@@ -25,40 +25,6 @@ class HtmlBuilder {
 		return $this->{$key}( $params );
 	}
 
-	private function schema_head_2( $params ) {
-
-		$html = Html::rawElement(
-			'p',
-			[
-				'style' => 'padding-top:0px;padding-bottom:0px;',
-				'class' => 'plainlinks'
-
-			],
-			$params['type_description']
-		);
-
-		if ( $params['error'] !== '' ) {
-			$html .= Html::rawElement( 'h3', [], $params['error-title'] ) . Html::rawElement(
-				'p',
-				[
-					'style' => 'border: 0px solid #eaecf0;padding:0px;'
-
-				],
-				$params['error']
-			);
-		}
-
-		$html .= Html::rawElement( 'hr', [ 'style' => 'margin-top: 20px;margin-bottom: 20px;background-color: #ddd;' ], '' );
-
-		return Html::rawElement(
-			'div',
-			[
-				'class' => 'schema-head'
-			],
-			$html
-		);
-	}
-
 	private function schema_head( $params ) {
 
 		$list = [];
@@ -75,25 +41,24 @@ class HtmlBuilder {
 			);
 		}
 
-		if ( $params['description'] !== '' ) {
-			$list[] = Html::rawElement(
-				'span',
-				[
-					'class' => 'plainlinks'
-				],
-				$params['description']
-			);
-		}
-
 		if ( isset( $params['type_description'] ) ) {
 			$type_description .= Html::rawElement(
 				'p',
 				[
-					'style' => 'padding-bottom:5px;padding-bottom:0px;',
-					'class' => 'plainlinks'
+					'class' => 'smw-schema-type-description plainlinks'
 
 				],
 				$params['type_description']
+			);
+		}
+
+		if ( $params['description'] !== '' ) {
+			$type_description .= Html::rawElement(
+				'p',
+				[
+					'class' => 'smw-schema-description plainlinks'
+				],
+				$params['description']
 			);
 		}
 
@@ -113,17 +78,7 @@ class HtmlBuilder {
 		);
 
 		$htmlTabs->content( 'schema-summary', $text );
-
-		$error = Html::rawElement(
-			'p',
-			[
-				'style' => 'border: 0px solid #eaecf0;padding:0px;'
-
-			],
-			$params['error']
-		);
-
-		$htmlTabs->content( 'schema-error', $error );
+		$htmlTabs->content( 'schema-error', $params['error'] );
 
 		$html = $htmlTabs->buildHTML(
 			[ 'class' => 'smw-schema' ]
@@ -156,7 +111,7 @@ class HtmlBuilder {
 		$html = Html::rawElement(
 				'ul',
 				[
-					'style' => 'padding-left:0px;'
+					'class' => 'smw-schema-validation-error-list'
 				],
 				'<li>' . implode( '</li><li>', $params['list'] ) . '</li>'
 		);
@@ -164,7 +119,7 @@ class HtmlBuilder {
 		$html = Html::rawElement(
 			'div',
 			[
-				'style' => 'padding-left:0px;padding-top:1px;'
+				'class' => 'smw-schema-validation-error'
 			],
 			$params['schema']
 		) . $html;
