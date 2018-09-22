@@ -191,6 +191,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getLanguage' )
+			->will( $this->returnValue( $language ) );
+
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
@@ -321,6 +325,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
 			->will( $this->returnValue( $context ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getLanguage' )
+			->will( $this->returnValue( $language ) );
 
 		$provider[] = [
 			[

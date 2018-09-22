@@ -37,6 +37,11 @@ define( 'SMW_FACTBOX_HIDDEN', 1 );
 define( 'SMW_FACTBOX_SPECIAL', 2 );
 define( 'SMW_FACTBOX_NONEMPTY', 3 );
 define( 'SMW_FACTBOX_SHOWN', 5 );
+
+define( 'SMW_FACTBOX_CACHE', 16 );
+define( 'SMW_FACTBOX_PURGE_REFRESH', 32 );
+define( 'SMW_FACTBOX_DISPLAY_SUBOBJECT', 64 );
+
 /**@}*/
 
 /**@{

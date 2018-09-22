@@ -4,6 +4,7 @@ namespace SMW\Factbox;
 
 use Html;
 use Sanitizer;
+use Title;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -50,6 +51,11 @@ class Factbox {
 	private $dataValueFactory;
 
 	/**
+	 * @var integer
+	 */
+	private $featureSet = 0;
+
+	/**
 	 * @var boolean
 	 */
 	protected $isVisible = false;
@@ -75,6 +81,15 @@ class Factbox {
 		$this->parserData = $parserData;
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $featureSet
+	 */
+	public function setFeatureSet( $featureSet ) {
+		$this->featureSet = $featureSet;
 	}
 
 	/**
@@ -356,6 +371,11 @@ class Factbox {
 		);
 
 		foreach ( $semanticData->getProperties() as $property ) {
+
+			if ( $property->getKey() === '_SOBJ' && !$this->hasFeature( SMW_FACTBOX_DISPLAY_SUBOBJECT ) ) {
+				continue;
+			}
+
 			$propertyDv = $this->dataValueFactory->newDataValueByItem( $property, null );
 			$row = '';
 
@@ -431,6 +451,11 @@ class Factbox {
 		);
 
 		return $semanticData->isEmpty();
+	}
+
+
+	private function hasFeature( $feature ) {
+		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 
 }

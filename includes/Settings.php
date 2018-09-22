@@ -65,6 +65,7 @@ class Settings extends Options {
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
+			'smwgFactboxFeatures' => $GLOBALS['smwgFactboxFeatures'],
 			'smwgShowFactbox' => $GLOBALS['smwgShowFactbox'],
 			'smwgShowFactboxEdit' => $GLOBALS['smwgShowFactboxEdit'],
 			'smwgCompactLinkSupport' => $GLOBALS['smwgCompactLinkSupport'],
@@ -137,8 +138,6 @@ class Settings extends Options {
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
-			'smwgFactboxUseCache' => $GLOBALS['smwgFactboxUseCache'],
-			'smwgFactboxCacheRefreshOnPurge' => $GLOBALS['smwgFactboxCacheRefreshOnPurge'],
 			'smwgQueryProfiler' => $GLOBALS['smwgQueryProfiler'],
 			'smwgEnabledSpecialPage' => $GLOBALS['smwgEnabledSpecialPage'],
 			'smwgFallbackSearchType' => $GLOBALS['smwgFallbackSearchType'],
@@ -310,6 +309,15 @@ class Settings extends Options {
 
 		if ( isset( $GLOBALS['smwgShowHiddenCategories'] ) && $GLOBALS['smwgShowHiddenCategories'] === false ) {
 			$configuration['smwgParserFeatures'] = $configuration['smwgParserFeatures'] & ~SMW_PARSER_HID_CATS;
+		}
+
+		// smwgFactboxFeatures
+		if ( isset( $GLOBALS['smwgFactboxUseCache'] ) && $GLOBALS['smwgFactboxUseCache'] === false ) {
+			$configuration['smwgFactboxFeatures'] = $configuration['smwgFactboxFeatures'] & ~SMW_FACTBOX_CACHE;
+		}
+
+		if ( isset( $GLOBALS['smwgFactboxCacheRefreshOnPurge'] ) && $GLOBALS['smwgFactboxCacheRefreshOnPurge'] === false ) {
+			$configuration['smwgFactboxFeatures'] = $configuration['smwgFactboxFeatures'] & ~SMW_FACTBOX_PURGE_REFRESH;
 		}
 
 		// smwgLinksInValues
@@ -523,6 +531,8 @@ class Settings extends Options {
 				'smwgSparqlUpdateEndpoint' => '3.1.0',
 				'smwgSparqlDataEndpoint' => '3.1.0',
 				'smwgCacheType' => '3.1.0',
+				'smwgFactboxUseCache' => '3.1.0',
+				'smwgFactboxCacheRefreshOnPurge' => '3.1.0',
 				'options' => [
 					'smwgCacheUsage' =>  [
 						'smwgStatisticsCache' => '3.1.0',
@@ -573,6 +583,8 @@ class Settings extends Options {
 				'smwgSparqlUpdateEndpoint' => 'smwgSparqlEndpoint',
 				'smwgSparqlDataEndpoint' => 'smwgSparqlEndpoint',
 				'smwgCacheType' => 'smwgMainCacheType',
+				'smwgFactboxUseCache' => 'smwgFactboxFeatures',
+				'smwgFactboxCacheRefreshOnPurge' => 'smwgFactboxFeatures',
 				'options' => [
 					'smwgCacheUsage' => [
 						'smwgStatisticsCacheExpiry' => 'special.statistics',
