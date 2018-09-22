@@ -212,10 +212,10 @@ span.smwb-value {
 
 .smwb-action-separator {
 	display: inline-block;
-    line-height: 1.025em;
-    border-left: 1px solid #a2a9b1;
-    margin: 0.2em 0.2em 0.2em 0.55em;
-    zoom: 1;
+	line-height: 1.025em;
+	border-left: 1px solid #a2a9b1;
+	margin: 0.2em 0.2em 0.2em 0.45em;
+	zoom: 1;
 }
 
 /**
