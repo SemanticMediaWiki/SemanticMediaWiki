@@ -121,12 +121,12 @@ class ApplicationFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string $serviceName
+	 * @param string $service
 	 *
 	 * @return mixed
 	 */
-	public function singleton( $serviceName ) {
-		return call_user_func_array( [ $this->containerBuilder, 'singleton' ], func_get_args() );
+	public function singleton( ...$service ) {
+		return $this->containerBuilder->singleton( ...$service );
 	}
 
 	/**
@@ -137,12 +137,12 @@ class ApplicationFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $serviceName
+	 * @param string $service
 	 *
 	 * @return mixed
 	 */
-	public function create( $serviceName ) {
-		return call_user_func_array( [ $this->containerBuilder, 'create' ], func_get_args() );
+	public function create( ...$service ) {
+		return $this->containerBuilder->create( ...$service );
 	}
 
 	/**
