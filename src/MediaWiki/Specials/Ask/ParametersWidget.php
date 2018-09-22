@@ -308,12 +308,15 @@ class ParametersWidget {
 			$attributes['size'] = $opts['size'];
 		}
 
-		if ( isset( $opts['data-property'] ) ) {
-			$attributes['data-property'] = $opts['data-property'];
-		}
-
-		if ( isset( $opts['data-value'] ) ) {
-			$attributes['data-value'] = $opts['data-value'];
+		// [ 'data-props' => [
+		//   'property' => Foo, 'value' => 'Bar', 'title-prefix' => 'false'
+		// ] ]
+		if ( isset( $opts['data-props'] ) && is_array( $opts['data-props'] ) ) {
+			foreach ( $opts['data-props'] as $key => $value ) {
+				if ( is_string( $key ) ) {
+					$attributes["data-$key"] = $value;
+				}
+			}
 		}
 
 		if ( isset( $opts['class'] ) ) {

@@ -31,6 +31,7 @@
 				"search": '',
 				'property': context.data( 'property' ),
 				'value': context.data( 'value' ),
+				'title-prefix': context.data( 'title-prefix' ),
 				"limit": limit
 			}
 		};
@@ -69,6 +70,7 @@
 					'search': query.search.replace( "?", '' ),
 					'property': context.data( 'property' ),
 					'value': context.data( 'value' ),
+					'title-prefix': context.data( 'title-prefix' ),
 					'limit': limit
 				} );
 

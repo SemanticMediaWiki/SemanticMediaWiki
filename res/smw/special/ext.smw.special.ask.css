@@ -395,8 +395,6 @@ display: inline-block;
 }
 
 .options-list .smw-property-input {
-	padding: 2px 1px 2px 1px;
-	border: 1px solid #aaa;
 }
 
 .smw-ask-sort-input .autocomplete-arrow, .smw-table-cell .autocomplete-arrow {
@@ -404,7 +402,6 @@ display: inline-block;
 }
 
 .options-list .smw-table-cell .autocomplete-arrow {
-	background-position-y: -2px;
 }
 
 .smw-ask-sort-input .autocomplete-loading {
@@ -417,8 +414,6 @@ display: inline-block;
 }
 
 .options-list .smw-table-cell .autocomplete-loading {
-	vertical-align: unset;
-	padding: 2px 1px 2px 1px;
 }
 
 .smw-table-cell .mw-ui-input.autocomplete-loading {
