@@ -22,7 +22,7 @@
 
 			for ( var prop in watchlist ) {
 				if ( watchlist.hasOwnProperty( prop ) ) {
-					text = text + '<tr><td>' + prop + '</td><td>&nbsp;</td><td>' + watchlist[prop] + '</td></tr>';
+					text = text + '<tr><td>' + prop + '</td><td>&nbsp;</td><td><span class="item-count active">' + watchlist[prop] + '</span></td></tr>';
 				}
 			}
 
