@@ -43,6 +43,11 @@ class Rebuilder {
 	private $rollover;
 
 	/**
+	 * @var FileIndexer
+	 */
+	private $fileIndexer;
+
+	/**
 	 * @var array
 	 */
 	private $settings = [];
@@ -56,11 +61,6 @@ class Rebuilder {
 	 * @var array
 	 */
 	private $options = [];
-
-	/**
-	 * @var array
-	 */
-	private $_instance = [];
 
 	/**
 	 * @since 3.0
@@ -230,13 +230,7 @@ class Rebuilder {
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {
 
-		if ( $this->_instance === [] ) {
-			if ( $this->client->getConfig()->dotGet( 'indexer.raw.text', false ) ) {
-				$this->_instance['text_indexer'] = $this->indexer->getTextIndexer();
-			} else {
-				$this->_instance['text_indexer'] = false;
-			}
-
+		if ( $this->fileIndexer === null ) {
 			$skip = false;
 
 			if ( isset( $this->options['skip-fileindex'] ) ) {
@@ -244,9 +238,9 @@ class Rebuilder {
 			}
 
 			if ( !$skip && $this->client->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
-				$this->_instance['file_indexer'] = $this->indexer->getFileIndexer();
+				$this->fileIndexer = $this->indexer->getFileIndexer();
 			} else {
-				$this->_instance['file_indexer'] = false;
+				$this->fileIndexer = false;
 			}
 		}
 
@@ -261,20 +255,14 @@ class Rebuilder {
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
 
-		$this->indexer->index( $changeOp->newChangeDiff() );
+		$this->indexer->index(
+			$changeOp->newChangeDiff(),
+			$this->raw_text( $dataItem )
+		);
 
-		if ( $this->_instance['text_indexer'] && $dataItem->getSubobjectName() === '' && ( $title = $dataItem->getTitle() ) !== null ) {
-
-			$text = $this->_instance['text_indexer']->fetchTextFromRevID(
-				$title->getLatestRevID( \Title::GAID_FOR_UPDATE )
-			);
-
-			$this->_instance['text_indexer']->index( $dataItem, $text );
-		}
-
-		if ( $this->_instance['file_indexer'] && $dataItem->getNamespace() === NS_FILE ) {
-			$this->_instance['file_indexer']->noSha1Check();
-			$this->_instance['file_indexer']->index( $dataItem, null );
+		if ( $this->fileIndexer && $dataItem->getNamespace() === NS_FILE ) {
+			$this->fileIndexer->noSha1Check();
+			$this->fileIndexer->index( $dataItem, null );
 		}
 	}
 
@@ -293,6 +281,19 @@ class Rebuilder {
 		$this->refresh_index( ElasticClient::TYPE_LOOKUP );
 
 		return true;
+	}
+
+	private function raw_text( $dataItem ) {
+
+		if ( !$this->client->getConfig()->dotGet( 'indexer.raw.text', false ) || $dataItem->getSubobjectName() !== ''  ) {
+			return '';
+		}
+
+		if ( ( $title = $dataItem->getTitle() ) !== null ) {
+			return $this->indexer->fetchNativeData( $title );
+		}
+
+		return '';
 	}
 
 	private function prepare_index( $type ) {
