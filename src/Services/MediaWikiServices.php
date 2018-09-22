@@ -87,7 +87,11 @@ return [
 	 */
 	'DBLoadBalancerFactory' => function( $containerBuilder ) {
 
-		 $containerBuilder->registerExpectedReturnType( 'DBLoadBalancerFactory', '\LBFactory' );
+		if ( class_exists( '\Wikimedia\Rdbms\LBFactory' ) ) {
+			$containerBuilder->registerExpectedReturnType( 'DBLoadBalancerFactory', '\Wikimedia\Rdbms\LBFactory' );
+		} else {
+			$containerBuilder->registerExpectedReturnType( 'DBLoadBalancerFactory', '\LBFactory' );
+		}
 
 		// > MW 1.28
 		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getDBLoadBalancerFactory' ) ) {
