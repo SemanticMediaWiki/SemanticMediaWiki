@@ -74,7 +74,7 @@ class SMWSql3SmwIds {
 	 */
 	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
 
-	const MAX_CACHE_SIZE = 500;
+	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
 
 	/**
@@ -140,7 +140,7 @@ class SMWSql3SmwIds {
 		$this->initCache();
 
 		$this->idEntityFinder = $this->factory->newIdEntityFinder(
-			$this->idCacheManager->get( 'entity.lookup' )
+			$this->idCacheManager
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
