@@ -1,5 +1,11 @@
 <?php
 
+use SMW\SQLStore\Installer;
+use SMW\Utils\File;
+use SMW\MediaWiki\Connection\Sequence;
+use SMW\ApplicationFactory;
+use SMW\SQLStore\SQLStore;
+
 if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 	die( 'Not an entry point' );
 }
@@ -14,7 +20,6 @@ $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
 
 $autoloader->addClassMap( [
 	'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
-	'SMW\Tests\Reporter\MessageReporterTestCase' => __DIR__ . '/phpunit/includes/Reporter/MessageReporterTestCase.php',
 	'SMW\Maintenance\RebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
 	'SMW\Maintenance\RebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
 	'SMW\Maintenance\RebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php',
@@ -24,3 +29,25 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\UpdateEntityCollation'      => __DIR__ . '/../maintenance/updateEntityCollation.php',
 	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php'
 ] );
+
+/**
+ * Register a shutdown function the invoke a final clean-up
+ */
+register_shutdown_function( function() {
+
+	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+		return;
+	}
+
+	// Restore the smw.json upgrade key with the settings
+	// that match the LocalSettings.php
+	Installer::setUpgradeKey( new File(), $GLOBALS );
+
+	// Reset any sequence modified during the test
+	$sequence = new Sequence(
+		ApplicationFactory::getInstance()->getConnectionManager()->getConnection( 'mw.db' )
+	);
+
+	$sequence->tablePrefix( '' );
+	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+} );
