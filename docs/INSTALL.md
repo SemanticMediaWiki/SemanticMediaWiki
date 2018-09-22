@@ -15,7 +15,7 @@ in the [compatibility matrix](COMPATIBILITY.md).
 The strongly recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org) using
 [MediaWiki's built-in support for Composer](https://www.mediawiki.org/wiki/Composer).
 
-##### Step 1
+#### Step 1
 
 Change to the base directory of your MediaWiki installation. This is where the "LocalSettings.php"
 file is located. If you have not yet installed Composer do it now by running the following command
@@ -23,7 +23,7 @@ in your shell:
 
     wget https://getcomposer.org/composer.phar
 
-##### Step 2
+#### Step 2
     
 If you do not have a "composer.local.json" file yet, create one and add the following content to it:
 
@@ -42,7 +42,7 @@ section in your file:
 
 Remember to add a comma to the end of the preceding line in this section.
 
-##### Step 3
+#### Step 3
 
 Run the following command in your shell:
 
@@ -51,14 +51,14 @@ Run the following command in your shell:
 Note if you have Git installed on your system add the `--prefer-source` flag to the above command. Also
 note that it may be necessary to run this command twice. If unsure do it twice right away.
 
-##### Step 4
+#### Step 4
 
 Run the MediaWiki [update script](https://www.mediawiki.org/wiki/Manual:Update.php). The location of
 this script is `maintenance/update.php`. It can be run as follows in your shell:
 
     php maintenance/update.php
 
-##### Step 5
+#### Step 5
 
 Add the following line to the end of your "LocalSettings.php" file:
 
@@ -66,7 +66,7 @@ Add the following line to the end of your "LocalSettings.php" file:
 
 Note that "example.org" should be replaced by your wiki's domain.
 
-##### Step 6
+#### Step 6
 
 If you are installing SMW on a freshly installed wiki continue to the next step. If the wiki already has content
 pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php"). The location of this script
@@ -74,7 +74,7 @@ is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. It can be run as 
 
     php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
 
-##### Verify installation success
+#### Verify installation success
 
 As final step, you can verify SMW got installed by looking at the "Special:Version" page on your wiki and check that
 the Semantic MediaWiki section is listed.
