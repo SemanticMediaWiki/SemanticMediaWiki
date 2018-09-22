@@ -34,29 +34,51 @@ class PSubjectLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testLookup() {
+	/**
+	 * @dataProvider lookupProvider
+	 */
+	public function testLookup( $subject, $parameters, $expected ) {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ new DIWikiPage( 'Foobar', NS_MAIN ) ] ) );
+			->will( $this->returnValue( [ $subject ] ) );
 
 		$instance = new PSubjectLookup(
 			$this->store
 		);
 
-		$parameters = [
-			'search' => 'Foo',
-			'property' => 'Bar'
-		];
-
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
 			$res['query'],
-			[
-				'Foobar'
-			]
+			$expected
 		);
+	}
+
+	public function lookupProvider() {
+
+		yield [
+			new DIWikiPage( 'Foo bar', NS_MAIN ),
+			[
+				'search' => 'Foo',
+				'property' => 'Bar'
+			],
+			[
+				'Foo bar'
+			]
+		];
+
+		yield [
+			new DIWikiPage( 'Foo bar', NS_HELP ),
+			[
+				'search' => 'Foo',
+				'property' => 'Bar',
+				'title-prefix' => false
+			],
+			[
+				'Foo bar'
+			]
+		];
 	}
 
 }
