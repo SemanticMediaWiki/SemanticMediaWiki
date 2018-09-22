@@ -266,6 +266,40 @@ class QueryDependencyLinksStore {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer|array $id
+	 *
+	 * @return integer
+	 */
+	public function countDependencies( $id ) {
+
+		$count = 0;
+		$ids = !is_array( $id ) ? (array)$id : $id;
+
+		if ( $ids === [] || !$this->isEnabled() ) {
+			return $count;
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
+			SQLStore::QUERY_LINKS_TABLE,
+			[
+				'COUNT(s_id) AS count'
+			],
+			[
+				'o_id' => $ids
+			],
+			__METHOD__
+		);
+
+		$count = $row ? $row->count : $count;
+
+		return (int)$count;
+	}
+
+	/**
 	 * Finds a partial list (given limit and offset) of registered subjects that
 	 * that represent a dependency on something like a subject in a query list,
 	 * a property, or a printrequest.

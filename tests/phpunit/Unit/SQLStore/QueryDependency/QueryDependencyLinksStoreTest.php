@@ -441,6 +441,52 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->findDependencyTargetLinksForSubject( DIWikiPage::newFromText( 'Foo' ), $requestOptions );
 	}
 
+	public function testCountDependencies() {
+
+		$row = new \stdClass;
+		$row->count = 1001;
+
+		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->with(
+				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
+				$this->anything(),
+				$this->equalTo( [ 'o_id' => [ 42 ] ] ) )
+			->will( $this->returnValue( $row ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$dependencyLinksTableUpdater->expects( $this->any() )
+			->method( 'getStore' )
+			->will( $this->returnValue( $store ) );
+
+		$instance = new QueryDependencyLinksStore(
+			$queryResultDependencyListResolver,
+			$dependencyLinksTableUpdater
+		);
+
+		$instance->countDependencies( 42 );
+	}
+
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )

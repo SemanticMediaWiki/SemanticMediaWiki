@@ -91,6 +91,12 @@ class ArticleDelete extends HookHandler {
 
 		$parameters['origin'] = 'ArticleDelete';
 
+		// Fetch the ID before the delete process marks it as outdated to help
+		// run a dispatch process on secondary tables
+		$parameters['_id'] = $this->store->getObjectIds()->getId(
+			$subject
+		);
+
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 
