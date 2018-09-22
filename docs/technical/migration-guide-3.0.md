@@ -1,6 +1,6 @@
 # Migration guide
 
-This document contains migration information both for users and administratiors as well as developers when upgrading from Semantic MediaWiki 2.5.x to Semantic MediaWiki 3.0.x. Please consult the resprective RELEASE-NOTES when upgrading from an earlier version of Semantic MediaWiki.
+This document contains migration information both for users and administratiors as well as developers when upgrading from Semantic MediaWiki 2.5.x to Semantic MediaWiki 3.0.x. Please consult the respective RELEASE-NOTES when upgrading from an earlier version of Semantic MediaWiki.
 
 ## Users and administrators
 
@@ -27,9 +27,7 @@ For details also see the [change description.](https://gist.github.com/s7eph4n/2
 ### Resources export
 
 - Resources are now being exported as Internationalized Resource Identifiers (IRI).
-  This means that the URIs are now being exported using Universal Coded Character
-  Set (UCS) instead of American Standard Code for Information Interchange (ASCII).
-  See the help page on configuration parameter [`$smwgExportResourcesAsIri`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri) for further information.
+  This means that the URIs are now being exported using Universal Coded Character Set (UCS) instead of American Standard Code for Information Interchange (ASCII). See the help page on configuration parameter [`$smwgExportResourcesAsIri`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri) for further information.
 
 ## Developers
 
