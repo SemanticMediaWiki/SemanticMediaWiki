@@ -74,6 +74,23 @@ span.smwttactiveinline span.smwbuiltin {
 	font-style: italic;
 }
 
+.item-count {
+	display: inline-block;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    background-color: rgba(27,31,35,0.04);
+    border-radius: 4px;
+    color: #bbb;
+    margin-left: 10px;
+}
+
+.item-count.active {
+    background-color: rgba(27,31,35,0.08);
+    color: #444d56;
+}
+
 /* make divs look like <pre> */
 .smwpre {
 	font-family: monospace;
