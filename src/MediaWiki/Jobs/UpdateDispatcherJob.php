@@ -8,6 +8,9 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\DataTypeRegistry;
+use SMW\RequestOptions;
+use SMW\Exception\DataItemDeserializationException;
+use SMWDataItem as DataItem;
 use Title;
 
 /**
@@ -22,12 +25,13 @@ use Title;
 class UpdateDispatcherJob extends Job {
 
 	/**
-	 * Restict disptach process on available pool of data
+	 * Restrict dispatch process to an available pool of data
 	 */
 	const RESTRICTED_DISPATCH_POOL = 'restricted.disp.pool';
 
 	/**
-	 * Restict disptach process on available pool of data
+	 * Parameter for the secondary run to contain a list of update jobs to be
+	 * inserted at once.
 	 */
 	const JOB_LIST = 'job-list';
 
@@ -46,14 +50,6 @@ class UpdateDispatcherJob extends Job {
 	public function __construct( Title $title, $params = [], $id = 0 ) {
 		parent::__construct( 'smw.updateDispatcher', $title, $params, $id );
 		$this->removeDuplicates = true;
-
-		$this->setStore(
-			ApplicationFactory::getInstance()->getStore()
-		);
-
-		$this->isEnabledJobQueue(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
-		);
 	}
 
 	/**
@@ -65,10 +61,24 @@ class UpdateDispatcherJob extends Job {
 	 */
 	public function run() {
 
+		$this->initServices();
+
+		/**
+		 * Retrieved a job list (most likely from a secondary dispatch run) and
+		 * push each list entry into the job queue to spread the work independently
+		 * from the actual dispatch process.
+		 */
 		if ( $this->hasParameter( self::JOB_LIST ) ) {
-			return $this->createUpdateJobsFromJobList(
-				$this->getParameter( self::JOB_LIST )
-			);
+			return $this->push_jobs_from_list( $this->getParameter( self::JOB_LIST ) );
+		}
+
+		/**
+		 * Using an entity ID to initiate some work (which if send from the DELETE
+		 * will have no valid ID_TABLE reference by the time this job is run) on
+		 * some secondary tables.
+		 */
+		if ( $this->hasParameter( '_id' ) ) {
+			$this->dispatch_by_id( $this->getParameter( '_id' ) );
 		}
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
@@ -83,9 +93,11 @@ class UpdateDispatcherJob extends Job {
 			);
 		}
 
-		// Push generated job list into a secondary dispatch run
+		/**
+		 * Create a secondary run by pushing collected jobs into a chunked queue
+		 */
 		if ( $this->jobs !== [] ) {
-			$this->createSecondaryDispatchRunWithChunkedJobList();
+			$this->create_secondary_dispatch_run( $this->jobs );
 		}
 
 		Hooks::run( 'SMW::Job::AfterUpdateDispatcherJobComplete', [ $this ] );
@@ -93,14 +105,71 @@ class UpdateDispatcherJob extends Job {
 		return true;
 	}
 
-	private function createSecondaryDispatchRunWithChunkedJobList() {
-		foreach ( array_chunk( $this->jobs, self::CHUNK_SIZE, true ) as $jobList ) {
+	private function initServices() {
 
-			$hash = md5( json_encode( $jobList ) );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$this->setStore( $applicationFactory->getStore() );
 
+		$this->serializerFactory = $applicationFactory->newSerializerFactory();
+
+		$this->isEnabledJobQueue(
+			$applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' )
+		);
+	}
+
+	private function dispatch_by_id( $id ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+			$applicationFactory->getStore()
+		);
+
+		$count = $queryDependencyLinksStore->countDependencies(
+			$id
+		);
+
+		if ( $count === 0 ) {
+			return;
+		}
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit(
+			$count
+		);
+
+		$dependencyTargetLinks = $queryDependencyLinksStore->findDependencyTargetLinks(
+			[ $id ],
+			$requestOptions
+		);
+
+		foreach ( $dependencyTargetLinks as $targetLink ) {
+			list( $title, $namespace, $iw, $subobjectname ) = explode( '#', $targetLink, 4 );
+
+			// @see DIWikiPage::doUnserialize
+			if ( !isset( $this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] ) ) {
+				$this->jobs[( $title . '#' . $namespace . '#' . $iw . '#' )] = true;
+			}
+		}
+	}
+
+	private function create_secondary_dispatch_run( $jobs ) {
+
+		$origin = $this->getTitle()->getPrefixedText();
+
+		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
 			$job = new self(
-				Title::newFromText( 'UpdateDispatcherChunkedJobList::' . $hash ),
-				[ self::JOB_LIST => $jobList ]
+				Title::newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
+				[
+					self::JOB_LIST => $jobList,
+					'origin' => $origin,
+
+					// We expect entities to exists that are send through the
+					// dispatch to avoid creating "dead" ids on non existing (or
+					// already deleted) entities
+					'check_exists' => true
+				]
 			);
 
 			$job->insert();
@@ -141,14 +210,14 @@ class UpdateDispatcherJob extends Job {
 				$property->findPropertyTypeId()
 			);
 
-			if ( $type !== \SMWDataItem::TYPE_WIKIPAGE ) {
+			if ( $type !== DataItem::TYPE_WIKIPAGE ) {
 				continue;
 			}
 
 			// Best effort to find all entities to a selected property
 			$subjects = $this->store->getAllPropertySubjects( $property );
 
-			$this->addUniqueSubjectsToUpdateJobList(
+			$this->add_job(
 				$this->apply_filter( $property, $subjects )
 			);
 		}
@@ -191,7 +260,7 @@ class UpdateDispatcherJob extends Job {
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);
 
-		$this->addUniqueSubjectsToUpdateJobList(
+		$this->add_job(
 			$subjects
 		);
 	}
@@ -202,7 +271,7 @@ class UpdateDispatcherJob extends Job {
 			return;
 		}
 
-		$semanticData = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+		$semanticData = $this->serializerFactory->newSemanticDataDeserializer()->deserialize(
 			$this->getParameter( 'semanticData' )
 		);
 
@@ -211,7 +280,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function addUniqueSubjectsToUpdateJobList( $subjects = [] ) {
+	private function add_job( $subjects = [] ) {
 
 		foreach ( $subjects as $subject ) {
 
@@ -234,7 +303,9 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function createUpdateJobsFromJobList( array $subjects ) {
+	private function push_jobs_from_list( array $subjects ) {
+
+		$check_exists = $this->getParameter( 'check_exists', false );
 
 		$parameters = [
 			UpdateJob::FORCED_UPDATE => true,
@@ -250,12 +321,16 @@ class UpdateDispatcherJob extends Job {
 			}
 
 			try {
-				$title = DIWikiPage::doUnserialize( $subject )->getTitle();
-			} catch( \SMW\Exception\DataItemDeserializationException $e ) {
+				$subject = DIWikiPage::doUnserialize( $subject );
+			} catch( DataItemDeserializationException $e ) {
 				continue;
 			}
 
-			if ( $title === null ) {
+			if ( $check_exists && !$this->store->getObjectIds()->exists( $subject ) ) {
+				continue;
+			}
+
+			if ( ( $title = $subject->getTitle() ) === null ) {
 				continue;
 			}
 

@@ -64,6 +64,10 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$updateDispatcherJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,9 +78,9 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'deleteSubject' );
@@ -84,6 +88,10 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
 			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
