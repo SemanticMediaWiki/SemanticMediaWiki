@@ -102,4 +102,30 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetHash() {
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$printRequests = [];
+		$results = [];
+
+		$instance = new QueryResult(
+			$printRequests,
+			$query,
+			$results,
+			$store
+		);
+
+		$this->assertNotSame(
+			$instance->getHash( 'quick' ),
+			$instance->getHash()
+		);
+	}
+
 }

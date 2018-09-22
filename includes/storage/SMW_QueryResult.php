@@ -1,6 +1,5 @@
 <?php
 
-use SMW\HashBuilder;
 use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -424,7 +423,7 @@ class SMWQueryResult {
 
 		return array_merge( $serializeArray, [
 			'meta'=> [
-				'hash'   => HashBuilder::createFromContent( $serializeArray ),
+				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
@@ -441,8 +440,23 @@ class SMWQueryResult {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
-		return HashBuilder::createFromContent( $this->serializeToArray() );
+	public function getHash( $type = null ) {
+
+		// Just iterate over available subjects to create a "quick" hash given
+		// that resolving the entire object tree is costly due to recursive
+		// processing of all data items including its printouts
+		if ( $type === 'quick' ) {
+			$hash = [];
+
+			foreach ( $this->mResults as $dataItem ) {
+				$hash[] = $dataItem->getHash();
+			}
+
+			reset( $this->mResults );
+			return 'q:' . md5( json_encode( $hash ) );
+		}
+
+		return md5( json_encode( $this->serializeToArray() ) );
 	}
 
 }
