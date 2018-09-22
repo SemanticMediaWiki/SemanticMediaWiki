@@ -36,6 +36,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	private $hasConstraintViolation = false;
 
 	/**
+	 * @var string
+	 */
+	private $errorMsg = '';
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param AllowsListValueParser $allowsListValueParser
@@ -63,6 +68,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	public function validate( $dataValue ) {
 
 		$this->hasConstraintViolation = false;
+		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-list';
 
 		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
 			return $this->hasConstraintViolation;
@@ -129,7 +135,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		$dataValue->addErrorMsg(
 			[
-				'smw_notinenum',
+				$this->errorMsg,
 				$dataValue->getWikiValue(),
 				$allowedValueList . ( $count > 10 ? ', ...' : '' ),
 				$property->getLabel()
@@ -234,6 +240,8 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			return true;
 		}
 
+		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-range';
+
 		return false;
 	}
 
@@ -252,6 +260,8 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		} else {
 			$allowedValueList[$allowedValue->getString()] = true;
 		}
+
+		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-range';
 
 		return false;
 	}
