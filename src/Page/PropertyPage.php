@@ -340,15 +340,17 @@ class PropertyPage extends Page {
 
 	private function getUsageCount() {
 
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 1 );
+
 		// Label that corresponds to the display and sort characteristics
 		if ( $this->property->isUserDefined() ) {
 			$searchLabel = $this->propertyValue->getSearchLabel();
 		} else {
-			$searchLabel = $this->property->getCanonicalLabel();
+			$searchLabel = $this->property->getKey();
+			$requestOptions->setOption( RequestOptions::SEARCH_FIELD, 'smw_title' );
 		}
 
-		$requestOptions = new RequestOptions();
-		$requestOptions->setLimit( 1 );
 		$requestOptions->addStringCondition( $searchLabel, StringCondition::COND_EQ );
 
 		$cachedLookupList = $this->store->getPropertiesSpecial( $requestOptions );

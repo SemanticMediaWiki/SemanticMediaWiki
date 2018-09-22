@@ -151,7 +151,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar'
+			' AND Foo >= 1 AND Bar = foo_bar'
 		];
 
 		# 4
@@ -165,7 +165,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar AND abd = 123'
+			' AND Foo >= 1 AND Bar = foo_bar AND abd = 123'
 		];
 
 		# 5
@@ -179,7 +179,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar OR abd = 123'
+			' AND Foo >= 1 AND Bar = foo_bar OR abd = 123'
 		];
 
 		# 6
@@ -192,7 +192,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( AND Foo >= 1) AND (Bar NOT = foo\_bar) '
+			' ( AND Foo >= 1) AND (Bar NOT = foo_bar) '
 		];
 
 		# 7
@@ -206,7 +206,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) '
+			' ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) '
 		];
 
 		# 8
@@ -221,7 +221,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar\_ex) '
+			' ( ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar_ex) '
 		];
 
 		return $provider;

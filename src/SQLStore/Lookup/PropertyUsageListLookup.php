@@ -93,6 +93,7 @@ class PropertyUsageListLookup implements ListLookup {
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$options = [ 'ORDER BY' => 'smw_sort' ];
+		$search_field = 'smw_sortkey';
 
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
@@ -105,8 +106,12 @@ class PropertyUsageListLookup implements ListLookup {
 			$options['OFFSET'] = max( $this->requestOptions->offset, 0 );
 		}
 
+		if ( $this->requestOptions->getOption( RequestOptions::SEARCH_FIELD ) ) {
+			$search_field = $this->requestOptions->getOption( RequestOptions::SEARCH_FIELD );
+		}
+
 		if ( $this->requestOptions->getStringConditions() ) {
-			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', 'smw_sortkey', false );
+			$conditions[] = $this->store->getSQLConditions( $this->requestOptions, '', $search_field, false );
 		}
 
 		$db = $this->store->getConnection( 'mw.db' );
