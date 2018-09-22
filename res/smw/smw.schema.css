@@ -92,8 +92,17 @@
     zoom: 1;
 }
 
+.smw-schema-description {
+    color:#888;
+}
+
 .schema-error {
-	color: #c00;
+    color: #c00;
+}
+
+.smw-schema-validation-error {
+    padding-left:0px;
+    padding-top:5px;
 }
 
 /**
