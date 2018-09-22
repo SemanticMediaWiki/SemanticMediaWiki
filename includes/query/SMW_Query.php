@@ -1,7 +1,6 @@
 <?php
 
 use SMW\DIWikiPage;
-use SMW\HashBuilder;
 use SMW\Message;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
@@ -500,17 +499,36 @@ class SMWQuery implements QueryContext {
 	 */
 	public function getHash() {
 
-		// For an optimal (less fragmentation) use of the cache, only use
-		// elements that directly influence the result list
-		$expectFingerprint = ($GLOBALS['smwgQueryResultCacheType'] !== false && $GLOBALS['smwgQueryResultCacheType'] !== CACHE_NONE ) || $GLOBALS['smwgQFilterDuplicates'] !== false;
+		// Only use elements that directly influence the result list
+		$serialized = [];
 
-		if ( $this->description !== null && $expectFingerprint ) {
-			return $this->createFromFingerprint( $this->description->getFingerprint() );
+		// Don't use the QueryString, use the canonized fingerprint to ensure that
+		// [[Foo::123]][[Bar::abc]] returns the same ID as [[Bar::abc]][[Foo::123]]
+		// given that limit, offset, and sort/order are the same
+		if ( $this->description !== null ) {
+			$serialized['fingerprint'] = $this->description->getFingerprint();
+		} else {
+			$serialized['conditions'] = $this->getQueryString();
 		}
 
-		// FIXME 3.0 Leave the hash unchanged to avoid unnecessary BC issues in
-		// case the cache is not used.
-		return HashBuilder::createFromArray( $this->toArray() );
+		$serialized['parameters'] = [
+			'limit'     => $this->limit,
+			'offset'    => $this->offset,
+			'sortkeys'  => $this->sortkeys,
+
+			 // COUNT, DEBUG ...
+			'querymode' => $this->querymode
+		];
+
+		// Make to sure to distinguish queries and results from a foreign repository
+		if ( $this->querySource !== null && $this->querySource !== '' ) {
+			$serialized['parameters']['source'] = $this->querySource;
+		}
+
+		// Printouts are avoided as part of the hash as they not influence the
+		// list of entities and are only resolved after the query result has
+		// been retrieved
+		return md5( json_encode( $serialized ) );
 	}
 
 	/**
@@ -529,33 +547,6 @@ class SMWQuery implements QueryContext {
 	 */
 	public function getQueryId() {
 		return self::ID_PREFIX . $this->getHash();
-	}
-
-	private function createFromFingerprint( $fingerprint ) {
-
-		$serialized = [];
-
-		// Don't use the QueryString, use the canonized fingerprint to ensure that
-		// [[Foo::123]][[Bar::abc]] returns the same ID as [[Bar::abc]][[Foo::123]]
-		// given that limit, offset, and sort/order are the same
-		$serialized['fingerprint'] = $fingerprint;
-
-		$serialized['parameters'] = [
-			'limit'     => $this->limit,
-			'offset'    => $this->offset,
-			'sortkeys'  => $this->sortkeys,
-			'querymode' => $this->querymode // COUNT, DEBUG ...
-		];
-
-		// Make to sure to distinguish queries and results from a foreign repository
-		if ( $this->querySource !== null && $this->querySource !== '' ) {
-			$serialized['parameters']['source'] = $this->querySource;
-		}
-
-		// Printouts are avoided as part of the hash as they not influence the
-		// result match process and are only resolved after the query result has
-		// been retrieved
-		return HashBuilder::createFromArray( $serialized );
 	}
 
 }

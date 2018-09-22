@@ -226,57 +226,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testQueryIdStabilityForFixedSetOfParameters() {
-
-		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
-		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
-
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
-			new ParserOutput()
-		);
-
-		$instance = new AskParserFunction(
-			$parserData,
-			$this->messageFormatter,
-			$this->circularReferenceGuard,
-			$this->expensiveFuncExecutionWatcher
-		);
-
-		$params = [
-			'[[Modification date::+]]',
-			'?Modification date',
-			'format=list'
-		];
-
-		$instance->parse( $params );
-
-		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERY702bb82fc5ac212df176709f98b4f5b9' )
-		);
-
-		// Limit is a factor that influences the query id, count uses the
-		// max limit available in $GLOBALS['smwgQMaxLimit'] therefore we set
-		// the limit to make the test independent from possible other settings
-
-		$params = [
-			'[[Modification date::+]]',
-			'?Modification date',
-			'format=count'
-		];
-
-		$instance->parse( $params );
-
-		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYf161b0f405d169d1f038812484619c1f' )
-		);
-	}
-
 	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
-		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', true );
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -314,7 +265,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance->parse( $params );
 
 		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYaa38249db4bc6d3e8133588fb08d0f0d' )
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYb6a190747f7d3c2775730f6bc6c5e469' )
 		);
 	}
 
