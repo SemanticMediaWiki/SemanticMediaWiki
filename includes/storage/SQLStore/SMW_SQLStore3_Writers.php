@@ -107,7 +107,7 @@ class SMWSQLStore3Writers {
 			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
 			$this->doDataUpdate( $emptySemanticData );
 
-			if ( $this->store->service( 'PropertyTableIdReferenceFinder' )->hasResidualReferenceForId( $id ) === false ) {
+			if ( $this->store->service( 'PropertyTableIdReferenceFinder' )->hasResidualPropertyTableReference( $id ) === false ) {
 				// Mark subject/subobjects with a special IW, the final removal is being
 				// triggered by the `EntityRebuildDispatcher`
 				$this->store->getObjectIds()->updateInterwikiField(

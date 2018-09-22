@@ -91,6 +91,22 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	public function hasResidualPropertyTableReference( $id ) {
+
+		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
+			return true;
+		}
+
+		return (bool)$this->findAtLeastOneActiveReferenceById( $id, false );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param integer $id
@@ -136,10 +152,11 @@ class PropertyTableIdReferenceFinder {
 	 * @since 2.4
 	 *
 	 * @param integer $id
+	 * @param boolean $secondary_ref
 	 *
 	 * @return DataItem|false
 	 */
-	public function findAtLeastOneActiveReferenceById( $id ) {
+	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ) {
 
 		$reference = false;
 
@@ -165,7 +182,7 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( !isset( $reference->s_id ) ) {
+		if ( $secondary_ref && !isset( $reference->s_id ) ) {
 			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
