@@ -111,6 +111,34 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance->tryToFindAtLeastOneReferenceForProperty( new DIProperty( 'Foo' ) );
 	}
 
+	public function testHasResidualPropertyTableReference() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new PropertyTableIdReferenceFinder(
+			$this->store
+		);
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->hasResidualPropertyTableReference( 42 )
+		);
+	}
+
 	public function testHasResidualReferenceFor() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
