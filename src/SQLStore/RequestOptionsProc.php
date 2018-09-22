@@ -108,13 +108,18 @@ class RequestOptionsProc {
 				$condition = 'LIKE';
 
 				switch ( $strcond->condition ) {
-					case StringCondition::COND_PRE:  $string .= '%';
+					case StringCondition::COND_PRE:
+						$string .= '%';
 					break;
-					case StringCondition::COND_POST: $string = '%' . $string;
+					case StringCondition::COND_POST:
+						$string = '%' . $string;
 					break;
-					case StringCondition::COND_MID:  $string = '%' . $string . '%';
+					case StringCondition::COND_MID:
+						$string = '%' . $string . '%';
 					break;
-					case StringCondition::COND_EQ:  $condition = '=';
+					case StringCondition::COND_EQ:
+						$string = $strcond->string;
+						$condition = '=';
 					break;
 				}
 

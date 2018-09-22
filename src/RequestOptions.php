@@ -17,6 +17,8 @@ namespace SMW;
  */
 class RequestOptions {
 
+	const SEARCH_FIELD = 'search_field';
+
 	/**
 	 * The maximum number of results that should be returned.
 	 */
