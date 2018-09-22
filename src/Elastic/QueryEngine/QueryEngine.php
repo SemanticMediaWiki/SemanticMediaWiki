@@ -309,6 +309,14 @@ class QueryEngine implements IQueryEngine {
 
 		// Relocate to the original position that returned from Elastic
 		foreach ( $dataItems as $dataItem ) {
+
+			// In case of an update lag (Elasticsearch is near real time where
+			// some shards may not yet have seen an update) make sure to hide any
+			// outdated entities we retrieve from the SQL as ID master back-end
+			if ( $dataItem->getInterwiki() === SMW_SQL3_SMWDELETEIW ) {
+				continue;
+			}
+
 			$id = $dataItem->getId();
 			$results[$listPos[$id]] = $dataItem;
 
