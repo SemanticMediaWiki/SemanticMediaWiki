@@ -14,6 +14,7 @@ use SMW\Store;
 use SMW\Utils\CharArmor;
 use SMWDIBlob as DIBlob;
 use Title;
+use Revision;
 
 /**
  * @license GNU GPL v2+
@@ -35,11 +36,6 @@ class Indexer {
 	 * @var ServicesContainer
 	 */
 	private $servicesContainer;
-
-	/**
-	 * @var TextIndexer
-	 */
-	private $textIndexer;
 
 	/**
 	 * @var FileIndexer
@@ -88,24 +84,6 @@ class Indexer {
 	 */
 	public function setOrigin( $origin ) {
 		$this->origin = $origin;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return TextIndexer
-	 */
-	public function getTextIndexer() {
-
-		if ( $this->textIndexer === null ) {
-			$this->textIndexer = $this->servicesContainer->get( 'TextIndexer', $this );
-		}
-
-		$this->textIndexer->setLogger(
-			$this->logger
-		);
-
-		return $this->textIndexer;
 	}
 
 	/**
@@ -233,7 +211,8 @@ class Indexer {
 	 */
 	public function newBulk( array $params ) {
 
-		$bulk = new Bulk(
+		$bulk = $this->servicesContainer->get(
+			'Bulk',
 			$this->store->getConnection( 'elastic' )
 		);
 
@@ -292,22 +271,21 @@ class Indexer {
 
 		$response = $bulk->execute();
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'origin' => $this->origin,
-			'procTime' => $time + microtime( true ),
-			'response' => $response
-		];
-
-		$msg = [
-			'Indexer',
-			'Deleted list',
-			'procTime (in sec): {procTime}',
-			'Response: {response}'
-		];
-
-		$this->logger->info( $msg, $context );
+		$this->logger->info(
+			[
+				'Indexer',
+				'Deleted list',
+				'procTime (in sec): {procTime}',
+				'Response: {response}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'origin' => $this->origin,
+				'procTime' => $time + microtime( true ),
+				'response' => $response
+			]
+		);
 	}
 
 	/**
@@ -350,30 +328,30 @@ class Indexer {
 
 		$response = $connection->index( $params + [ 'body' => $data ] );
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'origin' => $this->origin,
-			'subject' => $dataItem->getHash(),
-			'id' => $dataItem->getId(),
-			'response' => $response
-		];
-
-		$msg = [
-			'Indexer',
-			'Create ({subject}, {id})',
-			'Response: {response}'
-		];
-
-		$this->logger->info( $msg, $context );
+		$this->logger->info(
+			[
+				'Indexer',
+				'Create ({subject}, {id})',
+				'Response: {response}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'origin' => $this->origin,
+				'subject' => $dataItem->getHash(),
+				'id' => $dataItem->getId(),
+				'response' => $response
+			]
+		);
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param ChangeDiff $changeDiff
+	 * @param string $text
 	 */
-	public function safeReplicate( ChangeDiff $changeDiff ) {
+	public function safeReplicate( ChangeDiff $changeDiff, $text = '' ) {
 
 		$subject = $changeDiff->getSubject();
 
@@ -385,15 +363,48 @@ class Indexer {
 			return $this->planRecoveryJob( $subject->getTitle(), $params ) ;
 		}
 
-		$this->index( $changeDiff );
+		$this->index( $changeDiff, $text );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage|Title|integer $id
+	 *
+	 * @return string
+	 */
+	public function fetchNativeData( $id ) {
+
+		if ( $id instanceof DIWikiPage ) {
+			$id = $id->getTitle();
+		}
+
+		if ( $id instanceof Title ) {
+			$id = $id->getLatestRevID( \Title::GAID_FOR_UPDATE );
+		}
+
+		if ( $id == 0 ) {
+			return '';
+		};
+
+		$revision = Revision::newFromId( $id );
+
+		if ( $revision == null ) {
+			return '';
+		};
+
+		$content = $revision->getContent( Revision::RAW );
+
+		return $content->getNativeData();
 	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param ChangeDiff $changeDiff
+	 * @param string $text
 	 */
-	public function index( ChangeDiff $changeDiff ) {
+	public function index( ChangeDiff $changeDiff, $text = '' ) {
 
 		$time = -microtime( true );
 		$subject = $changeDiff->getSubject();
@@ -405,26 +416,10 @@ class Indexer {
 
 		$bulk = $this->newBulk( $params );
 
-		$this->doMap( $bulk, $changeDiff );
+		$this->map_data( $bulk, $changeDiff );
+		$this->map_text( $bulk, $subject, $text );
+
 		$response = $bulk->execute();
-
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'origin' => $this->origin,
-			'subject' => $subject->getHash(),
-			'procTime' => $time + microtime( true ),
-			'response' => $response
-		];
-
-		$msg = [
-			'Indexer',
-			'Data index completed ({subject})',
-			'procTime (in sec): {procTime}',
-			'Response: {response}'
-		];
-
-		$this->logger->info( $msg, $context );
 
 		// We always index (not upsert) since we want to have a complete state of
 		// an entity (and ES would delete and insert any document) so trying
@@ -447,6 +442,48 @@ class Indexer {
 		if ( !$this->isRebuild && $subject->getNamespace() === NS_FILE ) {
 			$this->getFileIndexer()->planIngestJob( $subject->getTitle() );
 		}
+
+		$this->logger->info(
+			[
+				'Indexer',
+				'Data index completed ({subject})',
+				'procTime (in sec): {procTime}',
+				'Response: {response}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'developer',
+				'origin' => $this->origin,
+				'subject' => $subject->getHash(),
+				'procTime' => $time + microtime( true ),
+				'response' => $response
+			]
+		);
+	}
+
+	/**
+	 * Remove anything that resembles [[:...|foo]] to avoid distracting the indexer
+	 * with internal links annotation that are not relevant.
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function removeLinks( $text ) {
+
+		// {{DEFAULTSORT: ... }}
+		$text = preg_replace( "/\\{\\{([^|]+?)\\}\\}/", "", $text );
+		$text = preg_replace( '/\\[\\[[\s\S]+?::/', '[[', $text );
+
+		// [[:foo|bar]]
+		$text = preg_replace( '/\\[\\[:[^|]+?\\|/', '[[', $text );
+		$text = preg_replace( "/\\{\\{([^|]+\\|)(.*?)\\}\\}/", "\\2", $text );
+		$text = preg_replace( "/\\[\\[([^|]+?)\\]\\]/", "\\1", $text );
+
+		// [[Has foo::Bar]]
+		//	$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
+
+		return $text;
 	}
 
 	private function isSafe() {
@@ -470,17 +507,51 @@ class Indexer {
 
 		$indexerRecoveryJob->insert();
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'user',
-			'origin' => $this->origin,
-			'subject' => $title->getPrefixedDBKey()
-		];
-
-		$this->logger->info( 'IndexerRecoveryJob: {subject}', $context );
+		$this->logger->info(
+			[
+				'Indexer',
+				'Insert IndexerRecoveryJob: {subject}',
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'origin' => $this->origin,
+				'subject' => $title->getPrefixedDBKey()
+			]
+		);
 	}
 
-	private function doMap( $bulk, $changeDiff ) {
+	private function map_text( $bulk, $subject, $text ) {
+
+		if ( $text === '' ) {
+			return;
+		}
+
+		$id = $subject->getId();
+
+		if ( $id == 0 ) {
+			$id = $this->store->getObjectIds()->getSMWPageID(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
+				true
+			);
+		}
+
+		$bulk->upsert(
+			[
+				'_index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
+				'_type'  => ElasticClient::TYPE_DATA,
+				'_id'    => $id
+			],
+			[
+				'text_raw' => $this->removeLinks( $text )
+			]
+		);
+	}
+
+	private function map_data( $bulk, $changeDiff ) {
 
 		$inserts = [];
 		$inverted = [];
@@ -686,31 +757,6 @@ class Indexer {
 
 			$insertRows[$sid][$pid]["dat_raw"][] = $ins['o_serialized'];
 		}
-	}
-
-	/**
-	 * Remove anything that resembles [[:...|foo]] to avoid distracting the indexer
-	 * with internal links annotation that are not relevant.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function removeLinks( $text ) {
-
-		// {{DEFAULTSORT: ... }}
-		$text = preg_replace( "/\\{\\{([^|]+?)\\}\\}/", "", $text );
-		$text = preg_replace( '/\\[\\[[\s\S]+?::/', '[[', $text );
-
-		// [[:foo|bar]]
-		$text = preg_replace( '/\\[\\[:[^|]+?\\|/', '[[', $text );
-		$text = preg_replace( "/\\{\\{([^|]+\\|)(.*?)\\}\\}/", "\\2", $text );
-		$text = preg_replace( "/\\[\\[([^|]+?)\\]\\]/", "\\1", $text );
-
-		// [[Has foo::Bar]]
-		//	$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
-
-		return $text;
 	}
 
 }

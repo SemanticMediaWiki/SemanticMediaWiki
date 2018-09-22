@@ -77,20 +77,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructTextIndexer() {
-
-		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new ElasticFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\TextIndexer',
-			$instance->newTextIndexer( $indexer )
-		);
-	}
-
 	public function testCanConstructFileIndexer() {
 
 		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
@@ -112,6 +98,16 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\Rollover',
 			$instance->newRollover( $this->connection )
+		);
+	}
+
+	public function testCanConstructBulk() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\Bulk',
+			$instance->newBulk( $this->connection )
 		);
 	}
 

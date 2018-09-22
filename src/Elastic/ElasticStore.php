@@ -211,6 +211,7 @@ class ElasticStore extends SQLStore {
 		parent::doDataUpdate( $semanticData );
 
 		$time = -microtime( true );
+		$config = $this->getConnection( 'elastic' )->getConfig();
 
 		if ( $this->indexer === null ) {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
@@ -227,8 +228,15 @@ class ElasticStore extends SQLStore {
 			throw new RuntimeException( "Unable to replicate, missing a `change.diff` object!" );
 		}
 
+		$text = '';
+
+		if ( $config->dotGet( 'indexer.raw.text', false ) && ( $revID = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
+			$text = $this->indexer->fetchNativeData( $revID );
+		}
+
 		$this->indexer->safeReplicate(
-			$this->extensionData['change.diff']
+			$this->extensionData['change.diff'],
+			$text
 		);
 
 		unset( $this->extensionData['delete.list'] );
@@ -247,61 +255,9 @@ class ElasticStore extends SQLStore {
 			]
 		);
 
-		$config = $this->getConnection( 'elastic' )->getConfig();
-
-		if ( $config->dotGet( 'indexer.raw.text', false ) && ( $revID = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
-			$this->doTextUpdate( $subject, $revID );
-		}
-
 		if ( $subject->getNamespace() === NS_FILE && $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
 			$this->indexer->getFileIndexer()->planIngestJob( $subject->getTitle() );
  		}
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param DIWikiPage $ubject
-	 * @param string $text
-	 */
-	public function doTextUpdate( DIWikiPage $subject, $revID ) {
-
-		$time = -microtime( true );
-
-		if ( $this->indexer === null ) {
-			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
-		}
-
-		if ( $subject->getId() == 0 ) {
-			$id = $this->getObjectIds()->getSMWPageID(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$subject->getSubobjectName(),
-				true
-			);
-
-			$subject->setId( $id );
-		}
-
-		$textIndexer = $this->indexer->getTextIndexer();
-
-		$textIndexer->setOrigin( 'ElasticStore::DoTextUpdate' );
-		$textIndexer->index( $subject, $textIndexer->fetchTextFromRevID( $revID ) );
-
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'production',
-			'procTime' => microtime( true ) + $time,
-		];
-
-		$msg = [
-			'ElasticStore',
-			'Text update completed',
-			'procTime in sec: {procTime}'
-		];
-
-		$this->logger->info( $msg, $context );
 	}
 
 	/**

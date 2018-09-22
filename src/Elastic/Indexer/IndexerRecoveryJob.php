@@ -60,7 +60,7 @@ class IndexerRecoveryJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$elasticFactory = new ElasticFactory();
+		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
 
 		$this->indexer = $elasticFactory->newIndexer(
 			$store
@@ -82,6 +82,7 @@ class IndexerRecoveryJob extends Job {
 
 		if ( $this->hasParameter( 'index' ) ) {
 			$this->index(
+				$connection,
 				$applicationFactory->getCache(),
 				$this->getParameter( 'index' )
 			);
@@ -121,15 +122,22 @@ class IndexerRecoveryJob extends Job {
 		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $cache, $hash ) {
+	private function index( $connection, $cache, $hash ) {
+
+		$subject = DIWikiPage::doUnserialize( $hash );
+		$text = '';
 
 		$changeDiff = ChangeDiff::fetch(
 			$cache,
-			DIWikiPage::doUnserialize( $hash )
+			$subject
 		);
 
+		if ( $connection->getConfig()->dotGet( 'indexer.raw.text', false ) ) {
+			$text = $this->indexer->fetchNativeData( $subject );
+		}
+
 		if ( $changeDiff !== false ) {
-			$this->indexer->index( $changeDiff );
+			$this->indexer->index( $changeDiff, $text );
 		}
 	}
 
