@@ -31,8 +31,7 @@ For details also see the [change description.](https://gist.github.com/s7eph4n/2
 - Resources are now being exported as Internationalized Resource Identifiers (IRI).
   This means that the URIs are now being exported using Universal Coded Character
   Set (UCS) instead of American Standard Code for Information Interchange (ASCII).
-  See the help page on configuration parameter [`$smwgExportResourcesAsIri`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri)
-  for furhter information.
+  See the help page on configuration parameter [`$smwgExportResourcesAsIri`](https://www.semantic-mediawiki.org/wiki/Help:$smwgExportResourcesAsIri) for further information.
 
 ## Developers
 
@@ -52,13 +51,12 @@ For details also see the [change description.](https://gist.github.com/s7eph4n/2
 
 ### Store
 
-- `Store::getPropertySubjects` is to return an `Iterator` hence an `array`
-  type check should be avoided and if necessary use `iterator_to_array` to
-  transform a result instance into a standard array
+- `Store::getPropertySubjects` is to return an `Iterator` hence an `array` type check should be avoided and if necessary
+use `iterator_to_array` to transform a result instance into a standard array
 
 #### Register predefined property
 
-```
+```php
 \Hooks::register( 'SMW::Property::initProperties', function( $propertyRegistry ) {
 
 	$propertyRegistry->registerProperty( '__FOO', '_txt', 'Foo' );
