@@ -138,6 +138,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 				'smwgExportResourcesAsIri' => false,
 				'smwgCompactLinkSupport' => false,
 				'smwgSparqlReplicationPropertyExemptionList' => [],
+				'smwgPageSpecialProperties' => [ '_MDAT' ],
 				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
 				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE,
 				'smwgCacheUsage' => [
