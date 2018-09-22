@@ -10,15 +10,18 @@ This release brings many highlights:
 
 Several user interface changes are deployed to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
 
-* Special page "Ask" (`Special:Ask`) / [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893), [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898), [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415) including further enhancements, most notably [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) input assistance on input fields, [#2967](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2967) comprehensive input help (cheat sheet) and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
-* Special page "Browse" (`Special:Browse`) - [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891), [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875), including further enhancements, [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874) grouping of properties and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
-* Special page "SemanticMediaWiki" (`Special:SemanticMediaWiki`) - [#3218](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3218)
-* Property and Concept pages - [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation including [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs
-* Factbox - [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
+* Special page "Ask" (`Special:Ask`) – [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893), [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898), [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415) including further enhancements, most notably [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) input assistance on input fields, [#2967](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2967) comprehensive input help (cheat sheet) and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "Browse" (`Special:Browse`) – [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891), [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875), including further enhancements, [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874) grouping of properties and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "SemanticMediaWiki" (`Special:SemanticMediaWiki`) – [#3218](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3218)
+* Property pages – [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation including [#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440) usage count information and [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs
+* Concept pages – [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation and [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs.
+* Factbox – [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
 
-### List and template printer rework
+### List formats and template format rework
 
-#3130
+The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906). Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling.
+
+See the [migration guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md#list-formats-incl-list-ol-ul-template) for a comprehensive overview of the changes done.
 
 ### Search and query
 
