@@ -299,7 +299,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructIdEntityFinder() {
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -307,7 +307,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\IdEntityFinder',
-			$instance->newIdEntityFinder( $cache )
+			$instance->newIdEntityFinder( $idCacheManager )
 		);
 	}
 

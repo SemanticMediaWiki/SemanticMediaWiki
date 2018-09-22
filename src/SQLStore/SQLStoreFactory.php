@@ -558,16 +558,16 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Cache $cache
+	 * @param IdCacheManager $idCacheManager
 	 *
 	 * @return IdEntityFinder
 	 */
-	public function newIdEntityFinder( Cache $cache ) {
+	public function newIdEntityFinder( IdCacheManager $idCacheManager ) {
 
 		$idMatchFinder = new IdEntityFinder(
 			$this->store,
 			$this->getIteratorFactory(),
-			$cache
+			$idCacheManager
 		);
 
 		return $idMatchFinder;
