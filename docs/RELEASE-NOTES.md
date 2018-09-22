@@ -27,11 +27,12 @@ See the [migration guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki
 
 Local-specific (ICU) sorting and collation is now possible for pages as well as values of datatype "Page" [(#2065)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2065) facilitated via configuration parameter [`$smwgEntityCollation`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation) [(#2429).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2429)
 
-Special page "Search" (`Special:Search`) now provides and additional search form accessible via the "Extended" selector in case the [`SMWSearch` feature](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) was enabled [(#3126).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) with custom search forms definable in the new "smw/schema" namespace [(#3431).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
+Special page "Search" (`Special:Search`) now provides and additional search form accessible via the "Extended" selector in case the ["SMWSearch" feature](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) was enabled [(#3126).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) with custom search forms definable in the new "smw/schema" namespace [(#3431).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
 
 ### Performance
 
-#3142, #3261, #3286
+Various effort have been put into improving the performance of the software, most notably with these three code changes:
+[#3142](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3142), [#3261](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3261) and [#3286](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3286) with the latter facilitating less expensive paging limits on various user facing special pages via configuration parameter [`$smwgPagingLimit`](https://www.semantic-mediawiki.org/wiki/Help:$smwgPagingLimit).
 
 ## Upgrading
 
@@ -49,7 +50,7 @@ If you are still using maintenance scripts identifiable by the `SMW_` prefix you
 
 ## Miscellaneous
 
-Semantic MediaWiki no longer provides file releases [(See #3347)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732). If command line access to the webspace is not available or if the hoster imposes restrictions on required functionality an [incdividual file release](https://github.com/SemanticMediaWiki/IndividualFileRelease) will have to be created.
+Semantic MediaWiki no longer provides file releases [(See #3347).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1732).If command line access to the webspace is not available or if the hoster imposes restrictions on required functionality an [individual file release](https://github.com/SemanticMediaWiki/IndividualFileRelease) will have to be created.
 
 ## New features and enhancements
 
