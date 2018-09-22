@@ -1,20 +1,20 @@
 # Semantic MediaWiki 3.0
 
-This is not a release yet and is planned to be available in Q3 2018.
+The final release was not made yet and is scheduled to be available in Mid Oktober 2018.
 
 ## Highlights
 
-Highlights for this release include ... (#2065)
+This release brings many highlights:
 
-### UI changes
+### User interface changes
 
-Several UI changes are deployed with 3.0 to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
+Several user interface changes are deployed to make user facing front-end components more intutive and mobile-friendly by improving the responsiveness on small screens including:
 
-- #2893, #2898 (`Special:Ask`),
-- #2891, #2875, (`Special:Browse`)
-- #2906 (Factbox)
-- #3218 (`Special:SemanticMediaWiki)
-- #3236 (Property page), #3308
+* Special page "Ask" (`Special:Ask`) / [#2893](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2893), [#2898](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2898), [#3415](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3415) including further enhancements, most notably [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) input assistance on input fields, [#2967](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2967) comprehensive input help (cheat sheet) and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "Browse" (`Special:Browse`) - [#2891](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2891), [#2875](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2875), including further enhancements, [#2874](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2874) grouping of properties and [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) compact links
+* Special page "SemanticMediaWiki" (`Special:SemanticMediaWiki`) - [#3218](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3218)
+* Property and Concept pages - [#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236) boxed pagination, [#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308) tabbed navigation including [#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346) custom tabs
+* Factbox - [#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906)
 
 ### List and template printer rework
 
@@ -22,6 +22,7 @@ Several UI changes are deployed with 3.0 to make user facing front-end component
 
 ### Search and query
 
+#2065
 #3126
 
 ### Performance
