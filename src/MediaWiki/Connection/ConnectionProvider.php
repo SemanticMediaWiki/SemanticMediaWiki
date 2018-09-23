@@ -116,8 +116,18 @@ class ConnectionProvider implements IConnectionProvider {
 			);
 		}
 
+		$transactionProfiler = new TransactionProfiler(
+			\Profiler::instance()->getTransactionProfiler()
+		);
+
+		$transactionProfiler->silenceTransactionProfiler();
+
 		$connection = new Database(
 			new ConnectionProviderRef( $connectionProviders )
+		);
+
+		$connection->setTransactionProfiler(
+			$transactionProfiler
 		);
 
 		// Only required because of SQlite

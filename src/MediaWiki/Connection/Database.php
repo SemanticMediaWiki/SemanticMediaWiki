@@ -61,9 +61,9 @@ class Database {
 	private $dbPrefix = '';
 
 	/**
-	 * @var boolean
+	 * @var TransactionProfiler
 	 */
-	private $resetTransactionProfiler = false;
+	private $transactionProfiler;
 
 	/**
 	 * @var boolean
@@ -93,6 +93,15 @@ class Database {
 		if ( $this->loadBalancerFactory === null ) {
 			$this->loadBalancerFactory = ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' );
 		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param TransactionProfiler $transactionProfiler
+	 */
+	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ) {
+		$this->transactionProfiler = $transactionProfiler;
 	}
 
 	/**
@@ -553,15 +562,6 @@ class Database {
 	}
 
 	/**
-	 * @note Use a blank trx profiler to ignore exceptions
-	 *
-	 * @since 2.4
-	 */
-	function resetTransactionProfiler( $resetTransactionProfiler ) {
-		$this->resetTransactionProfiler = $resetTransactionProfiler;
-	}
-
-	/**
 	 * @see DatabaseBase::clearFlag
 	 *
 	 * @since 2.4
@@ -618,7 +618,17 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->insert( $table, $rows, $fname, $options );
+		$oldSilenced = $this->transactionProfiler->setSilenced(
+			true
+		);
+
+		$res = $this->writeConnection->insert( $table, $rows, $fname, $options );
+
+		$this->transactionProfiler->setSilenced(
+			$oldSilenced
+		);
+
+		return $res;
 	}
 
 	/**
@@ -632,7 +642,17 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->update( $table, $values, $conds, $fname, $options );
+		$oldSilenced = $this->transactionProfiler->setSilenced(
+			true
+		);
+
+		$res = $this->writeConnection->update( $table, $values, $conds, $fname, $options );
+
+		$this->transactionProfiler->setSilenced(
+			$oldSilenced
+		);
+
+		return $res;
 	}
 
 	/**
@@ -646,7 +666,17 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->delete( $table, $conds, $fname );
+		$oldSilenced = $this->transactionProfiler->setSilenced(
+			true
+		);
+
+		$res = $this->writeConnection->delete( $table, $conds, $fname );
+
+		$this->transactionProfiler->setSilenced(
+			$oldSilenced
+		);
+
+		return $res;
 	}
 
 	/**
@@ -660,7 +690,17 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->replace( $table, $uniqueIndexes, $rows, $fname );
+		$oldSilenced = $this->transactionProfiler->setSilenced(
+			true
+		);
+
+		$res = $this->writeConnection->replace( $table, $uniqueIndexes, $rows, $fname );
+
+		$this->transactionProfiler->setSilenced(
+			$oldSilenced
+		);
+
+		return $res;
 	}
 
 	/**
