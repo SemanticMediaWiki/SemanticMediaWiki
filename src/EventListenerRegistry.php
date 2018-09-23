@@ -62,7 +62,7 @@ class EventListenerRegistry implements EventListenerCollection {
 				$applicationFactory = ApplicationFactory::getInstance();
 
 				$applicationFactory->getCache()->delete(
-					$applicationFactory->newCacheFactory()->getFactboxCacheKey( $title )
+					\SMW\Factbox\CachedFactbox::makeCacheKey( $title )
 				);
 			}
 		);

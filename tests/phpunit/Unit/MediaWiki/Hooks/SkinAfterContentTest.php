@@ -26,7 +26,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
 		$settings = Settings::newFromArray( [
-			'smwgFactboxUseCache'  => true,
+			'smwgFactboxFeatures'  => SMW_FACTBOX_CACHE,
 			'smwgMainCacheType'        => 'hash',
 			'smwgSemanticsEnabled' => true
 		] );
@@ -77,7 +77,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
 
 			$cachedFactbox->addContentToCache(
-				$this->applicationFactory->newCacheFactory()->getFactboxCacheKey( $parameters['title']->getArticleID() ),
+				$cachedFactbox->makeCacheKey( $parameters['title'] ),
 				$parameters['text']
 			);
 

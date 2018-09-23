@@ -333,21 +333,39 @@ return array(
 	##
 
 	###
+	# Specifies features supported by the in-page factbox
+	#
+	# - SMW_FACTBOX_CACHE to use the main cache to avoid reparsing the content on
+	#   each page view (replaced smwgFactboxUseCache)
+	#
+	# - SMW_FACTBOX_PURGE_REFRESH to refresh the faxtbox content on the purge
+	#   event (replaced smwgFactboxCacheRefreshOnPurge)
+	#
+	# - SMW_FACTBOX_DISPLAY_SUBOBJECT displays subobject references
+	#
+	# @since 3.0
+	##
+	'smwgFactboxFeatures' => SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT,
+
+	###
 	# This setting allows you to select in which cases you want to have a factbox
-	# appear below an article. Note that the Magic Words __SHOWFACTBOX__ and
-	# __HIDEFACTBOX__ can be used to control Factbox display for individual pages.
-	# Other options for this setting include:
+	# appear below an article and includes the following options:
+	#
+	# - SMW_FACTBOX_NONEMPTY show only those factboxes that have some content
+	# - SMW_FACTBOX_SPECIAL show only if special properties were set
+	# - SMW_FACTBOX_HIDDEN hide always
+	# - SMW_FACTBOX_SHOWN  show always
+	#
+	# @note  The Magic Words __SHOWFACTBOX__ and __HIDEFACTBOX__ can be used to
+	# control Factbox display for individual pages.
 	#
 	# @since 0.7
 	##
-	// 	'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY, 	# show only those factboxes that have some content
-	// 	'smwgShowFactbox' => SMW_FACTBOX_SPECIAL 	# show only if special properties were set
-	'smwgShowFactbox' => SMW_FACTBOX_HIDDEN, 	# hide always
-	// 	'smwgShowFactbox' => SMW_FACTBOX_SHOWN,  	# show always, buggy and not recommended
+	'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
 	##
 
 	###
-	# Same as $smwgShowFactbox but for edit mode and same possible values.
+	# Same as $smwgShowFactbox but for the edit mode with same possible values.
 	#
 	# @since 1.0
 	##
@@ -1197,39 +1215,6 @@ return array(
 	# default = true (legacy behaviour)
 	##
 	'smwgPropertyZeroCountDisplay' => true,
-	##
-
-	###
-	# Sets whether or not a factbox content should be stored in cache. This will
-	# considerable improve page response time as non-changed page content will
-	# not cause re-parsing of factbox content and instead is served directly from
-	# cache while only a new revision will trigger to re-parse the factbox.
-	#
-	# If smwgFactboxUseCache is set false (equals legacy behaviour) then every page
-	# request will bind the factbox to be re-parsed.
-	#
-	# @since 1.9
-	#
-	# @requires $smwgMainCacheType be set
-	# @default true
-	##
-	'smwgFactboxUseCache' => true,
-	##
-
-	###
-	# Sets whether or not a cached factbox should be invalidated on an action=purge
-	# event
-	#
-	# If set false the factbox cache will be only reset after a new page revision
-	# but if set true each purge request (no new page revision) will invalidate
-	# the factbox cache
-	#
-	# @since 1.9
-	#
-	# @requires $smwgMainCacheType be set
-	# @default true
-	##
-	'smwgFactboxCacheRefreshOnPurge' => true,
 	##
 
 	###

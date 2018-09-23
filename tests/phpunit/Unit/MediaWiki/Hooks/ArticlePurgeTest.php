@@ -73,8 +73,8 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->testEnvironment->addConfiguration(
-			'smwgFactboxCacheRefreshOnPurge',
-			$setup['smwgFactboxCacheRefreshOnPurge']
+			'smwgFactboxFeatures',
+			SMW_FACTBOX_PURGE_REFRESH
 		);
 
 		$this->testEnvironment->addConfiguration(
@@ -85,7 +85,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ArticlePurge();
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
-		$factboxCacheKey = $cacheFactory->getFactboxCacheKey( $pageId );
+		$factboxCacheKey = \SMW\Factbox\CachedFactbox::makeCacheKey( $pageId );
 		$purgeCacheKey = $cacheFactory->getPurgeCacheKey( $pageId );
 
 		$this->assertEquals(

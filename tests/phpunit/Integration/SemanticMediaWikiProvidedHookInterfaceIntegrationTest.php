@@ -192,19 +192,19 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			return false;
 		} );
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserData->expects( $this->any() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( new \ParserOutput() ) );
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue(  NS_MAIN ) );
 
-		$parserData->expects( $this->once() )
-			->method( 'getSubject' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+		$title->expects( $this->once() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
 
-		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $parserData );
+		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $title, new \ParserOutput() );
 		$instance->doBuild();
 
 		$this->assertEquals(

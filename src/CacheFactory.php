@@ -58,22 +58,6 @@ class CacheFactory {
 	 *
 	 * @return string
 	 */
-	public static function getFactboxCacheKey( $key ) {
-
-		if ( $key instanceof Title ) {
-			$key = $key->getArticleID();
-		}
-
-		return self::getCachePrefix() . ':smw:fc:' . md5( $key );
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param Title|integer|string $key
-	 *
-	 * @return string
-	 */
 	public static function getPurgeCacheKey( $key ) {
 
 		if ( $key instanceof Title ) {
