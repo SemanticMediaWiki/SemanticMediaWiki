@@ -450,6 +450,7 @@ class LegacyParser implements Parser {
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
+		$invalidName = false;
 
 		while ( $continue ) {
 			$chunk = $this->readChunk();
@@ -470,6 +471,14 @@ class LegacyParser implements Parser {
 				// We add a prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$prefix = $category ? $this->categoryPrefix : $this->conceptPrefix;
 				$title = Title::newFromText( $prefix . $chunk );
+
+				// Something like [[Category::Foo]] doesn't produce any meaningful
+				// results
+				if ( strpos( $prefix . $chunk, '::' ) !== false ) {
+					$invalidName .= "{$prefix}{$chunk}";
+				} elseif ( $invalidName ) {
+					$invalidName .= "||{$chunk}";
+				}
 
 				if ( $title !== null ) {
 					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
@@ -492,6 +501,10 @@ class LegacyParser implements Parser {
 
 			// Disjunctions only for categories
 			$continue = ( $chunk == '||' ) && $category;
+		}
+
+		if ( $invalidName ) {
+			return $this->descriptionProcessor->addErrorWithMsgKey( 'smw-category-invalid-value-assignment', "[[{$invalidName}]]" );
 		}
 
 		return $this->finishLinkDescription( $chunk, false, $description, $setNS );
