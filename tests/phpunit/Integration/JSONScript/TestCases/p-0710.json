@@ -1,0 +1,66 @@
+{
+	"description": "Test `#ask` with `[[Category::Foo]]`",
+	"setup": [
+		{
+			"page": "P0710/0",
+			"namespace":"NS_MAIN",
+			"contents": "{{#ask: [[Category::Foo]] }}"
+		},
+		{
+			"page": "P0710/1",
+			"namespace":"NS_MAIN",
+			"contents": "{{#ask: [[Category::Foo||Bar]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "P0710/0",
+			"assert-output": {
+				"to-contain": [
+					"\"[[Category&#58;&#58;Foo]]\" is not recognized as valid category or value annotation."
+				]
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": [
+						"P0710/0#0##_ERRc4925219842fff8c0078c42d61051c5e",
+						"P0710/0#0##_ERR32617756f0f702a55404d89059af32b8"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (with disjunction)",
+			"subject": "P0710/1",
+			"assert-output": {
+				"to-contain": [
+					"\"[[Category&#58;&#58;Foo||Bar]]\" is not recognized as valid category or value annotation."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

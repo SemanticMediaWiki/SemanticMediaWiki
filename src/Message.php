@@ -129,9 +129,11 @@ class Message {
 				// Unrecognized word "yyyy".</strong>"
 				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
 
-				// Internally encoded to circumvent the strip_tags which would remove
-				// <, > from values that represent a range
-				$value = str_replace( [ '%3C', '%3E' ], [ '>', '<' ], $value );
+				// - Internally encoded to circumvent the strip_tags which would
+				//   remove <, > from values that represent a range
+				// - Encode `::` to prevent the annotation parser to pick the
+				//   message value
+				$value = str_replace( [ '%3C', '%3E', "::" ], [ '>', '<', "&#58;&#58;" ], $value );
 
 				$encode[] = $value;
 			}
