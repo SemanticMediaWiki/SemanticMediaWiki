@@ -1799,11 +1799,11 @@ return array(
 	# Listed characters are categorized as invalid for a property label and will
 	# result in an error.
 	#
-	# @see #1568, #1638
+	# @see #1568, #1638, 3134
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%', "\r", "\n" ),
+	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n" ),
 	##
 
 	##
