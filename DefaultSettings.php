@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
   die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
-return array(
+return [
 
 	###
 	# This is the path to your installation of Semantic MediaWiki as seen on your
@@ -135,16 +135,16 @@ return array(
 	#
 	# @since 2.5.3
 	##
-	'smwgLocalConnectionConf' => array(
-		'mw.db' => array(
+	'smwgLocalConnectionConf' => [
+		'mw.db' => [
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
-		),
-		'mw.db.queryengine' => array(
+		],
+		'mw.db.queryengine' => [
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
-		)
-	),
+		]
+	],
 	##
 
 	###
@@ -285,7 +285,7 @@ return array(
 	# @since 2.5
 	# @default array
 	##
-	'smwgSparqlReplicationPropertyExemptionList' => array(),
+	'smwgSparqlReplicationPropertyExemptionList' => [],
 	##
 
 	###
@@ -312,7 +312,7 @@ return array(
 	#
 	# @since 0.7
 	##
-	'smwgNamespacesWithSemanticLinks' => array(
+	'smwgNamespacesWithSemanticLinks' => [
 		NS_MAIN => true,
 		NS_TALK => false,
 		NS_USER => true,
@@ -329,7 +329,7 @@ return array(
 		NS_HELP_TALK => false,
 		NS_CATEGORY => true,
 		NS_CATEGORY_TALK => false,
-	),
+	],
 	##
 
 	###
@@ -465,7 +465,7 @@ return array(
 	# @since 2.1 enabled default types, to disable the functionality either set the
 	# variable to array() or false
 	##
-	'smwgSearchByPropertyFuzzy' => array( '_num', '_txt', '_dat', '_mlt_rec' ),
+	'smwgSearchByPropertyFuzzy' => [ '_num', '_txt', '_dat', '_mlt_rec' ],
 	##
 
 	###
@@ -522,11 +522,11 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgPropertyListLimit' => array(
+	'smwgPropertyListLimit' => [
 		'subproperty' => 25,
 		'redirect' => 25,
 		'error' => 10
-	),
+	],
 	##
 
 	###
@@ -737,7 +737,7 @@ return array(
 	# formats 'table' and 'list' are defaults that cannot be disabled. The format
 	# 'broadtable' should not be disabled either in order not to break Special:ask.
 	##
-	'smwgResultFormats' => array(
+	'smwgResultFormats' => [
 		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'list'       => 'SMW\Query\ResultPrinters\ListResultPrinter',
@@ -755,7 +755,7 @@ return array(
 		'dsv'        => 'SMW\DsvResultPrinter',
 		'json'       => 'SMW\JsonResultPrinter',
 		'rdf'        => 'SMW\RdfResultPrinter'
-	),
+	],
 	##
 
 	##
@@ -821,10 +821,10 @@ return array(
 	#
 	# @since 1.4.3
 	##
-	'smwgQuerySources' => array(
+	'smwgQuerySources' => [
 	//	'local'      => '',
 	//	'mw-wiki-foo' => [ '\SMW\Query\RemoteRequest', 'url' => 'http://example.org/wiki/index.php' ],
-	),
+	],
 	##
 
 	### Default property type
@@ -910,7 +910,7 @@ return array(
 	#
 	# @since 1.7
 	##
-	'smwgPageSpecialProperties' => array( '_MDAT' ),
+	'smwgPageSpecialProperties' => [ '_MDAT' ],
 	##
 
 	###
@@ -928,10 +928,10 @@ return array(
 	#
 	# @since 1.5
 	##
-	'smwgChangePropagationWatchlist' => array(
+	'smwgChangePropagationWatchlist' => [
 		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
 		'_SUBP', '_SUBC', '_PVALI'
-	),
+	],
 	##
 
 	##
@@ -954,11 +954,11 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgDataTypePropertyExemptionList' => array(
+	'smwgDataTypePropertyExemptionList' => [
 		'Record',
 		'Reference',
 		'Keyword'
-	),
+	],
 	##
 
 	##
@@ -1136,7 +1136,7 @@ return array(
 	#
 	# @since 1.9
 	##
-	'smwgCacheUsage' => array(
+	'smwgCacheUsage' => [
 		'special.wantedproperties' => 3600,
 		'special.unusedproperties' => 3600,
 		'special.properties' => 3600,
@@ -1145,7 +1145,7 @@ return array(
 		'api.browse.pvalue' => 3600,
 		'api.browse.psubject' => 3600,
 		'api.task'  => 3600
-	),
+	],
 	##
 
 	###
@@ -1194,7 +1194,7 @@ return array(
 	#
 	# @default array()
 	##
-	'smwgFixedProperties' => array(),
+	'smwgFixedProperties' => [],
 
 	###
 	# Sets a threshold value for when a property is being highlighted as "hardly
@@ -1245,7 +1245,7 @@ return array(
 	#
 	# @since 1.9
 	##
-	'smwgEnabledSpecialPage' => array( 'Ask' ),
+	'smwgEnabledSpecialPage' => [ 'Ask' ],
 	##
 
 	###
@@ -1335,7 +1335,7 @@ return array(
 	#
 	# @since 2.3 (experimental)
 	##
-	'smwgQueryDependencyPropertyExemptionList' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
+	'smwgQueryDependencyPropertyExemptionList' => [ '_MDAT', '_SOBJ', '_ASKDU' ],
 	##
 
 	###
@@ -1348,7 +1348,7 @@ return array(
 	#
 	# @since 2.4 (experimental)
 	##
-	'smwgQueryDependencyAffiliatePropertyDetectionList' => array(),
+	'smwgQueryDependencyAffiliatePropertyDetectionList' => [],
 	##
 
 	###
@@ -1576,10 +1576,10 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgFulltextSearchTableOptions' => array(
-		'mysql'  => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ),
-		'sqlite' => array( 'FTS4' )
-	),
+	'smwgFulltextSearchTableOptions' => [
+		'mysql'  => [ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ],
+		'sqlite' => [ 'FTS4' ]
+	],
 	##
 
 	##
@@ -1595,11 +1595,11 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgFulltextSearchPropertyExemptionList' => array(
+	'smwgFulltextSearchPropertyExemptionList' => [
 		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
 		'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
 		'_REDI', '_CHGPRO'
-	),
+	],
 	##
 
 	##
@@ -1649,10 +1649,10 @@ return array(
 	# @since 2.5
 	# @default empty list (language detection is disabled by default)
 	##
-	'smwgFulltextLanguageDetection' => array(
+	'smwgFulltextLanguageDetection' => [
 	//	'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 	//	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
-	),
+	],
 	##
 
 	##
@@ -1803,7 +1803,7 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n" ),
+	'smwgPropertyInvalidCharacterList' => [ '[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n" ],
 	##
 
 	##
@@ -1823,7 +1823,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgPropertyReservedNameList' => array( 'Category', 'smw-property-reserved-category' ),
+	'smwgPropertyReservedNameList' => [ 'Category', 'smw-property-reserved-category' ],
 	##
 
 	##
@@ -2310,4 +2310,4 @@ return array(
 		// 'localhost:9200'
 	]
 
-);
+];
