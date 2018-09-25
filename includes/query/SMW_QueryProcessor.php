@@ -12,7 +12,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\QueryContext;
-use SMW\Query\ResultFormatNotFoundException;
+use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
  * This file contains a static class for accessing functions to generate and execute

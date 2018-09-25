@@ -8,6 +8,7 @@ namespace SMW\Test;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMWQueryProcessor;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWQueryProcessor class.
@@ -24,11 +25,20 @@ use SMWQueryProcessor;
  */
 class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 
+	use PHPUnitCompat;
+	
 	public function createQueryDataProvider() {
 		return [
 			[ '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ],
 		];
 	}
+	
+	public function testGetResultPrinter_ThrowsException() {
+
+		$this->setExpectedException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
+		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
+	}
+	
 
 	/**
 	* @dataProvider createQueryDataProvider
