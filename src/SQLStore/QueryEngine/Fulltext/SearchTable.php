@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
  * @license GNU GPL v2+
@@ -101,9 +102,17 @@ class SearchTable {
 			return false;
 		}
 
-		return $this->isExemptedProperty(
-			DIProperty::newFromUserLabel( $dataItem->getDBKey() )
-		);
+		try {
+			$property = DIProperty::newFromUserLabel(
+				$dataItem->getDBKey()
+			);
+		} catch( PredefinedPropertyLabelMismatchException $e ) {
+			// The property no longer exists (or is no longer available) therefore
+			// exempt it.
+			return true;
+		}
+
+		return $this->isExemptedProperty( $property );
 	}
 
 	/**
