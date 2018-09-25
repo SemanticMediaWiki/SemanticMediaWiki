@@ -133,7 +133,7 @@
             "Bearbeitungsgeschützt": "_EDIP",
             "Ist Änderungsweitergabe": "_CHGPRO",
             "Ist Attributgruppe": "_PPGR",
-            "Hat Schemabeschreigung": "_SCHEMA_DESC",
+            "Hat Schemabeschreibung": "_SCHEMA_DESC",
             "Hat Schemakennzeichen": "_SCHEMA_TAG",
             "Hat Schematyp": "_SCHEMA_TYPE",
             "Hat Schemadefinition": "_SCHEMA_DEF",
