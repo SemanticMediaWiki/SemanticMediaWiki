@@ -33,6 +33,26 @@ class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 		];
 	}
 	
+	/**
+	* @dataProvider resultAliasDataProvider
+	*/
+	public function testGetResultPrinter_MatchAlias( $alias ) {
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ResultPrinter',
+			SMWQueryProcessor::getResultPrinter( $alias )
+		);
+	}
+
+	public function resultAliasDataProvider() {
+
+		foreach ( $GLOBALS['smwgResultAliases'] as $format => $aliases ) {
+			foreach ( $aliases as $alias ) {
+				yield [ $alias ];
+			}
+		}
+	}
+	
 	public function testGetResultPrinter_ThrowsException() {
 
 		$this->setExpectedException( '\SMW\Query\Exception\ResultFormatNotFoundException' );

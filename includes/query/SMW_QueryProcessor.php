@@ -430,11 +430,13 @@ class SMWQueryProcessor implements QueryContext {
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
+		
+		SMWParamFormat::resolveFormatAliases( $format );
 
 		if ( !array_key_exists( $format, $smwgResultFormats ) ) {
 			throw new ResultFormatNotFoundException( "There is no result format for '$format'." );
 		}
-
+		
 		$formatClass = $smwgResultFormats[$format];
 
 		$printer = new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
