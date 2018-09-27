@@ -52,7 +52,7 @@ use `iterator_to_array` to transform a result instance into a standard array
 
 #### Register predefined property
 
-```php
+<pre>
 \Hooks::register( 'SMW::Property::initProperties', function( $propertyRegistry ) {
 
 	$propertyRegistry->registerProperty( '__FOO', '_txt', 'Foo' );
@@ -64,4 +64,4 @@ use `iterator_to_array` to transform a result instance into a standard array
 
 	return true;
 } );
-```
+</pre>
