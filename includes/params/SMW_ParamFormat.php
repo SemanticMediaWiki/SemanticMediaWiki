@@ -117,11 +117,7 @@ class SMWParamFormat extends StringParam {
 			return 'table';
 		}
 
-		if ( $this->showMode ) {
-			return 'plainlist';
-		}
-
-		return 'list';
+		return 'plainlist';
 	}
 
 	/**

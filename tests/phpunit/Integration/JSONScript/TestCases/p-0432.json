@@ -45,11 +45,11 @@
 		},
 		{
 			"page": "Example/P0432/Q5.1",
-			"contents": "{{#ask: [[Has number with ref::999]] |order=asc |link=none}}"
+			"contents": "{{#ask: [[Has number with ref::999]] |order=asc |link=none |format=list}}"
 		},
 		{
 			"page": "Example/P0432/Q5.2",
-			"contents": "{{#ask: [[Has number with ref::999]] |order=desc |link=none}}"
+			"contents": "{{#ask: [[Has number with ref::999]] |order=desc |link=none |format=list}}"
 		}
 	],
 	"tests": [
