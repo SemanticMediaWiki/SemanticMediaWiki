@@ -15,7 +15,22 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0 ",
+			"about": "#0",
+			"special-page": {
+				"page": "Types",
+				"query-parameters": "",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div id=\"smw-types\" class=\"smw-tabs smw-types\"><input id=\"tab-smw-type-list\" class=\"nav-tab\" type=\"radio\" name=\"types\" checked=\"\"/>",
+					"<p class=\"plainlinks smw-types-intro\">"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (Monolingual text)",
 			"special-page": {
 				"page": "Types",
 				"query-parameters": "Monolingual text",
@@ -25,6 +40,20 @@
 				"to-contain": [
 					"<div class=\"smw-breadcrumb-link\"><span class=\"smw-breadcrumb-arrow-right\">",
 					"<a href=\".*Has_monolingual_text\" title=\".*Has monolingual text\">"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (Foobar, unknown)",
+			"special-page": {
+				"page": "Types",
+				"query-parameters": "Foobar",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"plainlinks smw-type-unknown\">"
 				]
 			}
 		}

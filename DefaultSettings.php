@@ -486,7 +486,7 @@ return [
 	# @since 3.0
 	##
 	'smwgPagingLimit' => [
-		'type' => 200,
+		'type' => 50,
 		'concept' => 250,
 		'property' => 20,
 		'errorlist' => 20,

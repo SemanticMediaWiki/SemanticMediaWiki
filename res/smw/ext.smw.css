@@ -322,6 +322,11 @@ label.smw-form-checkbox {
 	padding-top: .5em;
 }
 
+.smw-column-header:first-child {
+	margin-top: 0em;
+	padding-top: 0em;
+}
+
 .smw-column {
 	float: left;
 	word-wrap: break-word;
