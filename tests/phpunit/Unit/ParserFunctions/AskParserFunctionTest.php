@@ -413,7 +413,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$postProcHandler->expects( $this->once() )
-			->method( 'addQueryRef' );
+			->method( 'addUpdate' );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),

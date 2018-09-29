@@ -278,7 +278,7 @@ class AskParserFunction {
 
 		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
 			$status[] = 100;
-			$this->postProcHandler->addQueryRef( $query );
+			$this->postProcHandler->addUpdate( $query );
 		}
 
 		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
@@ -316,12 +316,21 @@ class AskParserFunction {
 
 		$query->setOption( 'query.params', $params );
 
+		// Only request a result_hash in case the `check-query` is enabled
+		if ( $this->postProcHandler !== null ) {
+			$query->setOption( 'calc.result_hash', $this->postProcHandler->getOption( 'check-query' ) );
+		}
+
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
 			$this->context
 		);
+
+		if ( $this->postProcHandler !== null && $this->context !== QueryProcessor::DEFERRED_QUERY ) {
+			$this->postProcHandler->addCheck( $query );
+		}
 
 		$format = $this->params['format']->getValue();
 

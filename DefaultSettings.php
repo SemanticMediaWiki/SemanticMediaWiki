@@ -1283,7 +1283,7 @@ return [
 	##
 
 	###
-	# Regulates task specific settings for the postEdit process.
+	# Regulates task specific settings for the post-edit process.
 	#
 	# The main objective is to defer secondary updates until after the GET request
 	# has been finalized so that resource requirements are part of an API request
@@ -1294,9 +1294,29 @@ return [
 	# timely manner independent of a users job scheduler environment. The number
 	# indicates the expected number of jobs to be executed per request.
 	#
+	# @experimental
+	#
+	# `check-query` The display of query results and the storage of entities that
+	# make up the results of a query are two distinct processes. The display
+	# normally happens before the storage due to how the MW parser works meaning
+	# that a query can only display the most recent results after a page has
+	# been processed and rendered while the storage is being deferred (or in case
+	# of an external store is influenced by the network lag).
+	#
+	# The `check-query` uses the `post-edit` event to run registered queries and
+	# if necessary reloads the page (hereby refreshes the results) in case the
+	# result is different by comparing the `result_hash` from before and after.
+	# To determine the query state, the `post-edit` has to invoke the API (as
+	# background task) which has to probe the query and to only run the query once
+	# for the page that embeds the query, it is strongly recommended that this
+	# option is only enabled together with:
+	#   - the query cache (@see $smwgQueryResultCacheType) and
+	#   - the query links store (@see $smwgEnabledQueryDependencyLinksStore)
+	#
 	# @since 3.0
 	##
 	'smwgPostEditUpdate' => [
+		'check-query' => false,
 		'run-jobs' => [
 			'smw.fulltextSearchTableUpdate' => 1,
 			'smw.parserCachePurge' => 5

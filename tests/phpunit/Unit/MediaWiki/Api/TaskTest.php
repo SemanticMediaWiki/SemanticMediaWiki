@@ -204,4 +204,49 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$instance->execute();
 	}
 
+	public function testCheckQueryTask() {
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new Task(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'check-query',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'query' => [
+								'query_hash_1#result_hash_2' => [
+									'parameters' => [
+										'limit' => 5,
+										'offset' => 0,
+										'querymode' => 1
+									],
+									'conditions' => ''
+								]
+							]
+						]
+					),
+					'token'    => 'foo'
+				]
+			),
+			'smwtask'
+		);
+
+		$instance->execute();
+	}
+
 }
