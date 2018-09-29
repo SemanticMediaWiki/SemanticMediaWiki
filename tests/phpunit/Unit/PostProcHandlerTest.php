@@ -128,6 +128,49 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRunJobs() {
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'run-jobs' => [ 'fooJob' => 2 ]
+			]
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getCookie' )
+			->will( $this->returnValue( 'FakeCookie' ) );
+
+		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0##" data-jobs="{&quot;fooJob&quot;:2}"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
 	/**
 	 * @dataProvider validPropertyKey
 	 */

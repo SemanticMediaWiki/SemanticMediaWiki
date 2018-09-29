@@ -129,6 +129,16 @@ class PostProcHandler {
 			\EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
 		);
 
+		$jobs = [];
+
+		if ( $postEdit !== null && isset( $this->options['run-jobs'] ) ) {
+			$jobs = $this->find_jobs( $this->options['run-jobs'] );
+		}
+
+		if ( $jobs !== [] ) {
+			$attributes['data-jobs'] = json_encode( $jobs );
+		}
+
 		// Was the edit SMW specific or contains it an unrelated (e.g altered
 		// some text unrelated to any property/value annotation) change?
 		if ( $postEdit !== null && ( $changeDiff = ChangeDiff::fetch( $this->cache, $subject ) ) !== false ) {
@@ -146,29 +156,10 @@ class PostProcHandler {
 			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
 		}
 
-		$jobs = [];
-
-		if ( isset( $this->options['job.task'] ) ) {
-			$jobs = $this->options['job.task'];
-
-			// Not enabled, no need to invoke a job!
-			if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
-				unset( $jobs['smw.parserCachePurge'] );
-			}
-
-			if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
-				unset( $jobs['smw.fulltextSearchTableUpdate'] );
-			}
-		}
-
-		if ( $postEdit !== null && $jobs !== [] ) {
-			$attributes['data-jobs'] = json_encode( $jobs );
-		}
-
 		// The element is only added temporarily in the event of a postEdit, a
 		// reload of the page will not have the cookie being set and is therefore
 		// neglected
-		if ( $postEdit !== null ) {
+		if ( $postEdit !== null || $jobs !== [] ) {
 			return Html::rawElement( 'div', $attributes );
 		}
 
@@ -283,6 +274,20 @@ class PostProcHandler {
 		// Avoid any update since the condition of the diff containing any altered
 		// SMW data was not meet.
 		return null;
+	}
+
+	private function find_jobs( $jobs ) {
+
+		// Not enabled, no need to invoke a job!
+		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
+			unset( $jobs['smw.parserCachePurge'] );
+		}
+
+		if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
+			unset( $jobs['smw.fulltextSearchTableUpdate'] );
+		}
+
+		return $jobs;
 	}
 
 }

@@ -213,34 +213,14 @@ class Task extends ApiBase {
 
 		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 		$jobList = [];
-		$log = [];
 
 		if ( isset( $parameters['jobs'] ) ) {
 			$jobList = $parameters['jobs'];
 		}
 
-		foreach ( $jobList as $type => $amount ) {
-
-			if ( $amount == 0 || $amount === false ) {
-				continue;
-			}
-
-			$list = array_fill( 0, $amount, $type );
-			$log[$type] = [];
-
-			foreach ( $list as $t ) {
-				$job = $jobQueue->pop( $t );
-
-				if ( $job === false ) {
-					break;
-				}
-
-				$log[$type][] = $job->getTitle()->getPrefixedDBKey();
-
-				$job->run();
-				$jobQueue->ack( $job );
-			}
-		}
+		$log = $jobQueue->runFromQueue(
+			$jobList
+		);
 
 		return [ 'done' => true, 'log' => $log ];
 	}
