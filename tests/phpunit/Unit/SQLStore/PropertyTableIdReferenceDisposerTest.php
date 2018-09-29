@@ -276,8 +276,11 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->never() )
-			->method( 'onTransactionIdle' );
+		$connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return $callback();
+			} ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'delete' )
