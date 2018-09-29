@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
+use SMW\Enum;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
@@ -309,6 +310,13 @@ class SMWSQLStore3Readers {
 			$dataItem,
 			$requestOptions
 		);
+
+		// Keep the result as iterator which is normally advised when the result
+		// size is expected to be larger than 1000 or results are retrieved through
+		// a job which may process them in batches.
+		if ( $requestOptions !== null && $requestOptions->getOption( Enum::SUSPEND_CACHE_WARMUP ) ) {
+			return $result;
+		}
 
 		$this->store->smwIds->warmUpCache( $result );
 

@@ -9,6 +9,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\DataTypeRegistry;
 use SMW\RequestOptions;
+use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
 use SMWDataItem as DataItem;
 use Title;
@@ -214,8 +215,24 @@ class UpdateDispatcherJob extends Job {
 				continue;
 			}
 
+			$requestOptions = new RequestOptions();
+
+			// No need for a warmup since we want to keep the iterator for as
+			// long as possible to only access one item at a time
+			$requestOptions->setOption( Enum::SUSPEND_CACHE_WARMUP, true );
+
+			// If we have an ID then use it to restrict the range of mactches
+			// against that object reference (aka `o_id`). Of course, in case of
+			// a delete action it is required that the disposer job (that removes
+			// all pending references from any active table for that reference)
+			// is called only after the job queue has been cleared otherwise
+			// the `o_id` can no longer be a matchable ID.
+			if ( $this->hasParameter( '_id' ) ) {
+				$requestOptions->addExtraCondition( [ 'o_id' => $this->getParameter( '_id' ) ] );
+			}
+
 			// Best effort to find all entities to a selected property
-			$subjects = $this->store->getAllPropertySubjects( $property );
+			$subjects = $this->store->getAllPropertySubjects( $property, $requestOptions );
 
 			$this->add_job(
 				$this->apply_filter( $property, $subjects )
@@ -224,6 +241,12 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function apply_filter( $property, $subjects ) {
+
+		// If the an ID was provided it already restricted the list of references
+		// hence avoid any further work
+		if ( $this->hasParameter( '_id' ) ) {
+			return $subjects;
+		}
 
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			return $subjects;
