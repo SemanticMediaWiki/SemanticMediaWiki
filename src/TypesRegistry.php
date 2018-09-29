@@ -236,6 +236,24 @@ class TypesRegistry {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public static function getTypesByGroup( $group = '' ) {
+
+		if ( $group === 'primitive' ) {
+			return [ '_txt' => true , '_boo' => true , '_num' => true, '_dat' => true ];
+		}
+
+		if ( $group === 'compound' ) {
+			return [ '_ema' => true, '_tel' => true, '_tem' => true ];
+		}
+
+		return [];
+	}
+
+	/**
 	 * Use pre-defined ids for Very Important Properties, avoiding frequent
 	 * ID lookups for those.
 	 *

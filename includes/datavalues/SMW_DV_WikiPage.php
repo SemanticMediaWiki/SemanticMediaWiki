@@ -34,6 +34,16 @@ use SMW\Utils\Image;
 class SMWWikiPageValue extends SMWDataValue {
 
 	/**
+	 * Whether text transformation should be suppressed or not.
+	 */
+	const NO_TEXT_TRANSFORMATION = 'no.text.transformation';
+
+	/**
+	 * Whether to use the short form or not.
+	 */
+	const SHORT_FORM = 'short.form';
+
+	/**
 	 * Fragment text for user-specified title. Not stored, but kept for
 	 * printout on page.
 	 * @var string
@@ -426,7 +436,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getWikiValue() {
 
-		if ( $this->getTypeID() === '_wpp' || $this->m_fixNamespace == NS_MAIN ) {
+		if ( $this->getOption( self::SHORT_FORM, false ) ) {
+			$text = $this->getText();
+		} elseif ( $this->getTypeID() === '_wpp' || $this->m_fixNamespace == NS_MAIN ) {
 			$text = $this->getPrefixedText();
 		} else {
 			$text = $this->getText();
@@ -523,6 +535,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getText() {
+
+		if ( $this->getOption( self::NO_TEXT_TRANSFORMATION, false ) ) {
+			return $this->m_dataitem->getDBkey();
+		}
+
 		return str_replace( '_', ' ', $this->m_dataitem->getDBkey() );
 	}
 

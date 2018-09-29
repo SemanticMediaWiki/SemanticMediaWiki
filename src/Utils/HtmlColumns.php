@@ -15,12 +15,22 @@ class HtmlColumns {
 	/**
 	 * Indexed content
 	 */
-	const INDX_CONTENT = 'index.content';
+	const INDX_CONTENT = 'indexed.list';
+
+	/**
+	 * Indexed content
+	 */
+	const INDEXED_LIST = 'indexed.list';
 
 	/**
 	 * List content
 	 */
 	const LIST_CONTENT = 'list.content';
+
+	/**
+	 * List content
+	 */
+	const PLAIN_LIST = 'plain.list';
 
 	/**
 	 * @var integer
@@ -171,6 +181,16 @@ class HtmlColumns {
 	 * @param string $type
 	 */
 	public function addContents( array $cnts, $type = self::LIST_CONTENT ) {
+		$this->setContents( $cnts, $type );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string[] $cnts
+	 * @param string $type
+	 */
+	public function setContents( array $cnts, $type = self::LIST_CONTENT ) {
 
 		if ( $type === self::LIST_CONTENT ) {
 			$contents[''] = [];
