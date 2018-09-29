@@ -61,10 +61,6 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	/**
-	 * @note MW 1.29+ showed transaction collisions when executed using the
-	 * JobQueue in connection with purging the BagOStuff cache, use
-	 * 'onTransactionIdle' to isolate the execution for some of the tasks.
-	 *
 	 * @since 2.5
 	 */
 	public function waitOnTransactionIdle() {
@@ -102,7 +98,7 @@ class PropertyTableIdReferenceDisposer {
 			return null;
 		}
 
-		$this->doRemoveEntityReferencesById( $id, false );
+		$this->cleanUpSecondaryReferencesById( $id, false );
 	}
 
 	/**
@@ -146,6 +142,17 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function() use ( $id ) {
+				$this->cleanUpReferencesById( $id );
+			} );
+		} else {
+			$this->cleanUpReferencesById( $id );
+		}
+	}
+
+	private function cleanUpReferencesById( $id ) {
+
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
@@ -161,7 +168,7 @@ class PropertyTableIdReferenceDisposer {
 			);
 		}
 
-		$this->triggerCleanUpEvents( $subject, $this->onTransactionIdle );
+		$this->triggerCleanUpEvents( $subject );
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -194,7 +201,7 @@ class PropertyTableIdReferenceDisposer {
 			}
 		}
 
-		$this->doRemoveEntityReferencesById( $id, $isRedirect );
+		$this->cleanUpSecondaryReferencesById( $id, $isRedirect );
 		$this->connection->endAtomicTransaction( __METHOD__ );
 
 		\Hooks::run(
@@ -203,7 +210,7 @@ class PropertyTableIdReferenceDisposer {
 		);
 	}
 
-	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
+	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
 
 		// When marked as redirect, don't remove the reference
 		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
@@ -245,7 +252,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerCleanUpEvents( $subject, $onTransactionIdle ) {
+	private function triggerCleanUpEvents( $subject ) {
 
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
@@ -255,12 +262,6 @@ class PropertyTableIdReferenceDisposer {
 		// subject is cleaning up all related cache entries
 		if ( $subject->getSubobjectName() !== '' ) {
 			return;
-		}
-
-		if ( $onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function() use( $subject ) {
-				$this->triggerCleanUpEvents( $subject, false );
-			} );
 		}
 
 		$eventHandler = EventHandler::getInstance();
