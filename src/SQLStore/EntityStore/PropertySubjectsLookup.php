@@ -186,6 +186,18 @@ class PropertySubjectsLookup {
 
 		$this->getWhereConds( $query, $dataItem );
 
+		if ( $requestOptions !== null ) {
+			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+				if ( isset( $extraCondition['o_id'] ) ) {
+					$query->condition( $query->eq( 't1.o_id', $extraCondition['o_id'] ) );
+				}
+
+				if ( is_callable( $extraCondition ) ) {
+					$extraCondition( $query );
+				}
+			}
+		}
+
 		if ( $proptable->usesIdSubject() ) {
 			foreach ( [ SMW_SQL3_SMWIW_OUTDATED, SMW_SQL3_SMWDELETEIW, SMW_SQL3_SMWREDIIW ] as $v ) {
 				$query->condition( $query->neq( "smw_iw", $v ) );

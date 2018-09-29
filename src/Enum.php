@@ -20,4 +20,9 @@ class Enum {
 	 */
 	const PURGE_ASSOC_PARSERCACHE = 'smw.purge.assoc.parsercache';
 
+	/**
+	 * Indicates whether to proceed with the cache warming or not
+	 */
+	const SUSPEND_CACHE_WARMUP = 'smw.suspend.cache.warmup';
+
 }
