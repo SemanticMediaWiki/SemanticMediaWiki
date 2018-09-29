@@ -28,6 +28,7 @@
  */
 .smw-tabs {
 	margin-top: 10px;
+	clear: both;
 }
 
 .smw-tabs section {
