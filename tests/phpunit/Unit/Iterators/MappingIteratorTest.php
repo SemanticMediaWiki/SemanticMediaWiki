@@ -35,7 +35,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 		} );
 	}
 
-	public function testdoIterateOnArray() {
+	public function testIterate_Closure() {
 
 		$expected = [
 			1 , 42
@@ -44,6 +44,25 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 		$mappingIterator = new MappingIterator( $expected, function( $counter ) {
 			return $counter;
 		} );
+
+		foreach ( $mappingIterator as $key => $value ) {
+			$this->assertEquals(
+				$expected[$key],
+				$value
+			);
+		}
+	}
+
+	public function testIterate_ClassFunc() {
+
+		$expected = [
+			1 , 42
+		];
+
+		$mappingIterator = new MappingIterator(
+			$expected,
+			[ $this, 'counter' ]
+		);
 
 		foreach ( $mappingIterator as $key => $value ) {
 			$this->assertEquals(
@@ -74,6 +93,10 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 				$value
 			);
 		}
+	}
+
+	public function counter( $counter) {
+		return $counter;
 	}
 
 }

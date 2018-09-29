@@ -70,7 +70,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 * {@inheritDoc}
 	 */
 	public function current() {
-		return call_user_func( $this->callback, parent::current() );
+		return ( $this->callback ) ( parent::current() );
 	}
 
 }
