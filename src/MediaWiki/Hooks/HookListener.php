@@ -422,6 +422,12 @@ class HookListener {
 			$applicationFactory->getMediaWikiLogger()
 		);
 
+		$articleDelete->setOptions(
+			[
+				'smwgEnabledQueryDependencyLinksStore' => $applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			]
+		);
+
 		return $articleDelete->process( $wikiPage );
 	}
 

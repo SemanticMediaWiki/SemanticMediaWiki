@@ -72,9 +72,17 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$parserCachePurgeJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateDispatcherJob' )
 			->will( $this->returnValue( $updateDispatcherJob ) );
+
+		$this->jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newParserCachePurgeJob' )
+			->will( $this->returnValue( $parserCachePurgeJob ) );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
