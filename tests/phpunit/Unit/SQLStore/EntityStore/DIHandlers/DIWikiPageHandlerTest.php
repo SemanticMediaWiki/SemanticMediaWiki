@@ -129,7 +129,7 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->setExpectedException( '\SMWDataItemException' );
+		$this->setExpectedException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 
@@ -145,14 +145,18 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 			[ '_Foo', SMW_NS_PROPERTY, 'bar', '', '' ]
 		];
 
+		#0 SMW_NS_PROPERTY, pre-defined property (see bug 48711)
+		$provider[] = [
+			[ '_Foo', SMW_NS_PROPERTY, '', '', '' ]
+		];
+
 		return $provider;
 	}
 
 	public function dbKeysExceptionProvider() {
 
-		#0 SMW_NS_PROPERTY, pre-defined property (see bug 48711)
 		$provider[] = [
-			[ '_Foo', SMW_NS_PROPERTY, '', '', '' ]
+			[ 'Foo' ]
 		];
 
 		return $provider;

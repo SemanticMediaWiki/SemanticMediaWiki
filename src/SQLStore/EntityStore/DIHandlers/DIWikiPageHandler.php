@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 
@@ -158,11 +159,22 @@ class DIWikiPageHandler extends DataItemHandler {
 
 		$namespace = intval( $dbkeys[1] );
 
+		// Correctly interpret internal property keys
 		if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
 			$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
-			// Correctly interpret internal property keys
-			$property = new DIProperty( $dbkeys[0] );
+
+			try {
+				$property = new DIProperty( $dbkeys[0] );
+			} catch( PredefinedPropertyLabelMismatchException $e ) {
+				// Most likely an outdated, no longer existing predefined
+				// property, mark it as outdate
+				$dbkeys[2] = SMW_SQL3_SMWIW_OUTDATED;
+
+				return $this->newDiWikiPage( $dbkeys );
+			}
+
 			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
+
 			if ( !is_null( $wikipage ) ) {
 				return $wikipage;
 			}
