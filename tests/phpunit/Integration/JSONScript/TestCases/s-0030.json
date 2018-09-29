@@ -1,0 +1,50 @@
+{
+	"description": "Test `Special:Concepts`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "S0030/1",
+			"contents": "{{#concept: [[ConceptTest::+]] |Concept with no results}}"
+		},
+		{
+			"page": "S0030/2",
+			"contents": "{{#ask: [[Concept:S0030/Unknown]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Concepts",
+				"query-parameters": "",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*Concept:S0030/1\" title=\"Concept:S0030/1\">Concept:S0030/1</a>"
+				],
+				"not-contain": [
+					"Concept:S0030/Unknown"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

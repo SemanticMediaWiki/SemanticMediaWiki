@@ -57,7 +57,9 @@ class SpecialConcepts extends SpecialPage {
 		$conditions = [
 			'smw_namespace' => SMW_NS_CONCEPT,
 			'smw_iw' => '',
-			'smw_subobject' => ''
+			'smw_subobject' => '',
+			'smw_proptable_hash IS NOT NULL',
+			'concept_features > 0'
 		];
 
 		$options = [
@@ -66,11 +68,17 @@ class SpecialConcepts extends SpecialPage {
 		];
 
 		$res = $connection->select(
-			$connection->tableName( SQLStore::ID_TABLE ),
+			[
+				$connection->tableName( SQLStore::ID_TABLE ),
+				$connection->tableName( SQLStore::CONCEPT_TABLE )
+			],
 			$fields,
 			$conditions,
 			__METHOD__,
-			$options
+			$options,
+			[
+				$connection->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
+			]
 		);
 
 		foreach ( $res as $row ) {
