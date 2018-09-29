@@ -46,6 +46,11 @@ class HookHandler {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
+
+		if ( $this->options === null ) {
+			$this->setOptions( [] );
+		}
+
 		return $this->options->safeGet( $key, $default );
 	}
 

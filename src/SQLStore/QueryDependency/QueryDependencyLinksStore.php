@@ -362,7 +362,7 @@ class QueryDependencyLinksStore {
 		}
 
 		// Return the expected count of targets
-		$requestOptions->targetLinksCount = count( $targetLinksIdList );
+		$requestOptions->setOption( 'links.count', count( $targetLinksIdList ) );
 
 		$poolRequestOptions = new RequestOptions();
 
