@@ -803,19 +803,27 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 3.0
 	 *
 	 * @param integer $feature
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function hasFeature( $feature ) {
 
 		if ( $this->options !== null ) {
 			return $this->options->isFlagSet( 'smwgDVFeatures', (int)$feature );
 		}
 
 		return false;
+	}
+
+	/**
+	 * @deprecated since 3.0, use DataValue::hasFeature
+	 * @since 2.4
+	 */
+	public function isEnabledFeature( $feature ) {
+		return $this->hasFeature( $feature );
 	}
 
 	/**
