@@ -166,6 +166,13 @@ class CachingTermsLookup extends TermsLookup {
 			'info' => $parameters->get( 'query.info' )
 		];
 
+		if ( isset( $params['type'] ) && isset( $params['id'] ) ) {
+			$params = $this->termsLookup->terms_filter(
+				'_id',
+				$this->termsLookup->path_filter( $params['id'] )
+			);
+		}
+
 		return $params;
 	}
 

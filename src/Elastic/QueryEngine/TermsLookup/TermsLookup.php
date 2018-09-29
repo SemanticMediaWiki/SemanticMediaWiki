@@ -139,7 +139,14 @@ class TermsLookup implements ITermsLookup {
 
 		$parameters->set( 'query.info', $info );
 
-		return $this->ids_filter( $this->query_result( $parameters ) );
+		$results = $this->query_result( $parameters );
+
+		// Already in the `terms_filter` structure?
+		if ( isset( $results['type'] ) && isset( $results['id'] ) ) {
+			return $results;
+		}
+
+		return $this->ids_filter( $results );
 	}
 
 	/**
