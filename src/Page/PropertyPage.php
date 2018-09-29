@@ -8,7 +8,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Message;
-use SMW\Page\ListBuilder\ListBuilder;
+use SMW\Page\ListBuilder\ListBuilder as SimpleListBuilder;
 use SMW\Page\ListBuilder\ValueListBuilder;
 use SMW\PropertyRegistry;
 use SMW\PropertySpecificationReqMsgBuilder;
@@ -161,7 +161,7 @@ class PropertyPage extends Page {
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )
 		);
 
-		$this->listBuilder = new ListBuilder(
+		$this->listBuilder = new SimpleListBuilder(
 			$this->store
 		);
 

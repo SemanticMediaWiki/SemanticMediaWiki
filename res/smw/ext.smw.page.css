@@ -317,6 +317,7 @@
 }
 
 #tab-smw-property-value:checked + label.nav-label .usage-count,
+#tab-smw-concept-list:checked + label.nav-label .usage-count,
 #tab-smw-property-subp:checked + label.nav-label .item-count,
 #tab-smw-property-errp:checked + label.nav-label .item-count,
 #tab-smw-property-redi:checked + label.nav-label .item-count,
@@ -325,12 +326,14 @@
     color: #444d56;
 }
 
-#tab-smw-property-value:checked + label.nav-label .usage-count.moderate {
+#tab-smw-property-value:checked + label.nav-label .usage-count.moderate,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.moderate {
     background-color: rgba(43,157,239,0.18);
     color: #444d56;
 }
 
-#tab-smw-property-value:checked + label.nav-label .usage-count.high {
+#tab-smw-property-value:checked + label.nav-label .usage-count.high,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.high {
     background-color: rgba(186,0,0,0.16);
     color: #444d56;
 }

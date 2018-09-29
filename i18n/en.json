@@ -825,5 +825,6 @@
 	"smw-ask-tab-result": "Result",
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Debug",
-	"smw-ask-tab-code": "Code"
+	"smw-ask-tab-code": "Code",
+	"smw-helplink-concepts": "https://www.semantic-mediawiki.org/wiki/Help:Concepts"
 }
