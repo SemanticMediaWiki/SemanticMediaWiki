@@ -4,49 +4,68 @@ namespace SMW;
 
 use Html;
 use SMW\Page\ListPager;
+use SMW\Page\ListBuilder;
 use SMW\SQLStore\SQLStore;
-use SMWPageLister;
 use SMW\Utils\HtmlTabs;
+use SMW\ApplicationFactory;
+use SMW\MediaWiki\Collator;
 
 /**
  * Special page that lists available concepts
- *
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
+class SpecialConcepts extends \SpecialPage {
 
-/**
- * Special page that lists available concepts
- *
- * @ingroup SpecialPage
- */
-class SpecialConcepts extends SpecialPage {
+	/**
+	 * @var Store
+	 */
+	private $store;
 
 	/**
 	 * @see SpecialPage::__construct
-	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
 		parent::__construct( 'Concepts' );
 	}
 
 	/**
-	 * Returns concept pages
-	 *
+	 * @see SpecialPage::execute
+	 */
+	public function execute( $param ) {
+
+		$this->setHeaders();
+		$out = $this->getOutput();
+		$out->addModuleStyles( 'ext.smw.page.styles' );
+
+		$limit = $this->getRequest()->getVal( 'limit', 50 );
+		$offset = $this->getRequest()->getVal( 'offset', 0 );
+
+		$this->store = ApplicationFactory::getInstance()->getStore();
+
+		$diWikiPages = $this->fetchFromTable( $limit, $offset );
+		$html = $this->getHtml( $diWikiPages, $limit, $offset );
+
+		$this->addHelpLink( wfMessage( 'smw-helplink-concepts' )->escaped(), true );
+
+		$out->setPageTitle( $this->msg( 'concepts' )->text() );
+		$out->addHTML( $html );
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param integer $limit
-	 * @param integer $from
-	 * @param integer $until
+	 * @param integer $offset
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function getResults( $limit, $offset, $from, $until ) {
+	public function fetchFromTable( $limit, $offset ) {
 
-		$connection = $this->getStore()->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 		$results = [];
 
 		$fields = [
@@ -89,22 +108,33 @@ class SpecialConcepts extends SpecialPage {
 	}
 
 	/**
-	 * Returns html
-	 *
 	 * @since 1.9
 	 *
-	 * @param DIWikiPage[] $diWikiPages
+	 * @param DIWikiPage[] $dataItems
 	 * @param integer $limit
-	 * @param integer $from
-	 * @param integer $until
+	 * @param integer $offset
 	 *
 	 * @return string
 	 */
-	public function getHtml( $diWikiPages, $limit, $offset, $from, $until ) {
+	public function getHtml( $dataItems, $limit, $offset ) {
 
-		$resultNumber = min( $limit, count( $diWikiPages ) );
-		$pageLister   = new SMWPageLister( $diWikiPages, null, $limit, $from, $until );
-		$key = $resultNumber == 0 ? 'smw-special-concept-empty' : 'smw-special-concept-count';
+		if ( $this->store === null ) {
+			$this->store = ApplicationFactory::getInstance()->getStore();
+		}
+
+		$count = count( $dataItems );
+		$resultNumber = min( $limit, $count );
+
+		if ( $resultNumber == 0 ) {
+			$key = 'smw-special-concept-empty';
+		} else {
+			$key = 'smw-special-concept-count';
+		}
+
+		$listBuilder = new ListBuilder(
+			$this->store,
+			Collator::singleton()
+		);
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
@@ -115,12 +145,12 @@ class SpecialConcepts extends SpecialPage {
 			Html::rawElement(
 				'div',
 				[ 'class' => 'smw-page-navigation' ],
-				ListPager::pagination( $this->getPageTitle(), $limit, $offset, count( $diWikiPages ) )
+				ListPager::pagination( $this->getPageTitle(), $limit, $offset, $count )
 			) . Html::element(
 				'div',
-				[ 'class' => $key, 'style' => 'margin-top:10px;' ],
+				[ 'class' => $key, 'style' => 'margin-top:10px;margin-bottom:10px;' ],
 				$this->msg( $key, $resultNumber )->parse()
-			) . $pageLister->getColumnList( $offset, $limit, $diWikiPages, null )
+			) . $listBuilder->getColumnList( $dataItems )
 		);
 
 		$htmlTabs->tab( 'smw-concept-list', $this->msg( 'smw-concept-tab-list' ) );
@@ -138,32 +168,10 @@ class SpecialConcepts extends SpecialPage {
 	}
 
 	/**
-	 * Executes and outputs results for available concepts
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $param
+	 * @see SpecialPage::getGroupName
 	 */
-	public function execute( $param ) {
-
-		$this->setHeaders();
-		$out = $this->getOutput();
-		$out->addModuleStyles( 'ext.smw.page.styles' );
-
-		$from  = $this->getRequest()->getVal( 'from', '' );
-		$until = $this->getRequest()->getVal( 'until', '' );
-		$limit = $this->getRequest()->getVal( 'limit', 50 );
-		$offset = $this->getRequest()->getVal( 'offset', 0 );
-
-		$diWikiPages = $this->getResults( $limit, $offset, $from, $until );
-	//	$diWikiPages = $until !== '' ? array_reverse( $diWikiPages ) : $diWikiPages;
-		$html = $this->getHtml( $diWikiPages, $limit, $offset, $from, $until );
-
-		$out->setPageTitle( $this->msg( 'concepts' )->text() );
-		$out->addHTML( $html );
-	}
-
 	protected function getGroupName() {
 		return 'pages';
 	}
+
 }
