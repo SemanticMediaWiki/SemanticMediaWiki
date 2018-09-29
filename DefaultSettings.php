@@ -1290,14 +1290,14 @@ return [
 	# (and not a GET) and hereby ensures that a client remains responsive
 	# independent of the update workload.
 	#
-	# `job.task` specifies jobs that should be executed on a post-edit to run in a
+	# `run-jobs` specifies jobs that should be executed on a post-edit to run in a
 	# timely manner independent of a users job scheduler environment. The number
-	# indicates the expected amount of jobs to be executed per request.
+	# indicates the expected number of jobs to be executed per request.
 	#
 	# @since 3.0
 	##
 	'smwgPostEditUpdate' => [
-		'job.task' => [
+		'run-jobs' => [
 			'smw.fulltextSearchTableUpdate' => 1,
 			'smw.parserCachePurge' => 5
 		]

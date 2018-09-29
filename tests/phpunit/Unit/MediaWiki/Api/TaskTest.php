@@ -173,29 +173,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$nullJob->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
-
-		$nullJob->expects( $this->atLeastOnce() )
-			->method( 'run' );
-
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$jobQueue->expects( $this->atLeastOnce() )
-			->method( 'pop' )
-			->with( $this->equalTo( 'FooJob' ) )
-			->will( $this->returnValue( $nullJob ) );
-
-		$jobQueue->expects( $this->atLeastOnce() )
-			->method( 'ack' )
-			->with( $this->equalTo( $nullJob ) );
+			->method( 'runFromQueue' )
+			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
+			->will( $this->returnValue( '--job-done' ) );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
