@@ -206,6 +206,7 @@ class AskParserFunction {
 		}
 
 		$extraKeys = [];
+		$previous = false;
 
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
@@ -233,9 +234,22 @@ class AskParserFunction {
 				$this->parserData->addExtraParserKey( 'localTime' );
 			}
 
-			// First and marked printrequests
-			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+			// Skip the first (being the condition) and other marked
+			// printrequests
+			if ( $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
 				continue;
+			}
+
+			// The MW parser swallows any `|` char (as it is used as field
+			// separator) hence make an educated guess about the condition when
+			// it contains `[[`...`]]` and the previous value was empty (expected
+			// due to ||) then the string should be concatenated and interpret
+			// as [[Foo]] || [[Bar]]
+			if (
+				( $key > 0 && $previous === '' ) &&
+				( strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false ) ) {
+				$functionParams[0] .= " || $value";
+				unset( $functionParams[$key] );
 			}
 
 			// Filter parameters that can not be split into
@@ -243,6 +257,8 @@ class AskParserFunction {
 			if ( strpos( $value, '=' ) === false ) {
 				unset( $functionParams[$key] );
 			}
+
+			$previous = $value;
 		}
 
 		return [ $functionParams, $extraKeys ];

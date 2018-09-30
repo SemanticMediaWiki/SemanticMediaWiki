@@ -1,0 +1,149 @@
+{
+	"description": "Test `#ask` with `||` condition (#3473)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "P0711/0",
+			"contents": "[[Has number::123]] [[Has page::ABC]] [[Category:P0711/0]]"
+		},
+		{
+			"page": "P0711/1",
+			"contents": "[[Has number::1234]] [[Has page::DEF]] [[Category:P0711/1]]"
+		},
+		{
+			"page": "P0711/Q.1",
+			"contents": "{{#ask: [[Category:P0711/0]] || [[Category:P0711/1]] }}"
+		},
+		{
+			"page": "P0711/Q.2",
+			"contents": "{{#ask: [[Category:P0711/0]][[Has number::1234]] || [[Category:P0711/1]] |format=table |limt=1 }}"
+		},
+		{
+			"page": "P0711/Q.3",
+			"contents": "{{#ask: [[Category:P0711/0||P0711/1]] [[Has number::1234]] || [[Category:P0711/1]] |format=table |limt=1 }}"
+		},
+		{
+			"page": "P0711/Q.4",
+			"contents": "{{#ask: [[Category:P0711/0]] || [[Has number::1234]] || [[Category:P0711/1]] |format=table |limt=1 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 ([[Category:P0711/0]] || [[Category:P0711/1]])",
+			"subject": "P0711/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"P0711/0",
+					"P0711/1"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 ([[Category:P0711/0]] || [[Category:P0711/1]] )",
+			"subject": "P0711/Q.1#_QUERY242ebc6ec4e4f26fdf094cbe459c5a7c",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKDE",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKST",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[[Category:P0711/0||P0711/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 ( [[Category:P0711/0]][[Has number::1234]] || [[Category:P0711/1]] )",
+			"subject": "P0711/Q.2#_QUERY4d17e3c435adb842705d03a0ce6e80da",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKDE",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKST",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q>[[Category:P0711/0]] [[Has number::1234]] OR [[Category:P0711/1]]</q>"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 ( [[Category:P0711/0||P0711/1]][[Has number::1234]] || [[Category:P0711/1]] )",
+			"subject": "P0711/Q.3#_QUERY5eb422bd01f40410eaa3586b5134eb32",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKDE",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKST",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q>[[Category:P0711/0||P0711/1]] [[Has number::1234]] OR [[Category:P0711/1]]</q>"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 ( [[Category:P0711/0]] || [[Has number::1234]] || [[Category:P0711/1]] )",
+			"subject": "P0711/Q.4#_QUERYfcb13e9c99c91f99011555adf4327898",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASKDE",
+						"_ASKFO",
+						"_ASKSI",
+						"_ASKST",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"<q>[[Category:P0711/0||P0711/1]] OR  <q>[[Has number::1234]]</q> </q>"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
+
