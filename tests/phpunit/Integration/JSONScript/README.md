@@ -12,7 +12,7 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 
 ## TestCases
 
-Contains 277 files with a total of 1241 tests:
+Contains 280 files with a total of 1251 tests:
 
 ### A
 * [a-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0001.json) Test API `action=smwbrowse`
@@ -147,6 +147,8 @@ Contains 277 files with a total of 1241 tests:
 * [p-0707.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0707.json) Test `#ask` with enabled execution limit (`wgContLang=en`, `wgLang=en`, `smwgQExpensiveThreshold`, `smwgQExpensiveExecutionLimit`)
 * [p-0708.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0708.json) Test `#ask` NS_FILE and DISPLAYTITLE (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions', `wgRestrictDisplayTitle`)
 * [p-0709.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0709.json) Test #ask with `format=table` on inverse property, property path
+* [p-0710.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0710.json) Test `#ask` with `[[Category::Foo]]`
+* [p-0711.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0711.json) Test `#ask` with `||` condition (#3473)
 * [p-0901.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0901.json) Test #ask on moved redirected subject (#1086)
 * [p-0902.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0902.json) Test #ask on failed queries to produce a `_ERRC` (#1297, en)
 * [p-0903.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0903.json) Test #ask on redirected printrequest (#1290, en)
@@ -302,8 +304,9 @@ Contains 277 files with a total of 1241 tests:
 * [s-0027.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0027.json) Test `format=feed` output via `Special:Ask` (`wgEnableUploads`, `wgFileExtensions`, `wgRestrictDisplayTitle`)
 * [s-0028.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0028.json) Test `Special:Browse` limited value list
 * [s-0029.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0029.json) Test `Special:Ask` output on `mainlabel=.../?#...`, `format=table`
+* [s-0030.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0030.json) Test `Special:Concepts`
 
--- Last updated on 2018-09-22 by `readmeContentsBuilder.php`
+-- Last updated on 2018-09-30 by `readmeContentsBuilder.php`
 
 <!-- End of generated contents by readmeContentsBuilder.php -->
 
