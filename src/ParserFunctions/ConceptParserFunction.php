@@ -9,6 +9,7 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\ParserData;
+use SMW\PostProcHandler;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
 use Title;
@@ -36,6 +37,11 @@ class ConceptParserFunction {
 	private $messageFormatter;
 
 	/**
+	 * @var PostProcHandler
+	 */
+	private $postProcHandler;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -44,6 +50,15 @@ class ConceptParserFunction {
 	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PostProcHandler $postProcHandler
+	 */
+	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+		$this->postProcHandler = $postProcHandler;
 	}
 
 	/**
@@ -97,6 +112,10 @@ class ConceptParserFunction {
 		$this->messageFormatter
 			->addFromArray( $query->getErrors() )
 			->addFromArray( $this->parserData->getErrors() );
+
+		if ( $this->postProcHandler !== null ) {
+			$this->postProcHandler->addCheck( $query );
+		}
 
 		$this->addQueryProfile( $query );
 

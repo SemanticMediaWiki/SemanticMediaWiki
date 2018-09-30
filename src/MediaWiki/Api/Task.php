@@ -8,6 +8,8 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Enum;
+use SMWQueryProcessor as QueryProcessor;
+use SMWQuery as Query;
 
 /**
  * Module to support various tasks initiate using the API interface
@@ -48,6 +50,10 @@ class Task extends ApiBase {
 
 		if ( $params['task'] === 'update' ) {
 			$results = $this->callUpdateTask( $parameters );
+		}
+
+		if ( $params['task'] === 'check-query' ) {
+			$results = $this->callCheckQueryTask( $parameters );
 		}
 
 		if ( $params['task'] === 'duplookup' ) {
@@ -107,6 +113,85 @@ class Task extends ApiBase {
 		$cache->save( $key, $result, $cacheTTL );
 
 		return $result;
+	}
+
+	private function callCheckQueryTask( $parameters ) {
+
+		if ( $parameters['subject'] === '' || $parameters['query'] === '' ) {
+			return [ 'done' => false ];
+		}
+
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		$subject = DIWikiPage::doUnserialize(
+			$parameters['subject']
+		);
+
+		foreach ( $parameters['query'] as $hash => $raw_query ) {
+
+			// @see PostProcHandler::addQuery
+			list( $query_hash, $result_hash ) = explode( '#', $hash );
+
+			// Doesn't influence the fingerprint (aka query cache) so just
+			// ignored it
+			$printouts = [];
+			$parameters = $raw_query['parameters'];
+
+			if ( isset( $parameters['sortkeys']  ) ) {
+				$order = [];
+				$sort = [];
+
+				foreach ( $parameters['sortkeys'] as $key => $order_by ) {
+					$order[] = strtolower( $order_by );
+					$sort[] = $key;
+				}
+
+				$parameters['sort'] = implode( ',', $sort );
+				$parameters['order'] = implode( ',', $order );
+			}
+
+			QueryProcessor::addThisPrintout( $printouts, $parameters );
+
+			$query = QueryProcessor::createQuery(
+				$raw_query['conditions'],
+				QueryProcessor::getProcessedParams( $parameters, $printouts ),
+				QueryProcessor::INLINE_QUERY,
+				'',
+				$printouts
+			);
+
+			$query->setLimit(
+				$parameters['limit']
+			);
+
+			$query->setOffset(
+				$parameters['offset']
+			);
+
+			$query->setQueryMode(
+				$parameters['querymode']
+			);
+
+			$query->setContextPage(
+				$subject
+			);
+
+			$query->setOption( Query::PROC_CONTEXT, 'task.api' );
+
+			$res = $store->getQueryResult(
+				$query
+			);
+
+			// If the result_hash from before the post-edit and the result_hash
+			// after the post-edit check are not the same then it means that the
+			// list of entities changed hence send a `reload` command to the
+			// API promise.
+			if ( $result_hash !== $res->getHash( 'quick' ) ) {
+				return [ 'done' => true, 'reload' => true ];
+			}
+		}
+
+		return [ 'done' => true ];
 	}
 
 	private function callGenericJobTask( $params ) {
@@ -251,6 +336,9 @@ class Task extends ApiBase {
 
 					// Run update using the updateJob
 					'update',
+
+					// Run a query check
+					'check-query',
 
 					// Duplicate lookup support
 					'duplookup',

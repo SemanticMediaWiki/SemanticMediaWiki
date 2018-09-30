@@ -223,7 +223,9 @@ class ParserFunctionFactory {
 	 */
 	public function newConceptParserFunction( Parser $parser ) {
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
@@ -235,6 +237,10 @@ class ParserFunctionFactory {
 		$conceptParserFunction = new ConceptParserFunction(
 			$parserData,
 			$messageFormatter
+		);
+
+		$conceptParserFunction->setPostProcHandler(
+			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
 		);
 
 		return $conceptParserFunction;
