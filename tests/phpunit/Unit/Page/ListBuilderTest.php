@@ -61,6 +61,40 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetList_Sorted() {
+
+		$list = [
+			DIWikiPage::newFromText( 'Foo' ),
+			DIWikiPage::newFromText( 'ABC' )
+		];
+
+		$this->store->expects( $this->at( 0 ) )
+			->method( 'getWikiPageSortKey' )
+			->will( $this->returnValue( 'FOO' ) );
+
+		$this->collator->expects( $this->at( 0 ) )
+			->method( 'getFirstLetter' )
+			->will( $this->returnValue( 'F' ) );
+
+		$this->store->expects( $this->at( 1 ) )
+			->method( 'getWikiPageSortKey' )
+			->will( $this->returnValue( 'Abc' ) );
+
+		$this->collator->expects( $this->at( 1 ) )
+			->method( 'getFirstLetter' )
+			->will( $this->returnValue( 'A' ) );
+
+		$instance = new ListBuilder(
+			$this->store,
+			$this->collator
+		);
+
+		$this->assertEquals(
+			[ 'A', 'F' ],
+			array_keys( $instance->getList( $list ) )
+		);
+	}
+
 	public function testGetColumnList() {
 
 		$this->store->expects( $this->once() )
