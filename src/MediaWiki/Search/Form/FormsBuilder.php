@@ -39,6 +39,11 @@ class FormsBuilder {
 	private $customForm;
 
 	/**
+	 * @var string
+	 */
+	private $defaultForm = '';
+
+	/**
 	 * @var []
 	 */
 	private $formList = [];
@@ -119,7 +124,7 @@ class FormsBuilder {
 	 */
 	public function getPreselectNsList() {
 
-		$activeForm = $this->request->getVal( 'smw-form' );
+		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		if ( $activeForm === null ) {
 			return [];
@@ -195,17 +200,15 @@ class FormsBuilder {
 			throw new RuntimeException( "Missing forms definition" );
 		}
 
-		$default_form = '';
-
 		if ( isset( $data['default_form'] ) ) {
-			$default_form = self::toLowerCase( $data['default_form'] );
+			$this->defaultForm = self::toLowerCase( $data['default_form'] );
 		}
 
 		if ( isset( $data['term_parser']['prefix'] ) ) {
 			$this->termPrefixes = $data['term_parser']['prefix'];
 		}
 
-		$activeForm = $this->request->getVal( 'smw-form', $default_form );
+		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		$divider = "<div class='divider' style='display:none;'></div>";
 
