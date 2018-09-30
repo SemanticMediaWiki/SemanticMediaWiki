@@ -40,6 +40,11 @@ class ListBuilder {
 	public $linker = false;
 
 	/**
+	 * @var integer
+	 */
+	public $sort = SORT_NATURAL;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
@@ -66,6 +71,15 @@ class ListBuilder {
 	 */
 	public function setLinker( $linker ) {
 		$this->linker = $linker;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $sort
+	 */
+	public function sort( $sort ) {
+		$this->sort = $sort;
 	}
 
 	/**
@@ -144,6 +158,8 @@ class ListBuilder {
 				$contents[$startChar][] = $dataValue->getLongHTMLText( $this->linker ) . '&#160;' . $searchlink->getHTML( $this->linker );
 			}
 		}
+
+		ksort( $contents, $this->sort );
 
 		return $contents;
 	}
