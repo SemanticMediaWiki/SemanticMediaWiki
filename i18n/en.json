@@ -586,6 +586,7 @@
 	"smw-datavalue-restricted-use": "Datavalue \"$1\" has been marked for restricted use.",
 	"smw-datavalue-invalid-number": "\"$1\" can not be interpreted as a number.",
 	"smw-query-condition-circular": "A possible circular condition has been detected in \"$1\".",
+	"smw-query-condition-empty": "The query description has an empty condition.",
 	"smw-types-list": "List of datatypes",
 	"smw-types-default": "\"$1\" is a built-in datatype.",
 	"smw-types-help": "Further information and examples can be found on this [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 help page].",

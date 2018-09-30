@@ -251,6 +251,14 @@ class LegacyParser implements Parser {
 	 */
 	public function getQueryDescription( $queryString ) {
 
+		if ( $queryString === '' ) {
+			$this->descriptionProcessor->addErrorWithMsgKey(
+				'smw-query-condition-empty'
+			);
+
+			return  $this->descriptionFactory->newThingDescription();
+		}
+
 		$this->descriptionProcessor->clear();
 		$this->descriptionProcessor->setContextPage( $this->contextPage );
 
