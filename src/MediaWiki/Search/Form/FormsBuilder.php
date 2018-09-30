@@ -307,6 +307,10 @@ class FormsBuilder {
 				if ( is_string( $ns ) && defined( $ns ) ) {
 					$this->preselectNsList[$k][] = constant( $ns );
 				}
+
+				if ( is_numeric( $ns ) ) {
+					$this->preselectNsList[$k][] = $ns;
+				}
 			}
 		}
 	}
@@ -315,6 +319,10 @@ class FormsBuilder {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
+			}
+
+			if ( is_numeric( $ns ) ) {
+				$this->hiddenNsList[] = $ns;
 			}
 		}
 	}
