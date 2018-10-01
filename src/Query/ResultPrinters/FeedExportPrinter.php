@@ -92,6 +92,24 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	}
 
 	/**
+	 * The export uses MODE_INSTANCES on special pages (so that instances are
+	 * retrieved for the export) otherwise use MODE_NONE (displaying just a
+	 * download link).
+	 *
+	 * @param $mode
+	 *
+	 * @return integer
+	 */
+	public function getQueryMode( $mode ) {
+
+		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
+			return \SMWQuery::MODE_INSTANCES;
+		}
+		return \SMWQuery::MODE_NONE;
+
+	}
+
+	/**
 	 * @see ResultPrinter::getParamDefinitions
 	 *
 	 * {@inheritDoc}
