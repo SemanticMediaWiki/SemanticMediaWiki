@@ -16,10 +16,11 @@ Several user interface changes are deployed to make user facing front-end compon
 * Property pages – boxed pagination ([#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236)), tabbed navigation ([#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308)) including usage count information ([#3440](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3440)) and custom tabs ([#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346))
 * Concept pages – boxed pagination ([#3236](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3236)), tabbed navigation ([#3308](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3308)) and custom tabs ([#3346](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3346))
 * Factbox ([#2906](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2906))
+* Special page "Concepts" (`Special:Concepts`) ([#3500](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3500))
 
 ### List formats and template format rework
 
-The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3130) Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling. Note that the `plainlist` format does not apply these additional class attributes.
+The "list" formats (`list`, `ol` and `ul`) and the `template` format were completely reworked with the latter being renamed to `plainlist` [(#3130)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3130) now being the default result format if no result format was explicitly specifed for the query. Most notably dedicated separators for values, properties and result "rows" (`sep`, `propsep`, `valuesep`) were introduced as well as class attributes to HTML elements of "list", "ol" and "ul" formats were added to facilitate easy indidual styling. Note that the `plainlist` format does not apply these additional class attributes.
 
 **See the [migration guide](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/migration-guide-3.0.md#list-formats-incl-list-ol-ul-template) for a comprehensive overview of the changes done.**
 
