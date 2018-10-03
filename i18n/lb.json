@@ -309,6 +309,7 @@
 	"smw-processing": "Verschaffen...",
 	"smw-types-title": "Typ: $1",
 	"smw-schema-error": "Validéierungsfeeler",
+	"smw-schema-error-violation": "Violatioun (\"$1\", \"$2\")",
 	"smw-schema-title": "Schema",
 	"smw-schema-type": "Typ",
 	"smw-ask-title-keyword-type": "Schlësselwuert sichen",

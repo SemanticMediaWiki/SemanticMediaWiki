@@ -287,7 +287,7 @@
 	"smw-ui-tooltip-title-event": "Evento",
 	"smw-ui-tooltip-title-note": "Nota",
 	"smw-ui-tooltip-title-reference": "Referentia",
-	"smw_unknowntype": "Le typo de iste proprietate non es valide.",
+	"smw_unknowntype": "Le typo \"$1\" de iste proprietate non es valide.",
 	"smw_concept_header": "Paginas del concepto \"$1\"",
 	"smw_conceptarticlecount": "Presentation de $1 {{PLURAL:$1|pagina|paginas}}.",
 	"smw-livepreview-loading": "Cargamento in curso…",
