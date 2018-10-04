@@ -52,7 +52,7 @@
 	"smw_wrong_namespace": "Samo stranice iz imenskog prostora \"$1\" su dozvoljene ovde.",
 	"smw_manytypes": "Više od jednog tipa je definisano za ovu osobinu.",
 	"smw_emptystring": "Prazni stringovi nisu prihvatljivi.",
-	"smw_notinenum": "\"$1\" nije na spisku mogućih vrednosti ($2) za ovu osobinu.",
+	"smw_notinenum": "„$1“ nije na spisku ($2)  [[Property:Allows value|mogućih vrednosti]] za osobinu „$3“.",
 	"smw_noboolean": "\"$1\" nije prepoznat kao Bolova vrednost (istinito/neistinito).",
 	"smw_true_words": "istinito, i, da, d",
 	"smw_false_words": "neistinito, n, ne, n",
@@ -79,7 +79,7 @@
 	"smw_attribute_header": "Stranice koje koriste osobinu \"$1\"",
 	"smw_attributearticlecount": "Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.",
 	"smw_subproperty_header": "Podosobine",
-	"smw_subpropertyarticlecount": "Ova osobina sadrži {{PLURAL:$1|sledeću $1 podosobinu|sledeće $1 podosobine}}:",
+	"smw-subpropertylist-count": "Ova osobina sadrži {{PLURAL:$1|sledeću $1 podosobinu|sledeće $1 podosobine}}:",
 	"specialpages-group-smw_group": "Semantički Medijaviki",
 	"exportrdf": "Izvezi stranice u RDF",
 	"smw_exportrdf_docu": "Ova stranica omogućava preuzimanje podataka s neke stranice u formatu RDF.\nDa biste izvezli stranice, unesite naslove u kućicu ispod (po jedan naslov u svakom redu).",
@@ -104,8 +104,8 @@
 	"smw_purge": "Osveži",
 	"types": "Tipovi",
 	"smw_types_docu": "Ovo je spisak svih vrsta podataka koji mogu da se dodeljuju svojstvima.",
-	"semanticstatistics": "Semantičke statistike",
-	"smw_semstats_text": "Ovaj viki sadrži '''$1''' {{PLURAL:$1|vrednost|vrednosti|vrednosti}} svojstva od ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstva|različita svojstva|različitih svojstava}}]].\n'''$3''' {{PLURAL:$3|svojstvo ima svoju stranicu|svojstva imaju svoje stranice|svojstava imaju svoje stranice}}, a predviđena vrsta podataka je naznačena za '''$4''' od njih.\nNeki od postojećih svojstava mogu biti [[Special:UnusedProperties|neiskorišćeni]].\nSvojstva koja još nemaju stranicu nalaze se na [[Special:WantedProperties|spisku potrebnih svojstava]].",
+
+
 	"ask": "Semantička pretraga",
 	"smw_ask_sortby": "Sortiraj u kolone (opciono)",
 	"smw_ask_ascorder": "Rastući",

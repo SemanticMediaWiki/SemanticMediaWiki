@@ -61,7 +61,7 @@
 	"smw_wantedproperty_template": "$1 ($2 {{PLURAL:$2|utilizare|utilizări}})",
 	"smw_purge": "Reîncărcare",
 	"types": "Tipuri",
-	"semanticstatistics": "Statistici semantice",
+
 	"ask": "Căutare semantică",
 	"smw_ask_sortby": "Sortare după coloană (opțional)",
 	"smw_ask_ascorder": "Crescător",

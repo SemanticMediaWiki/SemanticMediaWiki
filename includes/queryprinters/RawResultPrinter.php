@@ -57,10 +57,10 @@ abstract class RawResultPrinter extends ResultPrinter {
 
 		return Html::rawElement(
 			'div',
-			array( 'class' => 'smw-spinner left mw-small-spinner' ),
+			[ 'class' => 'smw-spinner left mw-small-spinner' ],
 			Html::element(
 				'p',
-				array( 'class' => 'text' ),
+				[ 'class' => 'text' ],
 				$this->msg( 'smw-livepreview-loading' )->inContentLanguage()->text()
 			)
 		);
@@ -84,7 +84,7 @@ abstract class RawResultPrinter extends ResultPrinter {
 	protected function encodeToJsonForId( $id, $data ) {
 		SMWOutputs::requireHeadItem(
 			$id,
-			$this->getSkin()->makeVariablesScript( array ( $id => FormatJson::encode( $data ) )
+			$this->getSkin()->makeVariablesScript(  [ $id => FormatJson::encode( $data ) ]
 		) );
 
 		return $this;
@@ -118,12 +118,12 @@ abstract class RawResultPrinter extends ResultPrinter {
 		}
 
 		// Combine all data into one object
-		$data = array(
-			'query' => array(
+		$data = [
+			'query' => [
 				'result' => $queryResult->toArray(),
 				'ask'    => $ask
-			)
-		);
+			]
+		];
 
 		return $this->getHtml( $data );
 	}

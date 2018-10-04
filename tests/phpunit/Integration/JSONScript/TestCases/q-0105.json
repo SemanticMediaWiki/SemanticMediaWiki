@@ -1,0 +1,338 @@
+{
+	"description": "Test `_wpg`/`~` with enabled full-text search support (only enabled for MySQL, SQLite, `SMW_FT_WIKIPAGE`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/Q0105/1",
+			"contents": "{{#subobject: |Has page=MySQL vs MariaDB database}} {{#subobject: |Has page=Oracle vs MariaDB database}} {{#subobject: |Has page=PostgreSQL vs MariaDB database and more of}} {{#subobject: |Has page=MariaDB overview}}"
+		},
+		{
+			"page": "Example/Q0105/2",
+			"contents": "{{#subobject: |Has page=Elastic search}} {{#subobject: |Has page=Sphinx search}}"
+		},
+		{
+			"page": "Example/Q0105/3",
+			"contents": "{{#subobject: |Has page=...a hyphenated phrase that has special significance when it appears at the beginning of text...}} {{#subobject: |Has page=...a hyphenated phrase that has NOT any special significance when it appears at the beginning of text...}}"
+		},
+		{
+			"page": "Example/Q0105/4",
+			"contents": "{{#subobject: |Has page=Text with a category|@category=Q0105}} {{#subobject: |Has page=Text without a category}}"
+		}
+	],
+	"beforeTest": {
+		"job-run": [
+			"SMW\\SearchTableUpdateJob"
+		]
+	},
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 with boolean include/not include",
+			"condition": "[[Has page::~+MariaDB -database]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0105/1#0##_13bfd7da17ee73035f210b926e671c83"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Has page::~+database]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_4b9aef2f903c80012ed4000b519a039d"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (plus sorting)",
+			"condition": "[[Has page::~DATA*]]",
+			"skip-on": {
+				"elastic": "ES, not expect a prefix search without an explicit wildcard (*)."
+			},
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_4b9aef2f903c80012ed4000b519a039d"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2.elastic (plus sorting)",
+			"condition": "[[Has page::~*DATA*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_4b9aef2f903c80012ed4000b519a039d"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (plus sorting)",
+			"condition": "[[Has page::~sear*]]",
+			"skip-on": {
+				"elastic": "ES, not expect a prefix search without an explicit wildcard (*)."
+			},
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "ASC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/2#0##_4e8a7e81b361d0e14670809d9a1ff614",
+					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3.elastic (plus sorting)",
+			"condition": "[[Has page::~*sear*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "ASC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/2#0##_4e8a7e81b361d0e14670809d9a1ff614",
+					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 include/not include",
+			"condition": "[[Has page::~sear*, -elas*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page": "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 same as #4",
+			"condition": "[[Has page::!~elastic*, +sear*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0105/2#0##_7927dc49ee111e0929a91a1f357d9906"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 phrase matching",
+			"condition": "[[Has page::~\"phrase that has special\"]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0105/3#0##_6b717d3124b3d294797a43ed5064374c"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 similar to #5 but not used in phrase matching mode",
+			"condition": "[[Has page::~phrase that has special]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/3#0##_6b717d3124b3d294797a43ed5064374c",
+					"Example/Q0105/3#0##_1dd972ef96528fe09e971c88ed933a7a"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8 free search (wide proximity)",
+			"skip-on": {
+				"elastic": "ES matches only `with` not `without`",
+				"sqlite": "works different in comparison to MySQL, see #9"
+			},
+			"condition": "[[~~with a category]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc",
+					"Example/Q0105/4#0##_b827401b701c08c3c3d610a3a43d18c3"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8.elastic, free search (wide proximity, also match the annotated value)",
+			"skip-on": {
+				"elastic": [ "not", "See #8" ]
+			},
+			"condition": "[[~~with a category]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc",
+					"Text_with_a_category#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9 free search (wide proximity)",
+			"condition": "[[~~with* a category]] [[~Example/Q0105/*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc",
+					"Example/Q0105/4#0##_b827401b701c08c3c3d610a3a43d18c3"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10 free search (wide proximity)",
+			"condition": "[[~~with a category]] [[Category:Q0105]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0105/4#0##_9f1222a5f6669be2c5f76dd5af08a4dc"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#11 retain spaces on +/- operators",
+			"condition": "[[Has page::~+*maria* -postgres*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_13bfd7da17ee73035f210b926e671c83"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#12 same as #11 only with `,` (required by MySQL 5.7/MariaDB 10.1)",
+			"condition": "[[Has page::~+*maria*, -postgres*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0105/1#0##_d1e52a56041afb2795ebc6683f9a5229",
+					"Example/Q0105/1#0##_e64ad35fdcd8d9e99f2db9a815e36be3",
+					"Example/Q0105/1#0##_13bfd7da17ee73035f210b926e671c83"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEnabledFulltextSearch": true,
+		"smwgFulltextDeferredUpdate": false,
+		"smwgFulltextSearchIndexableDataTypes": [
+			"SMW_FT_BLOB",
+			"SMW_FT_URI",
+			"SMW_FT_WIKIPAGE"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Fulltext not supported by PostgreSQL.",
+			"sesame": "Fulltext not supported by SPARQLStore (Sesame).",
+			"virtuoso": "Fulltext not supported by SPARQLStore (Virtuoso).",
+			"fuseki": "Fulltext not supported by SPARQLStore (Fuskei).",
+			"blazegraph": "Fulltext not supported by SPARQLStore (Blazegraph)."
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -4,10 +4,6 @@ namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use DateInterval;
 use InvalidArgumentException;
-use SMW\Query\Language\Conjunction;
-use SMW\Query\Language\Disjunction;
-use SMW\Query\Language\ThingDescription;
-use SMW\Query\Language\ValueDescription;
 use SMWDITime as DITime;
 use SMWTimeValue as TimeValue;
 
@@ -52,16 +48,18 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 			$this->dataValue->setUserValue( $value );
 
 			if ( $this->dataValue->isValid() ) {
-				return new ValueDescription( $this->dataValue->getDataItem(), $this->dataValue->getProperty(), $comparator );
+				return $this->descriptionFactory->newValueDescription( $this->dataValue->getDataItem(), $this->dataValue->getProperty(), $comparator );
 			} else {
-				return new ThingDescription();
+				return $this->descriptionFactory->newThingDescription();
 			}
 		}
 
-		$this->dataValue->setUserValue( $value, false, true );
+		// #1178 to support queries like [[Has date::~ Dec 2001]]
+		$this->dataValue->setOption( TimeValue::OPT_QUERY_COMP_CONTEXT, true );
+		$this->dataValue->setUserValue( $value );
 
 		if ( !$this->dataValue->isValid() ) {
-			return new ThingDescription();
+			return $this->descriptionFactory->newThingDescription();
 		}
 
 		$dataItem = $this->dataValue->getDataItem();
@@ -69,22 +67,22 @@ class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
 
 		$upperLimitDataItem = $this->getUpperLimit( $dataItem );
 
-		if ( $this->getErrors() !== array() ) {
-			return new ThingDescription();
+		if ( $this->getErrors() !== [] ) {
+			return $this->descriptionFactory->newThingDescription();
 		}
 
 		if( $comparator === SMW_CMP_LIKE ) {
-			$description = new Conjunction( array(
-				new ValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
-				new ValueDescription( $upperLimitDataItem, $property, SMW_CMP_LESS )
-			) );
+			$description = $this->descriptionFactory->newConjunction( [
+				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
+				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_LESS )
+			] );
 		}
 
 		if( $comparator === SMW_CMP_NLKE ) {
-			$description = new Disjunction( array(
-				new ValueDescription( $dataItem, $property, SMW_CMP_LESS ),
-				new ValueDescription( $upperLimitDataItem, $property, SMW_CMP_GEQ )
-			) );
+			$description = $this->descriptionFactory->newDisjunction( [
+				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_LESS ),
+				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_GEQ )
+			] );
 		}
 
 		return $description;

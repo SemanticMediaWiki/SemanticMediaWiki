@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
+use SMW\SQLStore\TableBuilder\Table;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\PostgresTableBuilder
@@ -26,7 +27,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'postgres' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
+			PostgresTableBuilder::class,
 			PostgresTableBuilder::factory( $connection )
 		);
 	}
@@ -35,7 +36,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -52,18 +53,17 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
-	public function testUpdateTableOnOldTable() {
+	public function testUpdateTableWithNewField() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -77,7 +77,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -85,18 +85,50 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
+	}
+
+	public function testUpdateTableWithNewFieldAndDefault() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'tableExists', 'query' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$connection->expects( $this->at( 2 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'SELECT a.attname as' ) )
+			->will( $this->returnValue( [] ) );
+
+		$connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD "bar" TEXT'. " DEFAULT '0'" ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addDefault( 'bar', 0 );
+
+		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query', 'indexInfo' ) )
+			->setMethods( [ 'tableExists', 'query', 'indexInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -111,29 +143,29 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'indexInfo' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
-			->will( $this->returnValue( array() ) );
-
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0 ON foo (bar)' ) );
+			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
+			->will( $this->returnValue( [] ) );
+
+		$connection->expects( $this->at( 5 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'CREATE INDEX foo_idx_bar ON foo (bar)' ) );
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$indexOptions = array(
-			'indicies' => array( 'bar' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
 
-		$instance->createIndex( 'foo', $indexOptions );
+		$instance->create( $table );
 	}
 
 	public function testDropTable() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -150,7 +182,53 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = PostgresTableBuilder::factory( $connection );
 
-		$instance->dropTable( 'foo' );
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
+	}
+
+	public function testDoCheckOnAfterCreate() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'query', 'getType', 'onTransactionIdle' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
+
+		$connection->expects( $this->at( 4 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$instance->checkOn( $instance::POST_CREATION );
+	}
+
+	public function testOptimizeTable() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'query' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'postgres' ) );
+
+		$connection->expects( $this->at( 1 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE "foo"' ) );
+
+		$instance = PostgresTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
 	}
 
 }

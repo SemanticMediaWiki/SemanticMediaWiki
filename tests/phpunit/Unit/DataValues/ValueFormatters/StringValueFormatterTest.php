@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMWStringValue as StringValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter
@@ -16,17 +17,19 @@ use SMWStringValue as StringValue;
  */
 class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\StringValueFormatter',
+			StringValueFormatter::class,
 			new StringValueFormatter()
 		);
 	}
 
 	public function testIsFormatterForValidation() {
 
-		$stringValue = $this->getMockBuilder( '\SMWStringValue' )
+		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,16 +45,16 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setCaption( 'ABC[<>]' );
 
-		$instance = new StringValueFormatter( $stringValue );
+		$instance = new StringValueFormatter();
 
 		$this->assertEquals(
 			'ABC[<>]',
-			$instance->format( StringValueFormatter::WIKI_SHORT )
+			$instance->format( $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 
 		$this->assertEquals(
 			'ABC[&lt;&gt;]',
-			$instance->format( StringValueFormatter::HTML_SHORT )
+			$instance->format( $stringValue, [ StringValueFormatter::HTML_SHORT ] )
 		);
 	}
 
@@ -63,11 +66,37 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setUserValue( $stringUserValue );
 
-		$instance = new StringValueFormatter( $stringValue );
+		$instance = new StringValueFormatter();
 
 		$this->assertEquals(
 			$expected,
-			$instance->format( $type, $linker )
+			$instance->format( $stringValue, [ $type, $linker ] )
+		);
+	}
+
+	public function testFormatWithReducedLength() {
+
+		// > 255 / Reduced length
+		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
+		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
+		'tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus';
+
+		$expected = 'Lorem ipsum dolor sit amet consectetuer …';
+
+		$stringValue = new StringValue( '_txt' );
+		$stringValue->setUserValue( $text );
+		$stringValue->setOutputFormat( 40 );
+
+		$instance = new StringValueFormatter();
+
+		$this->assertEquals(
+			$expected,
+			$instance->format(  $stringValue, [ StringValueFormatter::HTML_LONG ] )
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->format(  $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 	}
 
@@ -81,102 +110,114 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function stringValueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::VALUE,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::WIKI_SHORT,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::HTML_SHORT,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			StringValueFormatter::HTML_LONG,
 			null,
 			'foo'
-		);
+		];
 
 		// > 255
 		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
 		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
 		'tincidunt Sed adipiscing nec facilisis tortor Nunc Sed ipsum tellus';
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			StringValueFormatter::HTML_LONG,
 			null,
 			'Lorem ipsum dolor sit amet consectetuer ju <span class="smwwarning">…</span> nec facilisis tortor Nunc Sed ipsum tellus'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			$text,
 			StringValueFormatter::WIKI_LONG,
 			null,
 			'Lorem ipsum dolor sit amet consectetuer ju <span class="smwwarning">…</span> nec facilisis tortor Nunc Sed ipsum tellus'
-		);
+		];
+
+		// Avoid breaking links
+		$text = 'Lorem ipsum dolor sit amet consectetuer [[justo Nam quis lobortis vel]]. Sapien nulla enim Lorem enim pede ' .
+		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
+		'tincidunt [[Sed adipiscing nec]] facilisis tortor Nunc Sed ipsum tellus';
+
+		$provider[] = [
+			$text,
+			StringValueFormatter::HTML_LONG,
+			null,
+			'Lorem ipsum dolor sit amet consectetuer [[justo Nam quis lobortis vel]] <span class="smwwarning">…</span> [[Sed adipiscing nec]] facilisis tortor Nunc Sed ipsum tellus'
+		];
 
 		// XMLContentEncode
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			StringValueFormatter::HTML_LONG,
 			null,
 			'&lt;foo&gt;'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<foo>',
 			StringValueFormatter::HTML_SHORT,
 			null,
 			'&lt;foo&gt;'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'*Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . '*Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'#Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . '#Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			':Foo',
 			StringValueFormatter::WIKI_LONG,
 			null,
 			"\n" . ':Foo' . "\n"
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'* Foo',
 			StringValueFormatter::HTML_LONG,
 			null,
 			"\n" . '* Foo' . "\n"
-		);
+		];
 
 		return $provider;
 	}

@@ -1,0 +1,177 @@
+{
+	"description": "Test `_uri` with additional annotation/search (#1129)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has telephone number",
+			"contents": "[[Has type::Telephone number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has email",
+			"contents": "[[Has type::Email]]"
+		},
+		{
+			"page": "Page/07/02/1",
+			"contents": "[[Has telephone number::+1-2012-555-0123]]"
+		},
+		{
+			"page": "Page/07/02/2",
+			"contents": "[[Has telephone number::+1-2012-555-5555]]"
+		},
+		{
+			"page": "Page/07/02/3",
+			"contents": "[[Has email::Lorem@ipsum.org]]"
+		},
+		{
+			"page": "Page/07/02/4",
+			"contents": "[[Has email::Lorem@123.org]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 search phone number +1-2012-555-5555",
+			"condition": "[[Has telephone number::+1-2012-555-5555]]",
+			"printouts": [
+				"Has telephone number"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has telephone number",
+						"value": "tel:+1-2012-555-5555"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 search phone number that contains 123",
+			"condition": "[[Has telephone number::~*123*]]",
+			"printouts": [
+				"Has telephone number"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has telephone number",
+						"value": "tel:+1-2012-555-0123"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 search phone number that contains 555",
+			"condition": "[[Has telephone number::~*555*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2",
+				"results": [
+					"Page/07/02/1#0##",
+					"Page/07/02/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 search e-mail address Lorem@ipsum.org",
+			"condition": "[[Has email::Lorem@ipsum.org]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 search e-mail address that contains 123.org",
+			"condition": "[[Has email::~*123.org]]",
+			"printouts": [
+				"Has email"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/4#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has email",
+						"value": "mailto:Lorem@123.org"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 search phone number that does not contain 123",
+			"condition": "[[Has telephone number::!~*123*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 search e-mail address that does not contain 123.org",
+			"condition": "[[Has email::!~*123.org]]",
+			"printouts": [
+				"Has email"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page/07/02/3#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has email",
+						"value": "mailto:Lorem@ipsum.org"
+					}
+				]
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

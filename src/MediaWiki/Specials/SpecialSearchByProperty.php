@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMWInfolink as Infolink;
 use SpecialPage;
 
 /**
@@ -35,13 +36,21 @@ class SpecialSearchByProperty extends SpecialPage {
 	 */
 	public function execute( $query ) {
 
+		$this->setHeaders();
 		$output = $this->getOutput();
+		$request = $this->getRequest();
 
 		$output->setPageTitle( $this->msg( 'searchbyproperty' )->text() );
 		$output->addModules( 'ext.smw.tooltip' );
-		$output->addModules( 'ext.smw.property' );
+		$output->addModules( 'ext.smw.autocomplete.property' );
 
 		list( $limit, $offset ) = $this->getLimitOffset();
+
+		if ( $request->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
 
 		// @see SMWInfolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
@@ -50,13 +59,13 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$requestOptions = array(
+		$requestOptions = [
 			'limit'    => $limit,
 			'offset'   => $offset,
 			'property' => $this->getRequest()->getVal( 'property' ),
 			'value'    => $this->getRequest()->getVal( 'value' ),
 			'nearbySearchForType' => $applicationFactory->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
-		);
+		];
 
 		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),

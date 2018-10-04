@@ -5,8 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
 
 /**
@@ -36,15 +35,16 @@ class MaintenanceFactory {
 	 */
 	public function newDataRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
+		$messageReporter = $this->newMessageReporter( $reporterCallback );
 
 		$dataRebuilder = new DataRebuilder(
 			$store,
-			ApplicationFactory::getInstance()->newTitleCreator()
+			ApplicationFactory::getInstance()->newTitleFactory()
 		);
 
-		$dataRebuilder->setMessageReporter( $messageReporter );
+		$dataRebuilder->setMessageReporter(
+			$messageReporter
+		);
 
 		return $dataRebuilder;
 	}
@@ -59,15 +59,14 @@ class MaintenanceFactory {
 	 */
 	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
-
 		$conceptCacheRebuilder = new ConceptCacheRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->getSettings()
 		);
 
-		$conceptCacheRebuilder->setMessageReporter( $messageReporter );
+		$conceptCacheRebuilder->setMessageReporter(
+			$this->newMessageReporter( $reporterCallback )
+		);
 
 		return $conceptCacheRebuilder;
 	}
@@ -82,20 +81,18 @@ class MaintenanceFactory {
 	 */
 	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ) {
 
-		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$messageReporter->registerReporterCallback( $reporterCallback );
-
-		$propertyStatisticsTable = new PropertyStatisticsTable(
-			$store->getConnection( 'mw.db' ),
-			SQLStore::PROPERTY_STATISTICS_TABLE
+		$propertyStatisticsStore = new PropertyStatisticsStore(
+			$store->getConnection( 'mw.db' )
 		);
 
 		$propertyStatisticsRebuilder = new PropertyStatisticsRebuilder(
 			$store,
-			$propertyStatisticsTable
+			$propertyStatisticsStore
 		);
 
-		$propertyStatisticsRebuilder->setMessageReporter( $messageReporter );
+		$propertyStatisticsRebuilder->setMessageReporter(
+			$this->newMessageReporter( $reporterCallback )
+		);
 
 		return $propertyStatisticsRebuilder;
 	}
@@ -110,6 +107,25 @@ class MaintenanceFactory {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return DuplicateEntitiesDisposer
+	 */
+	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null  ) {
+
+		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
+			$store,
+			ApplicationFactory::getInstance()->getCache()
+		);
+
+		$duplicateEntitiesDisposer->setMessageReporter(
+			$this->newMessageReporter( $reporterCallback )
+		);
+
+		return $duplicateEntitiesDisposer;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $performer
@@ -117,7 +133,24 @@ class MaintenanceFactory {
 	 * @return MaintenanceLogger
 	 */
 	public function newMaintenanceLogger( $performer ) {
-		return new MaintenanceLogger( $performer, new ManualEntryLogger() );
+
+		$maintenanceLogger = new MaintenanceLogger( $performer, new ManualEntryLogger() );
+		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
+
+		return $maintenanceLogger;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return MessageReporter
+	 */
+	public function newMessageReporter( $reporterCallback = null ) {
+
+		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( $reporterCallback );
+
+		return $messageReporter;
 	}
 
 }

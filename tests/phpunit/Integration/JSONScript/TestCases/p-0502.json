@@ -1,0 +1,194 @@
+{
+	"description": "Test in-text annotation allows value list (#2295, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list Publication categories",
+			"contents": {
+				"import-from": "/../Fixtures/p-0502.txt"
+			}
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list error",
+			"contents": {
+				"import-from": "/../Fixtures/p-0502-error.txt"
+			}
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list license",
+			"contents": "* BSD-2-Clause|2-clause BSD License (BSD-2-Clause)\n* Zlib|zlib/libpng license (Zlib)"
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows list other license.json",
+			"contents": {
+				"import-from": "/../Fixtures/p-0502-other-license.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has list",
+			"contents": "[[Has type::Text]] [[Allows value list::Publication categories]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has combined list",
+			"contents": "[[Has type::Text]] [[Allows value list::Publication categories]] [[Allows value::abc]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has combined error list",
+			"contents": "[[Has type::Text]] [[Allows value list::error]] [[Allows value::Foo]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has license",
+			"contents": "[[Has type::Text]] [[Allows value list::license]] [[Allows value list::other license.json]]"
+		},
+		{
+			"page": "Example/P0502/1",
+			"contents": "[[Has list::abc]]"
+		},
+		{
+			"page": "Example/P0502/2",
+			"contents": "[[Has list::Document]] [[Has list::Manuscript]]"
+		},
+		{
+			"page": "Example/P0502/3",
+			"contents": "[[Has combined list::abc]] [[Has combined list::Manuscript]]"
+		},
+		{
+			"page": "Example/P0502/4",
+			"contents": "[[Has combined error list::Foobar]]"
+		},
+		{
+			"page": "Example/P0502/5",
+			"contents": "[[Has license::Zlib]]"
+		},
+		{
+			"page": "Example/P0502/6",
+			"contents": "[[Has license::PD]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 invalid assignment",
+			"subject": "Example/P0502/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 valid assignment",
+			"subject": "Example/P0502/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has list"
+					],
+					"propertyValues": [
+						"Document",
+						"Manuscript"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 valid assignment",
+			"subject": "Example/P0502/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has combined list"
+					],
+					"propertyValues": [
+						"abc",
+						"Manuscript"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 error output",
+			"subject": "Example/P0502/4",
+			"assert-output": {
+				"to-contain": [
+					"\"Foobar\" is not in the list (Foo, Bar)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 assignment on key (* key|value)",
+			"subject": "Example/P0502/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has license"
+					],
+					"propertyValues": [
+						"Zlib"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 assignment from JSON",
+			"subject": "Example/P0502/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has license"
+					],
+					"propertyValues": [
+						"PD"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

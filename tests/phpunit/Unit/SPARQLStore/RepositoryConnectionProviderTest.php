@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RepositoryConnectionProvider;
 use SMW\Tests\Utils\GlobalsProvider;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectionProvider
@@ -16,29 +17,31 @@ use SMW\Tests\Utils\GlobalsProvider;
  */
 class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $globalsProvider;
-	private $smwgSparqlDatabase;
-	private $smwgSparqlDatabaseConnector;
+	private $smwgSparqlCustomConnector;
+	private $smwgSparqlRepositoryConnector;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->globalsProvider = GlobalsProvider::getInstance();
 
-		$this->smwgSparqlDatabaseConnector = $this->globalsProvider->get( 'smwgSparqlDatabaseConnector' );
-		$this->smwgSparqlDatabase = $this->globalsProvider->get( 'smwgSparqlDatabase' );
+		$this->smwgSparqlRepositoryConnector = $this->globalsProvider->get( 'smwgSparqlRepositoryConnector' );
+		$this->smwgSparqlCustomConnector = $this->globalsProvider->get( 'smwgSparqlCustomConnector' );
 	}
 
 	protected function tearDown() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabaseConnector',
-			$this->smwgSparqlDatabaseConnector
+			'smwgSparqlRepositoryConnector',
+			$this->smwgSparqlRepositoryConnector
 		);
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabase',
-			$this->smwgSparqlDatabase
+			'smwgSparqlCustomConnector',
+			$this->smwgSparqlCustomConnector
 		);
 
 		$this->globalsProvider->clear();
@@ -54,7 +57,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DBConnectionProvider',
+			'\SMW\Connection\ConnectionProvider',
 			$instance
 		);
 	}
@@ -89,7 +92,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\FusekiHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -99,7 +102,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'virtuoso' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\VirtuosoHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector',
 			$instance->getConnection()
 		);
 
@@ -115,7 +118,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( '4STORE' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\FourstoreHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector',
 			$instance->getConnection()
 		);
 
@@ -131,7 +134,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'sesame' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -141,7 +144,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new RepositoryConnectionProvider( 'generic' );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnector\GenericHttpRepositoryConnector',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -149,7 +152,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultConnectorForUnknownConnectorId() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabaseConnector',
+			'smwgSparqlRepositoryConnector',
 			'default'
 		);
 
@@ -164,7 +167,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultConnectorForEmptyConnectorId() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabaseConnector',
+			'smwgSparqlRepositoryConnector',
 			'default'
 		);
 
@@ -179,7 +182,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetDefaultConnectorForUnMappedId() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabaseConnector',
+			'smwgSparqlRepositoryConnector',
 			'idThatCanNotBeMapped'
 		);
 
@@ -194,7 +197,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testInvalidCustomClassConnectorThrowsException() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabase',
+			'smwgSparqlCustomConnector',
 			'InvalidCustomClassConnector'
 		);
 
@@ -207,7 +210,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testInvalidCustomRespositoryConnectorThrowsException() {
 
 		$this->globalsProvider->set(
-			'smwgSparqlDatabase',
+			'smwgSparqlCustomConnector',
 			'\SMW\Tests\Utils\Fixtures\InvalidCustomRespositoryConnector'
 		);
 

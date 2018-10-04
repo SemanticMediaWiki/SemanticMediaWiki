@@ -1,0 +1,192 @@
+{
+	"description": "Test `_wpg` queries to resolve property/values redirects (#467, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has firstPage",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has secondPage",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "PropertyToBeRedirected",
+			"contents": "#REDIRECT [[Property:Has firstPage]]"
+		},
+		{
+			"page": "PageValueToBeRedirected",
+			"contents": "#REDIRECT [[PageRedirectTarget]]"
+		},
+		{
+			"page": "AnotherPageValueToBeRedirected",
+			"contents": "#REDIRECT [[AnotherPageRedirectTarget]]"
+		},
+		{
+			"page": "Page-one",
+			"contents": "[[PropertyToBeRedirected::One]]"
+		},
+		{
+			"page": "Page-two",
+			"contents": "{{#subobject:PropertyToBeRedirected=Two}}"
+		},
+		{
+			"page": "Page-three",
+			"contents": "[[Has secondPage::PageValueToBeRedirected]]"
+		},
+		{
+			"page": "Page-four",
+			"contents": "{{#subobject:Has secondPage=PageValueToBeRedirected}}"
+		},
+		{
+			"page": "Page-five-combined",
+			"contents": "[[PropertyToBeRedirected::PageValueToBeRedirected]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 any value query for redirected property",
+			"condition": "[[PropertyToBeRedirected::+]]",
+			"printouts": [
+				"PropertyToBeRedirected",
+				"Has firstPage"
+			],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Page-one#0##",
+					"Page-two#0##_b60804b67d37b781ac15c6e78102d13c",
+					"Page-five-combined#0##"
+				],
+				"datavalues": [
+					{
+						"property": "PropertyToBeRedirected",
+						"value": "One"
+					},
+					{
+						"property": "PropertyToBeRedirected",
+						"value": "Two"
+					},
+					{
+						"property": "PropertyToBeRedirected",
+						"value": "PageValueToBeRedirected"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 any value query for redirected value",
+			"condition": "[[Has secondPage::+]]",
+			"printouts": [
+				"Has secondPage"
+			],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Page-three#0##",
+					"Page-four#0##_f5bb3e35482aaa5d1eef24749c24af30"
+				],
+				"datavalues": [
+					{
+						"property": "Has secondPage",
+						"value": "PageValueToBeRedirected"
+					},
+					{
+						"property": "Has secondPage",
+						"value": "PageValueToBeRedirected"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 disjunction query on discrete value search",
+			"condition": "[[PropertyToBeRedirected::One]] OR [[PropertyToBeRedirected::Two]] OR [[Has secondPage::PageValueToBeRedirected]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Page-one#0##",
+					"Page-two#0##_b60804b67d37b781ac15c6e78102d13c",
+					"Page-three#0##",
+					"Page-four#0##_f5bb3e35482aaa5d1eef24749c24af30"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 combined property/value redirect discrete value search",
+			"condition": "[[PropertyToBeRedirected::PageValueToBeRedirected]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Page-five-combined#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 single value search, refs #1007",
+			"condition": "[[:PageValueToBeRedirected]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"PageRedirectTarget#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 disjunctive single value search, refs #1007",
+			"condition": "[[:PageValueToBeRedirected]] OR [[:AnotherPageValueToBeRedirected]] OR [[:Page-one]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"PageRedirectTarget#0##",
+					"AnotherPageRedirectTarget#0##",
+					"Page-one#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 does not support property paths / SPARQL compiler, line 0: Invalid character in SPARQL expression at '^'"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -16,10 +16,20 @@ use SMW\Options;
  */
 class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 
+	private $file;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\ExceptionFileLogger',
+			ExceptionFileLogger::class,
 			new ExceptionFileLogger()
 		);
 	}
@@ -28,9 +38,9 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ExceptionFileLogger();
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'exception-log' => __DIR__
-		) ) );
+		] ) );
 
 		$this->assertInternalType(
 			'boolean',
@@ -39,26 +49,28 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'integer',
-			$instance->getExceptionCounter()
+			$instance->getExceptionCount()
 		);
 	}
 
 	public function testDoWriteExceptionLog() {
 
-		$instance = new ExceptionFileLogger();
+		$this->file->expects( $this->once() )
+			->method( 'write' );
 
-		$instance->setOptions( new Options( array(
-			'exception-log' => __DIR__
-		) ) );
+		$instance = new ExceptionFileLogger( 'foo', $this->file );
 
-		$instance->doWriteExceptionLog(
-			array( 'Foo' )
+		$instance->recordException(
+			'Foo',
+			new \Exception( 'Bar' )
 		);
 
 		$this->assertEquals(
-			0,
-			$instance->getExceptionCounter()
+			1,
+			$instance->getExceptionCount()
 		);
+
+		$instance->doWrite();
 	}
 
 }

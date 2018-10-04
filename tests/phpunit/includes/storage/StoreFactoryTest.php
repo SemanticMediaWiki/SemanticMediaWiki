@@ -19,6 +19,8 @@ use SMW\StoreFactory;
  */
 class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	protected function tearDown() {
 		StoreFactory::clear();
 
@@ -59,7 +61,7 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStoreInstanceException() {
-		$this->setExpectedException( '\SMW\InvalidStoreException' );
+		$this->setExpectedException( '\SMW\Exception\StoreNotFoundException' );
 		StoreFactory::getStore( '\SMW\StoreFactory' );
 	}
 

@@ -1,0 +1,81 @@
+{
+	"description": "Test `format=template` output + unicode characters (#988, skip postgres)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject",
+			"contents": "<includeonly>[{{{#}}}]:{{{1}}}:{{{Has page property}}}:{{{#userparam}}}:</includeonly>"
+		},
+		{
+			"page": "Foo",
+			"contents": "[[Has page property::一二三]] [[Has page property::456]] [[Category:template-002]]"
+		},
+		{
+			"page": "Bar",
+			"contents": "[[Has page property::一二三]] [[Has page property::456]] [[Category:template-002]]"
+		},
+		{
+			"page": "123",
+			"contents": "[[Has page property::一二三]] [[Has page property::456]] [[Category:template-002]]"
+		},
+		{
+			"page": "テスト",
+			"contents": "[[Has page property::一二三]] [[Has page property::456]] [[Category:template-002]]"
+		},
+		{
+			"page": "template-002-asc-order-named-args",
+			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q> |?Has page property |format=template |order=asc |sep=; |valuesep=; <nowiki/>|link=none |limit=10 |userparam=[$%&*==42] |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject ||named args=yes}}"
+		},
+		{
+			"page": "template-002-desc-order-named-args",
+			"contents": "{{#ask:[[Category:template-002]]<q>[[Has page property:一二三]] OR [[Has page property::456]]</q> |?Has page property |format=template |order=desc |sep=; |valuesep=; <nowiki/>|link=none |limit=10 |userparam=[$%&*==42] |template=TemplateOutputUsingNamedArgumentsForUnicodeIncludedSubject ||named args=yes}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 asc output order, without further links",
+			"subject": "template-002-asc-order-named-args",
+			"assert-output": {
+				"to-contain": [
+					"[0]:123:一二三; 456:[$%&amp;*==42]:",
+					"[1]:Bar:一二三; 456:[$%&amp;*==42]:",
+					"[2]:Foo:一二三; 456:[$%&amp;*==42]:",
+					"[3]:テスト:一二三; 456:[$%&amp;*==42]:"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 desc output order, without further links",
+			"subject": "template-002-desc-order-named-args",
+			"assert-output": {
+				"to-contain": [
+					"[0]:テスト:一二三; 456:[$%&amp;*==42]:",
+					"[1]:Foo:一二三; 456:[$%&amp;*==42]:",
+					"[2]:Bar:一二三; 456:[$%&amp;*==42]:",
+					"[3]:123:一二三; 456:[$%&amp;*==42]:"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Unicode needs special treatment in postgres"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -45,7 +45,7 @@ class Message {
 	/**
 	 * @var array
 	 */
-	private static $messageHandler = array();
+	private static $messageHandler = [];
 
 	/**
 	 * @since 2.4
@@ -81,7 +81,7 @@ class Message {
 	public static function getCache() {
 
 		if ( self::$messageCache === null ) {
-			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( self::POOLCACHE_ID, 1000 );
+			self::$messageCache = InMemoryPoolCache::getInstance()->getPoolCacheById( self::POOLCACHE_ID, 1000 );
 		}
 
 		return self::$messageCache;
@@ -108,10 +108,38 @@ class Message {
 		}
 
 		if ( $type === null ) {
-			$type = Message::TEXT;
+			$type = self::TEXT;
 		}
 
-		return json_encode( array_merge( (array)$type, (array)$message ) );
+		if ( $message === [] ) {
+			return '';
+		}
+
+		$message = (array)$message;
+		$encode = [];
+		$encode[] = $type;
+
+		foreach ( $message as $value ) {
+			// Check if the value is already encoded, and if decode to keep the
+			// structure intact
+			if ( substr( $value, 0, 1 ) === '[' && ( $dc = json_decode( $value, true ) ) && json_last_error() === JSON_ERROR_NONE ) {
+				$encode += $dc;
+			} else {
+				// Normalize arguments like "<strong>Expression error:
+				// Unrecognized word "yyyy".</strong>"
+				$value = strip_tags( htmlspecialchars_decode( $value, ENT_QUOTES ) );
+
+				// - Internally encoded to circumvent the strip_tags which would
+				//   remove <, > from values that represent a range
+				// - Encode `::` to prevent the annotation parser to pick the
+				//   message value
+				$value = str_replace( [ '%3C', '%3E', "::" ], [ '>', '<', "&#58;&#58;" ], $value );
+
+				$encode[] = $value;
+			}
+		}
+
+		return json_encode( $encode );
 	}
 
 	/**
@@ -156,7 +184,7 @@ class Message {
 			return $message[0];
 		}
 
-		return self::get( $message, $type !== null ? $type : $asType, $language );
+		return self::get( $message, ( $type !== null ? $type: $asType ), $language );
 	}
 
 	/**
@@ -197,7 +225,7 @@ class Message {
 
 		$message = call_user_func_array(
 			$handler,
-			array( $parameters, $language )
+			[ $parameters, $language ]
 		);
 
 		self::getCache()->save( $hash, $message );

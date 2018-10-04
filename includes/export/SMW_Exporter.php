@@ -4,15 +4,17 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\NamespaceUriFinder;
-use SMW\Exporter\DataItemByExpElementMatchFinder;
-use SMW\Exporter\DataItemToElementEncoder;
-use SMW\Exporter\DataItemToExpResourceEncoder;
+use SMW\Site;
+use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ElementFactory;
 use SMW\Exporter\Escaper;
-use SMW\Exporter\DispatchingResourceBuilder;
+use SMW\Exporter\ExpResourceMapper;
+use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
+use SMW\Localizer;
+use SMW\NamespaceUriFinder;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into
@@ -31,19 +33,19 @@ class SMWExporter {
 	private static $instance = null;
 
 	/**
-	 * @var DataItemToExpResourceEncoder
+	 * @var ExpResourceMapper
 	 */
-	private static $dataItemToExpResourceEncoder = null;
+	private static $expResourceMapper = null;
 
 	/**
-	 * @var DataItemToElementEncoder
+	 * @var ElementFactory
 	 */
-	private static $dataItemToElementEncoder = null;
+	private static $elementFactory = null;
 
 	/**
-	 * @var DataItemByExpElementMatchFinder
+	 * @var DataItemMatchFinder
 	 */
-	private static $dataItemByExpElementMatchFinder = null;
+	private static $dataItemMatchFinder = null;
 
 	/**
 	 * @var DispatchingResourceBuilder
@@ -71,25 +73,25 @@ class SMWExporter {
 			$applicationFactory = ApplicationFactory::getInstance();
 
 			$poolCache = $applicationFactory->getInMemoryPoolCache();
-			$poolCache->resetPoolCacheFor( self::POOLCACHE_ID );
+			$poolCache->resetPoolCacheById( self::POOLCACHE_ID );
 
 			// FIXME with 3.x
 			// There is no better way of getting around the static use without BC
-			self::$dataItemToElementEncoder = new DataItemToElementEncoder();
+			self::$elementFactory = new ElementFactory();
 
 			self::$dispatchingResourceBuilder = new DispatchingResourceBuilder();
 
-			self::$dataItemToExpResourceEncoder = new DataItemToExpResourceEncoder(
+			self::$expResourceMapper = new ExpResourceMapper(
 				$applicationFactory->getStore()
 			);
 
-			self::$dataItemToExpResourceEncoder->reset();
+			self::$expResourceMapper->reset();
 
-			self::$dataItemToExpResourceEncoder->setBCAuxiliaryUse(
+			self::$expResourceMapper->setBCAuxiliaryUse(
 				$applicationFactory->getSettings()->get( 'smwgExportBCAuxiliaryUse' )
 			);
 
-			self::$dataItemByExpElementMatchFinder = new DataItemByExpElementMatchFinder(
+			self::$dataItemMatchFinder = new DataItemMatchFinder(
 				$applicationFactory->getStore(),
 				self::$m_ent_wiki
 			);
@@ -109,8 +111,8 @@ class SMWExporter {
 	/**
 	 * @since 2.2
 	 */
-	public function resetCacheFor( SMWDIWikiPage $diWikiPage ) {
-		self::$dataItemToExpResourceEncoder->resetCacheFor( $diWikiPage );
+	public function resetCacheBy( SMWDIWikiPage $diWikiPage ) {
+		self::$expResourceMapper->invalidateCache( $diWikiPage );
 	}
 
 	/**
@@ -120,7 +122,7 @@ class SMWExporter {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
-		global $wgContLang, $wgServer, $wgArticlePath;
+		global $wgContLang;
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 
@@ -133,7 +135,7 @@ class SMWExporter {
 		}
 
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
-		self::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
+		self::$m_ent_wikiurl  = Site::wikiurl();
 		self::$m_ent_wiki     = $smwgNamespace;
 
 		$property = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) ) : 'Property';
@@ -148,10 +150,12 @@ class SMWExporter {
 		// Canonical form, the title object always contains a wgContLang reference
 		// therefore replace it
 		if ( !$GLOBALS['smwgExportBCNonCanonicalFormUse'] ) {
-			$special = wfUrlencode( '/' . $wgContLang->getNsText( NS_SPECIAL ) .':' );
+			$localizer = Localizer::getInstance();
 
-			self::$m_ent_wiki = str_replace( $special , '/Special:', self::$m_ent_wiki );
-			self::$m_exporturl = str_replace( $special , '/Special:', self::$m_exporturl );
+			self::$m_ent_property = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_property );
+			self::$m_ent_category = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_category );
+			self::$m_ent_wiki = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_wiki );
+			self::$m_exporturl = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_exporturl );
 		}
 	}
 
@@ -173,17 +177,43 @@ class SMWExporter {
 			$subject = DIProperty::newFromUserLabel( $subject->getDBKey() )->getCanonicalDiWikiPage();
 		}
 
-	       // #1690 Couldn't match a CanonicalDiWikiPage which is most likely caused
-	       // by an outdated pre-defined property therefore use the original subject
-	       if ( $subject->getDBKey() === '' ) {
-	           $subject = $semdata->getSubject();
-	       }
+		// #1690 Couldn't match a CanonicalDiWikiPage which is most likely caused
+		// by an outdated pre-defined property therefore use the original subject
+		if ( $subject->getDBKey() === '' ) {
+			$subject = $semdata->getSubject();
+		}
 
 		// #649 Alwways make sure to have a least one valid sortkey
 		if ( !$semdata->getPropertyValues( new DIProperty( '_SKEY' ) ) && $subject->getSortKey() !== '' ) {
+
+			// @see SMWSQLStore3Writers::getSortKey
+			if ( $semdata->getExtensionData( 'sort.extension' ) !== null ) {
+				$sortkey = $semdata->getExtensionData( 'sort.extension' );
+			} else {
+				$sortkey = $subject->getSortKey();
+			}
+
+			// Extend the subobject sortkey in case no @sortkey was given for an
+			// entity
+			if ( $subject->getSubobjectName() !== '' ) {
+
+				// Add sort data from some dedicated containers (of a record or
+				// reference type etc.) otherwise use the sobj name as extension
+				// to distinguish each entity
+				if ( $semdata->getExtensionData( 'sort.data' ) !== null ) {
+					$sortkey .= '#' . $semdata->getExtensionData( 'sort.data' );
+				} else {
+					$sortkey .= '#' . $subject->getSubobjectName();
+				}
+			}
+
+			// #649 Be consistent about how sortkeys are stored therefore always
+			// normalize even for usages like {{DEFAULTSORT: Foo_bar }}
+			$sortkey = str_replace( '_', ' ', $sortkey );
+
 			$semdata->addPropertyObjectValue(
 				new DIProperty( '_SKEY' ),
-				new SMWDIBlob( $subject->getSortKey() )
+				new SMWDIBlob( $sortkey )
 			);
 		}
 
@@ -253,7 +283,8 @@ class SMWExporter {
 			} else {
 				$prefixedSubjectTitle = $pageTitle;
 			}
-			$prefixedSubjectUrl = wfUrlencode( str_replace( ' ', '_', $prefixedSubjectTitle ) );
+
+			$prefixedSubjectUrl = Escaper::encodeUri( str_replace( ' ', '_', $prefixedSubjectTitle ) );
 
 			switch ( $diWikiPage->getNamespace() ) {
 				case NS_CATEGORY: case SMW_NS_CONCEPT:
@@ -275,18 +306,19 @@ class SMWExporter {
 			if ( !$wikiPageExpElement->isBlankNode() ) {
 				$ed = new ExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
-				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
-				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
 				$ed = new SMWExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
+				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
+				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
 				$ed = new ExpLiteral( strval( $diWikiPage->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$result->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
 
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
 					// this is set during parsing
-					$defaultSortkey = new ExpLiteral( $diWikiPage->getSortKey() );
-					$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
+					$property = new DIProperty( '_SKEY' );
+					$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
+					$resourceBuilder->addResourceValue( $result, $property, $diWikiPage );
 				}
 
 				if ( $diWikiPage->getPageLanguage() ) {
@@ -362,17 +394,17 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see DataItemToExpResourceEncoder::mapPropertyToResourceElement
+	 * @see ExpResourceMapper::mapPropertyToResourceElement
 	 */
-	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
-		return self::$dataItemToExpResourceEncoder->mapPropertyToResourceElement( $diProperty, $helperProperty );
+	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
+		return self::$expResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
 	}
 
 	/**
-	 * @see DataItemToExpResourceEncoder::mapWikiPageToResourceElement
+	 * @see ExpResourceMapper::mapWikiPageToResourceElement
 	 */
 	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
-		return self::$dataItemToExpResourceEncoder->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
+		return self::$expResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
 	/**
@@ -383,7 +415,7 @@ class SMWExporter {
 	 * @return SMWDataItem or null
 	 */
 	public function findDataItemForExpElement( ExpElement $expElement ) {
-		return self::$dataItemByExpElementMatchFinder->tryToFindDataItemForExpElement( $expElement );
+		return self::$dataItemMatchFinder->matchExpElement( $expElement );
 	}
 
 	/**
@@ -393,7 +425,7 @@ class SMWExporter {
 	 */
 	static public function getOWLPropertyType( $type = '' ) {
 		if ( $type instanceof SMWDIWikiPage ) {
-			$type = DataTypeRegistry::getInstance()->findTypeId( str_replace( '_', ' ', $type->getDBkey() ) );
+			$type = DataTypeRegistry::getInstance()->findTypeByLabel( str_replace( '_', ' ', $type->getDBkey() ) );
 		} elseif ( $type == false ) {
 			$type = '';
 		}
@@ -496,9 +528,9 @@ class SMWExporter {
 	 */
 	static public function expandURI( $uri ) {
 		self::initBaseURIs();
-		$uri = str_replace( array( '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ),
-		                    array( self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
-		                    self::$m_exporturl ),
+		$uri = str_replace( [ '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ],
+		                    [ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+		                    self::$m_exporturl ],
 		                    $uri );
 		return $uri;
 	}
@@ -571,10 +603,10 @@ class SMWExporter {
 	}
 
 	/**
-	 * @see DataItemToElementEncoder::mapDataItemToElement
+	 * @see ElementFactory::mapDataItemToElement
 	 */
 	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
-		return self::$dataItemToElementEncoder->mapDataItemToElement( $dataItem );
+		return self::$elementFactory->newFromDataItem( $dataItem );
 	}
 
 	/**

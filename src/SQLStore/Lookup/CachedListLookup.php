@@ -42,7 +42,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @var string
 	 */
-	private $cachePrefix = 'smw:llc:';
+	private $cachePrefix = 'smw:store:lookup:';
 
 	/**
 	 * @since 2.2
@@ -138,7 +138,7 @@ class CachedListLookup implements ListLookup {
 
 		$data = unserialize( $this->cache->fetch( $id ) );
 
-		if ( $data && $data !== array() ) {
+		if ( $data && $data !== [] ) {
 			foreach ( $data as $key => $value ) {
 				$this->cache->delete( $key );
 			}
@@ -155,7 +155,7 @@ class CachedListLookup implements ListLookup {
 
 		$data = unserialize( $this->cache->fetch( $optionsKey ) );
 
-		if ( $data === array() ) {
+		if ( $data === [] ) {
 			return null;
 		}
 
@@ -175,10 +175,10 @@ class CachedListLookup implements ListLookup {
 		$data[$optionsKey] = true;
 		$this->cache->save( $key, serialize( $data ), $ttl );
 
-		$data = array(
+		$data = [
 			'time' => $this->timestamp,
 			'list' => $list
-		);
+		];
 
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
@@ -191,10 +191,10 @@ class CachedListLookup implements ListLookup {
 			list( $id, $optionsKey ) = explode( '#', $id, 2 );
 		}
 
-		return array(
+		return [
 			$this->cachePrefix . md5( $id . self::VERSION ),
 			$this->cachePrefix . md5( $id . $optionsKey . self::VERSION )
-		);
+		];
 	}
 
 }

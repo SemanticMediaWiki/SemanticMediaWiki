@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral
@@ -17,6 +18,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -118,70 +121,70 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	public function constructorProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'', '', '', null,
-			array(
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'  => '',
 				'datatype'  => '',
 				'lang'  => '',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Foo', '', '', null,
-			array(
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'  => 'Foo',
 				'datatype' => '',
 				'lang'     => '',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'bar', '', null,
-			array(
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'  => 'Foo',
 				'datatype' => 'bar',
 				'lang'     => '',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'bar', '', new DIWikiPage( 'Foo', NS_MAIN ),
-			array(
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'   => 'Foo',
 				'datatype'  => 'bar',
 				'lang'      => '',
-				'dataitem' => array(
+				'dataitem' => [
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
-				)
-			)
-		);
+					'item' => 'Foo#0##'
+				]
+			]
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString', 'en', new DIWikiPage( 'Foo', NS_MAIN ),
-			array(
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'   => 'Foo',
 				'datatype'  => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString',
 				'lang'      => 'en',
-				'dataitem' => array(
+				'dataitem' => [
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
-				)
-			)
-		);
+					'item' => 'Foo#0##'
+				]
+			]
+		];
 
 		return $provider;
 	}
@@ -189,19 +192,19 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	public function invalidConstructorProvider() {
 
 		#0
-		$provider[] = array(
-			array(), '', '', null
-		);
+		$provider[] = [
+			[], '', '', null
+		];
 
 		#1
-		$provider[] = array(
-			'', array(), '', null
-		);
+		$provider[] = [
+			'', [], '', null
+		];
 
 		#1
-		$provider[] = array(
-			'', '', array(), null
-		);
+		$provider[] = [
+			'', '', [], null
+		];
 
 		return $provider;
 	}
@@ -209,59 +212,59 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	public function serializationMissingElementProvider() {
 
 		#0
-		$provider[] = array(
-			array()
-		);
+		$provider[] = [
+			[]
+		];
 
 		#1 Missing dataitem
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpLiteral::TYPE_LITERAL
-			)
-		);
+			]
+		];
 
 		#2 Bogus type
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => 'BogusType'
-			)
-		);
+			]
+		];
 
 		#3 Missing uri
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#4 Missing lexical
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'datatype' => 'foo',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#4 Missing datatype
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'  => 'foo',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#5 Missing lang
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'  => 'foo',
 				'datatype' => 'foo',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

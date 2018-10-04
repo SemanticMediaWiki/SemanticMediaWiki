@@ -2,14 +2,15 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\SQLStore\QueryEngine\Interpreter\ClassDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ConceptDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DisjunctionConjunctionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\NamespaceDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\SomePropertyInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ThingDescriptionInterpreter;
-use SMW\SQLStore\QueryEngine\Interpreter\ValueDescriptionInterpreter;
+use SMW\ApplicationFactory;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 
 /**
  * @license GNU GPL v2+
@@ -28,6 +29,7 @@ class DescriptionInterpreterFactory {
 	 */
 	public function newDispatchingDescriptionInterpreter( QuerySegmentListBuilder $querySegmentListBuilder ) {
 
+		$pplicationFactory = ApplicationFactory::getInstance();
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 
 		$dispatchingDescriptionInterpreter->addDefaultInterpreter(
@@ -54,8 +56,18 @@ class DescriptionInterpreterFactory {
 			new ValueDescriptionInterpreter( $querySegmentListBuilder )
 		);
 
+		$conceptDescriptionInterpreter = new ConceptDescriptionInterpreter(
+			$querySegmentListBuilder
+		);
+
+		$conceptDescriptionInterpreter->setQueryParser(
+			$pplicationFactory->getQueryFactory()->newQueryParser(
+				$pplicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+			)
+		);
+
 		$dispatchingDescriptionInterpreter->addInterpreter(
-			new ConceptDescriptionInterpreter( $querySegmentListBuilder )
+			$conceptDescriptionInterpreter
 		);
 
 		return $dispatchingDescriptionInterpreter;

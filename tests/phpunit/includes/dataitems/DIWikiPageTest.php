@@ -35,11 +35,11 @@ class DIWikiPageTest extends DataItemTest {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		return array(
-			array( 'Foo', NS_MAIN, '' ),
-			array( 'Foo_Bar', NS_MAIN, '' ),
-			array( 'Foo_Bar_Baz', NS_MAIN, '', 'spam' ),
-		);
+		return [
+			[ 'Foo', NS_MAIN, '' ],
+			[ 'Foo_Bar', NS_MAIN, '' ],
+			[ 'Foo_Bar_Baz', NS_MAIN, '', 'spam' ],
+		];
 	}
 
 	/**
@@ -65,31 +65,46 @@ class DIWikiPageTest extends DataItemTest {
 		);
 	}
 
+	public function testDoUnserialize() {
+
+		$expected = new DIWikiPage( 'Foo', 0 , '', '' );
+
+		$this->assertEquals(
+			$expected,
+			DIWikiPage::doUnserialize( 'Foo#0##' )
+		);
+
+		$this->assertEquals(
+			$expected,
+			DIWikiPage::doUnserialize( 'Foo#0##' )
+		);
+	}
+
 	public function sortKeyProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Some_title',
 			null,
 			'Some title'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Some_title',
 			'',
 			'Some title'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Some_title',
 			'abc',
 			'abc'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Some_title',
 			'abc_def',
 			'abc def'
-		);
+		];
 
 		return $provider;
 	}

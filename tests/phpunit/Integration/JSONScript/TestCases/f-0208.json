@@ -1,0 +1,180 @@
+{
+	"description": "Test `format=table` with `limit=0` (further result links) for user/predefined properties, `mainlabel=-`, `#show` (`wgContLang=en`, `wgLang=es`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/F0208/1",
+			"contents": "[[Has text::F0208]] [[Category:F0208]]"
+		},
+		{
+			"page": "Example/F0208/Q1.1",
+			"contents": "{{#ask: [[Has text::F0208]] |?Has text |?Modification date |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q2.1",
+			"contents": "{{#ask: [[Modification date::+]] |?Modification date |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q2.2",
+			"contents": "{{#ask: [[Fecha de modificación@es::+]] |?Fecha de modificación@es |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/3",
+			"contents": "[[Has page::F0208]] {{#subobject:Has text=ABC}}"
+		},
+		{
+			"page": "Example/F0208/4",
+			"contents": "[[Has page::Example/F0208/3]]"
+		},
+		{
+			"page": "Example/F0208/Q3.1",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q3.2",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page#Foo |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q3.3",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel |?Has page# |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q3.4",
+			"contents": "{{#ask: [[Has page::F0208]] |mainlabel=- |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q3.5",
+			"contents": "{{#show: Example/F0208/3 |mainlabel=- |?Has page |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q4.1",
+			"contents": "{{#ask:[[Has page::Example/F0208/3]] |mainlabel=- |?Has page.Has subobject.Has text |format=table |headers=plain |link=none |limit=0 }}"
+		},
+		{
+			"page": "Example/F0208/Q4.2",
+			"contents": "{{#ask:[[Has page::Example/F0208/3]] |mainlabel=- |?Has page.Has subobject.Has text=SomeOtherText |format=table |headers=plain |link=none |limit=0 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0",
+			"subject": "Example/F0208/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
+				],
+				"not-contain": [
+					"Special:Ask/-5B-5BHas-20text::F0208-5D-5D/-3FHas-20text-23/-3FModification-20date-23=Fecha-20de-20modificación/mainlabel=/offset=0/format=table"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 predefined properties linking to canonical properties",
+			"subject": "Example/F0208/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 predefined properties linking to canonical properties",
+			"subject": "Example/F0208/Q2.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BModification-20date::%2B-5D-5D/-3FModification-20date/mainlabel%3D/offset%3D0/format%3Dtable"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3",
+			"subject": "Example/F0208/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4",
+			"subject": "Example/F0208/Q3.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page-23Foo/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5",
+			"subject": "Example/F0208/Q3.3",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page-23-2D/mainlabel=/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6",
+			"subject": "Example/F0208/Q3.4",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0208-5D-5D/-3FHas-20page/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#7 (#show)",
+			"subject": "Example/F0208/Q3.5",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5B:Example-2FF0208-2F3-5D-5D/-3FHas-20page/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#8 (property chain on printrequest)",
+			"subject": "Example/F0208/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::Example-2FF0208-2F3-5D-5D/-3FHas-20page.Has-20subobject.Has-20text=Has-20text/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#9 (property chain on printrequest)",
+			"subject": "Example/F0208/Q4.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::Example-2FF0208-2F3-5D-5D/-3FHas-20page.Has-20subobject.Has-20text=SomeOtherText/mainlabel=-2D/offset=0/format=table/link=none/headers=plain"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

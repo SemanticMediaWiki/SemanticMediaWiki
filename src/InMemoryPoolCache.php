@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Utils\StatsFormatter;
+
 /**
  * A multipurpose non-persistent static pool cache to keep selected items for
  * the duration of a request cacheable.
@@ -12,6 +14,21 @@ namespace SMW;
  * @author mwjames
  */
 class InMemoryPoolCache {
+
+	/**
+	 * Stats as plain string
+	 */
+	const FORMAT_PLAIN = StatsFormatter::FORMAT_PLAIN;
+
+	/**
+	 * Stats as JSON output
+	 */
+	const FORMAT_JSON = StatsFormatter::FORMAT_JSON;
+
+	/**
+	 * Stats as HTML list output
+	 */
+	const FORMAT_HTML = StatsFormatter::FORMAT_HTML;
 
 	/**
 	 * @var InMemoryPoolCache
@@ -26,7 +43,7 @@ class InMemoryPoolCache {
 	/**
 	 * @var array
 	 */
-	private $poolCacheList = array();
+	private $poolCacheList = [];
 
 	/**
 	 * @since 2.3
@@ -63,7 +80,7 @@ class InMemoryPoolCache {
 	 *
 	 * @param string $poolCacheName
 	 */
-	public function resetPoolCacheFor( $poolCacheName = '' ) {
+	public function resetPoolCacheById( $poolCacheName = '' ) {
 		foreach ( $this->poolCacheList as $key => $value ) {
 			if ( $key === $poolCacheName || $poolCacheName === '' ) {
 				unset( $this->poolCacheList[$key] );
@@ -72,39 +89,59 @@ class InMemoryPoolCache {
 	}
 
 	/**
-	 * @since 2.3
+	 * @since 2.4
 	 *
-	 * @return array
+	 * @param string|null $format
+	 *
+	 * @return string|array
 	 */
-	public function getStats() {
-
-		$stats = array();
-
-		foreach ( $this->poolCacheList as $key => $value ) {
-			$stats[$key] = $value->getStats();
-		}
-
-		return $stats;
+	public function getStats( $format = null ) {
+		return StatsFormatter::format( $this->computeStats(), $format );
 	}
 
 	/**
-	 * @since 2.4
+	 * @deprecated since 2.5, use InMemoryPoolCache::getPoolCacheById
+	 * @since 2.3
 	 *
-	 * @return string
+	 * @param string $poolCacheName
+	 * @param integer $cacheSize
+	 *
+	 * @return Cache
 	 */
-	public function getFormattedStats() {
+	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
+		return $this->getPoolCacheById( $poolCacheName, $cacheSize );
+	}
 
-		$stats = '';
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $poolCacheId
+	 * @param integer $cacheSize
+	 *
+	 * @return Cache
+	 */
+	public function getPoolCacheById( $poolCacheId, $cacheSize = 500 ) {
+
+		if ( !isset( $this->poolCacheList[$poolCacheId] ) ) {
+			$this->poolCacheList[$poolCacheId] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
+		}
+
+		return $this->poolCacheList[$poolCacheId];
+	}
+
+	private function computeStats() {
+
 		ksort( $this->poolCacheList );
+		$stats = [];
 
 		foreach ( $this->poolCacheList as $key => $value ) {
-			$stats .= '- ' . $key . "\n";
+			$stats[$key] = [];
 
 			$hits = 0;
 			$misses = 0;
 
 			foreach ( $value->getStats() as $k => $v ) {
-				$stats .= '  - ' . $k . ' ' . $v . "\n";
+				$stats[$key][$k] = $v;
 
 				if ( $k === 'hits' ) {
 					$hits = $v;
@@ -120,27 +157,12 @@ class InMemoryPoolCache {
 			}
 
 			$hitRatio = $hits > 0 ? round( $hits / ( $hits + $misses ), 4 ) : 0;
-			$stats .= '  - ' . 'hit ratio ' . $hitRatio . ', miss ratio ' . round( 1 - $hitRatio, 4 ) . "\n";
+
+			$stats[$key]['hit ratio'] = $hitRatio;
+			$stats[$key]['miss ratio'] = $hitRatio > 0 ? round( 1 - $hitRatio, 4 ) : 0;
 		}
 
 		return $stats;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param string $poolCacheName
-	 * @param integer $cacheSize
-	 *
-	 * @return Cache
-	 */
-	public function getPoolCacheFor( $poolCacheName, $cacheSize = 500 ) {
-
-		if ( !isset( $this->poolCacheList[$poolCacheName] ) ) {
-			$this->poolCacheList[$poolCacheName] = $this->cacheFactory->newFixedInMemoryCache( $cacheSize );
-		}
-
-		return $this->poolCacheList[$poolCacheName];
 	}
 
 }

@@ -17,7 +17,7 @@ use SMWQuery as Query;
 class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $querySegmentListBuilder;
+	private $querySegmentListBuildManager;
 	private $querySegmentListProcessor;
 	private $engineOptions;
 
@@ -27,7 +27,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder' )
+		$this->querySegmentListBuildManager = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +44,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $this->store, $this->querySegmentListBuilder, $this->querySegmentListProcessor, $this->engineOptions )
+			new QueryEngine( $this->store, $this->querySegmentListBuildManager, $this->querySegmentListProcessor, $this->engineOptions )
 		);
 	}
 
@@ -58,19 +58,19 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->querySegmentListBuilder->expects( $this->any() )
+		$this->querySegmentListBuildManager->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->querySegmentListProcessor->expects( $this->any() )
-			->method( 'getListOfResolvedQueries' )
-			->will( $this->returnValue( array() ) );
+			->method( 'getExecutedQueries' )
+			->will( $this->returnValue( [] ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->querySegmentListBuilder,
+			$this->querySegmentListBuildManager,
 			$this->querySegmentListProcessor,
 			$this->engineOptions
 		);
@@ -94,15 +94,15 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->querySegmentListBuilder->expects( $this->any() )
+		$this->querySegmentListBuildManager->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->querySegmentListBuilder,
+			$this->querySegmentListBuildManager,
 			$this->querySegmentListProcessor,
 			$this->engineOptions
 		);

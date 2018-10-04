@@ -1,0 +1,141 @@
+{
+	"description": "Test `_wpg` regex search (`!~/~*/~?`) queries (#679)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has regexpage",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Page-1-with-spaces",
+			"contents": "[[Has regexpage::Annotation test with spaces]]"
+		},
+		{
+			"page": "Page-2-with-spaces",
+			"contents": "[[Has regexpage::Annotation text with spaces]]"
+		},
+		{
+			"page": "Page-3-without-spaces",
+			"contents": "[[Has regexpage::AnnotationTestWithoutSpaces]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Has regexpage::~Annotation te*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Page-1-with-spaces#0##",
+					"Page-2-with-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Has regexpage::~Annotation tes*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Page-1-with-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Has regexpage::~An??tation*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Page-1-with-spaces#0##",
+					"Page-2-with-spaces#0##",
+					"Page-3-without-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[Has regexpage::~Annotation*]] [[Has regexpage::!~Annotation tex*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Page-1-with-spaces#0##",
+					"Page-3-without-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"condition": "[[Has regexpage::~Annotation tes*]] OR [[Has regexpage::~Annotation tex*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Page-1-with-spaces#0##",
+					"Page-2-with-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"condition": "[[Has regexpage::~Annotation te?t with spaces]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Page-1-with-spaces#0##",
+					"Page-2-with-spaces#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6",
+			"condition": "[[Has regexpage::+]][[Has regexpage::!~Annotation te?t with spaces]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Page-3-without-spaces#0##"
+				]
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

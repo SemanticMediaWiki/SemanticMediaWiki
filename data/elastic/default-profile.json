@@ -1,0 +1,52 @@
+{
+	"connection": {
+		"retries": 2,
+		"timeout": 30,
+		"connect_timeout": 30,
+		"quick_ping": true,
+		"retries": 2
+	},
+	"settings": {
+		"data": {
+			"index.mapping.total_fields.limit": 9000,
+			"index.max_result_window": 50000
+		}
+	},
+	"indexer": {
+		"raw.text": false,
+		"experimental.file.ingest": false,
+		"throw.exception.on.illegal.argument.error": true,
+		"job.recovery.retries": 5,
+		"job.file.ingest.retries": 3
+	},
+	"query": {
+		"fallback.no.connection": false,
+		"profiling": false,
+		"debug.explain": true,
+		"debug.description.log": true,
+		"must_not.property.exists": true,
+		"sort.property.must.exists": true,
+		"score.sortfield": "elastic.score",
+		"query_string.boolean.operators": true,
+		"compat.mode": true,
+		"subquery.size":10000,
+		"subquery.constant.score": false,
+		"subquery.terms.lookup.result.size.index.write.threshold": 100,
+		"subquery.terms.lookup.cache.lifetime": 3600,
+		"concept.terms.lookup": true,
+		"concept.terms.lookup.result.size.index.write.threshold": 10,
+		"concept.terms.lookup.cache.lifetime": 3600,
+		"wide.proximity.as.match_phrase": true,
+		"wide.proximity.fields": [
+			"subject.title^8",
+			"text_copy^5",
+			"text_raw",
+			"attachment.title^3"
+			"attachment.content"
+		],
+		"uri.field.case.insensitive": false,
+		"text.field.case.insensitive.eq.match": false,
+		"page.field.case.insensitive.proximity.match": true,
+		"highlight.fragment.type": false
+	}
+}

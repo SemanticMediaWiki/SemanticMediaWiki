@@ -2,138 +2,86 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Language;
-use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
+use SMW\Store;
 
 /**
  * Add extra statistic at the end of Special:Statistics
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
  *
- * @ingroup FunctionHook
- *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SpecialStatsAddExtra {
+class SpecialStatsAddExtra extends HookHandler {
 
 	/**
-	 * @var array
+	 * @var Store
 	 */
-	protected $extraStats = null;
-
-	/**
-	 * @var string
-	 */
-	protected $version = null;
-
-	/**
-	 * @var Language
-	 */
-	protected $userLanguage;
+	private $store;
 
 	/**
 	 * @var string[]
 	 */
-	protected $legacyMessageMapper = array(
-		'PROPUSES'   => 'smw-statistics-property-instance',
-		'USEDPROPS'  => 'smw-statistics-property-total-legacy',
-		'OWNPAGE'    => 'smw-statistics-property-page',
-		'DECLPROPS'  => 'smw-statistics-property-type',
-		'SUBOBJECTS' => 'smw-statistics-subobject-count',
-		'QUERY'      => 'smw-statistics-query-inline-legacy',
-		'CONCEPTS'   => 'smw-statistics-concept-count-legacy'
-	);
-
-	/**
-	 * @var string[]
-	 */
-	protected $messageMapper = array(
+	private $messageMapper = [
 		'PROPUSES'    => 'smw-statistics-property-instance',
 		'ERRORUSES'   => 'smw-statistics-error-count',
-		'USEDPROPS'   => 'smw-statistics-property-total',
+		'TOTALPROPS'  => 'smw-statistics-property-total',
+		'USEDPROPS'   => 'smw-statistics-property-used',
 		'OWNPAGE'     => 'smw-statistics-property-page',
 		'DECLPROPS'   => 'smw-statistics-property-type',
 		'DELETECOUNT' => 'smw-statistics-delete-count',
 		'SUBOBJECTS'  => 'smw-statistics-subobject-count',
 		'QUERY'       => 'smw-statistics-query-inline',
 		'CONCEPTS'    => 'smw-statistics-concept-count',
-	);
+	];
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param array &$extraStats
-	 * @param string $version
-	 * @param Language $userLanguage User language
+	 * @param Store $store
 	 */
-	public function __construct( array &$extraStats, $version, Language $userLanguage ) {
-		$this->extraStats =& $extraStats;
-		$this->version = $version;
-		$this->userLanguage = $userLanguage;
+	public function __construct( Store $store ) {
+		$this->store = $store;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param array &$extraStats
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( array &$extraStats ) {
 
-		if ( !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !$this->getOption( 'smwgSemanticsEnabled', false ) ) {
 			return true;
 		}
 
-		return version_compare( $this->version, '1.21', '<' ) ? $this->copyLegacyStatistics() : $this->copyStatistics();
+		$this->copyStatistics( $extraStats );
+
+		return true;
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	protected function copyStatistics() {
+	private function copyStatistics( &$extraStats ) {
 
-		$statistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
+		$statistics = $this->store->getStatistics();
 
-		$this->extraStats['smw-statistics'] = array();
+		$extraStats['smw-statistics'] = [];
 
 		foreach ( $this->messageMapper as $key => $message ) {
-
 			if ( isset( $statistics[$key] ) ) {
-				$this->extraStats['smw-statistics'][$message] = $statistics[$key];
+				$extraStats['smw-statistics'][$message] = $statistics[$key];
 			}
 		}
 
-		$count = count( DataTypeRegistry::getInstance()->getKnownTypeLabels() );
-		$this->extraStats['smw-statistics']['smw-statistics-datatype-count'] = $count;
+		$count = count(
+			DataTypeRegistry::getInstance()->getKnownTypeLabels()
+		);
 
-		return true;
-
-	}
-
-	/**
-	 * Legacy approach to display statistical items for all MW 1.21- versions
-	 *
-	 * @since 1.9
-	 *
-	 * @return true
-	 */
-	protected function copyLegacyStatistics() {
-
-		$statistics = ApplicationFactory::getInstance()->getStore()->getStatistics();
-
-		foreach ( $this->legacyMessageMapper as $key => $message ) {
-
-			if ( isset( $statistics[$key] ) ) {
-				$this->extraStats[wfMessage( $message )->text()] = $this->userLanguage->formatNum( $statistics[$key] );
-			}
-		}
-
-		return true;
+		$extraStats['smw-statistics']['smw-statistics-datatype-count'] = $count;
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-use SMW\DataItemException;
+use SMW\Exception\DataItemException;
 
 /**
  * This class implements URI data items.
@@ -46,11 +46,11 @@ class SMWDIUri extends SMWDataItem {
 	 *
 	 * @todo Implement more validation here.
 	 */
-	public function __construct( $scheme, $hierpart, $query, $fragment ) {
-		if ( ( $scheme === '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) {
+	public function __construct( $scheme, $hierpart, $query, $fragment, $strict = true ) {
+		if ( $strict && ( ( $scheme === '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) ) {
 			throw new DataItemException( "Illegal URI scheme \"$scheme\"." );
 		}
-		if ( $hierpart === '' ) {
+		if ( $strict && $hierpart === '' ) {
 			throw new DataItemException( "Illegal URI hierpart \"$hierpart\"." );
 		}
 		$this->m_scheme   = $scheme;
@@ -65,9 +65,9 @@ class SMWDIUri extends SMWDataItem {
 
 	/// @todo This should be changed to the spelling getUri().
 	public function getURI() {
-		$schemesWithDoubleslesh = array(
+		$schemesWithDoubleslesh = [
 			'http', 'https', 'ftp'
-		);
+		];
 
 		$uri = $this->m_scheme . ':'
 			. ( in_array( $this->m_scheme, $schemesWithDoubleslesh ) ? '//' : '' )
@@ -75,7 +75,11 @@ class SMWDIUri extends SMWDataItem {
 			. ( $this->m_query ? '?' . $this->m_query : '' )
 			. ( $this->m_fragment ? '#' . $this->m_fragment : '' );
 
-		return $uri;
+		// #1878
+		// https://tools.ietf.org/html/rfc3986
+		// Normalize spaces to use `_` instead of %20 and so ensure
+		// that http://example.org/Foo bar === http://example.org/Foo_bar === http://example.org/Foo%20bar
+		return str_replace( [ ' ', '%20'], '_', $uri );
 	}
 
 	public function getScheme() {
@@ -94,8 +98,13 @@ class SMWDIUri extends SMWDataItem {
 		return $this->m_fragment;
 	}
 
+	/**
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
 	public function getSortKey() {
-		return $this->getURI();
+		return urldecode( $this->getURI() );
 	}
 
 	public function getSerialization() {
@@ -108,27 +117,42 @@ class SMWDIUri extends SMWDataItem {
 	 * @return SMWDIUri
 	 */
 	public static function doUnserialize( $serialization ) {
-		$parts = explode( ':', $serialization, 2 ); // try to split "schema:rest"
-		if ( count( $parts ) <= 1 ) {
+
+		// try to split "schema:rest"
+		$parts = explode( ':', $serialization, 2 );
+		$strict = true;
+
+		if ( $serialization !== null && count( $parts ) <= 1 ) {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
+
+		if ( $serialization === null ) {
+			$parts = [ '', 'NO_VALUE' ];
+			$strict = false;
+		}
+
 		$scheme = $parts[0];
-		$parts = explode( '?', $parts[1], 2 ); // try to split "hier-part?queryfrag"
+
+		 // try to split "hier-part?queryfrag"
+		$parts = explode( '?', $parts[1], 2 );
+
 		if ( count( $parts ) == 2 ) {
 			$hierpart = $parts[0];
-			$parts = explode( '#', $parts[1], 2 ); // try to split "query#frag"
+			 // try to split "query#frag"
+			$parts = explode( '#', $parts[1], 2 );
 			$query = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		} else {
 			$query = '';
-			$parts = explode( '#', $parts[0], 2 ); // try to split "hier-part#frag"
+			 // try to split "hier-part#frag"
+			$parts = explode( '#', $parts[0], 2 );
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
 
 		$hierpart = ltrim( $hierpart, '/' );
 
-		return new SMWDIUri( $scheme, $hierpart, $query, $fragment );
+		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $strict );
 	}
 
 	public function equals( SMWDataItem $di ) {

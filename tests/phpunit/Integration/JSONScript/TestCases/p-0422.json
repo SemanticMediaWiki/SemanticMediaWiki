@@ -1,0 +1,124 @@
+{
+	"description": "Test in-text annotation `_dat` on partial dates (#2076, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0422/1",
+			"contents": "[[Has date::Jan 1990]], [[Has date::02 1990]], [[Has date::1782]], [[Has date::1990年6月]], [[Has date::1990年4月28日 7時01分]], [[Has date::１９９０年９月]]"
+		},
+		{
+			"page": "Example/P0422/Q/1",
+			"contents": "{{#show: Example/P0422/1 |?Has date }}"
+		},
+		{
+			"page": "Example/P0422/2",
+			"contents": "{{#subobject:|Has date=Jan 1923|@category=Partial dates}} {{#subobject:|Has date=Feb 1960|@category=Partial dates}} {{#subobject:|Has date=1645|@category=Partial dates}}"
+		},
+		{
+			"page": "Example/P0422/Q/2/1",
+			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=asc |link=none }}"
+		},
+		{
+			"page": "Example/P0422/Q/2/2",
+			"contents": "{{#ask: [[Category:Partial dates]] |?Has date |sort=Has date|order=desc |link=none }}"
+		},
+		{
+			"page": "Example/P0422/3",
+			"contents": "[[Has date::0]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0422/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1990-01-01",
+						"1990-02-01",
+						"1782-01-01",
+						"1990-06-01",
+						"1990-04-28T07:01:00",
+						"1990-09-01"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0422/Q/1",
+			"assert-output": {
+				"to-contain": [
+					"January 1990",
+					"February 1990",
+					"1782",
+					"June 1990",
+					"28 April 1990 07:01:00",
+					"September 1990"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (sort asc)",
+			"subject": "Example/P0422/Q/2/1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_eda78f1641edf981597b59b79f9a8c1f</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2321884.5\">1645</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_23b1a59a99dd05132dabb6cf45cb40b3</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2423420.5\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_f9a370d40ebd98e67c2b884fc09c7f9d</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2436965.5\">February 1960</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (sort desc)",
+			"subject": "Example/P0422/Q/2/2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_f9a370d40ebd98e67c2b884fc09c7f9d</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2436965.5\">February 1960</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0422/2#_23b1a59a99dd05132dabb6cf45cb40b3</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2423420.5\">January 1923</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0422/2#_eda78f1641edf981597b59b79f9a8c1f</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2321884.5\">1645</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#2076, output an error instead of an exception)",
+			"subject": "Example/P0422/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

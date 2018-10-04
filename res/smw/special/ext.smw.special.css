@@ -1,0 +1,111 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/**
+ * Special:Admin
+ */
+.smw-admin-deprecation-notice-docu-section {
+	padding: 0.8rem;
+	background-color: #fcf8e3;
+	border-color: #faf2cc;
+	color: #8a6d3b;
+}
+
+.smw-admin-hr {
+	margin-top:20px;
+	background-color: #ddd;
+}
+
+.smw-admin-deprecation-notice-section-explanation {
+	font-size:12px;
+	font-style: italic;
+}
+
+.smw-special-filter{
+	padding: 5px 0px 0px 0px;
+}
+
+.smw-special-filter-button {
+	position: relative;
+	padding: 6px 14px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+}
+
+.smw-special-filter-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-special-filter-button a, .smw-special-filter-button a:hover, .smw-special-filter-button a:focus, .smw-special-filter-button a:active, .smw-special-filter-button a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #586069;
+}
+
+/**
+ * Tabbed admin
+ */
+.smw-admin #tab-general:checked ~ #tab-content-general,
+.smw-admin #tab-supplement:checked ~ #tab-content-supplement,
+.smw-admin #tab-rebuild:checked ~ #tab-content-rebuild,
+.smw-admin #tab-registry:checked ~ #tab-content-registry,
+.smw-admin #tab-notices:checked ~ #tab-content-notices {
+	display: block;
+}
+
+.smw-admin section {
+	border: 0px solid #aaa;
+	padding: 5px 0 0 0 !important;
+}
+
+.smw-tabs.smw-admin label.nav-label {
+	padding: 8px 20px;
+}
+
+.smw-admin input.nav-tab:checked + label.nav-label {
+	border: 1px solid #aaa;
+	border-top: 2px solid orange;
+	border-bottom: 1px solid #fff;
+}
+
+.smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
+	border-top: 2px solid rgb(204, 0, 0);
+}
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-special-pageproperty-input {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+}

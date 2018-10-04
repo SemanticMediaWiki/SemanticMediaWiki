@@ -1,0 +1,76 @@
+{
+	"description": "Test in-text annotation for `_boo` datatype (`wgContLang=ja`, `wgLang=ja`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"page": "Example/P0412/1",
+			"contents": "[[Has boolean::真]]"
+		},
+		{
+			"page": "Example/P0412/2",
+			"contents": "{{#set:Has boolean=偽}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 true",
+			"subject": "Example/P0412/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						true
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 false",
+			"subject": "Example/P0412/2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						false
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "ja",
+		"wgLang": "ja",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,230 @@
+{
+	"description": "Test `format=plainlist` with `limit=0` (further result links) for `mainlabel/?#...` (#481)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/F0211/1",
+			"contents": "[[Has text::F0211]] [[Has page::F0211]] [[Category:F0211]]"
+		},
+		{
+			"page": "Example/F0211/Q1.1",
+			"contents": "{{#ask: [[Has page::F0211]] |?#=Foo |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q1.2",
+			"contents": "{{#ask: [[Has page::F0211]] |?#=Foo |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 |mainlabel=- }}"
+		},
+		{
+			"page": "Example/F0211/Q1.3",
+			"contents": "{{#ask: [[Has page::F0211]] |?#=Foo# |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q1.4",
+			"contents": "{{#ask: [[Has page::F0211]] |?#=Foo#- |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q2.1",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 |mainlabel= }}"
+		},
+		{
+			"page": "Example/F0211/Q2.2",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 |mainlabel=- }}"
+		},
+		{
+			"page": "Example/F0211/Q2.3",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |format=plainlist |template=Template/F0211 |named args=yes |limit=0 |mainlabel=FOO }}"
+		},
+		{
+			"page": "Example/F0211/Q3.1",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?#  | mainlabel= |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q3.2",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?#- | mainlabel= |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q3.3",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?#- | mainlabel=- |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q3.4",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?#- | mainlabel=FOO |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q4.1",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |? | mainlabel= |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q4.2",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?- | mainlabel= |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		},
+		{
+			"page": "Example/F0211/Q4.3",
+			"contents": "{{#ask: [[Has page::F0211]] |?Has page |?=Foo | mainlabel= |format=plainlist |template=Template/F0211 |named args=yes |limit=0 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0",
+			"subject": "Example/F0211/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3F-23%3DFoo/-3FHas-20page/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1",
+			"subject": "Example/F0211/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3F-23%3DFoo/-3FHas-20page/mainlabel%3D-2D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2",
+			"subject": "Example/F0211/Q1.3",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3F-23%3DFoo-23-2D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3 (link is the same as in #2 due to `-`)",
+			"subject": "Example/F0211/Q1.4",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3F-23%3DFoo-23-2D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4 (mainlabel)",
+			"subject": "Example/F0211/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 (mainlabel)",
+			"subject": "Example/F0211/Q2.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/mainlabel%3D-2D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6 (mainlabel)",
+			"subject": "Example/F0211/Q2.3",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/mainlabel%3DFOO/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#7",
+			"subject": "Example/F0211/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F-23/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#8",
+			"subject": "Example/F0211/Q3.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F-23-2D/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#9",
+			"subject": "Example/F0211/Q3.3",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F-23-2D/mainlabel%3D-2D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#10",
+			"subject": "Example/F0211/Q3.4",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F-23-2D/mainlabel%3DFOO/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#11",
+			"subject": "Example/F0211/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#12 (?- is not valid and is therefore ignored)",
+			"subject": "Example/F0211/Q4.2",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#13",
+			"subject": "Example/F0211/Q4.3",
+			"assert-output": {
+				"to-contain": [
+					"Special:Ask/-5B-5BHas-20page::F0211-5D-5D/-3FHas-20page/-3F%3DFoo/mainlabel%3D/offset%3D0/format%3Dplainlist/template%3DTemplate-2FF0211/named-20args%3Dyes"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

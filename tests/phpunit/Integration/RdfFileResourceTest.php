@@ -31,23 +31,23 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 
-		$this->testEnvironment->withConfiguration( array(
-			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
-			'smwgCacheType' => 'hash',
+		$this->testEnvironment->withConfiguration( [
+			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_FILE => true ],
+			'smwgMainCacheType' => 'hash',
 			'smwgExportBCAuxiliaryUse' => true
-		) );
+		] );
 
 		// Ensure that the DB creates the extra tables for MEDIA/MINE
 		$this->getStore()->clear();
 		$this->getStore()->setupStore( false );
 
 		// MW GLOBALS to be restored after the test
-		$this->testEnvironment->withConfiguration( array(
+		$this->testEnvironment->withConfiguration( [
 			'wgEnableUploads'  => true,
-			'wgFileExtensions' => array( 'txt' ),
+			'wgFileExtensions' => [ 'txt' ],
 			'wgVerifyMimeType' => true
-		) );
+		] );
 
 		\SMWExporter::clear();
 	}
@@ -71,23 +71,25 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 			'[[HasFile::File:RdfLinkedFile.txt]]'
 		);
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$exportController = new ExportController( new RDFXMLSerializer() );
 		$exportController->enableBacklinks( false );
 
 		ob_start();
 
 		$exportController->printPages(
-			array( $subject->getTitle()->getPrefixedDBKey() )
+			[ $subject->getTitle()->getPrefixedDBKey() ]
 		);
 
 		$output = ob_get_clean();
 
-		$expected = array(
+		$expected = [
 			"<rdfs:label>{$fileNS}:RdfLinkedFile.txt</rdfs:label>",
 			'<swivt:file rdf:resource="' . $dummyTextFile->getLocalFile()->getFullURL() . '"/>',
 			'<property:Media_type-23aux rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TEXT</property:Media_type-23aux>',
 			'<property:MIME_type-23aux rdf:datatype="http://www.w3.org/2001/XMLSchema#string">text/plain</property:MIME_type-23aux>'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

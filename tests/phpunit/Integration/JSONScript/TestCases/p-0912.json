@@ -1,0 +1,171 @@
+{
+	"description": "Test `#ask` with (`#-raw`) formatter using `#set` (#..., `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has mono text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"page": "Example/P0912/1",
+			"contents": "[[Category:P0912]] {{#set: Has text=Some text with annotation [[Foo::Example/P0912/1]] }}"
+		},
+		{
+			"page": "Example/P0912/Q.1",
+			"contents": "{{#ask: [[Category:P0912]] [[Has text::+]] |?Has text |link=none }}"
+		},
+		{
+			"page": "Example/P0912/Q.2",
+			"contents": "{{#ask: [[Category:P0912]] [[Has text::+]] |?Has text#-raw |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0912/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_INST",
+						"_SKEY",
+						"Has text"
+					],
+					"propertyValues": [
+						"Some text with annotation [[Foo::Example/P0912/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31-) (without `-raw`)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0912/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation Example/P0912/1</td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31+) (without `-raw`)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0912/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation Example/P0912/1</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31-) (with `-raw`)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0912/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY",
+						"Foo"
+					],
+					"propertyValues": [
+						"Example/P0912/1"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation",
+					"title=\"Example/P0912/1\">Example/P0912/1</a></td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+) (with `-raw`)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0912/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY",
+						"Foo"
+					],
+					"propertyValues": [
+						"Example/P0912/1"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation",
+					"title=\"Example/P0912/1\">Example/P0912/1</a></td></tr></tbody></table>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

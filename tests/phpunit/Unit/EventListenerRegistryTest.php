@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;
-use SMW\DIWikiPage;
 use SMW\EventListenerRegistry;
 
 /**
@@ -19,9 +18,11 @@ use SMW\EventListenerRegistry;
 class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $eventDispatcherFactory;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
+		$this->eventDispatcherFactory = EventDispatcherFactory::getInstance();
 	}
 
 	protected function tearDown() {
@@ -35,7 +36,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\EventListenerRegistry',
+			EventListenerRegistry::class,
 			new EventListenerRegistry( $eventListenerCollection )
 		);
 	}
@@ -44,7 +45,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'registerCallback' ) )
+			->setMethods( [ 'registerCallback' ] )
 			->getMockForAbstractClass();
 
 		$eventListenerCollection->expects( $this->any() )
@@ -61,15 +62,15 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanExecuteRegisteredListeners() {
 
 		$instance = new EventListenerRegistry(
-			EventDispatcherFactory::getInstance()->newGenericEventListenerCollection()
+			$this->eventDispatcherFactory->newGenericEventListenerCollection()
 		);
 
-		$this->verifyPropertyTypeChangeEvent( $instance );
 		$this->verifyExporterResetEvent( $instance );
 		$this->verifyFactboxCacheDeleteEvent( $instance );
+		$this->verifyFactboxCacheDeleteEventOnEmpty( $instance );
 		$this->verifyCachedPropertyValuesPrefetcherResetEvent( $instance );
-		$this->verifyOnBeforeSemanticDataUpdateCompleteEvent( $instance );
-		$this->verifyOnAfterSemanticDataUpdateCompleteEvent( $instance );
+		$this->verifyCachedPrefetcherResetEvent( $instance );
+		$this->verifyCachedUpdateMarkerDeleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -78,28 +79,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function verifyQueryComparatorResetEvent( EventListenerCollection $instance ) {
 		$this->assertListenerExecuteFor( 'query.comparator.reset', $instance, null );
-	}
-
-	public function verifyPropertyTypeChangeEvent( EventListenerCollection $instance ) {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'subject', new DIWikiPage( 'Foo', NS_MAIN ) );
-
-		$this->assertListenerExecuteFor( 'property.spec.change', $instance, $dispatchContext );
 	}
 
 	public function verifyFactboxCacheDeleteEvent( EventListenerCollection $instance ) {
@@ -118,7 +97,7 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
 
 		$dispatchContext->set(
 			'title',
@@ -132,9 +111,31 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function verifyFactboxCacheDeleteEventOnEmpty( EventListenerCollection $instance ) {
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'Cache', $cache );
+
+		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
+
+		$dispatchContext->set(
+			'title',
+			''
+		);
+
+		$this->assertListenerExecuteFor(
+			'factbox.cache.delete',
+			$instance,
+			$dispatchContext
+		);
+	}
+
 	public function verifyCachedPropertyValuesPrefetcherResetEvent( EventListenerCollection $instance ) {
 
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -156,33 +157,48 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function verifyOnBeforeSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
+	public function verifyCachedPrefetcherResetEvent( EventListenerCollection $instance ) {
 
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$dispatchContext->set(
-			'subject',
-			new DIWikiPage( 'Foo', NS_MAIN )
+			'title',
+			$title
 		);
 
 		$this->assertListenerExecuteFor(
-			'on.before.semanticdata.update.complete',
+			'cached.prefetcher.reset',
 			$instance,
 			$dispatchContext
 		);
 	}
 
-	public function verifyOnAfterSemanticDataUpdateCompleteEvent( EventListenerCollection $instance ) {
+	public function verifyCachedUpdateMarkerDeleteEvent( EventListenerCollection $instance ) {
 
-		$dispatchContext = EventDispatcherFactory::getInstance()->newDispatchContext();
+		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->atLeastOnce() )
+			->method( 'getHash' );
 
 		$dispatchContext->set(
 			'subject',
-			new DIWikiPage( 'Foo', NS_MAIN )
+			$subject
 		);
 
 		$this->assertListenerExecuteFor(
-			'on.after.semanticdata.update.complete',
+			'cached.update.marker.delete',
 			$instance,
 			$dispatchContext
 		);

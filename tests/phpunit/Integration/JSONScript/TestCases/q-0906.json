@@ -1,0 +1,163 @@
+{
+	"description": "Test `_wpg`/`_txt` with enabled `SMW_FIELDT_CHAR_NOCASE` (#1912, `smwgFieldTypeFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/Q0906/1",
+			"contents": "[[Category:Q0906]] [[Has page::noCASE]] [[Has text::noCASE]]"
+		},
+		{
+			"page": "Example/Q0906/2",
+			"contents": "[[Category:Q0906]] [[Has page::NOcase]] [[Has text::NOcase]]"
+		},
+		{
+			"page": "Example/Q0906/3",
+			"contents": "[[Category:Q0906]] [[Has page::NOoNcase]] [[Has text::NOoNcase]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (on _wpg type ~ match)",
+			"condition": "[[Category:Q0906]] [[Has page::~*noCa*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0906/1#0##",
+					"Example/Q0906/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (on _txt type as ~ match)",
+			"condition": "[[Category:Q0906]] [[Has text::~*NOcA*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0906/1#0##",
+					"Example/Q0906/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (on _wpg type !~ match)",
+			"condition": "[[Category:Q0906]] [[Has page::!~*noCa*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0906/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (on _txt type as !~ match)",
+			"condition": "[[Category:Q0906]] [[Has text::!~*NOcA*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0906/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"skip-on": {
+				"virtuoso": "Not suported",
+				"sesame": "Not suported",
+				"fuseki": "Not suported",
+				"blazegraph": "Not suported"
+			},
+			"about": "#4 (on _txt type as object match)",
+			"condition": "[[Category:Q0906]] [[Has text::nocase]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0906/1#0##",
+					"Example/Q0906/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"skip-on": {
+				"virtuoso": "Not suported",
+				"sesame": "Not suported",
+				"fuseki": "Not suported",
+				"blazegraph": "Not suported"
+			},
+			"about": "#5 (on _txt type as !object match)",
+			"condition": "[[Category:Q0906]] [[Has text::!nocase]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0906/3#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_NOCASE"
+		],
+		"smwgFieldTypeFeatures": [
+			"SMW_FIELDT_CHAR_NOCASE"
+		],
+		"smwgElasticsearchConfig" : {
+			"connection":{
+				"retries": 1
+			},
+			"query": {
+				"text.field.case.insensitive.eq.match": true
+			}
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "PostgreSQL requires \"citext\" otherwise it returns with \"Error: 42704 ERROR:  type \"citext\" does not exist\"",
+			"sqlite": "NOCASE is not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

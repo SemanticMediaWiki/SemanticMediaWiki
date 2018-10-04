@@ -16,8 +16,8 @@ use RuntimeException;
 class IteratorMockBuilder extends \PHPUnit_Framework_TestCase {
 
 	private $iteratorClass;
-	private $items = array();
-	private $methods = array();
+	private $items = [];
+	private $methods = [];
 	private $counter = 0;
 
 	/**

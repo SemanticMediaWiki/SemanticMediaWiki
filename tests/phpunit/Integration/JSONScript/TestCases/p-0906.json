@@ -1,0 +1,69 @@
+{
+	"description": "Test `#ask` on category/property hierarchy with circular reference (#1713, `wgContLang=en`, `wgLang=en`, 'smwgEnabledQueryDependencyLinksStore', skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "CategoryWithCircularHierarchy",
+			"contents": "[[Category:CategoryWithCircularHierarchy]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "PropertyWithCircularHierarchy",
+			"contents": "[[Subproperty of::PropertyWithCircularHierarchy]]"
+		},
+		{
+			"page": "Example/P0906/1",
+			"contents": "[[Category:CategoryWithCircularHierarchy]]"
+		},
+		{
+			"page": "Example/P0906/Q1",
+			"contents": "{{#ask: [[Category:CategoryWithCircularHierarchy]] |link=none }}"
+		},
+		{
+			"page": "Example/P0906/2",
+			"contents": "[[PropertyWithCircularHierarchy::123]]"
+		},
+		{
+			"page": "Example/P0906/Q2",
+			"contents": "{{#ask: [[PropertyWithCircularHierarchy::+]] |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0906/Q1",
+			"assert-output": {
+				"to-contain": [
+					"Example/P0906/1"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0906/Q2",
+			"assert-output": {
+				"to-contain": [
+					"Example/P0906/2"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgEnabledQueryDependencyLinksStore": true,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/property hierarchies are currently not implemented"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

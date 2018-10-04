@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\DataItemFactory;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTable
@@ -17,7 +18,6 @@ use SMW\DataItemFactory;
 class SearchTableTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $textSanitizer;
 	private $dataItemFactory;
 
 	protected function setUp() {
@@ -27,25 +27,20 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTable',
-			new SearchTable( $this->store, $this->textSanitizer )
+			new SearchTable( $this->store )
 		);
 	}
 
 	public function testIsEnabled() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
 		);
 
 		$instance->setEnabled( true );
@@ -58,16 +53,15 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	public function testGetPropertyExemptionList() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
 		);
 
 		$instance->setPropertyExemptionList(
-			array( '_TEXT','fo oo' )
+			[ '_TEXT','fo oo' ]
 		);
 
 		$this->assertEquals(
-			array( '_TEXT', 'fo_oo' ),
+			[ '_TEXT', 'fo_oo' ],
 			$instance->getPropertyExemptionList()
 		);
 	}
@@ -75,12 +69,15 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 	public function testIsExemptedProperty() {
 
 		$instance = new SearchTable(
-			$this->store,
-			$this->textSanitizer
+			$this->store
+		);
+
+		$instance->setIndexableDataTypes(
+			SMW_FT_BLOB | SMW_FT_URI
 		);
 
 		$instance->setPropertyExemptionList(
-			array( '_TEXT' )
+			[ '_TEXT' ]
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( '_TEXT' );
@@ -94,6 +91,46 @@ class SearchTableTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$instance->isExemptedProperty( $property )
+		);
+	}
+
+	public function testIsValidType() {
+
+		$instance = new SearchTable(
+			$this->store
+		);
+
+		$instance->setIndexableDataTypes(
+			SMW_FT_BLOB | SMW_FT_URI
+		);
+
+		$this->assertTrue(
+			$instance->isValidByType( DataItem::TYPE_BLOB )
+		);
+
+		$this->assertFalse(
+			$instance->isValidByType( DataItem::TYPE_WIKIPAGE )
+		);
+	}
+
+	public function testHasMinTokenLength() {
+
+		$instance = new SearchTable(
+			$this->store
+		);
+
+		$instance->setMinTokenSize( 4 );
+
+		$this->assertFalse(
+			$instance->hasMinTokenLength( 'bar' )
+		);
+
+		$this->assertFalse(
+			$instance->hasMinTokenLength( 'テスト' )
+		);
+
+		$this->assertTrue(
+			$instance->hasMinTokenLength( 'test' )
 		);
 	}
 

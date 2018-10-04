@@ -1,0 +1,178 @@
+{
+	"description": "Test `format=table` on boolean table output formatting (#896, #1464)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has success state",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has project name",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Project one",
+			"contents": "[[Category:BoolProjects]] [[Has success state::true]] [[Has project name::One]]"
+		},
+		{
+			"page": "Project two",
+			"contents": "[[Category:BoolProjects]] [[Has success state::false]] [[Has project name::Two]]"
+		},
+		{
+			"page": "Example/F0201/1",
+			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#x|?Has project name|limit=10|format=table |link=none|headers=plain}}"
+		},
+		{
+			"page": "BooleanTable-ToLabelBoolValue",
+			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#success,failure|limit=10|format=table}}"
+		},
+		{
+			"page": "BooleanTable-ToLabelBoolValueAndColumn",
+			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#success,failure=Status|limit=10|format=table}}"
+		},
+		{
+			"page": "Example/F0201/3",
+			"contents": "{{#subobject: |Has boolean=true |@category=F0201 }}{{#subobject: |Has boolean=false |@category=F0201 }}"
+		},
+		{
+			"page": "Example/F0201/3a",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#✓,✕ }}"
+		},
+		{
+			"page": "Example/F0201/3b",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#○,× }}"
+		},
+		{
+			"page": "Example/F0201/3c",
+			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#<span style=\"color: green; font-size: 120%;\">&#10003;</span>,<span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span>=Label on (&#10003;,&#10005;) }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 Check format#x output, see #896",
+			"subject": "Example/F0201/1",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Project one</td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td><td class=\"Has-project-name smwtype_txt\">One</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Project two</td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">&#160;</td><td class=\"Has-project-name smwtype_txt\">Two</td></tr>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (1.31-) Check bool label output value label",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValue",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Has success state</a></th><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (1.31+) Check bool label output value label",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValue",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Has success state</a></th></tr><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Has-success-state smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (1.31-) Check bool/column label output",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Status</a></th><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 (1.31+) Check bool/column label output",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "BooleanTable-ToLabelBoolValueAndColumn",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable\">",
+					"title=\"Property:Has success state\">Status</a></th></tr><tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">",
+					"title=\"Project one\">Project one</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"1\">success</td>",
+					"title=\"Project two\">Project two</a></td><td class=\"Status smwtype_boo\" data-sort-value=\"0\">failure</td>",
+					"</table>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3",
+			"subject": "Example/F0201/3a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">✓</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">✕</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4",
+			"subject": "Example/F0201/3b",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">○</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">×</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 (#1464)",
+			"subject": "Example/F0201/3c",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"1\"><span style=\"color: green; font-size: 120%;\">&#10003;</span></td>",
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"0\"><span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span></td>"
+				]
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

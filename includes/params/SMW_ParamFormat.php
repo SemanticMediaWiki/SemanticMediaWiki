@@ -27,7 +27,9 @@ class SMWParamFormat extends StringParam {
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected $printRequests = array();
+	protected $printRequests = [];
+
+	protected $showMode = false;
 
 	/**
 	 * Takes a format name, which can be an alias and returns a format name
@@ -91,27 +93,31 @@ class SMWParamFormat extends StringParam {
 	 * @return string Array key in $smwgResultFormats
 	 */
 	protected function getDefaultFormat() {
+
 		if ( empty( $this->printRequests ) ) {
 			return 'table';
 		}
-		else {
-			$format = false;
 
-			/**
-			 * This hook allows extensions to override SMWs implementation of default result
-			 * format handling.
-			 *
-			 * @since 1.5.2
-			 */
-			\Hooks::run( 'SMWResultFormat', array( &$format, $this->printRequests, array() ) );
+		$format = false;
 
-			// If no default was set by an extension, use a table or list, depending on the column count.
-			if ( $format === false ) {
-				$format = count( $this->printRequests ) == 1 ? 'list' : 'table';
-			}
+		/**
+		 * This hook allows extensions to override SMWs implementation of default result
+		 * format handling.
+		 *
+		 * @since 1.5.2
+		 */
+		\Hooks::run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
 
+		if ( $format !== false ) {
 			return $format;
 		}
+
+		// If no default was set by an extension, use a table, plainlist or list, depending on showMode and column count.
+		if ( count( $this->printRequests ) > 1 ) {
+			return 'table';
+		}
+
+		return 'plainlist';
 	}
 
 	/**
@@ -124,6 +130,16 @@ class SMWParamFormat extends StringParam {
 	 */
 	public function setPrintRequests( array $printRequests ) {
 		$this->printRequests = $printRequests;
+	}
+
+	/**
+	 *
+	 * @since 3.0
+	 *
+	 * @param bool $showMode
+	 */
+	public function setShowMode( $showMode ) {
+		$this->showMode = $showMode;
 	}
 
 	/**

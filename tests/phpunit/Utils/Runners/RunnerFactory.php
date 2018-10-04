@@ -48,6 +48,9 @@ class RunnerFactory {
 			case 'rebuildConceptCache';
 				$maintenanceClass = 'SMW\Maintenance\RebuildConceptCache';
 				break;
+			case 'setupStore';
+				$maintenanceClass = 'SMW\Maintenance\SetupStore';
+				break;
 		}
 
 		return new MaintenanceRunner( $maintenanceClass );
@@ -67,11 +70,11 @@ class RunnerFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $source
+	 * @param string|null $source
 	 *
 	 * @return XmlImportRunner
 	 */
-	public function newXmlImportRunner( $source ) {
+	public function newXmlImportRunner( $source = null ) {
 		return new XmlImportRunner( $source );
 	}
 

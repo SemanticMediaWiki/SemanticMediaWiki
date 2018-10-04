@@ -31,25 +31,116 @@
 	'use strict';
 
 	/**
+	 * @since 3.0
+	 * @constructor
+	 *
+	 * @return {this}
+	 */
+	var change = function ( name ) {
+
+		this.name = name;
+		this.messages = {};
+
+		this.html = mw.html;
+		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result, #result-error, #ask-pagination, #ask-export-links, #tab-label-smw-askt-compact, #tab-label-smw-askt-code, #tab-label-smw-askt-debug, #tab-label-smw-askt-extra, #tab-label-smw-askt-result, #tab-label-smw-askt-clipboard, #search';
+
+		return this;
+	};
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 * @param {Sting} message
+	 */
+	change.prototype.add = function( key, message, type ) {
+		this.messages[key] = [ message, type ];
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.delete = function( key ) {
+		delete this.messages[key];
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.informAbout = function( key ) {
+
+		var informAbout = '';
+
+		// Anything to inform about?
+		if ( this.messages.hasOwnProperty( key ) ) {
+			informAbout = key;
+		} else {
+			for( var prop in this.messages ) {
+				if ( prop !== key && this.messages.hasOwnProperty( prop ) ) {
+					informAbout = prop
+				}
+			}
+		}
+
+		if ( informAbout !== '' ) {
+			this.show( informAbout );
+		} else {
+			this.hide();
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 *
+	 * @param {Sting} key
+	 */
+	change.prototype.show = function( key ) {
+
+		var msg = this.messages[key];
+
+		var html = this.html.element(
+			'div',
+			{
+				id: 'status-format-change',
+				class: 'smw-callout smw-callout-' + msg[1]
+			},
+			mw.msg( msg[0], this.name )
+		);
+
+		$( this.hideList ).hide();
+
+		$( '#status-format-change' ).remove();
+		$( '#ask-status' ).append( html );
+	}
+
+	/**
+	 * @since 3.0
+	 * @method
+	 */
+	change.prototype.hide = function() {
+
+		$( this.hideList ).show();
+		$( '#status-format-change' ).remove();
+
+		$( '#inlinequeryembed, #embed_hide' ).hide();
+		$( '#embed_show' ).show();
+	}
+
+	/**
 	 * Support and helper methods
 	 * @ignore
 	 */
 	var tooltip = new smw.util.tooltip();
 
 	var _init = {
-
-		// Autocomplete
-		autocomplete: {
-			textarea: function(){
-				// Textarea property autocomplete
-				// @see ext.smw.autocomplete
-			//	$( '#add_property' ).smwAutocomplete( { separator: '\n' } );
-			},
-			parameter: function(){
-				// Property autocomplete for the single sort field
-				//$( '.smw-ask-input-sort' ).smwAutocomplete();
-			}
-		},
 
 		// Tooltip
 		tooltip: function(){
@@ -61,14 +152,16 @@
 					button : false
 				} );
 			} );
+
+			$( '#options-list' ).trigger( 'smw.autocomplete.propertysubject', { context: $( '#options-list' ) } );
+			$( '#options-list' ).trigger( 'smw.autocomplete.property', { context: $( '#options-list' ) } );
 		},
 
 		// Format help link
 		formatHelp: function( options ){
-			// Make sure we don't have a pre existing element, using id as selector
-			// as it is faster compared to the class selector
-			$( '#formatHelp' ).remove();
-			$( options.selector ).after( '<span id="formatHelp" class="smw-ask-format-selection-help">' + mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) ) + '</span>' );
+			$( '.smw-ask-format-help-link' ).replaceWith(
+				'<li class="smw-ask-format-help-link">'+ mw.msg( 'smw-ask-format-selection-help', addFormatHelpLink( options ) )  + '</li>'
+			);
 		}
 	};
 
@@ -83,7 +176,7 @@
 	function addFormatHelpLink ( options ){
 		var h = mw.html,
 			link = h.element( 'a', {
-					href: 'http://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
+					href: 'https://semantic-mediawiki.org/wiki/Help:' + options.format + ' format',
 					title: options.name
 				}, options.name
 			);
@@ -92,13 +185,10 @@
 
 	/**
 	 * Multiple sorting
-	 * Code for handling adding and removing the "sort" inputs
-	 *
-	 * @TODO Something don't quite work here but it is broken from the beginning therefore ...
 	 */
 	var num_elements = $( '#sorting_main > div' ).length;
 
-	function addInstance(starter_div_id, main_div_id) {
+	function addSortInstance(starter_div_id, main_div_id) {
 		num_elements++;
 
 		var starter_div = $( '#' + starter_div_id),
@@ -106,7 +196,7 @@
 		new_div = starter_div.clone();
 
 		new_div.attr( {
-			'class': 'multipleTemplate',
+			'class': 'smw-ask-sort-input multipleTemplate',
 			'id': 'sort_div_' + num_elements
 		} );
 
@@ -114,19 +204,26 @@
 
 		//Create 'delete' link
 		var button = $( '<a>').attr( {
-			'href': '#',
-			'class': 'smw-ask-delete'
+			'class': 'smw-ask-sort-delete-action',
+			'data-target': 'sort_div_' + num_elements
 		} ).text( mw.msg( 'smw-ask-delete' ) );
 
-		button.click( function() {
-			removeInstance( 'sort_div_' + num_elements );
+		// Register event on the added instance
+		button.click( function( event ) {
+			removeInstance( $( this ).data( 'target' ) );
 		} );
 
 		new_div.append(
-			$( '<span>' ).html( button )
+			$( '<span class="smw-ask-sort-delete">' ).html( button )
 		);
 
-		//Add the new instance
+		// Trigger an event to ensure that the input field has an autocomplete
+		// instance attached
+		main_div.trigger( 'SMW::Property::Autocomplete' , {
+			'context': new_div
+		} );
+
+		// Add the new instance
 		main_div.append( new_div );
 	}
 
@@ -135,106 +232,132 @@
 	}
 
 	/**
-	 * Collapsible fieldsets
-	 * Based on the 'coolfieldset' jQuery plugin:
-	 * http://w3shaman.com/article/jquery-plugin-collapsible-fieldset
-	 *
-	 */
-	function smwHideFieldsetContent(obj, options){
-		obj.find( 'div' ).slideUp(options.speed);
-		obj.find( '.collapsed-info' ).slideDown(options.speed);
-		obj.removeClass( "smwExpandedFieldset" );
-		obj.addClass( "smwCollapsedFieldset" );
-	}
-
-	function smwShowFieldsetContent(obj, options){
-		obj.find( 'div' ).slideDown(options.speed);
-		obj.find( '.collapsed-info' ).slideUp(options.speed);
-		obj.removeClass( "smwCollapsedFieldset" );
-		obj.addClass( "smwExpandedFieldset" );
-	}
-
-	////////////////////////// PUBLIC METHODS ////////////////////////
-
-	$.fn.smwMakeCollapsible = function(options){
-		var setting = { collapsed: options.collapsed, speed: 'medium' };
-		$.extend(setting, options);
-
-		this.each(function(){
-			var fieldset = $(this);
-			var legend = fieldset.children('legend');
-			if ( setting.collapsed ) {
-				legend.toggle(
-					function(){
-						smwShowFieldsetContent(fieldset, setting);
-					},
-					function(){
-						smwHideFieldsetContent(fieldset, setting);
-					}
-				);
-
-				smwHideFieldsetContent(fieldset, {animation:false});
-			} else {
-				legend.toggle(
-					function(){
-						smwHideFieldsetContent(fieldset, setting);
-					},
-					function(){
-						smwShowFieldsetContent(fieldset, setting);
-					}
-				);
-			}
-		});
-	};
-
-	/**
 	 * Implementation of an Special:Ask instance
 	 * @since 1.8
 	 * @ignore
 	 */
 	$( document ).ready( function() {
 
+		var condition = $( '#ask-query-condition' ),
+			condVal = '',
+			isEmpty = '';
+
+		if ( condition.length ) {
+
+			condVal = condition.val().trim(),
+			isEmpty = condVal === '';
+
+			var entitySuggester = smw.Factory.newEntitySuggester(
+				condition
+			);
+
+			// Register autocomplete default tokens
+			entitySuggester.registerDefaultTokenList(
+				[
+					'property',
+					'concept',
+					'category'
+				]
+			);
+		};
+
+		// Field input is kept disabled until JS is fully loaded to signal
+		// "ready for input"
+		$( '#ask, #result' ).removeClass( 'is-disabled' );
+
 		// Get initial format and language settings
 		var selected = $( '#formatSelector option:selected' ),
 			options = {
 				selector : '#formatSelector',
 				format : selected.val(),
-				name : selected.text()
+				name : selected.text(),
+				isExport: selected.data( 'isexport' ) == 1
 			};
 
+		var chg = new change( options['name'] );
+
 		// Init
-		//_init.autocomplete.textarea();
-		//_init.autocomplete.parameter();
 		_init.tooltip();
 		_init.formatHelp( options );
 
-		// Fieldset collapsible
-		$( '.smw-ask-options' ).smwMakeCollapsible( {
-			'collapsed' : mw.user.options.get( 'smw-prefs-ask-options-collapsed-default' )
+		$( '.smw-ask-sort-delete-action' ).click( function() {
+			removeInstance( $( this).data( 'target' ) );
 		} );
 
-		// Multiple sorting
-		$( '.smw-ask-delete').click( function() {
-			removeInstance( $( this).attr( 'data-target' ) );
+		$( '.smw-ask-sort-add-action' ).click( function() {
+			addSortInstance( 'sorting_starter', 'sorting_main' );
 		} );
 
-		$( '.smw-ask-add').click( function() {
-			addInstance( 'sorting_starter', 'sorting_main' );
+		// Options toggle icon
+		$( '.options-toggle-action label' ).click( function() {
+			if ( $( '#options-toggle' ).prop( 'checked' ) ) {
+				$( this).html( '+' );
+				$( this).attr( 'title', mw.msg( 'smw-section-expand' ) );
+			} else {
+				$( this).html( '-' );
+				$( this).attr( 'title', mw.msg( 'smw-section-collapse' ) );
+			}
+		} );
+
+		// Submit the form via CTRL + q
+		$( "form" ).keypress( function ( event ) {
+			if ( event.ctrlKey && event.keyCode == 17 ) {
+				$( '#search input[type=submit]' ).click();
+				event.preventDefault();
+				return false;
+			} else {
+				return true;
+			};
+		} );
+
+		// Changed condition
+		$( '#ask-query-condition' ).change( function( event, $opts ) {
+
+			var $this = $( this );
+
+			if ( isEmpty === false && $this.val().trim() !== condVal ) {
+				chg.add( 'condition', 'smw-ask-condition-change-info', 'warning' );
+			} else {
+				chg.delete( 'condition' );
+			}
+
+			chg.informAbout( 'condition' );
 		} );
 
 		// Change format parameter form via ajax
-		$( '#formatSelector' ).change( function() {
-			var $this = $( this );
+		$( '#formatSelector' ).change( function( event, $opts ) {
+
+			var $this = $( this ),
+				isExport = $this.find( 'option:selected' ).data( 'isexport' ) == 1;
+
+			// Opaque options list for as long as the list is being generated
+			// via an ajax request
+			$( '#options-list' ).addClass( 'is-disabled' );
+
+			if ( isExport ) {
+				chg.add( 'format', 'smw-ask-format-export-info', 'info' );
+			} else if ( isEmpty === false && options['format'] !== $this.val() ) {
+				chg.add( 'format', 'smw-ask-format-change-info', 'warning' );
+			} else {
+				chg.delete( 'format' )
+			}
+
+			chg.informAbout( 'format' );
 
 			$.ajax( {
 				// Evil hack to get more evil Spcial:Ask stuff to work with less evil JS.
 				'url': $this.data( 'url' ).replace( 'this.value',  $this.val() ),
 				'context': document.body,
 				'success': function( data ) {
-					$( '#other_options' ).html( data );
+					$( '#options-list' ).html(
+						'<div class="options-parameter-list">' + data + '</div>'
+					);
+
+					// Remove disable state that was set at the beginning of the
+					// onChange event
+					$( '#options-list' ).removeClass( 'is-disabled' );
 
 					// Reinitialize functions after each ajax request
-					_init.autocomplete.parameter();
 					_init.tooltip();
 
 					// Update format created by the ajax instance

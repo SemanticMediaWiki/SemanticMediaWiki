@@ -56,11 +56,11 @@ class TitleIsAlwaysKnownTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider = array(
-			array( SMW_NS_PROPERTY, 'Modification date', true ),
-			array( SMW_NS_PROPERTY, 'Foo', false ),
-			array( NS_MAIN, 'Modification date', false ),
-		);
+		$provider = [
+			[ SMW_NS_PROPERTY, 'Modification date', true ],
+			[ SMW_NS_PROPERTY, 'Foo', false ],
+			[ NS_MAIN, 'Modification date', false ],
+		];
 
 		return $provider;
 	}

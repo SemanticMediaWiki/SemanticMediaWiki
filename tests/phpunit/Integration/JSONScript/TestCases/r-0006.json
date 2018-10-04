@@ -1,0 +1,127 @@
+{
+	"description": "Test RDF output generation for pages that contain `_rec` annotations (#1285, #1275)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasTextNumberRecord",
+			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
+		},
+		{
+			"page": "Example/R0006/1",
+			"contents": "[[Category:R0006]] [[HasTextNumberRecord::Foo;123]]"
+		},
+		{
+			"page": "Example/R0006/2",
+			"contents": "[[Category:R0006]] {{#subobject:|HasTextNumberRecord=Foo;123}}"
+		},
+		{
+			"page": "Example/R0006/3",
+			"contents": "[[Category:R0006]] [[HasTextNumberRecord::Foo;123]] {{#subobject:A1|Has number=123|HasTextNumberRecord=Foo;123}} {{#subobject:A2|Has number=456|HasTextNumberRecord=Foo;123}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 simple record annotation",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0006/1"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/1-23_e594fde0f37d237549009d2ecebce80e\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/1-23_e594fde0f37d237549009d2ecebce80e\">",
+					"<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>",
+					"<property:Has_text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Foo</property:Has_text>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHasTextNumberRecord\" />"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1 subobject record annotation",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0006/2"
+				],
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/2\">",
+					"<rdf:type rdf:resource=\"http://example.org/id/Category-3AR0006\"/>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/2-23_64dbbe1badeb217858f54cedb983c0ae\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/2-23_64dbbe1badeb217858f54cedb983c0ae\">",
+					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/2-23_e594fde0f37d237549009d2ecebce80e\"/>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0006/2-23_e594fde0f37d237549009d2ecebce80e\">",
+					"<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>",
+					"<property:Has_text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Foo</property:Has_text>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHas_subobject\" />",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHasTextNumberRecord\" />"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#2 multiple subobject record annotation, test statement uniqueness (statement order is important)",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0006/3"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/3-23A1\"/>",
+					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0006/3-23A2\"/>",
+					"<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>\n\t\t<property:Has_text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Foo</property:Has_text>\n\t\t<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0006/3#Foo;123</swivt:wikiPageSortKey>",
+					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>\n\t\t<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">123</property:Has_number>",
+					"<property:HasTextNumberRecord rdf:resource=\"&wiki;Example/R0006/3-23_e594fde0f37d237549009d2ecebce80e\"/>\n\t\t<property:Has_number rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">456</property:Has_number>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

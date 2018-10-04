@@ -1,19 +1,19 @@
-This file contains details about Semantic MediaWiki's API for external use with a description
-of available interfaces. For more details on MediaWiki's WbeAPI, it is recommended to read this [website][guideline].
+This file contains details about [Semantic MediaWiki's API][smwapi] for external use with a description
+of available interfaces. For more details on MediaWiki's WebAPI, it is recommended to read this [website][mwapi].
 
 ## api.php?action=ask
-The `Ask API` allows you to do ask queries against SMW using the MediaWiki API and get results back serialized in one of the formats it supports.
+The `Ask API` allows you to do ask queries against Semantic MediaWiki using the MediaWiki API and get results back serialized in one of the formats it supports.
 
-The ask module supports one parameter, query, which takes the same string you'd feed into an #ask tag, but urlencoded.
+The ask module supports one parameter, query, which takes the same string you'd feed into an `#ask` parser function, but urlencoded.
 
 > api.php?action=ask&query=[[Modification date::%2B]]|%3FModification date|sort%3DModification date|order%3Ddesc&format=jsonfm
 
-### api.php?action=askargs
+## api.php?action=askargs
 The `Askargs API` module aims to take arguments in un-serialized form, so with as little ask-specific syntax as possible. It supports 3 arguments:
 
-* "conditions": The query conditions, ie the requirements for a subject to be included
-* "printouts": The query printeouts, ie the properties to show per subject
-* "parameters": The query parameters, ie all non-condition and non-printeout arguments
+* `conditions`: The query conditions, ie the requirements for a subject to be included
+* `printouts`: The query printeouts, ie the properties to show per subject
+* `parameters`: The query parameters, ie all non-condition and non-printeout arguments
 
 > api.php?action=askargs&conditions=Modification date::%2B&printouts=Modification date&parameters=|sort%3DModification date|order%3Ddesc&format=jsonfm
 
@@ -64,17 +64,17 @@ An interface to access statistical information about the properties, values etc.
 
 > api.php?action=smwinfo&format=json&info=proppagecount|propcount
 
-The following parameters are available and can be concatenate using the "|" character.
-* proppagecount
-* propcount
-* querycount
-* usedpropcount
-* declaredpropcount
-* conceptcount
-* querysize
-* subobjectcount
-* formatcount
-* errorcount
+The following parameters are available and may be concatenate using the "|" character.
+* `proppagecount`: The total number of properties registered with a page.
+* `declaredpropcount`: The total number of properties with a datatype assigned.
+* `usedpropcount`: The total number of properties with at least one values assigned.
+* `propcount`: The total number of property values assinged.
+* `errorcount`: The total number of property values invalidly assinged.
+* `querycount`: The total number of queries.
+* `querysize`: The total size of all queries.
+* `formatcount`: The query formats and their respective total usage count.
+* `subobjectcount`: The total number of subobjects.
+* `conceptcount`: The total number of concepts.
 
 #### Output serialization
 
@@ -102,7 +102,7 @@ An interface to browse facts (the equivalent of `Special:Browse`) of a subject (
 ```php
 {
 	"query": {
-		"subject": "Main_Page#0#",
+		"subject": "Main_Page#0##",
 		"data": [
 			{
 				"property": "Foo",
@@ -171,4 +171,5 @@ An interface to browse properties (the equivalent of `Special:Properties`).
 }
 ```
 
-[api]: https://www.mediawiki.org/wiki/Api "Manual:Api"
+[mwapi]: https://www.mediawiki.org/wiki/API:Main_page "API:Main_page"
+[smwapi]: https://www.semantic-mediawiki.org/wiki/Help:API "Help:API"

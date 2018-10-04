@@ -1,0 +1,81 @@
+{
+	"description": "Test the QueryResult cache feature (#1251, `wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0907/1",
+			"contents": "[[Has page::ABC]]"
+		},
+		{
+			"page": "Example/P0907/2",
+			"contents": "{{#ask:[[Has page::ABC]] |sort=Has page |order=asc |limit=10 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0907/2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/P0907/1"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 query from the previous #ask with same description is fetched from cache",
+			"subject": "Foo",
+			"condition": "[[Has page::ABC]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10,
+				"sort": {
+					"Has_page": "ASC"
+				}
+			},
+			"assert-queryresult": {
+				"isFromCache": true,
+				"count": 1,
+				"results": [
+					"Example/P0907/1#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQueryResultCacheType": "hash",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

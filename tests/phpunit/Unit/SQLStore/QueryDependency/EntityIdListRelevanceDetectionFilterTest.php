@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,11 +18,13 @@ use SMW\Tests\TestEnvironment;
 class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -43,195 +44,207 @@ class EntityIdListRelevanceDetectionFilterTest extends \PHPUnit_Framework_TestCa
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter',
-			new EntityIdListRelevanceDetectionFilter( $store, $compositePropertyTableDiffIterator )
+			EntityIdListRelevanceDetectionFilter::class,
+			new EntityIdListRelevanceDetectionFilter( $store, $changeOp )
 		);
 	}
 
 	public function testgetFilteredIdListOnExemptedPredefinedProperty() {
 
-		$orderedDiffByTable = array(
-			'fpt_mdat' => array(
-				'property' => array(
+		$orderedDiffByTable = [
+			'fpt_mdat' => [
+				'property' => [
 					'key'  => '_MDAT',
 					'p_id' => 29
-				),
-				'insert' => array(
-					array(
+				],
+				'insert' => [
+					[
 						's_id' => 201,
 						'o_serialized' => '1/2016/6/1/11/1/48/0',
 						'o_sortkey' => '2457540.9595833'
-					)
-				),
-				'delete' => array(
-					array(
+					]
+				],
+				'delete' => [
+					[
 						's_id' => 202,
 						'o_serialized' => '1/2016/6/1/11/1/59/0',
 						'o_sortkey' => '2457540.9582292'
-					)
-				)
-			)
-		);
+					]
+				]
+			]
+		];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
+			->setMethods( [ 'getChangedEntityIdSummaryList', 'getOrderedDiffByTable' ] )
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->once() )
-			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 29, 201, 202, 1001 ) ) );
+		$changeOp->expects( $this->once() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [ 29, 201, 202, 1001 ] ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( $orderedDiffByTable ) );
 
 		$instance = new EntityIdListRelevanceDetectionFilter(
 			$store,
-			$compositePropertyTableDiffIterator
+			$changeOp
 		);
 
-		$instance->setPropertyExemptionlist(
-			array( '_MDAT' )
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->setPropertyExemptionList(
+			[ '_MDAT' ]
 		);
 
 		$this->assertEquals(
-			array( 1001 ),
+			[ 1001 ],
 			$instance->getFilteredIdList()
 		);
 	}
 
 	public function testgetFilteredIdListOnAffiliatePredefinedProperty() {
 
-		$orderedDiffByTable = array(
-			'fpt_dat' => array(
-				'property' => array(
+		$orderedDiffByTable = [
+			'fpt_dat' => [
+				'property' => [
 					'key'  => '_MDAT',
 					'p_id' => 29
-				),
-				'insert' => array(
-					array(
+				],
+				'insert' => [
+					[
 						's_id' => 201,
 						'o_serialized' => '1/2016/6/1/11/1/48/0',
 						'o_sortkey' => '2457540.9595833'
-					)
-				),
-				'delete' => array(
-					array(
+					]
+				],
+				'delete' => [
+					[
 						's_id' => 202,
 						'o_serialized' => '1/2016/6/1/11/1/59/0',
 						'o_sortkey' => '2457540.9582292'
-					)
-				)
-			)
-		);
+					]
+				]
+			]
+		];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
+			->setMethods( [ 'getChangedEntityIdSummaryList', 'getOrderedDiffByTable' ] )
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->once() )
-			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 1001 ) ) );
+		$changeOp->expects( $this->once() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [ 1001 ] ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( $orderedDiffByTable ) );
 
 		$instance = new EntityIdListRelevanceDetectionFilter(
 			$store,
-			$compositePropertyTableDiffIterator
+			$changeOp
 		);
 
-		$instance->setAffiliatePropertyDetectionlist(
-			array( '_MDAT' )
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->setAffiliatePropertyDetectionList(
+			[ '_MDAT' ]
 		);
 
 		$this->assertEquals(
-			array( 1001, 201, 202 ),
+			[ 1001, 201, 202 ],
 			$instance->getFilteredIdList()
 		);
 	}
 
 	public function testgetFilteredIdListOnExemptedUserdefinedProperty() {
 
-		$orderedDiffByTable = array(
-			'fpt_foo' => array(
-				'insert' => array(
-					array(
+		$orderedDiffByTable = [
+			'fpt_foo' => [
+				'insert' => [
+					[
 						'p_id' => 100,
 						's_id' => 201,
 						'o_serialized' => '1/2016/6/1/11/1/48/0',
 						'o_sortkey' => '2457540.9595833'
-					)
-				),
-				'delete' => array(
-					array(
+					]
+				],
+				'delete' => [
+					[
 						'p_id' => 100,
 						's_id' => 201,
 						'o_serialized' => '1/2016/6/1/11/1/59/0',
 						'o_sortkey' => '2457540.9582292'
-					)
-				)
-			)
-		);
+					]
+				]
+			]
+		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getDataItemForId' ) )
+			->setMethods( [ 'getDataItemById' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getDataItemForId' )
+			->method( 'getDataItemById' )
 			->with( $this->equalTo( 100 ) )
 			->will( $this->returnValue( DIWikiPage::newFromText( 'Has date', SMW_NS_PROPERTY ) ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$compositePropertyTableDiffIterator = $this->getMockBuilder( '\SMW\SQLStore\CompositePropertyTableDiffIterator' )
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getCombinedIdListOfChangedEntities', 'getOrderedDiffByTable' ) )
+			->setMethods( [ 'getChangedEntityIdSummaryList', 'getOrderedDiffByTable' ] )
 			->getMock();
 
-		$compositePropertyTableDiffIterator->expects( $this->once() )
-			->method( 'getCombinedIdListOfChangedEntities' )
-			->will( $this->returnValue( array( 100, 201, 1001 ) ) );
+		$changeOp->expects( $this->once() )
+			->method( 'getChangedEntityIdSummaryList' )
+			->will( $this->returnValue( [ 100, 201, 1001 ] ) );
 
-		$compositePropertyTableDiffIterator->expects( $this->any() )
+		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
 			->will( $this->returnValue( $orderedDiffByTable ) );
 
 		$instance = new EntityIdListRelevanceDetectionFilter(
 			$store,
-			$compositePropertyTableDiffIterator
+			$changeOp
 		);
 
-		$instance->setPropertyExemptionlist(
-			array( 'Has date' )
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->setPropertyExemptionList(
+			[ 'Has date' ]
 		);
 
 		$this->assertEquals(
-			array( 1001 ),
+			[ 1001 ],
 			$instance->getFilteredIdList()
 		);
 	}

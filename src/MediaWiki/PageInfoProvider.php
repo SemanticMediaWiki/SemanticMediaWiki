@@ -108,12 +108,37 @@ class PageInfoProvider implements PageInfo {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return text
+	 */
+	public function getNativeData() {
+
+		if ( $this->wikiPage->getContent() === null ) {
+			return '';
+		}
+
+		$content = $this->wikiPage->getContent();
+
+		if ( $content instanceof \SMW\Schema\Content\Content ) {
+			return $content->toJson();
+		}
+
+		return $content->getNativeData();
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @return string|null
 	 */
 	public function getMediaType() {
-		return $this->isFilePage() ? $this->wikiPage->getFile()->getMediaType() : null;
+
+		if ( $this->isFilePage() === false ) {
+			return null;
+		}
+
+		return $this->wikiPage->getFile()->getMediaType();
 	}
 
 	/**
@@ -122,7 +147,12 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMimeType() {
-		return $this->isFilePage() ? $this->wikiPage->getFile()->getMimeType() : null;
+
+		if ( $this->isFilePage() === false ) {
+			return null;
+		}
+
+		return $this->wikiPage->getFile()->getMimeType();
 	}
 
 }

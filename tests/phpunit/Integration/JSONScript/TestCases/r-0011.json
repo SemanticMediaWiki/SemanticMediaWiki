@@ -1,0 +1,112 @@
+{
+	"description": "Test RDF output generation `skos` import/`skos:altLabel` as Monolingual text (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import skos",
+			"contents": {
+				"import-from": "/../Fixtures/skos-import.txt"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has alternative label",
+			"contents": "[[Imported from::skos:altLabel]]"
+		},
+		{
+			"page": "Example/P0440/Triacylglycerol lipase",
+			"contents": "[[Has alternative label::Lipase@en]], [[Has alternative label::Tributyrase@en]], [[Has alternative label::Triglyceride lipase@en]], [[Has alternative label::トリアシルグリセロールリパーゼ@ja]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/P0440/Triacylglycerol lipase"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:Has_alternative_label rdf:resource=\"&wiki;Example/P0440/Triacylglycerol_lipase-23_MLb850763abfc7ff93b2753834b000b7dc\"/>",
+					"<property:Has_alternative_label rdf:resource=\"&wiki;Example/P0440/Triacylglycerol_lipase-23_MLa9c103f4379a94bfab97819dacd3c182\"/>",
+					"<property:Has_alternative_label rdf:resource=\"&wiki;Example/P0440/Triacylglycerol_lipase-23_MLcbdbdd5279ca447e5dc7f78465f45256\"/>",
+					"<property:Has_alternative_label rdf:resource=\"&wiki;Example/P0440/Triacylglycerol_lipase-23_MLca7a57d40b775013e7fcc714ec4da30d\"/>",
+					"<skos:altLabel xml:lang=\"en\">Lipase</skos:altLabel>",
+					"<skos:altLabel xml:lang=\"en\">Tributyrase</skos:altLabel>",
+					"<skos:altLabel xml:lang=\"en\">Triglyceride lipase</skos:altLabel>",
+					"<skos:altLabel xml:lang=\"ja\">トリアシルグリセロールリパーゼ</skos:altLabel>",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/P0440/Triacylglycerol_lipase-23_MLb850763abfc7ff93b2753834b000b7dc\">",
+					"<property:Language_code rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">en</property:Language_code>",
+					"<property:Text rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Lipase</property:Text>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AHas_alternative_label\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://www.w3.org/2004/02/skos/core#altLabel\" />"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1",
+			"exportcontroller": {
+				"syntax": "turtle",
+				"print-pages": [
+					"Example/P0440/Triacylglycerol lipase"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"property:Has_alternative_label  <http://example.org/id/Example/P0440/Triacylglycerol_lipase-23_MLb850763abfc7ff93b2753834b000b7dc> ,  <http://example.org/id/Example/P0440/Triacylglycerol_lipase-23_MLa9c103f4379a94bfab97819dacd3c182> ,  <http://example.org/id/Example/P0440/Triacylglycerol_lipase-23_MLcbdbdd5279ca447e5dc7f78465f45256> ,  <http://example.org/id/Example/P0440/Triacylglycerol_lipase-23_MLca7a57d40b775013e7fcc714ec4da30d> ;",
+					"skos:altLabel  \"Lipase\"@en ,  \"Tributyrase\"@en ,  \"Triglyceride lipase\"@en ,  \"トリアシルグリセロールリパーゼ\"@ja ;"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#2",
+			"exportcontroller": {
+				"print-pages": [
+					"Property:Has alternative label"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<owl:DatatypeProperty rdf:about=\"http://www.w3.org/2004/02/skos/core#altLabel\">",
+					"<rdfs:label>Has alternative label</rdfs:label>",
+					"<swivt:specialImportedFrom rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">skos:altLabel|http://www.w3.org/2004/02/skos/core#</swivt:specialImportedFrom>",
+					"<swivt:type rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0#_mlt_rec\"/>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

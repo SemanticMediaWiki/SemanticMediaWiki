@@ -31,12 +31,12 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @var string[]
 	 */
-	private $hierarchyCache = array();
+	private $hierarchyCache = [];
 
 	/**
 	 * @var array
 	 */
-	private $hierarchyTypeTable = array();
+	private $hierarchyTypeTable = [];
 
 	/**
 	 * @since 2.3
@@ -53,7 +53,7 @@ class HierarchyTempTableBuilder {
 	 * @since 2.3
 	 */
 	public function emptyHierarchyCache() {
-		$this->hierarchyCache = array();
+		$this->hierarchyCache = [];
 	}
 
 	/**
@@ -72,7 +72,7 @@ class HierarchyTempTableBuilder {
 	 * @param integer $depth
 	 */
 	public function setPropertyHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['property'] = array( $this->connection->tableName( $table ), $depth );
+		$this->hierarchyTypeTable['property'] = [ $this->connection->tableName( $table ), $depth ];
 	}
 
 	/**
@@ -82,7 +82,7 @@ class HierarchyTempTableBuilder {
 	 * @param integer $depth
 	 */
 	public function setClassHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['class'] = array( $this->connection->tableName( $table ), $depth );
+		$this->hierarchyTypeTable['class'] = [ $this->connection->tableName( $table ), $depth ];
 	}
 
 	/**
@@ -108,14 +108,19 @@ class HierarchyTempTableBuilder {
 	 * @param string $type
 	 * @param string $tablename
 	 * @param string $valueComposite
+	 * @param integer|null $depth
 	 *
 	 * @throws RuntimeException
 	 */
-	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite ) {
+	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite, $depth = null ) {
 
-		$this->temporaryTableBuilder->createTable( $tablename );
+		$this->temporaryTableBuilder->create( $tablename );
 
-		list( $smwtable, $depth ) = $this->getHierarchyTableDefinitionForType( $type );
+		list( $smwtable, $d ) = $this->getHierarchyTableDefinitionForType( $type );
+
+		if ( $depth === null ) {
+			$depth = $d;
+		}
 
 		if ( array_key_exists( $valueComposite, $this->hierarchyCache ) ) { // Just copy known result.
 
@@ -127,7 +132,7 @@ class HierarchyTempTableBuilder {
 			return;
 		}
 
-		$this->buildTempTableFor( $tablename, $valueComposite, $smwtable, $depth );
+		$this->buildTempTable( $tablename, $valueComposite, $smwtable, $depth );
 	}
 
 	/**
@@ -136,15 +141,15 @@ class HierarchyTempTableBuilder {
 	 * but then every iteration would use all elements of this table, while only the new ones
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
-	private function buildTempTableFor( $tablename, $values, $smwtable, $depth ) {
+	private function buildTempTable( $tablename, $values, $smwtable, $depth ) {
 
 		$db = $this->connection;
 
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
 
-		$this->temporaryTableBuilder->createTable( $tmpnew );
-		$this->temporaryTableBuilder->createTable( $tmpres );
+		$this->temporaryTableBuilder->create( $tmpnew );
+		$this->temporaryTableBuilder->create( $tmpres );
 
 		// Adding multiple values for the same column in sqlite is not supported
 		foreach ( explode( ',', $values ) as $value ) {
@@ -192,8 +197,8 @@ class HierarchyTempTableBuilder {
 
 		$this->hierarchyCache[$values] = $tablename;
 
-		$this->temporaryTableBuilder->dropTable( $tmpnew );
-		$this->temporaryTableBuilder->dropTable( $tmpres );
+		$this->temporaryTableBuilder->drop( $tmpnew );
+		$this->temporaryTableBuilder->drop( $tmpres );
 	}
 
 }

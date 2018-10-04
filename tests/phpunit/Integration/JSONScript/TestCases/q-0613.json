@@ -1,0 +1,182 @@
+{
+	"description": "Test single value (`~/!~`/`<`/`>`) queries on namespaced entity (#1652, `NS_HELP`, `smwStrictComparators=false`, skip-on virtuoso)",
+	"setup": [
+		{
+			"page": "ABC",
+			"contents": "[[Category:0613]] (control group)"
+		},
+		{
+			"page": "ABB",
+			"contents": "[[Category:0613]] (control group)"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "ABC",
+			"contents": "[[Category:0613]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "ABB",
+			"contents": "[[Category:0613]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "AAB",
+			"contents": "[[Category:0613]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Help:~A*B]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"AAB#12##",
+					"ABB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[~Help:A*B]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"AAB#12##",
+					"ABB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Help:!~A*B]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"ABC#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[!~Help:A*B]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"ABC#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"condition": "[[Help:>AB]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"ABC#12##",
+					"ABB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"condition": "[[>Help:AB]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"ABC#12##",
+					"ABB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6",
+			"condition": "[[Help:<AB]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"AAB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7",
+			"condition": "[[<Help:AB]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"AAB#12##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8",
+			"condition": "[[<Help:<AB]] [[Category:0613]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 0
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 does not like this test"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

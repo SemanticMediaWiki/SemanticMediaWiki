@@ -17,7 +17,7 @@ class MonolingualTextValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.4
@@ -31,22 +31,29 @@ class MonolingualTextValueParser implements ValueParser {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $userValue
+	 * @param string|array $userValue
 	 *
 	 * @return array
 	 */
 	public function parse( $userValue ) {
 
-		$text = $userValue;
+		// Allow things like [ "en" => "Foo ..." ] when retrieved from a JSON string
+		if ( is_array( $userValue ) ) {
+			foreach ( $userValue as $key => $value ) {
+				$languageCode = is_string( $key ) ? $key : '';
+				$text = is_string( $value ) ? $value : '';
+			}
+		} else {
+			$text = $userValue;
+			$languageCode = mb_substr( strrchr( $userValue, "@" ), 1 );
 
-		$languageCode = mb_substr( strrchr( $userValue, "@" ), 1 );
-
-		// Remove the language code and marker from the text
-		if ( $languageCode !== '' ) {
-			$text = substr_replace( $userValue, '', ( mb_strlen( $languageCode ) + 1 ) * -1 );
+			// Remove the language code and marker from the text
+			if ( $languageCode !== '' ) {
+				$text = substr_replace( $userValue, '', ( mb_strlen( $languageCode ) + 1 ) * -1 );
+			}
 		}
 
-		return array( $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) );
+		return [ $text, Localizer::asBCP47FormattedLanguageCode( $languageCode ) ];
 	}
 
 }

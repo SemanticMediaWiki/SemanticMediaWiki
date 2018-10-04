@@ -6,6 +6,8 @@ use SMW\DataValueFactory;
 use SMw\DIProperty;
 use SMW\Query\QueryComparator;
 use SMWDataItem as DataItem;
+use SMWNumberValue as NumberValue;
+use SMWURIValue as UriValue;
 
 /**
  * Description of one data value, or of a range of data values.
@@ -50,6 +52,25 @@ class ValueDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+
+		$property = null;
+
+		if ( $this->property !== null ) {
+			$property = $this->property->getSerialization();
+		}
+
+		// A change to the order does also change the signature and renders a
+		// different query ID
+		return 'V:' . md5( $this->comparator . '|' . $this->dataItem->getHash() . '|' . $property );
+	}
+
+	/**
 	 * @deprecated Use getDataItem() and \SMW\DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
 	 * @return DataItem
 	 */
@@ -87,11 +108,20 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getQueryString( $asValue = false ) {
-		$comparator = QueryComparator::getInstance()->getStringForComparator( $this->comparator );
-		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $this->dataItem, $this->property );
 
-		// Signals that we don't want any precision limitation
-		$dataValue->setOption( 'value.description', true );
+		$comparator = QueryComparator::getInstance()->getStringForComparator(
+			$this->comparator
+		);
+
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$this->dataItem,
+			$this->property
+		);
+
+		// Set option to ensure that the output doesn't alter the display
+		// characteristics of a value
+		$dataValue->setOption( UriValue::VALUE_RAW, true );
+		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
 		if ( $asValue ) {
 			return $comparator . $dataValue->getWikiValue();

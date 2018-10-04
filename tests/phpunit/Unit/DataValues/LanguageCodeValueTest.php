@@ -36,7 +36,7 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 	public function testHasErrorForInvalidLanguageCode() {
 
 		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isSupportedLanguage` is not supported on 1.19' );
+			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
 		}
 
 		$instance = new LanguageCodeValue();
@@ -56,8 +56,8 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 		$upperCase->setUserValue( 'EN' );
 
 		$this->assertEquals(
-			$mixedCase,
-			$upperCase
+			$mixedCase->getDataItem(),
+			$upperCase->getDataItem()
 		);
 
 		$this->assertEquals(
@@ -68,6 +68,30 @@ class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'en',
 			$upperCase->getDataItem()->getString()
+		);
+	}
+
+	public function testInvalidLanguageCode() {
+
+		$instance = new LanguageCodeValue();
+		$instance->setUserValue( 'Foo' );
+
+		$this->assertContains(
+			'[2,"smw-datavalue-languagecode-invalid","foo"]',
+			$instance->getDataItem()->getString()
+		);
+	}
+
+	public function testInvalidLanguageCodeIsAllowedInQueryContext() {
+
+		$instance = new LanguageCodeValue();
+		$instance->setOption( LanguageCodeValue::OPT_QUERY_CONTEXT, true );
+
+		$instance->setUserValue( 'Foo' );
+
+		$this->assertEquals(
+			'foo',
+			$instance->getDataItem()->getString()
 		);
 	}
 

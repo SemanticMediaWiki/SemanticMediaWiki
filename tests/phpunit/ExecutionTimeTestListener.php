@@ -1,16 +1,17 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use Exception;
 use PHPUnit_Framework_AssertionFailedError;
 use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestListener;
 use PHPUnit_Framework_TestSuite;
+use PHPUnit_Framework_Warning;
 
 class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 
-	protected $testCollector = array();
+	protected $testCollector = [];
 	protected $executionTimeThresholdInSeconds = 10;
 	protected $isEnabledToListen = true;
 
@@ -38,6 +39,13 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 	 * @see PHPUnit_Framework_TestListener::addError
 	 */
 	public function addError( PHPUnit_Framework_Test $test, Exception $e, $time ) {
+	}
+
+	/**
+	 * @see PHPUnit_Framework_TestListener::addError
+	 */
+	public function addWarning( PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time) {
+
 	}
 
 	/**

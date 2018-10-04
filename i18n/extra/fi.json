@@ -1,0 +1,183 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Ominaisuus",
+            "SMW_NS_PROPERTY_TALK": "Keskustelu_ominaisuudesta",
+            "SMW_NS_CONCEPT": "Konsepti",
+            "SMW_NS_CONCEPT_TALK": "Keskustelu_konseptista"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Sivu",
+            "_txt": "Teksti",
+            "_cod": "Lähdekoodi",
+            "_boo": "Boolean",
+            "_num": "Luku",
+            "_geo": "Maantieteellinen koordinaatti",
+            "_tem": "Lämpötila",
+            "_dat": "Päiväys",
+            "_ema": "Sähköposti",
+            "_uri": "URL-osoite",
+            "_anu": "Annotation URI",
+            "_tel": "Puhelinnumero",
+            "_rec": "Tietue",
+            "_qty": "Määrä",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "Merkkijono": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "On tyypiltään",
+            "_URI": "Yhtäpitävä URI",
+            "_SUBP": "Yläominaisuus",
+            "_SUBC": "Yläluokka",
+            "_UNIT": "Tulostusyksikkö",
+            "_IMPO": "Tuotu sanastosta",
+            "_CONV": "Vastaa määrää",
+            "_SERV": "Tarjoaa palvelun",
+            "_PVAL": "Mahdollinen arvo",
+            "_MDAT": "Muokkausaika",
+            "_CDAT": "Creation date",
+            "_NEWP": "Is a new page",
+            "_LEDT": "Last editor is",
+            "_ERRP": "Sopimaton arvo kentälle",
+            "_LIST": "Koostuu kentistä",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "Query string",
+            "_ASKFO": "Query format",
+            "_ASKSI": "Query size",
+            "_ASKDE": "Query depth",
+            "_ASKDU": "Query duration",
+            "_MEDIA": "Media type",
+            "_MIME": "Mime type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": []
+    },
+    "date": {
+        "months": [
+            [
+                "tammikuu",
+                "tammikuu"
+            ],
+            [
+                "helmikuu",
+                "helmikuu"
+            ],
+            [
+                "maaliskuu",
+                "maaliskuu"
+            ],
+            [
+                "huhtikuu",
+                "huhtikuu"
+            ],
+            [
+                "toukokuu",
+                "toukokuu"
+            ],
+            [
+                "kesäkuu",
+                "kesäkuu"
+            ],
+            [
+                "heinäkuu",
+                "heinäkuu"
+            ],
+            [
+                "elokuu",
+                "elokuu"
+            ],
+            [
+                "syyskuu",
+                "syyskuu"
+            ],
+            [
+                "lokakuu",
+                "lokakuu"
+            ],
+            [
+                "marraskuu",
+                "marraskuu"
+            ],
+            [
+                "joulukuu",
+                "joulukuu"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

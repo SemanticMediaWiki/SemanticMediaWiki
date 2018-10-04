@@ -1,0 +1,112 @@
+{
+	"description": "Test #ask on moved redirected subject (#1086)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasPropertyForMove",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Page/09/01/1",
+			"contents": "[[HasPropertyForMove::ABC]]"
+		},
+		{
+			"page": "Page/09/01/2",
+			"contents": "[[HasPropertyForMove::ABC]]"
+		},
+		{
+			"move-to": {
+				"target": "Move/09/01/4",
+				"is-redirect": false
+			},
+			"page": "Page/09/01/3",
+			"contents": "[[HasPropertyForMove::ABC]]"
+		},
+		{
+			"page": "Move/09/01/Query",
+			"contents": "{{#ask:[[HasPropertyForMove::ABC]] |format=ul |link=none |headers=show }}"
+		},
+		{
+			"move-to": {
+				"target": "Redirect/09/01/2",
+				"is-redirect": true
+			},
+			"page": "Redirect/09/01/1",
+			"contents": "[[HasPropertyForMove::123]]"
+		},
+		{
+			"page": "Redirect/09/01/3",
+			"contents": "#REDIRECT [[Redirect/09/01/4]] [[HasPropertyForMove::123]]"
+		},
+		{
+			"page": "Redirect/09/01/Query",
+			"contents": "{{#ask:[[HasPropertyForMove::ABC]] OR [[HasPropertyForMove::123]] |format=ul |link=none |headers=show }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 includes move",
+			"subject": "Move/09/01/Query",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/1</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/2</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Move/09/01/4</span></span></li>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 includes redirect",
+			"subject": "Redirect/09/01/Query",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/1</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Page/09/01/2</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Move/09/01/4</span></span></li>",
+					"<li class=\"smw-row\"><span class=\"smw-field\"><span class=\"smw-value\">Redirect/09/01/2</span></span></li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-master": "Skipping because redirect/move causes a failure in 1.27 (#1376) with the DeferredUpdate blocking succeeding tests"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

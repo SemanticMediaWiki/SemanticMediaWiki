@@ -3,14 +3,19 @@
 namespace SMW;
 
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotator\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotator\DisplayTitlePropertyAnnotator;
-use SMW\PropertyAnnotator\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotator\NullPropertyAnnotator;
-use SMW\PropertyAnnotator\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotator\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotator\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
+use SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator;
+use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\PropertyAnnotators\NullPropertyAnnotator;
+use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
+use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
+use SMW\PropertyAnnotators\SchemaPropertyAnnotator;
+use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
+use SMW\PropertyAnnotators\TranslationPropertyAnnotator;
 use SMW\Store;
+use SMW\Schema\Schema;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -39,11 +44,29 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return RedirectPropertyAnnotator
 	 */
-	public function newRedirectPropertyAnnotator( SemanticData $semanticData, RedirectTargetFinder $redirectTargetFinder ) {
+	public function newRedirectPropertyAnnotator( PropertyAnnotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
 		return new RedirectPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$redirectTargetFinder
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Schema $schema
+	 *
+	 * @return SchemaPropertyAnnotator
+	 */
+	public function newSchemaPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
+
+		$schemaPropertyAnnotator = new SchemaPropertyAnnotator(
+			$propertyAnnotator,
+			$schema
+		);
+
+		return $schemaPropertyAnnotator;
 	}
 
 	/**
@@ -54,10 +77,10 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return PredefinedPropertyAnnotator
 	 */
-	public function newPredefinedPropertyAnnotator( SemanticData $semanticData, PageInfo $pageInfo ) {
+	public function newPredefinedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, PageInfo $pageInfo ) {
 
 		$predefinedPropertyAnnotator = new PredefinedPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$pageInfo
 		);
 
@@ -69,6 +92,28 @@ class PropertyAnnotatorFactory {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param SemanticData $semanticData
+	 * @param Title $title
+	 *
+	 * @return EditProtectedPropertyAnnotator
+	 */
+	public function newEditProtectedPropertyAnnotator( PropertyAnnotator $propertyAnnotator, Title $title ) {
+
+		$editProtectedPropertyAnnotator = new EditProtectedPropertyAnnotator(
+			$propertyAnnotator,
+			$title
+		);
+
+		$editProtectedPropertyAnnotator->setEditProtectionRight(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEditProtectionRight' )
+		);
+
+		return $editProtectedPropertyAnnotator;
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param SemanticData $semanticData
@@ -76,11 +121,33 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return SortKeyPropertyAnnotator
 	 */
-	public function newSortKeyPropertyAnnotator( SemanticData $semanticData, $sortkey ) {
+	public function newSortKeyPropertyAnnotator( PropertyAnnotator $propertyAnnotator, $sortkey ) {
 		return new SortKeyPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$sortkey
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 * @param arrat|null $translation
+	 *
+	 * @return TranslationPropertyAnnotator
+	 */
+	public function newTranslationPropertyAnnotator( PropertyAnnotator $propertyAnnotator, $translation ) {
+
+		$translationPropertyAnnotator = new TranslationPropertyAnnotator(
+			$propertyAnnotator,
+			$translation
+		);
+
+		$translationPropertyAnnotator->setPredefinedPropertyList(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' )
+		);
+
+		return $translationPropertyAnnotator;
 	}
 
 	/**
@@ -92,12 +159,19 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return DisplayTitlePropertyAnnotator
 	 */
-	public function newDisplayTitlePropertyAnnotator( SemanticData $semanticData, $displayTitle, $defaultSort ) {
-		return new DisplayTitlePropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+	public function newDisplayTitlePropertyAnnotator( PropertyAnnotator $propertyAnnotator, $displayTitle, $defaultSort ) {
+
+		$displayTitlePropertyAnnotator = new DisplayTitlePropertyAnnotator(
+			$propertyAnnotator,
 			$displayTitle,
 			$defaultSort
 		);
+
+		$displayTitlePropertyAnnotator->canCreateAnnotation(
+			( ApplicationFactory::getInstance()->getSettings()->get( 'smwgDVFeatures' ) & SMW_DV_WPV_DTITLE ) != 0
+		);
+
+		return $displayTitlePropertyAnnotator;
 	}
 
 	/**
@@ -108,23 +182,29 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return CategoryPropertyAnnotator
 	 */
-	public function newCategoryPropertyAnnotator( SemanticData $semanticData, array $categories ) {
+	public function newCategoryPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $categories ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$categoryPropertyAnnotator = new CategoryPropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData ),
+			$propertyAnnotator,
 			$categories
 		);
 
-		$categoryPropertyAnnotator->setShowHiddenCategoriesState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgShowHiddenCategories' )
+		$categoryPropertyAnnotator->showHiddenCategories(
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_HID_CATS )
 		);
 
-		$categoryPropertyAnnotator->setCategoryInstanceUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgCategoriesAsInstances' )
+		$categoryPropertyAnnotator->useCategoryInstance(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_INSTANCE )
 		);
 
-		$categoryPropertyAnnotator->setCategoryHierarchyUsageState(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgUseCategoryHierarchy' )
+		$categoryPropertyAnnotator->useCategoryHierarchy(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_HIERARCHY )
+		);
+
+		$categoryPropertyAnnotator->useCategoryRedirect(
+			$settings->isFlagSet( 'smwgCategoryFeatures', SMW_CAT_REDIRECT )
 		);
 
 		return $categoryPropertyAnnotator;
@@ -137,9 +217,9 @@ class PropertyAnnotatorFactory {
 	 *
 	 * @return MandatoryTypePropertyAnnotator
 	 */
-	public function newMandatoryTypePropertyAnnotator( SemanticData $semanticData ) {
+	public function newMandatoryTypePropertyAnnotator( PropertyAnnotator $propertyAnnotator ) {
 		return new MandatoryTypePropertyAnnotator(
-			$this->newNullPropertyAnnotator( $semanticData )
+			$propertyAnnotator
 		);
 	}
 

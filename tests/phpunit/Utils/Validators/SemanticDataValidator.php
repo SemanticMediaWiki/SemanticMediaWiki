@@ -102,11 +102,17 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 	 * @param string|null $msg
 	 */
 	public function assertThatSemanticDataHasPropertyCountOf( $count, SemanticData $semanticData, $msg = null ) {
-		$this->assertCount(
-			$count,
-			$semanticData->getProperties(),
-			$msg === null ? "Asserts property count of {$count}" : $msg
-		);
+
+		$prop = [];
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$prop[] = $property->getKey();
+		}
+
+		$msg = $msg === null ? "Failed asserting property count of {$count}" : $msg;
+		$msg .= ' Counted properties include: ' . json_encode( $prop, JSON_PRETTY_PRINT );
+
+		$this->assertCount( $count, $prop, $msg );
 	}
 
 	/**
@@ -199,13 +205,23 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$runPropertiesAreSetAssert = false;
 		$properties = $semanticData->getProperties();
 
+		// Deprecated, use strictPropertyValueMatch
 		if ( isset( $expected['strict-mode-valuematch'] ) ) {
 			$this->setStrictModeForValueMatch( $expected['strict-mode-valuematch'] );
+		}
+
+		if ( isset( $expected['strictPropertyValueMatch'] ) ) {
+			$this->setStrictModeForValueMatch( $expected['strictPropertyValueMatch'] );
 		}
 
 		if ( isset( $expected['propertyCount'] ) ) {
 			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData, $message );
 		}
+
+		$report = [
+			'@unresolved' => [],
+			'@valueHint' => []
+		];
 
 		foreach ( $properties as $property ) {
 
@@ -222,7 +238,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 
 			if ( isset( $expected['propertyKeys'] ) ) {
-				$this->assertContainsPropertyKeys( $expected['propertyKeys'], $property );
+				$this->assertContainsPropertyKeys( $expected['propertyKeys'], $property, $message );
 				$runPropertiesAreSetAssert = true;
 			}
 
@@ -232,10 +248,13 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			}
 
 			if ( isset( $expected['propertyValues'] ) ) {
+				$pv = $semanticData->getPropertyValues( $property );
+				$report[$property->getKey()] =  $this->formatAsString( $pv );
+
 				$this->assertThatPropertyValuesAreSet(
 					$expected,
 					$property,
-					$semanticData->getPropertyValues( $property )
+					$pv
 				);
 
 				$runPropertiesAreSetAssert = true;
@@ -244,9 +263,11 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		// Final ceck for values distributed over different properties
 		if ( isset( $expected['propertyValues'] ) && !$this->strictModeForValueMatch ) {
+			$report['@unresolved'] = $expected['propertyValues'];
+			$report['@valueHint'] = $expected['@valueHint'];
 			$this->assertEmpty(
 				$expected['propertyValues'],
-				"Unmatched values in {$message} for " . $this->formatAsString( $expected['propertyValues'] )
+				"Unmatched values in {$message} for:\n" . json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
 			);
 		}
 
@@ -267,6 +288,10 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 
 		$runPropertyValueAssert = false;
 
+		if ( !isset( $expected['@valueHint'] ) ) {
+			$expected['@valueHint'] = [];
+		}
+
 		foreach ( $dataItems as $dataItem ) {
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $property );
@@ -285,7 +310,6 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 					$runPropertyValueAssert = $this->assertContainsPropertyValues( $expected, $dataValue, 'getWikiValue' );
 					break;
 			}
-
 		}
 
 		// Issue #124 needs to be resolved first
@@ -305,11 +329,15 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		return $semanticData->isEmpty();
 	}
 
-	private function assertContainsPropertyKeys( $keys, DIProperty $property ) {
+	private function assertContainsPropertyKeys( $keys, DIProperty $property, $message = null ) {
+
+		$keys = str_replace( " ", "_", $keys );
+		$message = ( $message === null ? 'Failed asserting' : "Failed asserting \"$message\"" );
+
 		$this->assertContains(
 			$property->getKey(),
 			$keys,
-			__METHOD__ . " asserts property key for '{$property->getLabel()}' with ({$this->formatAsString( $keys )})"
+			"{$message} property key: '{$property->getLabel()}' in ({$this->formatAsString( $keys )})"
 		);
 	}
 
@@ -344,20 +372,22 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		);
 	}
 
-	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = [] ) {
 
 		if ( !isset( $expected['propertyValues'] ) ) {
 			throw new RuntimeException( "Expected a 'propertyValues' array index" );
 		}
 
-		$formatter = array( $dataValue, $defaultFormatter );
+		$formatter = [ $dataValue, $defaultFormatter ];
+		$valueSerialization = $dataValue->getDataItem()->getSerialization();
 
 		if ( isset( $expected['valueFormatter'] ) && is_callable( $expected['valueFormatter'] ) ) {
 			$formatter = $expected['valueFormatter'];
-			$formatterParameters = array( $dataValue );
+			$formatterParameters = [ $dataValue ];
 		}
 
 		$value = call_user_func_array( $formatter, $formatterParameters );
+		$expected['@valueHint'][] = $value;
 
 		if ( $this->strictModeForValueMatch ) {
 
@@ -381,12 +411,17 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				continue;
 			}
 
-			if ( is_numeric( $value ) && $value == $propertyValue ) {
+			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) )  && $value == $propertyValue ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;
 			}
 
 			if ( strpos( $propertyValue, $value ) !== false ) {
+				unset( $expected['propertyValues'][$key] );
+				continue;
+			}
+
+			if ( $propertyValue === $valueSerialization ) {
 				unset( $expected['propertyValues'][$key] );
 			}
 		}

@@ -5,7 +5,8 @@ namespace SMW\SQLStore;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SQLStore\QueryEngine\ConceptQueryResolver;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
@@ -24,9 +25,9 @@ class ConceptCache {
 	private $store;
 
 	/**
-	 * @var ConceptQueryResolver
+	 * @var ConceptQuerySegmentBuilder
 	 */
-	private $conceptQueryResolver;
+	private $conceptQuerySegmentBuilder;
 
 	/**
 	 * @var integer
@@ -37,11 +38,11 @@ class ConceptCache {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
-	 * @param ConceptQueryResolver $conceptQueryResolver
+	 * @param ConceptQuerySegmentBuilder $conceptQueryResolver
 	 */
-	public function __construct( SMWSQLStore3 $store, ConceptQueryResolver $conceptQueryResolver ) {
+	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;
-		$this->conceptQueryResolver = $conceptQueryResolver;
+		$this->conceptQuerySegmentBuilder = $conceptQuerySegmentBuilder;
 	}
 
 	/**
@@ -61,11 +62,15 @@ class ConceptCache {
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
-		$errors = $this->refresh( $concept );
 
-		$this->conceptQueryResolver->cleanUp();
+		$errors = array_merge(
+			$this->conceptQuerySegmentBuilder->getErrors(),
+			$this->refresh( $concept )
+		);
 
-		return array_merge( $this->conceptQueryResolver->getErrors(), $errors );
+		$this->conceptQuerySegmentBuilder->cleanUp();
+
+		return ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $errors );
 	}
 
 	/**
@@ -91,7 +96,7 @@ class ConceptCache {
 		$cid_c = $this->getIdOfConcept( $concept );
 
 		if ( $cid !== $cid_c ) {
-			return array( "Skipping redirect concept." );
+			return [ "Skipping redirect concept." ];
 		}
 
 		$conceptQueryText = $this->getConceptCacheText( $concept );
@@ -99,22 +104,22 @@ class ConceptCache {
 		if ( $conceptQueryText === false ) {
 			$this->deleteConceptById( $cid );
 
-			return array( "No concept description found." );
+			return [ "No concept description found." ];
 		}
 
 		// Pre-process query:
-		$querySegment = $this->conceptQueryResolver->prepareQuerySegmentFor(
+		$querySegment = $this->conceptQuerySegmentBuilder->getQuerySegmentFrom(
 			$conceptQueryText
 		);
 
 		if ( $querySegment === null || $querySegment->joinfield === '' || $querySegment->joinTable === '' ) {
-			return array();
+			return [];
 		}
 
 		// TODO: catch db exception
 		$db->delete(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
-			array( 'o_id' => $cid ),
+			[ 'o_id' => $cid ],
 			__METHOD__
 		);
 
@@ -145,12 +150,12 @@ class ConceptCache {
 
 		$db->update(
 			'smw_fpt_conc',
-			array( 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ),
-			array( 's_id' => $cid ),
+			[ 'cache_date' => strtotime( "now" ), 'cache_count' => $db->affectedRows() ],
+			[ 's_id' => $cid ],
 			__METHOD__
 		);
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -202,14 +207,14 @@ class ConceptCache {
 
 		$db->delete(
 			SMWSQLStore3::CONCEPT_CACHE_TABLE,
-			array( 'o_id' => $conceptId ),
+			[ 'o_id' => $conceptId ],
 			__METHOD__
 		);
 
 		$db->update(
 			'smw_fpt_conc',
-			array( 'cache_date' => null, 'cache_count' => null ),
-			array( 's_id' => $conceptId ),
+			[ 'cache_date' => null, 'cache_count' => null ],
+			[ 's_id' => $conceptId ],
 			__METHOD__
 		);
 	}
@@ -234,8 +239,8 @@ class ConceptCache {
 
 		$row = $db->selectRow(
 			'smw_fpt_conc',
-			array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ),
-			array( 's_id' => $cid ),
+			[ 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date', 'cache_count' ],
+			[ 's_id' => $cid ],
 			__METHOD__
 		);
 

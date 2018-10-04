@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\UniquenessConstraintValue;
-use SMW\Options;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -49,10 +48,7 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UniquenessConstraintValue();
 
-		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => '' ) )
-		);
-
+		$instance->setOption( 'smwgDVFeatures', '' );
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertNotEmpty(
@@ -64,10 +60,7 @@ class UniquenessConstraintValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new UniquenessConstraintValue();
 
-		$instance->setOptions(
-			new Options( array( 'smwgDVFeatures' => SMW_DV_PVUC ) )
-		);
-
+		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVUC );
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertNotEmpty(

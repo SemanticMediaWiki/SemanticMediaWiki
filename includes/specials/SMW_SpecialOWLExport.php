@@ -21,6 +21,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 	}
 
 	public function execute( $page ) {
+		$this->setHeaders();
 		global $wgOut, $wgRequest;
 
 		$wgOut->setPageTitle( wfMessage( 'exportrdf' )->text() );
@@ -33,7 +34,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 			$page = is_null( $page ) ? $wgRequest->getCheck( 'text' ) : $page;
 
 			if ( $page !== '' ) {
-				$pages = array( $page );
+				$pages = [ $page ];
 			}
 		}
 
@@ -180,7 +181,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		// If it is a redirect then we don't want to generate triples other than
 		// the redirect target information
-		if ( isset( $pages[0] ) && Title::newFromText( $pages[0] )->isRedirect() ) {
+		if ( isset( $pages[0] ) && ( $title = Title::newFromText( $pages[0] ) ) !== null && $title->isRedirect() ) {
 			$backlinks = false;
 		}
 

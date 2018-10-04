@@ -36,6 +36,7 @@ class SpecialProperties extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
+		$this->setHeaders();
 		$out = $this->getOutput();
 
 		$out->setPageTitle( $this->msg( 'properties' )->text() );

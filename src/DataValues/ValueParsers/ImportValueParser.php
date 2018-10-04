@@ -2,7 +2,8 @@
 
 namespace SMW\DataValues\ValueParsers;
 
-use SMW\DataValues\ControlledVocabularyImportContentFetcher;
+use SMW\DataValues\ImportValue;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 
 /**
  * @private
@@ -15,22 +16,22 @@ use SMW\DataValues\ControlledVocabularyImportContentFetcher;
 class ImportValueParser implements ValueParser {
 
 	/**
-	 * @var ControlledVocabularyImportContentFetcher
+	 * @var MediaWikiNsContentReader
 	 */
-	private $controlledVocabularyImportContentFetcher;
+	private $mediaWikiNsContentReader;
 
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param ControlledVocabularyImportContentFetcher $controlledVocabularyImportContentFetcher
+	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( ControlledVocabularyImportContentFetcher $controlledVocabularyImportContentFetcher ) {
-		$this->controlledVocabularyImportContentFetcher = $controlledVocabularyImportContentFetcher;
+	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
+		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
 	}
 
 	/**
@@ -49,16 +50,16 @@ class ImportValueParser implements ValueParser {
 	 */
 	public function parse( $value ) {
 
-		list( $namespace, $section ) = $this->tryToSplitByNamespaceSection(
+		list( $namespace, $section, $controlledVocabulary ) = $this->splitByNamespaceSection(
 			$value
 		);
 
-		if ( $this->errors !== array() ) {
+		if ( $this->errors !== [] ) {
 			return null;
 		}
 
 		list( $uri, $name, $typelist ) = $this->doParse(
-			$this->controlledVocabularyImportContentFetcher->fetchFor( $namespace )
+			$controlledVocabulary
 		);
 
 		$type = $this->checkForValidType(
@@ -68,48 +69,57 @@ class ImportValueParser implements ValueParser {
 			$typelist
 		);
 
-		if ( $this->errors !== array() ) {
+		if ( $this->errors !== [] ) {
 			return null;
 		}
 
-		return array(
+		return [
 			$namespace,
 			$section,
 			$uri,
 			$name,
 			$type
-		);
+		];
 	}
 
 	/**
 	 * @return array|null
 	 */
-	private function tryToSplitByNamespaceSection( $value ) {
+	private function splitByNamespaceSection( $value ) {
 
 		if ( strpos( $value, ':' ) === false ) {
 
-			$this->errors[] = array(
-				'smw-datavalue-import-invalidvalue',
+			$this->errors[] = [
+				'smw-datavalue-import-invalid-value',
 				$value
-			);
+			];
 
 			return null;
 		}
 
 		list( $namespace, $section ) = explode( ':', $value, 2 );
 
-		// Check that elements exists for the namespace
-		if ( !$this->controlledVocabularyImportContentFetcher->contains( $namespace ) ) {
+		/*
+		 * A controlled vocabulary is a list of terms, with terms being unambiguous,
+		 * and non-redundant. Vocabulary definitions adhere only a limited set of
+		 * rules/constraints (e.g. Type/Label)
+		 */
+		$controlledVocabulary = $this->mediaWikiNsContentReader->read(
+			ImportValue::IMPORT_PREFIX . $namespace
+		);
 
-			$this->errors[] = array(
-				'smw-datavalue-import-unknownns',
+		// Check that elements exists for the namespace
+		if ( $controlledVocabulary === '' ) {
+
+			$this->errors[] = [
+				'smw-datavalue-import-unknown-namespace',
 				$namespace
-			);
+			];
 
 			return null;
 		}
 
-		return array( $namespace, $section );
+		return [ $namespace, $section, $controlledVocabulary ];
 	}
 
 	/**
@@ -119,21 +129,21 @@ class ImportValueParser implements ValueParser {
 
 		if ( $uri === '' ) {
 
-			$this->errors[] = array(
-				'smw-datavalue-import-missing-nsuri',
+			$this->errors[] = [
+				'smw-datavalue-import-missing-namespace-uri',
 				$namespace
-			);
+			];
 
 			return null;
 		}
 
 		if ( !isset( $typelist[$section] ) ) {
 
-			$this->errors[] = array(
+			$this->errors[] = [
 				'smw-datavalue-import-missing-type',
 				$section,
 				$namespace
-			);
+			];
 
 			return null;
 		}
@@ -144,15 +154,10 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function doParse( $contents ) {
+	private function doParse( $controlledVocabulary ) {
 
-		$list = array();
-
-		if ( $contents === '' ) {
-			return null;
-		}
-
-		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
+		$list = [];
+		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
 		// Get definition from first line
 		$fristLine = array_shift( $importDefintions );
@@ -173,7 +178,7 @@ class ImportValueParser implements ValueParser {
 			$list[trim( $secname )] = $typestring;
 		}
 
-		return array( $uri, $name, $list );
+		return [ $uri, $name, $list ];
 	}
 
 }

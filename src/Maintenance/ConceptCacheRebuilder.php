@@ -40,7 +40,7 @@ class ConceptCacheRebuilder {
 
 	private $concept = null;
 	private $action  = null;
-	private $options = array();
+	private $options = [];
 	private $startId = 0;
 	private $endId   = 0;
 	private $lines   = 0;
@@ -74,7 +74,7 @@ class ConceptCacheRebuilder {
 	 */
 	public function setParameters( array $parameters ) {
 
-		$options = array( 'hard', 'update', 'old', 'quiet', 'status', 'verbose' );
+		$options = [ 'hard', 'update', 'old', 'quiet', 'status', 'verbose' ];
 
 		foreach ( $options as $option ) {
 			if ( isset( $parameters[$option] ) ) {
@@ -94,7 +94,7 @@ class ConceptCacheRebuilder {
 			$this->endId = intval( $parameters['e'] );
 		}
 
-		$actions = array( 'status', 'create', 'delete' );
+		$actions = [ 'status', 'create', 'delete' ];
 
 		foreach ( $actions as $action ) {
 			if ( isset( $parameters[$action] ) && $this->action === null ) {
@@ -124,7 +124,7 @@ class ConceptCacheRebuilder {
 				$this->reportMessage( "\nAbort with CTRL-C in the next $delay seconds ... " );
 
 				if ( !$this->hasOption( 'quiet' ) ) {
-					wfCountDown( $delay );
+					swfCountDown( $delay );
 				}
 
 				$this->reportMessage( "\nDeleting concept caches.\n\n" );
@@ -148,7 +148,7 @@ class ConceptCacheRebuilder {
 			$this->workOnConcept( $concept );
 		}
 
-		if ( $concepts === array() ) {
+		if ( $concepts === [] ) {
 			$this->reportMessage( "No concept available.\n" );
 		} else {
 			$this->reportMessage( "\nDone.\n" );
@@ -179,7 +179,7 @@ class ConceptCacheRebuilder {
 		$skip = false;
 
 		if ( $concept === null ) {
-			$skip = 'page not cachable (no concept description, maybe a redirect)';
+			$skip = 'page not cacheable (no concept description, maybe a redirect)';
 		} elseif ( ( $this->hasOption( 'update' ) ) && ( $concept->getCacheStatus() !== 'full' ) ) {
 			$skip = 'page not cached yet';
 		} elseif ( ( $this->hasOption( 'old' ) ) && ( $concept->getCacheStatus() === 'full' ) &&
@@ -228,7 +228,7 @@ class ConceptCacheRebuilder {
 	private function getConcepts() {
 
 		if ( $this->concept !== null ) {
-			return array( $this->createConcept() );
+			return [ $this->createConcept() ];
 		}
 
 		return $this->createMultipleConcepts();

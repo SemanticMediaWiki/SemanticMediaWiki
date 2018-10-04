@@ -2,11 +2,13 @@
 
 namespace SMW\Tests\Integration\SQLStore\TableBuilder;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\SQLStore\TableBuilder\TableBuilder;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
-use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\Tests\MwDBaseUnitTestCase;
 
 /**
  * @group semantic-mediawiki
@@ -22,6 +24,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 	private $messageReporterFactory;
 	private $TableBuilder;
 	private $stringValidator;
+	private $tableName = 'rdbms_test';
 
 	protected function setUp() {
 		parent::setUp();
@@ -47,21 +50,16 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$definition = array(
-			'fields' => array(
-				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
-			),
-			'wgDBname' => $GLOBALS['wgDBname'],
-			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
-		);
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
 
-		$this->tableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table not found, now creating',
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -77,24 +75,19 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$definition = array(
-			'fields' => array(
-				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
-				't_num'  => $this->tableBuilder->getStandardFieldType( 'integer' ),
-				't_int'  => $this->tableBuilder->getStandardFieldType( 'integer' )
-			),
-			'wgDBname' => $GLOBALS['wgDBname'],
-			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
-		);
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_INT, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$this->tableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table already exists, checking structure',
 			'creating field t_num',
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -110,24 +103,19 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$definition = array(
-			'fields' => array(
-				'id'   => $this->tableBuilder->getStandardFieldType( 'id primary' ),
-				't_text' => $this->tableBuilder->getStandardFieldType( 'blob' ),
-				't_num'  => $this->tableBuilder->getStandardFieldType( 'double' ),
-				't_int'  => $this->tableBuilder->getStandardFieldType( 'integer' )
-			),
-			'wgDBname' => $GLOBALS['wgDBname'],
-			'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
-		);
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$this->tableBuilder->createTable( 'rdbms_test', $definition );
+		$this->tableBuilder->create( $table );
 
-		$expected = array(
+		$expected = [
 			'Checking table rdbms_test',
 			'Table already exists, checking structure',
 			'changing type of field t_num',
-		);
+		];
 
 		// Not supported
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
@@ -148,20 +136,23 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$definition = array(
-			'indicies' => array(
-				'id',
-				't_num'
-			)
-		);
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$this->tableBuilder->createIndex( 'rdbms_test', $definition );
+		$table->addIndex( 'id' );
+		$table->addIndex( 't_int' );
+		$table->addIndex( 't_num' );
 
-		$expected = array(
+		$this->tableBuilder->create( $table );
+
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'creating new index t_num'
-		);
+		];
 
 		// ID message, Primary doesn't implicitly exists before
 		if ( $this->tableBuilder instanceof PostgresTableBuilder || $this->tableBuilder instanceof SQLiteTableBuilder ) {
@@ -174,7 +165,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	public function testUpdateExistingIndex() {
+	public function testUpdateIndex_ReplaceIndex() {
 
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
@@ -182,21 +173,92 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$definition = array(
-			'indicies' => array(
-				'id',
-				't_num,t_int'
-			)
-		);
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
 
-		$this->tableBuilder->createIndex( 'rdbms_test', $definition );
+		$table->addIndex( 'id' );
+		$table->addIndex( 't_num,t_int' );
 
-		$expected = array(
+		$this->tableBuilder->create( $table );
+
+		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'removing index t_num',
 			'creating new index t_num,t_int',
+		];
+
+		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
+			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = 'removing index';
+		}
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$messageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testUpdateIndex_RemoveIndexWithArrayNotation() {
+
+		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
+
+		$this->tableBuilder->setMessageReporter(
+			$messageReporter
+		);
+
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
+
+		$table->addIndex( [ 'id', 'UNIQUE INDEX' ] );
+
+		$this->tableBuilder->create( $table );
+
+		$expected = [
+			'Checking index structures for table rdbms_test',
+			'index id is fine',
+			'removing index t_num,t_int'
+		];
+
+		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
+			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = 'removing index';
+		}
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$messageReporter->getMessagesAsString()
+		);
+	}
+
+	public function testUpdateIndex_NoIndexChange() {
+
+		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
+
+		$this->tableBuilder->setMessageReporter(
+			$messageReporter
+		);
+
+		$table = new Table( $this->tableName );
+		$table->addColumn( 'id', FieldType::FIELD_ID_PRIMARY );
+		$table->addColumn( 't_text', [ FieldType::TYPE_BLOB, 'NOT NULL' ] );
+		$table->addColumn( 't_num', [ FieldType::TYPE_DOUBLE, 'NOT NULL' ] );
+		$table->addColumn( 't_int', [ FieldType::TYPE_INT ] );
+
+		$table->addIndex( [ 'id', 'UNIQUE INDEX' ] );
+
+		$this->tableBuilder->create( $table );
+
+		$expected = [
+			'Checking index structures for table rdbms_test',
+			'index id is fine'
+		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
 			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
@@ -217,11 +279,13 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$this->tableBuilder->dropTable( 'rdbms_test' );
+		$table = new Table( $this->tableName );
 
-		$expected = array(
+		$this->tableBuilder->drop( $table );
+
+		$expected = [
 			'dropped table rdbms_test'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -237,11 +301,13 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			$messageReporter
 		);
 
-		$this->tableBuilder->dropTable( 'foo_test' );
+		$table = new Table( 'foo_test' );
 
-		$expected = array(
+		$this->tableBuilder->drop( $table );
+
+		$expected = [
 			'foo_test not found, skipping removal'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

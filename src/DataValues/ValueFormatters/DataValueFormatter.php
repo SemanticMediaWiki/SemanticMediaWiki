@@ -121,7 +121,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @return mixed|false
 	 */
-	public function getOptionValueFor( $key ) {
+	public function getOption( $key ) {
 
 		if ( $this->options !== null && $this->options->has( $key ) ) {
 			return $this->options->get( $key );

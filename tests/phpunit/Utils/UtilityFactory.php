@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\JsonFileReader;
+use Onoi\MessageReporter\SpyMessageReporter;
 use SMW\Tests\Utils\File\BulkFileProvider;
+use SMW\Tests\Utils\File\DummyFileCreator;
+use SMW\Tests\Utils\File\JsonFileReader;
+use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
@@ -173,6 +176,73 @@ class UtilityFactory {
 	 */
 	public function newBulkFileProvider( $path ) {
 		return new BulkFileProvider( $path );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $localUploadPath
+	 * @param $desiredDestName
+	 *
+	 * @return LocalFileUpload
+	 */
+	public function newLocalFileUploadWithCopy( $localUploadPath, $desiredDestName ) {
+
+		// Use to create a copy to avoid having the original file being
+		// deleted after the upload
+		$dummyFileCreator = new DummyFileCreator();
+		$dummyFileCreator->createFileWithCopyFrom(  $desiredDestName, $localUploadPath );
+
+		return new LocalFileUpload(
+			$dummyFileCreator->getPath(),
+			$desiredDestName
+		);
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return LocalFileUpload
+	 */
+	public function newLocalFileUpload() {
+
+		$localFileUpload = new LocalFileUpload();
+
+		$localFileUpload->setDummyFileCreator(
+			new DummyFileCreator()
+		);
+
+		return $localFileUpload;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param $length
+	 * @param $prefix identify a specific random string during testing
+	 *
+	 * @return string
+	 */
+	public function createRandomString( $length = 10, $prefix = null ) {
+		return $prefix . ( $prefix ? '-' : '' ) . substr( str_shuffle( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ), 0, $length );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return SpyLogger
+	 */
+	public function newSpyLogger() {
+		return new SpyLogger();
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return SpyMessageReporter
+	 */
+	public function newSpyMessageReporter() {
+		return new SpyMessageReporter();
 	}
 
 }

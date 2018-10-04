@@ -65,7 +65,7 @@ class SMWConceptValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		/// This should not be used for anything. This class does not support wiki values.
-		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() );
+		return str_replace( [ '&lt;', '&gt;', '&amp;' ], [ '<', '>', '&' ], $this->m_dataitem->getConceptQuery() );
 	}
 
 	/// Return the concept's defining text (in SMW query syntax)

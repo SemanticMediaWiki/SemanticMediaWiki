@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use Psr\Log\LoggerAwareTrait;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -14,20 +15,17 @@ use SMW\Store;
  */
 class DependencyLinksTableUpdater {
 
+	use LoggerAwareTrait;
+
 	/**
 	 * @var array
 	 */
-	private static $updateList = array();
+	private static $updateList = [];
 
 	/**
 	 * @var Store
 	 */
-	private $store = null;
-
-	/**
-	 * @var Database
-	 */
-	private $connection = null;
+	private $store;
 
 	/**
 	 * @since 2.4
@@ -36,7 +34,6 @@ class DependencyLinksTableUpdater {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 
 	/**
@@ -52,7 +49,7 @@ class DependencyLinksTableUpdater {
 	 * @since 2.4
 	 */
 	public function clear() {
-		self::$updateList = array();
+		self::$updateList = [];
 	}
 
 	/**
@@ -63,7 +60,7 @@ class DependencyLinksTableUpdater {
 	 */
 	public function addToUpdateList( $sid, array $dependencyList = null ) {
 
-		if ( $sid == 0 || $dependencyList === null || $dependencyList === array() ) {
+		if ( $sid == 0 || $dependencyList === null || $dependencyList === [] ) {
 			return null;
 		}
 
@@ -80,12 +77,12 @@ class DependencyLinksTableUpdater {
 	public function doUpdate() {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
-			if ( $dependencyList === array() ) {
+			if ( $dependencyList === [] ) {
 				continue;
 			}
 
 			$this->updateDependencyList( $sid, $dependencyList );
-			self::$updateList[$sid] = array();
+			self::$updateList[$sid] = [];
 		}
 	}
 
@@ -96,19 +93,26 @@ class DependencyLinksTableUpdater {
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
 
-		wfDebugLog( 'smw', __METHOD__ . ' ' . implode( ' ,', $deleteIdList ) . "\n" );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'list' => implode( ' ,', $deleteIdList )
+		];
 
-		$this->connection->beginAtomicTransaction( __METHOD__ );
+		$this->logger->info( '[QueryDependency] Delete dependencies: {list}', $context );
 
-		$this->connection->delete(
+		$connection = $this->store->getConnection( 'mw.db' );
+		$connection->beginAtomicTransaction( __METHOD__ );
+
+		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $deleteIdList
-			),
+			],
 			__METHOD__
 		);
 
-		$this->connection->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
@@ -117,26 +121,27 @@ class DependencyLinksTableUpdater {
 	 * @param integer $sid
 	 * @param array $dependencyList
 	 */
-	public function updateDependencyList( $sid, array $dependencyList ) {
+	private function updateDependencyList( $sid, array $dependencyList ) {
 
-		$this->connection->beginAtomicTransaction( __METHOD__ );
+		$connection = $this->store->getConnection( 'mw.db' );
+		$connection->beginAtomicTransaction( __METHOD__ );
 
 		// Before an insert, delete all entries that for the criteria which is
 		// cheaper then doing an individual upsert or selectRow, this also ensures
 		// that entries are self-corrected for dependencies matched
-		$this->connection->delete(
+		$connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array(
+			[
 				's_id' => $sid
-			),
+			],
 			__METHOD__
 		);
 
 		if ( $sid == 0 ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
+			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 
-		$inserts = array();
+		$inserts = [];
 
 		foreach ( $dependencyList as $dependency ) {
 
@@ -144,40 +149,46 @@ class DependencyLinksTableUpdater {
 				continue;
 			}
 
-			$oid = $this->getIdForSubject( $dependency );
+			$oid = $this->getId( $dependency );
 
 			// If the ID_TABLE didn't contained an valid ID then we create one ourselves
 			// to ensure that object entities are tracked from the start
 			// This can happen when a query is added with object reference that have not
 			// yet been referenced as annotation and therefore do not recognized as
 			// value annotation
-			if ( $oid < 1 && ( ( $oid = $this->tryToMakeIdForSubject( $dependency ) ) < 1 ) ) {
+			if ( $oid < 1 && ( ( $oid = $this->createId( $dependency ) ) < 1 ) ) {
 				continue;
 			}
 
-			$inserts[$sid . $oid] = array(
+			$inserts[$sid . $oid] = [
 				's_id' => $sid,
 				'o_id' => $oid
-			);
+			];
 		}
 
-		if ( $inserts === array() ) {
-			return $this->connection->endAtomicTransaction( __METHOD__ );
+		if ( $inserts === [] ) {
+			return $connection->endAtomicTransaction( __METHOD__ );
 		}
 
 		// MW's multi-array insert needs a numeric dimensional array but the key
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		wfDebugLog( 'smw', __METHOD__ . ' insert for SID ' . $sid . "\n" );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $sid
+		];
 
-		$this->connection->insert(
+		$this->logger->info( '[QueryDependency] Table insert: {id} ID', $context );
+
+		$connection->insert(
 			SQLStore::QUERY_LINKS_TABLE,
 			$inserts,
 			__METHOD__
 		);
 
-		$this->connection->endAtomicTransaction( __METHOD__ );
+		$connection->endAtomicTransaction( __METHOD__ );
 	}
 
 	/**
@@ -186,9 +197,18 @@ class DependencyLinksTableUpdater {
 	 * @param DIWikiPage $subject, $subobjectName
 	 * @param string $subobjectName
 	 */
-	public function getIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
+	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
 
-		$id = $this->store->getObjectIds()->getIDFor(
+		if ( $subobjectName !== '' ) {
+			$subject = new DIWikiPage(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subobjectName
+			);
+		}
+
+		$id = $this->store->getObjectIds()->getId(
 			$subject
 		);
 
@@ -201,11 +221,7 @@ class DependencyLinksTableUpdater {
 	 * @param DIWikiPage $subject, $subobjectName
 	 * @param string $subobjectName
 	 */
-	public function tryToMakeIdForSubject( DIWikiPage $subject, $subobjectName = '' ) {
-
-		if ( $subject->getNamespace() !== NS_CATEGORY && $subject->getNamespace() !== SMW_NS_PROPERTY ) {
-			return 0;
-		}
+	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
 
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
@@ -215,7 +231,15 @@ class DependencyLinksTableUpdater {
 			false
 		);
 
-		wfDebugLog( 'smw', __METHOD__ . " add new {$id} ID for " . $subject->getHash() . " \n" );
+		$context = [
+			'method' => __METHOD__,
+			'role' => 'developer',
+			'id' => $id,
+			'origin' => $subject->getHash() . $subobjectName
+
+		];
+
+		$this->logger->info( '[QueryDependency] Table update: new {id} ID; {origin}', $context );
 
 		return $id;
 	}

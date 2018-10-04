@@ -1,0 +1,111 @@
+{
+	"description": "Test `_txt`/`_uri` with enabled `SMW_FIELDT_CHAR_LONG | SMW_FIELDT_CHAR_NOCASE` (#1912, #2499, `smwgFieldTypeFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/Q0907/1",
+			"contents": {
+				"import-from": "/../Fixtures/q-0907-1.txt"
+			}
+		},
+		{
+			"page": "Example/Q0907/2",
+			"contents": {
+				"import-from": "/../Fixtures/q-0907-2.txt"
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (on _txt within 300 char range)",
+			"condition": "[[Category:Q0907]] [[Has text::~*libero*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0907/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (on _txt within 300 char range, case insensitive)",
+			"condition": "[[Category:Q0907]] [[Has text::~*LIbero*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0907/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (on _uri within 300 char range)",
+			"condition": "[[Category:Q0907]] [[Has url::~*stack*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0907/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (on _uri within 300 char range)",
+			"condition": "[[Category:Q0907]] [[Has url::~*STACK*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0907/2#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_NOCASE"
+		],
+		"smwgFieldTypeFeatures": [
+			"SMW_FIELDT_CHAR_NOCASE",
+			"SMW_FIELDT_CHAR_LONG"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "PostgreSQL requires \"citext\" otherwise it returns with \"Error: 42704 ERROR:  type \"citext\" does not exist\"",
+			"sqlite": "NOCASE is not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

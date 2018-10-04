@@ -1,0 +1,117 @@
+{
+	"description": "Test `#info`, `#ask` template output (#2347, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "P0108.Ask.Output",
+			"contents": "<includeonly>{{{1}}} {{{2}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "P0108.Ask",
+			"contents": "<includeonly>{{#ask: [[Has page::P0108]] |?Has page |limit=1 |format=template |link=none |template=P0108.Ask.Output }}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "P0108",
+			"contents": "{{#info: message={{P0108.Ask}} }}"
+		},
+		{
+			"page": "Test/P0108/1",
+			"contents": "[[Has page::P0108]]"
+		},
+		{
+			"page": "Test/P0108/2",
+			"contents": "{{P0108}}"
+		},
+		{
+			"page": "Test/P0108/3",
+			"contents": "{{#set: Has text=Text with an [[Has page::annotation]] }}"
+		},
+		{
+			"page": "Test/P0108/4",
+			"contents": "{{#info: message={{#show: Test/P0108/3 |?Has text }} }}"
+		},
+		{
+			"page": "Test/P0108/5",
+			"contents": "{{#info: {{#show: Test/P0108/3 |?Has text }} }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #info with template generate output including encoded (&#91;) on/off marker",
+			"subject": "Test/P0108/2",
+			"skip-on": {
+				"mw-1.23.x": "works different in 1.23+"
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Test/P0108/1 P0108\">",
+					"<span class=\"smwttcontent\">Test/P0108/1 P0108</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 $info + #show (no annotation is leaked via a text element)",
+			"subject": "Test/P0108/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Text with an annotation\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 $info + #show (no annotation is leaked via a text element)",
+			"subject": "Test/P0108/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Text with an annotation\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

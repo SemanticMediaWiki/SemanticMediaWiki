@@ -33,6 +33,15 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 	}
 
 	/**
+	 * SpecialPage::doesWrites
+	 *
+	 * @return boolean
+	 */
+	public function doesWrites() {
+		return true;
+	}
+
+	/**
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
@@ -75,6 +84,10 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 
 		$this->getOutput()->disable();
 
+		if ( wfReadOnly() ) {
+			return $this->modifyHttpHeader( "HTTP/1.0 423 Locked", 'Wiki is in read-only mode.' );
+		}
+
 		if ( !$this->isHttpRequestMethod( 'HEAD' ) && !$this->isHttpRequestMethod( 'POST' ) ) {
 			return $this->modifyHttpHeader( "HTTP/1.0 400 Bad Request", 'The special page requires a POST/HEAD request.' );
 		}
@@ -94,27 +107,7 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 			return;
 		}
 
-		$type = $parameters['async-job']['type'];
-		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
-
-		if ( $title === null ) {
-			wfDebugLog( 'smw', __METHOD__  . " invalid title" . "\n" );
-			return;
-		}
-
-		switch ( $type ) {
-			case 'SMW\ParserCachePurgeJob':
-				$this->runParserCachePurgeJob( $title, $parameters );
-				break;
-			case 'SMW\SearchTableUpdateJob':
-				$this->runSearchTableUpdateJob( $title, $parameters );
-				break;
-			case 'SMW\UpdateJob':
-				$this->runUpdateJob( $title, $parameters );
-				break;
-		}
-
-		return true;
+		return $this->doRunJob( $parameters, ApplicationFactory::getInstance()->getMediaWikiLogger() );
 	}
 
 	private function modifyHttpHeader( $header, $message = '' ) {
@@ -141,40 +134,26 @@ class SpecialDeferredRequestDispatcher extends SpecialPage {
 		} );
 	}
 
-	private function runParserCachePurgeJob( $title, $parameters ) {
+	private function doRunJob( $parameters, $logger ) {
 
-		if ( !isset( $parameters['idlist'] ) || $parameters['idlist'] === array() ) {
-			return;
+		$type = $parameters['async-job']['type'];
+		$title = Title::newFromDBkey( $parameters['async-job']['title'] );
+
+		if ( $title === null ) {
+			return $logger->info( __METHOD__  . " invalid title" );
 		}
 
-		$purgeParserCacheJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
+		$logger->info( __METHOD__ . ' ' . $type . ' :: ' .  $title->getPrefixedDBkey() . '#' . $title->getNamespace() );
+
+		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			$type,
 			$title,
 			$parameters
 		);
 
-		$purgeParserCacheJob->run();
-	}
+		$job->run();
 
-	private function runSearchTableUpdateJob( $title, $parameters ) {
-
-		$searchTableUpdateJob = ApplicationFactory::getInstance()->newJobFactory()->newSearchTableUpdateJob(
-			$title,
-			$parameters
-		);
-
-		$searchTableUpdateJob->run();
-	}
-
-	private function runUpdateJob( $title, $parameters ) {
-
-		wfDebugLog( 'smw', __METHOD__ . ' dispatched for '.  $title->getPrefixedDBkey() . "\n" );
-
-		$updateJob = ApplicationFactory::getInstance()->newJobFactory()->newUpdateJob(
-			$title,
-			$parameters
-		);
-
-		$updateJob->run();
+		return true;
 	}
 
 	// 1.19 doesn't have a getMethod

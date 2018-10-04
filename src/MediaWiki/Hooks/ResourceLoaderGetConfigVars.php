@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MWNamespace;
+use SMW\Localizer;
 
 /**
  * Hook: ResourceLoaderGetConfigVars called right before
@@ -17,45 +18,38 @@ use MWNamespace;
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVars {
-
-	/**
-	 * @var array
-	 */
-	protected $vars;
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param array $vars
-	 */
-	public function __construct( array &$vars ) {
-		$this->vars =& $vars;
-	}
+class ResourceLoaderGetConfigVars extends HookHandler {
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param array $vars
+	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process( array &$vars ) {
 
-		$this->vars['smw-config'] = array(
+		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
-			'settings' => array(
+			'namespaces' => [],
+			'settings' => [
 				'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],
 				'smwgQMaxInlineLimit' => $GLOBALS['smwgQMaxInlineLimit'],
-			)
-		);
+			]
+		];
+
+		$localizer = Localizer::getInstance();
 
 		// Available semantic namespaces
 		foreach ( array_keys( $GLOBALS['smwgNamespacesWithSemanticLinks'] ) as $ns ) {
 			$name = MWNamespace::getCanonicalName( $ns );
-			$this->vars['smw-config']['settings']['namespace'][$name] = $ns;
+			$vars['smw-config']['settings']['namespace'][$name] = $ns;
+			$vars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
+			$vars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNamespaceTextById( $ns );
 		}
 
 		foreach ( array_keys( $GLOBALS['smwgResultFormats'] ) as $format ) {
-			$this->vars['smw-config']['formats'][$format] = htmlspecialchars( $format );
+			$vars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
 
 		return true;

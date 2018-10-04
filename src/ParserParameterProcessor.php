@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Utils\ErrorCodeFormatter;
+
 /**
  * @license GNU GPL v2+
  * @since   1.9
@@ -33,14 +35,14 @@ class ParserParameterProcessor {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param array $rawParameters
 	 */
-	public function __construct( array $rawParameters = array() ) {
+	public function __construct( array $rawParameters = [] ) {
 		$this->rawParameters = $rawParameters;
 		$this->parameters = $this->doMap( $rawParameters );
 	}
@@ -64,7 +66,7 @@ class ParserParameterProcessor {
 	 * @param mixed $error
 	 */
 	public function addError( $error ) {
-		$this->errors = array_merge( (array)$error === $error ? $error : array( $error ), $this->errors );
+		$this->errors = array_merge( (array)$error === $error ? $error : [ $error ], $this->errors );
 	}
 
 	/**
@@ -108,6 +110,8 @@ class ParserParameterProcessor {
 	/**
 	 * @since 2.3
 	 *
+	 * @param string $key
+	 *
 	 * @return boolean
 	 */
 	public function hasParameter( $key ) {
@@ -115,25 +119,44 @@ class ParserParameterProcessor {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 */
+	public function removeParameterByKey( $key ) {
+		unset( $this->parameters[$key] );
+	}
+
+	/**
+	 * @deprecated since 2.5, use ParserParameterProcessor::getParameterValuesByKey
 	 * @since 2.3
 	 *
 	 * @return array
 	 */
 	public function getParameterValuesFor( $key ) {
+		return $this->getParameterValuesByKey( $key );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $key
+	 *
+	 * @return array
+	 */
+	public function getParameterValuesByKey( $key ) {
 
 		if ( $this->hasParameter( $key ) ) {
 			return $this->parameters[$key];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
-	 * Inject parameters from an outside source
-	 *
 	 * @since 1.9
 	 *
-	 * @param array
+	 * @param array $parameters
 	 */
 	public function setParameters( array $parameters ) {
 		$this->parameters = $parameters;
@@ -158,8 +181,30 @@ class ParserParameterProcessor {
 	 * @param array $values
 	 */
 	public function setParameter( $key, array $values ) {
-		if ( $key !== '' && $values !== array() ) {
+		if ( $key !== '' && $values !== [] ) {
 			$this->parameters[$key] = $values;
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $parameters
+	 * @param boolean $associative
+	 */
+	public static function sort( array &$parameters, $associative = true ) {
+
+		// Associative vs. simple index array sort
+		if ( $associative ) {
+			ksort( $parameters );
+		} else {
+			sort( $parameters );
+		}
+
+		foreach ( $parameters as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				self::sort( $value, is_int( $key ) );
+			}
 		}
 	}
 
@@ -168,13 +213,13 @@ class ParserParameterProcessor {
 	 * via [key] => [value1, value2]
 	 */
 	private function doMap( array $params ) {
-		$results = array();
+		$results = [];
 		$previousProperty = null;
 
 		while ( key( $params ) !== null ) {
-			$separator = '';
+
 			$pipe = false;
-			$values = array();
+			$values = [];
 
 			// Only strings are allowed for processing
 			if( !is_string( current ( $params ) ) ) {
@@ -185,23 +230,7 @@ class ParserParameterProcessor {
 			$currentElement = explode( '=', trim( current ( $params ) ), 2 );
 
 			// Looking to the next element for comparison
-			if( next( $params ) ) {
-				$nextElement = explode( '=', trim( current( $params ) ), 2 );
-
-				if ( $nextElement !== array() ) {
-					// This allows assignments of type |Has property=Test1,Test2|+sep=,
-					// as a means to support multiple value declaration
-					if ( substr( $nextElement[0], - 5 ) === '+sep' ) {
-						$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
-						next( $params );
-					}
-				}
-
-				if ( current( $params ) === '+pipe' ) {
-					$pipe = true;
-					next( $params );
-				}
-			}
+			$separator = $this->lookAheadOnNextElement( $params, $pipe );
 
 			// First named parameter
 			if ( count( $currentElement ) == 1 && $previousProperty === null ) {
@@ -226,18 +255,82 @@ class ParserParameterProcessor {
 
 			// Remap properties and values to output a simple array
 			foreach ( $values as $value ) {
-				if ( $value !== '' ){
-					$results[$currentElement[0]][] = $value;
+				if ( $value !== '' ) {
+					$results[$currentElement[0]][] = trim( $value );
 				}
 			}
 
 			// +pipe indicates that elements are expected to be concatenated
 			// with a | that was removed during a #parserFunction invocation
 			if ( $pipe ) {
-				$results[$currentElement[0]] = array( implode( '|', $results[$currentElement[0]] ) );
+				$results[$currentElement[0]] = [ implode( '|', $results[$currentElement[0]] ) ];
 			}
 		}
 
-		return $results;
+		return $this->parseFromJson( $results );
 	}
+
+	private function lookAheadOnNextElement( &$params, &$pipe ) {
+
+		$separator = '';
+
+		if( !next( $params ) ) {
+			return $separator;
+		}
+
+		$nextElement = explode( '=', trim( current( $params ) ), 2 );
+
+		if ( $nextElement !== [] ) {
+			// This allows assignments of type |Has property=Test1,Test2|+sep=,
+			// as a means to support multiple value declaration
+			if ( substr( $nextElement[0], - 5 ) === '+sep' ) {
+				$separator = isset( $nextElement[1] ) ? $nextElement[1] !== '' ? $nextElement[1] : $this->defaultSeparator : $this->defaultSeparator;
+				next( $params );
+			}
+		}
+
+		if ( current( $params ) === '+pipe' ) {
+			$pipe = true;
+			next( $params );
+		}
+
+		return $separator;
+	}
+
+	private function parseFromJson( $results ) {
+
+		if ( !isset( $results['@json'] ) || !isset( $results['@json'][0] ) ) {
+			return $results;
+		}
+
+		// Restrict the depth to avoid resolving recursive assignment
+		// that can not be handled beyond the 2:n
+		$depth = 3;
+		$params = json_decode( $results['@json'][0], true, $depth );
+
+		if ( $params === null || json_last_error() !== JSON_ERROR_NONE ) {
+			$this->addError( Message::encode(
+				[
+					'smw-parser-invalid-json-format',
+					ErrorCodeFormatter::getStringFromJsonErrorCode( json_last_error() )
+				]
+			) );
+			return $results;
+		}
+
+		array_walk( $params, function( &$value, $key ) {
+
+			if ( $value === '' ) {
+				$value = [];
+			}
+
+			if ( !is_array( $value ) ) {
+				$value = [ $value ];
+			}
+		} );
+
+		unset( $results['@json'] );
+		return array_merge( $results, $params );
+	}
+
 }

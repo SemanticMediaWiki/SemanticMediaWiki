@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use Onoi\Tesa\SanitizerFactory;
-use Onoi\Tesa\Sanitizer;
 use Onoi\Tesa\Normalizer;
+use Onoi\Tesa\Sanitizer;
+use Onoi\Tesa\SanitizerFactory;
 use Onoi\Tesa\Tokenizer\Tokenizer;
 use Onoi\Tesa\Transliterator;
 
@@ -24,7 +24,7 @@ class TextSanitizer {
 	/**
 	 * @var array
 	 */
-	private $languageDetection = array();
+	private $languageDetection = [];
 
 	/**
 	 * @var integer
@@ -47,18 +47,18 @@ class TextSanitizer {
 	 */
 	public function getVersions() {
 
-		$languageDetector = '(disabled)';
+		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
 			$languageDetector = 'TextCatLanguageDetector (' . implode(', ', $this->languageDetection['TextCatLanguageDetector'] ) . ')';
 		}
 
-		return array(
-			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(disabled)' ),
+		return [
+			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(Disabled)' ),
 			'Tesa::Sanitizer'  => Sanitizer::VERSION,
 			'Tesa::Transliterator' => Transliterator::VERSION,
 			'Tesa::LanguageDetector' => $languageDetector
-		);
+		];
 	}
 
 	/**
@@ -91,24 +91,12 @@ class TextSanitizer {
 		$start = microtime( true );
 		$text = rawurldecode( trim( $text ) );
 
-		$affix = '';
 		$exemptionList = '';
 
 		// Those have special meaning when running a match search against
 		// the fulltext index (wildcard, phrase matching markers etc.)
 		if ( $isSearchTerm ) {
-			$exemptionList = array( '*', '"', '+', '-', '&', ',', '@' );
-		}
-
-		// MySQLValueMatchConditionBuilder::getQuerySearchModifier
-		// Any query modifier? Take care of it before any tokenizer or ngrams
-		// distort the marker
-		if ( $isSearchTerm &&
-			( $pos = strrpos( $text, '&BOL' ) ) !== false ||
-			( $pos = strrpos( $text, '&INL' ) ) !== false ||
-			( $pos = strrpos( $text, '&QEX' ) ) !== false ) {
-			$affix = mb_strcut( $text, $pos );
-			$text = str_replace( $affix, '', $text );
+			$exemptionList = [ '*', '"', '+', '-', '&', ',', '@', '~' ];
 		}
 
 		$sanitizer = $this->sanitizerFactory->newSanitizer( $text );
@@ -117,8 +105,8 @@ class TextSanitizer {
 		$sanitizer->convertDoubleWidth();
 
 		$sanitizer->replace(
-			array( 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', "\n", "\t" ),
-			array( '', '', '', '*', ' ', '[', "", "" )
+			[ 'http://', 'https://', 'mailto:', '%2A', '_', '&#x005B;', '&#91;', "\n", "\t" ],
+			[ '', '', '', '*', ' ', '[', '[', "", "" ]
 		);
 
 		$language = $this->predictLanguage( $text );
@@ -151,10 +139,10 @@ class TextSanitizer {
 
 		// Remove possible spaces added by the tokenizer
 		$text = str_replace(
-			array( ' *', '* ', ' "', '" ', '+ ', '- ', '@ ' ),
-			array( '*', '*', '"', '"', ' +', ' -', '@' ),
+			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
+			[ '*', '*', '"', '"', '+', '-', '@', '~' ,'* +', '* -', '* ~' ],
 			$text
-		) . $affix;
+		);
 
 		//var_dump( $language, $text, (microtime( true ) - $start ) );
 		return $text;
@@ -162,7 +150,7 @@ class TextSanitizer {
 
 	private function predictLanguage( $text ) {
 
-		if ( $this->languageDetection === array() ) {
+		if ( $this->languageDetection === [] ) {
 			return null;
 		}
 

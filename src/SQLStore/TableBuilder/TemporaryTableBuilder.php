@@ -21,7 +21,7 @@ class TemporaryTableBuilder {
 	/**
 	 * @var boolean
 	 */
-	private $withAutoCommit = false;
+	private $autoCommitFlag = false;
 
 	/**
 	 * @since 2.3
@@ -33,13 +33,13 @@ class TemporaryTableBuilder {
 	}
 
 	/**
-	 * @see DefaultSettings::smwgQTemporaryTablesWithAutoCommit
+	 * @see $smwgQTemporaryTablesWithAutoCommit
 	 * @since 2.5
 	 *
-	 * @param boolean $withAutoCommit
+	 * @param boolean $autoCommitFlag
 	 */
-	public function withAutoCommit( $withAutoCommit ) {
-		$this->withAutoCommit = (bool)$withAutoCommit;
+	public function setAutoCommitFlag( $autoCommitFlag ) {
+		$this->autoCommitFlag = (bool)$autoCommitFlag;
 	}
 
 	/**
@@ -47,18 +47,17 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function createTable( $tableName ) {
+	public function create( $tableName ) {
 
-		$sql = $this->getSQLCodeFor( $tableName );
-
-		// #1605
-		// "... creating temporary tables in a transaction is not replication-safe
-		// and causes errors in MySQL 5.6. ..."
-		if ( $this->withAutoCommit ) {
-			$this->connection->queryWithAutoCommit( $sql, __METHOD__ );
-		} else {
-			$this->connection->query( $sql, __METHOD__ );
+		if ( $this->autoCommitFlag ) {
+			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
+
+		$this->connection->query(
+			$this->getSQLCodeFor( $tableName ),
+			__METHOD__,
+			false
+		);
 	}
 
 	/**
@@ -66,23 +65,28 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function dropTable( $tableName ) {
+	public function drop( $tableName ) {
 
-		$sql = "DROP TEMPORARY TABLE " . $tableName;
-
-		if ( $this->withAutoCommit ) {
-			$this->connection->queryWithAutoCommit( $sql, __METHOD__ );
-		} else {
-			$this->connection->query( $sql, __METHOD__ );
+		if ( $this->autoCommitFlag ) {
+			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
+
+		$this->connection->query(
+			"DROP TEMPORARY TABLE " . $tableName,
+			__METHOD__,
+			false
+		);
 	}
 
 	/**
-	 * Get SQL code suitable to create a temporary table of the given name, used to store ids.
-	 * MySQL can do that simply by creating new temporary tables. PostgreSQL first checks if such
-	 * a table exists, so the code is ready to reuse existing tables if the code was modified to
-	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
-	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
+	 * Get SQL code suitable to create a temporary table of the given name, used
+	 * to store ids.
+	 *
+	 * MySQL can do that simply by creating new temporary tables. PostgreSQL first
+	 * checks if such a table exists, so the code is ready to reuse existing tables
+	 * if the code was modified to keep them after query answering. Also, PostgreSQL
+	 * tables will use a RULE to achieve built-in duplicate elimination. The latter
+	 * is done using INSERT IGNORE in MySQL.
 	 *
 	 * @param string $tableName
 	 *
@@ -99,7 +103,7 @@ class TemporaryTableBuilder {
 				. " IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='{$tableName}' AND schemaname = ANY (current_schemas(true))) "
 				. " THEN DELETE FROM {$tableName}; "
 				. " ELSE "
-				. "  CREATE TEMPORARY TABLE {$tableName} (id INTEGER PRIMARY KEY); "
+				. "  CREATE TEMPORARY TABLE {$tableName} (id SERIAL); "
 				. "    CREATE RULE {$tableName}_ignore AS ON INSERT TO {$tableName} WHERE (EXISTS (SELECT 1 FROM {$tableName} "
 				. "	 WHERE ({$tableName}.id = new.id))) DO INSTEAD NOTHING; "
 				. " END IF; "

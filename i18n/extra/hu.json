@@ -1,0 +1,181 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Tulajdonság",
+            "SMW_NS_PROPERTY_TALK": "Tulajdonságvita",
+            "SMW_NS_CONCEPT": "Koncepció",
+            "SMW_NS_CONCEPT_TALK": "Koncepcióvita"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Oldal",
+            "_txt": "Szöveg",
+            "_cod": "Forráskód",
+            "_boo": "Logikai",
+            "_num": "Szám",
+            "_geo": "Földrajzi koordináta",
+            "_tem": "Hőmérséklet",
+            "_dat": "Dátum",
+            "_ema": "E-Mail",
+            "_uri": "URL",
+            "_anu": "Annotált URI",
+            "_tel": "Telefonszám",
+            "_rec": "Rekord",
+            "_qty": "Mennyiség",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Típusa",
+            "_URI": "Megegyező URL",
+            "_SUBP": "Altulajdonsága",
+            "_SUBC": "Alkategóriája",
+            "_UNIT": "Mértékegysége",
+            "_IMPO": "Importálva",
+            "_CONV": "Egyenértékű",
+            "_SERV": "Nyújtott szolgáltatása",
+            "_PVAL": "Lehetséges értéke",
+            "_MDAT": "Utolsó módosítása",
+            "_CDAT": "Létrehozva",
+            "_NEWP": "Új oldal",
+            "_LEDT": "Utolsó szerkesztője",
+            "_ERRP": "Érvénytelen értéke",
+            "_LIST": "Mezője",
+            "_SOBJ": "Alobjektuma",
+            "_ASK": "Lekérdezése",
+            "_ASKST": "Lekérdezése szövege",
+            "_ASKFO": "Lekérdezése formátuma",
+            "_ASKSI": "Lekérdezése nagysága",
+            "_ASKDE": "Lekérdezése mélysége",
+            "_ASKDU": "Lekérdezése időtartama",
+            "_MEDIA": "Médiatípusa",
+            "_MIME": "MIME-Típusa",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Adattípusa": "_TYPE"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "Január",
+                "Jan"
+            ],
+            [
+                "Február",
+                "Feb"
+            ],
+            [
+                "Március",
+                "Már"
+            ],
+            [
+                "Április",
+                "Ápr"
+            ],
+            [
+                "Május",
+                "Máj"
+            ],
+            [
+                "Június",
+                "Jún"
+            ],
+            [
+                "Július",
+                "Júl"
+            ],
+            [
+                "Augusztus",
+                "Aug"
+            ],
+            [
+                "Szeptember",
+                "Sze"
+            ],
+            [
+                "Október",
+                "Okt"
+            ],
+            [
+                "November",
+                "Nov"
+            ],
+            [
+                "December",
+                "Dec"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_YM"
+            ],
+            [
+                "SMW_YMD"
+            ]
+        ]
+    }
+}

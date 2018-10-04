@@ -21,6 +21,8 @@ use Title;
  */
 class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $semanticDataValidator;
 
 	protected function setUp() {
@@ -186,16 +188,33 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
-		$instance->addDataValue( $dataValue);
+		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$instance->addDataValue( $dataValue );
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$this->setExpectedException( '\SMW\InvalidSemanticDataException' );
+		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->getSemanticData();
+	}
+
+	/**
+	 * @dataProvider errorProvider
+	 */
+	public function testErrorHandlingOnErrors( $errors, $expected ) {
+
+		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+
+		foreach ( $errors as $error ) {
+			$instance->addError( $error );
+		}
+
+		$this->assertCount(
+			$expected,
+			$instance->getErrors()
+		);
 	}
 
 	/**
@@ -213,117 +232,114 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 / asserting conditions for a named identifier
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'Bar',
-				'properties' => array( 'Foo' => 'bar' )
-			),
-			array(
+				'properties' => [ 'Foo' => 'bar' ]
+			],
+			[
 				'errors' => 0,
 				'identifier' => 'Bar',
 				'propertyCount'  => 1,
 				'propertyLabels' => 'Foo',
 				'propertyValues' => 'Bar',
-			)
-		);
+			]
+		];
 
 		// #1 / asserting conditions for an anon identifier
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => '',
-				'properties' => array( 'FooBar' => 'bar Foo' )
-			),
-			array(
+				'properties' => [ 'FooBar' => 'bar Foo' ]
+			],
+			[
 				'errors' => 0,
 				'identifier' => '_',
 				'propertyCount'  => 1,
 				'propertyLabels' => 'FooBar',
 				'propertyValues' => 'Bar Foo',
-			)
-		);
+			]
+		];
 
 		// #2 / asserting conditions
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'foo',
-				'properties' => array( 9001 => 1001 )
-			),
-			array(
+				'properties' => [ 9001 => 1001 ]
+			],
+			[
 				'errors' => 0,
 				'identifier' => 'foo',
 				'propertyCount'  => 1,
-				'propertyLabels' => array( 9001 ),
-				'propertyValues' => array( 1001 ),
-			)
-		);
+				'propertyLabels' => [ 9001 ],
+				'propertyValues' => [ 1001 ],
+			]
+		];
 
 		// #3
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'foo bar',
-				'properties' => array( 1001 => 9001, 'Foo' => 'Bar' )
-			),
-			array(
+				'properties' => [ 1001 => 9001, 'Foo' => 'Bar' ]
+			],
+			[
 				'errors' => 0,
 				'identifier' => 'foo bar',
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 1001, 'Foo' ),
-				'propertyValues' => array( 9001, 'Bar' ),
-			)
-		);
+				'propertyLabels' => [ 1001, 'Foo' ],
+				'propertyValues' => [ 9001, 'Bar' ],
+			]
+		];
 
 		// #4 / asserting that a property with a leading underscore would produce an error
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'bar',
-				'properties' => array( '_FooBar' => 'bar Foo' )
-			),
-			array(
+				'properties' => [ '_FooBar' => 'bar Foo' ]
+			],
+			[
 				'errors' => 1,
 				'identifier' => 'bar',
 				'propertyCount'  => 1,
-				'strict-mode-valuematch' => false,
-				'propertyKeys' => array( '_ERRC' )
-			)
-		);
+				'strictPropertyValueMatch' => false,
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
 
 		// #5 / asserting that an inverse property would produce an error
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'bar',
-				'properties' => array( '-FooBar' => 'bar Foo' )
-			),
-			array(
+				'properties' => [ '-FooBar' => 'bar Foo' ]
+			],
+			[
 				'errors' => 1,
 				'identifier' => 'bar',
 				'propertyCount'  => 1,
-				'strict-mode-valuematch' => false,
-				'propertyKeys' => array( '_ERRC' )
-			)
-		);
+				'strictPropertyValueMatch' => false,
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
 
 		// #6 / asserting that an improper value for a _wpg property would add "Has improper value for"
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'identifier' => 'bar',
-				'properties' => array( 'Foo' => '' )
-			),
-			array(
+				'properties' => [ 'Foo' => '' ]
+			],
+			[
 				'identifier' => 'bar',
 				'errors' => 1,
-				'strict-mode-valuematch' => false,
+				'strictPropertyValueMatch' => false,
 				'propertyCount'  => 1,
-				'propertyKeys' => array( '_ERRC' )
-			)
-		);
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
 
 		return $provider;
 	}
@@ -335,25 +351,25 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function newDataValueProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 Bug 49530
-		$provider[] = array(
-			array(
-				'property' => array(
+		$provider[] = [
+			[
+				'property' => [
 					'typeId' => '_txt',
 					'label'  => 'Blob.example',
 					'key'    => 'Blob.example'
-				),
+				],
 				'dataItem' => new SMWDIBlob( '<a href="http://username@example.org/path">Example</a>' )
-			),
-			array(
+			],
+			[
 				'errors' => 0,
 				'propertyCount'  => 1,
 				'propertyLabels' => 'Blob.example',
 				'propertyValues' => '<a href="http://username@example.org/path">Example</a>',
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
@@ -372,6 +388,49 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 		$instance->setEmptyContainerForId( $id );
 
 		return $instance;
+	}
+
+	public function errorProvider() {
+
+		$provider = [];
+
+		#0
+		$provider[] = [
+			[
+				'Foo',
+				'Foo'
+			],
+			1
+		];
+
+		#1
+		$provider[] = [
+			[
+				'Foo',
+				'Bar'
+			],
+			2
+		];
+
+		#2
+		$provider[] = [
+			[
+				[ 'Foo' => 'Bar' ],
+				[ 'Foo' => 'Bar' ],
+			],
+			1
+		];
+
+		#3
+		$provider[] = [
+			[
+				[ 'Foo' => 'Bar' ],
+				[ 'Bar' => 'Foo' ],
+			],
+			2
+		];
+
+		return $provider;
 	}
 
 }

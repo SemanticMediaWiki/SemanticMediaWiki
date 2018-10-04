@@ -30,6 +30,18 @@ class NamespaceDescription extends Description {
 	}
 
 	/**
+	 * @see Description::getFingerprint
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+		// Avoid a simple `int` which may interfere with an associative array
+		// when compounding hash strings from different descriptions
+		return 'N:' . md5( $this->namespace );
+	}
+
+	/**
 	 * @return integer
 	 */
 	public function getNamespace() {

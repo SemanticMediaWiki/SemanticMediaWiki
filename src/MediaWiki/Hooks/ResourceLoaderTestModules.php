@@ -14,7 +14,7 @@ use ResourceLoader;
  *
  * @author mwjames
  */
-class ResourceLoaderTestModules {
+class ResourceLoaderTestModules extends HookHandler {
 
 	/**
 	 * @var ResourceLoader
@@ -22,44 +22,39 @@ class ResourceLoaderTestModules {
 	private $resourceLoader;
 
 	/**
-	 * @var array
+	 * @var string
 	 */
-	private $testModules;
+	private $path;
 
 	/**
 	 * @var string
 	 */
-	private $installPath;
+	private $ip;
 
 	/**
-	 * @var string
-	 */
-	private $basePath;
-
-	/**
-	 * @since  2.0
+	 * @since 2.0
 	 *
-	 * @param  ResourceLoader $resourceLoader object
-	 * @param  array $testModules array of JavaScript testing modules
-	 * @param  string $basePath
-	 * @param  string $installPath
+	 * @param ResourceLoader $resourceLoader object
+	 * @param string $path
+	 * @param string $ip
 	 */
-	public function __construct( ResourceLoader &$resourceLoader, array &$testModules, $basePath, $installPath ) {
+	public function __construct( ResourceLoader &$resourceLoader, $path = '', $ip = '' ) {
 		$this->resourceLoader = $resourceLoader;
-		$this->testModules =& $testModules;
-		$this->basePath = $basePath;
-		$this->installPath = $installPath;
+		$this->path = $path;
+		$this->ip = $ip;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param array &$testModules
+	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process(  array &$testModules ) {
 
-		$this->testModules['qunit']['ext.smw.tests'] = array(
-			'scripts' => array(
+		$testModules['qunit']['ext.smw.tests'] = [
+			'scripts' => [
 				'tests/qunit/smw/ext.smw.test.js',
 				'tests/qunit/smw/util/ext.smw.util.tooltip.test.js',
 
@@ -79,18 +74,18 @@ class ResourceLoaderTestModules {
 				'tests/qunit/smw/data/ext.smw.data.test.js',
 				'tests/qunit/smw/api/ext.smw.api.test.js',
 				'tests/qunit/smw/query/ext.smw.query.test.js',
-			),
-			'dependencies' => array(
+			],
+			'dependencies' => [
 				'ext.smw',
 				'ext.smw.tooltip',
 				'ext.smw.query',
 				'ext.smw.data',
 				'ext.smw.api'
-			),
+			],
 			'position' => 'top',
-			'localBasePath' => $this->basePath,
-			'remoteExtPath' => '..' . substr( $this->basePath, strlen( $this->installPath ) ),
-		);
+			'localpath' => $this->path,
+			'remoteExtPath' => '..' . substr( $this->path, strlen( $this->ip ) ),
+		];
 
 		return true;
 	}

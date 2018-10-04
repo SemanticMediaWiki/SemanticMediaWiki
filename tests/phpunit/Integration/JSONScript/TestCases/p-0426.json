@@ -1,0 +1,104 @@
+{
+	"description": "Test in-text annotation for `_num` on big/small numbers/scientific notation (`wgContLang=fr`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number with precision 4",
+			"contents": "[[Has type::Number]] [[Display precision of::4]]"
+		},
+		{
+			"contentlanguage": "fr",
+			"page": "Example/P0426/1",
+			"contents": "[[Has number::0,00000000000012]] [[Has number::1,000000000000123]] [[Has number::72,769482308]] [[Has number::5000,769482308]] [[Has number::-0,000000000004566]] [[Has number::0,2123456e+3]] [[Has number::1,334e-13]]"
+		},
+		{
+			"contentlanguage": "en",
+			"page": "Example/P0426/2",
+			"contents": "[[Has number::0.00000000000012]] [[Has number::1.000000000000123]] [[Has number::72.769482308]] [[Has number::5000.769482308]] [[Has number::-0.000000000004566]] [[Has number::0.2123456e+3]] [[Has number::1.334e-13]]"
+		},
+		{
+			"contentlanguage": "fr",
+			"page": "Example/P0426/Q1.1",
+			"contents": "{{#ask: [[Example/P0426/1]] |?Has number }}"
+		},
+		{
+			"contentlanguage": "fr",
+			"page": "Example/P0426/Q1.2",
+			"contents": "{{#ask: [[Example/P0426/1]] |?Has number#-p5 }}"
+		},
+		{
+			"contentlanguage": "fr",
+			"page": "Example/P0426/Q2.1",
+			"contents": "{{#ask: [[Example/P0426/2]] |?Has number }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 page content language FR, display in en",
+			"subject": "Example/P0426/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"1.2e-13",
+					"1",
+					"72.769",
+					"5,000.769",
+					"-4.566e-12",
+					"212.346",
+					"1.334e-13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 page content language EN, display in en",
+			"subject": "Example/P0426/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"1.2e-13",
+					"1",
+					"72.769",
+					"5,000.769",
+					"-4.566e-12",
+					"212.346",
+					"1.334e-13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 with precision display precision 5",
+			"subject": "Example/P0426/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"0.00000",
+					"1.00000",
+					"72.76948",
+					"5,000.76948",
+					"-0.00000",
+					"212.34560",
+					"0.00000"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgLang": "en",
+		"wgContLang": "fr",
+		"wgLanguageCode": "fr",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

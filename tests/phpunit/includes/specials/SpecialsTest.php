@@ -21,14 +21,13 @@ use SpecialPageFactory;
  */
 
 /**
- * @covers \SMW\SpecialSemanticStatistics
  * @covers \SMW\SpecialWantedProperties
  * @covers \SMW\SpecialUnusedProperties
  * @covers \SMW\SpecialProperties
  * @covers \SMW\SpecialConcepts
  * @covers \SMW\SpecialPage
- * @covers SMWAskPage
- * @covers SMWAdmin
+ * @covers \SMW\MediaWiki\Specials\SpecialAsk
+ * @covers \SMW\MediaWiki\Specials\SpecialAdmin
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
  * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
  *
@@ -79,7 +78,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	public function testSpecialAliasesContLang( SpecialPage $specialPage ) {
 
 		// Test for languages
-		$langCodes = array( 'en', 'fr', 'de', 'es', 'zh', 'ja' );
+		$langCodes = [ 'en', 'fr', 'de', 'es', 'zh', 'ja' ];
 
 		// Test aliases for a specific language
 		foreach ( $langCodes as $langCode ) {
@@ -98,7 +97,10 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 				}
 			}
 
-			$this->assertTrue( $found, "{$name} alias not found in language {$langCode}" );
+			$this->assertTrue(
+				$found,
+				"{$name} alias not found in language {$langCode}"
+			);
 		}
 	}
 
@@ -108,49 +110,44 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function specialPageProvider() {
-		$request = new FauxRequest( array(), true );
-		$argLists = array();
+		$request = new FauxRequest( [], true );
+		$argLists = [];
 
-		$specialPages = array(
+		$specialPages = [
 			'Ask',
 			'Browse',
 			'PageProperty',
 			'SearchByProperty',
 			'SMWAdmin',
-			'SemanticStatistics',
 			'ExportRDF',
 			'Types',
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
-			'Concepts'
-
-			// Can't be tested because of
-
-			// FIXME Test fails with Undefined index: HTTP_ACCEPT
-			// 'URIResolver'
-
-		);
+			'Concepts',
+			'ProcessingErrorList',
+			'PropertyLabelSimilarity',
+			'URIResolver'
+		];
 
 		foreach ( $specialPages as $special ) {
 
-			if ( array_key_exists( $special, $GLOBALS['wgSpecialPages'] ) ) {
+			$specialPage = SpecialPageFactory::getPage(
+				$special
+			);
 
-				$specialPage = SpecialPageFactory::getPage( $special );
+			// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
+			$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
 
-				// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-				$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
+			$context = RequestContext::newExtraneousContext( $title );
+			$context->setRequest( $request );
 
-				$context = RequestContext::newExtraneousContext( $title );
-				$context->setRequest( $request );
+			$specialPage->setContext( clone $context );
+			$argLists[] = [ clone $specialPage ];
 
-				$specialPage->setContext( clone $context );
-				$argLists[] = array( clone $specialPage );
-
-				$context->setUser( $this->getUser() );
-				$specialPage->setContext( $context );
-				$argLists[] = array( $specialPage );
-			}
+			$context->setUser( $this->getUser() );
+			$specialPage->setContext( $context );
+			$argLists[] = [ $specialPage ];
 		}
 
 		return $argLists;

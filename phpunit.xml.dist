@@ -14,7 +14,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          verbose="true">
     <listeners>
-        <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Test\ExecutionTimeTestListener">
+        <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Tests\ExecutionTimeTestListener">
            <arguments>
               <boolean>true</boolean>
               <integer>10</integer>
@@ -38,12 +38,7 @@
             <directory>tests/phpunit/Integration/System</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-benchmark">
-            <file>tests/phpunit/Benchmark/ImportPageCopyBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/JobQueueBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/MaintenanceBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/StandardQueryEngineBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/ExtendedQueryEngineBenchmarkTest.php</file>
-            <file>tests/phpunit/Benchmark/PageEditBenchmarkTest.php</file>
+            <directory>tests/phpunit/Benchmark</directory>
         </testsuite>
     </testsuites>
     <groups>
@@ -61,17 +56,19 @@
     <php>
        <var name="smwgSemanticsEnabled" value="true"/>
        <var name="wgUseFileCache" value="false"/>
+       <var name="smwgEntityCollation" value="identity"/>
+       <var name="smwgFieldTypeFeatures" value="false"/>
+       <var name="smwgCreateProtectionRight" value="false"/>
        <var name="smwgSparqlDefaultGraph" value="http://example.org/phpunit-testrun"/>
-       <var name="smwgValueLookupCacheType" value="hash"/>
+       <var name="smwgSparqlQFeatures" value="false"/>
+       <var name="smwgElasticsearchProfile" value="false"/>
+       <var name="smwgEntityLookupCacheType" value="hash"/>
        <var name="smwgEnabledDeferredUpdate" value="false"/>
+       <var name="smwgImportReqVersion" value="false"/>
        <var name="smwgEnabledFulltextSearch" value="false"/>
-       <var name="smwgEnabledHttpDeferredJobRequest" value="false"/>
        <var name="smwgEnabledQueryDependencyLinksStore" value="true"/>
-       <var name="benchmarkQueryRepetitionExecutionThreshold" value="5"/>
-       <var name="benchmarkQueryLimit" value="500"/>
-       <var name="benchmarkQueryOffset" value="0"/>
-       <var name="benchmarkPageCopyThreshold" value="1000"/>
-       <var name="benchmarkShowMemoryUsage" value="false"/>
-       <var name="benchmarkReuseDatasets" value="true"/>
+       <var name="smwgQueryResultCacheType" value="hash"/>
+       <var name="benchmarkPageCopyCount" value="1000"/>
+       <var name="benchmarkPageEditRepetitionCount" value="50"/>
     </php>
 </phpunit>

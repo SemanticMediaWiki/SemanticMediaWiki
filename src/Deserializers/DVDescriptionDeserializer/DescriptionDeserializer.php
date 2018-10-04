@@ -3,6 +3,9 @@
 namespace SMW\Deserializers\DVDescriptionDeserializer;
 
 use Deserializers\DispatchableDeserializer;
+use SMW\ApplicationFactory;
+use SMW\DataItemFactory;
+use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
 use SMWDataValue as DataValue;
 
@@ -34,14 +37,43 @@ use SMWDataValue as DataValue;
 abstract class DescriptionDeserializer implements DispatchableDeserializer {
 
 	/**
+	 * @var DescriptionFactory
+	 */
+	protected $descriptionFactory;
+
+	/**
+	 * @var DataItemFactory
+	 */
+	protected $dataItemFactory;
+
+	/**
 	 * @var array
 	 */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * @var DataValue
 	 */
 	protected $dataValue;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DescriptionFactory|null $descriptionFactory
+	 * @param DataItemFactory|null $dataItemFactory
+	 */
+	public function __construct( DescriptionFactory $descriptionFactory = null, DescriptionFactory $dataItemFactory = null ) {
+		$this->descriptionFactory = $descriptionFactory;
+		$this->dataItemFactory = $dataItemFactory;
+
+		if ( $this->descriptionFactory === null ) {
+			$this->descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
+		}
+
+		if ( $this->dataItemFactory === null ) {
+			$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+		}
+	}
 
 	/**
 	 * @since 2.3
@@ -50,7 +82,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 */
 	public function setDataValue( DataValue $dataValue ) {
 		$this->dataValue = $dataValue;
-		$this->errors = array();
+		$this->errors = [];
 	}
 
 	/**
@@ -87,6 +119,62 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 */
 	protected function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
+
+		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a
+		// proximity match where lorem AND ipsum needs to be present in the
+		// indexed match field.
+		//
+		// For those query engines that support those search patterns!
+		if ( $comparator === SMW_CMP_IN ) {
+			$comparator = SMW_CMP_LIKE;
+
+			// Looking for something like [[in:phrase:foo]]
+			if ( strpos( $value, 'phrase:' ) !== false ) {
+				$value = str_replace( 'phrase:', '', $value );
+				$value = '"' . $value . '"';
+			}
+
+			// `in:...` is for the "busy" user to avoid adding wildcards now and
+			// then to the value string
+			$value = "*$value*";
+
+			// No property and the assumption is [[in:...]] with the expected use
+			// of the wide proximity as indicated by an additional `~`
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~$value";
+			}
+		}
+
+		// [[not:foo bar]]
+		// For those query engines that support those text search patterns!
+		if ( $comparator === SMW_CMP_NOT ) {
+			$comparator = SMW_CMP_NLKE;
+
+			$value = str_replace( '!', '', $value );
+
+			// Opposed to `in:` which includes *, `not:` is intended to match
+			// only the exact entered term. It can be extended using *
+			// if necessary (e.g. [[Has text::not:foo*]]).
+
+			// Use as phrase to signal an exact term match for a wide proximity
+			// search
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~\"$value\"";
+			}
+		}
+
+		// [[phrase:lorem ipsum]] to be turned into a promixity phrase_match
+		// where the entire string (incl. its order) are to be matched.
+		//
+		// For those query engines that support those search patterns!
+		if ( $comparator === SMW_CMP_PHRASE ) {
+			$comparator = SMW_CMP_LIKE;
+			$value = '"' . $value . '"';
+
+			if ( $this->dataValue->getProperty() === null ) {
+				$value = "~$value";
+			}
+		}
 	}
 
 }

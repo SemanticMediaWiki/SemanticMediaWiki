@@ -6,54 +6,62 @@ use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers SMW\SpecialConcepts
+ * @group semantic-mediawiki
  *
- *
- * @group SMW
- * @group SMWExtension
- * @group SpecialPage
- * @group medium
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class SpecialConceptsTest extends SpecialPageTestCase {
+class SpecialConceptsTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
-	}
-
-	public function getClass() {
-		return '\SMW\SpecialConcepts';
-	}
-
-	/**
-	 * @return SpecialConcepts
-	 */
-	protected function getInstance() {
-		return new SpecialConcepts();
+		$this->testEnvironment = new TestEnvironment();
+		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-		$this->assertInstanceOf( $this->getClass(), $this->getInstance() );
+
+		$this->assertInstanceOf(
+			SpecialConcepts::class,
+			new SpecialConcepts()
+		);
 	}
 
 	public function testExecute() {
 
-		$this->execute();
+		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
-		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-docu"',
-			$this->getText()
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'addHtml' )
+			 ->with( $this->stringContains( $expected ) );
+
+		$query = '';
+		$instance = new SpecialConcepts();
+
+		$instance->getContext()->setTitle(
+			Title::newFromText( 'SemanticMadiaWiki' )
 		);
+
+		$oldOutput = $instance->getOutput();
+
+		$instance->getContext()->setOutput( $outputPage );
+		$instance->execute( $query );
+
+		// Context is static avoid any succeeding tests to fail
+		$instance->getContext()->setOutput( $oldOutput );
 	}
 
 	/**
@@ -61,11 +69,11 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 	 */
 	public function testGetHtmlForAnEmptySubject() {
 
-		$instance = $this->getInstance();
+		$instance = new SpecialConcepts();
 
 		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-empty"',
-			$instance->getHtml( array(), 0, 0, 0 )
+			'div class="smw-special-concept-empty"',
+			$instance->getHtml( [], 0, 0 )
 		);
 	}
 
@@ -74,12 +82,12 @@ class SpecialConceptsTest extends SpecialPageTestCase {
 	 */
 	public function testGetHtmlForSingleSubject() {
 
-		$subject  = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
-		$instance = $this->getInstance();
+		$subject  = DIWikiPage::newFromText( __METHOD__ );
+		$instance = new SpecialConcepts();
 
 		$this->stringValidator->assertThatStringContains(
-			'span class="smw-sp-concept-count"',
-			$instance->getHtml( array( $subject ), 1, 1, 1 )
+			'div class="smw-special-concept-count"',
+			$instance->getHtml( [ $subject ], 1, 0 )
 		);
 	}
 

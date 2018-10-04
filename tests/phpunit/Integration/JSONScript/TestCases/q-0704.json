@@ -1,0 +1,52 @@
+{
+	"description": "Test `_uri` long URL (255+) (#1872)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/Q0704/1",
+			"contents": "[[Has url::http://example.org/TBgcHiQBTvpV3XkFiRpMcV1KQoZvQXFyiQUQMM2RoYUyJaRoSyKnsQTWwia3HATd4YVmd8BZgkL2LfL0Q6rP5E90A4IuV6uKdYjL3nxZvx0pbc3tbxwa6jMW1JDNxusaKQ52ftRS7DCEY1IPTRZnuRMLPgWYwLOsEAebOsxD7BBL9IK3Z2Osfh9s0FC1SUwCVdKcLkBgurXKGi99s61qnAU2zWFXBUCEzID6533LeaHCBKW8\\/\\i2BgTK2tv65LHO6zB-larger%&`^Than255ö/ä/ü/è/é]]"
+		},
+		{
+			"page": "Example/Q0704/Q.1",
+			"contents": "{{#ask: [[Has url::~*Than255]] |?Has url}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 URL 255+ chars",
+			"condition": "[[Has url::~*Than255*]]",
+			"printouts": [
+				"Has url"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0704/1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Has url",
+						"value": "http://example.org/TBgcHiQBTvpV3XkFiRpMcV1KQoZvQXFyiQUQMM2RoYUyJaRoSyKnsQTWwia3HATd4YVmd8BZgkL2LfL0Q6rP5E90A4IuV6uKdYjL3nxZvx0pbc3tbxwa6jMW1JDNxusaKQ52ftRS7DCEY1IPTRZnuRMLPgWYwLOsEAebOsxD7BBL9IK3Z2Osfh9s0FC1SUwCVdKcLkBgurXKGi99s61qnAU2zWFXBUCEzID6533LeaHCBKW8%5C/%5Ci2BgTK2tv65LHO6zB-larger%&%60%5EThan255%C3%B6/%C3%A4/%C3%BC/%C3%A8/%C3%A9"
+					}
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEnabledFulltextSearch": true,
+		"smwgFulltextDeferredUpdate": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

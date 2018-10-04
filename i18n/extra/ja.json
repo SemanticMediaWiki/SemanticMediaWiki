@@ -1,0 +1,44 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": [],
+        "aliases": []
+    },
+    "datatype": {
+        "labels": [],
+        "aliases": []
+    },
+    "property": {
+        "labels": [],
+        "aliases": []
+    },
+    "date": {
+        "months": [],
+        "days": [],
+        "precision": {
+            "SMW_PREC_Y": "Y年",
+            "SMW_PREC_YM": "Y年n月",
+            "SMW_PREC_YMD": "Y年n月j日 (D)",
+            "SMW_PREC_YMDT": "Y年n月j日 (D) H:i:s",
+            "SMW_PREC_YMDTZ": "Y年n月j日 (D) H:i:s T"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_YM",
+                "SMW_MY"
+            ],
+            [
+                "SMW_YMD",
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

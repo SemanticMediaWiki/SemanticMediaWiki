@@ -1,0 +1,108 @@
+{
+	"description": "Test `format=debug` output",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]] [[Display precision of::2]]"
+		},
+		{
+			"page": "Example/0001",
+			"contents": "[[Has page::Foo]] [[Has text::bar]]"
+		},
+		{
+			"page": "Example/F0001/2",
+			"contents": "[[Has number::3.555567]]"
+		},
+		{
+			"page": "Example/0001/1",
+			"contents": "{{#ask:[[Has page::Foo]] [[Has page::42]] |?Has page |?Has text |format=debug }}"
+		},
+		{
+			"page": "Example/F0001/Q.1",
+			"contents": "{{#ask: [[Has number::3.555567]] |?Has number |format=debug }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 simple debug output",
+			"subject": "Example/0001/1",
+			"skip-on": {
+				"elastic": "Different debug format"
+			},
+			"assert-output": {
+				"to-contain": [
+					"&#91;&#91;Has page::Foo]] &#91;&#91;Has page::42]]",
+					"Query-Size:4",
+					"Query-Depth:1",
+					"None"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#0.elastic simple debug output",
+			"subject": "Example/0001/1",
+			"skip-on": {
+				"elastic": [ "not", "Different debug format" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"&#91;&#91;Has page::Foo]] &#91;&#91;Has page::42]]",
+					"\"query size\": 4",
+					"\"query depth\": 1"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 value input/output not be constraint by precision",
+			"subject": "Example/F0001/Q.1",
+			"skip-on": {
+				"elastic": "Different debug format"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smwpre\">&#91;&#91;Has number::3.555567]]</div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1.elastic value input/output not be constraint by precision",
+			"subject": "Example/F0001/Q.1",
+			"skip-on": {
+				"elastic": [ "not", "Different debug format" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"\"query\": \"&#91;&#91;Has number::3.555567]]\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

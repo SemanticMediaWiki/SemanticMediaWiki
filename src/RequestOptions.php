@@ -17,6 +17,8 @@ namespace SMW;
  */
 class RequestOptions {
 
+	const SEARCH_FIELD = 'search_field';
+
 	/**
 	 * The maximum number of results that should be returned.
 	 */
@@ -59,18 +61,34 @@ class RequestOptions {
 	/**
 	 * An array of string conditions that are applied if the result has a
 	 * string label that can be subject to those patterns.
+	 *
+	 * @var StringCondition[]
 	 */
-	private $stringConditions = array();
+	private $stringConditions = [];
+
+	/**
+	 * Contains extra conditions which a consumer is being allowed to interpret
+	 * freely to modify a search condition.
+	 *
+	 * @var array
+	 */
+	private $extraConditions = [];
+
+	/**
+	 * @var array
+	 */
+	private $options = [];
 
 	/**
 	 * @since 1.0
 	 *
 	 * @param string $string to match
 	 * @param integer $condition one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
-	 * @param boolean $asDisjunctiveCondition
+	 * @param boolean $isOr
+	 * @param boolean $isNot
 	 */
-	public function addStringCondition( $string, $condition, $asDisjunctiveCondition = false ) {
-		$this->stringConditions[] = new StringCondition( $string, $condition, $asDisjunctiveCondition );
+	public function addStringCondition( $string, $condition, $isOr = false, $isNot = false ) {
+		$this->stringConditions[] = new StringCondition( $string, $condition, $isOr, $isNot );
 	}
 
 	/**
@@ -82,6 +100,87 @@ class RequestOptions {
 	 */
 	public function getStringConditions() {
 		return $this->stringConditions;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param mixed $extraCondition
+	 */
+	public function addExtraCondition( $extraCondition ) {
+		$this->extraConditions[] = $extraCondition;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array
+	 */
+	public function getExtraConditions() {
+		return $this->extraConditions;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function setOption( $key, $value ) {
+		$this->options[$key] = $value;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = null ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
+		}
+
+		return $default;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $limit
+	 */
+	public function setLimit( $limit ) {
+		$this->limit = (int)$limit;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return integer
+	 */
+	public function getLimit() {
+		return (int)$this->limit;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $offset
+	 */
+	public function setOffset( $offset ) {
+		$this->offset = (int)$offset;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return integer
+	 */
+	public function getOffset() {
+		return (int)$this->offset;
 	}
 
 	/**
@@ -97,13 +196,17 @@ class RequestOptions {
 			$stringConditions .= $stringCondition->getHash();
 		}
 
-		return $this->limit . '#' .
-			$this->offset . '#' .
-			$this->sort . '#' .
-			$this->ascending . '#' .
-			$this->boundary . '#' .
-			$this->include_boundary .
-			( $stringConditions !== '' ? '|' . $stringConditions : '' );
+		return json_encode( [
+			$this->limit,
+			$this->offset,
+			$this->sort,
+			$this->ascending,
+			$this->boundary,
+			$this->include_boundary,
+			$stringConditions,
+			$this->extraConditions,
+			$this->options,
+		] );
 	}
 
 }

@@ -1,0 +1,47 @@
+{
+	"description": "Test output from `Special:PageProperty` (with `_dat`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "S0026 date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/S0026/1",
+			"contents": "[[S0026 date::1 Jan 1970]]"
+		},
+		{
+			"page": "Example/S0026/2",
+			"contents": "[[S0026 date::2 Dec 2100 12:12:12]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "PageProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"type": "S0026 date"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li>1 January 1970&#160;&#160;<span class=\"smwsearch\"><a href=\".*:S0026-20date/1-20January-201970\" title=\"1 January 1970\">+</a></span></li>",
+					"<li>2 December 2100 12:12:12&#160;&#160;<span class=\"smwsearch\"><a href=\".*:S0026-20date/2-20December-202100-2012:12:12\" title=\"2 December 2100 12:12:12\">+</a></span></li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

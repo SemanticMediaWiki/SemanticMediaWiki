@@ -55,17 +55,35 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function fullStringProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo@EN',
 			'Foo',
 			'en'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'testWith@example.org@zh-hans',
 			'testWith@example.org',
 			'zh-Hans'
-		);
+		];
+
+		$provider[] = [
+			[ 'EN' =>'Foo' ],
+			'Foo',
+			'en'
+		];
+
+		$provider[] = [
+			[ 'EN', 'Foo' ],
+			'Foo',
+			''
+		];
+
+		$provider[] = [
+			[ 'EN', [] ],
+			'',
+			''
+		];
 
 		return $provider;
 	}

@@ -3,13 +3,14 @@
 namespace SMW\ParserFunctions;
 
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
 use SMW\ParameterListDocBuilder;
-use SMWQueryProcessor;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Class that provides the {{#smwdoc}} parser function, which displays parameter
@@ -25,7 +26,7 @@ class DocumentationParserFunction implements HookHandler {
 	/**
 	 * @var string
 	 */
-	private $language;
+	private $language = 'en';
 
 	/**
 	 * @param Parser $parser
@@ -34,55 +35,92 @@ class DocumentationParserFunction implements HookHandler {
 	 * @return mixed
 	 */
 	public function handle( Parser $parser, ProcessingResult $result ) {
+
 		if ( $result->hasFatal() ) {
 			return $this->getOutputForErrors( $result->getErrors() );
 		}
 
 		$parameters = $result->getParameters();
+		$format = $parameters['format']->getValue();
+
+		$formatParameters = QueryProcessor::getFormatParameters(
+			$format
+		);
 
 		$this->language = $parameters['language']->getValue();
 
-		$params = $this->getFormatParameters( $parameters['format']->getValue() );
-
-		if ( $parameters['parameters']->getValue() === 'specific' ) {
-			foreach ( array_keys( SMWQueryProcessor::getParameters() ) as $name ) {
-				unset( $params[$name] );
-			}
-		}
-		elseif ( $parameters['parameters']->getValue() === 'base' ) {
-			foreach ( array_diff_key( $params, SMWQueryProcessor::getParameters() ) as $param ) {
-				unset( $params[$param->getName()] );
-			}
+		if ( $formatParameters === [] ) {
+			return $this->msg( 'smw-smwdoc-default-no-parameter-list', $format );
 		}
 
-		$docBuilder = new ParameterListDocBuilder( $this->newMessageFunction() );
-
-		return $docBuilder->getParameterTable( $params );
-	}
-
-	private function newMessageFunction() {
-		$language = $this->language;
-
-		return function() use ( $language ) {
-			$args = func_get_args();
-			$key = array_shift( $args );
-			return wfMessage( $key )->params( $args )->useDatabase( true )->inLanguage( $language )->text();
-		};
+		return $this->buildParameterListDocumentation( $parameters, $formatParameters );
 	}
 
 	/**
-	 * @param string $format
-	 *
-	 * @return array of IParamDefinition
+	 * @return HookDefinition
 	 */
-	private function getFormatParameters( $format ) {
-		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
-			return array();
+	public static function getHookDefinition() {
+		return new HookDefinition(
+			'smwdoc',
+			[
+				[
+					'name' => 'format',
+					'message' => 'smw-smwdoc-par-format',
+					'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
+				],
+				[
+					'name' => 'language',
+					'message' => 'smw-smwdoc-par-language',
+					'default' => $GLOBALS['wgLanguageCode'],
+				],
+				[
+					'name' => 'parameters',
+					'message' => 'smw-smwdoc-par-parameters',
+					'values' => [ 'all', 'specific', 'base' ],
+					'default' => 'specific',
+				],
+			],
+			[ 'format', 'language', 'parameters' ]
+		);
+	}
+
+	/**
+	 * @param ProcessedParam[] $parameters
+	 *
+	 * @return string
+	 */
+	private function buildParameterListDocumentation( array $parameters, $formatParameters ) {
+
+		if ( $parameters['parameters']->getValue() === 'specific' ) {
+			foreach ( array_keys( QueryProcessor::getParameters() ) as $name ) {
+				unset( $formatParameters[$name] );
+			}
+		} elseif ( $parameters['parameters']->getValue() === 'base' ) {
+			foreach ( array_diff_key( $formatParameters, QueryProcessor::getParameters() ) as $param ) {
+				unset( $formatParameters[$param->getName()] );
+			}
 		}
 
-		return ParamDefinition::getCleanDefinitions(
-			SMWQueryProcessor::getResultPrinter( $format )->getParamDefinitions( SMWQueryProcessor::getParameters() )
+		$docBuilder = new ParameterListDocBuilder(
+			[ $this, 'msg' ]
 		);
+
+		if ( ( $parameterTable = $docBuilder->getParameterTable( $formatParameters ) ) !== ''  ) {
+			return $parameterTable;
+		}
+
+		return $this->msg( 'smw-smwdoc-default-no-parameter-list', $parameters['format']->getValue() );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ...$args
+	 *
+	 * @return string
+	 */
+	public function msg( ...$args ) {
+		return wfMessage( array_shift( $args ) )->params( $args )->useDatabase( true )->inLanguage( $this->language )->text();
 	}
 
 	/**
@@ -92,31 +130,6 @@ class DocumentationParserFunction implements HookHandler {
 	private function getOutputForErrors( $errors ) {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #smwdoc parser function';
-	}
-
-	public static function getHookDefinition() {
-		return new HookDefinition(
-			'smwdoc',
-			array(
-				array(
-					'name' => 'format',
-					'message' => 'smw-smwdoc-par-format',
-					'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
-				),
-				array(
-					'name' => 'language',
-					'message' => 'smw-smwdoc-par-language',
-					'default' => $GLOBALS['wgLanguageCode'],
-				),
-				array(
-					'name' => 'parameters',
-					'message' => 'smw-smwdoc-par-parameters',
-					'values' => array( 'all', 'specific', 'base' ),
-					'default' => 'specific',
-				),
-			),
-			array( 'format', 'language', 'parameters' )
-		);
 	}
 
 }

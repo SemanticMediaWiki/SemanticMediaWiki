@@ -1,0 +1,64 @@
+{
+	"description": "Test `#ask` on `format=table` using different printrequest label output (#1270, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0703/1",
+			"contents": "[[Has text::P0703]]"
+		},
+		{
+			"page": "Example/P0703/2",
+			"contents": "[[Has text::P0703]]"
+		},
+		{
+			"page": "Example/P0703/Q.1",
+			"contents": "{{#ask: [[Has text::P0703]] |?Has text=<span style=\"color: green; font-size: 120%;\">Label</span> |format=table |limit=1 }}"
+		},
+		{
+			"page": "Example/P0703/Q.2",
+			"contents": "{{#ask: [[Has text::P0703]] |?Has text=Label {{#info:Text info.}} |format=table |limit=1 }}",
+			"message-cache": "clear"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0703/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Has text\"><span style=\"color: green; font-size: 120%;\">Label</span>",
+					"Special:Ask/-5B-5BHas-20text::P0703-5D-5D/-3FHas-20text=-3Cspan-20style=&quot;color:-20green-3B-20font-2Dsize:-20120-25-3B&quot;-3ELabel-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 with #info parser",
+			"subject": "Example/P0703/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:Has text\">Label <span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"Text info.\">",
+					"<span class=\"smwtticon info\"></span><span class=\"smwttcontent\">Text info.</span></span>",
+					"Special:Ask/-5B-5BHas-20text::P0703-5D-5D/-3FHas-20text=Label-20-3Cspan-20class=&quot;smw-2Dhighlighter&quot;-20data-2Dtype=&quot;6&quot;-20data-2Dstate=&quot;persistent&quot;-20data-2Dtitle=&quot;Information&quot;-20title=&quot;Text-20info.&quot;-3E-3Cspan-20class=&quot;smwtticon-20info&quot;-3E-3C-2Fspan-3E-3Cspan-20class=&quot;smwttcontent&quot;-3EText-20info.-3C-2Fspan-3E-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

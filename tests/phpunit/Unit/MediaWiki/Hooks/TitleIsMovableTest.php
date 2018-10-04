@@ -22,11 +22,9 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$isMovable = true;
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\TitleIsMovable',
-			new TitleIsMovable( $title, $isMovable )
+			new TitleIsMovable( $title )
 		);
 	}
 
@@ -35,10 +33,10 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );
 		$isMovable = true;
 
-		$instance = new TitleIsMovable( $title, $isMovable );
+		$instance = new TitleIsMovable( $title );
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->process( $isMovable )
 		);
 
 		$this->assertFalse(
@@ -51,10 +49,10 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( 'Foo', SMW_NS_PROPERTY );
 		$isMovable = true;
 
-		$instance = new TitleIsMovable( $title, $isMovable );
+		$instance = new TitleIsMovable( $title );
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->process( $isMovable )
 		);
 
 		$this->assertTrue(
@@ -67,13 +65,29 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( 'Foo', NS_MAIN );
 		$isMovable = true;
 
-		$instance = new TitleIsMovable( $title, $isMovable );
+		$instance = new TitleIsMovable( $title );
 
 		$this->assertTrue(
-			$instance->process()
+			$instance->process( $isMovable )
 		);
 
 		$this->assertTrue(
+			$isMovable
+		);
+	}
+
+	public function testRulePageIsAlwaysNotMovable() {
+
+		$title = Title::newFromText( 'Foo', SMW_NS_SCHEMA );
+		$isMovable = true;
+
+		$instance = new TitleIsMovable( $title );
+
+		$this->assertTrue(
+			$instance->process( $isMovable )
+		);
+
+		$this->assertFalse(
 			$isMovable
 		);
 	}

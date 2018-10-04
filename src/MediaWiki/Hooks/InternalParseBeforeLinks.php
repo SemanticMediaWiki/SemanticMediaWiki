@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
+use SMW\Parser\InTextAnnotationParser;
+use StripState;
 
 /**
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
@@ -24,64 +26,70 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks {
+class InternalParseBeforeLinks extends HookHandler {
 
 	/**
 	 * @var Parser
 	 */
-	private $parser = null;
+	private $parser;
 
 	/**
-	 * @var string
+	 * @var StripState
 	 */
-	private $text;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
+	private $stripState;
 
 	/**
 	 * @since 1.9
 	 *
 	 * @param Parser $parser
-	 * @param string $text
+	 * @param StripState $stripState
 	 */
-	public function __construct( Parser &$parser, &$text ) {
+	public function __construct( Parser &$parser, $stripState ) {
 		$this->parser = $parser;
-		$this->text =& $text;
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->stripState = $stripState;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param string $text
+	 *
 	 * @return true
 	 */
-	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+	public function process( &$text ) {
+
+		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
+			return true;
+		}
+
+		return $this->performUpdate( $text );
 	}
 
-	private function canPerformUpdate() {
+	private function canPerformUpdate( $text, $title ) {
 
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
 		}
 
-		// ParserOptions::getInterfaceMessage is being used to identify whether a
-		// parse was initiated by `Message::parse`
-		if ( $this->text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
-			return false;
-		}
-
-		if ( !$this->parser->getTitle()->isSpecialPage() ) {
+		// #2209, #2370 Allow content to be parsed that contain [[SMW::off]]/[[SMW::on]]
+		// even in case of MediaWiki messages
+		if ( InTextAnnotationParser::hasMarker( $text ) ) {
 			return true;
 		}
 
-		$isEnabledSpecialPage = $this->applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' );
+		// ParserOptions::getInterfaceMessage is being used to identify whether a
+		// parse was initiated by `Message::parse`
+		if ( $text === '' || $this->parser->getOptions()->getInterfaceMessage() ) {
+			return false;
+		}
 
-		foreach ( $isEnabledSpecialPage as $specialPage ) {
-			if ( $this->parser->getTitle()->isSpecial( $specialPage ) ) {
+		if ( !$title->isSpecialPage() ) {
+			return true;
+		}
+
+		// #2529
+		foreach ( $this->getOption( 'smwgEnabledSpecialPage', [] ) as $specialPage ) {
+			if ( is_string( $specialPage ) && $title->isSpecial( $specialPage ) ) {
 				return true;
 			}
 		}
@@ -89,12 +97,14 @@ class InternalParseBeforeLinks {
 		return false;
 	}
 
-	private function performUpdate() {
+	private function performUpdate( &$text ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
 		 * @var ParserData $parserData
 		 */
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
@@ -105,11 +115,25 @@ class InternalParseBeforeLinks {
 		 *
 		 * @var InTextAnnotationParser
 		 */
-		$inTextAnnotationParser = $this->applicationFactory->newInTextAnnotationParser( $parserData );
-		$inTextAnnotationParser->setRedirectTarget( $this->getRedirectTarget() );
-		$inTextAnnotationParser->parse( $this->text );
+		$inTextAnnotationParser = $applicationFactory->newInTextAnnotationParser(
+			$parserData
+		);
 
-		$parserData->setSemanticDataStateToParserOutputProperty();
+		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
+			$this->stripState
+		);
+
+		$inTextAnnotationParser->setStripMarkerDecoder(
+			$stripMarkerDecoder
+		);
+
+		$inTextAnnotationParser->setRedirectTarget(
+			$this->getRedirectTarget()
+		);
+
+		$inTextAnnotationParser->parse( $text );
+
+		$parserData->markParserOutput();
 
 		return true;
 	}

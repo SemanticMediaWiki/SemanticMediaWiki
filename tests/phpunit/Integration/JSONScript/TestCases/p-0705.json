@@ -1,0 +1,98 @@
+{
+	"description": "Test `#ask`/ NS_FILE option (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions')",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "P0705.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::123]] {{#subobject:Test|Has text=Foo}}"
+				}
+			}
+		},
+		{
+			"page": "Example/P0705/Q.1",
+			"contents": "{{#ask: [[Has file::+]] |?Has file |format=table |limit=1 }}"
+		},
+		{
+			"page": "Example/P0705/Q.2",
+			"contents": "{{#ask: [[Has file::+]] |?Has file#120px;thumb;<b>{{#show: File:P0705.png |?Has caption |link=none}}</b>[[Extra]] |format=table |limit=1 }}"
+		},
+		{
+			"page": "Example/P0705/Q.3",
+			"contents": "{{#ask: [[File:+]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0705/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"class=\"image\"><img alt=\"P0705.png\"",
+					"300px-P0705.png\" width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\""
+				],
+				"not-contain": [
+					"P0705.png\" width=\"480\" height=\"480\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 with options",
+			"subject": "Example/P0705/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"300px-P0705.png\" width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\"",
+					"class=\"image\"><img alt=\"P0705.png\"",
+					"120px-P0705.png\" width=\"120\" height=\"120\" class=\"thumbimage\"",
+					"<b>123</b>",
+					"class=\"thumb tright\"",
+					"<div class=\"thumbcaption\"><div class=\"magnify\">",
+					"Extra"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (subobject is displayed as normal link and not with an image reference)",
+			"subject": "Example/P0705/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
+					"<a href=.*P0705.png\" class=\"image\"><img alt=\"P0705.png\" .*class=\"thumbborder\" .*</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

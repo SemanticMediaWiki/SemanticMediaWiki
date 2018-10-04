@@ -4,13 +4,16 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
-use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -26,18 +29,12 @@ class QueryEngineFactory {
 	private $store;
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
 	 */
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -46,10 +43,17 @@ class QueryEngineFactory {
 	 * @return QuerySegmentListBuilder
 	 */
 	public function newQuerySegmentListBuilder() {
-		return new QuerySegmentListBuilder(
+
+		$querySegmentListBuilder = new QuerySegmentListBuilder(
 			$this->store,
 			new DescriptionInterpreterFactory()
 		);
+
+		$querySegmentListBuilder->isFilterDuplicates(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQFilterDuplicates' )
+		);
+
+		return $querySegmentListBuilder;
 	}
 
 	/**
@@ -58,6 +62,8 @@ class QueryEngineFactory {
 	 * @return QuerySegmentListProcessor
 	 */
 	public function newQuerySegmentListProcessor() {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$temporaryTableBuilder = $this->newTemporaryTableBuilder();
@@ -69,12 +75,12 @@ class QueryEngineFactory {
 
 		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-			$this->applicationFactory->getSettings()->get( 'smwgQSubpropertyDepth' )
+			$settings->get( 'smwgQSubpropertyDepth' )
 		);
 
 		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
 			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
-			$this->applicationFactory->getSettings()->get( 'smwgQSubcategoryDepth' )
+			$settings->get( 'smwgQSubcategoryDepth' )
 		);
 
 		$querySegmentListProcessor = new QuerySegmentListProcessor(
@@ -92,12 +98,65 @@ class QueryEngineFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine() {
-		return new QueryEngine(
+
+		$querySegmentListBuilder = $this->newQuerySegmentListBuilder();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$settings = $applicationFactory->getSettings();
+
+		$orderCondition = new OrderCondition(
+			$querySegmentListBuilder
+		);
+
+		$orderCondition->isSupported(
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
+		);
+
+		$orderCondition->asUnconditional(
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_UNCONDITIONAL )
+		);
+
+		$querySegmentListBuildManager = new QuerySegmentListBuildManager(
+			$this->store->getConnection( 'mw.db.queryengine' ),
+			$querySegmentListBuilder,
+			$orderCondition
+		);
+
+		$queryEngine = new QueryEngine(
 			$this->store,
-			$this->newQuerySegmentListBuilder(),
+			$querySegmentListBuildManager,
 			$this->newQuerySegmentListProcessor(),
 			new EngineOptions()
 		);
+
+		$queryEngine->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		return $queryEngine;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return ConceptQuerySegmentBuilder
+	 */
+	public function newConceptQuerySegmentBuilder() {
+
+		$pplicationFactory = ApplicationFactory::getInstance();
+
+		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
+			$this->newQuerySegmentListBuilder(),
+			$this->newQuerySegmentListProcessor()
+		);
+
+		$conceptQuerySegmentBuilder->setQueryParser(
+			$pplicationFactory->getQueryFactory()->newQueryParser(
+				$pplicationFactory->getSettings()->get( 'smwgQConceptFeatures' )
+			)
+		);
+
+		return $conceptQuerySegmentBuilder;
 	}
 
 	private function newTemporaryTableBuilder() {
@@ -106,8 +165,8 @@ class QueryEngineFactory {
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);
 
-		$temporaryTableBuilder->withAutoCommit(
-			$this->applicationFactory->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
+		$temporaryTableBuilder->setAutoCommitFlag(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQTemporaryTablesAutoCommitMode' )
 		);
 
 		return $temporaryTableBuilder;

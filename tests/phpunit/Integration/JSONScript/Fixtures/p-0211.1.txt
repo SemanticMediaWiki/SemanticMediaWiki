@@ -1,0 +1,20 @@
+@source: http://www.simile-widgets.org/exhibit3/examples/other-versions/HEAD/icd/icd10-infectious.json
+
+{{#subobject:
+    |@category=P0211
+    |@json={
+    "kind": "chapter",
+    "code": "I",
+    "exclusion": "carrier or suspected carrier of infectious diseaseZ22.-",
+    "icdId": "http://id.who.int/icd/icd10/I",
+    "inclusion": "diseases generally recognized as communicable or transmissible",
+    "label": "Certain infectious and parasitic diseases",
+    "link": "http://apps.who.int/classifications/icd10/browse/2010/en#/I",
+    "subclasses": [
+        "http://id.who.int/icd/icd10/A00-A09",
+        "http://id.who.int/icd/icd10/A15-A19",
+        "http://id.who.int/icd/icd10/A20-A28"
+    ],
+    "id": "http://id.who.int/icd/icd10/I"
+}
+}}

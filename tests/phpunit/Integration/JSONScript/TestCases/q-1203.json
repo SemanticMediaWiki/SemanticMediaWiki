@@ -1,0 +1,271 @@
+{
+	"description": "Test `_wpg/`_txt` with `in:/phrase:` queries (ES only)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Q1203/1",
+			"contents": "[[Category:Q1203]] [[Has text::fox]] [[Has page::fox]]"
+		},
+		{
+			"page": "Q1203/2",
+			"contents": "[[Category:Q1203]] [[Has text::fox and chicken both jump over ...]] [[Has page::fox and chicken both jump over ...]]"
+		},
+		{
+			"page": "Q1203/3",
+			"contents": "[[Category:Q1203]] [[Has text::fox jumps over ...]] [[Has page::fox jumps over ...]]"
+		},
+		{
+			"page": "Q1203/4",
+			"contents": "[[Category:Q1203]] [[Has text::fox-hunting is a sport ...]] [[Has page::fox-hunting is a sport ...]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (in:fox jump, match fox AND jump, see `minimum_should_match`)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[in:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1203/2#0##",
+					"Q1203/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (Has text::in:fox jump, match fox AND jump)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has text::in:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1203/2#0##",
+					"Q1203/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (Has page::in:fox jump, match fox AND jump)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has page::in:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1203/2#0##",
+					"Q1203/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (in:fox)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1203/1#0##",
+					"Q1203/2#0##",
+					"Q1203/3#0##",
+					"Q1203/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (Has text::in:fox)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has text::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1203/1#0##",
+					"Q1203/2#0##",
+					"Q1203/3#0##",
+					"Q1203/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (Has page::in:fox)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1203/1#0##",
+					"Q1203/2#0##",
+					"Q1203/3#0##",
+					"Q1203/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 (phrase:fox jump, mind jump vs. jumps)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[phrase:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count":0,
+				"results": []
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 (Has text::phrase:fox jump, mind jump vs. jumps)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has text::phrase:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count":0,
+				"results": []
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8 (Has page::phrase:fox jump, mind jump vs. jumps)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has page::phrase:fox jump]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count":0,
+				"results": []
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9 (phrase:fox jump*, `phrase_prefix`)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[phrase:fox jump*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1203/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9 (Has text::phrase:fox jump*, `phrase_prefix`)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has text::phrase:fox jump*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1203/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10 (Has page::phrase:fox jump*, `phrase_prefix`)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1203]] [[Has page::phrase:fox jump*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1203/3#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgElasticsearchConfig": {
+			"indexer": {
+				"raw.text": false
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

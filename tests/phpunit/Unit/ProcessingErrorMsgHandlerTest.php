@@ -5,8 +5,6 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Message;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
@@ -44,6 +42,13 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGrepPropertyFromRestrictionErrorMsg() {
+
+		$this->assertNull(
+			ProcessingErrorMsgHandler::grepPropertyFromRestrictionErrorMsg( 'Foo' )
+		);
+	}
+
 	/**
 	 * @dataProvider messagesProvider
 	 */
@@ -51,7 +56,12 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			ProcessingErrorMsgHandler::normalizeMessages( $messages, null, 'en' )
+			ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages, null, 'en' )
+		);
+
+		$this->assertInternalType(
+			'string',
+			ProcessingErrorMsgHandler::getMessagesAsString( $messages, null, 'en' )
 		);
 	}
 
@@ -73,7 +83,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addPropertyObjectValue' )
 			->with( $this->equalTo( $this->dataItemFactory->newDIProperty( '_ERRC' ) ) );
 
-		$instance->pushTo(
+		$instance->addToSemanticData(
 			$semanticData,
 			$container
 		);
@@ -86,17 +96,17 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
-		$container = $instance->getErrorContainerFromMsg( 'foo', $property );
+		$container = $instance->newErrorContainerFromMsg( 'foo', $property );
 
 		$this->assertInstanceOf(
 			'\SMWDIContainer',
 			$container
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount' => 2,
-			'propertyKeys'  => array( '_ERRP', '_ERRT' ),
-		);
+			'propertyKeys'  => [ '_ERRP', '_ERRT' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -110,12 +120,12 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$container = $instance->getErrorContainerFromMsg( 'foo' );
+		$container = $instance->newErrorContainerFromMsg( 'foo' );
 
-		$expected = array(
+		$expected = [
 			'propertyCount' => 1,
-			'propertyKeys'  => array( '_ERRT' ),
-		);
+			'propertyKeys'  => [ '_ERRT' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -131,28 +141,28 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getErrors', 'getProperty' ) )
+			->setMethods( [ 'getErrors', 'getProperty' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
 
-		$container = $instance->getErrorContainerFromDataValue( $dataValue );
+		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
 		$this->assertInstanceOf(
 			'\SMWDIContainer',
 			$container
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount' => 2,
-			'propertyKeys'  => array( '_ERRP', '_ERRT' ),
-		);
+			'propertyKeys'  => [ '_ERRP', '_ERRT' ],
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -162,45 +172,45 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function messagesProvider() {
 
-		$provider[] = array(
-			array(),
-			array()
-		);
+		$provider[] = [
+			[],
+			[]
+		];
 
-		$provider[] = array(
-			array( 'Foo' ),
-			array( 'Foo' )
-		);
+		$provider[] = [
+			[ 'Foo' ],
+			[ 'Foo' ]
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( 'Bar' ) ),
-			array( 'Foo', 'Bar' )
-		);
+		$provider[] = [
+			[ 'Foo', [ 'Bar' ] ],
+			[ 'Foo', 'Bar' ]
+		];
 
-		$provider[] = array(
-			array( 'smw-title', array( 'smw-title' ) ),
-			array( 'Semantic MediaWiki' )
-		);
+		$provider[] = [
+			[ 'smw-title', [ 'smw-title' ] ],
+			[ 'Semantic MediaWiki' ]
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( 'Bar', array( 'Bar' ) ) ),
-			array( 'Foo', 'Bar', )
-		);
+		$provider[] = [
+			[ 'Foo', [ 'Bar', [ 'Bar' ] ] ],
+			[ 'Foo', 'Bar', ]
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( 'Bar', array( 'Bar' ), new \stdClass ) ),
-			array( 'Foo', 'Bar', new \stdClass )
-		);
+		$provider[] = [
+			[ 'Foo', [ 'Bar', [ 'Bar' ], new \stdClass ] ],
+			[ 'Foo', 'Bar', new \stdClass ]
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( 'Bar', array( 'Bar', new \stdClass ), new \stdClass ), 'Foobar' ),
-			array( 'Foo', 'Bar', new \stdClass, new \stdClass, 'Foobar' )
-		);
+		$provider[] = [
+			[ 'Foo', [ 'Bar', [ 'Bar', new \stdClass ], new \stdClass ], 'Foobar' ],
+			[ 'Foo', 'Bar', new \stdClass, new \stdClass, 'Foobar' ]
+		];
 
-		$provider[] = array(
-			array( 'Foo', array( '[2,"smw-title"]' ) ),
-			array( 'Foo' , 'Semantic MediaWiki' )
-		);
+		$provider[] = [
+			[ 'Foo', [ '[2,"smw-title"]' ] ],
+			[ 'Foo' , 'Semantic MediaWiki' ]
+		];
 
 		return $provider;
 	}

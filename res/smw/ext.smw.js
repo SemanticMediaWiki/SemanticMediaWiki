@@ -47,6 +47,21 @@ var smw = ( function ( $, undefined ) {
 		/* Public Members */
 
 		/**
+		 * Merges two objects
+		 *
+		 * @since 1.8
+		 *
+		 * @return {object}
+		 */
+		merge: function( obj1, obj2 ) {
+			// ECMAScript 2015 (ES6) Standard Method
+			// return Object.assign(obj1, obj2);
+
+			// ES5 and Earlier
+			return jQuery.extend( obj1, obj2 );
+		},
+
+		/**
 		 * Outputs a debug log
 		 *
 		 * @since 1.8
@@ -60,6 +75,17 @@ var smw = ( function ( $, undefined ) {
 				}
 			} else {
 				return mediaWiki.log.call( mediaWiki.log, 'SMW: ', message );
+			}
+		},
+
+		/**
+		 * @since 3.0
+		 */
+		load: function load( callback ) {
+			if ( document.readyState == 'complete' ) {
+				callback();
+			} else {
+				window.addEventListener( 'load', callback );
 			}
 		},
 

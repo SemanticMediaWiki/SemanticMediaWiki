@@ -1,0 +1,173 @@
+{
+	"description": "Test in-text annotation / `#ask` (#MEDIAWIKI, #LOCL) output for `_dat` datatype (#1545, `wgContLang=en`, `wgLang=ja`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0423/1",
+			"contents": "[[Has date::12 Jan 1957 12:05]]"
+		},
+		{
+			"contentlanguage": "fr",
+			"page": "Example/P0423/2",
+			"contents": "[[Has date::12 April 1957 12:05]]"
+		},
+		{
+			"page": "Example/P0423/Q1.1",
+			"contents": "{{#ask: [[Has date::12 Jan 1957 12:05]] |?Has date |?Has date#MEDIAWIKI }}"
+		},
+		{
+			"page": "Example/P0423/Q1.2",
+			"contents": "{{#show: Example/P0423/1 |?Has date |?Has date#MEDIAWIKI }}"
+		},
+		{
+			"page": "Example/P0423/Q1.3",
+			"contents": "{{#ask: [[Has date::12 Jan 1957 12:05]] |?Has date#LOCL }}"
+		},
+		{
+			"page": "Example/P0423/Q1.4",
+			"contents": "{{#show: Example/P0423/1 |?Has date#LOCL }}"
+		},
+		{
+			"page": "Example/P0423/Q1.5",
+			"contents": "{{#show: Example/P0423/1 |?Has date#LOCL@fr }}"
+		},
+		{
+			"page": "Example/P0423/Q2.1",
+			"contents": "{{#show: Example/P0423/2 |?Has date }}"
+		},
+		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1 does not support `-4715-11-24T12:00:00Z\"^^xsd:dateTime` and goes '...Error: Malformed query...'"
+			},
+			"page": "Example/P0423/3",
+			"contents": "[[Has date::Jan 10000000000]]"
+		},
+		{
+			"page": "Example/P0423/Q3.1",
+			"contents": "{{#ask: [[Example/P0423/3]] |?Has date#LOCL }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0423/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1957-01-12T12:05:00"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"12 Jan 1957 12:05"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#ask MEDIAWIKI)",
+			"subject": "Example/P0423/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">12 January 1957 12:05:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (#show MEDIAWIKI)",
+			"subject": "Example/P0423/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_dat\" data-sort-value=\"2435851.0034722\">12 January 1957 12:05:00</td>",
+					"<td class=\"smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#ask LOCL)",
+			"subject": "Example/P0423/Q1.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2435851.0034722\">1957年1月12日 (土) 12:05:00</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#show LOCL for user lang)",
+			"subject": "Example/P0423/Q1.4",
+			"assert-output": {
+				"to-contain": [
+					"1957年1月12日 (土) 12:05:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (#show LOCL@fr for annotated fr lang and not for user lang)",
+			"subject": "Example/P0423/Q1.5",
+			"assert-output": {
+				"to-contain": [
+					"12:05:00, 12 janvier 1957"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 page vs global content language",
+			"subject": "Example/P0423/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"12 April 1957 12:05:00"
+				],
+				"not-contain": [
+					"12 avril 1957 12:05:00"
+				]
+			}
+		},
+		{
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.1, see Example/P0423/3 comment!"
+			},
+			"type": "parser",
+			"about": "#7 avoid a possible `DateTime ... Failed to parse time ...` on large dates, only checking some minor output since WINOS reports 784354016999.5, yet Linux returns 3652426721059.5 (float precision issue)",
+			"subject": "Example/P0423/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"class=\"Has-date smwtype_dat\" "
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "ja",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

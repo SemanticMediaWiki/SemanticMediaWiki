@@ -12,6 +12,16 @@ namespace SMW\SPARQLStore;
 interface RepositoryConnection {
 
 	/**
+	 * The function returns connection details required for establishing an active
+	 * repository connection.
+	 *
+	 * @since 2.5
+	 *
+	 * @return RepositoryClient
+	 */
+	public function getRepositoryClient();
+
+	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in
 	 * $extraNamespaces.
@@ -23,7 +33,7 @@ interface RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function select( $vars, $where, $options = array(), $extraNamespaces = array() );
+	public function select( $vars, $where, $options = [], $extraNamespaces = [] );
 
 	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
@@ -35,7 +45,7 @@ interface RepositoryConnection {
 	 *
 	 * @return RepositoryResult
 	 */
-	public function ask( $where, $extraNamespaces = array() );
+	public function ask( $where, $extraNamespaces = [] );
 
 	/**
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
@@ -48,7 +58,7 @@ interface RepositoryConnection {
 	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = array() );
+	public function delete( $deletePattern, $where, $extraNamespaces = [] );
 
 	/**
 	 * Execute a SPARQL query and return an RepositoryResult object

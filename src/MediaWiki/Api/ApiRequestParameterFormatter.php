@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
+use SMW\DataValueFactory;
 use SMW\Options;
 use SMW\Query\PrintRequest;
-use SMWPropertyValue;
 
 /**
  * This class handles Api related request parameter formatting
@@ -19,7 +19,7 @@ final class ApiRequestParameterFormatter {
 	/**
 	 * @var array
 	 */
-	protected $requestParameters = array();
+	protected $requestParameters = [];
 
 	/**
 	 * @var ObjectDictionary
@@ -45,7 +45,7 @@ final class ApiRequestParameterFormatter {
 	public function getAskApiParameters() {
 
 		if ( $this->results === null ) {
-			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])/", $this->requestParameters['query'] ) : array();
+			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])/", $this->requestParameters['query'] ) : [];
 		}
 
 		return $this->results;
@@ -79,9 +79,9 @@ final class ApiRequestParameterFormatter {
 		$result = new Options();
 
 		// Set defaults
-		$result->set( 'conditions', array() );
-		$result->set( 'printouts', array() );
-		$result->set( 'parameters', array() );
+		$result->set( 'conditions', [] );
+		$result->set( 'printouts', [] );
+		$result->set( 'parameters', [] );
 
 		if ( isset( $this->requestParameters['parameters'] ) && is_array( $this->requestParameters['parameters'] ) ) {
 			$result->set( 'parameters', $this->formatParameters() );
@@ -107,7 +107,7 @@ final class ApiRequestParameterFormatter {
 	 */
 	protected function formatParameters() {
 
-		$parameters = array();
+		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
 			$parts = explode( '=', $param, 2 );
@@ -146,7 +146,7 @@ final class ApiRequestParameterFormatter {
 		return new PrintRequest(
 			PrintRequest::PRINT_PROP,
 			$printout,
-			SMWPropertyValue::makeUserProperty( $printout )
+			DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
 		);
 	}
 

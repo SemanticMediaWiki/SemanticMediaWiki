@@ -1,0 +1,63 @@
+{
+	"description": "Test `format=template`, `format=plainlist` with `#show` and template args (#502)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Template/F0805_show_text",
+			"contents": "<includeonly>{{{Has text}}}</includeonly>"
+		},
+		{
+			"page": "Example/F0805/1",
+			"contents": "[[Has text::123]]"
+		},
+		{
+			"page": "Example/F0805/Q.1",
+			"contents": "{{#show: Example/F0805/1 |?Has text |format=template |named args=yes |template=Template/F0805_show_text }}"
+		},
+		{
+			"page": "Example/F0805/Q.2",
+			"contents": "{{#show: Example/F0805/1 |?Has text |format=plainlist |named args=yes |template=Template/F0805_show_text }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (#show, `format=template` to support template parameters)",
+			"subject": "Example/F0805/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#show, `format=plainlist` to support template parameters)",
+			"subject": "Example/F0805/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"123"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -17,7 +17,7 @@ use SMW\InMemoryPoolCache;
  *
  * @ingroup SMW
  */
-class SMWTurtleSerializer extends SMWSerializer{
+class SMWTurtleSerializer extends SMWSerializer {
 	/**
 	 * Array of non-trivial sub-SMWExpData elements that cannot be nested while
 	 * serializing some SMWExpData. The elements of the array are serialized
@@ -49,14 +49,14 @@ class SMWTurtleSerializer extends SMWSerializer{
 
 	public function clear() {
 		parent::clear();
-		$this->sparql_namespaces = array();
+		$this->sparql_namespaces = [];
 	}
 
 	/**
 	 * @since 2.3
 	 */
 	public static function reset() {
-		InMemoryPoolCache::getInstance()->resetPoolCacheFor( 'turtle.serializer' );
+		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'turtle.serializer' );
 	}
 
 	/**
@@ -69,14 +69,14 @@ class SMWTurtleSerializer extends SMWSerializer{
 	 */
 	public function flushSparqlPrefixes() {
 		$result = $this->sparql_namespaces;
-		$this->sparql_namespaces = array();
+		$this->sparql_namespaces = [];
 		return $result;
 	}
 
 	protected function serializeHeader() {
 		if ( $this->sparqlmode ) {
 			$this->pre_ns_buffer = '';
-			$this->sparql_namespaces = array(
+			$this->sparql_namespaces = [
 				"rdf" => SMWExporter::getInstance()->expandURI( '&rdf;' ),
 				"rdfs" => SMWExporter::getInstance()->expandURI( '&rdfs;' ),
 				"owl" => SMWExporter::getInstance()->expandURI( '&owl;' ),
@@ -86,7 +86,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 				"property" => SMWExporter::getInstance()->expandURI( '&property;' ),
 				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
 				"wikiurl" => SMWExporter::getInstance()->expandURI( '&wikiurl;' )
-			);
+			];
 		} else {
 			$this->pre_ns_buffer =
 			"@prefix rdf: <" . SMWExporter::getInstance()->expandURI( '&rdf;' ) . "> .\n" .
@@ -101,7 +101,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" . // note that this XSD URI is hardcoded below (its unlikely to change, of course)
 			"@prefix wikiurl: <" . SMWExporter::getInstance()->expandURI( '&wikiurl;' ) . "> .\n";
 		}
-		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true );
+		$this->global_namespaces = [ 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true ];
 		$this->post_ns_buffer = "\n";
 	}
 
@@ -117,7 +117,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 
 	public function serializeExpData( SMWExpData $expData ) {
 
-		$this->subExpData = array( $expData );
+		$this->subExpData = [ $expData ];
 
 		while ( count( $this->subExpData ) > 0 ) {
 			$this->serializeNestedExpData( array_pop( $this->subExpData ), '' );
@@ -152,7 +152,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 		if ( $data->getSubject()->getDataItem() !== null && $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$hash = $data->getHash();
-			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheFor( 'turtle.serializer' );
+			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'turtle.serializer' );
 
 			if ( $poolCache->contains( $hash ) && $poolCache->fetch( $hash ) ) {
 				return;
@@ -261,18 +261,34 @@ class SMWTurtleSerializer extends SMWSerializer{
 				return '<' . str_replace( '>', '\>', SMWExporter::getInstance()->expandURI( $expElement->getUri() ) ) . '>';
 			}
 		} elseif ( $expElement instanceof SMWExpLiteral ) {
-			$lexicalForm = '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $expElement->getLexicalForm() ) . '"';
-			$dt = $expElement->getDatatype();
-			if ( ( $dt !== '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
+			$dataType = $expElement->getDatatype();
+			$lexicalForm = self::getCorrectLexicalForm( $expElement );
+
+			if ( ( $dataType !== '' ) && ( $dataType != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
 				$count = 0;
-				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:', $dt, $count );
-				return ( $count == 1 ) ? "$lexicalForm^^$newdt" : "$lexicalForm^^<$dt>";
+				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:', $dataType, $count );
+				return ( $count == 1 ) ? "$lexicalForm^^$newdt" : "$lexicalForm^^<$dataType>";
 			} else {
 				return $lexicalForm;
 			}
 		} else {
 			throw new InvalidArgumentException( 'The method can only serialize atomic elements of type SMWExpResource or SMWExpLiteral.' );
 		}
+	}
+
+	private static function getCorrectLexicalForm( $expElement ) {
+
+		$lexicalForm = str_replace( [ '\\', "\n", '"' ], [ '\\\\', "\\n", '\"' ], $expElement->getLexicalForm() );
+
+		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {
+			$lexicalForm = '"' . $lexicalForm . '@' . $expElement->getLang() . '"';
+		} elseif ( $expElement->getLang() !== '' ) {
+			$lexicalForm = '"' . $lexicalForm . '"'. '@' . $expElement->getLang();
+		} else {
+			$lexicalForm = '"' . $lexicalForm . '"';
+		}
+
+		return $lexicalForm;
 	}
 
 }

@@ -39,7 +39,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$lowerboundLimit = 1;
 
@@ -72,7 +72,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$upperboundLimit = 999999999;
 
@@ -105,7 +105,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 
 		$upperboundLimit = 999999999;
 
@@ -135,8 +135,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new Query( $description, true, false );
-		$instance->setExtraPrintouts( array( $printRequest ) );
+		$instance = new Query( $description, Query::INLINE_QUERY );
+		$instance->setExtraPrintouts( [ $printRequest ] );
 
 		$serialized = $instance->toArray();
 
@@ -145,23 +145,23 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 			$serialized
 		);
 
-		$expected = array(
+		$expected = [
 			'conditions',
 			'parameters',
 			'printouts'
-		);
+		];
 
 		foreach ( $expected as $key ) {
 			$this->assertArrayHasKey( $key, $serialized );
 		}
 
-		$expectedParameters = array(
+		$expectedParameters = [
 			'limit',
 			'offset',
 			'mainlabel',
 			'sortkeys',
 			'querymode'
-		);
+		];
 
 		foreach ( $expectedParameters as $key ) {
 			$this->assertArrayHasKey( $key, $serialized['parameters'] );
@@ -170,9 +170,12 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHash() {
 
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getFingerprint' ] )
+			->getMockForAbstractClass();
 
-		$instance = new Query( $description, true, false );
+		$instance = new Query( $description, Query::INLINE_QUERY );
 		$instance->setLimit( 50 );
 
 		$hash = $instance->getHash();

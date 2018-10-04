@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Exception\DataItemDeserializationException;
+use SMW\Exception\DataItemException;
 use SMWDataItem;
 use Title;
 
@@ -56,7 +58,12 @@ class DIWikiPage extends SMWDataItem {
 	private $pageLanguage = null;
 
 	/**
-	 * Contructor. We do not bother with too much detailed validation here,
+	 * @var integer
+	 */
+	private $id = 0;
+
+	/**
+	 * Constructor. We do not bother with too much detailed validation here,
 	 * regarding the known namespaces, canonicity of the dbkey (namespace
 	 * exrtacted?), validity of interwiki prefix (known?), and general use
 	 * of allowed characters (may depend on MW configuration). All of this
@@ -171,6 +178,24 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
+	 * @since  2.5
+	 *
+	 * @param integer $id
+	 */
+	public function setId( $id ) {
+		$this->id = (int)$id;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
 	 * Create a MediaWiki Title object for this DIWikiPage. The result
 	 * can be null if an error occurred.
 	 *
@@ -206,15 +231,13 @@ class DIWikiPage extends SMWDataItem {
 	 * @return string
 	 */
 	public function getSerialization() {
-		$segments = array(
+		$segments = [
 			$this->m_dbkey,
 			$this->m_namespace,
 			$this->m_interwiki
-		);
+		];
 
-		if ( $this->m_subobjectname !== '' ) {
-			$segments[] = $this->m_subobjectname;
-		}
+		$segments[] = $this->m_subobjectname;
 
 		return implode( '#', $segments );
 	}
@@ -225,7 +248,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $serialization
 	 *
 	 * @return DIWikiPage
-	 * @throws DataItemException
+	 * @throws DataItemDeserializationException
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '#', $serialization, 4 );
@@ -235,14 +258,14 @@ class DIWikiPage extends SMWDataItem {
 		} elseif ( count( $parts ) == 4 ) {
 			return new self( $parts[0], intval( $parts[1] ), $parts[2], $parts[3] );
 		} else {
-			throw new DataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
+			throw new DataItemDeserializationException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		}
 	}
 
 	/**
 	 * Create a data item from a MediaWiki Title.
 	 *
-	 * @param $title Title
+	 * @param Title $title
 	 * @return DIWikiPage
 	 */
 	public static function newFromTitle( Title $title ) {
@@ -274,4 +297,3 @@ class DIWikiPage extends SMWDataItem {
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
-

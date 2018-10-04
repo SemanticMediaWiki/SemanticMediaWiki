@@ -69,7 +69,7 @@ class MwApiFactory {
 		return $api->getResultData();
 	}
 
-	private function newRequestContext( $request = array() ) {
+	private function newRequestContext( $request = [] ) {
 
 		$context = new RequestContext();
 

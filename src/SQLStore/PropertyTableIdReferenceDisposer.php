@@ -2,7 +2,14 @@
 
 namespace SMW\SQLStore;
 
+use SMW\ApplicationFactory;
+use SMW\DIWikiPage;
+use SMW\EventHandler;
+use SMW\Iterators\ResultIterator;
+
 /**
+ * @private
+ *
  * Class responsible for the clean-up (aka disposal) of any outdated table entries
  * that are contained in either the ID_TABLE or related property tables with
  * reference to a matchable ID.
@@ -25,6 +32,16 @@ class PropertyTableIdReferenceDisposer {
 	private $connection = null;
 
 	/**
+	 * @var boolean
+	 */
+	private $onTransactionIdle = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $redirectRemoval = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -32,6 +49,33 @@ class PropertyTableIdReferenceDisposer {
 	public function __construct( SQLStore $store ) {
 		$this->store = $store;
 		$this->connection = $this->store->getConnection( 'mw.db' );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $redirectRemoval
+	 */
+	public function setRedirectRemoval( $redirectRemoval ) {
+		$this->redirectRemoval = $redirectRemoval;
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public function waitOnTransactionIdle() {
+		$this->onTransactionIdle = true;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	public function isDisposable( $id ) {
+		return $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) === false;
 	}
 
 	/**
@@ -48,13 +92,44 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param integer $id
 	 */
-	public function tryToRemoveOutdatedIDFromEntityTables( $id ) {
+	public function removeOutdatedEntityReferencesById( $id ) {
 
-		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceFor( $id ) ) {
+		if ( $this->store->getPropertyTableIdReferenceFinder()->hasResidualReferenceForId( $id ) ) {
 			return null;
 		}
 
-		$this->removeIDFromEntityReferenceTables( $id );
+		$this->cleanUpSecondaryReferencesById( $id, false );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return ResultIterator
+	 */
+	public function newOutdatedEntitiesResultIterator() {
+
+		$res = $this->connection->select(
+			SQLStore::ID_TABLE,
+			[ 'smw_id' ],
+			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
+			__METHOD__
+		);
+
+		return new ResultIterator( $res );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param stdClass $row
+	 */
+	public function cleanUpTableEntriesByRow( $row ) {
+
+		if ( !isset( $row->smw_id ) ) {
+			return;
+		}
+
+		$this->cleanUpTableEntriesById( $row->smw_id );
 	}
 
 	/**
@@ -65,13 +140,43 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param integer $id
 	 */
-	public function cleanUpTableEntriesFor( $id ) {
+	public function cleanUpTableEntriesById( $id ) {
+
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function() use ( $id ) {
+				$this->cleanUpReferencesById( $id );
+			} );
+		} else {
+			$this->cleanUpReferencesById( $id );
+		}
+	}
+
+	private function cleanUpReferencesById( $id ) {
+
+		$subject = $this->store->getObjectIds()->getDataItemById( $id );
+		$isRedirect = false;
+
+		if ( $subject instanceof DIWikiPage ) {
+			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
+
+			// Use the subject without an internal 'smw-delete' iw marker
+			$subject = new DIWikiPage(
+				$subject->getDBKey(),
+				$subject->getNamespace(),
+				'',
+				$subject->getSubobjectName()
+			);
+		}
+
+		$this->triggerCleanUpEvents( $subject );
+
+		$this->connection->beginAtomicTransaction( __METHOD__ );
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			if ( $proptable->usesIdSubject() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 's_id' => $id ),
+					[ 's_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -79,7 +184,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( !$proptable->isFixedPropertyTable() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'p_id' => $id ),
+					[ 'p_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -90,38 +195,47 @@ class PropertyTableIdReferenceDisposer {
 			if ( isset( $fields['o_id'] ) ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'o_id' => $id ),
+					[ 'o_id' => $id ],
 					__METHOD__
 				);
 			}
 		}
 
-		$this->removeIDFromEntityReferenceTables( $id );
+		$this->cleanUpSecondaryReferencesById( $id, $isRedirect );
+		$this->connection->endAtomicTransaction( __METHOD__ );
+
+		\Hooks::run(
+			'SMW::SQLStore::EntityReferenceCleanUpComplete',
+			[ $this->store, $id, $subject, $isRedirect ]
+		);
 	}
 
-	private function removeIDFromEntityReferenceTables( $id ) {
+	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
 
-		$this->connection->delete(
-			SQLStore::ID_TABLE,
-			array( 'smw_id' => $id ),
-			__METHOD__
-		);
+		// When marked as redirect, don't remove the reference
+		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
+			$this->connection->delete(
+				SQLStore::ID_TABLE,
+				[ 'smw_id' => $id ],
+				__METHOD__
+			);
+		}
 
 		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array( 'p_id' => $id ),
+			[ 'p_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' => $id ),
+			[ 's_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 'o_id' => $id ),
+			[ 'o_id' => $id ],
 			__METHOD__
 		);
 
@@ -130,12 +244,41 @@ class PropertyTableIdReferenceDisposer {
 		try {
 			$this->connection->delete(
 				SQLStore::FT_SEARCH_TABLE,
-				array( 's_id' => $id ),
+				[ 's_id' => $id ],
 				__METHOD__
 			);
 		} catch ( \DBError $e ) {
-			wfDebugLog( 'smw', __METHOD__ . ' reported: ' . $e->getMessage() );
+			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
+	}
+
+	private function triggerCleanUpEvents( $subject ) {
+
+		if ( !$subject instanceof DIWikiPage ) {
+			return;
+		}
+
+		// Skip any reset for subobjects where it is expected that the base
+		// subject is cleaning up all related cache entries
+		if ( $subject->getSubobjectName() !== '' ) {
+			return;
+		}
+
+		$eventHandler = EventHandler::getInstance();
+
+		$dispatchContext = $eventHandler->newDispatchContext();
+		$dispatchContext->set( 'subject', $subject );
+		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'cached.prefetcher.reset',
+			$dispatchContext
+		);
+
+		$eventHandler->getEventDispatcher()->dispatch(
+			'factbox.cache.delete',
+			$dispatchContext
+		);
 	}
 
 }

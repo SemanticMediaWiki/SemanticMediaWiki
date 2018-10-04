@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 
 /**
@@ -21,31 +22,39 @@ use SMW\ApplicationFactory;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RefreshJob extends JobBase {
+class RefreshJob extends Job {
 
 	/**
 	 * Constructor. The parameters optionally specified in the second
-	 * argument of this constructor use the following array keys:  'spos'
-	 * (start index, default 1), 'prog' (progress indicator, default 0),
-	 * ('rc' (number of runs to be done, default 1). If more than one run
-	 * is done, then the first run will restrict to properties and types.
-	 * The progress indication refers to the current run, not to the
+	 * argument of this constructor use the following array keys:
+	 *
+	 * - 'spos' : (start index, default 1),
+	 * - 'prog' : (progress indicator, default 0),
+	 * - 'rc' : (number of runs to be done, default 1)
+	 *
+	 * If more than one run is done, then the first run will restrict to properties
+	 * and types. The progress indication refers to the current run, not to the
 	 * overall job.
 	 *
-	 * @param $title Title not relevant but needed for MW jobs
-	 * @param $params array (associative) as explained above
+	 * @param Title $title
+	 * @param array $params
 	 */
-	public function __construct( $title, $params = array( 'spos' => 1, 'prog' => 0, 'rc' => 1 ) ) {
-		parent::__construct( 'SMW\RefreshJob', $title, $params );
+	public function __construct( $title, $params = [ 'spos' => 1, 'prog' => 0, 'rc' => 1 ] ) {
+		parent::__construct( 'smw.refresh', $title, $params );
 	}
 
 	/**
-	 * @since 1.9
+	 * @see Job::run
 	 *
-	 * @return boolean success
+	 * @return boolean
 	 */
 	public function run() {
-		return $this->hasParameter( 'spos' ) ? $this->refreshData( $this->getParameter( 'spos' ) ) : true;
+
+		if ( $this->hasParameter( 'spos' ) ) {
+			$this->refreshData( $this->getParameter( 'spos' ) );
+		}
+
+		return true;
 	}
 
 	/**
@@ -65,48 +74,38 @@ class RefreshJob extends JobBase {
 	}
 
 	/**
-	 * @see Job::insert
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( $this->enabledJobQueue ) {
-			parent::insert();
-		}
-	}
-
-	/**
 	 * @param $spos start index
 	 */
 	protected function refreshData( $spos ) {
 
 		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
-		$byIdDataRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
+		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
 			$spos,
 			20,
 			$this->getNamespace( $run )
 		);
 
-		$byIdDataRebuildDispatcher->dispatchRebuildFor( $spos );
-		$prog = $byIdDataRebuildDispatcher->getEstimatedProgress();
+		$entityRebuildDispatcher->rebuild( $spos );
+		$prog = $entityRebuildDispatcher->getEstimatedProgress();
 
 		if ( $spos > 0 ) {
 
-			$this->createNextJob( array(
+			$this->createNextJob( [
 				'spos' => $spos,
 				'prog' => $prog,
 				'rc'   => $this->getParameter( 'rc' ),
 				'run'  => $run
-			) );
+			] );
 
 		} elseif ( $this->hasParameter( 'rc' ) && $this->getParameter( 'rc' ) > $run ) { // do another run from the beginning
 
-			$this->createNextJob( array(
+			$this->createNextJob( [
 				'spos' => 1,
 				'prog' => 0,
 				'rc'   => $this->getParameter( 'rc' ),
 				'run'  => $run + 1
-			) );
+			] );
 
 		}
 
@@ -114,8 +113,14 @@ class RefreshJob extends JobBase {
 	}
 
 	protected function createNextJob( array $parameters ) {
-		$nextjob = new self( $this->getTitle(), $parameters );
-		$nextjob->setJobQueueEnabledState( $this->enabledJobQueue )->insert();
+
+		$job = new self(
+			$this->getTitle(),
+			$parameters
+		);
+
+		$job->isEnabledJobQueue( $this->isEnabledJobQueue );
+		$job->insert();
 	}
 
 	protected function getNamespace( $run ) {
@@ -124,7 +129,7 @@ class RefreshJob extends JobBase {
 			return false;
 		}
 
-		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ) : false;
+		return ( ( $this->getParameter( 'rc' ) > 1 ) && ( $run == 1 ) ) ? [ SMW_NS_PROPERTY ] : false;
 	}
 
 }

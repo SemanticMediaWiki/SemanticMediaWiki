@@ -1,0 +1,285 @@
+{
+	"description": "Test in-text annotation for `_PVUC` to validate uniqueness (`smwgDVFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has Url",
+			"contents": "[[Has type::URL]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has monolingual text",
+			"contents": "[[Has type::Monolingual text]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has numeric reference",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;Date]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness record",
+			"contents": "[[Has type::Record]] [[Has fields::Number;Date]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"page": "Example/P0419/1",
+			"contents": "[[Has Url::http://example.org/P0419]]"
+		},
+		{
+			"page": "Example/P0419/2",
+			"contents": "[[Has Url::http://example.org/P0419]] [[Has Url::http://example.org/P0419-1]]"
+		},
+		{
+			"page": "Example/P0419/3",
+			"contents": "[[Has text::P0419]]"
+		},
+		{
+			"page": "Example/P0419/4",
+			"contents": "[[Has text::P0419]]"
+		},
+		{
+			"page": "Example/P0419/5",
+			"contents": "[[Has date::1 Jan 1970 12:50:12]]"
+		},
+		{
+			"page": "Example/P0419/6",
+			"contents": "{{#subobject:|Has date=1 Jan 1970 12:50:12}}"
+		},
+		{
+			"page": "Example/P0419/7",
+			"contents": "[[Has monolingual text::Foo@en]]"
+		},
+		{
+			"page": "Example/P0419/8",
+			"contents": "{{#subobject:|Has monolingual text=Foo@en}}"
+		},
+		{
+			"page": "Example/P0419/9",
+			"contents": "[[Has numeric reference::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/9/1",
+			"contents": "[[Has numeric reference::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/9/2",
+			"contents": "[[Has numeric reference::42;1 Jan 1970 12:00]]"
+		},
+		{
+			"page": "Example/P0419/10",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/10/1",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0419/10/2",
+			"contents": "[[Has uniqueness record::42;1 Jan 1970 12:00]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0419/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_Url"
+					],
+					"propertyValues": [
+						"http://example.org/P0419"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0419/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC",
+						"Has_Url"
+					],
+					"propertyValues": [
+						"http://example.org/P0419-1"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0419/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text"
+					],
+					"propertyValues": [
+						"P0419"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 Fails uniqueness for the text annotated in Example/P0419/3",
+			"subject": "Example/P0419/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 Fails uniqueness for date value annotated in Example/P0419/5",
+			"subject": "Example/P0419/6#_9fbec9d56750049a3420802d55db9a62",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 Fails uniqueness for monolingual text value annotated in Example/P0419/7",
+			"subject": "Example/P0419/8#_7d241515e1224e118e0cd09f9b055a79",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (Fails uniqueness due to same reference in Example/P0419/9)",
+			"subject": "Example/P0419/9/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (same number but different date as in Example/P0419/9)",
+			"subject": "Example/P0419/9/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has numeric reference"
+					],
+					"propertyValues": [
+						"Example/P0419/9/2#0##_REF31fea0d5c8403916c6f1da7c68f3998f"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (Fails uniqueness due to same record in Example/P0419/10)",
+			"subject": "Example/P0419/10/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (same number but different date as in Example/P0419/10)",
+			"subject": "Example/P0419/10/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has uniqueness record"
+					],
+					"propertyValues": [
+						"Example/P0419/10/2#0##_fdf9ee62dae77aa0c5d7cf89d1faa64d"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

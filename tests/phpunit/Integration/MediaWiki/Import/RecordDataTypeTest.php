@@ -26,7 +26,7 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
@@ -58,7 +58,7 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 
 	public function testImportOfRecordValues() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'Property:Has record number field',
 			'Property:Has record page field',
 			'Property:Has record text field',
@@ -67,23 +67,23 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 			'RecordDataTypePage',
 			'RecordDataTypeRegressionTest/WithSubpage',
 			'RecordDataTypeRegressionTest'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$title = Title::newFromText( 'RecordDataTypeRegressionTest' );
 
-		$expectedCategoryAsWikiValue = array(
+		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'Regression test',
 				'Data type regression test',
 				'Record type regression test'
-			)
-		);
+			]
+		];
 
-		$expectedSomeProperties = array(
-			'properties' => array(
+		$expectedSomeProperties = [
+			'properties' => [
 				DIProperty::newFromUserLabel( 'RecordDataTypePage' ),
 				DIProperty::newFromUserLabel( 'BarText' ),
 				DIProperty::newFromUserLabel( 'BooPage' ),
@@ -94,8 +94,8 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 				new DIProperty( '_SKEY' ),
 				new DIProperty( '_SOBJ' ),
 				new DIProperty( '_INST' )
-			)
-		);
+			]
+		];
 
 		$property = DIProperty::newFromUserLabel( 'Has record type for single test' );
 		$valueString = 'ForSingleTestAsPage;ForSingleTestAsText;3333';
@@ -104,57 +104,57 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 			$valueString = 'ForSingleTestAsPage; ForSingleTestAsText; 3333';
 		}
 
-		$expectedRecordTypeValuesAsWikiValue = array(
+		$expectedRecordTypeValuesAsWikiValue = [
 			'subject'        => DIWikiPage::newFromTitle( $title ),
 			'record'         => $property,
 			'property'       => $property,
-			'propertyValues' => array( $valueString, '?; ?; ?' )
-		);
+			'propertyValues' => [ $valueString, '?; ?; ?' ]
+		];
 
-		$expectedRecordPageFieldValuesAsWikiValue = array(
+		$expectedRecordPageFieldValuesAsWikiValue = [
 			'subject'        => DIWikiPage::newFromTitle( $title ),
 			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
 			'property'       => DIProperty::newFromUserLabel( 'Has record page field' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'FooPage',
 				'QyuPageOnSubobject',
 				'QyuPage',
 				'XeuiPageOnSubobject',
 				'RecordDataTypePage',
 				'BooPage'
-			)
-		);
+			]
+		];
 
-		$expectedRecordTextFieldValuesAsWikiValue = array(
+		$expectedRecordTextFieldValuesAsWikiValue = [
 			'subject'        => DIWikiPage::newFromTitle( $title ),
 			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
 			'property'       => DIProperty::newFromUserLabel( 'Has record text field' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				'BarText',
 				'ForSingleTestAsText',
 				'FooText',
 				'XeuiTextOnSubobject'
-			)
-		);
+			]
+		];
 
-		$expectedRecordNumberFieldValuesAsNumber = array(
+		$expectedRecordNumberFieldValuesAsNumber = [
 			'subject'        => DIWikiPage::newFromTitle( Title::newFromText( 'RecordDataTypeRegressionTest/WithSubpage' ) ),
 			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
 			'property'       => DIProperty::newFromUserLabel( 'Has record number field' ),
-			'propertyValues' => array(
+			'propertyValues' => [
 				1111,
 				9001,
 				9999,
 				1009
-			)
-		);
+			]
+		];
 
 		$semanticDataFinder = new ByPageSemanticDataFinder;
 		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
-		$semanticDataBatches = array(
+		$semanticDataBatches = [
 			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $title ) ),
-		);
+		];
 
 		foreach ( $semanticDataBatches as $semanticData ) {
 
@@ -201,7 +201,7 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 	protected function assertThatRecordValuesAreSet( $expected ) {
 
 		$runValueAssert = false;
-		$values = array();
+		$values = [];
 
 		$container = $this->getStore()->getPropertyValues(
 			$expected['subject'],

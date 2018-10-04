@@ -51,13 +51,9 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\Factbox\Factbox',
-			new Factbox( $store, $parserData, $messageBuilder )
+			Factbox::class,
+			new Factbox( $store, $parserData )
 		);
 	}
 
@@ -74,20 +70,15 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$instance = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'fetchContent', 'getMagicWords' ),
-			array(
+		$instance = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+			->setConstructorArgs( [
 				$store,
-				$parserData,
-				$messageBuilder
-			)
-		);
+				$parserData
+			] )
+			->setMethods( [ 'fetchContent', 'getMagicWords' ] )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'getMagicWords' )
@@ -138,32 +129,20 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( $subject ) ) );
+			->will( $this->returnValue( [ $subject ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( DIProperty::newFromUserLabel( 'SomeFancyProperty' ) ) ) );
+			->will( $this->returnValue( [ DIProperty::newFromUserLabel( 'SomeFancyProperty' ) ] ) );
 
 		$parserOutput = $this->setupParserOutput( $semanticData );
 
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new Factbox(
+			$store,
+			new ParserData( $subject->getTitle(), $parserOutput )
+		);
 
-		$message->expects( $this->any() )
-			->method( 'inContentLanguage' )
-			->will( $this->returnSelf() );
-
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
-
-		$instance = new Factbox( $store, new ParserData( $subject->getTitle(), $parserOutput ), $messageBuilder );
-		$result   = $instance->doBuild()->getContent();
+		$result = $instance->doBuild()->getContent();
 
 		$this->assertInternalType(
 			'string',
@@ -192,23 +171,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$message->expects( $this->any() )
-			->method( 'inContentLanguage' )
-			->will( $this->returnSelf() );
-
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
-
-		$instance = new Factbox( $store, $parserData, $messageBuilder );
+		$instance = new Factbox( $store, $parserData );
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$createTable  = $reflector->getMethod( 'createTable' );
@@ -217,6 +180,19 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'string',
 			$createTable->invoke( $instance, $parserData->getSemanticData() )
+		);
+	}
+
+	public function testTabs() {
+
+		$this->assertContains(
+			'tab-facts-rendered',
+			Factbox::tabs( 'Foo' )
+		);
+
+		$this->assertContains(
+			'tab-facts-derived',
+			Factbox::tabs( 'Foo', 'Bar' )
 		);
 	}
 
@@ -229,11 +205,10 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Factbox( $store, $parserData, $messageBuilder );
+		$instance = new Factbox(
+			$store,
+			$parserData
+		);
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
@@ -291,20 +266,15 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( null ) );
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMock( '\SMW\Factbox\Factbox',
-			array( 'createTable' ),
-			array(
+		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+			->setConstructorArgs( [
 				$store,
-				$parserData,
-				$messageBuilder
-			)
-		);
+				$parserData
+			] )
+			->setMethods( [ 'createTable' ] )
+			->getMock();
 
 		$factbox->expects( $this->any() )
 			->method( 'createTable' )
@@ -334,62 +304,62 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	public function contentDataProvider() {
 
 		$text = __METHOD__;
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			$text // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => true,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			$text // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => true,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_SPECIAL,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => false,
 				'hasVisibleProperties'        => false,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'hasVisibleSpecialProperties' => true,
 				'hasVisibleProperties'        => false,
 				'isEmpty'                     => false,
 				'showFactbox'                 => SMW_FACTBOX_NONEMPTY,
 				'invokedContent'              => $text,
-			),
+			],
 			'' // expected return
-		);
+		];
 
 		return $provider;
 	}
@@ -413,28 +383,12 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$message->expects( $this->any() )
-			->method( 'inContentLanguage' )
-			->will( $this->returnSelf() );
-
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
-
-		$instance = new Factbox( $store, $parserData, $messageBuilder );
+		$instance = new Factbox( $store, $parserData );
 
 		$this->stringValidator->assertThatStringContains(
-			array(
+			[
 				'div class="smwrdflink"'
-			),
+			],
 			$instance->doBuild()->getContent()
 		);
 	}
@@ -455,22 +409,6 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$message->expects( $this->any() )
-			->method( 'inContentLanguage' )
-			->will( $this->returnSelf() );
-
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -478,6 +416,10 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$property->expects( $this->any() )
 			->method( 'isUserDefined' )
 			->will( $this->returnValue( $test['isUserDefined'] ) );
+
+		$property->expects( $this->any() )
+			->method( 'findPropertyTypeID' )
+			->will( $this->returnValue( '_wpg' ) );
 
 		$property->expects( $this->any() )
 			->method( 'isShown' )
@@ -500,7 +442,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		$instance = new Factbox( $store, $parserData, $messageBuilder );
+		$instance = new Factbox( $store, $parserData );
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -510,39 +452,39 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	public function tableContentDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => true,
 				'isUserDefined' => true,
-			),
-			array( 'class="smwprops"' )
-		);
+			],
+			[ 'class="smw-table-cell smwprops"' ]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => false,
 				'isUserDefined' => true,
-			),
+			],
 			''
-		);
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => true,
 				'isUserDefined' => false,
-			),
-			array( 'class="smwspecs"' )
-		);
+			],
+			[ 'class="smw-table-cell smwspecs"' ]
+		];
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'isShown'       => false,
 				'isUserDefined' => false,
-			),
+			],
 			''
-		);
+		];
 
 		return $provider;
 	}
@@ -554,7 +496,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$provider = array();
+		$provider = [];
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -562,7 +504,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
@@ -575,7 +517,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$parserData->setSemanticData( $semanticData );
 
-		$provider[] = array( $parserData );
+		$provider[] = [ $parserData ];
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -583,7 +525,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( new DIProperty( '_SKEY') ) ) );
+			->will( $this->returnValue( [ new DIProperty( '_SKEY') ] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )
@@ -596,7 +538,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$parserData->setSemanticData( $semanticData );
 
-		$provider[] = array( $parserData );
+		$provider[] = [ $parserData ];
 
 		return $provider;
 	}

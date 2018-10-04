@@ -1,0 +1,192 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Свойство",
+            "SMW_NS_PROPERTY_TALK": "Обсуждение_свойства",
+            "SMW_NS_CONCEPT": "Концепция",
+            "SMW_NS_CONCEPT_TALK": "Обсуждение_концепции"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Страница",
+            "_txt": "Текст",
+            "_cod": "Исходный код",
+            "_boo": "Булево",
+            "_num": "Число",
+            "_geo": "Географические координаты",
+            "_tem": "Температура",
+            "_dat": "Дата",
+            "_ema": "Почта",
+            "_uri": "URL",
+            "_anu": "URI аннотации",
+            "_tel": "Номер телефона",
+            "_rec": "Запись",
+            "_qty": "Количество",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Целое": "_num",
+            "Десятичное": "_num",
+            "Плавающее": "_num",
+            "Перечисление": "_txt",
+            "Строка": "_txt",
+            "Телефон": "_tel"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Имеет тип",
+            "_URI": "Эквивалентный URI",
+            "_SUBP": "Подчиненное свойству",
+            "_SUBC": "Вложенная категория",
+            "_UNIT": "Отображаемые единицы",
+            "_IMPO": "Импортировано из",
+            "_CONV": "Относится к",
+            "_SERV": "Предоставляет сервис",
+            "_PVAL": "Допустимое значение",
+            "_MDAT": "Дата последней правки",
+            "_CDAT": "Дата создания",
+            "_NEWP": "Новая страница",
+            "_LEDT": "Последний редактор",
+            "_ERRP": "Содержит некорректное значение",
+            "_LIST": "Имеет поля",
+            "_SOBJ": "Содержит субобъект",
+            "_ASK": "Содержит запрос",
+            "_ASKST": "Строка запроса",
+            "_ASKFO": "Формат запроса",
+            "_ASKSI": "Размер запроса",
+            "_ASKDE": "Глубина запроса",
+            "_ASKDU": "Длительность запроса",
+            "_MEDIA": "Тип медиа",
+            "_MIME": "MIME-тип",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Тип данных": "_TYPE",
+            "Отображаемая единица": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "января",
+                "янв"
+            ],
+            [
+                "февраля",
+                "фев"
+            ],
+            [
+                "марта",
+                "мар"
+            ],
+            [
+                "апреля",
+                "апр"
+            ],
+            [
+                "мая",
+                "мая"
+            ],
+            [
+                "июня",
+                "июн"
+            ],
+            [
+                "июля",
+                "июл"
+            ],
+            [
+                "августа",
+                "авг"
+            ],
+            [
+                "сентября",
+                "сен"
+            ],
+            [
+                "октября",
+                "окт"
+            ],
+            [
+                "ноября",
+                "ноя"
+            ],
+            [
+                "декабря",
+                "дек"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

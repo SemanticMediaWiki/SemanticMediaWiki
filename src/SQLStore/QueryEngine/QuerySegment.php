@@ -67,6 +67,31 @@ class QuerySegment {
 	public $type = self::Q_TABLE;
 
 	/**
+	 * @var integer|null
+	 */
+	public $depth;
+
+	/**
+	 * @var string
+	 */
+	public $fingerprint = '';
+
+	/**
+	 * @var boolean
+	 */
+	public $null = false;
+
+	/**
+	 * @var boolean
+	 */
+	public $not = false;
+
+	/**
+	 * @var string
+	 */
+	public $joinType = '';
+
+	/**
 	 * @var string
 	 */
 	public $joinTable = '';
@@ -75,6 +100,14 @@ class QuerySegment {
 	 * @var string|array
 	 */
 	public $joinfield = '';
+
+	/**
+	 * Allows to define an index field, for example in case when a sub-query rewires
+	 * a match condition.
+	 *
+	 * @var string
+	 */
+	public $indexField = '';
 
 	/**
 	 * @var string
@@ -89,7 +122,7 @@ class QuerySegment {
 	/**
 	 * @var string[]
 	 */
-	public $components = array();
+	public $components = [];
 
 	/**
 	 * The alias to be used for jointable; read-only after construct!
@@ -101,7 +134,7 @@ class QuerySegment {
 	 * property dbkey => db field; passed down during query execution.
 	 * @var string[]
 	 */
-	public $sortfields = array();
+	public $sortfields = [];
 
 	/**
 	 * @var integer

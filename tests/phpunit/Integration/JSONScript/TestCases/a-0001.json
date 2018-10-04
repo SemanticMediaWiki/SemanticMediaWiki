@@ -1,0 +1,301 @@
+{
+	"description": "Test API `action=smwbrowse`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API test property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API text property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API date property",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "API test concept",
+			"contents": "..."
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "API test category",
+			"contents": "..."
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/1",
+			"contents": "[[API text property::text 1]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/2",
+			"contents": "[[API text property::text 2]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/3",
+			"contents": "[[API page property::page 1]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/4",
+			"contents": "[[API page property::page 2]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/5",
+			"contents": "[[API date property::1 Jan 1970]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "A0001/6",
+			"contents": "[[API date property::2 Jan 1971]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "#0 `smwbrowse` property search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "property",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\", \"description\": true, \"prefLabel\": true }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.0.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#1 `smwbrowse` concept search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "concept",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\", \"description\": true, \"prefLabel\": true }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.1.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#2 `smwbrowse` category search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "category",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\", \"description\": true, \"prefLabel\": true }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.2.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"postgres": "Skipping, because I have no idea why this returning empty on Travis!",
+				"sqlite": "Skipping, because I have no idea why this returning empty on Travis!"
+			},
+			"about": "#3 `smwbrowse` page search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "page",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.3.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"sqlite": "Skipping, because I have no idea why this returning empty during the test!"
+			},
+			"about": "#4 `smwbrowse` pvalue (text type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API text property\", \"search\": \"tex\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.4.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#5 `smwbrowse` pvalue (page type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"search\": \"pag\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.5.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"skip-on": {
+				"sqlite": "Skipping, because I have no idea why this is returning empty during the test!"
+			},
+			"about": "#6 `smwbrowse` pvalue (date type) search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "pvalue",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API date property\", \"search\": \"197\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/a-0001.6.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#7 `smwbrowse` subject lookup, JSON",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.7.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#8 `smwbrowse` subject lookup, HTML",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": {} }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.8.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#9 `smwbrowse` (distinct value, empty search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"Page 1\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.9.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#10 `smwbrowse` (empty value, empty search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.10.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#11 `smwbrowse` (empty value, distinct search) psubject search",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "psubject",
+					"params": "{ \"limit\": 10, \"offset\": 0, \"property\": \"API page property\", \"value\": \"\", \"search\": \"/4\", \"sort\": \"asc\" }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0001.11.txt"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCacheUsage": {
+			"api.browse": false,
+			"api.browse.pvalue": false,
+			"api.browse.psubject": false
+		},
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

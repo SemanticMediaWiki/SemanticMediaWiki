@@ -57,7 +57,7 @@ class BulkFileProvider {
 
 	private function checkPathReadability( $path ) {
 
-		$path = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $path );
+		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {
 			return $path;
@@ -68,15 +68,20 @@ class BulkFileProvider {
 
 	private function iterateToFindFilesForExtension( $path, $extension ) {
 
-		$files = array();
+		$files = [];
 
 		$directoryIterator = new \RecursiveDirectoryIterator( $path );
 
 		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
 			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
-				$files[$fileInfo->getFilename()] = $fileInfo->getPathname();
+
+				// Use a shortcut to be sortable while keep files with same name
+				// in different directories distinct
+				$files[$fileInfo->getFilename() . ' (' . substr( md5( $fileInfo->getPathname() ), 0, 5 ) .')'] = $fileInfo->getPathname();
 			}
 		}
+
+		asort( $files );
 
 		return $files;
 	}

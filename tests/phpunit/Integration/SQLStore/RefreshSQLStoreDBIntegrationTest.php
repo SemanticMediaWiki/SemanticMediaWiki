@@ -79,27 +79,27 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function assertStoreHasDataToRefresh( $useJobs ) {
 		$refreshPosition = $this->title->getArticleID();
 
-		$byIdDataRebuildDispatcher = $this->getStore()->refreshData(
+		$entityRebuildDispatcher = $this->getStore()->refreshData(
 			$refreshPosition,
 			1,
 			false,
 			$useJobs
 		);
 
-		$byIdDataRebuildDispatcher->dispatchRebuildFor( $refreshPosition );
+		$entityRebuildDispatcher->rebuild( $refreshPosition );
 
 		$this->assertGreaterThan(
 			0,
-			$byIdDataRebuildDispatcher->getEstimatedProgress()
+			$entityRebuildDispatcher->getEstimatedProgress()
 		);
 	}
 
 	public function titleProvider() {
-		$provider = array();
+		$provider = [];
 
 	//	$provider[] = array( NS_MAIN, 'withInterWiki', 'commons' );
-		$provider[] = array( NS_MAIN, 'normalTite', '' );
-		$provider[] = array( NS_MAIN, 'useUpdateJobs', '' );
+		$provider[] = [ NS_MAIN, 'normalTite', '' ];
+		$provider[] = [ NS_MAIN, 'useUpdateJobs', '' ];
 
 		return $provider;
 	}

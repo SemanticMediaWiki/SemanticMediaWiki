@@ -7,6 +7,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer
@@ -18,6 +19,8 @@ use SMWExpData as ExpData;
  * @author mwjames
  */
 class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstructor() {
 
@@ -53,19 +56,19 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 		#0
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 
-		$provider[] = array(
+		$provider[] = [
 			$expData,
-			array(
-				'subject' => array(
+			[
+				'subject' => [
 					'type' => 1,
 					'uri' => 'Foo|Bar|Mo',
 					'dataitem' => null
-				),
-				'data' => array(),
+				],
+				'data' => [],
 				'serializer' => 'SMW\Serializers\ExpDataSerializer',
 				'version' => 0.1
-			)
-		);
+			]
+		];
 
 		#1
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
@@ -75,36 +78,36 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 			new ExpLiteral( 'Foo', 'Bar' )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$expData,
-			array(
-				'subject' => array(
+			[
+				'subject' => [
 					'type' => 1,
 					'uri' => 'Foo|Bar|Mo',
 					'dataitem' => null
-				),
-				'data' => array(
-					'LaLi' => array(
-						 'property' => array(
+				],
+				'data' => [
+					'LaLi' => [
+						 'property' => [
 						 	'type' => 1,
 						 	'uri' => 'Li|La|Lu',
 						 	'dataitem' => null
-						 ),
-						 'children' => array(
-						 	array(
+						 ],
+						 'children' => [
+						 	[
 						 		'type' => 2,
 						 		'lexical' => 'Foo',
 						 		'datatype' => 'Bar',
 						 		'lang' => '',
 						 		'dataitem' => null
-						 	)
-						 )
-					)
-				),
+						 	]
+						 ]
+					]
+				],
 				'serializer' => 'SMW\Serializers\ExpDataSerializer',
 				'version' => 0.1
-			)
-		);
+			]
+		];
 
 		#2 Nested
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
@@ -119,50 +122,50 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 			new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) ) )
 		);
 
-		$provider[] = array(
+		$provider[] = [
 			$expData,
-			array(
-				'subject' => array(
+			[
+				'subject' => [
 					'type' => 1,
 					'uri' => 'Foo|Bar|Mo',
 					'dataitem' => null
-				),
-				'data' => array(
-					'LaLi' => array(
-						 'property' => array(
+				],
+				'data' => [
+					'LaLi' => [
+						 'property' => [
 						 	'type' => 1,
 						 	'uri' => 'Li|La|Lu',
-						 	'dataitem' => array( // DIBlob
+						 	'dataitem' => [ // DIBlob
 						 		'type' => 2,
 						 		'item' => 'SomeText'
-						 	)
-						 ),
-						 'children' => array(
-						 	array( // ExpLiteral
+						 	]
+						 ],
+						 'children' => [
+						 	[ // ExpLiteral
 						 		'type' => 2,
 						 		'lexical' => 'Foo',
 						 		'datatype' => 'Bar',
 						 		'lang' => '',
 						 		'dataitem' => null
-						 	),
-						 	array( // ExpData
-								'subject' => array(
+						 	],
+						 	[ // ExpData
+								'subject' => [
 								'type' => 1,
 								'uri' => 'Foo|Bar|Mo',
-							 	'dataitem' => array(
+							 	'dataitem' => [
 							 		'type' => 2,
 							 		'item' => 'SomeOtherText'
-							 		)
-								),
-								'data' => array()
-						 	)
-						 )
-					)
-				),
+							 		]
+								],
+								'data' => []
+						 	]
+						 ]
+					]
+				],
 				'serializer' => 'SMW\Serializers\ExpDataSerializer',
 				'version' => 0.1
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

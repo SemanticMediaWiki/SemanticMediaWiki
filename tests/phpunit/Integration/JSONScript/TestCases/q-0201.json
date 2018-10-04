@@ -1,0 +1,130 @@
+{
+	"description": "Test `_CONC` queries (skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Population",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has concept description",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Page one",
+			"contents": "[[Population::1001]], [[Has concept description::Bar]]"
+		},
+		{
+			"page": "Page two",
+			"contents": "[[Has concept description::Foo]], [[Population::9999]]"
+		},
+		{
+			"page": "Page three",
+			"contents": "[[Has concept description::Bar]]"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for any value selection",
+			"contents": "{{#concept: [[Population::+]][[Has concept description::+]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for any broader value selection",
+			"contents": "{{#concept: [[Has concept description::+]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept for distinct value selection",
+			"contents": "{{#concept: [[Has concept description::Foo]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Composite concept for a conjunctive condition",
+			"contents": "{{#concept: [[Concept:Concept for any value selection]][[Concept:Concept for distinct value selection]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Composite concept for a disjunctive condition",
+			"contents": "{{#concept: [[Concept:Concept for any value selection]] OR [[Concept:Concept for distinct value selection]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "concept",
+			"about": "#0 Simple concept member list",
+			"condition": "[[Concept:Concept for any value selection]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept for any value selection",
+					"count": "2"
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#1 Simple concept distinct member list",
+			"condition": "[[Concept:Concept for distinct value selection]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept for distinct value selection",
+					"count": "1"
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#2 Composite concept set by conjunctive conditions",
+			"condition": "[[Concept:Composite concept for a conjunctive condition]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1"
+			},
+			"conceptcache": [
+				{
+					"concept": "Composite concept for a conjunctive condition",
+					"count": "1"
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#3 Composite concept set by disjunctive conditions",
+			"condition": "[[Concept:Composite concept for a disjunctive condition]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2"
+			},
+			"conceptcache": [
+				{
+					"concept": "Composite concept for a disjunctive condition",
+					"count": "2"
+				}
+			]
+		}
+	],
+	"settings": [],
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
+		},
+		"version": "2",
+		"is-incomplete": false
+	}
+}

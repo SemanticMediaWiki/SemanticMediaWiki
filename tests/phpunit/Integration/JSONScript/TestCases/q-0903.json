@@ -1,0 +1,347 @@
+{
+	"description": "Test `_wpg`/`_num`/`_txt` for disjunction OR || (T31866, #1059, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/Q0903/Number/1",
+			"contents": "[[Has number::1]]"
+		},
+		{
+			"page": "Example/Q0903/Number/2",
+			"contents": "[[Has number::2]]"
+		},
+		{
+			"page": "Example/Q0903/Number/3",
+			"contents": "[[Has number::3]]"
+		},
+		{
+			"page": "Example/Q0903/Title/1",
+			"contents": "[[Has text::Foo]] [[Has page::123]]"
+		},
+		{
+			"page": "Example/Q0903/Title/2",
+			"contents": "[[Has text::Foobar]] [[Has page::ABC]]"
+		},
+		{
+			"page": "Example/Q0903/Title/3",
+			"contents": "[[Has text::FOO]] [[Has page::abc]]"
+		},
+		{
+			"page": "Example/Q0903/Title/4",
+			"contents": "[[Has text::FoO]] [[Has page::aBc]]"
+		},
+		{
+			"page": "Example/Q0903/Title/5",
+			"contents": "[[Has text::FoO]] [[Has page::Example/Q0903/Title/2]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Has number::1]] OR [[Has number::2]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Number/1#0##",
+					"Example/Q0903/Number/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 same as #0",
+			"condition": "[[Has number::1||2]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Number/1#0##",
+					"Example/Q0903/Number/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Has text::~Foo*]][[Has page::123||ABC]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 same as #2",
+			"condition": "[[Has page::123||ABC]][[Has text::~Foo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 same as #2",
+			"condition": "[[Has text::~Foo*]][[Has page::123]] OR [[Has page::ABC]][[Has text::~Foo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"skip-on": {
+				"elastic" : "Finds 5 due to `oo`, `OO`, and `oO` being matched using an analyzed field"
+			},
+			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #5 comment)" ]
+			},
+			"condition": "[[Has text::+]][[Has text::~*oo*||~*OO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 same as #5",
+			"skip-on": {
+				"elastic" : "Finds 5 due to `oo`, `OO`, and `oO` being matched using an analyzed field"
+			},
+			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #6 comment)" ]
+			},
+			"condition": "[[Has text::+]][[Has text::~*OO*||~*oo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Example/Q0903/Title/1#0##",
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7",
+			"condition": "[[Has page::+]][[Has page::~*a*||~*A*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8",
+			"skip-on": {
+				"elastic" : "Finds 3 due to `b` and `B` being matched using an analyzed field"
+			},
+			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #8 comment)" ]
+			},
+			"condition": "[[Has page::+]][[Has page::~*B*]][[Has text::~*OO*||~*oo*||~*oO*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9",
+			"skip-on": {
+				"elastic" : "Finds 4 due to `bc`, `Bc`, and `BC` being matched using an analyzed field"
+			},
+			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9.elastic",
+			"skip-on": {
+				"elastic" : [ "not", "Only relevant to ES (see #9 comment)" ]
+			},
+			"condition": "[[Has text::~*oO*]][[Has page::~*Bc*|| <q>[[Has page::~*a*||~*A*]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##",
+					"Example/Q0903/Title/5#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10, see issue #19",
+			"condition": "[[Has page::~*b*||~*B*]] AND [[Has text::~*oO*||~*OO*||~*oo*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/Q0903/Title/2#0##",
+					"Example/Q0903/Title/3#0##",
+					"Example/Q0903/Title/4#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

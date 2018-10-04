@@ -13,7 +13,7 @@ class WikitextTemplateRenderer {
 	/**
 	 * @var array
 	 */
-	private $fields = array();
+	private $fields = [];
 
 	/**
 	 * @var string
@@ -40,11 +40,11 @@ class WikitextTemplateRenderer {
 		$this->template .= '{{'. $templateName;
 
 		foreach ( $this->fields as $key => $value ) {
-			$this->template .= "|$key=$value";
+			$this->template .= "\n|$key=$value";
 		}
 
 		$this->template .= '}}';
-		$this->fields = array();
+		$this->fields = [];
 	}
 
 	/**
@@ -55,7 +55,7 @@ class WikitextTemplateRenderer {
 	public function render() {
 		$wikiText = $this->template;
 		$this->template = '';
-		$this->fields = array();
+		$this->fields = [];
 		return $wikiText;
 	}
 

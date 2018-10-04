@@ -1,0 +1,115 @@
+{
+	"description": "Test in-text annotation for `_boo` datatype using `LOCL` (`wgContLang=en`, `wgLang=fr`, skip-on 1.25.6)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"page": "Example/P0424/1",
+			"contents": "[[Has boolean::true]] [[Category:P0424]]"
+		},
+		{
+			"page": "Example/P0424/2",
+			"contents": "{{#set:Has boolean=false}} [[Category:P0424]]"
+		},
+		{
+			"page": "Example/P0424/Q1.1",
+			"contents": "{{#ask: [[Category:P0424]] |?Has boolean |?Has boolean#LOCL}}"
+		},
+		{
+			"page": "Example/P0424/Q1.2",
+			"contents": "{{#ask: [[Category:P0424]] |?Has boolean |?Has boolean#LOCL@ja}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 true",
+			"subject": "Example/P0424/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
+					"propertyValues": [
+						true
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 false",
+			"subject": "Example/P0424/2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_boolean",
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
+					"propertyValues": [
+						false
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 LOCL used the user language",
+			"subject": "Example/P0424/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">true</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">vrai</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">false</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">faux</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 LOCL@js uses a specific language",
+			"subject": "Example/P0424/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">true</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">真</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">false</td>",
+					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"0\">偽</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "fr",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

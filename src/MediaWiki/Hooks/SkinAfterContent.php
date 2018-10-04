@@ -19,59 +19,57 @@ use SMW\ApplicationFactory;
 class SkinAfterContent {
 
 	/**
-	 * @var string
-	 */
-	protected $data = null;
-
-	/**
 	 * @var Skin
 	 */
-	protected $skin = null;
+	private $skin = null;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param string $data
 	 * @param Skin|null $skin
 	 */
-	public function __construct( &$data, Skin $skin = null ) {
-		$this->data =& $data;
+	public function __construct( Skin $skin = null ) {
 		$this->skin = $skin;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param string &$data
+	 *
 	 * @return true
 	 */
-	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+	public function performUpdate( &$data ) {
+
+		if ( $this->canAddFactbox() ) {
+			$this->addFactboxTo( $data );
+		}
+
+		return true;
 	}
 
-	private function canPerformUpdate() {
+	private function canAddFactbox() {
 
-		if ( !$this->skin instanceof Skin ) {
+		if ( !$this->skin instanceof Skin || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			return false;
 		}
 
 		$request = $this->skin->getContext()->getRequest();
 
-		if ( $request->getVal( 'action' ) === 'delete' || $request->getVal( 'action' ) === 'purge' || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history' ] ) ) {
 			return false;
 		}
 
 		return true;
 	}
 
-	private function performUpdate() {
+	private function addFactboxTo( &$data ) {
 
-		$cachedFactbox = ApplicationFactory::getInstance()->newFactboxFactory()->newCachedFactbox();
+		$cachedFactbox = ApplicationFactory::getInstance()->singleton( 'FactboxFactory' )->newCachedFactbox();
 
-		$this->data .= $cachedFactbox->retrieveContent(
+		$data .= $cachedFactbox->retrieveContent(
 			$this->skin->getOutput()
 		);
-
-		return true;
 	}
 
 }

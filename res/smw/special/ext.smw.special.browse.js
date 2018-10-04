@@ -6,20 +6,26 @@
  */
 
 /*global jQuery, mediaWiki, mw, smw */
+( function ( $, mw ) {
 
-// (ES6), see https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes
-class Browse {
+	'use strict';
 
 	/**
-	 * @since 2.5
+	 * @since  2.5.0
 	 * @constructor
 	 *
-	 * @param {Object} api
+	 * @param {Object} mwApi
+	 * @param {Object} util
+	 *
+	 * @return {this}
 	 */
-	constructor ( api ) {
-		this.VERSION = "2.5";
-		this.api = api;
-	}
+	var browse = function ( mwApi ) {
+
+		this.VERSION = "3.0.0";
+		this.api = mwApi;
+
+		return this;
+	};
 
 	/**
 	 * @since 2.5
@@ -27,46 +33,88 @@ class Browse {
 	 *
 	 * @param {Object} context
 	 */
-	setContext ( context ) {
+	browse.prototype.setContext = function( context ) {
 		this.context = context;
+		this.options = context.data( 'options' );
+
+		return this;
 	}
 
 	/**
 	 * @since 2.5
 	 * @method
 	 */
-	doApiRequest () {
+	browse.prototype.requestHTML = function() {
 
 		var self = this,
-			subject = self.context.data( 'subject' ),
-			options = JSON.stringify( self.context.data( 'options' ) );
+			subject = self.context.data( 'subject' );
 
-		// Expect format generated from DIWikiPage::getHash
+		// Expect a serialization format (see DIWikiPage::getHash)
 		if ( subject.indexOf( "#" ) == -1 ) {
-			return self.reportError( mw.msg( 'smw-browse-api-subject-serialization-invalid' ) );
+			return this.context.find( '.smwb-status' )
+				.append(
+					mw.msg( 'smw-browse-api-subject-serialization-invalid' )
+				)
+				.addClass( 'smw-callout smw-callout-error' );
 		}
 
 		subject = subject.split( "#" );
 
-		self.api.get( {
-			action: "browsebysubject",
-			subject: subject[0],
-			ns: subject[1],
-			iw: subject[2],
-			subobject: subject[3],
-			options: options,
-			type: 'html'
+		self.api.post( {
+			action: "smwbrowse",
+			browse: "subject",
+			params: JSON.stringify( {
+				subject: subject[0],
+				ns: subject[1],
+				iw: subject[2],
+				subobject: subject[3],
+				options: self.options,
+				type: 'html'
+			} )
 		} ).done( function( data ) {
-			self.appendContent( data.query );
+			self.context.find( '.smwb-emptysheet' ).replaceWith( data.query );
+			self.triggerEvents();
 		} ).fail ( function( xhr, status, error ) {
+			self.reportError( xhr, status, error );
+		} );
+	}
 
-			var text = 'Unknown API error';
+	/**
+	 * @since 3.0
+	 * @method
+	 */
+	browse.prototype.doUpdate = function( opts  ) {
 
-			if ( status.hasOwnProperty( 'error' ) ) {
-				text = status.error.code + ': ' + status.error.info;
-			}
+		var self = this,
+			subject = self.context.data( 'subject' );
 
-			self.reportError( text );
+		subject = subject.split( "#" );
+
+		self.context.addClass( 'is-disabled' );
+		self.context.append( '<span id="smw-wait" class="smw-overlay-spinner large inline"></span>' );
+
+		self.api.post( {
+			action: "smwbrowse",
+			browse: "subject",
+			params: JSON.stringify( {
+				subject: subject[0],
+				ns: subject[1],
+				iw: subject[2],
+				subobject: subject[3],
+				options: $.extend( self.options, opts ),
+				type: 'html'
+			} )
+		} ).done( function( data ) {
+			self.context.removeClass( 'is-disabled' );
+			self.context.find( '#smw-wait' ).remove();
+
+			self.context.find( '.smwb-form' ).remove();
+			self.context.find( '.smwb-modules' ).remove();
+			self.context.find( '.smwb-datasheet' ).replaceWith( data.query );
+
+			self.triggerEvents();
+		} ).fail ( function( xhr, status, error ) {
+			self.reportError( xhr, status, error );
 		} );
 	}
 
@@ -74,60 +122,103 @@ class Browse {
 	 * @since 2.5
 	 * @method
 	 *
-	 * @param {string} error
+	 * @param {object} xhr
+	 * @param {object} status
+	 * @param {object} error
 	 */
-	reportError ( error ) {
-		this.context.find( '.smwb-status' ).append( error ).addClass( 'smw-callout smw-callout-error' );
+	browse.prototype.reportError = function( xhr, status, error ) {
+
+		var text = 'The API encountered an unknown error';
+
+		if ( status.hasOwnProperty( 'xhr' ) ) {
+			var xhr = status.xhr;
+
+			if ( xhr.hasOwnProperty( 'statusText' ) ) {
+				text = 'The API returned with: ' + xhr.statusText.replace(/\<br \/\>/g," " );
+			};
+
+			if ( xhr.hasOwnProperty( 'responseText' ) ) {
+				text = xhr.responseText.replace(/\<br \/\>/g," " ).replace(/#/g, "<br\>#" );
+			};
+		}
+
+		if ( status.hasOwnProperty( 'error' ) ) {
+			text = '<b>' + status.error.code + '</b><br\>' + status.error.info.replace(/#/g, "<br\>#" );
+		}
+
+		this.context.find( '.smwb-status' ).append( text ).addClass( 'smw-callout smw-callout-error' );
 	}
 
 	/**
 	 * @since 2.5
 	 * @method
-	 *
-	 * @param {string} content
 	 */
-	appendContent ( content ) {
+	browse.prototype.triggerEvents = function() {
 
 		var self = this;
+		var form = self.context.find( '.smwb-form' );
 
-		self.context.find( '.smwb-content' ).replaceWith( content );
-
-		// Re-apply JS-component instances on new content
-		mw.loader.using( 'ext.smw.tooltips' ).done( function () {
-			smw.Factory.newTooltip().initFromContext( self.context );
-		} );
-
-		mw.loader.using( 'ext.smw.browse' ).done( function () {
-			self.context.find( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		form.trigger( 'smw.page.autocomplete' , {
+			'context': form
 		} );
 
 		mw.loader.load(
 			self.context.find( '.smwb-modules' ).data( 'modules' )
 		);
 
+		// Re-apply JS-component instances on new content
 		// Trigger an event
+		mw.hook( 'smw.browse.apiparsecomplete' ).fire( self.context );
+
 		$( document ).trigger( 'SMW::Browse::ApiParseComplete' , {
 			'context': self.context
 		} );
 	}
-}
 
-( function ( $, mw ) {
-
-	'use strict';
-
-	var browse = new Browse(
+	var instance = new browse(
 		new mw.Api()
 	);
 
 	$( document ).ready( function() {
 
-		$( '.smwb-container' ).each( function() {
-			browse.setContext( $( this ) );
-			browse.doApiRequest();
+		/**
+		 * Group related actions
+		 */
+		$( document ).on( 'click', '.smw-browse-hide-group', function( event ) {
+			instance.doUpdate( { "group": "hide" } );
+			event.preventDefault();
 		} );
 
-		$( '#smwb-page-search' ).smwAutocomplete( { search: 'page', namespace: 0 } );
+		$( document ).on( 'click', '.smw-browse-show-group', function( event ) {
+			instance.doUpdate( { "group": "show" } );
+			event.preventDefault();
+		} );
+
+		/**
+		 * Incoming, outgoing related actions
+		 */
+		$( document ).on( 'click', '.smw_browse_hide_incoming', function( event ) {
+			instance.doUpdate( { "dir": "out" } );
+			event.preventDefault();
+		} );
+
+		$( document ).on( 'click', '.smw_browse_show_incoming', function( event ) {
+			instance.doUpdate( { "dir": "both" } );
+			event.preventDefault();
+		} );
+
+		$( '.smwb-container' ).each( function() {
+			instance.setContext( $( this ) ).requestHTML();
+		} );
+
+		var form = $( this ).find( '.smwb-form' );
+
+		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
+			form.trigger( 'smw.page.autocomplete' , {
+				'context': form
+			} );
+		} );
+
 	} );
 
 }( jQuery, mediaWiki ) );

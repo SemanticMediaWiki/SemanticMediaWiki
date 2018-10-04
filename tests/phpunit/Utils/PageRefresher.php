@@ -7,7 +7,6 @@ use SMW\ApplicationFactory;
 use SMW\ContentParser;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\Store;
 use Title;
 use WikiPage;
 
@@ -39,7 +38,6 @@ class PageRefresher {
 		}
 
 		$contentParser = new ContentParser( $title );
-		$contentParser->forceToUseParser();
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,

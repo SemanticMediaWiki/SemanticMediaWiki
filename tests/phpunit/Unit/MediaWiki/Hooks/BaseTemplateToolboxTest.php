@@ -2,9 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
-use SMW\Settings;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
 
@@ -19,23 +17,30 @@ use Title;
  */
 class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() {
-		ApplicationFactory::clear();
+	private $namespaceExaminer;
+	private $skinTemplate;
 
+	protected function setUp() {
+		parent::setUp();
+
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	protected function tearDown() {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$toolbox = '';
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\BaseTemplateToolbox',
-			new BaseTemplateToolbox( $skinTemplate, $toolbox )
+			BaseTemplateToolbox::class,
+			new BaseTemplateToolbox( $this->namespaceExaminer )
 		);
 	}
 
@@ -44,34 +49,43 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$toolbox  = '';
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( $setup['settings']['isEnabledNamespace'] ) );
 
-		ApplicationFactory::getInstance()->registerObject(
-			'Settings',
-			Settings::newFromArray( $setup['settings'] )
+		$toolbox = [];
+
+		$instance = new BaseTemplateToolbox(
+			$this->namespaceExaminer
 		);
 
-		$instance = new BaseTemplateToolbox( $setup['skinTemplate'], $toolbox );
+		$instance->setOptions(
+			[
+				'smwgBrowseFeatures' => $setup['settings']['smwgBrowseFeatures']
+			]
+		);
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process( $setup['skinTemplate'], $toolbox )
+		);
 
 		if ( $expected['count'] == 0 ) {
-			return $this->assertEmpty( $toolbox );
+			$this->assertEmpty( $toolbox );
+		} else {
+			$this->assertCount(
+				$expected['count'],
+				$toolbox['smw-browse']
+			);
 		}
-
-		$this->assertCount(
-			$expected['count'],
-			$toolbox['smw-browse']
-		);
 	}
 
 	public function skinTemplateDataProvider() {
 
 		#0 Standard title
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
-		);
+		$settings = [
+			'isEnabledNamespace' => true,
+			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
+		];
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
@@ -83,10 +97,13 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 4 ),
-		);
+		$provider[] = [
+			[
+				'skinTemplate' => $skinTemplate,
+				'settings' => $settings
+			],
+			[ 'count' => 4 ],
+		];
 
 		#1 isarticle = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -99,12 +116,15 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = false;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[
+				'skinTemplate' => $skinTemplate,
+				'settings' => $settings
+			],
+			[ 'count' => 0 ],
+		];
 
-		#2 smwgToolboxBrowseLink = false
+		#2 smwgBrowseFeatures = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,15 +135,18 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => false
-		);
+		$settings = [
+			'isEnabledNamespace' => true,
+			'smwgBrowseFeatures' => SMW_BROWSE_NONE
+		];
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[
+				'skinTemplate' => $skinTemplate,
+				'settings' => $settings
+			],
+			[ 'count' => 0 ],
+		];
 
 		#3 smwgNamespacesWithSemanticLinks = false
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -136,21 +159,24 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
-			'smwgToolboxBrowseLink'           => true
-		);
+		$settings = [
+			'isEnabledNamespace' => false,
+			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
+		];
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[
+				'skinTemplate' => $skinTemplate,
+				'settings' => $settings
+			],
+			[ 'count' => 0 ],
+		];
 
 		#4 Special page
-		$settings = array(
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgToolboxBrowseLink'           => true
-		);
+		$settings = [
+			'isEnabledNamespace' => true,
+			'smwgBrowseFeatures' => SMW_BROWSE_TLINK
+		];
 
 		$title = MockTitle::buildMock( __METHOD__ );
 
@@ -176,10 +202,13 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 
 		$skinTemplate->data['isarticle'] = true;
 
-		$provider[] = array(
-			array( 'skinTemplate' => $skinTemplate, 'settings' => $settings ),
-			array( 'count'        => 0 ),
-		);
+		$provider[] = [
+			[
+				'skinTemplate' => $skinTemplate,
+				'settings' => $settings
+			],
+			[ 'count' => 0 ],
+		];
 
 		return $provider;
 	}

@@ -1,0 +1,219 @@
+{
+	"description": "Test `_wpg`/`_txt`/`_uri` on enabled `SMW_FIELDT_CHAR_LONG | SMW_FIELDT_CHAR_NOCASE` with `like:/nlike:` (#1912, #2499, `smwgFieldTypeFeatures`, `smwgSparqlQFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/Q0908/0",
+			"contents": "[[Category:Q0908]] [[Has page::Some title]] [[Has text::Some title]] [[Has url::http://example.org/some title]] {{#subobject: |Has page=SOME title |Has text=SOME title |Has url=http://example.org/SOME title |@category=Q0908 }}"
+		},
+		{
+			"page": "Example/Q0908/1",
+			"contents": "[[Category:Q0908]] [[Has page::Some title WiTH a VaLUE]] {{#subobject: |Has page=SOME title WITH A value |@category=Q0908 }}"
+		},
+		{
+			"page": "Example/Q0908/2",
+			"contents": "[[Category:Q0908]] [[Has text::Some title WiTH a VaLUE]] {{#subobject: |Has text=SOME title WITH A value |@category=Q0908 }}"
+		},
+		{
+			"page": "Example/Q0908/3",
+			"contents": "[[Category:Q0908]] [[Has url::http://example.org/Some title WiTH a VaLUE]] {{#subobject: |Has url=http://example.org/SOME title WITH A value |@category=Q0908 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (on _wpg, like:)",
+			"condition": "[[Category:Q0908]] [[Has page::like:some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/1#0##",
+					"Example/Q0908/1#0##_fddfd44d1be8e8a7f3ea5f4893df9963"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (on _wpg, nlike:)",
+			"condition": "[[Category:Q0908]] [[Has page::nlike:some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/0#0##",
+					"Example/Q0908/0#0##_34013e9e1a62a2138034ac5287a7cf0e"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (on _txt, equal)",
+			"condition": "[[Category:Q0908]] [[Has text::some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/2#0##",
+					"Example/Q0908/2#0##_52d6bd41c1e8946f754f9687b88ded4c"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (on _txt, like:)",
+			"condition": "[[Category:Q0908]] [[Has text::like:some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/2#0##",
+					"Example/Q0908/2#0##_52d6bd41c1e8946f754f9687b88ded4c"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (on _txt, nlike:)",
+			"condition": "[[Category:Q0908]] [[Has text::nlike:some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/0#0##",
+					"Example/Q0908/0#0##_34013e9e1a62a2138034ac5287a7cf0e"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (on _uri, equal)",
+			"skip-on": {
+				"fuseki": "Using lcase on _uri/equal is not supported",
+				"sesame": "Using lcase on _uri/equal is not supported",
+				"blazegraph": "Using lcase on _uri/equal is not supported",
+				"virtuoso": "Using lcase on _uri/equal is not supported"
+			},
+			"condition": "[[Category:Q0908]] [[Has url::http://example.org/some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/3#0##",
+					"Example/Q0908/3#0##_bc98426861e347260e7aa56265803598"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 (on _uri, like:)",
+			"condition": "[[Category:Q0908]] [[Has url::like:http://example.org/some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/3#0##",
+					"Example/Q0908/3#0##_bc98426861e347260e7aa56265803598"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 (on _uri, nlike:)",
+			"condition": "[[Category:Q0908]] [[Has url::nlike:http://example.org/some title with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/0#0##",
+					"Example/Q0908/0#0##_34013e9e1a62a2138034ac5287a7cf0e"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8 (on _uri, in:)",
+			"condition": "[[Category:Q0908]] [[Has url::in:with a value]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0908/3#0#",
+					"Example/Q0908/3#0##_bc98426861e347260e7aa56265803598"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_NOCASE"
+		],
+		"smwgFieldTypeFeatures": [
+			"SMW_FIELDT_CHAR_NOCASE",
+			"SMW_FIELDT_CHAR_LONG"
+		],
+		"smwgElasticsearchConfig" : {
+			"connection":{
+				"retries": 1
+			},
+			"query": {
+				"uri.field.case.insensitive": true,
+				"text.field.case.insensitive.eq.match": true
+			}
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "PostgreSQL requires \"citext\" otherwise it returns with \"Error: 42704 ERROR:  type \"citext\" does not exist\"",
+			"sqlite": "NOCASE is not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

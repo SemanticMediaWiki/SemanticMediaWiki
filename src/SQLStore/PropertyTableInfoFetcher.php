@@ -15,6 +15,11 @@ use SMWDataItem as DataItem;
 class PropertyTableInfoFetcher {
 
 	/**
+	 * @var PropertyTypeFinder
+	 */
+	private $propertyTypeFinder;
+
+	/**
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
@@ -37,23 +42,23 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private $customizableSpecialProperties = array(
+	private static $customizableSpecialProperties = [
 		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $customSpecialPropertyList = array();
+	private $customSpecialPropertyList = [];
 
 	/**
 	 * @var array
 	 */
-	private $fixedSpecialProperties = array(
+	private $fixedSpecialProperties = [
 		// property declarations
-		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC',
+		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC', '_PPLB',
 		// query statistics (very frequently used)
-		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU',
+		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU', '_ASKPA',
 		// subproperties, classes, and instances
 		'_SUBP', '_SUBC', '_INST',
 		// redirects
@@ -68,19 +73,19 @@ class PropertyTableInfoFetcher {
 		'_LCODE', '_TEXT',
 		// Display title of
 		'_DTITLE'
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $customFixedPropertyList = array();
+	private $customFixedPropertyList = [];
 
 	/**
 	 * Default tables to use for storing data of certain types.
 	 *
 	 * @var array
 	 */
-	private $defaultDiTypeTableIdMap = array(
+	private $defaultDiTypeTableIdMap = [
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',
@@ -89,7 +94,25 @@ class PropertyTableInfoFetcher {
 		DataItem::TYPE_GEO        => 'smw_di_coords', // currently created only if Semantic Maps are installed
 		DataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 		//DataItem::TYPE_CONCEPT    => '', // _CONC is the only property of this type
-	);
+	];
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param PropertyTypeFinder $propertyTypeFinder
+	 */
+	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
+		$this->propertyTypeFinder = $propertyTypeFinder;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public static function getFixedSpecialPropertyList() {
+		return self::$customizableSpecialProperties;
+	}
 
 	/**
 	 * @since 2.2
@@ -144,6 +167,31 @@ class PropertyTableInfoFetcher {
 		}
 
 		return '';
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public function getDefaultDataItemTables() {
+		return array_values( $this->defaultDiTypeTableIdMap );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isFixedTableProperty( DIProperty $property ) {
+
+		if ( $this->fixedPropertyTableIds === null ) {
+			$this->buildDefinitionsForPropertyTables();
+		}
+
+		return array_key_exists( $property->getKey(), $this->fixedPropertyTableIds );
 	}
 
 	/**
@@ -203,7 +251,7 @@ class PropertyTableInfoFetcher {
 	private function buildDefinitionsForPropertyTables() {
 
 		$enabledSpecialProperties = $this->fixedSpecialProperties;
-		$customizableSpecialProperties = array_flip( $this->customizableSpecialProperties );
+		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
 
 		foreach ( $this->customSpecialPropertyList as $property ) {
 			if ( isset( $customizableSpecialProperties[$property] ) ) {
@@ -212,12 +260,14 @@ class PropertyTableInfoFetcher {
 		}
 
 		$definitionBuilder = new PropertyTableDefinitionBuilder(
+			$this->propertyTypeFinder
+		);
+
+		$definitionBuilder->doBuild(
 			$this->defaultDiTypeTableIdMap,
 			$enabledSpecialProperties,
 			$this->customFixedPropertyList
 		);
-
-		$definitionBuilder->doBuild();
 
 		$this->propertyTableDefinitions = $definitionBuilder->getTableDefinitions();
 		$this->fixedPropertyTableIds = $definitionBuilder->getFixedPropertyTableIds();

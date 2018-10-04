@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Api;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
@@ -17,6 +18,8 @@ use Title;
  * @author mwjames
  */
 class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $apiFactory;
 	private $semanticDataFactory;
@@ -43,7 +46,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new BrowseBySubject(
-			$this->apiFactory->newApiMain( array('subject' => 'Foo' ) ),
+			$this->apiFactory->newApiMain( ['subject' => 'Foo' ] ),
 			'browsebysubject'
 		);
 
@@ -69,15 +72,15 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$expectedResultToContainArrayKeys = array(
+		$expectedResultToContainArrayKeys = [
 			'error'  => false,
 			'result' => true
-		);
+		];
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 			'action'  => 'browsebysubject',
 			'subject' => 'Foo'
-		) );
+		] );
 
 		$this->assertToContainArrayKeys(
 			$expectedResultToContainArrayKeys,
@@ -88,15 +91,15 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	public function testExecuteForInvalidSubjectThrowsException() {
 		$this->setExpectedException( interface_exists( 'Throwable' ) ? 'Throwable' : 'Exception' );
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 			'action'  => 'browsebysubject',
 			'subject' => '{}'
-		) );
+		] );
 	}
 
 	public function testRawJsonPrintOutput() {
 
-		$parameters = array( 'subject' => 'Foo', 'subobject' => 'Bar'  );
+		$parameters = [ 'subject' => 'Foo', 'subobject' => 'Bar'  ];
 
 		$dataItem = new DIWikiPage(
 			'Foo',
@@ -147,11 +150,11 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testHtmlJsonPrintOutput() {
 
-		$parameters = array(
+		$parameters = [
 			'subject' => 'Foo',
 			'subobject' => 'Bar',
 			'type' => 'html'
-		);
+		];
 
 		$dataItem = new DIWikiPage(
 			'Foo',
@@ -194,7 +197,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		$out = ob_get_clean();
 
 		$this->stringValidator->assertThatStringContains(
-			'"query":"\n<table class=\"smwb-factbox\" ',
+			'"query":"<div class=\"smwb-datasheet.*\"><div class=\"smw-table smwb-factbox\">',
 			$out
 		);
 	}
@@ -202,23 +205,23 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	public function assertToContainArrayKeys( $setup, $result ) {
 		$this->assertInternalArrayStructure(
 			$setup, $result, 'error', 'array', function( $r ) { return $r['error'];
-		} );
+			} );
 
 		$this->assertInternalArrayStructure(
 			$setup, $result, 'result', 'array', function( $r ) { return $r['query'];
-		} );
+			} );
 
 		$this->assertInternalArrayStructure(
 			$setup, $result, 'subject', 'string', function( $r ) { return $r['query']['subject'];
-		} );
+			} );
 
 		$this->assertInternalArrayStructure(
 			$setup, $result, 'data', 'array', function( $r ) { return $r['query']['data'];
-		} );
+			} );
 
 		$this->assertInternalArrayStructure(
 			$setup, $result, 'sobj', 'array', function( $r ) { return $r['query']['sobj'];
-		} );
+			} );
 	}
 
 	protected function assertInternalArrayStructure( $setup, $result, $field, $internalType, $definition ) {

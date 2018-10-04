@@ -1,0 +1,540 @@
+{
+	"description": "Test `format=list` output",
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": true
+	},
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Version",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Developer",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Company",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Website",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0402",
+			"contents": "<includeonly>{{{1}}}-{{{SomeMainlabel}}}; #userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}}; #rownumber: {{{#rownumber|}}}; Version: {{{2}}}-{{{Version}}}; Developer: {{{3}}}-{{{Developer}}}; Company: {{{4}}}-{{{Company}}}; Website: {{{5}}}-{{{Website}}};</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0402/intro",
+			"contents": "<includeonly><span class='intro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "f-0402/outro",
+			"contents": "<includeonly><span class='outro'>#userparam: {{{#userparam|}}}; #querycondition: {{#tag:nowiki|{{{#querycondition|}}}}}; #querylimit: {{{#querylimit|}}}; #resultoffset: {{{#resultoffset|}}}; #rowcount: {{{#rowcount|}}};</span></includeonly>"
+		},
+		{
+			"page": "f-0402/Asoka",
+			"contents": "[[Category:0402]][[Version::3.8]][[Developer::Shae Erley]][[Developer::Keeley Considine]][[Company::Edgewire]]"
+		},
+		{
+			"page": "f-0402/Bitwolf",
+			"contents": "[[Category:0402]][[Version::0.3.8]][[Developer::Nealy Dawes]][[Developer::Harmony Hadgraft]][[Company::Eadel]]"
+		},
+		{
+			"page": "f-0402/Domainer",
+			"contents": "[[Category:0402]][[Version::9.49]][[Developer::Maridel Murdoch]][[Developer::Wiatt Crowest]][[Developer::Lottie Cruz]][[Company::Skimia]][[Website::https://icio.us/vestibulum/rutrum/rutrum/neque.aspx]]"
+		},
+		{
+			"page": "f-0402/Home Ing",
+			"contents": "[[Category:0402]][[Version::5.0.8]][[Developer::Mimi Kemish]][[Company::Oyope]]"
+		},
+		{
+			"page": "f-0402/Lotstring",
+			"contents": "[[Category:0402]][[Version::1.5]][[Developer::Willamina Strete]][[Company::Riffwire]]"
+		},
+		{
+			"page": "f-0402/Prodder",
+			"contents": "[[Category:0402]][[Version::0.1.8]][[Developer::Nevsa Slavin]][[Company::Bluezoom]][[Website::http://yale.edu/luctus/tincidunt/nulla/mollis/molestie/lorem/quisque.js]]"
+		},
+		{
+			"page": "f-0402/Span",
+			"contents": "[[Category:0402]][[Version::2.19]][[Developer::Meredith Yakubowicz]][[Company::Devbug]]"
+		},
+		{
+			"page": "f-0402/Tin",
+			"contents": "[[Category:0402]][[Version::0.1.5]][[Developer::Jemmie Crutchley]][[Company::Rhyzio]]"
+		},
+		{
+			"page": "f-0402/Veribet",
+			"contents": "[[Category:0402]][[Version::0.89]][[Developer::Gaspar Truelock]][[Company::Gabspot]]"
+		},
+		{
+			"page": "f-0402/Zaam-Dox",
+			"contents": "[[Category:0402]][[Version::8.06]][[Developer::Lew Whittek]][[Company::Kayveo]]"
+		},
+		{
+			"page": "f-0402/Test-01",
+			"contents": "{{#ask:[[Category:0402]]}}"
+		},
+		{
+			"page": "f-0402/Test-02",
+			"contents": "{{#ask:[[Category:0402]]|format=list}}"
+		},
+		{
+			"page": "f-0402/Test-02.2",
+			"contents": "{{#ask:[[Category:0402]]|format=plainlist}}"
+		},
+		{
+			"page": "f-0402/Test-03",
+			"contents": "{{#ask:[[Category:0402]]|format=template}}"
+		},
+		{
+			"page": "f-0402/Test-04",
+			"contents": "{{#ask:[[Category:0402]]|format=ol}}"
+		},
+		{
+			"page": "f-0402/Test-05",
+			"contents": "{{#ask:[[Category:0402]]|format=ul}}"
+		},
+		{
+			"page": "f-0402/Test-06",
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|template=f-0402|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|limit=5}}"
+		},
+		{
+			"page": "f-0402/Test-07",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version=|?Developer|?Company|?Website|template=f-0402|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|searchlabel=|mainlabel=SomeMainlabel|userparam=SomeUserParam|offset=2|limit=5|named args=yes}}"
+		},
+		{
+			"page": "f-0402/Test-08",
+			"contents": "{{#ask:[[Category:0402]]|format=list|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP}}"
+		},
+		{
+			"page": "f-0402/Test-09",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Version|?Developer|?Company|?Website|sep=SEPARATOR|propsep=PSEP|valuesep=VSEP|offset=2|limit=5}}{{#ask:[[Category:0402]]|format=ul|?Version|?Developer|?Company|?Website|sep=SEPARATOR}}"
+		},
+		{
+			"page": "f-0402/Test-10",
+			"contents": "{{#ask:[[Category:0402]]|format=list|introtemplate=f-0402/intro|outrotemplate=f-0402/outro}}"
+		},
+		{
+			"page": "f-0402/Test-11",
+			"contents": "{{#ask:[[Category:0402]]|format=list|template=f-0402|introtemplate=f-0402/intro|outrotemplate=f-0402/outro|limit=8}}"
+		},
+		{
+			"page": "f-0402/Test-12",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|introtemplate=f-0402/intro|outrotemplate=f-0402/outro}}"
+		},
+		{
+			"page": "f-0402/Test-13",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=none|headers=show|searchlabel=}}"
+		},
+		{
+			"page": "f-0402/Test-14",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=subject|headers=hide|searchlabel=}}"
+		},
+		{
+			"page": "f-0402/Test-15",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|?Company|link=all|headers=plain|searchlabel=}}"
+		},
+		{
+			"page": "f-0402/Test-16",
+			"contents": "{{#ask:[[Category:0402]]|format=list|class=some-class}}"
+		},
+		{
+			"page": "f-0402/Test-17",
+			"contents": "{{#ask:[[Category:0402]]|format=plainlist|class=some-class}}"
+		},
+		{
+			"page": "f-0402/Test-18",
+			"contents": "{{#ask:[[Category:0402]]|format=ol|class=some-class}}"
+		},
+		{
+			"page": "f-0402/Test-19",
+			"contents": "{{#ask:[[Category:0402]]|format=ul|class=some-class}}"
+		}
+
+	],
+	"tests": [
+		{
+			"type": "parser-html",
+			"about": "#1 Plainlist format is called as standard output",
+			"subject": "f-0402/Test-01",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+						"a[title] ~ a[title]"
+				],
+				"not-contain": [
+					".smw-format",
+					".list-format",
+					".smw-row",
+					".smw-field",
+					".smw-value"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#2 List format is called when format=list",
+			"subject": "f-0402/Test-02",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
+						10
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#2.2 Plainlist format is called when format=plainlist",
+			"subject": "f-0402/Test-02.2",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+						"a[title] ~ a[title]"
+				],
+				"not-contain": [
+					".smw-format",
+					".list-format",
+					".smw-row",
+					".smw-field",
+					".smw-value"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#3 List format is called when format=template (but no actual template specified)",
+			"subject": "f-0402/Test-03",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
+						10
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#4 Ol format is called when format=ol",
+			"subject": "f-0402/Test-04",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"ol.ol-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
+						10
+					]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#5 Ul format is called when format=ul",
+			"subject": "f-0402/Test-05",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[
+						"ul.ul-format > li.smw-row > span.smw-field > span.smw-value > a[title]",
+						10
+					]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 List format with template specified (numbered args)",
+			"subject": "f-0402/Test-06",
+			"assert-output": {
+				"to-contain": [
+					"/(SEPARATOR.+?){4}/",
+					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
+					"#userparam: SomeUserParam;",
+					"#querycondition: [[Category:0402]];",
+					"#querylimit: 5;",
+					"#resultoffset: 2;",
+					"#rowcount: 10;",
+					"#rownumber: 3;",
+					"#rownumber: 7;",
+					"{{{SomeMainlabel}}}", // Named template params are not replaced
+					"{{{Version}}}",
+					"{{{Developer}}}",
+					"{{{Company}}}",
+					"{{{Website}}}"
+				],
+				"not-contain": [
+					"/(SEPARATOR){10,}/",
+					"PSEP",
+					"#rownumber: 2;",
+					"#rownumber: 8;",
+					"smw-row", // no structure for list with templates
+					"smw-field",
+					"smw-value",
+					"{{{1}}}",  // Numbered template params are replaced
+					"{{{2}}}",
+					"{{{3}}}",
+					"{{{4}}}",
+					"{{{5}}}"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 Ol format with template specified (named args)",
+			"subject": "f-0402/Test-07",
+			"assert-output": {
+				"to-contain": [
+					"VSEP",  // just make sure there's a bunch of VSEPs, don't count
+					"#userparam: SomeUserParam;",
+					"#querycondition: [[Category:0402]];",
+					"#querylimit: 5;",
+					"#resultoffset: 2;",
+					"#rowcount: 10;",
+					"#rownumber: 3;",
+					"#rownumber: 7;",
+					"smw-row", // Templates are applied inside rows for ol with templates
+					"{{{1}}}", // Numbered template params are not replaced
+					"{{{Version}}}", // ...except if the label is empty
+					"{{{3}}}",
+					"{{{4}}}",
+					"{{{5}}}"
+				],
+				"not-contain": [
+					"SEPARATOR",
+					"PSEP",
+					"#rownumber: 2;",
+					"#rownumber: 8;",
+					"smw-field", // no structure below row for ol with templates
+					"smw-value",
+					"{{{SomeMainlabel}}}", // Named template params are replaced
+					"{{{2}}}", // ...except if the label is empty
+					"{{{Developer}}}",
+					"{{{Company}}}",
+					"{{{Website}}}"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 List format with sep",
+			"subject": "f-0402/Test-08",
+			"assert-output": { // at least 18, but not 19 or more, i.e. exactly 18
+				"to-contain": [
+					"/(span>SEPARATOR<span.+?){9}/",
+					"PSEP",
+					"VSEP"
+				],
+				"not-contain": [ "/(span>SEPARATOR<span.+?){10,}/" ]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9.1 Ol & ul format without sep (even if specified)",
+			"subject": "f-0402/Test-09",
+			"assert-output": {
+				"to-contain": [
+					"PSEP",
+					"VSEP"
+				],
+				"not-contain": [
+					"SEPARATOR"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#9.2 Ol format with offset",
+			"subject": "f-0402/Test-09",
+			"assert-output": {
+				"to-contain": [
+					"ol.ol-format[start=\"3\"]"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10.1 List format with introtemplate and outrotemplate",
+			"subject": "f-0402/Test-10",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#10.2 List format with introtemplate and outrotemplate",
+			"subject": "f-0402/Test-10",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "span.intro + span.smw-format", 1 ],
+					[ "span.smw-format + span.outro", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#11.1 Template format with introtemplate and outrotemplate",
+			"subject": "f-0402/Test-11",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 8; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 8; #resultoffset: 0; #rowcount: 10;</span>"
+				],
+				"not-contain": [
+					";, <a" //No default list separator (, ) between template calls
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#11.2 Template format with introtemplate and outrotemplate",
+			"subject": "f-0402/Test-11",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "p > span.intro:first-child + a", 1 ],
+					[ "p > span.outro + span.smw-list-furtherresults:last-child", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12.1 Ol format with introtemplate and outrotemplate",
+			"subject": "f-0402/Test-12",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"intro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>",
+					"<span class=\"outro\">#userparam:&#160;; #querycondition: [[Category:0402]]; #querylimit: 50; #resultoffset: 0; #rowcount: 10;</span>"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#12.2 (1.31-) Ol format with introtemplate and outrotemplate",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "f-0402/Test-12",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "span.intro + ol.smw-format", 1 ],
+					[ "ol.smw-format + span.outro", 1 ]
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#13",
+			"subject": "f-0402/Test-13",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "span.smw-field-label > a", 10 ] // headers = show
+				],
+				"not-contain": [
+					"span.smw-value > a" // link = none
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#14",
+			"subject": "f-0402/Test-14",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "li.smw-row > span.smw-field:first-child > span.smw-value > a", 10 ] // link = subject
+				],
+				"not-contain": [
+					"li.smw-row > span.smw-field:not(:first-child) > span.smw-value > a", // link = subject
+					"span.smw-field-label" // headers = hide
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#15",
+			"subject": "f-0402/Test-15",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "li.smw-row > span.smw-field > span.smw-value > a", 20 ], // link = all
+					[ "span.smw-field-label", 10 ] // headers = plain
+				],
+				"not-contain": [
+					"span.smw-field-label > a" // headers = plain
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#16 List format is called as standard output",
+			"subject": "f-0402/Test-16",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					"span.list-format.some-class"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#17 List format is called as standard output",
+			"subject": "f-0402/Test-17",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"not-contain": [
+					".some-class"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#18 List format is called as standard output",
+			"subject": "f-0402/Test-18",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					"ol.ol-format.some-class"
+				]
+			}
+		},
+		{
+			"type": "parser-html",
+			"about": "#19 List format is called as standard output",
+			"subject": "f-0402/Test-19",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					"ul.ul-format.some-class"
+				]
+			}
+		}
+
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	}
+}

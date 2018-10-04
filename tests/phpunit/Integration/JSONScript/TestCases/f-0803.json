@@ -1,0 +1,169 @@
+{
+	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022, #2567)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/Sep",
+			"contents": "<includeonly>{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/Numbered",
+			"contents": "<includeonly>{{{1}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/Named",
+			"contents": "<includeonly>{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/NamedWithMainlabel",
+			"contents": "<includeonly>{{{main}}}{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/F0803/Legacy",
+			"contents": "<includeonly>{{{?Has text}}}</includeonly>"
+		},
+		{
+			"page": "Example/F0803/1",
+			"contents": "{{#subobject: |@category=F0803 |Has text=123 |Has text=456 }} {{#subobject: |@category=F0803 |Has text=abc }}"
+		},
+		{
+			"page": "Example/F0803/2",
+			"contents": "[[Category:F0803]][[Has text::foo\n=bar]]"
+		},
+		{
+			"page": "Example/F0803/Q.1",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.3",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Legacy |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.4",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Named |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.5",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/NamedWithMainlabel |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.6",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=main |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.7",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=- |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.8",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/F0803/Q.9",
+			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |named args=yes |sort=Has text |order=asc }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/F0803/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (template contains ?... )",
+			"subject": "Example/F0803/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"{{{?Has text}}}&#32;&#8226;&#32;{{{?Has text}}}"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (`named` selected)",
+			"subject": "Example/F0803/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (`named` selected with mainlabel)",
+			"subject": "Example/F0803/Q.5",
+			"assert-output": {
+				"to-contain": [
+					"Example/F0803/1#_a8833df1372ac8f410272cb680410853123&#32;&#8226;&#32; 456&#32;&#8226;&#32;Example/F0803/1#_41e021fb1955f0af8aa8b9dcb8313425abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (`numbered` selected)",
+			"subject": "Example/F0803/Q.6",
+			"assert-output": {
+				"to-contain": [
+					"Example/F0803/1#_a8833df1372ac8f410272cb680410853&#32;&#8226;&#32;Example/F0803/1#_41e021fb1955f0af8aa8b9dcb8313425"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (`numbered` selected, without mainlabel)",
+			"subject": "Example/F0803/Q.7",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (`valuesep` parameter omitted)",
+			"subject": "Example/F0803/Q.8",
+			"assert-output": {
+				"to-contain": [
+					"123, 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (#2567)",
+			"subject": "Example/F0803/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"123, 456abcfoo\n=bar"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

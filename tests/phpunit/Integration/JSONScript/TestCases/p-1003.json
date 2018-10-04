@@ -1,0 +1,72 @@
+{
+	"description": "Test property restriction on annotation and #ask (`wgContLang=en`, `wgLang=en`, `smwgCreateProtectionRight`)",
+	"setup": [
+		{
+			"page": "Example/P1003/1",
+			"contents": "[[Has unknown::abc]]"
+		},
+		{
+			"page": "Example/P1003/2",
+			"contents": "{{#ask: [[Has unknown::123]] |format=table |limit=10 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 on annotation attempt",
+			"subject": "Example/P1003/1#_ERR504f58c6ccf85a3bb8ccd4562463664a",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Has_unknown#102##",
+						"[8,\"smw-datavalue-property-create-restriction\",\"Has unknown\",\"foo\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 on #ask attempt",
+			"subject": "Example/P1003/2#_ERR85d779fcd4429a44d5f9dd85e292a953",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Has_unknown#102##",
+						"[2,\"smw-datavalue-property-create-restriction\",\"Has unknown\",\"foo\"]"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCreateProtectionRight": "foo",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

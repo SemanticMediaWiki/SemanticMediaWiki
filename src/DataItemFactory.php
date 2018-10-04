@@ -9,6 +9,8 @@ use SMWDIContainer as DIContainer;
 use SMWDIError as DIError;
 use SMWDINumber as DINumber;
 use SMWDIUri as DIUri;
+use SMWDITime  as DITime;
+use Title;
 
 /**
  * @private
@@ -46,15 +48,20 @@ class DataItemFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param string $dbKey
+	 * @param string|Title $title
 	 * @param integer $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectName
 	 *
 	 * @return DIWikiPage
 	 */
-	public function newDIWikiPage( $dbKey, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
-		return new DIWikiPage( $dbKey, $namespace, $interwiki, $subobjectName );
+	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
+
+		if ( $title instanceof Title ) {
+			return DIWikiPage::newFromTitle( $title );
+		}
+
+		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
 	}
 
 	/**
@@ -66,6 +73,17 @@ class DataItemFactory {
 	 */
 	public function newDIContainer( ContainerSemanticData $containerSemanticData ) {
 		return new DIContainer( $containerSemanticData );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return ContainerSemanticData
+	 */
+	public function newContainerSemanticData( DIWikiPage $subject ) {
+		return new ContainerSemanticData( $subject );
 	}
 
 	/**
@@ -128,6 +146,24 @@ class DataItemFactory {
 	 */
 	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ) {
 		return new DIUri( $scheme, $hierpart, $query, $fragment );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $calendarmodel
+	 * @param integer $year
+	 * @param integer|false $month
+	 * @param integer|false $day
+	 * @param integer|false $hour
+	 * @param integer|false $minute
+	 * @param integer|false $second
+	 * @param integer|false $timezone
+	 *
+	 * @return DITime
+	 */
+	public function newDITime( $calendarmodel, $year, $month = false, $day = false, $hour = false, $minute = false, $second = false, $timezone = false ) {
+		return new DITime( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $timezone );
 	}
 
 }

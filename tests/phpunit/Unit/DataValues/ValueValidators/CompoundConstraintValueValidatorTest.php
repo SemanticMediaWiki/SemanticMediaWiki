@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueValidators\CompoundConstraintValueValidator
@@ -14,6 +15,8 @@ use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
  * @author mwjames
  */
 class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -45,6 +48,14 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			$instance->hasConstraintViolation()
 		);
+	}
+
+	public function testMissingConstraintValueValidatorRegThrowsException() {
+
+		$instance = new CompoundConstraintValueValidator();
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->validate( 'Foo' );
 	}
 
 }

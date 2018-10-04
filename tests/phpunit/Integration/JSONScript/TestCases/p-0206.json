@@ -1,0 +1,105 @@
+{
+	"description": "Test #show parser on inverse printrequest (#1222, #1223)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasWorkManifested",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasWorkManifestedAsText",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/0206/1",
+			"contents": "[[HasWorkManifested::ABC]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
+		},
+		{
+			"page": "Example/0206/2",
+			"contents": "[[HasWorkManifested::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifested|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifested|link=none}}"
+		},
+		{
+			"page": "Example/0206/3",
+			"contents": "[[HasWorkManifestedAsText::{{FULLPAGENAME}}]] + {{#show:{{FULLPAGENAME}}|?-HasWorkManifestedAsText|link=none}} + {{#show:{{FULLPAGENAME}}|?HasWorkManifestedAsText|link=none}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 where inverse is unknown and not displayed",
+			"subject": "Example/0206/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifested"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">ABC</a> +  + ABC"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 inverse pointing to itself",
+			"subject": "Example/0206/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifested"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Example/0206/2.* + Example/0206/2 + Example/0206/2"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2, see #1222, inverse is not displayed compared to #1",
+			"subject": "Example/0206/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"HasWorkManifestedAsText"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<p>Example/0206/3 +  + Example/0206/3"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

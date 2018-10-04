@@ -1,0 +1,179 @@
+{
+	"description": "Test `format=feed` output via `Special:Ask` (`wgEnableUploads`, `wgFileExtensions`, `wgRestrictDisplayTitle`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/1",
+			"contents": "[[Has text::Some example]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/3",
+			"contents": "[[Has text::ABC]] [[Has number::123]] [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/4",
+			"contents": "[[Has text::DEF]] [[Has number::123]] {{DISPLAYTITLE:Uses different title}} [[Category:S0027]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/Q.1",
+			"contents": "{{#ask: [[Category:S0027]] |format=feed |type=atom |limit=10 |searchlabel=feed output }}"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/Q.2",
+			"contents": "{{#ask: [[Category:S0027]] |format=feed |type=atom |limit=10 |offset=3 |searchlabel=feed output }}"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "S0027.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::File:S0027.png]] [[Has caption::Test file]] [[Category:S0027]]"
+				}
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 with header",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Category:S0027]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>S0027/1</title>",
+					"<title>S0027/2</title>",
+					"<title>S0027/3</title>",
+					"<title>Uses different title</title>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (file)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Has file::+]] [[Category:S0027]]",
+					"po": "?Has file|?Has caption"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>File:S0027.png</title>",
+					"a href=.*File:S0027.png",
+					"img alt=&quot;File:S0027.png"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (file, link=none)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "feed"
+					},
+					"q": "[[Has file::+]] [[Category:S0027]]",
+					"po": "?Has file|?Has caption"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<title>File:S0027.png</title>",
+					"File:S0027.png",
+					"Test file"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (verify link, correct 0 offset)",
+			"subject": "S0027/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0027-5D-5D/mainlabel=/limit=10/order=desc/sort=/offset=0/format=feed/searchlabel=feed-20output/type=atom"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (verify link)",
+			"subject": "S0027/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0027-5D-5D/mainlabel=/offset=3/limit=10/order=desc/sort=/format=feed/searchlabel=feed-20output/type=atom"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgCompactLinkSupport": false,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"wgRestrictDisplayTitle": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

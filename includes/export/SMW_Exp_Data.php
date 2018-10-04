@@ -41,13 +41,13 @@ class SMWExpData implements Element {
 	 * SMWExpElement objects.
 	 * @var array of array of SMWElement
 	 */
-	protected $m_children = array();
+	protected $m_children = [];
 
 	/**
 	 * Array mapping property URIs to arrays their SMWExpResource
 	 * @var array of SMWExpResource
 	 */
-	protected $m_edges = array();
+	protected $m_edges = [];
 
 	/**
 	 * @var string|null
@@ -83,7 +83,7 @@ class SMWExpData implements Element {
 			return $this->hash;
 		}
 
-		$hashes = array();
+		$hashes = [];
 		$hashes[] = $this->m_subject->getHash();
 
 		foreach ( $this->getProperties() as $property ) {
@@ -157,7 +157,7 @@ class SMWExpData implements Element {
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
-			$this->m_children[$property->getUri()] = array();
+			$this->m_children[$property->getUri()] = [];
 			$this->m_edges[$property->getUri()] = $property;
 		}
 
@@ -186,12 +186,12 @@ class SMWExpData implements Element {
 			return $this->m_children[$property->getUri()];
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
 	 * Return the list of SMWExpData values associated to some property that is
-	 * specifed by a standard namespace id and local name.
+	 * specified by a standard namespace id and local name.
 	 *
 	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
 	 * @param $localName string of local name (e.g. "type")
@@ -269,7 +269,7 @@ class SMWExpData implements Element {
 					}
 				} elseif ( ( $rest instanceof SMWExpResource ) &&
 				           ( $rest->getUri() == $rdfnilUri ) )  {
-					return array( $first );
+					return [ $first ];
 				} else {
 					return false;
 				}
@@ -277,7 +277,7 @@ class SMWExpData implements Element {
 				return false;
 			}
 		} elseif ( ( count( $this->m_children ) == 0 ) && ( $this->m_subject->getUri() == $rdfnilUri ) ) {
-			return array();
+			return [];
 		} else {
 			return false;
 		}
@@ -299,7 +299,7 @@ class SMWExpData implements Element {
 			$subject = $this->m_subject;
 		}
 
-		$result = array();
+		$result = [];
 
 		foreach ( $this->m_edges as $key => $edge ) {
 			foreach ( $this->m_children[$key] as $childElement ) {
@@ -315,7 +315,7 @@ class SMWExpData implements Element {
 					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
 				}
 
-				$result[] = array( $subject, $edge, $childSubject );
+				$result[] = [ $subject, $edge, $childSubject ];
 				if ( $childElement instanceof SMWExpData ) { // recursively add child's triples
 					$result = array_merge( $result, $childElement->getTripleList( $childSubject ) );
 				}

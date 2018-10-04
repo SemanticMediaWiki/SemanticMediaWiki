@@ -4,6 +4,8 @@ namespace SMW\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\StoreFactory;
+use SMW\Store;
+use SMW\Setup;
 use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
@@ -66,6 +68,8 @@ class RebuildData extends \Maintenance {
 	 */
 	protected function addDefaultParams() {
 
+		parent::addDefaultParams();
+
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing an article, useful for limiting server load.', false, true );
 		$this->addOption( 's', '<startid> Start refreshing at given article ID, useful for partial refreshing.', false, true );
 		$this->addOption( 'e', '<endid> Stop refreshing at given article ID, useful for partial refreshing.', false, true );
@@ -80,13 +84,17 @@ class RebuildData extends \Maintenance {
 								'May leave the wiki temporarily incomplete.', false );
 
 		$this->addOption( 'v', 'Be verbose about the progress', false );
-		$this->addOption( 'categories', 'Will refresh only category pages (and other explicitly named namespaces)', false, false, 'c' );
-		$this->addOption( 'p', 'Will refresh only property pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'p', 'Only refresh property pages (and other explicitly named namespaces)', false );
+		$this->addOption( 'categories', 'Only refresh category pages (and other explicitly named namespaces)', false, false, 'c' );
 		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
+		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
-		$this->addOption( 'shallow-update', 'Skip processing of entitites that compare to the last known revision date', false );
-		$this->addOption( 'with-property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
+		$this->addOption( 'shallow-update', 'Skip processing of entities that compare to the last known revision date', false );
+		$this->addOption( 'property-statistics', 'Execute `rebuildPropertyStatistics` after the `rebuildData` run has finished.', false );
+
+		$this->addOption( 'force-update', 'Force an update even when an associated revision is known', false );
+		$this->addOption( 'revision-mode', 'Skip entities where its associated revision matches the latests referenced revision of an associated page', false );
 
 		$this->addOption( 'ignore-exceptions', 'Ignore exceptions and log exception to a file', false );
 		$this->addOption( 'exception-log', 'Exception log file location (e.g. /tmp/logs/)', false, true );
@@ -102,6 +110,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'query', "<query> Will refresh only pages returned by a given query. Example: --query='[[Category:SomeCategory]]'", false, true );
 
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
+		$this->addOption( 'report-poolcache', 'Report internal poolcache memory usage', false );
 		$this->addOption( 'no-cache', 'Sets the `wgMainCacheType` to none while running the script', false );
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'quiet', 'Do not give any output', false );
@@ -112,9 +121,14 @@ class RebuildData extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) || !$GLOBALS['smwgSemanticsEnabled'] ) {
+		if ( !Setup::isEnabled() ) {
 			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
-			return false;
+			exit;
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
+			exit;
 		}
 
 		$maintenanceFactory = ApplicationFactory::getInstance()->newMaintenanceFactory();
@@ -124,21 +138,25 @@ class RebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
-			$maintenanceHelper->setGlobalToValue( 'smwgValueLookupCacheType', CACHE_NONE );
+			$maintenanceHelper->setGlobalToValue( 'smwgEntityLookupCacheType', CACHE_NONE );
+			$maintenanceHelper->setGlobalToValue( 'smwgQueryResultCacheType', CACHE_NONE );
 		}
 
 		if ( $this->hasOption( 'debug' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgShowExceptionDetails', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowSQLErrors', true );
 			$maintenanceHelper->setGlobalToValue( 'wgShowDBErrorBacktrace', true );
+		} else {
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogFile', '' );
+			$maintenanceHelper->setGlobalToValue( 'wgDebugLogGroups', [] );
 		}
 
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
-		$store->setUpdateJobsEnabledState( false );
+		$store->setOption( Store::OPT_CREATE_UPDATE_JOB, false );
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,
-			array( $this, 'reportMessage' )
+			[ $this, 'reportMessage' ]
 		);
 
 		$dataRebuilder->setOptions(
@@ -149,25 +167,35 @@ class RebuildData extends \Maintenance {
 			$dataRebuilder->rebuild()
 		);
 
-		if ( $result && $this->hasOption( 'with-property-statistics' ) ) {
-			$this->reportMessage( "---\n\n" );
+		if ( $result && $this->hasOption( 'property-statistics' ) ) {
 			$rebuildPropertyStatistics = $maintenanceFactory->newRebuildPropertyStatistics();
 			$rebuildPropertyStatistics->execute();
 		}
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . $maintenanceHelper->transformRuntimeValuesForOutput() . "\n" );
+			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
+			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildDataLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+			$runtimeValues = $maintenanceHelper->getRuntimeValues();
+
+			$log = [
+				'Memory used: ' . $runtimeValues['memory-used'],
+				'Time used: ' . $runtimeValues['humanreadable-time'],
+				'Rebuild count: ' . $dataRebuilder->getRebuildCount(),
+				'Exception count: ' . $dataRebuilder->getExceptionCount()
+			];
+
+			$maintenanceLogger->log( implode( ', ', $log ) );
 		}
 
 		$maintenanceHelper->reset();
 
-		// Only for internal use
-		// $this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getFormattedStats() . "\n" );
+		if ( $this->hasOption( 'report-poolcache' ) ) {
+			$this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getStats( \SMW\Utils\StatsFormatter::FORMAT_JSON ) . "\n" );
+		}
 
 		return $result;
 	}

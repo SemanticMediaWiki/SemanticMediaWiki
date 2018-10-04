@@ -1,0 +1,61 @@
+
+.smw-deferred-query-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.smw-deferred-query .loading-image {
+    text-align: center;
+}
+
+.smw-deferred-query .overlay {
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    z-index: 10000;
+    cursor: wait;
+}
+
+.smw-deferred-query #controls {
+   margin-bottom:10px;
+}
+
+.smw-deferred-query .ui-slider-horizontal .ui-state-default {
+    margin-left: -1.5em;
+}
+
+.smw-deferred-query .ui-slider .ui-slider-handle {
+    width:3em;
+    left:-1.5em;
+    text-decoration:none;
+    text-align:center;
+}
+
+.smw-deferred-query .irs-from, .smw-deferred-query .irs-to, .smw-deferred-query .irs-single {
+    background: rgba(0,0,0,0.3);
+}
+
+.smw-deferred-query .irs-from:after, .smw-deferred-query .irs-to:after, .smw-deferred-query .irs-single:after {
+    border-top-color: rgba(0,0,0,0.3);
+}
+
+.smw-deferred-query .irs {
+   margin-bottom: 10px;
+}
+
+.is-disabled {
+    opacity: .5;
+    position: relative;
+    pointer-events: none;
+}
+
+.is-disabled::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: ' ';
+}

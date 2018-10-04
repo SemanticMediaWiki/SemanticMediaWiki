@@ -1,0 +1,55 @@
+{
+	"description": "Test in-text annotation with combined constraint validation `_PVUC` and `_PVAL` (`smwgDVFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness url",
+			"contents": "[[Has type::URL]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]] [[Allows value::open]]"
+		},
+		{
+			"page": "Example/P0421/1",
+			"contents": "[[Has uniqueness url::http://example.org/P0421]] [[Has text::open]]"
+		},
+		{
+			"page": "Example/P0421/2",
+			"contents": "[[Has uniqueness url::http://example.org/P0421]] [[Has text::closed]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 Fails on both constraints due to Example/P0421/1",
+			"subject": "Example/P0421/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,68 @@
+{
+	"description": "Test `format=list` output",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Foo",
+			"contents": "[[Has page property::ABC]]"
+		},
+		{
+			"page": "Bar",
+			"contents": "[[Has page property::ABC]]"
+		},
+		{
+			"page": "Baz",
+			"contents": "[[Has page property::ABC]]"
+		},
+		{
+			"page": "Quok",
+			"contents": "[[Has page property::ABC]]"
+		},
+		{
+			"page": "Quuz",
+			"contents": "[[Has page property::DEF]]"
+		},
+		{
+			"page": "Example/0401",
+			"contents": "{{#ask:[[Has page property::ABC]] |format=list}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser-html",
+			"about": "#0 Basic List format (structure)",
+			"subject": "Example/0401",
+			"assert-output": {
+				"to-be-valid-html": true,
+				"to-contain": [
+					[ "span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]", 4 ]
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Basic List format (order)",
+			"subject": "Example/0401",
+			"assert-output": {
+				"to-contain": [
+					"Bar.*Baz.*Foo.*Quok"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

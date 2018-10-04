@@ -51,7 +51,7 @@ class DumpRdf extends \Maintenance {
 	/**
 	 * @var array
 	 */
-	private $pages = array();
+	private $pages = [];
 
 	/**
 	 * @since 2.0
@@ -69,6 +69,8 @@ class DumpRdf extends \Maintenance {
 	 * @since 2.0
 	 */
 	protected function addDefaultParams() {
+
+		parent::addDefaultParams();
 
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing, useful for limiting server load.', false, true );
 		$this->addOption( 'e', '<each> after how many exported entities should the process take a nap.', false, true );
@@ -136,11 +138,9 @@ class DumpRdf extends \Maintenance {
 		} elseif ( $this->hasOption( 'concepts' ) ) {
 			$this->restrictNamespaceTo = SMW_NS_CONCEPT;
 		} elseif ( $this->hasOption( 'classes' ) ) {
-			$this->restrictNamespaceTo = array( NS_CATEGORY, SMW_NS_CONCEPT );
+			$this->restrictNamespaceTo = [ NS_CATEGORY, SMW_NS_CONCEPT ];
 		} elseif ( $this->hasOption( 'properties' ) ) {
 			$this->restrictNamespaceTo = SMW_NS_PROPERTY;
-		} elseif ( $this->hasOption( 'types' ) ) {
-			$this->restrictNamespaceTo = SMW_NS_TYPE;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
 			$this->restrictNamespaceTo = - 1;
 		}
@@ -160,7 +160,7 @@ class DumpRdf extends \Maintenance {
 
 		$exportController = new ExportController( new RDFXMLSerializer() );
 
-		if ( $this->pages !== array() ) {
+		if ( $this->pages !== [] ) {
 			return $exportController->printPages(
 				$this->pages
 			);

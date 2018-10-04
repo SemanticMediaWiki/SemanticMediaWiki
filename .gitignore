@@ -11,3 +11,4 @@ composer.lock
 
 !.*
 .idea/
+.smw.json

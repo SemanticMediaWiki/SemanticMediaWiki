@@ -1,0 +1,62 @@
+{
+	"description": "Test `_wpg` namespace any value queries (#1301, en)",
+	"setup": [
+		{
+			"namespace": "NS_HELP",
+			"page": "Example/Q0611/1",
+			"contents": "[[Category:Q0611]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "Example/Q0611/2",
+			"contents": "[[Category:Q0611]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "Example/Q0611/3",
+			"contents": "#REDIRECT [[Example/Q0611/4]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"do-delete": true,
+			"page": "Example/Q0611/4",
+			"contents": "[[Category:Q0611]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Help:+]] [[Category:Q0611]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0611/1#12##",
+					"Example/Q0611/2#12##"
+				]
+			},
+			"store": {
+				"clear-cache": true
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		},
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

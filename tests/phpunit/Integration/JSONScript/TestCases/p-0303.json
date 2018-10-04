@@ -1,0 +1,70 @@
+{
+	"description": "Test `#subobject` and `#set` parser on values with spaces (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has effect",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0303/1",
+			"contents": {
+				"import-from": "/../Fixtures/p-0303.txt"
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 values are trimmed (no leading spaces)",
+			"subject": "Example/P0303/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_effect",
+						"_SKEY",
+						"_MDAT",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"Foo",
+						"Bar"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 values are trimmed (no leading spaces)",
+			"subject": "Example/P0303/1#_4cf77c0a97795d2717d53fa6165a0bf5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"Has_effect",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Foo",
+						"Bar"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

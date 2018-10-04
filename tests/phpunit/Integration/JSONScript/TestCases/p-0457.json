@@ -1,0 +1,70 @@
+{
+	"description": "Test named subobject caption display (#2895)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"page": "Example/P0457/1",
+			"contents": "{{#subobject:Foo bar|Has text=123|@category=P0457/1}}"
+		},
+		{
+			"page": "Example/P0457/2",
+			"contents": "{{#subobject:Foo bar|Has text=123|@category=P0457/2|display title of=Bar foo}}"
+		},
+		{
+			"page": "Example/P0457/Q.1",
+			"contents": "{{#ask: [[Category:P0457/1]] }}"
+		},
+		{
+			"page": "Example/P0457/Q.2",
+			"contents": "{{#ask: [[Category:P0457/2]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (named sobj without `_` in caption)",
+			"subject": "Example/P0457/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=.*Example/P0457/1#Foo_bar\" title=\"Example/P0457/1\">Example/P0457/1#Foo bar</a>"
+				],
+				"not-contain": [
+					"<a href=.*Example/P0457/1#Foo_bar\" title=\"Example/P0457/1\">Example/P0457/1#Foo_bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (named sobj without `_` in caption and `display title of`)",
+			"subject": "Example/P0457/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<a href=.*Example/P0457/2#Foo_bar\" title=\"Example/P0457/2\">Bar foo#Foo bar</a>"
+				],
+				"not-contain": [
+					"<a href=.*Example/P0457/2#Foo_bar\" title=\"Example/P0457/2\">Example/P0457/2#Foo_bar</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

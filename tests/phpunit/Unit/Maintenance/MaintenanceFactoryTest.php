@@ -83,6 +83,16 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDuplicateEntitiesDisposer() {
+
+		$instance = new MaintenanceFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\DuplicateEntitiesDisposer',
+			$instance->newDuplicateEntitiesDisposer( $this->store )
+		);
+	}
+
 	public function testCanConstructMaintenanceLogger() {
 
 		$instance = new MaintenanceFactory();

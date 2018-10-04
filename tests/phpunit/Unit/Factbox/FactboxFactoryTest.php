@@ -36,11 +36,15 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructFactbox() {
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$contextSource = $this->getMockBuilder( '\IContextSource' )
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +52,7 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Factbox\Factbox',
-			$instance->newFactbox( $parserData, $contextSource )
+			$instance->newFactbox( $title, $parserOutput )
 		);
 	}
 

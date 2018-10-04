@@ -46,6 +46,11 @@ class RepositoryClient {
 	private $dataEndpoint = '';
 
 	/**
+	 * @var string
+	 */
+	private $name = '';
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string $defaultGraph
@@ -61,6 +66,24 @@ class RepositoryClient {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $name
+	 */
+	public function setName( $name ) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return string
@@ -72,7 +95,7 @@ class RepositoryClient {
 	/**
 	 * @since 2.2
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function getQueryEndpoint() {
 		return $this->queryEndpoint;

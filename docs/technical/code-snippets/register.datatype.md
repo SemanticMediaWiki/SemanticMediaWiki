@@ -1,46 +1,66 @@
 ## Register new datatype
 
-```php
-\Hooks::register( 'SMW::DataType::initTypes', function ( $dataTypeRegistry ) {
+This example shows how to register a new dataType/dataValue in Semantic MediaWiki.
 
-	$dataTypeRegistry->registerDatatype(
-		'___foo_bar',
-		'\Foo\DataValues\FooValue',
-		DataItem::TYPE_BLOB
-	);
+* [Datatype](https://www.semantic-mediawiki.org/wiki/Help:Datatype)
+* [DataValue](https://www.semantic-mediawiki.org/wiki/Help:DataValue)
 
-	// Since 2.4
-	$dataTypeRegistry->setOption(
-		'settingRelevantForTheFactoryProcess',
-		42
-	);
+### Type registration
 
-	return true;
-};
-```
+All IDs must start with an underscore, two underscores indicate a truly internal
+(non user-interacted type), three underscores should be used by an extension.
 
-```php
+`TypesRegistry::getDataTypeList` expects that the following information are provided:
+
+* A type id (e.g. `FooValue::TYPE_ID`)
+* An associated class
+* An item type (storage type)
+* A declaration whether it is a subData type (e.g subobject) or not
+* Whether a type is browsable or not
+
+<pre>
+return array(
+	// ...
+	FooValue::TYPE_ID => [ FooValue::class, DataItem::TYPE_WIKIPAGE, false, false ],
+);
+</pre>
+
+<pre>
 class FooValue extends DataValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_foo';
+
+	/**
 	 * @see DataValue::parseUserValue
-	 * @note called by DataValue::setUserValue
 	 *
 	 * @param string $value
 	 */
 	protected function parseUserValue( $userValue ) {
-		if ( $this->getOptionValueFor( 'settingRelevantForTheFactoryProcess' ) === 42 ) {
-
-		}
+		...
 	}
+
 }
-```
+</pre>
 
-```php
-$fooValue = DataValueFactory::getInstance()->newTypeIdValue(
-	'___foo_bar',
-	'Bar'
-)
+### Label registration
 
-$fooValue->getShortWikiText();
-```
+By default, DataTypes (Date, URL etc.) are registered with a corresponding property
+of the same name to match the expected semantics. For an exemption, see
+`smwgDataTypePropertyExemptionList`.
+
+Find `i18n/extra/en.json` and extend the canonical description (which is English) with something like:
+
+<pre>
+	"dataTypeLabels":{
+		"_foo": "SomeType"
+		...
+	},
+	"dataTypeAliases":{
+		"SomeType": "_foo"
+		"ExtraAlias": "_foo"
+		...
+	},
+</pre>

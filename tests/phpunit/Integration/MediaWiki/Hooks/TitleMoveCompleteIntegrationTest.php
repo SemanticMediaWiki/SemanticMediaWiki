@@ -27,7 +27,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	private $mwHooksHandler;
 	private $queryResultValidator;
 	private $applicationFactory;
-	private $toBeDeleted = array();
+	private $toBeDeleted = [];
 	private $pageCreator;
 
 	protected function setUp() {
@@ -91,19 +91,13 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
-		$this->toBeDeleted = array(
+		$this->toBeDeleted = [
 			$oldTitle,
 			$expectedNewTitle
-		);
+		];
 	}
 
 	public function testPageMoveWithRemovalOfOldPage() {
-
-		// PHPUnit query issue
-		$this->skipTestForDatabase( array( 'postgres' ) );
-
-		// Revison showed an issue on 1.19 not being null after the move
-		$this->skipTestForMediaWikiVersionLowerThan( '1.21' );
 
 		// Further hooks required to ensure in-text annotations can be used for queries
 		$this->mwHooksHandler->register(
@@ -167,14 +161,14 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
-			array( DIWikiPage::newFromTitle( $expectedNewTitle ) ),
+			[ DIWikiPage::newFromTitle( $expectedNewTitle ) ],
 			$queryResult
 		);
 
-		$this->toBeDeleted = array(
+		$this->toBeDeleted = [
 			$title,
 			$expectedNewTitle
-		);
+		];
 	}
 
 	public function testPredefinedPropertyPageIsNotMovable() {
@@ -203,10 +197,10 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
-		$this->toBeDeleted = array(
+		$this->toBeDeleted = [
 			$title,
 			$expectedNewTitle
-		);
+		];
 	}
 
 }

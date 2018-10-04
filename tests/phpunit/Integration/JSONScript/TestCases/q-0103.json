@@ -1,0 +1,223 @@
+{
+	"description": "Test `_txt` for `~*` regex query with the condition to include the `\\` escape character (skip sqlite, postgres)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has regexblob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has simple text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Escape character blob subject-a",
+			"contents": "{{#set:|Has regexblob property=[(+*. \\.)']}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\:)]\\\\\"}}"
+		},
+		{
+			"page": "Escape character blob subject-b",
+			"contents": "{{#set:|Has regexblob property=[(+*. \\;)\\\\']\\\"}} {{#subobject:FixedSubobjectName|Has regexblob property=[(+* \\=)]\\\\\"\\\"}}"
+		},
+		{
+			"page": "Escape character blob subject-c",
+			"contents": "[[Has regexblob property::Foo(\\\"'#^$&-/)]]"
+		},
+		{
+			"page": "BlobValue with whitespaces",
+			"contents": "[[Has simple text:: +/-nuclear atypia ]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Has regexblob property::~*.*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-a#0##",
+					"Escape character blob subject-b#0##"
+				],
+				"count": "2"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Has regexblob property::~*\\'*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Has regexblob property::~*'*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##",
+					"Escape character blob subject-a#0##",
+					"Escape character blob subject-c#0##"
+				],
+				"count": "3"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[Has regexblob property::~*\\\\'*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"condition": "[[Has regexblob property::~*\\\\\"*]]",
+			"printouts": [
+				"Has regexblob property"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-a#0##FixedSubobjectName",
+					"Escape character blob subject-b#0##FixedSubobjectName"
+				],
+				"count": "2"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"condition": "[[Has regexblob property::~*\\\\\"\\\"*]]",
+			"skip-on": {
+				"elastic": "Finding more than one due to the wildcard"
+			},
+			"printouts": [
+				"Has regexblob property"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-b#0##FixedSubobjectName"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6",
+			"condition": "[[Has regexblob property::~*\\\"*]]",
+			"printouts": [
+				"Has regexblob property"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-a#0##FixedSubobjectName",
+					"Escape character blob subject-b#0##",
+					"Escape character blob subject-b#0##FixedSubobjectName",
+					"Escape character blob subject-c#0##"
+				],
+				"count": "4"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7",
+			"condition": "[[Has regexblob property::~*\\.*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-a#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8",
+			"condition": "[[Has regexblob property::~*\\:*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-a#0##FixedSubobjectName"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9",
+			"condition": "[[Has regexblob property::~*Foo(\\\"'#^$&-/)*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Escape character blob subject-c#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10 find subject even when value annotation contained whitespaces",
+			"condition": "[[Has simple text::+/-nuclear atypia]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"BlobValue with whitespaces#0##"
+				],
+				"count": "1"
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"skip-on": {
+			"sqlite": "Requires special \\ escape sequence on sqlite"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

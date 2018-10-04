@@ -1,0 +1,133 @@
+{
+	"description": "Test deep subqueries (Friends of friends) (`smwgQMaxDepth`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Age",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Material status",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/Q0618/1",
+			"contents": {
+				"import-from": "/../Fixtures/q-0618.persons.txt"
+			}
+		},
+		{
+			"page": "Example/Q0618/2",
+			"contents": {
+				"import-from": "/../Fixtures/q-0618.visits.txt"
+			}
+		},
+		{
+			"page": "Example/Q0618/3",
+			"contents": {
+				"import-from": "/../Fixtures/q-0618.friends.txt"
+			}
+		},
+		{
+			"page": "Example/Q0618/4a",
+			"contents": "{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} {{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide |format=debug }}"
+		},
+		{
+			"page": "Example/Q0618/4b",
+			"contents": "{{#ask: [[-Person::<q>[[Person.-Has friend.Person::Andy Mars]][[Age::>>{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} ]]</q>]] }} {{#ask: [[-Person::<q>[[Person.-Has friend.Person::Andy Mars]][[Age::>>{{#ask: [[Person::Andy Mars]][[Age::+]] |?Age |mainlabel=- |headers=hide }} ]]</q>]] |format=debug}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (Show Friends of friends from Andy Mars)",
+			"condition": "[[-Has friend.Person.-Has friend.Person::Andy Mars]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 7,
+				"results": [
+					"Charlotte Beans#0##",
+					"Evelyne Lynn#0##",
+					"James Ross#0##",
+					"Mandy Rose#0##",
+					"Michael Chester#0##",
+					"Rosalia Alvarez#0##",
+					"Yumi Tanaka#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (Show Friends of friends from Andy Mars who are single and over 30)",
+			"condition": "[[-Person:: <q>[[Person.-Has friend.Person.-Has friend.Person::Andy Mars]] [[Material status::single]][[Age::> 30]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Michael Chester#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (Show Friends who have been to places Andy Mars has visited)",
+			"condition": "[[-Person.Place visited::<q>[[-Place visited.Person::<q>[[-Has friend.Person::Andy Mars]]</q>]][[-Place visited::<q>[[Person::Andy Mars]]</q>]]</q>]] [[!Andy Mars]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 7,
+				"results": [
+					"Charles Banning#0##",
+					"Charlotte Beans#0##",
+					"John Maier#0##",
+					"Kevin Mikaelson#0##",
+					"Mike Bloom#0##",
+					"Rosalia Alvarez#0##",
+					"Yumi Tanaka#0##"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (age)",
+			"subject": "Example/Q0618/4a",
+			"assert-output": {
+				"to-contain": [
+					"32"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (Show Friends from Andy Mars that are older has him)",
+			"subject": "Example/Q0618/4b",
+			"assert-output": {
+				"to-contain": [
+					"Charles Banning"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgQMaxDepth": 16,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -12,36 +12,24 @@ namespace SMW\MediaWiki\Hooks;
  *
  * @author mwjames
  */
-class ExtensionTypes {
-
-	/**
-	 * @var array
-	 */
-	private $extensionTypes = array();
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param array $extensionTypes
-	 */
-	public function __construct( array &$extensionTypes ) {
-		$this->extensionTypes =& $extensionTypes;
-	}
+class ExtensionTypes extends HookHandler {
 
 	/**
 	 * @since 2.0
 	 *
+	 * @param array $extensionTypes
+	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process( array &$extensionTypes ) {
 
-		if ( !is_array( $this->extensionTypes ) ) {
-			$this->extensionTypes = array();
+		if ( !is_array( $extensionTypes ) ) {
+			$extensionTypes = [];
 		}
 
-		$this->extensionTypes = array_merge(
-			array( 'semantic' => wfMessage( 'version-semantic' )->text() ),
-			$this->extensionTypes
+		$extensionTypes = array_merge(
+			[ 'semantic' => wfMessage( 'version-semantic' )->text() ],
+			$extensionTypes
 		);
 
 		return true;

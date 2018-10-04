@@ -3,9 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use EditPage;
-use SMW\ApplicationFactory;
+use Html;
 use SMW\DIProperty;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\Message;
+use SMW\NamespaceExaminer;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
@@ -15,92 +16,87 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
  *
  * @author mwjames
  */
-class EditPageForm {
+class EditPageForm extends HookHandler {
 
 	/**
-	 * @var EditPage
+	 * @var NamespaceExaminer
 	 */
-	private $editPage = null;
+	private $namespaceExaminer;
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer = null;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
-	 * @since  2.1
+	 * @since 2.5
 	 *
-	 * @param EditPage $editPage
-	 * @param HtmlFormRenderer $htmlFormRenderer
+	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( EditPage $editPage, HtmlFormRenderer $htmlFormRenderer ) {
-		$this->editPage = $editPage;
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->applicationFactory = ApplicationFactory::getInstance();
+	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+		$this->namespaceExaminer = $namespaceExaminer;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param EditPage $editPage
+	 *
 	 * @return boolean
 	 */
-	public function process() {
-		return $this->canAddHelpForm() ? $this->addHelpForm() : true;
-	}
+	public function process( EditPage $editPage ) {
 
-	private function addHelpForm() {
+		if ( !$this->getOption( 'smwgEnabledEditPageHelp', false ) || $this->getOption( 'prefs-disable-editpage', false ) ) {
+			return true;
+		}
 
-		$message = $this->htmlFormRenderer
-			->getMessageBuilder()
-			->getMessage( $this->findMessageKeyFor( $this->editPage->getTitle()->getNamespace() ) )
-			->parse();
-
-		$html = $this->htmlFormRenderer
-			->setName( 'editpage-help' )
-			->addParagraph( $message, array( 'class' => 'smw-editpage-help' ) )
-			->getForm();
-
-		$this->editPage->editFormPageTop .= $html;
+		$this->updateEditPage( $editPage );
 
 		return true;
 	}
 
-	private function findMessageKeyFor( $namespace ) {
+	private function updateEditPage( $editPage ) {
 
-		if ( $this->isPropertyPage( $namespace ) ) {
-			if ( DIProperty::newFromUserLabel( $this->editPage->getTitle()->getText() )->isUserDefined() ) {
+		$msgKey = $this->getMessageKey(
+			$editPage->getTitle()
+		);
+
+		$message = Message::get(
+			$msgKey,
+			Message::PARSE,
+			Message::USER_LANGUAGE
+		);
+
+		$html =	Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-editpage-help'
+			],
+			Html::rawElement(
+				'p',
+				[
+					'data-msgKey' => $msgKey
+				],
+				$message
+			)
+		);
+
+		$editPage->editFormPageTop .= $html;
+	}
+
+	private function getMessageKey( $title ) {
+
+		$text = $title->getText();
+		$namespace = $title->getNamespace();
+
+		if ( $namespace === SMW_NS_PROPERTY ) {
+			if ( DIProperty::newFromUserLabel( $text )->isUserDefined() ) {
 				return 'smw-editpage-property-annotation-enabled';
 			} else {
 				return 'smw-editpage-property-annotation-disabled';
 			}
-		} elseif ( $this->isConceptPage( $namespace ) ) {
+		} elseif ( $namespace === SMW_NS_CONCEPT ) {
 			return 'smw-editpage-concept-annotation-enabled';
-		} elseif ( $this->isSemanticEnabledPage( $namespace ) ) {
+		} elseif ( $this->namespaceExaminer->isSemanticEnabled( $namespace ) ) {
 			return 'smw-editpage-annotation-enabled';
 		}
 
 		return 'smw-editpage-annotation-disabled';
-	}
-
-	private function isPropertyPage( $namespace ) {
-		return $namespace === SMW_NS_PROPERTY;
-	}
-
-	private function isConceptPage( $namespace ) {
-		return $namespace === SMW_NS_CONCEPT;
-	}
-
-	private function isSemanticEnabledPage( $namespace ) {
-		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $namespace );
-	}
-
-	private function canAddHelpForm() {
-		return $this->applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' );
 	}
 
 }

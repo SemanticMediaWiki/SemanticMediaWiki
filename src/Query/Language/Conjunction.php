@@ -18,37 +18,79 @@ class Conjunction extends Description {
 	/**
 	 * @var Description[]
 	 */
-	protected $m_descriptions;
+	protected $descriptions = [];
 
-	public function __construct( array $descriptions = array() ) {
-		$this->m_descriptions = $descriptions;
+	/**
+	 * @since 1.6
+	 *
+	 * @param array $descriptions
+	 */
+	public function __construct( array $descriptions = [] ) {
+		foreach ( $descriptions as $description ) {
+			$this->addDescription( $description );
+		}
+	}
+
+	/**
+	 * @see Description::getFingerprint
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
+		}
+
+		$fingerprint = [];
+
+		// Filter equal signatures
+		foreach ( $this->descriptions as $description ) {
+			$fingerprint[$description->getFingerprint()] = true;
+		}
+
+		// Sorting to generate a constant fingerprint independent of its
+		// position within a conjunction ( [Foo]][[Bar]], [[Bar]][[Foo]])
+		ksort( $fingerprint );
+
+		return $this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
 	}
 
 	public function getDescriptions() {
-		return $this->m_descriptions;
+		return $this->descriptions;
 	}
 
 	public function addDescription( Description $description ) {
+
+		$this->fingerprint = null;
+
 		if ( ! ( $description instanceof ThingDescription ) ) {
 			if ( $description instanceof Conjunction ) { // absorb sub-conjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
-					$this->m_descriptions[] = $subdesc;
+					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;
 				}
 			} else {
-				$this->m_descriptions[] = $description;
+				$this->descriptions[$description->getFingerprint()] = $description;
 			}
 
 			// move print descriptions downwards
 			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future changes
 			$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
-			$description->setPrintRequests( array() );
+			$description->setPrintRequests( [] );
+		}
+
+		$fingerprint = $this->getFingerprint();
+
+		foreach ( $this->descriptions as $description ) {
+			$description->setMembership( $fingerprint );
 		}
 	}
 
 	public function getQueryString( $asvalue = false ) {
 		$result = '';
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$result .= ( $result ? ' ' : '' ) . $desc->getQueryString( false );
 		}
 
@@ -61,7 +103,7 @@ class Conjunction extends Description {
 	}
 
 	public function isSingleton() {
-		foreach ( $this->m_descriptions as $d ) {
+		foreach ( $this->descriptions as $d ) {
 			if ( $d->isSingleton() ) {
 				return true;
 			}
@@ -72,7 +114,7 @@ class Conjunction extends Description {
 	public function getSize() {
 		$size = 0;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$size += $desc->getSize();
 		}
 
@@ -82,7 +124,7 @@ class Conjunction extends Description {
 	public function getDepth() {
 		$depth = 0;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$depth = max( $depth, $desc->getDepth() );
 		}
 
@@ -92,7 +134,7 @@ class Conjunction extends Description {
 	public function getQueryFeatures() {
 		$result = SMW_CONJUNCTION_QUERY;
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$result = $result | $desc->getQueryFeatures();
 		}
 
@@ -105,11 +147,11 @@ class Conjunction extends Description {
 			return new ThingDescription();
 		}
 
-		$prunelog = array();
+		$prunelog = [];
 		$newdepth = $maxdepth;
 		$result = new Conjunction();
 
-		foreach ( $this->m_descriptions as $desc ) {
+		foreach ( $this->descriptions as $desc ) {
 			$restdepth = $maxdepth;
 			$result->addDescription( $desc->prune( $maxsize, $restdepth, $prunelog ) );
 			$newdepth = min( $newdepth, $restdepth );

@@ -1,0 +1,98 @@
+{
+	"description": "Test #ask with subject redirected to different NS (en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0904/1",
+			"contents": "[[Has page::P0904]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "Example/P0904/1",
+			"contents": "[[Has page::P0904]]"
+		},
+		{
+			"page": "Example/P0904/1",
+			"contents": "#REDIRECT [[Help:Example/P0904/1]]"
+		},
+		{
+			"page": "Example/P0904/2",
+			"contents": "{{#ask: [[Has page::P0904]] |?Has page |format=table |link=none }}"
+		},
+		{
+			"page": "Example/P0904/3",
+			"contents": "{{#ask: [[~Example/P0904*]] |?Has page |format=table |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0904/1",
+			"namespace": "NS_HELP",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0904/2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (redirected subject does not appear in result list)",
+			"subject": "Example/P0904/3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+				],
+				"not-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

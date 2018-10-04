@@ -1,0 +1,234 @@
+{
+	"description": "Test `format=category` with numeric collation sort (same as uppercase, but with numeric sorting) (#2065, `smwgEntityCollation=numeric`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "b9/3",
+			"contents": "[[Has page::b9]] [[Category:F0306-1]]"
+		},
+		{
+			"page": "b1000/3",
+			"contents": "[[Has page::b1000]] [[Category:F0306-1]]"
+		},
+		{
+			"page": "Example/F0306/1",
+			"contents": {
+				"import-from": "/../Fixtures/numeric-sorting.txt"
+			}
+		},
+		{
+			"page": "Example/F0306/Q.1.1",
+			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort= |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0306/Q.1.2",
+			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort= |order=desc |link=none }}"
+		},
+		{
+			"page": "Example/F0306/Q.1.3",
+			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort=Has page |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0306/Q.1.4",
+			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort=Has page |order=desc |link=none }}"
+		},
+		{
+			"page": "Example/F0306/Q.2.1",
+			"contents": "{{#ask: [[Category:Numeric sorting example]] |?Has page |format=category |sort=Has page |order=asc |link=none |mainlabel=- |headers=hide }}"
+		},
+		{
+			"page": "Example/F0306/Q.2.2",
+			"contents": "{{#ask: [[Category:Numeric sorting example]] |?Has page |format=category |sort=Has page |order=desc |link=none |mainlabel=- |headers=hide }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 asc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
+			},
+			"subject": "Example/F0306/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#0.elastic asc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"subject": "Example/F0306/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9.*"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 desc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
+				"postgres": "PostgreSQL `numeric` collation generates a different order when compared with MySQL, SQLite."
+			},
+			"subject": "Example/F0306/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1.elastic desc (different to f-0305, f-0304)",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"subject": "Example/F0306/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 Has page, asc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.3",
+			"skip-on": {
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
+				"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2.elastic Has page, asc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.3",
+			"skip-on":{
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3 Has page, desc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.4",
+			"skip-on": {
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
+				"hhvm-*": "HHVM (or SQLite) shows opposite B9, B1000"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3.elastic Has page, desc (different to f-0305, f-0304)",
+			"subject": "Example/F0306/Q.1.4",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4 Has page, asc, imported content",
+			"subject": "Example/F0306/Q.2.1",
+			"skip-on": {
+				"elastic": "Different sorting behaviour, natural",
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-2.*<li>Antonov An-3 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-218 </li>.*<li>Antonov An-225 </li>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4.elastic Has page, asc, imported content",
+			"subject": "Example/F0306/Q.2.1",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-2.*<li>Antonov An-218 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-225 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-3 </li>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 Has page, desc, imported content",
+			"subject": "Example/F0306/Q.2.2",
+			"skip-on": {
+				"elastic": "Different sorting behaviour, natural",
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-225.*<li>Antonov An-218 </li>.*<li>Antonov An-24 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-3 </li>.*<li>Antonov An-2 </li>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5.elastic Has page, desc, imported content",
+			"subject": "Example/F0306/Q.2.2",
+			"skip-on": {
+				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">A</div><ul><li>Antonov An-3.*<li>Antonov An-24 </li>.*<li>Antonov An-225 </li>.*<li>Antonov An-22 </li>.*<li>Antonov An-218 </li>.*<li>Antonov An-2 </li>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEntityCollation": "numeric",
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC",
+			"SMW_SPARQL_QF_COLLATION"
+		],
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.28<": "`numeric` collation only available with 1.28+"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

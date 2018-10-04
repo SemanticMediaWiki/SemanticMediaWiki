@@ -1,0 +1,76 @@
+{
+	"description": "Test RDF output generation on non-latin URI/IRI export (#2188, `smwgExportResourcesAsIri=false`, `wgContLang=ru`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Заголовок",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Тип публикации",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Журнал",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Год",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/R0014/Заголовок",
+			"contents": "[[Заголовок::Pollen Limitation]] [[Журнал::Arctic, Antarctic and Alpine Research]] [[Год::2009]] [[Тип публикации::Статья]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0014/Заголовок"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0014/-D0-97-D0-B0-D0-B3-D0-BE-D0-BB-D0-BE-D0-B2-D0-BE-D0-BA\">",
+					"<rdfs:label>Example/R0014/Заголовок</rdfs:label>",
+					"<wiki:Property-3A-D0-93-D0-BE-D0-B4 rdf:datatype=\"http://www.w3.org/2001/XMLSchema#gYear\">2009</wiki:Property-3A-D0-93-D0-BE-D0-B4>",
+					"<wiki:Property-3A-D0-96-D1-83-D1-80-D0-BD-D0-B0-D0-BB rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Arctic, Antarctic and Alpine Research</wiki:Property-3A-D0-96-D1-83-D1-80-D0-BD-D0-B0-D0-BB>",
+					"<wiki:Property-3A-D0-97-D0-B0-D0-B3-D0-BE-D0-BB-D0-BE-D0-B2-D0-BE-D0-BA rdf:resource=\"&wiki;Pollen_Limitation\"/>",
+					"<wiki:Property-3A-D0-A2-D0-B8-D0-BF_-D0-BF-D1-83-D0-B1-D0-BB-D0-B8-D0-BA-D0-B0-D1-86-D0-B8-D0-B8 rdf:resource=\"&wiki;-D0-A1-D1-82-D0-B0-D1-82-D1-8C-D1-8F\"/>",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3A-D0-93-D0-BE-D0-B4\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3A-D0-93-D0-BE-D0-B4-23aux\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://example.org/id/Property-3A-D0-96-D1-83-D1-80-D0-BD-D0-B0-D0-BB\" />",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3A-D0-97-D0-B0-D0-B3-D0-BE-D0-BB-D0-BE-D0-B2-D0-BE-D0-BA\" />",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3A-D0-A2-D0-B8-D0-BF_-D0-BF-D1-83-D0-B1-D0-BB-D0-B8-D0-BA-D0-B0-D1-86-D0-B8-D0-B8\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "ru",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgExportResourcesAsIri": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -42,7 +42,7 @@ class WikitextTemplateRendererTest extends \PHPUnit_Framework_TestCase {
 		$instance->packFieldsForTemplate( 'Foobaz' );
 
 		$this->assertEquals(
-			'{{Bar|property=Foo|value=42}}{{Foobaz|property=Bar|value=Foo}}',
+			"{{Bar\n|property=Foo\n|value=42}}{{Foobaz\n|property=Bar\n|value=Foo}}",
 			$instance->render()
 		);
 

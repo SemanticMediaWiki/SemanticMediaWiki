@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use ApiBase;
 use SMW\ApplicationFactory;
+use SMW\Localizer;
 use SMW\NamespaceUriFinder;
 
 /**
@@ -13,6 +14,14 @@ use SMW\NamespaceUriFinder;
  * @author mwjames
  */
 class BrowseByProperty extends ApiBase {
+
+	/**
+	 * #2696
+	 * @deprecated since 3.0, use the smwbrowse API module
+	 */
+	public function isDeprecated() {
+		return true;
+	}
 
 	/**
 	 * @see ApiBase::execute
@@ -31,11 +40,19 @@ class BrowseByProperty extends ApiBase {
 			$params['limit']
 		);
 
-		$propertyListByApiRequest->setLanguageCode(
-			$params['lang']
+		$propertyListByApiRequest->setListOnly(
+			$params['listonly']
 		);
 
-		$propertyListByApiRequest->findPropertyListFor(
+		if ( ( $lang = $params['lang'] ) === null ) {
+			$lang = Localizer::getInstance()->getUserLanguage()->getCode();
+		}
+
+		$propertyListByApiRequest->setLanguageCode(
+			$lang
+		);
+
+		$propertyListByApiRequest->findPropertyListBy(
 			$params['property']
 		);
 
@@ -77,7 +94,7 @@ class BrowseByProperty extends ApiBase {
 		$this->getResult()->addValue(
 			null,
 			'version',
-			0.2
+			2
 		);
 
 		$this->getResult()->addValue(
@@ -100,24 +117,30 @@ class BrowseByProperty extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'property' => array(
+		return [
+			'property' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'limit' => array(
+			],
+			'limit' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_DFLT => 50,
 				ApiBase::PARAM_REQUIRED => false,
-			),
-			'lang' => array(
+			],
+			'lang' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => false,
 				ApiBase::PARAM_REQUIRED => false,
-			)
-		);
+			],
+			'listonly' => [
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_DFLT => false,
+				ApiBase::PARAM_ISMULTI => false,
+				ApiBase::PARAM_REQUIRED => false,
+			]
+		];
 	}
 
 	/**
@@ -127,10 +150,12 @@ class BrowseByProperty extends ApiBase {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
-			'property' => 'To select a specific property',
-			'limit' => 'To specify the size of the list request'
-		);
+		return [
+			'property' => 'To match a specific property',
+			'limit'    => 'To specify the size of the list request',
+			'lang'     => 'To specify a specific language used for some attributes (description etc.)',
+			'listonly' => 'To specify that only a property list is returned without further details'
+		];
 	}
 
 	/**
@@ -140,9 +165,9 @@ class BrowseByProperty extends ApiBase {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to query a property list or an individual property.'
-		);
+		];
 	}
 
 	/**
@@ -151,11 +176,12 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
-		return array(
+	public function getExamples() {
+		return [
 			'api.php?action=browsebyproperty&property=Modification_date',
 			'api.php?action=browsebyproperty&limit=50',
-		);
+			'api.php?action=browsebyproperty&limit=5&listonly=true',
+		];
 	}
 
 	/**

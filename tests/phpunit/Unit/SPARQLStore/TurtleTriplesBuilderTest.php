@@ -19,19 +19,21 @@ use SMWExporter as Exporter;
  */
 class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 
+	private $repositoryRedirectLookup;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
-
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\TurtleTriplesBuilder',
-			new TurtleTriplesBuilder( $semanticData, $redirectLookup )
+			new TurtleTriplesBuilder( $this->repositoryRedirectLookup )
 		);
 	}
 
@@ -43,22 +45,33 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 			'Redirect'
 		);
 
-		$semanticData = new SemanticData( new DIWikiPage( 'Foo', NS_MAIN, '' ) );
+		$semanticData = new SemanticData(
+			new DIWikiPage( 'Foo', NS_MAIN, '' )
+		);
 
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$redirectLookup->expects( $this->atLeastOnce() )
+		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
 			->will( $this->returnValue( $expNsResource ) );
 
-		$instance = new TurtleTriplesBuilder( $semanticData, $redirectLookup );
+		$instance = new TurtleTriplesBuilder(
+			$this->repositoryRedirectLookup
+		);
 
-		$this->assertTrue( $instance->doBuild()->hasTriplesForUpdate() );
+		$instance->doBuildTriplesFrom( $semanticData );
 
-		$this->assertInternalType( 'string', $instance->getTriples() );
-		$this->assertInternalType( 'array', $instance->getPrefixes() );
+		$this->assertTrue(
+			$instance->hasTriples()
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getTriples()
+		);
+
+		$this->assertInternalType(
+			'array',
+			$instance->getPrefixes()
+		);
 	}
 
 	public function testChunkedTriples() {
@@ -73,20 +86,16 @@ class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$redirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RedirectLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$redirectLookup->expects( $this->atLeastOnce() )
+		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
 			->method( 'findRedirectTargetResource' )
 			->will( $this->returnValue( $expNsResource ) );
 
 		$instance = new TurtleTriplesBuilder(
-			$semanticData,
-			$redirectLookup
+			$this->repositoryRedirectLookup
 		);
 
 		$instance->setTriplesChunkSize( 1 );
+		$instance->doBuildTriplesFrom( $semanticData );
 
 		$this->assertInternalType(
 			'array',

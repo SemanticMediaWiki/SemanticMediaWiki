@@ -1,0 +1,46 @@
+{
+	"description": "Test RDF output generation with special characters (`smwgExportResourcesAsIri=true`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/R0018/1",
+			"contents": "[[Has url::https://example.org/public/item#Foo\"Bar\"]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 (double quotes)",
+			"dumpRDF": {
+				"parameters": {
+					"page": "Example/R0018/1"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<property:Has_url rdf:resource=\"https://example.org/public/item#Foo%22Bar%22\"/>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgExportResourcesAsIri": true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

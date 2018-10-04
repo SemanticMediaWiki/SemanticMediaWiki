@@ -1,0 +1,11 @@
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon .smwb-datasheet, .skin-chameleon .smwb-content {
+	margin-right: 0em;
+}
+
+.skin-chameleon .smwb-container .smw-overlay-spinner {
+	left: 50%;
+	top: 45%;
+}

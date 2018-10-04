@@ -2,34 +2,20 @@
 
 namespace SMW\Test;
 
+use ReflectionClass;
+use SMW\Tests\Utils\Mock\MockSuperUser;
+use Title;
+
 /**
- * Tests for the QueryPage class
- *
- * @file
+ * @covers \SMW\QueryPage
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since   1.9
  *
  * @author mwjames
  */
-
-/**
- * @covers \SMW\QueryPage
- *
- *
- * @group SMW
- * @group SMWExtension
- */
-class QueryPageTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\QueryPage';
-	}
+class QueryPageTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Helper method that returns a QueryPage object
@@ -42,12 +28,12 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	private function newInstance( $search = '' ) {
 
-		$queryPage = $this->getMockBuilder( $this->getClass() )
-			->setMethods( array( 'getResults', 'formatResult' ) )
+		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
+			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
-		$context = $this->newContext( array( 'property' => $search ) );
-		$context->setTitle( $this->newTitle() );
+		$context = $this->newContext( [ 'property' => $search ] );
+		$context->setTitle( Title::newFromText( __METHOD__ ) );
 
 		$queryPage->setContext( $context );
 
@@ -60,7 +46,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
+		$this->assertInstanceOf( '\SMW\QueryPage', $this->newInstance() );
 	}
 
 	/**
@@ -74,7 +60,7 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testLinkParameters( $test, $expected ) {
 
-		$search = $this->newRandomString();
+		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
 		$this->assertInternalType( 'array', $result );
@@ -89,28 +75,28 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testGetSearchForm() {
 
-		$search   = $this->newRandomString();
+		$search = __METHOD__;
 		$instance = $this->newInstance();
 
-		$reflector = $this->newReflector();
+		$reflector = new ReflectionClass( '\SMW\QueryPage' );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
 		$selectOptions->setAccessible( true );
-		$selectOptions->setValue( $instance, array(
+		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,
 			'end'    => 5,
 			'count'  => 4
-		) );
+		] );
 
 		$result = $instance->getSearchForm( $search );
 
-		$matcher = array(
+		$matcher = [
 			'tag' => 'form',
-			'descendant' => array(
+			'descendant' => [
 				'tag' => 'input',
-				'attributes' => array( 'name' => 'property', 'value' => $search )
-			)
-		);
+				'attributes' => [ 'name' => 'property', 'value' => $search ]
+			]
+		];
 
 		$this->assertInternalType( 'string', $result );
 
@@ -125,14 +111,30 @@ class QueryPageTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function linkParametersDataProvider() {
-		$random = $this->newRandomString();
+		$param = __METHOD__;
 
-		return array(
-			array( ''      , array() ),
-			array( null    , array() ),
-			array( $random , array( 'property' => $random ) ),
-			array( "[{$random}]" , array( 'property' => "[{$random}]" ) ),
-			array( "[&{$random}...]" , array( 'property' => "[&{$random}...]" ) )
-		);
+		return [
+			[ ''      , [] ],
+			[ null    , [] ],
+			[ $param , [ 'property' => $param ] ],
+			[ "[{$param}]" , [ 'property' => "[{$param}]" ] ],
+			[ "[&{$param}...]" , [ 'property' => "[&{$param}...]" ] ]
+		];
 	}
+
+	private function newContext( $request = [] ) {
+
+		$context = new \RequestContext();
+
+		if ( $request instanceof \WebRequest ) {
+			$context->setRequest( $request );
+		} else {
+			$context->setRequest( new \FauxRequest( $request, true ) );
+		}
+
+		$context->setUser( new MockSuperUser() );
+
+		return $context;
+	}
+
 }

@@ -5,6 +5,8 @@ namespace SMW\DataValues;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Message;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\PropertySpecificationLookup;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
@@ -23,9 +25,14 @@ class InfoLinksProvider {
 	private $dataValue;
 
 	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
+
+	/**
 	 * @var Infolink[]
 	 */
-	protected $infoLinks = array();
+	protected $infoLinks = [];
 
 	/**
 	 * Used to control the addition of the standard search link.
@@ -45,28 +52,41 @@ class InfoLinksProvider {
 	private $enabledServiceLinks = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $compactLink = false;
+
+	/**
 	 * @var boolean|array
 	 */
 	private $serviceLinkParameters = false;
 
 	/**
+	 * @var []
+	 */
+	private $browseLinks = [ '__sob' ];
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param DataValue $dataValue
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( DataValue $dataValue ) {
+	public function __construct( DataValue $dataValue, PropertySpecificationLookup $propertySpecificationLookup ) {
 		$this->dataValue = $dataValue;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 
 	/**
 	 * @since 2.4
 	 */
 	public function init() {
-		$this->infoLinks = array();
+		$this->infoLinks = [];
 		$this->hasSearchLink = false;
 		$this->hasServiceLinks = false;
 		$this->enabledServiceLinks = true;
 		$this->serviceLinkParameters = false;
+		$this->compactLink = false;
 	}
 
 	/**
@@ -74,6 +94,15 @@ class InfoLinksProvider {
 	 */
 	public function disableServiceLinks() {
 		$this->enabledServiceLinks = false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $compactLink
+	 */
+	public function setCompactLink( $compactLink ) {
+		$this->compactLink = (bool)$compactLink;
 	}
 
 	/**
@@ -106,28 +135,36 @@ class InfoLinksProvider {
 	 */
 	public function createInfoLinks() {
 
-		if ( $this->infoLinks !== array() ) {
+		if ( $this->infoLinks !== [] ) {
 			return $this->infoLinks;
 		}
 
-		if ( !$this->dataValue->isValid() || $this->dataValue->getProperty() === null ) {
-			return array();
+		if ( !$this->dataValue->isValid() ) {
+			return [];
 		}
 
+		// Avoid any localization when generating the value
+		$this->dataValue->setOutputFormat( '' );
+
 		$value = $this->dataValue->getWikiValue();
+		$property = $this->dataValue->getProperty();
 
 		// InTextAnnotationParser will detect :: therefore avoid link
 		// breakage by encoding the string
-		if ( strpos( $value, '::' ) !== false && !$this->hasInternalAnnotationMarker( $value ) ) {
+		if ( strpos( $value, '::' ) !== false && !InTextAnnotationParser::hasMarker( $value ) ) {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-		$this->hasSearchLink = true;
-		$this->infoLinks[] = Infolink::newPropertySearchLink(
-			'+',
-			$this->dataValue->getProperty()->getLabel(),
-			$value
-		);
+		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
+			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
+			$infoLink->setCompactLink( $this->compactLink );
+		} elseif ( $property !== null ) {
+			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
+			$infoLink->setCompactLink( $this->compactLink );
+		}
+
+		$this->infoLinks[] = $infoLink;
+		$this->hasSearchLink = $this->infoLinks !== [];
 
 		 // add further service links
 		if ( !$this->hasServiceLinks && $this->enabledServiceLinks ) {
@@ -150,7 +187,7 @@ class InfoLinksProvider {
 
 		$result = '';
 		$first = true;
-		$extralinks = array();
+		$extralinks = [];
 
 		foreach ( $this->dataValue->getInfolinks() as $link ) {
 
@@ -170,12 +207,12 @@ class InfoLinksProvider {
 			}
 		}
 
-		if ( $extralinks !== array() ) {
+		if ( $extralinks !== [] ) {
 			$result .= smwfEncodeMessages( $extralinks, 'service', '', false );
 		}
 
 		// #1453 SMW::on/off will break any potential link therefore just don't even try
-		return !$this->hasInternalAnnotationMarker( $result ) ? $result : '';
+		return !InTextAnnotationParser::hasMarker( $result ) ? $result : '';
 	}
 
 	/**
@@ -192,12 +229,15 @@ class InfoLinksProvider {
 			return;
 		}
 
+		$dataItem = null;
+
 		if ( $this->dataValue->getProperty() !== null ) {
-			$propertyDiWikiPage = $this->dataValue->getProperty()->getDiWikiPage();
+			$dataItem = $this->dataValue->getProperty()->getDiWikiPage();
 		}
 
-		if ( $propertyDiWikiPage === null ) {
-			return; // no property known, or not associated with a page
+		// No property known, or not associated with a page!
+		if ( $dataItem === null ) {
+			return;
 		}
 
 		$args = $this->serviceLinkParameters;
@@ -206,36 +246,39 @@ class InfoLinksProvider {
 			return; // no services supported
 		}
 
-		array_unshift( $args, '' ); // add a 0 element as placeholder
+		// add a 0 element as placeholder
+		array_unshift( $args, '' );
 
-		$servicelinks = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher()->getPropertyValues(
-			$propertyDiWikiPage,
+		$servicelinks = $this->propertySpecificationLookup->getSpecification(
+			$dataItem,
 			new DIProperty( '_SERV' )
 		);
 
-		foreach ( $servicelinks as $dataItem ) {
-			if ( !( $dataItem instanceof DIBlob ) ) {
-				continue;
-			}
-
-			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() ); // messages distinguish ' ' from '_'
-			$text = Message::get( $args, Message::TEXT, Message::CONTENT_LANGUAGE );
-			$links = preg_split( "/[\n][\s]?/u", $text );
-
-			foreach ( $links as $link ) {
-				$linkdat = explode( '|', $link, 2 );
-
-				if ( count( $linkdat ) == 2 ) {
-					$this->addInfolink( Infolink::newExternalLink( $linkdat[0], trim( $linkdat[1] ) ) );
-				}
-			}
+		foreach ( $servicelinks as $servicelink ) {
+			$this->makeLink( $servicelink, $args );
 		}
 
 		$this->hasServiceLinks = true;
 	}
 
-	private function hasInternalAnnotationMarker( $value ) {
-		return strpos( $value, 'SMW::off' ) !== false || strpos( $value, 'SMW::on' ) !== false;
+	private function makeLink( $dataItem, $args ) {
+
+		if ( !( $dataItem instanceof DIBlob ) ) {
+			return;
+		}
+
+		 // messages distinguish ' ' from '_'
+		$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() );
+		$text = Message::get( $args, Message::TEXT, Message::CONTENT_LANGUAGE );
+		$links = preg_split( "/[\n][\s]?/u", $text );
+
+		foreach ( $links as $link ) {
+			$linkdat = explode( '|', $link, 2 );
+
+			if ( count( $linkdat ) == 2 ) {
+				$this->addInfolink( Infolink::newExternalLink( $linkdat[0], trim( $linkdat[1] ) ) );
+			}
+		}
 	}
 
 }

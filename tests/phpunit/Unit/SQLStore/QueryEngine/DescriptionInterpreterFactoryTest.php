@@ -32,7 +32,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DescriptionInterpreterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Interpreter\DispatchingDescriptionInterpreter',
+			'\SMW\SQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter',
 			$instance->newDispatchingDescriptionInterpreter( $querySegmentListBuilder )
 		);
 	}

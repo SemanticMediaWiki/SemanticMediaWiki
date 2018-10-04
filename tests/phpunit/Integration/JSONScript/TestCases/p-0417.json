@@ -1,0 +1,88 @@
+{
+	"description": "Test in-text annotation for `Allows pattern` to match regular expressions (en)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw allows pattern",
+			"contents": "...\n Whitelist|^(FooOnWhitelist|Bar|Foo bar)$\n IPv4|^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$\n"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has whitelist",
+			"contents": "[[Has type::Text]] [[Allows pattern::Whitelist]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "IPv4",
+			"contents": "[[Has type::Text]] [[Allows pattern::IPv4]]"
+		},
+		{
+			"page": "Example/P0417/1",
+			"contents": "[[Has whitelist::FooOnWhitelist]] [[Has whitelist::Foobar]]"
+		},
+		{
+			"page": "Example/P0417/2",
+			"contents": "[[IPv4::192.168.0.100]] [[IPv4::192.168.0.256]]"
+		},
+		{
+			"page": "Example/P0417/1a",
+			"contents": "{{#ask: [[Example/P0417/1]] |?Has whitelist |format=table }}"
+		},
+		{
+			"page": "Example/P0417/2a",
+			"contents": "{{#ask: [[Example/P0417/2]] |?IPv4 |format=table }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0, value Foobar is not allowed",
+			"subject": "Example/P0417/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_whitelist",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"FooOnWhitelist"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0417/1a",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0417/1\">Example/P0417/1</a></td><td class=\"Has-whitelist smwtype_txt\">FooOnWhitelist</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0417/2a",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0417/2\">Example/P0417/2</a></td><td class=\"IPv4 smwtype_txt\">192.168.0.100</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"skip-on": [],
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

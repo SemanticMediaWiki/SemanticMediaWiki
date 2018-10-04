@@ -23,6 +23,8 @@ class Ask extends Query {
 	 */
 	public function execute() {
 
+		$params = $this->extractRequestParams();
+
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
@@ -38,6 +40,10 @@ class Ask extends Query {
 			$outputFormat = 'xml';
 		}
 
+		if ( isset( $params['api_version'] ) ) {
+			$queryResult->setSerializerVersion( $params['api_version'] );
+		}
+
 		$this->addQueryResult( $queryResult, $outputFormat );
 	}
 
@@ -48,12 +54,17 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'query' => array(
+		return [
+			'query' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_REQUIRED => true,
-			),
-		);
+			],
+			'api_version' => [
+				ApiBase::PARAM_TYPE => [ 2, 3 ],
+				ApiBase::PARAM_DFLT => 2,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+			],
+		];
 	}
 
 	/**
@@ -63,9 +74,9 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'query' => 'The query string in ask-language'
-		);
+		];
 	}
 
 	/**
@@ -75,9 +86,9 @@ class Ask extends Query {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to query SMW by providing a query in the ask language.'
-		);
+		];
 	}
 
 	/**
@@ -87,10 +98,10 @@ class Ask extends Query {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
-		);
+		];
 	}
 
 	/**

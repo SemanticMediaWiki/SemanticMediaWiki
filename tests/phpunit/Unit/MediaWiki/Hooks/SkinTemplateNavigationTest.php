@@ -21,7 +21,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$links = array();
+		$links = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\SkinTemplateNavigation',
@@ -46,11 +46,19 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 		$user->expects( $this->atLeastOnce() )
 			->method( 'isAllowed' )
 			->will( $this->returnValue( true ) );
+		
+		$output = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$skinTemplate->expects( $this->atLeastOnce() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $output ) );
+			
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
@@ -63,7 +71,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$links = array();
+		$links = [];
 
 		$instance = new SkinTemplateNavigation( $skinTemplate, $links );
 		$instance->process();

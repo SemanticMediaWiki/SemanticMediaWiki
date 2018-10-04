@@ -1,0 +1,189 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "خاصية",
+            "SMW_NS_PROPERTY_TALK": "نقاش_الخاصية",
+            "SMW_NS_CONCEPT": "مبدأ",
+            "SMW_NS_CONCEPT_TALK": "نقاش_المبدأ"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "الصفحة",
+            "_txt": "نص",
+            "_cod": "كود",
+            "_boo": "منطقى",
+            "_num": "عدد",
+            "_geo": "الإحداثيات الجغرافية",
+            "_tem": "الحرارة",
+            "_dat": "التاريخ",
+            "_ema": "البريد الإلكترونى",
+            "_uri": "مسار",
+            "_anu": "التعليق علي معرف الموارد الموحد",
+            "_tel": "Telephone number",
+            "_rec": "Record",
+            "_qty": "Quantity",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Float": "_num",
+            "Integer": "_num",
+            "سلسلة": "_txt",
+            "Enumeration": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "لديه نوع",
+            "_URI": "معرف الموارد الموحد معادلة",
+            "_SUBP": "الخاصية الفرعية ل",
+            "_SUBC": "Subcategory of",
+            "_UNIT": "عرض الوحدات",
+            "_IMPO": "المستوردة من",
+            "_CONV": "يقابل",
+            "_SERV": "يوفر الخدمة",
+            "_PVAL": "يسمح بالقيمة",
+            "_MDAT": "Modification date",
+            "_CDAT": "Creation date",
+            "_NEWP": "Is a new page",
+            "_LEDT": "Last editor is",
+            "_ERRP": "Has improper value for",
+            "_LIST": "Has fields",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "Query string",
+            "_ASKFO": "Query format",
+            "_ASKSI": "Query size",
+            "_ASKDE": "Query depth",
+            "_ASKDU": "Query duration",
+            "_MEDIA": "Media type",
+            "_MIME": "MIME type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "عرض الوحدة": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "يناير",
+                "يناير"
+            ],
+            [
+                "فبراير",
+                "فبراير"
+            ],
+            [
+                "مارس",
+                "مارس"
+            ],
+            [
+                "أبريل",
+                "أبريل"
+            ],
+            [
+                "مايو",
+                "مايو"
+            ],
+            [
+                "يونيو",
+                "يونيو"
+            ],
+            [
+                "يوليو",
+                "يوليو"
+            ],
+            [
+                "أغسطس",
+                "أغسطس"
+            ],
+            [
+                "سبتمبر",
+                "سبتمبر"
+            ],
+            [
+                "أكتوبر",
+                "أكتوبر"
+            ],
+            [
+                "نوفمبر",
+                "نوفمبر"
+            ],
+            [
+                "ديسمبر",
+                "ديسمبر"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

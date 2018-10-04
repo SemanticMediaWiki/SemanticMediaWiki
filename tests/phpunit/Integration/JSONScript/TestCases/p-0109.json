@@ -1,0 +1,54 @@
+{
+	"description": "Test `#info`, `#ask`/`#show` with error output (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "Test/P0109/1",
+			"contents": "Info: {{#info: message=Test some error {{#show: [[Test/P0109/2]] |?Has text }} }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (1.31-) switch #info to error display",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Test/P0109/1",
+			"assert-output": {
+				"to-contain": [
+					"Info: Test some error <span class=\"smw-highlighter\" data-type=\"4\""
+				],
+				"not-contain": [
+					"Info: <span class=\"smw-highlighter\" data-type=\"5\"",
+					"<div class=\"smwttcontent\">Test some error <span class=\"smw-highlighter\" data-type=\"4\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0 (1.31+) switch #info to error display",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Test/P0109/1",
+			"assert-output": {
+				"to-contain": [
+					"Info: Test some error </p><span class=\"smw-highlighter\" data-type=\"4\""
+				],
+				"not-contain": [
+					"Info: <span class=\"smw-highlighter\" data-type=\"5\"",
+					"<div class=\"smwttcontent\">Test some error <span class=\"smw-highlighter\" data-type=\"4\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

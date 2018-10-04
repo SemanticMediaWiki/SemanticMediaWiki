@@ -1,7 +1,7 @@
 {
 	"name": "mediawiki/semantic-media-wiki",
 	"type": "mediawiki-extension",
-	"description": "MediaWiki extension that lets you store and query structured data within wiki pages",
+	"description": "An extension to MediaWiki that lets you store and query structured data within wiki pages",
 	"keywords": [
 		"SMW",
 		"Semantic MediaWiki",
@@ -9,17 +9,17 @@
 		"MediaWiki"
 	],
 	"homepage": "https://www.semantic-mediawiki.org/wiki/",
-	"license": "GPL-2.0+",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "Markus Krötzsch",
-			"homepage": "http://korrekt.org",
+			"homepage": "http://korrekt.org/",
 			"role": "Original author"
 		},
 		{
 			"name": "Jeroen De Dauw",
 			"email": "jeroendedauw@gmail.com",
-			"homepage": "http://jeroendedauw.com",
+			"homepage": "https://www.entropywins.wtf/",
 			"role": "Core developer"
 		},
 		{
@@ -31,15 +31,15 @@
 	"support": {
 		"email": "semediawiki-user@lists.sourceforge.net",
 		"issues": "https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues",
-		"irc": "irc://irc.freenode.net/semantic-mediawiki",
 		"forum": "https://www.semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
 		"wiki": "https://www.semantic-mediawiki.org/wiki/",
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=5.3.0",
+		"php": ">=5.6.0",
 		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
+		"psr/log": "~1.0",
 		"mediawiki/parser-hooks": "~1.4",
 		"param-processor/param-processor": "~1.2",
 		"serialization/serialization": "~3.2",
@@ -48,8 +48,11 @@
 		"onoi/event-dispatcher": "~1.0",
 		"onoi/blob-store": "~1.2",
 		"onoi/http-request": "~1.1",
-		"onoi/callback-container": "~1.0",
-		"onoi/tesa": "~0.1"
+		"onoi/callback-container": "~2.0",
+		"onoi/tesa": "~0.1",
+		"onoi/shared-resources": "~0.3",
+		"symfony/css-selector": "^3.3",
+		"elasticsearch/elasticsearch": "^5.3|^6.0"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~2.1",
@@ -59,12 +62,11 @@
 		"mediawiki/semantic-mediawiki": "*"
 	},
 	"suggest": {
-		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries",
-		"mediawiki/semantic-forms": "Easy creation of forms to add semantic data"
+		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.5.x-dev"
+			"dev-master": "3.0.x-dev"
 		}
 	},
 	"autoload": {
@@ -73,26 +75,26 @@
 			"SMW\\Maintenance\\": "maintenance/"
 		},
 		"files" : [
-			"src/Aliases.php",
-			"src/Defines.php",
-			"src/GlobalFunctions.php",
-			"DefaultSettings.php",
 			"SemanticMediaWiki.php"
 		],
-		"classmap": [
-			"includes/",
-			"languages/SMW_Language.php"
+		"classmap" : [
+			"includes/"
 		]
 	},
 	"config": {
 		"process-timeout": 0
 	},
 	"scripts": {
+		"test": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpdbg": "phpdbg -qrr ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
 			"composer dump-autoload",
-			"php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist --testsuite=semantic-mediawiki-unit"
+			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
 		],
+		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
+		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
+		"quick-benchmark": "php ../../tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
 		"cs-standalone": [
 			"composer validate --no-interaction",
 			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"

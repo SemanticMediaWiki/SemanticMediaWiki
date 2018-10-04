@@ -1,0 +1,114 @@
+{
+	"description": "Test in-text annotation with `_PPLB` [preferred property label] (#1879, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P106",
+			"contents": {
+				"import-from": "/../Fixtures/P106.txt"
+			}
+		},
+		{
+			"page": "Example/P0436/1",
+			"contents": "{{#subobject: |P106=Teacher }}{{#subobject: |P106=Actor }}"
+		},
+		{
+			"page": "Example/P0436/Q.1",
+			"contents": "{{#ask: [[P106::+]] |?P106 }}"
+		},
+		{
+			"page": "Example/P0436/Q.2",
+			"contents": "{{#ask: [[P106::+]] |?P106 |headers=plain }}"
+		},
+		{
+			"page": "Example/P0436/Q.3",
+			"contents": "{{#ask: [[P106::+]] |?P106=with a different Label |headers=plain }}"
+		},
+		{
+			"page": "Example/P0436/Q.4",
+			"contents": "{{#ask: [[P106::+]] |?P106=with a different Label }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "P106",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 6,
+					"propertyKeys": [
+						"_PPLB",
+						"_PDESC",
+						"_TYPE",
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0 (en)",
+			"subject": "Example/P0436/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"data-title=\"Property\" title=\"occupation of a person; see also field of work (Property:P101)\">",
+					"title=\"Property:P106\">occupation</a>",
+					"<span class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (en, headers=plain)",
+			"subject": "Example/P0436/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"occupation\">occupation</th>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (en, headers=plain, different label)",
+			"subject": "Example/P0436/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"with-a-different-Label\">with a different Label</th>"
+				],
+				"not-contain": [
+					"<th class=\"occupation\">occupation</th>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (en, different label, doesn't contain a prefLabel marker)",
+			"subject": "Example/P0436/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"with-a-different-Label\">",
+					"title=\"Property:P106\">with a different Label</a>",
+					"<span class=\"smwttcontent\">occupation of a person; see also field of work (Property:P101)</span></span>"
+				],
+				"not-contain": [
+					"<th class=\"occupation\">occupation</th>",
+					"&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

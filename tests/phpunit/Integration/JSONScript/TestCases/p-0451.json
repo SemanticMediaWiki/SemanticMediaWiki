@@ -1,0 +1,105 @@
+{
+	"description": "Test in-text `_dat` datatype, time zone, and JD output (#2454, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0451/1",
+			"contents": "{{#set:Has date=April 25, 2017 20:00-4:00}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/2",
+			"contents": "{{#set:Has date=April 25, 2017 20:00 EDT}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/3",
+			"contents": "{{#set:Has date=April 25, 2017 20:00-5:00}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/4",
+			"contents": "{{#set:Has date=April 25, 2017 21:00 EDT}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/5",
+			"contents": "{{#set:Has date=April 25, 2017 20:00-3:00}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/6",
+			"contents": "{{#set:Has date=April 25, 2017 19:00 EDT}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/7",
+			"contents": "{{#set:Has date=April 25, 2017 17:00-7:00}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/8",
+			"contents": "{{#set:Has date=April 25, 2017 14:00-10:00}} [[Category:P0451]]"
+		},
+		{
+			"page": "Example/P0451/Q.1",
+			"contents": "{{#ask: [[Category:P0451]] |?Has date  |?Has date#LOCL#TZ |?Has date#JD=JD |format=list }}"
+		},
+		{
+			"page": "Example/P0451/9",
+			"contents": "[[Has date::2458119.500000]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 standard, TZ, and JD output",
+			"subject": "Example/P0451/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"Example/P0451/1.*26 April 2017 00:00:00.*00:00:00 UTC, 26 April 2017.*2457869.5",
+					"Example/P0451/2.*26 April 2017 00:00:00.*20:00:00 EDT, 25 April 2017.*2457869.5",
+					"Example/P0451/3.*26 April 2017 01:00:00.*01:00:00 UTC, 26 April 2017.*2457869.5416667",
+					"Example/P0451/4.*26 April 2017 01:00:00.*21:00:00 EDT, 25 April 2017.*2457869.5416667",
+					"Example/P0451/5.*25 April 2017 23:00:00.*23:00:00 UTC, 25 April 2017.*2457869.4583333",
+					"Example/P0451/6.*25 April 2017 23:00:00.*19:00:00 EDT, 25 April 2017.*2457869.4583333",
+					"Example/P0451/7.*26 April 2017 00:00:00.*00:00:00 UTC, 26 April 2017.*2457869.5",
+					"Example/P0451/8.*26 April 2017 00:00:00.*00:00:00 UTC, 26 April 2017.*2457869.5"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (recognized as JD not as timestamp)",
+			"subject": "Example/P0451/9",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has date"
+					],
+					"propertyValues": [
+						"2018-01-01T00:00:00"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"2458119.500000"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder
@@ -14,6 +15,8 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
  * @author mwjames
  */
 class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $connection;
 	private $temporaryTableBuilder;
@@ -53,7 +56,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setPropertyHierarchyTableDefinition( 'bar', 3 );
 
 		$this->assertEquals(
-			array( '_bar', 3 ),
+			[ '_bar', 3 ],
 			$instance->getHierarchyTableDefinitionForType( 'property' )
 		);
 	}
@@ -88,9 +91,9 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setClassHierarchyTableDefinition( 'bar', 3 );
 		$instance->createHierarchyTempTableFor( 'class', 'foobar', '(42)' );
 
-		$expected = array(
+		$expected = [
 			'(42)' => 'foobar'
-		);
+		];
 
 		$this->assertEquals(
 			$expected,

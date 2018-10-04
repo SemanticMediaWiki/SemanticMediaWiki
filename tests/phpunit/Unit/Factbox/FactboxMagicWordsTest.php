@@ -7,7 +7,7 @@ use ReflectionClass;
 use SMW\ApplicationFactory;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
-use SMW\Settings;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -21,23 +21,22 @@ use Title;
  */
 class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -49,15 +48,12 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		$title  = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
-		$settings = Settings::newFromArray( array(
-			'smwgNamespacesWithSemanticLinks' => array( $title->getNamespace() => true ),
-			'smwgEnabledInTextAnnotationParserStrictMode' => true,
-			'smwgLinksInValues' => false,
-			'smwgInlineErrors'  => true,
-			)
+		$this->testEnvironment->withConfiguration(
+			[
+				'smwgNamespacesWithSemanticLinks' => [ $title->getNamespace() => true ],
+				'smwgParserFeatures' => SMW_PARSER_STRICT | SMW_PARSER_INL_ERROR
+			]
 		);
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserData = new ParserData( $title, $parserOutput );
 
@@ -78,13 +74,11 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
-		$settings = Settings::newFromArray( array(
+		$this->testEnvironment->withConfiguration( [
 			'smwgShowFactboxEdit' => SMW_FACTBOX_HIDDEN,
 			'smwgShowFactbox'     => SMW_FACTBOX_HIDDEN
-			)
+			]
 		);
-
-		$this->applicationFactory->registerObject( 'Settings', $settings );
 
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
@@ -112,7 +106,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		if ( isset( $expected['preview'] ) && $expected['preview'] ) {
-			$instance->useInPreview( true );
+			$instance->setPreviewFlag( true );
 		}
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
@@ -131,58 +125,58 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function textDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0 __NOFACTBOX__, this test should not generate a factbox output
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' __NOFACTBOX__ ',
-			array(
-				'magicWords' => array( 'SMW_NOFACTBOX' ),
+			[
+				'magicWords' => [ 'SMW_NOFACTBOX' ],
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		// #1 __SHOWFACTBOX__, this test should generate a factbox output
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut' .
 			' __SHOWFACTBOX__',
-			array(
-				'magicWords' => array( 'SMW_SHOWFACTBOX' ),
+			[
+				'magicWords' => [ 'SMW_SHOWFACTBOX' ],
 				'constants'  => SMW_FACTBOX_NONEMPTY,
 				'textOutput' => 'smwfactboxhead' // lazy check because we use assertContains
-			)
-		);
+			]
+		];
 
 		// #2 empty
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
-			array(
-				'magicWords' => array(),
+			[
+				'magicWords' => null,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		// #3 empty + preview option
-		$provider[] = array(
+		$provider[] = [
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis' .
 			' [[Foo::dictumst cursus]]. Nisl sit condimentum Quisque facilisis' .
 			' Suspendisse [[Bar::tincidunt semper]] facilisi dolor Aenean. Ut',
-			array(
-				'magicWords' => array(),
+			[
+				'magicWords' => null,
 				'preview'    => true,
 				'constants'  => SMW_FACTBOX_HIDDEN,
 				'textOutput' => ''
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

@@ -85,4 +85,26 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructConceptQuerySegmentBuilder() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new QueryEngineFactory( $store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder',
+			$instance->newConceptQuerySegmentBuilder()
+		);
+	}
+
 }

@@ -1,0 +1,47 @@
+{
+	"description": "Test `_INST` query (#1004, en)",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Foo",
+			"contents": ""
+		},
+		{
+			"page": "Page-with-category",
+			"contents": "[[Category:Foo]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 query pages with annotated category",
+			"condition": "[[Category:Foo]]",
+			"printouts": [
+				"_INST"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Page-with-category#0##"
+				],
+				"datavalues": [
+					{
+						"property": "_INST",
+						"value": "Foo"
+					}
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -65,15 +65,35 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSplitList() {
+
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$instance = new ParserCachePurgeJob(
+			$subject->getTitle()
+		);
+
+		$list = [
+			DIWikiPage::newFromText( 'Foo' ),
+			DIWikiPage::newFromText( 'Bar' ),
+			new DIWikiPage( 'Foobar', 0 , '', '_QUERY123' )
+		];
+
+		$this->assertEquals(
+			[ [ 'Foo#0##', 'Bar#0##', 'Foobar#0##' ], [ '_QUERY123' ] ],
+			$instance->splitList( $list )
+		);
+	}
+
 	public function parametersProvider() {
 
-		$provider[] = array(
-			'idlist' => array( 1, 2 )
-		);
+		$provider[] = [
+			'idlist' => [ 1, 2 ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'idlist' => '1|2'
-		);
+		];
 
 		return $provider;
 	}

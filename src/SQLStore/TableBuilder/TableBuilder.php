@@ -2,21 +2,19 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use Onoi\MessageReporter\MessageReporter;
-use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use DatabaseBase;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
+use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 
 /**
  * @license GNU GPL v2+
  * @since 2.5
  *
- * @author Markus Krötzsch
- * @author Marcel Gsteiger
- * @author Jeroen De Dauw
  * @author mwjames
  */
-abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
+abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
 	 * @var DatabaseBase
@@ -27,6 +25,16 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
+
+	/**
+	 * @var array
+	 */
+	protected $config = [];
+
+	/**
+	 * @var array
+	 */
+	protected $activityLog = [];
 
 	/**
 	 * @since 2.5
@@ -62,10 +70,23 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 		}
 
 		if ( $instance === null ) {
-			throw new RuntimeException( "Unknown DB type " . $connection->getType() );
+			throw new RuntimeException( "Unknown or unsupported DB type " . $connection->getType() );
 		}
 
+		$instance->addConfig( 'wgDBname', $GLOBALS['wgDBname'] );
+		$instance->addConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
+
 		return $instance;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string|integer $key
+	 * @param mixed
+	 */
+	public function addConfig( $key, $value ) {
+		$this->config[$key] = $value;
 	}
 
 	/**
@@ -100,7 +121,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $fieldType ) {
 		return false;
 	}
 
@@ -109,29 +130,30 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function createTable( $tableName, array $tableOptions = null ) {
+	public function create( Table $table ) {
+
+		$attributes = $table->getAttributes();
+		$tableName = $table->getName();
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
-			$this->doCreateTable( $tableName, $tableOptions );
+			$this->doCreateTable( $tableName, $attributes );
 		} else {
 			$this->reportMessage( "   Table already exists, checking structure ...\n" );
-			$this->doUpdateTable( $tableName, $tableOptions );
+			$this->doUpdateTable( $tableName, $attributes );
 		}
 
 		$this->reportMessage( "   ... done.\n" );
-	}
 
-	/**
-	 * @since 2.5
-	 *
-	 * {@inheritDoc}
-	 */
-	public function createIndex( $tableName, array $indexOptions = null ) {
+		if ( !isset( $attributes['indices'] ) ) {
+			return $this->reportMessage( "No index structures for table $tableName ...\n" );
+		}
+
 		$this->reportMessage( "Checking index structures for table $tableName ...\n" );
-		$this->doCreateIndicies( $tableName, $indexOptions );
+		$this->doCreateIndices( $tableName, $attributes );
+
 		$this->reportMessage( "   ... done.\n" );
 	}
 
@@ -140,7 +162,9 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dropTable( $tableName ) {
+	public function drop( Table $table ) {
+
+		$tableName = $table->getName();
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
 			return $this->reportMessage( " ... $tableName not found, skipping removal.\n" );
@@ -148,6 +172,33 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 
 		$this->doDropTable( $tableName );
 		$this->reportMessage( " ... dropped table $tableName.\n" );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function optimize( Table $table ) {
+		$this->doOptimize( $table->getName() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $event
+	 */
+	public function checkOn( $event ) {
+		return false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getLog() {
+		return $this->activityLog;
 	}
 
 	/**
@@ -166,11 +217,30 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporter {
 	 * @param string $tableName
 	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndicies( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
 
 	/**
 	 * @param string $tableName
 	 */
 	abstract protected function doDropTable( $tableName );
+
+	/**
+	 * @param string $tableName
+	 */
+	abstract protected function doOptimize( $tableName );
+
+	// #1978
+	// http://php.net/manual/en/function.array-search.php
+	protected function recursive_array_search( $needle, $haystack ) {
+		foreach( $haystack as $key => $value ) {
+			$current_key = $key;
+
+			if ( $needle === $value or ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
+				return $current_key;
+			}
+		}
+
+		return false;
+	}
 
 }

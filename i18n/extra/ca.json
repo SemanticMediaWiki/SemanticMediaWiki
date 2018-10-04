@@ -1,0 +1,200 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Propietat",
+            "SMW_NS_PROPERTY_TALK": "Propietat_Discussió",
+            "SMW_NS_CONCEPT": "Concepte",
+            "SMW_NS_CONCEPT_TALK": "Concepte_Discussió"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Pàgina",
+            "_txt": "Text",
+            "_cod": "Codi",
+            "_boo": "Booleà",
+            "_num": "Nombre",
+            "_geo": "Coordenades geogràfiques",
+            "_tem": "Temperatura",
+            "_dat": "Data",
+            "_ema": "Adreça electrònica",
+            "_uri": "URL",
+            "_anu": "URI-Anotació",
+            "_tel": "Número de telèfon",
+            "_rec": "Registre",
+            "_qty": "Quantitat",
+            "_mlt_rec": "Text monolingüe",
+            "_eid": "Identificador extern",
+            "_keyw": "Paraula clau",
+            "_ref_rec": "Referència"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Decimal": "_num",
+            "Enter": "_num",
+            "Cadena": "_txt",
+            "Enumeració": "_txt",
+            "Número de telèfon": "_tel",
+            "Adreça electrònica": "_ema",
+            "Coordenada geogràfica": "_geo",
+            "Polígon geogràfic": "_gpo"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Té tipus",
+            "_URI": "URI equivalent",
+            "_SUBP": "Subpropietat de",
+            "_SUBC": "Subcategoria de",
+            "_UNIT": "Unitats de mesura",
+            "_IMPO": "Importat de",
+            "_CONV": "Correspon a",
+            "_SERV": "Proporciona servei",
+            "_PVAL": "Permet valor",
+            "_MDAT": "Data de modificació",
+            "_CDAT": "Data de creació",
+            "_NEWP": "És pàgina nova",
+            "_LEDT": "Darrer editor és",
+            "_ERRP": "Té valor incorrecte per a",
+            "_LIST": "Té camps",
+            "_SOBJ": "Té subobjecte",
+            "_ASK": "Té consulta",
+            "_ASKST": "Cadena de consulta",
+            "_ASKFO": "Format de consulta",
+            "_ASKSI": "Mida de consulta",
+            "_ASKDE": "Profunditat de consulta",
+            "_ASKDU": "Durada de consulta",
+            "_ASKSC": "Font de consulta",
+            "_ASKPA": "Paràmetres de consulta",
+            "_MEDIA": "Tipus Media",
+            "_MIME": "Tipus MIME",
+            "_ERRC": "Té error de processament",
+            "_ERRT": "Té text d'error de processament",
+            "_PREC": "Precisió a mostrar de",
+            "_LCODE": "Codi d'idioma",
+            "_TEXT": "Text",
+            "_PDESC": "Té descripció de propietat",
+            "_PVAP": "Permet patró",
+            "_PVALI": "Permet llista de valors",
+            "_DTITLE": "Títol a mostrar de",
+            "_PVUC": "Té restricció única",
+            "_PEID": "Identificador extern",
+            "_PEFU": "URI del formatador extern",
+            "_PPLB": "Té etiqueta de propietat preferida",
+            "_EDIP": "Té protecció de modificació",
+            "_CHGPRO": "Propagació de canvi",
+            "_PPGR": "És grup de propietat"
+        },
+        "aliases": {
+            "Unitat de mesura": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "gener",
+                "gen"
+            ],
+            [
+                "febrer",
+                "febr"
+            ],
+            [
+                "març",
+                "març"
+            ],
+            [
+                "abril",
+                "abr"
+            ],
+            [
+                "maig",
+                "maig"
+            ],
+            [
+                "juny",
+                "juny"
+            ],
+            [
+                "juliol",
+                "jul"
+            ],
+            [
+                "agost",
+                "ag"
+            ],
+            [
+                "setembre",
+                "set"
+            ],
+            [
+                "octubre",
+                "oct"
+            ],
+            [
+                "novembre",
+                "nov"
+            ],
+            [
+                "desembre",
+                "des"
+            ]
+        ],
+        "days": [
+            [
+                "dilluns",
+                "dl"
+            ],
+            [
+                "dimarts",
+                "dm"
+            ],
+            [
+                "dimecres",
+                "dc"
+            ],
+            [
+                "dijous",
+                "dj"
+            ],
+            [
+                "divendres",
+                "dv"
+            ],
+            [
+                "dissabte",
+                "ds"
+            ],
+            [
+                "diumenge",
+                "dg"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

@@ -1,0 +1,90 @@
+{
+	"description": "Test `#set_recurring_event` (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0210/1",
+			"contents": "{{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event |unit=year |period=12 |limit=3 }}"
+		},
+		{
+			"page": "Example/P0210/Q1",
+			"contents": "{{#ask: [[Has title::Recurring event]] |?Has date |format=table |link=none }}"
+		},
+		{
+			"page": "Example/P0210/2",
+			"contents": "{{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event 2 |unit=month |period=1 |limit=2 }} {{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event 2, Test|+sep=, |unit=month |period=1 |limit=2 }}"
+		},
+		{
+			"page": "Example/P0210/2",
+			"contents": "{{#set_recurring_event:property=Has date |start=01 Feb 1970 |Has title=Recurring event 2, Test|+sep=, |unit=month |period=1 |limit=2 }}"
+		},
+		{
+			"page": "Example/P0210/Q.2",
+			"contents": "{{#ask: [[Has title::Recurring event 2]] |?Has date |format=table |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0210/Q1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_6c0c58959b4717205b4c1b2c3b0e3e84</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_999d559e938eeaee07f5f52de53638e9</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2445001.5\">1 February 1982</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_f42111f2b6af198c265ef2d8330b6a13</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2449384.5\">1 February 1994</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/1#_bdfba16fe62b82d1eadcb21054d8452b</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2453767.5\">1 February 2006</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (set and replace)",
+			"subject": "Example/P0210/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0210/2#_6af7f30c51558500a93d03f795738a61</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/2#_6c8f1e0c1ab31ea31cfbc3d4fa44a173</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440677.5\">1 April 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/P0210/2#_dc90c230beae622cd7e0d87ea1a93b78</td><td class=\"Has-date smwtype_dat\" data-sort-value=\"2440646.5\">1 March 1970</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0210/2#_6af7f30c51558500a93d03f795738a61",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has title",
+						"Has date",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"1970-02-01",
+						"Recurring event 2 ",
+						"Test"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

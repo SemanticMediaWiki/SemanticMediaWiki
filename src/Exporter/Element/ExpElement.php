@@ -69,15 +69,15 @@ abstract class ExpElement implements Element {
 		$dataItem = null;
 
 		if ( $this->getDataItem() !== null ) {
-			$dataItem = array(
+			$dataItem = [
 				'type' => $this->getDataItem()->getDIType(),
 				'item' => $this->getDataItem()->getSerialization()
-			);
+			];
 		}
 
-		return array(
+		return [
 			'dataitem' => $dataItem
-		);
+		];
 	}
 
 	/**
@@ -117,13 +117,13 @@ abstract class ExpElement implements Element {
 
 		switch ( $serialization['type'] ) {
 			case Element::TYPE_RESOURCE:
-				$elementClass = '\SMW\Exporter\Element\ExpResource';
+				$elementClass = ExpResource::class;
 				break;
 			case Element::TYPE_NSRESOURCE:
-				$elementClass = '\SMW\Exporter\Element\ExpNsResource';
+				$elementClass = ExpNsResource::class;
 				break;
 			case Element::TYPE_LITERAL:
-				$elementClass = '\SMW\Exporter\Element\ExpLiteral';
+				$elementClass = ExpLiteral::class;
 				break;
 			default:
 				throw new RuntimeException( "Unknown type" );

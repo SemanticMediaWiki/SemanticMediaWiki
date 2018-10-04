@@ -38,10 +38,10 @@ class SMWDIBooleanTest extends DataItemTest {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		return array(
-			array( false ),
-			array( true ),
-		);
+		return [
+			[ false ],
+			[ true ],
+		];
 	}
 
 }

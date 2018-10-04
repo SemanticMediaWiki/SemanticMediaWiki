@@ -1,0 +1,249 @@
+{
+	"description": "Test `_wpg`/`_num`/`_txt` using subqueries (#466, #627, #625)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Located in",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Member of",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has arbitrary number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has arbitrary text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has area",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::1000 m²]]"
+		},
+		{
+			"page": "City-A",
+			"contents": "[[Located in::Country-A]] {{#subobject:|Has arbitrary number=42|Has arbitrary text=abc}}"
+		},
+		{
+			"page": "City-B",
+			"contents": "[[Located in::Country-B]] {{#subobject:|Has arbitrary number=1001|Has arbitrary text=def}}"
+		},
+		{
+			"page": "City-C",
+			"contents": "[[Located in::Country-C]] {{#subobject:|Has area=891.85 km ²}}"
+		},
+		{
+			"page": "Country-A",
+			"contents": "[[Member of::EconomicUnion-A]] {{#subobject:|Member of=DefenseUnion-A}}"
+		},
+		{
+			"page": "Country-B",
+			"contents": "{{#subobject:|Member of=EconomicUnion-B}}"
+		},
+		{
+			"page": "EconomicUnion-A",
+			"contents": "[[Is part of::Community-A]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 as property chain notation",
+			"condition": "[[Located in.Member of::EconomicUnion-A]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"City-A#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 same as #0 as subquery notation",
+			"condition": "[[Located in::<q>[[Member of::EconomicUnion-A]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"City-A#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Located in.Member of.Is part of::Community-A]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"City-A#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[Has subobject.Member of::EconomicUnion-B]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Country-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 SubqueryForCombinedSubobjectPropertyChain",
+			"condition": "[[Located in.Has subobject.Member of::EconomicUnion-B]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"City-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 SubqueryForCombinedSubobjectPropertyChainForWilcardSearch",
+			"condition": "[[Located in.Has subobject.Member of::+]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"City-A#0##",
+					"City-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 regex search",
+			"condition": "[[Has subobject.Member of::~*Union*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Country-A#0##",
+					"Country-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 wildcard search",
+			"condition": "[[Has subobject.Member of::+]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Country-A#0##",
+					"Country-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8",
+			"condition": "[[Located in::Country-A||Country-B]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"City-A#0##",
+					"City-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9 conjunctive subobject subquery ",
+			"condition": "[[Has subobject::<q>[[Has arbitrary number::42]][[Has arbitrary text::abc]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"City-A#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10",
+			"condition": "[[Has subobject::<q>[[Has arbitrary number::42||1001]] OR [[Has arbitrary text::abc||def]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"City-A#0##",
+					"City-B#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#11 disjunctive subobject subquery, #625",
+			"condition": "[[Has subobject::<q>[[Has area::891.85 km ²]] OR [[Has arbitrary text::abc||def]]</q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"City-A#0##",
+					"City-B#0##",
+					"City-C#0##"
+				]
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

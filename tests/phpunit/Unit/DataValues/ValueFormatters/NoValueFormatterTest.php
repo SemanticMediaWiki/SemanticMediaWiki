@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NoValueFormatter
@@ -14,6 +15,8 @@ use SMW\DataValues\ValueFormatters\NoValueFormatter;
  * @author mwjames
  */
 class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -40,7 +43,7 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSerialization' ) )
+			->setMethods( [ 'getSerialization' ] )
 			->getMockForAbstractClass();
 
 		$dataItem->expects( $this->once() )
@@ -49,7 +52,7 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getDataItem' ) )
+			->setMethods( [ 'isValid', 'getDataItem' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )

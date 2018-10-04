@@ -1,0 +1,291 @@
+/**
+ * Special rules for Semantic MediaWiki
+ *
+ * @note Default dataTable CSS contains !important attribute for the
+ * button, remove them in order to override with the following rules.
+ */
+
+.smw-datatable {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+.smw-datatable.smw-placeholder {
+	padding:0px;
+}
+
+.smw-datatable table.dataTable {
+	margin-bottom: 10px;
+	width: 100% !important;
+}
+
+.smw-datatable table.dataTable.no-footer {
+	border-bottom: 1px solid #aaaaaa;
+}
+
+.smw-datatable table.dataTable tfoot td {
+	padding: 10px 18px 10px 10px;
+	border-bottom: 1px solid #aaaaaa;
+	border-top: 1px solid #aaaaaa;
+}
+
+.smw-datatable table.dataTable.compact tfoot th,
+.smw-datatable table.dataTable.compact tfoot td {
+	padding: 4px;
+	border-bottom: 1px solid #aaaaaa;
+	border-top: 1px solid #aaaaaa;
+}
+
+.smw-datatable table.dataTable thead th, .smw-datatable table.dataTable thead td,
+.smw-datatable table.data.smw-datatable table.compact thead th,
+.smw-datatable table.data.smw-datatable table.compact thead td,
+.smw-datatable table.data.smw-datatable table.no-footer {
+	border-bottom: 1px solid #aaaaaa;
+}
+
+.smw-datatable table.dataTable thead th,
+.smw-datatable table.dataTable thead td,
+.smw-datatable table.data.smw-datatable table.compact thead th,
+.smw-datatable table.data.smw-datatable table.compact thead td  {
+	border-top: 1px solid #aaaaaa;
+}
+
+.smw-datatable .dataTables_wrapper {
+	position: relative;
+	clear: both;
+	zoom: 1;
+	margin-top: 10px;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_paginate {
+	float: right;
+	padding-top: 0.45em;
+	margin-top: 0;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+	display: inline-block;
+	background: #eee;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	/* font-size: 1rem; */
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	/* font-size: 0.875rem; */
+	border-radius: 0.2rem;
+	color: #292b2c;
+	/* background-color: #e6e6e6; */
+	border-color: #ddd;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button {
+	display: inline-block;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	/* font-size: 1rem; */
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	/* font-size: 0.875rem; */
+	border-radius: 0.2rem;
+	color: #292b2c;
+	/* background-color: #e6e6e6; */
+	border-color: #ddd;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	background-color: #e6e6e6;
+	background: #007bff;
+	color: #aaa;
+	display: inline-block;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	/* font-size: 1rem; */
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	/* font-size: 0.875rem; */
+	border-radius: 0.2rem;
+	color: #fff;
+	border-color: #007bff;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+	cursor: default;
+	color: #666;
+	border: 1px solid transparent;
+	background: transparent;
+	box-shadow: none;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_filter input {
+/*	display: inline-block; */
+	font-weight: normal;
+	line-height: 1.25;
+	/* text-align: center; */
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	/* font-size: 1rem; */
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	/* font-size: 0.875rem; */
+	border-radius: 0.2rem;
+	color: #292b2c;
+	/* background-color: #e6e6e6; */
+	border-color: #ddd;
+	display: inline-block;
+	vertical-align: baseline;
+}
+
+.smw-datatable .dataTables_wrapper select {
+/*	display: inline-block; */
+	font-weight: normal;
+	line-height: 1.25;
+	/* text-align: center; */
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	/* font-size: 1rem; */
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25rem 0.5rem;
+	/* font-size: 0.875rem; */
+	border-radius: 0.2rem;
+	color: #292b2c;
+	/* background-color: #e6e6e6; */
+	border-color: #ddd;
+}
+
+.smw-datatable .dataTables_wrapper select:focus,
+.smw-datatable .dataTables_wrapper select:active,
+.smw-datatable .dataTables_wrapper .dataTables_filter input:focus,
+.smw-datatable .dataTables_wrapper .dataTables_filter input:active {
+	border:1px solid #007bff;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_info {
+	clear: both;
+	float: left;
+	padding-top: 0.45em;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_filter {
+	margin-bottom: 10px;
+}
+
+.smw-datatable-toolbar {
+	display: inline-block;
+	margin-left: 10px;
+	padding: 0px;
+}
+
+.smw-datatable-toolbar .smw-dropdown {
+	top: -1px;
+}
+
+.smw-datatable-toolbar .smw-dropdown button {
+	padding: 4px 25px 5px 15px;
+	border: 1px solid #ddd;
+	border-radius: 0.2rem;
+}
+
+@-moz-document url-prefix() {
+	.smw-datatable-toolbar .smw-dropdown button {
+		padding: 3px 25px 4px 15px;
+	}
+}
+
+.smw-datatable-toolbar .smw-dropdown .smw-dropdown-menu {
+	right: 0px;
+	left: initial;
+}
+
+.smw-datatable-toolbar .smw-dropdown .smw-dropdown-menu li {
+	min-width: 60px;
+	text-align: right;
+}
+
+.smw-datatable-toolbar .smw-dropdown .divider {
+	margin: 4px 0;
+}
+
+.smw-datatable-sep {
+	border-left: 1px solid #ddd;
+	margin-right: 0.4em;
+	padding: 0.2em;
+}
+
+.smw-datatable-text {
+	margin-right: 10px;
+}
+
+.smw-datatable-button {
+	position: relative;
+	padding: 5px 12px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+	font-size: 0.975em;
+	margin-right: 5px;
+}
+
+.smw-datatable-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-datatable-button a {
+	text-decoration: none;
+}

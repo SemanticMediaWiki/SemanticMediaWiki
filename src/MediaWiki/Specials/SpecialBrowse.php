@@ -2,16 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use Html;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\Localizer;
-use SMW\SemanticData;
-use SMW\UrlEncoder;
-use SMW\MediaWiki\Specials\Browse\HtmlContentBuilder;
+use SMW\Encoder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\Message;
+use SMWInfolink as Infolink;
 use SpecialPage;
-use Html;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
@@ -24,21 +23,10 @@ use Html;
 class SpecialBrowse extends SpecialPage {
 
 	/**
-	 * @var DataValue
-	 */
-	private $subjectDV = null;
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory = null;
-
-	/**
 	 * @see SpecialPage::__construct
 	 */
 	public function __construct() {
 		parent::__construct( 'Browse', '', true, false, 'default', true );
-		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
 	/**
@@ -54,167 +42,176 @@ class SpecialBrowse extends SpecialPage {
 		// get the GET parameters
 		$articletext = $webRequest->getVal( 'article' );
 
+		if ( $webRequest->getText( 'cl', '' ) !== '' ) {
+			$query = Infolink::decodeCompactLink( 'cl:'. $webRequest->getText( 'cl' ) );
+		} else {
+			$query = Infolink::decodeCompactLink( $query );
+		}
+
+		$isEmptyRequest = $query === null && ( $webRequest->getVal( 'article' ) === '' || $webRequest->getVal( 'article' ) === null );
+
 		// @see SMWInfolink::encodeParameters
 		if ( $query === null && $this->getRequest()->getCheck( 'x' ) ) {
 			$query = $this->getRequest()->getVal( 'x' );
 		}
 
-		// no GET parameters? Then try the URL
-		if ( $articletext === null ) {
-			$articletext = UrlEncoder::decode( $query );
+		// Auto-generated link is marked with a leading :
+		if ( $query !== '' && $query{0} === ':' ) {
+			$articletext = Encoder::unescape( $query );
+		} elseif ( $articletext === null ) {
+			$articletext = $query;
 		}
 
-		$this->subjectDV = DataValueFactory::getInstance()->newTypeIDValue(
+		// no GET parameters? Then try the URL
+		if ( $articletext === null ) {
+		}
+
+		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			'_wpg',
 			$articletext
 		);
 
 		$out = $this->getOutput();
-		$out->setHTMLTitle( $this->subjectDV->getTitle() );
+		$out->setHTMLTitle( $dataValue->getTitle() );
 
-		$out->addModuleStyles( array(
+		$out->addModuleStyles( [
 			'mediawiki.ui',
 			'mediawiki.ui.button',
-			'mediawiki.ui.input'
-		) );
+			'mediawiki.ui.input',
+			'ext.smw.browse.styles'
+		] );
 
-		$out->addModules( array(
+		$out->addModules( [
 			'ext.smw.browse',
 			'ext.smw.tooltip'
-		) );
+		] );
 
 		$out->addHTML(
-			$this->getHtml( $webRequest )
+			$this->buildHTML( $webRequest, $dataValue, $isEmptyRequest )
 		);
 
-		$this->addExternalHelpLinks();
+		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function getHtml( $webRequest ) {
+	private function buildHTML( $webRequest, $dataValue, $isEmptyRequest ) {
 
-		if ( !$this->subjectDV->isValid() ) {
-			return Html::rawElement(
-					'div',
-					array(
-						'class' => 'smw-callout smw-callout-error'
-					),
-					Message::get( array( 'smw-browse-subject-invalid', $this->subjectDV->getErrors() ) )
-				) . HtmlContentBuilder::getPageSearchQuickForm();
+		if ( $isEmptyRequest && !$this->including() ) {
+			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FieldBuilder::createQueryForm();
 		}
 
-		$htmlContentBuilder = $this->newHtmlContentBuilder( $webRequest );
+		if ( !$dataValue->isValid() ) {
 
-		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlContentBuilder->getOption( 'byApi' ) ) {
-			return $htmlContentBuilder->getHtml();
+			foreach ( $dataValue->getErrors() as $error ) {
+				$error = Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
+			}
+
+			$html = Html::rawElement(
+				'div',
+				[
+					'class' => 'smw-callout smw-callout-error'
+				],
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
+			);
+
+			if ( !$this->including() ) {
+				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article' ) );
+			}
+
+			return $html;
 		}
 
-		$options = array(
-			'dir'         => $htmlContentBuilder->getOption( 'dir' ),
-			'offset'      => $htmlContentBuilder->getOption( 'offset' ),
-			'printable'   => $htmlContentBuilder->getOption( 'printable' ),
-			'showInverse' => $htmlContentBuilder->getOption( 'showInverse' ),
-			'showAll'     => $htmlContentBuilder->getOption( 'showAll' )
+		$applicationFactory = ApplicationFactory::getInstance();
+		$dataItem = $dataValue->getDataItem();
+
+		$htmlBuilder = $this->newHtmlBuilder(
+			$webRequest,
+			$dataItem,
+			$applicationFactory->getStore(),
+			$applicationFactory->getSettings()
 		);
+
+		$options = $htmlBuilder->getOptions();
+
+		if ( $webRequest->getVal( 'format' ) === 'json' ) {
+			$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+			$res = $semanticDataSerializer->serialize(
+				$applicationFactory->getStore()->getSemanticData( $dataItem )
+			);
+
+			$this->getOutput()->disable();
+			header( 'Content-type: ' . 'application/json' . '; charset=UTF-8' );
+			echo json_encode( $res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		}
+
+		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlBuilder->getOption( 'api' ) ) {
+			return $htmlBuilder->legacy();
+		}
 
 		// Ajax/API is doing the data fetch
-		$html = Html::rawElement(
-			'div',
-			array(
-				'class' => 'smwb-container',
-				'data-subject' => $this->subjectDV->getDataItem()->getHash(),
-				'data-options' => json_encode( $options )
-			),
-			Html::rawElement(
-				'div',
-				array(
-					'class' => 'smwb-status'
-				)
-			) . Html::rawElement(
-				'div',
-				array(
-					'class' => 'smwb-content is-disabled'
+		return $htmlBuilder->placeholder();
+	}
+
+	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
+
+		$htmlBuilder = new HtmlBuilder(
+			$store,
+			$dataItem
+		);
+
+		$htmlBuilder->setOptions(
+			[
+				'dir' => $webRequest->getVal( 'dir' ),
+				'group' => $webRequest->getVal( 'group' ),
+				'printable' => $webRequest->getVal( 'printable' ),
+				'offset' => $webRequest->getVal( 'offset' ),
+				'including' => $this->including(),
+				'showInverse' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INVERSE ),
+				'showAll' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_INCOMING ),
+				'showGroup' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_GROUP ),
+				'showSort' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_SHOW_SORTKEY ),
+				'api' => $settings->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_USE_API ),
+
+				// WebRequest::getGPCVal/getVal doesn't understand `.` as in
+				// `valuelistlimit.out`
+
+				'valuelistlimit.out' => $webRequest->getVal(
+					'valuelistlimit-out',
+					$settings->dotGet( 'smwgPagingLimit.browse.valuelist.outgoing' )
 				),
-				Html::rawElement(
-					'span',
-					array(
-						'class' => 'spinner large inline'
-					)
-				) . $htmlContentBuilder->getEmptyHtml()
-			)
+				'valuelistlimit.in' => $webRequest->getVal(
+					'valuelistlimit-in',
+					$settings->dotGet( 'smwgPagingLimit.browse.valuelist.incoming' )
+				),
+			]
 		);
 
-		return $html;
+		return $htmlBuilder;
 	}
 
-	private function newHtmlContentBuilder( $webRequest ) {
-
-		$htmlContentBuilder = new HtmlContentBuilder(
-			$this->applicationFactory->getStore(),
-			$this->subjectDV->getDataItem()
-		);
-
-		$htmlContentBuilder->setOption(
-			'dir',
-			$webRequest->getVal( 'dir' )
-		);
-
-		$htmlContentBuilder->setOption(
-			'printable',
-			$webRequest->getVal( 'printable' )
-		);
-
-		$htmlContentBuilder->setOption(
-			'offset',
-			$webRequest->getVal( 'offset' )
-		);
-
-		$htmlContentBuilder->setOption(
-			'showInverse',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseShowInverse' )
-		);
-
-		$htmlContentBuilder->setOption(
-			'showAll',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseShowAll' )
-		);
-
-		$htmlContentBuilder->setOption(
-			'byApi',
-			$this->applicationFactory->getSettings()->get( 'smwgBrowseByApi' )
-		);
-
-		return $htmlContentBuilder;
-	}
-
-	private function addExternalHelpLinks() {
+	private function addExternalHelpLinks( $dataValue ) {
 
 		if ( $this->getRequest()->getVal( 'printable' ) === 'yes' ) {
 			return null;
 		}
-		
-		// FIXME with SMW 3.0, allow to be used with MW 1.25-
-		if ( !method_exists( $this, 'addHelpLink' ) ) {
-			return null;
-		}
 
-		if ( $this->subjectDV->isValid() ) {
-			$link = SpecialPage::getTitleFor( 'ExportRDF', $this->subjectDV->getTitle()->getPrefixedText() );
+		if ( $dataValue->isValid() ) {
+			$link = SpecialPage::getTitleFor( 'ExportRDF', $dataValue->getTitle()->getPrefixedText() );
 
-			$this->getOutput()->setIndicators( array(
-				Html::rawElement(
+			$this->getOutput()->setIndicators( [
+				'browse' => Html::rawElement(
 					'div',
-					array(
-						'class' => 'mw-indicator smw-page-indicator-rdflink'
-					),
+					[
+						'class' => 'smw-page-indicator-rdflink'
+					],
 					Html::rawElement(
 						'a',
-						array(
+						[
 							'href' => $link->getLocalUrl( 'syntax=rdf' )
-						),
+						],
 						'RDF'
 					)
 				)
-			) );
+			] );
 		}
 
 		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );

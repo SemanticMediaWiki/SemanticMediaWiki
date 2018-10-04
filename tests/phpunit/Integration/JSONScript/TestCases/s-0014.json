@@ -1,0 +1,240 @@
+{
+	"description": "Test `Special:Browse` with special characters `%'\"&` (`wgContLang=en`, `wgLang=es` )",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/S0014/L'oéal",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+		},
+		{
+			"page": "Example/S0014/%Some@%",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+		},
+		{
+			"page": "Example/S0014/ABC(-3-)",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+		},
+		{
+			"page": "Example/S0014/\"Some\"&*^-25-20-2D",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"skip-on": {
+				"mediawiki": [ ">1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/L'oéal",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0014-2FL%27o%C3%A9al",
+					"title=\"Example/S0014/L'oéal\">Example/S0014/L'oéal</a>",
+					"Example-2FS0014-2FL'oéal"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#0 (1.30+)",
+			"skip-on": {
+				"mediawiki": [ "<1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/L'oéal",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0014-2FL%27o%C3%A9al",
+					"title=\"Example/S0014/L&#039;oéal\">Example/S0014/L'oéal</a>",
+					"Example-2FS0014-2FL&#039;oéal"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1",
+			"skip-on": {
+				"mediawiki": [ ">1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article" : "Example/S0014/L'oéal"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0014-2FL%27o%C3%A9al",
+					"title=\"Example/S0014/L'oéal\">Example/S0014/L'oéal</a>",
+					"Example-2FS0014-2FL'oéal"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (1.30+)",
+			"skip-on": {
+				"mediawiki": [ "<1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
+			},
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article" : "Example/S0014/L'oéal"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example-2FS0014-2FL%27o%C3%A9al",
+					"title=\"Example/S0014/L&#039;oéal\">Example/S0014/L'oéal</a>",
+					"Example-2FS0014-2FL&#039;oéal"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/%Some@%",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/S0014/%Some@%\">Example/S0014/%Some@%</a>",
+					"Example-2FS0014-2F-25Some@-25"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#3",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article" : "Example/S0014/%Some@%"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/S0014/%Some@%\">Example/S0014/%Some@%</a>",
+					"Example-2FS0014-2F-25Some@-25"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#4",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/ABC(-3-)",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/S0014/ABC(-3-)\">Example/S0014/ABC(-3-)</a>",
+					"Example-2FS0014-2FABC(-2D3-2D)"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article" : "Example/S0014/ABC(-3-)"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/S0014/ABC(-3-)\">Example/S0014/ABC(-3-)</a>",
+					"Example-2FS0014-2FABC(-2D3-2D)"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#6",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0014/\"Some\"&*^-25-20-2D",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&*^-25-20-2D</a>",
+					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#6",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "",
+				"request-parameters": {
+					"output": "legacy",
+					"article": "Example/S0014/\"Some\"&*^-25-20-2D"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&*^-25-20-2D</a>",
+					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,24 @@
+* Has type: [[Has type::Text]]
+
+== Preferred property labels ==
+* [[Has preferred property label::occupation@en]]
+* [[Has preferred property label::Tätigkeit@de]]
+* [[Has preferred property label::occupation@fr]]
+* [[Has preferred property label::ocupación@es]]
+* [[Has preferred property label::род занятий@ru]]
+* [[Has preferred property label::occupazione@it]]
+* [[Has preferred property label::职业@zh-hans]]
+* [[Has preferred property label::職業@ja]]
+
+<!-- Causes error as it is already defined above -->
+* [[Has preferred property label::職種@ja]]
+
+== Property descriptions ==
+* [[Has property description::occupation of a person; see also field of work (Property:P101)@en]]
+* [[Has property description::Beruf oder andere Tätigkeit einer Person (ergänzt durch Arbeitsgebiet: Property:P101)@de]]
+* [[Has property description::actividad laboral u otra ocupación de la persona; véase también campo de trabajo (propiedad 101)@es]]
+* [[Has property description::qualité d'une personne (métier, hobby...), voir aussi domaine d'activité (Property:P101) et fonction (Property:P39)@fr]]
+* [[Has property description::attività lavorativa svolta, vedi anche campo di lavoro (Property: P101)@it]]
+* [[Has property description::профессия персоны; см. также свойство область деятельности (Property:P101)@ru]]
+* [[Has property description::职业即职场上的专门行业，是对劳动的分类。@zh-hans]]
+* [[Has property description::人物の職業。「専門分野」(Property:P101) も参照@ja]]

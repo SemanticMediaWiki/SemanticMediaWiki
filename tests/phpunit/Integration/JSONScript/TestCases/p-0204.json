@@ -1,0 +1,54 @@
+{
+	"description": "Test #set parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Set-number-with-error",
+			"contents": "{{#set:Has number=12}} {{#set:Has number=32a}} {{#set:Has number=66}} {{#set:Has number=88b}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 with error",
+			"subject": "Set-number-with-error",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_number",
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						12,
+						66
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;a&quot; can not be assigned to a declared number type with value 32.",
+					"&quot;b&quot; can not be assigned to a declared number type with value 88."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

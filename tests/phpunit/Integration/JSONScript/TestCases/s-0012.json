@@ -1,0 +1,66 @@
+{
+	"description": "Test `Special:Ask` output `#ask` image/upload (#2009, `wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has caption",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "S0012.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:S0012]]"
+				}
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (display image in table with 50px|thumb|123)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0012-5D-5D/-3FHas-20file#50px;thumb;123/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-file smwtype_wpg\"><div class=\"thumb tright\"><div class=\"thumbinner\" style=\"width:52px;\">",
+					"S0012.png/50px-S0012.png\" width=\"50\" height=\"50\" class=\"thumbimage\"",
+					"<div class=\"thumbcaption\"><div class=\"magnify\">",
+					"class=\"internal\" title=\"Enlarge\">",
+					"</a></div>123</div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

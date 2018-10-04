@@ -1,0 +1,212 @@
+{
+	"description": "Test in-text annotation via template and manual redirect (#895)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "UseTemplateForAnnotation",
+			"contents": "<includeonly>[[Has page::{{PAGENAME}}]], [[Has page::Abc]], {{#subobject:|Has page=123}}</includeonly>"
+		},
+		{
+			"page": "Page-with-template-for-unknown-redirect-target",
+			"contents": "{{UseTemplateForAnnotation}}"
+		},
+		{
+			"page": "Page-with-template-for-unknown-redirect-target",
+			"contents": "#REDIRECT [[To-be-unknown-template-redirect-target]]"
+		},
+		{
+			"page": "Page-with-template-for-known-redirect-target",
+			"contents": "{{UseTemplateForAnnotation}}"
+		},
+		{
+			"page": "To-be-known-template-redirect-target",
+			"contents": "{{UseTemplateForAnnotation}}"
+		},
+		{
+			"page": "Page-with-template-for-known-redirect-target",
+			"contents": "#REDIRECT [[To-be-known-template-redirect-target]]"
+		},
+		{
+			"page": "Page-with-annotation-for-unknown-redirect-target",
+			"contents": "[[Has page::{{PAGENAME}}]]"
+		},
+		{
+			"page": "Page-with-annotation-for-unknown-redirect-target",
+			"contents": "#REDIRECT [[To-be-unknown-redirect-target]]"
+		},
+		{
+			"page": "Page-with-template-was-redirected-now-restored",
+			"contents": "{{UseTemplateForAnnotation}}"
+		},
+		{
+			"page": "Page-with-template-was-redirected-now-restored",
+			"contents": "#REDIRECT [[To-be-unknown-temporary-redirect-target]]"
+		},
+		{
+			"page": "Page-with-template-was-redirected-now-restored",
+			"contents": "{{UseTemplateForAnnotation}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 verify redirect for unknown target",
+			"subject": "Page-with-template-for-unknown-redirect-target",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 1,
+					"propertyKeys": [
+						"_SKEY"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-template-for-unknown-redirect-target#0##"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 verify unknown target",
+			"subject": "To-be-unknown-template-redirect-target",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 1,
+					"propertyKeys": [
+						"_SKEY"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-template-for-unknown-redirect-target#0##"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 verify redirect for knwown target",
+			"subject": "Page-with-template-for-known-redirect-target",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_SOBJ",
+						"Has_page"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI",
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-for-known-redirect-target#0##",
+							"To-be-known-template-redirect-target#0##"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 verify knwown target",
+			"subject": "To-be-known-template-redirect-target",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_SOBJ",
+						"Has_page"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI",
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-for-known-redirect-target#0##",
+							"To-be-known-template-redirect-target#0##"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 verify redirect for unknown target",
+			"subject": "Page-with-annotation-for-unknown-redirect-target",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 1,
+					"propertyKeys": [
+						"_SKEY"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Page-with-annotation-for-unknown-redirect-target#0##"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 verify that a redirected page can be restored to host annotations",
+			"subject": "Page-with-template-was-redirected-now-restored",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page",
+						"_SOBJ"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"Has_page"
+						],
+						"propertyValues": [
+							"Page-with-template-was-redirected-now-restored#0##"
+						]
+					}
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

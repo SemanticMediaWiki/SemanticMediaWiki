@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Page;
-use SMW\ConceptPage as ConceptPage;
-use SMWPropertyPage as PropertyPage;
+use SMW\Page\PageFactory;
+use SMW\Store;
 use Title;
 
 /**
@@ -18,41 +18,45 @@ use Title;
  *
  * @author mwjames
  */
-class ArticleFromTitle {
+class ArticleFromTitle extends HookHandler {
 
 	/**
-	 * @var Title
+	 * @var Store
 	 */
-	private $title = null;
+	private $store;
 
 	/**
-	 * @var Page
-	 */
-	private $article = null;
-
-	/**
-	 * @since  2.0
+	 * @since 2.0
 	 *
-	 * @param Title &$title
-	 * @param Page|null &$article
+	 * @param Store $store
 	 */
-	public function __construct( Title &$title, Page &$article = null ) {
-		$this->title = &$title;
-		$this->article = &$article;
+	public function __construct( Store $store ) {
+		$this->store = $store;
 	}
 
 	/**
 	 * @since 2.0
 	 *
+	 * @param Title &$title
+	 * @param Page|null &$page
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( Title &$title, Page &$page = null ) {
 
-		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			$this->article = new PropertyPage( $this->title );
-		} elseif ( $this->title->getNamespace() === SMW_NS_CONCEPT ) {
-			$this->article = new ConceptPage( $this->title );
+		$ns = $title->getNamespace();
+
+		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT ) {
+			return true;
 		}
+
+		$pageFactory = new PageFactory(
+			$this->store
+		);
+
+		$page = $pageFactory->newPageFromTitle(
+			$title
+		);
 
 		return true;
 	}

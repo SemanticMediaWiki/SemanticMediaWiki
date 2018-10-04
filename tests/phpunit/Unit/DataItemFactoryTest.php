@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\DataItemFactory;
+use SMWDITime as DITime;
 use SMWDIUri as DIUri;
 
 /**
@@ -54,6 +55,24 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDIWikiPageFromTitle() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\DIWikiPage',
+			$instance->newDIWikiPage( $title )
+		);
+	}
+
 	public function testCanConstructDIContainer() {
 
 		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
@@ -65,6 +84,20 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMWDIContainer',
 			$instance->newDIContainer( $containerSemanticData )
+		);
+	}
+
+	public function testCanConstructContainerSemanticData() {
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\DataModel\ContainerSemanticData',
+			$instance->newContainerSemanticData( $subject )
 		);
 	}
 
@@ -115,6 +148,16 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			DIUri::class,
 			$instance->newDIUri( 'http', 'example.org' )
+		);
+	}
+
+	public function testCanConstructDITime() {
+
+		$instance = new DataItemFactory();
+
+		$this->assertInstanceOf(
+			DITime::class,
+			$instance->newDITime( 1, '1900' )
 		);
 	}
 

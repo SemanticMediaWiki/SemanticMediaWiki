@@ -1,0 +1,122 @@
+{
+	"description": "Test in-text annotation using '_txt'/'_wpg' type / UTF encoding (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0439/1",
+			"contents": "[[Has text::ö/ä/ü]]"
+		},
+		{
+			"page": "Example/P0439/2",
+			"contents": {
+				"import-from": "/../Fixtures/p-0439.de.txt"
+			}
+		},
+		{
+			"page": "Example/P0439/3",
+			"contents": {
+				"import-from": "/../Fixtures/p-0439.fr.txt"
+			}
+		},
+		{
+			"page": "Example/P0439/ö/ä/ü",
+			"contents": "[[Has page::Some ö/ä/ü]]"
+		},
+		{
+			"page": "Example/P0439/Q.1",
+			"contents": "{{#ask: [[Has text::ö/ä/ü]] |?Has text }}"
+		},
+		{
+			"page": "Example/P0439/Q.2",
+			"contents": "{{#ask: [[Example/P0439/2]] |?Has text }}"
+		},
+		{
+			"page": "Example/P0439/Q.3",
+			"contents": "{{#ask: [[Example/P0439/3]] |?Has text }}"
+		},
+		{
+			"page": "Example/P0439/Q.4",
+			"contents": "{{#ask: [[Has page::Some ö/ä/ü]] |?Has page }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0439/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_text",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"ö/ä/ü"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0439/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">ö/ä/ü</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (long text, de)",
+			"subject": "Example/P0439/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"fügte, während ihr Gesicht sich aufklärte"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (long text, fr)",
+			"subject": "Example/P0439/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"nous avons annoncé le chef-d'oeuvre du poëte"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0439/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0439/ö/ä/ü\">Example/P0439/ö/ä/ü</a>",
+					"Some ö/ä/ü"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

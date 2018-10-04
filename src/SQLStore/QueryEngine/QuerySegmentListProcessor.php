@@ -38,7 +38,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var array
 	 */
-	private $executedQueries = array();
+	private $executedQueries = [];
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -51,7 +51,7 @@ class QuerySegmentListProcessor {
 	/**
 	 * @var array
 	 */
-	private $querySegmentList = array();
+	private $querySegmentList = [];
 
 	/**
 	 * @param Database $connection
@@ -69,7 +69,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @return array
 	 */
-	public function getListOfResolvedQueries() {
+	public function getExecutedQueries() {
 		return $this->executedQueries;
 	}
 
@@ -99,43 +99,61 @@ class QuerySegmentListProcessor {
 	 * @param integer $id
 	 * @throws RuntimeException
 	 */
-	public function doExecuteSubqueryJoinDependenciesFor( $id ) {
+	public function process( $id ) {
 
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
-		$this->executedQueries = array();
+		$this->executedQueries = [];
 
 		// Should never happen
 		if ( !isset( $this->querySegmentList[$id] ) ) {
 			throw new RuntimeException( "$id doesn't exist" );
 		}
 
-		$this->doResolveBySegment( $this->querySegmentList[$id] );
+		$this->resolve( $this->querySegmentList[$id] );
 	}
 
-	private function doResolveBySegment( QuerySegment &$query ) {
-
-		$db = $this->connection;
+	private function resolve( QuerySegment &$query ) {
 
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->doResolveBySegment( $subQuery );
+					$this->resolve( $subQuery );
 
 					if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $db->tableName( $subQuery->joinTable ) . " AS $subQuery->alias ON $joinField=" . $subQuery->joinfield;
+						$op = $subQuery->not ? '!' : '';
+
+						$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+						$t = $this->connection->tableName( $subQuery->joinTable ) ." AS $subQuery->alias";
+
+						if ( $subQuery->from ) {
+							$t = "($t $subQuery->from)";
+						}
+
+						$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
+
+						if ( $joinType === 'LEFT' ) {
+							$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->joinfield . ' IS NULL)';
+						}
+
 					} elseif ( $subQuery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
 
-						foreach ( $subQuery->joinfield as $value ) {
-							$condition .= ( $condition ? ' OR ':'' ) . "$joinField=" . $db->addQuotes( $value );
+						if ( $subQuery->null === true ) {
+								$condition .= ( $condition ? ' OR ': '' ) . "$joinField IS NULL";
+						} else {
+							foreach ( $subQuery->joinfield as $value ) {
+								$op = $subQuery->not ? '!' : '';
+								$condition .= ( $condition ? ' OR ': '' ) . "$joinField$op=" . $this->connection->addQuotes( $value );
+							}
 						}
 
 						if ( count( $subQuery->joinfield ) > 1 ) {
 							$condition = "($condition)";
 						}
 
-						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . $condition;
+						$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
+						$query->from .= $subQuery->from;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
 						$query->joinTable = '';
@@ -144,14 +162,16 @@ class QuerySegmentListProcessor {
 						break;
 					}
 
-					if ( $subQuery->where !== '' ) {
-						$query->where .= ( ( $query->where === '' ) ? '':' AND ' ) . '(' . $subQuery->where . ')';
+					if ( $subQuery->where !== '' && $subQuery->where !== null ) {
+						if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
+							$query->from .= ' AND (' . $subQuery->where . ')';
+						} else {
+							$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
+						}
 					}
-
-					$query->from .= $subQuery->from;
 				}
 
-				$query->components = array();
+				$query->components = [];
 			break;
 			case QuerySegment::Q_CONJUNCTION:
 				reset( $query->components );
@@ -170,7 +190,7 @@ class QuerySegmentListProcessor {
 				unset( $query->components[$key] );
 
 				// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-				$this->doResolveBySegment( $result );
+				$this->resolve( $result );
 
 				// ... and append to this query the remaining queries.
 				foreach ( $query->components as $qid => $joinfield ) {
@@ -178,25 +198,25 @@ class QuerySegmentListProcessor {
 				}
 
 				// Second execute, now incorporating remaining conditions.
-				$this->doResolveBySegment( $result );
+				$this->resolve( $result );
 				$query = $result;
 			break;
 			case QuerySegment::Q_DISJUNCTION:
 				if ( $this->queryMode !== Query::MODE_NONE ) {
-					$this->temporaryTableBuilder->createTable( $db->tableName( $query->alias ) );
+					$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
 				}
 
-				$this->executedQueries[$query->alias] = array();
+				$this->executedQueries[$query->alias] = [];
 
 				foreach ( $query->components as $qid => $joinField ) {
 					$subQuery = $this->querySegmentList[$qid];
-					$this->doResolveBySegment( $subQuery );
+					$this->resolve( $subQuery );
 					$sql = '';
 
 					if ( $subQuery->joinTable !== '' ) {
 						$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-						       $db->tableName( $query->alias ) .
-							   " SELECT DISTINCT $subQuery->joinfield FROM " . $db->tableName( $subQuery->joinTable ) .
+						       $this->connection->tableName( $query->alias ) .
+							   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
 							   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
 					} elseif ( $subQuery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
@@ -208,16 +228,16 @@ class QuerySegmentListProcessor {
 						// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
 
 						foreach ( $subQuery->joinfield as $value ) {
-							$values .= ( $values ? ',' : '' ) . '(' . $db->addQuotes( $value ) . ')';
+							$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
 						}
 
-						$sql = 'INSERT ' . 'IGNORE ' .  'INTO ' . $db->tableName( $query->alias ) . " (id) VALUES $values";
+						$sql = 'INSERT ' . 'IGNORE ' .  'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ( $sql ) {
 						$this->executedQueries[$query->alias][] = $sql;
 
 						if ( $this->queryMode !== Query::MODE_NONE ) {
-							$db->query(
+							$this->connection->query(
 								$sql,
 								__METHOD__
 							);
@@ -227,16 +247,16 @@ class QuerySegmentListProcessor {
 
 				$query->type = QuerySegment::Q_TABLE;
 				$query->where = '';
-				$query->components = array();
+				$query->components = [];
 
 				$query->joinTable = $query->alias;
 				$query->joinfield = "$query->alias.id";
-				$query->sortfields = array(); // Make sure we got no sortfields.
+				$query->sortfields = []; // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case QuerySegment::Q_PROP_HIERARCHY:
 			case QuerySegment::Q_CLASS_HIERARCHY: // make a saturated hierarchy
-				$this->resolveHierarchyForSegment( $query );
+				$this->resolveHierarchy( $query );
 			break;
 			case QuerySegment::Q_VALUE:
 			break; // nothing to do
@@ -249,7 +269,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param QuerySegment $query
 	 */
-	private function resolveHierarchyForSegment( QuerySegment &$query ) {
+	private function resolveHierarchy( QuerySegment &$query ) {
 
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
@@ -264,6 +284,11 @@ class QuerySegmentListProcessor {
 			$type
 		);
 
+		// An individual depth was annotated as part of the query
+		if ( $query->depth !== null ) {
+			$depth = $query->depth;
+		}
+
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = QuerySegment::Q_VALUE;
 			return;
@@ -272,32 +297,41 @@ class QuerySegmentListProcessor {
 		$values = '';
 		$valuecond = '';
 
-		$db = $this->connection;
-
 		foreach ( $query->joinfield as $value ) {
-			$values .= ( $values ? ',':'' ) . '(' . $db->addQuotes( $value ) . ')';
-			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $db->addQuotes( $value );
+			$values .= ( $values ? ',':'' ) . '(' . $this->connection->addQuotes( $value ) . ')';
+			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->connection->addQuotes( $value );
 		}
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $db->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
+		$res = $this->connection->select(
+			$smwtable,
+			's_id',
+			$valuecond,
+			__METHOD__,
+			[ 'LIMIT' => 1 ]
+		);
 
-		if ( !$db->fetchObject( $res ) ) { // no subobjects, we are done!
-			$db->freeResult( $res );
+		if ( !$this->connection->fetchObject( $res ) ) { // no subobjects, we are done!
+			$this->connection->freeResult( $res );
 			$query->type = QuerySegment::Q_VALUE;
 			return;
 		}
 
-		$db->freeResult( $res );
-		$tablename = $db->tableName( $query->alias );
-		$this->executedQueries[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
+		$this->connection->freeResult( $res );
+		$tablename = $this->connection->tableName( $query->alias );
+		$this->executedQueries[$query->alias] = [
+			"Recursively computed hierarchy for element(s) $values.",
+			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
+		];
+
 		$query->joinTable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 
 		$this->hierarchyTempTableBuilder->createHierarchyTempTableFor(
 			$type,
 			$tablename,
-			$values
+			$values,
+			$depth
 		);
 	}
 
@@ -308,7 +342,7 @@ class QuerySegmentListProcessor {
 	 */
 	public function cleanUp() {
 		foreach ( $this->executedQueries as $table => $log ) {
-			$this->temporaryTableBuilder->dropTable( $this->connection->tableName( $table ) );
+			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
 		}
 	}
 

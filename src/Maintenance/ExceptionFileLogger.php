@@ -2,7 +2,9 @@
 
 namespace SMW\Maintenance;
 
+use Exception;
 use SMW\Options;
+use SMW\Utils\File;
 
 /**
  * @private
@@ -20,6 +22,11 @@ class ExceptionFileLogger {
 	private $namespace;
 
 	/**
+	 * @var File
+	 */
+	private $file;
+
+	/**
 	 * @var string
 	 */
 	private $exceptionFile;
@@ -27,15 +34,26 @@ class ExceptionFileLogger {
 	/**
 	 * @var integer
 	 */
-	private $exceptionCounter = 0;
+	private $exceptionCount = 0;
+
+	/**
+	 * @var array
+	 */
+	private $exceptionLogMessages = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param string $namespace
+	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw' ) {
+	public function __construct( $namespace = 'smw', File $file = null ) {
 		$this->namespace = $namespace;
+		$this->file = $file;
+
+		if ( $this->file === null ) {
+			$this->file = new File();
+		}
 	}
 
 	/**
@@ -46,12 +64,11 @@ class ExceptionFileLogger {
 	public function setOptions( Options $options ) {
 
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+		$this->exceptionFile = __DIR__ . "../../../";
 
-		$this->exceptionFile = $options->has( 'exception-log' ) ? $options->get( 'exception-log' ) : __DIR__ . "../../../";
-
-		//if ( !is_writable( $this->exceptionFile ) ) {
-		//	die( "`$this->exceptionFile` is not writable.\n" );
-		//}
+		if ( $options->has( 'exception-log' ) ) {
+			$this->exceptionFile = $options->get( 'exception-log' );
+		}
 
 		$this->exceptionFile .= $this->namespace . "-exceptions-" . $dateTimeUtc->format( 'Y-m-d' ) . ".log";
 	}
@@ -70,39 +87,46 @@ class ExceptionFileLogger {
 	 *
 	 * @return integer
 	 */
-	public function getExceptionCounter() {
-		return $this->exceptionCounter;
+	public function getExceptionCount() {
+		return $this->exceptionCount;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $exceptionLogMessages
+	 * @param string $id
+	 * @param Exception $exception
 	 */
-	public function doWriteExceptionLog( array $exceptionLogMessages ) {
-		foreach ( $exceptionLogMessages as $id => $exception ) {
+	public function recordException( $id, Exception $exception ) {
+		$this->exceptionCount++;
 
-			if ( !is_array( $exception ) ) {
-				continue;
-			}
-
-			$this->exceptionCounter++;
-			$this->writeLogFile( $id, $exception );
-		}
+		$this->exceptionLogMessages[$id] = [
+			'msg' => $exception->getMessage(),
+			'trace' => $exception->getTraceAsString()
+		];
 	}
 
-	private function writeLogFile( $id, $exception ) {
+	/**
+	 * @since 3.0
+	 */
+	public function doWrite() {
+
+		foreach ( $this->exceptionLogMessages as $id => $exception ) {
+			$this->put( $id, $exception );
+		}
+
+		$this->exceptionLogMessages = [];
+		$this->exceptionCount = 0;
+	}
+
+	private function put( $id, $exception ) {
 
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .
 			"======== END ======" ."\n";
 
-		file_put_contents(
-			$this->exceptionFile,
-			$text,
-			FILE_APPEND
-		);
+		$this->file->write( $this->exceptionFile, $text, FILE_APPEND );
 	}
 
 }

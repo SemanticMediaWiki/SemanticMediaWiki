@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpNsResource
@@ -17,6 +18,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -128,57 +131,57 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	public function constructorProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'', '', '', null,
-			array(
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => '||',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Foo', '', '', null,
-			array(
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => 'Foo||',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'Bar', '', null,
-			array(
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => 'Foo|Bar|',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'Bar', 'Fum', null,
-			array(
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => 'Foo|Bar|Fum',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Foo', 'Bar', 'Fum', new DIWikiPage( 'Foo', NS_MAIN ),
-			array(
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => 'Foo|Bar|Fum',
-				'dataitem' => array(
+				'dataitem' => [
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
-				)
-			)
-		);
+					'item' => 'Foo#0##'
+				]
+			]
+		];
 
 		return $provider;
 	}
@@ -186,19 +189,19 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	public function invalidConstructorProvider() {
 
 		#0
-		$provider[] = array(
-			array(), '', '', null
-		);
+		$provider[] = [
+			[], '', '', null
+		];
 
 		#1
-		$provider[] = array(
-			'', array(), '', null
-		);
+		$provider[] = [
+			'', [], '', null
+		];
 
 		#2
-		$provider[] = array(
-			'', '', array(), null
-		);
+		$provider[] = [
+			'', '', [], null
+		];
 
 		return $provider;
 	}
@@ -206,49 +209,49 @@ class ExpNsResourceTest extends \PHPUnit_Framework_TestCase {
 	public function serializationMissingElementProvider() {
 
 		#0
-		$provider[] = array(
-			array()
-		);
+		$provider[] = [
+			[]
+		];
 
 		#1
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE
-			)
-		);
+			]
+		];
 
 		#2
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => 'BogusType'
-			)
-		);
+			]
+		];
 
 		#3
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#4
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => '',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#5
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpNsResource::TYPE_NSRESOURCE,
 				'uri'  => '|',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

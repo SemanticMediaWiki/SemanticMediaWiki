@@ -1,0 +1,127 @@
+{
+	"description": "Test range `<>` syntax on `_num` (float,double), `_dat` (millisec) values (`smwStrictComparators=true`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/Q0617/1",
+			"contents": "[[Has number::100.1000008]] [[Category:Q0617]]"
+		},
+		{
+			"page": "Example/Q0617/2",
+			"contents": "[[Has number::100.1000009]] [[Category:Q0617]]"
+		},
+		{
+			"page": "Example/Q0617/3",
+			"contents": "[[Has number::100.1000010]] [[Category:Q0617]]"
+		},
+		{
+			"page": "Example/Q0617/4",
+			"contents": "[[Has date::1 Jan 2200 12:00:00.100]] [[Category:Q0617]]"
+		},
+		{
+			"page": "Example/Q0617/5",
+			"contents": "[[Has date::1 Jan 2200 12:00:00.200]] [[Category:Q0617]]"
+		},
+		{
+			"page": "Example/Q0617/6",
+			"contents": "[[Has date::1 Jan 2200 12:00:00.300]] [[Category:Q0617]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (>100.1000008 AND <100.1000010)",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.+ just can't cope with this query!"
+			},
+			"condition": "[[Has number::>100.1000008]] [[Has number::<100.1000010]] [[Category:Q0617]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0617/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (>=100.1000008 AND <100.1000010)",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.+ just can't cope with this query!"
+			},
+			"condition": "[[Has number::>=100.1000008]] [[Has number::<100.1000010]] [[Category:Q0617]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q0617/1#0##",
+					"Example/Q0617/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (1 Jan 2200 12:00:00.100)",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.+ just can't cope with this query!"
+			},
+			"condition": "[[Has date::1 Jan 2200 12:00:00.100]] [[Category:Q0617]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0617/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (>1 Jan 2200 12:00:00 AND <1 Jan 2200 12:00:00.200)",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.+ just can't cope with this query!"
+			},
+			"condition": "[[Has date::>1 Jan 2200 12:00:00]][[Has date::<1 Jan 2200 12:00:00.200]] [[Category:Q0617]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0617/4#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": true,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,180 @@
+{
+	"description": "Test `_txt/`_uri`/`_num`/`_dat` with `!...` (NEQ)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/Q0909/1",
+			"contents": "[[Has text::Foo/Bar]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/2",
+			"contents": "[[Has text::Foo/Foobar]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/3",
+			"contents": "[[Has url::http://example.org/Foo/Bar]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/4",
+			"contents": "[[Has url::http://example.org/Foo/Foobar]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/5",
+			"contents": "[[Has number::123]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/6",
+			"contents": "[[Has number::456]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/7",
+			"contents": "[[Has date::1 Jan 1970 12:00]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/8",
+			"contents": "[[Has date::1 Jan 1970 12:01]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/9",
+			"contents": "[[Has page::123]] [[Category:Q0909]]"
+		},
+		{
+			"page": "Example/Q0909/10",
+			"contents": "[[Has page::456]] [[Category:Q0909]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Category:Q0909]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 10,
+				"results": [
+					"Example/Q0909/1#0##",
+					"Example/Q0909/2#0##",
+					"Example/Q0909/3#0##",
+					"Example/Q0909/4#0##",
+					"Example/Q0909/5#0##",
+					"Example/Q0909/6#0##",
+					"Example/Q0909/7#0##",
+					"Example/Q0909/8#0##",
+					"Example/Q0909/9#0##",
+					"Example/Q0909/10#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (! on text)",
+			"condition": "[[Category:Q0909]] [[Has text::+]] [[Has text::!Foo/Bar]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0909/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (! on uri)",
+			"condition": "[[Category:Q0909]] [[Has url::+]] [[Has url::!http://example.org/Foo/Bar]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0909/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (! on number)",
+			"condition": "[[Category:Q0909]] [[Has number::+]] [[Has number::!123]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0909/6#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (! on date)",
+			"skip-on": {
+				"virtuoso": "Virtuoso 6.+ doesn't support this!"
+			},
+			"condition": "[[Category:Q0909]] [[Has date::+]] [[Has date::!1 Jan 1970 12:00]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0909/8#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (! on page)",
+			"condition": "[[Category:Q0909]] [[Has page::+]] [[Has page::!123]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0909/10#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

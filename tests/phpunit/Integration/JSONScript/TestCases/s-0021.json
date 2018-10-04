@@ -1,0 +1,81 @@
+{
+	"description": "Test `format=table` on `Special:Ask` with `headers=plain` (#2702, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has extra text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/S0021/1",
+			"contents": "[[Has extra text::S0021]]"
+		},
+		{
+			"page": "Example/S0021/2",
+			"contents": "[[Has extra text::S0021]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 with headers",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"headers": "",
+						"format": "table"
+					},
+					"q": "[[Has extra text::S0021]]",
+					"po": "?Has extra text=Modified <i>label</i> for text"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\"><a href=.* title=\"Property:Has extra text\">Modified <i>label</i> for text</a></th></thead>",
+					"<a href=.* title=\"Example/S0021/1\">Example/S0021/1</a>",
+					"<a href=.* title=\"Example/S0021/2\">Example/S0021/2</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 with headers plain",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"limit": "10",
+						"offset": "0",
+						"headers": "plain",
+						"format": "table"
+					},
+					"q": "[[Has extra text::S0021]]",
+					"po": "?Has extra text=Modified <i>label</i> for text"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\">Modified <i>label</i> for text</th></thead>",
+					"<a href=.* title=\"Example/S0021/1\">Example/S0021/1</a>",
+					"<a href=.* title=\"Example/S0021/2\">Example/S0021/2</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

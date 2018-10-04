@@ -43,15 +43,24 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\Onoi\Cache\Cache',
-			$instance->getPoolCacheFor( 'Foo' )
+			$instance->getPoolCacheById( 'Foo' )
 		);
 
-		$instance->getPoolCacheFor( 'Foo' )->save( 'Bar', 42 );
+		$instance->getPoolCacheById( 'Foo' )->save( 'Bar', 42 );
 
 		$this->assertEquals(
 			42,
-			$instance->getPoolCacheFor( 'Foo' )->fetch( 'Bar' )
+			$instance->getPoolCacheById( 'Foo' )->fetch( 'Bar' )
 		);
+
+		$instance->resetPoolCacheById( 'Foo' );
+	}
+
+	public function testGetStats() {
+
+		$instance = InMemoryPoolCache::getInstance();
+
+		$instance->getPoolCacheById( 'Foo' )->save( 'Bar', 42 );
 
 		$this->assertNotEmpty(
 			$instance->getStats()
@@ -59,14 +68,20 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getFormattedStats()
+			$instance->getStats( InMemoryPoolCache::FORMAT_PLAIN )
 		);
 
-		$instance->resetPoolCacheFor( 'Foo' );
-
-		$this->assertEmpty(
-			$instance->getStats()
+		$this->assertContains(
+			'ul',
+			$instance->getStats( InMemoryPoolCache::FORMAT_HTML )
 		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getStats( InMemoryPoolCache::FORMAT_JSON )
+		);
+
+		$instance->resetPoolCacheById( 'Foo' );
 	}
 
 }

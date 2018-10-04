@@ -1,0 +1,118 @@
+{
+	"description": "Test in-text annotations being disabled for when Factbox contains extra `[[ ... ]]` (#1126)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "SetValue",
+			"contents": "<includeonly>{{{value}}}</includeonly>"
+		},
+		{
+			"page": "Example/P0403/1",
+			"contents": "[[Has url::http://example.org/api.php?action=ask&query=%5B%5BModification%20date::%2B%5D%5D%7C%3FModification%20date%7Csort%3DModification%20date%7Corder%3Ddesc|api.php?action=ask&query=]] __SHOWFACTBOX__"
+		},
+		{
+			"page": "Example/P0403/2",
+			"contents": "{{#set:|Has text=ABC [[Has page::DEF]] 123|template=SetValue}}"
+		},
+		{
+			"page": "Example/P0403/3",
+			"contents": "{{#ask: [[Example/P0403/2]] |?Has text}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 don't expected to see a Modification date annotation due to %5B%5BModification%20date::%2B%5D%5D => [[Modification::+]]",
+			"subject": "Example/P0403/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_url"
+					],
+					"propertyValues": [
+						"Example/P0403/1",
+						"http://example.org/api.php?action=ask&query=%5B%5BModification_date::%2B%5D%5D%7C%3FModification_date%7Csort%3DModification_date%7Corder%3Ddesc"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"http://example.org/api.php?action=ask&amp;query=%5B%5BModification_date::%2B%5D%5D%7C%3FModification_date%7Csort%3DModification_date%7Corder%3Ddesc\">api.php?action=ask&amp;query=</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1, refs #1314",
+			"subject": "Example/P0403/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text",
+						"Has_page"
+					],
+					"propertyValues": [
+						"Example/P0403/2",
+						"ABC [[Has page::DEF]] 123",
+						"DEF"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 does not contain any [[ :: ]] copied annotation values, refs #1314",
+			"subject": "Example/P0403/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ASK"
+					],
+					"propertyValues": []
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"ABC DEF 123"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

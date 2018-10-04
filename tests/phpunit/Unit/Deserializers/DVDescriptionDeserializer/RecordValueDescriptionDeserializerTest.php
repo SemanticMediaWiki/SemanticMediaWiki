@@ -4,6 +4,7 @@ namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\DIProperty;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer
@@ -15,6 +16,8 @@ use SMW\DIProperty;
  * @author mwjames
  */
 class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -78,7 +81,7 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new RecordValueDescriptionDeserializer();
 		$instance->setDataValue( $recordValue );
@@ -99,34 +102,34 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 		$instance->setDataValue( $recordValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
 	}
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Jan;1970',
-			array( new DIProperty( 'Foo' ) ),
+			[ new DIProperty( 'Foo' ) ],
 			'\SMW\Query\Language\SomeProperty'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Jan;1970',
-			array( new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ),
+			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'?',
-			array( new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ),
+			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
 			'\SMW\Query\Language\ThingDescription'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(),
+			[],
 			'\SMW\Query\Language\ThingDescription'
-		);
+		];
 
 		return $provider;
 	}

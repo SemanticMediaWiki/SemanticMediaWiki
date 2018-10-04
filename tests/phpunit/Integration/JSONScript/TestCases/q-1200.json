@@ -1,0 +1,210 @@
+{
+	"description": "Test `_wpg/`_txt` with `~*` and `.../...` queries (ES only)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Q1200/1/Foo bar/Bar",
+			"contents": "[[Category:Q1200]] [[Has text::Foo bar/Bar]] [[Has page::Foo bar/Bar]]"
+		},
+		{
+			"page": "Q1200/1/Foobar/Bar/Foo",
+			"contents": "[[Category:Q1200]] [[Has text::Foobar/Bar/Foo]] [[Has page::Foobar/Bar/Foo]]"
+		},
+		{
+			"page": "Q1200/1/Foo BAR/Foo",
+			"contents": "[[Category:Q1200]] [[Has text::Foo BAR/Foo]] [[Has page::Foo BAR/Foo]]"
+		},
+		{
+			"page": "Q1200/1/Foo/Bar",
+			"contents": "[[Category:Q1200]] [[Has text::Foo/Bar]] [[Has page::Foo/Bar]]"
+		},
+		{
+			"page": "Q1200/1/Foo",
+			"contents": "[[Category:Q1200]] [[Has text::Foo]] [[Has page::Foo]]"
+		},
+		{
+			"page": "Q1200/2",
+			"contents": "[[Category:Q1200]] {{#subobject: |Has page=Q1200/2 |Has text=Q1200/2 |Q1200/2=A,B,C|+sep=, }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (~*bar*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[~*bar*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1200/1/Foo bar/Bar#0##",
+					"Q1200/1/Foobar/Bar/Foo#0##",
+					"Q1200/1/Foo BAR/Foo#0##",
+					"Q1200/1/Foo/Bar#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (~*Bar/*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[~*Bar/*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q1200/1/Foo bar/Bar#0##",
+					"Q1200/1/Foobar/Bar/Foo#0##",
+					"Q1200/1/Foo BAR/Foo#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (~*Foo bar/*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[~*Foo bar/*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1200/1/Foo bar/Bar#0##",
+					"Q1200/1/Foo BAR/Foo#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (~F??Bar/*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[~*F??Bar/*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1200/1/Foobar/Bar/Foo#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (Has page:: ~*bar*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[Has page::~*bar*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1200/1/Foo bar/Bar#0##",
+					"Q1200/1/Foobar/Bar/Foo#0##",
+					"Q1200/1/Foo BAR/Foo#0##",
+					"Q1200/1/Foo/Bar#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (Has page::~*Bar/*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1200]] [[Has page::~*Bar/*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1200/1/Foo bar/Bar#0##",
+					"Q1200/1/Foobar/Bar/Foo#0##",
+					"Q1200/1/Foo BAR/Foo#0##",
+					"Q1200/1/Foo/Bar#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 (Has subobject::~*Q1200*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Has subobject::~*Q1200*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1200/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 (-Q1200/2.-Has subobject::~*Q1200*)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[-Q1200/2.-Has subobject::~*Q1200*]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"A#0##",
+					"B#0##",
+					"C#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -30,7 +30,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store->expects( $this->once() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
@@ -64,6 +64,16 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructTextSanitizer() {
+
+		$instance = new FulltextSearchTableFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer',
+			$instance->newTextSanitizer()
+		);
+	}
+
 	public function testCanConstructSearchTable() {
 
 		$instance = new FulltextSearchTableFactory();
@@ -92,7 +102,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructTextByChangeUpdater() {
+	public function testCanConstructTextChangeUpdater() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -105,8 +115,8 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater',
-			$instance->newTextByChangeUpdater( $this->store )
+			'\SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater',
+			$instance->newTextChangeUpdater( $this->store )
 		);
 	}
 

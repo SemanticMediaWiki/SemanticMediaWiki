@@ -1,0 +1,119 @@
+{
+	"description": "Test keyword type `_keyw` with a formatter schema (`smwgCompactLinkSupport`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Keyword link formatter schema",
+			"contents": {
+				"import-from": "/../Fixtures/p-0459-keyword-formatter-schema.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has keyword",
+			"contents": "[[Has type::Keyword]] [[Formatter schema::Keyword link formatter schema]]"
+		},
+		{
+			"page": "Example/P0459/1",
+			"contents": "[[Has keyword::aBcDEF]]"
+		},
+		{
+			"page": "Example/P0459/2",
+			"contents": "[[Has keyword::abcdef]]"
+		},
+		{
+			"page": "Example/P0459/3",
+			"contents": "[[Has keyword::ABCDEF]]"
+		},
+		{
+			"page": "Example/P0459/Q.1",
+			"contents": "{{#ask: [[Has keyword::ABCDEF]] |?Has keyword }}"
+		},
+		{
+			"page": "Example/P0459/Q.2",
+			"contents": "{{#ask: [[Has keyword::abcdef]] |?Has keyword }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Keyword link formatter schema",
+			"namespace": "SMW_NS_SCHEMA",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 6,
+					"propertyKeys": [
+						"_MDAT",
+						"_SCHEMA_DEF",
+						"_SCHEMA_DESC",
+						"_SCHEMA_TAG",
+						"_SCHEMA_TYPE",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Has keyword",
+			"namespace": "SMW_NS_PROPERTY",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_FORMAT_SCHEMA",
+						"_SKEY",
+						"_MDAT",
+						"_TYPE"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0459/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0459/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCompactLinkSupport": true,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -30,17 +30,21 @@ class StringConditionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'Foo#0#1',
+			'Foo#0#1#',
 			$instance->getHash()
 		);
 
 		$this->assertEquals(
-			StringCondition::STRCOND_PRE,
+			StringCondition::COND_PRE,
 			$instance->condition
 		);
 
 		$this->assertTrue(
-			$instance->asDisjunctiveCondition
+			$instance->isOr
+		);
+
+		$this->assertFalse(
+			$instance->isNot
 		);
 	}
 

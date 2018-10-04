@@ -2,17 +2,17 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\SQLStore\SQLStore;
-use SMW\ApplicationFactory;
-use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
-use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
-use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
-use SMW\SQLStore\QueryEngine\Fulltext\TextByChangeUpdater;
-use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
-use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use Onoi\Tesa\SanitizerFactory;
+use SMW\ApplicationFactory;
+use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -23,54 +23,44 @@ use Onoi\Tesa\SanitizerFactory;
 class FulltextSearchTableFactory {
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
-	 * @since 2.5
-	 */
-	public function __construct() {
-		$this->applicationFactory = ApplicationFactory::getInstance();
-	}
-
-	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return ValueMatchConditionBuilder
 	 */
-	public function newValueMatchConditionBuilderByType( SQLStore $store ) {
+	public function newValueMatchConditionBuilderByType( Store $store ) {
 
 		$type = $store->getConnection( 'mw.db' )->getType();
 
 		switch ( $type ) {
 			case 'mysql':
 				return new MySQLValueMatchConditionBuilder(
+					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
 				break;
 			case 'sqlite':
 				return new SQLiteValueMatchConditionBuilder(
+					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
 				break;
 		}
 
-		return new ValueMatchConditionBuilder();
+		return new ValueMatchConditionBuilder( $this->newTextSanitizer(), $this->newSearchTable( $store ) );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTable
 	 */
-	public function newSearchTable( SQLStore $store ) {
+	public function newTextSanitizer() {
 
-		$settings = $this->applicationFactory->getSettings();
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$textSanitizer = new TextSanitizer(
 			new SanitizerFactory()
@@ -84,9 +74,22 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextSearchMinTokenSize' )
 		);
 
+		return $textSanitizer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param Store $store
+	 *
+	 * @return SearchTable
+	 */
+	public function newSearchTable( Store $store ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$searchTable = new SearchTable(
-			$store,
-			$textSanitizer
+			$store
 		);
 
 		$searchTable->setEnabled(
@@ -101,62 +104,73 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextSearchMinTokenSize' )
 		);
 
+		$searchTable->setIndexableDataTypes(
+			$settings->get( 'smwgFulltextSearchIndexableDataTypes' )
+		);
+
 		return $searchTable;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTableUpdater
 	 */
-	public function newSearchTableUpdater( SQLStore $store ) {
+	public function newSearchTableUpdater( Store $store ) {
 		return new SearchTableUpdater(
+			$store->getConnection( 'mw.db' ),
 			$this->newSearchTable( $store ),
-			$store->getConnection( 'mw.db' )
+			$this->newTextSanitizer()
 		);
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
-	 * @return TextByChangeUpdater
+	 * @return TextChangeUpdater
 	 */
-	public function newTextByChangeUpdater( SQLStore $store ) {
+	public function newTextChangeUpdater( Store $store ) {
 
-		$settings = $this->applicationFactory->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
-		$textByChangeUpdater = new TextByChangeUpdater(
-			$this->newSearchTableUpdater( $store ),
-			$store->getConnection( 'mw.db' )
+		$textChangeUpdater = new TextChangeUpdater(
+			$store->getConnection( 'mw.db' ),
+			$applicationFactory->getCache(),
+			$this->newSearchTableUpdater( $store )
 		);
 
-		$textByChangeUpdater->asDeferredUpdate(
+		$textChangeUpdater->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$textChangeUpdater->asDeferredUpdate(
 			$settings->get( 'smwgFulltextDeferredUpdate' )
 		);
 
 		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
-		$textByChangeUpdater->isCommandLineMode(
+		$textChangeUpdater->isCommandLineMode(
 			$GLOBALS['wgCommandLineMode']
 		);
 
-		return $textByChangeUpdater;
+		return $textChangeUpdater;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 *
 	 * @return SearchTableRebuilder
 	 */
-	public function newSearchTableRebuilder( SQLStore $store ) {
+	public function newSearchTableRebuilder( Store $store ) {
 		return new SearchTableRebuilder(
-			$this->newSearchTableUpdater( $store ),
-			$store->getConnection( 'mw.db' )
+			$store->getConnection( 'mw.db' ),
+			$this->newSearchTableUpdater( $store )
 		);
 	}
 

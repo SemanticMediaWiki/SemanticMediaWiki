@@ -1,0 +1,47 @@
+{
+	"description": "Test in-text `_txt` 00 string/loose comparison (#2061)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0441/1",
+			"contents": "[[Has text::011]] [[Has text::0011]]"
+		},
+		{
+			"page": "Example/P0441/1",
+			"contents": "[[Has text::011]] [[Has text::00011]]"
+		},
+		{
+			"page": "Example/P0441/2",
+			"contents": "{{#ask: [[Example/P0441/1]] |?Has text }}",
+			"message-cache": "clear"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0441/2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"011\">011<br />00011</td>"
+				],
+				"no-contain": [
+					"<td class=\"Has-text smwtype_txt\" data-sort-value=\"011\">011</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

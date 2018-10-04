@@ -1,0 +1,84 @@
+{
+	"description": "Test #set parser to use template for output (#1146, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "SetParserTemplateToCreateAskLink",
+			"contents": "<includeonly>{{#ask: [[{{{property}}}::{{{value}}}]]|limit=0|searchlabel={{{value}}}|format=list }}</includeonly>"
+		},
+		{
+			"page": "Transclude-Template-Using-Set",
+			"contents": "{{#set:SetParserTemplateProperty=SetParserTemplateValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
+		},
+		{
+			"page": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
+			"contents": "{{#set:Has date=NoTemplateForInvalidValue|+sep=;|template=SetParserTemplateToCreateAskLink}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #set annotation/parser with template",
+			"subject": "Transclude-Template-Using-Set",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"SetParserTemplateProperty"
+					],
+					"propertyValues": [
+						"SetParserTemplateValue"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 invalid property value declaration causes error",
+			"subject": "Try-To-Transclude-Template-For-Invalid-PropertyValue",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #ask link to be correctly parsed, #1146",
+			"subject": "Transclude-Template-Using-Set",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-list-furtherresults\">",
+					"Special:Ask/-5B-5BSetParserTemplateProperty::SetParserTemplateValue-5D-5D/mainlabel=/offset=0/format=list/searchlabel=SetParserTemplateValue\">SetParserTemplateValue</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

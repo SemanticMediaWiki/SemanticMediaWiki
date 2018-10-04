@@ -1,0 +1,186 @@
+{
+	"description": "Test in-text annotation for `_ref_rec` type (#1808, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number with ref",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;Date;URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has mlt with ref",
+			"contents": "[[Has type::Reference]] [[Has fields::Monolingual text;Date;Number]]"
+		},
+		{
+			"page": "Example/P0432/1",
+			"contents": "[[Has number with ref::123;1.1.2000;http://example.org]]"
+		},
+		{
+			"page": "Example/P0432/Q1.1",
+			"contents": "{{#ask: [[Has number with ref::123]] |?Has number with ref|+index=Date|?Has number with ref|+index=URL |link=none}}"
+		},
+		{
+			"page": "Example/P0432/2",
+			"contents": "{{#subobject: |Has number with ref=456;12-04-1637;http://example.org }}"
+		},
+		{
+			"page": "Example/P0432/Q2.1",
+			"contents": "{{#ask: [[Has number with ref::456]] |?Has number with ref|+index=Date|?Has number with ref|+index=URL |link=none}}"
+		},
+		{
+			"page": "Example/P0432/3",
+			"contents": "[[Has mlt with ref::Test@en;01.01.1800;123]] {{#subobject: |Has mlt with ref::テスト@ja;01.01.1800;456 }}"
+		},
+		{
+			"page": "Example/P0432/Q3.1",
+			"contents": "{{#ask: [[Has mlt with ref::?@en]] |?Has mlt with ref|+index=Monolingual text|?Has mlt with ref|+index=Number |link=none}}"
+		},
+		{
+			"page": "Example/P0432/4",
+			"contents": "[[Has number with ref:: {{#show: Example/P0432/1 |?Has number with ref |link=none }}]]"
+		},
+		{
+			"page": "Example/P0432/5",
+			"contents": "{{#subobject: Has number with ref=999;1.1.2000 12:00;http://example.org}} {{#subobject: Has number with ref=999;1.1.2000 13:00;http://example.org}}"
+		},
+		{
+			"page": "Example/P0432/Q5.1",
+			"contents": "{{#ask: [[Has number with ref::999]] |order=asc |link=none |format=list}}"
+		},
+		{
+			"page": "Example/P0432/Q5.2",
+			"contents": "{{#ask: [[Has number with ref::999]] |order=desc |link=none |format=list}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0432/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_number_with_ref",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"123;1 January 2000;http://example.org"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\"",
+					"January 1, 2000",
+					"href=&quot;http://example.org&quot;&gt;http://example.org",
+					"title=\"Date: January 1, 2000, URL: http://example.org\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0432/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/1</td>",
+					"<td class=\"Has-number-with-ref smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td>",
+					"<td class=\"Has-number-with-ref smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org\">http://example.org</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0432/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/2#_7b5db4a4195b1843f9a25639c0d7ff5c</td>",
+					"<td class=\"Has-number-with-ref smwtype_dat\" data-sort-value=\"2319299.5\">4 December 1637</td>",
+					"<td class=\"Has-number-with-ref smwtype_uri\"><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org\">http://example.org</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (Monolingual text, number index output)",
+			"subject": "Example/P0432/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0432/3</td>",
+					"<td class=\"Has-mlt-with-ref smwtype_mlt_rec\">Test (en)</td>",
+					"<td class=\"Has-mlt-with-ref smwtype_num\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#show + link=none)",
+			"subject": "Example/P0432/4",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_number_with_ref",
+						"_SKEY",
+						"_MDAT",
+						"_ASK"
+					],
+					"propertyValues": [
+						"123;?;?"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"123<span class=\"smw-reference smw-reference-indicator smw-highlighter smwttinline\" data-title=\"Reference\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (chronological order, asc)",
+			"subject": "Example/P0432/Q5.1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					">Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a<.*>Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5<"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (chronological order, desc)",
+			"subject": "Example/P0432/Q5.2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					">Example/P0432/5#_f3d26f55b0c2b1edf58613dd875ba0e5<.*>Example/P0432/5#_1c26bb9aac2df0c73a22cacd64a2b56a<"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

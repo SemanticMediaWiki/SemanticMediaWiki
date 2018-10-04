@@ -2,69 +2,55 @@
 - `install-semantic-mediawiki.sh` to handle the install of Semantic MediaWiki
 - `install-services.sh` to handle the install of additional services
 
-## SPARQL services
+## SPARQL endpoints and services
 
-<table>
-	<tr>
-		<th>Service</th>
-		<th>Connector</th>
-		<th>QueryEndPoint</th>
-		<th>UpdateEndPoint</th>
-		<th>DataEndpoint</th>
-		<th>DefaultGraph</th>
-		<th>Comments</th>
-	</tr>
-	<tr>
-		<th>Fuseki (mem)<sup>1</sup></th>
-		<td>Fuseki</td>
-		<td>http://localhost:3030/db/query</td>
-		<td>http://localhost:3030/db/update</td>
-		<td>''</td>
-		<td>''</td>
-		<td>fuseki-server --update --port=3030 --mem /db</td>
-	</tr>
-	<tr>
-		<th>Fuseki (memTDB)</th>
-		<td>Fuseki</td>
-		<td>http://localhost:3030/db/query</td>
-		<td>http://localhost:3030/db/update</td>
-		<td>''</td>
-		<td>http://example.org/myFusekiGraph</td>
-		<td>fuseki-server --update --port=3030 --memTDB --set tdb:unionDefaultGraph=true /db</td>
-	</tr>
-	<tr>
-		<th>Virtuoso opensource</th>
-		<td>Virtuoso</td>
-		<td>http://localhost:8890/sparql</td>
-		<td>http://localhost:8890/sparql</td>
-		<td>''</td>
-		<td>http://example.org/myVirtuosoGraph</td>
-		<td>sudo apt-get install virtuoso-opensource</td>
-	</tr>
-	<tr>
-		<th>4store<sup>2</sup></th>
-		<td>4store</td>
-		<td>http://localhost:8088/sparql/</td>
-		<td>http://localhost:8088/update/</td>
-		<td>''</td>
-		<td>http://example.org/myFourGraph</td>
-		<td>apt-get install 4store</td>
-	</tr>
-	<tr>
-		<th>Sesame</th>
-		<td>Custom</td>
-		<td>http://localhost:8080/openrdf-sesame/repositories/test-smw</td>
-		<td>http://localhost:8080/openrdf-sesame/repositories/test-smw/statements</td>
-		<td>''</td>
-		<td>`test-smw` is specifed as native in-memory store</td>
-		<td></td>
-	</tr>
+- Fuseki (mem)
+  - Connector: Fuseki (When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.)
+  - QueryEndPoint: http://localhost:3030/db/query
+  - UpdateEndPoint: http://localhost:3030/db/update
+  - DataEndpoint:
+  - DefaultGraph:
+  - Comments: fuseki-server --update --port=3030 --mem /db
 
-</table>
+- Fuseki (memTDB)
+  - Connector: Fuseki
+  - QueryEndPoint: http://localhost:3030/db/query
+  - UpdateEndPoint: http://localhost:3030/db/update
+  - DataEndpoint:
+  - DefaultGraph: http://example.org/myFusekiGraph
+  - Comments: fuseki-server --update --port=3030 --memTDB --set tdb:unionDefaultGraph=true /db
 
-<sup>1</sup> When running integration tests with [Jena Fuseki][fuseki] it is suggested that the `in-memory` option is used to avoid potential loss of production data during test execution.
+- Virtuoso opensource
+  - Connector: Virtuoso
+  - QueryEndPoint: http://localhost:8890/sparql
+  - UpdateEndPoint: http://localhost:8890/sparql
+  - DataEndpoint:
+  - DefaultGraph: http://example.org/myVirtuosoGraph
+  - Comments: sudo apt-get install virtuoso-opensource
 
-<sup>2</sup> Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been sucessfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110) )
+- 4store
+  - Connector: 4store (Currently, Travis-CI doesn't support `4Store` (1.1.4-2) as service but the following configuration has been successfully tested with the available test suite. ([issue #110](https://github.com/garlik/4store/issues/110))
+  - QueryEndPoint: http://localhost:8088/sparql/
+  - UpdateEndPoint: http://localhost:8088/update/
+  - DataEndpoint:
+  - DefaultGraph: http://example.org/myFourGraph
+  - Comments: apt-get install 4store
+
+- Sesame
+  - Connector: Sesame
+  - QueryEndPoint: http://localhost:8080/openrdf-sesame/repositories/test-smw
+  - UpdateEndPoint: http://localhost:8080/openrdf-sesame/repositories/test-smw/statements
+  - DataEndpoint:
+  - DefaultGraph:
+  - Comments: `test-smw` is specified as native in-memory store
+
+- Blazegraph
+  - Connector: Blazegraph
+  - QueryEndPoint: http://localhost:9999/bigdata/namespace/kb/sparql
+  - UpdateEndPoint: http://localhost:9999/bigdata/namespace/kb/sparql
+  - DataEndpoint:
+  - DefaultGraph:
+  - Comments: java -server -Xmx4g -Dbigdata.propertyFile=$BASE_PATH/tests/travis/blazegraph-store.properties -jar bigdata-bundled.jar
 
 [fuseki]: https://jena.apache.org/
 [virtuoso]: https://github.com/openlink/virtuoso-opensource

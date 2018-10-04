@@ -14,9 +14,28 @@ namespace SMW;
  */
 class StringCondition {
 
-	const STRCOND_PRE = 0;
-	const STRCOND_POST = 1;
-	const STRCOND_MID = 2;
+	/**
+	 * String matches prefix
+	 */
+	const COND_PRE = 0;
+	const STRCOND_PRE = self::COND_PRE; // Deprecated
+
+	/**
+	 * String matches postfix
+	 */
+	const COND_POST = 1;
+	const STRCOND_POST = self::COND_POST; // Deprecated
+
+	/**
+	 * String matches to some inner part
+	 */
+	const COND_MID = 2;
+	const STRCOND_MID = self::COND_MID; // Deprecated
+
+	/**
+	 * String matches as equal
+	 */
+	const COND_EQ = 3;
 
 	/**
 	 * String to match.
@@ -31,13 +50,14 @@ class StringCondition {
 	 *
 	 * @var boolean
 	 */
-	public $asDisjunctiveCondition;
+	public $isOr;
 
 	/**
-	 * Condition. One of STRCOND_PRE (string matches prefix),
-	 * STRCOND_POST (string matches postfix), STRCOND_MID
-	 * (string matches to some inner part).
-	 *
+	 * @var boolean
+	 */
+	public $isNot;
+
+	/**
 	 * @var integer
 	 */
 	public $condition;
@@ -47,12 +67,13 @@ class StringCondition {
 	 *
 	 * @param srting $string
 	 * @param integer $condition
-	 * @param boolean $asDisjunctiveCondition
+	 * @param boolean $isOr
 	 */
-	public function __construct( $string, $condition, $asDisjunctiveCondition = false ) {
+	public function __construct( $string, $condition, $isOr = false, $isNot = false ) {
 		$this->string = $string;
 		$this->condition = $condition;
-		$this->asDisjunctiveCondition = $asDisjunctiveCondition;
+		$this->isOr = $isOr;
+		$this->isNot = $isNot;
 	}
 
 	/**
@@ -61,7 +82,7 @@ class StringCondition {
 	 * @return string
 	 */
 	public function getHash() {
-		return $this->string . '#' . $this->condition . '#' . $this->asDisjunctiveCondition;
+		return $this->string . '#' . $this->condition . '#' . $this->isOr . '#' . $this->isNot;
 	}
 
 }

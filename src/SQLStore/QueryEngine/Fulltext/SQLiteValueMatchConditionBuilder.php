@@ -13,60 +13,7 @@ use SMW\Query\Language\ValueDescription;
 class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 
 	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param SearchTable $searchTable
-	 */
-	public function __construct( SearchTable $searchTable ) {
-		$this->searchTable = $searchTable;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled() {
-		return $this->searchTable->isEnabled();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function getTableName() {
-		return $this->searchTable->getTableName();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $value
-	 *
-	 * @return boolean
-	 */
-	public function hasMinTokenLength( $value ) {
-		return mb_strlen( $value ) >= $this->searchTable->getMinTokenSize();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $temporaryTable
-	 *
-	 * @return string
-	 */
-	public function getSortIndexField( $temporaryTable = '' ) {
-		return ( $temporaryTable !== '' ? $temporaryTable . '.' : '' ) . $this->searchTable->getSortField();
-	}
-
-	/**
+	 * @see ValueMatchConditionBuilder::canApplyFulltextSearchMatchCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
@@ -75,11 +22,15 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function canApplyFulltextSearchMatchCondition( ValueDescription $description ) {
 
-		if ( !$this->isEnabled() || $description->getProperty() === null ) {
+		if ( !$this->isEnabled() ) {
 			return false;
 		}
 
-		if ( $this->searchTable->isExemptedProperty( $description->getProperty() ) ) {
+		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
+			return false;
+		}
+
+		if ( !$this->searchTable->isValidByType( $description->getDataItem()->getDiType() ) ) {
 			return false;
 		}
 
@@ -97,6 +48,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	}
 
 	/**
+	 * @see ValueMatchConditionBuilder::getWhereCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
@@ -110,7 +62,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 			$description
 		);
 
-		$value = $this->searchTable->getTextSanitizer()->sanitize(
+		$value = $this->textSanitizer->sanitize(
 			$matchableText,
 			true
 		);
@@ -138,7 +90,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 		// process by adding the PID as an additional condition
 		if ( $property !== null ) {
 			$propertyCondition = ' AND ' . $temporaryTable . 'p_id=' . $this->searchTable->addQuotes(
-				$this->searchTable->getPropertyID( $property )
+				$this->searchTable->getIdByProperty( $property )
 			);
 		}
 

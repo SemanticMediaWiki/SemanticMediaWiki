@@ -1,0 +1,47 @@
+{
+	"description": "Test RDF wiki-info output (#928, en)",
+	"setup": [],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 simple output",
+			"exportcontroller": {
+				"wiki-info": true,
+				"parameters": {
+					"backlinks": false,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:Wikisite rdf:about=\"&wiki;#wiki\">",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#siteName\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#pagePrefix\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#smwVersion\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#langCode\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#pageCount\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#contentPageCount\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#mediaCount\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#editCount\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#userCount\" />",
+					"<owl:DatatypeProperty rdf:about=\"http://semantic-mediawiki.org/swivt/1.0#adminCount\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

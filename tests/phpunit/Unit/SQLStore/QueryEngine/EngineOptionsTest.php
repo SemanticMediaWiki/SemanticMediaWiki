@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\EngineOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\EngineOptions
@@ -14,6 +15,8 @@ use SMW\SQLStore\QueryEngine\EngineOptions;
  * @author mwjames
  */
 class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -33,13 +36,8 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQSortingSupport' )
-		);
-
-		$this->assertInternalType(
-			'boolean',
-			$instance->get( 'smwgQRandSortingSupport' )
+			'integer',
+			$instance->get( 'smwgQSortFeatures' )
 		);
 	}
 

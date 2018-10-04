@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Fixtures;
 
+use SMW\Tests\Utils\File\DummyFileCreator;
 use SMW\Tests\Utils\File\LocalFileUpload;
-use SMW\Tests\Utils\Fixtures\File\DummyFileCreator;
 
 /**
  * @license GNU GPL v2+
@@ -22,8 +22,8 @@ class FixturesFileProvider {
 	 */
 	public function newDummyJsonFile( $desiredDestName ) {
 
-		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
-		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.json' );
+		$dummyFileCreator = new DummyFileCreator();
+		$dummyFileCreator->createFileWithCopyFrom( $desiredDestName, __DIR__ . '/File/' . 'LoremIpsum.json' );
 
 		return $dummyFileCreator;
 	}
@@ -37,8 +37,8 @@ class FixturesFileProvider {
 	 */
 	public function newDummyTextFile( $desiredDestName ) {
 
-		$dummyFileCreator = new DummyFileCreator( $desiredDestName );
-		$dummyFileCreator->createFileByCopyContentOf( __DIR__ . '/File/' . 'LoremIpsum.txt' );
+		$dummyFileCreator = new DummyFileCreator();
+		$dummyFileCreator->createFileWithCopyFrom( $desiredDestName, __DIR__ . '/File/' . 'LoremIpsum.txt' );
 
 		return $dummyFileCreator;
 	}

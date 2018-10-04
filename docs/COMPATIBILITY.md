@@ -1,5 +1,6 @@
 For a full list of changes in each release, see the [release notes](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/docs/releasenotes). For instructions
-on how to install the latest version of SMW, see the [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
+on how to install the latest version of Semantic MediaWiki (SMW), see the [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
+
 
 ## Release versions
 
@@ -11,26 +12,32 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%203.0">SMW 3.0.x</a></th>
-		<td>Planned release</td>
-		<td>Q1 or Q2 2017</td>
-		<td></td>
-	</tr>
-	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestones/SMW%202.5">SMW 2.5.x</a></th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.1.x</a></th>
 		<td>Development version</td>
-		<td>Q4 2016</td>
+		<td>Q1 2019</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/RELEASE-NOTES.md">SMW 2.4.x</a></th>
-		<td>Stable release</td>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
+		<td>Prerelease version</td>
+		<td>October 2018</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">SMW 2.5.x</a></th>
+		<td>Stable version</td>
+		<td>2017-03-14</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">2.5.x</a></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">SMW 2.4.x</a></th>
+		<td>Obsolete release</td>
 		<td>2016-07-09</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.4.x">2.4.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">SMW 2.3.x</a></th>
-		<td>Stable release</td>
+		<td>Obsolete release</td>
 		<td>2015-10-25</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.3.x">2.3.x</a></td>
 	</tr>
@@ -50,7 +57,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0">SMW 2.0.x</a></th>
 		<td>Obsolete release</td>
 		<td>2014-08-04</td>
-		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0">2.0</a></td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.0.x">2.0.x</a></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.2">SMW 1.9.2</a></th>
@@ -84,6 +91,7 @@ on how to install the latest version of SMW, see the [installation instructions]
 	</tr>
 </table>
 
+
 ## Platform compatibility
 
 The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also
@@ -100,26 +108,32 @@ Note that HHVM is only required if you do not use PHP.
 		<th>MediaWiki</th>
 	</tr>
 	<tr>
+		<th>SMW 3.1.x</th>
+		<td><strong><a href="https://php.net/supported-versions.php">7.1.0</a></strong> - latest</td>
+		<td>No support</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.31</a></strong> - ?</td>
+	</tr>
+	<tr>
 		<th>SMW 3.0.x</th>
-		<td><strong>5.6.0</strong> - latest (possibly 5.5.x)</td>
+		<td><strong><a href="https://php.net/supported-versions.php">5.6.0</a></strong> - latest</td>
 		<td>3.5.0 - latest</td>
-		<td><strong>1.27</strong> - latest</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.27.0</a></strong> - 1.31</td>
 	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
-		<td><strong>5.5.0</strong><sup>[p.1]</sup> - latest</td>
-		<td>3.5.0 - latest</td>
-		<td><strong>1.25</strong><sup>[m.1]</sup> - latest</td>
+		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - 7.1.x</td>
+		<td>3.5.0 - 3.12.x</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.30</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
-		<td>5.3.2 - 7.0</td>
+		<td>5.3.2 - 7.0.x</td>
 		<td>3.5.0 - 3.9.x</td>
 		<td>1.19 - 1.27</td>
 	</tr>
 	<tr>
 		<th>SMW 2.3.x</th>
-		<td>5.3.2 - 5.6.x (beta support for PHP 7)</td>
+		<td>5.3.2 - 5.6.x</td>
 		<td><strong>3.5.0</strong> - 3.9.x</td>
 		<td>1.19 - 1.25</td>
 	</tr>
@@ -127,7 +141,7 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SMW 2.2.x</th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>3.3.0 - 3.9.x</td>
-		<td>1.19 - 1.25</sup></td>
+		<td>1.19 - 1.25</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
@@ -148,6 +162,11 @@ Note that HHVM is only required if you do not use PHP.
 		<td>1.19 - 1.22</td>
 	</tr>
 </table>
+
+* *Note:* It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.
+* For the 1.28 MediaWiki release branch, 1.28.1 or later is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
+* For the 1.27 MediaWiki release branch, 1.27.4 or later is recommended due to [T100085](https://phabricator.wikimedia.org/T100085).
+* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation. 
 
 **Releases before Composer support:**
 
@@ -175,6 +194,7 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
+
 ## Database compatibility
 
 ### SQL support
@@ -185,6 +205,18 @@ Note that HHVM is only required if you do not use PHP.
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
+	</tr>
+	<tr>
+		<th>SMW 2.5.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
@@ -236,6 +268,8 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
+Note that MS SQL Server and Oracle are not supported as database backends.
+
 ### Triple store support
 
 <table>
@@ -247,36 +281,52 @@ Note that HHVM is only required if you do not use PHP.
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
 	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
+	</tr>
+	<tr>
+		<th>SMW 2.5.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
+	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
-		<td>Full support (1.x >=1.1) + 2.4.0</td>
-		<td>Full support (6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.8.x)</td>
-		<td>Full support (1.5.2) + 2.1.0<sup>[t.3]</sup></td>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.3.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.7.x)</td>
-		<td>Full support (1.5.2)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.7.x)</td>
+		<td>Full support<br />(1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.2.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
-		<td>Beta support (1.x >=1.1)<sup>[t.2]</sup></td>
-		<td>Full support (2.7.x)</td>
-		<td>Beta support (1.5.2)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1) + 7.1<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.7.x)</td>
+		<td>Beta support<br />(1.5.2)</td>
 	</tr>
 	<tr>
 		<th>SMW 2.1.x</th>
-		<td>Full support (1.x >=1.1)</td>
-		<td>Full support (6.x >=6.1)</td>
-		<td>Beta support (1.x >=1.1)</td>
-		<td>Full support (2.7.x)</td>
+		<td>Full support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(6.x >=6.1)</td>
+		<td>Beta support<br />(1.x >=1.1)</td>
+		<td>Full support<br />(2.7.x)</td>
 		<td>Not tested</td>
 	</tr>
 	<tr>
@@ -305,17 +355,16 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
-- `Full support` means that all functionality has been verified to work and that it can be used in production
-- `Beta support` means that most functionality has been verified to work, though stability is still low, and things might be buggy
-- `Experimental support` means there is some preliminary support which is still much too immature for use in production
+- "Full support" means that all functionality has been verified to work and that it can be used in production
+- "Beta support" means that most functionality has been verified to work, though stability is still low, and things might be buggy
+- "Experimental support" means there is some preliminary support which is still much too immature for use in production
 
 The information in brackets denotes the versions with which SMW is known to work. SMW might also
 work with different versions, especially more recent ones, though this is not guaranteed.
 
 ## Notes
 
-- <sup>[p.1]</sup> http://php.net/supported-versions.php
-- <sup>[m.1]</sup> https://www.mediawiki.org/wiki/Version_lifecycle
 - <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.2](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/97294290)
 - <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
 - <sup>[t.3]</sup> [#1583](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1583)
+- [#2688](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2688) Removed HHVM support

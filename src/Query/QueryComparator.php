@@ -3,16 +3,10 @@
 namespace SMW\Query;
 
 /**
- * Static class for functions related to the SMW query language.
- *
- * Note: the query language "definition" is located at various places in the SMW codebase.
- * SMWQueryParser defines most of the actual query syntax.
- * SMWDescription defines the semantic elements of the query language.
- * This class is an attempt to gradualy migrate to having all the stuff at one location,
- * clearly distinguised from non-language code.
- *
+ * @license GNU GPL v2+
  * @since 1.5.3
  *
+ * @author mwjames
  * @author Jeroen De Dauw
  */
 class QueryComparator {
@@ -30,7 +24,7 @@ class QueryComparator {
 	/**
 	 * @var array
 	 */
-	private $reverseCache = array();
+	private $reverseCache = [];
 
 	/**
 	 * @since 2.3
@@ -67,7 +61,7 @@ class QueryComparator {
 	}
 
 	/**
-	 * Gets an array with all suported comparator strings.
+	 * Gets an array with all supported comparator strings.
 	 * The string for SMW_CMP_EQ, which is an empty string, is not in this list.
 	 *
 	 * @since 1.5.3
@@ -96,6 +90,18 @@ class QueryComparator {
 		}
 
 		return array_key_exists( $string, $this->comparators ) ? $this->comparators[$string] : $defaultComparator;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $value
+	 * @param integer $comparator
+	 *
+	 * @return boolean
+	 */
+	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
+		return $this->extractComparatorFromString( $value ) === $comparator;
 	}
 
 	/**
@@ -134,7 +140,7 @@ class QueryComparator {
 	 */
 	public function getStringForComparator( $comparator ) {
 
-		if ( $this->reverseCache === array() ) {
+		if ( $this->reverseCache === [] ) {
 			$this->reverseCache = array_flip( $this->comparators );
 		}
 
@@ -149,8 +155,14 @@ class QueryComparator {
 
 	private function getEnabledComparators( $comparatorList, $strictComparators ) {
 
-		// Note: Comparators that contain other comparators at the beginning of the string need to be at beginning of the array.
-		$comparators = array(
+		// Note: Comparators that contain other comparators at the beginning of
+		// the string need to be at beginning of the array.
+		$comparators = [
+			'like:' => SMW_CMP_PRIM_LIKE,
+			'nlike:' => SMW_CMP_PRIM_NLKE,
+			'in:' => SMW_CMP_IN,
+			'not:' => SMW_CMP_NOT,
+			'phrase:' => SMW_CMP_PHRASE,
 			'!~' => SMW_CMP_NLKE,
 			'<<' => SMW_CMP_LESS,
 			'>>' => SMW_CMP_GRTR,
@@ -160,7 +172,7 @@ class QueryComparator {
 			'≥' => SMW_CMP_GEQ,
 			'!' => SMW_CMP_NEQ,
 			'~' => SMW_CMP_LIKE,
-		);
+		];
 
 		if ( strpos( $comparatorList, '|' ) === false ) {
 			return $comparators;

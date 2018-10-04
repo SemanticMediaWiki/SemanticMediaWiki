@@ -1,0 +1,192 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "屬性",
+            "SMW_NS_PROPERTY_TALK": "屬性討論",
+            "SMW_NS_CONCEPT": "概念",
+            "SMW_NS_CONCEPT_TALK": "概念討論"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "頁面型",
+            "_txt": "文字型",
+            "_cod": "代碼型",
+            "_boo": "布爾型",
+            "_num": "數值型",
+            "_geo": "地理坐標型",
+            "_tem": "溫度型",
+            "_dat": "日期型",
+            "_ema": "電子郵件地址型",
+            "_uri": "URL型",
+            "_anu": "注釋URI型",
+            "_tel": "電話號碼型",
+            "_rec": "記錄型",
+            "_qty": "數量型",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "浮點型": "_num",
+            "整數型": "_num",
+            "枚舉型": "_txt",
+            "字串型": "_txt",
+            "Float": "_num",
+            "Integer": "_num",
+            "Enumeration": "_txt",
+            "URI": "_uri"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "具有類型",
+            "_URI": "等價URI",
+            "_SUBP": "是……的子屬性",
+            "_SUBC": "是……的子分類",
+            "_UNIT": "顯示單位",
+            "_IMPO": "導入自",
+            "_CONV": "對應於",
+            "_SERV": "提供服務",
+            "_PVAL": "允許取值",
+            "_MDAT": "修改日期",
+            "_CDAT": "創建日期",
+            "_NEWP": "是一個新頁面",
+            "_LEDT": "最後編者為",
+            "_ERRP": "具有……的不當取值",
+            "_LIST": "具有欄位",
+            "_SOBJ": "具有子對象",
+            "_ASK": "具有查詢",
+            "_ASKST": "查詢字串",
+            "_ASKFO": "查詢格式",
+            "_ASKSI": "查詢大小",
+            "_ASKDE": "查詢深度",
+            "_ASKDU": "查詢持續時間",
+            "_MEDIA": "媒體類型",
+            "_MIME": "MIME類型",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "顯示計量單位": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "1月",
+                "1月"
+            ],
+            [
+                "2月",
+                "2月"
+            ],
+            [
+                "3月",
+                "3月"
+            ],
+            [
+                "4月",
+                "4月"
+            ],
+            [
+                "5月",
+                "5月"
+            ],
+            [
+                "6月",
+                "6月"
+            ],
+            [
+                "7月",
+                "7月"
+            ],
+            [
+                "8月",
+                "8月"
+            ],
+            [
+                "9月",
+                "9月"
+            ],
+            [
+                "10月",
+                "10月"
+            ],
+            [
+                "11月",
+                "11月"
+            ],
+            [
+                "12月",
+                "12月"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y年",
+            "SMW_PREC_YM": "Y年n月",
+            "SMW_PREC_YMD": "Y年n月j日 (D)",
+            "SMW_PREC_YMDT": "Y年n月j日 (D) H:i:s"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

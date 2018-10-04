@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
@@ -25,7 +25,7 @@ use SMWQueryProcessor as QueryProcessor;
  */
 class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $subjects = array();
+	private $subjects = [];
 	private $semanticDataFactory;
 
 	private $dataValueFactory;
@@ -46,7 +46,7 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->queryParser = new QueryParser();
+		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
 	protected function tearDown() {
@@ -86,11 +86,11 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 		/**
 		 * @query [[Url::http://example.org/api.php?action=Foo]][[Url::http://example.org/Bar 42]]
 		 */
-		$rawParams = array(
+		$rawParams = [
 			'[[Url::http://example.org/api.php?action=Foo]][[Url::http://example.org/Bar 42]]',
 			'?Url',
 			'limit=1'
-		);
+		];
 
 		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
 			$rawParams,
@@ -150,63 +150,63 @@ class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function queryDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #1 Standard query
-		$provider[] =array(
-			array( 'query' => array(
+		$provider[] =[
+			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date',
 				'limit=10'
-				)
-			),
-			array(
-				array(
+				]
+			],
+			[
+				[
 					'label'=> '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
 					'key' => '',
 					'redi' => ''
-				),
-				array(
+				],
+				[
 					'label'=> 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => '',
 					'key' => '_MDAT',
 					'redi' => ''
-				)
-			)
-		);
+				]
+			]
+		];
 
 		// #2 Query containing a printrequest formatting
-		$provider[] =array(
-			array( 'query' => array(
+		$provider[] =[
+			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date#ISO',
 				'limit=10'
-				)
-			),
-			array(
-				array(
+				]
+			],
+			[
+				[
 					'label'=> '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
 					'key' => '',
 					'redi' => ''
-				),
-				array(
+				],
+				[
 					'label'=> 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => 'ISO',
 					'key' => '_MDAT',
 					'redi' => ''
-				)
-			)
-		);
+				]
+			]
+		];
 
 		return $provider;
 	}

@@ -5,9 +5,10 @@ namespace SMW\SQLStore;
 use Hooks;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use SMW\PropertyRegistry;
 
 /**
- * Class that generates property table definitions
+ * @private
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -17,19 +18,33 @@ use SMW\DIProperty;
 class PropertyTableDefinitionBuilder {
 
 	/**
+	 * Fixed property table prefix
+	 */
+	const PROPERTY_TABLE_PREFIX = 'smw_fpt';
+
+	/**
+	 * @var PropertyTypeFinder
+	 */
+	private $propertyTypeFinder;
+
+	/**
 	 * @var TableDefinition[]
 	 */
-	protected $propertyTables = array();
+	protected $propertyTables = [];
 
 	/**
 	 * @var array
 	 */
-	protected $fixedPropertyTableIds = array();
+	protected $fixedPropertyTableIds = [];
 
 	/**
-	 * @var string
+	 * @since 1.9
+	 *
+	 * @param PropertyTypeFinder $propertyTypeFinder
 	 */
-	private $fixedPropertyTablePrefix = 'smw_fpt';
+	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
+		$this->propertyTypeFinder = $propertyTypeFinder;
+	}
 
 	/**
 	 * @since 1.9
@@ -38,38 +53,32 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $specialProperties
 	 * @param array $userDefinedFixedProperties
 	 */
-	public function __construct( array $diTypes, array $specialProperties, array $userDefinedFixedProperties ) {
-		$this->diTypes = $diTypes;
-		$this->specialProperties = $specialProperties;
-		$this->userDefinedFixedProperties = $userDefinedFixedProperties;
-	}
+	public function doBuild( $diTypes, $specialProperties, $userDefinedFixedProperties ) {
 
-	/**
-	 * @since 1.9
-	 */
-	public function doBuild() {
-
-		$this->addTableDefinitionForDiTypes( $this->diTypes );
+		$this->addTableDefinitionForDiTypes( $diTypes );
 
 		$this->addTableDefinitionForFixedProperties(
-			$this->specialProperties
+			$specialProperties
 		);
 
-		$customFixedProperties = array();
+		$customFixedProperties = [];
+		$fixedPropertyTablePrefix = [];
 
-		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', array( &$customFixedProperties ) );
+		// Allow to alter the prefix by an extension
+		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', [ &$customFixedProperties, &$fixedPropertyTablePrefix ] );
 
 		$this->addTableDefinitionForFixedProperties(
-			$customFixedProperties
+			$customFixedProperties,
+			$fixedPropertyTablePrefix
 		);
 
 		$this->addRedirectTableDefinition();
 
 		$this->addTableDefinitionForUserDefinedFixedProperties(
-			$this->userDefinedFixedProperties
+			$userDefinedFixedProperties
 		);
 
-		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
+		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', [ &$this->propertyTables ] );
 
 		$this->createFixedPropertyTableIdIndex();
 	}
@@ -82,7 +91,7 @@ class PropertyTableDefinitionBuilder {
 	 * @return string
 	 */
 	public function getTablePrefix() {
-		return $this->fixedPropertyTablePrefix;
+		return self::PROPERTY_TABLE_PREFIX;
 	}
 
 	/**
@@ -123,6 +132,29 @@ class PropertyTableDefinitionBuilder {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @param string $tableName
+	 *
+	 * @return string
+	 */
+	public function createTableNameFrom( $tableName ) {
+		return self::PROPERTY_TABLE_PREFIX . strtolower( $tableName );
+	}
+
+	/**
+	 * @see http://stackoverflow.com/questions/3763728/shorter-php-cipher-than-md5
+	 * @since 2.5
+	 *
+	 * @param string $tableName
+	 *
+	 * @return string
+	 */
+	public function createHashedTableNameFrom( $tableName ) {
+		return self::PROPERTY_TABLE_PREFIX . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
+	}
+
+	/**
 	 * Add property table definition
 	 *
 	 * @since 1.9
@@ -144,19 +176,18 @@ class PropertyTableDefinitionBuilder {
 		}
 	}
 
-	/**
-	 * @param array $properties
-	 */
-	private function addTableDefinitionForFixedProperties( array $properties ) {
-		foreach( $properties as $propertyKey => $propetyTableSuffix ) {
+	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [] ) {
+		foreach( $properties as $propertyKey => $propertyTableSuffix ) {
+
+			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;
 
 			// Either as plain index array containing the property key or as associated
 			// array with property key => tableSuffix
-			$propertyKey = is_int( $propertyKey ) ? $propetyTableSuffix : $propertyKey;
+			$propertyKey = is_int( $propertyKey ) ? $propertyTableSuffix : $propertyKey;
 
 			$this->addPropertyTable(
-				DataTypeRegistry::getInstance()->getDataItemId( DIProperty::getPredefinedPropertyTypeId( $propertyKey ) ),
-				$this->fixedPropertyTablePrefix . strtolower( $propetyTableSuffix ),
+				DataTypeRegistry::getInstance()->getDataItemByType( PropertyRegistry::getInstance()->getPropertyValueTypeById( $propertyKey ) ),
+				$tablePrefix . strtolower( $propertyTableSuffix ),
 				$propertyKey
 			);
 		}
@@ -165,7 +196,8 @@ class PropertyTableDefinitionBuilder {
 	private function addRedirectTableDefinition() {
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		$redirectTableName = $this->fixedPropertyTablePrefix . '_redi';
+		$redirectTableName = $this->createTableNameFrom( '_REDI' );
+
 		if ( isset( $this->propertyTables[$redirectTableName]) ) {
 			$this->propertyTables[$redirectTableName]->setUsesIdSubject( false );
 		}
@@ -178,15 +210,21 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $fixedProperties
 	 */
 	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
-		foreach( $fixedProperties as $propertyKey => $tableDIType ) {
+
+		$this->propertyTypeFinder->setTypeTableName(
+			$this->createTableNameFrom( '_TYPE' )
+		);
+
+		foreach( $fixedProperties as $propertyKey ) {
 
 			// Normalize the key to be independent from a possible MW setting
 			// (has area == Has_area <> Has_Area)
 			$propertyKey = str_replace( ' ', '_', ucfirst( $propertyKey ) );
+			$property = new DIProperty( $propertyKey );
 
 			$this->addPropertyTable(
-				$tableDIType,
-				$this->fixedPropertyTablePrefix . '_' . md5( $propertyKey ),
+				DataTypeRegistry::getInstance()->getDataItemByType( $this->propertyTypeFinder->findTypeID( $property ) ),
+				$this->createHashedTableNameFrom( $propertyKey ),
 				$propertyKey
 			);
 		}

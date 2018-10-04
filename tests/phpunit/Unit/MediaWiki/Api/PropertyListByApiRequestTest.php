@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\PropertyListByApiRequest;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\PropertyListByApiRequest
@@ -17,6 +18,7 @@ use SMW\MediaWiki\Api\PropertyListByApiRequest;
 class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
@@ -24,7 +26,14 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+ 	}
 
 	public function testCanConstruct() {
 
@@ -40,51 +49,51 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSerializedListForProperty() {
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foo' ),
 			42
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new DIProperty( 'Foaf:Foo' ),
 			1001
-		);
+		];
 
-		$list[] = array(
+		$list[] = [
 			new \SMWDIError( 'error' ),
 			-1
-		);
+		];
 
-		$list[] = array();
+		$list[] = [];
 
 		$isCached = true;
 
-		$expectedSerializedPropertyList = array(
-			'Foo' => array(
+		$expectedSerializedPropertyList = [
+			'Foo' => [
 				'label' => 'Foo',
 				'key' => 'Foo',
 				'isUserDefined' => true,
 				'usageCount' => 42,
 				'description' => ''
-			),
-			'Foaf:Foo' => array(
+			],
+			'Foaf:Foo' => [
 				'label' => 'Foaf:Foo',
 				'key' => 'Foaf:Foo',
 				'isUserDefined' => true,
 				'usageCount' => 1001,
 				'description' => ''
-			)
-		);
+			]
+		];
 
-		$expectedNamespaces = array(
+		$expectedNamespaces = [
 			'Foaf'
-		);
+		];
 
-		$expectedMeta = array(
+		$expectedMeta = [
 			'limit' => 3,
 			'count' => 2,
 			'isCached' => $isCached
-		);
+		];
 
 		$cachedListLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\CachedListLookup' )
 			->disableOriginalConstructor()
@@ -110,7 +119,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$instance->setLimit( 3 );
 
 		$this->assertTrue(
-			$instance->findPropertyListFor( 'Foo' )
+			$instance->findPropertyListBy( 'Foo' )
 		);
 
 		$this->assertEquals(

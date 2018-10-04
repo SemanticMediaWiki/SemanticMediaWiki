@@ -49,11 +49,29 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
 		$this->assertEquals( false, $instance->isSingleton() );
-		$this->assertEquals( array(), $instance->getPrintRequests() );
+		$this->assertEquals( [], $instance->getPrintRequests() );
 
 		$this->assertEquals( 1, $instance->getSize() );
 		$this->assertEquals( 0, $instance->getDepth() );
 		$this->assertEquals( 4, $instance->getQueryFeatures() );
+	}
+
+	public function testGetFingerprint() {
+
+		$instance = new ConceptDescription(
+			new DIWikiPage( 'Foo', SMW_NS_CONCEPT )
+		);
+
+		$expected = $instance->getFingerprint();
+
+		$instance = new ConceptDescription(
+			new DIWikiPage( 'Bar', SMW_NS_CONCEPT )
+		);
+
+		$this->assertNotSame(
+			$expected,
+			$instance->getFingerprint()
+		);
 	}
 
 	public function testPrune() {
@@ -62,7 +80,7 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 1;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			$instance,
@@ -71,7 +89,7 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$maxsize  = 0;
 		$maxDepth = 1;
-		$log      = array();
+		$log      = [];
 
 		$this->assertEquals(
 			new ThingDescription(),

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use OutputPage;
 use ParserOutput;
 use SMW\ApplicationFactory;
+use SMW\Query\QueryRefFinder;
 use Title;
 
 /**
@@ -55,32 +56,55 @@ class OutputPageParserOutput {
 	 * @return true
 	 */
 	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
-	}
-
-	protected function canPerformUpdate() {
 
 		$title = $this->outputPage->getTitle();
 
 		if ( $title->isSpecialPage() ||
 			$title->isRedirect() ||
 			!$this->isSemanticEnabledNamespace( $title ) ) {
-			return false;
+			return true;
 		}
 
-		if ( isset( $this->outputPage->mSMWFactboxText ) && $this->outputPage->getContext()->getRequest()->getCheck( 'wpPreview' ) ) {
-			return false;
-		}
+		$request = $this->outputPage->getContext()->getRequest();
 
-		return true;
+		$this->factbox( $request );
+		$this->postProc( $title, $request );
 	}
 
-	protected function performUpdate() {
+	private function postProc( $title, $request) {
 
-		$cachedFactbox = ApplicationFactory::getInstance()->newFactboxFactory()->newCachedFactbox();
+		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ] ) ) {
+			return '';
+		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$postProcHandler = $applicationFactory->create( 'PostProcHandler', $this->parserOutput );
+
+		$html = $postProcHandler->getHtml(
+			$title,
+			$request
+		);
+
+		if ( $html !== '' ) {
+			$this->outputPage->addModules( $postProcHandler->getModules() );
+			$this->outputPage->addHtml( $html );
+		}
+	}
+
+	protected function factbox( $request ) {
+
+		if ( isset( $this->outputPage->mSMWFactboxText ) && $request->getCheck( 'wpPreview' ) ) {
+			return '';
+		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
 		$cachedFactbox->prepareFactboxContent(
 			$this->outputPage,
+			$this->outputPage->getLanguage(),
 			$this->getParserOutput()
 		);
 

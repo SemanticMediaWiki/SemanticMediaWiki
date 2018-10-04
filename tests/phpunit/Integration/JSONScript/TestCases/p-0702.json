@@ -1,0 +1,99 @@
+{
+	"description": "Test #ask with `format=table` on inverse property/printrequest (#1270, #1360)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has inverse prop",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has query",
+			"contents": "(Remove set display title from p-0438)"
+		},
+		{
+			"page": "Example/P0702/1",
+			"contents": "{{#subobject:|Has inverse prop=InverseExample|Has number=4040}}"
+		},
+		{
+			"page": "Example/P0702/1/1",
+			"contents": "{{#ask: [[-Has inverse prop::<q>[[-Has subobject::Example/P0702/1]]</q>]]|?-Has inverse prop||?-Has inverse prop=LabelOnInversePrintout|format=table}}"
+		},
+		{
+			"page": "Example/P0702/2",
+			"contents": "[[-Has inverse prop::Invalid in-text annotation]]"
+		},
+		{
+			"page": "Example/P0702/3/1",
+			"contents": "{{#ask: [[-Has query::Example/P0702/1/1]]|?-Has query |format=table}}"
+		},
+		{
+			"page": "Example/P0702/3/2",
+			"contents": "{{#ask: [[-Has query::Example/P0702/1/1]]|?-Has query=AnotherLabel |format=table}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 table output using inverse property (label is inverse, link is to normal property)",
+			"subject": "Example/P0702/1/1",
+			"assert-output": {
+				"to-contain": [
+					"Property:Has_inverse_prop\" title=\"Property:Has inverse prop\">-Has inverse prop</a>",
+					">InverseExample</a>",
+					"title=\"Example/P0702/1\">Example/P0702/1</a>",
+					">LabelOnInversePrintout</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 in-text inverse annotation",
+			"subject": "Example/P0702/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (inverse indicator on predefined property)",
+			"subject": "Example/P0702/3/1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=.*Property:Has_query\" title=\"Property:Has query\">-Has query</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (custom label overrides any inverse indicator from property)",
+			"subject": "Example/P0702/3/2",
+			"assert-output": {
+				"to-contain": [
+					"<a href=.*Property:Has_query\" title=\"Property:Has query\">AnotherLabel</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

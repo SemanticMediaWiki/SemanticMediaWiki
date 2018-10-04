@@ -65,8 +65,8 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertMagicWordFromParserOutput(
 			$instance,
-			array( 'Foo', '', 'Bar' ),
-			array( 'Foo', 'Bar' )
+			[ 'Foo', '', 'Bar' ],
+			[ 'Foo', 'Bar' ]
 		);
 	}
 
@@ -74,7 +74,7 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'hasExtensionData' ) )
+			->setMethods( [ 'hasExtensionData' ] )
 			->getMock();
 
 		$instance->expects( $this->any() )
@@ -85,9 +85,31 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertMagicWordFromParserOutput(
 			$instance,
-			array( 'Foo', '', 'Bar' ),
-			array( 'Foo', 'Bar' )
+			[ 'Foo', '', 'Bar' ],
+			[ 'Foo', 'Bar' ]
 		);
+	}
+
+	public function testNoPushOnEmptyMagicWordsList() {
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput->expects( $this->never() )
+			->method( 'setExtensionData' );
+
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'hasExtensionData' ] )
+			->getMock();
+
+		$instance->expects( $this->any() )
+			->method( 'hasExtensionData' )
+			->will( $this->returnValue( true ) );
+
+		$instance->setOutput( $parserOutput );
+		$instance->pushMagicWordsToParserOutput( [] );
 	}
 
 	protected function assertMagicWordFromParserOutput( $instance, $magicWord, $expectedMagicWords ) {
@@ -109,28 +131,28 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function magicWordsProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW_NOFACTBOX',
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis',
 			'Lorem ipsum dolor sit amet consectetuer auctor at quis',
 			''
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW_NOFACTBOX',
 			'Lorem ipsum dolor sit __NOFACTBOX__ amet consectetuer auctor at quis',
 			'Lorem ipsum dolor sit  amet consectetuer auctor at quis',
 			'SMW_NOFACTBOX'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'SMW_SHOWFACTBOX',
 			'Lorem ipsum dolor __NOFACTBOX__ sit amet consectetuer auctor at quis __SHOWFACTBOX__',
 			'Lorem ipsum dolor __NOFACTBOX__ sit amet consectetuer auctor at quis ',
 			'SMW_SHOWFACTBOX'
-		);
+		];
 
 		return $provider;
 	}

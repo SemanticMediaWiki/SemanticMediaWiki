@@ -2,46 +2,67 @@
 
 namespace SMW\Tests;
 
+use SMW\Exception\DataItemException;
+
 /**
  * @covers SMWDIGeoCoord
  * @covers SMWDataItem
  *
- * @file
- * @since 1.8
- *
- *
- * @group SMW
- * @group SMWExtension
- * @group SMWDataItems
- *
- * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIGeoCoordTest extends DataItemTest {
+class SMWDIGeoCoordTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @see DataItemTest::getClass
-	 *
-	 * @since 1.8
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return '\SMWDIGeoCoord';
+	use PHPUnitCompat;
+
+	public function testConstructorWithArrayArgumentForm() {
+		$coordinate = new \SMWDIGeoCoord( [ 'lat' => 13.37, 'lon' => 42.42 ] );
+
+		$this->assertSame( 13.37, $coordinate->getLatitude() );
+		$this->assertSame( 42.42, $coordinate->getLongitude() );
 	}
 
-	/**
-	 * @see DataItemTest::constructorProvider
-	 *
-	 * @since 1.8
-	 *
-	 * @return array
-	 */
-	public function constructorProvider() {
-		return array(
-			array( array( 'lat' => 83.34, 'lon' => 38.44, 'alt' => 54 ) ),
-			array( array( 'lat' => 42.43, 'lon' => 33.32 ) ),
-		);
+	public function testConstructorWithMultipleArgumentsForm() {
+		$coordinate = new \SMWDIGeoCoord( 13.37, 42.42 );
+
+		$this->assertSame( 13.37, $coordinate->getLatitude() );
+		$this->assertSame( 42.42, $coordinate->getLongitude() );
+	}
+
+	public function testWhenConstructingWithIntegers_gettersReturnFloats() {
+		$coordinate = new \SMWDIGeoCoord( 13, 42 );
+
+		$this->assertSame( 13.0, $coordinate->getLatitude() );
+		$this->assertSame( 42.0, $coordinate->getLongitude() );
+	}
+
+	public function testWhenOnlyProvidingLatitudeArgument_constructorThrowsException() {
+		$this->setExpectedException( DataItemException::class );
+		new \SMWDIGeoCoord( 13 );
+	}
+
+	public function testWhenProvidingNonNumericalArgument_constructorThrowsException() {
+		$this->setExpectedException( DataItemException::class );
+		new \SMWDIGeoCoord( 13, null );
+	}
+
+	public function testWhenProvidingArrayWithNonNumericalArgument_constructorThrowsException() {
+		$this->setExpectedException( DataItemException::class );
+		new \SMWDIGeoCoord( [ 'lat' => null, 'lon' => 42.42 ] );
+	}
+
+	public function testObjectEqualsItself() {
+		$coordinate = new \SMWDIGeoCoord( 13, 42 );
+		$this->assertTrue( $coordinate->equals( $coordinate ) );
+	}
+
+	public function testObjectEqualsDifferentInstancesWithEqualValues() {
+		$coordinate = new \SMWDIGeoCoord( 13, 42 );
+		$this->assertTrue( $coordinate->equals( new \SMWDIGeoCoord( 13.0, 42.0 ) ) );
+	}
+
+	public function testObjectDoesNotEqualInstancesWithDifferentValues() {
+		$coordinate = new \SMWDIGeoCoord( 13, 42 );
+		$this->assertFalse( $coordinate->equals( new \SMWDIGeoCoord( 1, 2 ) ) );
 	}
 
 }

@@ -14,7 +14,7 @@
 
 throw new Exception( 'Not an actual source file' );
 
-class SMWDataItemException extends SMW\DataItemException {
+class SMWDataItemException extends SMW\Exception\DataItemException {
 }
 
 abstract class SMWStore extends SMW\Store {
@@ -56,7 +56,7 @@ class SMWEmbeddedResultPrinter extends SMW\EmbeddedResultPrinter {
 class SMWRDFResultPrinter extends SMW\RdfResultPrinter {
 }
 
-class SMWListResultPrinter extends SMW\ListResultPrinter {
+class SMWListResultPrinter extends SMW\Query\ResultPrinters\ListResultPrinter {
 }
 
 interface SMWIResultPrinter extends SMW\QueryResultPrinter {

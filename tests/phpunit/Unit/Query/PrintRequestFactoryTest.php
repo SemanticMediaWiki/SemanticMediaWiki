@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use SMW\DIProperty;
+use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
 
 /**
@@ -28,7 +29,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestByProperty(
+		$printRequest = $instance->newFromProperty(
 			new DIProperty( 'Foo' )
 		);
 
@@ -47,7 +48,7 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestFromText(
+		$printRequest = $instance->newFromText(
 			'Foo'
 		);
 
@@ -61,13 +62,26 @@ class PrintRequestFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PrintRequestFactory();
 
-		$printRequest = $instance->newPrintRequestFromText(
+		$printRequest = $instance->newFromText(
 			'--[[Foo',
 			false
 		);
 
 		$this->assertNull(
 			$printRequest
+		);
+	}
+
+	public function testCanConstructThisPrintRequest() {
+
+		$instance = new PrintRequestFactory();
+
+		$printRequest = $instance->newThisPrintRequest(
+			'Foo'
+		);
+
+		$this->assertTrue(
+			$printRequest->isMode( PrintRequest::PRINT_THIS )
 		);
 	}
 

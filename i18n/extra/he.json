@@ -1,0 +1,188 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "תכונה",
+            "SMW_NS_PROPERTY_TALK": "שיחת_תכונה",
+            "SMW_NS_CONCEPT": "רעיון",
+            "SMW_NS_CONCEPT_TALK": "שיחת_רעיון"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "עמוד",
+            "_txt": "טקסט",
+            "_cod": "קוד",
+            "_boo": "נכוןלאנכון",
+            "_num": "מספר",
+            "_geo": "קורדינטות גיאוגרפיות",
+            "_tem": "טמפרטורה",
+            "_dat": "תאריך",
+            "_ema": "דואל",
+            "_uri": "כתובת כללית",
+            "_anu": "מזהה יחודי לפירוש",
+            "_tel": "Telephone number",
+            "_rec": "Record",
+            "_qty": "Quantity",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "מזהה יחודי": "_uri",
+            "שלם": "_num",
+            "נקודהצפה": "_num",
+            "מחרוזת": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "מטיפוס",
+            "_URI": "מזהה יחודי תואם",
+            "_SUBP": "רכוש כפוף ל",
+            "_SUBC": "תת קטגוריה של",
+            "_UNIT": "יחידות מידה",
+            "_IMPO": "יובא מ",
+            "_CONV": "מתורגם ל",
+            "_SERV": "מספק שירות",
+            "_PVAL": "ערך אפשרי",
+            "_MDAT": "תאריך לשינוי",
+            "_CDAT": "תאריך יצירה",
+            "_NEWP": "האם הדף חדש",
+            "_LEDT": "העורך האחרון ",
+            "_ERRP": "יש ערך תקין בשביל",
+            "_LIST": "Has fields",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "מחרוזת השאילתא",
+            "_ASKFO": "פורמט השאילתא",
+            "_ASKSI": "גודל השאילתא",
+            "_ASKDE": "עומק שאילתא",
+            "_ASKDU": "Query duration",
+            "_MEDIA": "Media type",
+            "_MIME": "Mime type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "יחידת הצגה": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "ינואר",
+                "ינואר"
+            ],
+            [
+                "פברואר",
+                "פברואר"
+            ],
+            [
+                "מרץ",
+                "מרץ"
+            ],
+            [
+                "אפריל",
+                "אפריל"
+            ],
+            [
+                "מאי",
+                "מאי"
+            ],
+            [
+                "יוני",
+                "יוני"
+            ],
+            [
+                "יולי",
+                "יולי"
+            ],
+            [
+                "אוגוסט",
+                "אוגוסט"
+            ],
+            [
+                "ספטמבר",
+                "ספטמבר"
+            ],
+            [
+                "אוקטובר",
+                "אוקטובר"
+            ],
+            [
+                "נובמבר",
+                "נובמבר"
+            ],
+            [
+                "דצמבר",
+                "דצמבר"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

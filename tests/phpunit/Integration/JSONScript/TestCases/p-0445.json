@@ -1,0 +1,63 @@
+{
+	"description": "Test in-text annotation for `_ref_rec` type with errors (#..., `wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number reference",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;Date]]"
+		},
+		{
+			"page": "Example/P0445/1",
+			"contents": "[[Has number reference::Foo;1 Jan 1970]]"
+		},
+		{
+			"page": "Example/P0445/2",
+			"contents": "[[Has number reference::123;Foo]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 error on number element (type mismatch)",
+			"subject": "Example/P0445/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 error on date element (type mismatch)",
+			"subject": "Example/P0445/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,165 @@
+{
+	"description": "Test `_dat` range for strict comparators (#285, `smwStrictComparators=true`, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/1003/10-Jan",
+			"contents": "[[Category:Date range]] [[Has date::10 Jan 1970]]"
+		},
+		{
+			"page": "Example/1003/12-Jan",
+			"contents": "[[Category:Date range]] [[Has date::12 Jan 1970]]"
+		},
+		{
+			"page": "Example/1003/20-Jan",
+			"contents": "[[Category:Date range]] [[Has date::20 Jan 1970]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 greater than",
+			"condition": "[[Category:Date range]] [[Has date::>10 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/12-Jan#0##",
+					"Example/1003/20-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 greater than",
+			"condition": "[[Category:Date range]] [[Has date::>>10 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/12-Jan#0##",
+					"Example/1003/20-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 greater than, equal to",
+			"condition": "[[Category:Date range]] [[Has date::≥10 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/1003/10-Jan#0##",
+					"Example/1003/12-Jan#0##",
+					"Example/1003/20-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[Category:Date range]] [[Has date::>11 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/12-Jan#0##",
+					"Example/1003/20-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 smaller than",
+			"condition": "[[Category:Date range]] [[Has date::<20 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/10-Jan#0##",
+					"Example/1003/12-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 smaller than",
+			"condition": "[[Category:Date range]] [[Has date::<<20 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/10-Jan#0##",
+					"Example/1003/12-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 smaller than, equal to",
+			"condition": "[[Category:Date range]] [[Has date::≤20 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Example/1003/10-Jan#0##",
+					"Example/1003/12-Jan#0##",
+					"Example/1003/20-Jan#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7",
+			"condition": "[[Category:Date range]] [[Has date::<19 Jan 1970]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/1003/10-Jan#0##",
+					"Example/1003/12-Jan#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": true
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 somwhow fails for >/>>"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

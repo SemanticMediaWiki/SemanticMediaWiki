@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use Onoi\Cache\Cache;
+use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
@@ -22,14 +24,19 @@ use SMWTurtleSerializer as TurtleSerializer;
 class TurtleTriplesBuilder {
 
 	/**
+	 * ID used for the InMemoryPoolCache
+	 */
+	const POOLCACHE_ID = 'sparql.turtle.triplesbuilder';
+
+	/**
 	 * @var SemanticData
 	 */
 	private $semanticData = null;
 
 	/**
-	 * @var RedirectLookup
+	 * @var RepositoryRedirectLookup
 	 */
-	private $redirectLookup = null;
+	private $repositoryRedirectLookup = null;
 
 	/**
 	 * @var null|string
@@ -37,14 +44,14 @@ class TurtleTriplesBuilder {
 	private $triples = null;
 
 	/**
-	 * @var null|array
+	 * @var array
 	 */
-	private $prefixes = null;
+	private $prefixes = [];
 
 	/**
-	 * @var null|boolean
+	 * @var boolean
 	 */
-	private $hasTriplesForUpdate = null;
+	private $hasTriplesForUpdate = false;
 
 	/**
 	 * @var integer
@@ -52,19 +59,19 @@ class TurtleTriplesBuilder {
 	private $triplesChunkSize = 80;
 
 	/**
-	 * @var array
+	 * @var Cache
 	 */
-	private static $dataItemExportCache = array();
+	private $dataItemExportInMemoryCache;
 
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
-	 * @param RedirectLookup $redirectLookup
+	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
+	 * @param Cache|null $cache
 	 */
-	public function __construct( SemanticData $semanticData, RedirectLookup $redirectLookup ) {
-		$this->semanticData = $semanticData;
-		$this->redirectLookup = $redirectLookup;
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
+		$this->dataItemExportInMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 	}
 
 	/**
@@ -79,24 +86,33 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return TurtleTriplesBuilder
+	 * @param SemanticData $semanticData
 	 */
-	public function doBuild() {
-		return $this->serializeToTurtleRepresentation();
+	public function doBuildTriplesFrom( SemanticData $semanticData ) {
+
+		$this->hasTriplesForUpdate = false;
+		$this->triples  = '';
+		$this->prefixes = [];
+
+		$this->doSerialize( $semanticData );
 	}
 
 	/**
 	 * @since 2.0
 	 *
+	 * @return boolean
+	 */
+	public function hasTriples() {
+		return $this->hasTriplesForUpdate;
+	}
+
+	/**
+	 * @since 2.3
+	 *
 	 * @return string
 	 */
 	public function getTriples() {
-
-		if ( $this->triples === null ) {
-			$this->doBuild();
-		}
-
-		return $this->triples;
+		return $this->triples === null ? '' : $this->triples;
 	}
 
 	/**
@@ -110,10 +126,10 @@ class TurtleTriplesBuilder {
 	 */
 	public function getChunkedTriples() {
 
-		$chunkedTriples = array();
+		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
-			$this->doBuild();
+			return $chunkedTriples;
 		}
 
 		if ( strpos( $this->triples, " ." ) === false ) {
@@ -137,44 +153,19 @@ class TurtleTriplesBuilder {
 	 * @return array
 	 */
 	public function getPrefixes() {
-
-		if ( $this->prefixes === null ) {
-			$this->doBuild();
-		}
-
 		return $this->prefixes;
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return boolean
-	 */
-	public function hasTriplesForUpdate() {
-
-		if ( $this->hasTriplesForUpdate === null ) {
-			$this->doBuild();
-		}
-
-		return $this->hasTriplesForUpdate;
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @return boolean
 	 */
 	public static function reset() {
 		TurtleSerializer::reset();
 	}
 
-	private function serializeToTurtleRepresentation() {
+	private function doSerialize( SemanticData $semanticData ) {
 
-		$this->hasTriplesForUpdate = false;
-		$this->triples  = '';
-		$this->prefixes = array();
-
-		$expDataArray = $this->prepareUpdateExpData( $this->semanticData );
+		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {
 
@@ -192,8 +183,6 @@ class TurtleTriplesBuilder {
 			$this->triples = $turtleSerializer->flushContent();
 			$this->prefixes = $turtleSerializer->flushSparqlPrefixes();
 		}
-
-		return $this;
 	}
 
 	/**
@@ -215,7 +204,7 @@ class TurtleTriplesBuilder {
 	 */
 	private function prepareUpdateExpData( SemanticData $semanticData ) {
 
-		$result = array();
+		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );
 		$newExpData = $this->expandUpdateExpData( $expData, $result, false );
@@ -274,7 +263,7 @@ class TurtleTriplesBuilder {
 		$exists = true;
 
 		if ( $expResource instanceof ExpNsResource ) {
-			$elementTarget = $this->redirectLookup->findRedirectTargetResource( $expResource, $exists );
+			$elementTarget = $this->repositoryRedirectLookup->findRedirectTargetResource( $expResource, $exists );
 		} else {
 			$elementTarget = $expResource;
 		}
@@ -284,11 +273,11 @@ class TurtleTriplesBuilder {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 
-			if ( !isset( self::$dataItemExportCache[$hash] ) ) {
-				self::$dataItemExportCache[$hash] = Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true );
+			if ( !$this->dataItemExportInMemoryCache->contains( $hash ) ) {
+				$this->dataItemExportInMemoryCache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
 			}
 
-			$auxiliaryExpData[$hash] = self::$dataItemExportCache[$hash];
+			$auxiliaryExpData[$hash] = $this->dataItemExportInMemoryCache->fetch( $hash );
 		}
 
 		return $elementTarget;

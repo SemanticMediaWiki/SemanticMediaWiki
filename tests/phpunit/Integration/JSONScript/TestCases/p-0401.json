@@ -1,0 +1,153 @@
+{
+	"description": "Test annotations with disabled capital links (#673, `wgCapitalLinks=false`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "has number",
+			"contents": "[[has type::number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "wikidata id",
+			"contents": "[[has type::string]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "founded",
+			"contents": "[[has type::date]] [[wikidata id::P571]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "set-non-capital-property",
+			"contents": "{{#set:|has type=boolean}} [[Category:Foo]]"
+		},
+		{
+			"page": "Empty",
+			"contents": "no annotation"
+		},
+		{
+			"page": "Single-category",
+			"contents": "[[Category:Foo]]"
+		},
+		{
+			"page": "Default-sort-with-non-capital-property",
+			"contents": "{{DEFAULTSORTKEY:Bar}} [[has number::42]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Empty",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Empty"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Single-category",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_INST",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"Single-category",
+						"Foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Default-sort-with-non-capital-property",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"has_number"
+					],
+					"propertyValues": [
+						"Bar",
+						42
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 check has type despite wgCapitalLinks setting",
+			"subject": "set-non-capital-property",
+			"namespace": "SMW_NS_PROPERTY",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_TYPE",
+						"_INST"
+					],
+					"propertyValues": [
+						"Boolean",
+						"Foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 check has type despite wgCapitalLinks setting, user-defined property is kept lower case",
+			"subject": "founded",
+			"namespace": "SMW_NS_PROPERTY",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_TYPE",
+						"wikidata id"
+					],
+					"propertyValues": [
+						"P571"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgCapitalLinks": false,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

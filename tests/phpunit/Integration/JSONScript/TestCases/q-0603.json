@@ -1,0 +1,230 @@
+{
+	"description": "Test `_wpg` queries for various conditions using #set annotated content",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Member of",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Page-with-set-1",
+			"contents": "{{#set:|Member of=Foo}}\n {{#set:|Member of=Bar}}"
+		},
+		{
+			"page": "Page-with-set-2",
+			"contents": "{{#set:|Member of=Foobaz}} {{#set:|Member of=Bar}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Member of::Foo]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page-with-set-1#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Foo"
+					},
+					{
+						"property": "Member of",
+						"value": "Bar"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Member of::~*Foo*]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2",
+				"results": [
+					"Page-with-set-1#0##",
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Foo"
+					},
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Member of::Foo]] OR [[Member of::Foobaz]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2",
+				"results": [
+					"Page-with-set-1#0##",
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Foo"
+					},
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"condition": "[[Member of::Foo||Foobaz]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2",
+				"results": [
+					"Page-with-set-1#0##",
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Foo"
+					},
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"condition": "[[Member of::Foobaz]] AND [[Member of::Bar]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"condition": "[[Member of::Foobaz]] AND <q>[[Member of::Bar]] AND [[Member of::Foobaz]]</q>",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6",
+			"condition": "[[Member of::Foobaz]] AND <q>[[Member of::Bar]] AND <q>[[Member of::Bar]] OR [[Member of::Foobaz]]</q></q>",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "1",
+				"results": [
+					"Page-with-set-2#0##"
+				],
+				"datavalues": [
+					{
+						"property": "Member of",
+						"value": "Bar"
+					},
+					{
+						"property": "Member of",
+						"value": "Foobaz"
+					}
+				]
+			}
+		}
+	],
+	"settings": [],
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

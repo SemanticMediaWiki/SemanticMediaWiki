@@ -1,0 +1,140 @@
+{
+	"description": "Test `_INST`/ Nested category annotation (#1012, en, skip virtuoso) category hierarchy queries",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has trait",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has breed trait",
+			"contents": "[[Has type::Text]] [[Subproperty of::Has trait]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has group",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Animal",
+			"contents": "..."
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Canis",
+			"contents": "is a genus containing ... and is part of the [[Category:Animal]] kingdom."
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Domestic dog",
+			"contents": "[[Category:Canis]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Dog",
+			"contents": "#REDIRECT [[:Category:Domestic dog]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Wolf",
+			"contents": "[[Category:Canis]]"
+		},
+		{
+			"page": "German Shepherd",
+			"contents": "[[Category:Dog]] [[Has breed trait::Herding]] [[Has group::Herding group]]"
+		},
+		{
+			"page": "Dachshund",
+			"contents": "[[Category:Dog]] [[Has breed trait::Hunting]] [[Has group::Hound group]]"
+		},
+		{
+			"page": "Scottish Terrier",
+			"contents": "[[Category:Dog]] [[Has breed trait::Hunting]] [[Has group::Terrier group]]"
+		},
+		{
+			"page": "Irish Setter",
+			"contents": "[[Category:Dog]] [[Has breed trait::Sporting]] [[Has group::Sporting group]]"
+		},
+		{
+			"page": "Gray wolf",
+			"contents": "[[Category:Wolf]] [[Has trait::Hunting]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 all (max 10) animals with herding traits",
+			"condition": "[[Category:Animal]] AND [[Has trait::Herding]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"German Shepherd#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 all (max 10) animals with herding or hunting traits",
+			"condition": "[[Category:Animal]] <q>[[Has trait::Herding]] OR [[Has trait::Hunting]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"German Shepherd#0##",
+					"Scottish Terrier#0##",
+					"Dachshund#0##",
+					"Gray wolf#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 all (max 10) animals with herding or hunting traits (compact OR notation)",
+			"condition": "[[Category:Animal]][[Has trait::Herding||Hunting]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"German Shepherd#0##",
+					"Scottish Terrier#0##",
+					"Dachshund#0##",
+					"Gray wolf#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

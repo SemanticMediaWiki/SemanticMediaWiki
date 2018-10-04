@@ -2,13 +2,56 @@
 
 namespace SMW\SQLStore;
 
+use SMW\SQLStore\TableBuilder\Table;
+
 /**
+ * @private
+ *
+ * Provides generic creation and updating function for database tables. A builder
+ * that implements this interface is expected to define Database specific
+ * operations and allowing it to be executed on a specific RDBMS back-end.
+ *
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
  */
 interface TableBuilder {
+
+	/**
+	 * Common prefix used by all Semantic MediaWiki tables
+	 */
+	const TABLE_PREFIX = 'smw_';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_NEW = 'field.new';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_UPD = 'field.update';
+
+	/**
+	 * Processing field activity status
+	 */
+	const PROC_FIELD_DROP = 'field.drop';
+
+	/**
+	 * On before the creation of tables and indices
+	 */
+	const PRE_CREATION = 'pre.creation';
+
+	/**
+	 * On after creation of all tables
+	 */
+	const POST_CREATION = 'post.creation';
+
+	/**
+	 * On after dropping all tables
+	 */
+	const POST_DESTRUCTION = 'post.destruction';
 
 	/**
 	 * Generic creation and updating function for database tables. Ideally, it
@@ -28,48 +71,31 @@ interface TableBuilder {
 	 * @note The function partly ignores the order in which fields are set up.
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 *
-	 * ```
-	 * $tableOptions = array(
-	 * 	'fields' => array(
-	 * 	),
-	 * 	'wgDBname' => $GLOBALS['$wgDBname'],
-	 * 	'wgDBTableOptions' => $GLOBALS['wgDBTableOptions']
-	 *  ...
-	 * )
-	 *```
 	 * @since 2.5
 	 *
-	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param Table $table
 	 */
-	public function createTable( $tableName, array $tableOptions = null );
+	public function create( Table $table );
 
 	/**
 	 * Removes a table from the RDBMS backend.
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $tableName
+	 * @param Table $table
 	 */
-	public function dropTable( $tableName );
+	public function drop( Table $table );
 
 	/**
-	 * Generic method to create or update index information of a table
+	 * Performs analysis on a key distribution and stores the distribution so
+	 * that the query planner can use these statistics to help determine the
+	 * most efficient execution plans for queries.
 	 *
-	 * ```
-	 * $indexOptions = array(
-	 * 	'indicies' => array(
-	 * 	)
-	 *  ...
-	 * )
-	 *```
+	 * @since 3.0
 	 *
-	 * @since 2.5
-	 *
-	 * @param string $indexName
-	 * @param array|null $indexOptions
+	 * @param Table $table
 	 */
-	public function createIndex( $tableName, array $indexOptions = null );
+	public function optimize( Table $table );
 
 	/**
 	 * Database backends often have different types that need to be used
@@ -81,10 +107,28 @@ interface TableBuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $input
+	 * @param string|FieldType $fieldType
 	 *
 	 * @return string|false SQL type declaration
 	 */
-	public function getStandardFieldType( $input );
+	public function getStandardFieldType( $fieldType );
+
+	/**
+	 * Returns a list of process activities
+	 *
+	 * @since 3.0
+	 *
+	 * @param array
+	 */
+	public function getLog();
+
+	/**
+	 * Allows to check and validate the build on specific events
+	 *
+	 * @since 2.5
+	 *
+	 * @param string $event
+	 */
+	public function checkOn( $event );
 
 }

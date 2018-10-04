@@ -1,0 +1,102 @@
+{
+	"description": "Test `@@@` in-text annotation syntax (#1855, #1875 `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]] {{#set: Has property description=Some text with a link to [http://example.org/ foo] and <li>stripped `li` in title element</li>@en}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P106",
+			"contents": "[[Has type::Text]] [[Has preferred property label::occupation@en]] [[Has preferred property label::직업@ko]] [[Has preferred property label::職業@ja]] [[Has property description::人物の職業。「専門分野」@ja]] [[Has property description::대상 인물의 직업@ko]]"
+		},
+		{
+			"page": "Example/P0212/1",
+			"contents": "[[Has date::@@@]]"
+		},
+		{
+			"page": "Example/P0212/2",
+			"contents": "[[Has date::@@@|With extra caption]]"
+		},
+		{
+			"page": "Example/P0212/3",
+			"contents": "[[P106::@@@ja]]"
+		},
+		{
+			"page": "Example/P0212/4",
+			"contents": "[[P106::@@@ko|WithCaption]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0212/1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element&#10;\">",
+					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></span>",
+					"title=\"Property:Has date\">Has date</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0212/2",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"1\" data-state=\"inline\" data-title=\"Property\" title=\"Some text with a link to foo and stripped `li` in title element&#10;\">",
+					"<span class=\"smwttcontent\">Some text with a link to <a rel=\"nofollow\" class=\"external text\" href=\"http://example.org/\">foo</a> and <li>stripped `li` in title element</li></span>",
+					"title=\"Property:Has date\">With extra caption</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31-)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0212/3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0212/3",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0212/4",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property:P106\">WithCaption</a></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

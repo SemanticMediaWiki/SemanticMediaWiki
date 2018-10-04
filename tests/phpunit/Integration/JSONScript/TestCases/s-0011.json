@@ -1,0 +1,136 @@
+{
+	"description": "Test `Special:Ask` output `#ask` intro/outro link/template parse (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "S0011-Template",
+			"contents": "<includeonly>{{{test}}} link [[{{{test}}}]]</includeonly>"
+		},
+		{
+			"page": "Example/S0011/1",
+			"contents": "[[Has text::abc]] [[Category:S0011]]"
+		},
+		{
+			"page": "Example/S0011/Q.1",
+			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=with [[intro parameter]] {{#info:intro bubble}} |outro=with [[outro parameter]] {{#info:outro bubble}} }}",
+			"message-cache": "clear"
+		},
+		{
+			"page": "Example/S0011/Q.2",
+			"contents": "{{#ask: [[Category:S0011]] |?Has text |limit=0 |link=none |format=table |intro=[[File:Foo.png|link=Bar]] }}",
+			"message-cache": "clear"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (further results)",
+			"subject": "Example/S0011/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": []
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory%3AS0011-5D-5D%2F-3FHas-20text&amp;mainlabel=&amp;offset=0&amp;format=table&amp;link=none&amp;intro=with%20%5B%5Bintro%20parameter%5D%5D%20%3Cspan%20class%3D%22smw-highlighter%22%20data-type%3D%226%22%20data-state%3D%22persistent%22%20data-title%3D%22Information%22%20title%3D%22intro%20bubble%22%3E%3Cspan%20class%3D%22smwtticon%20info%22%3E%3C%2Fspan%3E%3Cspan%20class%3D%22smwttcontent%22%3Eintro%20bubble%3C%2Fspan%3E%3C%2Fspan%3E&amp;outro=with%20%5B%5Boutro%20parameter%5D%5D%20%3Cspan%20class%3D%22smw-highlighter%22%20data-type%3D%226%22%20data-state%3D%22persistent%22%20data-title%3D%22Information%22%20title%3D%22outro%20bubble%22%3E%3Cspan%20class%3D%22smwtticon%20info%22%3E%3C%2Fspan%3E%3Cspan%20class%3D%22smwttcontent%22%3Eoutro%20bubble%3C%2Fspan%3E%3C%2Fspan%3E"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (parse [[ ... ]] as links in intro/outro)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=Intro%25parameter",
+					"class=\"new\" title=\"Intro%parameter",
+					"\">intro%parameter</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"class=\"new\" title=\"Outro%parameter",
+					"\">outro%parameter</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (parse URL in intro/outro)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#3 (parse template in intro/outro)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"S0011%intro link",
+					"class=\"new\" title=\"S0011%intro",
+					"\">S0011%intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"S0011%outro link",
+					"class=\"new\" title=\"S0011%outro",
+					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#3196, `-3D/=` decode)",
+			"subject": "Example/S0011/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0011-5D-5D/-3FHas-20text/mainlabel%3D/offset%3D0/format%3Dtable/link%3Dnone/intro%3D-5B-5BFile:Foo.png-7Clink%3DBar-5D-5D"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

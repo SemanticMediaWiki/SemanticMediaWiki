@@ -1,0 +1,187 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Properti",
+            "SMW_NS_PROPERTY_TALK": "Pembicaraan_Properti",
+            "SMW_NS_CONCEPT": "Konsep",
+            "SMW_NS_CONCEPT_TALK": "Pembicaraan_Konsep"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Halaman",
+            "_txt": "Teks",
+            "_cod": "Kode",
+            "_boo": "Boole",
+            "_num": "Angka",
+            "_geo": "Koordinat geografis",
+            "_tem": "Suhu",
+            "_dat": "Tanggal",
+            "_ema": "Surel",
+            "_uri": "URL",
+            "_anu": "URI anotasi",
+            "_tel": "Nomor telepon",
+            "_rec": "Rekaman",
+            "_qty": "Quantity",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Enumerasi": "_txt",
+            "Nomor telepon": "_tel"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Memiliki tipe",
+            "_URI": "URI ekuivalen",
+            "_SUBP": "Subproperti dari",
+            "_SUBC": "Subkategori dari",
+            "_UNIT": "Unit tampilan",
+            "_IMPO": "Diimpor dari",
+            "_CONV": "Berhubungan dengan",
+            "_SERV": "Memberikan layanan",
+            "_PVAL": "Mengizinkan nilai",
+            "_MDAT": "Tanggal modifikasi",
+            "_CDAT": "Creation date",
+            "_NEWP": "Is a new page",
+            "_LEDT": "Last editor is",
+            "_ERRP": "Memiliki nilai yang tidak tepat untuk",
+            "_LIST": "Memiliki bidang",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "Query string",
+            "_ASKFO": "Query format",
+            "_ASKSI": "Query size",
+            "_ASKDE": "Query depth",
+            "_ASKDU": "Query duration",
+            "_MEDIA": "Media type",
+            "_MIME": "Mime type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Unit tampilan": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "Januari",
+                "Jan"
+            ],
+            [
+                "Februari",
+                "Feb"
+            ],
+            [
+                "Maret",
+                "Mar"
+            ],
+            [
+                "April",
+                "Apr"
+            ],
+            [
+                "Mei",
+                "Mei"
+            ],
+            [
+                "Juni",
+                "Jun"
+            ],
+            [
+                "Juli",
+                "Jul"
+            ],
+            [
+                "Agustus",
+                "Agu"
+            ],
+            [
+                "September",
+                "Sep"
+            ],
+            [
+                "Oktober",
+                "Okt"
+            ],
+            [
+                "November",
+                "Nov"
+            ],
+            [
+                "Desember",
+                "Des"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

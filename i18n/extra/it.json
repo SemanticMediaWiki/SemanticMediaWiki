@@ -1,0 +1,191 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Proprietà",
+            "SMW_NS_PROPERTY_TALK": "Discussione proprietà",
+            "SMW_NS_CONCEPT": "Concetto",
+            "SMW_NS_CONCEPT_TALK": "Discussione concetto"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Pagina",
+            "_txt": "Testo",
+            "_cod": "Code",
+            "_boo": "Booleano",
+            "_num": "Numero",
+            "_geo": "Coordinate geografiche",
+            "_tem": "Temperatura",
+            "_dat": "Data",
+            "_ema": "Email",
+            "_uri": "URL",
+            "_anu": "Annotazione URI",
+            "_tel": "Telephone number",
+            "_rec": "Record",
+            "_qty": "Quantity",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Float": "_num",
+            "Integer": "_num",
+            "Intero": "_num",
+            "Enumeration": "_txt",
+            "Enumerazione": "_txt",
+            "Stringa": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Ha tipo",
+            "_URI": "URI equivalente",
+            "_SUBP": "Sottoproprietà di",
+            "_SUBC": "Subcategory of",
+            "_UNIT": "Visualizza unità",
+            "_IMPO": "Importato da",
+            "_CONV": "Corrisponde a ",
+            "_SERV": "Fornisce servizio",
+            "_PVAL": "Ammette valore",
+            "_MDAT": "Data di modifica",
+            "_CDAT": "Creation date",
+            "_NEWP": "Is a new page",
+            "_LEDT": "Last editor is",
+            "_ERRP": "Ha un valore improprio per",
+            "_LIST": "Has fields",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "Query string",
+            "_ASKFO": "Query format",
+            "_ASKSI": "Query size",
+            "_ASKDE": "Query depth",
+            "_ASKDU": "Query duration",
+            "_MEDIA": "Media type",
+            "_MIME": "Mime type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Display unit": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "gennaio",
+                "gen"
+            ],
+            [
+                "febbraio",
+                "feb"
+            ],
+            [
+                "marzo",
+                "mar"
+            ],
+            [
+                "aprile",
+                "apr"
+            ],
+            [
+                "maggio",
+                "mag"
+            ],
+            [
+                "giugno",
+                "giu"
+            ],
+            [
+                "luglio",
+                "lug"
+            ],
+            [
+                "agosto",
+                "ago"
+            ],
+            [
+                "settembre",
+                "set"
+            ],
+            [
+                "ottobre",
+                "ott"
+            ],
+            [
+                "novembre",
+                "nov"
+            ],
+            [
+                "dicembre",
+                "dic"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

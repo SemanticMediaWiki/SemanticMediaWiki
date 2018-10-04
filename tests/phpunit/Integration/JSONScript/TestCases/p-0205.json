@@ -1,0 +1,87 @@
+{
+	"description": "Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)",
+	"setup": [
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "AskTemplateToAddPropertyAnnotation",
+			"contents": "<includeonly>{{#set:|ByAskTemplateToSetProperty=1234}}</includeonly>"
+		},
+		{
+			"page": "Example/0205",
+			"contents": "{{#set:|TestPropertyByAskTemplate=TestValueByAskTemplate}}"
+		},
+		{
+			"page": "Example/0205/Ask/List",
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=list|template=AskTemplateToAddPropertyAnnotation|import-annotation=true}}"
+		},
+		{
+			"page": "Example/0205/Ask/Embedded/1",
+			"contents": "{{#ask:[[TestPropertyByAskTemplate::TestValueByAskTemplate]]|link=none|sep=|format=embedded|import-annotation=false}}"
+		},
+		{
+			"page": "Example/0205/Ask/Embedded/2",
+			"contents": "{{#ask:[[ByAskTemplateToSetProperty::1234]]|link=none|sep=|format=embedded|import-annotation=false}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/0205/Ask/List",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"ByAskTemplateToSetProperty"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 embbeded with disabled recursive parse support",
+			"subject": "Example/0205/Ask/Embedded/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 embbeded with disabled recursive parse support",
+			"subject": "Example/0205/Ask/Embedded/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

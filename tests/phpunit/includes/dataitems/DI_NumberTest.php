@@ -35,10 +35,10 @@ class SMWDINumberTest extends DataItemTest {
 	 * @return array
 	 */
 	public function constructorProvider() {
-		return array(
-			array( 0 ),
-			array( 243.35353 ),
-		);
+		return [
+			[ 0 ],
+			[ 243.35353 ],
+		];
 	}
 
 }

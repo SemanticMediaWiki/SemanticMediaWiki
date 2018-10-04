@@ -1,0 +1,218 @@
+{
+	"description": "Test in-text `_num`, `_qty` in combination with an \"Allows value\" range, bounds",
+	"setup": [
+		{
+			"page": "Has ranged number",
+			"namespace":"SMW_NS_PROPERTY",
+			"contents": "[[Has type::Number]], [[Allows value::>1]] [[Allows value::<10]] [[Allows value::20]]"
+		},
+		{
+			"page": "Has bounded number",
+			"namespace":"SMW_NS_PROPERTY",
+			"contents": "[[Has type::Number]], [[Allows value::1..10]] [[Allows value::50...60]] [[Allows value::70]]"
+		},
+		{
+			"page": "Has bounded quantity",
+			"namespace":"SMW_NS_PROPERTY",
+			"contents": "[[Has type::Quantity]], [[Allows value::1..200]] [[Corresponds to::1 km²]] [[Corresponds to::0.38613 sq mi]] [[Corresponds to::1000 m²]]"
+		},
+		{
+			"page": "Example/P0460/1",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has ranged number::2]]"
+		},
+		{
+			"page": "Example/P0460/2",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has ranged number::20]]"
+		},
+		{
+			"page": "Example/P0460/3",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has ranged number::10]]"
+		},
+		{
+			"page": "Example/P0460/4",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded number::1]]"
+		},
+		{
+			"page": "Example/P0460/5",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded number::60]]"
+		},
+		{
+			"page": "Example/P0460/6",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded number::70]]"
+		},
+		{
+			"page": "Example/P0460/7",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded number::60.1]]"
+		},
+		{
+			"page": "Example/P0460/8",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded quantity::200m²]]"
+		},
+		{
+			"page": "Example/P0460/9",
+			"namespace":"NS_MAIN",
+			"contents": "[[Has bounded quantity::200.1km²]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (number, inside the number range)",
+			"subject": "Example/P0460/1",
+			"assert-output": {
+				"to-contain": [
+					"2"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (number, outside of number range but matches discrete value)",
+			"subject": "Example/P0460/2",
+			"assert-output": {
+				"to-contain": [
+					"20"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31-) (number, invalid, outside of specified range)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/3",
+			"assert-output": {
+				"to-contain": [
+					"10<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;10&quot; is not in the list (&gt;1, ) of allowed values for the &quot;Has ranged number&quot; property.\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+) (number, invalid, outside of specified range)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/3",
+			"assert-output": {
+				"to-contain": [
+					"10<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;10&quot; is not in the list (&gt;1, ) of allowed values for the &quot;Has ranged number&quot; property.\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (number, inside the bounds)",
+			"subject": "Example/P0460/4",
+			"assert-output": {
+				"to-contain": [
+					"1"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (number, inside the seconds bounds)",
+			"subject": "Example/P0460/5",
+			"assert-output": {
+				"to-contain": [
+					"60"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (number, outside the bounds but matches discrete value)",
+			"subject": "Example/P0460/6",
+			"assert-output": {
+				"to-contain": [
+					"70"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (1.31-) (number, invalid, outside of specified bounds)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/7",
+			"assert-output": {
+				"to-contain": [
+					"60.1<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;60.1&quot; is not in the list (1..10, 50...60, 70) of allowed values for the &quot;Has bounded number&quot; property.\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (1.31+) (number, invalid, outside of specified bounds)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/7",
+			"assert-output": {
+				"to-contain": [
+					"60.1<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;60.1&quot; is not in the list (1..10, 50...60, 70) of allowed values for the &quot;Has bounded number&quot; property.\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (quantity, inside the bounds)",
+			"subject": "Example/P0460/8",
+			"assert-output": {
+				"to-contain": [
+					"0.2 km²"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (1.31-) (quantity, invalid, outside of specified range, bounds)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/9",
+			"assert-output": {
+				"to-contain": [
+					"200.1km²<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;200.1 km²&quot; is not within that range of &quot;1..200&quot; specified by the allows value constraint for the &quot;Has bounded quantity&quot; property.\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (1.31+) (quantity, invalid, outside of specified range, bounds)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0460/9",
+			"assert-output": {
+				"to-contain": [
+					"200.1km²<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"&quot;200.1 km²&quot; is not within that range of &quot;1..200&quot; specified by the allows value constraint for the &quot;Has bounded quantity&quot; property.\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

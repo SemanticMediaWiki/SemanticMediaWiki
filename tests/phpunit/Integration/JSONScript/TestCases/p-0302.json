@@ -1,0 +1,106 @@
+{
+	"description": "Test #subobject parser to use invalid assignments and create `_ERRC` (#1299, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0302/1",
+			"contents": "{{#subobject:abc.name |@category=ABC;123|+sep=;}}"
+		},
+		{
+			"page": "Example/P0302/2",
+			"contents": "{{#subobject:|Modification date= 1 Jan 1970 }}"
+		},
+		{
+			"page": "Example/P0302/3",
+			"contents": "{{#subobject:|Date= InvalidValue }}"
+		},
+		{
+			"page": "Example/P0302/4",
+			"contents": "{{#set_recurring_event:some.foo|property=Has date |start=June 8, 2010 |unit=day |period=1 |limit=10 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 dot scheme not permitted for user-defined named identifiers",
+			"subject": "Example/P0302/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 restricted property",
+			"subject": "Example/P0302/2#_6bcfd8f29c79e61086605597e7f2a8d4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 invalid value",
+			"subject": "Example/P0302/3#_d22883317b11ebaf00a39aaffc1d30fa",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 recurring events invalid name",
+			"subject": "Example/P0302/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": []
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

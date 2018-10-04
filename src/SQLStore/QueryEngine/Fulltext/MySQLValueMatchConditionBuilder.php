@@ -13,60 +13,7 @@ use SMW\Query\Language\ValueDescription;
 class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 
 	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param SearchTable $searchTable
-	 */
-	public function __construct( SearchTable $searchTable ) {
-		$this->searchTable = $searchTable;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return boolean
-	 */
-	public function isEnabled() {
-		return $this->searchTable->isEnabled();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function getTableName() {
-		return $this->searchTable->getTableName();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $value
-	 *
-	 * @return boolean
-	 */
-	public function hasMinTokenLength( $value ) {
-		return mb_strlen( $value ) >= $this->searchTable->getMinTokenSize();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param string $temporaryTable
-	 *
-	 * @return string
-	 */
-	public function getSortIndexField( $temporaryTable = '' ) {
-		return ( $temporaryTable !== '' ? $temporaryTable . '.' : '' ) . $this->searchTable->getSortField();
-	}
-
-	/**
+	 * @see ValueMatchConditionBuilder::canApplyFulltextSearchMatchCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
@@ -75,11 +22,15 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function canApplyFulltextSearchMatchCondition( ValueDescription $description ) {
 
-		if ( !$this->isEnabled() || $description->getProperty() === null ) {
+		if ( !$this->isEnabled() ) {
 			return false;
 		}
 
-		if ( $this->searchTable->isExemptedProperty( $description->getProperty() ) ) {
+		if ( $description->getProperty() !== null && $this->isExemptedProperty( $description->getProperty() ) ) {
+			return false;
+		}
+
+		if ( !$this->searchTable->isValidByType( $description->getDataItem()->getDiType() ) ) {
 			return false;
 		}
 
@@ -90,6 +41,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 		$comparator = $description->getComparator();
 
 		if ( $matchableText && ( $comparator === SMW_CMP_LIKE || $comparator === SMW_CMP_NLKE ) ) {
+
 			// http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 			// innodb_ft_min_token_size and innodb_ft_max_token_size are used
 			// for InnoDB search indexes. ft_min_word_len and ft_max_word_len
@@ -103,6 +55,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	}
 
 	/**
+	 * @see ValueMatchConditionBuilder::getWhereCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
@@ -112,14 +65,27 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 */
 	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
 
+		$affix = '';
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
 		);
 
-		$value = $this->searchTable->getTextSanitizer()->sanitize(
+		// Any query modifier? Take care of it before any tokenizer or ngrams
+		// distort the marker
+		if (
+			( $pos = strrpos( $matchableText, '&BOL' ) ) !== false ||
+			( $pos = strrpos( $matchableText, '&INL' ) ) !== false ||
+			( $pos = strrpos( $matchableText, '&QEX' ) ) !== false ) {
+			$affix = mb_strcut( $matchableText, $pos );
+			$matchableText = str_replace( $affix, '', $matchableText );
+		}
+
+		$value = $this->textSanitizer->sanitize(
 			$matchableText,
 			true
 		);
+
+		$value .= $affix;
 
 		// A leading or trailing minus sign indicates that this word must not
 		// be present in any of the rows that are returned.
@@ -137,7 +103,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 		// Full text is collected in a single table therefore limit the match
 		// process by adding the PID as an additional condition
 		if ( $property !== null ) {
-			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getPropertyID( $property );
+			$propertyCondition = 'AND ' . $temporaryTable . 'p_id=' . $this->searchTable->getIdByProperty( $property );
 		}
 
 		$querySearchModifier = $this->getQuerySearchModifier(

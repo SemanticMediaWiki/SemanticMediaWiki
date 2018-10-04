@@ -1,0 +1,70 @@
+{
+	"description": "Test #ask on redirected printrequest (#1290, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has PAGE",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "#REDIRECT [[Property:Has PAGE]]"
+		},
+		{
+			"page": "Example/P0903/1",
+			"contents": "[[Has page::ABC]]"
+		},
+		{
+			"page": "Example/P0903/2",
+			"contents": "[[Has PAGE::ABC]]"
+		},
+		{
+			"page": "Example/P0903/3",
+			"contents": "{{#ask:[[Has page::ABC]] |?Has page |?Has PAGE |format=table }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0903/3",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/P0903/1",
+					"Example/P0903/2"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

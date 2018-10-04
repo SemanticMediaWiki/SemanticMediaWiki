@@ -1,0 +1,45 @@
+{
+	"description": "Test RDF output on `/` in porperty name (#3134)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "R0020/URL",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/R0020/1",
+			"contents": "[[R0020/URL::https://example.org/Foo]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"dumpRDF": {
+				"parameters": {
+					"page": "Example/R0020/1"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<wiki:Property-3AR0020-2FURL rdf:resource=\"https://example.org/Foo\"/>",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3AR0020-2FURL\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

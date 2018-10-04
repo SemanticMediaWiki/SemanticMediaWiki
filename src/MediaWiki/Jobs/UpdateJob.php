@@ -2,10 +2,13 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use LinkCache;
 use ParserOutput;
 use SMW\ApplicationFactory;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Enum;
 use SMW\EventHandler;
 use Title;
 
@@ -18,7 +21,7 @@ use Title;
  * due to some type change).
  *
  * @note This job does not update the page display or parser cache, so in general
- * it might happen that part of the wiki page still displays based on old data (e.g.
+ * it might happen that part of the wiki page still displays old data (e.g.
  * formatting in-page values based on a datatype thathas since been changed), whereas
  * the Factbox and query/browsing interfaces might already show the updated records.
  *
@@ -29,7 +32,22 @@ use Title;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class UpdateJob extends JobBase {
+class UpdateJob extends Job {
+
+	/**
+	 * Enforces an update independent of the update marker status
+	 */
+	const FORCED_UPDATE = 'forcedUpdate';
+
+	/**
+	 * Indicates the use of the _CHGPRO property as base for the SemanticData
+	 */
+	const CHANGE_PROP = 'changeProp';
+
+	/**
+	 * Indicates the use of the semanticData parameter
+	 */
+	const SEMANTIC_DATA = 'semanticData';
 
 	/**
 	 * @var ApplicationFactory
@@ -42,9 +60,13 @@ class UpdateJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\UpdateJob', $title, $params );
+	function __construct( Title $title, $params = [] ) {
+		parent::__construct( 'smw.update', $title, $params );
 		$this->removeDuplicates = true;
+
+		$this->isEnabledJobQueue(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' )
+		);
 	}
 
 	/**
@@ -53,38 +75,22 @@ class UpdateJob extends JobBase {
 	 * @return boolean
 	 */
 	public function run() {
-		return $this->doUpdate();
-	}
 
-	/**
-	 * @see Job::insert
-	 *
-	 * This actually files the job. This is prevented if the configuration of SMW
-	 * disables jobs.
-	 *
-	 * @note Any method that inserts jobs with Job::batchInsert or otherwise must
-	 * implement this check individually. The below is not called in these cases.
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function insert() {
-		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgEnableUpdateJobs' ) ) {
-			parent::insert();
+		// #2199 ("Invalid or virtual namespace -1 given")
+		if ( $this->getTitle()->isSpecialPage() ) {
+			return true;
 		}
-	}
-
-	private function doUpdate() {
 
 		LinkCache::singleton()->clear();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $this->matchWikiPageLastModifiedToRevisionLastModified( $this->getTitle() ) ) {
+		if ( !$this->hasParameter( self::FORCED_UPDATE ) && $this->matchesLastModified( $this->getTitle() ) ) {
 			return true;
 		}
 
 		if ( $this->getTitle()->exists() ) {
-			return $this->doPrepareForUpdate();
+			return $this->doUpdate();
 		}
 
 		$this->applicationFactory->getStore()->clearData(
@@ -94,44 +100,99 @@ class UpdateJob extends JobBase {
 		return true;
 	}
 
-	private function matchWikiPageLastModifiedToRevisionLastModified( $title ) {
+	private function matchesLastModified( $title ) {
 
-		if ( $this->getParameter( 'pm' ) !== ( $this->getParameter( 'pm' ) | SMW_UJ_PM_CLASTMDATE ) ) {
+		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
 		}
 
-		$lastModified = $this->applicationFactory->getStore()->getWikiPageLastModifiedTimestamp(
+		$lastModified = $this->getLastModifiedTimestamp(
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		if ( $lastModified === \WikiPage::factory( $title )->getTimestamp() ) {
-			$pageUpdater = $this->applicationFactory->newMwCollaboratorFactory()->newPageUpdater();
-			$pageUpdater->addPage( $title );
-			$pageUpdater->doPurgeParserCache();
-			return true;
+		if ( $lastModified !== \WikiPage::factory( $title )->getTimestamp() ) {
+			return false;
 		}
 
-		return false;
+		$pageUpdater = $this->applicationFactory->newPageUpdater();
+		$pageUpdater->addPage( $title );
+		$pageUpdater->waitOnTransactionIdle();
+		$pageUpdater->doPurgeParserCache();
+
+		return true;
 	}
 
-	private function doPrepareForUpdate() {
-		return $this->needToParsePageContentBeforeUpdate();
+	private function doUpdate() {
+
+		// ChangePropagationJob
+		if ( $this->hasParameter( self::CHANGE_PROP ) ) {
+			return $this->change_propagation( $this->getParameter( self::CHANGE_PROP ) );
+		}
+
+		if ( $this->hasParameter( self::SEMANTIC_DATA ) ) {
+			return $this->set_data( $this->getParameter( self::SEMANTIC_DATA ) );
+		}
+
+		return $this->parse_content();
 	}
 
-	/**
-	 * SMW_UJ_PM_NP = new Parser to avoid "Parser state cleared" exception
-	 */
-	private function needToParsePageContentBeforeUpdate() {
+	private function change_propagation( $dataItem ) {
+
+		$this->setParameter( 'updateType', 'ChangePropagation' );
+		$subject = DIWikiPage::doUnserialize( $dataItem );
+
+		// Read the _CHGPRO property and fetch the serialized
+		// SemanticData object
+		$pv = $this->applicationFactory->getStore()->getPropertyValues(
+			$subject,
+			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+		);
+
+		if ( $pv === [] ) {
+			return;
+		}
+
+		// PropertySpecificationChangeNotifier encodes the serialized content
+		// using the JSON format
+		$semanticData = json_decode( end( $pv )->getString(), true );
+
+		$this->set_data(
+			$semanticData
+		);
+	}
+
+	private function set_data( $semanticData ) {
+
+		$this->setParameter( 'updateType', 'SemanticData' );
+
+		$semanticData = $this->applicationFactory->newSerializerFactory()->newSemanticDataDeserializer()->deserialize(
+			$semanticData
+		);
+
+		$semanticData->removeProperty(
+			new DIProperty( DIProperty::TYPE_CHANGE_PROP )
+		);
+
+		$parserData = $this->applicationFactory->newParserData(
+			$this->getTitle(),
+			new ParserOutput()
+		);
+
+		$parserData->setSemanticData( $semanticData );
+
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			false
+		);
+
+		return $this->updateStore( $parserData );
+	}
+
+	private function parse_content() {
+
+		$this->setParameter( 'updateType', 'ContentParse' );
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->getTitle() );
-
-		if ( $this->getParameter( 'pm' ) === ( $this->getParameter( 'pm' ) | SMW_UJ_PM_NP ) ) {
-			$contentParser->setParser(
-				new \Parser( $GLOBALS['wgParserConf'] )
-			);
-		}
-
-		$contentParser->forceToUseParser();
 		$contentParser->parse();
 
 		if ( !( $contentParser->getOutput() instanceof ParserOutput ) ) {
@@ -144,10 +205,36 @@ class UpdateJob extends JobBase {
 			$contentParser->getOutput()
 		);
 
+		// Suspend the purge as any preceding parse process most likely has
+		// invalidated the cache for a selected subject
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			true
+		);
+
 		return $this->updateStore( $parserData );
 	}
 
 	private function updateStore( $parserData ) {
+
+		$this->applicationFactory->getMediaWikiLogger()->info(
+			[
+				'Job',
+				'UpdateJob',
+				'{title}',
+				'Type: {updateType}',
+				'Origin: {origin}',
+				'isForcedUpdate: {forcedUpdate}'
+			],
+			[
+				'method' => __METHOD__,
+				'role' => 'user',
+				'title' => $this->getTitle()->getPrefixedDBKey(),
+				'origin' => $this->getParameter( 'origin', 'N/A' ),
+				'updateType' => $this->getParameter( 'updateType' ),
+				'forcedUpdate' => $this->getParameter( self::FORCED_UPDATE )
+			]
+		);
 
 		$eventHandler = EventHandler::getInstance();
 
@@ -167,10 +254,69 @@ class UpdateJob extends JobBase {
 		// TODO
 		// Rebuild the factbox
 
-		$parserData->disableBackgroundUpdateJobs();
+		$origin[] = 'UpdateJob';
+
+		if ( $this->hasParameter( 'origin' ) ) {
+			$origin[] = $this->getParameter( 'origin' );
+		}
+
+		if ( $this->hasParameter( 'ref' ) ) {
+			$origin[] = $this->getParameter( 'ref' );
+		}
+
+		$parserData->setOrigin( $origin );
+
+		$parserData->setOption(
+			Enum::OPT_SUSPEND_PURGE,
+			$this->getParameter( Enum::OPT_SUSPEND_PURGE )
+		);
+
+		$parserData->setOption(
+			$parserData::OPT_FORCED_UPDATE,
+			$this->getParameter( self::FORCED_UPDATE )
+		);
+
+		$parserData->setOption(
+			$parserData::OPT_CHANGE_PROP_UPDATE,
+			$this->getParameter( self::CHANGE_PROP )
+		);
+
+		$parserData->getSemanticData()->setOption(
+			\SMW\SemanticData::OPT_LAST_MODIFIED,
+			wfTimestamp( TS_UNIX )
+		);
+
+		$parserData->setOption(
+			$parserData::OPT_CREATE_UPDATE_JOB,
+			false
+		);
+
+		$parserData->getSemanticData()->setOption(
+			Enum::PURGE_ASSOC_PARSERCACHE,
+			(bool)$this->getParameter( Enum::PURGE_ASSOC_PARSERCACHE )
+		);
+
 		$parserData->updateStore();
 
 		return true;
+	}
+
+	/**
+	 * Convenience method to find last modified MW timestamp for a subject that
+	 * has been added using the storage-engine.
+	 */
+	private function getLastModifiedTimestamp( DIWikiPage $wikiPage ) {
+
+		$dataItems = $this->applicationFactory->getStore()->getPropertyValues(
+			$wikiPage,
+			new DIProperty( '_MDAT' )
+		);
+
+		if ( $dataItems !== [] ) {
+			return end( $dataItems )->getMwTimestamp( TS_MW );
+		}
+
+		return 0;
 	}
 
 }

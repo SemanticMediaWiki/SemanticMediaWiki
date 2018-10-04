@@ -2,9 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\DIWikiPage;
 use SMW\ParserFunctionFactory;
-use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\ParserFunctionFactory
@@ -22,7 +20,20 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->parserFactory = UtilityFactory::getInstance()->newParserFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'ParserData', $this->parserData );
+
+		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -47,15 +58,13 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserFunctionInstance( $instance, $method ) {
 
-		$parser = $this->parserFactory->newFromTitle(
-			DIWikiPage::newFromText( __METHOD__ )->getTitle()
-		);
+		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
 		$this->assertInstanceOf(
 			$instance,
-			call_user_func_array( array( $parserFunctionFactory, $method ), array( $parser ) )
+			call_user_func_array( [ $parserFunctionFactory, $method ], [ $parser ] )
 		);
 	}
 
@@ -64,15 +73,13 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParserFunctionDefinition( $method, $expected ) {
 
-		$parser = $this->parserFactory->newFromTitle(
-			DIWikiPage::newFromText( __METHOD__ )->getTitle()
-		);
+		$parser = $this->parserFactory->create( __METHOD__ );
 
 		$parserFunctionFactory = new ParserFunctionFactory( $parser );
 
 		$definition = call_user_func_array(
-			array( $parserFunctionFactory, $method ),
-			array( '' )
+			[ $parserFunctionFactory, $method ],
+			[ '' ]
 		);
 
 		$this->assertEquals(
@@ -91,92 +98,111 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAskParserFunctionWithParserOption() {
+
+		$this->parserData->expects( $this->at( 0 ) )
+			->method( 'setOption' )
+			->with(
+				$this->equalTo( \SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE ),
+				$this->anything() );
+
+		$parser = $this->parserFactory->create( __METHOD__ );
+		$parser->getOptions()->smwAskNoDependencyTracking = true;
+
+		$parserFunctionFactory = new ParserFunctionFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\ParserFunctions\AskParserFunction',
+			$parserFunctionFactory->newAskParserFunction( $parser )
+		);
+	}
+
 	public function parserFunctionProvider() {
 
-		$provider[] = array(
-			'\SMW\RecurringEventsParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'getRecurringEventsParser'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\SubobjectParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'getSubobjectParser'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\RecurringEventsParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\RecurringEventsParserFunction',
 			'newRecurringEventsParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\SubobjectParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\SubobjectParserFunction',
 			'newSubobjectParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\AskParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\AskParserFunction',
 			'newAskParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\ShowParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\ShowParserFunction',
 			'newShowParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\SetParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\SetParserFunction',
 			'newSetParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\ConceptParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\ConceptParserFunction',
 			'newConceptParserFunction'
-		);
+		];
 
-		$provider[] = array(
-			'\SMW\DeclareParserFunction',
+		$provider[] = [
+			'\SMW\ParserFunctions\DeclareParserFunction',
 			'newDeclareParserFunction'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function parserFunctionDefinitionProvider() {
 
-		$provider[] = array(
-			'newAskParserFunctionDefinition',
+		$provider[] = [
+			'getAskParserFunctionDefinition',
 			'ask'
-		);
+		];
 
-		$provider[] = array(
-			'newShowParserFunctionDefinition',
+		$provider[] = [
+			'getShowParserFunctionDefinition',
 			'show'
-		);
+		];
 
-		$provider[] = array(
-			'newSubobjectParserFunctionDefinition',
+		$provider[] = [
+			'getSubobjectParserFunctionDefinition',
 			'subobject'
-		);
+		];
 
-		$provider[] = array(
-			'newRecurringEventsParserFunctionDefinition',
+		$provider[] = [
+			'getSetRecurringEventParserFunctionDefinition',
 			'set_recurring_event'
-		);
+		];
 
-		$provider[] = array(
-			'newSetParserFunctionDefinition',
+		$provider[] = [
+			'getSetParserFunctionDefinition',
 			'set'
-		);
+		];
 
-		$provider[] = array(
-			'newConceptParserFunctionDefinition',
+		$provider[] = [
+			'getConceptParserFunctionDefinition',
 			'concept'
-		);
+		];
 
-		$provider[] = array(
-			'newDeclareParserFunctionDefinition',
+		$provider[] = [
+			'getDeclareParserFunctionDefinition',
 			'declare'
-		);
+		];
 
 		return $provider;
 	}

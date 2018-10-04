@@ -5,6 +5,7 @@ namespace SMW\Deserializers;
 use SMW\Deserializers\DVDescriptionDeserializer\DescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\DispatchingDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
+use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
@@ -82,19 +83,20 @@ class DVDescriptionDeserializerRegistry {
 	 *
 	 * @return DescriptionDeserializer
 	 */
-	public function getDescriptionDeserializerFor( DataValue $dataValue ) {
+	public function getDescriptionDeserializerBy( DataValue $dataValue ) {
 
 		if ( $this->dispatchingDescriptionDeserializer === null ) {
 			$this->dispatchingDescriptionDeserializer = $this->newDispatchingDescriptionDeserializer();
 		}
 
-		return $this->dispatchingDescriptionDeserializer->getDescriptionDeserializerFor( $dataValue );
+		return $this->dispatchingDescriptionDeserializer->getDescriptionDeserializerBy( $dataValue );
 	}
 
 	private function newDispatchingDescriptionDeserializer() {
 
 		$dispatchingDescriptionDeserializer = new DispatchingDescriptionDeserializer();
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new TimeValueDescriptionDeserializer() );
+		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new NumberValueDescriptionDeserializer() );
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new RecordValueDescriptionDeserializer() );
 		$dispatchingDescriptionDeserializer->addDescriptionDeserializer( new MonolingualTextValueDescriptionDeserializer() );
 

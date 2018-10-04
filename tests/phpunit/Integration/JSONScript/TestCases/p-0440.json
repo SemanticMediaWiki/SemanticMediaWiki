@@ -1,0 +1,187 @@
+{
+	"description": "Test in-text annotation `_mlt_rec` (Monolingual text) with `|+lang`/`|+order` parameter (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has alternative label",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "SomeProperty",
+			"contents": " [[Category:P0440]] [[Has property description::Something ...@en]] [[Has property description::何かあるもの。。。@ja]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "AnotherProperty",
+			"contents": " [[Category:P0440]] [[Has property description::Something else ...@en]] [[Has property description::他の何かあるもの。。。@ja]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has alternative record",
+			"contents": "[[Has type::Record]] [[Has fields::Text;Number]]"
+		},
+		{
+			"page": "Example/P0440/Triacylglycerol lipase",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Has alternative record::ABC;123]] [[Has alternative label::Lipase@en]], [[Has alternative label::Tributyrase@en]], [[Has alternative label::Triglyceride lipase@en]], [[Has alternative label::トリアシルグリセロールリパーゼ@ja]], [[Has alternative label::ليباز ثلاثي اسيل الغليسيرول@ar]], [[Has alternative label::Triacylglycérol lipase@fr]], [[Has alternative label::Triacilglicerol lipaza@sh]], [[Has alternative label::Triacilglicerol lipaza@sr]]"
+		},
+		{
+			"page": "Example/P0440/Q.0",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+order=desc }}"
+		},
+		{
+			"page": "Example/P0440/Q.1",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+order=asc }}"
+		},
+		{
+			"page": "Example/P0440/Q.2",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+order=asc }}"
+		},
+		{
+			"page": "Example/P0440/Q.3",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+limit=1|+order=asc }}"
+		},
+		{
+			"page": "Example/P0440/Q.4",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=en|+limit=1 |limit=0 }}"
+		},
+		{
+			"page": "Example/P0440/Q.5",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has alternative label|+lang=foo|+order=asc }}"
+		},
+		{
+			"page": "Example/P0440/Q.6",
+			"contents": "{{#ask: [[Has alternative label::+]] |?Has page|+lang=en }}"
+		},
+		{
+			"page": "Example/P0440/Q.7",
+			"contents": "{{#ask: [[Has alternative record::+]] |?Has alternative record|+lang=en }}"
+		},
+		{
+			"page": "Example/P0440/Q.8",
+			"contents": "{{#ask: [[Category:P0440]] [[Has property description::+]] |?Has property description|+lang=en }}"
+		},
+		{
+			"page": "Example/P0440/Q.9",
+			"contents": "{{#ask: [[Category:P0440]] [[Has property description::+]] |?Has property description|+lang=en |?Has property description|+lang=ja  |limit=1 }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (no filter, lang tag, desc)",
+			"subject": "Example/P0440/Q.0",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-alternative-label smwtype_mlt_rec\">トリアシルグリセロールリパーゼ (ja)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />Triglyceride lipase (en)<br />Tributyrase (en)<br />Triacylglycérol lipase (fr)<br />Triacilglicerol lipaza (sr)<br />Triacilglicerol lipaza (sh)<br />Lipase (en)</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (no filter, lang tag, asc)",
+			"subject": "Example/P0440/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-alternative-label smwtype_mlt_rec\">Lipase (en)<br />Triacilglicerol lipaza (sh)<br />Triacilglicerol lipaza (sr)<br />Triacylglycérol lipase (fr)<br />Tributyrase (en)<br />Triglyceride lipase (en)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />トリアシルグリセロールリパーゼ (ja)</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (filtered by language, no lang tag)",
+			"subject": "Example/P0440/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-alternative-label smwtype_txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (column value list limited to 1)",
+			"subject": "Example/P0440/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-alternative-label smwtype_txt\">Lipase</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (no result, Special:Ask link)",
+			"subject": "Example/P0440/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BHas-20alternative-20label::+-5D-5D/-3FHas-20alternative-20label-7C+lang=en-7C+limit=1/mainlabel=/offset=0/format=table"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (invalid/unknown/unmatchable language)",
+			"subject": "Example/P0440/Q.5",
+			"assert-output": {
+				"not-contain": [
+					"<td class=\"Has-alternative-label smwtype_txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (+lang not applied on non-Monolingual type)",
+			"subject": "Example/P0440/Q.6",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0440/Triacylglycerol lipase\">Example/P0440/Triacylglycerol lipase</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (+lang not applied on non-Monolingual type)",
+			"subject": "Example/P0440/Q.7",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0440/Triacylglycerol lipase\">Example/P0440/Triacylglycerol lipase</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8",
+			"subject": "Example/P0440/Q.8",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Property-description smwtype_txt\">Something else ...</td>",
+					"<td class=\"Property-description smwtype_txt\">Something ...</td>"
+				],
+				"not-contain": [
+					"<td class=\"Property-description smwtype_txt\">Something ...<br />何かあるもの。。。</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (no `|+index=...` in further result links)",
+			"subject": "Example/P0440/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:P0440-5D-5D-20-5B-5BProperty-20description::+-5D-5D/-3FProperty-20description-7C+lang=en/-3FProperty-20description-7C+lang=ja/mainlabel=/limit=1/offset=1/format=table"
+				],
+				"not-contain": [
+					"-5B-5BCategory:P0440-5D-5D-20-5B-5BProperty-20description::+-5D-5D/-3FProperty-20description-7C+lang=en-7C+index=1/-3FProperty-20description-7C+lang=ja-7C+index=1/mainlabel=/limit=1/offset=1/format=table"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

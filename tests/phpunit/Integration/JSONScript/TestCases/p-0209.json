@@ -1,0 +1,247 @@
+{
+	"description": "Test `#set` for various `_qty` values without explicit precision (3 digit implicit), with/without leading zero, and different printouts (#753, en, `smwgMaxNonExpNumber`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has area",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km²]] [[Corresponds to::0.38610 sq mi, sqmi]] [[Corresponds to::1000 m²]] [[Corresponds to::247.1054 acre]] [[Corresponds to::988.42155 rood]]"
+		},
+		{
+			"page": "Example/P0209/1",
+			"contents": "{{#set: Has area=25 sq mi;30 sqmi; 10 m ²|+sep=; }}"
+		},
+		{
+			"page": "Example/P0209/2",
+			"contents": "{{#set:Has area=.25 sq mi;.30 sqmi; .10 m ²|+sep=; }}"
+		},
+		{
+			"page": "Example/P0209/1/1",
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/1/2",
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/1/3",
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-n|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/1/4",
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#-u|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/1/5",
+			"contents": "{{#ask: [[Example/P0209/1]] |?Has area#m²|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/2/1",
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/2/2",
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/2/3",
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-n|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/2/4",
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#-u|+order=desc |format=table }}"
+		},
+		{
+			"page": "Example/P0209/2/5",
+			"contents": "{{#ask: [[Example/P0209/2]] |?Has area#m²|+order=desc |format=table }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0209/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_area",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"64.750064750065",
+						"77.700077700078",
+						"0.01"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0209/2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_area",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"0.64750064750065",
+						"0.77700077700078",
+						"0.0001"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 #ask quantity standard output",
+			"subject": "Example/P0209/1/1",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"77.700077700078\"",
+					"<span class=\"smwtext\">64.75&#160;km²</span>",
+					"25&#160;sqmi",
+					"64,750.065&#160;m²",
+					"16,000.091&#160;acre",
+					"64,000.359&#160;rood",
+					"<span class=\"smwtext\">77.7&#160;km²</span>",
+					"77,700.078&#160;m²",
+					"19,200.109&#160;acre",
+					"76,800.431&#160;rood",
+					"<span class=\"smwtext\">0.01&#160;km²</span>",
+					"0.00386&#160;sqmi",
+					"10&#160;m²",
+					"2.471&#160;acre",
+					"9.884&#160;rood"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #ask quantity plain output",
+			"subject": "Example/P0209/1/2",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"77.700077700078\"",
+					"64.750064750065 km²",
+					"77.700077700078 km²",
+					"0.01 km²"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 #ask quantity no unit output",
+			"subject": "Example/P0209/1/3",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"77.700077700078\"",
+					"77.700077700078<br />",
+					"<br />64.750064750065<br />",
+					"<br />0.01"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #ask quantity only unit output",
+			"subject": "Example/P0209/1/4",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"77.700077700078\"",
+					"<br />km²<br />"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 #ask quantity output specific unit",
+			"subject": "Example/P0209/1/5",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"77.700077700078\"",
+					"<span class=\"smwtext\">64,750.065&#160;m²</span>",
+					"<span class=\"smwtext\">77,700.078&#160;m²</span>",
+					"<span class=\"smwtext\">10&#160;m²</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 #ask quantity standard output",
+			"subject": "Example/P0209/2/1",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"0.77700077700078\"",
+					"<span class=\"smwtext\">0.648&#160;km²</span>",
+					"<span class=\"smwtext\">0.777&#160;km²</span>",
+					"<span class=\"smwtext\">1.0e-4&#160;km²</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 #ask quantity plain unit output",
+			"subject": "Example/P0209/2/2",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"0.77700077700078\"",
+					"0.77700077700078 km²<br />",
+					"<br />0.64750064750065 km²<br />",
+					"<br />0.0001 km²"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 #ask quantity number only output",
+			"subject": "Example/P0209/2/3",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"0.77700077700078\"",
+					"0.77700077700078<br />",
+					"<br />0.64750064750065<br />",
+					"<br />0.0001"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 #ask quantity output specific unit",
+			"subject": "Example/P0209/2/5",
+			"assert-output": {
+				"to-contain": [
+					"data-sort-value=\"0.77700077700078\"",
+					"<span class=\"smwtext\">647.501&#160;m²</span>",
+					"<span class=\"smwtext\">777.001&#160;m²</span>",
+					"<span class=\"smwtext\">0.1&#160;m²</span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgMaxNonExpNumber": 1.0e+15,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

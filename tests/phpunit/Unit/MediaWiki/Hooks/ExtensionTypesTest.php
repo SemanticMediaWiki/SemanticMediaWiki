@@ -17,22 +17,23 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$extensionTypes = array();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ExtensionTypes',
-			new ExtensionTypes( $extensionTypes )
+			ExtensionTypes::class,
+			new ExtensionTypes()
 		);
 	}
 
 	public function testProcess() {
 
-		$extensionTypes = array();
+		$extensionTypes = [];
 
-		$instance = new ExtensionTypes( $extensionTypes );
-		$instance->process();
+		$instance = new ExtensionTypes();
+		$instance->process( $extensionTypes );
 
-		$this->assertArrayHasKey( 'semantic', $extensionTypes );
+		$this->assertArrayHasKey(
+			'semantic',
+			$extensionTypes
+		);
 	}
 
 }

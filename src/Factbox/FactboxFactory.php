@@ -5,7 +5,8 @@ namespace SMW\Factbox;
 use IContextSource;
 use OutputPage;
 use SMW\ApplicationFactory;
-use SMW\ParserData;
+use Title;
+use ParserOutput;
 
 /**
  * @license GNU GPL v2+
@@ -22,16 +23,24 @@ class FactboxFactory {
 	 */
 	public function newCachedFactbox() {
 
-		$cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
-
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
-			'useCache' => ApplicationFactory::getInstance()->getSettings()->get( 'smwgFactboxUseCache' ),
-			'ttl'      => 0
-		) );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$cachedFactbox = new CachedFactbox(
-			$cacheFactory->newMediaWikiCompositeCache( $cacheFactory->getMainCacheType() ),
-			$cacheOptions
+			$applicationFactory->getCache(
+				$settings->get( 'smwgMainCacheType' )
+			)
+		);
+
+		// Month = 30 * 24 * 3600
+		$cachedFactbox->setExpiryInSeconds( 2592000 );
+
+		$cachedFactbox->isEnabled(
+			$settings->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE )
+		);
+
+		$cachedFactbox->setFeatureSet(
+			$settings->get( 'smwgFactboxFeatures' )
 		);
 
 		return $cachedFactbox;
@@ -40,23 +49,25 @@ class FactboxFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param ParserData $parserData
-	 * @param IContextSource $context
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return Factbox
 	 */
-	public function newFactbox( ParserData $parserData, IContextSource $context ) {
+	public function newFactbox( Title $title, ParserOutput $parserOutput ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$messageBuilder = $applicationFactory->newMwCollaboratorFactory()->newMessageBuilder();
-		$messageBuilder->setLanguageFromContext( $context );
-
-		return new Factbox(
+		$factbox = new Factbox(
 			$applicationFactory->getStore(),
-			$parserData,
-			$messageBuilder
+			$applicationFactory->newParserData( $title, $parserOutput )
 		);
+
+		$factbox->setFeatureSet(
+			$applicationFactory->getSettings()->get( 'smwgFactboxFeatures' )
+		);
+
+		return $factbox;
 	}
 
 }

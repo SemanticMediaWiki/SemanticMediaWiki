@@ -1,0 +1,56 @@
+{
+	"description": "Test output from `Special:SearchByProperty` / `_dat` (#1922, `wgContLang=en`, `wgLang=es`, skip-on sqlite)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/S0010/1",
+			"contents": "[[Has date::1 Jan 1970]]"
+		},
+		{
+			"page": "Example/S0010/2",
+			"contents": "[[Has date::2 Dec 2100 12:12:12]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 infolinks on value are content lang. formatted",
+			"special-page": {
+				"page": "SearchByProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"property": "Has date"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li>1 ene 1970&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20date/1-20January-201970\">+</a>",
+					"<li>12:12:12 2 dic 2100&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20date/2-20December-202100-2012:12:12\">+</a>"
+				],
+				"not-contain": [
+					"title=\"Special:SearchByProperty/:Has-20date/1-20ene-201970\">+</a>",
+					"title=\"Special:SearchByProperty/:Has-20date/12:12:12-202-20dic-202100\">+</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

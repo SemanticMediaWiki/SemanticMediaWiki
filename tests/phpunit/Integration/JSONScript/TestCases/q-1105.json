@@ -1,0 +1,94 @@
+{
+	"description": "Test `_rec` in combination with named subobject (T49472, #1300, en, `smwStrictComparators=false`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has record text",
+			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
+		},
+		{
+			"page": "Example/Q1105/1",
+			"contents": "{{#subobject: Test|Has text=Foo|Has record text=abc;123}} {{#subobject: Test|Has text=Bar}}"
+		},
+		{
+			"page": "Example/Q1105/2",
+			"contents": "{{#subobject: Test|Has text=Bar}} {{#subobject: Test|Has text=Foo|Has record text=abc;456}}"
+		},
+		{
+			"page": "Example/Q1105/3",
+			"contents": "{{#subobject: Test|Has text=Foo|Has record text=def;456}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 declaration order does not matter (oppose to T49472)",
+			"condition": "[[Has record text::abc;?]]",
+			"printouts": [
+				"Has record text"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q1105/1#0##Test",
+					"Example/Q1105/2#0##Test"
+				],
+				"datavalues": [
+					{
+						"property": "Has record text",
+						"value": "abc;123"
+					},
+					{
+						"property": "Has record text",
+						"value": "abc;456"
+					}
+				]
+			},
+			"store": {
+				"clear-cache": true
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 same as #0 only to use property chain notation",
+			"condition": "[[Has record text.Has text::abc]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/Q1105/1#0##Test",
+					"Example/Q1105/2#0##Test"
+				]
+			},
+			"store": {
+				"clear-cache": true
+			}
+		}
+	],
+	"settings": {
+		"smwStrictComparators": false,
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

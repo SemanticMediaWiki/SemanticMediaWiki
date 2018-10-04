@@ -52,19 +52,52 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFetchSemanticData() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$editInfo = (object)[];
+		$editInfo->output = new ParserOutput();
+		$editInfo->output->setExtensionData( \SMW\ParserData::DATA_ID, $semanticData );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->will( $this->returnValue( $editInfo ) );
+
+		$instance = new EditInfoProvider(
+			$wikiPage,
+			$this->newRevisionStub()
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SemanticData',
+			$instance->fetchSemanticData()
+		);
+	}
+
 	/**
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
 
-		$instance = $this->getMock( '\SMW\MediaWiki\EditInfoProvider',
-			array( 'hasContentForEditMethod' ),
-			array(
+		if ( !method_exists( '\WikiPage', 'prepareTextForEdit' ) ) {
+			$this->markTestSkipped( 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)' );
+		}
+
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->setConstructorArgs( [
 				$parameters['wikiPage'],
 				$parameters['revision'],
 				null
-			)
-		);
+			] )
+			->setMethods( [ 'hasContentForEditMethod' ] )
+			->getMock();
 
 		$instance->expects( $this->any() )
 			->method( 'hasContentForEditMethod' )
@@ -78,101 +111,116 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function wikiPageDataProvider() {
 
+		// 'WikiPage::prepareTextForEdit is no longer accessible (MW 1.29+)'
+		$prepareTextForEditExists = method_exists( '\WikiPage', 'prepareTextForEdit' );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		#0 No parserOutput object
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = null;
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ $title ] )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		#1
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ $title ] )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( false ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( false ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( false ) );
+		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => false,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		#2
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ $title ] )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			$editInfo->output
-		);
+		];
 
 		#3
-		$editInfo = (object)array();
+		$editInfo = (object)[];
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ $title ] )
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		if ( $prepareTextForEditExists ) {
+			$wikiPage->expects( $this->any() )
+				->method( 'prepareTextForEdit' )
+				->will( $this->returnValue( $editInfo ) );
+		}
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
 				'revision' => $this->newRevisionStub()
-			),
+			],
 			null
-		);
+		];
 
 		return $provider;
 	}
@@ -181,6 +229,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'getRawText', 'getContent' ] )
 			->getMock();
 
 		$revision->expects( $this->any() )
@@ -189,10 +238,10 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
-			->will( $this->returnValueMap( array(
-				array( \Revision::RAW, null, 'Foo' ),
-				array( \Revision::FOR_PUBLIC, null, $this->newContentStub() ),
-			) ) );
+			->will( $this->returnValueMap( [
+				[ \Revision::RAW, null, 'Foo' ],
+				[ \Revision::FOR_PUBLIC, null, $this->newContentStub() ],
+			] ) );
 
 		return $revision;
 	}

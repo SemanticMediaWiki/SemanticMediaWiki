@@ -4,8 +4,9 @@ namespace SMW\Test;
 
 use SMW\DataItemFactory;
 use SMW\Settings;
-use SMW\UnusedPropertiesQueryPage;
 use SMW\Tests\TestEnvironment;
+use SMW\UnusedPropertiesQueryPage;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $skin;
@@ -50,13 +53,13 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $container ) );
 
 		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
-			->setConstructorArgs( array( $this->store, $blobStore ) )
+			->setConstructorArgs( [ $this->store, $blobStore ] )
 			->setMethods( null )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'CachedPropertyValuesPrefetcher', $cachedPropertyValuesPrefetcher );
 
-		$this->settings = Settings::newFromArray( array() );
+		$this->settings = Settings::newFromArray( [] );
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
@@ -98,14 +101,14 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInvalidResultException() {
+	public function testInvalidResultThrowsException() {
 
 		$instance = new UnusedPropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
-		$this->setExpectedException( '\SMW\InvalidResultException' );
+		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundException' );
 		$instance->formatResult( $this->skin, null );
 	}
 

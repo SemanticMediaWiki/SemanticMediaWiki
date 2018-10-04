@@ -43,7 +43,7 @@ class QueryResultFactory {
 		return new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
-			array(),
+			[],
 			$this->store,
 			$hasFurtherResults
 		);
@@ -77,7 +77,7 @@ class QueryResultFactory {
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
-			array(),
+			[],
 			$this->store,
 			false
 		);
@@ -85,7 +85,7 @@ class QueryResultFactory {
 		if ( $repositoryResult->getErrorCode() === RepositoryResult::ERROR_NOERROR ) {
 			$queryResult->setCountValue( $repositoryResult->getNumericValue() );
 		} else {
-			$queryResult->addErrors( array( wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ) );
+			$queryResult->addErrors( [ wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ] );
 		}
 
 		return $queryResult;
@@ -93,7 +93,7 @@ class QueryResultFactory {
 
 	private function makeQueryResultForInstance( RepositoryResult $repositoryResult, Query $query ) {
 
-		$resultDataItems = array();
+		$resultDataItems = [];
 
 		foreach ( $repositoryResult as $resultRow ) {
 
@@ -127,10 +127,10 @@ class QueryResultFactory {
 			case RepositoryResult::ERROR_NOERROR:
 			break;
 			case RepositoryResult::ERROR_INCOMPLETE:
-				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ) );
+				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryincomplete' )->inContentLanguage()->text() ] );
 			break;
 			default:
-				$result->addErrors( array( wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ) );
+				$result->addErrors( [ wfMessage( 'smw_db_sparqlqueryproblem' )->inContentLanguage()->text() ] );
 			break;
 		}
 

@@ -18,7 +18,7 @@ class Disjunction extends Description {
 	/**
 	 * @var Description[]
 	 */
-	private $descriptions;
+	private $descriptions = [];
 
 	/**
 	 * contains a single class description if any such disjunct was given;
@@ -35,9 +35,53 @@ class Disjunction extends Description {
 	 */
 	private $isTrue = false;
 
-	public function __construct( array $descriptions = array() ) {
+	public function __construct( array $descriptions = [] ) {
 		foreach ( $descriptions as $desc ) {
 			$this->addDescription( $desc );
+		}
+	}
+
+	/**
+	 * @see Description::getFingerprint
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+
+		// Avoid a recursive tree
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
+		}
+
+		$fingerprint = [];
+
+		foreach ( $this->descriptions as $description ) {
+			$fingerprint[$description->getFingerprint()] = true;
+		}
+
+		ksort( $fingerprint );
+
+		return $this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $hierarchyDepth
+	 */
+	public function setHierarchyDepth( $hierarchyDepth ) {
+
+		$this->fingerprint = null;
+
+		if ( $this->classDescription !== null ) {
+			$this->classDescription->setHierarchyDepth( $hierarchyDepth );
+		}
+
+		foreach ( $this->descriptions as $key => $description ) {
+			if ( $description instanceof SomeProperty ) {
+				$description->setHierarchyDepth( $hierarchyDepth );
+			}
 		}
 	}
 
@@ -46,35 +90,42 @@ class Disjunction extends Description {
 	}
 
 	public function addDescription( Description $description ) {
+
+		$this->fingerprint = null;
+		$fingerprint = $description->getFingerprint();
+
 		if ( $description instanceof ThingDescription ) {
 			$this->isTrue = true;
-			$this->descriptions = array(); // no conditions any more
+			$this->descriptions = []; // no conditions any more
 			$this->classDescription = null;
 		}
 
 		if ( !$this->isTrue ) {
-			if ( $description instanceof ClassDescription ) { // combine class descriptions
+			 // Combine class descriptions only when those describe the same state
+			if ( $description instanceof ClassDescription ) {
 				if ( is_null( $this->classDescription ) ) { // first class description
 					$this->classDescription = $description;
-					$this->descriptions[] = $description;
-				} else {
+					$this->descriptions[$description->getFingerprint()] = $description;
+				} elseif ( $this->classDescription->isMergableDescription( $description ) ) {
 					$this->classDescription->addDescription( $description );
+				} else {
+					$this->descriptions[$description->getFingerprint()] = $description;
 				}
 			} elseif ( $description instanceof Disjunction ) { // absorb sub-disjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
-					$this->descriptions[] = $subdesc;
+					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;
 				}
 			// } elseif ($description instanceof SMWSomeProperty) {
 			   ///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
 			} else {
-				$this->descriptions[] = $description;
+				$this->descriptions[$fingerprint] = $description;
 			}
 		}
 
 		// move print descriptions downwards
 		///TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
 		$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
-		$description->setPrintRequests( array() );
+		$description->setPrintRequests( [] );
 	}
 
 	public function getQueryString( $asValue = false ) {
@@ -153,7 +204,7 @@ class Disjunction extends Description {
 			return new ThingDescription();
 		}
 
-		$prunelog = array();
+		$prunelog = [];
 		$newdepth = $maxdepth;
 		$result = new Disjunction();
 

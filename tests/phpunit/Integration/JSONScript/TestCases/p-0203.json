@@ -1,0 +1,104 @@
+{
+	"description": "Test #set parser in combination with #subobject and template output (#1067, regression check)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Paragraph number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Paragraph",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Paragraph backlink",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "SimpleSetTemplate",
+			"contents": "<includeonly>Lorem ipsum.{{#set:Reference=Test}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "CreateParagraphAsSubobject",
+			"contents": "<includeonly><div style=\"display:none;\">{{#subobject:|Paragraph number={{{Paragraph number|}}}|Paragraph={{{Paragraph|}}}|Paragraph backlink={{PAGENAME}} }}</div></includeonly>"
+		},
+		{
+			"page": "Transclude-Template",
+			"contents": "{{CreateParagraphAsSubobject|Paragraph number=1|Paragraph=Test1 {{SimpleSetTemplate}} }} {{SimpleSetTemplate}}"
+		},
+		{
+			"page": "Ask-For-Transclude-Template",
+			"contents": "{{#ask:[[Paragraph backlink::Transclude-Template]]|?Paragraph}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Transclude-Template",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Reference",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"Test",
+						"Transclude-Template#_2d7f2b93bd6e9816ff85f022cddc62eb"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 subobject check",
+			"subject": "Transclude-Template#_2d7f2b93bd6e9816ff85f022cddc62eb",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Paragraph",
+						"Paragraph_backlink",
+						"Paragraph_number",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"1",
+						"Test1 Lorem ipsum.",
+						"Transclude-Template"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 check for the ask output",
+			"subject": "Ask-For-Transclude-Template",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Transclude-Template\">Transclude-Template</a>",
+					"<td class=\"Paragraph smwtype_txt\">Test1 Lorem ipsum.</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

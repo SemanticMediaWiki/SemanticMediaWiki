@@ -3,6 +3,7 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use SMW\Exception\SubSemanticDataException;
 use SMWContainerSemanticData;
 use SMWDataValue;
 use SMWDIContainer;
@@ -31,7 +32,7 @@ class Subobject {
 	/**
 	 * @var array
 	 */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * @since 1.9
@@ -86,7 +87,14 @@ class Subobject {
 	 * @param array|string $error
 	 */
 	public function addError( $error ) {
-		$this->errors = array_merge( $this->errors, (array)$error );
+
+		if ( is_string( $error ) ) {
+			$error = [ md5( $error ) => $error ];
+		}
+
+		// Preserve the keys, avoid using array_merge to avert a possible
+		// Fatal error: Allowed memory size of ... bytes exhausted ... Subobject.php on line 89
+		$this->errors += $error;
 	}
 
 	/**
@@ -132,7 +140,7 @@ class Subobject {
 	public function getSemanticData() {
 
 		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
-			throw new InvalidSemanticDataException( 'The semantic data container is not initialized' );
+			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}
 
 		return $this->semanticData;
@@ -165,12 +173,12 @@ class Subobject {
 	 *
 	 * @param DataValue $dataValue
 	 *
-	 * @throws InvalidSemanticDataException
+	 * @throws SubSemanticDataException
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
 
 		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
-			throw new InvalidSemanticDataException( 'The semantic data container is not initialized' );
+			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}
 
 		$this->semanticData->addDataValue( $dataValue );

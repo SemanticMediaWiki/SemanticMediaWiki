@@ -18,10 +18,15 @@ use SMWNumberValue as NumberValue;
 class TemperatureValue extends NumberValue {
 
 	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_tem';
+
+	/**
 	 * @param string $typeid
 	 */
 	public function __construct( $typeid = '' ) {
-		parent::__construct( '_tem' );
+		parent::__construct( self::TYPE_ID );
 	}
 
 	/**
@@ -49,7 +54,7 @@ class TemperatureValue extends NumberValue {
 			return; // do this only once
 		}
 
-		$this->m_unitvalues = array();
+		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
 			return $this->m_unitvalues;
@@ -58,12 +63,12 @@ class TemperatureValue extends NumberValue {
 		$displayUnit = $this->getPreferredDisplayUnit();
 		$number = $this->m_dataitem->getNumber();
 
-		$unitvalues = array(
+		$unitvalues = [
 			'K'  => $number,
 			'°C' => $number - 273.15,
 			'°F' => ( $number - 273.15 ) * 1.8 + 32,
 			'°R' => ( $number ) * 1.8
-		);
+		];
 
 		if ( isset( $unitvalues[$displayUnit] ) ) {
 			$this->m_unitvalues[$displayUnit] = $unitvalues[$displayUnit];
@@ -144,7 +149,7 @@ class TemperatureValue extends NumberValue {
 	 * NumberValue::getUnitList
 	 */
 	public function getUnitList() {
-		return array( 'K', '°C', '°F', '°R' );
+		return [ 'K', '°C', '°F', '°R' ];
 	}
 
 	/**
@@ -162,11 +167,11 @@ class TemperatureValue extends NumberValue {
 			return $unit;
 		}
 
-		$units = $this->getPropertySpecificationLookup()->getDisplayUnitsFor(
+		$units = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getDisplayUnits(
 			$this->getProperty()
 		);
 
-		if ( $units !== null && $units !== array() ) {
+		if ( $units !== null && $units !== [] ) {
 			$unit = $this->getUnitID( end( $units ) );
 		}
 

@@ -1,0 +1,89 @@
+{
+	"description": "Test that undeclared properties with references remain after a `rebuildData` run (#1216, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Test/P0207",
+			"contents": "{{#set:Has number=12}} {{#set:Undeclared property=abc}} [[Undeclared prop::P0207]]"
+		},
+		{
+			"namespace": "NS_HELP",
+			"page": "Test/P0207/1",
+			"contents": "{{:Test/P0207}}"
+		}
+	],
+	"beforeTest": {
+		"maintenance-run": {
+			"rebuildData": true
+		}
+	},
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 Rebuild + clear cache to verify that the disposer (#1216) didn't remove undeclared properties that still contain references",
+			"subject": "Test/P0207",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"Has_number",
+						"_ERRP",
+						"_SKEY",
+						"_MDAT",
+						"Undeclared_property",
+						"Undeclared_prop"
+					],
+					"propertyValues": [
+						12,
+						"Abc",
+						"P0207"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 embedded page on disabled namespace",
+			"namespace": "NS_HELP",
+			"subject": "Test/P0207/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 0
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".* title=\"P0207.*\">P0207</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": false,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

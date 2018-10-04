@@ -80,29 +80,110 @@ class QueryComparatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider containsComparatorProvider
+	 */
+	public function testContainsComparator( $string, $comparator, $expected ) {
+
+		$comparatorList = '';
+
+		$instance = new QueryComparator( $comparatorList, true );
+
+		$this->assertEquals(
+			$expected,
+			$instance->containsComparator( $string, $comparator )
+		);
+	}
+
 	public function stringComparatorProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'!~',
 			SMW_CMP_NLKE
-		);
+		];
 
 		return $provider;
 	}
 
 	public function extractStringComparatorProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'!~Foo',
 			'Foo',
 			SMW_CMP_NLKE
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<Foo',
 			'Foo',
 			SMW_CMP_LESS
-		);
+		];
+
+		$provider[] = [
+			'like:Foo',
+			'Foo',
+			SMW_CMP_PRIM_LIKE
+		];
+
+		$provider[] = [
+			'nlike:Foo',
+			'Foo',
+			SMW_CMP_PRIM_NLKE
+		];
+
+		return $provider;
+	}
+
+	public function containsComparatorProvider() {
+
+		$provider[] = [
+			'~someThing',
+			SMW_CMP_EQ,
+			false
+		];
+
+		$provider[] = [
+			'someThing',
+			SMW_CMP_EQ,
+			true
+		];
+
+		$provider[] = [
+			'!~someThing',
+			SMW_CMP_NLKE,
+			true
+		];
+
+		$provider[] = [
+			'!~someThing',
+			SMW_CMP_LIKE,
+			false
+		];
+
+		$provider[] = [
+			'>>someThing',
+			SMW_CMP_LESS,
+			false
+		];
+
+		$provider[] = [
+			'<<someThing',
+			SMW_CMP_LESS,
+			true
+		];
+
+
+		$provider[] = [
+			'like:someThing',
+			SMW_CMP_PRIM_LIKE,
+			true
+		];
+
+		$provider[] = [
+			'nlike:someThing',
+			SMW_CMP_PRIM_NLKE,
+			true
+		];
 
 		return $provider;
 	}

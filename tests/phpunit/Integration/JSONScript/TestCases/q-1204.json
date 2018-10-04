@@ -1,0 +1,204 @@
+{
+	"description": "Test `!` category queries (ES only, `smwgQSubcategoryDepth`)",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q1204/1",
+			"contents": "[[Category:Q1204/0]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q1204/2",
+			"contents": "[[Category:Q1204/0]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q1204/1/1",
+			"contents": "[[Category:Q1204/1]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q1204/2/1",
+			"contents": "[[Category:Q1204/2]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Q1204/0",
+			"contents": "[[Category:Q1204/0]]"
+		},
+		{
+			"page": "Q1204/1",
+			"contents": "[[Category:Q1204/1]] [[Has page::fox]]"
+		},
+		{
+			"page": "Q1204/2",
+			"contents": "[[Category:Q1204/2]] [[Has page::fox and chicken both jump over ...]]"
+		},
+		{
+			"page": "Q1204/3",
+			"contents": "[[Category:Q1204/2]] [[Category:Q1204/1]] [[Has page::fox jumps over ...]]"
+		},
+		{
+			"page": "Q1204/4",
+			"contents": "[[Category:Q1204/2/1]] [[Category:Q1204/1/1]] [[Has page::fox-hunting is a sport ...]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:Q1204/1]] || [[Category:Q1204/2]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 4,
+				"results": [
+					"Q1204/1#0##",
+					"Q1204/2#0##",
+					"Q1204/3#0##",
+					"Q1204/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (!Q1204/1)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:!Q1204/1]] [[Category:Q1204/2]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1204/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (!Q1204/1|+depth=0)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:!Q1204/1|+depth=0] [[Category:Q1204/2]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1204/2#0##",
+					"Q1204/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (!Q1204/2)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:Q1204/1]] [[Category:!Q1204/2]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1204/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (!Q1204/2|+depth=0)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:Q1204/1]] [[Category:!Q1204/2|+depth=0]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1204/1#0##",
+					"Q1204/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (Q1204/1 || !Q1204/2)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "<q>[[Category:Q1204/1]] || [[Category:!Q1204/2]] </q> [[Has page::in:fox]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q1204/1#0##",
+					"Q1204/3#0##",
+					"Q1204/4#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6 (!Q1204/2)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1204/0]] [[Category:!Q1204/2]] ",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1204/0#0##",
+					"Q1204/1#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgQSubcategoryDepth": 10,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgElasticsearchConfig": {
+			"indexer": {
+				"raw.text": false
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -3,8 +3,7 @@
 namespace SMW\Tests;
 
 use RuntimeException;
-use SMW\FileReader;
-use SMW\Localizer;
+use SMW\Tests\Utils\File\JsonFileReader;
 
 /**
  * @license GNU GPL v2+
@@ -15,7 +14,7 @@ use SMW\Localizer;
 class JsonTestCaseFileHandler {
 
 	/**
-	 * @var FileReader
+	 * @var JsonFileReader
 	 */
 	private $fileReader;
 
@@ -27,9 +26,9 @@ class JsonTestCaseFileHandler {
 	/**
 	 * @since 2.2
 	 *
-	 * @param FileReader $fileReader
+	 * @param JsonFileReader $fileReader
 	 */
-	public function __construct( FileReader $fileReader ) {
+	public function __construct( JsonFileReader $fileReader ) {
 		$this->fileReader = $fileReader;
 	}
 
@@ -63,6 +62,40 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return boolean
+	 */
+	public function hasAllRequirements( $dependencyDef = [] ) {
+
+		$requires = $this->getContentsFor( 'requires' );
+
+		if ( $requires === [] ) {
+			return true;
+		}
+
+		foreach ( $requires as $key => $value ) {
+			$res = false;
+
+			if ( isset( $dependencyDef[$key] ) && is_callable( $dependencyDef[$key] ) ) {
+				$res = call_user_func_array( $dependencyDef[$key], [ $value, &$this->reasonToSkip ] );
+			}
+
+			if ( $res === false ) {
+
+				// Default msg!
+				if ( $this->reasonToSkip === '' ) {
+					$this->reasonToSkip = "$key requirements were not met!";
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param array $case
@@ -72,25 +105,79 @@ class JsonTestCaseFileHandler {
 	 */
 	public function requiredToSkipFor( array $case, $identifier ) {
 
-		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : array();
+		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
-		$mwVersion = $GLOBALS['wgVersion'];
+		$version = $GLOBALS['wgVersion'];
 
-		foreach ( $skipOn as $id => $reason ) {
+		foreach ( $skipOn as $id => $value ) {
 
+			$versionToSkip = '';
+			$compare = '=';
+			$noop = '';
+
+			if ( is_array( $value ) ) {
+				$versionToSkip = $value[0];
+				$reason = $value[1];
+			} else {
+				$reason = $value;
+			}
+
+			// Suppor for { "skip-on": { "foo": [ "not", "Exclude all except foo ..." ] }
+			if ( $versionToSkip === 'not' && $identifier === $id ) {
+				continue;
+			} elseif ( $versionToSkip === 'not' && $identifier !== $id ) {
+				return true;
+			}
+
+			// Suppor for { "skip-on": { "virtuoso": "Virtuoso 6.1 ..." }
 			if ( $identifier === $id ) {
 				return true;
 			}
 
-			if ( strpos( $id, 'mw-' ) === false ) {
-				continue;
+			// Suppor for { "skip-on": { "smw->2.5.x": "Reason is ..." }
+			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
+			if ( strpos( $id, 'mw-' ) !== false ) {
+				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
 			}
 
-			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			if ( strpos( $id, 'hhvm-' ) !== false ) {
+				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
+			}
 
-			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
-				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
+			// Suppor for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
+			if ( strpos( $id, 'smw' ) !== false ) {
+				$version = SMW_VERSION;
+			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
+				$version = $GLOBALS['wgVersion'];
+			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
+				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
+			} elseif ( strpos( $id, 'php' ) !== false ) {
+				$version = defined( 'PHP_VERSION' ) ? PHP_VERSION : 0;
+ 			}
+
+			if ( $versionToSkip !== '' && ( $versionToSkip{0} === '<' || $versionToSkip{0} === '>' ) ) {
+				$compare = $versionToSkip{0};
+				$versionToSkip = substr( $versionToSkip, 1 );
+			}
+
+			if ( strpos( $versionToSkip, '.x' ) ) {
+				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
+				$compare = $compare === '=' ? '<' : $compare;
+			}
+
+			if ( strpos( $versionToSkip, '<' ) ) {
+				$versionToSkip = str_replace( '<', '', $versionToSkip );
+				$compare = '<';
+			}
+
+			// Skip any version as in { "skip-on": { "mediawiki": [ "*", "Reason is ..." ] }
+			if ( $versionToSkip === '*' ) {
+				return true;
+			}
+
+			if ( version_compare( $version, $versionToSkip, $compare ) ) {
+				$this->reasonToSkip = "$version version is not supported ({$reason})";
 				return true;
 			}
 		}
@@ -108,7 +195,7 @@ class JsonTestCaseFileHandler {
 		$connectorId = strtolower( $connectorId );
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		if ( in_array( $connectorId, array_keys( $skipOn ) ) ) {
 			$this->reasonToSkip = $skipOn[$connectorId];
@@ -126,8 +213,8 @@ class JsonTestCaseFileHandler {
 
 		$meta = $this->getFileContentsFor( 'meta' );
 
-		if ( version_compare( $version, $meta['version'], 'lt' ) ) {
-			$this->reasonToSkip = $meta['version'] . ' as file version is not supported';
+		if ( version_compare( $version, $meta['version'], 'ne' ) ) {
+			$this->reasonToSkip = $meta['version'] . " is not supported due to a required {$version} test case version.";
 		}
 
 		return $this->reasonToSkip !== '';
@@ -141,7 +228,7 @@ class JsonTestCaseFileHandler {
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 
 		$meta = $this->getFileContentsFor( 'meta' );
-		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : array();
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
 
 		foreach ( $skipOn as $id => $reason ) {
 
@@ -150,8 +237,19 @@ class JsonTestCaseFileHandler {
 			}
 
 			list( $mw, $versionToSkip ) = explode( "mw-", $id, 2 );
+			$compare = '=';
 
-			if ( version_compare( $mwVersion, $versionToSkip, '=' ) ) {
+			if ( strpos( $versionToSkip, '.x' ) ) {
+				$versionToSkip = str_replace( '.x', '.9999', $versionToSkip );
+				$compare = '<';
+			}
+
+			if ( strpos( $versionToSkip, '<' ) ) {
+				$versionToSkip = str_replace( '<', '', $versionToSkip );
+				$compare = '<';
+			}
+
+			if ( version_compare( $mwVersion, $versionToSkip, $compare ) ) {
 				$this->reasonToSkip = "MediaWiki " . $mwVersion . " version is not supported ({$reason})";
 				break;
 			}
@@ -170,24 +268,36 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return booleam
+	 */
+	public function hasSetting( $key ) {
+
+		$settings = $this->getFileContentsFor( 'settings' );
+
+		return isset( $settings[$key] );
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return array|integer|string|boolean
 	 * @throws RuntimeException
 	 */
-	public function getSettingsFor( $key ) {
+	public function getSettingsFor( $key, $callback = null ) {
 
 		$settings = $this->getFileContentsFor( 'settings' );
 
-		if ( ( $key === 'wgContLang' || $key === 'wgLang' ) && isset( $settings[$key] ) ) {
-			\RequestContext::getMain()->setLanguage( $settings[$key] );
-			Localizer::getInstance()->clear();
-			return \Language::factory( $settings[$key] );
+		if ( isset( $settings[$key] ) && is_callable( $callback ) ) {
+			return call_user_func_array( $callback, [ $settings[$key] ] );
 		}
 
 		// Needs special attention due to NS constant usage
 		if ( $key === 'smwgNamespacesWithSemanticLinks' && isset( $settings[$key] ) ) {
-			$smwgNamespacesWithSemanticLinks = array();
+			$smwgNamespacesWithSemanticLinks = [];
 
 			foreach ( $settings[$key] as $ns => $value ) {
 				$smwgNamespacesWithSemanticLinks[constant( $ns )] = (bool)$value;
@@ -196,14 +306,35 @@ class JsonTestCaseFileHandler {
 			return $smwgNamespacesWithSemanticLinks;
 		}
 
-		if ( $key === 'smwgDVFeatures' && isset( $settings[$key] ) ) {
-			$smwgDVFeatures = '';
+		$constantFeaturesList = [
+			'smwgSparqlQFeatures',
+			'smwgDVFeatures',
+			'smwgFulltextSearchIndexableDataTypes',
+			'smwgFieldTypeFeatures',
+			'smwgQueryProfiler',
+			'smwgParserFeatures',
+			'smwgCategoryFeatures',
+			'smwgQSortFeatures'
+		];
 
-			foreach ( $settings[$key] as $value ) {
-				$smwgDVFeatures = constant( $value ) | $smwgDVFeatures;
+		foreach ( $constantFeaturesList as $constantFeatures ) {
+			if ( $key === $constantFeatures && isset( $settings[$key] ) ) {
+				$features = '';
+
+				if ( !is_array( $settings[$key] ) ) {
+					return $settings[$key];
+				}
+
+				foreach ( $settings[$key] as $value ) {
+					$features = constant( $value ) | (int)$features;
+				}
+
+				return $features;
 			}
+		}
 
-			return $smwgDVFeatures;
+		if ( $key === 'wgDefaultUserOptions' && isset( $settings[$key] ) ) {
+			return array_merge( $GLOBALS['wgDefaultUserOptions'], $settings[$key] );
 		}
 
 		// Needs special attention due to constant usage
@@ -211,16 +342,22 @@ class JsonTestCaseFileHandler {
 			return constant( $settings[$key] );
 		}
 
+		// Needs special attention due to constant usage
+		if ( strpos( $key, 'CacheType' ) !== false && isset( $settings[$key] ) ) {
+			return $settings[$key] === false ? CACHE_NONE : defined( $settings[$key] ) ? constant( $settings[$key] ) : $settings[$key];
+		}
+
 		if ( isset( $settings[$key] ) ) {
 			return $settings[$key];
 		}
 
-		// Set default values
-		if ( isset( $GLOBALS[$key] ) ) {
+		// Return values from the global settings as default
+		if ( isset( $GLOBALS[$key] ) || array_key_exists( $key, $GLOBALS ) ) {
 			return $GLOBALS[$key];
 		}
 
-		throw new RuntimeException( "{$key} is unknown" );
+		// Key is unknown, TestConfig will remove any remains during tearDown
+		return null;
 	}
 
 	/**
@@ -242,6 +379,15 @@ class JsonTestCaseFileHandler {
 	}
 
 	/**
+	 * @since 2.2
+	 *
+	 * @return array
+	 */
+	public function getPageCreationSetupList() {
+		return $this->getContentsFor( 'setup' );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $key
@@ -253,7 +399,7 @@ class JsonTestCaseFileHandler {
 		try{
 			$contents = $this->getFileContentsFor( $key );
 		} catch( \Exception $e ) {
-			$contents = array();
+			$contents = [];
 		}
 
 		return $contents;
@@ -268,6 +414,42 @@ class JsonTestCaseFileHandler {
 	 */
 	public function findTestCasesFor( $key ) {
 		return $this->getContentsFor( $key );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	public function findTasksBeforeTestExecutionByType( $type ) {
+		$contents = $this->getContentsFor( 'beforeTest' );
+		return isset( $contents[$type] ) ? $contents[$type] : [];
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $type
+	 *
+	 * @return array
+	 */
+	public function findTestCasesByType( $type ) {
+		return array_filter( $this->getContentsFor( 'tests' ), function( $contents ) use( $type ) {
+			return isset( $contents['type'] ) && $contents['type'] === $type;
+		} );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $type
+	 *
+	 * @return integer
+	 */
+	public function countTestCasesByType( $type ) {
+		return count( $this->findTestCasesByType( $type ) );
 	}
 
 	private function getFileContentsFor( $index ) {

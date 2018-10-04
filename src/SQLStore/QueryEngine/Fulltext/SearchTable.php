@@ -2,12 +2,13 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\MediaWiki\Database;
 use SMW\DataTypeRegistry;
-use SMW\SQLStore\SQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Database;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
  * @license GNU GPL v2+
@@ -28,11 +29,6 @@ class SearchTable {
 	private $connection;
 
 	/**
-	 * @var TextSanitizer
-	 */
-	private $textSanitizer;
-
-	/**
 	 * @var boolean
 	 */
 	private $isEnabled = false;
@@ -43,19 +39,22 @@ class SearchTable {
 	private $minTokenSize = 3;
 
 	/**
+	 * @var integer
+	 */
+	private $indexableDataTypes = 0;
+
+	/**
 	 * @var array
 	 */
-	private $propertyExemptionList = array();
+	private $propertyExemptionList = [];
 
 	/**
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
-	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( SQLStore $store, TextSanitizer $textSanitizer ) {
+	public function __construct( SQLStore $store ) {
 		$this->store = $store;
-		$this->textSanitizer = $textSanitizer;
 		$this->connection = $store->getConnection( 'mw.db.queryengine' );
 	}
 
@@ -68,6 +67,15 @@ class SearchTable {
 		$this->propertyExemptionList = array_flip(
 			str_replace( ' ', '_', $propertyExemptionList )
 		);
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $indexableDataTypes
+	 */
+	public function setIndexableDataTypes( $indexableDataTypes ) {
+		$this->indexableDataTypes = $indexableDataTypes;
 	}
 
 	/**
@@ -88,17 +96,23 @@ class SearchTable {
 	 */
 	public function isExemptedPropertyById( $id ) {
 
-		$dataItem = $this->store->getObjectIds()->getDataItemForId(
-			$id
-		);
+		$dataItem = $this->getDataItemById( $id );
 
 		if ( !$dataItem instanceof DIWikiPage || $dataItem->getDBKey() === '' ) {
 			return false;
 		}
 
-		return $this->isExemptedProperty(
-			DIProperty::newFromUserLabel( $dataItem->getDBKey() )
-		);
+		try {
+			$property = DIProperty::newFromUserLabel(
+				$dataItem->getDBKey()
+			);
+		} catch( PredefinedPropertyLabelMismatchException $e ) {
+			// The property no longer exists (or is no longer available) therefore
+			// exempt it.
+			return true;
+		}
+
+		return $this->isExemptedProperty( $property );
 	}
 
 	/**
@@ -114,12 +128,38 @@ class SearchTable {
 			$property->findPropertyTypeID()
 		);
 
-		// Is neither therefore is exempted
-		if ( $dataItemTypeId !== DataItem::TYPE_BLOB && $dataItemTypeId !== DataItem::TYPE_URI ) {
+		// Property does not belong to a valid type which means to be exempted
+		if ( !$this->isValidByType( $dataItemTypeId ) ) {
 			return true;
 		}
 
 		return isset( $this->propertyExemptionList[$property->getKey()] );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return boolean
+	 */
+	public function isValidByType( $type ) {
+
+		$indexType = SMW_FT_NONE;
+
+		if ( $type === DataItem::TYPE_BLOB ) {
+			$indexType = SMW_FT_BLOB;
+		}
+
+		if ( $type === DataItem::TYPE_URI ) {
+			$indexType = SMW_FT_URI;
+		}
+
+		if ( $type === DataItem::TYPE_WIKIPAGE ) {
+			$indexType = SMW_FT_WIKIPAGE;
+		}
+
+		return ( $this->indexableDataTypes & $indexType ) != 0;
 	}
 
 	/**
@@ -188,10 +228,12 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return TextSanitizer
+	 * @param string $token
+	 *
+	 * @return boolean
 	 */
-	public function getTextSanitizer() {
-		return $this->textSanitizer;
+	public function hasMinTokenLength( $token ) {
+		return mb_strlen( $token ) >= $this->minTokenSize;
 	}
 
 	/**
@@ -201,8 +243,19 @@ class SearchTable {
 	 *
 	 * @return integer
 	 */
-	public function getPropertyID( DIProperty $property ) {
-		return $this->store->getObjectIds()->getIDFor( $property->getCanonicalDiWikiPage() );
+	public function getIdByProperty( DIProperty $property ) {
+		return $this->store->getObjectIds()->getId( $property->getCanonicalDiWikiPage() );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param integer $id
+	 *
+	 * @return DIWikiPage|null
+	 */
+	public function getDataItemById( $id ) {
+		return $this->store->getObjectIds()->getDataItemById( $id );
 	}
 
 	/**

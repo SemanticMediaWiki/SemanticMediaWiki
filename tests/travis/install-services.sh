@@ -22,11 +22,11 @@ then
 	then
 
 		# Fuseki requires Java8 for Fuseki2 v2.3.0 onwards
-		sudo apt-get install oracle-java8-installer
+		#sudo apt-get install oracle-java8-installer
 
-		export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
-		export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
-		export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
+		#export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
+		#export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
+		#export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
 
 		wget https://github.com/mwjames/travis-support/raw/master/fuseki/$FUSEKI/apache-jena-fuseki-$FUSEKI.tar.gz
 
@@ -211,4 +211,29 @@ then
 		exit $E_UNREACHABLE
 	fi
 
+fi
+
+if [ "$ES" != "" ]
+then
+
+	# Configure a specific version of Elasticsearch
+	# See: https://docs.travis-ci.com/user/database-setup/#Installing-ElasticSearch-on-trusty-container-based-infrastructure
+
+	if [[ "$ES" == "5."* ]]
+	then
+
+		sudo apt-get install oracle-java8-installer
+
+		export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
+		export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
+		export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
+
+		wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES}.tar.gz
+
+		tar -xzf elasticsearch-${ES}.tar.gz
+	fi
+
+	./elasticsearch-${ES}/bin/elasticsearch &>/dev/null &
+
+	wget -q --waitretry=1 --retry-connrefused -T 10 -O - http://127.0.0.1:9200
 fi

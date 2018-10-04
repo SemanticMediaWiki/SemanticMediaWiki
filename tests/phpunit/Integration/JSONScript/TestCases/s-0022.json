@@ -1,0 +1,248 @@
+{
+	"description": "Test `format=csv` output via `Special:Ask` (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0022/1",
+			"contents": "[[Has text::Some example]] [[Category:S0022]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0022/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0022]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0022/3",
+			"contents": "[[Has text::ABC]] [[Has number::123]] [[Category:S0022]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0022/4",
+			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:S0022]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 with header",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "csv"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.0.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 without header",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"headers": "hide",
+						"format": "csv"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.1.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 mainlabel",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.2.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#3 merge rows with identical first column identifier",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.3.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#4 valuesep, headers=hide",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"headers": "hide",
+						"valuesep": ";",
+						"format": "csv"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has text|?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.4.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5 sep, valuesep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"format": "csv",
+						"sep": "|",
+						"valuesep": "+"
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.5.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#6 merge rows, valuesep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"valuesep": ";",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.6.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 merge rows, valuesep, sep",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "-",
+						"format": "csv",
+						"sep": "|",
+						"valuesep": ";",
+						"merge": true
+					},
+					"q": "[[Category:S0022]]",
+					"po": "?Has number|?Has text"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0022.7.csv"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

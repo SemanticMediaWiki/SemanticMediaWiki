@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\ContentParser;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -19,27 +18,38 @@ use Title;
 class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
-	private $applicationFactory;
 	private $parserFactory;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgMainCacheType' => CACHE_NONE
+		] );
 
-		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
+		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->parserFactory = $utilityFactory->newParserFactory();
+		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
 
-		$this->applicationFactory->getSettings()->set( 'smwgCacheType', CACHE_NONE );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
@@ -49,7 +59,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->applicationFactory->clear();
+		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -59,15 +69,15 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
 
-		$expectedNullOutputFor = array(
+		$expectedNullOutputFor = [
 			'concept',
 			'declare'
-		);
+		];
 
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', true );
+		$this->testEnvironment->addConfiguration( 'smwgQEnabled', true );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
@@ -89,17 +99,17 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParseWithParserFunctionDisabled( $parserName, $text ) {
 
-		$expectedNullOutputFor = array(
+		$expectedNullOutputFor = [
 			'concept',
 			'declare',
 			'ask',
 			'show'
-		);
+		];
 
 		$title = Title::newFromText( __METHOD__ );
 		$parser = $this->parserFactory->newFromTitle( $title );
 
-		$this->applicationFactory->getSettings()->set( 'smwgQEnabled', false );
+		$this->testEnvironment->addConfiguration( 'smwgQEnabled', false );
 
 		$instance = new ContentParser( $title, $parser );
 		$instance->parse( $text );
@@ -118,52 +128,52 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	public function textToParseProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		#0 ask
-		$provider[] = array(
+		$provider[] = [
 			'ask',
 			'{{#ask: [[Modification date::+]]|limit=1}}'
-		);
+		];
 
 		#1 show
-		$provider[] = array(
+		$provider[] = [
 			'show',
 			'{{#show: [[Foo]]|limit=1}}'
-		);
+		];
 
 		#2 subobject
-		$provider[] = array(
+		$provider[] = [
 			'subobject',
 			'{{#subobject:|foo=bar|lila=lula,linda,luna|+sep=,}}'
-		);
+		];
 
 		#3 set
-		$provider[] = array(
+		$provider[] = [
 			'set',
 			'{{#set:|foo=bar|lila=lula,linda,luna|+sep=,}}'
-		);
+		];
 
 		#4 set_recurring_event
-		$provider[] = array(
+		$provider[] = [
 			'set_recurring_event',
 			'{{#set_recurring_event:some more tests|property=has date|' .
 			'has title=Some recurring title|title2|has group=Events123|Events456|start=June 8, 2010|end=June 8, 2011|' .
 			'unit=week|period=1|limit=10|duration=7200|include=March 16, 2010;March 23, 2010|+sep=;|' .
 			'exclude=March 15, 2010;March 22, 2010|+sep=;}}'
-		);
+		];
 
 		#5 declare
-		$provider[] = array(
+		$provider[] = [
 			'declare',
 			'{{#declare:population=Foo}}'
-		);
+		];
 
 		#6 concept
-		$provider[] = array(
+		$provider[] = [
 			'concept',
 			'{{#concept:[[Modification date::+]]|Foo}}'
-		);
+		];
 
 		return $provider;
 	}

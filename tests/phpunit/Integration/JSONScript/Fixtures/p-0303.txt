@@ -1,0 +1,7 @@
+{{#set: Has effect=Foo,
+Bar |+sep=,
+}}
+
+{{#subobject: Has effect=Foo,
+Bar |+sep=,
+}}

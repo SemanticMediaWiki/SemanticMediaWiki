@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use Revision;
+use SMW\ParserData;
 use User;
 use WikiPage;
 
@@ -57,6 +58,22 @@ class EditInfoProvider {
 	}
 
 	/**
+	 * @since 2.5
+	 *
+	 * @return SemanticData|null
+	 */
+	public function fetchSemanticData() {
+
+		$parserOutput = $this->fetchEditInfo()->getOutput();
+
+		if ( $parserOutput === null ) {
+			return null;
+		}
+
+		return $parserOutput->getExtensionData( ParserData::DATA_ID );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return EditInfoProvider
@@ -78,7 +95,12 @@ class EditInfoProvider {
 	}
 
 	private function prepareContentForEdit() {
-		$content  = $this->revision->getContent();
+
+		if ( !$this->revision instanceof Revision ) {
+			return null;
+		}
+
+		$content = $this->revision->getContent();
 
 		return $this->wikiPage->prepareContentForEdit(
 			$content,

@@ -1,0 +1,44 @@
+{
+	"description": "Test output of `Special:UnusedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite, 1.19)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Unused typed property",
+			"contents": "[[Has type::Page]] [[Has property description::Typed property@en]]"
+		}
+	],
+	"beforeTest": {
+		"maintenance-run": {
+			"rebuildPropertyStatistics": true
+		}
+	},
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (whether to appear in the list of unused properties without subproperty)",
+			"special-page": {
+				"page": "UnusedProperties",
+				"query-parameters": [],
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property:Unused typed property"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`",
+			"mw-1.19.20": "The table update on 1.19 lacks behind"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

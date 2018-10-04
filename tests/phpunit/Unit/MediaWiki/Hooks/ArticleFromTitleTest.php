@@ -15,24 +15,26 @@ use SMW\MediaWiki\Hooks\ArticleFromTitle;
  */
 class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
 	public function testCanConstruct() {
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ArticleFromTitle',
-			new ArticleFromTitle( $title, $wikiPage )
+			ArticleFromTitle::class,
+			new ArticleFromTitle( $this->store )
 		);
 	}
 
 	/**
-	 * @dataProvider titleProvider
+	 * @dataProvider namespaceProvider
 	 */
 	public function testProcess( $namespace, $expected ) {
 
@@ -48,8 +50,8 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ArticleFromTitle( $title, $wikiPage );
-		$instance->process();
+		$instance = new ArticleFromTitle( $this->store );
+		$instance->process( $title, $wikiPage );
 
 		$this->assertInstanceOf(
 			$expected,
@@ -57,12 +59,17 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function titleProvider() {
+	public function namespaceProvider() {
 
-		$provider = array(
-			array( SMW_NS_PROPERTY, 'SMWPropertyPage' ),
-			array( SMW_NS_CONCEPT, 'SMW\ConceptPage' ),
-		);
+		$provider[] = [
+			SMW_NS_PROPERTY,
+			'SMW\Page\PropertyPage'
+		];
+
+		$provider[] = [
+			SMW_NS_CONCEPT,
+			'SMW\Page\ConceptPage'
+		];
 
 		return $provider;
 	}

@@ -1,0 +1,212 @@
+{
+	"description": "Test `format=category` with template usage (#699, en, skip postgres)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "UseNamedArgsTemplateForColumnOutput",
+			"contents": "<includeonly>{{{1}}}, {{{Has page property}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "UseUnnamedArgsTemplateForColumnOutput",
+			"contents": "<includeonly>{{{1}}}, {{{2}}}</includeonly>"
+		},
+		{
+			"page": "Foo",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"page": "Bar",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"page": "123",
+			"contents": "[[Has page property::Test]] [[Has page property::Test2]]"
+		},
+		{
+			"page": "テスト",
+			"contents": "[[Has page property::Test]]"
+		},
+		{
+			"page": "είναι απλά",
+			"contents": "[[Has page property::Test2]] {{DEFAULTSORT:A}}"
+		},
+		{
+			"page": "је једноставно модел",
+			"contents": "[[Has page property::Test2]] {{DEFAULTSORT:B}}"
+		},
+		{
+			"page": "template-output-named-args-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+		},
+		{
+			"page": "template-output-named-args-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+		},
+		{
+			"page": "template-output-unnamed-args-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+		},
+		{
+			"page": "template-output-unnamed-args-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+		},
+		{
+			"page": "one-column-plainlist-output-asc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n}}"
+		},
+		{
+			"page": "limited-two-column-plainlist-output-desc",
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |searchlabel=Test more\n |limit=2\n |columns=2\n}}"
+		},
+		{
+			"page": "one-column-plainlist-output-with-default-sort-asc",
+			"contents": "{{#ask:[[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n}}"
+		},
+		{
+			"page": "template-output-unnamed-args-with-default-sort-asc",
+			"contents": "{{#ask:[[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0",
+			"subject": "template-output-named-args-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1",
+			"subject": "template-output-named-args-desc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2",
+			"subject": "template-output-unnamed-args-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3",
+			"subject": "template-output-unnamed-args-desc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4",
+			"subject": "one-column-plainlist-output-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test, Test2)</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5",
+			"subject": "limited-two-column-plainlist-output-desc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト (Has page property Test)</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo (Has page property Test)</li></ul></div>",
+					"<div class=\"smw-column\" style=\"width:50%;\" dir=\"ltr\"><div class=\"smw-column-header\">F cont.</div><ul><li>",
+					"Special:Ask/-5B-5BHas-20page-20property::Test-5D-5D/-3FHas-20page-20property/mainlabel=/limit=2/order=desc/sort=/offset=2/format=category/link=none/headers=plain/searchlabel=Test-20more/columns=2\">Test more</a></span></li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6, refs #699",
+			"subject": "one-column-plainlist-output-with-default-sort-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column\" style=\"width:100%;\" dir=\"ltr\"><div class=\"smw-column-header\">1</div><ul><li>123 (Has page property Test, Test2)</li></ul>",
+					"<div class=\"smw-column-header\">A</div><ul><li>Είναι απλά (Has page property Test2)</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Је једноставно модел (Has page property Test2)</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#7, refs #699",
+			"subject": "template-output-unnamed-args-with-default-sort-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">A</div><ul><li>Είναι απλά, Test2</li></ul></div>",
+					"<div class=\"smw-column\" style=\"width:33%;\" dir=\"ltr\"><div class=\"smw-column-header\">B</div><ul><li>Је једноставно модел, Test2</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"postgres": "Unicode needs special treatment in postgres"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

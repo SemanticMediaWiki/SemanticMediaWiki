@@ -1,0 +1,41 @@
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+	padding: 0.55rem 0.85rem;
+	line-height: 1.0;
+	font-size: 14px;
+}
+
+.skin-chameleon .smw-datatable .dataTables_wrapper select,
+.skin-chameleon .smw-datatable .dataTables_wrapper select:focus,
+.skin-chameleon .smw-datatable .dataTables_wrapper select:active {
+	/*padding: 0.15rem 0.5rem;*/
+}
+
+.skin-chameleon .smw-datatable .dataTables_wrapper .dataTables_filter input {
+	line-height: 1.35;
+}
+
+.skin-chameleon .dataTables_wrapper label {
+	font-weight: normal;
+}
+
+.skin-chameleon table th {
+	text-align: center;
+}
+
+.skin-chameleon .smw-datatable-toolbar .smw-dropdown button {
+	padding: 2px 25px 2px 15px;
+	border-radius: 0.2rem;
+}
+
+.skin-chameleon .smw-datatable .smw-datatable-sep {
+	padding: 0 0.2em 0.2em 0;
+}

@@ -24,7 +24,12 @@ class HtmlColumnListRenderer {
 	/**
 	 * @var array
 	 */
-	private $contentsByIndex = array();
+	private $contentsByIndex = [];
+
+	/**
+	 * @var array
+	 */
+	private $itemAttributes = [];
 
 	/**
 	 * @var integer
@@ -50,6 +55,11 @@ class HtmlColumnListRenderer {
 	 * @var string
 	 */
 	private $listType = 'ul';
+
+	/**
+	 * @var string
+	 */
+	private $olType = '';
 
 	/**
 	 * @var string
@@ -119,12 +129,32 @@ class HtmlColumnListRenderer {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function setListType( $listType ) {
+	public function setListType( $listType, $olType = '' ) {
 
-		if ( in_array( $listType, array( 'ul', 'ol' ) ) ) {
+		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
 
+		if ( $this->listType === 'ol' && in_array( $olType, [ '1', 'a', 'A', 'i', 'I' ] ) ) {
+			$this->olType = $olType;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Allows to define attributes for a item such as:
+	 *
+	 * [md5( $itemContent )] = [
+	 * 	'id' => 'Foo'
+	 * ]
+	 *
+	 * @since 3.0
+	 *
+	 * @param array $itemAttributes
+	 */
+	public function setItemAttributes( array $itemAttributes ) {
+		$this->itemAttributes = $itemAttributes;
 		return $this;
 	}
 
@@ -137,7 +167,7 @@ class HtmlColumnListRenderer {
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ) {
 
-		$contentsByEmptyIndex[''] = array();
+		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
 			$contentsByEmptyIndex[''][] = $value;
@@ -183,11 +213,11 @@ class HtmlColumnListRenderer {
 
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
-			if ( $resultItems === array() ) {
+			if ( $resultItems === [] ) {
 					continue;
 			}
 
-			$result .= $this->doFormat(
+			$result .= $this->makeList(
 				$key,
 				$listContinuesAbbrev,
 				$resultItems,
@@ -201,30 +231,42 @@ class HtmlColumnListRenderer {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => $this->columnListClass,
 				'dir'   => $this->isRTL ? 'rtl' : 'ltr'
-			),
+			],
 			$result . "\n" . '<br style="clear: both;"/>'
 		);
 	}
 
-	private function doFormat( $key, $listContinuesAbbrev, $resultItems, &$usedColumnCloser ) {
+	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ) {
 
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
 
-		foreach ( $resultItems as $resultItem ) {
+		foreach ( $items as $item ) {
+
+			$attributes = [];
+
+			if ( $this->itemAttributes !== [] ) {
+				$hash = md5( $item );
+
+				if ( isset( $this->itemAttributes[$hash] ) ) {
+					$attributes = $this->itemAttributes[$hash];
+				}
+			}
 
 			if ( $this->numRows % $this->rowsPerColumn == 0 ) {
 				$result .= "<div class=\"$this->columnClass\" style=\"width:$this->columnWidth%;\" dir=\"$dir\">";
 
 				$numRowsInColumn = $this->numRows + 1;
+				$type = $this->olType !== '' ? " type={$this->olType}" : '';
 
 				if ( $key == $previousKey ) {
 					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-					$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), "$key $listContinuesAbbrev" ) : '' ) . "<{$this->listType} start={$numRowsInColumn}>";
+					$result .= $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], "$key $listContinuesAbbrev" ) : '';
+					$result .= "<{$this->listType}$type start={$numRowsInColumn}>";
 					// @codingStandardsIgnoreEnd
 				}
 			}
@@ -233,11 +275,11 @@ class HtmlColumnListRenderer {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), $key ) : '' ) . "<{$this->listType}>";
+				$result .= ( $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], $key ) : '' ) . "<{$this->listType}>";
 			}
 
 			$previousKey = $key;
-			$result .= Html::rawElement( 'li', array(), $resultItem );
+			$result .= Html::rawElement( 'li', $attributes, $item );
 			$usedColumnCloser = false;
 
 			if ( ( $this->numRows + 1 ) % $this->rowsPerColumn == 0 && ( $this->numRows + 1 ) < $this->numberOfResults ) {

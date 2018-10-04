@@ -2,9 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use Title;
 
 /**
@@ -18,76 +16,79 @@ use Title;
  */
 class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $namespaceExaminer;
 
 	protected function setUp() {
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->getSettings()->set( 'smwgEnabledEditPageHelp', true );
-	}
+		parent::setUp();
 
-	protected function tearDown() {
-		$this->applicationFactory->clear();
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
-		$editPage = $this->getMockBuilder( '\EditPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Hooks\EditPageForm',
-			new EditPageForm( $editPage, $htmlFormRenderer )
+			new EditPageForm( $this->namespaceExaminer )
 		);
 	}
 
 	public function testDisabledHelp() {
 
-		$this->applicationFactory->getSettings()->set( 'smwgEnabledEditPageHelp', false );
+		$editPage = $this->getMockBuilder( '\EditPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EditPageForm(
+			$this->namespaceExaminer
+		);
+
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => false
+			]
+		);
+
+		$this->assertTrue(
+			$instance->process( $editPage )
+		);
+	}
+
+	public function testDisabledOnUserPreference() {
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
-			->disableOriginalConstructor()
-			->getMock();
+		$instance = new EditPageForm(
+			$this->namespaceExaminer
+		);
 
-		$editPage->expects( $this->never() )
-			->method( 'getMessageBuilder' );
+		$instance->setOptions(
+			[
+				'prefs-disable-editpage' => true
+			]
+		);
 
-		$instance = new EditPageForm( $editPage, $htmlFormRenderer );
+		$editPage->editFormPageTop = '';
 
-		$this->assertTrue(
-			$instance->process()
+		$instance->process( $editPage );
+
+		$this->assertEmpty(
+			$editPage->editFormPageTop
 		);
 	}
 
 	/**
 	 * @dataProvider titleProvider
 	 */
-	public function testExtendEditFormPageTop( $title, $namespaces, $expected ) {
+	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
 
-		$this->applicationFactory->getSettings()->set( 'smwgNamespacesWithSemanticLinks', $namespaces );
-
-		$message = $this->getMockBuilder( '\Message' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$messageBuilder->expects( $this->any() )
-			->method( 'getMessage' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( $message ) );
-
-		$htmlFormRenderer = new HtmlFormRenderer( $title, $messageBuilder );
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->with( $this->equalTo( $namespaces ) )
+			->will( $this->returnValue( $isSemanticEnabled ) );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -99,44 +100,60 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 		$editPage->editFormPageTop = '';
 
-		$instance = new EditPageForm( $editPage, $htmlFormRenderer );
+		$instance = new EditPageForm(
+			$this->namespaceExaminer
+		);
 
-		$this->assertTrue(
-			$instance->process()
+		$instance->setOptions(
+			[
+				'smwgEnabledEditPageHelp' => true
+			]
+		);
+
+		$instance->process( $editPage );
+
+		$this->assertContains(
+			$expected,
+			$editPage->editFormPageTop
 		);
 	}
 
 	public function titleProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_PROPERTY ),
-			array( SMW_NS_PROPERTY => true ),
+			SMW_NS_PROPERTY,
+			true,
 			'smw-editpage-property-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Modification date', SMW_NS_PROPERTY ),
-			array( SMW_NS_PROPERTY => true ),
+			SMW_NS_PROPERTY,
+			true,
 			'smw-editpage-property-annotation-disabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_CONCEPT ),
-			array( SMW_NS_CONCEPT => true ),
+			SMW_NS_CONCEPT,
+			true,
 			'smw-editpage-concept-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', NS_MAIN ),
-			array( NS_MAIN => true ),
+			NS_MAIN,
+			true,
 			'smw-editpage-annotation-enabled'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Foo', NS_MAIN ),
-			array( NS_MAIN => false ),
+			NS_MAIN,
+			false,
 			'smw-editpage-annotation-disabled'
-		);
+		];
 
 		return $provider;
 	}

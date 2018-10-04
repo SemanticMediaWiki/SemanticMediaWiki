@@ -1,0 +1,142 @@
+{
+	"description": "Test `cjk.best.effort.proximity.match` (ES only)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Q1206/1",
+			"contents": "[[Has page::東日本]] [[Has text::東日本]]"
+		},
+		{
+			"page": "Q1206/2",
+			"contents": "[[Has page::西日本]] [[Has text::西日本]]"
+		},
+		{
+			"page": "Q1206/3",
+			"contents": "[[Has text::。。。　暑さが続いている西日本と東日本では　。。。]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Has page::in:西日本]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1206/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[in:西日本]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q1206/2#0##",
+					"Q1206/3#0##",
+					"西日本#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[in:日本]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Q1206/1#0##",
+					"Q1206/2#0##",
+					"Q1206/3#0##",
+					"西日本#0##",
+					"東日本#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[in:東日本]] [[in:西日本]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1206/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[in:東日本]] [[not:西日本]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q1206/1#0##",
+					"東日本#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgElasticsearchConfig": {
+			"query": {
+				"cjk.best.effort.proximity.match": true
+			}
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

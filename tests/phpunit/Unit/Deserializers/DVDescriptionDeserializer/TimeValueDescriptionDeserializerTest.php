@@ -3,6 +3,7 @@
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
 use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer
@@ -14,6 +15,8 @@ use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer
  * @author mwjames
  */
 class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -95,25 +98,25 @@ class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDataValue( $timeValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
 	}
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Jan 1970',
 			'\SMW\Query\Language\ValueDescription'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'~Jan 1970',
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'!~Jan 1970',
 			'\SMW\Query\Language\Disjunction'
-		);
+		];
 
 		return $provider;
 	}

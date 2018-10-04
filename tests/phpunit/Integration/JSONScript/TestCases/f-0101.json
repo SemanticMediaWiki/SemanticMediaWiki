@@ -1,0 +1,125 @@
+{
+	"description": "Test `format=template` output using unnamed arguments (#885)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "TemplateOutputUsingUnnamedArgumentsForNonUnicode",
+			"contents": "<includeonly>[{{{#}}}]:{{{1}}}:{{{2}}}:{{{#userparam}}}:</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra",
+			"contents": "<includeonly><div>{{{#userparam}}}</div></includeonly>"
+		},
+		{
+			"page": "Foo",
+			"contents": "[[Has page property::ABC]] [[Has page property::DEF]] [[Category:template-001]]"
+		},
+		{
+			"page": "Bar",
+			"contents": "[[Has page property::ABC]] [[Has page property::DEF]] [[Category:template-001]]"
+		},
+		{
+			"page": "123",
+			"contents": "[[Has page property::ABC]] [[Has page property::DEF]] [[Category:template-001]]"
+		},
+		{
+			"page": "yxz",
+			"contents": "[[Has page property::ABC]] [[Has page property::DEF]] [[Category:template-001]]"
+		},
+		{
+			"page": "template-001-asc-order-unnamed-args",
+			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]] |?Has page property |sep=, |format=template |order=asc |link=none |limit=3 |searchlabel=furtherresults |userparam=[$%&*==42] |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra}}"
+		},
+		{
+			"page": "template-001-desc-order-unnamed-args",
+			"contents": "{{#ask:[[Category:template-001]][[Has page property::ABC]] |?Has page property |sep=, |format=template |order=desc |link=none |limit=3 |searchlabel=furtherresults |userparam=[$%&*==42] |template=TemplateOutputUsingUnnamedArgumentsForNonUnicode |introtemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra |outrotemplate=TemplateOutputUsingUnnamedArgumentsForNonUnicodeExtra}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 (1.31-) asc template output using unnamed arguments, #885 further results link",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "template-001-asc-order-unnamed-args",
+			"assert-output": {
+				"to-contain": [
+					"<div>[$%&amp;*==42]</div>",
+					"[0]:123:ABC, DEF:[$%&amp;*==42]:",
+					"[1]:Bar:ABC, DEF:[$%&amp;*==42]:",
+					"[2]:Foo:ABC, DEF:[$%&amp;*==42]:",
+					"<div>[$%&amp;*==42]</div><span class=\"smw-template-furtherresults\">"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#0 (1.31+) asc template output using unnamed arguments, #885 further results link",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "template-001-asc-order-unnamed-args",
+			"assert-output": {
+				"to-contain": [
+					"<div>[$%&amp;*==42]</div>",
+					"[0]:123:ABC, DEF:[$%&amp;*==42]:",
+					"[1]:Bar:ABC, DEF:[$%&amp;*==42]:",
+					"[2]:Foo:ABC, DEF:[$%&amp;*==42]:",
+					"<div>[$%&amp;*==42]</div><p><span class=\"smw-template-furtherresults\">"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (1.31-) desc template output using unnamed arguments",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "template-001-desc-order-unnamed-args",
+			"assert-output": {
+				"to-contain": [
+					"<div>[$%&amp;*==42]</div>",
+					"[0]:Yxz:ABC, DEF:[$%&amp;*==42]:",
+					"[1]:Foo:ABC, DEF:[$%&amp;*==42]:",
+					"[2]:Bar:ABC, DEF:[$%&amp;*==42]:",
+					"<div>[$%&amp;*==42]</div><span class=\"smw-template-furtherresults\">"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (1.31+) desc template output using unnamed arguments",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "template-001-desc-order-unnamed-args",
+			"assert-output": {
+				"to-contain": [
+					"<div>[$%&amp;*==42]</div>",
+					"[0]:Yxz:ABC, DEF:[$%&amp;*==42]:",
+					"[1]:Foo:ABC, DEF:[$%&amp;*==42]:",
+					"[2]:Bar:ABC, DEF:[$%&amp;*==42]:",
+					"<div>[$%&amp;*==42]</div><p><span class=\"smw-template-furtherresults\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

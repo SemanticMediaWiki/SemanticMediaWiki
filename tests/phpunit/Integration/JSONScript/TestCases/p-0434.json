@@ -1,0 +1,215 @@
+{
+	"description": "Test printrequest property chaining `|?Foo.Bar` (#1824, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has population",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;Date;URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Capital of",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0434/1",
+			"contents": "[[Has population::123;1 Jan 1970;http://example.org/SomeSource]] {{#subobject:Has population=456;1 Jan 2000;http://example.org/SomeSource }} [[Category:P0434]]"
+		},
+		{
+			"page": "Example/P0434/Q1.1",
+			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none}} {{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Number |link=none |format=debug}}"
+		},
+		{
+			"page": "Example/P0434/Q1.2",
+			"contents": "{{#ask: [[Has population::+]] [[Category:P0434]] |?Has population.Date |link=none}}"
+		},
+		{
+			"page": "Example/P0434/2",
+			"contents": "[[Capital of::Example/P0434/1]] [[Located in::Example/P0434/3]] [[Category:City]] [[Category:P0434]]"
+		},
+		{
+			"page": "Example/P0434/Q2.1",
+			"contents": "{{#ask: [[Category:City]] [[Category:P0434]] |?Capital of.Has population.Number |link=none}}"
+		},
+		{
+			"page": "Example/P0434/3",
+			"contents": "[[Located in::Example/P0434/4]] [[Category:Country]] [[Category:P0434]]"
+		},
+		{
+			"page": "Example/P0434/Q3.1",
+			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of |link=subject }}"
+		},
+		{
+			"page": "Example/P0434/Q3.2",
+			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of=SomeOtherText |link=none }}"
+		},
+		{
+			"page": "Example/P0434/Q3.3",
+			"contents": "{{#ask: [[Category:Country]] [[Category:P0434]] |?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number |link=none }}"
+		},
+		{
+			"page": "Example/P0434/4",
+			"contents": "{{#subobject:Has population=123;1 Jan 2000;http://example.org/SomeSource |@category=P0434-sort }} {{#subobject:Has population=456;1 Jan 1900;http://example.org/SomeSource |@category=P0434-sort}} {{#subobject:Has population=789;1 Jan 1999;http://example.org/SomeSource |@category=P0434-sort}}"
+		},
+		{
+			"page": "Example/P0434/Q4.1",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date |order=asc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.2",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date |order=desc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.3",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date,Has population.Number |order=asc,desc |link=none}}"
+		},
+		{
+			"page": "Example/P0434/Q4.4",
+			"contents": "{{#ask: [[Category:P0434-sort]] |?Has population.Date |sort=Has population.Date,Has population.Number |order=desc,asc |link=none}}"
+		}
+
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0434/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td class=\"Number smwtype_num\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31-)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0434/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2440587.5\">1 January 1970</td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31+)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0434/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td class=\"Date smwtype_dat\" data-sort-value=\"2440587.5\">1 January 1970</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 on (?Capital of.Has population.Number)",
+			"subject": "Example/P0434/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0434/2</td><td class=\"Number smwtype_num\" data-sort-value=\"123\">123</td>"
+				],
+				"not-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0434/1</td><td class=\"Number smwtype_num\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 on (?Located in.-Located in.-Located in.Capital of)",
+			"subject": "Example/P0434/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Capital-of smwtype_wpg\">Example/P0434/1</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 on (?Located in.-Located in.-Located in.Capital of=SomeOtherText)",
+			"subject": "Example/P0434/Q3.2",
+			"assert-output": {
+				"to-contain": [
+					"SomeOtherText</a>&#160;<span title=\"Located in.-Located in.-Located in.Capital of\">⠉</span>",
+					"<td class=\"SomeOtherText smwtype_wpg\">Example/P0434/1</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 on (?Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number)",
+			"subject": "Example/P0434/Q3.3",
+			"assert-output": {
+				"to-contain": [
+					"<span title=\"Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number\">⠉</span>",
+					"<td class=\"smwtype_wpg\">Example/P0434/3</td><td class=\"Number smwtype_num\" data-sort-value=\"456\">456</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (sort=Has population.Date, order=asc) ",
+			"subject": "Example/P0434/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (sort=Has population.Date, order=desc) ",
+			"subject": "Example/P0434/Q4.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (Has population.Date,Has population.Number, order=asc,desc) ",
+			"subject": "Example/P0434/Q4.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (Has population.Date,Has population.Number, order=desc,asc) ",
+			"subject": "Example/P0434/Q4.4",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_4bae31c0cd5bda46c3cf0245523a954a</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451544.5\">1 January 2000</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0434/4#_eb1c9a9f3a8ad677d7424e8d842b10dd</td><td class=\"Date smwtype_dat\" data-sort-value=\"2451179.5\">1 January 1999</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0434/4#_357f4a06073b86afc07cb0c6237b9f36</td><td class=\"Date smwtype_dat\" data-sort-value=\"2415020.5\">1 January 1900</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

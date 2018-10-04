@@ -27,7 +27,7 @@ class RdfResultPrinterTest extends QueryPrinterTestCase {
 	/**
 	 * @return RdfResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
+	private function getInstance( $parameters = [] ) {
 		return $this->setParameters( new RdfResultPrinter( 'rdf' ), $parameters );
 	}
 

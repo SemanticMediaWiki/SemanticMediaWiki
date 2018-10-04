@@ -1,0 +1,65 @@
+{
+	"description": "Test `_txt` to correctly apply parentheses for somehting like (a OR b OR c) AND d (#556)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has conference type",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Conference-1",
+			"contents": "[[Has conference type::Presentation]], [[Has conference type::Tutorial]]"
+		},
+		{
+			"page": "Conference-2",
+			"contents": "[[Has conference type::Tutorial]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Conference-1]] [[Has conference type::Presentation||Tutorial]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Conference-1#0##"
+				],
+				"count": "1",
+				"dataitems": []
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "<q>[[Conference-1]] [[Has conference type::Presentation||Tutorial||Another]]</q> OR [[Has conference type::Presentation||Tutorial||Another]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Conference-1#0##",
+					"Conference-2#0##"
+				],
+				"count": "2",
+				"dataitems": []
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

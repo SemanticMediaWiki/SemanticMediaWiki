@@ -128,12 +128,12 @@ class RdfResultPrinter extends FileExportPrinter {
 
 		$definitions['searchlabel']->setDefault( wfMessage( 'smw_rdf_link' )->inContentLanguage()->text() );
 
-		$definitions[] = array(
+		$definitions[] = [
 			'name' => 'syntax',
 			'message' => 'smw-paramdesc-rdfsyntax',
-			'values' => array( 'rdfxml', 'turtle' ),
+			'values' => [ 'rdfxml', 'turtle' ],
 			'default' => 'rdfxml',
-		);
+		];
 
 		return $definitions;
 	}

@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SearchResult;
+use SMW\DIWikiPage;
+use SMW\Utils\CharExaminer;
 
 /**
  * @ingroup SMW
@@ -14,12 +15,27 @@ use SearchResult;
  */
 class SearchResultSet extends \SearchResultSet {
 
+	/**
+	 * @var DIWikiPage[]|[]
+	 */
 	private $pages;
+
+	/**
+	 * @var QueryToken
+	 */
+	private $queryToken;
+
+	/**
+	 * @var Excerpts
+	 */
+	private $excerpts;
+
 	private $count = null;
 
 	public function __construct( \SMWQueryResult $result, $count = null ) {
-
 		$this->pages = $result->getResults();
+		$this->queryToken = $result->getQuery()->getQueryToken();
+		$this->excerpts = $result->getExcerpts();
 		$this->count = $count;
 	}
 
@@ -47,7 +63,82 @@ class SearchResultSet extends \SearchResultSet {
 	 * @return SearchResult
 	 */
 	public function next() {
-		return ( list( , $page ) = each( $this->pages ) ) !== false ? ( SearchResult::newFromTitle( $page->getTitle() ) ) : false;
+
+		$page = current( $this->pages );
+		$searchResult = false;
+
+		if ( $page instanceof DIWikiPage ) {
+			$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+		}
+
+		// Attempt to use excerpts available from a different back-end
+		if ( $searchResult && $this->excerpts !== null ) {
+			if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+				$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
+			}
+		}
+
+		next( $this->pages );
+
+		return $searchResult;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return SearchSuggestionSet
+	 */
+	public function newSearchSuggestionSet() {
+
+		$suggestions = [];
+		$hasMoreResults = false;
+		$score = count( $this->pages );
+
+		foreach ( $this->pages as $page ) {
+			if ( ( $title = $page->getTitle() ) && $title->exists() ) {
+				$suggestions[] = \SearchSuggestion::fromTitle( $score--, $title );
+			}
+		}
+
+		return new \SearchSuggestionSet( $suggestions, $hasMoreResults );
+	}
+
+	/**
+	 * @see SearchResultSet::extractResults
+	 *
+	 * @since 3.0
+	 */
+	public function extractResults() {
+
+		// #3204
+		// https://github.com/wikimedia/mediawiki/commit/720fdfa7901cbba93b5695ed5f00f982272ced27
+		//
+		// MW 1.32+:
+		// - Remove SearchResultSet::next, SearchResultSet::numRows
+		// - Move QueryResult::getResults, QueryResult::getExcerpts into this
+		//   method to avoid constructor work
+
+		if ( $this->pages === [] ) {
+			return $this->results = [];
+		}
+
+		foreach ( $this->pages as $page ) {
+
+			if ( $page instanceof DIWikiPage ) {
+				$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+			}
+
+			// Attempt to use excerpts available from a different back-end
+			if ( $searchResult && $this->excerpts !== null ) {
+				if ( ( $excerpt = $this->excerpts->getExcerpt( $page ) ) !== false ) {
+					$searchResult->setExcerpt( $excerpt, $this->excerpts->hasHighlight() );
+				}
+			}
+
+			$this->results[] = $searchResult;
+		}
+
+		return $this->results;
 	}
 
 	/**
@@ -78,11 +169,36 @@ class SearchResultSet extends \SearchResultSet {
 	 */
 	public function termMatches() {
 
+		if ( ( $tokens = $this->getTokens() ) !== [] ) {
+			return $tokens;
+		}
+
 		if ( method_exists( '\SearchHighlighter', 'highlightNone' ) ) {
-			return array();
+			return [];
 		}
 
 		// Will cause the highlighter to match every line start, thus returning the first few lines of found pages.
-		return array( '^' );
+		return [ '^' ];
 	}
+
+	private function getTokens() {
+
+		$tokens = [];
+
+		if ( $this->queryToken === null ) {
+			return $tokens;
+		}
+
+		// Use tokens gathered from a query context [[in:Foo]] (~~*Foo*), a filter context
+		// such as [[Category:Foo]] is not considered eligible to provide a
+		// token.
+		foreach ( $this->queryToken->getTokens() as $key => $value ) {
+			// Avoid add \b boundary checks for CJK where whitespace is not used
+			// as word break
+			$tokens[] = CharExaminer::isCJK( $key ) ? "$key" : "\b$key\b";
+		}
+
+		return $tokens;
+	}
+
 }

@@ -37,6 +37,7 @@ class SpecialUnusedProperties extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $param ) {
+		$this->setHeaders();
 
 		$out = $this->getOutput();
 
@@ -46,7 +47,7 @@ class SpecialUnusedProperties extends SpecialPage {
 		$page->setContext( $this->getContext() );
 
 		list( $limit, $offset ) = $this->getLimitOffset();
-		$page->doQuery( $offset, $limit );
+		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $out );

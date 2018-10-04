@@ -1,0 +1,133 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @see https://www.w3schools.com/howto/howto_css_modals.asp
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.smw-modal {
+    display: none; /* Hidden by default */
+    position: absolute; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: -1px;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.23); /* Black w*/
+}
+
+.smw-modal-title {
+    color: #333333;
+    vertical-align: -0.25em;
+    font-size: 1.2em;
+}
+
+/* smw-modal Content */
+.smw-modal-content {
+ background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(27,31,35,0.25);
+    border-radius: 3px;
+    box-shadow: 0 0 18px rgba(27,31,35,0.4);
+    margin-top:50px;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.smw-modal-close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    opacity: 0.25;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.smw-modal-close:hover,
+.smw-modal-close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.smw-modal-header {
+    padding: 15px;
+    margin: -20px -20px 15px;
+    font-weight: normal;
+    border-bottom: 1px solid #e1e4e8;
+    background-color: #f6f8fa;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.smw-modal-header h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+    border-bottom: 0px solid #a2a9b1;
+    color: #fff;
+}
+
+.smw-modal-body {
+}
+
+.smw-modal-footer {
+    display: none;
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}

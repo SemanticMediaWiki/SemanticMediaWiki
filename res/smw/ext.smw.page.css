@@ -1,0 +1,420 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://www.semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/* Property page */
+.smw-property-page-results .smwpropname {
+	width: 50%;
+}
+
+.smw-property-page-results .smwprops {
+	vertical-align: top;
+	width: 50%;
+}
+
+@media (min-width: 600px) {
+	.smw-property-page-results .smwpropname {
+		width: 33%;
+	}
+
+	.smw-property-page-results .smwprops {
+		width: 75%;
+	}
+}
+
+.smw-property-page-content-line {
+	border-bottom: 1px solid #ddd;
+	line-height: 0.6;
+}
+
+.smw-property-page-results {
+	margin-top: 0.9em;
+}
+
+.smw-property-page-results table {
+	border: none;
+}
+
+.smw-property-page-results .header-row {
+	/* background-color: #f5f5f5; */
+}
+
+.smw-property-page-results .smwpropname {
+	text-align: left;
+	vertical-align: top;
+	padding-right: 1em;
+	width: 33%;
+	border: 0px;
+}
+
+.smw-property-page-results .smwprops {
+	vertical-align: top;
+	text-align: left;
+	/* width: 75%; */
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+	border: 0px;
+}
+
+.smw-property-page-results .value-row:hover {
+	background-color: #f5f5f5;
+}
+
+.smw-property-page-results .header-row > .header-title {
+	border-bottom: 1px solid #ddd;
+}
+
+.smw-property-page-results .value-row > .smw-table-cell {
+	padding-bottom: 0.2em;
+	padding-top: 0.2em;
+}
+
+.smw-property-page-results .header-row + .value-row .smw-table-cell {
+	padding-top: 0.3em;
+}
+
+.smw-page-navigation, .smw-page-content {
+	margin-top: 1.2em;
+}
+
+.smw-page-nav-note, .smw-page-nav-container {
+	margin-top: 0.5em;
+}
+
+.smw-page-nav-container::after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.smw-page-nav-left {
+	float: left;
+	margin-right: 20px;
+}
+
+.smw-page-nav-right {
+	float: right;
+}
+
+.smw-ui-pagination .page-link {
+    display: inline-block;
+    padding: .30em .55em;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding-top: 0.35em;
+}
+
+.smw-ui-pagination .page-link:first-child {
+    margin-left: 0;
+    border-top-left-radius: .2em;
+    border-bottom-left-radius: .2em;
+ }
+
+.smw-ui-pagination .page-link:last-child {
+    border-top-right-radius: .2em;
+    border-bottom-right-radius: .2em;
+}
+
+.smw-ui-pagination .page-link:hover {
+    color: #0056b3;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.smw-ui-pagination .page-link.link-disabled {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.smw-ui-pagination .page-link.link-active {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.smw-property-page-results .header-title {
+	font-weight: bold;
+	font-size: 1.17em;
+	line-height: 1.6;
+	margin-top: 0.0em;
+	color: #333;
+	overflow: hidden;
+	padding: 2px 3px;
+	background-color: #fff;
+	border: none;
+	/* border-right: 1px solid #ddd;
+	padding: 5px 20px;
+	background-color: #f9f9f9; */
+}
+
+.smw-property-page-results tr.value-row:nth-child(even) {
+	/* background-color: #f5f5f5; */
+}
+
+.list-pager-value-filter {
+	text-align: right;
+}
+
+.list-pager-value-filter input {
+	font-weight: normal;
+	line-height: 1.25;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5em 1em;
+	border-radius: 0.25em;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	padding: 0.25em 0.5em;
+	border-radius: 0.2em;
+	color: #292b2c;
+	border-color: #ddd;
+	display: inline-block;
+	vertical-align: baseline;
+	margin-left: 0.5em;
+
+	position: relative;
+	/* display: block; */
+	/* padding: 0.5em 0.75em; */
+	/* margin-left: -1px; */
+	line-height: 1.25;
+	/* color: #0275d8; */
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+.smw-ui-input-filter {
+	display: inline-block;
+    padding: 0 .25em;
+    /* margin-left: 10px; */
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top-left-radius: .2em;
+    border-bottom-left-radius: .2em;
+    border-top-right-radius: .2em;
+    border-bottom-right-radius: .2em;
+}
+
+.smw-ui-input-filter label {
+	margin-left: 0.25em;
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+
+.smw-ui-input-filter input {
+	border :0px solid #ddd;
+    padding: .42em .55em .35em .55em;
+    border-top-left-radius: .0em;
+    border-bottom-left-radius: .0em;
+    outline: none;
+    border-left: 0.1em solid #ddd;
+    /* border-left: 0; */
+    margin-left: 0.45em;
+    font-weight: normal;
+    color: #333333;
+}
+
+.smw-property-page-results .value-row:nth-child(odd) {
+	/* background-color: #f9f9f9; */
+}
+
+.smw-property-page-results .smwpropname, .smw-property-page-results .smwprops {
+	/* border-top: 1px solid #ddd; */
+	padding: 20px 20px;
+}
+
+.smw-property-page-results .header-title {
+	border-bottom: 1px solid #ddd;
+}
+
+.clearfix::after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.smw-property-page-results.legacy .header-title {
+	text-align: right;
+	border-bottom: 0px solid #ddd;
+}
+
+.smw-property-page-results.legacy .smwpropname {
+	text-align: right;
+	vertical-align: top;
+	padding-right: 1em;
+}
+
+.smw-property-page-results.legacy .smwpropname {
+	padding: 0px 20px;
+	padding-top: 0.3em;
+}
+
+.smw-property-page-results.legacy .smwprops {
+	padding: 0px 0px;
+	padding-top: 0.3em;
+}
+
+.smw-property-page-info {
+	float:right;
+	padding-top: 8px;
+}
+
+.smw-property-specification {
+	display: none;
+}
+
+.usage-count, .item-count {
+	display: inline-block;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    background-color: rgba(27,31,35,0.04);
+    border-radius: 4px;
+    color: #bbb;
+    margin-left: 10px;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count,
+#tab-smw-concept-list:checked + label.nav-label .usage-count,
+#tab-smw-property-subp:checked + label.nav-label .item-count,
+#tab-smw-property-errp:checked + label.nav-label .item-count,
+#tab-smw-property-redi:checked + label.nav-label .item-count,
+#tab-smw-property-spec:checked + label.nav-label .item-count {
+    background-color: rgba(27,31,35,0.08);
+    color: #444d56;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count.moderate,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.moderate {
+    background-color: rgba(43,157,239,0.18);
+    color: #444d56;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count.high,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.high {
+    background-color: rgba(186,0,0,0.16);
+    color: #444d56;
+}
+
+/**
+ * Tabs
+ */
+.smw-tabs.smw-property, .smw-tabs.smw-property p {
+	margin-top: 15px;
+}
+
+.smw-tabs label.nav-label.smw-tab-right {
+	float: right;
+    margin: -1px 0 0 0;
+}
+
+.smw-property #tab-smw-property-value:checked ~ #tab-content-smw-property-value,
+.smw-property #tab-smw-property-subp:checked ~ #tab-content-smw-property-subp,
+.smw-property #tab-smw-property-errp:checked ~ #tab-content-smw-property-errp,
+.smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi,
+.smw-property #tab-smw-property-spec:checked ~ #tab-content-smw-property-spec,
+.smw-types #tab-smw-type-errors:checked ~ #tab-content-smw-type-errors,
+.smw-types #tab-smw-type-list:checked ~ #tab-content-smw-type-list {
+	display: block;
+}
+
+.smw-concept #tab-smw-concept-list:checked ~ #tab-content-smw-concept-list,
+.smw-concept #tab-smw-concept-errors:checked ~ #tab-content-smw-concept-errors {
+	display: block;
+}
+
+.smw-property input.nav-tab:checked + label.nav-label.smw-tab-warning,
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-warning,
+.smw-types input.nav-tab:checked + label.nav-label.smw-tab-warning {
+    border-top: 2px solid rgb(204,0,0);
+}
+
+.smw-property input.nav-tab:checked + label.nav-label.smw-tab-spec,
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-spec {
+    border-top: 2px solid orange;
+}
+
+/**
+ * Responsive settings (@see ext.smw.table)
+ */
+@media screen and (max-width: 800px) {
+
+	.smw-page-nav-right {
+		float: left;
+	}
+
+	.smw-tabs label.nav-label.smw-tab-right  {
+		float: unset;
+		margin: 0 0 -1px;
+	}
+
+	.smw-page-nav-left {
+		margin-bottom: 8px;
+	}
+
+	.smw-property-page-results .header-title, .smw-property-page-results .header-row > .header-title {
+		border-bottom: none;
+	}
+
+	.smw-property-page-results .header-title:first-child, .smw-property-page-results .header-row > .header-title:first-child {
+		border-bottom: 1px solid #ddd;
+	}
+
+	.smw-property-page-results .smwpropname {
+		font-weight: bold;
+		width: 100%;
+	}
+
+	.smw-property-page-results .smwprops {
+		width: 100%;
+	}
+
+	.smw-property-page-results > .smw-table-row .smwpropname {
+		text-align: left;
+		vertical-align: top;
+		padding-right: 1em;
+		width: 100%;
+	}
+}

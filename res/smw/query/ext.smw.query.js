@@ -47,9 +47,25 @@
 	 * @return {this}
 	 */
 	var query = function ( printouts, parameters, conditions ) {
-		this.printouts  = printouts !== '' && printouts !== undefined ? printouts : [];
-		this.parameters = parameters !== '' && parameters !== undefined ? parameters : {};
-		this.conditions = conditions !== '' && conditions !== undefined ? conditions :[];
+
+		this.printouts  = [];
+		this.conditions = [];
+
+		this.parameters = {};
+		this.linkAttributes = {};
+
+		if ( printouts !== '' && printouts !== undefined ) {
+			this.printouts = printouts;
+		};
+
+		if ( parameters !== '' && parameters !== undefined ) {
+			this.parameters = parameters;
+		};
+
+		if ( conditions !== '' && conditions !== undefined ) {
+			this.conditions = conditions;
+		};
+
 		return this;
 	};
 
@@ -91,6 +107,15 @@
 		},
 
 		/**
+		 * @since 3.0
+		 *
+		 * @param {Object} linkAttributes
+		 */
+		setLinkAttributes: function( linkAttributes ) {
+			this.linkAttributes = linkAttributes;
+		},
+
+		/**
 		 * Returns query link (see SMW\QueryResult::getLink())
 		 *
 		 * Caption text is set either by using parameters.searchlabel or by
@@ -103,15 +128,22 @@
 		 */
 		getLink: function( caption ) {
 			var c = caption ? caption : this.parameters.searchlabel !== undefined ? this.parameters.searchlabel : '...' ;
-			return html.element( 'a', {
+
+			var args = {
+				title: 'Special:Ask',
+				q:  $.type( this.conditions ) === 'string' ? this.conditions : this.conditions.join( '' ),
+				po: this.printouts.join( '\n' ),
+				p: this.parameters
+			};
+
+			var attr = {
 				'class': 'query-link',
-				'href' : mw.config.get( 'wgScript' ) + '?' + $.param( {
-						title: 'Special:Ask',
-						'q':  $.type( this.conditions ) === 'string' ? this.conditions : this.conditions.join( '' ),
-						'po': this.printouts.join( '\n' ),
-						'p':  this.parameters
-					} )
-			}, c );
+				'href' : mw.config.get( 'wgScript' ) + '?' + $.param( args )
+			} ;
+
+			$.extend( attr, this.linkAttributes );
+
+			return html.element( 'a', attr , c );
 		},
 
 		/**

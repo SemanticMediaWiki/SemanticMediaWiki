@@ -1,0 +1,68 @@
+{
+	"description": "Test output of `Special:Properties` (`wgContLang=en`, skip-on sqlite)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has test blob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Is restricted property",
+			"contents": "[[Has type::Text]] [[Allows value::open]] [[Allows value::closed]]"
+		}
+	],
+	"beforeTest": {
+		"maintenance-run": {
+			"rebuildPropertyStatistics": true
+		}
+	},
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 search for user-defined property to contain",
+			"special-page": {
+				"page": "Properties",
+				"query-parameters": [],
+				"request-parameters": {
+					"property": "test blob"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property:Has_test_blob_property\" title=\"ID:",
+					"Has test blob property"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 search for pre-defined property",
+			"special-page": {
+				"page": "Properties",
+				"query-parameters": [],
+				"request-parameters": {
+					"property": "Allow"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property:Allows_value\" title=\"ID: 14 (_PVAL)\">Allows value</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPropertyZeroCountDisplay": true
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

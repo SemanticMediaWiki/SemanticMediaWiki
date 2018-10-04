@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,12 +18,14 @@ use SMW\Tests\TestEnvironment;
 class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $spyLogger;
 	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -49,11 +50,11 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	public function testAddToUpdateList() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor' ) )
+			->setMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->onConsecutiveCalls( 1001 ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -64,12 +65,12 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with(
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( array( 's_id' => 42 ) ) );
+				$this->equalTo( [ 's_id' => 42 ] ) );
 
-		$insert[] = array(
+		$insert[] = [
 			's_id' => 42,
 			'o_id' => 1001
-		);
+		];
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
@@ -77,7 +78,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
 				$this->equalTo( $insert ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +88,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
@@ -100,9 +101,13 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->clear();
 
-		$instance->addToUpdateList( 42, array( DIWikiPage::newFromText( 'Bar' ) ) );
+		$instance->addToUpdateList( 42, [ DIWikiPage::newFromText( 'Bar' ) ] );
 		$instance->doUpdate();
 	}
 
@@ -124,7 +129,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->addToUpdateList( 0, array() )
+			$instance->addToUpdateList( 0, [] )
 		);
 	}
 
@@ -135,18 +140,18 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertNull(
-			$instance->addToUpdateList( 42, array() )
+			$instance->addToUpdateList( 42, [] )
 		);
 	}
 
 	public function testAddDependenciesFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getIDFor', 'makeSMWPageID' ) )
+			->setMethods( [ 'getId', 'makeSMWPageID' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'getIDFor' )
+			->method( 'getId' )
 			->will( $this->returnValue( 0 ) );
 
 		$idTable->expects( $this->any() )
@@ -161,12 +166,12 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with(
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
-				$this->equalTo( array( 's_id' => 42 ) ) );
+				$this->equalTo( [ 's_id' => 42 ] ) );
 
-		$insert[] = array(
+		$insert[] = [
 			's_id' => 42,
 			'o_id' => 1001
-		);
+		];
 
 		$connection->expects( $this->once() )
 			->method( 'insert' )
@@ -174,7 +179,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( \SMWSQLStore3::QUERY_LINKS_TABLE ),
 				$this->equalTo( $insert ) );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +189,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
@@ -197,9 +202,13 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
 		$instance->clear();
 
-		$instance->addToUpdateList( 42, array( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ) );
+		$instance->addToUpdateList( 42, [ DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ] );
 		$instance->doUpdate();
 	}
 

@@ -13,44 +13,47 @@ use Title;
  *
  * @author mwjames
  */
-class TitleIsMovable {
+class TitleIsMovable extends HookHandler {
 
 	/**
 	 * @var Title
 	 */
-	private $title = null;
-
-	/**
-	 * @var boolean
-	 */
-	private $isMovable = true;
+	private $title;
 
 	/**
 	 * @since  2.1
 	 *
-	 * @param Title &$title
-	 * @param boolean &$isMovable
+	 * @param Title $title
 	 */
-	public function __construct( Title $title, &$isMovable ) {
+	public function __construct( Title $title ) {
 		$this->title = $title;
-		$this->isMovable = &$isMovable;
 	}
 
 	/**
 	 * @since 2.1
 	 *
+	 * @param boolean &$isMovable
+	 *
 	 * @return boolean
 	 */
-	public function process() {
-		return $this->isPropertyNamespace() ? $this->detectMovabilityForProperty() : true;
-	}
+	public function process( &$isMovable ) {
 
-	private function isPropertyNamespace() {
-		return $this->title->getNamespace() === SMW_NS_PROPERTY;
-	}
+		// We don't allow rule pages to be moved as we cannot track JSON content
+		// as redirects and therefore invalidate any rule assignment without a
+		// possibility to automatically reassign IDs
+		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
+			$isMovable = false;
+		}
 
-	private function detectMovabilityForProperty() {
-		$this->isMovable = DIProperty::newFromUserLabel( $this->title->getText() )->isUserDefined();
+		if ( $this->title->getNamespace() !== SMW_NS_PROPERTY ) {
+			return true;
+		}
+
+		// Predefined properties cannot be moved!
+		if ( !DIProperty::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
+			$isMovable = false;
+		}
+
 		return true;
 	}
 

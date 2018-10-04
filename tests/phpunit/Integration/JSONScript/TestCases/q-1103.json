@@ -1,0 +1,100 @@
+{
+	"description": "Test `_rec` using some additional search pattern (#1189, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "hasWeightMeasure",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 g, gram, grams]] [[Corresponds to::0.2 teaspoon, teaspoons]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "hasIngredient",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text number record",
+			"contents": "[[Has type::Record]] [[Has fields::Has text;Has number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "hasCookingIngredient",
+			"contents": "[[Has type::Record]] [[Has fields::hasIngredient;hasWeightMeasure]]"
+		},
+		{
+			"page": "Example/1103/1",
+			"contents": "[[Category:E-1103]][[Has text number record::SomeText;123]]"
+		},
+		{
+			"page": "Example/1103/2",
+			"contents": "[[Category:E-1103]][[hasCookingIngredient::salt:0.25 teaspoon]]"
+		},
+		{
+			"page": "Example/1103/3",
+			"contents": "{{#ask: [[Category:E-1103]][[hasCookingIngredient::salt;~teaspoon]] |?hasCookingIngredient}}"
+		},
+		{
+			"page": "Example/1103/4",
+			"contents": "[[Category:E-1103]][[Has text number record::SomeText;1234]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#1 verify no cached DataValue is invoked and causes wrong object deseralization (see #1189)",
+			"subject": "Example/1103/3",
+			"assert-output": {
+				"to-contain": [
+					"&quot;teaspoon&quot; is not a number"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#0 simple search that causes an error",
+			"condition": "[[Category:E-1103]] [[Has status record::SomeText;~12]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 0
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1, see issue #1207",
+			"condition": "[[Category:E-1103]] [[Has text number record::~*eT*;>123]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/1103/4#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwStrictComparators": true
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

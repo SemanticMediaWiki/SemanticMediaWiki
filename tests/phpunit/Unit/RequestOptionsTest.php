@@ -19,7 +19,7 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\RequestOptions',
+			RequestOptions::class,
 			new RequestOptions()
 		);
 	}
@@ -36,14 +36,91 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 			);
 
 			$this->assertFalse(
-				$stringCondition->asDisjunctiveCondition
+				$stringCondition->isOr
 			);
 		}
 
 		$this->assertEquals(
-			'-1#0##1##1|Foo#0#',
+			'[-1,0,false,true,null,true,"Foo#0##",[],[]]',
 			$instance->getHash()
 		);
+	}
+
+	public function testEddExtraCondition() {
+
+		$instance = new RequestOptions();
+		$instance->addExtraCondition( 'Foo' );
+		$instance->addExtraCondition( [ 'Bar' => 'Foobar' ] );
+
+		$this->assertEquals(
+			[
+				'Foo',
+				[ 'Bar' => 'Foobar' ]
+			],
+			$instance->getExtraConditions()
+		);
+
+		$this->assertEquals(
+			'[-1,0,false,true,null,true,"",["Foo",{"Bar":"Foobar"}],[]]',
+			$instance->getHash()
+		);
+	}
+
+	/**
+	 * @dataProvider numberProvider
+	 */
+	public function testLimit( $limit, $expected ) {
+
+		$instance = new RequestOptions();
+		$instance->setLimit( $limit );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getLimit()
+		);
+
+		$instance->limit = $limit;
+
+		$this->assertEquals(
+			$expected,
+			$instance->getLimit()
+		);
+	}
+
+	/**
+	 * @dataProvider numberProvider
+	 */
+	public function testOffset( $offset, $expected ) {
+
+		$instance = new RequestOptions();
+		$instance->setOffset( $offset );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getOffset()
+		);
+
+		$instance->offset = $offset;
+
+		$this->assertEquals(
+			$expected,
+			$instance->getOffset()
+		);
+	}
+
+	public function numberProvider() {
+
+		$provider[] = [
+			42,
+			42
+		];
+
+		$provider[] = [
+			'42foo',
+			42
+		];
+
+		return $provider;
 	}
 
 }

@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\EngineOptions
@@ -14,6 +15,8 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
  * @author mwjames
  */
 class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -30,8 +33,7 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EngineOptions();
 
-		$this->assertInternalType(
-			$expected,
+		$this->assertNotNull(
 			$instance->get( $setting )
 		);
 	}
@@ -62,35 +64,30 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function initialSettingsProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgIgnoreQueryErrors',
 			'boolean'
-		);
+		];
 
-		$provider[] = array(
-			'smwgQSortingSupport',
-			'boolean'
-		);
+		$provider[] = [
+			'smwgQSortFeatures',
+			'integer'
+		];
 
-		$provider[] = array(
-			'smwgQRandSortingSupport',
-			'boolean'
-		);
-
-		$provider[] = array(
+		$provider[] = [
 			'smwgQSubpropertyDepth',
 			'integer'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgQSubcategoryDepth',
 			'integer'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'smwgSparqlQFeatures',
 			'integer'
-		);
+		];
 
 		return $provider;
 	}

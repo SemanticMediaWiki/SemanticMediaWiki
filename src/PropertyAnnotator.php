@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * Interface specifing available methods to interact with the Decorator
+ * Interface specifying available methods to interact with the Decorator
  *
  * @ingroup SMW
  *

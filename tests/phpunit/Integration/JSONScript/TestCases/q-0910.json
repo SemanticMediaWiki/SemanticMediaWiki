@@ -1,0 +1,113 @@
+{
+	"description": "Test `SMW_QSORT_UNCONDITIONAL` (`smwgQSortFeatures`, skip-on all SPARQL repositories, postgres)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Q0910/1",
+			"contents": "[[Has page::123]] [[Category:Q0910]]"
+		},
+		{
+			"page": "Q0910/2",
+			"contents": "[[Has text::ABC]] [[Category:Q0910]]"
+		},
+		{
+			"page": "Q0910/3",
+			"contents": "[[Has text::345]] [[Category:Q0910]]"
+		},
+		{
+			"page": "Q0910/Q.1",
+			"contents": "{{#ask: [[Category:Q0910]] |?Has page |?Has text |sort=Has page,Has text |order=desc, desc }}"
+		},
+		{
+			"page": "Q0910/Q.2",
+			"contents": "{{#ask: [[Category:Q0910]] |?Has page |?Has text |sort=Has page,Has text |order=desc, asc }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (SMW_QSORT_UNCONDITIONAL display, 2, 3)",
+			"condition": "[[Category:Q0910]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Has_page" : "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0910/1#0##",
+					"Q0910/2#0##",
+					"Q0910/3#0##"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (SMW_QSORT_UNCONDITIONAL on Has page=desc, Has text=desc)",
+			"skip-on": {
+				"postgres": "Has different order than MySQL/SQLite, needs investigation."
+			},
+			"subject": "Q0910/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype_wpg\" data-sort-value=\"123\">",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\">ABC</td>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\" data-sort-value=\"345\">345</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (SMW_QSORT_UNCONDITIONAL on Has page=desc, Has text=asc)",
+			"skip-on": {
+				"postgres": "Has different order than MySQL/SQLite, needs investigation."
+			},
+			"subject": "Q0910/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype_wpg\" data-sort-value=\"123\">",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\" data-sort-value=\"345\">345</td>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\">ABC</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgQSortFeatures": [
+			"SMW_QSORT",
+			"SMW_QSORT_UNCONDITIONAL"
+		],
+		"smwgElasticsearchConfig": {
+			"query": {
+				"sort.property.must.exists": false
+			}
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "SMW_QSORT_UNCONDITIONAL isn't implemented",
+			"sesame": "SMW_QSORT_UNCONDITIONAL isn't implemented",
+			"fuseki": "SMW_QSORT_UNCONDITIONAL isn't implemented",
+			"blazegraph": "SMW_QSORT_UNCONDITIONAL isn't implemented"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

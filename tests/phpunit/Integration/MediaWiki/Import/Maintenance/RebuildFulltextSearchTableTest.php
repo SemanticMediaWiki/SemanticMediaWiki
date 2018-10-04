@@ -17,7 +17,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
@@ -31,7 +31,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->tearDown();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			$this->testEnvironment->getFixturesLocation( 'Import', 'cicero-de-finibus.xml' )
+			__DIR__ . '/../Fixtures/cicero-de-finibus.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
@@ -47,9 +47,9 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 
 	public function testCanRun() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'De Finibus Bonorum et Malorum'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 

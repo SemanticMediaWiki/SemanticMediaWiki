@@ -64,7 +64,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 	}
 
 	protected function requiresAuxiliary( $key ) {
-		return !in_array( $key, array( '_SKEY', '_INST', '_MDAT', '_CDAT', '_SUBC', '_SUBP', '_TYPE', '_IMPO', '_URI' ) );
+		return !in_array( $key, [ '_SKEY', '_INST', '_MDAT', '_CDAT', '_SUBC', '_SUBP', '_TYPE', '_IMPO', '_URI' ] );
 	}
 
 }

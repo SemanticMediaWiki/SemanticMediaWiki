@@ -1,0 +1,83 @@
+{
+	"description": "Test `Special:Browse` output for `_dat`, '_REDI' (`wgContLang=en`, `wgLang=en`, `smwgDVFeatures=SMW_DV_TIMEV_CM | SMW_DV_WPV_DTITLE`, `wgRestrictDisplayTitle=false`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/S0005/1",
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has date::12 Jan 1345]] [[Category:S0004]]"
+		},
+		{
+			"page": "Example/S0005/2",
+			"contents": "#REDIRECT [[Example/S0005/3]]"
+		},
+		{
+			"page": "Example/S0005/3",
+			"contents": "{{DISPLAYTITLE:ABC}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0005/1",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwb-value\">08:56:00, 12 January 1991&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20date/12-20January-201991-2008:56:00\">+</a></span>",
+					"<span class=\"smwb-value\">January 12, 1345 <sup>JL</sup>&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20date/12-20January-201345-20JL\">+</a></span>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (redirect to show source page instead of DISPLAYTITLE)",
+			"special-page": {
+				"page": "Browse",
+				"query-parameters": "Example/S0005/3",
+				"request-parameters": {
+					"output": "legacy"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Example/S0005/2\">Example/S0005/2"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Example/S0005/2\">ABC"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgRestrictDisplayTitle": false,
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM",
+			"SMW_DV_WPV_DTITLE"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

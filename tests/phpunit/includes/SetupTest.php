@@ -22,7 +22,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 	private $defaultConfig;
-	private $mockbuilder;
 
 	protected function setUp() {
 		parent::setUp();
@@ -33,11 +32,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -46,13 +45,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->defaultConfig = array(
-			'smwgCacheType' => CACHE_NONE,
-			'smwgNamespacesWithSemanticLinks' => array(),
+		$this->defaultConfig = [
+			'smwgMainCacheType' => CACHE_NONE,
+			'smwgNamespacesWithSemanticLinks' => [],
 			'smwgEnableUpdateJobs' => false,
-			'wgNamespacesWithSubpages' => array(),
+			'wgNamespacesWithSubpages' => [],
 			'wgExtensionAssetsPath'    => false,
-			'wgResourceModules' => array(),
+			'smwgResourceLoaderDefFiles' => [],
+			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
 			'wgVersion'         => '1.21',
@@ -60,7 +60,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgLang'            => $language,
 			'IP'                => 'Foo',
 			'smwgSemanticsEnabled' => true
-		);
+		];
 
 		foreach ( $this->defaultConfig as $key => $value ) {
 			$this->applicationFactory->getSettings()->set( $key, $value );
@@ -79,22 +79,19 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$config = array();
-		$basepath = 'Foo';
-
 		$this->assertInstanceOf(
-			'\SMW\Setup',
-			new Setup( $applicationFactory, $config, $basepath )
+			Setup::class,
+			new Setup( $applicationFactory )
 		);
 	}
 
 	public function testResourceModules() {
 
-		$config   = $this->defaultConfig;
-		$basepath = $this->applicationFactory->getSettings()->get( 'smwgIP' );
+		$config = $this->defaultConfig;
+		$config['smwgResourceLoaderDefFiles'] = $GLOBALS['smwgResourceLoaderDefFiles'];
 
-		$instance = new Setup( $this->applicationFactory, $config, $basepath );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, '' );
 
 		$this->assertNotEmpty(
 			$config['wgResourceModules']
@@ -104,8 +101,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider apiModulesDataProvider
 	 */
-	public function testRegisterApiModules( $moduleEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgAPIModules', $moduleEntry, $setup );
+	public function testGetAPIModules( $name ) {
+
+		$vars = Setup::getAPIModules();
+
+		$this->assertArrayHasKey(
+			$name,
+			$vars
+		);
 	}
 
 	/**
@@ -116,25 +119,26 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider messagesFilesDataProvider
-	 */
-	public function testRegisterMessageFiles( $moduleEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgExtensionMessagesFiles', $moduleEntry, $setup, 'file' );
-	}
-
-	/**
 	 * @dataProvider specialPageDataProvider
 	 */
-	public function testRegisterSpecialPages( $specialEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgSpecialPages', $specialEntry, $setup );
+	public function testInitSpecialPageList( $name ) {
+
+		$vars = [];
+
+		Setup::initSpecialPageList( $vars );
+
+		$this->assertArrayHasKey(
+			$name,
+			$vars
+		);
 	}
 
 	public function testRegisterDefaultRightsUserGroupPermissions() {
 
 		$config = $this->defaultConfig;
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgAvailableRights']
@@ -146,6 +150,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$config['wgGroupPermissions']['smwcurator']['smw-patternedit']
+		);
+
+		$this->assertTrue(
+			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
 		);
 
 		$this->assertTrue(
@@ -164,8 +172,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$localConfig
 		);
 
-		$instance = new Setup( $this->applicationFactory, $localConfig, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
@@ -187,8 +195,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgParamDefinitions']['smwformat']
 		);
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgParamDefinitions']['smwformat']
@@ -199,10 +207,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$config['wgFooterIcons']['poweredby'] = array();
+		$config['wgFooterIcons']['poweredby'] = [];
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
 			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
@@ -214,13 +222,12 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function specialPageDataProvider() {
 
-		$specials = array(
+		$specials = [
 			'Ask',
 			'Browse',
 			'PageProperty',
 			'SearchByProperty',
 			'SMWAdmin',
-			'SemanticStatistics',
 			'Concepts',
 			'ExportRDF',
 			'Types',
@@ -228,8 +235,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
-			'DeferredRequestDispatcher'
-		);
+			'DeferredRequestDispatcher',
+			'ProcessingErrorList',
+			'PropertyLabelSimilarity'
+		];
 
 		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );
 	}
@@ -239,16 +248,37 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function jobClassesDataProvider() {
 
-		$jobs = array(
+		$jobs = [
+
+			'smw.update',
+			'smw.refresh',
+			'smw.updateDispatcher',
+			'smw.parserCachePurge',
+			'smw.fulltextSearchTableUpdate',
+			'smw.entityIdDisposer',
+			'smw.propertyStatisticsRebuild',
+			'smw.fulltextSearchTableRebuild',
+			'smw.changePropagationDispatch',
+			'smw.changePropagationUpdate',
+			'smw.changePropagationClassUpdate',
+			'smw.elasticIndexerRecovery',
+			'smw.elasticFileIngest',
+
+			// Legacy
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
 			'SMW\ParserCachePurgeJob',
-
-			// Legacy
+			'SMW\FulltextSearchTableUpdateJob',
+			'SMW\EntityIdDisposerJob',
+			'SMW\PropertyStatisticsRebuildJob',
+			'SMW\FulltextSearchTableRebuildJob',
+			'SMW\ChangePropagationDispatchJob',
+			'SMW\ChangePropagationUpdateJob',
+			'SMW\ChangePropagationClassUpdateJob',
 			'SMWUpdateJob',
 			'SMWRefreshJob',
-		);
+		];
 
 		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );
 	}
@@ -258,30 +288,15 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function apiModulesDataProvider() {
 
-		$modules = array(
+		$modules = [
 			'ask',
 			'smwinfo',
 			'askargs',
 			'browsebysubject',
 			'browsebyproperty'
-		);
+		];
 
 		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function messagesFilesDataProvider() {
-
-		$modules = array(
-			'SemanticMediaWikiAlias',
-			'SemanticMediaWikiMagic',
-			'SemanticMediaWikiNamespaces'
-		);
-
-		return $this->buildDataProvider( 'wgExtensionMessagesFiles', $modules, '' );
 	}
 
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
@@ -293,8 +308,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			"Asserts that {$entry} is empty"
 		);
 
-		$instance = new Setup( $this->applicationFactory, $config, 'Foo' );
-		$instance->run();
+		$instance = new Setup( $this->applicationFactory );
+		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty( $config[$target][$entry] );
 
@@ -313,13 +328,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function buildDataProvider( $id, $definitions, $default ) {
 
-		$provider = array();
+		$provider = [];
 
 		foreach ( $definitions as $definition ) {
-			$provider[] = array(
+			$provider[] = [
 				$definition,
-				array( $id => array( $definition => $default ) ),
-			);
+				[ $id => [ $definition => $default ] ],
+			];
 		}
 
 		return $provider;

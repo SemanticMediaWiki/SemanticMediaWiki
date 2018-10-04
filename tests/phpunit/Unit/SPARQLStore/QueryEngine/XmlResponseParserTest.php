@@ -6,6 +6,7 @@ use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser
@@ -17,6 +18,8 @@ use SMWExpResource as ExpResource;
  * @author mwjames
  */
 class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -57,7 +60,7 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	protected function assertResultFormat( $expectedResultRowItemInstance, $results ) {
 
 		if ( !is_array( $expectedResultRowItemInstance ) ) {
-			$expectedResultRowItemInstance =  array( $expectedResultRowItemInstance );
+			$expectedResultRowItemInstance =  [ $expectedResultRowItemInstance ];
 		}
 
 		foreach ( $results as $key => $row ) {
@@ -82,84 +85,84 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 		$rawResultProvider = new FakeRawResultProvider();
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getUriResourceSparqlResultXml(),
 			new ExpResource( 'http://example.org/id/Foo' )
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getEmptySparqlResultXml(),
 			null
-		);
+		];
 
 		#2 @bug 62218
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getNonTypeLiteralResultXml(),
 			new ExpLiteral( 'Has foo' )
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getBooleanSparqlResultXml(),
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getStringTypeLiteralSparqlResultXml(),
 			new ExpLiteral( 'Foo', 'http://www.w3.org/2001/XMLSchema#string' )
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getIntegerTypeLiteralSparqlResultXml(),
 			new ExpLiteral( '1', 'http://www.w3.org/2001/XMLSchema#integer' )
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getMixedRowsSparqlResultXml(),
-			array(
+			[
 				new ExpResource( 'http://example.org/id/Foo' ),
 				new ExpResource( 'http://example.org/id/Bar' ),
 				new ExpLiteral( 'Quux', 'http://www.w3.org/2001/XMLSchema#string' )
-			)
-		);
+			]
+		];
 
 		#7 #450
-		$provider[] = array(
+		$provider[] = [
 			false,
 			null
-		);
+		];
 
 		#8 #450
-		$provider[] = array(
+		$provider[] = [
 			'false',
 			null
-		);
+		];
 
 		#9 #626
-		$provider[] = array(
+		$provider[] = [
 			'true',
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
-		);
+		];
 
 		#10
-		$provider[] = array(
+		$provider[] = [
 			'',
 			new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' )
-		);
+		];
 
 		#11
-		$provider[] = array(
+		$provider[] = [
 			$rawResultProvider->getMixedRowsSparqlResultUtf8Xml(),
-			array(
+			[
 				new ExpResource( 'http://example.org/id/F安o' ),
 				new ExpResource( 'http://example.org/id/B定ar' ),
 				new ExpLiteral( 'Quux安定', 'http://www.w3.org/2001/XMLSchema#string' )
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

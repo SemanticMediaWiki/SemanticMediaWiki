@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -10,7 +11,6 @@ use SMW\Query\Language\SomeProperty as SomeProperty;
 use SMW\Query\Language\ThingDescription as ThingDescription;
 use SMW\Query\Language\ValueDescription as ValueDescription;
 use SMW\SPARQLStore\SPARQLStore;
-use SMW\StoreFactory;
 use SMW\Subobject;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
@@ -18,12 +18,7 @@ use SMWDINumber as DINumber;
 use SMWQuery as Query;
 
 /**
- *
- * @group SMW
- * @group SMWExtension
- * @group semantic-mediawiki-integration
- * @group semantic-mediawiki-sparql
- * @group semantic-mediawiki-query
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 2.0
@@ -39,23 +34,26 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 
 	protected function setUp() {
 
-		$this->store = StoreFactory::getStore();
+		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {
 			$this->markTestSkipped( "Requires a SPARQLStore instance" );
 		}
 
-		$sparqlDatabase = $this->store->getConnection();
+		$repositoryConnection = $this->store->getConnection( 'sparql' );
+		$repositoryConnection->setConnectionTimeout( 5 );
 
-		if ( !$sparqlDatabase->setConnectionTimeoutInSeconds( 5 )->ping() ) {
-			$this->markTestSkipped( "Can't connect to the SPARQL database" );
+		if ( !$repositoryConnection->ping() ) {
+			$this->markTestSkipped( "Can't connect to the SPARQL repository" );
 		}
 
-		$sparqlDatabase->deleteAll();
+		$repositoryConnection->deleteAll();
 
 		$this->queryResultValidator = new QueryResultValidator();
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+
+		ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' )->disableCache();
 	}
 
 	public function testQuerySubjects_afterUpdatingSemanticData() {

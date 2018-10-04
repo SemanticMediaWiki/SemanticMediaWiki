@@ -1,0 +1,327 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.smw-search-results-prepend {
+	clear: both;
+	padding: 0.65em 0.75em 0.60em 0.75em;
+	background-color: #ddeefc;
+	margin: -1px 0 0;
+	border: 1px solid rgba( 94, 157, 200, 0.25 );
+	border-radius: 2px 2px 2px 2px;
+	margin-bottom: 1em;
+}
+
+/* https://stackoverflow.com/questions/2812770/add-centered-text-to-the-middle-of-a-hr-like-line */
+.smw-text-strike {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 15px 0 15px 0;
+    clear: both;
+}
+
+.smw-text-strike > span {
+    position: relative;
+    display: inline-block;
+    font-size: 95%;
+    margin-left: 20px;
+}
+
+.smw-text-strike > span:before,
+.smw-text-strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #aaa;
+}
+
+.smw-text-strike > span:before {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.smw-text-strike > span:after {
+    left: 100%;
+    margin-left: 10px;
+}
+
+.smw-fields {
+    display: flex;
+    /* justify-content: space-between; */
+    /* padding-left: 10px; */
+    /* margin: 0 -10px; */
+    margin: 0 -10px;
+    /* flex-direction: column; */
+    margin-right: 6px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-content: flex-end;
+}
+
+.smw-fields .smw-input-field {
+    margin: 0 10px;
+    margin-top: 4px;
+    flex: 1 0 40%; /* make max 2 columns*/
+}
+
+.smw-input-field label {
+    margin-left: 8px;
+}
+
+.smw-input {
+    padding:8px;
+    display:block;
+    border:none;
+    border-bottom:1px solid #eaecf0;
+    width:100%
+}
+
+.smw-input-group {
+   display: flex;
+    flex: 1 0 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-content: flex-end;
+}
+
+
+.smw-select-field {
+ -webkit-appearance: none;
+  -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg fill='%23888888' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 6px);
+    background-position-y: 5px;
+
+    padding:7px 25px 7px 10px;
+    margin-top: 4px;
+    margin-left: 4px;
+    border:none;
+    border-bottom:1px solid #eaecf0;
+    flex: 1 0 35px;
+    display: inline-block;
+        padding: 7px;
+    /* margin: 0 10px; */
+    margin-top: 4px;
+    /* width: 100%; */
+    margin-left: 10px;
+    margin-right: -5px;
+}
+
+.smw-button-field {
+    vertical-align: middle;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #888888;
+    /* flex: 1 0 35px; */
+    display: inline-block;
+}
+
+.smw-form-description {
+    margin-left: 14px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.smw-form-link-form {
+    margin-left: 0.25em;
+}
+
+.smw-form-link-query {
+    display: inline-block;
+    line-height: 1.25em;
+    border-right: 1px solid #a2a9b1;
+    margin: 0.125em 0;
+    padding: 0 0.5em;
+    zoom: 1;
+}
+
+.smw-input-tooltip {
+    width: calc(100% - 40px);
+    display: inline-block;
+}
+
+.smw-search-options {
+  display: flex;
+  width: 100%;
+}
+
+.smw-search-options div:last-child {
+  margin-left: auto;
+}
+
+.smw-search-options div:first-child {
+  margin-left: unset;
+}
+
+.smw-search-sort {
+    min-width: 120px;
+}
+
+#smw-search-togglensview {
+    float: right;
+}
+
+.ns-list-off {
+    display:none;
+}
+
+.ns-list-on {
+    display:block;
+}
+
+#smw-togglensview {
+    margin-left: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    opacity: 0.6;
+}
+
+#smw-togglensview:hover {
+    opacity: 1
+}
+
+#smw-togglensview:focus{
+    outline: none;
+}
+
+#smw-searchoptions {
+    margin: 0;
+    padding: 0.5em 0.75em 0.75em 0.75em;
+    background-color: #f8f9fa;
+    border: 1px solid #c8ccd1;
+    border-top-width: 0;
+}
+
+#smw-searchoptions .divider {
+    clear: both;
+    border-bottom: 1px solid #eaecf0;
+    padding-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#smw-search-synatx-list, #smw-search-sort-list {
+    /* font-size: smaller; */
+}
+
+#smw-search-synatx-list code {
+    background-color: #5e9dc82e;
+    border: 1px solid #5e9dc84a;
+}
+
+#mw-searchoptions h4 {
+    margin-top: 2px !important;
+}
+
+#smw-search-togglensview, #mw-search-togglebox {
+    margin-top: 2px !important;
+}
+
+.searchresult {
+    text-align: justify;
+}
+
+.search-types .current a:after {
+    color: #586069;
+    position: unset !important;
+    display: inline-block !important;
+    width: 0 !important;
+    height: 0 !important;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    margin-left: 5px;
+}
+
+.smw-search-options .smw-modal-link {
+    position: absolute;
+    right: 10px;
+}
+
+.smw-search-options .smw-icon-info {
+    padding: 0 0 8px 22px !important;
+}
+
+/**
+ * Responsive settings (#see smw.table.css)
+ */
+@media screen and (max-width: 800px) {
+    .smw-fields .smw-input-field, .smw-select-field {
+        flex: 1 1 auto;
+    }
+
+    #smw-search-sort label {
+        display: none;
+    }
+
+    .smw-input-group {
+    /*    display:block;*/
+    }
+}
+
+/**
+ * .skin-chameleon specific styles
+ */
+.skin-chameleon .smw-search-help-proximity {
+    margin-top: 10px;
+}
+
+.skin-chameleon .smw-select-field {
+    margin-right: -3px;
+}
+
+.skin-chameleon .smw-fields .smw-input-field {
+    margin: 5px -3px 0 10px;
+}
+
+.skin-chameleon #mw-searchoptions h4 {
+    margin-top: 6px !important;
+    margin-bottom: 2px !important;
+}
+
+.skin-chameleon #smw-search-togglensview, .skin-chameleon #mw-search-togglebox {
+    margin-top: 0px !important;
+}
+
+.skin-chameleon .smw-search-options .smw-modal-link {
+    position: absolute;
+    right: 35px;
+}
+
+.skin-chameleon .smw-search-options .smw-icon-info {
+    padding: 0 0 15px 24px !important;
+}

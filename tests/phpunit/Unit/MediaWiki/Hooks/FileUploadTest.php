@@ -23,20 +23,20 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
-			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_FILE => true ),
-			'smwgCacheType'  => 'hash',
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_FILE => true ],
+			'smwgMainCacheType'  => 'hash',
 			'smwgEnableUpdateJobs' => false
-		) );
+		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'hasIDFor' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -44,6 +44,12 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $idTable ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
 	protected function tearDown() {
@@ -53,19 +59,27 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$file = $this->getMockBuilder( 'File' )
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\FileUpload',
-			new FileUpload( $file )
+			FileUpload::class,
+			new FileUpload( $namespaceExaminer )
 		);
 	}
 
-	public function testPerformUpdateForEnabledNamespace() {
+	public function testprocessEnabledNamespace() {
 
 		$title = Title::newFromText( __METHOD__, NS_FILE );
+
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$namespaceExaminer->expects( $this->atLeastOnce() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
@@ -89,7 +103,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'createFilePage' ) )
+			->setMethods( [ 'createFilePage' ] )
 			->getMock();
 
 		$pageCreator->expects( $this->once() )
@@ -100,22 +114,32 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload(
-			$file,
-			true
+			$namespaceExaminer
 		);
 
-		$this->assertTrue(
-			$instance->process()
-		);
+		$reUploadStatus = true;
 
 		$this->assertTrue(
-			$wikiFilePage->smwFileReUploadStatus
+			$instance->process( $file, $reUploadStatus )
+		);
+
+		$this->assertEquals(
+			$wikiFilePage->smwFileReUploadStatus,
+			$reUploadStatus
 		);
 	}
 
-	public function testTryToPerformUpdateForDisabledNamespace() {
+	public function testTryToProcessDisabledNamespace() {
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
+
+		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$namespaceExaminer->expects( $this->atLeastOnce() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( false ) );
 
 		$file = $this->getMockBuilder( 'File' )
 			->disableOriginalConstructor()
@@ -135,13 +159,10 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
 		$instance = new FileUpload(
-			$file,
-			false
+			$namespaceExaminer
 		);
 
-		$this->assertTrue(
-			$instance->process()
-		);
+		$instance->process( $file, false );
 	}
 
 }

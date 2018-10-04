@@ -1,0 +1,106 @@
+{
+	"description": "Test conditions and constraint validations for allowed values `_LIST` and uniqueness `_PVUC` (#1207, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]] [[Allows value::open]], [[Allows value::closed]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has uniqueness",
+			"contents": "[[Has type::Text]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"page": "Example/Q1108/1",
+			"contents": "[[Category:Q1108]][[Has text::open]]"
+		},
+		{
+			"page": "Example/Q1108/2",
+			"contents": "[[Category:Q1108]][[Has text::close]]"
+		},
+		{
+			"page": "Example/Q1108/3",
+			"contents": "[[Category:Q1108]][[Has text::invalid]]"
+		},
+		{
+			"page": "Example/Q1108/4",
+			"contents": "[[Category:Q1108]] [[Has uniqueness::Foo]]"
+		},
+		{
+			"page": "Example/Q1108/5",
+			"contents": "[[Category:Q1108]] [[Has uniqueness::Foo]]"
+		},
+		{
+			"page": "Example/Q1108/Q1",
+			"contents": "{{#ask: [[Category:Q1108]] [[Has uniqueness::Foo]] |link=none}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#3 embedded query with uniqueness condition works without raising an issue due to different context page",
+			"subject": "Example/Q1108/Q1",
+			"assert-output": {
+				"to-contain": [
+					"Example/Q1108/4"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#0 matches one with open",
+			"condition": "[[Category:Q1108]][[Has text::open]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q1108/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 matches none",
+			"condition": "[[Category:Q1108]][[Has text::invalid]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 0,
+				"results": []
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Category:Q1108]] [[Has uniqueness::Foo]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q1108/4#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -37,6 +37,13 @@ class XmlImportRunner {
 	}
 
 	/**
+	 * @param string $file
+	 */
+	public function setFile( $file ) {
+		$this->file = $file;
+	}
+
+	/**
 	 * @param boolean $verbose
 	 *
 	 * @return XmlImportRunner
@@ -140,7 +147,7 @@ class XmlImportRunner {
 
 	private function assertThatFileIsReadableOrThrowException( $file ) {
 
-		$file = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $file );
+		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( is_readable( $file ) ) {
 			return $file;

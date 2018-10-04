@@ -27,11 +27,11 @@ class RawResultPrinterTest extends QueryPrinterTestCase {
 	/**
 	 * @return RawResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
+	private function getInstance( $parameters = [] ) {
 
 		$instance = $this->getMockBuilder( '\SMW\RawResultPrinter' )
 			->disableOriginalConstructor()
-			->setConstructorArgs( array( 'api' ) )
+			->setConstructorArgs( [ 'api' ] )
 			->getMockForAbstractClass();
 
 		return $this->setParameters( $instance, $parameters );

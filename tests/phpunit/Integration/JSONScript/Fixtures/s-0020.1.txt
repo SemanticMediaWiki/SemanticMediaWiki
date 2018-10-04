@@ -1,0 +1,1 @@
+{"Example/S0020/1#0##":{"Has text":["Some example"],"Has number":[]},"Example/S0020/2#0##":{"Has text":[],"Has number":["123","345"]}}

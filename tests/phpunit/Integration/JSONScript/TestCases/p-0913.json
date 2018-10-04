@@ -1,0 +1,221 @@
+{
+	"description": "Test `#ask` with (`#-raw`) formatter with links in values (#..., `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"page": "Example/P0913/1",
+			"contents": "[[Category:P0913]] [[Has text::Some text with annotation [[Foo::Example/P0913/1]]]]"
+		},
+		{
+			"page": "Example/P0913/Q.1",
+			"contents": "{{#ask: [[Category:P0913]] [[Has text::+]] |?Has text |link=none }}"
+		},
+		{
+			"page": "Example/P0913/Q.2",
+			"contents": "{{#ask: [[Category:P0913]] [[Has text::+]] |?Has text#-raw |link=none }}"
+		},
+		{
+			"page": "Example/P0913/Q.3",
+			"contents": "{{#ask: [[Category:P0913]] [[Has text::+]] |?Has text#-raw |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0913/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_MDAT",
+						"_INST",
+						"_SKEY",
+						"Has text",
+						"Foo"
+					],
+					"propertyValues": [
+						"Some text with annotation Example/P0913/1"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31-) (without `-raw`)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (1.31+) (without `-raw`)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31-) (with `-raw`)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (1.31+) (with `-raw`)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (1.31-) same as #2 (with deprecated `-ia`)",
+			"skip-on": {
+				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (1.31+) same as #2 (with deprecated `-ia`)",
+			"skip-on": {
+				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/P0913/Q.3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS",
+			"SMW_PARSER_LINV"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

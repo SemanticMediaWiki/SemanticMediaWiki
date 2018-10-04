@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter
@@ -14,6 +15,8 @@ use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
  * @author mwjames
  */
 class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

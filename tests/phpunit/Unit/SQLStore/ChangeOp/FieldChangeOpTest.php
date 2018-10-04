@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\FieldChangeOp;
+namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\FieldChangeOp
@@ -15,24 +16,26 @@ use SMW\SQLStore\ChangeOp\FieldChangeOp;
  */
 class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\FieldChangeOp',
+			FieldChangeOp::class,
 			new FieldChangeOp()
 		);
 	}
 
 	public function testChangeOp() {
 
-		$changeOp = array(
+		$op = [
 			's_id' => 462,
 			'o_serialized' => '1/2016/6/10/2/3/31/0',
 			'o_sortkey' => '2457549.5857755',
-		);
+		];
 
 		$instance = new FieldChangeOp(
-			$changeOp
+			$op
 		);
 
 		$this->assertFalse(

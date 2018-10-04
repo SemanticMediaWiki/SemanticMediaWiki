@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Query\Language\ValueDescription;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
@@ -15,12 +17,33 @@ use SMWDIUri as DIUri;
 class ValueMatchConditionBuilder {
 
 	/**
+	 * @var TextSanitizer
+	 */
+	protected $textSanitizer;
+
+	/**
+	 * @var SearchTable
+	 */
+	protected $searchTable;
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param TextSanitizer $textSanitizer
+	 * @param SearchTable $searchTable
+	 */
+	public function __construct( TextSanitizer $textSanitizer, SearchTable $searchTable ) {
+		$this->textSanitizer = $textSanitizer;
+		$this->searchTable = $searchTable;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return boolean
 	 */
 	public function isEnabled() {
-		return false;
+		return $this->searchTable->isEnabled();
 	}
 
 	/**
@@ -29,7 +52,7 @@ class ValueMatchConditionBuilder {
 	 * @return string
 	 */
 	public function getTableName() {
-		return '';
+		return $this->searchTable->getTableName();
 	}
 
 	/**
@@ -40,7 +63,18 @@ class ValueMatchConditionBuilder {
 	 * @return boolean
 	 */
 	public function hasMinTokenLength( $value ) {
-		return false;
+		return $this->searchTable->hasMinTokenLength( $value );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $property
+	 *
+	 * @return boolean
+	 */
+	public function isExemptedProperty( DIProperty $property ) {
+		return $this->searchTable->isExemptedProperty( $property );
 	}
 
 	/**
@@ -51,7 +85,7 @@ class ValueMatchConditionBuilder {
 	 * @return string
 	 */
 	public function getSortIndexField( $temporaryTable = '' ) {
-		return '';
+		return ( $temporaryTable !== '' ? $temporaryTable . '.' : '' ) . $this->searchTable->getSortField();
 	}
 
 	/**
@@ -77,7 +111,7 @@ class ValueMatchConditionBuilder {
 		return '';
 	}
 
-	protected function getMatchableTextFromDescription( $description ) {
+	protected function getMatchableTextFromDescription( ValueDescription $description ) {
 
 		$matchableText = false;
 
@@ -85,7 +119,7 @@ class ValueMatchConditionBuilder {
 			$matchableText = $description->getDataItem()->getString();
 		}
 
-		if ( $description->getDataItem() instanceof DIUri ) {
+		if ( $description->getDataItem() instanceof DIUri || $description->getDataItem() instanceof DIWikiPage ) {
 			$matchableText = $description->getDataItem()->getSortKey();
 		}
 

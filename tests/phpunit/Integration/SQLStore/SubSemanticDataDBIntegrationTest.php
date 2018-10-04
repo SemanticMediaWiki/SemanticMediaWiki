@@ -54,19 +54,19 @@ class SubSemanticDataDBIntegrationTest extends MwDBaseUnitTestCase {
 			$semanticData->findSubSemanticData( 'namedSubobject' )
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'properties' => array(
+			'properties' => [
 				new DIProperty( 'AA' ),
 				new DIProperty( 'BB' ),
 				new DIProperty( '_SKEY' )
-			),
-			'propertyValues' => array(
+			],
+			'propertyValues' => [
 				'Test1',
 				'Test2',
 				'Z'
-			)
-		);
+			]
+		];
 
 		$semanticDataValidator = new SemanticDataValidator();
 

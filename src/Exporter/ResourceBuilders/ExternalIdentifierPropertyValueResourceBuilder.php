@@ -2,13 +2,11 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\Exporter\ResourceBuilder;
-use SMW\DIProperty;
-use SMWExporter as Exporter;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 use SMWDIUri as DIUri;
+use SMWExpData as ExpData;
 
 /**
  * @private
@@ -31,7 +29,7 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 
 	/**
 	 * Instead of representing an external identifier as "owl:sameAs", the weaker
-	 * declarative axiom "skos:exactMatch" has been choosen to avoid potential
+	 * declarative axiom "skos:exactMatch" has been chosen to avoid potential
 	 * issues with undesirable entailments.
 	 *
 	 * "skos:exactMatch" has been defined as "... indicating a high degree of
@@ -51,12 +49,12 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 			$property
 		);
 
-		$formattedUriDataItem = $dataValue->getWithFormattedUri();
+		$uri = $dataValue->getUri();
 
-		if ( $formattedUriDataItem instanceof DIUri ) {
+		if ( $uri instanceof DIUri ) {
 			$expData->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'skos', 'exactMatch' ),
-				$this->exporter->getDataItemExpElement( $formattedUriDataItem )
+				$this->exporter->getDataItemExpElement( $uri )
 			);
 		}
 	}

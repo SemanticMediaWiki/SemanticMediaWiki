@@ -1,0 +1,207 @@
+{
+	"description": "Test in-text annotation with links in values (#2153, `wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0444/1",
+			"contents": {
+				"import-from": "/../Fixtures/p-0444.txt"
+			}
+		},
+		{
+			"page": "Example/P0444/2",
+			"contents": "[[Has text::[[Lorem ipsum]][[Lorem ipsum|Bar]]]]"
+		},
+		{
+			"page": "Example/P0444/3",
+			"contents": "[[Has text::[http://example.org/eleifend eleifend]]]"
+		},
+		{
+			"page": "Example/P0444/4",
+			"contents": "[[Has text::[[Has number::42|1001]]]] [[Category:P0444]]"
+		},
+		{
+			"page": "Example/P0444/Q.1",
+			"contents": "{{#ask: [[Category:P0444]] |format=embedded }}"
+		},
+		{
+			"page": "Example/P0444/5",
+			"contents": "[[Has text::[[:Lorem ipsum]] [[:Lorem ipsum|Bar]]]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 import",
+			"subject": "Example/P0444/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 6,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has page",
+						"Has number",
+						"Has date",
+						"Has text"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 internal wiki link",
+			"subject": "Example/P0444/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"[[Lorem ipsum]][[Lorem ipsum|Bar]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Lorem ipsum</a>",
+					">Bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 external link",
+			"subject": "Example/P0444/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"[http://example.org/eleifend eleifend]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">eleifend</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 link-in annotation (piped hence annotated 42, displayed 1001)",
+			"subject": "Example/P0444/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_INST",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1001"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 embbeded format to verify that [[SMW::OFF]]/[[SMW:ON]] remains intact after transclusion",
+			"subject": "Example/P0444/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ASK"
+					],
+					"propertyValues": []
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 internal wiki link (`[[:...`)",
+			"subject": "Example/P0444/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"[[:Lorem ipsum]] [[:Lorem ipsum|Bar]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Lorem ipsum</a>",
+					">Bar</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS",
+			"SMW_PARSER_LINV"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

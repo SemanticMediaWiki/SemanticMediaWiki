@@ -90,14 +90,20 @@ class BooleanValue extends DataValue {
 		} elseif ( strtolower( $formatstring ) == '-' ) { // "plain" format
 			$this->trueCaption = 'true';
 			$this->falseCaption = 'false';
+		} elseif ( strtolower( $formatstring ) == 'num' ) { // "numeric" format
+			$this->trueCaption = 1;
+			$this->falseCaption = 0;
+		} elseif ( strtolower( $formatstring ) == 'tick' ) { // "tick" format
+			$this->trueCaption = '✓';
+			$this->falseCaption = '✕';
 		} elseif ( strtolower( $formatstring ) == 'x' ) { // X format
 			$this->trueCaption = '<span style="font-family: sans-serif; ">X</span>';
 			$this->falseCaption = '&nbsp;';
 		} else { // format "truelabel, falselabel" (hopefully)
 			$captions = explode( ',', $formatstring, 2 );
 			if ( count( $captions ) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative
-				$this->trueCaption = htmlspecialchars_decode( htmlspecialchars( trim( $captions[0] ) ) );
-				$this->falseCaption = htmlspecialchars_decode( htmlspecialchars( trim( $captions[1] ) ) );
+				$this->trueCaption = \Sanitizer::removeHTMLtags( trim( $captions[0] ) );
+				$this->falseCaption = \Sanitizer::removeHTMLtags( trim( $captions[1] ) );
 			} // else: no format that is recognised, ignore
 		}
 
@@ -175,14 +181,14 @@ class BooleanValue extends DataValue {
 
 		return $this->getFirstBooleanCaptionFrom(
 			$this->m_dataitem->getBoolean() ? 'smw_true_words' : 'smw_false_words',
-			$this->getOptionValueFor( 'content.language' )
+			$this->getOption( 'content.language' )
 		);
 	}
 
 	private function doParseBoolValue( $value ) {
 
 		// Use either the global or page related content language
-		$contentLanguage = $this->getOptionValueFor( 'content.language' );
+		$contentLanguage = $this->getOption( 'content.language' );
 
 		$lcv = mb_strtolower( $value );
 		$boolvalue = false;
@@ -191,13 +197,13 @@ class BooleanValue extends DataValue {
 			$boolvalue = true;
 		} elseif ( $lcv === '0' ) {
 			$boolvalue = false;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_true_words', $contentLanguage, 'true' ), true ) ) {
 			$boolvalue = true;
-		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage ), true ) ) {
+		} elseif ( in_array( $lcv, $this->getBooleanWordsFrom( 'smw_false_words', $contentLanguage, 'false' ), true ) ) {
 			$boolvalue = false;
 		} else {
 			$this->addErrorMsg(
-				array( 'smw_noboolean', $value ),
+				[ 'smw_noboolean', $value ],
 				Message::TEXT,
 				Message::USER_LANGUAGE
 			);
@@ -209,7 +215,7 @@ class BooleanValue extends DataValue {
 	private function setLocalizedCaptions( &$formatstring ) {
 
 		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
-			$languageCode = $this->getOptionValueFor( 'user.language' );
+			$languageCode = $this->getOption( 'user.language' );
 		}
 
 		$this->trueCaption = $this->getFirstBooleanCaptionFrom(
@@ -233,12 +239,16 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null ) {
+	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
 
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )
 		);
+
+		if ( $canonicalForm !== null ) {
+			$vals[] = $canonicalForm;
+		}
 
 		return $vals;
 	}

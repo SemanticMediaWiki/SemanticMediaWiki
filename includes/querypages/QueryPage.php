@@ -35,7 +35,7 @@ abstract class QueryPage extends \QueryPage {
 	protected $linker = null;
 
 	/** @var array */
-	protected $selectOptions = array();
+	protected $selectOptions = [];
 
 	/** @var array */
 	protected $useSerchForm = false;
@@ -70,11 +70,17 @@ abstract class QueryPage extends \QueryPage {
 	 */
 	public function linkParameters() {
 
-		$parameters = array();
+		$parameters = [];
 		$property   = $this->getRequest()->getVal( 'property' );
 
 		if ( $property !== null && $property !== '' ) {
 			$parameters['property'] = $property;
+		}
+
+		$filter = $this->getRequest()->getVal( 'filter' );
+
+		if ( $filter !== null && $filter !== '' ) {
+			$parameters['filter'] = $filter;
 		}
 
 		return $parameters;
@@ -121,10 +127,10 @@ abstract class QueryPage extends \QueryPage {
 	 *
 	 * @return string
 	 */
-	public function getSearchForm( $property = '', $cacheDate = '' ) {
+	public function getSearchForm( $property = '', $cacheDate = '', $propertySearch = true, $filter = '' ) {
 
 		$this->useSerchForm = true;
-		$this->getOutput()->addModules( 'ext.smw.property' );
+		$this->getOutput()->addModules( 'ext.smw.autocomplete.property' );
 
 		// No need to verify $this->selectOptions because its values are set
 		// during doQuery() which is processed before this form is generated
@@ -138,17 +144,31 @@ abstract class QueryPage extends \QueryPage {
 			$this->selectOptions['end']
 		);
 
-		return Xml::tags( 'form', array(
+		if ( $cacheDate !== '' ) {
+			$cacheDate = Xml::tags( 'p', [], $cacheDate );
+		}
+
+		if ( $propertySearch ) {
+			$propertySearch = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) .
+				Xml::inputLabel( $this->msg( 'smw-special-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
+				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() );
+		}
+
+		if ( $filter !== '' ) {
+			$filter = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) . $filter;
+		}
+
+		return Xml::tags( 'form', [
 			'method' => 'get',
-			'action' => htmlspecialchars( $GLOBALS['wgScript'] )
-		), Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
-			Xml::fieldset( $this->msg( 'properties' )->text(),
-				Xml::tags( 'p', array(), $resultCount ) .
-				Xml::tags( 'p', array(), $selection ) .
-				Xml::tags( 'p', array(), $cacheDate ) .
-				Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) .
-				Xml::inputLabel( $this->msg( 'smw-sp-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
-				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() )
+			'action' => htmlspecialchars( $GLOBALS['wgScript'] ),
+			'class' => 'plainlinks'
+		], Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+			Xml::fieldset( $this->msg( 'smw-special-property-searchform-options' )->text(),
+				Xml::tags( 'p', [], $resultCount ) .
+				Xml::tags( 'p', [], $selection ) .
+				$cacheDate .
+				$propertySearch .
+				$filter
 			)
 		);
 	}
@@ -176,18 +196,22 @@ abstract class QueryPage extends \QueryPage {
 			$options->addStringCondition( $property, SMWStringCondition::STRCOND_MID );
 		}
 
+		if ( ( $filter = $this->getRequest()->getVal( 'filter' ) ) === 'unapprove' ) {
+			$options->addExtraCondition( [ 'filter.unapprove' => true ] );
+		}
+
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
 		// often disable 'next' link when we reach the end
 		$atend = $num < $limit;
 
-		$this->selectOptions = array(
+		$this->selectOptions = [
 			'offset' => $offset,
 			'limit'  => $limit,
 			'end'    => $atend,
 			'count'  => $num
-		);
+		];
 
 		$out->addHTML( $this->getPageHeader() );
 
@@ -197,26 +221,8 @@ abstract class QueryPage extends \QueryPage {
 			return;
 		}
 
-		// If unused properties and wanted properties are using the searchForm
-		// then the useSerchForm if-inclusion can be scrapped
-		if ( !$this->useSerchForm ) {
-
-			$top = wfShowingResults( $offset, $num );
-
-			$sl = $this->getLanguage()->viewPrevNext(
-				$this->getTitleFor( $this->getName() ),
-				$this->selectOptions['offset'],
-				$this->selectOptions['limit'],
-				$this->linkParameters(),
-				$this->selectOptions['end']
-			);
-
-			$out->addHTML( "<p>{$top}\n" );
-			$out->addHTML( "<br />{$sl}</p>\n" );
-		}
-
 		if ( $num > 0 ) {
-			$s = array();
+			$s = [];
 			if ( ! $this->listoutput ) {
 				$s[] = $this->openList( $offset );
 			}

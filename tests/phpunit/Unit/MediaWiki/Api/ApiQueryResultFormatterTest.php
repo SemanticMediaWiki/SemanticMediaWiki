@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiQueryResultFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Api\ApiQueryResultFormatter;
  * @author mwjames
  */
 class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -43,7 +46,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 		// $method->setAccessible( true );
 		// $method->invoke( $instance, $arr, null )
 
-		$arr = array();
+		$arr = [];
 
 		$this->setExpectedException( 'InvalidArgumentException' );
 		$instance->setIndexedTagName( $arr, null );
@@ -64,7 +67,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
@@ -116,225 +119,225 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function resultDataProvider() {
 
-		$result = array(
-			'results' => array(
-				'Foo' => array(
-					'printouts' => array( 'lula' => array( 'lila' ) )
-				)
-			),
-			'printrequests' => array( 'Bar' ),
-			'meta' => array( 'count' => 5, 'offset' => 5 )
-		);
+		$result = [
+			'results' => [
+				'Foo' => [
+					'printouts' => [ 'lula' => [ 'lila' ] ]
+				]
+			],
+			'printrequests' => [ 'Bar' ],
+			'meta' => [ 'count' => 5, 'offset' => 5 ]
+		];
 
-		$xml = array(
-			'results' => array(
-				array(
-					'printouts' => array(
-						array( 'label' => 'lula', 'lila', '_element' => 'value'	),
-						'_element' => 'property' )
-					),
+		$xml = [
+			'results' => [
+				[
+					'printouts' => [
+						[ 'label' => 'lula', 'lila', '_element' => 'value'	],
+						'_element' => 'property' ]
+					],
 					'_element' => 'subject'
-				),
-			'printrequests' => array(
+				],
+			'printrequests' => [
 				'Bar',
 				'_element' => 'printrequest'
-			),
-			'meta' => array( 'count' => 5, 'offset' => 5, '_element' => 'meta' )
-		);
+			],
+			'meta' => [ 'count' => 5, 'offset' => 5, '_element' => 'meta' ]
+		];
 
-		$provider = array();
+		$provider = [];
 
 		// #0 Without further results
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'result'  => $result,
 				'rawMode' => false,
 				'furtherResults' => false
-			),
-			array(
+			],
+			[
 				'result' => $result,
 				'continueOffset' => false
-			)
-		);
+			]
+		];
 
 		// #1 Without further results + XML
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'result'  => $result,
 				'rawMode' => true,
 				'furtherResults' => false
-			),
-			array(
+			],
+			[
 				'result' => $xml,
 				'continueOffset' => false
-			)
-		);
+			]
+		];
 
 		// #2 With further results
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'result' => $result,
 				'rawMode' => false,
 				'furtherResults' => true
-			),
-			array(
+			],
+			[
 				'result' => $result,
 				'continueOffset' => 10
-			)
-		);
+			]
+		];
 
 		// #3 With further results + XML
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'result' => $result,
 				'rawMode' => true,
 				'furtherResults' => true
-			),
-			array(
+			],
+			[
 				'result' => $xml,
 				'continueOffset' => 10
-			)
-		);
+			]
+		];
 
 
 		// #4 Extended subject data + XML
-		$provider[] = array(
-			array(
-				'result' => array(
-					'results' => array(
-						'Foo' => array(
-							'printouts' => array(
-								'lula' => array( 'lila' ) ),
-							'fulltext' => 'Foo' )
-						),
-					'printrequests' => array( 'Bar' ),
-					'meta' => array(
+		$provider[] = [
+			[
+				'result' => [
+					'results' => [
+						'Foo' => [
+							'printouts' => [
+								'lula' => [ 'lila' ] ],
+							'fulltext' => 'Foo' ]
+						],
+					'printrequests' => [ 'Bar' ],
+					'meta' => [
 						'count' => 5,
 						'offset' => 5
-					)
-				),
+					]
+				],
 				'rawMode' => true,
 				'furtherResults' => true
-			),
-			array(
-				'result' =>  array(
-					'results' => array(
-						array(
-							'printouts' => array(
-								array(
+			],
+			[
+				'result' =>  [
+					'results' => [
+						[
+							'printouts' => [
+								[
 									'label' => 'lula',
 									'lila', '_element' => 'value'
-								), '_element' => 'property' ),
+								], '_element' => 'property' ],
 							'fulltext' => 'Foo'
-							), '_element' => 'subject'
-						),
-					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-					'meta' => array(
+							], '_element' => 'subject'
+						],
+					'printrequests' => [ 'Bar', '_element' => 'printrequest' ],
+					'meta' => [
 						'count' => 5,
 						'offset' => 5,
 						'_element' => 'meta'
-					)
-				),
+					]
+				],
 				'continueOffset' => 10
-			)
-		);
+			]
+		];
 
 		// #5 printouts without values + XML
-		$provider[] = array(
-			array(
-				'result' => array(
-					'results' => array(
-						'Foo' => array(
-							'printouts' => array( 'lula' ),
-							'fulltext' => 'Foo' )
-						),
-					'printrequests' => array( 'Bar' ),
-					'meta' => array(
+		$provider[] = [
+			[
+				'result' => [
+					'results' => [
+						'Foo' => [
+							'printouts' => [ 'lula' ],
+							'fulltext' => 'Foo' ]
+						],
+					'printrequests' => [ 'Bar' ],
+					'meta' => [
 						'count' => 5,
 						'offset' => 5
-					)
-				),
+					]
+				],
 				'rawMode' => true,
 				'furtherResults' => true
-			),
-			array(
-				'result' =>  array(
-					'results' => array(
-						array(
-							'printouts' => array( '_element' => 'property' ),
+			],
+			[
+				'result' =>  [
+					'results' => [
+						[
+							'printouts' => [ '_element' => 'property' ],
 							'fulltext' => 'Foo'
-							),
+							],
 						'_element' => 'subject'
-						),
-					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-					'meta' => array(
+						],
+					'printrequests' => [ 'Bar', '_element' => 'printrequest' ],
+					'meta' => [
 						'count' => 5,
 						'offset' => 5,
 						'_element' => 'meta'
-					)
-				),
+					]
+				],
 				'continueOffset' => 10
-			)
-		);
+			]
+		];
 
 		// #6 empty results + XML
-		$provider[] = array(
-			array(
-				'result' => array(
-					'results' => array(),
-					'printrequests' => array( 'Bar' ),
-					'meta' => array(
+		$provider[] = [
+			[
+				'result' => [
+					'results' => [],
+					'printrequests' => [ 'Bar' ],
+					'meta' => [
 						'count' => 0,
 						'offset' => 0
-					)
-				),
+					]
+				],
 				'rawMode' => true,
 				'furtherResults' => false
-			),
-			array(
-				'result' =>  array(
-					'results' => array(),
-					'printrequests' => array( 'Bar', '_element' => 'printrequest' ),
-					'meta' => array(
+			],
+			[
+				'result' =>  [
+					'results' => [],
+					'printrequests' => [ 'Bar', '_element' => 'printrequest' ],
+					'meta' => [
 						'count' => 0,
 						'offset' => 0,
 						'_element' => 'meta'
-					)
-				),
+					]
+				],
 				'continueOffset' => 0
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}
 
 	public function errorDataProvider() {
 
-		$errors = array( 'Foo', 'Bar' );
+		$errors = [ 'Foo', 'Bar' ];
 
-		$provider = array();
+		$provider = [];
 
 		// #0
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'rawMode'=> false,
 				'errors' => $errors
-			),
-			array(
+			],
+			[
 				'query' => $errors
-			)
-		);
+			]
+		];
 
 		// #1
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'rawMode'=> true,
 				'errors' => $errors
-			),
-			array(
-				'query' => array_merge( $errors, array( '_element' => 'info' ) )
-			)
-		);
+			],
+			[
+				'query' => array_merge( $errors, [ '_element' => 'info' ] )
+			]
+		];
 
 		return $provider;
 	}

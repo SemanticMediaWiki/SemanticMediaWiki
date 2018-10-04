@@ -2,11 +2,17 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use SMW\SQLStore\SQLStore;
+use SMW\MediaWiki\Connection\Sequence;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
  *
  * @author mwjames
+ * @author Markus Krötzsch
+ * @author Marcel Gsteiger
+ * @author Jeroen De Dauw
  */
 class PostgresTableBuilder extends TableBuilder {
 
@@ -15,35 +21,42 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $input ) {
+	public function getStandardFieldType( $fieldType ) {
 
-		switch ( $input ) {
-			case 'id':
-			return 'SERIAL'; // like page_id in MW page table
-			case 'id primary':
-			return 'SERIAL' . ' NOT NULL PRIMARY KEY'; // like page_id in MW page table
-			case 'namespace':
-			return 'BIGINT'; // like page_namespace in MW page table
-			case 'title':
-			return 'TEXT'; // like page_title in MW page table
-			case 'iw':
-			return 'TEXT'; // like iw_prefix in MW interwiki table
-			case 'blob':
-			return 'BYTEA'; // larger blobs of character data, usually not subject to SELECT conditions
-			case 'boolean':
-			return 'BOOLEAN';
-			case 'double':
-			return 'DOUBLE PRECISION';
-			case 'integer':
-			case 'usage count':
-			return 'bigint';
-			case 'integer unsigned':
-			return 'INTEGER';
-			case 'sort':
-			return 'TEXT';
-		}
+		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
-		return false;
+		$fieldTypes = [
+			 // like page_id in MW page table
+			'id'         => 'SERIAL',
+			 // like page_id in MW page table
+			'id_primary' => 'SERIAL NOT NULL PRIMARY KEY',
+
+			 // not autoincrementing integer
+			'id_unsigned' => 'INTEGER',
+
+			 // like page_namespace in MW page table
+			'namespace'  => 'BIGINT',
+			 // like page_title in MW page table
+			'title'      => 'TEXT',
+			 // like iw_prefix in MW interwiki table
+			'interwiki'  => 'TEXT',
+			'iw'         => 'TEXT',
+			'hash'       => 'TEXT',
+			 // larger blobs of character data, usually not subject to SELECT conditions
+			'blob'       => 'BYTEA',
+			'text'       => 'TEXT',
+			'boolean'    => 'BOOLEAN',
+			'double'     => 'DOUBLE PRECISION',
+			'integer'    => 'bigint',
+			'char_long'  => 'TEXT',
+			// Requires citext extension
+			'char_nocase' => 'citext NOT NULL',
+			'char_long_nocase' => 'citext NOT NULL',
+			'usage_count'      => 'bigint',
+			'integer_unsigned' => 'INTEGER'
+		];
+
+		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
 
 	/** Create */
@@ -53,18 +66,20 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $tableOptions = null ) {
+	protected function doCreateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 
-		$fieldSql = array();
-		$fields = $tableOptions['fields'];
+		$fieldSql = [];
+		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$fieldSql[] = "$fieldName  $fieldType";
+			$fieldSql[] = "$fieldName " . $this->getStandardFieldType( $fieldType );
 		}
 
-		$this->connection->query( 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ', __METHOD__ );
+		$sql = 'CREATE TABLE ' . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
+
+		$this->connection->query( $sql, __METHOD__ );
 	}
 
 	/** Update */
@@ -74,17 +89,21 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $tableOptions = null ) {
+	protected function doUpdateTable( $tableName, array $attributes = null ) {
 
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
-		$fields = $tableOptions['fields'];
+		$fields = $attributes['fields'];
 		$position = 'FIRST';
 
-		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
+		if ( !isset( $this->activityLog[$tableName] ) ) {
+			$this->activityLog[$tableName] = [];
+		}
+
+		// Loop through all the field definitions, and handle each definition
 		foreach ( $fields as $fieldName => $fieldType ) {
-			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $tableOptions );
+			$this->doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, $attributes );
 
 			$position = "AFTER $fieldName";
 			$currentFields[$fieldName] = false;
@@ -141,7 +160,7 @@ EOT;
 			. " ORDER BY a.attnum";
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
@@ -158,8 +177,9 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $tableOptions ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
+		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
 		if ( $keypos > 0 ) {
@@ -167,11 +187,14 @@ EOT;
 		}
 
 		$fieldType = strtoupper( $fieldType );
+		$default = '';
+
+		if ( isset( $attributes['defaults'][$fieldName] ) ) {
+			$default = "DEFAULT '" . $attributes['defaults'][$fieldName] . "'";
+		}
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
-			$this->reportMessage( "   ... creating field $fieldName ... " );
-			$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType", __METHOD__ );
-			$this->reportMessage( "done.\n" );
+			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
 
@@ -205,7 +228,19 @@ EOT;
 		}
 	}
 
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+
+		$this->reportMessage( "   ... creating field $fieldName ... " );
+		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__ );
+		$this->reportMessage( "done.\n" );
+	}
+
 	private function doDropField( $tableName, $fieldName ) {
+
+		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
+
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
 		$this->connection->query( 'ALTER TABLE ' . $tableName . ' DROP COLUMN "' . $fieldName . '"', __METHOD__ );
 		$this->reportMessage( "done.\n" );
@@ -218,15 +253,24 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndicies( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
 
-		$indicies = $indexOptions['indicies'];
+		$indices = $indexOptions['indices'];
+		$ix = [];
 
-		// First remove possible obsolete indicies
-		$this->doDropObsoleteIndicies( $tableName, $indicies );
+		// In case an index has a length restriction indexZ(200), remove it since
+		// Postgres doesn't know such syntax
+		foreach ( $indices as $k => $columns ) {
+			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+		}
+
+		$indices = $ix;
+
+		// First remove possible obsolete indices
+		$this->doDropObsoleteIndices( $tableName, $indices );
 
 		// Add new indexes.
-		foreach ( $indicies as $indexName => $index ) {
+		foreach ( $indices as $indexName => $index ) {
 			// If the index is an array, it contains the column
 			// name as first element, and index type as second one.
 			if ( is_array( $index ) ) {
@@ -241,18 +285,19 @@ EOT;
 		}
 	}
 
-	private function doDropObsoleteIndicies( $tableName, array &$indicies ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ) {
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
-		$currentIndicies = $this->getIndexInfo( $tableName );
+		$currentIndices = $this->getIndexInfo( $tableName );
 
-		foreach ( $currentIndicies as $indexName => $indexColumn ) {
-			$id = array_search( $indexColumn, $indicies );
+		foreach ( $currentIndices as $indexName => $indexColumn ) {
+			// Indices may contain something like array( 'id', 'UNIQUE INDEX' )
+			$id = $this->recursive_array_search( $indexColumn, $indices );
 			if ( $id !== false || $indexName == 'PRIMARY' ) {
 				$this->reportMessage( "   ... index $indexColumn is fine.\n" );
 
 				if ( $id !== false ) {
-					unset( $indicies[$id] );
+					unset( $indices[$id] );
 				}
 
 			} else { // Duplicate or unrequired index.
@@ -268,7 +313,7 @@ EOT;
 		}
 
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
-		$indexName = "{$tableName}_index{$indexName}";
+		$indexName = $this->getCumulatedIndexName( $tableName, $columns );
 
 		$this->reportMessage( "   ... creating new index $columns ..." );
 
@@ -279,9 +324,15 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
+	private function getCumulatedIndexName( $tableName, $columns ) {
+		// Identifiers -- table names, column names, constraint names,
+		// etc. -- are limited to a maximum length of 63 bytes
+		return str_replace( '__' , '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
+	}
+
 	private function getIndexInfo( $tableName ) {
 
-		$indices = array();
+		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
 			. " pg_get_indexdef(i.oid) AS indexdef, "
@@ -298,7 +349,7 @@ EOT;
 		$res = $this->connection->query( $sql, __METHOD__ );
 
 		if ( !$res ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $res as $row ) {
@@ -322,7 +373,51 @@ EOT;
 	 * {@inheritDoc}
 	 */
 	protected function doDropTable( $tableName ) {
-		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		// Function: SMW\SQLStore\TableBuilder\PostgresTableBuilder::doDropTable
+		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
+		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
+		// HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__ );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function doOptimize( $tableName ) {
+
+		$this->reportMessage( "Checking table $tableName ...\n" );
+
+		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
+		$this->reportMessage( "   ... analyze " );
+		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+
+		$this->reportMessage( "done.\n" );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * {@inheritDoc}
+	 */
+	public function checkOn( $event ) {
+		if ( $event === self::POST_CREATION ) {
+			$this->doCheckOnPostCreation();
+		}
+	}
+
+	private function doCheckOnPostCreation() {
+
+		$sequence = new Sequence( $this->connection );
+
+		// To avoid things like:
+		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
+		$seq_num = $sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+
+		$this->reportMessage( "Checking `smw_id` sequence consistency ...\n" );
+		$this->reportMessage( "   ... setting sequence to {$seq_num} ...\n" );
+		$this->reportMessage( "   ... done.\n" );
 	}
 
 }

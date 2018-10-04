@@ -24,7 +24,7 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $semanticDataValidator;
@@ -56,7 +56,7 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 
 	public function testRebuildData() {
 
-		 $this->importedTitles = array(
+		 $this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
 			'Elit Aliquam urna interdum',
@@ -71,14 +71,14 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		);
+		];
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
 		$main = Title::newFromText( 'Lorem ipsum' );
 
-		$expectedSomeProperties = array(
-			'properties' => array(
+		$expectedSomeProperties = [
+			'properties' => [
 				new DIProperty( 'Has boolean' ),
 				new DIProperty( 'Has date' ),
 				new DIProperty( 'Has email' ),
@@ -89,8 +89,8 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 				new DIProperty( 'Has text' ),
 				new DIProperty( 'Has Url' ),
 				new DIProperty( 'Has annotation uri' )
-			)
-		);
+			]
+		];
 
 		$this->maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildData' );
 		$this->maintenanceRunner->setQuiet();
@@ -115,12 +115,12 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected function assertRunWithFullDeleteOption( $expectedSomeProperties ) {
 
-		$options = array(
+		$options = [
 			'f' => true,
 			'no-cache' => true,
 			'debug' => true,
 			'report-runtime' => true
-		);
+		];
 
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
@@ -131,32 +131,32 @@ class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
 	protected function assertRunWithIdRangeOption( $expectedSomeProperties ) {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
-			$this->maintenanceRunner->setOptions( array( 's' => 1, 'e' => 10 ) )->run()
+			$this->maintenanceRunner->setOptions( [ 's' => 1, 'e' => 10 ] )->run()
 		);
 	}
 
 	protected function assertRunWithCategoryOption( $expectedSomeProperties ) {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
-			$this->maintenanceRunner->setOptions( array( 'c' => true ) )->run()
+			$this->maintenanceRunner->setOptions( [ 'c' => true ] )->run()
 		);
 	}
 
 	protected function assertRunWithSparqlStoreForPropertyOption( $expectedSomeProperties ) {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
-			$this->maintenanceRunner->setOptions( array(
+			$this->maintenanceRunner->setOptions( [
 				'p' => true,
-				'b' => 'SMWSparqlStore' ) )->run()
+				'b' => 'SMWSparqlStore' ] )->run()
 		);
 	}
 
 	protected function assertRunWithSparqlStoreForQueryOption( $expectedSomeProperties ) {
 		$this->assertThatPropertiesAreSet(
 			$expectedSomeProperties,
-			$this->maintenanceRunner->setOptions( array(
+			$this->maintenanceRunner->setOptions( [
 				'query' => '[[Has Url::+]]',
-				'b' => 'SMWSparqlStore' ) )->run()
+				'b' => 'SMWSparqlStore' ] )->run()
 		);
 	}
 

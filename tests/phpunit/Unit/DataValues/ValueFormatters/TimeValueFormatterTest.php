@@ -3,7 +3,9 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
+use SMW\DataValues\ValueParsers\TimeValueParser;
 use SMWTimeValue as TimeValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\TimeValueFormatter
@@ -15,6 +17,30 @@ use SMWTimeValue as TimeValue;
  * @author mwjames
  */
 class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
+
+	private $dataValueServiceFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getValueParser' )
+			->will( $this->returnValue( new TimeValueParser() ) );
+
+		$this->dataValueServiceFactory->expects( $this->any() )
+			->method( 'getConstraintValueValidator' )
+			->will( $this->returnValue( $constraintValueValidator ) );
+	}
 
 	public function testCanConstruct() {
 
@@ -52,13 +78,17 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1001,
-			$instance->getOptionValueFor( 'Foo' )
+			$instance->getOption( 'Foo' )
 		);
 	}
 
 	public function testToUseCaptionOutput() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setCaption( 'ABC[<>]' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -75,6 +105,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testFormat( $timeUserValue, $type, $format, $linker, $languageCode, $expected ) {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( $timeUserValue );
 
 		$timeValue->setOutputFormat( $format );
@@ -93,6 +127,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetISO8601DateForMinDefault() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2000' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -103,6 +141,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2000-02-23 12:02' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -116,6 +158,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetISO8601DateForMaxDefault() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2000' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -126,6 +172,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2000-02-23 12:02' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -139,6 +189,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCaptionFromDataItemForPositiveYearWithEraMarker() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2000 AD' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -152,6 +206,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testLeapYear() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2016-02-29' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -166,6 +224,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2016-02' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -176,6 +238,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2015-02' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -189,6 +255,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testInvalidLeapYear() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2015-02-29' );
 
 		$instance = new TimeValueFormatter( $timeValue );
@@ -201,6 +271,9 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testMediaWikiDate_WithDifferentLanguage() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
 
 		$timeValue->setUserValue( '2015-02-28' );
 		$timeValue->setOption( 'user.language', 'en' );
@@ -225,6 +298,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testLOCLOutputFormat() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2015-02-28' );
 
 		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
@@ -246,6 +323,10 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testLOCLOutputFormatWithSpecificAnnotatedLanguage() {
 
 		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
 		$timeValue->setUserValue( '2015-02-28' );
 
 		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
@@ -259,157 +340,207 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testLOCLOutputFormatWithTimeZone() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$timeValue->setUserValue( '2015-02-28 12:12:00 A' );
+
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL#TZ' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'12:12:00 A, 28 February 2015',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+
+		$this->assertEquals(
+			'2015-02-28 12:12:00 A',
+			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+	}
+
+	public function testLOCLOutputFormatWithTimeZoneOnSpecificAnnotatedLanguage() {
+
+		$timeValue = new TimeValue( '_dat' );
+		$timeValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
+		);
+
+		$timeValue->setUserValue( '2015-02-28 12:12:00 A' );
+
+		$timeValue->setOption( TimeValue::OPT_USER_LANGUAGE, 'en' );
+		$timeValue->setOutputFormat( 'LOCL@ja#TZ' );
+
+		$instance = new TimeValueFormatter( $timeValue );
+
+		$this->assertEquals(
+			'2015年2月28日 (土) 12:12:00 A',
+			$instance->format( TimeValueFormatter::HTML_LONG )
+		);
+
+		$this->assertEquals(
+			'2015-02-28 12:12:00 A',
+			$instance->format( TimeValueFormatter::WIKI_SHORT )
+		);
+	}
+
 	public function timeInputProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-01-01'
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-01-01'
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::WIKI_LONG,
 			'MEDIAWIKI',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'2000',
 			TimeValueFormatter::HTML_LONG,
 			'MEDIAWIKI',
 			null,
 			'',
 			'2000'
-		);
+		];
 
 		#8
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#9
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::VALUE,
 			'ISO',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#10
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_SHORT,
 			'',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#11
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_SHORT,
 			'ISO',
 			null,
 			'',
 			'2000-02'
-		);
+		];
 
 		#12
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::WIKI_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-02-01'
-		);
+		];
 
 		#13
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
 			'ISO',
 			null,
 			'',
 			'2000-02-01'
-		);
+		];
 
 		#14
-		$provider[] = array(
+		$provider[] = [
 			'2000-02',
 			TimeValueFormatter::HTML_LONG,
 			'LOCL',
 			null,
 			'en',
 			'February 2000'
-		);
+		];
 
 		return $provider;
 	}

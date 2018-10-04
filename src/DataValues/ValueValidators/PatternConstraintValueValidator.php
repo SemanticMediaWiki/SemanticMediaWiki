@@ -2,11 +2,12 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\DataValues\ValueParserFactory;
+use SMW\ApplicationFactory;
+use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMWDataValue as DataValue;
 
 /**
- * To suppport regular expressions in connection with the `Allows pattern`
+ * To support regular expressions in connection with the `Allows pattern`
  * property.
  *
  * @license GNU GPL v2+
@@ -14,12 +15,12 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class PatternConstraintValueValidator  implements ConstraintValueValidator {
+class PatternConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
 	 * @var AllowsPatternContentParser
 	 */
-	private $allowsPatternContentParser;
+	private $allowsPatternValueParser;
 
 	/**
 	 * @var boolean
@@ -28,9 +29,11 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 
 	/**
 	 * @since 2.4
+	 *
+	 * @param AllowsPatternValueParser $allowsPatternValueParser
 	 */
-	public function __construct() {
-		$this->allowsPatternContentParser = ValueParserFactory::getInstance()->newAllowsPatternContentParser();
+	public function __construct( AllowsPatternValueParser $allowsPatternValueParser ) {
+		$this->allowsPatternValueParser = $allowsPatternValueParser;
 	}
 
 	/**
@@ -58,11 +61,11 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		if ( ( $reference = $dataValue->getPropertySpecificationLookup()->getAllowedPatternFor( $dataValue->getProperty() ) ) === '' ) {
+		if ( ( $reference = ApplicationFactory::getInstance()->getPropertySpecificationLookup()->getAllowedPatternBy( $dataValue->getProperty() ) ) === '' ) {
 			return $this->hasConstraintViolation;
 		}
 
-		$content = $this->allowsPatternContentParser->parse(
+		$content = $this->allowsPatternValueParser->parse(
 			$reference
 		);
 
@@ -72,7 +75,7 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 
 		// Prevent a possible remote code execution vulnerability in connection
 		// with PCRE
-		$pattern = str_replace( array( '/e' ), array( '' ), trim( $content ) );
+		$pattern = str_replace( [ '/e' ], [ '' ], trim( $content ) );
 
 		$this->doPregMatch(
 			$pattern,
@@ -99,11 +102,11 @@ class PatternConstraintValueValidator  implements ConstraintValueValidator {
 		// test the expression before making it available
 		if ( !@preg_match( $pattern, $dataValue->getDataItem()->getSortKey() ) ) {
 			$dataValue->addErrorMsg(
-				array(
+				[
 					'smw-datavalue-allows-pattern-mismatch',
 					$dataValue->getWikiValue(),
 					$reference
-				)
+				]
 			);
 
 			$this->hasConstraintViolation = true;

@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
-use SMW\Tests\TestEnvironment;
+use SMW\SQLStore\TableBuilder\Table;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\SQLiteTableBuilder
@@ -16,12 +16,6 @@ use SMW\Tests\TestEnvironment;
  */
 class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	private $testEnvironment;
-
-	protected function setUp() {
-		$this->testEnvironment = new TestEnvironment();
-	}
-
 	public function testCanConstruct() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
@@ -33,7 +27,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'sqlite' ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\SQLiteTableBuilder',
+			SQLiteTableBuilder::class,
 			SQLiteTableBuilder::factory( $connection )
 		);
 	}
@@ -42,7 +36,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -59,18 +53,17 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
 	}
 
-	public function testUpdateTableOnOldTable() {
+	public function testUpdateTableWithNewField() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -84,7 +77,7 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -92,18 +85,50 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$tableOptions = array(
-			'fields' => array( 'bar' => 'text' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
 
-		$instance->createTable( 'foo', $tableOptions );
+		$instance->create( $table );
+	}
+
+	public function testUpdateTableWithNewFieldAndDefault() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'tableExists', 'query' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'sqlite' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$connection->expects( $this->at( 2 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'PRAGMA table_info("foo")' ) )
+			->will( $this->returnValue( [] ) );
+
+		$connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text' . " DEFAULT '0'" ) );
+
+		$instance = SQLiteTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addDefault( 'bar', 0 );
+
+		$instance->create( $table );
 	}
 
 	public function testCreateIndex() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -114,29 +139,29 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableExists' )
 			->will( $this->returnValue( false ) );
 
-		$connection->expects( $this->at( 1 ) )
+		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'PRAGMA index_list("foo")' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'CREATE INDEX "foo"_index0' ) );
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$indexOptions = array(
-			'indicies' => array( 'bar' )
-		);
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
 
-		$instance->createIndex( 'foo', $indexOptions );
+		$instance->create( $table );
 	}
 
 	public function testDropTable() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -153,7 +178,29 @@ class SQLiteTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = SQLiteTableBuilder::factory( $connection );
 
-		$instance->dropTable( 'foo' );
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
+	}
+
+	public function testOptimizeTable() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'query' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'sqlite' ) );
+
+		$connection->expects( $this->at( 1 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE "foo"' ) );
+
+		$instance = SQLiteTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
 	}
 
 }

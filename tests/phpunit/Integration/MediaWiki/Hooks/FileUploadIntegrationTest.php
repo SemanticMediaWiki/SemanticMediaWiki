@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
@@ -30,17 +28,10 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 	private $semanticDataValidator;
 	private $pageEditor;
 
-	/**
-	 * MW GLOBALS to be restored after the test
-	 */
-	private $wgFileExtensions;
-	private $wgEnableUploads;
-	private $wgVerifyMimeType;
-
 	protected function setUp() {
 		parent::setUp();
 
-		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->semanticDataValidator = $utilityFactory->newValidatorFactory()->newSemanticDataValidator();
@@ -49,24 +40,17 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$this->mwHooksHandler = $utilityFactory->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->testEnvironment->withConfiguration( [
+			'smwgPageSpecialProperties' => [ '_MEDIA', '_MIME' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_FILE => true ],
+			'smwgMainCacheType' => 'hash',
+		] );
 
-		$settings = array(
-			'smwgPageSpecialProperties' => array( '_MEDIA', '_MIME' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_FILE => true ),
-			'smwgCacheType' => 'hash',
-		);
-
-		foreach ( $settings as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
-
-	//	$this->getStore()->clear();
-	//	$this->getStore()->setupStore( false );
-
-		$this->wgEnableUploads  = $GLOBALS['wgEnableUploads'];
-		$this->wgFileExtensions = $GLOBALS['wgFileExtensions'];
-		$this->wgVerifyMimeType = $GLOBALS['wgVerifyMimeType'];
+		$this->testEnvironment->withConfiguration( [
+			'wgEnableUploads' => true,
+			'wgFileExtensions' => [ 'txt' ],
+			'wgVerifyMimeType' => true
+		] );
 
 		$this->mwHooksHandler->register(
 			'FileUpload',
@@ -83,17 +67,12 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
 		);
 
-		$GLOBALS['wgEnableUploads'] = true;
-		$GLOBALS['wgFileExtensions'] = array( 'txt' );
-		$GLOBALS['wgVerifyMimeType'] = true;
+		$this->getStore()->setup( false );
 	}
 
 	protected function tearDown() {
 		$this->mwHooksHandler->restoreListedHooks();
-
-		$GLOBALS['wgEnableUploads'] = $this->wgEnableUploads;
-		$GLOBALS['wgFileExtensions'] = $this->wgFileExtensions;
-		$GLOBALS['wgVerifyMimeType'] = $this->wgVerifyMimeType;
+		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -110,11 +89,13 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 			$dummyTextFile->doUpload( '[[HasFile::File:Foo.txt]]' )
 		);
 
-		$expected = array(
+		$this->testEnvironment->executePendingDeferredUpdates();
+
+		$expected = [
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( 'HasFile', '_MEDIA', '_MIME', '_SKEY' ),
-			'propertyValues' => array( "$fileNS:Foo.txt", 'TEXT', 'text/plain', 'Foo.txt' )
-		);
+			'propertyKeys'   => [ 'HasFile', '_MEDIA', '_MIME', '_SKEY' ],
+			'propertyValues' => [ "$fileNS:Foo.txt", 'TEXT', 'text/plain', 'Foo.txt' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -132,16 +113,18 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
 		$dummyTextFile->doUpload();
 
+		$this->testEnvironment->executePendingDeferredUpdates();
+
 		$this->pageEditor
 			->editPage( $subject->getTitle() )
 			->doEdit( '[[Ichi::Maru|Kyū]]' );
 
 		// File page content is kept from the initial upload
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( '_MEDIA', '_MIME', '_SKEY', 'Ichi' ),
-			'propertyValues' => array( 'TEXT', 'text/plain', 'Foo.txt', 'Maru' )
-		);
+			'propertyKeys'   => [ '_MEDIA', '_MIME', '_SKEY', 'Ichi' ],
+			'propertyValues' => [ 'TEXT', 'text/plain', 'Foo.txt', 'Maru' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

@@ -1,0 +1,127 @@
+{
+	"description": "Test property page with redirect(synonym)/displayTitle (`wgContLang=en`, `wgLang=en`, `wgAllowDisplayTitle`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has synonym",
+			"contents": "[[Has type::Page]] {{DISPLAYTITLE:SomeTest}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some redirect",
+			"contents": "[[Has type::Page]] {{DISPLAYTITLE:SomePropertyRedirectTest}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some redirect",
+			"contents": "#REDIRECT [[Property:Has synonym]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some redirect2",
+			"contents": "[[Has type::Page]] {{DISPLAYTITLE:IsRedirectTarget}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some redirect2",
+			"contents": "[[Has type::Page]] {{DISPLAYTITLE:SomeTest2}}",
+			"move-to":{
+				"target": "Has synonym2",
+				"is-redirect": true
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (manual redirect)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has synonym",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_TYPE",
+						"_MDAT",
+						"_DTITLE",
+						"_SKEY"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Some_redirect#102##"
+						]
+					}
+				}
+			},
+			"assert-output": {
+				"onPageView": true,
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect\">Property:Some redirect</a>"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect\">SomeTest</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has synonym2",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_TYPE",
+						"_MDAT",
+						"_DTITLE",
+						"_SKEY"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						],
+						"propertyValues": [
+							"Some_redirect2#102##"
+						]
+					}
+				}
+			},
+			"assert-output": {
+				"onPageView": true,
+				"to-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect2\">Property:Some redirect2</a>"
+				],
+				"not-contain": [
+					"class=\"mw-redirect\" title=\"Property:Some redirect2\">SomeTest2</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgAllowDisplayTitle": true,
+		"wgRestrictDisplayTitle": false,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

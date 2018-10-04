@@ -1,0 +1,1 @@
+{"query":{"subject":"A0001\/1#0##","data":[{"property":"API_text_property","dataitem":[{"type":2,"item":"text 1"}]},{"property":"_MDAT","dataitem":[{"type":6,"item":".*"}]},{"property":"_SKEY","dataitem":[{"type":2,"item":"A0001\/1"}]}],"serializer":"SMW\\Serializers\\SemanticDataSerializer","version":2},"meta":{"type":"subject"}.*}

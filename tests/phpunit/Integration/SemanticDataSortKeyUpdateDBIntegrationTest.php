@@ -25,7 +25,7 @@ use Title;
 class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $semanticDataFactory;
-	private $subjects = array();
+	private $subjects = [];
 
 	protected function setUp() {
 		parent::setUp();

@@ -62,9 +62,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( $concept );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action => true
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -79,9 +79,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( $concept );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action => true
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -99,11 +99,11 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( $concept );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action => true,
 			's'     => 0,
 			'e'     => 90000
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -118,11 +118,11 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( $concept );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action => true,
 			's'     => 0,
 			'e'     => 90000
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -140,11 +140,11 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( $concept );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action   => true,
 			'old'     => 10,
 			'concept' => 'Bar'
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -156,10 +156,10 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->acquireInstanceFor( null );
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			$action   => true,
 			'concept' => 'Bar'
-		) );
+		] );
 
 		$this->assertTrue( $instance->rebuild() );
 	}
@@ -179,7 +179,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$database->expects( $expectedToRun )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -191,7 +191,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshConceptCache' )
-			->will( $this->returnValue( array( $refreshConceptCacheReturn ) ) );
+			->will( $this->returnValue( [ $refreshConceptCacheReturn ] ) );
 
 		$store->expects( $expectedToRun )
 			->method( 'getConnection' )
@@ -206,19 +206,19 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 			$settings
 		);
 
-		$instance->setParameters( array(
+		$instance->setParameters( [
 			'quiet' => true,
-		) );
+		] );
 
 		return $instance;
 	}
 
 	public function actionProvider() {
-		return array(
-			array( 'status' ),
-			array( 'create' ),
-			array( 'delete' )
-		);
+		return [
+			[ 'status' ],
+			[ 'create' ],
+			[ 'delete' ]
+		];
 	}
 
 }

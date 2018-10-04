@@ -1,0 +1,81 @@
+{
+	"description": "Test `_wpg` object value that contains `=` (equals sign) (#640, #710, #1542, #1645, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/Q0612/1(=)",
+			"contents": "[[Category:Q0612]] [[Has page::{{FULLPAGENAME}}]]"
+		},
+		{
+			"page": "Example/Q0612/Q1",
+			"contents": "{{#show: Example/Q0612/1(=) |?Has page |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#2 #show not be disturbed by `=`",
+			"subject": "Example/Q0612/Q1",
+			"assert-output": {
+				"to-contain": [
+					"Example/Q0612/1(=)"
+				],
+				"not-contain": [
+					"&quot;:&quot; cannot be used as a page name in this wiki."
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Category:Q0612]] [[Example/Q0612/1(=)]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0612/1(=)#0##"
+				]
+			},
+			"store": {
+				"clear-cache": true
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Category:Q0612]] [[Has page::Example/Q0612/1(=)]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0612/1(=)#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		},
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

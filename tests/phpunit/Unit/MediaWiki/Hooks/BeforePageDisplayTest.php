@@ -2,10 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use Language;
-use OutputPage;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
-use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
@@ -18,20 +15,66 @@ use SMW\Tests\Utils\Mock\MockTitle;
  */
 class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
+	private $outputPage;
+	private $request;
+	private $skin;
+
+	protected function setUp() {
+
+		$this->request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext = $this->getMockBuilder( '\RequestContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$requestContext->expects( $this->any() )
+			->method( 'getRequest' )
+			->will( $this->returnValue( $this->request ) );
+
+		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->skin = $this->getMockBuilder( '\Skin' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->skin->expects( $this->any() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $requestContext ) );
+	}
+
 	public function testCanConstruct() {
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skin = $this->getMockBuilder( '\Skin' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\BeforePageDisplay',
-			new BeforePageDisplay( $outputPage, $skin )
+			BeforePageDisplay::class,
+			new BeforePageDisplay()
 		);
+	}
+
+	public function testModules() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'getOption' )
+			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->outputPage->expects( $this->exactly( 2 ) )
+			->method( 'addModules' );
+
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$instance = new BeforePageDisplay();
+
+		$instance->process( $this->outputPage, $this->skin );
 	}
 
 	/**
@@ -39,47 +82,40 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
-		$skin = $this->getMockBuilder( '\Skin' )
+		$expected = $expected['result'] ? $this->atLeastOnce() : $this->never();
+
+		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$context = new \RequestContext();
-		$context->setTitle( $setup['title'] );
-		$context->setLanguage( Language::factory( 'en' ) );
+		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$outputPage = new OutputPage( $context );
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
 
-		$instance = new BeforePageDisplay( $outputPage, $skin );
-		$result   = $instance->process();
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $setup['title'] ) );
 
-		$this->assertInternalType( 'boolean', $result );
-		$this->assertTrue( $result );
+		$this->outputPage->expects( $expected )
+			->method( 'addLink' );
 
-		$contains = false;
+		$instance = new BeforePageDisplay();
 
-		if ( method_exists( $outputPage, 'getHeadLinksArray' ) ) {
-			foreach ( $outputPage->getHeadLinksArray() as $key => $value ) {
-				if ( strpos( $value, 'ExportRDF' ) ){
-					$contains = true;
-					break;
-				};
-			}
-		} else{
-			// MW 1.19
-			if ( strpos( $outputPage->getHeadLinks(), 'ExportRDF' ) ){
-				$contains = true;
-			};
-		}
-
-		$expected['result'] ? $this->assertTrue( $contains ) : $this->assertFalse( $contains );
+		$this->assertTrue(
+			$instance->process( $this->outputPage, $this->skin )
+		);
 	}
 
 	public function titleDataProvider() {
 
-		$language = Language::factory( 'en' );
-
 		#0 Standard title
-		$title = MockTitle::buildMockForMainNamespace();
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedText' )
@@ -89,38 +125,32 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( false ) );
 
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
-
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => true
-			)
-		);
+			]
+		];
 
 		#1 as SpecialPage
-		$title = MockTitle::buildMock();
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
 
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
-
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'title'  => $title
-			),
-			array(
+			],
+			[
 				'result' => false
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

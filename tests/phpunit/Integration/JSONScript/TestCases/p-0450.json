@@ -1,0 +1,94 @@
+{
+	"description": "Test in-text annotation with invisible chars (`wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/P0450/1",
+			"contents": "[[Left-To-Right ‎‎Mark::C++‎]] [[Left-To-Right Mark::C++]]"
+		},
+		{
+			"page": "Example/P0450/2",
+			"contents": "[[Right-To-Left ‏Mark::באמת! -]] [[Right-To-Left Mark::באמת!‏ -]]"
+		},
+		{
+			"page": "Example/P0450/3",
+			"contents": "[[Has text::no shyness]] [[Has text::visible shy&shy;ness]] [[Has text::invisible shy­ness]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 Left-To-Right Mark chars",
+			"subject": "Example/P0450/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Left-To-Right Mark"
+					],
+					"propertyValues": [
+						"C++"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 Right-To-Left Mark chars",
+			"subject": "Example/P0450/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Right-To-Left Mark"
+					],
+					"propertyValues": [
+						"באמת! -"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 shy char",
+			"subject": "Example/P0450/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"no shyness",
+						"visible shyness",
+						"invisible shyness"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

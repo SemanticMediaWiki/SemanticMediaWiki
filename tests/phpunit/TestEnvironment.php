@@ -5,10 +5,9 @@ namespace SMW\Tests;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
-use SMW\Store;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Localizer;
 use SMW\Tests\Utils\Mock\ConfigurableStub;
-use RuntimeException;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @license GNU GPL v2+
@@ -21,26 +20,27 @@ class TestEnvironment {
 	/**
 	 * @var ApplicationFactory
 	 */
-	private $applicationFactory = null;
+	private $applicationFactory;
 
 	/**
 	 * @var DataValueFactory
 	 */
-	private $dataValueFactory = null;
+	private $dataValueFactory;
 
 	/**
-	 * @var array
+	 * @var TestConfig
 	 */
-	private $configuration = array();
+	private $testConfig;
 
 	/**
 	 * @since 2.4
 	 *
 	 * @param array $configuration
 	 */
-	public function __construct( array $configuration = array() ) {
+	public function __construct( array $configuration = [] ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->testConfig = new TestConfig();
 
 		$this->withConfiguration( $configuration );
 	}
@@ -70,7 +70,7 @@ class TestEnvironment {
 	 * @return self
 	 */
 	public function addConfiguration( $key, $value ) {
-		return $this->withConfiguration( array( $key => $value ) );
+		return $this->withConfiguration( [ $key => $value ] );
 	}
 
 	/**
@@ -80,14 +80,8 @@ class TestEnvironment {
 	 *
 	 * @return self
 	 */
-	public function withConfiguration( array $configuration = array() ) {
-
-		foreach ( $configuration as $key => $value ) {
-			$this->configuration[$key] = $GLOBALS[$key];
-			$GLOBALS[$key] = $value;
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
-
+	public function withConfiguration( array $configuration = [] ) {
+		$this->testConfig->set( $configuration );
 		return $this;
 	}
 
@@ -110,7 +104,33 @@ class TestEnvironment {
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
 
+		if ( $name === 'MainWANObjectCache' ) {
+			\MediaWiki\MediaWikiServices::getInstance()->getMainWANObjectCache()->clearProcessCache();
+		}
+
 		return $this;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $name
+	 * @param callable $service
+	 */
+	public function redefineMediaWikiService( $name, callable $service ) {
+
+		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
+			return null;
+		}
+
+		$this->resetMediaWikiService( $name );
+
+		try {
+			\MediaWiki\MediaWikiServices::getInstance()->redefineService( $name, $service );
+		} catch( \Exception $e ) {
+			// Do nothing just avoid a
+			// MediaWiki\Services\NoSuchServiceException: No such service ...
+		}
 	}
 
 	/**
@@ -120,15 +140,15 @@ class TestEnvironment {
 	 *
 	 * @return self
 	 */
-	public function resetPoolCacheFor( $poolCache ) {
+	public function resetPoolCacheById( $poolCache ) {
 
 		if ( is_array( $poolCache ) ) {
 			foreach ( $poolCache as $pc ) {
-				$this->resetPoolCacheFor( $pc );
+				$this->resetPoolCacheById( $pc );
 			}
 		}
 
-		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheFor( $poolCache );
+		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheById( $poolCache );
 
 		return $this;
 	}
@@ -150,12 +170,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public function tearDown() {
-
-		foreach ( $this->configuration as $key => $value ) {
-			$GLOBALS[$key] = $value;
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
-
+		$this->testConfig->reset();
 		$this->applicationFactory->clear();
 		$this->dataValueFactory->clear();
 	}
@@ -163,27 +178,16 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param $originalClassName
-	 * @param array $configuration
+	 * @param callable $callback
 	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return string
 	 */
-	public function createConfiguredStub( $originalClassName, array $configuration ) {
-		$configurableStub = new ConfigurableStub();
-		return $configurableStub->createConfiguredStub( $originalClassName, $configuration );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param $originalClassName
-	 * @param array $configuration
-	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
-	 */
-	public function createConfiguredAbstractStub( $originalClassName, array $configuration ) {
-		$configurableStub = new ConfigurableStub();
-		return $configurableStub->createConfiguredAbstractStub( $originalClassName, $configuration );
+	public function outputFromCallbackExec( callable $callback ) {
+		ob_start();
+		call_user_func( $callback );
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output;
 	}
 
 	/**
@@ -192,7 +196,7 @@ class TestEnvironment {
 	 * @param array $pages
 	 */
 	public function flushPages( $pages ) {
-		$this->getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
+		self::getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
 	}
 
 	/**
@@ -200,29 +204,45 @@ class TestEnvironment {
 	 *
 	 * @return UtilityFactory
 	 */
-	public function getUtilityFactory() {
+	public static function getUtilityFactory() {
 		return UtilityFactory::getInstance();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ValidatorFactory
+	 */
+	public static function newValidatorFactory() {
+		return UtilityFactory::getInstance()->newValidatorFactory();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return SpyLogger
+	 */
+	public static function newSpyLogger() {
+		return self::getUtilityFactory()->newSpyLogger();
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $target
-	 * @param string $file
+	 * @param integer $index
+	 * @param string $url
 	 *
 	 * @return string
-	 * @throws RuntimeException
 	 */
-	public function getFixturesLocation( $target = '', $file = '' ) {
+	public function replaceNamespaceWithLocalizedText( $index, $text ) {
 
-		$fixturesLocation = __DIR__ . '/Fixtures' . ( $target !== '' ? "/{$target}" :  '' ) . '/' . $file;
-		$fixturesLocation = str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $fixturesLocation );
+		$namespace = Localizer::getInstance()->getNamespaceTextById( $index );
 
-		if ( !file_exists( $fixturesLocation ) && !is_dir( $fixturesLocation ) ) {
-			throw new RuntimeException( "{$fixturesLocation} does not exist." );
-		}
-
-		return $fixturesLocation;
+		return str_replace(
+			Localizer::getInstance()->getCanonicalNamespaceTextById( $index ) . ':',
+			$namespace . ':',
+			$text
+		);
 	}
 
 }

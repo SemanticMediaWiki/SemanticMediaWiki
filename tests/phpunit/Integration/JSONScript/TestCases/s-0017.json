@@ -1,0 +1,79 @@
+{
+	"description": "Test `Special:Types` (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has monolingual text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Types",
+				"query-parameters": "",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div id=\"smw-types\" class=\"smw-tabs smw-types\"><input id=\"tab-smw-type-list\" class=\"nav-tab\" type=\"radio\" name=\"types\" checked=\"\"/>",
+					"<p class=\"plainlinks smw-types-intro\">"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (Monolingual text)",
+			"special-page": {
+				"page": "Types",
+				"query-parameters": "Monolingual text",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-breadcrumb-link\"><span class=\"smw-breadcrumb-arrow-right\">",
+					"<a href=\".*Has_monolingual_text\" title=\".*Has monolingual text\">"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (Foobar, unknown)",
+			"special-page": {
+				"page": "Types",
+				"query-parameters": "Foobar",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"plainlinks smw-type-unknown\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

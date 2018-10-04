@@ -1,0 +1,259 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.smwb-container .smw-overlay-spinner {
+	left: 45%;
+	top: 40%;
+}
+
+.smwb-datasheet, .smwb-content {
+	margin-right: 0.5em;
+}
+
+.smwb-factbox {
+	border-left: 0.5em solid #DDDDDD;
+	width: 100%
+}
+
+.smwb-factbox .smwb-propvalue.smwb-group {
+	width: 100%;
+}
+
+.smwb-prophead a {
+	overflow-wrap: break-word;
+	word-break: break-word;
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+.smwb-factbox .smwb-cell {
+	border: 0px solid #999999;
+	border-top: 2px solid #fff;
+/*	border-bottom: 2px solid #fff; */
+}
+
+.smwb-cell-empty {
+	border-left: 0.5em solid #DDDDDD;
+}
+
+.smwb-prophead {
+	background-color: #ddd;
+}
+
+.smwb-title {
+	font-size: 200%;
+	background-color: #DDDDDD;
+	line-height: 1.5;
+	font-weight: normal;
+}
+
+.smwb-title td {
+	padding-left: 5px;
+	border-bottom: 2px solid white;
+}
+
+.smwb-propvalue {
+	background-color: #EEEEEE;
+}
+
+.smwb-propvalue .smwb-prophead {
+	text-align: right;
+	vertical-align: top;
+	font-weight: bold;
+	font-size: 120%;
+	background-color: #DDDDDD;
+	padding: 0.2em 0.6em;
+}
+
+.smwb-propvalue .smwb-propval {
+	padding: 0.4em 0.6em;
+	background-color: #EEEEEE;
+	vertical-align: top;
+}
+
+.smwb-center,  .smwb-actions {
+	background-color: #DDDDDD;
+	padding: 0px;
+}
+
+.smwb-actions {
+	line-height: 2.0em;
+}
+
+.smwb-title a, .smwb-center a:first-child, .smwb-actions a:first-child {
+	padding-left: 8px;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+span.smwb-value {
+}
+
+.smwb-bottom {
+	border-bottom: 2px solid #fff;
+}
+
+/**
+ * Inverse factbox
+ * @ignore
+ */
+.smwb-ifactbox {
+	border-right: 0.5em solid #DDDDDD;
+	width: 100%
+}
+
+.smwb-ifactbox .smwb-cell {
+	border: 0px solid #999999;
+	border-top: 2px solid #fff;
+/*	border-bottom: 2px solid #fff; */
+}
+
+.smwb-ititle {
+	font-size: 200%;
+	background-color: #DDDDDD;
+	line-height: 1.5;
+}
+
+.smwb-ititle td {
+	padding-left: 5px;
+	border-bottom: 2px solid white;
+}
+
+.smwb-ipropvalue {
+	background-color: #EEEEEE;
+	text-align: right;
+}
+
+.smwb-ipropvalue .smwb-prophead {
+	text-align: left;
+	font-weight: bold;
+	font-size: 120%;
+	background-color: #DDDDDD;
+	padding: 0.2em 0.6em;
+}
+
+.smwb-ipropvalue .smwb-propval {
+	background-color: #EEEEEE;
+	padding-right: 1em;
+	padding: 0.4em 0.6em;
+}
+
+.smwb-factbox .group-link:before {
+	content:"▾ ";
+}
+
+.smwb-ifactbox .group-link:after {
+	content:" ▾";
+}
+
+.smwb-input {
+	display: flex;
+}
+
+.smwb-input .input-field {
+	flex: 1; margin: 0 0 0 0;
+}
+
+.smwb-input .button-field {
+	flex: 0; margin: 0 0 0 1rem;
+}
+
+.smwb-input .button-field input {
+	padding: 6px;
+}
+
+.smwb-input .mw-ui-input:focus {
+	box-shadow: inset 0 0 0 1px #ddd;
+	border-color: #ddd;
+	outline: 0;
+}
+
+.smwb-input input {
+	padding: 0.52em 1em;
+}
+
+.smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
+	width: 30%;
+}
+
+.mw-ui-input.autocomplete-loading {
+	vertical-align: unset;
+	padding: 0.52em 1em !important;
+}
+
+.smwb-action-separator {
+	display: inline-block;
+	line-height: 1.025em;
+	border-left: 1px solid #a2a9b1;
+	margin: 0.2em 0.2em 0.2em 0.45em;
+	zoom: 1;
+}
+
+/**
+ * Light theme
+ */
+.smwb-theme-light .smwb-factbox {
+	border-left: 0.5em solid #f0f0f0;
+}
+
+.smwb-theme-light .smwb-ifactbox {
+	border-right: 0.5em solid #f0f0f0;
+}
+
+.smwb-theme-light .smwb-title, .smwb-theme-light .smwb-center, .smwb-theme-light .smwb-actions, .smwb-theme-light .smwb-prophead  {
+	background-color: #f0f0f0;
+}
+
+.smwb-theme-light .smwb-propval  {
+	background-color: #f7f7f7;
+}
+
+/**
+ * Responsive settings (#see smw.table.css)
+ */
+@media screen and (max-width: 800px) {
+	.smwb-factbox .smwb-propvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
+		width: auto;
+	}
+
+	.smwb-ifactbox .smwb-ipropvalue .smwb-prophead, .smwb-ifactbox .smwb-ipropvalue .smwb-propval, .smwb-ifactbox .smwb-propvalue .smwb-prophead {
+		justify-content: flex-end;
+	}
+
+	.smwb-group .smwb-propval, .smwb-group .smwb-theme-light .smwb-propval {
+		background-color: #d9e8f3;
+	}
+
+	.smwb-emptysheet .smwb-prophead {
+		border-top: none;
+	}
+}

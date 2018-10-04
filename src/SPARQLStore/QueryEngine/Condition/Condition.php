@@ -30,7 +30,7 @@ abstract class Condition {
 	 * Format sortkey => variable name
 	 * @var array
 	 */
-	public $orderVariables = array();
+	public $orderVariables = [];
 
 	/**
 	 * Associative array of additional conditions that should not narrow
@@ -42,7 +42,7 @@ abstract class Condition {
 	 * variable.
 	 * @var array of format "condition identifier" => "condition"
 	 */
-	public $weakConditions = array();
+	public $weakConditions = [];
 
 	/**
 	 * Associative array of additional conditions that should can narrow
@@ -50,18 +50,18 @@ abstract class Condition {
 	 *
 	 * @var array of format "condition identifier" => "condition"
 	 */
-	public $cogentConditions = array();
+	public $cogentConditions = [];
 
 	/**
 	 * Associative array of additional namespaces that this condition
 	 * requires to be declared
 	 * @var array of format "shortName" => "namespace URI"
 	 */
-	public $namespaces = array();
+	public $namespaces = [];
 
 	/**
 	 * Get the SPARQL condition string that this object represents. This
-	 * does not inlcude the weak conditions, or additional formulations to
+	 * does not include the weak conditions, or additional formulations to
 	 * match singletons (see SMWSparqlSingletonCondition).
 	 *
 	 * @return string

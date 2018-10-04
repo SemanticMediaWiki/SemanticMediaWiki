@@ -6,6 +6,7 @@ use SMW\ArrayAccessor;
 use SMW\DataItemFactory;
 use SMW\PropertiesQueryPage;
 use SMW\Settings;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertiesQueryPage
@@ -17,6 +18,8 @@ use SMW\Settings;
  * @author mwjames
  */
 class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $skin;
@@ -34,11 +37,11 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settings = Settings::newFromArray( array(
+		$this->settings = Settings::newFromArray( [
 			'smwgPDefaultType'              => '_wpg',
 			'smwgPropertyLowUsageThreshold' => 5,
 			'smwgPropertyZeroCountDisplay'  => true
-		) );
+		] );
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
@@ -62,7 +65,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $error, null )
+			[ $error, null ]
 		);
 
 		$this->assertInternalType(
@@ -76,14 +79,14 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInvalidResultException() {
+	public function testInvalidResultThrowsException() {
 
 		$instance = new PropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
-		$this->setExpectedException( '\SMW\InvalidResultException' );
+		$this->setExpectedException( '\SMW\Exception\PropertyNotFoundException' );
 		$instance->formatResult( $this->skin, null );
 	}
 
@@ -98,7 +101,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -118,7 +121,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 42 )
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -143,10 +146,10 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, 0 )
+			[ $property, 0 ]
 		);
 
-		$this->assertNotEmpty(
+		$this->assertEmpty(
 			$result
 		);
 	}
@@ -173,7 +176,7 @@ class PropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->formatResult(
 			$this->skin,
-			array( $property, $count )
+			[ $property, $count ]
 		);
 
 		$this->assertContains(

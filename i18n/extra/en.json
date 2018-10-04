@@ -1,0 +1,304 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": false,
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Property",
+            "SMW_NS_PROPERTY_TALK": "Property_talk",
+            "SMW_NS_CONCEPT": "Concept",
+            "SMW_NS_CONCEPT_TALK": "Concept_talk",
+            "SMW_NS_SCHEMA": "smw/schema",
+            "SMW_NS_SCHEMA_TALK": "smw/schema_talk"
+        },
+        "aliases": {
+            "Property": "SMW_NS_PROPERTY",
+            "Property_talk": "SMW_NS_PROPERTY_TALK",
+            "Concept": "SMW_NS_CONCEPT",
+            "Concept_talk": "SMW_NS_CONCEPT_TALK",
+            "smw/schema": "SMW_NS_SCHEMA",
+            "smw/schema_talk": "SMW_NS_SCHEMA_TALK"
+        }
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Page",
+            "_txt": "Text",
+            "_cod": "Code",
+            "_boo": "Boolean",
+            "_num": "Number",
+            "_geo": "Geographic coordinates",
+            "_tem": "Temperature",
+            "_dat": "Date",
+            "_ema": "Email",
+            "_uri": "URL",
+            "_anu": "Annotation URI",
+            "_tel": "Telephone number",
+            "_rec": "Record",
+            "_qty": "Quantity",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_keyw": "Keyword",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URL": "_uri",
+            "URI": "_uri",
+            "Page": "_wpg",
+            "Text": "_txt",
+            "Enumeration": "_txt",
+            "String": "_txt",
+            "Code": "_cod",
+            "Boolean": "_boo",
+            "Number": "_num",
+            "Float": "_num",
+            "Integer": "_num",
+            "Geographic coordinates": "_geo",
+            "Geographic coordinate": "_geo",
+            "Geographic polygon": "_gpo",
+            "Temperature": "_tem",
+            "Quantity": "_qty",
+            "Date": "_dat",
+            "Email": "_ema",
+            "E-mail": "_ema",
+            "Annotation URI": "_anu",
+            "Telephone number": "_tel",
+            "Phone number": "_tel",
+            "Record": "_rec",
+            "Monolingual text": "_mlt_rec",
+            "External identifier": "_eid",
+            "Keyword": "_keyw",
+            "Reference": "_ref_rec"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Has type",
+            "_URI": "Equivalent URI",
+            "_SUBP": "Subproperty of",
+            "_SUBC": "Subcategory of",
+            "_UNIT": "Display units",
+            "_IMPO": "Imported from",
+            "_CONV": "Corresponds to",
+            "_SERV": "Provides service",
+            "_PVAL": "Allows value",
+            "_MDAT": "Modification date",
+            "_CDAT": "Creation date",
+            "_NEWP": "Is a new page",
+            "_LEDT": "Last editor is",
+            "_ERRP": "Has improper value for",
+            "_LIST": "Has fields",
+            "_SOBJ": "Has subobject",
+            "_ASK": "Has query",
+            "_ASKST": "Query string",
+            "_ASKFO": "Query format",
+            "_ASKSI": "Query size",
+            "_ASKDE": "Query depth",
+            "_ASKDU": "Query duration",
+            "_ASKSC": "Query source",
+            "_ASKPA": "Query parameters",
+            "_ASKCO": "Query state",
+            "_MEDIA": "Media type",
+            "_MIME": "MIME type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Property description",
+            "_PVAP": "Allows pattern",
+            "_PVALI": "Allows value list",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter URI",
+            "_PPLB": "Preferred property label",
+            "_EDIP": "Is edit protected",
+            "_CHGPRO": "Change propagation",
+            "_PPGR": "Is property group",
+            "_SCHEMA_DESC": "Schema description",
+            "_SCHEMA_TAG": "Schema tag",
+            "_SCHEMA_TYPE": "Schema type",
+            "_SCHEMA_DEF": "Schema definition",
+            "_SCHEMA_LINK": "Schema link",
+            "_FORMAT_SCHEMA": "Formatter schema",
+            "_FILE_ATTCH": "File attachment",
+            "_CONT_TYPE": "Content type",
+            "_CONT_AUTHOR": "Content author",
+            "_CONT_LEN": "Content length",
+            "_CONT_LANG": "Content language",
+            "_CONT_TITLE": "Content title",
+            "_CONT_DATE": "Content date",
+            "_CONT_KEYW": "Content keyword",
+            "_TRANS": "Translation",
+            "_TRANS_SOURCE": "Translation source",
+            "_TRANS_GROUP": "Translation group"
+        },
+        "aliases": {
+            "Display unit": "_UNIT",
+            "Display units": "_UNIT",
+            "Has type": "_TYPE",
+            "Equivalent URI": "_URI",
+            "Subproperty of": "_SUBP",
+            "Subcategory of": "_SUBC",
+            "Imported from": "_IMPO",
+            "Corresponds to": "_CONV",
+            "Provides service": "_SERV",
+            "Allows value": "_PVAL",
+            "Has allows value list": "_PVALI",
+            "Modification date": "_MDAT",
+            "Creation date": "_CDAT",
+            "Is a new page": "_NEWP",
+            "Last editor is": "_LEDT",
+            "Has improper value for": "_ERRP",
+            "Has fields": "_LIST",
+            "Has subobject": "_SOBJ",
+            "Has query": "_ASK",
+            "Has query string": "_ASKST",
+            "Has query format": "_ASKFO",
+            "Has query size": "_ASKSI",
+            "Has query depth": "_ASKDE",
+            "Has query duration": "_ASKDU",
+            "Has query source": "_ASKSC",
+            "Has query parameters": "_ASKPA",
+            "Has query state": "_ASKCO",
+            "Has query status code": "_ASKCO",
+            "Has media type": "_MEDIA",
+            "Has mime type": "_MIME",
+            "Display precision of": "_PREC",
+            "Display precision": "_PREC",
+            "Language code": "_LCODE",
+            "Text": "_TEXT",
+            "Has property description": "_PDESC",
+            "Property description": "_PDESC",
+            "Has allows pattern": "_PVAP",
+            "Has display title of": "_DTITLE",
+            "Has uniqueness constraint": "_PVUC",
+            "Uniqueness constraint": "_PVUC",
+            "IsFunctionalProperty": "_PVUC",
+            "External identifier": "_PEID",
+            "External formatter URI": "_PEFU",
+            "External formatter uri": "_PEFU",
+            "External formatter URL": "_PEFU",
+            "Has preferred property label": "_PPLB",
+            "Is edit protected": "_EDIP",
+            "IsEditProtected": "_EDIP",
+            "Change propagation": "_CHGPRO",
+            "Property group": "_PPGR",
+            "Schema description": "_SCHEMA_DESC",
+            "Schema tag": "_SCHEMA_TAG",
+            "Schema type": "_SCHEMA_TYPE",
+            "Schema definition": "_SCHEMA_DEF",
+            "Schema link": "_SCHEMA_LINK",
+            "Formatter schema": "_FORMAT_SCHEMA",
+            "File attachment": "_FILE_ATTCH",
+            "Has file attachment": "_FILE_ATTCH",
+            "Has translation":"_TRANS"
+        }
+    },
+    "date": {
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y",
+            "SMW_PREC_YMDTZ": "H:i:s T, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ],
+        "months": [
+            [
+                "January",
+                "Jan"
+            ],
+            [
+                "February",
+                "Feb"
+            ],
+            [
+                "March",
+                "Mar"
+            ],
+            [
+                "April",
+                "Apr"
+            ],
+            [
+                "May",
+                "May"
+            ],
+            [
+                "June",
+                "Jun"
+            ],
+            [
+                "July",
+                "Jul"
+            ],
+            [
+                "August",
+                "Aug"
+            ],
+            [
+                "September",
+                "Sep"
+            ],
+            [
+                "October",
+                "Oct"
+            ],
+            [
+                "November",
+                "Nov"
+            ],
+            [
+                "December",
+                "Dec"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thrusday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ]
+    }
+}

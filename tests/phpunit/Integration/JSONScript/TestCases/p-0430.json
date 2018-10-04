@@ -1,0 +1,133 @@
+{
+	"description": "Test in-text annotation for `_eid` type (`#nowiki`) (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "NDL ID",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::https://id.ndl.go.jp/auth/ndlna/$1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some ID",
+			"contents": "[[Has type::External identifier]] [[External formatter uri::https://example.org/$1]]"
+		},
+		{
+			"page": "Example/P0430/1",
+			"contents": "[[NDL ID::00564222]]"
+		},
+		{
+			"page": "Example/P0430/Q1.1",
+			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID |link=none}}"
+		},
+		{
+			"page": "Example/P0430/Q1.2",
+			"contents": "{{#ask: [[NDL ID::00564222]] |?NDL ID }}"
+		},
+		{
+			"page": "Example/P0430/2",
+			"contents": "[[Some ID::W%D6LLEKLA01]]"
+		},
+		{
+			"page": "Example/P0430/Q2.1",
+			"contents": "{{#ask: [[Some ID::W%D6LLEKLA01]] |?Some ID }}"
+		},
+		{
+			"page": "Example/P0430/Q2.2",
+			"contents": "{{#ask: [[Some ID::W%D6LLEKLA01]] |?Some ID#nowiki }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0430/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"NDL_ID",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"00564222"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (link=none)",
+			"subject": "Example/P0430/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"NDL-ID smwtype_eid\" data-sort-value=\"00564222\">00564222</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0430/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"NDL-ID smwtype_eid\" data-sort-value=\"00564222\"><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://id.ndl.go.jp/auth/ndlna/00564222\">00564222</a></span></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (decode,encode)",
+			"subject": "Example/P0430/2",
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a>"
+				],
+				"not-contain": [
+					"<a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%25D6LLEKLA01\">W%D6LLEKLA01</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0430/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #nowiki",
+			"subject": "Example/P0430/Q2.2",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\">https&#58;//example.org/W%D6LLEKLA01</span>"
+				],
+				"not-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://example.org/W%D6LLEKLA01\">W%D6LLEKLA01</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

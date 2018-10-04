@@ -1,0 +1,67 @@
+{
+	"description": "Test #info parser output (#1019, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"message-cache": "clear",
+			"page": "P0106/Warning",
+			"contents": "{{#info: an warning text | warning }}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "P0106/Error",
+			"contents": "{{#info: an error text | error }}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "P0106/Note",
+			"contents": "{{#info: an info note | note }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "P0106/Warning",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"an warning text\">",
+					"<span class=\"smwtticon warning\">",
+					"<span class=\"smwttcontent\">an warning text</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "P0106/Error",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"5\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
+					"<span class=\"smwtticon error\">",
+					"<span class=\"smwttcontent\">an error text</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "P0106/Note",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"8\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
+					"<span class=\"smwtticon note\">",
+					"<span class=\"smwttcontent\">an info note</span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -30,7 +30,7 @@ class SMWErrorValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->addErrorMsg( 'smw_parseerror' );
+		$this->addErrorMsg( [ 'smw-datavalue-parse-error', $value ] );
 	}
 
 	/**
@@ -66,7 +66,12 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->m_dataitem->getString();
+
+		if ( $this->m_dataitem !== null ) {
+			return $this->m_dataitem->getString();
+		}
+
+		return $this->getErrorText();
 	}
 
 	public function isValid() {

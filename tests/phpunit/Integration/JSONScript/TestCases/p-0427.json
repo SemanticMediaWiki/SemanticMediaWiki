@@ -1,0 +1,146 @@
+{
+	"description": "Test in-text annotation with DISPLAYTITLE / `foaf` to check on upper vs. lower case (`wgRestrictDisplayTitle`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import foaf",
+			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:homepage",
+			"contents": "[[Imported from::foaf:homepage]] {{DISPLAYTITLE:foaf:homepage}} [[Has property description::URL representing ... @en]] [[Category:Imported vocabulary]]"
+		},
+		{
+			"page": "Example/P0427/Q0.1",
+			"contents": "{{#show: Property:Foaf:homepage |?Has property description}}"
+		},
+		{
+			"page": "Example/P0427/Q0.2",
+			"contents": "{{#ask: [[Property:+]][[Category:Imported vocabulary]] |?Has property description=Description |link=none}}"
+		},
+		{
+			"page": "Example/P0427/1",
+			"contents": "{{#subobject: |Has text=abc |display title of=ab c123 |@category=P0427 }}{{#subobject: |Has text=ABC |display title of=AB C123 |@category=P0427 }}"
+		},
+		{
+			"page": "Example/P0427/Q1.1",
+			"contents": "{{#ask: [[Category:P0427]] [[~ab c*]] |?Has text |link=none}}"
+		},
+		{
+			"page": "Example/P0427/Q1.2",
+			"contents": "{{#ask: [[Category:P0427]] [[~AB C*]] |?Has text |link=none}}"
+		},
+		{
+			"page": "Example/P0427/Q1.3",
+			"contents": "{{#ask: [[Example/P0427/1#_7cae05fedd48fa820a0ea915518cc3fd]] |?Has text |link=none}}"
+		},
+		{
+			"page": "Example/P0427/Q1.4",
+			"contents": "{{#ask: [[Category:P0427]] [[!~ab c*]] |?Has text |link=none}}"
+		},
+		{
+			"page": "Example/P0427/Q1.5",
+			"contents": "{{#ask: [[Category:P0427]] [[!~AB C*]] |?Has text |link=none}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 match foaf:homepage to Property:Foaf:homepage",
+			"subject": "Example/P0427/Q0.1",
+			"assert-output": {
+				"to-contain": [
+					"URL representing ... (en)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0427/Q0.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Property:Foaf:homepage</td>",
+					"<td class=\"Description smwtype_mlt_rec\">URL representing ... (en)</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 only match `abc*`",
+			"subject": "Example/P0427/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0427/1#_7cae05fedd48fa820a0ea915518cc3fd</td>",
+					"<td class=\"Has-text smwtype_txt\">abc</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 only match `ABC*`",
+			"subject": "Example/P0427/Q1.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0427/1#_6840005f556d165faf53ecf39be9ee97</td>",
+					"<td class=\"Has-text smwtype_txt\">ABC</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 same as #2",
+			"subject": "Example/P0427/Q1.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0427/1#_7cae05fedd48fa820a0ea915518cc3fd</td>",
+					"<td class=\"Has-text smwtype_txt\">abc</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 to be reverse to #2",
+			"subject": "Example/P0427/Q1.4",
+			"skip-on": {
+				"elastic": "ES matches both `AB C` and `ab c` which is why the result set is 0"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0427/1#_6840005f556d165faf53ecf39be9ee97</td>",
+					"<td class=\"Has-text smwtype_txt\">ABC</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 to be reverse to #3",
+			"subject": "Example/P0427/Q1.5",
+			"skip-on": {
+				"elastic": "ES matches both `AB C` and `ab c` which is why the result set is 0"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/P0427/1#_7cae05fedd48fa820a0ea915518cc3fd</td>",
+					"<td class=\"Has-text smwtype_txt\">abc</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

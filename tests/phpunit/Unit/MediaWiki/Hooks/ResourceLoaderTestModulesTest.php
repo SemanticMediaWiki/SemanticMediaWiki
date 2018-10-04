@@ -21,11 +21,9 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ResourceLoaderTestModules',
-			new ResourceLoaderTestModules( $resourceLoader, $testModules, '', '' )
+			ResourceLoaderTestModules::class,
+			new ResourceLoaderTestModules( $resourceLoader )
 		);
 	}
 
@@ -35,12 +33,15 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
+		$testModules = [];
 
-		$instance = new ResourceLoaderTestModules( $resourceLoader, $testModules, '', '' );
-		$instance->process();
+		$instance = new ResourceLoaderTestModules( $resourceLoader );
+		$instance->process( $testModules );
 
-		$this->assertArrayHasKey( 'ext.smw.tests', $testModules['qunit'] );
+		$this->assertArrayHasKey(
+			'ext.smw.tests',
+			$testModules['qunit']
+		);
 	}
 
 }

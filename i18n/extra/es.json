@@ -1,0 +1,202 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Propiedad",
+            "SMW_NS_PROPERTY_TALK": "Propiedad_discusión",
+            "SMW_NS_CONCEPT": "Concepto",
+            "SMW_NS_CONCEPT_TALK": "Concepto_discusión"
+        },
+        "aliases": {
+            "Atributo": "SMW_NS_PROPERTY",
+            "Atributo_discusión": "SMW_NS_PROPERTY_TALK"
+        }
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Página",
+            "_txt": "Texto",
+            "_cod": "Código",
+            "_boo": "Booleano",
+            "_num": "Número",
+            "_geo": "Coordenadas geográficas",
+            "_tem": "Temperatura",
+            "_dat": "Fecha",
+            "_ema": "Dirección electrónica",
+            "_uri": "URL",
+            "_anu": "Anotación-URI",
+            "_tel": "Número de teléfono",
+            "_rec": "Registro",
+            "_qty": "Cantidad",
+            "_mlt_rec": "Texto monolingüe",
+            "_eid": "Identificador externo",
+            "_keyw": "Palabra clave",
+            "_ref_rec": "Referencia"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Número entero": "_num",
+            "Número con coma": "_num",
+            "Cadena de caracteres": "_txt",
+            "Enumeración": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Tiene tipo de datos",
+            "_URI": "URI equivalente",
+            "_SUBP": "Subpropiedad de",
+            "_SUBC": "Subcategoría de",
+            "_UNIT": "Unidades de medida",
+            "_IMPO": "Importado de",
+            "_CONV": "Corresponde a",
+            "_SERV": "Provee servicio",
+            "_PVAL": "Permite el valor",
+            "_MDAT": "Fecha de modificación",
+            "_CDAT": "Fecha de creación",
+            "_NEWP": "Es una página nueva",
+            "_LEDT": "Último editor es",
+            "_ERRP": "Tiene valor incorrecto para",
+            "_LIST": "Tiene campos",
+            "_SOBJ": "Tiene subobjeto",
+            "_ASK": "Tiene consulta",
+            "_ASKST": "Cadena de consulta",
+            "_ASKFO": "Formato de consulta",
+            "_ASKSI": "Tamaño de consulta",
+            "_ASKDE": "Profundidad de consulta",
+            "_ASKDU": "Duración de consulta",
+            "_ASKSC": "Fuente de consulta",
+            "_ASKPA": "Parámetros de consulta",
+            "_ASKCO": "Código de estado de consulta",
+            "_MEDIA": "Tipo Media",
+            "_MIME": "Tipo MIME",
+            "_ERRC": "Tiene error de procesamiento",
+            "_ERRT": "Tiene texto de error procesamiento",
+            "_PREC": "Mostrar precisión de",
+            "_LCODE": "Código de lenguaje",
+            "_TEXT": "Texto",
+            "_PDESC": "Tiene descripción de propiedad",
+            "_PVAP": "Permite patrón",
+            "_PVALI": "Permite lista de valores",
+            "_DTITLE": "Mostrar título de",
+            "_PVUC": "Tiene restricción de singularidad",
+            "_PEID": "Identificador externo",
+            "_PEFU": "URI del formateador externo",
+            "_PPLB": "Etiqueta de propiedad preferida",
+            "_EDIP": "Está protegida de edición",
+            "_CHGPRO": "Propagación de cambio",
+            "_PPGR": "Es un grupo de propiedad"
+        },
+        "aliases": {
+            "Es página nueva": "_NEWP",
+            "Tiene restricción de unicidad": "_PVUC",
+            "Unidad de medida": "_UNIT"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "enero",
+                "ene"
+            ],
+            [
+                "febrero",
+                "feb"
+            ],
+            [
+                "marzo",
+                "mar"
+            ],
+            [
+                "abril",
+                "abr"
+            ],
+            [
+                "mayo",
+                "may"
+            ],
+            [
+                "junio",
+                "jun"
+            ],
+            [
+                "julio",
+                "jul"
+            ],
+            [
+                "agosto",
+                "ago"
+            ],
+            [
+                "septiembre",
+                "sep"
+            ],
+            [
+                "octubre",
+                "oct"
+            ],
+            [
+                "noviembre",
+                "nov"
+            ],
+            [
+                "diciembre",
+                "dic"
+            ]
+        ],
+        "days": [
+            [
+                "Lunes",
+                "Lun"
+            ],
+            [
+                "Martes",
+                "Mar"
+            ],
+            [
+                "Miércoles",
+                "Mie"
+            ],
+            [
+                "Jueves",
+                "Jue"
+            ],
+            [
+                "Viernes",
+                "Vie"
+            ],
+            [
+                "Sábado",
+                "Sab"
+            ],
+            [
+                "Domingo",
+                "Dom"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "M Y",
+            "SMW_PREC_YMD": "j M Y",
+            "SMW_PREC_YMDT": "H:i:s j M Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

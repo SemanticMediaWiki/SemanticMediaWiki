@@ -3,12 +3,12 @@
 namespace SMW\SQLStore;
 
 use InvalidArgumentException;
-use RuntimeException;
-use SMW\DataItemException;
 use SMW\DIProperty;
+use SMW\Exception\DataItemException;
 use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDIError as DIError;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2+
@@ -23,20 +23,45 @@ class PropertyTableRowDiffer {
 	/**
 	 * @var Store
 	 */
-	private $store = null;
+	private $store;
 
 	/**
-	 * @var CompositePropertyTableDiffIterator
+	 * @var PropertyTableRowMapper
 	 */
-	private $compositePropertyTableDiffIterator = null;
+	private $propertyTableRowMapper;
+
+	/**
+	 * @var ChangeOp
+	 */
+	private $changeOp;
 
 	/**
 	 * @since 2.3
 	 *
 	 * @param Store $store
+	 * @param PropertyTableRowMapper $propertyTableRowMapper
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, PropertyTableRowMapper $propertyTableRowMapper ) {
 		$this->store = $store;
+		$this->propertyTableRowMapper = $propertyTableRowMapper;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param ChangeOp|null $changeOp
+	 */
+	public function setChangeOp( ChangeOp $changeOp = null ) {
+		$this->changeOp = $changeOp;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return ChangeOp
+	 */
+	public function getChangeOp() {
+		return $this->changeOp;
 	}
 
 	/**
@@ -63,19 +88,31 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	public function computeTableRowDiffFor( $sid, SemanticData $semanticData ) {
+	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
 
-		$tablesDeleteRows = array();
-		$tablesInsertRows = array();
+		$tablesDeleteRows = [];
+		$tablesInsertRows = [];
 
-		$newHashes = array();
+		$propertyList = [];
+		$textItems = [];
 
-		$newData = $this->mapToInsertValueFormat(
+		$newHashes = [];
+
+		if ( $this->changeOp === null ) {
+			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
+		}
+
+		list( $newData, $textItems, $propertyList, $fixedPropertyList ) = $this->propertyTableRowMapper->mapToRows(
 			$sid,
 			$semanticData
 		);
 
-		$oldHashes = $this->fetchPropertyTableHashesForId( $sid );
+		$this->changeOp->addPropertyList( $propertyList );
+
+		$oldHashes = $this->fetchPropertyTableHashesById(
+			$sid
+		);
+
 		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $propertyTables as $propertyTable ) {
@@ -104,13 +141,17 @@ class PropertyTableRowDiffer {
 				}
 			}
 
+			if ( $fixedProperty ) {
+				$this->changeOp->addFixedPropertyRecord( $tableName, $fixedProperty );
+			}
+
 			if ( array_key_exists( $tableName, $newData ) ) {
 				// Note: the order within arrays should remain the same while page is not updated.
 				// Hence we do not sort before serializing. It is hoped that this assumption is valid.
-				$newHashes[$tableName] = $this->createNewHashForTable(
+				$newHashes[$tableName] = $this->createHash(
 					$tableName,
 					$newData,
-					$semanticData->getLastModified()
+					$semanticData->getOption( SemanticData::OPT_LAST_MODIFIED )
 				);
 
 				if ( array_key_exists( $tableName, $oldHashes ) && $newHashes[$tableName] == $oldHashes[$tableName] ) {
@@ -119,62 +160,44 @@ class PropertyTableRowDiffer {
 				} else { // Table contains no data or contains data that is different from the new
 					list( $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ) = $this->arrayDeleteMatchingValues(
 						$this->fetchCurrentContentsForPropertyTable( $sid, $propertyTable ),
-						$newData[$tableName]
+						$newData[$tableName],
+						$propertyTable
 					);
-
-					if ( $fixedProperty ) {
-						$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
-					}
 				}
 			} elseif ( array_key_exists( $tableName, $oldHashes ) ) {
 				// Table contains data but should not contain any after update
-				$tablesInsertRows[$tableName] = array();
+				$tablesInsertRows[$tableName] = [];
 				$tablesDeleteRows[$tableName] = $this->fetchCurrentContentsForPropertyTable(
 					$sid,
 					$propertyTable
 				);
-
-				if ( $fixedProperty ) {
-					$this->getCompositePropertyTableDiff()->addFixedPropertyRecord( $tableName, $fixedProperty );
-				}
 			}
 		}
 
-		$this->getCompositePropertyTableDiff()->addTableRowsToCompositeDiff(
+		$this->changeOp->addTextItems(
+			$sid,
+			$textItems
+		);
+
+		$this->changeOp->addDataOp(
+			$semanticData->getSubject()->getHash(),
+			$newData
+		);
+
+		$this->changeOp->addDiffOp(
 			$tablesInsertRows,
 			$tablesDeleteRows
 		);
 
-		return array( $tablesInsertRows, $tablesDeleteRows, $newHashes );
+		return [ $tablesInsertRows, $tablesDeleteRows, $newHashes ];
 	}
 
-	/**
-	 * @since 2.3
-	 */
-	public function resetCompositePropertyTableDiff() {
-		$this->compositePropertyTableDiffIterator = null;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @return CompositePropertyTableDiffIterator
-	 */
-	public function getCompositePropertyTableDiff() {
-
-		if ( $this->compositePropertyTableDiffIterator === null ) {
-			$this->compositePropertyTableDiffIterator = new CompositePropertyTableDiffIterator();
-		}
-
-		return $this->compositePropertyTableDiffIterator;
-	}
-
-	private function fetchPropertyTableHashesForId( $sid ) {
+	private function fetchPropertyTableHashesById( $sid ) {
 		return $this->store->getObjectIds()->getPropertyTableHashes( $sid );
 	}
 
 	/**
-	 * The hashModifier can be used to force a modification in order to detect
+	 * @note The hashMutator can be used to force a modification in order to detect
 	 * content edits where text has been changed but the md5 table hash remains
 	 * unchanged and therefore would not re-compute the diff and misses out
 	 * critical updates on property tables.
@@ -182,8 +205,8 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createNewHashForTable( $tableName, $newData, $hashModifier = '' ) {
-		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashModifier );
+	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
 	/**
@@ -205,13 +228,13 @@ class PropertyTableRowDiffer {
 			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
 		}
 
-		$contents = array();
+		$contents = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$result = $connection->select(
 			$connection->tablename( $propertyTable->getName() ),
 			'*',
-			array( 's_id' => $sid ),
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -234,7 +257,8 @@ class PropertyTableRowDiffer {
 					$resultRow['o_id'] = (int)$resultRow['o_id'];
 				}
 
-				$contents[] = $resultRow;
+				$hash = $this->propertyTableRowMapper->makeHash( $resultRow );
+				$contents[$hash] = $resultRow;
 			}
 		}
 
@@ -248,17 +272,29 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param array $oldValues
 	 * @param array $newValues
+	 * @param PropertyTableDefinition $propertyTable
+	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues ) {
+	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
 
-		// cycle through old values
+		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
+
+		// Cycle through old values
 		foreach ( $oldValues as $oldKey => $oldValue ) {
 
-			// cycle through new values
+			// Cycle through new values
 			foreach ( $newValues as $newKey => $newValue ) {
 
-				// delete matching values;
+				// #2061
+				// Loose comparison on a string will fail for cases like 011 == 0011
+				// therefore use the strict comparison and have the values
+				// remain if they don't match
+				if ( $isString && $newValue !== $oldValue ) {
+					continue;
+				}
+
+				// Delete matching values
 				// use of == is intentional to account for oldValues only
 				// containing strings while new values might also contain other
 				// types
@@ -269,147 +305,9 @@ class PropertyTableRowDiffer {
 			}
 		};
 
-		// arrays have to be renumbered because database functions expect an
+		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array
-		return array( array_values( $newValues ), array_values( $oldValues ) );
-	}
-
-	/**
-	 * Create an array of rows to insert into property tables in order to
-	 * store the given SMWSemanticData. The given $sid (subject page id) is
-	 * used directly and must belong to the subject of the data container.
-	 * Sortkeys are ignored since they are not stored in a property table
-	 * but in the ID table.
-	 *
-	 * The returned array uses property table names as keys and arrays of
-	 * table rows as values. Each table row is an array mapping column
-	 * names to values.
-	 *
-	 * @note Property tables that do not use ids as subjects are ignored.
-	 * This just excludes redirects that are handled differently anyway;
-	 * it would not make a difference to include them here.
-	 *
-	 * @since 1.8
-	 *
-	 * @param integer $sid
-	 * @param SemanticData $semanticData
-	 *
-	 * @return array
-	 */
-	private function mapToInsertValueFormat( $sid, SemanticData $semanticData ) {
-		$updates = array();
-
-		$subject = $semanticData->getSubject();
-		$propertyTables = $this->store->getPropertyTables();
-
-		foreach ( $semanticData->getProperties() as $property ) {
-
-			$tableId = $this->store->findPropertyTableID( $property );
-
-			// not stored in a property table, e.g., sortkeys
-			if ( $tableId === null ) {
-				continue;
-			}
-
-			// "Notice: Undefined index"
-			if ( !isset( $propertyTables[$tableId] ) ) {
-				throw new RuntimeException( "Unable to find a property table for " . $property->getKey() );
-			}
-
-			$propertyTable = $propertyTables[$tableId];
-
-			// not using subject ids, e.g., redirects
-			if ( !$propertyTable->usesIdSubject() ) {
-				continue;
-			}
-
-			$insertValues = array( 's_id' => $sid );
-
-			if ( !$propertyTable->isFixedPropertyTable() ) {
-				$insertValues['p_id'] = $this->store->getObjectIds()->makeSMWPropertyID( $property );
-			}
-
-			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
-
-				if ( $dataItem instanceof DIError ) { // ignore error values
-					continue;
-				}
-
-				if ( !array_key_exists( $propertyTable->getName(), $updates ) ) {
-					$updates[$propertyTable->getName()] = array();
-				}
-
-				$dataItemValues = $this->store->getDataItemHandlerForDIType( $dataItem->getDIType() )->getInsertValues( $dataItem );
-
-				// Ensure that the sortkey is a string
-				if ( isset( $dataItemValues['o_sortkey'] ) ) {
-					$dataItemValues['o_sortkey'] = (string)$dataItemValues['o_sortkey'];
-				}
-
-				// Make sure to build a unique set without duplicates which could happen
-				// if an annotation is made to a property that has a redirect pointing
-				// to the same p_id
-				$insertValues = array_merge( $insertValues, $dataItemValues );
-				$insertValuesHash = md5( implode( '#', $insertValues ) );
-
-				$updates[$propertyTable->getName()][$insertValuesHash] = $insertValues;
-			}
-		}
-
-		// Special handling of Concepts
-		if ( $subject->getNamespace() === SMW_NS_CONCEPT && $subject->getSubobjectName() == '' ) {
-			$this->fetchConceptTableInserts( $sid, $updates );
-		}
-
-		return $updates;
-	}
-
-	/**
-	 * Add cache information to concept data and make sure that there is
-	 * exactly one value for the concept table.
-	 *
-	 * @note This code will vanish when concepts have a more standard
-	 * handling. So not point in optimizing this much now.
-	 *
-	 * @since 1.8
-	 * @param integer $sid
-	 * @param &array $insertData
-	 */
-	private function fetchConceptTableInserts( $sid, &$insertData ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		// Make sure that there is exactly one row to be written:
-		if ( array_key_exists( 'smw_fpt_conc', $insertData ) && !empty( $insertData['smw_fpt_conc'] ) ) {
-			$insertValues = end( $insertData['smw_fpt_conc'] );
-		} else {
-			$insertValues = array(
-				's_id'          => $sid,
-				'concept_txt'   => '',
-				'concept_docu'  => '',
-				'concept_features' => 0,
-				'concept_size'  => -1,
-				'concept_depth' => -1
-			);
-		}
-
-		// Add existing cache status data to this row:
-		$row = $connection->selectRow(
-			'smw_fpt_conc',
-			array( 'cache_date', 'cache_count' ),
-			array( 's_id' => $sid ),
-			__METHOD__
-		);
-
-		if ( $row === false ) {
-			$insertValues['cache_date'] = null;
-			$insertValues['cache_count'] = null;
-		} else {
-			$insertValues['cache_date'] = $row->cache_date;
-			$insertValues['cache_count'] = $row->cache_count;
-		}
-
-		$insertData['smw_fpt_conc'] = array( $insertValues );
+		return [ array_values( $newValues ), array_values( $oldValues ) ];
 	}
 
 }

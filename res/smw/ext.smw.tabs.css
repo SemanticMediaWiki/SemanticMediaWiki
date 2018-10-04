@@ -1,0 +1,85 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @see https://codepen.io/oknoblich/pen/tfjFl
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+.smw-tabs {
+	margin-top: 10px;
+	clear: both;
+}
+
+.smw-tabs section {
+	display: none;
+	padding: 0 0 0 0;
+	border-top: 1px solid #ddd;
+}
+
+.smw-tabs input.nav-tab {
+	display: none;
+}
+
+.smw-tabs label.nav-label {
+	display: inline-block;
+	margin: 0 0 -1px;
+	padding: 5px 25px;
+	font-weight: normal;
+	text-align: center;
+	color: #bbb;
+	border: 1px solid transparent;
+}
+
+.smw-tabs label.nav-label:before {
+	font-weight: normal;
+	margin-right: 10px;
+}
+
+.smw-tabs label.nav-label[for*='1']:before { content: ''; }
+.smw-tabs label.nav-label[for*='2']:before { content: ''; }
+.smw-tabs label.nav-label[for*='3']:before { content: ''; }
+.smw-tabs label.nav-label[for*='4']:before { content: ''; }
+
+.smw-tabs label.nav-label:hover {
+	color: #888;
+	cursor: pointer;
+}
+
+.smw-tabs input.nav-tab:checked + label.nav-label {
+	color: #24292e;
+	border: 1px solid #ddd;
+	border-top: 2px solid #337ab7;
+	border-bottom: 1px solid #fff;
+}
+
+/**
+ * Requires to be adjusted by each set that uses the rules
+ * to assign a tab to a content section.
+ */
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4 {
+	display: block;
+}

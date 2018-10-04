@@ -1,0 +1,72 @@
+{
+	"description": "Test keyword type `_keyw`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has keyword",
+			"contents": "[[Has type::Keyword]]"
+		},
+		{
+			"page": "Example/P0458/1",
+			"contents": "[[Has keyword::aBcDEF]]"
+		},
+		{
+			"page": "Example/P0458/2",
+			"contents": "[[Has keyword::abcdef]]"
+		},
+		{
+			"page": "Example/P0458/3",
+			"contents": "[[Has keyword::ABCDEF]]"
+		},
+		{
+			"page": "Example/P0458/Q.1",
+			"contents": "{{#ask: [[Has keyword::ABCDEF]] |?Has keyword }}"
+		},
+		{
+			"page": "Example/P0458/Q.2",
+			"contents": "{{#ask: [[Has keyword::abcdef]] |?Has keyword }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0458/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype_keyw\">aBcDEF</td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype_keyw\">abcdef</td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype_keyw\">ABCDEF</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0458/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype_keyw\">aBcDEF</td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype_keyw\">abcdef</td>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype_keyw\">ABCDEF</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

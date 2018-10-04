@@ -4,6 +4,9 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\MediaWiki;
+use SMW\ParserData;
+use SMW\SemanticData;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -16,55 +19,110 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class ParserAfterTidy {
+class ParserAfterTidy extends HookHandler {
 
 	/**
 	 * @var Parser
 	 */
-	private $parser = null;
+	private $parser;
 
 	/**
-	 * @var string
+	 * @var NamespaceExaminer
 	 */
-	private $text;
+	private $namespaceExaminer;
 
 	/**
-	 * @var ApplicationFactory
+	 * @var boolean
 	 */
-	private $applicationFactory = null;
+	private $isCommandLineMode = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $isReadOnly = false;
 
 	/**
 	 * @since  1.9
 	 *
 	 * @param Parser $parser
-	 * @param string $text
 	 */
-	public function __construct( Parser &$parser, &$text ) {
+	public function __construct( Parser &$parser ) {
 		$this->parser = $parser;
-		$this->text =& $text;
+		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
+	 *
+	 * @since 2.5
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function isCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = (bool)$isCommandLineMode;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isReadOnly
+	 */
+	public function isReadOnly( $isReadOnly ) {
+		$this->isReadOnly = (bool)$isReadOnly;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param string $text
+	 *
 	 * @return true
 	 */
-	public function process() {
-		return $this->canPerformUpdate() ? $this->performUpdate() : true;
+	public function process( &$text ) {
+
+		if ( $this->canPerformUpdate() ) {
+			$this->performUpdate( $text );
+		}
+
+		return true;
 	}
 
-	protected function canPerformUpdate() {
+	private function canPerformUpdate() {
 
-		// ParserOptions::getInterfaceMessage is being used to identify whether a
-		// parse was initiated by `Message::parse`
-		if ( $this->parser->getTitle()->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
+		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
+		// when for example Title::isProtected is accessed
+		if ( $this->isReadOnly ) {
 			return false;
 		}
 
-		// @see ParserData::setSemanticDataStateToParserOutputProperty
-		if ( $this->parser->getOutput()->getProperty( 'smw-semanticdata-status' ) ||
-			$this->parser->getOutput()->getProperty( 'displaytitle' ) ||
-			$this->parser->getOutput()->getCategoryLinks() ||
+		$title = $this->parser->getTitle();
+
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			return false;
+		}
+
+		// Avoid an update for the SCHEMA NS to ensure errors remain present without
+		// the need the rerun the schema validator again.
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
+			return false;
+		}
+
+		// ParserOptions::getInterfaceMessage is being used to identify whether a
+		// parse was initiated by `Message::parse`
+		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
+			return false;
+		}
+
+		$parserOutput = $this->parser->getOutput();
+
+		if ( $parserOutput->getProperty( 'displaytitle' ) ||
+			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
+			$parserOutput->getCategoryLinks() ) {
+			return true;
+		}
+
+		if ( ParserData::hasSemanticData( $parserOutput ) ||
+			$title->isProtected( 'edit' ) ||
 			$this->parser->getDefaultSort() ) {
 			return true;
 		}
@@ -72,53 +130,75 @@ class ParserAfterTidy {
 		return false;
 	}
 
-	protected function performUpdate() {
+	private function performUpdate( &$text ) {
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = $this->applicationFactory->newParserData(
+		$parserData = $applicationFactory->newParserData(
 			$this->parser->getTitle(),
 			$this->parser->getOutput()
 		);
 
-		$this->updateAnnotionsForAfterParse(
-			$this->applicationFactory->newPropertyAnnotatorFactory(),
-			$parserData->getSemanticData()
-		);
+		$semanticData = $parserData->getSemanticData();
 
-		$parserData->pushSemanticDataToParserOutput();
-
-		$this->checkForRequestedUpdateByPagePurge( $parserData );
-
-		return true;
-	}
-
-	private function updateAnnotionsForAfterParse( $propertyAnnotatorFactory, $semanticData ) {
-
-		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
-			$semanticData,
-			$this->parser->getOutput()->getCategoryLinks()
-		);
-
-		$propertyAnnotator->addAnnotation();
-
-		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
+		$this->addPropertyAnnotations(
+			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$semanticData
 		);
 
-		$propertyAnnotator->addAnnotation();
+		$parserData->copyToParserOutput();
+		$subject = $semanticData->getSubject();
+
+		// Only carry out a purge where the InTextAnnotationParser have set
+		// an appropriate context reference otherwise it is assumed that the hook
+		// call is part of another non SMW related parse
+		if ( $subject->getContextReference() !== null || $subject->getNamespace() === SMW_NS_SCHEMA ) {
+			$this->checkPurgeRequest( $parserData );
+		}
+	}
+
+	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
+
+		$parserOutput = $this->parser->getOutput();
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+			$semanticData
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
+			$propertyAnnotator,
+			$parserOutput->getCategoryLinks()
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
+			$propertyAnnotator
+		);
+
+		$propertyAnnotator = $propertyAnnotatorFactory->newEditProtectedPropertyAnnotator(
+			$propertyAnnotator,
+			$this->parser->getTitle()
+		);
+
+		// Special case! belongs to the EditProtectedPropertyAnnotator instance
+		$propertyAnnotator->addTopIndicatorTo(
+			$parserOutput
+		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
-			$semanticData,
-			$this->parser->getOutput()->getProperty( 'displaytitle' ),
+			$propertyAnnotator,
+			$parserOutput->getProperty( 'displaytitle' ),
 			$this->parser->getDefaultSort()
 		);
 
-		$propertyAnnotator->addAnnotation();
-
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
-			$semanticData,
+			$propertyAnnotator,
 			$this->parser->getDefaultSort()
+		);
+
+		// #2300
+		$propertyAnnotator = $propertyAnnotatorFactory->newTranslationPropertyAnnotator(
+			$propertyAnnotator,
+			$parserOutput->getExtensionData( 'translate-translation-page' )
 		);
 
 		$propertyAnnotator->addAnnotation();
@@ -133,29 +213,39 @@ class ParserAfterTidy {
 	 * a static variable or any other messaging that is not persistent will not
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
-	private function checkForRequestedUpdateByPagePurge( $parserData ) {
+	private function checkPurgeRequest( $parserData ) {
 
-		// Only carry out a purge where InTextAnnotationParser have set
-		// an appropriate context reference otherwise it is assumed that the hook
-		// call is part of another non SMW related parse
-		if ( $parserData->getSemanticData()->getSubject()->getContextReference() === null ) {
-			return true;
-		}
-
-		$cache = $this->applicationFactory->getCache();
+		$cache = ApplicationFactory::getInstance()->getCache();
 		$start = microtime( true );
 
-		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey(
+		$key = ApplicationFactory::getInstance()->getCacheFactory()->getPurgeCacheKey(
 			$this->parser->getTitle()->getArticleID()
 		);
 
 		if( $cache->contains( $key ) && $cache->fetch( $key ) ) {
 			$cache->delete( $key );
 
-			// Set a timestamp explicitly to create a new hash for the property
+			// Avoid a Parser::lock for when a PurgeRequest remains intact
+			// during an update process while being executed from the cmdLine
+			if ( $this->isCommandLineMode ) {
+				return true;
+			}
+
+			$parserData->setOrigin( 'ParserAfterTidy' );
+
+			// Set an explicit timestamp to create a new hash for the property
 			// table change row differ and force a data comparison (this doesn't
 			// change the _MDAT annotation)
-			$parserData->getSemanticData()->setLastModified( wfTimestamp( TS_UNIX ) );
+			$parserData->getSemanticData()->setOption(
+				SemanticData::OPT_LAST_MODIFIED,
+				wfTimestamp( TS_UNIX )
+			);
+
+			$parserData->setOption(
+				$parserData::OPT_FORCED_UPDATE,
+				true
+			);
+
 			$parserData->updateStore( true );
 
 			$parserData->addLimitReport(
@@ -163,8 +253,6 @@ class ParserAfterTidy {
 				number_format( ( microtime( true ) - $start ), 3 )
 			);
 		}
-
-		return true;
 	}
 
 }

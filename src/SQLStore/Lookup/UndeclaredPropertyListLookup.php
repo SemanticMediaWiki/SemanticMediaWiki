@@ -4,7 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
 use SMW\DIProperty;
-use SMW\InvalidPropertyException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMWDIError as DIError;
@@ -63,7 +63,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		$propertyTable = $this->getPropertyTableForType( $this->defaultPropertyType );
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			return array();
+			return [];
 		}
 
 		return $this->buildPropertyList( $this->selectPropertiesFromTable( $propertyTable ) );
@@ -99,34 +99,41 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	private function selectPropertiesFromTable( $propertyTable ) {
 
 		$options = $this->store->getSQLOptions( $this->requestOptions, 'title' );
-		$idTable = \SMWSQLStore3::ID_TABLE;
+		$idTable = SQLStore::ID_TABLE;
 
 		$options['ORDER BY'] = 'count DESC';
-		$options['GROUP BY'] = 'smw_title';
 
-		$conditions = array(
+		// Postgres Error: 42803 ERROR: ...smw_title must appear in the GROUP BY
+		// clause or be used in an aggregate function
+		$options['GROUP BY'] = 'smw_id, smw_title';
+
+		$conditions = [
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
-			'page_id IS NULL',
+			'smw_namespace' => SMW_NS_PROPERTY,
+			'smw_proptable_hash IS NULL',
 			'smw_iw' => '',
 			'smw_subobject' => ''
-		);
+		];
 
-		$db = $this->store->getConnection( 'mw.db' );
+		$joinCond = 'p_id';
 
-		$res = $db->select(
-			array( $idTable, 'page', $propertyTable->getName() ),
-			array( 'smw_title', 'COUNT(*) as count' ),
+		foreach ( $this->requestOptions->getExtraConditions() as $extaCondition ) {
+			if ( isset( $extaCondition['filter.unapprove'] ) ) {
+				$joinCond = 'o_id';
+			}
+		}
+
+		$res = $this->store->getConnection( 'mw.db' )->select(
+			[ $idTable, $propertyTable->getName() ],
+			[ 'smw_id', 'smw_title', 'COUNT(*) as count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			array(
-				$idTable => array(
-					'INNER JOIN', 'p_id=smw_id'
-				),
-				'page' => array(
-					'LEFT JOIN', array( 'page_namespace=' . $db->addQuotes( SMW_NS_PROPERTY ), 'page_title=smw_title'  )
-				)
-			)
+			[
+				$idTable => [
+					'INNER JOIN', "$joinCond=smw_id"
+				]
+			]
 		);
 
 		return $res;
@@ -134,10 +141,10 @@ class UndeclaredPropertyListLookup implements ListLookup {
 
 	private function buildPropertyList( $res ) {
 
-		$result = array();
+		$result = [];
 
 		foreach ( $res as $row ) {
-			$result[] = array( $this->addPropertyFor( $row->smw_title ), $row->count );
+			$result[] = [ $this->addPropertyFor( $row->smw_title ), $row->count ];
 		}
 
 		return $result;
@@ -147,8 +154,8 @@ class UndeclaredPropertyListLookup implements ListLookup {
 
 		try {
 			$property = new DIProperty( $title );
-		} catch ( InvalidPropertyException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
+		} catch ( PropertyLabelNotResolvedException $e ) {
+			$property = new DIError( new \Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

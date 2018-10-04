@@ -1,0 +1,24 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": false,
+    "datatype":{
+        "labels": {},
+        "aliases": {}
+    },
+    "property":{
+        "labels": {},
+        "aliases": {}
+    },
+    "namespace": {
+      "labels": [],
+     "aliases": []
+    },
+    "date": {
+        "precision": [],
+        "format": [],
+        "months": [],
+        "days": []
+    }
+}

@@ -20,6 +20,8 @@ class AskArgs extends Query {
 	 */
 	public function execute() {
 
+		$params = $this->extractRequestParams();
+
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
@@ -33,6 +35,10 @@ class AskArgs extends Query {
 			$outputFormat = 'xml';
 		}
 
+		if ( isset( $params['api_version'] ) ) {
+			$queryResult->setSerializerVersion( $params['api_version'] );
+		}
+
 		$this->addQueryResult( $queryResult, $outputFormat );
 	}
 
@@ -43,23 +49,28 @@ class AskArgs extends Query {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'conditions' => array(
+		return [
+			'conditions' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_ISMULTI => true,
 				ApiBase::PARAM_REQUIRED => true,
-			),
-			'printouts' => array(
+			],
+			'printouts' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_ISMULTI => true,
-			),
-			'parameters' => array(
+			],
+			'parameters' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_DFLT => '',
 				ApiBase::PARAM_ISMULTI => true,
-			),
-		);
+			],
+			'api_version' => [
+				ApiBase::PARAM_TYPE => [ 2, 3 ],
+				ApiBase::PARAM_DFLT => 2,
+				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
+			],
+		];
 	}
 
 	/**
@@ -69,11 +80,11 @@ class AskArgs extends Query {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
 			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
 			'parameters' => 'The query parameters, i.e. all non-condition and non-printout arguments',
-		);
+		];
 	}
 
 	/**
@@ -83,9 +94,9 @@ class AskArgs extends Query {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
-		);
+		];
 	}
 
 	/**
@@ -95,9 +106,9 @@ class AskArgs extends Query {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
-		);
+		];
 	}
 
 	/**

@@ -1,0 +1,189 @@
+{
+	"description": "Test in-text `_dat` annotation with time offset, time zone, am/pm (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0429/1",
+			"contents": "[[Has date::1 Jan 1971 13:45:23-3:30]]"
+		},
+		{
+			"page": "Example/P0429/Q.1",
+			"contents": "{{#show: Example/P0429/1 |?Has date }}"
+		},
+		{
+			"page": "Example/P0429/2",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 EST]]"
+		},
+		{
+			"page": "Example/P0429/Q.2",
+			"contents": "{{#show: Example/P0429/2 |?Has date }} {{#show: Example/P0429/2 |?Has date#LOCL#TZ }}"
+		},
+		{
+			"page": "Example/P0429/3",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 am]]"
+		},
+		{
+			"page": "Example/P0429/4",
+			"contents": "[[Has date::1 Jan 1971 5:05:23 pm]]"
+		},
+		{
+			"page": "Example/P0429/5",
+			"contents": "[[Has date::1 Jan 1971 13:45:23 America/New_York]]"
+		},
+		{
+			"page": "Example/P0429/Q.5.1",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ }}"
+		},
+		{
+			"page": "Example/P0429/Q.5.2",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL#TZ@ja }}"
+		},
+		{
+			"page": "Example/P0429/Q.5.3",
+			"contents": "{{#show: Example/P0429/5 |?Has date#LOCL@ja#TZ }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 timeoffset",
+			"subject": "Example/P0429/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T16:15:23"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0429/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"1 January 1971 16:15:23"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 timezone",
+			"subject": "Example/P0429/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T18:45:23"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0429/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"1 January 1971 18:45:23",
+					"13:45:23 EST, 1 January 1971"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 invalid am/pm",
+			"subject": "Example/P0429/3",
+			"assert-output": {
+				"to-contain": [
+					"&quot;1 Jan 1971 13:45:23 am&quot; contains &quot;13&quot; as hour element that is invalid for a 12-hour convention."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 valid am/pm",
+			"subject": "Example/P0429/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					],
+					"propertyValues": [
+						"1971-01-01T17:05:23"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 valid am/pm",
+			"subject": "Example/P0429/4",
+			"assert-output": {
+				"to-contain": [
+					"1 Jan 1971 5:05:23 pm"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 long timezone name",
+			"subject": "Example/P0429/Q.5.1",
+			"assert-output": {
+				"to-contain": [
+					"13:45:23 America/New_York, 1 January 1971"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 long timezone name",
+			"subject": "Example/P0429/Q.5.2",
+			"assert-output": {
+				"to-contain": [
+					"1971年1月1日 (金) 13:45:23 America/New_York"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 long timezone name",
+			"subject": "Example/P0429/Q.5.3",
+			"assert-output": {
+				"to-contain": [
+					"1971年1月1日 (金) 13:45:23 America/New_York"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -2,17 +2,16 @@
 
 namespace SMW\Tests\SQLStore;
 
+use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\RedirectStore;
 use SMWSql3SmwIds;
 
 /**
  * @covers \SMWSql3SmwIds
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group semantic-mediawiki-sqlstore
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9.1
@@ -21,23 +20,83 @@ use SMWSql3SmwIds;
  */
 class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
+	private $cache;
+	private $idMatchFinder;
+	private $uniquenessLookup;
+	private $factory;
+
+	protected function setUp() {
+
+		$idCacheManager = new IdCacheManager(
+			[
+				'entity.id' => new FixedInMemoryLruCache(),
+				'entity.sort' => new FixedInMemoryLruCache(),
+				'entity.lookup' => new FixedInMemoryLruCache(),
+				'table.hash' => new FixedInMemoryLruCache()
+			]
+		);
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdEntityFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->uniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\UniquenessLookup' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
+		$redirectStore = new RedirectStore( $this->store );
+
+		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newUniquenessLookup' )
+			->will( $this->returnValue( $this->uniquenessLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newRedirectStore' )
+			->will( $this->returnValue( $redirectStore ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyStatisticsStore' )
+			->will( $this->returnValue( $propertyStatisticsStore ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newidEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
 			'\SMWSql3SmwIds',
-			new SMWSql3SmwIds( $store )
+			new SMWSql3SmwIds( $this->store, $this->factory )
 		);
 	}
 
@@ -45,44 +104,35 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', 9001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$instance = new SMWSql3SmwIds( $store );
-
-		$this->assertFalse(
-			$instance->checkIsRedirect( $subject )
+		$instance = new SMWSql3SmwIds(
+			$this->store,
+			$this->factory
 		);
 
-		$instance->addRedirectForId( 42, 'Foo', 9001 );
+		$this->assertFalse(
+			$instance->isRedirect( $subject )
+		);
+
+		$instance->addRedirect( 42, 'Foo', 9001 );
 
 		$this->assertEquals(
 			42,
-			$instance->findRedirectIdFor( 'Foo', 9001 )
+			$instance->findRedirect( 'Foo', 9001 )
 		);
 
 		$this->assertTrue(
-			$instance->checkIsRedirect( $subject )
+			$instance->isRedirect( $subject )
 		);
 
-		$instance->deleteRedirectEntry( 'Foo', 9001 );
+		$instance->deleteRedirect( 'Foo', 9001 );
 
 		$this->assertEquals(
 			0,
-			$instance->findRedirectIdFor( 'Foo', 9001 )
+			$instance->findRedirect( 'Foo', 9001 )
 		);
 
 		$this->assertFalse(
-			$instance->checkIsRedirect( $subject )
+			$instance->isRedirect( $subject )
 		);
 	}
 
@@ -90,6 +140,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -108,7 +159,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
 
 		$result = $instance->getSMWPropertyID( new DIProperty( 'Foo' ) );
 
@@ -122,6 +176,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 9999;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 
@@ -141,7 +196,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
 
 		$sortkey = $parameters['sortkey'];
 
@@ -166,6 +224,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow = new \stdClass;
 		$selectRow->smw_id = 0;
 		$selectRow->o_id = 0;
+		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 
@@ -189,7 +248,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
 
 		$sortkey = $parameters['sortkey'];
 
@@ -206,39 +268,29 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 9999, $result );
 	}
 
-	public function testGetDataItemForId() {
-
-		$row = new \stdClass;
-		$row->smw_title = 'Foo';
-		$row->smw_namespace = 0;
-		$row->smw_iw = '';
-		$row->smw_subobject ='';
+	public function testGetDataItemById() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
-			->will( $this->returnValue( $row ) );
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$this->idEntityFinder->expects( $this->once() )
+			->method( 'getDataItemById' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$instance = new SMWSql3SmwIds(
+			$this->store,
+			$this->factory
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\DIWikiPage',
-			$instance->getDataItemForId( 42 )
+			$instance->getDataItemById( 42 )
 		);
 	}
 
@@ -252,8 +304,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array( 'smw_iw' => 'Bar' ) ),
-				$this->equalTo( array( 'smw_id' => 42 ) ) );
+				$this->equalTo( [
+					'smw_iw' => 'Bar',
+					'smw_hash' => '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ] ),
+				$this->equalTo( [ 'smw_id' => 42 ] ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -263,7 +317,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds( $store );
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
 
 		$instance->updateInterwikiField(
 			42,
@@ -271,17 +328,200 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindDuplicateEntries() {
+
+		$expected = [
+			'count' => 2,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => ''
+		];
+
+		$row = $expected;
+
+		$this->uniquenessLookup->expects( $this->once() )
+			->method( 'findDuplicates' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$instance = new SMWSql3SmwIds(
+			$this->store,
+			$this->factory
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			$instance->findDuplicates()
+		);
+	}
+
+	public function testGetIDOnPredefinedProperty() {
+
+		$row = new \stdClass;
+		$row->smw_id = 42;
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( $row ) );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$this->factory
+		);
+
+		$this->assertEquals(
+			29,
+			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY ) )
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
+		);
+	}
+
+	public function testWarmUpCache() {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'Foo',
+			'smw_sort' => '',
+		];
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idCacheManager->expects( $this->once() )
+			->method( 'setCache' );
+
+		$idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$factory->expects( $this->any() )
+			->method( 'newIdEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( [ (object)$row ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$factory
+		);
+
+		$instance->warmUpCache( [ new DIWikiPage( 'Bar', NS_MAIN ) ] );
+	}
+
+	public function testFindAssociatedRev() {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'Foo',
+			'smw_sort' => '',
+			'smw_rev' => 1001,
+		];
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$factory->expects( $this->any() )
+			->method( 'newIdEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)$row ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$factory
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->findAssociatedRev( 'Foo', NS_MAIN, '', '' )
+		);
+	}
+
 	public function pageIdandSortProvider() {
 
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, true );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false );
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, true ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false ];
 
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true );
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true ];
 
 		return $this->createAssociativeArrayFromProviderDefinition( $provider );
 	}
@@ -289,7 +529,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private function createAssociativeArrayFromProviderDefinition( $definitions ) {
 
 		foreach ( $definitions as $map ) {
-			$provider[] = array( array(
+			$provider[] = [ [
 				'title'         => $map[0],
 				'namespace'     => $map[1],
 				'iw'            => $map[2],
@@ -297,7 +537,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				'sortkey'       => $map[4],
 				'canonical'     => $map[5],
 				'fetchHashes'   => $map[6]
-			) );
+			] ];
 		}
 
 		return $provider;

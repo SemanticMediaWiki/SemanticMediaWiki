@@ -33,10 +33,10 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListFromCache() {
 
-		$expectedCachedItem = array(
+		$expectedCachedItem = [
 			'time' => 42,
-			'list' => array( 'Foo' )
-		);
+			'list' => [ 'Foo' ]
+		];
 
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
@@ -52,7 +52,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'contains' )
-			->with(	$this->stringContains( 'cacheprefix-foobar:smw:llc:' ) )
+			->with(	$this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
 			->will( $this->returnValue( true ) );
 
 		$cache->expects( $this->once() )
@@ -66,7 +66,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->setCachePrefix( 'cacheprefix-foobar' );
 
 		$this->assertEquals(
-			array( 'Foo' ),
+			[ 'Foo' ],
 			$instance->fetchList()
 		);
 
@@ -87,10 +87,10 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRetrieveResultListFromInjectedListLookup() {
 
-		$expectedCacheItem = array(
+		$expectedCacheItem = [
 			'time' => 42,
-			'list' => array( 'Foo' )
-		);
+			'list' => [ 'Foo' ]
+		];
 
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$listLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$listLookup->expects( $this->once() )
 			->method( 'getTimestamp' )
@@ -111,7 +111,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->at( 1 ) )
 			->method( 'save' )
 			->with(
-				$this->stringContains( 'llc' ),
+				$this->stringContains( 'smw:store:lookup' ),
 				$this->anything( serialize( $expectedCacheItem ) ),
 				$this->equalTo( 1001 ) );
 
@@ -122,7 +122,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
 
 		$this->assertEquals(
-			array( 'Foo' ),
+			[ 'Foo' ],
 			$instance->fetchList()
 		);
 
@@ -152,12 +152,12 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( array( 'smw:llc:6283479db90b04ad3a6db333a3c89766' => true ) ) ) );
+			->will( $this->returnValue( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) ) );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->with(
-				$this->stringContains( 'llc' ) );
+				$this->stringContains( 'smw:store:lookup' ) );
 
 		$cacheOptions = new \stdClass;
 

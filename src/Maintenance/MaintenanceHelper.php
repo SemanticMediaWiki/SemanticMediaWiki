@@ -2,6 +2,8 @@
 
 namespace SMW\Maintenance;
 
+use SMW\ApplicationFactory;
+
 /**
  * @license GNU GPL v2+
  * @since 2.2
@@ -13,15 +15,15 @@ class MaintenanceHelper {
 	/**
 	 * @var array
 	 */
-	private $globals = array();
+	private $globals = [];
 
 	/**
 	 * @var array
 	 */
-	private $runtime = array(
+	private $runtime = [
 		'start'  => 0,
 		'memory' => 0
-	);
+	];
 
 	/**
 	 * @since 2.2
@@ -39,13 +41,18 @@ class MaintenanceHelper {
 	public function getRuntimeValues() {
 
 		$memory = memory_get_peak_usage( false );
+		$time = microtime( true ) - $this->runtime['start'];
 
-		return array(
-			'time' => microtime( true ) - $this->runtime['start'],
+		$hTime = round( $time, 2 ) . ' sec';
+		$hTime .= ( $time > 60 ? ' (' . round( $time / 60, 2 ) . ' min)' : '' );
+
+		return [
+			'time' => $time,
+			'humanreadable-time' => $hTime,
 			'memory-before' => $this->runtime['memory'],
 			'memory-after'  => $memory,
 			'memory-used'   => $memory - $this->runtime['memory']
-		);
+		];
 	}
 
 	/**
@@ -53,17 +60,12 @@ class MaintenanceHelper {
 	 *
 	 * @return string
 	 */
-	public function transformRuntimeValuesForOutput() {
+	public function getFormattedRuntimeValues( $indent = '' ) {
 
 		$runtimeValues = $this->getRuntimeValues();
 
-		$time = round( $runtimeValues['time'], 2 ) . ' sec ';
-		$time .= ( $runtimeValues['time'] > 60 ? '(' . round( $runtimeValues['time'] / 60, 2 ) . ' min)' : '' );
-
-		return "Memory used: " . $runtimeValues['memory-used'] . " (" .
-			"b: " . $runtimeValues['memory-before'] . ", ".
-			"a: " . $runtimeValues['memory-after'] . ") with a " .
-			"runtime of " . $time;
+		return "$indent Memory used: " . $runtimeValues['memory-used'] . "\n" .
+			"$indent Time: " . $runtimeValues['humanreadable-time'];
 	}
 
 	/**
@@ -80,6 +82,7 @@ class MaintenanceHelper {
 
 		$this->globals[$key] = $GLOBALS[$key];
 		$GLOBALS[$key] = $value;
+		ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 	}
 
 	/**
@@ -89,6 +92,7 @@ class MaintenanceHelper {
 
 		foreach ( $this->globals as $key => $value ) {
 			$GLOBALS[$key] = $value;
+			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
 		$this->runtime['start'] = 0;

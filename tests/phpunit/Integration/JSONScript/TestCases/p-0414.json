@@ -1,0 +1,395 @@
+{
+	"description": "Test in-text annotation/free format for `_dat` datatype (#1389, #1401, en, `smwgDVFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0414/1",
+			"contents": "[[Has date::Feb 11 1389 10:00:01]]"
+		},
+		{
+			"page": "Example/P0414/1a",
+			"contents": "{{#ask: [[Example/P0414/1]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"page": "Example/P0414/2",
+			"contents": "[[Has date::100000 BC]]"
+		},
+		{
+			"page": "Example/P0414/2a",
+			"contents": "{{#ask: [[Example/P0414/2]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"page": "Example/P0414/3",
+			"contents": "[[Has date::1902]]"
+		},
+		{
+			"page": "Example/P0414/3a",
+			"contents": "{{#ask: [[Example/P0414/3]] |?Has date#-F[Y] |?Has date#-F[Y/m/d] |?Has date#JD=JD }}"
+		},
+		{
+			"page": "Example/P0414/4",
+			"contents": "[[Has date::12001102120325]]"
+		},
+		{
+			"page": "Example/P0414/4a",
+			"contents": "{{#ask: [[Example/P0414/4]] |?Has date#-F[Y] |?Has date#-F[Y/m/d] |?Has date#JD=JD }}"
+		},
+		{
+			"page": "Example/P0414/5",
+			"contents": "[[Has date::-100000]]"
+		},
+		{
+			"page": "Example/P0414/5a",
+			"contents": "{{#ask: [[Example/P0414/5]] |?Has date#-F[H:i:s.u] |?Has date#-F[Y/m/d H:i] |?Has date#GR-F[Y/m/d H:i] |?Has date#JD=JD }}"
+		},
+		{
+			"page": "Example/P0414/6",
+			"contents": "[[Has date::1902 AD]]"
+		},
+		{
+			"page": "Example/P0414/6a",
+			"contents": "{{#ask: [[Example/P0414/6]]  |?Has date |?Has date#-F[Y] |?Has date#-F[Y/m/d] }}"
+		},
+		{
+			"page": "Example/P0414/7",
+			"contents": "[[Has date::2012-07-08 11:14:15.888499949]]"
+		},
+		{
+			"page": "Example/P0414/7a",
+			"contents": "{{#ask: [[Example/P0414/7]]  |?Has date |?Has date#-F[H:i:s.u] }}"
+		},
+		{
+			"page": "Example/P0414/8",
+			"contents": "[[Has date::2010年1月6日 16:57]]"
+		},
+		{
+			"page": "Example/P0414/8a",
+			"contents": "{{#ask: [[Example/P0414/8]]  |?Has date |?Has date#-F[Y年m月d日 H:i] }}"
+		},
+		{
+			"page": "Example/P0414/9",
+			"contents": "[[Has date::2010年1月6日 16時57分]]"
+		},
+		{
+			"page": "Example/P0414/9a",
+			"contents": "{{#ask: [[Example/P0414/9]]  |?Has date |?Has date#-F[Y年m月d日 H:i] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 JL calendar date with time",
+			"subject": "Example/P0414/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1389-02-19T10:00:01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Feb 11 1389 10:00:01"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0414/1a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">10:00:01.000000</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">1389/02/11 10:00 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2228431.9166782\">1389/02/19 10:00</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2228431.9166782\">2228431.9166782</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 Prehistory",
+			"subject": "Example/P0414/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--100000-01-01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"100000 BC"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0414/2a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"-100001\">--100000-01-01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"-100001\">-34802824.5</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 year only",
+			"subject": "Example/P0414/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1902-01-01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1902"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5",
+			"subject": "Example/P0414/3a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902/01/01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2415750.5\">2415750.5</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 timestamp input (TS_MW as 'YmdHis)",
+			"subject": "Example/P0414/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1200-11-02T12:03:25"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"12001102120325"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7",
+			"subject": "Example/P0414/4a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2159657.0023727\">1200 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2159657.0023727\">1200/10/26 <sup>JL</sup></td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"2159657.0023727\">2159657.0023727</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 negative year without BC",
+			"subject": "Example/P0414/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"--100000-01-01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"-100000"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9",
+			"subject": "Example/P0414/5a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"-100001\">--100000-01-01</td>",
+					"<td class=\"JD smwtype_dat\" data-sort-value=\"-100001\">-34802824.5</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 positive year only with era marker",
+			"subject": "Example/P0414/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"AD 1902-01-01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1902 AD"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#11",
+			"subject": "Example/P0414/6a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">AD 1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2415750.5\">1902/01/01</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12 micro sec",
+			"subject": "Example/P0414/7",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2012-07-08T11:14:15"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"2012-07-08 11:14:15.888499949"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#13 `.888499949` is being rounded to `.888500`",
+			"subject": "Example/P0414/7a",
+			"skip-on": {
+				"hhvm-*": "Avoid .888500 vs. .888499 msec issue due to hhvm#6899"
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2456116.9682395\">8 July 2012 11:14:15</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2456116.9682395\">11:14:15.888500</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#14 Japanese date format",
+			"subject": "Example/P0414/8",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"2010-01-06T16:57:00"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"2010年1月6日 16:57"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#15",
+			"subject": "Example/P0414/8a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">6 January 2010 16:57:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">2010年01月06日 16:57</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#16",
+			"subject": "Example/P0414/9a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">6 January 2010 16:57:00</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2455203.20625\">2010年01月06日 16:57</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

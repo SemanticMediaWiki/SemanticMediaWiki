@@ -2,7 +2,8 @@
 
 namespace SMW;
 
-use SMW\DataValues\ValueValidatorRegistry;
+use SMW\DataValues\PropertyValue;
+use SMW\Services\DataValueServiceFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
@@ -37,12 +38,24 @@ class DataValueFactory {
 	private $dataTypeRegistry = null;
 
 	/**
+	 * @var DataValueServiceFactory
+	 */
+	private $dataValueServiceFactory;
+
+	/**
+	 * @var array
+	 */
+	private $defaultOutputFormatters;
+
+	/**
 	 * @since 1.9
 	 *
-	 * @param DataTypeRegistry|null $dataTypeRegistry
+	 * @param DataTypeRegistry $dataTypeRegistry
+	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	protected function __construct( DataTypeRegistry $dataTypeRegistry = null ) {
+	protected function __construct( DataTypeRegistry $dataTypeRegistry, DataValueServiceFactory $dataValueServiceFactory ) {
 		$this->dataTypeRegistry = $dataTypeRegistry;
+		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
 	/**
@@ -52,11 +65,26 @@ class DataValueFactory {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-			self::$instance = new self(
-				DataTypeRegistry::getInstance()
-			);
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$dataValueServiceFactory = $applicationFactory->create( 'DataValueServiceFactory' );
+		$dataTypeRegistry = DataTypeRegistry::getInstance();
+
+		$dataValueServiceFactory->importExtraneousFunctions(
+			$dataTypeRegistry->getExtraneousFunctions()
+		);
+
+		self::$instance = new self(
+			$dataTypeRegistry,
+			$dataValueServiceFactory
+		);
+
+		self::$instance->setDefaultOutputFormatters(
+			$applicationFactory->getSettings()->get( 'smwgDefaultOutputFormatters' )
+		);
 
 		return self::$instance;
 	}
@@ -66,8 +94,28 @@ class DataValueFactory {
 	 */
 	public function clear() {
 		$this->dataTypeRegistry->clear();
-		ValueValidatorRegistry::getInstance()->clear();
 		self::$instance = null;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $defaultOutputFormatters
+	 */
+	public function setDefaultOutputFormatters( array $defaultOutputFormatters ) {
+
+		$this->defaultOutputFormatters = [];
+
+		foreach ( $defaultOutputFormatters as $type => $formatter ) {
+
+			$type = str_replace( ' ' , '_', $type );
+
+			if ( $type{0} !== '_' && ( $dType = $this->dataTypeRegistry->findTypeByLabel( $type ) ) !== '' ) {
+				$type = $dType;
+			}
+
+			$this->defaultOutputFormatters[$type] = $formatter;
+		}
 	}
 
 	/**
@@ -84,40 +132,64 @@ class DataValueFactory {
 	 */
 	public function newDataValueByType( $typeId, $valueString = false, $caption = false, DIProperty $property = null, $contextPage = null ) {
 
-		$dataTypeRegistry = $this->dataTypeRegistry;
-
-		if ( !$dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
+		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
-				array( 'smw_unknowntype', $typeId ),
+				[ 'smw_unknowntype', $typeId ],
 				$valueString,
 				$caption
 			);
 		}
 
-		$class  = $dataTypeRegistry->getDataTypeClassById( $typeId );
-		$dataValue = new $class( $typeId );
-
-		$dataValue->setExtraneousFunctions(
-			$dataTypeRegistry->getExtraneousFunctions()
+		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
+			$typeId,
+			$this->dataTypeRegistry->getDataTypeClassById( $typeId )
 		);
 
-		$dataValue->setOptions(
-			$dataTypeRegistry->getOptions()
+		$dataValue->setDataValueServiceFactory(
+			$this->dataValueServiceFactory
 		);
+
+		$dataValue->copyOptions(
+			$this->dataTypeRegistry->getOptions()
+		);
+
+		foreach ( $this->dataTypeRegistry->getExtensionData( $typeId ) as $key => $value ) {
+
+			if ( !is_string( $key ) ) {
+				continue;
+			}
+
+			$dataValue->setExtensionData( $key, $value );
+		}
+
+		$localizer = Localizer::getInstance();
 
 		$dataValue->setOption(
 			DataValue::OPT_USER_LANGUAGE,
-			Localizer::getInstance()->getUserLanguage()->getCode()
+			$localizer->getUserLanguage()->getCode()
 		);
 
 		$dataValue->setOption(
 			DataValue::OPT_CONTENT_LANGUAGE,
-			Localizer::getInstance()->getContentLanguage()->getCode()
+			$localizer->getContentLanguage()->getCode()
 		);
+
+		$dataValue->setOption(
+			DataValue::OPT_COMPACT_INFOLINKS,
+			$GLOBALS['smwgCompactLinkSupport']
+		);
+
+		if ( isset( $this->defaultOutputFormatters[$typeId] ) ) {
+			$dataValue->setOutputFormat( $this->defaultOutputFormatters[$typeId] );
+		}
 
 		if ( $property !== null ) {
 			$dataValue->setProperty( $property );
+
+			if ( isset( $this->defaultOutputFormatters[$property->getKey()] ) ) {
+				$dataValue->setOutputFormat( $this->defaultOutputFormatters[$property->getKey()] );
+			}
 		}
 
 		if ( !is_null( $contextPage ) ) {
@@ -145,7 +217,7 @@ class DataValueFactory {
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
 		} else {
-			$typeId = $this->dataTypeRegistry->getDefaultDataItemTypeId( $dataItem->getDiType() );
+			$typeId = $this->dataTypeRegistry->getDefaultDataItemByType( $dataItem->getDiType() );
 		}
 
 		$dataValue = $this->newDataValueByType( $typeId, false, $caption, $property );
@@ -193,21 +265,23 @@ class DataValueFactory {
 	 */
 	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
 
-		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $contextPage );
+		$propertyDV = $this->newPropertyValueByLabel( $propertyName, $caption, $contextPage );
 
 		if ( !$propertyDV->isValid() ) {
 			return $propertyDV;
 		}
 
-		if ( !$propertyDV->canUse() ) {
+		if ( $propertyDV->isRestricted() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-property-restricted-use', $propertyName ),
+				$propertyDV->getRestrictionError(),
 				$valueString,
 				$caption
 			);
 
-			$dataValue->setProperty( $propertyDV->getDataItem() );
+			if ( $propertyDV->getDataItem() instanceof DIProperty ) {
+				$dataValue->setProperty( $propertyDV->getDataItem() );
+			}
 
 			return $dataValue;
 		}
@@ -230,7 +304,7 @@ class DataValueFactory {
 
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
-				array( 'smw_noinvannot' ),
+				[ 'smw_noinvannot' ],
 				$valueString,
 				$caption
 			);
@@ -239,7 +313,7 @@ class DataValueFactory {
 		} else {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-property-name-invalid', $propertyName ),
+				[ 'smw-property-name-invalid', $propertyName ],
 				$valueString,
 				$caption
 			);
@@ -250,7 +324,7 @@ class DataValueFactory {
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ),
+				[ 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ],
 				$valueString,
 				$caption
 			);
@@ -265,12 +339,13 @@ class DataValueFactory {
 	 * @since 2.4
 	 *
 	 * @param string $propertyLabel
+	 * @param string|false $caption
 	 * @param DIWikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newPropertyValueByLabel( $propertyLabel, DIWikiPage $contextPage = null ) {
-		return $this->newDataValueByType( '__pro', $propertyLabel, false, null, $contextPage );
+	public function newPropertyValueByLabel( $propertyLabel, $caption = false, DIWikiPage $contextPage = null ) {
+		return $this->newDataValueByType( PropertyValue::TYPE_ID, $propertyLabel, $caption, null, $contextPage );
 	}
 
 	/**
@@ -323,48 +398,6 @@ class DataValueFactory {
 	 */
 	public function newPropertyValue( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
 		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataType
-	 */
-	public static function registerDatatype( $id, $className, $dataItemId, $label = false ) {
-		DataTypeRegistry::getInstance()->registerDataType( $id, $className, $dataItemId, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataTypeAlias
-	 */
-	public static function registerDatatypeAlias( $id, $label ) {
-		DataTypeRegistry::getInstance()->registerDataTypeAlias( $id, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeId
-	 */
-	public static function findTypeID( $label ) {
-		return DataTypeRegistry::getInstance()->findTypeId( $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeLabel
-	 */
-	public static function findTypeLabel( $id ) {
-		return DataTypeRegistry::getInstance()->findTypeLabel( $id );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getKnownTypeLabels
-	 */
-	public static function getKnownTypeLabels() {
-		return DataTypeRegistry::getInstance()->getKnownTypeLabels();
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getDataItemId
-	 */
-	public static function getDataItemId( $typeId ) {
-		return DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 	}
 
 }

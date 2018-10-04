@@ -1,0 +1,35 @@
+{
+	"description": "Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Example/P0501/1",
+			"contents": "{{#concept: [[Modification date::+]] |Modification date}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 canonical representation, not userlang specific",
+			"subject": "Example/P0501/1",
+			"namespace": "SMW_NS_CONCEPT",
+			"assert-output": {
+				"to-contain": [
+					"<p class=\"concept-documenation\">Modification date</p><pre>&#91;&#91;Modification date::+]]</pre>"
+				],
+				"not-contain": [
+					"<p class=\"concept-documenation\">Modification date</p><pre>&#91;&#91;Fecha de modificación::+]]</pre>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "es"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

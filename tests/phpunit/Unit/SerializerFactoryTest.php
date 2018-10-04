@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\SerializerFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SerializerFactory
@@ -14,6 +15,8 @@ use SMW\SerializerFactory;
  * @author mwjames
  */
 class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -112,7 +115,7 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SerializerFactory();
 
 		$this->setExpectedException( 'OutOfBoundsException' );
-		$instance->getDeserializerFor( array( 'Foo' ) );
+		$instance->getDeserializerFor( [ 'Foo' ] );
 	}
 
 	public function objectToSerializerProvider() {
@@ -122,44 +125,44 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$semanticData
-		);
+		];
 
 		#1
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$queryResult
-		);
+		];
 
 		#2
 		$queryResult = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$queryResult
-		);
+		];
 
 		return $provider;
 	}
 
 	public function serializationToDeserializerProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		#0
-		$provider[] = array(
-			array( 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0#' )
-		);
+		$provider[] = [
+			[ 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0##' ]
+		];
 
 		#1
-		$provider[] = array(
-			array( 'serializer' => 'SMW\Serializers\ExpDataSerializer' )
-		);
+		$provider[] = [
+			[ 'serializer' => 'SMW\Serializers\ExpDataSerializer' ]
+		];
 
 		return $provider;
 	}

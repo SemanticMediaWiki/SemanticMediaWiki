@@ -23,7 +23,7 @@ class HashBuilder {
 	 */
 	public static function createFromSemanticData( SemanticData $semanticData ) {
 
-		$hash = array();
+		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -51,12 +51,24 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createHashIdForContent( $hashableContent, $prefix = '' ) {
+	public static function createFromContent( $hashableContent, $prefix = '' ) {
 
 		if ( is_string( $hashableContent ) ) {
-			$hashableContent = array( $hashableContent );
+			$hashableContent = [ $hashableContent ];
 		}
 
+		return $prefix . md5( json_encode( $hashableContent ) );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param array $hashableContent
+	 * @param string $prefix
+	 *
+	 * @return string
+	 */
+	public static function createFromArray( array $hashableContent, $prefix = '' ) {
 		return $prefix . md5( json_encode( $hashableContent ) );
 	}
 
@@ -145,7 +157,7 @@ class HashBuilder {
 		// A leading underscore is an internal SMW convention to describe predefined
 		// properties and as such need to be transformed into a valid representation
 		if ( $title{0} === '_' ) {
-			$title = str_replace( ' ', '_', DIProperty::findPropertyLabel( $title ) );
+			$title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $title ) );
 		}
 
 		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );

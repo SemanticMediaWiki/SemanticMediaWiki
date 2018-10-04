@@ -1,0 +1,43 @@
+{
+	"description": "Test tooltip with error output on `_PVUC` (`smwgDVFeatures`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has Url",
+			"contents": "[[Has type::URL]] [[Has uniqueness constraint::true]]"
+		},
+		{
+			"page": "Test/P0110/1",
+			"contents": "[[Has Url::http://example.org/Foo]]"
+		},
+		{
+			"page": "Test/P0110/2",
+			"contents": "[[Has Url::http://example.org/Foo]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 error tooltip, title does not include <a> elements",
+			"subject": "Test/P0110/2",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Property &quot;Has Url&quot; only permits unique value assignments and http://example.org/Foo",
+					"<span class=\"smwttcontent\">Property \"Has Url\" only permits unique value assignments and <i><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo\">http://example.org/Foo</a></i>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgDVFeatures": [
+			"SMW_DV_PVUC"
+		],
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

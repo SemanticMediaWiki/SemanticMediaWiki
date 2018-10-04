@@ -1,8 +1,7 @@
 <?php
 
-use SMW\DataValues\UnitConversionFetcher;
+use SMW\DataValues\Number\UnitConverter;
 use SMW\Message;
-use SMW\NumberFormatter;
 
 /**
  * @ingroup SMWDataValues
@@ -17,6 +16,11 @@ use SMW\NumberFormatter;
  * @ingroup SMWDataValues
  */
 class SMWQuantityValue extends SMWNumberValue {
+
+	/**
+	 * DV identifier
+	 */
+	const TYPE_ID = '_qty';
 
 	/**
 	 * Array with format (canonical unit ID string) => (conversion factor)
@@ -60,7 +64,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			return; // do this only once
 		}
 
-		$this->m_unitvalues = array();
+		$this->m_unitvalues = [];
 
 		if ( !$this->isValid() ) {
 			return;
@@ -86,7 +90,10 @@ class SMWQuantityValue extends SMWNumberValue {
 	}
 
 	protected function makeUserValue() {
-		$printunit = false; // the normalised string of a known unit to use for printouts
+
+		 // The normalised string of a known unit to use for printouts
+		$printunit = false;
+		$unitfactor = 1;
 
 		// Check if a known unit is given as outputformat:
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
@@ -110,19 +117,26 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 
 		$asPrefix = isset( $this->prefixalUnitPreference[$printunit] ) && $this->prefixalUnitPreference[$printunit];
+		$this->m_unitin = isset( $this->m_unitids[$printunit] ) ? $this->m_unitids[$printunit] : 0;
 
-		$this->m_unitin = $this->m_unitids[$printunit];
-		$this->m_unitvalues = false; // this array depends on m_unitin if displayunits were used, better invalidate it here
-
-		$value = $this->m_dataitem->getNumber() * $this->m_unitfactors[$this->m_unitin];
-
+		// This array depends on m_unitin if displayunits were used, better
+		// invalidate it here
+		$this->m_unitvalues = false;
 		$this->m_caption = '';
 
-		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
+		if ( isset( $this->m_unitfactors[$this->m_unitin] ) ) {
+			$unitfactor = $this->m_unitfactors[$this->m_unitin];
+		}
+
+		$value = $this->m_dataitem->getNumber() * $unitfactor;
+
+		// -u is the format for displaying the unit only
+		if ( $this->m_outformat != '-u' ) {
 			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? $this->getLocalizedFormattedNumber( $value ) : $this->getNormalizedFormattedNumber( $value ) );
 		}
 
-		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+		 // -n is the format for displaying the number only
+		if ( ( $printunit !== '' ) && ( $this->m_outformat != '-n' ) ) {
 
 			$sep = '';
 
@@ -152,15 +166,16 @@ class SMWQuantityValue extends SMWNumberValue {
 	 * This method initializes $m_unitfactors, $m_unitids, and $m_mainunit.
 	 */
 	protected function initConversionData() {
+
 		if ( $this->m_unitids !== false ) {
-			return; // do the below only once
+			return;
 		}
 
-		$unitConversionFetcher = new UnitConversionFetcher( $this );
-		$unitConversionFetcher->fetchCachedConversionData( $this->m_property );
+		$unitConverter = new UnitConverter( $this );
+		$unitConverter->initConversionData( $this->m_property );
 
-		if ( $unitConversionFetcher->getErrors() !== array() ) {
-			foreach ( $unitConversionFetcher->getErrors() as $error ) {
+		if ( $unitConverter->getErrors() !== [] ) {
+			foreach ( $unitConverter->getErrors() as $error ) {
 				$this->addErrorMsg(
 					$error,
 					Message::TEXT,
@@ -169,10 +184,10 @@ class SMWQuantityValue extends SMWNumberValue {
 			}
 		}
 
-		$this->m_unitids = $unitConversionFetcher->getUnitIds();
-		$this->m_unitfactors = $unitConversionFetcher->getUnitFactors();
-		$this->m_mainunit = $unitConversionFetcher->getMainUnit();
-		$this->prefixalUnitPreference = $unitConversionFetcher->getPrefixalUnitPreference();
+		$this->m_unitids = $unitConverter->getUnitIds();
+		$this->m_unitfactors = $unitConverter->getUnitFactors();
+		$this->m_mainunit = $unitConverter->getMainUnit();
+		$this->prefixalUnitPreference = $unitConverter->getPrefixalUnitPreference();
 	}
 
 	/**
@@ -183,13 +198,13 @@ class SMWQuantityValue extends SMWNumberValue {
 			return; // do the below only once
 		}
 		$this->initConversionData(); // needed to normalise unit strings
-		$this->m_displayunits = array();
+		$this->m_displayunits = [];
 
 		if ( is_null( $this->m_property ) || is_null( $this->m_property->getDIWikiPage() ) ) {
 			return;
 		}
 
-		$units = $this->getPropertySpecificationLookup()->getDisplayUnitsFor(
+		$units = $this->dataValueServiceFactory->getPropertySpecificationLookup()->getDisplayUnits(
 			$this->getProperty()
 		);
 

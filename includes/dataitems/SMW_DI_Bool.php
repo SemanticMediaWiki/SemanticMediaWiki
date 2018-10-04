@@ -2,7 +2,8 @@
 /**
  * @ingroup SMWDataItems
  */
-use SMW\DataItemException;
+
+use SMW\Exception\DataItemException;
 
 /**
  * This class implements Boolean data items.

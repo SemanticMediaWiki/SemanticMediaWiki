@@ -1,0 +1,379 @@
+{
+	"description": "Test `_wpg`/`_txt` on various disjunction, conjunction queries (#19, #1060, #1056, #1057)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page-1",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page-2",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text-1",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text-2",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0901-1"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0901-2"
+		},
+		{
+			"page": "Q0901/1",
+			"contents": "[[Category:Q0901-1]] [[Has page-1::Value 1]][[Has text-1::Value 1]] [[Has text-1::Value 3]]"
+		},
+		{
+			"page": "Q0901/1/1",
+			"contents": "[[Category:Q0901-1]] [[Has page-1::Value 1]][[Has page-2::Value 2]][[Has text-1::Value 1]][[Has text-2::Value 2]]"
+		},
+		{
+			"page": "Q0901/1/2",
+			"contents": "[[Category:Q0901-1]] [[Has page-1::Value 1]][[Has page-1::Value 2]][[Has text-1::Value 1]][[Has text-1::Value 2]]"
+		},
+		{
+			"page": "Q0901/2",
+			"contents": "[[Category:Q0901-1]] [[Has page-2::Value 1]][[Has text-2::Value 1]] [[Has page-1::Value 3]]"
+		},
+		{
+			"page": "Q0901/2/1",
+			"contents": "[[Category:Q0901-1]] [[Has page-2::Value 1]][[Has page-2::Value 2]][[Has text-2::Value 1]][[Has text-2::Value 2]]"
+		},
+		{
+			"page": "Q0901/3/1",
+			"contents": "[[Category:Q0901-1]] [[Has page-2::Q0901/1/2]]"
+		},
+		{
+			"page": "Q0901/3/2",
+			"contents": "[[Category:Q0901-2]] [[Has page-2::Q0901/2/1]]"
+		},
+		{
+			"page": "Q0901/4/1",
+			"contents": "[[Category:Q0901-1]] [[Has page-1::Q0901/3/2]]"
+		},
+		{
+			"page": "Q0901/4/2",
+			"contents": "[[Category:Q0901-2]] [[Has page-1::Q0901/3/2]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 simple conjection page/text value",
+			"condition": "[[Has page-1::Value 1]] AND [[Has text-1::Value 1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 simple conjection page/text value",
+			"condition": "[[Has page-1::Value 1]] AND [[Has text-1::Value 1]] AND [[Has page-2::+]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q0901/1/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 simple conjection page/text for multiple value",
+			"condition": "[[Has page-1::Value 1]] AND [[Has text-1::Value 1||Value2]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 equivalent to #2",
+			"condition": "[[Has page-1::Value 1]] AND <q>[[Has text-1::Value 1]] OR [[Has text-1::Value 2]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4",
+			"condition": "[[Has page-1::Value 1]] AND <q>[[Has text-1::Value 1]] OR [[Has page-2::Value 2]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5",
+			"condition": "[[Category:Q0901-1]] AND <q>[[Has text-1::Value 1||Value 2]] OR [[Has page-2::Value 1||Value 2]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 5,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##",
+					"Q0901/2#0##",
+					"Q0901/2/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#6",
+			"condition": "[[Category:Q0901-1]] AND <q>[[Has text-2::Value 1||Value 2]] AND <q>[[Has page-2::Value 1]] AND [[Has page-2::Value 2]]</q></q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q0901/2/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7",
+			"condition": "<q>[[Category:Q0901-1]] OR [[Category:Q0901-2]]</q> AND [[Has page-2::<q> [[Has text-1::Value 1]] OR [[Has text-2::Value 2]] </q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/3/1#0##",
+					"Q0901/3/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8 equivalent to #7",
+			"condition": "[[Category:Q0901-1||Q0901-2]] AND [[Has page-2::<q> [[Has text-1::Value 1]] OR [[Has text-2::Value 2]] </q>]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/3/1#0##",
+					"Q0901/3/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#9",
+			"condition": "[[Has page-1::<q> [[Has page-2::<q> [[Has text-1::Value 1]] OR [[Has text-2::Value 2]] </q>]] </q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/4/1#0##",
+					"Q0901/4/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#10 equivalent to #9 only in chain notation",
+			"condition": "[[Has page-1.Has page-2:: <q> [[Has text-1::Value 1]] OR [[Has text-2::Value 2]]</q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/4/1#0##",
+					"Q0901/4/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#11",
+			"condition": "[[Category:Q0901-1]] [[Has page-1.Has page-2:: <q> [[Has text-1::Value 1]] OR <q>[[Has text-2::Value 2]][[Has page-2::Value 2]]</q></q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q0901/4/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#12",
+			"condition": "[[Category:Q0901-1||Q0901-2]] AND [[Has page-1.Has page-2:: <q><q>[[Has text-1::Value 1]][[Has page-2::Value 1]]</q> OR <q>[[Has text-2::Value 2]][[Has page-2::Value 2]]</q></q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/4/1#0##",
+					"Q0901/4/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#13, see issue #19",
+			"condition": "[[Has page-1::Value 1||Value 2]] [[Has text-1::Value 1||Value 2]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#14 equivalent to #13",
+			"condition": "<q>[[Has page-1::Value 1]] OR [[Has page-1::Value 2]]</q> AND <q>[[Has text-1::Value 1]] OR [[Has text-1::Value 2]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 3,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/1/1#0##",
+					"Q0901/1/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#15",
+			"condition": "<q>[[Has page-1::Value 1]] OR [[Has page-2::Value 1]]</q> AND <q>[[Has text-1::Value 1]] OR [[Has text-2::Value 1]]</q> AND <q>[[Has text-1::Value 3]] OR [[Has page-1::Value 3]]</q>",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/1#0##",
+					"Q0901/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#16",
+			"condition": "[[Has page-2:: <q>[[Has page-1::Value 1||Value 2]] [[Has text-1::Value 1||Value 2]]</q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q0901/3/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#17",
+			"condition": "[[Has page-2:: <q>[[Has page-1::Value 1||Value 2]] [[Has text-1::Value 1||Value 2]]</q> || <q> [[Has page-2::Value 1||Value 2]]</q> ]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0901/3/1#0##",
+					"Q0901/3/2#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

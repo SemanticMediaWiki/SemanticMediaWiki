@@ -45,11 +45,12 @@ class SkinTemplateNavigation {
 	public function process() {
 
 		if ( $this->skinTemplate->getUser()->isAllowed( 'purge' ) ) {
-			$this->links['actions']['purge'] = array(
-				'class' => false,
+			$this->skinTemplate->getOutput()->addModules( 'ext.smw.purge' );
+			$this->links['actions']['purge'] = [
+				'class' => 'is-disabled',
 				'text' => $this->skinTemplate->msg( 'smw_purge' )->text(),
-				'href' => $this->skinTemplate->getTitle()->getLocalUrl( array( 'action' => 'purge' ) )
-			);
+				'href' => $this->skinTemplate->getTitle()->getLocalUrl( [ 'action' => 'purge' ] )
+			];
 		}
 
 		return true;

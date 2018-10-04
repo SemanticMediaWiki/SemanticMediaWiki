@@ -1,0 +1,134 @@
+{
+	"description": "Test `_IMPO` queries for imported foaf vocabulary (#891, en)",
+	"setup": [
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Smw import foaf",
+			"contents": "http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n homepage|Type:URL\n mbox|Type:Email\n mbox_sha1sum|Type:Text\n depiction|Type:URL\n phone|Type:Text\n Person|Category\n Organization|Category\n knows|Type:Page\n member|Type:Page\n"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:homepage",
+			"contents": "[[Imported from::foaf:homepage]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:name",
+			"contents": "[[Imported from::foaf:name]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Foaf:knows",
+			"contents": "[[Imported from::foaf:knows]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has name",
+			"contents": "#REDIRECT [[Property:Foaf:name]]"
+		},
+		{
+			"page": "John Doe",
+			"contents": "[[Foaf:name::John Doe]], [[Foaf:homepage::http://example.org/JohnDoe]] [[Foaf:knows::Jane Doe]]"
+		},
+		{
+			"page": "Jane Doe",
+			"contents": "[[Foaf:name::Jane Doe]], [[Foaf:homepage::http://example.org/JaneDoe]] [[Foaf:knows::John Doe]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Foaf:name::John Doe]] OR [[Foaf:name::Jane Doe]]",
+			"printouts": [
+				"Foaf:name",
+				"Foaf:knows"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"John Doe#0##",
+					"Jane Doe#0##"
+				],
+				"count": "2",
+				"datavalues": [
+					{
+						"property": "Foaf:name",
+						"value": "John Doe"
+					},
+					{
+						"property": "Foaf:name",
+						"value": "Jane Doe"
+					},
+					{
+						"property": "Foaf:knows",
+						"value": "Jane Doe"
+					},
+					{
+						"property": "Foaf:knows",
+						"value": "John Doe"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 check auto-property types, #891",
+			"condition": "[[Foaf:name::John Doe]] OR [[Foaf:name::Jane Doe]]",
+			"printouts": [
+				"Foaf:homepage"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"John Doe#0##",
+					"Jane Doe#0##"
+				],
+				"count": "2",
+				"dataitems": [
+					{
+						"type": "_uri",
+						"value": "http://example.org/JohnDoe"
+					},
+					{
+						"type": "_uri",
+						"value": "http://example.org/JaneDoe"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 query on redirected property",
+			"condition": "[[Has name::John Doe]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"John Doe#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

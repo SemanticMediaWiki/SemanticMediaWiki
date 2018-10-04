@@ -1,0 +1,258 @@
+{
+    "@metadata": {
+        "authors": [
+            "Karsten Hoffmeyer",
+            "Markus Krötzsch"
+        ]
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Attribut",
+            "SMW_NS_PROPERTY_TALK": "Attribut_Diskussion",
+            "SMW_NS_CONCEPT": "Konzept",
+            "SMW_NS_CONCEPT_TALK": "Konzept_Diskussion",
+            "SMW_NS_SCHEMA": "SMW/Schema",
+            "SMW_NS_SCHEMA_TALK": "SMW/Schema_Diskussion"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Seite",
+            "_txt": "Text",
+            "_cod": "Quellcode",
+            "_boo": "Wahrheitswert",
+            "_num": "Zahl",
+            "_geo": "Geografische Koordinaten",
+            "_tem": "Temperatur",
+            "_dat": "Datum",
+            "_ema": "E-Mail",
+            "_uri": "URL",
+            "_anu": "URI-Annotation",
+            "_tel": "Telefonnummer",
+            "_rec": "Verbund",
+            "_qty": "Maß",
+            "_mlt_rec": "Einsprachiger Text",
+            "_eid": "Externe Kennung",
+            "_keyw": "Stichwort",
+            "_ref_rec": "Referenzierung"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Ganze Zahl": "_num",
+            "Dezimalzahl": "_num",
+            "Aufzählung": "_txt",
+            "Zeichenkette": "_txt",
+            "Menge": "_qty",
+            "Schlagwort": "_keyw"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Datentyp",
+            "_URI": "Gleichwertige URI",
+            "_SUBP": "Unterattribut von",
+            "_SUBC": "Unterkategorie von",
+            "_UNIT": "Einheiten",
+            "_IMPO": "Importiert aus",
+            "_CONV": "Entspricht",
+            "_SERV": "Bietet Service",
+            "_PVAL": "Erlaubt Wert",
+            "_MDAT": "Zuletzt geändert",
+            "_CDAT": "Erstellt",
+            "_NEWP": "Ist eine neue Seite",
+            "_LEDT": "Letzter Bearbeiter ist",
+            "_ERRP": "Hat unpassenden Wert für",
+            "_LIST": "Hat Komponenten",
+            "_SOBJ": "Hat Unterobjekt",
+            "_ASK": "Hat Abfrage",
+            "_ASKST": "Abfragetext",
+            "_ASKFO": "Abfrageformat",
+            "_ASKSI": "Abfragegröße",
+            "_ASKDE": "Abfragetiefe",
+            "_ASKDU": "Abfragedauer",
+            "_ASKPA": "Abfrageparameter",
+            "_ASKSC": "Abfragequelle",
+            "_ASKCO": "Abfragestatuscode",
+            "_MEDIA": "Medientyp",
+            "_MIME": "MIME-Typ",
+            "_ERRC": "Verarbeitungsfehler",
+            "_ERRT": "Verarbeitungsfehlerhinweis",
+            "_PREC": "Anzeigegenauigkeit",
+            "_LCODE": "Sprachcode",
+            "_TEXT": "Text",
+            "_PDESC": "Attributbeschreibung",
+            "_PVAP": "Erlaubt Muster",
+            "_DTITLE": "Anzeigetitel",
+            "_PVUC": "Erlaubt Wert einmal",
+            "_PVALI": "Erlaubt Werteliste",
+            "_PEID": "Kennung zur externen URI",
+            "_PEFU": "Formatierungsanweisung zur externen URI",
+            "_EDIP": "Ist bearbeitungsgeschützt",
+            "_CHGPRO": "Änderungsweitergabe",
+            "_PPGR": "Attributgruppe",
+            "_SCHEMA_DESC": "Schemabeschreibung",
+            "_SCHEMA_TAG": "Schemakennzeichen",
+            "_SCHEMA_TYPE": "Schematyp",
+            "_SCHEMA_DEF": "Schemadefinition",
+            "_SCHEMA_LINK": "Schemalink",
+            "_FORMAT_SCHEMA": "Formatierungsregel",
+            "_FILE_ATTCH": "Dateianhang",
+            "_CONT_TYPE": "Inhaltstyp",
+            "_CONT_AUTHOR": "Inhaltsautor",
+            "_CONT_LEN": "Inhaltslänge",
+            "_CONT_LANG": "Inhaltssprache",
+            "_CONT_TITLE": "Inhaltstitel",
+            "_CONT_DATE": "Inhaltsdatum",
+            "_CONT_KEYW": "Inhaltsstichwort",
+            "_TRANS": "Übersetzung",
+            "_TRANS_SOURCE": "Übersetzungsquelle",
+            "_TRANS_GROUP": "Übersetzungsgruppe"
+        },
+        "aliases": {
+            "Hat Datentyp": "_TYPE",
+            "Hat erlaubten Wert": "_PVAL",
+            "Hat Einheiten": "_UNIT",
+            "Hat Medientyp": "_MEDIA",
+            "Hat MIME-Typ": "_MIME",
+            "Abfrage": "_ASK",
+            "Unterobjekt": "_SOBJ",
+            "Komponenten": "_LIST",
+            "Neue Seite": "_NEWP",
+            "Letzer Bearbeiter": "_LEDT",
+            "Ausgabeeinheit": "_UNIT",
+            "Gleichwertige URI von": "_URI",
+            "Unpassender Wert": "_ERRP",
+            "Hat Sprachcode": "_LCODE",
+            "Hat Anzeigegenauigkeit": "_PREC",
+            "Hat Attributbeschreibung": "_PDESC",
+            "Hat Anzeigetitel": "_DTITLE",
+            "Hat einmal erlaubten Wert": "_PVUC",
+            "Externe Kennung": "_PEID",
+            "Bearbeitungsgeschützt": "_EDIP",
+            "Ist Änderungsweitergabe": "_CHGPRO",
+            "Ist Attributgruppe": "_PPGR",
+            "Hat Schemabeschreibung": "_SCHEMA_DESC",
+            "Hat Schemakennzeichen": "_SCHEMA_TAG",
+            "Hat Schematyp": "_SCHEMA_TYPE",
+            "Hat Schemadefinition": "_SCHEMA_DEF",
+            "Hat Schemalink": "_SCHEMA_LINK",
+            "Hat Formatierungsregel": "_FORMAT_SCHEMA",
+            "Hat Dateianhang": "_FILE_ATTCH",
+            "Hat Inhaltstyp": "_CONT_TYPE",
+            "Hat Inhaltsautor": "_CONT_AUTHOR",
+            "Hat Inhaltslänge": "_CONT_LEN",
+            "Hat Inhaltssprache": "_CONT_LANG",
+            "Hat Inhaltstitel": "_CONT_TITLE",
+            "Hat Inhaltsdatum": "_CONT_DATE",
+            "Hat Inhaltsstichwort": "_CONT_KEYW",
+            "Hat Übersetzung": "_TRANS",
+            "Hat Übersetzungsquelle": "_TRANS_SOURCE",
+            "Hat Übersetzungsgruppe": "_TRANS_GROUP"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "Januar",
+                "Jan"
+            ],
+            [
+                "Februar",
+                "Feb"
+            ],
+            [
+                "März",
+                "Mär"
+            ],
+            [
+                "April",
+                "Apr"
+            ],
+            [
+                "Mai",
+                "Mai"
+            ],
+            [
+                "Juni",
+                "Jun"
+            ],
+            [
+                "Juli",
+                "Jul"
+            ],
+            [
+                "August",
+                "Aug"
+            ],
+            [
+                "September",
+                "Sep"
+            ],
+            [
+                "Oktober",
+                "Okt"
+            ],
+            [
+                "November",
+                "Nov"
+            ],
+            [
+                "Dezember",
+                "Dez"
+            ]
+        ],
+        "days": [
+            [
+                "Montag",
+                "Mo"
+            ],
+            [
+                "Dienstag",
+                "Di"
+            ],
+            [
+                "Mittwoch",
+                "Mi"
+            ],
+            [
+                "Donnerstag",
+                "Do"
+            ],
+            [
+                "Freitag",
+                "Fr"
+            ],
+            [
+                "Samstag",
+                "Sa"
+            ],
+            [
+                "Sonntag",
+                "So"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "j. F Y",
+            "SMW_PREC_YMDT": "j. F Y, H:i:s"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

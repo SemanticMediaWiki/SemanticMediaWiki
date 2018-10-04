@@ -2,7 +2,6 @@
 
 namespace SMW\Query;
 
-use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
@@ -66,7 +65,7 @@ class DescriptionFactory {
 	 *
 	 * @return Disjunction
 	 */
-	public function newDisjunction( $descriptions = array() ) {
+	public function newDisjunction( $descriptions = [] ) {
 		return new Disjunction( $descriptions );
 	}
 
@@ -77,7 +76,7 @@ class DescriptionFactory {
 	 *
 	 * @return Conjunction
 	 */
-	public function newConjunction( $descriptions = array() ) {
+	public function newConjunction( $descriptions = [] ) {
 		return new Conjunction( $descriptions );
 	}
 
@@ -95,11 +94,11 @@ class DescriptionFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $category
+	 * @param DIWikiPage|[] $category
 	 *
 	 * @return ClassDescription
 	 */
-	public function newClassDescription( DIWikiPage $category ) {
+	public function newClassDescription( $category ) {
 		return new ClassDescription( $category );
 	}
 
@@ -127,24 +126,10 @@ class DescriptionFactory {
 			return $this->newThingDescription();
 		}
 
-		// RecordValue is missing
+		// Avoid circular reference when called from outside of the DV context
+		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
 
-		// FIXME This knowledge should reside with the DV itself
-		if ( $dataValue instanceof MonolingualTextValue ) {
-			$container =  $dataValue->getDataItem();
-
-			$value = '';
-
-			foreach ( $dataValue->getPropertyDataItems() as $property ) {
-				foreach ( $container->getSemanticData()->getPropertyValues( $property ) as $val ) {
-					$value .= ( $property->getKey() == '_LCODE' ? '@' : '' ) . $val->getString();
-				}
-			}
-
-			$description = $dataValue->getQueryDescription( $value );
-		} else {
-			$description = $this->newValueDescription( $dataValue->getDataItem() );
-		}
+		$description = $dataValue->getQueryDescription( $dataValue->getWikiValue() );
 
 		if ( $dataValue->getProperty() === null ) {
 			return $description;

@@ -1,0 +1,193 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Eigenschap",
+            "SMW_NS_PROPERTY_TALK": "Overleg_eigenschap",
+            "SMW_NS_CONCEPT": "Concept",
+            "SMW_NS_CONCEPT_TALK": "Overleg_concept"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Pagina",
+            "_txt": "Tekst",
+            "_cod": "Code",
+            "_boo": "Booleaans",
+            "_num": "Getal",
+            "_geo": "Geografische coördinaat",
+            "_tem": "Temperatuur",
+            "_dat": "Datum",
+            "_ema": "E-mail",
+            "_uri": "URL",
+            "_anu": "Annotatie-URI",
+            "_tel": "Telefoonnummer",
+            "_rec": "Record",
+            "_qty": "Hoeveelheid",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "URI": "_uri",
+            "Drijvende komma": "_num",
+            "Integer": "_num",
+            "Opsomming": "_txt",
+            "String": "_txt"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Heeft type",
+            "_URI": "Equivalent URI",
+            "_SUBP": "Subeigenschap van",
+            "_SUBC": "Subcategorie van",
+            "_UNIT": "Weergaveeenheden",
+            "_IMPO": "Geïmporteerd uit",
+            "_CONV": "Komt overeen met",
+            "_SERV": "Verleent dienst",
+            "_PVAL": "Geldige waarde",
+            "_MDAT": "Wijzigingsdatum",
+            "_CDAT": "Creatiedatum",
+            "_NEWP": "Is een nieuwe pagina",
+            "_LEDT": "Laatste redacteur is",
+            "_ERRP": "Heeft ongeldige waarde voor",
+            "_LIST": "Heeft velden",
+            "_SOBJ": "Heeft subobject",
+            "_ASK": "Heeft bevraging",
+            "_ASKST": "Zoekstring",
+            "_ASKFO": "Zoekopdracht-opmaak",
+            "_ASKSI": "Zoekopdracht-omvang",
+            "_ASKDE": "Zoekdiepte",
+            "_ASKDU": "Zoekduur",
+            "_MEDIA": "Heeft Mediatype",
+            "_MIME": "Heeft MIME-type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Weergave-eenheid": "_UNIT",
+            "Bevragingsstring": "_ASKST",
+            "Bevragingsopmaak": "_ASKFO",
+            "Bevragingsgrootte": "_ASKSI",
+            "Bevragingsdiepgang": "_ASKDE"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "januari",
+                "jan"
+            ],
+            [
+                "februari",
+                "feb"
+            ],
+            [
+                "maart",
+                "mar"
+            ],
+            [
+                "april",
+                "apr"
+            ],
+            [
+                "mei",
+                "mei"
+            ],
+            [
+                "juni",
+                "jun"
+            ],
+            [
+                "juli",
+                "jul"
+            ],
+            [
+                "augustus",
+                "aug"
+            ],
+            [
+                "september",
+                "sep"
+            ],
+            [
+                "oktober",
+                "okt"
+            ],
+            [
+                "november",
+                "nov"
+            ],
+            [
+                "december",
+                "dec"
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

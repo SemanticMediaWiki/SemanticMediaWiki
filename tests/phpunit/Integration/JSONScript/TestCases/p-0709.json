@@ -1,0 +1,104 @@
+{
+	"description": "Test #ask with `format=table` on inverse property, property path",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "P0709/1",
+			"contents": "[[Has number::123]] [[Has page::ABC]] [[Category:P0709]]"
+		},
+		{
+			"page": "P0709/2",
+			"contents": "[[Has number::1234]] [[Has page::DEF]] [[Category:P0709]]"
+		},
+		{
+			"page": "P0709/3",
+			"contents": "{{#subobject:A |@category=P0709}} {{#subobject:B |@category=P0709}}"
+		},
+		{
+			"page": "P0709/Q.1",
+			"contents": "{{#ask: [[-Has page.Has number::123]] |?Has page |format=table}}"
+		},
+		{
+			"page": "P0709/Q.2",
+			"contents": "{{#ask: [[-Has page.Has number::+]] |?Has page |order=asc |format=table}}"
+		},
+		{
+			"page": "P0709/Q.3",
+			"contents": "{{#ask: [[-Has page.Has number::+]] |?Has page |order=desc |format=table}}"
+		},
+		{
+			"page": "P0709/Q.4",
+			"contents": "{{#ask: [[-Has subobject::+]] [[Category:P0709]] |order=asc |format=table}}"
+		},
+		{
+			"page": "P0709/Q.5",
+			"contents": "{{#ask: [[-Has number::+]] |format=table |default=is empty}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (-Has page.Has number::123)",
+			"subject": "P0709/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=\".*\">ABC</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (-Has page.Has number::+, sort=asc)",
+			"subject": "P0709/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=\".*\">ABC</a></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*\">DEF</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (-Has page.Has number::+, sort=desc)",
+			"subject": "P0709/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=\".*\">DEF</a></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*\">ABC</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (-Has subobject::+, sort=asc)",
+			"subject": "P0709/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><span class=\"smw-subobject-entity\"><a href=\".*\">P0709/3#A</a></span></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><span class=\"smw-subobject-entity\"><a href=\".*\">P0709/3#B</a></span></td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

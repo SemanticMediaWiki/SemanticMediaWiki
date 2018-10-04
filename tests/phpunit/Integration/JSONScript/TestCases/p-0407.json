@@ -1,0 +1,61 @@
+{
+	"description": "Test in-text annotation for a redirect that is pointing to a deleted target (#1105)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasPropertyForUse",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/0407/1",
+			"contents": "#REDIRECT [[Example/0407/2]]"
+		},
+		{
+			"do-delete": true,
+			"page": "Example/0407/2",
+			"contents": "[[HasPropertyForUse::ABC]]"
+		},
+		{
+			"page": "Example/0407/3",
+			"contents": "[[HasPropertyForUse::Example/0407/1]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 check annotation for a deleted redirected target subject",
+			"subject": "Example/0407/3",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"HasPropertyForUse"
+					],
+					"propertyValues": [
+						"Example/0407/2"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -2,7 +2,8 @@
 
 namespace SMW\Query\Language;
 
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\Exception\FingerprintNotFoundException;
+use SMW\Query\PrintRequest;
 
 /**
  * Abstract base class for all descriptions
@@ -15,15 +16,25 @@ use SMW\Query\PrintRequest as PrintRequest;
 abstract class Description {
 
 	/**
-	 * @var \SMW\Query\PrintRequest[]
+	 * @var PrintRequest[]
 	 */
-	protected $m_printreqs = array();
+	protected $m_printreqs = [];
+
+	/**
+	 * @var string|null
+	 */
+	protected $fingerprint = null;
+
+	/**
+	 * @var string
+	 */
+	private $membership = '';
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.
 	 *
-	 * @return array of SMW\Query\PrintRequest
+	 * @return PrintRequest[]
 	 */
 	public function getPrintRequests() {
 		return $this->m_printreqs;
@@ -41,7 +52,7 @@ abstract class Description {
 	/**
 	 * Add a single SMW\Query\PrintRequest.
 	 *
-	 * @param \SMW\Query\PrintRequest $printRequest
+	 * @param PrintRequest $printRequest
 	 */
 	public function addPrintRequest( PrintRequest $printRequest ) {
 		$this->m_printreqs[] = $printRequest;
@@ -55,6 +66,50 @@ abstract class Description {
 	 */
 	public function prependPrintRequest( PrintRequest $printRequest ) {
 		array_unshift( $this->m_printreqs, $printRequest );
+	}
+
+	/**
+	 * Returns a compound signature that identifies the canonized
+	 * description. It builds a fingerrint so that [[Foo::123]][[Bar::abc]]
+	 * returns the same signature as for [[Bar::abc]][[Foo::123]].
+	 *
+	 * @note An extension to a description should not rely on the query string
+	 * as sole representation for a fingerprint.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 * @throws FingerprintNotFoundException
+	 */
+	public function getFingerprint() {
+
+		if ( $this->fingerprint !== null ) {
+			return $this->fingerprint;
+		}
+
+		throw new FingerprintNotFoundException( "Missing a fingerprint, a signature was expected for the current description instance." );
+	}
+
+	/**
+	 * Identifies an arbitrary membership to a wider circle of descriptions that
+	 * mostly occurs in connection with a Conjunction, Disjunction, or
+	 * SomeProperty.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getMembership() {
+		return $this->membership;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param string $membership
+	 */
+	public function setMembership( $membership ) {
+		$this->membership = $membership;
 	}
 
 	/**
@@ -137,6 +192,16 @@ abstract class Description {
 		$maxDepth = $maxDepth - $this->getDepth();
 
 		return $this;
+	}
+
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->getQueryString();
 	}
 
 }

@@ -1,0 +1,104 @@
+{
+	"description": "Test RDF output on canonical entities (`wgContLang=fr`, `wgLang=es`, syntax=rdf/turtle)",
+	"setup": [
+		{
+			"page": "Example/R0010/1",
+			"contents": "[[Boolean::true]]"
+		},
+		{
+			"page": "Example/R0010/2",
+			"contents": "[[Date::2034]]"
+		},
+		{
+			"page": "Example/R0010/Q1",
+			"contents": "{{#ask: [[Booléen::+]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Special:ExportRDF/Example/R0010/1",
+					"<property:Boolean rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Boolean>"
+				],
+				"not-contain": [
+					"Sp%C3%A9cial:ExportRDF/Example/R0010/1",
+					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/2"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Special:ExportRDF/Example/R0010/2",
+					"<property:Date rdf:datatype=\"http://www.w3.org/2001/XMLSchema#gYear\">2034</property:Date>",
+					"<property:Date-23aux rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">2463963.5</property:Date-23aux>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#2",
+			"exportcontroller": {
+				"print-pages": [
+					"Example/R0010/Q1"
+				],
+				"parameters": {
+					"backlinks": true,
+					"recursion": "1",
+					"revisiondate": false
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<swivt:wikiPageContentLanguage rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">fr</swivt:wikiPageContentLanguage>",
+					"<property:Has_query rdf:resource=\"&wiki;Example/R0010/Q1-23_QUERY5223a22ba7ce6ccf63e5701b6d6093b6\"/>"
+				],
+				"not-contain": [
+					"Sp%C3%A9cial:ExportRDF/Example/R0010/2",
+					"<property:Booleano rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Booleano>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgExportBCNonCanonicalFormUse": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "fr",
+		"wgLang": "es",
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,190 @@
+{
+	"description": "Test `format=category` with uppercase collation sort (#2065, `smwgEntityCollation=uppercase`, `smwgSparqlQFeatures=SMW_SPARQL_QF_COLLATION`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Chiapas",
+			"contents": "[[Has page::Chiapas]] [[Category:F0305-1]]"
+		},
+		{
+			"page": "Colima",
+			"contents": "[[Has page::Colima]] [[Category:F0305-1]]"
+		},
+		{
+			"page": "Cinco Rios",
+			"contents": "[[Has page::Cinco Rios]] [[Category:F0305-1]]"
+		},
+		{
+			"page": "California",
+			"contents": "[[Has page::California]] [[Category:F0305-1]]"
+		},
+		{
+			"page": "Example/F0305/Q.1.1",
+			"contents": "{{#ask: [[Category:F0305-1]] |?Has page |format=category |sort=# |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.1.2",
+			"contents": "{{#ask: [[Category:F0305-1]] |?Has page |format=category |sort=# |order=desc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.1.3",
+			"contents": "{{#ask: [[Category:F0305-1]] |?Has page |format=category |sort= |order=desc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.1.4",
+			"contents": "{{#ask: [[Category:F0305-1]] |?Has page |format=category |sort=Has page |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.1.5",
+			"contents": "{{#ask: [[Category:F0305-1]] |?Has page |format=category |sort=Has page |order=desc |link=none }}"
+		},
+		{
+			"page": "Robin Hood and Little John (Aslackby)/2",
+			"contents": "[[Has page::Robin Hood and Little John (Aslackby)]] [[Category:F0305-2]]"
+		},
+		{
+			"page": "Robin Hood Tavern (Upper Clapton)/2",
+			"contents": "[[Has page::Robin Hood Tavern (Upper Clapton)]] [[Category:F0305-2]]"
+		},
+		{
+			"page": "Example/F0305/Q.2.1",
+			"contents": "{{#ask: [[Category:F0305-2]] |?Has page |format=category |sort= |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.2.2",
+			"contents": "{{#ask: [[Category:F0305-2]] |?Has page |format=category |sort= |order=desc |link=none }}"
+		},
+		{
+			"page": "b9",
+			"contents": "[[Has page::b9]] [[Category:F0305-3]]"
+		},
+		{
+			"page": "b1000",
+			"contents": "[[Has page::b1000]] [[Category:F0305-3]]"
+		},
+		{
+			"page": "Example/F0305/Q.3.1",
+			"contents": "{{#ask: [[Category:F0305-3]] |?Has page |format=category |sort= |order=asc |link=none }}"
+		},
+		{
+			"page": "Example/F0305/Q.3.2",
+			"contents": "{{#ask: [[Category:F0305-3]] |?Has page |format=category |sort= |order=desc |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 asc",
+			"subject": "Example/F0305/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">C</div><ul><li>California.*</li><li>Chiapas.*<li>Cinco Rios.*</li><li>Colima"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 desc",
+			"subject": "Example/F0305/Q.1.2",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">C</div><ul><li>Colima.*</li><li>Cinco Rios.*<li>Chiapas.*</li><li>California"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 desc",
+			"subject": "Example/F0305/Q.1.3",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">C</div><ul><li>Colima.*</li><li>Cinco Rios.*<li>Chiapas.*</li><li>California"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#4 Has page,asc",
+			"subject": "Example/F0305/Q.1.4",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">C</div><ul><li>California.*</li><li>Chiapas.*<li>Cinco Rios.*</li><li>Colima"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 Has page,desc",
+			"subject": "Example/F0305/Q.1.5",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">C</div><ul><li>Colima.*</li><li>Cinco Rios.*<li>Chiapas.*</li><li>California"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6 asc (different to f-0304)",
+			"subject": "Example/F0305/Q.2.1",
+			"assert-output": {
+				"to-contain": [
+					"<ul><li>Robin Hood and Little John (Aslackby).*<li>Robin Hood Tavern (Upper Clapton)"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#7 desc (different to f-0304)",
+			"subject": "Example/F0305/Q.2.2",
+			"assert-output": {
+				"to-contain": [
+					"<ul><li>Robin Hood Tavern (Upper Clapton).*<li>Robin Hood and Little John (Aslackby)"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#8 asc",
+			"subject": "Example/F0305/Q.3.1",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#9 desc",
+			"subject": "Example/F0305/Q.3.2",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgEntityCollation": "uppercase",
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_REDI",
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC",
+			"SMW_SPARQL_QF_COLLATION"
+		],
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

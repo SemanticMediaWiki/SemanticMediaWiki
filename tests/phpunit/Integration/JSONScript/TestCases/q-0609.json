@@ -1,0 +1,78 @@
+{
+	"description": "Test `_wpg` for single value approximate (`~/!~`) queries with conjunctive category hierarchy (#1246, en, skip virtuoso)",
+	"setup": [
+		{
+			"page": "Example/0609/1",
+			"contents": "[[Category:0609-1]]"
+		},
+		{
+			"page": "Example/0609/2",
+			"contents": "[[Category:0609-2]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "0609-1",
+			"contents": "[[Category:0609]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "0609-2",
+			"contents": "[[Category:0609]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[~*0609*]][[Category:0609]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Example/0609/1#0##",
+					"Example/0609/2#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[~*0609*]][[Category:0609]][[!~*0609*/2]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/0609/1#0##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"wgContLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso 6.1 rdfs / subproperty/subcategory hierarchies are not supported"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

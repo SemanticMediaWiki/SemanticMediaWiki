@@ -85,33 +85,52 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function textOnMockProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'foo',
 			'foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo* - bar',
 			'foo* -bar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo* + bar',
 			'foo* +bar'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'foo *',
 			'foo*'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'* foo *',
 			'*foo*'
-		);
+		];
+
+		$provider[] = [
+			'*foo* bar',
+			'*foo*bar'
+		];
+
+		$provider[] = [
+			'+foo*, *bar',
+			'+foo*,*bar'
+		];
+
+		$provider[] = [
+			'+foo* -bar',
+			'+foo* -bar'
+		];
+
+		$provider[] = [
+			'+foo* ~ bar',
+			'+foo* ~bar'
+		];
 
 		return $provider;
 	}
-
 
 }

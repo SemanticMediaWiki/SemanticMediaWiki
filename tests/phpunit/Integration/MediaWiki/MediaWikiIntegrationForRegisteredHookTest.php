@@ -43,14 +43,12 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$settings = array(
-			'smwgPageSpecialProperties' => array( '_MDAT' ),
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
-			'smwgCacheType' => 'hash',
-			'smwgAutoRefreshOnPurge' => true,
-			'smwgDeleteSubjectAsDeferredJob' => false,
-			'smwgDeleteSubjectWithAssociatesRefresh' => false
-		);
+		$settings = [
+			'smwgPageSpecialProperties' => [ '_MDAT' ],
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+			'smwgMainCacheType' => 'hash',
+			'smwgAutoRefreshOnPurge' => true
+		];
 
 		foreach ( $settings as $key => $value ) {
 			$this->applicationFactory->getSettings()->set( $key, $value );
@@ -137,9 +135,9 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 			$parserOutput
 		);
 
-		$expected = array(
-			'propertyKeys' => array( '_SKEY', '_MDAT', 'EditPageToGetNewRevisionHookTest' )
-		);
+		$expected = [
+			'propertyKeys' => [ '_SKEY', '_MDAT', 'EditPageToGetNewRevisionHookTest' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

@@ -1,0 +1,78 @@
+{
+	"description": "Test in-text annonation on different category colon identifier",
+	"setup": [
+		{
+			"page": "Example/P0404/1",
+			"contents": "[[Category:SingleColonNotion]], [[Category::DoubleColonNotion]]"
+		},
+		{
+			"page": "Example/P0404/2",
+			"contents": "[[Category:P4040]]"
+		},
+		{
+			"page": "Example/P0404/Q.1",
+			"contents": "{{#ask: [[Category:P4040]] |?Category }}"
+		},
+		{
+			"page": "Example/P0404/Q.2",
+			"contents": "{{#ask: [[Category:P4040]] |?Categories }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 : vs. ::",
+			"subject": "Example/P0404/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Category",
+						"_MDAT",
+						"_SKEY",
+						"_INST"
+					],
+					"propertyValues": [
+						"SingleColonNotion",
+						"DoubleColonNotion"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (printrequest singular use)",
+			"subject": "Example/P0404/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Category\"><a href=.*>Category</a></th>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0404/2\" title=\"Example/P0404/2\">Example/P0404/2</a></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (printrequest plural use)",
+			"subject": "Example/P0404/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Category\"><a href=.*>Category</a></th>",
+					"<td class=\"smwtype_wpg\"><a href=.*Example/P0404/2\" title=\"Example/P0404/2\">Example/P0404/2</a></td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

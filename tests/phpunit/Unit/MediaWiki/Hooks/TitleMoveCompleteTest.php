@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\TitleMoveComplete;
-use SMW\Settings;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -19,19 +18,28 @@ use SMW\Tests\Utils\Mock\MockTitle;
  */
 class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
 	private $user;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
+		$this->testEnvironment = new TestEnvironment();
 		$this->user = new MockSuperUser();
-		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$settings = [
+			'smwgMainCacheType'             => 'hash',
+			'smwgAutoRefreshOnPageMove' => true,
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, NS_HELP => false ]
+		];
+
+		$this->testEnvironment->withConfiguration(
+			$settings
+		);
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -66,13 +74,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->never() )
 			->method( 'changeTitle' );
 
-		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
-			'smwgCacheType'             => 'hash',
-			'smwgAutoRefreshOnPageMove' => true,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true )
-		) ) );
-
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new TitleMoveComplete(
 			$oldTitle,
@@ -101,13 +103,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $oldTitle ) );
 
-		$this->applicationFactory->registerObject( 'Settings', Settings::newFromArray( array(
-			'smwgCacheType'             => 'hash',
-			'smwgAutoRefreshOnPageMove' => true,
-			'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true, NS_HELP => false )
-		) ) );
-
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new TitleMoveComplete(
 			$oldTitle,

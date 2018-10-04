@@ -1,0 +1,50 @@
+{
+	"description": "Test output of `Special:WantedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite)",
+	"setup": [
+		{
+			"page": "Example/S0006/1",
+			"contents": "[[Has property without type::123]]"
+		},
+		{
+			"page": "Example/S0006/2",
+			"contents": "[[Has property without type::456]]"
+		},
+		{
+			"page": "Example/S0006/3",
+			"contents": "[[Has property without type::789]]"
+		}
+	],
+	"beforeTest": {
+		"maintenance-run": {
+			"rebuildPropertyStatistics": true
+		}
+	},
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (whether to appear on the list of wanted properties)",
+			"special-page": {
+				"page": "WantedProperties",
+				"query-parameters": [],
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property:Has property without type (page does not exist)"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"skip-on": {
+			"sqlite": "Returns a `database is locked`"
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

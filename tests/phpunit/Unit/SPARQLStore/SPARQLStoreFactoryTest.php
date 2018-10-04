@@ -47,7 +47,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWSQLStore3',
-			$instance->newBaseStore( 'SMWSQLStore3' )
+			$instance->getBaseStore( 'SMWSQLStore3' )
 		);
 	}
 
@@ -56,7 +56,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\QueryEngine',
+			'\SMW\QueryEngine',
 			$instance->newMasterQueryEngine()
 		);
 	}
@@ -66,8 +66,28 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\ConnectionManager',
-			$instance->newConnectionManager()
+			'\SMW\Connection\ConnectionManager',
+			$instance->getConnectionManager()
+		);
+	}
+
+	public function testCanConstructRepositoryRedirectLookup() {
+
+		$instance = new SPARQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\RepositoryRedirectLookup',
+			$instance->newRepositoryRedirectLookup()
+		);
+	}
+
+	public function testCanConstructReplicationDataTruncator() {
+
+		$instance = new SPARQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\ReplicationDataTruncator',
+			$instance->newReplicationDataTruncator()
 		);
 	}
 

@@ -1,0 +1,48 @@
+{
+	"description": "Test `_wpg` sort query with #subobject annotated @sortkey content",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Member of",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Page-with-subobject",
+			"contents": "{{#subobject:|Member of=WXYZ|@sortkey=B}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=A}}\n {{#subobject:|Member of=ABCD|@sortkey=C}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Member of::+]]",
+			"printouts": [
+				"Member of"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": {
+					"Member_of": "DESC"
+				}
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Page-with-subobject#0##_7aa07758037723bb0d3522a1a151771f",
+					"Page-with-subobject#0##_cd630d70e4e469611f361bcda9cf919a",
+					"Page-with-subobject#0##_38a501d710af2a3167121d6282e64fe6"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"description": "Test #ask on failed queries to produce a `_ERRC` (#1297, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasPropertyForMove",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0902/1",
+			"contents": "{{#ask:[[Help:]] |format=ul |link=none |headers=show }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 failed NS query",
+			"subject": "Example/P0902/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 error record on empty Help:",
+			"subject": "Example/P0902/1#_ERRaefa648d070f2edc4b171586eae9b1b0",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

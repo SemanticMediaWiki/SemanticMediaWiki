@@ -6,11 +6,14 @@ use Language;
 use Parser;
 use Revision;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use StripState;
 use Title;
 use User;
 use WikiPage;
@@ -35,17 +38,6 @@ class MwCollaboratorFactory {
 	 */
 	public function __construct( ApplicationFactory $applicationFactory ) {
 		$this->applicationFactory = $applicationFactory;
-	}
-
-	/**
-	 * @since 2.1
-	 *
-	 * @param Database $connection
-	 *
-	 * @return JobQueueLookup
-	 */
-	public function newJobQueueLookup( Database $connection ) {
-		return new JobQueueLookup( $connection );
 	}
 
 	/**
@@ -126,19 +118,34 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @return LazyDBConnectionProvider
+	 * @return LoadBalancerConnectionProvider
 	 */
-	public function newLazyDBConnectionProvider( $connectionType ) {
-		return new LazyDBConnectionProvider( $connectionType );
+	public function newLoadBalancerConnectionProvider( $connectionType ) {
+		return new LoadBalancerConnectionProvider( $connectionType );
 	}
 
 	/**
 	 * @since 2.1
 	 *
-	 * @return DatabaseConnectionProvider
+	 * @param string|null $provider
+	 *
+	 * @return ConnectionProvider
 	 */
-	public function newMediaWikiDatabaseConnectionProvider() {
-		return new DatabaseConnectionProvider();
+	public function newConnectionProvider( $provider = null ) {
+
+		$connectionProvider = new ConnectionProvider(
+			$provider
+		);
+
+		$connectionProvider->setLocalConnectionConf(
+			$this->applicationFactory->getSettings()->get( 'smwgLocalConnectionConf' )
+		);
+
+		$connectionProvider->setLogger(
+			$this->applicationFactory->getMediaWikiLogger()
+		);
+
+		return $connectionProvider;
 	}
 
 	/**
@@ -155,12 +162,16 @@ class MwCollaboratorFactory {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 2.5
 	 *
-	 * @return PageUpdater
+	 * @param WikiPage $wkiPage
+	 * @param Revision $revision
+	 * @param User|null $user
+	 *
+	 * @return EditInfoProvider
 	 */
-	public function newPageUpdater() {
-		return new PageUpdater();
+	public function newEditInfoProvider( WikiPage $wkiPage, Revision $revision, User $user = null ) {
+		return new EditInfoProvider( $wkiPage, $revision, $user );
 	}
 
 	/**
@@ -193,6 +204,26 @@ class MwCollaboratorFactory {
 	 */
 	public function newMediaWikiNsContentReader() {
 		return new MediaWikiNsContentReader();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param StripState $stripState
+	 *
+	 * @return StripMarkerDecoder
+	 */
+	public function newStripMarkerDecoder( StripState $stripState ) {
+
+		$stripMarkerDecoder = new StripMarkerDecoder(
+			$stripState
+		);
+
+		$stripMarkerDecoder->isSupported(
+			$this->applicationFactory->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_UNSTRIP )
+		);
+
+		return $stripMarkerDecoder;
 	}
 
 }

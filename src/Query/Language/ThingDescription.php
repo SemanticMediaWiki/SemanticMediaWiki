@@ -17,7 +17,7 @@ namespace SMW\Query\Language;
 class ThingDescription extends Description {
 
 	public function getQueryString( $asValue = false ) {
-		return $asValue ? '+' : '';
+		return $asValue ? ( isset( $this->isNegation ) ? '!' : '' ) . '+' : '';
 	}
 
 	public function isSingleton() {
@@ -30,6 +30,18 @@ class ThingDescription extends Description {
 
 	public function prune( &$maxsize, &$maxdepth, &$log ) {
 		return $this;
+	}
+
+	/**
+	 * @see Description::getFingerprint
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+		// Avoid a simple 0 which may interfere with an associative array
+		// when compounding hash strings from different descriptions
+		return 'T:' . md5( 0 ) . ( isset( $this->isNegation ) ? '!' : '' );
 	}
 
 }

@@ -1,0 +1,78 @@
+{
+	"description": "Semantic MediaWiki default vocabulary import",
+	"import": [
+		{
+			"page": "Smw import skos",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "/vocabularies/skos.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Smw import foaf",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "/vocabularies/foaf.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Smw import owl",
+			"namespace": "NS_MEDIAWIKI",
+			"contents": {
+				"importFrom": "/vocabularies/owl.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:knows",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": {
+				"importFrom": "/properties/foaf.knows.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:name",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": {
+				"importFrom": "/properties/foaf.name.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Foaf:homepage",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": {
+				"importFrom": "/properties/foaf.homepage.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		},
+		{
+			"page": "Owl:differentFrom",
+			"namespace": "SMW_NS_PROPERTY",
+			"contents": {
+				"importFrom": "/properties/owl.differentFrom.txt"
+			},
+			"options": {
+				"canReplace": false
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

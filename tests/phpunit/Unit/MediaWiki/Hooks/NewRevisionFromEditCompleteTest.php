@@ -4,11 +4,9 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use ParserOutput;
 use Revision;
-use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
-use SMW\Settings;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\TestEnvironment;
 use Title;
 use WikiPage;
 
@@ -23,78 +21,69 @@ use WikiPage;
  */
 class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
 	private $semanticDataValidator;
+	private $testEnvironment;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->semanticDataValidator = new SemanticDataValidator();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->applicationFactory->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\User' )
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\NewRevisionFromEditComplete',
-			 new NewRevisionFromEditComplete( $wikiPage, $revision, 0, $user )
+			NewRevisionFromEditComplete::class,
+			new NewRevisionFromEditComplete( $title, $editInfoProvider, $pageInfoProvider )
 		);
 	}
 
 	/**
 	 * @dataProvider wikiPageDataProvider
 	 */
-	public function testProcess( $parameters, $expected ) {
+	public function testProcess( $settings, $title, $editInfoProvider, $pageInfoProvider, $expected ) {
 
-		$this->applicationFactory->registerObject(
-			'Settings',
-			Settings::newFromArray( $parameters['settings'] )
-		);
+		$this->testEnvironment->withConfiguration( $settings );
 
 		$instance = new NewRevisionFromEditComplete(
-			$parameters['wikiPage'],
-			$parameters['revision'],
-			0
+			$title,
+			$editInfoProvider,
+			$pageInfoProvider
 		);
 
-		$this->assertTrue( $instance->process() );
+		$this->assertTrue(
+			$instance->process()
+		);
 
-		$editInfo = $parameters['editInfo'];
-
-		if ( $editInfo && $editInfo->output instanceof ParserOutput ) {
-
-			$parserData = $this->applicationFactory->newParserData(
-				$parameters['wikiPage']->getTitle(),
-				$editInfo->output
-			);
-
+		if ( $expected ) {
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
-				$parserData->getSemanticData()
+				$editInfoProvider->fetchSemanticData()
 			);
 		}
 	}
@@ -102,117 +91,124 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	public function wikiPageDataProvider() {
 
 		#0 No parserOutput object
-		$editInfo = (object)array();
-		$editInfo->output = null;
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getOutput' ] )
+			->getMock();
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$provider[] = array(
-			array(
-				'editInfo' => $editInfo,
-				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub(),
-				'settings' => array()
-			),
-			array()
-		);
+		$provider[] = [
+			[],
+			$title,
+			$editInfoProvider,
+			$pageInfoProvider,
+			false
+		];
 
 		#1 With annotation
-		$editInfo = (object)array();
-		$editInfo->output = new ParserOutput();
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareContentForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
 
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareTextForEdit' )
-			->will( $this->returnValue( $editInfo ) );
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( Title::newFromText( __METHOD__ ) ) );
+		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getOutput' ] )
+			->getMock();
 
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getTimestamp' )
+		$editInfoProvider->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new ParserOutput() ) );
+
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageInfoProvider->expects( $this->atLeastOnce() )
+			->method( 'getModificationDate' )
 			->will( $this->returnValue( 1272508903 ) );
 
-		$provider[] = array(
-			array(
-				'editInfo' => $editInfo,
-				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub(),
-				'settings' => array(
-					'smwgPageSpecialProperties' => array( DIProperty::TYPE_MODIFICATION_DATE ),
-					'smwgDVFeatures' => ''
-				)
-			),
-			array(
+		$provider[] = [
+			[
+				'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ],
+				'smwgDVFeatures' => ''
+			],
+			$title,
+			$editInfoProvider,
+			$pageInfoProvider,
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_MDAT',
-				'propertyValues' => array( '2010-04-29T02:41:43' ),
-			)
+				'propertyValues' => [ '2010-04-29T02:41:43' ],
+			]
+		];
+
+		#2 on schema page
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo_schema' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+
+		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getOutput' ] )
+			->getMock();
+
+		$editInfoProvider->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( new ParserOutput() ) );
+
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$data = json_encode(
+			[ 'description' => 'Foobar', 'type' => 'FOO_ROLE' ]
 		);
+
+		$pageInfoProvider->expects( $this->atLeastOnce() )
+			->method( 'getNativeData' )
+			->will( $this->returnValue( $data ) );
+
+		$provider[] =[
+			[
+				'smwgPageSpecialProperties' => [],
+				'smwgDVFeatures' => '',
+				'smwgSchemaTypes' => [ 'FOO_ROLE' => [] ]
+			],
+			$title,
+			$editInfoProvider,
+			$pageInfoProvider,
+			[
+				'propertyCount'  => 3,
+				'propertyKeys'   => [ '_SCHEMA_DESC', '_SCHEMA_TYPE', '_SCHEMA_DEF' ],
+				'propertyValues' => [ 'Foobar', 'FOO_ROLE', '{"description":"Foobar","type":"FOO_ROLE"}' ],
+			]
+		];
 
 		return $provider;
 	}
 
-	private function newRevisionStub() {
-
-		$revision = $this->getMockBuilder( '\Revision' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revision->expects( $this->any() )
-			->method( 'getRawText' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getContent' )
-			->will( $this->returnValueMap( array(
-				array( \Revision::RAW, null, 'Foo' ),
-				array( \Revision::FOR_PUBLIC, null, $this->newContentStub() ),
-			) ) );
-
-		return $revision;
-	}
-
-	private function newContentStub() {
-
-		if ( !class_exists( 'ContentHandler' ) ) {
-			return null;
-		}
-
-		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$contentHandler->expects( $this->atLeastOnce() )
-			->method( 'getDefaultFormat' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$content = $this->getMockBuilder( '\Content' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$content->expects( $this->atLeastOnce() )
-			->method( 'getContentHandler' )
-			->will( $this->returnValue( $contentHandler ) );
-
-		return $content;
-	}
 }

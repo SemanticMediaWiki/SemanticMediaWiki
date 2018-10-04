@@ -1,0 +1,201 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "Egenskap",
+            "SMW_NS_PROPERTY_TALK": "Egenskap-diskusjon",
+            "SMW_NS_CONCEPT": "Konsept",
+            "SMW_NS_CONCEPT_TALK": "Konsept-diskusjon"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": {
+            "_wpg": "Side",
+            "_txt": "Tekst",
+            "_cod": "Kode",
+            "_boo": "Boolsk",
+            "_num": "Tall",
+            "_geo": "Geografisk koordinat",
+            "_tem": "Temperatur",
+            "_dat": "Dato",
+            "_ema": "E-post",
+            "_uri": "URL",
+            "_anu": "URI-merknad",
+            "_tel": "Telefonnummer",
+            "_rec": "Post",
+            "_qty": "Størrelse",
+            "_mlt_rec": "Monolingual text",
+            "_eid": "External identifier",
+            "_ref_rec": "Reference"
+        },
+        "aliases": {
+            "Lang tekst": "_txt",
+            "Kort tekst": "_txt",
+            "Streng": "_txt",
+            "Linje": "_txt",
+            "Hellall": "_num",
+            "Desimaltall": "_num",
+            "Liste": "_txt",
+            "Kildekode": "_cod",
+            "Koordinat": "_geo",
+            "Epost": "_ema",
+            "URI": "_uri",
+            "Nettadresse": "_uri",
+            "Mål": "_qty",
+            "Record": "_rec"
+        }
+    },
+    "property": {
+        "labels": {
+            "_TYPE": "Har type",
+            "_URI": "Ekvivalent URI",
+            "_SUBP": "Underegenskap av",
+            "_SUBC": "Underkategori av",
+            "_UNIT": "Visningsenhet",
+            "_IMPO": "Importert fra",
+            "_CONV": "Svarer til",
+            "_SERV": "Tilbyr tjeneste",
+            "_PVAL": "Tillater verdi",
+            "_MDAT": "Endringsdato",
+            "_CDAT": "Opprettelsesdato",
+            "_NEWP": "Er en ny side",
+            "_LEDT": "Siste redaktør er",
+            "_ERRP": "Feilaktig verdi for",
+            "_LIST": "Har feltene",
+            "_SOBJ": "Har underobjekt",
+            "_ASK": "Har spørring",
+            "_ASKST": "Spørringsstreng",
+            "_ASKFO": "Spørringsformat",
+            "_ASKSI": "Spørringsstørrelse",
+            "_ASKDE": "Spørringsdybde",
+            "_ASKDU": "Spørringsvarighet",
+            "_MEDIA": "Mediatype",
+            "_MIME": "MIME-type",
+            "_ERRC": "Has processing error",
+            "_ERRT": "Has processing error text",
+            "_PREC": "Display precision of",
+            "_LCODE": "Language code",
+            "_TEXT": "Text",
+            "_PDESC": "Has property description",
+            "_PVAP": "Allows pattern",
+            "_DTITLE": "Display title of",
+            "_PVUC": "Has uniqueness constraint",
+            "_PEID": "External identifier",
+            "_PEFU": "External formatter uri",
+            "_ASKSC": "Query source"
+        },
+        "aliases": {
+            "Type": "_TYPE",
+            "Enhet": "_UNIT",
+            "Synonym URI": "_URI",
+            "Synonym adresse": "_URI"
+        }
+    },
+    "date": {
+        "months": [
+            [
+                "januar",
+                "jan."
+            ],
+            [
+                "februar",
+                "feb."
+            ],
+            [
+                "mars",
+                "mars"
+            ],
+            [
+                "april",
+                "april"
+            ],
+            [
+                "mai",
+                "mai"
+            ],
+            [
+                "juni",
+                "juni"
+            ],
+            [
+                "juli",
+                "juli"
+            ],
+            [
+                "august",
+                "aug."
+            ],
+            [
+                "september",
+                "sep."
+            ],
+            [
+                "oktober",
+                "okt."
+            ],
+            [
+                "november",
+                "nov."
+            ],
+            [
+                "desember",
+                "des."
+            ]
+        ],
+        "days": [
+            [
+                "Monday",
+                "Mon"
+            ],
+            [
+                "Tuesday",
+                "Tue"
+            ],
+            [
+                "Wednesday",
+                "Wed"
+            ],
+            [
+                "Thursday",
+                "Thu"
+            ],
+            [
+                "Friday",
+                "Fri"
+            ],
+            [
+                "Saturday",
+                "Sat"
+            ],
+            [
+                "Sunday",
+                "Sun"
+            ]
+        ],
+        "precision": {
+            "SMW_PREC_Y": "Y",
+            "SMW_PREC_YM": "F Y",
+            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMDT": "H:i:s, j F Y"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_DMY",
+                "SMW_MDY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ]
+    }
+}

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use Onoi\Cache\NullCache;
 use SMW\CacheFactory;
 
 /**
@@ -14,6 +16,8 @@ use SMW\CacheFactory;
  * @author mwjames
  */
 class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -50,14 +54,32 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPurgeCacheKey() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 42 ) );
+
+		$instance = new CacheFactory( 'hash' );
+
+		$this->assertInternalType(
+			'string',
+			$instance->getPurgeCacheKey( $title )
+		);
+	}
+
 	public function testCanConstructCacheOptions() {
 
 		$instance = new CacheFactory( 'hash' );
 
-		$cacheOptions = $instance->newCacheOptions( array(
+		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true,
 			'ttl' => 0
-		) );
+		] );
 
 		$this->assertTrue(
 			$cacheOptions->useCache
@@ -70,9 +92,9 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'RuntimeException' );
 
-		$cacheOptions = $instance->newCacheOptions( array(
+		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true
-		) );
+		] );
 	}
 
 	public function testCanConstructFixedInMemoryCache() {
@@ -107,6 +129,31 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'Onoi\Cache\Cache',
 			$instance->newMediaWikiCompositeCache( $instance->getMainCacheType() )
+		);
+	}
+
+	public function testCanConstructMediaWikiCache() {
+
+		$instance = new CacheFactory();
+
+		$this->assertInstanceOf(
+			Cache::class,
+			$instance->newMediaWikiCache( 'hash' )
+		);
+	}
+
+	public function testCanConstructCacheByType() {
+
+		$instance = new CacheFactory();
+
+		$this->assertInstanceOf(
+			NullCache::class,
+			$instance->newCacheByType( CACHE_NONE )
+		);
+
+		$this->assertInstanceOf(
+			Cache::class,
+			$instance->newCacheByType( 'hash' )
 		);
 	}
 

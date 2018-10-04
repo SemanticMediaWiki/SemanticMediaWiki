@@ -1,0 +1,281 @@
+{
+	"description": "Test in-text annotation with DISPLAYTITLE (#1410, #1611, `wgRestrictDisplayTitle`, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Dwc:vernacularName",
+			"contents": "[[Has type::Text]] {{DISPLAYTITLE:dwc:vernacularName}}"
+		},
+		{
+			"page": "Example/P0416/1",
+			"contents": "{{DISPLAYTITLE:Foo}} {{#subobject:Bar|text=abc|Display title of=123}}"
+		},
+		{
+			"page": "Example/P0416/Q1.1",
+			"contents": "{{#ask: [[~Foo]] OR [[~123*]] |?Display title of |format=table }}"
+		},
+		{
+			"page": "Example/P0416/2",
+			"contents": "{{DISPLAYTITLE:Foobar}} {{#subobject:Bar|text=abc}}"
+		},
+		{
+			"page": "Example/P0416/Q2.1",
+			"contents": "{{#ask: [[~Example/P0416/2*]] OR [[~Foobar*]] |?Display title of |format=table }}"
+		},
+		{
+			"page": "Example/P0416/3",
+			"contents": "[[dwc:vernacularName::Gewoon struisgras]] {{DISPLAYTITLE:Agrostis capillaris}}"
+		},
+		{
+			"page": "Example/P0416/Q3.1",
+			"contents": "{{#ask: [[~Agrostis*]] |?dwc:vernacularName |format=table }}"
+		},
+		{
+			"page": "Example/P0416/4",
+			"contents": "{{DISPLAYTITLE:Foo}} {{DEFAULTSORTKEY:BAR}}"
+		},
+		{
+			"page": "Example/P0416/5",
+			"contents": "{{DISPLAYTITLE:Foo}} {{#subobject:|@sortkey=SORT}} {{#show: Example/P0416/5 |?Has subobject}}"
+		},
+		{
+			"page": "Example/P0416/6/1",
+			"contents": "{{DISPLAYTITLE:P0416}} {{#subobject:@category=P0416}} [[Category:P0416]]"
+		},
+		{
+			"page": "Example/P0416/6/2",
+			"contents": "{{DISPLAYTITLE:P0416}} {{DEFAULTSORT:BAR}} {{#subobject:@category=P0416}} [[Category:P0416]]"
+		},
+		{
+			"page": "Example/P0416/6/3",
+			"contents": "{{DISPLAYTITLE:P0416}} {{#subobject:@category=P0416|@sortkey=DEF}} [[Category:P0416]]"
+		},
+		{
+			"page": "Example/P0416/7",
+			"contents": "{{DISPLAYTITLE:ABC & DEF}}, see #1611"
+		},
+		{
+			"page": "Example/P0416/8'a",
+			"contents": "{{DISPLAYTITLE:<span style=\"position: absolute; clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px);\">{{FULLPAGENAME}}</span>}} "
+		},
+		{
+			"page": "Example/P0416/Q6.1",
+			"contents": "{{#ask: [[Category:P0416]] [[~P0416*]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/P0416/Q6.2.1",
+			"contents": "{{#ask: [[Category:P0416]] [[~BAR]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/P0416/Q6.2.2",
+			"contents": "{{#ask: [[Category:P0416]] [[~BAR*]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/P0416/Q6.3",
+			"contents": "{{#ask: [[Category:P0416]] [[~DEF]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/P0416/Q7.1",
+			"contents": "{{#ask: [[Display title of::ABC & DEF]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/P0416/Q8.1",
+			"contents": "{{#ask: [[Display title of::Example/P0416/8'a]] |link=none |format=table |sort=# |order=asc}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0416/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_DTITLE",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"Foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0416/1#Bar",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_DTITLE",
+						"_TEXT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"abc",
+						"123"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0416/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0416/1\">Foo</a></td><td class=\"Display-title-of smwtype_txt\">Foo</td>",
+					"title=\"Example/P0416/1\">123#Bar</a></span></td><td class=\"Display-title-of smwtype_txt\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0416/Q2.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0416/2\">Foobar</a></td><td class=\"Display-title-of smwtype_txt\">Foobar</td>",
+					"title=\"Example/P0416/2\">Foobar#Bar</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0416/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/P0416/3\">Agrostis capillaris</a></td><td class=\"dwc:vernacularName smwtype_txt\">Gewoon struisgras</td>",
+					"title=\"Property:Dwc:vernacularName\">dwc:vernacularName</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5",
+			"subject": "Example/P0416/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_DTITLE",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"Foo",
+						"BAR"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6",
+			"subject": "Example/P0416/5#_47ab3a24a41d0687c9398e1886c38fe3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 1,
+					"propertyKeys": [
+						"_SKEY"
+					],
+					"propertyValues": [
+						"SORT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7",
+			"subject": "Example/P0416/5",
+			"assert-output": {
+				"to-contain": [
+					"Example/P0416/5#_47ab3a24a41d0687c9398e1886c38fe3\" title=\"Example/P0416/5\">Foo</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (sortkey is copied from root, [1 and 3 contain both P0416 as sort while 1(sobj) contains P0416# ... ])",
+			"subject": "Example/P0416/Q6.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/6/1</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0416/6/3</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/6/1#_4c8278b5823715af48e85d55f6118d4e</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 (sortkey is copied from root, strict ~BAR)",
+			"subject": "Example/P0416/Q6.2.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/6/2</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 (sortkey is copied from root, ~BAR*)",
+			"subject": "Example/P0416/Q6.2.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/6/2</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/P0416/6/2#_4c8278b5823715af48e85d55f6118d4e</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#11 (sobj sortkey)",
+			"subject": "Example/P0416/Q6.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/6/3#_b6f2e00f3a822fef179c8c2ea8e0c987</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12 Display title/query includes &",
+			"subject": "Example/P0416/Q7.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/7</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#13 Display title/query includes '",
+			"subject": "Example/P0416/Q8.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/P0416/8'a</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

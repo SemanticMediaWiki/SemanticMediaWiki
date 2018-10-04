@@ -1,0 +1,174 @@
+{
+	"description": "Test in-text annotation for use of restricted properties (#914, `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "To-verify-annotation-works",
+			"contents": "[[Has date::1 Jan 1970]] {{#set:|Has date=1 Jan 1970}} {{#subobject:|Has date=1 Jan 1970}}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "Modification-date",
+			"contents": "[[Modification date::1 Jan 1970]] {{#set:|Modification date=1 Jan 1970}} {{#subobject:|Modification date=1 Jan 1970}}"
+		},
+		{
+			"page": "Has-query",
+			"contents": "[[Has query::Invalid]] {{#set:|Has query=Invalid}} {{#subobject:|Has query=Invalid}}"
+		},
+		{
+			"page": "Has-subobject",
+			"contents": "[[Has subobject::Invalid]] {{#set:|Has subobject=Invalid}} {{#subobject:|Has subobject=Invalid}}"
+		},
+		{
+			"page": "Example/P0101/5",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/P0101/6",
+			"contents": "{{#set:|Has type=Page}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 verify that annotation/parser works",
+			"subject": "To-verify-annotation-works",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_date",
+						"_MDAT",
+						"_SKEY",
+						"_SOBJ"
+					],
+					"propertyValues": [
+						"1970-01-01"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1 Jan 1970"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 verify no free annotation using Modification date (_MDAT) is created by the system",
+			"subject": "Modification-date",
+			"assert-store": {
+				"errors": [],
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_SOBJ",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property &quot;Modification date&quot; has a restricted application area and cannot be used as annotation property by a user."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 verify no free annotation using Has query",
+			"subject": "Has-query",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_SOBJ",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property &quot;Has query&quot; has a restricted application area and cannot be used as annotation property by a user."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 verify no free annotation using Has subobject",
+			"subject": "Has-subobject",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_SOBJ",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Property &quot;Has subobject&quot; has a restricted application area and cannot be used as annotation property by a user."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 error on [[ ...]](NS_MAIN) with restricted declarative property",
+			"subject": "Example/P0101/5#_ERR20a1185193cbb57b6472d45844e0abbe",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-property-restricted-declarative-use\",\"Has type\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 error on #set(NS_MAIN) with restricted declarative property",
+			"subject": "Example/P0101/6#_ERR20a1185193cbb57b6472d45844e0abbe",
+			"assert-store": {
+				"semantic-data": {
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRP",
+						"_ERRT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-property-restricted-declarative-use\",\"Has type\"]"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

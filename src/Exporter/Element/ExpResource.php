@@ -28,6 +28,11 @@ class ExpResource extends ExpElement {
 	private $uri;
 
 	/**
+	 * @var boolean
+	 */
+	public $isImported = false;
+
+	/**
 	 * @note The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.
 	 *
@@ -44,7 +49,11 @@ class ExpResource extends ExpElement {
 
 		parent::__construct( $dataItem );
 
-		$this->uri = $uri;
+		// https://www.w3.org/2011/rdf-wg/wiki/IRIs/RDFConceptsProposal
+		// "... characters “<”, “>”, “{”, “}”, “|”, “\”, “^”, “`”, ‘“’ (double quote),
+		// and “ ” (space) were allowed ... are not allowed in IRIs, Data
+		// containing these characters in %-encoded form is fine ..."
+		$this->uri = str_replace( [ '"' ], [ '%22' ], $uri );
 	}
 
 	/**
@@ -54,6 +63,15 @@ class ExpResource extends ExpElement {
 	 */
 	public function isBlankNode() {
 		return $this->uri === '' || $this->uri{0} == '_';
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return boolean
+	 */
+	public function isImported() {
+		return $this->isImported;
 	}
 
 	/**
@@ -73,10 +91,10 @@ class ExpResource extends ExpElement {
 	 */
 	public function getSerialization() {
 
-		$serialization = array(
+		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()
-		);
+		];
 
 		return $serialization + parent::getSerialization();
 	}

@@ -1,0 +1,108 @@
+{
+	"description": "Test in-text annotation for `_dat` using JL/GR annotated values (en, `smwgDVFeatures`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0420/1",
+			"contents": "[[Has date::21 March 1685 JL]]"
+		},
+		{
+			"page": "Example/P0420/2",
+			"contents": "[[Has date::21 March 1685 Jl]]"
+		},
+		{
+			"page": "Example/P0420/3",
+			"contents": "[[Has date::21 March 1685 GR]]"
+		},
+		{
+			"page": "Example/P0420/1a",
+			"contents": "{{#ask: [[Example/P0420/1]] |?Has date |?Has date#GR |?Has date#JL }}"
+		},
+		{
+			"page": "Example/P0420/2a",
+			"contents": "{{#ask: [[Example/P0420/2]] |?Has date |?Has date#GR |?Has date#JL }}"
+		},
+		{
+			"page": "Example/P0420/3a",
+			"contents": "{{#ask: [[Example/P0420/3]] |?Has date |?Has date#GR |?Has date#JL }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 JL calendar date with time",
+			"subject": "Example/P0420/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_date",
+						"_SKEY",
+						"_MDAT"
+					],
+					"propertyValues": [
+						"1685-03-31"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"21 March 1685 JL"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 JL",
+			"subject": "Example/P0420/1a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">21 March 1685 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">31 March 1685</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">21 March 1685 <sup>JL</sup></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 JL",
+			"subject": "Example/P0420/2a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">21 March 1685 <sup>JL</sup></td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">31 March 1685</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336583.5\">21 March 1685 <sup>JL</sup></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 GR",
+			"subject": "Example/P0420/3a",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336573.5\">21 March 1685</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336573.5\">21 March 1685</td>",
+					"<td class=\"Has-date smwtype_dat\" data-sort-value=\"2336573.5\">11 March 1685 <sup>JL</sup></td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDVFeatures": [
+			"SMW_DV_TIMEV_CM"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

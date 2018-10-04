@@ -1,0 +1,124 @@
+{
+	"description": "Test `format=template` with self reference (#988, guard against template self-reference in ask/show query)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has blob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page property",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Page with annotation for template usage",
+			"contents": "[[Has blob property::Template one]] [[Has page property::Template two]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "TemplateWithReferenceToItself",
+			"contents": "<includeonly>{{#ask: [[Has page property::Template two]] OR [[Has page property::Template three]]|format=template|template=TemplateWithReferenceToItself}}</includeonly>"
+		},
+		{
+			"page": "PageContainsAskWithTemplateUsage",
+			"contents": "{{#ask: [[Has blob property::Template one]]|format=template|template=TemplateWithReferenceToItself|import-annotation=true}}"
+		},
+		{
+			"page": "PageContainsTemplateTransclusion",
+			"contents": "[[Has page property::Template three]] {{TemplateWithReferenceToItself}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 query profile (use invert query)",
+			"condition": "[[-Has query::PageContainsAskWithTemplateUsage]]",
+			"printouts": [
+				"Query size",
+				"Query string",
+				"Query depth"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"PageContainsAskWithTemplateUsage#0##_QUERY243ffe4b18342e8ae68152cedc5b1966",
+					"PageContainsAskWithTemplateUsage#0##_QUERYe295f9adeb904a1cbab1e30eb56d79ba"
+				],
+				"count": "2",
+				"datavalues": [
+					{
+						"property": "Query size",
+						"value": "1"
+					},
+					{
+						"property": "Query depth",
+						"value": "1"
+					},
+					{
+						"property": "Query string",
+						"value": "[[Has blob property::Template one]]"
+					},
+					{
+						"property": "Query size",
+						"value": "4"
+					},
+					{
+						"property": "Query depth",
+						"value": "1"
+					},
+					{
+						"property": "Query string",
+						"value": " <q> <q>[[Has page property::Template two]]</q>  OR  <q>[[Has page property::Template three]]</q> </q> "
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 query profile on page/template transcluded page (use invert query)",
+			"condition": "[[-Has query::PageContainsTemplateTransclusion]]",
+			"printouts": [
+				"Query size",
+				"Query string",
+				"Query depth"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"PageContainsTemplateTransclusion#0##_QUERY243ffe4b18342e8ae68152cedc5b1966"
+				],
+				"count": "1",
+				"datavalues": [
+					{
+						"property": "Query size",
+						"value": "4"
+					},
+					{
+						"property": "Query depth",
+						"value": "1"
+					},
+					{
+						"property": "Query string",
+						"value": " <q> <q>[[Has page property::Template two]]</q>  OR  <q>[[Has page property::Template three]]</q> </q> "
+					}
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

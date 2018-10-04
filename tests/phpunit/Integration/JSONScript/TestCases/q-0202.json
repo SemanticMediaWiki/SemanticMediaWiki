@@ -1,0 +1,123 @@
+{
+	"description": "Test `_CONC` for guarding against circular/self-reference which otherwise would fail with 'Maximum function nesting level ... reached, aborting' (#945, skip virtuoso)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has concept description",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Page one",
+			"contents": "[[Has concept description::Bar]]"
+		},
+		{
+			"page": "Page two",
+			"contents": "[[Has concept description::Foo]]"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-not-circular",
+			"contents": "{{#concept: [[Has concept description::+]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-circular",
+			"contents": "{{#concept: [[Concept:Concept-is-circular]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-circular-extra",
+			"contents": "{{#concept: [[Has concept description::+]] [[Concept:Concept-is-circular-extra]] }}"
+		},
+		{
+			"namespace": "SMW_NS_CONCEPT",
+			"page": "Concept-is-circular-extra-extra",
+			"contents": "{{#concept: [[Has concept description::+]] [[Has concept description::+]] OR [[Concept:Concept-is-circular-extra]] [[Concept:Concept-is-circular]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "concept",
+			"about": "#0 Check simple concept list",
+			"condition": "[[Concept:Concept-is-not-circular]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": "2"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-is-not-circular",
+					"count": "2"
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#1 Check for circular concept",
+			"condition": "[[Concept:Concept-is-circular]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 0,
+				"error": ">1"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-is-circular",
+					"count": null
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#2 Check for circular concept (conjunction)",
+			"condition": "[[Concept:Concept-is-circular-extra]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 0,
+				"error": ">1"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-is-circular-extra",
+					"count": null
+				}
+			]
+		},
+		{
+			"type": "concept",
+			"about": "#3 Check for circular concept (disjunctions)",
+			"condition": "[[Concept:Concept-is-circular-extra-extra]]",
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"error": ">1"
+			},
+			"conceptcache": [
+				{
+					"concept": "Concept-is-circular-extra-extra",
+					"count": 2
+				}
+			]
+		}
+	],
+	"settings": {
+		"smwgQueryResultCacheType": false,
+		"smwgQFilterDuplicates": false,
+		"smwgQConceptCaching": "CONCEPT_CACHE_NONE"
+	},
+	"meta": {
+		"skip-on": {
+			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
+		},
+		"version": "2",
+		"is-incomplete": false
+	}
+}

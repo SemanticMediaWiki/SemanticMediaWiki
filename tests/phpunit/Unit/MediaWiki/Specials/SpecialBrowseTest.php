@@ -23,11 +23,9 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->testEnvironment = new TestEnvironment( array(
-			'smwgBrowseShowInverse' => false,
-			'smwgBrowseShowAll'     => true,
-			'smwgBrowseByApi'       => true
-		) );
+		$this->testEnvironment = new TestEnvironment( [
+			'smwgBrowseFeatures' => SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API
+		] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -64,34 +62,34 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 	public function queryParameterProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array( 'smw-callout smw-callout-error' )
-		);
+			[ 'smw-callout smw-callout-error' ]
+		];
 
 		#1
-		$provider[] = array(
-			'Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
-			array( 'smw-callout smw-callout-error' )
-		);
+		$provider[] = [
+			':Has-20foo/http:-2F-2Fexample.org-2Fid-2FCurly-2520Brackets-257B-257D',
+			[ 'smw-callout smw-callout-error' ]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo/Bar',
-			array(
-				'data-subject="Foo/Bar#0#"',
-				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true}"'
-			)
-		);
+			[
+				'data-subject="Foo/Bar#0##"',
+				'data-options="{&quot;dir&quot;:null,&quot;group&quot;:null,&quot;printable&quot;:null,&quot;offset&quot;:null,&quot;including&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;showGroup&quot;:false,&quot;showSort&quot;:false,&quot;api&quot;:true,&quot;valuelistlimit.out&quot;:&quot;200&quot;,&quot;valuelistlimit.in&quot;:&quot;20&quot;}"'
+			]
+		];
 
 		#3
-		$provider[] = array(
-			'Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
-			array(
+		$provider[] = [
+			':Main-20Page-23_QUERY140d50d705e9566904fc4a877c755964',
+			[
 				'data-subject="Main_Page#0##_QUERY140d50d705e9566904fc4a877c755964"',
-				'data-options="{&quot;dir&quot;:null,&quot;offset&quot;:null,&quot;printable&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true}"'
-			)
-		);
+				'data-options="{&quot;dir&quot;:null,&quot;group&quot;:null,&quot;printable&quot;:null,&quot;offset&quot;:null,&quot;including&quot;:null,&quot;showInverse&quot;:false,&quot;showAll&quot;:true,&quot;showGroup&quot;:false,&quot;showSort&quot;:false,&quot;api&quot;:true,&quot;valuelistlimit.out&quot;:&quot;200&quot;,&quot;valuelistlimit.in&quot;:&quot;20&quot;}"'
+			]
+		];
 
 		return $provider;
 	}

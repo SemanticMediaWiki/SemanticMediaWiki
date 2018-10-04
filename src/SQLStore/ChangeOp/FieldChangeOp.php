@@ -15,13 +15,22 @@ class FieldChangeOp {
 	/**
 	 * @var array
 	 */
-	private $changeOp = array();
+	private $changeOp = [];
+
+	/**
+	 * @var string
+	 */
+	private $type;
 
 	/**
 	 * @since 2.4
+	 *
+	 * @param array $changeOp
+	 * @param string|null $type
 	 */
-	public function __construct( array $changeOp = array() ) {
+	public function __construct( array $changeOp = [], $type = null ) {
 		$this->changeOp = $changeOp;
+		$this->type = $type;
 	}
 
 	/**
@@ -69,6 +78,13 @@ class FieldChangeOp {
 	 */
 	public function getChangeOp() {
 		return $this->changeOp;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function __toString() {
+		return json_encode( [ $this->type => $this->changeOp ] );
 	}
 
 }

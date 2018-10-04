@@ -15,7 +15,7 @@
  *
  * @ingroup SMW
  */
-class SMWRDFXMLSerializer extends SMWSerializer{
+class SMWRDFXMLSerializer extends SMWSerializer {
 	/**
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current
@@ -63,7 +63,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			"\txmlns:wiki=\"&wiki;\"\n" .
 			"\txmlns:category=\"&category;\"\n" .
 			"\txmlns:property=\"&property;\"";
-		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true );
+		$this->global_namespaces = [ 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true ];
 		$this->post_ns_buffer .= ">\n\n";
 	}
 
@@ -180,11 +180,20 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 */
 	protected function serializeExpLiteral( SMWExpNsResource $expResourceProperty, SMWExpLiteral $expLiteral, $indent ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
-		if ( $expLiteral->getDatatype() !== '' ) {
+
+		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
+		// "... to indicate that the included content is in the given language.
+		// Typed literals which includes XML literals are not affected by this
+		// attribute. The most specific in-scope language present (if any) is
+		// applied to property element string literal ..."
+		if ( $expLiteral->getDatatype() !== '' && $expLiteral->getLang() !== '' ) {
+			$this->post_ns_buffer .= ' xml:lang="' . $expLiteral->getLang() . '"';
+		} elseif ( $expLiteral->getDatatype() !== '' ) {
 			$this->post_ns_buffer .= ' rdf:datatype="' . $expLiteral->getDatatype() . '"';
 		}
-		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() ) .
-			'</' . $expResourceProperty->getQName() . ">\n";
+
+		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() );
+		$this->post_ns_buffer .= '</' . $expResourceProperty->getQName() . ">\n";
 	}
 
 	/**
@@ -262,7 +271,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 * @return string
 	 */
 	protected function makeAttributeValueString( $string ) {
-		return str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $string );
+		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 
 }

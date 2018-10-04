@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
 
+use SMW\ApplicationFactory;
 use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
@@ -14,6 +16,16 @@ use SMW\Deserializers\DVDescriptionDeserializer\SomeValueDescriptionDeserializer
  * @author mwjames
  */
 class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
+
+	private $dataItemFactory;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->dataItemFactory = ApplicationFactory::getInstance()->getDataItemFactory();
+	}
 
 	public function testCanConstruct() {
 
@@ -43,14 +55,13 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ) )
+			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ),
 				$this->equalTo( false ) );
 
 		$dataValue->expects( $this->any() )
@@ -59,11 +70,11 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new \SMWDITime( 1, '1970' ) ) );
+			->will( $this->returnValue($this->dataItemFactory->newDITime( 1, '1970' ) ) );
 
 		$dataValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
 
 		$instance = new SomeValueDescriptionDeserializer();
 		$instance->setDataValue( $dataValue );
@@ -81,15 +92,14 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'setUserValue' ) )
+			->setMethods( [ 'setUserValue' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'setUserValue' )
 			->with(
 				$this->anything(),
-				$this->equalTo( false ),
-				$this->equalTo( true ) );
+				$this->equalTo( false ) );
 
 		$instance = new SomeValueDescriptionDeserializer();
 		$instance->setDataValue( $dataValue );
@@ -101,7 +111,7 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'isValid' ) )
+			->setMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->any() )
@@ -127,15 +137,49 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDataValue( $dataValue );
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( array() );
+		$instance->deserialize( [] );
+	}
+
+	public function testWikiPageValueOnNonMainNamespace() {
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'setUserValue' )
+			->with(
+				$this->anything(),
+				$this->equalTo( false ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( '~Foo', NS_HELP ) ) );
+
+		$dataValue->expects( $this->any() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Foo' ) ) );
+
+		$instance = new SomeValueDescriptionDeserializer();
+		$instance->setDataValue( $dataValue );
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Language\Conjunction',
+			$instance->deserialize( 'Help:~Foo' )
+		);
 	}
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			'\SMW\Query\Language\ValueDescription'
-		);
+		];
 
 		return $provider;
 	}
@@ -143,13 +187,13 @@ class SomeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function likeNotLikeProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'~Foo'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'!~Foo'
-		);
+		];
 
 		return $provider;
 	}

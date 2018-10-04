@@ -24,6 +24,16 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructProfileAnnotatorFactory() {
+
+		$instance = new QueryFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Query\ProfileAnnotatorFactory',
+			$instance->newProfileAnnotatorFactory()
+		);
+	}
+
 	public function testCanConstructQuery() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
@@ -83,8 +93,34 @@ class QueryFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMWQueryParser',
+			'\SMW\Query\Parser',
 			$instance->newQueryParser()
+		);
+	}
+
+	public function testCanConstructQueryResult() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->once() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$instance = new QueryFactory();
+
+		$this->assertInstanceOf(
+			'\SMWQueryResult',
+			$instance->newQueryResult( $store, $query )
 		);
 	}
 

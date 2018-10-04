@@ -2,12 +2,14 @@
 
 namespace SMW\Maintenance;
 
+use Exception;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
+use SMW\ApplicationFactory;
 use SMW\Options;
 use SMW\Store;
 use SMWQueryProcessor;
@@ -27,9 +29,9 @@ class DistinctEntityDataRebuilder {
 	private $store;
 
 	/**
-	 * @var TitleCreator
+	 * @var TitleFactory
 	 */
-	private $titleCreator;
+	private $titleFactory;
 
 	/**
 	 * @var Options
@@ -42,9 +44,14 @@ class DistinctEntityDataRebuilder {
 	private $reporter;
 
 	/**
+	 * @var ExceptionFileLogger
+	 */
+	private $exceptionFileLogger;
+
+	/**
 	 * @var array
 	 */
-	private $exceptionLog = array();
+	private $filters = [];
 
 	/**
 	 * @var integer
@@ -55,11 +62,11 @@ class DistinctEntityDataRebuilder {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param TitleCreator $titleCreator
+	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleCreator $titleCreator ) {
+	public function __construct( Store $store, TitleFactory $titleFactory ) {
 		$this->store = $store;
-		$this->titleCreator = $titleCreator;
+		$this->titleFactory = $titleFactory;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -82,6 +89,15 @@ class DistinctEntityDataRebuilder {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param ExceptionFileLogger $exceptionFileLogger
+	 */
+	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ) {
+		$this->exceptionFileLogger = $exceptionFileLogger;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return int
@@ -93,70 +109,70 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.4
 	 *
-	 * @return array
-	 */
-	public function getExceptionLog() {
-		return $this->exceptionLog;
-	}
-
-	/**
-	 * @since 2.4
-	 *
 	 * @return boolean
 	 */
 	public function doRebuild() {
 
-		$this->reportMessage(
-			"Refreshing selected pages"  .
-			( $this->options->has( 'redirects' ) ? ' (redirects)' : '' ) .
-			( $this->options->has( 'categories' ) ? ' (categories)' : '' ) .
-			( $this->options->has( 'query' ) ? ' (queries)' : '' ) .
-			( $this->options->has( 'p' ) ? ' (properties)' : '' ) .
-			".\n"
-		);
+		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
+		( $this->options->has( 'categories' ) ? 'category' : '' ) .
+		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) .')' : '' ) .
+		( $this->options->has( 'p' ) ? 'property' : '' );
 
-		$pages = array();
-		$this->setNamespaceFiltersFromOptions();
+		$pages = [];
+		$this->findFilters();
 
 		if ( $this->options->has( 'page' ) ) {
 			$pages = explode( '|', $this->options->get( 'page' ) );
 		}
 
-		$pages = array_merge( $this->getPagesFromQuery(), $pages, $this->getPagesFromFilters(), $this->getRedirectPages() );
+		$pages = $this->normalize(
+			[
+				$this->getPagesFromQuery(),
+				$pages,
+				$this->getPagesFromFilters(),
+				$this->getRedirectPages()
+			]
+		);
 
-		$this->normalizeBulkOfPages( $pages );
-		$numPages = count( $pages );
+		$total = count( $pages );
+		$this->reportMessage( "Rebuilding $type pages ...\n" );
+		$this->reportMessage( "   ... selecting $total pages ...\n" );
 
-		foreach ( $pages as $page ) {
+		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+
+		foreach ( $pages as $key => $page ) {
 
 			$this->rebuildCount++;
-			$percentage = round( ( $this->rebuildCount / $numPages ) * 100 ) ."%";
+			$progress = round( ( $this->rebuildCount / $total ) * 100 );
 
-			$this->reportMessage(
-				sprintf( "%-16s%s\n", "($this->rebuildCount/$numPages $percentage)", "Page " . $page->getPrefixedDBkey() ),
-				$this->options->has( 'v' )
-			);
+			if ( !$this->options->has( 'v' ) ) {
+				$this->reportMessage(
+					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $this->rebuildCount, $progress ) )
+				);
+			} else {
+				$this->reportMessage(
+					sprintf( "%-16s%s\n", "   ... ($this->rebuildCount/$total $progress)", "Page " . $key ),
+					$this->options->has( 'v' )
+				);
+			}
 
-			$this->doExecuteUpdateJobFor(
-				$page
-			);
-
-			$this->doPrintDotProgressIndicator(
-				$this->options->has( 'v' ),
-				$percentage
-			);
+			$this->doUpdate( $jobFactory, $page );
 		}
 
-		$this->reportMessage( "\n\n$this->rebuildCount pages refreshed.\n" );
+		$this->reportMessage( ( $this->options->has( 'v' ) ? "" : "\n" ) . "   ... done.\n" );
 
 		return true;
 	}
 
-	private function doExecuteUpdateJobFor( $page ) {
+	private function doUpdate( $jobFactory, $page ) {
 
-		$updatejob = new UpdateJob( $page, array(
-			'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
-		) );
+		$updatejob = $jobFactory->newUpdateJob(
+			$page,
+			[
+				UpdateJob::FORCED_UPDATE => true,
+				'shallowUpdate' => $this->options->has( 'shallow-update' )
+			]
+		);
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			return $updatejob->run();
@@ -164,16 +180,13 @@ class DistinctEntityDataRebuilder {
 
 		try {
 			$updatejob->run();
-		} catch ( \Exception $e ) {
-			$this->exceptionLog[$page->getPrefixedDBkey()] = array(
-				'msg'   => $e->getMessage(),
-				'trace' => $e->getTraceAsString()
-			);
+		} catch ( Exception $e ) {
+			$this->exceptionFileLogger->recordException( $page->getPrefixedDBkey(), $e );
 		}
 	}
 
-	private function setNamespaceFiltersFromOptions() {
-		$this->filters = array();
+	private function findFilters() {
+		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
@@ -185,13 +198,13 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	private function getPagesFromQuery() {
 
 		if ( !$this->options->has( 'query' ) ) {
-			return array();
+			return [];
 		}
 
 		$queryString = $this->options->get( 'query' );
@@ -199,7 +212,7 @@ class DistinctEntityDataRebuilder {
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
+			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
@@ -207,7 +220,7 @@ class DistinctEntityDataRebuilder {
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array() )
+			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
@@ -217,7 +230,7 @@ class DistinctEntityDataRebuilder {
 
 	private function getPagesFromFilters() {
 
-		$pages = array();
+		$pages = [];
 
 		if ( !$this->hasFilters() ) {
 			return $pages;
@@ -235,7 +248,7 @@ class DistinctEntityDataRebuilder {
 	private function getRedirectPages() {
 
 		if ( !$this->options->has( 'redirects' ) ) {
-			return array();
+			return [];
 		}
 
 		$titleLookup = new TitleLookup(
@@ -245,47 +258,36 @@ class DistinctEntityDataRebuilder {
 		return $titleLookup->getRedirectPages();
 	}
 
-	private function normalizeBulkOfPages( &$pages ) {
+	private function normalize( $list ) {
 
-		$titleCache = array();
+		$titleCache = [];
+		$p = [];
 
-		foreach ( $pages as $key => &$page ) {
+		foreach ( $list as $pages ) {
+			foreach ( $pages as $key => $page ) {
 
-			if ( $page instanceof DIWikiPage ) {
-				$page = $page->getTitle();
-			}
+				if ( $page instanceof DIWikiPage ) {
+					$page = $page->getTitle();
+				}
 
-			if ( !$page instanceof Title ) {
-				$page = $this->titleCreator->createFromText( $page );
-			}
+				if ( !$page instanceof Title ) {
+					$page = $this->titleFactory->newFromText( $page );
+				}
 
-			// Filter out pages with fragments (subobjects)
-			if ( isset( $titleCache[$page->getPrefixedDBkey()] ) ) {
-				unset( $pages[$key] );
-			} else{
-				$titleCache[$page->getPrefixedDBkey()] = true;
+				$id = $page->getPrefixedDBkey();
+
+				if ( !isset( $p[$id] ) ) {
+					$p[$id] = $page;
+				}
 			}
 		}
 
-		unset( $titleCache );
+		return $p;
 	}
 
 	private function reportMessage( $message, $output = true ) {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
-		}
-	}
-
-	private function doPrintDotProgressIndicator( $verbose, $progress ) {
-
-		if ( ( $this->rebuildCount - 1 ) % 60 === 0 ) {
-			$this->reportMessage( "\n", !$verbose );
-		}
-
-		$this->reportMessage( '.', !$verbose );
-
-		if ( $this->rebuildCount % 60 === 0 ) {
-			$this->reportMessage( " $progress", !$verbose );
 		}
 	}
 

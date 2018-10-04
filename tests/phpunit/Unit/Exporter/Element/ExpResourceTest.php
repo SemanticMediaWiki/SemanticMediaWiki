@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpResource
@@ -17,6 +18,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ExpResourceTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -107,40 +110,40 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	public function constructorProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'', null,
 			true,
-			array(
+			[
 				'type' => ExpResource::TYPE_RESOURCE,
 				'uri'  => '',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Foo', null,
 			false,
-			array(
+			[
 				'type' => ExpResource::TYPE_RESOURCE,
 				'uri'  => 'Foo',
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Foo', new DIWikiPage( 'Foo', NS_MAIN ),
 			false,
-			array(
+			[
 				'type' => ExpResource::TYPE_RESOURCE,
 				'uri'  => 'Foo',
-				'dataitem' => array(
+				'dataitem' => [
 					'type' => DataItem::TYPE_WIKIPAGE,
-					'item' => 'Foo#0#'
-				)
-			)
-		);
+					'item' => 'Foo#0##'
+				]
+			]
+		];
 
 		return $provider;
 	}
@@ -148,9 +151,9 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	public function invalidConstructorProvider() {
 
 		#0
-		$provider[] = array(
-			array(), null
-		);
+		$provider[] = [
+			[], null
+		];
 
 		return $provider;
 	}
@@ -158,31 +161,31 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	public function serializationMissingElementProvider() {
 
 		#0
-		$provider[] = array(
-			array()
-		);
+		$provider[] = [
+			[]
+		];
 
 		#1 Missing dataitem
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpResource::TYPE_RESOURCE
-			)
-		);
+			]
+		];
 
 		#2 Bogus type
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => 'BogusType'
-			)
-		);
+			]
+		];
 
 		#3 Missing uri
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'type' => ExpResource::TYPE_RESOURCE,
 				'dataitem' => null
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

@@ -72,7 +72,7 @@ class MagicWordsFinder {
 		// Filter empty lines
 		$words = array_values( array_filter( $words ) );
 
-		if ( $this->hasExtensionData() ) {
+		if ( $this->hasExtensionData() && $words !== [] ) {
 			return $this->parserOutput->setExtensionData( 'smwmagicwords', $words );
 		}
 
@@ -94,7 +94,7 @@ class MagicWordsFinder {
 			return $this->parserOutput->mSMWMagicWords;
 		}
 
-		return array();
+		return [];
 	}
 
 	/**

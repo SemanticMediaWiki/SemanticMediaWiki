@@ -1,0 +1,127 @@
+{
+	"description": "Test `_txt` query for simple assignments, NS_HELP, and special chars",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has blob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has another blob property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "abc-123&^*",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Examples/Q0101/1",
+			"contents": "[[Has blob property::Value One]], [[Has another blob property::Value One]]"
+		},
+		{
+			"page": "Examples/Q0101/2",
+			"namespace": "NS_HELP",
+			"contents": "[[Has blob property::Value Two]], [[Has another blob property::Value Two]]"
+		},
+		{
+			"page": "Examples/Q0101/3",
+			"contents": "[[Has text::foo-123#&^*%<1?=/->\"']]"
+		},
+		{
+			"page": "Examples/Q0101/4",
+			"contents": "[[abc-123&^*::foo-123#&^*%<1?=/->\"']]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 Simple disjunctive blob query",
+			"condition": "[[Has blob property::Value One]] OR [[Has another blob property::Value Two]]",
+			"printouts": [
+				"Has blob property"
+			],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Examples/Q0101/1#0##",
+					"Examples/Q0101/2#12##"
+				],
+				"count": "2",
+				"dataitems": [
+					{
+						"type": "_txt",
+						"value": "Value Two"
+					},
+					{
+						"type": "_txt",
+						"value": "Value One"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 Simple conjunctive blob query",
+			"condition": "[[Has blob property::Value One]][[Has another blob property::Value One]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Examples/Q0101/1#0##"
+				],
+				"count": "1"
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 with special chars",
+			"condition": "[[Has text::foo-123#&^*%<1?=/->\"']]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Examples/Q0101/3#0##"
+				],
+				"count": 1
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 with special chars",
+			"condition": "[[abc-123&^*::foo-123#&^*%<1?=/->\"']]",
+			"parameters" : {
+				"limit" : "10"
+			},
+			"assert-queryresult": {
+				"results": [
+					"Examples/Q0101/4#0##"
+				],
+				"count": 1
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_HELP": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

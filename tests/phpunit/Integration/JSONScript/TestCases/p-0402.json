@@ -1,0 +1,239 @@
+{
+	"description": "Test in-text parsing for double colon annotation such as `::::` or `:::` (#1066, #1075, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Double-single-colon",
+			"contents": "[[Has page:::Page/::Foo:Bar]] [[Has text:::Text/::Foo:Bar]] [[Has url::http://example.org/::Foo:Bar]]"
+		},
+		{
+			"page": "Double-double-colon",
+			"contents": "//::Page/::Foo:Bar is not allowed as title; [[Has text::::Text/::Foo:Bar]] [[Has url::http://example.org/:::Foo:Bar]]"
+		},
+		{
+			"page": "Example/P0402/3",
+			"contents": "[[Has date:::1 Jan 1970]]"
+		},
+		{
+			"page": "Number-error",
+			"contents": "[[Has number:::123]]"
+		},
+		{
+			"page": "Page-no-error",
+			"contents": "[[Has page:::123|abc]] [[Has page:::xyz]]"
+		},
+		{
+			"page": "Page-error",
+			"contents": "[[Has page::::123|abc]] [[Has page::::xyz]]"
+		},
+		{
+			"page": "Example/P0402/7",
+			"contents": "[[Has date::-901 AD]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Double-single-colon",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page",
+						"Has_text",
+						"Has_url"
+					],
+					"propertyValues": [
+						"Page/::Foo:Bar",
+						":Text/::Foo:Bar",
+						"http://example.org/::Foo:Bar"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Page/::Foo:Bar",
+					"Text/::Foo:Bar",
+					"http://example.org/::Foo:Bar"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (: as leading text element to be converted to an indent)",
+			"subject": "Double-double-colon",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_text",
+						"Has_url"
+					],
+					"propertyValues": [
+						"::Text/::Foo:Bar",
+						"http://example.org/:::Foo:Bar"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<dd>Text/::Foo:Bar",
+					"http://example.org/:::Foo:Bar"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Page-no-error",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_page"
+					],
+					"propertyValues": [
+						"123",
+						"Xyz"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"abc",
+					"xyz"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Page-error",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"abc",
+					"&#58;&#58;xyz"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0402/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has_date"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"1 Jan 1970"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5",
+			"subject": "Number-error",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&#58;123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 negative year with AD/CE era is not allowed",
+			"subject": "Example/P0402/7",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"&quot;-901 AD&quot; contains an extrinsic dash or other characters that are invalid for a date interpretation."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

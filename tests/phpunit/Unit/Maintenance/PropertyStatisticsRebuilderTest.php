@@ -22,29 +22,42 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\PropertyStatisticsRebuilder',
+			PropertyStatisticsRebuilder::class,
 			new PropertyStatisticsRebuilder( $store, $propertyStatisticsStore )
 		);
 	}
 
-	public function testRebuildWithValidPropertyStatisticsStoreInsertUsageCount() {
+	public function testRebuildStatisticsStoreAndInsertCountRows() {
 
-		$arbitraryPropertyTableName = 'allornothing';
+		$tableName = 'Foobar';
 
-		$propertySelectRow = new \stdClass;
-		$propertySelectRow->count = 1111;
+		$uRow = new \stdClass;
+		$uRow->count = 1111;
 
-		$selectResult = array(
-			'smw_title'   => 'Foo',
-			'smw_id'      => 9999
+		$nRow = new \stdClass;
+		$nRow->count = 1;
+
+		$res = [
+			'smw_title' => 'Foo',
+			'smw_id' => 9999
+		];
+
+		$resultWrapper = new FakeResultWrapper(
+			[ (object)$res ]
 		);
 
-		$selectResultWrapper = new FakeResultWrapper( array( (object)$selectResult ) );
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->atLeastOnce() )
+			->method( 'getTableFields' )
+			->will( $this->returnValue( [] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -52,15 +65,16 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$database->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $selectResultWrapper ) );
+			->will( $this->returnValue( $resultWrapper ) );
 
-		$database->expects( $this->once() )
+		$database->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->with( $this->stringContains( $arbitraryPropertyTableName ),
+			->with(
+				$this->stringContains( $tableName ),
 				$this->anything(),
-				$this->equalTo( array( 'p_id' => 9999 ) ),
+				$this->equalTo( [ 'p_id' => 9999 ] ),
 				$this->anything() )
-			->will( $this->returnValue( $propertySelectRow ) );
+			->will( $this->onConsecutiveCalls( $uRow, $nRow ) );
 
 		$store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -71,17 +85,22 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$store->expects( $this->atLeastOnce() )
-			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array(
-				$this->getNonFixedPropertyTable( $arbitraryPropertyTableName ) )
-			) );
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\Store\PropertyStatisticsStore' )
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $this->newPropertyTable( $tableName ) ] ) );
+
+		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyStatisticsStore->expects( $this->atLeastOnce() )
-			->method( 'insertUsageCount' );
+			->method( 'insertUsageCount' )
+			->with(
+				$this->equalTo( 9999 ),
+				$this->equalTo( [ 1110, 1 ] ) );
 
 		$instance = new PropertyStatisticsRebuilder(
 			$store,
@@ -91,17 +110,16 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->rebuild();
 	}
 
-	protected function getNonFixedPropertyTable( $propertyTableName ) {
+	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
 
-		$propertyTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array(
-				'isFixedPropertyTable',
-				'getName' ) )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )
 			->getMock();
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->will( $this->returnValue( $fixedPropertyTable ) );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getName' )

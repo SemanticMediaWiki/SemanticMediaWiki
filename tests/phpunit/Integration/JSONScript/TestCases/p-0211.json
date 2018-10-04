@@ -1,0 +1,97 @@
+{
+	"description": "Test `#set`/`#subobject` to import annotation via `@json` syntax (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/P0211/1",
+			"contents": {
+				"import-from": "/../Fixtures/p-0211.1.txt"
+			}
+		},
+		{
+			"page": "Example/P0211/2",
+			"contents": {
+				"import-from": "/../Fixtures/p-0211.2.txt"
+			}
+		},
+		{
+			"page": "Example/P0211/3",
+			"contents": {
+				"import-from": "/../Fixtures/p-0211.3.txt"
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #subobject",
+			"subject": "Example/P0211/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SOBJ",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 #set",
+			"subject": "Example/P0211/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 10,
+					"propertyKeys": [
+						"Kind",
+						"_cod",
+						"IcdId",
+						"Label",
+						"Link",
+						"Superclasses",
+						"Subclasses",
+						"Id",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #set depth issue",
+			"subject": "Example/P0211/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
