@@ -43,7 +43,8 @@
 			"DePlusJean",
 			"Oupsa",
 			"Eduardo Addad de Oliveira",
-			"Hmevidia"
+			"Hmevidia",
+			"Tartare"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -623,11 +624,11 @@
 	"smw-types-default": "\"$1\" est un type de données interne.",
 	"smw-types-help": "De plus amples informations et des exemples peuvent être trouvés sur la [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 page d'aide].",
 	"smw-type-anu": "« $1 » est une variante du type de données [[Special:Types/URL|URL]] principalement utilisée pour une déclaration d'exportation de type  \"owl:AnnotationProperty\" .",
-	"smw-type-boo": "« $1 » est un type de données de base pour décrire une valeur vrai/faux.",
+	"smw-type-boo": "« $1 » est un type de données de base pour décrire une valeur vraie/fausse.",
 	"smw-type-cod": "« $1 » est une variante du type de données [[Special:Types/Text|Text]] à utiliser pour les textes techniques de longueur quelconque, comme du code source.",
 	"smw-type-geo": "« $1 » est un type de données qui décrit des emplacements géographiques et nécessite l’extension [https://www.semantic-mediawiki.org/wiki/Extension:Maps « Maps »] .",
 	"smw-type-tel": "« $1 » est un type de données spécial pour décrire les numéros de téléphone internationaux conformément à la RFC 3966.",
-	"smw-type-txt": "« $1 » est un type de données de base pour décrire les chaînes de longueur arbitraire.",
+	"smw-type-txt": "« $1 » est un type de données de base pour décrire les chaînes de caractères de longueur arbitraire.",
 	"smw-type-dat": "« $1 » est un type de données de base pour représenter des points dans le temps, dans un format unifié.",
 	"smw-type-ema": "« $1 » est un type de données spécial servant à représenter un courriel.",
 	"smw-type-tem": "« $1 » est un type de données numérique spécial servant à représenter une temperature.",
