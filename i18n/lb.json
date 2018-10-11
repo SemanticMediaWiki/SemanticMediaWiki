@@ -265,7 +265,7 @@
 	"smw-datavalue-invalid-number": "\"$1\" kann net als Zuel interpretéiert ginn.",
 	"smw-types-list": "Lëscht vun Datentypen",
 	"smw-types-default": "\"$1\" ass en agebauten Datentyp.",
-	"smw-types-help": "Méi Informatiounen a Beispiller fannt Dir op der [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit].",
+	"smw-types-help": "Méi Informatiounen a Beispiller fannt Dir op dëser [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hëllef-Säit].",
 	"smw-type-tab-types": "Typen",
 	"smw-type-tab-errors": "Feeler",
 	"smw-type-contextual": "Kontextuel",
