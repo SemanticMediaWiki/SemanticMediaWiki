@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.0
 
-The final release was not made yet and is scheduled to be available in Mid Oktober 2018.
+Released on October 11, 2018.
 
 ## Highlights
 
@@ -37,9 +37,9 @@ Various effort have been put into improving the performance of the software, mos
 
 ## Upgrading
 
-Even though Semantic MediaWiki now supports the `extension.json` registration approach (#1732), `enableSemantics` remains the sole point of activiation for SMW itself to ensure that data and objects are prepared in advanced and users don't have to modify any existing settings in their `LocalSettings.php`.
+Even though Semantic MediaWiki now supports the `extension.json` registration approach (#1732), `enableSemantics` remains the sole point of activiation for SMW itself to ensure that data and objects are prepared in advanced and users do not have to modify any existing settings in their `LocalSettings.php`.
 
-This release requires (#2065, #2461, #2499) to run the `setupStore.php` or `update.php` script and a missing upgrade process will redirect users to an [error message](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) to remind him or her of a required action. Note that running the schema update may take quite long (minutes on a medium sized site, many hours on a large site). 
+This release requires (#2065, #2461, #2499) to run the `setupStore.php` or `update.php` script and a missing upgrade process will redirect users to an [error message](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) to remind him or her of a required action. Note that running the schema update may take quite long (minutes on a medium sized site, many hours on a large site). **Note that SMW requires write access to the code directory meaning that you currently cannot update. This will be fixed in the following relase allowing to configure an alternative directory for this purpose.**
 
 After the upgrade, please check the "Deprecation notices" section in `Special:SemanticMediaWiki` to adapt and modify listed deprecated settings.
 
@@ -144,12 +144,12 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 * [#2348](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2348) Allow showing annotations even if they are improper for datatype "Text"
 * [#2435](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2435) Added filtering of invisible characters (non-printable, shyness etc.) to armor against incorrect annotations
 * [#2453](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2453) Changed the approach on how referenced properties during an article delete are generated to optimize the update dispatcher
-* [#2471](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2471) Added [`$smwgUseCategoryRedirect`](https://www.semantic-mediawiki.org/wiki/Help:$smwgUseCategoryRedirect) setting to allow finding redirects on categories
+* [#2471](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2471) Added [`SMW_CAT_REDIRECT`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCategoryFeatures) option to allow finding redirects on categories
 * [#2494](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2494) Added [`$smwgChangePropagationProtection`](https://www.semantic-mediawiki.org/wiki/Help:$smwgChangePropagationProtection) and changed the approach on how property modifications are propagated
 * [#2543](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2543) Extended [`EditPageHelp`](https://www.semantic-mediawiki.org/wiki/Help:$smwgEnabledEditPageHelp) to be disabled using a user preference
 * [#2561](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2561) Added listing of improper assignments to the property page for an easier visual control
 * [#2595](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2595) Improved the content navigation in `Special:SemanticMediaWiki`
-* [#2600](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2600) Added [`$smwgCreateProtectionRight`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCreateProtectionRight) setting to control the creation of new properties and hereby annotations as part of the [authority mode](https://www.semantic-mediawiki.org/wiki/Authority_mode)
+* [#2600](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2600) Added [`$smwgCreateProtectionRight`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCreateProtectionRight) setting to control the creation of new properties and hereby annotations as part of the [authority mode](https://www.semantic-mediawiki.org/wiki/Help:Authority_mode)
 * [#2615](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2615) Added `filter=unapprove` to `Special:WantedProperties`
 * [#2632](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2632) Added [uniqueness violation](https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness) check on the property page for the property label used
 * [#2699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2699) Added an [input assistance](https://www.semantic-mediawiki.org/wiki/Help:Input_assistance) for the `Special:Ask` condition textbox
@@ -178,7 +178,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 * [#2913](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2913) Added a job queue watchlist feature and the [`$smwgJobQueueWatchlist`](https://www.semantic-mediawiki.org/wiki/Help:$smwgJobQueueWatchlist) setting
 * [#2922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2922) Added `SMW_BROWSE_SHOW_SORTKEY` flag to the [`$smwgBrowseFeatures`](https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseFeatures) setting
 * [#2930](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2930) Added limit to value selection on the property page
-* [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932) Added `removeDuplicateEntities.php` script to remove duplicate entities
+* [#2932](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2932) Added ["removeDuplicateEntities.php"](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_removeDuplicateEntities.php) script to remove duplicate entities
 * [#2933](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2933) Added [`$smwgDefaultLoggerRole`](https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultLoggerRole) setting to define logging granularity for Semantic MediaWiki
 * [#2973](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2973) Set initial stats entry for non-fixed predefined properties
 * [#3017](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3017) Added the [`$smwgCompactLinkSupport`](https://www.semantic-mediawiki.org/wiki/Help:$smwgCompactLinkSupport) setting to compact links produced by `Special:Ask` and `Special:Browse`
@@ -341,4 +341,29 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 
 ## Contributors
 
-...
+- 1036 - James Hong Kong
+-  147 - translatewiki.net
+-  120 - Karsten Hoffmeyer
+-   50 - Jeroen De Dauw
+-   13 - Stephan Gambke
+-    7 - Kumioko
+-    6 - Iván
+-    6 - Zoran Dori
+-    4 - James Montalvo
+-    4 - Máté Szabó
+-    2 - Jaider Andrade Ferreira
+-    2 - Josef Konrad
+-    2 - TK-999
+-    1 - Amir E. Aharoni
+-    1 - C. Scott Ananian
+-    1 - Kunal Mehta
+-    1 - Peter Grassberger
+-    1 - Prateek Saxena
+-    1 - Stephan
+-    1 - Thiemo Kreuz
+-    1 - Timo Tijhof
+-    1 - Toni Hermoso Pulido
+-    1 - ka7
+-    1 - matthew-a-thompson
+-    1 - salle
+-    1 - غلامحسین حق دوست
