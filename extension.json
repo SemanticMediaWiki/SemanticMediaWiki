@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "3.0.0-rc.2",
+	"version": "3.0.0",
 	"author": [
 		"[http://korrekt.org Markus Krötzsch]",
 		"[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]",
@@ -24,6 +24,6 @@
 	"ExtensionFunctions": [
 		"SemanticMediaWiki::onExtensionFunction"
 	],
-	"load_composer_autoloader":true,
+	"load_composer_autoloader": true,
 	"manifest_version": 1
 }
