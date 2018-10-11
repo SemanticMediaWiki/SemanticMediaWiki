@@ -252,6 +252,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 
 ## Breaking changes and deprecations
 
+* [#1345](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/1345) Setting multiple values to the `#set` and `#subobject` paser functions using pipe `|` is deprecated. Use the `+sep` parameter instead.
 * [#2495](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2495) `Store::getPropertySubjects` and `Store::getAllPropertySubjects` will return an `Iterator` instead of just an array
 * [#2588](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2588) Removed special page "SemanticStatistics"
 * [#2611](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2611) Removed the user preference `smw-ask-otheroptions-collapsed-info`
@@ -297,6 +298,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 
 ## Other changes
 
+* [#2342](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2342) Added the display of invalid data value annotations  for datatype "Text"
 * [#2485](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2485) Disabled updates by the `QueryDependencyLinksStore` on a 'stashedit' activity
 * [#2491](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2491) Added `ChunkedIterator` to `DataRebuilder` to avoid OOM situations in case of a large update queue
 * [#2535](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/2535) Fixed property namespace (`_wpp`) display in `WikiPageValue`
@@ -342,7 +344,7 @@ Semantic MediaWiki no longer provides file releases [(See #3347).](https://githu
 ## Contributors
 
 - 1036 - James Hong Kong
--  147 - translatewiki.net
+-  147 - translatewiki.net for the translator community
 -  120 - Karsten Hoffmeyer
 -   50 - Jeroen De Dauw
 -   13 - Stephan Gambke
