@@ -597,6 +597,7 @@
 	"smw-type-txt": "“$1”是一个描述任意长度字符串的原始数据类型。",
 	"smw-type-dat": "“$1”是一个代表统一格式的时间点的数据类型。",
 	"smw-type-ema": "“$1”是以电子邮件之殊，体。",
+	"smw-type-rec": "“$1”是一个容器数据类型，它以固定的顺序指定类型化属性的列表。",
 	"smw-type-tab-properties": "属性",
 	"smw-type-tab-types": "样式",
 	"smw-type-tab-errors": "错误",
