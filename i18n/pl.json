@@ -443,7 +443,7 @@
 	"smw-types-default": "„$1” jest wbudowanym typem danych.",
 	"smw-types-help": "Więcej informacji i przykładów można znaleźć na tej [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 stronie pomocy].",
 	"smw-type-tel": "„$1” to specjalny typ danych do opisywania międzynarodowych numerów telefonicznych zgodnie z RFC 3966.",
-	"smw-type-dat": "„$1” to typ danych reprezentujący punkty w czasie w ujednoliconym formacie.",
+	"smw-type-dat": "„$1” to podstawowy typ danych, reprezentujący punkty w czasie w ujednoliconym formacie.",
 	"smw-type-tab-properties": "Właściwości",
 	"smw-type-tab-types": "Typy",
 	"smw-type-tab-errors": "Błędy",
