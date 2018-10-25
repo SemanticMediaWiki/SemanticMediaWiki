@@ -138,6 +138,7 @@
 	"smw_emptystring": "Cadeias de caracteres vazias não são aceitas.",
 	"smw_notinenum": "\"$1\" não está na lista ($2) dos [[Property:Allows value|valores permitidos]] para a propriedade \"$3\".",
 	"smw-datavalue-constraint-error-allows-value-list": "\"$1\" não está na lista ($2) dos [[Property:Allows value|valores permitidos]] para a propriedade \"$3\".",
+	"smw-datavalue-constraint-error-allows-value-range": "\"$1\" não está no intervalo de \"$2\" especificado pela restrição [[Property:Allows value|permite valor]] para a propriedade \"$3\".",
 	"smw_noboolean": "\"$1\" não é reconhecido como um valor Booleano (verdadeiro/falso).",
 	"smw_true_words": "verdadeiro,v,sim,s,true,t,yes,y",
 	"smw_false_words": "falso,f,não,nao,n,false,no",
