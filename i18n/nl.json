@@ -432,6 +432,7 @@
 	"smw-sp-searchbyproperty-valuequery": "Een lijst van pagina's waarop de eigenschap ''$1'' de waarde ''$2'' heeft.",
 	"smw-datavalue-number-textnotallowed": "\"$1\" kan niet worden toegewezen aan een getaltype met waarde $2.",
 	"smw-search-profile": "Uitgebreid",
+	"smw-search-profile-sort-recent": "Meest recent",
 	"smw-search-profile-sort-title": "Titel",
 	"smw-search-profile-extended-help-query-link": "(Voor meer details $1).",
 	"smw-search-profile-extended-help-find-forms": "beschikbare formulieren",
@@ -492,5 +493,14 @@
 	"smw-help": "Hulp",
 	"smw-processing": "Verwerken...",
 	"smw-types-title": "Type: $1",
-	"smw-ask-tab-result": "Resultaat"
+	"smw-parameter-missing": "Parameter \"$1\" ontbreekt.",
+	"smw-property-tab-usage": "Gebruik",
+	"smw-property-tab-redirects": "Synoniemen",
+	"smw-property-tab-subproperties": "Subeigenschappen",
+	"smw-property-tab-errors": "Onjuiste toewijzingen",
+	"smw-property-tab-specification": "... meer",
+	"smw-concept-tab-list": "Lijst",
+	"smw-concept-tab-errors": "Fouten",
+	"smw-ask-tab-result": "Resultaat",
+	"smw-ask-tab-extra": "Extra"
 }
