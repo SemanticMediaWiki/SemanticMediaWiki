@@ -527,8 +527,10 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
+	 *
+	 * @param Linker|null|bool $linker
 	 */
-	abstract public function getShortWikiText( $linked = null );
+	abstract public function getShortWikiText( $linker = null );
 
 	/**
 	 * Returns a short textual representation for this data value. If the value
@@ -539,6 +541,8 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
+	 *
+	 * @param Linker|null|bool $linker
 	 */
 	abstract public function getShortHTMLText( $linker = null );
 
@@ -549,8 +553,10 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
+	 *
+	 * @param Linker|null|bool $linker
 	 */
-	abstract public function getLongWikiText( $linked = null );
+	abstract public function getLongWikiText( $linker = null );
 
 	/**
 	 * Return the long textual description of the value, as printed for
@@ -559,6 +565,8 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
+	 *
+	 * @param Linker|null|bool $linker
 	 */
 	abstract public function getLongHTMLText( $linker = null );
 
@@ -579,9 +587,12 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
+	 *
+	 * @param int $outputFormat
+	 * @param Linker|null|bool $linker
 	 */
-	public function getShortText( $outputformat, $linker = null ) {
-		switch ( $outputformat ) {
+	public function getShortText( $outputFormat, $linker = null ) {
+		switch ( $outputFormat ) {
 			case SMW_OUTPUT_WIKI:
 				return $this->getShortWikiText( $linker );
 			case SMW_OUTPUT_HTML:
@@ -598,9 +609,12 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
+	 *
+	 * @param int $outputFormat
+	 * @param Linker|null|bool $linker
 	 */
-	public function getLongText( $outputformat, $linker = null ) {
-		switch ( $outputformat ) {
+	public function getLongText( $outputFormat, $linker = null ) {
+		switch ( $outputFormat ) {
 			case SMW_OUTPUT_WIKI:
 				return $this->getLongWikiText( $linker );
 			case SMW_OUTPUT_HTML:
@@ -614,12 +628,12 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
-	 * @param $linker
+	 * @param integer $outputFormat Element of the SMW_OUTPUT_ enum
+	 * @param Linker|null|bool $linker
 	 *
 	 * @return string
 	 */
-	public function getInfolinkText( $outputformat, $linker = null ) {
+	public function getInfolinkText( $outputFormat, $linker = null ) {
 
 		if ( $this->infoLinksProvider === null ) {
 			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
@@ -633,7 +647,7 @@ abstract class SMWDataValue {
 			$this->getOption( self::OPT_COMPACT_INFOLINKS, false )
 		);
 
-		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
+		return $this->infoLinksProvider->getInfolinkText( $outputFormat, $linker );
 	}
 
 	/**
@@ -676,9 +690,9 @@ abstract class SMWDataValue {
 	public function isNumeric() {
 		if ( isset( $this->m_dataitem ) ) {
 			return is_numeric( $this->m_dataitem->getSortKey() );
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
