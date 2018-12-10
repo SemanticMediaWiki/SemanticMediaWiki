@@ -28,7 +28,8 @@
 			"Hanyanbo98",
 			"夢蝶葬花",
 			"A Chinese Wikipedian",
-			"Phenolla"
+			"Phenolla",
+			"Angrydog001"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -779,6 +780,7 @@
 	"smw-schema-error": "验证错误",
 	"smw-schema-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/$1",
 	"smw-schema-type": "类型",
+	"smw-schema-tag": "{{PLURAL:$1|标签|标签}}",
 	"smw-ask-title-keyword-type": "关键词搜索",
 	"smw-ask-message-keyword-type": "此搜索匹配<code><nowiki>$1</nowiki></code>条件。",
 	"smw-remote-source-unavailable": "无法连接远程“$1”目标。",
