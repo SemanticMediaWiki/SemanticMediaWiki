@@ -788,5 +788,8 @@
 	"smw-property-tab-specification": "… ещё",
 	"smw-concept-tab-list": "Список",
 	"smw-concept-tab-errors": "Ошибки",
+	"smw-ask-tab-result": "Результат",
+	"smw-ask-tab-extra": "Дополнительно",
+	"smw-ask-tab-debug": "Отладка",
 	"smw-ask-tab-code": "Код"
 }
