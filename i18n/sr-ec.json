@@ -20,7 +20,7 @@
 	},
 	"smw-desc": "Чини вики приступачнијим — за машине  „и” људе ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документација на мрежи])",
 	"smw-title": "Семантички Медијавики",
-	"smw-semantics-not-enabled": "Функционалност Семантичког Медијавикија није омогућена за овај вики.",
+	"smw-semantics-not-enabled": "Функционалност Семантичког MediaWiki-ја није омогућена за овај вики.",
 	"smw_viewasrdf": "RDF фид",
 	"smw_finallistconjunct": " и",
 	"smw-factbox-head": "… више о страници „$1”",
