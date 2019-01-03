@@ -191,7 +191,7 @@
 	"smw-special-concept-count": "{{PLURAL:$1|Наступне поняття|$1 наступні поняття|$1 наступних понять}} {{PLURAL:$1|перераховане|переховані|перераховано}}.",
 	"smw-special-concept-empty": "Поняття не знайдено.",
 	"unusedproperties": "Властивості, що не використовуються",
-	"smw-unusedproperties-docu": "На цій сторінці перераховані [https://www.semantic-mediawiki.org/wiki/Unused_properties невикористані властивості], які були оголошені, хоча ніякі інші сторінки працюють. Для диференційованого підходу див. у [[Special:Properties|весь]] або [[Special:WantedProperties|параметрів]] спеціальні сторінки.",
+	"smw-unusedproperties-docu": "На цій сторінці перераховані [https://www.semantic-mediawiki.org/wiki/Unused_properties невикористані властивості], які були оголошені, хоча ніякі інші сторінки їх не використовують. Для диференційованого вигляду див. спеціальні сторінки [[Special:Properties|всіх]] або [[Special:WantedProperties|потрібних властивостей]].",
 	"smw-unusedproperty-template": "$1 із типом даних $2",
 	"wantedproperties": "Потрібні властивості",
 	"smw-wantedproperties-docu": "На цій сторінці перелічені [https://www.semantic-mediawiki.org/wiki/Wanted_properties бажані властивості], які використовуються у вікі, але не мають сторінки опису. Диференційований показ див. на спеціальних сторінках  [[Special:Properties|усіх]] або  [[Special:UnusedProperties|невикористовуваних властивостей]].",
