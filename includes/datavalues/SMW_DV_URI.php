@@ -249,43 +249,42 @@ class SMWURIValue extends SMWDataValue {
 			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) ||
 			( $this->m_caption === '' ) || $linker === false ) {
 			return $caption;
-		} else {
-			return $linker->makeExternalLink( $url, $caption );
 		}
+
+		return $linker->makeExternalLink( $url, $caption );
 	}
 
-	public function getLongWikiText( $linked = null ) {
-
-		if ( !$this->isValid() ) {
-			return $this->getErrorText();
-		}
-
-		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linked );
-
-		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
-			( $this->m_outformat == '-' ) || $linked === false ) {
-			return $wikitext;
-		} elseif ( $this->m_outformat == 'nowiki' ) {
-			return $this->makeNonlinkedWikiText( $wikitext );
-		} else {
-			return '[' . $url . ' ' . $wikitext . ']';
-		}
-	}
-
-	public function getLongHTMLText( $linker = null ) {
-
+	public function getLongWikiText( $linker = null ) {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
 
 		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linker );
 
-		if ( is_null( $linker ) || ( !$this->isValid() ) || ( $url === '' ) ||
-			( $this->m_outformat == '-' ) || ( $this->m_outformat == 'nowiki' ) || $linker === false ) {
+		if ( $linker === null || $linker === false || $url === '' || $this->m_outformat == '-' ) {
 			return $wikitext;
-		} else {
-			return $linker->makeExternalLink( $url, $wikitext );
 		}
+
+		if ( $this->m_outformat == 'nowiki' ) {
+			return $this->makeNonlinkedWikiText( $wikitext );
+		}
+
+		return '[' . $url . ' ' . $wikitext . ']';
+	}
+
+	public function getLongHTMLText( $linker = null ) {
+		if ( !$this->isValid() ) {
+			return $this->getErrorText();
+		}
+
+		list( $url, $wikitext ) = $this->decodeUriContext( $this->m_wikitext, $linker );
+
+		if ( is_null( $linker ) || $linker === false || $url === '' ||
+			$this->m_outformat == '-' || $this->m_outformat == 'nowiki' ) {
+			return $wikitext;
+		}
+
+		return $linker->makeExternalLink( $url, $wikitext );
 	}
 
 	public function getWikiValue() {
