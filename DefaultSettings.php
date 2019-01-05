@@ -1977,8 +1977,8 @@ return [
 	# @since 3.0
 	##
 	'smwgURITypeSchemeList' => [
-		'http', 'https', 'mailto', 'tel', 'ftp', 'news', 'file', 'urn', 'telnet',
-		'ldap', 'gopher'
+		'http', 'https', 'mailto', 'tel', 'ftp', 'sftp', 'news', 'file', 'urn',
+		'telnet', 'ldap', 'gopher', 'ssh', 'git', 'irc', 'ircs'
 	],
 	##
 
