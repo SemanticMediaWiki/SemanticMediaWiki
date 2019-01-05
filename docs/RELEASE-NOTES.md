@@ -30,6 +30,8 @@ Local-specific (ICU) sorting and collation is now possible for pages as well as 
 
 Special page "Search" now provides and additional search form accessible via the "Extended" selector in case the ["SMWSearch" feature](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) was enabled [(#3126).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3126) with custom search forms definable in the new "smw/schema" namespace [(#3431).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3431)
 
+It is now possible to define [remote sources which can be queried](https://www.semantic-mediawiki.org/wiki/Help:Remote_request) using special page "Ask" or doing inline queries [(#3167).](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3167)
+
 ### Performance
 
 Various effort have been put into improving the performance of the software, most notably with these three code changes:
