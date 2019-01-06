@@ -37,7 +37,7 @@
 			"assert-output": {
 				"to-contain": [
 					"class=\"image\"><img alt=\"P0705.png\"",
-					"300px-P0705.png\" width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\""
+					"300px-P0705.png\" .*width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\""
 				],
 				"not-contain": [
 					"P0705.png\" width=\"480\" height=\"480\""
@@ -50,9 +50,9 @@
 			"subject": "Example/P0705/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"300px-P0705.png\" width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\"",
+					"300px-P0705.png\" .*width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\"",
 					"class=\"image\"><img alt=\"P0705.png\"",
-					"120px-P0705.png\" width=\"120\" height=\"120\" class=\"thumbimage\"",
+					"120px-P0705.png\" .*width=\"120\" height=\"120\" class=\"thumbimage\"",
 					"<b>123</b>",
 					"class=\"thumb tright\"",
 					"<div class=\"thumbcaption\"><div class=\"magnify\">",
