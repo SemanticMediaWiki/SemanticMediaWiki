@@ -121,7 +121,7 @@ class Query {
 	 */
 	public function hasField( $field = '' ) {
 
-		if ( $field === '' ) {
+		if ( (string)$field === '' ) {
 			return $this->fields !== [];
 		}
 

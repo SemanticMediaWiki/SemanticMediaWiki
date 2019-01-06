@@ -416,7 +416,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				continue;
 			}
 
-			if ( strpos( $propertyValue, $value ) !== false ) {
+			if ( strpos( $propertyValue, (string)$value ) !== false ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;
 			}

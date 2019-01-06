@@ -254,7 +254,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->fetchSemanticData( 42, $subject, $propertyTable, $requestOptions );
 
 		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0,  AS v2 FROM  " .
+			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
 			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
 			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete') AND (p_id='9999') " .
 			"LIMIT 4",
@@ -299,7 +299,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->fetchSemanticData( 42, null, $propertyTable );
 
 		$this->assertEquals(
-			"SELECT p.smw_title AS prop, fooField AS v0,  AS v2 FROM  " .
+			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
 			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
 			"WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
 			$this->query->build()
