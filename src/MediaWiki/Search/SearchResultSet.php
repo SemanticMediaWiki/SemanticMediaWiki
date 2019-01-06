@@ -84,6 +84,26 @@ class SearchResultSet extends \SearchResultSet {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @return SearchSuggestionSet
+	 */
+	public function newSearchSuggestionSet() {
+
+		$suggestions = [];
+		$hasMoreResults = false;
+		$score = count( $this->pages );
+
+		foreach ( $this->pages as $page ) {
+			if ( ( $title = $page->getTitle() ) && $title->exists() ) {
+				$suggestions[] = \SearchSuggestion::fromTitle( $score--, $title );
+			}
+		}
+
+		return new \SearchSuggestionSet( $suggestions, $hasMoreResults );
+	}
+
+	/**
 	 * @see SearchResultSet::extractResults
 	 *
 	 * @since 3.0
@@ -154,11 +174,11 @@ class SearchResultSet extends \SearchResultSet {
 		}
 
 		if ( method_exists( '\SearchHighlighter', 'highlightNone' ) ) {
-			return array();
+			return [];
 		}
 
 		// Will cause the highlighter to match every line start, thus returning the first few lines of found pages.
-		return array( '^' );
+		return [ '^' ];
 	}
 
 	private function getTokens() {

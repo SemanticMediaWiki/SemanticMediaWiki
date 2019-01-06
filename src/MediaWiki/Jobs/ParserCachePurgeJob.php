@@ -2,12 +2,14 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use Hooks;
 use SMW\ApplicationFactory;
 use SMW\HashBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Utils\Timer;
+use SMW\DIWikiPage;
 use SMWQuery as Query;
 use Title;
 
@@ -17,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class ParserCachePurgeJob extends JobBase {
+class ParserCachePurgeJob extends Job {
 
 	/**
 	 * A balanced size that should be carefully monitored in order to not have a
@@ -63,9 +65,23 @@ class ParserCachePurgeJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ParserCachePurgeJob', $title, $params );
+	public function __construct( Title $title, $params = [] ) {
+		parent::__construct( 'smw.parserCachePurge', $title, $params );
 		$this->removeDuplicates = true;
+	}
+
+	/**
+	 * @see Job::run
+	 */
+	public function insert() {
+
+		if (
+			$this->hasParameter( 'is.enabled' ) &&
+			$this->getParameter( 'is.enabled' ) === false ) {
+			return;
+		}
+
+		parent::insert();
 	}
 
 	/**
@@ -100,7 +116,7 @@ class ParserCachePurgeJob extends JobBase {
 			$this->pageUpdater->doPurgeParserCacheAsPool();
 		}
 
-		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', array( $this ) );
+		Hooks::run( 'SMW::Job::AfterParserCachePurgeComplete', [ $this ] );
 
 		$this->applicationFactory->getMediaWikiLogger()->info(
 			[
@@ -142,11 +158,13 @@ class ParserCachePurgeJob extends JobBase {
 			$idList = explode( '|', $idList );
 		}
 
-		if ( $idList === array() ) {
+		if ( $idList === [] ) {
 			return true;
 		}
 
-		$queryDependencyLinksStoreFactory = new QueryDependencyLinksStoreFactory();
+		$queryDependencyLinksStoreFactory = $this->applicationFactory->singleton(
+			'QueryDependencyLinksStoreFactory'
+		);
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$this->applicationFactory->getStore()
@@ -159,16 +177,18 @@ class ParserCachePurgeJob extends JobBase {
 		// +1 to look ahead
 		$requestOptions->setLimit( $this->limit + 1 );
 		$requestOptions->setOffset( $this->offset );
-		$requestOptions->targetLinksCount = 0;
+		$requestOptions->setOption( 'links.count', 0 );
 
 		$hashList = $queryDependencyLinksStore->findDependencyTargetLinks(
 			$idList,
 			$requestOptions
 		);
 
+		$linksCount = $requestOptions->getOption( 'links.count' );
+
 		// If more results are available then use an iterative increase to fetch
 		// the remaining updates by creating successive jobs
-		if ( $requestOptions->targetLinksCount > $this->limit ) {
+		if ( $linksCount > $this->limit ) {
 			$job = new self(
 				$this->getTitle(),
 				[
@@ -182,16 +202,18 @@ class ParserCachePurgeJob extends JobBase {
 			$job->run();
 		}
 
-		if ( $hashList === array() ) {
+		if ( $hashList === [] ) {
 			return true;
 		}
 
 		list( $hashList, $queryList ) = $this->splitList( $hashList	);
-
 		$listCount = count( $hashList );
-		$linksCount = $requestOptions->targetLinksCount;
 
-		$this->applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
+		$cachedQueryResultPrefetcher = $this->applicationFactory->singleton(
+			'CachedQueryResultPrefetcher'
+		);
+
+		$cachedQueryResultPrefetcher->resetCacheBy(
 			$queryList,
 			'ParserCachePurgeJob'
 		);
@@ -205,12 +227,12 @@ class ParserCachePurgeJob extends JobBase {
 
 	public function splitList( $hashList ) {
 
-		$targetLinksList = array();
-		$queryList = array();
+		$targetLinksList = [];
+		$queryList = [];
 
 		foreach ( $hashList as $hash ) {
 
-			if ( $hash instanceof DiWikiPage ) {
+			if ( $hash instanceof DIWikiPage ) {
 				$hash = $hash->getHash();
 			}
 
@@ -228,7 +250,7 @@ class ParserCachePurgeJob extends JobBase {
 			$targetLinksList[HashBuilder::createHashIdFromSegments( $title, $namespace, $iw )] = true;
 		}
 
-		return array( array_keys( $targetLinksList ), array_keys( $queryList ) );
+		return [ array_keys( $targetLinksList ), array_keys( $queryList ) ];
 	}
 
 	private function addPagesToUpdater( array $hashList ) {

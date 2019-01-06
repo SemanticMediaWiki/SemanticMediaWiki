@@ -5,7 +5,8 @@ namespace SMW\Factbox;
 use IContextSource;
 use OutputPage;
 use SMW\ApplicationFactory;
-use SMW\ParserData;
+use Title;
+use ParserOutput;
 
 /**
  * @license GNU GPL v2+
@@ -23,10 +24,11 @@ class FactboxFactory {
 	public function newCachedFactbox() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$cachedFactbox = new CachedFactbox(
 			$applicationFactory->getCache(
-				$applicationFactory->getSettings()->get( 'smwgMainCacheType' )
+				$settings->get( 'smwgMainCacheType' )
 			)
 		);
 
@@ -34,7 +36,11 @@ class FactboxFactory {
 		$cachedFactbox->setExpiryInSeconds( 2592000 );
 
 		$cachedFactbox->isEnabled(
-			$applicationFactory->getSettings()->get( 'smwgFactboxUseCache' )
+			$settings->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_CACHE )
+		);
+
+		$cachedFactbox->setFeatureSet(
+			$settings->get( 'smwgFactboxFeatures' )
 		);
 
 		return $cachedFactbox;
@@ -43,15 +49,25 @@ class FactboxFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param ParserData $parserData
+	 * @param Title $title
+	 * @param ParserOutput $parserOutput
 	 *
 	 * @return Factbox
 	 */
-	public function newFactbox( ParserData $parserData ) {
-		return new Factbox(
-			ApplicationFactory::getInstance()->getStore(),
-			$parserData
+	public function newFactbox( Title $title, ParserOutput $parserOutput ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$factbox = new Factbox(
+			$applicationFactory->getStore(),
+			$applicationFactory->newParserData( $title, $parserOutput )
 		);
+
+		$factbox->setFeatureSet(
+			$applicationFactory->getSettings()->get( 'smwgFactboxFeatures' )
+		);
+
+		return $factbox;
 	}
 
 }

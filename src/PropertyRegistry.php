@@ -35,17 +35,17 @@ class PropertyRegistry {
 	 *
 	 * @var array
 	 */
-	private $propertyList = array();
+	private $propertyList = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $datatypeLabels = array();
+	private $datatypeLabels = [];
 
 	/**
 	 * @var string[]
 	 */
-	private $propertyDescriptionMsgKeys = array();
+	private $propertyDescriptionMsgKeys = [];
 
 	/**
 	 * @var PropertyAliasFinder
@@ -55,7 +55,7 @@ class PropertyRegistry {
 	/**
 	 * @var string[]
 	 */
-	private $dataTypePropertyExemptionList = array();
+	private $dataTypePropertyExemptionList = [];
 
 	/**
 	 * @since 2.1
@@ -103,7 +103,7 @@ class PropertyRegistry {
 	 * @param PropertyAliasFinder $propertyAliasFinder
 	 * @param array $dataTypePropertyExemptionList
 	 */
-	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = array() ) {
+	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = [] ) {
 
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$this->propertyLabelFinder = $propertyLabelFinder;
@@ -170,7 +170,7 @@ class PropertyRegistry {
 	 */
 	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true ) {
 
-		$this->propertyList[$id] = array( $valueType, $isVisible, $isAnnotable );
+		$this->propertyList[$id] = [ $valueType, $isVisible, $isAnnotable ];
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
@@ -483,13 +483,13 @@ class PropertyRegistry {
 		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
-			$this->propertyList[$id] = array( $id, true, true, false );
+			$this->propertyList[$id] = [ $id, true, true, false ];
 		}
 
 		// @deprecated since 2.1
 		\Hooks::run( 'smwInitProperties' );
 
-		\Hooks::run( 'SMW::Property::initProperties', array( $this ) );
+		\Hooks::run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
 	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {

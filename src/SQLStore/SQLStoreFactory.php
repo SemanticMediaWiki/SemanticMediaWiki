@@ -255,10 +255,10 @@ class SQLStoreFactory {
 			$useCache = true;
 		}
 
-		$cacheOptions = $cacheFactory->newCacheOptions( array(
+		$cacheOptions = $cacheFactory->newCacheOptions( [
 			'useCache' => $useCache,
 			'ttl'      => $cacheExpiry
-		) );
+		] );
 
 		$cachedListLookup = new CachedListLookup(
 			$listLookup,
@@ -294,7 +294,10 @@ class SQLStoreFactory {
 	 * @return EntityRebuildDispatcher
 	 */
 	public function newEntityRebuildDispatcher() {
-		return new EntityRebuildDispatcher( $this->store );
+		return new EntityRebuildDispatcher(
+			$this->store,
+			ApplicationFactory::getInstance()->newTitleFactory()
+		);
 	}
 
 	/**
@@ -555,16 +558,16 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Cache $cache
+	 * @param IdCacheManager $idCacheManager
 	 *
 	 * @return IdEntityFinder
 	 */
-	public function newIdEntityFinder( Cache $cache ) {
+	public function newIdEntityFinder( IdCacheManager $idCacheManager ) {
 
 		$idMatchFinder = new IdEntityFinder(
 			$this->store,
 			$this->getIteratorFactory(),
-			$cache
+			$idCacheManager
 		);
 
 		return $idMatchFinder;
@@ -739,7 +742,11 @@ class SQLStoreFactory {
 				'EntityValueUniquenessConstraintChecker' => [
 					'_service' => [ $this, 'newEntityValueUniquenessConstraintChecker' ],
 					'_type'    => EntityValueUniquenessConstraintChecker::class
-				]
+				],
+				'PropertyTableIdReferenceFinder' => function() {
+					static $singleton;
+					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+				}
 			]
 		);
 

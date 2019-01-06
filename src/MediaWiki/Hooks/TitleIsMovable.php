@@ -41,7 +41,7 @@ class TitleIsMovable extends HookHandler {
 		// We don't allow rule pages to be moved as we cannot track JSON content
 		// as redirects and therefore invalidate any rule assignment without a
 		// possibility to automatically reassign IDs
-		if ( $this->title->getNamespace() === SMW_NS_RULE ) {
+		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
 			$isMovable = false;
 		}
 

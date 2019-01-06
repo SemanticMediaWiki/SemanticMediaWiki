@@ -25,9 +25,9 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		// Disable a possible active hook execution
-		$this->testEnvironment = new TestEnvironment( array(
+		$this->testEnvironment = new TestEnvironment( [
 			'smwgEnabledQueryDependencyLinksStore' => false
-		) );
+		] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -134,20 +134,20 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new HtmlBuilder(
 			$this->store,
 			$subject
 		);
 
-		$options = array(
+		$options = [
 			'offset' => 0,
 			'showAll' => true,
 			'showInverse' => false,
 			'dir' => 'both',
 			'printable' => ''
-		);
+		];
 
 		$instance->setOptions(
 			$options
@@ -168,9 +168,9 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			$subject
 		);
 
-		$options = array(
+		$options = [
 			'Foo' => 42
-		);
+		];
 
 		$instance->setOptions(
 			$options

@@ -1,0 +1,134 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Schema content related CSS
+ *
+ * @file
+ * @ingroup semantic-mediawiki
+ *
+ * @license GNU GPL v2+
+ * @since 3.0
+ *
+ * @author mwjames
+ */
+
+.content-highlight {
+	font-size: 1.2em;
+	margin: 0;
+    border-top: 1px solid #eaecf0;
+    border-left: 1px solid #eaecf0;
+    border-right: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.content-no-highlight-o {
+    margin: 0;
+    padding: 5px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaecf0;
+    border-left: 1px solid #eaecf0;
+    border-right: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.unknown-type .content-highlight {
+    border-top: 1px solid #eaecf0;
+}
+
+.schema-tags {
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #f8f9fa;
+  /*  background-color: #f8f9fa;*/
+    padding: 5px;
+    /*margin-top: 1em;*/
+    clear: both;
+}
+
+.schema-tags:first-child {
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    padding: 5px;
+    margin-top: 1em;
+    clear: both;
+}
+.schema-tags ul {
+    display: inline;
+    margin: 0 !important;
+    padding: 0;
+    list-style: none;
+    list-style-type: none;
+    list-style-image: none;
+ }
+
+.schema-tags li:first-child {
+    padding-left: 0.25em;
+    border-left: 0;
+}
+
+.schema-tags li {
+    display: inline-block;
+    line-height: 1.25em;
+    border-left: 1px solid #a2a9b1;
+    margin: 0.125em 0;
+    padding: 0 0.5em;
+    zoom: 1;
+}
+
+.smw-schema-description {
+    color:#888;
+}
+
+.schema-error {
+    color: #c00;
+}
+
+.smw-schema-validation-error {
+    padding-left:0px;
+    padding-top:5px;
+}
+
+/**
+ * Tabs
+ */
+.smw-schema #tab-schema-error:checked ~ #tab-content-schema-error,
+.smw-schema #tab-schema-summary:checked ~ #tab-content-schema-summary {
+	display: block;
+}
+
+.smw-schema section {
+	border-top: 1px solid #ddd;
+	border-left: 0px solid #ddd;
+	border-right: 0px solid #ddd;
+}
+
+.smw-schema label.nav-label {
+	padding: 8px 20px;
+}
+
+.smw-schema input.nav-tab:checked + label.nav-label  {
+	border: 1px solid #ddd;
+	border-top: 2px solid #337ab7;
+	border-bottom: 1px solid #fff;
+}
+
+.smw-schema input.nav-tab:checked + label.nav-label.error-label {
+	border-top: 2px solid #cc0000;
+}

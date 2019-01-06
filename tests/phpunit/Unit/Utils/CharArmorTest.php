@@ -43,60 +43,60 @@ class CharArmorTest extends \PHPUnit_Framework_TestCase {
 
 	public function invisibleControlCharactersProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Left-To-Right Mark::"‎"]]',
 			'[[Left-To-Right Mark::""]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Right-To-Left Mark::"‏"]]',
 			'[[Right-To-Left Mark::""]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Zero-Width​Space::"​"]]',
 			'[[Zero-WidthSpace::""]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Zero Width Non-Joiner::"‌"]]',
 			'[[Zero Width Non-Joiner::""]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Zero Width Joiner::"‍"]]',
 			'[[Zero Width Joiner::""]]'
-		);
+		];
 
 		return $provider;
 	}
 
 	public function specialCharactersProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'visible shy&shy;ness',
 			'visible shyness'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'leftToRight&lrm;Mark',
 			'leftToRightMark'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Figure Space::" "]]',
 			'[[Figure Space::" "]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[En Quad::" "]]',
 			'[[En Quad::" "]]'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Hair Space::" "]]',
 			'[[Hair Space::" "]]'
-		);
+		];
 
 		return $provider;
 	}

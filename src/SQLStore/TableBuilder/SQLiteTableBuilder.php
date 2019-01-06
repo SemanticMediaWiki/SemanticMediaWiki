@@ -22,10 +22,14 @@ class SQLiteTableBuilder extends TableBuilder {
 
 		$charLongLength = FieldType::CHAR_LONG_LENGTH;
 
-		$fieldTypes = array(
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'INTEGER',
 			'id_primary' => 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT',
+
+			 // (see postgres, mysql on the difference)
+			'id_unsigned' => 'INTEGER',
+
 			 // like page_namespace in MW page table
 			'namespace'  => 'INT(11)',
 			 // like page_title in MW page table
@@ -45,7 +49,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			'char_long_nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
 			'usage_count'      => 'INT(8)',
 			'integer_unsigned' => 'INTEGER'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -82,7 +86,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$mode = $ftsOptions;
 		}
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -135,7 +139,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$row->Field = $row->name;
@@ -159,7 +163,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
 
 		if ( !isset( $this->activityLog[$tableName] ) ) {
-			$this->activityLog[$tableName] = array();
+			$this->activityLog[$tableName] = [];
 		}
 
 		$fieldType = $this->getStandardFieldType( $fieldType );
@@ -295,12 +299,12 @@ class SQLiteTableBuilder extends TableBuilder {
 	private function getIndexInfo( $tableName ) {
 
 		$tableName = $this->connection->tableName( $tableName );
-		$indices = array();
+		$indices = [];
 
 		$res = $this->connection->query( 'PRAGMA index_list(' . $tableName . ')', __METHOD__ );
 
 		if ( !$res ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $res as $row ) {

@@ -56,14 +56,14 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetHtml() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
 			'addHeader',
 			'addParagraph',
 			'addSubmitButton'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
@@ -98,7 +98,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'SMW\RefreshJob' ) )
 			->will( $this->returnValue( false ) );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDataItem as DataItem;
 
@@ -33,7 +34,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -42,7 +43,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getFetchFields() {
-		return array( 'o_id' => FieldType::FIELD_ID );
+		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
 	/**
@@ -51,7 +52,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTableIndexes() {
-		return array(
+		return [
 			'o_id',
 
 			// SMWSQLStore3Readers::getPropertySubjects
@@ -90,7 +91,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			// SMWSQLStore3Readers::getPropertySubjects
 			// SELECT DISTINCT s_id FROM `smw_di_wikipage` WHERE (p_id='64' AND o_id='104') ORDER BY s_sort ASC
 			//'o_id,p_id,s_id,s_sort'
-		);
+		];
 	}
 
 	/**
@@ -107,7 +108,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**
@@ -124,7 +125,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dataItem->getSubobjectName()
 		);
 
-		return array( 'o_id' => $oid );
+		return [ 'o_id' => $oid ];
 	}
 
 	/**
@@ -158,11 +159,22 @@ class DIWikiPageHandler extends DataItemHandler {
 
 		$namespace = intval( $dbkeys[1] );
 
+		// Correctly interpret internal property keys
 		if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
 			$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
-			// Correctly interpret internal property keys
-			$property = new DIProperty( $dbkeys[0] );
+
+			try {
+				$property = new DIProperty( $dbkeys[0] );
+			} catch( PredefinedPropertyLabelMismatchException $e ) {
+				// Most likely an outdated, no longer existing predefined
+				// property, mark it as outdate
+				$dbkeys[2] = SMW_SQL3_SMWIW_OUTDATED;
+
+				return $this->newDiWikiPage( $dbkeys );
+			}
+
 			$wikipage = $property->getCanonicalDiWikiPage( $dbkeys[4] );
+
 			if ( !is_null( $wikipage ) ) {
 				return $wikipage;
 			}

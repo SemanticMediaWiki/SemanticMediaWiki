@@ -86,7 +86,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'newCachedFactbox' ) )
+			->setMethods( [ 'newCachedFactbox' ] )
 			->getMock();
 
 		$factboxFactory->expects( $this->any() )
@@ -154,11 +154,11 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array( DIWikiPage::newFromTitle( $title ) ) ) );
+			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array( new DIProperty(  __METHOD__ . 'property' ) ) ) );
+			->will( $this->returnValue( [ new DIProperty(  __METHOD__ . 'property' ) ] ) );
 
 		#0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );
@@ -191,16 +191,20 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getLanguage' )
+			->will( $this->returnValue( $language ) );
+
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'outputPage'   => $outputPage,
 				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			),
-			array(
+			],
+			[
 				'text'         => $subject->getDBKey()
-			)
-		);
+			]
+		];
 
 		#1 Disabled namespace, no return value expected
 		$title = MockTitle::buildMock( __METHOD__ . 'title-ns-disabled' );
@@ -225,16 +229,16 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => false ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => false ],
 				'outputPage'   => $outputPage,
 				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			),
-			array(
+			],
+			[
 				'text'         => ''
-			)
-		);
+			]
+		];
 
 		// #2 Specialpage, no return value expected
 		$title = MockTitle::buildMock( __METHOD__ . 'mock-specialpage' );
@@ -255,16 +259,16 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'outputPage'   => $outputPage,
 				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			),
-			array(
+			],
+			[
 				'text'         => ''
-			)
-		);
+			]
+		];
 
 		// #3 Redirect, no return value expected
 		$title = MockTitle::buildMock( __METHOD__ . 'mock-redirect' );
@@ -285,16 +289,16 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'outputPage'   => $outputPage,
 				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			),
-			array(
+			],
+			[
 				'text'         => ''
-			)
-		);
+			]
+		];
 
 		// #4 Oldid
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-oldid' );
@@ -316,22 +320,26 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $title ) );
 
 		$context = new \RequestContext( );
-		$context->setRequest( new \FauxRequest( array( 'oldid' => 9001 ), true ) );
+		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
 			->will( $this->returnValue( $context ) );
 
-		$provider[] = array(
-			array(
-				'smwgNamespacesWithSemanticLinks' => array( NS_MAIN => true ),
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getLanguage' )
+			->will( $this->returnValue( $language ) );
+
+		$provider[] = [
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
 				'outputPage'   => $outputPage,
 				'parserOutput' => $this->makeParserOutput( $semanticData ),
-			),
-			array(
+			],
+			[
 				'text'         => $subject->getDBKey()
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

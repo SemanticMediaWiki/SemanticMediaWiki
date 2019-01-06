@@ -218,10 +218,10 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			$this->assertThatSemanticDataHasPropertyCountOf( $expected['propertyCount'], $semanticData, $message );
 		}
 
-		$report = array(
-			'@unresolved' => array(),
-			'@valueHint' => array()
-		);
+		$report = [
+			'@unresolved' => [],
+			'@valueHint' => []
+		];
 
 		foreach ( $properties as $property ) {
 
@@ -267,7 +267,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 			$report['@valueHint'] = $expected['@valueHint'];
 			$this->assertEmpty(
 				$expected['propertyValues'],
-				"Unmatched values in {$message} for:\n" . json_encode( $report, JSON_PRETTY_PRINT )
+				"Unmatched values in {$message} for:\n" . json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
 			);
 		}
 
@@ -289,7 +289,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		$runPropertyValueAssert = false;
 
 		if ( !isset( $expected['@valueHint'] ) ) {
-			$expected['@valueHint'] = array();
+			$expected['@valueHint'] = [];
 		}
 
 		foreach ( $dataItems as $dataItem ) {
@@ -372,18 +372,18 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		);
 	}
 
-	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = array() ) {
+	private function assertContainsPropertyValues( &$expected, $dataValue, $defaultFormatter, $formatterParameters = [] ) {
 
 		if ( !isset( $expected['propertyValues'] ) ) {
 			throw new RuntimeException( "Expected a 'propertyValues' array index" );
 		}
 
-		$formatter = array( $dataValue, $defaultFormatter );
+		$formatter = [ $dataValue, $defaultFormatter ];
 		$valueSerialization = $dataValue->getDataItem()->getSerialization();
 
 		if ( isset( $expected['valueFormatter'] ) && is_callable( $expected['valueFormatter'] ) ) {
 			$formatter = $expected['valueFormatter'];
-			$formatterParameters = array( $dataValue );
+			$formatterParameters = [ $dataValue ];
 		}
 
 		$value = call_user_func_array( $formatter, $formatterParameters );
@@ -411,7 +411,7 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 				continue;
 			}
 
-			if ( is_numeric( $value ) && $value == $propertyValue ) {
+			if ( ( is_numeric( $value ) && is_numeric( $propertyValue ) )  && $value == $propertyValue ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;
 			}

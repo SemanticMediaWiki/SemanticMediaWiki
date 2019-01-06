@@ -39,6 +39,11 @@ class FormsBuilder {
 	private $customForm;
 
 	/**
+	 * @var string
+	 */
+	private $defaultForm = '';
+
+	/**
 	 * @var []
 	 */
 	private $formList = [];
@@ -57,6 +62,11 @@ class FormsBuilder {
 	 * @var []
 	 */
 	private $parameters = [];
+
+	/**
+	 * @var []
+	 */
+	private $termPrefixes = [];
 
 	/**
 	 * @since 3.0
@@ -94,6 +104,15 @@ class FormsBuilder {
 	 *
 	 * @return []
 	 */
+	public function getTermPrefixes() {
+		return $this->termPrefixes;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
 	public function getHiddenNsList() {
 		return $this->hiddenNsList;
 	}
@@ -105,7 +124,7 @@ class FormsBuilder {
 	 */
 	public function getPreselectNsList() {
 
-		$activeForm = $this->request->getVal( 'smw-form' );
+		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		if ( $activeForm === null ) {
 			return [];
@@ -181,13 +200,15 @@ class FormsBuilder {
 			throw new RuntimeException( "Missing forms definition" );
 		}
 
-		$default_form = '';
-
 		if ( isset( $data['default_form'] ) ) {
-			$default_form = self::toLowerCase( $data['default_form'] );
+			$this->defaultForm = self::toLowerCase( $data['default_form'] );
 		}
 
-		$activeForm = $this->request->getVal( 'smw-form', $default_form );
+		if ( isset( $data['term_parser']['prefix'] ) ) {
+			$this->termPrefixes = $data['term_parser']['prefix'];
+		}
+
+		$activeForm = $this->request->getVal( 'smw-form', $this->defaultForm );
 
 		$divider = "<div class='divider' style='display:none;'></div>";
 
@@ -289,6 +310,10 @@ class FormsBuilder {
 				if ( is_string( $ns ) && defined( $ns ) ) {
 					$this->preselectNsList[$k][] = constant( $ns );
 				}
+
+				if ( is_numeric( $ns ) ) {
+					$this->preselectNsList[$k][] = $ns;
+				}
 			}
 		}
 	}
@@ -297,6 +322,10 @@ class FormsBuilder {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
+			}
+
+			if ( is_numeric( $ns ) ) {
+				$this->hiddenNsList[] = $ns;
 			}
 		}
 	}

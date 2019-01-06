@@ -53,7 +53,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new Browse(
-			$this->apiFactory->newApiMain( array() ),
+			$this->apiFactory->newApiMain( [] ),
 			'smwbrowse'
 		);
 
@@ -211,7 +211,7 @@ class BrowseTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			'article'
+			'page'
 		];
 
 		$provider[] = [

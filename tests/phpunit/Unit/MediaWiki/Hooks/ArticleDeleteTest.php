@@ -31,11 +31,16 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 	}
 
 	protected function tearDown() {
@@ -59,7 +64,15 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$updateDispatcherJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserCachePurgeJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,18 +80,26 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newUpdateDispatcherJob' )
 			->will( $this->returnValue( $updateDispatcherJob ) );
 
+		$this->jobFactory->expects( $this->atLeastOnce() )
+			->method( 'newParserCachePurgeJob' )
+			->will( $this->returnValue( $parserCachePurgeJob ) );
+
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'deleteSubject' );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( array( new DIProperty( 'Foo' ) ) ) );
+			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()

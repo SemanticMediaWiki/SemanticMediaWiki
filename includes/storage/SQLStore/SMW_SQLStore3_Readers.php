@@ -2,6 +2,7 @@
 
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
+use SMW\Enum;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
@@ -149,7 +150,7 @@ class SMWSQLStore3Readers {
 
 		// Avoid adding a sortkey for an already extended stub
 		if ( !$semanticData->hasProperty( new DIProperty( '_SKEY' ) ) ) {
-			$semanticData->addPropertyStubValue( '_SKEY', array( '', $sortKey ) );
+			$semanticData->addPropertyStubValue( '_SKEY', [ '', $sortKey ] );
 		}
 
 		$this->store->smwIds->warmUpCache(
@@ -187,19 +188,19 @@ class SMWSQLStore3Readers {
 				$subject->getNamespace(), $subject->getInterwiki(),
 				$subject->getSubobjectName(), true );
 			if ( $sid == 0 ) {
-				$result = array();
+				$result = [];
 			} elseif ( $property->getKey() == '_SKEY' ) {
 				$this->store->smwIds->getSMWPageIDandSort( $subject->getDBkey(),
 				$subject->getNamespace(), $subject->getInterwiki(),
 				$subject->getSubobjectName(), $sortKey, true );
 				$sortKeyDi = new SMWDIBlob( $sortKey );
-				$result = $this->store->applyRequestOptions( array( $sortKeyDi ), $requestOptions );
+				$result = $this->store->applyRequestOptions( [ $sortKeyDi ], $requestOptions );
 			} else {
 				$propTableId = $this->store->findPropertyTableID( $property );
 				$proptables =  $this->store->getPropertyTables();
 
 				if ( !isset( $proptables[$propTableId] ) ) {
-					return array();
+					return [];
 				}
 
 				$propertyTableDef = $proptables[$propTableId];
@@ -230,7 +231,7 @@ class SMWSQLStore3Readers {
 			$tableid =  $this->store->findPropertyTableID( $property );
 
 			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
-				return array();
+				return [];
 			}
 
 			$proptables =  $this->store->getPropertyTables();
@@ -241,7 +242,7 @@ class SMWSQLStore3Readers {
 				$requestOptions
 			);
 
-			$result = array();
+			$result = [];
 			$propertyTypeId = $property->findPropertyTypeID();
 			$propertyDiId = DataTypeRegistry::getInstance()->getDataItemId( $propertyTypeId );
 
@@ -309,6 +310,13 @@ class SMWSQLStore3Readers {
 			$dataItem,
 			$requestOptions
 		);
+
+		// Keep the result as iterator which is normally advised when the result
+		// size is expected to be larger than 1000 or results are retrieved through
+		// a job which may process them in batches.
+		if ( $requestOptions !== null && $requestOptions->getOption( Enum::SUSPEND_CACHE_WARMUP ) ) {
+			return $result;
+		}
 
 		$this->store->smwIds->warmUpCache( $result );
 

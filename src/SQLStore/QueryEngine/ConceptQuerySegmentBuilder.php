@@ -61,7 +61,7 @@ class ConceptQuerySegmentBuilder {
 		QuerySegment::$qnum = 0;
 
 		$querySegmentListBuilder = $this->querySegmentListBuilder;
-		$querySegmentListBuilder->setSortKeys( array() );
+		$querySegmentListBuilder->setSortKeys( [] );
 
 		if ( $this->queryParser === null ) {
 			throw new RuntimeException( 'Missing a QueryParser instance' );

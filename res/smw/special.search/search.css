@@ -42,6 +42,7 @@
     overflow: hidden;
     white-space: nowrap;
     padding: 15px 0 15px 0;
+    clear: both;
 }
 
 .smw-text-strike > span {
@@ -230,12 +231,25 @@
     margin-bottom: 0.5em;
 }
 
+#smw-search-synatx-list, #smw-search-sort-list {
+    /* font-size: smaller; */
+}
+
+#smw-search-synatx-list code {
+    background-color: #5e9dc82e;
+    border: 1px solid #5e9dc84a;
+}
+
 #mw-searchoptions h4 {
     margin-top: 2px !important;
 }
 
 #smw-search-togglensview, #mw-search-togglebox {
     margin-top: 2px !important;
+}
+
+.searchresult {
+    text-align: justify;
 }
 
 .search-types .current a:after {

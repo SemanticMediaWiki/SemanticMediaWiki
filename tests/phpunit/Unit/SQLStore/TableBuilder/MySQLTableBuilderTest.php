@@ -16,27 +16,45 @@ use SMW\SQLStore\TableBuilder\Table;
  */
 class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $connection;
 
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+	protected function setUp() {
+
+		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'tableExists', 'query', 'dbSchema', 'tablePrefix' ] )
 			->getMockForAbstractClass();
 
-		$connection->expects( $this->any() )
+		$this->connection->expects( $this->any() )
 			->method( 'getType' )
 			->will( $this->returnValue( 'mysql' ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'dbSchema' )
+			->will( $this->returnValue( '' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'tablePrefix' )
+			->will( $this->returnValue( '' ) );
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
 			MySQLTableBuilder::class,
-			MySQLTableBuilder::factory( $connection )
+			MySQLTableBuilder::factory( $this->connection )
 		);
 	}
 
 	public function testCreateNewTable() {
 
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -60,11 +78,38 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
+	public function testCreateNewTable_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( false ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->stringContains( 'CREATE TABLE `xyz`."foo"' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
+		$instance->addConfig( 'wgDBname', 'xyz' );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+
+		$instance->create( $table );
+	}
+
 	public function testUpdateExistingTableWithNewField() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -78,7 +123,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -92,11 +137,42 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
+	public function testUpdateExistingTableWithNewField_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->at( 4 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'DESCRIBE' ) )
+			->will( $this->returnValue( [] ) );
+
+		$this->connection->expects( $this->at( 5 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text  FIRST' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+
+		$instance->create( $table );
+	}
+
 	public function testUpdateExistingTableWithNewFieldAndDefault() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -110,7 +186,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 2 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'DESCRIBE' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
@@ -125,11 +201,43 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
+	public function testUpdateExistingTableWithNewFieldAndDefault_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->at( 4 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'DESCRIBE' ) )
+			->will( $this->returnValue( [] ) );
+
+		$this->connection->expects( $this->at( 5 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD `bar` text' . " DEFAULT '0'" . ' FIRST' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addDefault( 'bar', 0 );
+
+		$instance->create( $table );
+	}
+
 	public function testCreateIndex() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -143,7 +251,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->at( 3 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'SHOW INDEX' ) )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection->expects( $this->at( 4 ) )
 			->method( 'query' )
@@ -158,11 +266,43 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->create( $table );
 	}
 
+	public function testCreateIndex_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->any() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( false ) );
+
+		$this->connection->expects( $this->at( 7 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'SHOW INDEX' ) )
+			->will( $this->returnValue( [] ) );
+
+		$this->connection->expects( $this->at( 10 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ALTER TABLE "foo" ADD INDEX (bar)' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
+
+		$table = new Table( 'foo' );
+		$table->addColumn( 'bar', 'text' );
+		$table->addIndex( 'bar' );
+
+		$instance->create( $table );
+	}
+
 	public function testDropTable() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tableExists', 'query' ) )
+			->setMethods( [ 'tableExists', 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -183,11 +323,35 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance->drop( $table );
 	}
 
+	public function testDropTable_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->once() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->with( $this->stringContains( 'DROP TABLE "foo"' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
+
+		$table = new Table( 'foo' );
+		$instance->drop( $table );
+	}
+
 	public function testOptimizeTable() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'query' ) )
+			->setMethods( [ 'query' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->any() )
@@ -203,6 +367,26 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->stringContains( 'OPTIMIZE TABLE "foo"' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
+
+		$table = new Table( 'foo' );
+		$instance->optimize( $table );
+	}
+
+	public function testOptimizeTable_132() {
+
+		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
+		}
+
+		$this->connection->expects( $this->at( 3 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'ANALYZE TABLE "foo"' ) );
+
+		$this->connection->expects( $this->at( 6 ) )
+			->method( 'query' )
+			->with( $this->stringContains( 'OPTIMIZE TABLE "foo"' ) );
+
+		$instance = MySQLTableBuilder::factory( $this->connection );
 
 		$table = new Table( 'foo' );
 		$instance->optimize( $table );

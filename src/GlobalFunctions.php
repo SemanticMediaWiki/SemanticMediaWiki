@@ -16,16 +16,6 @@ use SMW\ProcessingErrorMsgHandler;
  */
 
 /**
- * @see NamespaceExaminer
- *
- * @return boolean
- * @deprecated since 1.9 and will be removed in 1.11
- */
-function smwfIsSemanticsProcessed( $namespace ) {
-	return \SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( $namespace );
-}
-
-/**
  * Takes a title text and turns it safely into its DBKey. This function
  * reimplements most of the title normalization as done in Title.php in order
  * to achieve conversion with less overhead. The official code could be called
@@ -72,7 +62,7 @@ function smwfNormalTitleText( $text ) {
  * @param string $text
  */
 function smwfXMLContentEncode( $text ) {
-	return str_replace( array( '&', '<', '>' ), array( '&amp;', '&lt;', '&gt;' ), Sanitizer::decodeCharReferences( $text ) );
+	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ) );
 }
 
 /**
@@ -127,7 +117,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
-	if ( $messages === array() ) {
+	if ( $messages === [] ) {
 		return '';
 	}
 
@@ -153,10 +143,10 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 
 	$highlighter = Highlighter::factory( $type );
 
-	$highlighter->setContent( array(
+	$highlighter->setContent( [
 		'caption'   => null,
 		'content'   => Highlighter::decode( $content )
-	) );
+	] );
 
 	return $highlighter->getHtml();
 }

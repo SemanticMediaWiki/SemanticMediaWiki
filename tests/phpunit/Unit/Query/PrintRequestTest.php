@@ -106,16 +106,16 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 		$instance->setParameter( 'foo', 123 );
 
 		$this->assertEquals(
-			array(
+			[
 				'foo' => 123
-			),
+			],
 			$instance->getParameters()
 		);
 
 		$instance->removeParameter( 'foo' );
 
 		$this->assertEquals(
-			array(),
+			[],
 			$instance->getParameters()
 		);
 	}
@@ -123,67 +123,67 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	public function textProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			false,
 			'Foo'
-		);
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
 			true,
 			''
-		);
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo=Bar',
 			false,
 			'Bar'
-		);
+		];
 
 		#3
-		$provider[] = array(
+		$provider[] = [
 			'Foo=Bar#123',
 			false,
 			'Bar#123'
-		);
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Foo#123=Bar',
 			false,
 			'Bar'
-		);
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'Category=Foo',
 			false,
 			'Foo'
-		);
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			'-Foo',
 			false,
 			'-Foo'
-		);
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'-Foo=Bar',
 			false,
 			'Bar'
-		);
+		];
 
 		#8, 1464
-		$provider[] = array(
+		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,
 			'Label on (&#10003;,&#10005;)'
-		);
+		];
 
 		return $provider;
 	}

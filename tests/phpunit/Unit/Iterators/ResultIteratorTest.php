@@ -22,7 +22,7 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ResultIterator::class,
-			new ResultIterator( array() )
+			new ResultIterator( [] )
 		);
 	}
 
@@ -34,9 +34,9 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoIterateOnArray() {
 
-		$result = array(
+		$result = [
 			1, 42
-		);
+		];
 
 		$instance = new ResultIterator( $result );
 
@@ -55,9 +55,9 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testdoSeekOnArray() {
 
-		$result = array(
+		$result = [
 			1, 42, 1001
-		);
+		];
 
 		$instance = new ResultIterator( $result );
 		$instance->seek( 1 );

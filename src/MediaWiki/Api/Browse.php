@@ -69,8 +69,8 @@ class Browse extends ApiBase {
 			$res = $this->callSubjectLookup( $parameters );
 		}
 
-		if ( $params['browse'] === 'article' ) {
-			$res = $this->callArticleLookup( $parameters );
+		if ( $params['browse'] === 'page' ) {
+			$res = $this->callPageLookup( $parameters );
 		}
 
 		$result = $this->getResult();
@@ -219,7 +219,7 @@ class Browse extends ApiBase {
 		);
 	}
 
-	private function callArticleLookup( $parameters ) {
+	private function callPageLookup( $parameters ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -238,7 +238,7 @@ class Browse extends ApiBase {
 		$articleLookup = new ArticleLookup(
 			$connection,
 			new ArticleAugmentor(
-				$applicationFactory->create( 'TitleCreator' )
+				$applicationFactory->create( 'TitleFactory' )
 			)
 		);
 
@@ -290,10 +290,10 @@ class Browse extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
-		return array(
-			'browse' => array(
+		return [
+			'browse' => [
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => array(
+				ApiBase::PARAM_TYPE => [
 
 					// List, browse of properties
 					'property',
@@ -305,7 +305,7 @@ class Browse extends ApiBase {
 					'concept',
 
 					// List, browse of articles, pages (mediawiki)
-					'article',
+					'page',
 
 					// Equivalent to Store::getPropertyValues
 					'pvalue',
@@ -315,13 +315,13 @@ class Browse extends ApiBase {
 
 					// Equivalent to Special:Browse
 					'subject',
-				)
-			),
-			'params' => array(
+				]
+			],
+			'params' => [
 				ApiBase::PARAM_TYPE => 'string',
 				ApiBase::PARAM_REQUIRED => true,
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -331,10 +331,10 @@ class Browse extends ApiBase {
 	 * @return array
 	 */
 	public function getParamDescription() {
-		return array(
+		return [
 			'browse' => 'Specifies the type of browse activity',
 			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
-		);
+		];
 	}
 
 	/**
@@ -344,9 +344,9 @@ class Browse extends ApiBase {
 	 * @return array
 	 */
 	public function getDescription() {
-		return array(
+		return [
 			'API module to support browse activties for different entity types in Semantic MediaWiki.'
-		);
+		];
 	}
 
 	/**
@@ -356,7 +356,7 @@ class Browse extends ApiBase {
 	 * @return array
 	 */
 	protected function getExamples() {
-		return array(
+		return [
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
@@ -367,10 +367,10 @@ class Browse extends ApiBase {
 			'api.php?action=smwbrowse&browse=category&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "" }',
 			'api.php?action=smwbrowse&browse=concept&params={ "limit": 10, "offset": 0, "search": "Date" }',
-			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main" }',
-			'api.php?action=smwbrowse&browse=article&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
+			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main" }',
+			'api.php?action=smwbrowse&browse=page&params={ "limit": 10, "offset": 0, "search": "Main", "fullText": true, "fullURL": true }',
 			'api.php?action=smwbrowse&browse=subject&params={ "subject": "Main page", "ns" :0, "iw": "", "subobject": "" }',
-		);
+		];
 	}
 
 	/**

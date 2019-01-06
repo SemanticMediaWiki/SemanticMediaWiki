@@ -37,7 +37,7 @@ class TestEnvironment {
 	 *
 	 * @param array $configuration
 	 */
-	public function __construct( array $configuration = array() ) {
+	public function __construct( array $configuration = [] ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->testConfig = new TestConfig();
@@ -70,7 +70,7 @@ class TestEnvironment {
 	 * @return self
 	 */
 	public function addConfiguration( $key, $value ) {
-		return $this->withConfiguration( array( $key => $value ) );
+		return $this->withConfiguration( [ $key => $value ] );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class TestEnvironment {
 	 *
 	 * @return self
 	 */
-	public function withConfiguration( array $configuration = array() ) {
+	public function withConfiguration( array $configuration = [] ) {
 		$this->testConfig->set( $configuration );
 		return $this;
 	}

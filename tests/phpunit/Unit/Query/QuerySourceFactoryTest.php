@@ -49,9 +49,9 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QuerySourceFactory(
 			$this->store,
-			array(
+			[
 				'foo' => FakeQueryEngine::class
-			)
+			]
 		);
 
 		$this->assertInstanceOf(
@@ -103,7 +103,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
@@ -112,9 +112,9 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QuerySourceFactory(
 			$store,
-			array(
+			[
 				'bar' => AnotherFakeQueryEngine::class
-			)
+			]
 		);
 
 		$this->assertInstanceOf(

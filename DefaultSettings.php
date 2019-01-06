@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
   die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
-return array(
+return [
 
 	###
 	# This is the path to your installation of Semantic MediaWiki as seen on your
@@ -135,16 +135,16 @@ return array(
 	#
 	# @since 2.5.3
 	##
-	'smwgLocalConnectionConf' => array(
-		'mw.db' => array(
+	'smwgLocalConnectionConf' => [
+		'mw.db' => [
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
-		),
-		'mw.db.queryengine' => array(
+		],
+		'mw.db.queryengine' => [
 			'read'  => DB_SLAVE,
 			'write' => DB_MASTER
-		)
-	),
+		]
+	],
 	##
 
 	###
@@ -285,7 +285,7 @@ return array(
 	# @since 2.5
 	# @default array
 	##
-	'smwgSparqlReplicationPropertyExemptionList' => array(),
+	'smwgSparqlReplicationPropertyExemptionList' => [],
 	##
 
 	###
@@ -312,7 +312,7 @@ return array(
 	#
 	# @since 0.7
 	##
-	'smwgNamespacesWithSemanticLinks' => array(
+	'smwgNamespacesWithSemanticLinks' => [
 		NS_MAIN => true,
 		NS_TALK => false,
 		NS_USER => true,
@@ -329,25 +329,43 @@ return array(
 		NS_HELP_TALK => false,
 		NS_CATEGORY => true,
 		NS_CATEGORY_TALK => false,
-	),
+	],
 	##
+
+	###
+	# Specifies features supported by the in-page factbox
+	#
+	# - SMW_FACTBOX_CACHE to use the main cache to avoid reparsing the content on
+	#   each page view (replaced smwgFactboxUseCache)
+	#
+	# - SMW_FACTBOX_PURGE_REFRESH to refresh the faxtbox content on the purge
+	#   event (replaced smwgFactboxCacheRefreshOnPurge)
+	#
+	# - SMW_FACTBOX_DISPLAY_SUBOBJECT displays subobject references
+	#
+	# @since 3.0
+	##
+	'smwgFactboxFeatures' => SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT,
 
 	###
 	# This setting allows you to select in which cases you want to have a factbox
-	# appear below an article. Note that the Magic Words __SHOWFACTBOX__ and
-	# __HIDEFACTBOX__ can be used to control Factbox display for individual pages.
-	# Other options for this setting include:
+	# appear below an article and includes the following options:
+	#
+	# - SMW_FACTBOX_NONEMPTY show only those factboxes that have some content
+	# - SMW_FACTBOX_SPECIAL show only if special properties were set
+	# - SMW_FACTBOX_HIDDEN hide always
+	# - SMW_FACTBOX_SHOWN  show always
+	#
+	# @note  The Magic Words __SHOWFACTBOX__ and __HIDEFACTBOX__ can be used to
+	# control Factbox display for individual pages.
 	#
 	# @since 0.7
 	##
-	// 	'smwgShowFactbox' => SMW_FACTBOX_NONEMPTY, 	# show only those factboxes that have some content
-	// 	'smwgShowFactbox' => SMW_FACTBOX_SPECIAL 	# show only if special properties were set
-	'smwgShowFactbox' => SMW_FACTBOX_HIDDEN, 	# hide always
-	// 	'smwgShowFactbox' => SMW_FACTBOX_SHOWN,  	# show always, buggy and not recommended
+	'smwgShowFactbox' => SMW_FACTBOX_HIDDEN,
 	##
 
 	###
-	# Same as $smwgShowFactbox but for edit mode and same possible values.
+	# Same as $smwgShowFactbox but for the edit mode with same possible values.
 	#
 	# @since 1.0
 	##
@@ -447,7 +465,7 @@ return array(
 	# @since 2.1 enabled default types, to disable the functionality either set the
 	# variable to array() or false
 	##
-	'smwgSearchByPropertyFuzzy' => array( '_num', '_txt', '_dat', '_mlt_rec' ),
+	'smwgSearchByPropertyFuzzy' => [ '_num', '_txt', '_dat', '_mlt_rec' ],
 	##
 
 	###
@@ -468,10 +486,10 @@ return array(
 	# @since 3.0
 	##
 	'smwgPagingLimit' => [
-		'type' => 200,
+		'type' => 50,
 		'concept' => 250,
 		'property' => 20,
-		'errorlist' => 25,
+		'errorlist' => 20,
 
 		// Special:Browse
 		'browse' => [
@@ -504,11 +522,11 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgPropertyListLimit' => array(
+	'smwgPropertyListLimit' => [
 		'subproperty' => 25,
 		'redirect' => 25,
 		'error' => 10
-	),
+	],
 	##
 
 	###
@@ -719,14 +737,14 @@ return array(
 	# formats 'table' and 'list' are defaults that cannot be disabled. The format
 	# 'broadtable' should not be disabled either in order not to break Special:ask.
 	##
-	'smwgResultFormats' => array(
+	'smwgResultFormats' => [
 		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'list'       => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'plainlist'  => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ol'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ul'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
-		'category'   => 'SMW\CategoryResultPrinter',
+		'category'   => 'SMW\Query\ResultPrinters\CategoryResultPrinter',
 		'embedded'   => 'SMW\EmbeddedResultPrinter',
 		'template'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'count'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
@@ -737,7 +755,7 @@ return array(
 		'dsv'        => 'SMW\DsvResultPrinter',
 		'json'       => 'SMW\JsonResultPrinter',
 		'rdf'        => 'SMW\RdfResultPrinter'
-	),
+	],
 	##
 
 	##
@@ -803,10 +821,10 @@ return array(
 	#
 	# @since 1.4.3
 	##
-	'smwgQuerySources' => array(
+	'smwgQuerySources' => [
 	//	'local'      => '',
 	//	'mw-wiki-foo' => [ '\SMW\Query\RemoteRequest', 'url' => 'http://example.org/wiki/index.php' ],
-	),
+	],
 	##
 
 	### Default property type
@@ -858,10 +876,10 @@ return array(
 	# To make this feature available, assign a simple list to the setting as in:
 	#
 	# $GLOBALS['smwgJobQueueWatchlist'] = [
-	#	'SMW\UpdateJob',
-	#	'SMW\ParserCachePurgeJob',
-	#	'SMW\FulltextSearchTableUpdateJob',
-	#	'SMW\ChangePropagationUpdateJob'
+	#	'smw.update',
+	#	'smw.parserCachePurge',
+	#	'smw.fulltextSearchTableUpdate',
+	#	'smw.changePropagationUpdate'
 	# ]
 	#
 	# Information are not displayed unless a user enables the setting in his or
@@ -892,7 +910,7 @@ return array(
 	#
 	# @since 1.7
 	##
-	'smwgPageSpecialProperties' => array( '_MDAT' ),
+	'smwgPageSpecialProperties' => [ '_MDAT' ],
 	##
 
 	###
@@ -910,10 +928,10 @@ return array(
 	#
 	# @since 1.5
 	##
-	'smwgChangePropagationWatchlist' => array(
+	'smwgChangePropagationWatchlist' => [
 		'_PVAL', '_LIST', '_PVAP', '_PVUC', '_PDESC', '_PPLB', '_PREC', '_PDESC',
 		'_SUBP', '_SUBC', '_PVALI'
-	),
+	],
 	##
 
 	##
@@ -936,11 +954,11 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgDataTypePropertyExemptionList' => array(
+	'smwgDataTypePropertyExemptionList' => [
 		'Record',
 		'Reference',
 		'Keyword'
-	),
+	],
 	##
 
 	##
@@ -1118,7 +1136,7 @@ return array(
 	#
 	# @since 1.9
 	##
-	'smwgCacheUsage' => array(
+	'smwgCacheUsage' => [
 		'special.wantedproperties' => 3600,
 		'special.unusedproperties' => 3600,
 		'special.properties' => 3600,
@@ -1127,7 +1145,7 @@ return array(
 		'api.browse.pvalue' => 3600,
 		'api.browse.psubject' => 3600,
 		'api.task'  => 3600
-	),
+	],
 	##
 
 	###
@@ -1176,7 +1194,7 @@ return array(
 	#
 	# @default array()
 	##
-	'smwgFixedProperties' => array(),
+	'smwgFixedProperties' => [],
 
 	###
 	# Sets a threshold value for when a property is being highlighted as "hardly
@@ -1197,39 +1215,6 @@ return array(
 	# default = true (legacy behaviour)
 	##
 	'smwgPropertyZeroCountDisplay' => true,
-	##
-
-	###
-	# Sets whether or not a factbox content should be stored in cache. This will
-	# considerable improve page response time as non-changed page content will
-	# not cause re-parsing of factbox content and instead is served directly from
-	# cache while only a new revision will trigger to re-parse the factbox.
-	#
-	# If smwgFactboxUseCache is set false (equals legacy behaviour) then every page
-	# request will bind the factbox to be re-parsed.
-	#
-	# @since 1.9
-	#
-	# @requires $smwgMainCacheType be set
-	# @default true
-	##
-	'smwgFactboxUseCache' => true,
-	##
-
-	###
-	# Sets whether or not a cached factbox should be invalidated on an action=purge
-	# event
-	#
-	# If set false the factbox cache will be only reset after a new page revision
-	# but if set true each purge request (no new page revision) will invalidate
-	# the factbox cache
-	#
-	# @since 1.9
-	#
-	# @requires $smwgMainCacheType be set
-	# @default true
-	##
-	'smwgFactboxCacheRefreshOnPurge' => true,
 	##
 
 	###
@@ -1260,7 +1245,7 @@ return array(
 	#
 	# @since 1.9
 	##
-	'smwgEnabledSpecialPage' => array( 'Ask' ),
+	'smwgEnabledSpecialPage' => [ 'Ask' ],
 	##
 
 	###
@@ -1298,23 +1283,43 @@ return array(
 	##
 
 	###
-	# Regulates task specific settings for the postEdit process.
+	# Regulates task specific settings for the post-edit process.
 	#
 	# The main objective is to defer secondary updates until after the GET request
 	# has been finalized so that resource requirements are part of an API request
 	# (and not a GET) and hereby ensures that a client remains responsive
 	# independent of the update workload.
 	#
-	# `job.task` specifies jobs that should be executed on a post-edit to run in a
+	# `run-jobs` specifies jobs that should be executed on a post-edit to run in a
 	# timely manner independent of a users job scheduler environment. The number
-	# indicates the expected amount of jobs to be executed per request.
+	# indicates the expected number of jobs to be executed per request.
+	#
+	# @experimental
+	#
+	# `check-query` The display of query results and the storage of entities that
+	# make up the results of a query are two distinct processes. The display
+	# normally happens before the storage due to how the MW parser works meaning
+	# that a query can only display the most recent results after a page has
+	# been processed and rendered while the storage is being deferred (or in case
+	# of an external store is influenced by the network lag).
+	#
+	# The `check-query` uses the `post-edit` event to run registered queries and
+	# if necessary reloads the page (hereby refreshes the results) in case the
+	# result is different by comparing the `result_hash` from before and after.
+	# To determine the query state, the `post-edit` has to invoke the API (as
+	# background task) which has to probe the query and to only run the query once
+	# for the page that embeds the query, it is strongly recommended that this
+	# option is only enabled together with:
+	#   - the query cache (@see $smwgQueryResultCacheType) and
+	#   - the query links store (@see $smwgEnabledQueryDependencyLinksStore)
 	#
 	# @since 3.0
 	##
 	'smwgPostEditUpdate' => [
-		'job.task' => [
-			'SMW\FulltextSearchTableUpdateJob' => 1,
-			'SMW\ParserCachePurgeJob' => 5
+		'check-query' => false,
+		'run-jobs' => [
+			'smw.fulltextSearchTableUpdate' => 1,
+			'smw.parserCachePurge' => 5
 		]
 	],
 	##
@@ -1350,7 +1355,7 @@ return array(
 	#
 	# @since 2.3 (experimental)
 	##
-	'smwgQueryDependencyPropertyExemptionList' => array( '_MDAT', '_SOBJ', '_ASKDU' ),
+	'smwgQueryDependencyPropertyExemptionList' => [ '_MDAT', '_SOBJ', '_ASKDU' ],
 	##
 
 	###
@@ -1363,7 +1368,7 @@ return array(
 	#
 	# @since 2.4 (experimental)
 	##
-	'smwgQueryDependencyAffiliatePropertyDetectionList' => array(),
+	'smwgQueryDependencyAffiliatePropertyDetectionList' => [],
 	##
 
 	###
@@ -1591,10 +1596,10 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgFulltextSearchTableOptions' => array(
-		'mysql'  => array( 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ),
-		'sqlite' => array( 'FTS4' )
-	),
+	'smwgFulltextSearchTableOptions' => [
+		'mysql'  => [ 'ENGINE=MyISAM, DEFAULT CHARSET=utf8' ],
+		'sqlite' => [ 'FTS4' ]
+	],
 	##
 
 	##
@@ -1610,11 +1615,11 @@ return array(
 	#
 	# @since 2.5
 	##
-	'smwgFulltextSearchPropertyExemptionList' => array(
+	'smwgFulltextSearchPropertyExemptionList' => [
 		'_ASKFO', '_ASKST', '_ASKPA','_IMPO', '_LCODE', '_UNIT', '_CONV',
 		'_TYPE', '_ERRT', '_INST', '_ASK', '_SOBJ', '_PVAL', '_PVALI',
 		'_REDI', '_CHGPRO'
-	),
+	],
 	##
 
 	##
@@ -1664,10 +1669,10 @@ return array(
 	# @since 2.5
 	# @default empty list (language detection is disabled by default)
 	##
-	'smwgFulltextLanguageDetection' => array(
+	'smwgFulltextLanguageDetection' => [
 	//	'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 	//	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
-	),
+	],
 	##
 
 	##
@@ -1814,11 +1819,11 @@ return array(
 	# Listed characters are categorized as invalid for a property label and will
 	# result in an error.
 	#
-	# @see #1568, #1638
+	# @see #1568, #1638, 3134
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => array( '[', ']' , '|' , '<' , '>', '{', '}', '+', '%', "\r", "\n" ),
+	'smwgPropertyInvalidCharacterList' => [ '[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n" ],
 	##
 
 	##
@@ -1838,7 +1843,7 @@ return array(
 	#
 	# @since 3.0
 	##
-	'smwgPropertyReservedNameList' => array( 'Category', 'smw-property-reserved-category' ),
+	'smwgPropertyReservedNameList' => [ 'Category', 'smw-property-reserved-category' ],
 	##
 
 	##
@@ -1978,26 +1983,32 @@ return array(
 	##
 
 	##
-	# Rule types
+	# Special:Ask form submit method
 	#
-	# The mapping defines the relation between a specific type, group and
-	# a possible interpreter which validates the expected rule syntax.
+	# - SMW_SASK_SUBMIT_POST uses `post` as submit method, allows to jump
+	#   directly to the search result but will not produce any copyable URL
+	#   string (use the result bookmark button instead)
 	#
-	# Each type will have its own interpretation about rule specific syntax
-	# elements and how to define and enact requirements.
+	# - SMW_SASK_SUBMIT_GET uses `get` as submit method and was the default
+	#   until 2.5, is not able to jump the search result directly after a submit
+	#
+	# - SMW_SASK_SUBMIT_GET_REDIRECT uses `get` as submit method and provides
+	#   the means to directly jump to the search result after a submit but
+	#   requires an extra HTTP request to follow a redirect
 	#
 	# @since 3.0
+	# @default SMW_SASK_SUBMIT_POST
 	##
-	'smwgRuleTypes' => [
-		'LINK_FORMAT_RULE' => [
-			'schema'  => __DIR__ . '/data/schema/rule/link-format-rule-schema.v1.json',
-			'group'   => SMW_RULE_GROUP_FORMAT,
-		],
-		'SEARCH_FORM_DEFINITION_RULE' => [
-			'schema'  => __DIR__ . '/data/schema/rule/search-form-definition-rule-schema.v1.json',
-			'group'   => SMW_RULE_GROUP_FORM_DEFINITION,
-		]
-	],
+	'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_POST,
+	##
+
+	##
+	# Enable/disable <section> ... </section> support
+	#
+	# @since 3.0
+	# @default true
+	##
+	'smwgSupportSectionTag' => true,
 	##
 
 	##
@@ -2005,6 +2016,32 @@ return array(
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first
 	# before enabling the ElasticStore and its settings!
+	##
+
+	##
+	# Schema types
+	#
+	# The mapping defines the relation between a specific type, group and
+	# a possible interpreter which validates the expected syntax.
+	#
+	# Each type will have its own interpretation about elements and how to
+	# define and enact requirements.
+	#
+	# @since 3.0
+	##
+	'smwgSchemaTypes' => [
+		'LINK_FORMAT_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/link-format-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_FORMAT,
+			'type_description' => 'smw-schema-description-link-format-schema',
+			// '__factory' => [ 'SMW\Schema\SchemaFactory', 'newTest' ]
+		],
+		'SEARCH_FORM_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
+			'type_description' => 'smw-schema-description-search-form-schema'
+		]
+	],
 	##
 
 	##
@@ -2255,9 +2292,8 @@ return array(
 			// [[Has page::~Foo bar/bar/*]]
 			'page.field.case.insensitive.proximity.match' => true,
 
-			// Allows to retrieve text fragments from ES for a `Special:Search`
-			// query request and depending on the type selected can require more
-			// query time.
+			// Allows to retrieve text fragments from ES for query request and
+			// depending on the type selected can require more query time.
 			//
 			// Available types are `plain`, `unified`, and `fvh`. The `fvh` type
 			// requires text fields to have the `term_vector` with `with_positions_offsets`
@@ -2265,7 +2301,7 @@ return array(
 			//
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#plain-highlighter
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/term-vector.html
-			'special_search.highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
+			'highlight.fragment' => [ 'number' => 1, 'size' => 250, 'type' => false ]
 		]
 	],
 	##
@@ -2294,4 +2330,4 @@ return array(
 		// 'localhost:9200'
 	]
 
-);
+];

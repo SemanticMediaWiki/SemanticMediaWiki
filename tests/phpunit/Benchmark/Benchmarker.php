@@ -13,7 +13,7 @@ class Benchmarker {
 	/**
 	 * @var array
 	 */
-	private $container = array();
+	private $container = [];
 
 	/**
 	 * @var boolean
@@ -36,7 +36,7 @@ class Benchmarker {
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->container = array();
+		$this->container = [];
 		return $this;
 	}
 

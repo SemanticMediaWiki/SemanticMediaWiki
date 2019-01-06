@@ -220,14 +220,14 @@ abstract class Store implements QueryEngine {
 		/**
 		 * @since 1.6
 		 */
-		\Hooks::run( 'SMWStore::updateDataBefore', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
 
 		$this->doDataUpdate( $semanticData );
 
 		/**
 		 * @since 1.6
 		 */
-		\Hooks::run( 'SMWStore::updateDataAfter', array( $this, $semanticData ) );
+		\Hooks::run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
 
 		$context = [
 			'method' => __METHOD__,

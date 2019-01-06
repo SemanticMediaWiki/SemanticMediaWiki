@@ -32,12 +32,12 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertySubjects' ) )
+			->setMethods( [ 'getPropertySubjects' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->setOption( 'smwgSemanticsEnabled', true );
 		$store->setOption( 'smwgAutoRefreshSubject', true );
@@ -91,17 +91,17 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp =  time();
 
-		$parameters = json_encode( array(
-			'async-job' => array( 'type' => 'SMW\UpdateJob', 'title' => 'Foo' ),
+		$parameters = json_encode( [
+			'async-job' => [ 'type' => 'SMW\UpdateJob', 'title' => 'Foo' ],
 			'timestamp' => $timestamp,
 			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( $timestamp ),
-		) );
+		] );
 
 		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( array( 'parameters' => $parameters ), true )
+			new \FauxRequest( [ 'parameters' => $parameters ], true )
 		);
 
 		$this->assertTrue(
@@ -117,12 +117,12 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getPropertySubjects' ) )
+			->setMethods( [ 'getPropertySubjects' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->setLogger( $this->spyLogger );
 
@@ -130,18 +130,18 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp = time();
 
-		$parameters = json_encode( array(
-			'async-job' => array( 'type' => 'SMW\ParserCachePurgeJob', 'title' => 'Foo' ),
+		$parameters = json_encode( [
+			'async-job' => [ 'type' => 'SMW\ParserCachePurgeJob', 'title' => 'Foo' ],
 			'timestamp' => $timestamp,
 			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( $timestamp ),
-			'idlist' => array( 1, 2 )
-		) );
+			'idlist' => [ 1, 2 ]
+		] );
 
 		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( array( 'parameters' => $parameters ), true )
+			new \FauxRequest( [ 'parameters' => $parameters ], true )
 		);
 
 		$this->assertTrue(
@@ -157,16 +157,16 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$timestamp =  time();
 
-		$parameters = json_encode( array(
+		$parameters = json_encode( [
 			'timestamp' => $timestamp,
 			'requestToken' => SpecialDeferredRequestDispatcher::getRequestToken( 'Foo' )
-		) );
+		] );
 
 		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( array( 'parameters' => $parameters ), true )
+			new \FauxRequest( [ 'parameters' => $parameters ], true )
 		);
 
 		$this->assertNull(
@@ -180,7 +180,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 
-		$request = array();
+		$request = [];
 
 		$instance = new SpecialDeferredRequestDispatcher();
 		$instance->disallowToModifyHttpHeader();

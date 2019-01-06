@@ -54,13 +54,13 @@ class ParametersProcessor {
 
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
-		$reqParameters = self::getParameterList( $request, $params );
+		$parameterList = self::getParameterList( $request, $params );
 		$printouts = [];
 
 		// Check for q= query string, used whenever this special page calls
 		// itself (via submit or plain link):
 		if ( ( $q = $request->getText( 'q' ) ) !== '' ) {
-			$reqParameters[] = $q;
+			$parameterList[] = $q;
 		}
 
 		// Parameters separated by newlines here (compatible with text-input for
@@ -71,14 +71,14 @@ class ParametersProcessor {
 
 		// Check for param strings in po (printouts), appears in some links
 		// and in submits:
-		$reqParameters = self::checkReqParameters(
+		$parameterList = self::checkParameterList(
 			$request,
-			$reqParameters,
+			$parameterList,
 			$printouts
 		);
 
 		list( $queryString, $parameters, $printouts ) =  QueryProcessor::getComponentsFromFunctionParams(
-			$reqParameters,
+			$parameterList,
 			false
 		);
 
@@ -154,7 +154,7 @@ class ParametersProcessor {
 
 		$parameters['limit'] = min( $parameters['limit'], self::$maxInlineLimit );
 
-		return array( $queryString, $parameters, $printouts );
+		return [ $queryString, $parameters, $printouts ];
 	}
 
 	private static function getParameterList( $request, $params ) {
@@ -195,7 +195,7 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkReqParameters( $request, $reqParameters, $printouts ) {
+	private static function checkParameterList( $request, $parameterList, $printouts ) {
 
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
@@ -205,17 +205,17 @@ class ParametersProcessor {
 				$param = '?' . $param;
 			}
 
-			$reqParameters[] = $param;
+			$parameterList[] = $param;
 		}
 
-		$parameters = array();
-		unset( $reqParameters['title'] );
+		$parameters = [];
+		unset( $parameterList['title'] );
 
 		// MW's internal token
-		unset( $reqParameters['wpEditToken'] );
+		unset( $parameterList['wpEditToken'] );
 
 		// Split ?Has property=Foo|+index=1 into a [ '?Has property=Foo', '+index=1' ]
-		foreach ( $reqParameters as $key => $value ) {
+		foreach ( $parameterList as $key => $value ) {
 			if (
 				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
 				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {

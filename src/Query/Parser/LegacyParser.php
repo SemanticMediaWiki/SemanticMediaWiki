@@ -60,7 +60,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @var array
 	 */
-	private $separatorStack = array();
+	private $separatorStack = [];
 
 	/**
 	 * Remaining string to be parsed (parsing eats query string from the front)
@@ -251,11 +251,19 @@ class LegacyParser implements Parser {
 	 */
 	public function getQueryDescription( $queryString ) {
 
+		if ( $queryString === '' ) {
+			$this->descriptionProcessor->addErrorWithMsgKey(
+				'smw-query-condition-empty'
+			);
+
+			return  $this->descriptionFactory->newThingDescription();
+		}
+
 		$this->descriptionProcessor->clear();
 		$this->descriptionProcessor->setContextPage( $this->contextPage );
 
 		$this->currentString = $queryString;
-		$this->separatorStack = array();
+		$this->separatorStack = [];
 
 		$this->selfReference = false;
 		$setNS = false;
@@ -304,7 +312,7 @@ class LegacyParser implements Parser {
 	private function getSubqueryDescription( &$setNS ) {
 
 		$conjunction = null;      // used for the current inner conjunction
-		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
+		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must NS restrictions be set? (may become true even if $setNS is false)
@@ -335,7 +343,7 @@ class LegacyParser implements Parser {
 						if ( $hasNamespaces && !$mustSetNS ) {
 							// add NS restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
-							$newdisjuncts = array();
+							$newdisjuncts = [];
 
 							foreach ( $disjuncts as $conj ) {
 								$newdisjuncts[] = $this->descriptionProcessor->asAnd( $conj, $this->defaultNamespace );
@@ -450,6 +458,7 @@ class LegacyParser implements Parser {
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
+		$invalidName = false;
 
 		while ( $continue ) {
 			$chunk = $this->readChunk();
@@ -470,6 +479,14 @@ class LegacyParser implements Parser {
 				// We add a prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$prefix = $category ? $this->categoryPrefix : $this->conceptPrefix;
 				$title = Title::newFromText( $prefix . $chunk );
+
+				// Something like [[Category::Foo]] doesn't produce any meaningful
+				// results
+				if ( strpos( $prefix . $chunk, '::' ) !== false ) {
+					$invalidName .= "{$prefix}{$chunk}";
+				} elseif ( $invalidName ) {
+					$invalidName .= "||{$chunk}";
+				}
 
 				if ( $title !== null ) {
 					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
@@ -494,6 +511,10 @@ class LegacyParser implements Parser {
 			$continue = ( $chunk == '||' ) && $category;
 		}
 
+		if ( $invalidName ) {
+			return $this->descriptionProcessor->addErrorWithMsgKey( 'smw-category-invalid-value-assignment', "[[{$invalidName}]]" );
+		}
+
 		return $this->finishLinkDescription( $chunk, false, $description, $setNS );
 	}
 
@@ -511,8 +532,8 @@ class LegacyParser implements Parser {
 
 		// First process property chain syntax (e.g. "property1.property2::value"),
 		// escaped by initial " ":
-		$propertynames = ( $propertyName{0} == ' ' ) ? array( $propertyName ) : explode( '.', $propertyName );
-		$propertyValueList = array();
+		$propertynames = ( $propertyName{0} == ' ' ) ? [ $propertyName ] : explode( '.', $propertyName );
+		$propertyValueList = [];
 
 		$typeid = '_wpg';
 		$inverse = false;

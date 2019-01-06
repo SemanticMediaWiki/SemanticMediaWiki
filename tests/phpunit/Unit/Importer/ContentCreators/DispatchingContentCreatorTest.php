@@ -42,7 +42,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Importer\ContentCreators\DispatchingContentCreator',
-			new DispatchingContentCreator( array() )
+			new DispatchingContentCreator( [] )
 		);
 	}
 
@@ -61,9 +61,9 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$instance = new DispatchingContentCreator(
-			array(
+			[
 				$contentCreator
-			)
+			]
 		);
 
 		$this->assertTrue(
@@ -90,9 +90,9 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$instance = new DispatchingContentCreator(
-			array(
+			[
 				$contentCreator
-			)
+			]
 		);
 
 		$instance->setMessageReporter(
@@ -121,9 +121,9 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->method( 'create' );
 
 		$instance = new DispatchingContentCreator(
-			array(
+			[
 				$contentCreator
-			)
+			]
 		);
 
 		$this->setExpectedException( 'RuntimeException' );

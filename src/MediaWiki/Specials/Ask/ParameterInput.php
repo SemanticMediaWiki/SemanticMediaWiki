@@ -110,13 +110,13 @@ class ParameterInput {
 	 * @return string
 	 */
 	public function getHtml() {
-		$valueList = array();
+		$valueList = [];
 
 		if ( is_array( $this->param->getAllowedValues() ) ) {
 			$valueList = $this->param->getAllowedValues();
 		}
 
-		if ( $valueList === array() ) {
+		if ( $valueList === [] ) {
 			switch ( $this->param->getType() ) {
 				case 'char':
 				case 'float':
@@ -154,7 +154,7 @@ class ParameterInput {
 		}
 
 		// #1473
-		if ( $value === array() ) {
+		if ( $value === [] ) {
 		   $value = '';
 		}
 
@@ -249,12 +249,12 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getSelectInput( array $valueList ) {
-		$options = array();
+		$options = [];
 		$options[] = '<option value=""></option>';
 
 		$currentValues = (array)$this->getValueToUse();
 		if ( is_null( $currentValues ) ) {
-			$currentValues = array();
+			$currentValues = [];
 		}
 
 		foreach ( $valueList as $value ) {
@@ -266,10 +266,10 @@ class ParameterInput {
 
 		return Html::rawElement(
 			'select',
-			array(
+			[
 				'name' => $this->inputName,
 				'class'=> 'parameter-select-input'
-			),
+			],
 			implode( "\n", $options )
 		);
 	}
@@ -284,8 +284,8 @@ class ParameterInput {
 	 * @return string
 	 */
 	protected function getCheckboxListInput( array $valueList ) {
-		$boxes = array();
-		$currentValues = array();
+		$boxes = [];
+		$currentValues = [];
 
 		$values = $this->getValueToUse();
 
@@ -309,14 +309,14 @@ class ParameterInput {
 
 			$boxes[] = Html::rawElement(
 				'span',
-				array(
+				[
 					'class' => 'parameter-checkbox-input',
 					'style' => 'white-space: nowrap; padding-right: 5px;'
-				),
+				],
 				Html::rawElement(
 					'input',
 					$attr + ( isset( $currentValues[$value] ) ? [ 'checked' ] : [] )
-				) . Html::element( 'tt', array(), $value )
+				) . Html::element( 'tt', [], $value )
 			);
 		}
 

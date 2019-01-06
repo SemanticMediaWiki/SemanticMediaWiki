@@ -1,0 +1,119 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "description": {
+      "$id": "/properties/description",
+      "type": "string",
+      "title": "The Description Schema",
+      "default": "",
+      "examples": [
+        "Define ..."
+      ]
+    },
+    "type": {
+      "$id": "/properties/type",
+      "type": "string",
+      "title": "The Type Schema",
+      "default": "",
+      "examples": [
+        "LINK_FORMAT_SCHEMA"
+      ],
+      "enum": [
+        "LINK_FORMAT_SCHEMA"
+      ]
+    },
+    "rule": {
+      "$id": "/properties/rule",
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "link_to": {
+          "$id": "/properties/rule/properties/link_to",
+          "type": "string",
+          "title": "The link_to Schema",
+          "default": "",
+          "examples": [
+            "SPECIAL_ASK"
+          ],
+          "minLength": 1,
+          "enum": [
+            "SPECIAL_ASK",
+            "SPECIAL_SEARCH_BY_PROPERTY"
+          ]
+        },
+        "parameters": {
+          "$id": "/properties/rule/properties/parameters",
+          "type": "object",
+          "properties": {
+            "format": {
+              "$id": "/properties/rule/properties/parameters/properties/format",
+              "type": "string",
+              "title": "The Format Schema",
+              "default": "",
+              "examples": [
+                "category"
+              ],
+              "enum": [
+                "category",
+                "broadtable",
+                "table",
+                "list"
+              ]
+            },
+            "printouts": {
+              "$id": "/properties/rule/properties/parameters/properties/printouts",
+              "type": "array",
+              "items": {
+                "$id": "/properties/rule/properties/parameters/properties/printouts/items",
+                "type": "string",
+                "title": "The 0 Schema",
+                "default": "",
+                "examples": [
+                  "Has description"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "link_to"
+      ],
+      "anyOf": [{
+          "properties": {
+            "link_to": {
+              "enum": ["SPECIAL_ASK"]
+            }
+          },
+          "required": [ "parameters" ]
+        },
+        {
+          "properties": {
+            "link_to": {
+              "enum": ["SPECIAL_SEARCH_BY_PROPERTY" ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "tags": {
+      "$id": "/properties/tags",
+      "type": "array",
+      "items": {
+        "$id": "/properties/tags/items",
+        "type": "string",
+        "title": "The 0 Schema",
+        "default": "",
+        "examples": [
+          "formatter"
+        ]
+      }
+    }
+  },
+  "required": [
+    "type",
+    "rule"
+  ]
+}

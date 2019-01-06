@@ -91,11 +91,33 @@ class ArticleDelete extends HookHandler {
 
 		$parameters['origin'] = 'ArticleDelete';
 
+		// Fetch the ID before the delete process marks it as outdated to help
+		// run a dispatch process on secondary tables
+		$parameters['_id'] = $this->store->getObjectIds()->getId(
+			$subject
+		);
+
 		// Restricted to the available SemanticData
 		$parameters[UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL] = true;
 
 		$updateDispatcherJob = $jobFactory->newUpdateDispatcherJob( $title, $parameters );
 		$updateDispatcherJob->insert();
+
+		$parserCachePurgeJob = $jobFactory->newParserCachePurgeJob(
+			$title,
+			[
+				'idlist' => [
+					$parameters['_id']
+				],
+				'origin' => 'ArticleDelete',
+
+				// Insert will only be done for when the links store is active
+				// otherwise the job wouldn't have any work to do
+				'is.enabled' => $this->getOption( 'smwgEnabledQueryDependencyLinksStore' )
+			]
+		);
+
+		$parserCachePurgeJob->insert();
 
 		$this->store->deleteSubject( $title );
 

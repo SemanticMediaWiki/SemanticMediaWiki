@@ -41,7 +41,7 @@ class SpecialURIResolver extends SpecialPage {
 
 		if ( $query === null || trim( $query ) === '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
-				$out->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( array( 'stats' => '1' ) ), '303' );
+				$out->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( [ 'stats' => '1' ] ), '303' );
 			} else {
 				$this->setHeaders();
 				$out->addHTML(
@@ -61,7 +61,7 @@ class SpecialURIResolver extends SpecialPage {
 				$out->showErrorPage( 'badtitle', 'badtitletext' );
 			} elseif ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
 				$out->redirect(
-					SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( array( 'xmlmime' => 'rdf' ) )
+					SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( [ 'xmlmime' => 'rdf' ] )
 				);
 			} else {
 				$out->redirect( $title->getFullURL(), '303' );

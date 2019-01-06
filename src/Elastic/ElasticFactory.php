@@ -14,10 +14,10 @@ use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\Elastic\Indexer\TextIndexer;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Rollover;
 use SMW\Elastic\Indexer\Rebuilder;
+use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
@@ -138,8 +138,8 @@ class ElasticFactory {
 					'_service' => [ $this, 'newRollover' ],
 					'_type' => Rollover::class
 				],
-				'TextIndexer' => [ $this, 'newTextIndexer' ],
 				'FileIndexer' => [ $this, 'newFileIndexer' ],
+				'Bulk' => [ $this, 'newBulk' ],
 			]
 		);
 
@@ -177,12 +177,12 @@ class ElasticFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Indexer $indexer
+	 * @param ElasticClient $connection
 	 *
-	 * @return TextIndexer
+	 * @return Bulk
 	 */
-	public function newTextIndexer( Indexer $indexer ) {
-		return new TextIndexer( $indexer );
+	public function newBulk( ElasticClient $connection ) {
+		return new Bulk( $connection );
 	}
 
 	/**

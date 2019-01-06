@@ -180,7 +180,7 @@ class NamespaceForm {
 			// populated by js if available
 			"<div id='smw-search-togglensview'></div>" .
 			"<div id='mw-search-togglebox'></div>" .
-			"<div id='ns-list' style='display:$display'>" . $divider .
+			"<div id='mw-search-ns' style='display:$display'>" . $divider .
 			implode(
 				$divider,
 				$showSections

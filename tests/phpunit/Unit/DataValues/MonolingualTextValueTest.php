@@ -222,10 +222,10 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertEquals(
-			array(
+			[
 				'_TEXT'  => 'Foo',
 				'_LCODE' => 'en'
-			),
+			],
 			$instance->toArray()
 		);
 	}

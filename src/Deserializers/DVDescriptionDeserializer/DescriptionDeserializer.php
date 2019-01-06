@@ -49,7 +49,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	/**
 	 * @var array
 	 */
-	protected $errors = array();
+	protected $errors = [];
 
 	/**
 	 * @var DataValue
@@ -82,7 +82,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 */
 	public function setDataValue( DataValue $dataValue ) {
 		$this->dataValue = $dataValue;
-		$this->errors = array();
+		$this->errors = [];
 	}
 
 	/**

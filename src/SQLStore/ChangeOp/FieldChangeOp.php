@@ -15,7 +15,7 @@ class FieldChangeOp {
 	/**
 	 * @var array
 	 */
-	private $changeOp = array();
+	private $changeOp = [];
 
 	/**
 	 * @var string
@@ -28,7 +28,7 @@ class FieldChangeOp {
 	 * @param array $changeOp
 	 * @param string|null $type
 	 */
-	public function __construct( array $changeOp = array(), $type = null ) {
+	public function __construct( array $changeOp = [], $type = null ) {
 		$this->changeOp = $changeOp;
 		$this->type = $type;
 	}

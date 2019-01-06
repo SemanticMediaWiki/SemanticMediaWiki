@@ -170,7 +170,7 @@ class PropertyTableRowMapper {
 				continue;
 			}
 
-			$insertValues = array( 's_id' => $sid );
+			$insertValues = [ 's_id' => $sid ];
 			$p_type = $property->findPropertyValueType();
 
 			if ( !$propertyTable->isFixedPropertyTable() ) {
@@ -278,21 +278,21 @@ class PropertyTableRowMapper {
 		if ( array_key_exists( 'smw_fpt_conc', $insertData ) && !empty( $insertData['smw_fpt_conc'] ) ) {
 			$insertValues = end( $insertData['smw_fpt_conc'] );
 		} else {
-			$insertValues = array(
+			$insertValues = [
 				's_id'          => $sid,
 				'concept_txt'   => '',
 				'concept_docu'  => '',
 				'concept_features' => 0,
 				'concept_size'  => -1,
 				'concept_depth' => -1
-			);
+			];
 		}
 
 		// Add existing cache status data to this row:
 		$row = $connection->selectRow(
 			'smw_fpt_conc',
-			array( 'cache_date', 'cache_count' ),
-			array( 's_id' => $sid ),
+			[ 'cache_date', 'cache_count' ],
+			[ 's_id' => $sid ],
 			__METHOD__
 		);
 
@@ -304,7 +304,7 @@ class PropertyTableRowMapper {
 			$insertValues['cache_count'] = $row->cache_count;
 		}
 
-		$insertData['smw_fpt_conc'] = array( $insertValues );
+		$insertData['smw_fpt_conc'] = [ $insertValues ];
 	}
 
 }

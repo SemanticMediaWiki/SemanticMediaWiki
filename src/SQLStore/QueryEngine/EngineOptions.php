@@ -16,11 +16,11 @@ class EngineOptions extends Options {
 	 * @since 2.2
 	 */
 	public function __construct() {
-		parent::__construct( array(
+		parent::__construct( [
 			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
 			'smwgQSortFeatures'     => $GLOBALS['smwgQSortFeatures'],
 			'smwgQFilterDuplicates'   => $GLOBALS['smwgQFilterDuplicates']
-		) );
+		] );
 	}
 
 }

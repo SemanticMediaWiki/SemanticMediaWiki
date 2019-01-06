@@ -61,7 +61,7 @@ class PrintRequest {
 
 	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
 
-	protected $m_params = array();
+	protected $m_params = [];
 
 	/**
 	 * Identifies whether this instance was used/added and is diconnected to

@@ -53,7 +53,7 @@ class ExpResource extends ExpElement {
 		// "... characters “<”, “>”, “{”, “}”, “|”, “\”, “^”, “`”, ‘“’ (double quote),
 		// and “ ” (space) were allowed ... are not allowed in IRIs, Data
 		// containing these characters in %-encoded form is fine ..."
-		$this->uri = str_replace( array( '"' ), array( '%22' ), $uri );
+		$this->uri = str_replace( [ '"' ], [ '%22' ], $uri );
 	}
 
 	/**
@@ -91,10 +91,10 @@ class ExpResource extends ExpElement {
 	 */
 	public function getSerialization() {
 
-		$serialization = array(
+		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()
-		);
+		];
 
 		return $serialization + parent::getSerialization();
 	}

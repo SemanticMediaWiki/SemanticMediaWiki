@@ -79,22 +79,22 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array(
+			->will( $this->returnValue( [
 				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ) ) );
+				new DIWikiPage( 'ResultTwo', NS_HELP ) ] ) );
 
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
-			new PageRequestOptions( 'Foo/Bar', array() ),
+			new PageRequestOptions( 'Foo/Bar', [] ),
 			new QueryResultLookup( $store )
 		);
 
-		$expected = array(
+		$expected = [
 			'value="Foo"',
 			'value="Bar"',
 			'title="ResultOne',
 			'title="' . $this->localizer->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
@@ -142,19 +142,19 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array(
+			->will( $this->returnValue( [
 				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ) ) );
+				new DIWikiPage( 'ResultTwo', NS_HELP ) ] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$requestOptions = array(
+		$requestOptions = [
 			'propertyString' => 'Foo',
 			'valueString' => 'Bar',
-			'nearbySearchForType' => array( '_wpg' )
-		);
+			'nearbySearchForType' => [ '_wpg' ]
+		];
 
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
@@ -162,12 +162,12 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 			new QueryResultLookup( $store )
 		);
 
-		$expected = array(
+		$expected = [
 			'value="Foo"',
 			'value="Bar"',
 			'title="ResultOne',
 			'title="' . $this->localizer->getNamespaceTextById( NS_HELP ) . ':ResultTwo'
-		);
+		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,

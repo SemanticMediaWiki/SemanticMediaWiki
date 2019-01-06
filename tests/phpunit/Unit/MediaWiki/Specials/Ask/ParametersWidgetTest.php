@@ -52,23 +52,23 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 
 	public function parametersProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(),
+			[],
 			'<div class="smw-table smw-ask-options-list" width="100%"><div class="smw-table-row smw-ask-options-row-odd"></div></div>'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'table',
-			array(),
+			[],
 			[
 				'<div class="smw-table smw-ask-options-list" width="100%"',
 				'<input class="parameter-number-input" size="6" style="width: 95%;" value="50" name="p[limit]"',
 				'<input class="parameter-number-input" size="6" style="width: 95%;" value="0" name="p[offset]"'
 			]
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'table',
 			[
 				'limit'  => 9999,
@@ -78,7 +78,7 @@ class ParametersWidgetTest extends \PHPUnit_Framework_TestCase {
 				'<input class="parameter-number-input" size="6" style="width: 95%;" value="9999" name="p[limit]"',
 				'<input class="parameter-number-input" size="6" style="width: 95%;" value="42" name="p[offset]"'
 			]
-		);
+		];
 
 		return $provider;
 	}

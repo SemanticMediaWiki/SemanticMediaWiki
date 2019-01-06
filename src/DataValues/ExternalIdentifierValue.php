@@ -75,9 +75,9 @@ class ExternalIdentifierValue extends StringValue {
 
 		return \Html::rawElement(
 			'span',
-			array(
+			[
 				'class' => 'plainlinks smw-eid'
-			),
+			],
 			$url
 		);
 	}
@@ -109,10 +109,10 @@ class ExternalIdentifierValue extends StringValue {
 
 		return \Html::rawElement(
 			'a',
-			array(
+			[
 				'href'   => $uri,
 				'target' => '_blank'
-			),
+			],
 			$this->m_caption
 		);
 	}
@@ -170,7 +170,7 @@ class ExternalIdentifierValue extends StringValue {
 			new DIProperty( '_PEFU' )
 		);
 
-		if ( $dataValue->getErrors() !== array() ) {
+		if ( $dataValue->getErrors() !== [] ) {
 			$this->addError( $dataValue->getErrors() );
 			return;
 		}

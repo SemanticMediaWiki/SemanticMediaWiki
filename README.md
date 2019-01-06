@@ -20,8 +20,8 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-- PHP 5.5 or later (5.6 or later recommended)
-- MediaWiki 1.23 or later (1.27 or later recommended)
+- PHP 5.6 or later
+- MediaWiki 1.27 or later
 - MySQL 5+, SQLite 3+ or PostgreSQL 9.x
 
 A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
@@ -29,25 +29,15 @@ release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 
-The easiest way to install Semantic MediaWiki is by using [Composer][composer].
-It is recommended to read the [installation instructions](docs/INSTALL.md) together with
-the available [upgrade guide][smw-installation].
-
-```json
-{
-	"require": {
-		"mediawiki/semantic-media-wiki": "~2.5"
-	}
-}
-```
+The recommended way to install Semantic MediaWiki is by using [Composer][composer]. See the detailed
+[installation guide](docs/INSTALL.md) as well as the information on [compatibility](docs/COMPATIBILITY.md).
 
 ## Documentation
 
-Most of the documentation can be found on the [SMW wiki](https://www.semantic-mediawiki.org).
-A small core of documentation also comes bundled with the software itself. This documentation
-is minimalistic and less explanatory then what can be found on the SMW wiki. It is however
-always kept up to date, and applies to the version of the code it comes bundled with. The
-most important files are linked below.
+Most of the documentation can be found on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org).
+A small core of documentation also comes bundled with the software itself. This documentation is minimalistic
+and less explanatory then what can be found on the SMW wiki. It is however always kept up to date, and applies
+to the version of the code it comes bundled with. The most important files are linked below.
 
 * [User documentation](docs/README.md)
 * [Technical documentation](docs/technical/README.md)
@@ -59,7 +49,7 @@ most important files are linked below.
 [![Google+](https://www.semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
 Many people have contributed to SMW. A list of people who have made contributions in the past can
-be found [here][contributors] or [on the SMW wiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
+be found [here][contributors] or on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 

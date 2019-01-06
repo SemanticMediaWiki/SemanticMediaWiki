@@ -28,7 +28,7 @@ class DsvResultPrinterTest extends QueryPrinterTestCase {
 	/**
 	 * @return DsvResultPrinter
 	 */
-	private function getInstance( $parameters = array() ) {
+	private function getInstance( $parameters = [] ) {
 		return $this->setParameters( new DsvResultPrinter( 'dsv' ), $parameters );
 	}
 

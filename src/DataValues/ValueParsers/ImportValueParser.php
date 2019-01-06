@@ -23,7 +23,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.2
@@ -54,7 +54,7 @@ class ImportValueParser implements ValueParser {
 			$value
 		);
 
-		if ( $this->errors !== array() ) {
+		if ( $this->errors !== [] ) {
 			return null;
 		}
 
@@ -69,17 +69,17 @@ class ImportValueParser implements ValueParser {
 			$typelist
 		);
 
-		if ( $this->errors !== array() ) {
+		if ( $this->errors !== [] ) {
 			return null;
 		}
 
-		return array(
+		return [
 			$namespace,
 			$section,
 			$uri,
 			$name,
 			$type
-		);
+		];
 	}
 
 	/**
@@ -89,10 +89,10 @@ class ImportValueParser implements ValueParser {
 
 		if ( strpos( $value, ':' ) === false ) {
 
-			$this->errors[] = array(
+			$this->errors[] = [
 				'smw-datavalue-import-invalid-value',
 				$value
-			);
+			];
 
 			return null;
 		}
@@ -111,15 +111,15 @@ class ImportValueParser implements ValueParser {
 		// Check that elements exists for the namespace
 		if ( $controlledVocabulary === '' ) {
 
-			$this->errors[] = array(
+			$this->errors[] = [
 				'smw-datavalue-import-unknown-namespace',
 				$namespace
-			);
+			];
 
 			return null;
 		}
 
-		return array( $namespace, $section, $controlledVocabulary );
+		return [ $namespace, $section, $controlledVocabulary ];
 	}
 
 	/**
@@ -129,21 +129,21 @@ class ImportValueParser implements ValueParser {
 
 		if ( $uri === '' ) {
 
-			$this->errors[] = array(
+			$this->errors[] = [
 				'smw-datavalue-import-missing-namespace-uri',
 				$namespace
-			);
+			];
 
 			return null;
 		}
 
 		if ( !isset( $typelist[$section] ) ) {
 
-			$this->errors[] = array(
+			$this->errors[] = [
 				'smw-datavalue-import-missing-type',
 				$section,
 				$namespace
-			);
+			];
 
 			return null;
 		}
@@ -156,7 +156,7 @@ class ImportValueParser implements ValueParser {
 	 */
 	private function doParse( $controlledVocabulary ) {
 
-		$list = array();
+		$list = [];
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
 
 		// Get definition from first line
@@ -178,7 +178,7 @@ class ImportValueParser implements ValueParser {
 			$list[trim( $secname )] = $typestring;
 		}
 
-		return array( $uri, $name, $list );
+		return [ $uri, $name, $list ];
 	}
 
 }

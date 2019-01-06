@@ -32,8 +32,8 @@ class LinksEncoder {
 		// Filter simple [ ... ] from [[ ... ]] links and ensure to find the correct
 		// start and end in case of [[Foo::[[Bar]]]] or [[Foo::[http://example.org/foo]]]
 		$text = str_replace(
-			array( '[', ']', '&#x005B;&#x005B;', '&#x005D;&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;' ),
-			array( '&#x005B;', '&#x005D;', '[[', ']]]]', '&#x005D;]]', ']]' ),
+			[ '[', ']', '&#x005B;&#x005B;', '&#x005D;&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;&#x005D;', '&#x005D;&#x005D;' ],
+			[ '&#x005B;', '&#x005D;', '[[', ']]]]', '&#x005D;]]', ']]' ],
 			$text
 		);
 
@@ -65,8 +65,8 @@ class LinksEncoder {
 	 */
 	public static function encodeLinks( $text ) {
 		return str_replace(
-			array( '[', ']', '|' ),
-			array( '&#x005B;', '&#x005D;', '&#124;' ),
+			[ '[', ']', '|' ],
+			[ '&#x005B;', '&#x005D;', '&#124;' ],
 			$text
 		);
 	}
@@ -79,7 +79,7 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function decodeSquareBracket( $text ) {
-		return str_replace( array( '%5B', '%5D' ), array( '[', ']' ), $text );
+		return str_replace( [ '%5B', '%5D' ], [ '[', ']' ], $text );
 	}
 
 	/**
@@ -224,7 +224,7 @@ class LinksEncoder {
 		// obfuscate the returning [[, |, ]] result
 		$replace = self::encodeLinks( preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			array( $parser, 'preprocess' ),
+			[ $parser, 'preprocess' ],
 			$match
 		) );
 

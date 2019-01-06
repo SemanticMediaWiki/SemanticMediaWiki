@@ -62,7 +62,7 @@ class RepositoryResult implements Iterator {
 	 * @param $comments array of string comments if the result contained any
 	 * @param $errorCode integer an error code
 	 */
-	public function __construct( array $header = array(), array $data = array(), array $comments = array(), $errorCode = self::ERROR_NOERROR ) {
+	public function __construct( array $header = [], array $data = [], array $comments = [], $errorCode = self::ERROR_NOERROR ) {
 		$this->header    = $header;
 		$this->data      = $data;
 		$this->comments  = $comments;

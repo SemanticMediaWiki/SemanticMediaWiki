@@ -20,7 +20,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function table( $html = '', array $attributes = array() ) {
+	public static function table( $html = '', array $attributes = [] ) {
 		return self::open( $attributes ) . $html . self::close();
 	}
 
@@ -31,7 +31,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function open( array $attributes = array() ) {
+	public static function open( array $attributes = [] ) {
 		return Html::openElement(
 			'div',
 			self::mergeAttributes( 'smw-table', $attributes ),
@@ -47,7 +47,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function header( $html = '', array $attributes = array() ) {
+	public static function header( $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			self::mergeAttributes( 'smw-table-header', $attributes ),
@@ -63,7 +63,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function body( $html = '', array $attributes = array() ) {
+	public static function body( $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			self::mergeAttributes( 'smw-table-body', $attributes ),
@@ -79,7 +79,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function footer( $html = '', array $attributes = array() ) {
+	public static function footer( $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			self::mergeAttributes( 'smw-table-footer', $attributes ),
@@ -95,7 +95,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function row( $html = '', array $attributes = array() ) {
+	public static function row( $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			self::mergeAttributes( 'smw-table-row', $attributes ),
@@ -111,7 +111,7 @@ class HtmlDivTable {
 	 *
 	 * @return string
 	 */
-	public static function cell( $html = '', array $attributes = array() ) {
+	public static function cell( $html = '', array $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			self::mergeAttributes( 'smw-table-cell', $attributes ),
@@ -132,7 +132,7 @@ class HtmlDivTable {
 
 	private static function mergeAttributes( $class, $attr ) {
 
-		$attributes = array();
+		$attributes = [];
 
 		// A bit of attribute order
 		if ( isset( $attr['id'] ) ) {

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -37,7 +38,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends JobBase {
+class ChangePropagationDispatchJob extends Job {
 
 	/**
 	 * Size of rows stored in a temp file
@@ -55,8 +56,8 @@ class ChangePropagationDispatchJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\ChangePropagationDispatchJob', $title, $params );
+	public function __construct( Title $title, $params = [] ) {
+		parent::__construct( 'smw.changePropagationDispatch', $title, $params );
 		$this->removeDuplicates = true;
 	}
 
@@ -70,7 +71,7 @@ class ChangePropagationDispatchJob extends JobBase {
 	 *
 	 * @return boolean
 	 */
-	public static function planAsJob( DIWikiPage $subject, $params = array() ) {
+	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
 
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->resetCacheBy(
@@ -115,10 +116,10 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$jobType = 'SMW\ChangePropagationUpdateJob';
+		$jobType = 'smw.changePropagationUpdate';
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
-			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+			$jobType = 'smw.changePropagationClassUpdate';
 		}
 
 		if ( $applicationFactory->getJobQueue()->hasPendingJob( $jobType ) ) {
@@ -148,10 +149,10 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$jobType = 'SMW\ChangePropagationUpdateJob';
+		$jobType = 'smw.changePropagationUpdate';
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
-			$jobType = 'SMW\ChangePropagationClassUpdateJob';
+			$jobType = 'smw.changePropagationClassUpdate';
 		}
 
 		$count = $applicationFactory->getJobQueue()->getQueueSize( $jobType );
@@ -226,7 +227,7 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		// Refresh the property page once more on the last dispatch
 		$appendIterator->add(
-			array( $subject )
+			[ $subject ]
 		);
 
 		// After relevant subjects has been selected, commit the changes to the
@@ -259,7 +260,7 @@ class ChangePropagationDispatchJob extends JobBase {
 
 	private function pushChangePropagationDispatchJob( $tempFile, $file, $num, $chunk ) {
 
-		$data = array();
+		$data = [];
 		$file .= "_$num.tmp";
 
 		// Filter any subobject
@@ -279,10 +280,10 @@ class ChangePropagationDispatchJob extends JobBase {
 		// contents by third-parties
 		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
 			$this->getTitle(),
-			array(
+			[
 				'dataFile' => $file,
 				'checkSum' => $checkSum
-			) + self::newRootJobParams(
+			] + self::newRootJobParams(
 				"ChangePropagationDispatchJob:$file:$checkSum"
 			)
 		);
@@ -356,9 +357,9 @@ class ChangePropagationDispatchJob extends JobBase {
 
 			$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 				$title,
-				array(
+				[
 					UpdateJob::FORCED_UPDATE => true
-				)
+				]
 			);
 
 			$changePropagationUpdateJob->insert();
@@ -374,10 +375,10 @@ class ChangePropagationDispatchJob extends JobBase {
 
 		$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 			$subject->getTitle(),
-			array(
+			[
 				UpdateJob::CHANGE_PROP => $subject->getSerialization(),
 				UpdateJob::FORCED_UPDATE => true
-			)
+			]
 		);
 
 		$changePropagationUpdateJob->run();

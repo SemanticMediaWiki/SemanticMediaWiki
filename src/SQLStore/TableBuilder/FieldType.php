@@ -25,6 +25,11 @@ class FieldType {
 	/**
 	 * @var string
 	 */
+	const FIELD_ID_UNSIGNED = 'id_unsigned';
+
+	/**
+	 * @var string
+	 */
 	const FIELD_TITLE = 'title';
 
 	/**
@@ -103,7 +108,7 @@ class FieldType {
 	 * @param string|array $type
 	 * @param array $fieldTypes
 	 */
-	public static function mapType( $type, $fieldTypes = array() ) {
+	public static function mapType( $type, $fieldTypes = [] ) {
 
 		$fieldType = $type;
 		$auxilary = '';

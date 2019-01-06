@@ -43,7 +43,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getFields' )
-			->will( $this->returnValue( array( 'o_id' => 42 ) ) );
+			->will( $this->returnValue( [ 'o_id' => 42 ] ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -59,7 +59,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
@@ -102,13 +102,41 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array( $tableDefinition ) ) );
+			->will( $this->returnValue( [ $tableDefinition ] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
 		);
 
 		$instance->tryToFindAtLeastOneReferenceForProperty( new DIProperty( 'Foo' ) );
+	}
+
+	public function testHasResidualPropertyTableReference() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new PropertyTableIdReferenceFinder(
+			$this->store
+		);
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->hasResidualPropertyTableReference( 42 )
+		);
 	}
 
 	public function testHasResidualReferenceFor() {
@@ -127,7 +155,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store
@@ -155,7 +183,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$instance = new PropertyTableIdReferenceFinder(
 			$this->store

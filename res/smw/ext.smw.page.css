@@ -99,7 +99,7 @@
 	padding-top: 0.3em;
 }
 
-.smw-page-navigation {
+.smw-page-navigation, .smw-page-content {
 	margin-top: 1.2em;
 }
 
@@ -300,6 +300,44 @@
 	padding-top: 8px;
 }
 
+.smw-property-specification {
+	display: none;
+}
+
+.usage-count, .item-count {
+	display: inline-block;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    background-color: rgba(27,31,35,0.04);
+    border-radius: 4px;
+    color: #bbb;
+    margin-left: 10px;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count,
+#tab-smw-concept-list:checked + label.nav-label .usage-count,
+#tab-smw-property-subp:checked + label.nav-label .item-count,
+#tab-smw-property-errp:checked + label.nav-label .item-count,
+#tab-smw-property-redi:checked + label.nav-label .item-count,
+#tab-smw-property-spec:checked + label.nav-label .item-count {
+    background-color: rgba(27,31,35,0.08);
+    color: #444d56;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count.moderate,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.moderate {
+    background-color: rgba(43,157,239,0.18);
+    color: #444d56;
+}
+
+#tab-smw-property-value:checked + label.nav-label .usage-count.high,
+#tab-smw-concept-list:checked + label.nav-label .usage-count.high {
+    background-color: rgba(186,0,0,0.16);
+    color: #444d56;
+}
+
 /**
  * Tabs
  */
@@ -307,10 +345,18 @@
 	margin-top: 15px;
 }
 
+.smw-tabs label.nav-label.smw-tab-right {
+	float: right;
+    margin: -1px 0 0 0;
+}
+
 .smw-property #tab-smw-property-value:checked ~ #tab-content-smw-property-value,
 .smw-property #tab-smw-property-subp:checked ~ #tab-content-smw-property-subp,
 .smw-property #tab-smw-property-errp:checked ~ #tab-content-smw-property-errp,
-.smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi {
+.smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi,
+.smw-property #tab-smw-property-spec:checked ~ #tab-content-smw-property-spec,
+.smw-types #tab-smw-type-errors:checked ~ #tab-content-smw-type-errors,
+.smw-types #tab-smw-type-list:checked ~ #tab-content-smw-type-list {
 	display: block;
 }
 
@@ -320,8 +366,14 @@
 }
 
 .smw-property input.nav-tab:checked + label.nav-label.smw-tab-warning,
-.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-warning {
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-warning,
+.smw-types input.nav-tab:checked + label.nav-label.smw-tab-warning {
     border-top: 2px solid rgb(204,0,0);
+}
+
+.smw-property input.nav-tab:checked + label.nav-label.smw-tab-spec,
+.smw-concept input.nav-tab:checked + label.nav-label.smw-tab-spec {
+    border-top: 2px solid orange;
 }
 
 /**
@@ -331,6 +383,11 @@
 
 	.smw-page-nav-right {
 		float: left;
+	}
+
+	.smw-tabs label.nav-label.smw-tab-right  {
+		float: unset;
+		margin: 0 0 -1px;
 	}
 
 	.smw-page-nav-left {

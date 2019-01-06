@@ -31,7 +31,7 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 
 		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'addExtensionUpdate' ) )
+			->setMethods( [ 'addExtensionUpdate' ] )
 			->getMockForAbstractClass();
 
 		$databaseUpdater->expects( $this->once() )

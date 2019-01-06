@@ -44,7 +44,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @param string|array $groups
 	 * @param string|boolean $wiki
 	 */
-	public function __construct( $id, $groups = array(), $wiki = false ) {
+	public function __construct( $id, $groups = [], $wiki = false ) {
 		$this->id = $id;
 		$this->groups = $groups;
 		$this->wiki = $wiki;

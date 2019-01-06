@@ -74,17 +74,17 @@ class SpecialBrowse extends SpecialPage {
 		$out = $this->getOutput();
 		$out->setHTMLTitle( $dataValue->getTitle() );
 
-		$out->addModuleStyles( array(
+		$out->addModuleStyles( [
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input',
 			'ext.smw.browse.styles'
-		) );
+		] );
 
-		$out->addModules( array(
+		$out->addModules( [
 			'ext.smw.browse',
 			'ext.smw.tooltip'
-		) );
+		] );
 
 		$out->addHTML(
 			$this->buildHTML( $webRequest, $dataValue, $isEmptyRequest )
@@ -107,10 +107,10 @@ class SpecialBrowse extends SpecialPage {
 
 			$html = Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'smw-callout smw-callout-error'
-				),
-				Message::get( array( 'smw-browse-invalid-subject', $error ), Message::TEXT, Message::USER_LANGUAGE )
+				],
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
 			);
 
 			if ( !$this->including() ) {
@@ -197,21 +197,21 @@ class SpecialBrowse extends SpecialPage {
 		if ( $dataValue->isValid() ) {
 			$link = SpecialPage::getTitleFor( 'ExportRDF', $dataValue->getTitle()->getPrefixedText() );
 
-			$this->getOutput()->setIndicators( array(
+			$this->getOutput()->setIndicators( [
 				'browse' => Html::rawElement(
 					'div',
-					array(
+					[
 						'class' => 'smw-page-indicator-rdflink'
-					),
+					],
 					Html::rawElement(
 						'a',
-						array(
+						[
 							'href' => $link->getLocalUrl( 'syntax=rdf' )
-						),
+						],
 						'RDF'
 					)
 				)
-			) );
+			] );
 		}
 
 		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );

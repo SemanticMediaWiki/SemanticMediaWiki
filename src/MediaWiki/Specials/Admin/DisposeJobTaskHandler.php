@@ -157,18 +157,18 @@ class DisposeJobTaskHandler extends TaskHandler {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 		}
 
-		$entityIdDisposerJob = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-			'SMW\EntityIdDisposerJob',
+		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
+			'smw.entityIdDisposer',
 			\SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
 
-		$entityIdDisposerJob->insert();
+		$job->insert();
 
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 	}
 
 	private function hasPendingJob() {
-		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'SMW\EntityIdDisposerJob' );
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.entityIdDisposer' );
 	}
 
 }

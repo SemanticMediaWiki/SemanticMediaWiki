@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
+use SMW\ApplicationFactory;
 use Title;
 
 /**
@@ -10,7 +12,7 @@ use Title;
  *
  * @author mwjames
  */
-class NullJob extends JobBase {
+class NullJob extends Job {
 
 	/**
 	 * @since 2.5
@@ -18,8 +20,7 @@ class NullJob extends JobBase {
 	 * @param Title|null $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title = null, $params = array() ) {
-	}
+	public function __construct( Title $title = null, $params = [] ) {}
 
 	/**
 	 * @see Job::run
@@ -31,11 +32,10 @@ class NullJob extends JobBase {
 	}
 
 	/**
-	 * @see JobBase::insert
+	 * @see Job::insert
 	 *
 	 * @since  2.5
 	 */
-	public function insert() {
-	}
+	public function insert() {}
 
 }

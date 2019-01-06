@@ -102,10 +102,10 @@ class TableChangeOp {
 	public function getFieldChangeOps( $opType = null, $filter = [] ) {
 
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
-			return array();
+			return [];
 		}
 
-		$fieldOps = array();
+		$fieldOps = [];
 		$changeOps = $this->changeOps;
 
 		if ( $opType !== null ) {

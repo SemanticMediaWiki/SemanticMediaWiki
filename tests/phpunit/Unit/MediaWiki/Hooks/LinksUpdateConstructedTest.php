@@ -32,12 +32,12 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds' ) )
+			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -90,7 +90,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
@@ -99,7 +99,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'clearData', 'getObjectIds' ) )
+			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -127,7 +127,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
-			array( NS_HELP => false )
+			[ NS_HELP => false ]
 		);
 
 		$title = Title::newFromText( __METHOD__, NS_HELP );

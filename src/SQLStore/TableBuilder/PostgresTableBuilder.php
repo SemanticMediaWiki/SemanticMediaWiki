@@ -23,11 +23,17 @@ class PostgresTableBuilder extends TableBuilder {
 	 */
 	public function getStandardFieldType( $fieldType ) {
 
-		$fieldTypes = array(
+		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
+
+		$fieldTypes = [
 			 // like page_id in MW page table
 			'id'         => 'SERIAL',
 			 // like page_id in MW page table
 			'id_primary' => 'SERIAL NOT NULL PRIMARY KEY',
+
+			 // not autoincrementing integer
+			'id_unsigned' => 'INTEGER',
+
 			 // like page_namespace in MW page table
 			'namespace'  => 'BIGINT',
 			 // like page_title in MW page table
@@ -48,7 +54,7 @@ class PostgresTableBuilder extends TableBuilder {
 			'char_long_nocase' => 'citext NOT NULL',
 			'usage_count'      => 'bigint',
 			'integer_unsigned' => 'INTEGER'
-		);
+		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
 	}
@@ -64,7 +70,7 @@ class PostgresTableBuilder extends TableBuilder {
 
 		$tableName = $this->connection->tableName( $tableName );
 
-		$fieldSql = array();
+		$fieldSql = [];
 		$fields = $attributes['fields'];
 
 		foreach ( $fields as $fieldName => $fieldType ) {
@@ -154,7 +160,7 @@ EOT;
 			. " ORDER BY a.attnum";
 
 		$res = $this->connection->query( $sql, __METHOD__ );
-		$currentFields = array();
+		$currentFields = [];
 
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
@@ -321,12 +327,12 @@ EOT;
 	private function getCumulatedIndexName( $tableName, $columns ) {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
-		return str_replace( '__' , '_', "{$tableName}_idx_" . str_replace( array( '_', 'smw', ',' ), array( '', '_', '_' ), $columns ) );
+		return str_replace( '__' , '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
 	}
 
 	private function getIndexInfo( $tableName ) {
 
-		$indices = array();
+		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"
 			. " pg_get_indexdef(i.oid) AS indexdef, "
@@ -343,7 +349,7 @@ EOT;
 		$res = $this->connection->query( $sql, __METHOD__ );
 
 		if ( !$res ) {
-			return array();
+			return [];
 		}
 
 		foreach ( $res as $row ) {

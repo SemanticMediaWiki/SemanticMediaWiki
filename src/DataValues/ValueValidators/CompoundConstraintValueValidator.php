@@ -22,7 +22,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	/**
 	 * @var array
 	 */
-	private $constraintValueValidators = array();
+	private $constraintValueValidators = [];
 
 	/**
 	 * @since 2.4
@@ -51,7 +51,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 
 		$this->hasConstraintViolation = false;
 
-		if ( $this->constraintValueValidators === array() ) {
+		if ( $this->constraintValueValidators === [] ) {
 			throw new RuntimeException( "Missing a registered ConstraintValueValidator" );
 		}
 

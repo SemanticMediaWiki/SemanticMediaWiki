@@ -171,7 +171,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'getSMWPropertyID' ) )
+			->setMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
@@ -180,7 +180,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->atLeastOnce() )
 			->method( 'getDefaultDataItemTables' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -196,15 +196,15 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
@@ -218,9 +218,9 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ChangePropagationDispatchJob(
 			$subject->getTitle(),
-			array(
+			[
 				'isTypePropagation' => true
-			)
+			]
 		);
 
 		$instance->run();

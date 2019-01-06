@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
-use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\Tests\Utils\Runners\JobQueueRunner;
 use Title;
 
@@ -35,7 +35,7 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	/**
 	 * @var array
 	 */
-	private $benchmarkReport = array();
+	private $benchmarkReport = [];
 
 	/**
 	 * @var string
@@ -71,7 +71,7 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	 */
 	public function run( array $case ) {
 
-		$this->benchmarkReport = array();
+		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
 		if ( !isset( $case['job'] ) ) {
@@ -108,18 +108,18 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 			);
 		}
 
-		$this->benchmarkReport = array(
+		$this->benchmarkReport = [
 			'type'   => $case['type'],
 			'case'   => $case['job'],
 			'repetitionCount' => $case['repetitionCount'],
 			'memory' => memory_get_peak_usage( false ) - $memoryBefore,
-			'time'      => array(
+			'time'      => [
 				'sum'  => $this->benchmarker->getSum(),
 				'mean' => $this->benchmarker->getMean(),
 				'sd'   => $this->benchmarker->getStandardDeviation(),
 				'norm' => $this->benchmarker->getNormalizedValueBy( $case['repetitionCount'] )
-			)
-		);
+			]
+		];
 	}
 
 }

@@ -70,7 +70,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnSelf() );
 
 		$instance = new ConceptParserFunction( $parserData, $messageFormatter );
-		$instance->parse( array() );
+		$instance->parse( [] );
 	}
 
 	/**
@@ -129,7 +129,7 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Foo',
-			$instance->parse( array() )
+			$instance->parse( [] )
 		);
 	}
 
@@ -176,72 +176,72 @@ class ConceptParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryParameterProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// {{#concept: [[Modification date::+]]
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]]'
-			),
-			array(
+			],
+			[
 				'result' => true,
 				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => '',
 				'conceptSize'   => 1,
 				'conceptDepth'  => 1,
-			)
-		);
+			]
+		];
 
 		// #1
 		// {{#concept: [[Modification date::+]]
 		// |Foooooooo
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]]',
 				'Foooooooo'
-			),
-			array(
+			],
+			[
 				'result' => true,
 				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => 'Foooooooo',
 				'conceptSize'   => 1,
 				'conceptDepth'  => 1,
-			)
-		);
+			]
+		];
 
 		// #2 (includes Parser object)
 		$parser = UtilityFactory::getInstance()->newParserFactory()->newFromTitle( Title::newFromText( __METHOD__ ) );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				$parser,
 				'[[Modification date::+]]',
 				'Foooooooo'
-			),
-			array(
+			],
+			[
 				'result' => true,
 				'propertyCount' => 2,
 				'conceptQuery'  => '[[Modification date::+]]',
 				'conceptDocu'   => 'Foooooooo',
 				'conceptSize'   => 1,
 				'conceptDepth'  => 1,
-			)
-		);
+			]
+		];
 
 		return $provider;
 
 	}
 
 	public function namespaceDataProvider() {
-		return array(
-			array( NS_MAIN ),
-			array( NS_HELP )
-		);
+		return [
+			[ NS_MAIN ],
+			[ NS_HELP ]
+		];
 	}
 
 }

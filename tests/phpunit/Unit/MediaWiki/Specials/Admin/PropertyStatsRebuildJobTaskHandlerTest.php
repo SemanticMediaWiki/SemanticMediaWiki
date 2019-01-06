@@ -56,14 +56,14 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetHtml() {
 
-		$methods = array(
+		$methods = [
 			'setName',
 			'setMethod',
 			'addHiddenField',
 			'addHeader',
 			'addParagraph',
 			'addSubmitButton'
-		);
+		];
 
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
@@ -86,7 +86,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\PropertyStatisticsRebuildJob' ) )
+			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )
 			->will( $this->returnValue( false ) );
 
 		$propertyStatisticsRebuildJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob' )
@@ -96,7 +96,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		$propertyStatisticsRebuildJob->expects( $this->once() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,10 +124,10 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\PropertyStatisticsRebuildJob' ) )
+			->with( $this->equalTo( 'smw.propertyStatisticsRebuild' ) )
 			->will( $this->returnValue( true ) );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

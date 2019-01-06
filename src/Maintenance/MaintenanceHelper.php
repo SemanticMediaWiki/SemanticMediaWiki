@@ -15,15 +15,15 @@ class MaintenanceHelper {
 	/**
 	 * @var array
 	 */
-	private $globals = array();
+	private $globals = [];
 
 	/**
 	 * @var array
 	 */
-	private $runtime = array(
+	private $runtime = [
 		'start'  => 0,
 		'memory' => 0
-	);
+	];
 
 	/**
 	 * @since 2.2

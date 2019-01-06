@@ -47,7 +47,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new TitleLookup( $database );
 
@@ -70,10 +70,10 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'page_namespace' => NS_MAIN ) ),
+				$this->equalTo( [ 'page_namespace' => NS_MAIN ] ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new TitleLookup( $database );
 
@@ -95,10 +95,10 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with( $this->stringContains( 'category' ),
 				$this->anything(),
-				$this->equalTo( array( "cat_id BETWEEN 1 AND 5" ) ),
+				$this->equalTo( [ "cat_id BETWEEN 1 AND 5" ] ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new TitleLookup( $database );
 
@@ -121,10 +121,10 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( array( "page_id BETWEEN 6 AND 10", 'page_namespace' => NS_MAIN ) ),
+				$this->equalTo( [ "page_id BETWEEN 6 AND 10", 'page_namespace' => NS_MAIN ] ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new TitleLookup( $database );
 
@@ -143,7 +143,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'select' )
 			->with( $this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'page_namespace' => NS_MAIN ) ),
+				$this->equalTo( [ 'page_namespace' => NS_MAIN ] ),
 				$this->anything(),
 				$this->anything() )
 			->will( $this->returnValue( false ) );
@@ -164,7 +164,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 		$database->expects( $this->any() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( array( 'page', 'redirect' ) ),
+				$this->equalTo( [ 'page', 'redirect' ] ),
 				$this->anything(),
 				$this->anything(),
 				$this->anything(),

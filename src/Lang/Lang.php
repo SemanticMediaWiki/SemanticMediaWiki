@@ -37,17 +37,17 @@ class Lang {
 	/**
 	 * @var array
 	 */
-	private $propertyIdByLabelMap = array();
+	private $propertyIdByLabelMap = [];
 
 	/**
 	 * @var array
 	 */
-	private $dateFormatsMap = array();
+	private $dateFormatsMap = [];
 
 	/**
 	 * @var array
 	 */
-	private $monthMap = array();
+	private $monthMap = [];
 
 	/**
 	 * @since 2.4
@@ -447,7 +447,7 @@ class Lang {
 
 		$languageCode = $this->languageCode;
 
-		if ( !isset( $this->dateFormatsMap[$languageCode] ) || $this->dateFormatsMap[$languageCode] === array() ) {
+		if ( !isset( $this->dateFormatsMap[$languageCode] ) || $this->dateFormatsMap[$languageCode] === [] ) {
 			$this->dateFormatsMap[$languageCode] = $this->getDateFormatsByLanguageCode( $languageCode );
 		}
 
@@ -498,7 +498,7 @@ class Lang {
 
 		$languageCode = $this->languageCode;
 
-		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
+		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === [] ) {
 			$this->months[$languageCode] = $this->languageContents->get( 'date.months', $languageCode );
 		}
 
@@ -532,7 +532,7 @@ class Lang {
 		$languageCode = $this->languageCode;
 		$number = (int)( $number - 1 ); // array starts with 0
 
-		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === array() ) {
+		if ( !isset( $this->months[$languageCode] ) || $this->months[$languageCode] === [] ) {
 			$this->months[$languageCode] = $this->languageContents->get( 'date.months', $languageCode );
 		}
 
@@ -545,10 +545,10 @@ class Lang {
 
 	private function getDateFormatsByLanguageCode( $languageCode ) {
 
-		$dateformats = array();
+		$dateformats = [];
 
 		foreach ( $this->languageContents->get( 'date.format', $languageCode ) as $row ) {
-			$internalNumberFormat = array();
+			$internalNumberFormat = [];
 
 			foreach ( $row as $value ) {
 				$internalNumberFormat[] = constant( $value );

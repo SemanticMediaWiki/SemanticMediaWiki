@@ -22,7 +22,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
-	private $importedTitles = array();
+	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 	private $pageCreator;
@@ -54,7 +54,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 
 	public function testRebuildConceptCache() {
 
-		$this->importedTitles = array(
+		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
 			'Elit Aliquam urna interdum',
@@ -69,7 +69,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 			'Property:Has quantity',
 			'Property:Has temperature',
 			'Property:Has text'
-		);
+		];
 
 		// 1.19 Title/LinkCache goes nuts for when a page in a previous test got
 		// deleted
@@ -82,7 +82,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 		$maintenanceRunner->setQuiet();
 
 		$maintenanceRunner
-			->setOptions( array( 'status' => true ) )
+			->setOptions( [ 'status' => true ] )
 			->run();
 
 		$this->assertInstanceOf(
@@ -91,27 +91,27 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 		);
 
 		$maintenanceRunner
-			->setOptions( array( 'create' => true ) )
+			->setOptions( [ 'create' => true ] )
 			->run();
 
 		$maintenanceRunner
-			->setOptions( array( 'delete' => true ) )
+			->setOptions( [ 'delete' => true ] )
 			->run();
 
 		$maintenanceRunner
-			->setOptions( array( 'create' => true, 's' => 1 ) )
+			->setOptions( [ 'create' => true, 's' => 1 ] )
 			->run();
 
 		$maintenanceRunner
-			->setOptions( array( 'create' => true, 's' => 1, 'e' => 100 ) )
+			->setOptions( [ 'create' => true, 's' => 1, 'e' => 100 ] )
 			->run();
 
 		$maintenanceRunner
-			->setOptions( array( 'create' => true, 'update' => true, 'old' => 1 ) )
+			->setOptions( [ 'create' => true, 'update' => true, 'old' => 1 ] )
 			->run();
 
 		$maintenanceRunner
-			->setOptions( array( 'delete' => true, 'concept' => 'Lorem ipsum concept' ) )
+			->setOptions( [ 'delete' => true, 'concept' => 'Lorem ipsum concept' ] )
 			->run();
 	}
 

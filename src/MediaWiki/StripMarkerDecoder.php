@@ -93,8 +93,8 @@ class StripMarkerDecoder {
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(
-			array( '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ),
-			array( '&lt;', '&gt;', ' ', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ),
+			[ '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ],
+			[ '&lt;', '&gt;', ' ', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ],
 			$this->doUnstrip( $text )
 		);
 	}

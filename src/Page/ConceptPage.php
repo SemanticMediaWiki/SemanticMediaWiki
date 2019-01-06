@@ -11,6 +11,7 @@ use SMW\MediaWiki\Collator;
 use SMW\Message;
 use SMWDataItem as DataItem;
 use SMW\Utils\HtmlTabs;
+use SMW\Page\ListBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -50,71 +51,97 @@ class ConceptPage extends Page {
 	 * @return string
 	 */
 	protected function getHtml() {
-		global $wgRequest;
 
 		$context = $this->getContext();
-
 		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
 
-		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
+		$request = $context->getRequest();
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		// limit==0: configuration setting to disable this completely
+		if ( $this->limit > 0 ) {
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
 			$description = $descriptionFactory->newConceptDescription( $this->getDataItem() );
 			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
-			$query->setLimit( $wgRequest->getVal( 'limit', $this->getOption( 'pagingLimit' ) ) );
-			$query->setOffset( $wgRequest->getVal( 'offset', '0' ) );
+			$query->setLimit( $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) ) );
+			$query->setOffset( $request->getVal( 'offset', '0' ) );
 			$query->setContextPage( $this->getDataItem() );
 			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
+			$query->setOption( $query::NO_CACHE, true );
 
-			$queryResult = ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
+			$queryResult = $store->getQueryResult( $query );
 
 			$diWikiPages = $queryResult->getResults();
+
 			if ( $this->until !== '' ) {
 				$diWikiPages = array_reverse( $diWikiPages );
 			}
 
 			$errors = $queryResult->getErrors();
 		} else {
-			$diWikiPages = array();
-			$errors = array();
+			$diWikiPages = [];
+			$errors = [];
 		}
 
-		$pageLister = new \SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
-		$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
+		// Make navigation point to the result list.
+		$this->mTitle->setFragment( '#smw-result' );
 
 		$titleText = htmlspecialchars( $this->mTitle->getText() );
 		$resultCount = count( $diWikiPages );
 
-		$request = $this->getContext()->getRequest();
-
 		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
 		$offset = $request->getVal( 'offset', '0' );
 
-		$query = array(
+		$query = [
 			'from' => $request->getVal( 'from', '' ),
 			'until' => $request->getVal( 'until', '' ),
 			'value' => $request->getVal( 'value', '' )
-		);
+		];
 
-		$countMessage = Html::rawElement(
+		$navigationLinks = Html::rawElement(
 			'div',
-			array( 'style' => 'margin-top:10px;' ),
-			wfMessage( 'smw_conceptarticlecount', ( $resultCount < $limit ? $resultCount : $limit ) )->parse()
+			[
+				'class' => 'smw-page-navigation'
+			],
+			Html::rawElement(
+				'div',
+				[
+					'class' => 'clearfix'
+				],
+				ListPager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query + [ '_target' => '#smw-result' ] )
+			) . Html::rawElement(
+				'div',
+				[
+					'style' => 'margin-top:10px;margin-bottom:10px;'
+				],
+				wfMessage( 'smw_conceptarticlecount', ( $resultCount < $limit ? $resultCount : $limit ) )->parse()
+			)
 		);
-
-		$navigationLinks =  '<div class="smw-page-navigation"><div class="clearfix">' . ListPager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query ) . '</div>' . $countMessage . '</div>';
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
 
 		if ( $this->mTitle->exists() ) {
-			$html = $navigationLinks . $this->getFormattedColumns( $diWikiPages );
+
+			$listBuilder = new ListBuilder(
+				$store
+			);
+
+			$html = $navigationLinks . $listBuilder->getColumnList( $diWikiPages );
 		} else {
 			$html = '';
 		}
 
-		$htmlTabs->tab( 'smw-concept-list', $this->msg( 'smw-concept-tab-list' ), [ 'hide' => $html === '' ] );
+		$htmlTabs->tab(
+			'smw-concept-list',
+			$this->msg( 'smw-concept-tab-list' ) . $this->getCachedCount( $store ),
+			[
+				'hide' => $html === ''
+			]
+		);
+
 		$htmlTabs->content( 'smw-concept-list', $html );
 
 		// Improperty values
@@ -129,101 +156,48 @@ class ConceptPage extends Page {
 
 		return Html::element(
 			'div',
-			array( 'id' => 'smwfootbr' )
+			[
+				'id' => 'smwfootbr'
+			]
 		) . Html::element(
 			'a',
-			array( 'name' => 'SMWResults' ),
+			[
+				'name' => 'smw-result'
+			],
 			null
 		) . Html::rawElement(
 			'div',
-			array( 'id' => 'mw-pages'),
+			[
+				'id' => 'mw-pages'
+			],
 			$html
 		);
 	}
 
-	/**
-	 * @see Page::getTopIndicators
-	 *
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	protected function getTopIndicators() {
+	private function getCachedCount( $store ) {
 
-		if ( ( $cacheInformation = $this->getCacheInformation()  ) === [] ) {
+		$concept = $store->getConceptCacheStatus(
+			$this->getDataItem()
+		);
+
+		if ( !$concept instanceof DIConcept || $concept->getCacheStatus() !== 'full' ) {
 			return '';
 		}
 
-		$cacheCount = $cacheInformation['count'];
-		$date = $this->getContext()->getLanguage()->timeanddate( $cacheInformation['date'] );
+		$cacheCount = $concept->getCacheCount();
+		$date = $this->getContext()->getLanguage()->timeanddate( $concept->getCacheDate() );
 
-		$countMsg = Message::get( array( 'smw-concept-indicator-cache-update', $date ) );
+		$countMsg = Message::get( [ 'smw-concept-indicator-cache-update', $date ] );
 		$indicatorClass = ( $cacheCount < 25000 ? ( $cacheCount > 5000 ? ' moderate' : '' ) : ' high' );
 
-		$usageCountHtml = Html::rawElement(
+		return Html::rawElement(
 			'div',
 			[
 				'title' => $countMsg,
-				'class' => 'smw-page-indicator usage-count' . $indicatorClass
+				'class' => 'usage-count' . $indicatorClass
 			],
 			$cacheCount
 		);
-
-		return [
-			'smw-concept-count' => $usageCountHtml
-		];
-	}
-
-	private function getCacheInformation() {
-
-		$concept = ApplicationFactory::getInstance()->getStore()->getConceptCacheStatus( $this->getDataItem() );
-		$cacheInformation = wfMessage( 'smw-concept-no-cache' )->text();
-
-		if ( !$concept instanceof DIConcept || $concept->getCacheStatus() !== 'full' ) {
-			return [];
-		}
-
-		return [
-			'count' => $concept->getCacheCount(),
-			'date'  => $concept->getCacheDate()
-		];
-	}
-
-	private function getFormattedColumns( array $diWikiPages ) {
-
-		if ( $diWikiPages === array() ) {
-			return '';
-		}
-
-		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
-		$htmlColumnListRenderer = $mwCollaboratorFactory->newHtmlColumnListRenderer();
-
-		foreach ( $diWikiPages as $value ) {
-			$dv = DataValueFactory::getInstance()->newDataValueByItem( $value );
-			$contentsByIndex[$this->getSortedFirstLetterFrom( $value )][] = $dv->getLongHTMLText( smwfGetLinker() );
-		}
-
-		$htmlColumnListRenderer->setColumnRTLDirectionalityState(
-			$this->getContext()->getLanguage()->isRTL()
-		);
-
-		$htmlColumnListRenderer->setColumnClass( 'smw-column-responsive' );
-		$htmlColumnListRenderer->setNumberOfColumns( 1 );
-		$htmlColumnListRenderer->addContentsByIndex( $contentsByIndex );
-
-		return $htmlColumnListRenderer->getHtml();
-	}
-
-	private function getSortedFirstLetterFrom( DataItem $dataItem ) {
-
-		$sortKey = $dataItem->getSortKey();
-
-		if ( $dataItem->getDIType() == DataItem::TYPE_WIKIPAGE ) {
-			$sortKey = ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $dataItem );
-
-		}
-
-		return Collator::singleton()->getFirstLetter( $sortKey );
 	}
 
 	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {

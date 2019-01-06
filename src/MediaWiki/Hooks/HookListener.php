@@ -7,6 +7,7 @@ use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
+use SMW\ParserFunctions\SectionTag;
 use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\Site;
 use SMW\Store;
@@ -36,7 +37,7 @@ class HookListener {
 	 * @param array &$vars
 	 * @param string $basePath
 	 */
-	public function __construct( &$vars = array(), $basePath = '' ) {
+	public function __construct( &$vars = [], $basePath = '' ) {
 		$this->vars = $vars;
 		$this->basePath = $basePath;
 	}
@@ -421,6 +422,12 @@ class HookListener {
 			$applicationFactory->getMediaWikiLogger()
 		);
 
+		$articleDelete->setOptions(
+			[
+				'smwgEnabledQueryDependencyLinksStore' => $applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
+			]
+		);
+
 		return $articleDelete->process( $wikiPage );
 	}
 
@@ -449,6 +456,21 @@ class HookListener {
 		);
 
 		$linksUpdateConstructed->process( $linksUpdate );
+
+		return true;
+	}
+
+	/**
+	 * Hook: Occurs when an articleheader is shown
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ContentHandlerForModelID
+	 */
+	public function onContentHandlerForModelID( $modelId, &$contentHandler ) {
+
+		// 'rule-json' being a legacy model, remove with 3.1
+		if ( $modelId === 'rule-json' || $modelId === 'smw/schema' ) {
+			$contentHandler = new \SMW\Schema\Content\ContentHandler();
+		}
 
 		return true;
 	}
@@ -710,7 +732,8 @@ class HookListener {
 	 */
 	public function onParserFirstCallInit( &$parser ) {
 
-		$parserFunctionFactory = ApplicationFactory::getInstance()->newParserFunctionFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
 		$parserFunctionFactory->registerFunctionHandlers( $parser );
 
 		$hookRegistrant = new HookRegistrant( $parser );
@@ -724,6 +747,14 @@ class HookListener {
 		$docsFunctionHandler = new DocumentationParserFunction();
 		$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
 		$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+
+		/**
+		 * Support for <section> ... </section>
+		 */
+		SectionTag::register(
+			$parser,
+			$applicationFactory->getSettings()->get( 'smwgSupportSectionTag' )
+		);
 
 		return true;
 	}

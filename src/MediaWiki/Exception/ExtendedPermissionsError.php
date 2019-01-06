@@ -17,8 +17,8 @@ class ExtendedPermissionsError extends PermissionsError {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function __construct( $permission, $errors = array() ) {
-		parent::__construct( $permission, array() );
+	public function __construct( $permission, $errors = [] ) {
+		parent::__construct( $permission, [] );
 
 		// Push SMW specific messages to appear first, PermissionsError will
 		// generate a list of required permissions

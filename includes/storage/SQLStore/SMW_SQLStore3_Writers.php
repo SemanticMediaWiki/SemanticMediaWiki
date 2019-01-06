@@ -84,9 +84,9 @@ class SMWSQLStore3Writers {
 	public function deleteSubject( Title $title ) {
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
-		\Hooks::run( 'SMWSQLStore3::deleteSubjectBefore', array( $this->store, $title ) );
+		\Hooks::run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
-		\Hooks::run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', array( $this->store, $title ) );
+		\Hooks::run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', [ $this->store, $title ] );
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
@@ -105,17 +105,33 @@ class SMWSQLStore3Writers {
 
 		foreach ( $idList as $id ) {
 			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
+			$this->doDataUpdate( $emptySemanticData );
+
+			if ( $this->store->service( 'PropertyTableIdReferenceFinder' )->hasResidualPropertyTableReference( $id ) === false ) {
+				// Mark subject/subobjects with a special IW, the final removal is being
+				// triggered by the `EntityRebuildDispatcher`
+				$this->store->getObjectIds()->updateInterwikiField(
+					$id,
+					$subject,
+					SMW_SQL3_SMWDELETEIW
+				);
+			} else {
+				// Convert the subject into a simple object instance
+				$this->store->getObjectIds()->setPropertyTableHashes(
+					$id,
+					null
+				);
+			}
 		}
 
-		$this->doDataUpdate( $emptySemanticData );
 		$extensionList = array_keys( $extensionList );
 
 		$this->store->extensionData['delete.list'] = $extensionList;
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', array( $this->store, $title ) );
+		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
 
-		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', array( $this->store, $title ) );
+		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
 	}
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
@@ -127,26 +143,18 @@ class SMWSQLStore3Writers {
 
 			$db->delete(
 				SMWSQLStore3::CONCEPT_TABLE,
-				array( 's_id' => $id ),
+				[ 's_id' => $id ],
 				'SMW::deleteSubject::Conc'
 			);
 
 			$db->delete(
 				SMWSQLStore3::CONCEPT_CACHE_TABLE,
-				array( 'o_id' => $id ),
+				[ 'o_id' => $id ],
 				'SMW::deleteSubject::Conccache'
 			);
 		}
 
 		$subject->setId( $id );
-
-		// Mark subject/subobjects with a special IW, the final removal is being
-		// triggered by the `EntityRebuildDispatcher`
-		$this->store->getObjectIds()->updateInterwikiField(
-			$id,
-			$subject,
-			SMW_SQL3_SMWDELETEIW
-		);
 
 		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
 			$extensionList[$subobject->getId()] = true;
@@ -166,7 +174,7 @@ class SMWSQLStore3Writers {
 	 * @param SMWSemanticData $data
 	 */
 	public function doDataUpdate( SMWSemanticData $semanticData ) {
-		\Hooks::run( 'SMWSQLStore3::updateDataBefore', array( $this->store, $semanticData ) );
+		\Hooks::run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
 		$subject = $semanticData->getSubject();
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -242,13 +250,13 @@ class SMWSQLStore3Writers {
 		$this->store->extensionData['change.diff'] = $changeDiff;
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
-		\Hooks::run( 'SMWSQLStore3::updateDataAfter', array( $this->store, $semanticData ) );
+		\Hooks::run( 'SMWSQLStore3::updateDataAfter', [ $this->store, $semanticData ] );
 
-		\Hooks::run( 'SMW::SQLStore::AfterDataUpdateComplete', array(
+		\Hooks::run( 'SMW::SQLStore::AfterDataUpdateComplete', [
 			$this->store,
 			$semanticData,
 			$changeOp
-		) );
+		] );
 
 		$connection->endAtomicTransaction( __METHOD__ );
 	}
@@ -341,7 +349,7 @@ class SMWSQLStore3Writers {
 
 		$this->propertyTableUpdater->update( $sid, $params );
 
-		if ( $redirects === array() && $subject->getSubobjectName() === ''  ) {
+		if ( $redirects === [] && $subject->getSubobjectName() === ''  ) {
 
 			$dataItemFromId = $this->store->getObjectIds()->getDataItemById( $sid );
 
@@ -433,7 +441,7 @@ class SMWSQLStore3Writers {
 
 		\Hooks::run(
 			'SMW::SQLStore::BeforeChangeTitleComplete',
-			array( $this->store, $oldTitle, $newTitle, $pageId, $redirectId )
+			[ $this->store, $oldTitle, $newTitle, $pageId, $redirectId ]
 		);
 
 		$db = $this->store->getConnection();
@@ -465,16 +473,16 @@ class SMWSQLStore3Writers {
 				// Note that this also changes the reference for internal objects (subobjects)
 				$db->update(
 					SMWSql3SmwIds::TABLE_NAME,
-					array(
+					[
 						'smw_title' => $newTitle->getDBkey(),
 						'smw_namespace' => $newTitle->getNamespace(),
 						'smw_iw' => ''
-					),
-					array(
+					],
+					[
 						'smw_title' => $oldTitle->getDBkey(),
 						'smw_namespace' => $oldTitle->getNamespace(),
 						'smw_iw' => ''
-					),
+					],
 					__METHOD__
 				);
 
@@ -560,11 +568,11 @@ class SMWSQLStore3Writers {
 			// Associate internal objects (subobjects) with the new title:
 			$table = $db->tableName( SMWSql3SmwIds::TABLE_NAME );
 
-			$values = array(
+			$values = [
 				'smw_title' => $newTitle->getDBkey(),
 				'smw_namespace' => $newTitle->getNamespace(),
 				'smw_iw' => ''
-			);
+			];
 
 			$sql = "UPDATE $table SET " . $db->makeList( $values, LIST_SET ) .
 				' WHERE smw_title = ' . $db->addQuotes( $oldTitle->getDBkey() ) . ' AND ' .
@@ -684,7 +692,7 @@ class SMWSQLStore3Writers {
 		} // note that this means $old_tid != $new_tid in all cases below
 
 		// *** Make relevant changes in property tables (don't write the new redirect yet) ***//
-		$jobs = array();
+		$jobs = [];
 
 		if ( ( $old_tid == 0 ) && ( $sid != 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // new redirect
 			// $smwgQEqualitySupport requires us to change all tables' page references from $sid to $new_tid.
@@ -732,8 +740,8 @@ class SMWSQLStore3Writers {
 				} else {
 					$db->update(
 						SMWSql3SmwIds::TABLE_NAME,
-						array( 'smw_iw' => SMW_SQL3_SMWREDIIW ),
-						array( 'smw_id' => $sid ),
+						[ 'smw_iw' => SMW_SQL3_SMWREDIIW ],
+						[ 'smw_id' => $sid ],
 						__METHOD__
 					);
 
@@ -773,8 +781,8 @@ class SMWSQLStore3Writers {
 
 				$db->update(
 					SMWSql3SmwIds::TABLE_NAME,
-					array( 'smw_iw' => '' ),
-					array( 'smw_id' => $sid ),
+					[ 'smw_iw' => '' ],
+					[ 'smw_id' => $sid ],
 					__METHOD__
 				);
 

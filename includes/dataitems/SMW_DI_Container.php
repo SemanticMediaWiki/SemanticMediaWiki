@@ -99,7 +99,7 @@ class SMWDIContainer extends SMWDataItem {
 
 	private function getValueHash( $semanticData ) {
 
-		$hash = array();
+		$hash = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
 			$hash[] = $property->getKey();

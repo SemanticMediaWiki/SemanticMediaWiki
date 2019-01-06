@@ -75,11 +75,11 @@ class DescriptionProfileTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 3,
-			'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE' ),
-			'propertyValues' => array( 'Foo', 2, 42 )
-		);
+			'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE' ],
+			'propertyValues' => [ 'Foo', 2, 42 ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,

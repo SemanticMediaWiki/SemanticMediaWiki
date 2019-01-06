@@ -95,7 +95,7 @@ class ExpResourceMapper {
 			'exporter.expresource.mapper'
 		);
 
-		foreach ( array( $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ) as $key ) {
+		foreach ( [ $hash, $hash . self::AUX_MARKER . $this->seekImportVocabulary ] as $key ) {
 			$poolCache->delete( $key );
 		}
 	}
@@ -219,34 +219,45 @@ class ExpResourceMapper {
 			new DIProperty( '_IMPO' )
 		);
 
-		return array(
+		return [
 			$importValue->getLocalName(),
 			$importValue->getNS(),
 			$importValue->getNSID()
-		);
+		];
 	}
 
 	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
 
 		$localName = '';
+		$hasFixedNamespace = false;
 
 		if ( $diWikiPage->getNamespace() === NS_CATEGORY ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'category' );
 			$namespaceId = 'category';
 			$localName = Escaper::encodeUri( $diWikiPage->getDBkey() );
+			$hasFixedNamespace = true;
 		}
 
 		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'property' );
 			$namespaceId = 'property';
 			$localName = Escaper::encodeUri( $diWikiPage->getDBkey() );
+			$hasFixedNamespace = true;
 		}
 
 		if ( ( $localName === '' ) ||
-		     ( in_array( $localName{0}, array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
+		     ( in_array( $localName{0}, [ '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ] ) ) ||
+		     ( $hasFixedNamespace && strpos( $localName, '/' ) !== false )
+		     ) {
 			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
 			$namespaceId = 'wiki';
 			$localName = Escaper::encodePage( $diWikiPage );
+		}
+
+		if ( $hasFixedNamespace && strpos( $localName, '/' ) !== false ) {
+			$namespace = Exporter::getInstance()->getNamespaceUri( 'wiki' );
+			$namespaceId = 'wiki';
+			$localName = Escaper::armorChars( Escaper::encodePage( $diWikiPage ) );
 		}
 
 		// "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
@@ -255,11 +266,11 @@ class ExpResourceMapper {
 			$localName .=  '-23' . Escaper::encodeUri( $modifier );
 		}
 
-		return array(
+		return [
 			$localName,
 			$namespace,
 			$namespaceId
-		);
+		];
 	}
 
 	private function findImportDataItem( DIWikiPage $diWikiPage, $modifier ) {
@@ -274,7 +285,7 @@ class ExpResourceMapper {
 			);
 		}
 
-		if ( $importDataItems !== null && $importDataItems !== array() ) {
+		if ( $importDataItems !== null && $importDataItems !== [] ) {
 			$importDataItems = current( $importDataItems );
 		}
 

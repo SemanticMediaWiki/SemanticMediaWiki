@@ -55,16 +55,16 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'PageCreator', $this->pageCreator );
 		$containerBuilder->registerObject( 'ConnectionManager', $this->connectionManager );
 
-		$containerBuilder->registerObject( 'Settings', new Settings( array(
+		$containerBuilder->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDirs' => [ 'foo' ]
-		) ) );
+		] ) );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'ImporterServices.php' );
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( array( $containerBuilder, 'create' ), $parameters )
+			call_user_func_array( [ $containerBuilder, 'create' ], $parameters )
 		);
 	}
 
@@ -74,35 +74,35 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			'Importer',
-			array( $contentIterator ),
+			[ $contentIterator ],
 			'\SMW\Importer\Importer'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'JsonContentIterator',
-			array( 'SomeDirectory' ),
+			[ 'SomeDirectory' ],
 			'\SMW\Importer\JsonContentIterator'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'ImporterServiceFactory',
-			array(),
+			[],
 			'\SMW\Services\ImporterServiceFactory'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'XmlContentCreator',
-			array(),
+			[],
 			'\SMW\Importer\ContentCreators\XmlContentCreator'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'TextContentCreator',
-			array(),
+			[],
 			'\SMW\Importer\ContentCreators\TextContentCreator'
-		);
+		];
 
 		return $provider;
 	}

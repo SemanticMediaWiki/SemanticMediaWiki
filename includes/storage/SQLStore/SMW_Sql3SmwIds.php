@@ -74,7 +74,7 @@ class SMWSql3SmwIds {
 	 */
 	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
 
-	const MAX_CACHE_SIZE = 500;
+	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
 
 	/**
@@ -140,7 +140,7 @@ class SMWSql3SmwIds {
 		$this->initCache();
 
 		$this->idEntityFinder = $this->factory->newIdEntityFinder(
-			$this->idCacheManager->get( 'entity.lookup' )
+			$this->idCacheManager
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
@@ -302,15 +302,15 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = array( 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+					$select = [ 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
 				} else {
-					$select = array( 'smw_sortkey', 'smw_sort' );
+					$select = [ 'smw_sortkey', 'smw_sort' ];
 				}
 
 				$row = $db->selectRow(
 					self::TABLE_NAME,
 					$select,
-					array( 'smw_id' => $id ),
+					[ 'smw_id' => $id ],
 					__METHOD__
 				);
 
@@ -330,9 +330,9 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' );
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
 			} else {
-				$select = array( 'smw_id', 'smw_sortkey', 'smw_sort' );
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort' ];
 			}
 
 			// #2001
@@ -350,12 +350,12 @@ class SMWSql3SmwIds {
 			$row = $db->selectRow(
 				self::TABLE_NAME,
 				$select,
-				array(
+				[
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
 					'smw_subobject' => $subobjectName
-				),
+				],
 				__METHOD__
 			);
 
@@ -511,13 +511,13 @@ class SMWSql3SmwIds {
 
 		$row = $this->store->getConnection( 'mw.db' )->selectRow(
 			self::TABLE_NAME,
-			array( 'smw_id' ),
-			array(
+			[ 'smw_id' ],
+			[
 				'smw_title' => $subject->getDBKey(),
 				'smw_namespace' => $subject->getNamespace(),
 				'smw_iw' => $subject->getInterWiki(),
 				'smw_subobject' => $subject->getSubobjectName()
-			),
+			],
 			__METHOD__
 		);
 
@@ -633,7 +633,7 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
@@ -642,7 +642,7 @@ class SMWSql3SmwIds {
 					'smw_sortkey' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
 					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
-				),
+				],
 				__METHOD__
 			);
 
@@ -735,6 +735,31 @@ class SMWSql3SmwIds {
 			$sid,
 			$subject->getSortKey()
 		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $title
+	 * @param integer $namespace
+	 * @param string $iw
+	 */
+	public function findAssociatedRev( $title, $namespace, $iw = '' ) {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
+			self::TABLE_NAME,
+			'smw_rev',
+			[
+				"smw_title =" . $connection->addQuotes( $title ),
+				"smw_namespace =" . $connection->addQuotes( $namespace ),
+				"smw_iw =" . $connection->addQuotes( $iw ),
+				"smw_subobject =''"
+			],
+			__METHOD__
+		);
+
+		return $row === false ? 0 : $row->smw_rev;
 	}
 
 	/**
@@ -861,7 +886,7 @@ class SMWSql3SmwIds {
 		$row = $db->selectRow(
 			self::TABLE_NAME,
 			'*',
-			array( 'smw_id' => $curid ),
+			[ 'smw_id' => $curid ],
 			__METHOD__
 		);
 
@@ -880,7 +905,7 @@ class SMWSql3SmwIds {
 
 			$db->insert(
 				self::TABLE_NAME,
-				array(
+				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
@@ -888,7 +913,7 @@ class SMWSql3SmwIds {
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey,
 					'smw_sort' => $row->smw_sort
-				),
+				],
 				__METHOD__
 			);
 
@@ -896,23 +921,23 @@ class SMWSql3SmwIds {
 		} else { // change to given id
 			$db->insert(
 				self::TABLE_NAME,
-				array( 'smw_id' => $targetid,
+				[ 'smw_id' => $targetid,
 					'smw_title' => $row->smw_title,
 					'smw_namespace' => $row->smw_namespace,
 					'smw_iw' => $row->smw_iw,
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey,
 					'smw_sort' => $row->smw_sort
-				),
+				],
 				__METHOD__
 			);
 		}
 
 		$db->delete(
 			self::TABLE_NAME,
-			array(
+			[
 				'smw_id' => $curid
-			),
+			],
 			__METHOD__
 		);
 
@@ -1173,7 +1198,7 @@ class SMWSql3SmwIds {
 
 		$row = $connection->selectRow(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' ),
+			[ 'smw_proptable_hash' ],
 			'smw_id=' . $sid,
 			__METHOD__
 		);
@@ -1199,18 +1224,31 @@ class SMWSql3SmwIds {
 	 * @param integer $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $sid, array $hash ) {
+	public function setPropertyTableHashes( $sid, $hash = null ) {
 
-		$db = $this->store->getConnection();
+		$connection = $this->store->getConnection( 'mw.db' );
+		$update = [];
 
-		$db->update(
+		if ( $hash === null ) {
+			$update = [ 'smw_proptable_hash' => $hash, 'smw_rev' => null ];
+		} elseif ( is_array( $hash ) ) {
+			$update = [ 'smw_proptable_hash' => serialize( $hash ) ];
+		} else {
+			throw new RuntimeException( "Expected a null or an array as value!");
+		}
+
+		$connection->update(
 			self::TABLE_NAME,
-			array( 'smw_proptable_hash' => serialize( $hash ) ),
-			array( 'smw_id' => $sid ),
+			$update,
+			[ 'smw_id' => $sid ],
 			__METHOD__
 		);
 
 		$this->setPropertyTableHashesCache( $sid, $hash );
+
+		if ( $hash === null ) {
+			$this->idCacheManager->deleteCacheById( $sid );
+		}
 	}
 
 	/**

@@ -75,29 +75,81 @@ class LinksWidget {
 			],
 			Html::rawElement(
 				'span',
-				array(
+				[
 					'id'  => 'embed_show'
-				), Html::rawElement(
+				], Html::rawElement(
 					'a',
-					array(
+					[
 						'href'  => '#embed_show',
 						'rel'   => 'nofollow',
 						'onclick' => $embedShow
-					), wfMessage( 'smw_ask_show_embed' )->escaped()
+					], wfMessage( 'smw_ask_show_embed' )->escaped()
 				)
 			) . Html::rawElement(
 				'span',
-				array(
+				[
 					'id'  => 'embed_hide',
 					'style'  => 'display: none;'
-				), Html::rawElement(
+				], Html::rawElement(
 					'a',
-					array(
+					[
 						'href'  => '#embed_hide',
 						'rel'   => 'nofollow',
 						'onclick' => $embedHide
-					), wfMessage( 'smw_ask_hide_embed' )->escaped()
+					], wfMessage( 'smw_ask_hide_embed' )->escaped()
 				)
+			)
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $href
+	 *
+	 * @return string
+	 */
+	public static function editLink( $href ) {
+		return Html::rawElement(
+				'a',
+				[
+					'href'  => $href . '#search',
+					'rel'   => 'href',
+					'style' => 'display:block; width:60px'
+				],
+				Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-icon-pen',
+					'title' => wfMessage( 'smw_ask_editquery' )->text(),
+				],
+				''
+			)
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $href
+	 *
+	 * @return string
+	 */
+	public static function hideLink( $href ) {
+		return Html::rawElement(
+				'a',
+				[
+					'href'  => $href,
+					'rel'   => 'nofollow',
+					'style' => 'display:block; width:60px'
+				],
+				Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-icon-compact',
+					'title' => wfMessage( 'smw_ask_hidequery' )->text()
+				],
+				''
 			)
 		);
 	}
@@ -109,28 +161,35 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function embeddedCodeBlock( $code ) {
+	public static function embeddedCodeBlock( $code, $raw = false ) {
+
+		$code = Html::rawElement(
+			'pre',
+			[
+				'id' => 'inlinequeryembedarea',
+				'readonly' => 'yes',
+				'cols' => 20,
+				'rows' => substr_count( $code, "\n" ) + 1,
+				'onclick' => 'this.select()'
+			],
+			$code
+		);
+
+		if ( $raw ) {
+			return '<p>' . wfMessage( 'smw_ask_embed_instr' )->escaped() . '</p>' . $code;
+		}
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id'  => 'inlinequeryembed',
 				'style' => 'display: none;'
-			), Html::rawElement(
+			], Html::rawElement(
 				'div',
-				array(
+				[
 					'id' => 'inlinequeryembedinstruct'
-				), wfMessage( 'smw_ask_embed_instr' )->escaped()
-			) . Html::rawElement(
-				'textarea',
-				array(
-					'id' => 'inlinequeryembedarea',
-					'readonly' => 'yes',
-					'cols' => 20,
-					'rows' => substr_count( $code, "\n" ) + 1,
-					'onclick' => 'this.select()'
-				), $code
-			)
+				], wfMessage( 'smw_ask_embed_instr' )->escaped()
+			) . $code
 		);
 	}
 
@@ -147,20 +206,20 @@ class LinksWidget {
 			return '';
 		}
 
-		return Html::rawElement( 'span', [ 'class' => 'smw-ask-button smw-ask-button-dblue' ], Html::element(
+		return Html::rawElement( 'div', [ 'class' => 'smw-ask-button-submit' ], Html::element(
 			'input',
-			array(
+			[
 				'type'  => 'submit',
 				'class' => '',
 				'value' => wfMessage( 'smw_ask_submit' )->escaped()
-			), ''
+			], ''
 		) . ' ' . Html::element(
 			'input',
-			array(
+			[
 				'type'  => 'hidden',
 				'name'  => 'eq',
 				'value' => 'yes'
-			), ''
+			], ''
 		) );
 	}
 
@@ -176,7 +235,7 @@ class LinksWidget {
 	 */
 	public static function showHideLink( Title $title, UrlArgs $urlArgs, $hideForm = false, $isEmpty = false ) {
 
-		if ( $isEmpty ) {
+		if ( $isEmpty || $hideForm === false ) {
 			return '';
 		}
 
@@ -205,7 +264,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false ) {
+	public static function debugLink( Title $title, UrlArgs $urlArgs, $isEmpty = false, $raw = false ) {
 
 		if ( $isEmpty ) {
 			return '';
@@ -215,6 +274,21 @@ class LinksWidget {
 		$urlArgs->set( 'debug', 'true' );
 		$urlArgs->setFragment( 'search' );
 
+		$link = Html::element(
+			'a',
+			[
+				'class' => '',
+				'href'  => $title->getLocalURL( $urlArgs ),
+				'rel'   => 'nofollow',
+				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
+			],
+			$raw ? Message::get( 'smw-ask-debug', Message::TEXT, Message::USER_LANGUAGE ) : 'ℹ'
+		);
+
+		if ( $raw ) {
+			return $link;
+		}
+
 		return Html::rawElement(
 			'span',
 			[
@@ -222,15 +296,7 @@ class LinksWidget {
 				'class' => 'smw-ask-button smw-ask-button-right',
 				'title' => Message::get( 'smw-ask-debug-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
-			Html::element(
-				'a',
-				[
-					'class' => '',
-					'href'  => $title->getLocalURL( $urlArgs ),
-					'rel'   => 'nofollow'
-				],
-				'ℹ'
-			)
+			$link
 		);
 	}
 
@@ -258,7 +324,7 @@ class LinksWidget {
 			'span',
 			[
 				'id' => 'ask-cache',
-				'class' => 'smw-ask-button smw-ask-button-right',
+				'class' => '',
 				'title' => Message::get( 'smw-ask-no-cache-desc', Message::TEXT, Message::USER_LANGUAGE )
 			],
 			Html::element(
@@ -268,7 +334,7 @@ class LinksWidget {
 					'href'  => $title->getLocalURL( $urlArgs ),
 					'rel'   => 'nofollow'
 				],
-				'⊘'
+				Message::get( 'smw-ask-no-cache', Message::TEXT, Message::USER_LANGUAGE )
 			)
 		);
 	}
@@ -289,8 +355,8 @@ class LinksWidget {
 		return Html::rawElement(
 			'span',
 			[
-				'id' => 'ask-clipboard',
-				'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
+				'id' => 'ask-clipboard ',
+			//	'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
 			],
 			Html::element(
 				'a',
@@ -298,11 +364,10 @@ class LinksWidget {
 					'data-clipboard-action' => 'copy',
 					'data-clipboard-target' => '.clipboard',
 					'data-onoi-clipboard-field' => 'value',
-					'class' => 'clipboard',
+					'class' => 'clipboard smw-icon-bookmark',
 					'value' => $infolink->getURL(),
 					'title' =>  wfMessage( 'smw-clipboard-copy-link' )->text()
-				],
-				'⧟'
+				]
 			)
 		);
 	}

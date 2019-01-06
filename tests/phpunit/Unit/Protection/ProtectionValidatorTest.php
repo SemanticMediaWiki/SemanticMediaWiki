@@ -73,7 +73,7 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $subject->asBase() ),
 				$this->equalTo( $property ) )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new ProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,
@@ -103,7 +103,7 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $subject->asBase() ),
 				$this->equalTo( $property ) )
-			->will( $this->returnValue( array( $this->dataItemFactory->newDIBoolean( true ) ) ) );
+			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
 
 		$instance = new ProtectionValidator(
 			$this->cachedPropertyValuesPrefetcher,

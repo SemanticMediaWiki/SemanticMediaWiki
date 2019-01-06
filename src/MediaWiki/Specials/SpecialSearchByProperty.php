@@ -59,13 +59,13 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$requestOptions = array(
+		$requestOptions = [
 			'limit'    => $limit,
 			'offset'   => $offset,
 			'property' => $this->getRequest()->getVal( 'property' ),
 			'value'    => $this->getRequest()->getVal( 'value' ),
 			'nearbySearchForType' => $applicationFactory->getSettings()->get( 'smwgSearchByPropertyFuzzy' )
-		);
+		];
 
 		$htmlFormRenderer = $applicationFactory->newMwCollaboratorFactory()->newHtmlFormRenderer(
 			$this->getContext()->getTitle(),

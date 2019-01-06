@@ -22,15 +22,15 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ChunkedIterator::class,
-			new ChunkedIterator( array() )
+			new ChunkedIterator( [] )
 		);
 	}
 
 	public function testChunkedOnArray() {
 
-		$result = array(
+		$result = [
 			1, 42, 1001, 9999
-		);
+		];
 
 		$instance = new ChunkedIterator( $result, 2 );
 
@@ -63,7 +63,7 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 	public function testInvalidChunkSizeArgumentThrowsException() {
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance = new ChunkedIterator( array(), -1 );
+		$instance = new ChunkedIterator( [], -1 );
 	}
 
 }

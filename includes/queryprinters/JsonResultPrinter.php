@@ -130,23 +130,23 @@ class JsonResultPrinter extends FileExportPrinter {
 
 		$params['limit']->setDefault( 100 );
 
-		$params['type'] = array(
-			'values' => array( 'simple', 'full' ),
+		$params['type'] = [
+			'values' => [ 'simple', 'full' ],
 			'default' => 'full',
 			'message' => 'smw-paramdesc-json-type',
-		);
+		];
 
-		$params['prettyprint'] = array(
+		$params['prettyprint'] = [
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-prettyprint',
-		);
+		];
 
-		$params['unescape'] = array(
+		$params['unescape'] = [
 			'type' => 'boolean',
 			'default' => '',
 			'message' => 'smw-paramdesc-json-unescape',
-		);
+		];
 
 		return $params;
 	}
@@ -187,11 +187,3 @@ class JsonResultPrinter extends FileExportPrinter {
 	}
 
 }
-
-/**
- * SMWJsonResultPrinter
- * @codeCoverageIgnore
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\JsonResultPrinter', 'SMWJsonResultPrinter' );

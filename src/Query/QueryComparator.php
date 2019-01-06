@@ -24,7 +24,7 @@ class QueryComparator {
 	/**
 	 * @var array
 	 */
-	private $reverseCache = array();
+	private $reverseCache = [];
 
 	/**
 	 * @since 2.3
@@ -140,7 +140,7 @@ class QueryComparator {
 	 */
 	public function getStringForComparator( $comparator ) {
 
-		if ( $this->reverseCache === array() ) {
+		if ( $this->reverseCache === [] ) {
 			$this->reverseCache = array_flip( $this->comparators );
 		}
 
@@ -157,7 +157,7 @@ class QueryComparator {
 
 		// Note: Comparators that contain other comparators at the beginning of
 		// the string need to be at beginning of the array.
-		$comparators = array(
+		$comparators = [
 			'like:' => SMW_CMP_PRIM_LIKE,
 			'nlike:' => SMW_CMP_PRIM_NLKE,
 			'in:' => SMW_CMP_IN,
@@ -172,7 +172,7 @@ class QueryComparator {
 			'≥' => SMW_CMP_GEQ,
 			'!' => SMW_CMP_NEQ,
 			'~' => SMW_CMP_LIKE,
-		);
+		];
 
 		if ( strpos( $comparatorList, '|' ) === false ) {
 			return $comparators;

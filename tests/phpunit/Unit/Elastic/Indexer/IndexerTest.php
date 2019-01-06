@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Services\ServicesContainer;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Elastic\Indexer\Indexer
@@ -18,6 +19,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $servicesContainer;
+	private $logger;
 
 	protected function setUp() {
 
@@ -26,6 +28,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->servicesContainer = new ServicesContainer();
+
+		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
@@ -78,6 +84,51 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->drop();
+	}
+
+	public function testTextIndex() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject->setId( 42 );
+
+		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->will( $this->returnValue( [] ) );
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getDataOps' )
+			->will( $this->returnValue( [] ) );
+
+		$bulk = $this->getMockBuilder( '\SMW\Elastic\Indexer\Bulk' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$bulk->expects( $this->once() )
+			->method( 'upsert' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [ 'text_raw' => 'Bar' ] ) );
+
+		$this->servicesContainer->add(
+			'Bulk',
+			function() use( $bulk ) { return $bulk;	}
+		);
+
+		$instance = new Indexer(
+			$this->store,
+			$this->servicesContainer
+		);
+
+		$instance->setLogger( $this->logger );
+		$instance->index( $changeDiff, 'Bar' );
 	}
 
 	/**

@@ -18,7 +18,7 @@ class FormatListWidget {
 	/**
 	 * @var array
 	 */
-	private static $resultFormats = array();
+	private static $resultFormats = [];
 
 	/**
 	 * @since 3.0
@@ -90,7 +90,7 @@ class FormatListWidget {
 			$defaultLocalizedName
 		);
 
-		$formats = array();
+		$formats = [];
 
 		foreach ( array_keys( self::$resultFormats ) as $format ) {
 			// Special formats "count" and "debug" currently not supported.

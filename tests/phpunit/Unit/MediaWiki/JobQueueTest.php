@@ -32,6 +32,27 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRunFromQueue() {
+
+		$jobQueue = $this->getMockBuilder( '\JobQueue' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->jobQueueGroup->expects( $this->once() )
+			->method( 'get' )
+			->with( $this->stringContains( 'FakeJob' ) )
+			->will( $this->returnValue( $jobQueue ) );
+
+		$instance = new JobQueue( $this->jobQueueGroup );
+
+		// MediaWiki's JobQueue::pop !!!
+		try {
+			$log = $instance->runFromQueue( [ 'FakeJob' => 2 ] );
+		} catch ( \Exception $e ) {
+			// Do nothing
+		}
+	}
+
 	public function testPop() {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
@@ -57,7 +78,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$job = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getType', 'run' ) )
+			->setMethods( [ 'getType', 'run' ] )
 			->getMock();
 
 		$job->expects( $this->atLeastOnce() )
@@ -87,7 +108,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ) )
+			->setMethods( [ 'assertNotReadOnly', 'doDelete', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->any() )
@@ -154,7 +175,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doGetSize', 'doFlushCaches' ) )
+			->setMethods( [ 'doGetSize', 'doFlushCaches' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
@@ -178,7 +199,7 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue = $this->getMockBuilder( '\JobQueue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'doGetSize' ) )
+			->setMethods( [ 'doGetSize' ] )
 			->getMockForAbstractClass();
 
 		$jobQueue->expects( $this->once() )
@@ -194,6 +215,29 @@ class JobQueueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->hasPendingJob( 'FakeJob' )
+		);
+	}
+
+	public function testHasPendingJobWithLegacyName() {
+
+		$jobQueue = $this->getMockBuilder( '\JobQueue' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'doGetSize' ] )
+			->getMockForAbstractClass();
+
+		$jobQueue->expects( $this->once() )
+			->method( 'doGetSize' )
+			->will( $this->returnValue( 1 ) );
+
+		$this->jobQueueGroup->expects( $this->once() )
+			->method( 'get' )
+			->with( $this->stringContains( 'smw.fake' ) )
+			->will( $this->returnValue( $jobQueue ) );
+
+		$instance = new JobQueue( $this->jobQueueGroup );
+
+		$this->assertTrue(
+			$instance->hasPendingJob( 'SMW\FakeJob' )
 		);
 	}
 

@@ -91,6 +91,22 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	public function hasResidualPropertyTableReference( $id ) {
+
+		if ( $id == SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
+			return true;
+		}
+
+		return (bool)$this->findAtLeastOneActiveReferenceById( $id, false );
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param integer $id
@@ -115,7 +131,7 @@ class PropertyTableIdReferenceFinder {
 	 */
 	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
 
-		$references = array();
+		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 			$reference = false;
@@ -136,10 +152,11 @@ class PropertyTableIdReferenceFinder {
 	 * @since 2.4
 	 *
 	 * @param integer $id
+	 * @param boolean $secondary_ref
 	 *
 	 * @return DataItem|false
 	 */
-	public function findAtLeastOneActiveReferenceById( $id ) {
+	public function findAtLeastOneActiveReferenceById( $id, $secondary_ref = true ) {
 
 		$reference = false;
 
@@ -165,7 +182,7 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( !isset( $reference->s_id ) ) {
+		if ( $secondary_ref && !isset( $reference->s_id ) ) {
 			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
@@ -187,8 +204,8 @@ class PropertyTableIdReferenceFinder {
 		if ( $proptable->usesIdSubject() ) {
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
-				array( 's_id' ),
-				array( 's_id' => $id ),
+				[ 's_id' ],
+				[ 's_id' => $id ],
 				__METHOD__
 			);
 		}
@@ -203,12 +220,12 @@ class PropertyTableIdReferenceFinder {
 		if ( isset( $fields['o_id'] ) ) {
 
 			// This next time someone ... I'm going to Alaska
-			$field = strpos( $proptable->getName(), 'redi' ) ? array( 's_title', 's_namespace' ) : array( 's_id' );
+			$field = strpos( $proptable->getName(), 'redi' ) ? [ 's_title', 's_namespace' ] : [ 's_id' ];
 
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
 				$field,
-				array( 'o_id' => $id ),
+				[ 'o_id' => $id ],
 				__METHOD__
 			);
 
@@ -223,8 +240,8 @@ class PropertyTableIdReferenceFinder {
 		if ( $row === false && !$proptable->isFixedPropertyTable() ) {
 			$row = $this->connection->selectRow(
 				$proptable->getName(),
-				array( 's_id' ),
-				array( 'p_id' => $id ),
+				[ 's_id' ],
+				[ 'p_id' => $id ],
 				__METHOD__
 			);
 		}
@@ -239,8 +256,8 @@ class PropertyTableIdReferenceFinder {
 		// removed the object will also loose its reference
 		$row = $this->connection->selectRow(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' ),
-			array( 'o_id' => $id ),
+			[ 's_id' ],
+			[ 'o_id' => $id ],
 			__METHOD__
 		);
 

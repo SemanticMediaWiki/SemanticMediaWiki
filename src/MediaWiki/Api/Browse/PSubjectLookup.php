@@ -138,7 +138,11 @@ class PSubjectLookup extends Lookup {
 				continue;
 			}
 
-			$list[] = $dataItem->getTitle()->getPrefixedText();
+			if ( isset( $parameters['title-prefix'] ) && (bool)$parameters['title-prefix'] === false ) {
+				$list[] = $dataItem->getTitle()->getText();
+			} else {
+				$list[] = $dataItem->getTitle()->getPrefixedText();
+			}
 		}
 
 		if ( $this->is_iterable( $res ) ) {

@@ -257,7 +257,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( array( $row ) ) );
+			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
@@ -272,7 +272,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
@@ -289,21 +289,21 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function purgeMethodProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'doPurgeParserCache',
 			'invalidateCache'
-		);
+		];
 
 
-		$provider[] = array(
+		$provider[] = [
 			'doPurgeHtmlCache',
 			'touchLinks'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'doPurgeWebCache',
 			'purgeSquid'
-		);
+		];
 
 		return $provider;
 	}

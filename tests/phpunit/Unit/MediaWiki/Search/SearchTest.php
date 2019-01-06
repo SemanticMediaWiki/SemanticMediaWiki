@@ -76,7 +76,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getSearchEngine' ) )
+			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 
 		$databaseBase->expects( $this->any() )
@@ -141,7 +141,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchTitle')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -174,7 +174,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchTitle')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -261,7 +261,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'searchText')
-			->will( $this->returnValueMap( array( array( $term, $searchResultSet ) ) ) );
+			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -290,7 +290,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$searchEngine->expects( $this->once() )
 			->method( 'supports')
 			->with( $this->equalTo( 'Some feature' ) )
-			->will( $this->returnValueMap( array( array( 'Some feature', true ) ) ) );
+			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -307,7 +307,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$searchEngine->expects( $this->once() )
 			->method( 'normalizeText')
 			->with( $this->equalTo( 'Some text' ) )
-			->will( $this->returnValueMap( array( array( 'Some text', 'Some normalized text' ) ) ) );
+			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -341,7 +341,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->equalTo( $title ),
 				$this->equalTo( $content ) )
-			->will( $this->returnValueMap( array( array( $title, $content, 'text from content for title' ) ) ) );
+			->will( $this->returnValueMap( [ [ $title, $content, 'text from content for title' ] ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
@@ -510,14 +510,14 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->once() )
 			->method( 'setNamespaces')
-			->with( $this->equalTo( array( 1, 2, 3, 5, 8 ) ) );
+			->with( $this->equalTo( [ 1, 2, 3, 5, 8 ] ) );
 
 		$search = new Search();
 		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setNamespaces( array( 1, 2, 3, 5, 8 ) );
+		$search->setNamespaces( [ 1, 2, 3, 5, 8 ] );
 
 		$this->assertEquals(
-			array( 1, 2, 3, 5, 8 ),
+			[ 1, 2, 3, 5, 8 ],
 			$search->namespaces
 		);
 	}
@@ -541,6 +541,95 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		$search->setShowSuggestion( true );
 
 		$this->assertTrue( $search->getShowSuggestion() );
+	}
+
+	public function testCompletionSearch_OnEligiblePrefix() {
+
+		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQueryLink' )
+			->will( $this->returnValue( $infoLink ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$search = new Search();
+		$search->setFallbackSearchEngine( $searchEngine );
+
+		$this->assertInstanceof(
+			'\SearchSuggestionSet',
+			$search->completionSearch( 'in:Foo' )
+		);
+	}
+
+	public function testCompletionSearch_NoRelevantPrefix() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchSuggestionSet->expects( $this->any() )
+			->method( 'map')
+			->will( $this->returnValue( [] ) );
+
+		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchEngine->expects( $this->once() )
+			->method( 'setShowSuggestion')
+			->with( $this->equalTo( true ) );
+
+		$searchEngine->expects( $this->once() )
+			->method( 'completionSearch' )
+			->will( $this->returnValue( $searchSuggestionSet ) );
+
+		$search = new Search();
+		$search->setFallbackSearchEngine( $searchEngine );
+		$search->setShowSuggestion( true );
+
+		$this->assertInstanceof(
+			'\SearchSuggestionSet',
+			$search->completionSearch( 'Foo' )
+		);
 	}
 
 }

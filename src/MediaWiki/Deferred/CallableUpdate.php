@@ -56,7 +56,7 @@ class CallableUpdate implements DeferrableUpdate {
 	/**
 	 * @var array
 	 */
-	private static $pendingUpdates = array();
+	private static $pendingUpdates = [];
 
 	/**
 	 * @var string|null
@@ -66,7 +66,7 @@ class CallableUpdate implements DeferrableUpdate {
 	/**
 	 * @var array
 	 */
-	private static $queueList = array();
+	private static $queueList = [];
 
 	/**
 	 * @var string
@@ -213,7 +213,7 @@ class CallableUpdate implements DeferrableUpdate {
 			DeferredUpdates::addUpdate( $update );
 		}
 
-		self::$pendingUpdates = array();
+		self::$pendingUpdates = [];
 	}
 
 	/**
@@ -316,11 +316,11 @@ class CallableUpdate implements DeferrableUpdate {
 	}
 
 	protected function getLoggableContext() {
-		return array(
+		return [
 			'origin' => $this->origin,
 			'fingerprint' => $this->fingerprint,
 			'stage' => $this->stage
-		);
+		];
 	}
 
 	private function emptyCallback() {

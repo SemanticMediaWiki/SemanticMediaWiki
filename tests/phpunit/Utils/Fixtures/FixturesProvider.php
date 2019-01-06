@@ -51,11 +51,11 @@ class FixturesProvider {
 	 * @return array
 	 */
 	public function getListOfFactsheetInstances() {
-		return array(
+		return [
 			'berlin' => new BerlinFactsheet(),
 			'paris'  => new ParisFactsheet(),
 			'france'  => new FranceFactsheet()
-		);
+		];
 	}
 
 	/**
@@ -64,7 +64,7 @@ class FixturesProvider {
 	 * @return array
 	 */
 	public function getListOfPropertyInstances() {
-		return array(
+		return [
 			'area' => new AreaProperty(),
 			'populationdensity' => new PopulationDensityProperty(),
 		//	'capitalof' => new CapitalOfProperty(),
@@ -76,7 +76,7 @@ class FixturesProvider {
 			'year' => new YearProperty(),
 			'title' => new TitleProperty(),
 			'url' => new UrlProperty()
-		);
+		];
 	}
 
 	/**
@@ -85,9 +85,9 @@ class FixturesProvider {
 	 * @return array
 	 */
 	public function getListOfCategoryInstances() {
-		return array(
+		return [
 			'city' => new CityCategory()
-		);
+		];
 	}
 
 	/**

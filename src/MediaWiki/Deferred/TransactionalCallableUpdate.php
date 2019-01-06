@@ -35,12 +35,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	/**
 	 * @var array
 	 */
-	private $preCommitableCallbacks = array();
+	private $preCommitableCallbacks = [];
 
 	/**
 	 * @var array
 	 */
-	private $postCommitableCallbacks = array();
+	private $postCommitableCallbacks = [];
 
 	/**
 	 * @var boolean
@@ -201,9 +201,9 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	protected function getLoggableContext() {
-		return parent::getLoggableContext() + array(
+		return parent::getLoggableContext() + [
 			'transactionTicket' => $this->transactionTicket
-		);
+		];
 	}
 
 	private function runOnTransactionIdle() {

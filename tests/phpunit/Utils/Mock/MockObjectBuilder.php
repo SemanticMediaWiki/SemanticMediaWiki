@@ -33,7 +33,7 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	protected $configuration;
 
 	/** @var MockObjectRepository */
-	protected $repository = array();
+	protected $repository = [];
 
 	/**
 	 * @since  1.9
@@ -68,13 +68,13 @@ class MockObjectBuilder extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @return mixed
 	 */
-	public function newObject( $objectName, $objectArguments = array() ) {
+	public function newObject( $objectName, $objectArguments = [] ) {
 
 		if ( !is_string( $objectName ) ) {
 			throw new InvalidArgumentException( "Object name is not a string" );
 		}
 
-		if ( $objectArguments !== array() && !is_array( $objectArguments ) ) {
+		if ( $objectArguments !== [] && !is_array( $objectArguments ) ) {
 			throw new InvalidArgumentException( "Arguments are not an array type" );
 		}
 

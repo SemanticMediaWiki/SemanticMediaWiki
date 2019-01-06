@@ -21,12 +21,12 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\JobQueue;
-use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
@@ -41,7 +41,7 @@ use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
-use SMW\Rule\RuleFactory;
+use SMW\Schema\SchemaFactory;
 use SMW\Settings;
 use SMW\Options;
 use SMW\StoreFactory;
@@ -197,9 +197,9 @@ class SharedServicesContainer implements CallbackContainer {
 			return new ManualEntryLogger();
 		} );
 
-		$containerBuilder->registerCallback( 'TitleCreator', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TitleCreator', '\SMW\MediaWiki\TitleCreator' );
-			return new TitleCreator();
+		$containerBuilder->registerCallback( 'TitleFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TitleFactory', '\SMW\MediaWiki\TitleFactory' );
+			return new TitleFactory();
 		} );
 
 		$containerBuilder->registerCallback( 'ContentParser', function( $containerBuilder, \Title $title ) {
@@ -306,19 +306,18 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var RuleFactory
+		 * @var SchemaFactory
 		 */
-		$containerBuilder->registerCallback( 'RuleFactory', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'RuleFactory', RuleFactory::class );
-			$containerBuilder->registerAlias( 'RuleFactory', RuleFactory::class );
+		$containerBuilder->registerCallback( 'SchemaFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'SchemaFactory', SchemaFactory::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
 
-			$ruleFactory = new RuleFactory(
-				$settings->get( 'smwgRuleTypes' )
+			$schemaFactory = new SchemaFactory(
+				$settings->get( 'smwgSchemaTypes' )
 			);
 
-			return $ruleFactory;
+			return $schemaFactory;
 		} );
 
 		/**
@@ -390,7 +389,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var JobFactory
 		 */
 		$containerBuilder->registerCallback( 'JobFactory', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\Jobs\JobFactory' );
+			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\JobFactory' );
 			return new JobFactory();
 		} );
 

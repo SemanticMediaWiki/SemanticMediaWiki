@@ -31,7 +31,7 @@ class SMWOutputs {
 	 * Format $id => $headItem where $id is used only to avoid duplicate
 	 * items in the time before they are forwarded to the output.
 	 */
-	protected static $headItems = array();
+	protected static $headItems = [];
 
 	/**
 	 * Protected member for temporarily storing additional Javascript
@@ -39,21 +39,21 @@ class SMWOutputs {
 	 * avoid duplicate scripts in the time before they are forwarded
 	 * to the output.
 	 */
-	protected static $scripts = array();
+	protected static $scripts = [];
 
 	/**
 	 * Protected member for temporarily storing resource modules.
 	 *
 	 * @var array
 	 */
-	protected static $resourceModules = array();
+	protected static $resourceModules = [];
 
 	/**
 	 * Protected member for temporarily storing resource modules.
 	 *
 	 * @var array
 	 */
-	protected static $resourceStyles = array();
+	protected static $resourceStyles = [];
 
 	/**
 	 * Adds a resource module to the parser output.
@@ -191,9 +191,9 @@ class SMWOutputs {
 		$parserOutput->addModuleStyles( array_values( self::$resourceStyles ) );
 		$parserOutput->addModules( array_values( self::$resourceModules ) );
 
-		self::$resourceStyles = array();
-		self::$resourceModules = array();
-		self::$headItems = array();
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
 	}
 
 	/**
@@ -217,9 +217,9 @@ class SMWOutputs {
 		$output->addModuleStyles( array_values( self::$resourceStyles ) );
 		$output->addModules( array_values( self::$resourceModules ) );
 
-		self::$resourceStyles = array();
-		self::$resourceModules = array();
-		self::$headItems = array();
+		self::$resourceStyles = [];
+		self::$resourceModules = [];
+		self::$headItems = [];
 	}
 
 }

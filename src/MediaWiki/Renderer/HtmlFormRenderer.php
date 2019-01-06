@@ -43,7 +43,7 @@ class HtmlFormRenderer {
 	/**
 	 * @var array
 	 */
-	private $queryParameters = array();
+	private $queryParameters = [];
 
 	/**
 	 * @var string
@@ -68,7 +68,7 @@ class HtmlFormRenderer {
 	/**
 	 * @var string[]
 	 */
-	private $content = array();
+	private $content = [];
 
 	/**
 	 * @var string
@@ -92,8 +92,8 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function clear() {
-		$this->queryParameters = array();
-		$this->content = array();
+		$this->queryParameters = [];
+		$this->content = [];
 		$this->name = '';
 		$this->method = false;
 		$this->useFieldset = false;
@@ -187,10 +187,10 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addParagraph( $text, $attributes = array() ) {
+	public function addParagraph( $text, $attributes = [] ) {
 
-		if ( $attributes === array() ) {
-			$attributes = array( 'class' => $this->defaultPrefix . '-paragraph' );
+		if ( $attributes === [] ) {
+			$attributes = [ 'class' => $this->defaultPrefix . '-paragraph' ];
 		}
 
 		$this->content[] = Xml::tags( 'p', $attributes, $text );
@@ -204,10 +204,10 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addHorizontalRule( $attributes = array() ) {
+	public function addHorizontalRule( $attributes = [] ) {
 
-		if ( $attributes === array() ) {
-			$attributes = array( 'class' => $this->defaultPrefix . '-horizontalrule' );
+		if ( $attributes === [] ) {
+			$attributes = [ 'class' => $this->defaultPrefix . '-horizontalrule' ];
 		}
 
 		$this->content[] = Xml::tags( 'hr', $attributes, '' );
@@ -225,9 +225,9 @@ class HtmlFormRenderer {
 	public function addHeader( $level, $text ) {
 
 		$level = strtolower( $level );
-		$level = in_array( $level, array( 'h2', 'h3', 'h4' ) ) ? $level : 'h2';
+		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
-		$this->content[] = Html::element( $level, array(), $text );
+		$this->content[] = Html::element( $level, [], $text );
 		return $this;
 	}
 
@@ -237,7 +237,7 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addLineBreak() {
-		$this->content[] = Html::element( 'br', array(), '' );
+		$this->content[] = Html::element( 'br', [], '' );
 		return $this;
 	}
 
@@ -258,7 +258,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addSubmitButton( $text, $attributes = array() ) {
+	public function addSubmitButton( $text, $attributes = [] ) {
 		$this->content[] = Xml::submitButton( $text, $attributes );
 		return $this;
 	}
@@ -359,26 +359,26 @@ class HtmlFormRenderer {
 		ksort( $options );
 
 		$html = '';
-		$optionsHtml = array();
+		$optionsHtml = [];
 
 		foreach ( $options as $internalId => $name ) {
 			$optionsHtml[] = Html::element(
-				'option', array(
+				'option', [
 				//	'disabled' => false,
 					'value' => $internalId,
 					'selected' => $internalId == $inputValue,
-				), $name
+				], $name
 			);
 		}
 
-		$html .= Html::element( 'label', array( 'for' => $id ), $label ) . '&#160;';
+		$html .= Html::element( 'label', [ 'for' => $id ], $label ) . '&#160;';
 
 		$html .= Html::openElement(
 			'select',
-			array(
+			[
 				'name' => $inputName,
 				'id' => $id,
-				'class' => $this->defaultPrefix . '-select' ) ) . "\n" .
+				'class' => $this->defaultPrefix . '-select' ] ) . "\n" .
 			implode( "\n", $optionsHtml ) . "\n" .
 			Html::closeElement( 'select' );
 
@@ -397,7 +397,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = array() ) {
+	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ) {
 
 		if ( $id === null ) {
 			$id = $inputName;
@@ -410,11 +410,11 @@ class HtmlFormRenderer {
 			$inputName,
 			$id,
 			$isChecked,
-			array(
+			[
 				'id' => $id,
 				'class' => $this->defaultPrefix . '-checkbox',
 				'value' => $inputValue
-			) + ( $isChecked ? array( 'checked' => 'checked' ) : array() )
+			] + ( $isChecked ? [ 'checked' => 'checked' ] : [] )
 		);
 
 		$this->content[] = Html::rawElement( 'span', $attributes, $html );
@@ -457,7 +457,7 @@ class HtmlFormRenderer {
 				$count < $limit
 			);
 
-			return Xml::tags( 'p', array(), $resultCount ) . Xml::tags( 'p', array(), $paging );
+			return Xml::tags( 'p', [], $resultCount ) . Xml::tags( 'p', [], $paging );
 		};
 
 		return $this;
@@ -480,18 +480,18 @@ class HtmlFormRenderer {
 			$content = Xml::fieldset(
 				$this->messageBuilder->getMessage( $this->name )->text(),
 				$content,
-				array(
+				[
 					'id' => $this->defaultPrefix . "-fieldset-{$this->name}"
-				)
+				]
 			);
 		}
 
-		$form = Xml::tags( 'form', array(
+		$form = Xml::tags( 'form', [
 			'id'     => $this->defaultPrefix . "-{$this->name}",
 			'name'   => $this->name,
-			'method' => in_array( $this->method, array( 'get', 'post' ) ) ? $this->method : 'get',
+			'method' => in_array( $this->method, [ 'get', 'post' ] ) ? $this->method : 'get',
 			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
-		), Html::hidden(
+		], Html::hidden(
 			'title',
 			strtok( $this->title->getPrefixedText(), '/' )
 		) . $content );

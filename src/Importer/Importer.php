@@ -110,7 +110,7 @@ class Importer implements MessageReporterAware {
 			$import = true;
 		}
 
-		if ( $this->contentIterator->getErrors() !== array() ) {
+		if ( $this->contentIterator->getErrors() !== [] ) {
 			$this->messageReporter->reportMessage(
 				"\n" . 'Import failed on "' . implode( ", ", $this->contentIterator->getErrors() ) . '"'
 			);

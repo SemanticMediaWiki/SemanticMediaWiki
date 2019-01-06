@@ -29,7 +29,7 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 

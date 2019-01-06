@@ -58,22 +58,6 @@ class CacheFactory {
 	 *
 	 * @return string
 	 */
-	public static function getFactboxCacheKey( $key ) {
-
-		if ( $key instanceof Title ) {
-			$key = $key->getArticleID();
-		}
-
-		return self::getCachePrefix() . ':smw:fc:' . md5( $key );
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @param Title|integer|string $key
-	 *
-	 * @return string
-	 */
 	public static function getPurgeCacheKey( $key ) {
 
 		if ( $key instanceof Title ) {
@@ -129,10 +113,10 @@ class CacheFactory {
 	 */
 	public function newMediaWikiCompositeCache( $mediaWikiCacheType = null ) {
 
-		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( array(
+		$compositeCache = OnoiCacheFactory::getInstance()->newCompositeCache( [
 			$this->newFixedInMemoryCache( 500 ),
 			$this->newMediaWikiCache( $mediaWikiCacheType )
-		) );
+		] );
 
 		return $compositeCache;
 	}

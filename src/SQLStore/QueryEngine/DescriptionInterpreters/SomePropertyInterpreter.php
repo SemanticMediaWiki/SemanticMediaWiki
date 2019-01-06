@@ -153,7 +153,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pqid = QuerySegment::$qnum;
 			$pquery = new QuerySegment();
 			$pquery->type = QuerySegment::Q_PROP_HIERARCHY;
-			$pquery->joinfield = array( $pid );
+			$pquery->joinfield = [ $pid ];
 			$pquery->depth = $description->getHierarchyDepth();
 			$query->components[$pqid] = "{$query->alias}.p_id";
 
@@ -294,7 +294,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		if ( $where == '' && $valueMatchConditionBuilder->canApplyFulltextSearchMatchCondition( $description ) ) {
 			$query->joinTable = $valueMatchConditionBuilder->getTableName();
 			$query->sortIndexField = $valueMatchConditionBuilder->getSortIndexField( $query->alias );
-			$query->components = array();
+			$query->components = [];
 			$where = $valueMatchConditionBuilder->getWhereCondition( $description, $query->alias );
 		} elseif ( $where == '' ) {
 

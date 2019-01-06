@@ -12,106 +12,106 @@
 // #1466 (Make sure to work on both Win and Ux)
 $pathParts = explode( '/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ) );
 
-$moduleTemplate = array(
+$moduleTemplate = [
 	'localBasePath' => __DIR__,
 	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) ),
 	'group' => 'ext.smw'
-);
+];
 
-return array(
+return [
 	// SMW core class
-	'ext.smw' => $moduleTemplate + array(
+	'ext.smw' => $moduleTemplate + [
 		'scripts' => 'smw/ext.smw.js',
 		'dependencies' => 'ext.jquery.async',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Resource is loaded at the top otherwise the stylesheet will only
 	// become active after all content is loaded with icons appearing with a
 	// delay due to missing stylesheet definitions at the time of the display
-	'ext.smw.style' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.style' => $moduleTemplate + [
+		'styles' => [
 			'smw/ext.smw.css',
 			'smw/ext.smw.skin.css',
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
 			'smw/ext.smw.factbox.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'smw.ui' => $moduleTemplate + array(
+	'smw.ui' => $moduleTemplate + [
 		'scripts' => 'smw/smw.ui.js',
 		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'smw.ui.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'smw.ui.styles' => $moduleTemplate + [
+		'styles' => [
 			'jquery/jquery.selectmenu.css',
 			'smw/smw.selectmenu.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'ext.smw.special.style' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.special.style' => $moduleTemplate + [
+		'styles' => [
 			'smw/special/ext.smw.special.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// https://github.com/TerryZ/SelectMenu
-	'jquery.selectmenu' => $moduleTemplate + array(
+	'jquery.selectmenu' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.selectmenu.js',
-		'dependencies' => array(
+		'dependencies' => [
 		'jquery.selectmenu.styles'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'jquery.selectmenu.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'jquery.selectmenu.styles' => $moduleTemplate + [
+		'styles' => [
 			'jquery/jquery.selectmenu.css',
 			'smw/smw.selectmenu.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Load the module explicitly, otherwise mobile will complain with
 	// "Uncaught Error: Unknown dependency: jquery.async"
-	'ext.jquery.async' => $moduleTemplate + array(
+	'ext.jquery.async' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.async.js',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Avoid "Warning: Use of the json module is deprecated since MediaWiki 1.29"
 	// jStorage was added in MW 1.20
-	'ext.jquery.jStorage' => $moduleTemplate + array(
+	'ext.jquery.jStorage' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.jstorage.js',
 		'dependencies' => version_compare( $GLOBALS['wgVersion'], '1.29', '<' ) ? 'json' : [],
-	),
+	],
 
 	// md5 hash key generator
-	'ext.jquery.md5' => $moduleTemplate + array(
+	'ext.jquery.md5' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.md5.js'
-	),
+	],
 
 	// dataItem representation
-	'ext.smw.dataItem' => $moduleTemplate + array(
-		'scripts' => array(
+	'ext.smw.dataItem' => $moduleTemplate + [
+		'scripts' => [
 			'smw/data/ext.smw.dataItem.wikiPage.js',
 			'smw/data/ext.smw.dataItem.uri.js',
 			'smw/data/ext.smw.dataItem.time.js',
@@ -120,93 +120,93 @@ return array(
 			'smw/data/ext.smw.dataItem.number.js',
 			'smw/data/ext.smw.dataItem.text.js',
 			'smw/data/ext.smw.dataItem.geo.js',
-		),
-		'dependencies' => array(
+		],
+		'dependencies' => [
 			'ext.smw',
 			'mediawiki.Title',
 			'mediawiki.Uri'
-		)
-	),
+		]
+	],
 
 	// dataValue representation
-	'ext.smw.dataValue' => $moduleTemplate + array(
-		'scripts' => array(
+	'ext.smw.dataValue' => $moduleTemplate + [
+		'scripts' => [
 			'smw/data/ext.smw.dataValue.quantity.js',
-		),
+		],
 		'dependencies' => 'ext.smw.dataItem'
-	),
+	],
 
 	// dataItem representation
-	'ext.smw.data' => $moduleTemplate + array(
+	'ext.smw.data' => $moduleTemplate + [
 		'scripts' => 'smw/data/ext.smw.data.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw.dataItem',
 			'ext.smw.dataValue'
-		)
-	),
+		]
+	],
 
 	// Query
-	'ext.smw.query' => $moduleTemplate + array(
+	'ext.smw.query' => $moduleTemplate + [
 		'scripts' => 'smw/query/ext.smw.query.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw',
 			'mediawiki.util'
-		),
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		],
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// API
-	'ext.smw.api' => $moduleTemplate + array(
+	'ext.smw.api' => $moduleTemplate + [
 		'scripts' => 'smw/api/ext.smw.api.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'mediawiki.util',
 			'ext.smw.data',
 			'ext.smw.query',
 			'ext.jquery.jStorage',
 			'ext.jquery.md5'
-		)
-	),
+		]
+	],
 
 	// https://github.com/devbridge/jQuery-Autocomplete
-	'ext.jquery.autocomplete' => $moduleTemplate + array(
+	'ext.jquery.autocomplete' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.autocomplete.js',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Tooltip qtip2 resources
-	'ext.jquery.qtip.styles' => $moduleTemplate + array(
+	'ext.jquery.qtip.styles' => $moduleTemplate + [
 		'styles' => 'jquery/jquery.qtip.css',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Tooltip qtip2 resources
-	'ext.jquery.qtip' => $moduleTemplate + array(
+	'ext.jquery.qtip' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.qtip.js',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Tooltip
-	'ext.smw.tooltip.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.tooltip.styles' => $moduleTemplate + [
+		'styles' => [
 			// Style dependencies don't work
 			// therefore make sure to load it
 			// together
 			'jquery/jquery.qtip.css',
 			'smw/util/ext.smw.util.tooltip.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Tooltip
-	'ext.smw.tooltip' => $moduleTemplate + array(
+	'ext.smw.tooltip' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw.tooltip.styles',
 			'ext.smw',
 			'ext.jquery.qtip'
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw-ui-tooltip-title-property',
 			'smw-ui-tooltip-title-quantity',
 			'smw-ui-tooltip-title-info',
@@ -214,103 +214,103 @@ return array(
 			'smw-ui-tooltip-title-warning',
 			'smw-ui-tooltip-title-parameter',
 			'smw-ui-tooltip-title-event',
-		),
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		],
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'ext.smw.tooltips' => $moduleTemplate + array(
-		'dependencies' => array(
+	'ext.smw.tooltips' => $moduleTemplate + [
+		'dependencies' => [
 			'ext.smw.style',
 			'ext.smw.tooltip'
-		),
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		],
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Autocomplete resources
-	'ext.smw.autocomplete' => $moduleTemplate + array(
+	'ext.smw.autocomplete' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.autocomplete.js',
 		'dependencies' => 'jquery.ui.autocomplete',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Purge resources
-	'ext.smw.purge' => $moduleTemplate + array(
+	'ext.smw.purge' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.purge.js',
-		'messages' => array(
+		'messages' => [
 			'smw-purge-failed'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// VTabs
-	'ext.smw.vtabs.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.vtabs.styles' => $moduleTemplate + [
+		'styles' => [
 			'smw/util/ext.smw.vertical.tabs.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// VTabs
-	'ext.smw.vtabs' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.vtabs' => $moduleTemplate + [
+		'styles' => [
 			'smw/util/ext.smw.vertical.tabs.css'
-		),
-		'scripts' => array(
+		],
+		'scripts' => [
 			'smw/util/ext.smw.vertical.tabs.js'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Modal
-	'ext.smw.modal.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.modal.styles' => $moduleTemplate + [
+		'styles' => [
 			'smw/util/ext.smw.modal.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Modal
-	'ext.smw.modal' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.modal' => $moduleTemplate + [
+		'styles' => [
 			'smw/util/ext.smw.modal.css'
-		),
-		'scripts' => array(
+		],
+		'scripts' => [
 			'smw/util/ext.smw.modal.js'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Special:Search
-	'smw.special.search.styles' => $moduleTemplate + array(
+	'smw.special.search.styles' => $moduleTemplate + [
 		'styles' => 'smw/special.search/search.css',
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'smw.special.search' => $moduleTemplate + array(
+	'smw.special.search' => $moduleTemplate + [
 		'scripts' => [
 			'smw/special.search/search.namespace.js',
 			'smw/special.search/search.input.js',
@@ -318,123 +318,127 @@ return array(
 		],
 		'styles' => 'smw/special.search/search.css',
 		'position' => 'top',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw',
 			'smw.ui'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		],
+		'messages' => [
+			'smw-search-hide',
+			'smw-search-show',
+		],
+	],
 
 	// Postproc resources
-	'ext.smw.postproc' => $moduleTemplate + array(
+	'ext.smw.postproc' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
 		'position' => 'top',
-		'messages' => array(
+		'messages' => [
 			'smw-postproc-queryref'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// https://github.com/ichord/Caret.js
-	'ext.jquery.caret' => $moduleTemplate + array(
+	'ext.jquery.caret' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.caret.js',
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// https://github.com/ichord/At.js
-	'ext.jquery.atwho' => $moduleTemplate + array(
+	'ext.jquery.atwho' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.atwho.js',
 		'styles' => 'jquery/jquery.atwho.css',
 		'position' => 'top',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.jquery.caret'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.suggester' => $moduleTemplate + array(
+	'ext.smw.suggester' => $moduleTemplate + [
 		'scripts' => 'smw/suggester/ext.smw.suggester.js',
 		'position' => 'top',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw',
 			'ext.jquery.atwho'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.suggester.textInput' => $moduleTemplate + array(
+	'ext.smw.suggester.textInput' => $moduleTemplate + [
 		'scripts' => 'smw/suggester/ext.smw.suggester.textInput.js',
 		'position' => 'top',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw',
 			'ext.smw.suggester'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.autocomplete.article' => $moduleTemplate + array(
-		'scripts' => 'smw/util/ext.smw.util.autocomplete.article.js',
-		'dependencies' => array(
+	'ext.smw.autocomplete.page' => $moduleTemplate + [
+		'scripts' => 'smw/util/ext.smw.util.autocomplete.page.js',
+		'dependencies' => [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
-		),
+		],
 		'position' => 'bottom',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'ext.smw.autocomplete.property' => $moduleTemplate + array(
+	'ext.smw.autocomplete.property' => $moduleTemplate + [
 		'scripts' => [
 			'smw/util/ext.smw.util.autocomplete.property.js',
 			'smw/util/ext.smw.util.autocomplete.propertyvalue.js',
 			'smw/util/ext.smw.util.autocomplete.propertysubject.js'
 		],
-		'dependencies' => array(
+		'dependencies' => [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
-		),
+		],
 		'position' => 'bottom',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Special:Ask
-	'ext.smw.ask.styles' => $moduleTemplate + array(
+	'ext.smw.ask.styles' => $moduleTemplate + [
 		'styles' => 'smw/special/ext.smw.special.ask.css',
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Special:Ask
-	'ext.smw.ask' => $moduleTemplate + array(
+	'ext.smw.ask' => $moduleTemplate + [
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw.tooltip',
 			'ext.smw.style',
 			'ext.smw.ask.styles',
 			'ext.smw.suggester'
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw-ask-delete',
 			'smw-ask-format-selection-help',
 			'smw-ask-condition-change-info',
@@ -443,117 +447,117 @@ return array(
 			'smw-ask-format-help-link',
 			'smw-section-expand',
 			'smw-section-collapse'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Table styles
-	'ext.smw.table.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.table.styles' => $moduleTemplate + [
+		'styles' => [
 			'smw/ext.smw.table.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Facts and browse
-	'ext.smw.browse.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.browse.styles' => $moduleTemplate + [
+		'styles' => [
 			'smw/ext.smw.table.css',
 			'smw/special/ext.smw.special.browse.css',
 			'smw/special/ext.smw.special.browse.skin.css',
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.browse' => $moduleTemplate + array(
+	'ext.smw.browse' => $moduleTemplate + [
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'mediawiki.api',
 			'ext.smw.style'
-		),
+		],
 		'position' => 'top',
-		'messages' => array(
+		'messages' => [
 			'smw-browse-api-subject-serialization-invalid'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.browse.autocomplete' => $moduleTemplate + array(
-		'dependencies' => array(
+	'ext.smw.browse.autocomplete' => $moduleTemplate + [
+		'dependencies' => [
 			'ext.smw.browse',
-			'ext.smw.autocomplete.article'
-		),
-		'targets' => array(
+			'ext.smw.autocomplete.page'
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Special:Admin/SemanticMediaWiki
-	'ext.smw.admin' => $moduleTemplate + array(
+	'ext.smw.admin' => $moduleTemplate + [
 		'scripts' => 'smw/special/ext.smw.special.admin.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'mediawiki.api'
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw-no-data-available',
 			'smw-list-count',
 			'smw-list-count-from-cache'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Personal resource
-	'ext.smw.personal' => $moduleTemplate + array(
+	'ext.smw.personal' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.personal.js',
-		'dependencies' => array(
+		'dependencies' => [
 			'ext.smw.tooltip',
 			'mediawiki.api'
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw-personal-jobqueue-watchlist'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// TableResultPrinter resource
-	'smw.tableprinter.datatable' => $moduleTemplate + array(
-		'scripts' => array(
+	'smw.tableprinter.datatable' => $moduleTemplate + [
+		'scripts' => [
 			'smw/printer/ext.smw.tableprinter.js'
-		),
-		'styles'   => array(
+		],
+		'styles'   => [
 			'smw/printer/ext.smw.tableprinter.css',
 			'smw/printer/ext.smw.tableprinter.skin.css'
-		),
-		'dependencies' => array(
+		],
+		'dependencies' => [
 			'onoi.dataTables',
 			'ext.smw.query'
-		),
+		],
 		'position' => 'top',
-		'messages' => array(
+		'messages' => [
 			"smw-format-datatable-emptytable",
 			"smw-format-datatable-info",
 			"smw-format-datatable-infoempty",
@@ -571,81 +575,90 @@ return array(
 			"smw-format-datatable-sortascending",
 			"smw-format-datatable-sortdescending",
 			"smw-format-datatable-toolbar-export"
-		),
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		],
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
-	'smw.tableprinter.datatable.styles' => $moduleTemplate + array(
-		'styles'   => array(
+	'smw.tableprinter.datatable.styles' => $moduleTemplate + [
+		'styles'   => [
 			'smw/printer/ext.smw.tableprinter.css',
 			'smw/printer/ext.smw.tableprinter.skin.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array( 'mobile', 'desktop' )
-	),
+		'targets' => [ 'mobile', 'desktop' ]
+	],
 
 	// Deferred
-	'ext.smw.deferred.styles'  => $moduleTemplate + array(
+	'ext.smw.deferred.styles'  => $moduleTemplate + [
 		'position' => 'top',
-		'styles'   => array(
+		'styles'   => [
 			'smw/deferred/ext.smw.deferred.css',
 			'smw/deferred/ext.smw.deferred.skin.css'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'ext.smw.deferred'  => $moduleTemplate + array(
+	'ext.smw.deferred'  => $moduleTemplate + [
 		'position' => 'top',
-		'styles'   => array(
+		'styles'   => [
 			'smw/deferred/ext.smw.deferred.css',
 			'smw/deferred/ext.smw.deferred.skin.css'
-		),
-		'scripts'  => array( 'smw/deferred/ext.smw.deferred.js' ),
-		'dependencies'  => array(
+		],
+		'scripts'  => [ 'smw/deferred/ext.smw.deferred.js' ],
+		'dependencies'  => [
 			'mediawiki.api',
 			'mediawiki.api.parse',
 			'onoi.rangeslider'
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw_result_noresults'
-		),
-		'targets' => array(
+		],
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
 	// Page styles
-	'ext.smw.page.styles' => $moduleTemplate + array(
-		'styles' => array(
+	'ext.smw.page.styles' => $moduleTemplate + [
+		'styles' => [
 			'smw/ext.smw.page.css',
 			'smw/ext.smw.table.css'
-		),
+		],
 		'position' => 'top',
-		'targets' => array(
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-	'smw.property.page'  => $moduleTemplate + array(
+	'smw.property.page'  => $moduleTemplate + [
 		'position' => 'top',
-		'scripts'  => array( 'smw/util/smw.property.page.js' ),
-		'dependencies'  => array(
+		'scripts'  => [ 'smw/util/smw.property.page.js' ],
+		'dependencies'  => [
 			'mediawiki.api',
 			'mediawiki.api.parse',
 			'ext.smw.tooltip',
-		),
-		'messages' => array(
+		],
+		'messages' => [
 			'smw_result_noresults'
-		),
-		'targets' => array(
+		],
+	],
+
+	// Schema content styles
+	'smw.content.schema' => $moduleTemplate + [
+		'styles' => [
+			'smw/smw.schema.css',
+			'smw/ext.smw.table.css'
+		],
+		'position' => 'top',
+		'targets' => [
 			'mobile',
 			'desktop'
-		)
-	),
+		]
+	],
 
-);
+];

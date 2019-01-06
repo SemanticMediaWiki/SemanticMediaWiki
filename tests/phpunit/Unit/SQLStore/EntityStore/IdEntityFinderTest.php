@@ -22,17 +22,26 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $cache;
 	private $iteratorFactory;
+	private $idCacheManager;
 	private $store;
 	private $conection;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +63,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			IdEntityFinder::class,
-			new IdEntityFinder( $this->store, $this->iteratorFactory, $this->cache )
+			new IdEntityFinder( $this->store, $this->iteratorFactory, $this->idCacheManager )
 		);
 	}
 
@@ -67,6 +76,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_subobject ='';
 		$row->smw_sortkey ='';
 		$row->smw_sort ='';
+		$row->smw_hash = 'x99w';
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
@@ -83,13 +93,13 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
+				$this->equalTo( [ 'smw_id' => 42 ] ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
-			$this->cache
+			$this->idCacheManager
 		);
 
 		$this->assertInstanceOf(
@@ -110,7 +120,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
-			$this->cache
+			$this->idCacheManager
 		);
 
 		$this->assertInstanceOf(
@@ -133,6 +143,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_subobject = '';
 		$row->smw_sortkey = 'bar';
 		$row->smw_sort = 'BAR';
+		$row->smw_hash = 'x99w';
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -143,13 +154,13 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => 42 ) ) )
+				$this->equalTo( [ 'smw_id' => 42 ] ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
-			$this->cache
+			$this->idCacheManager
 		);
 
 		$this->assertEquals(
@@ -171,7 +182,7 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new IdEntityFinder(
 			$this->store,
 			$this->iteratorFactory,
-			$this->cache
+			$this->idCacheManager
 		);
 
 		$this->assertNull(
@@ -183,6 +194,8 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = new DIWikiPage( 'Foo', 0, '', '' );
 		$expected->setId( 42 );
+		$expected->setSortKey( '...' );
+		$expected->setOption( 'sort', '...' );
 
 		$row = new \stdClass;
 		$row->smw_id = 42;
@@ -190,19 +203,22 @@ class IdEntityFinderTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
+		$row->smw_sortkey = '...';
+		$row->smw_sort = '...';
+		$row->smw_hash = 'x99w';
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( array( 'smw_id' => array( 42 ) ) ) )
-			->will( $this->returnValue( array( $row ) ) );
+				$this->equalTo( [ 'smw_id' => [ 42 ] ] ) )
+			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new IdEntityFinder(
 			$this->store,
 			new IteratorFactory(),
-			$this->cache
+			$this->idCacheManager
 		);
 
 		foreach ( $instance->getDataItemsFromList( [ 42 ] ) as $value ) {

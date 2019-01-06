@@ -136,7 +136,7 @@ abstract class SMWDataValue {
 	 * (PHP's count() is too slow when called often) by using $mHasErrors.
 	 * @var array
 	 */
-	private $mErrors = array();
+	private $mErrors = [];
 
 	/**
 	 * Boolean indicating if there where any errors.
@@ -200,7 +200,7 @@ abstract class SMWDataValue {
 	public function setUserValue( $value, $caption = false ) {
 
 		$this->m_dataitem = null;
-		$this->mErrors = array(); // clear errors
+		$this->mErrors = []; // clear errors
 		$this->mHasErrors = false;
 		$this->m_caption = is_string( $caption ) ? trim( $caption ) : false;
 		$this->userValue = $value;
@@ -221,7 +221,7 @@ abstract class SMWDataValue {
 		// just fails, even if parseUserValue() above might not have noticed this issue.
 		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now (backwards compatibility, b/c)
 		if ( is_string( $value ) && ( ( strpos( $value, "\x7f" ) !== false ) || ( strpos( $value, "\x07" ) !== false ) ) ) {
-			$this->addErrorMsg( array( 'smw-datavalue-stripmarker-parse-error', $value ) );
+			$this->addErrorMsg( [ 'smw-datavalue-stripmarker-parse-error', $value ] );
 		}
 
 		if ( $this->isValid() && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
@@ -245,7 +245,7 @@ abstract class SMWDataValue {
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
 		$this->m_dataitem = null;
-		$this->mErrors = array();
+		$this->mErrors = [];
 		$this->mHasErrors = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
 	}
@@ -441,7 +441,7 @@ abstract class SMWDataValue {
 	 * @since 2.4
 	 */
 	public function clearErrors() {
-		$this->mErrors = array();
+		$this->mErrors = [];
 		$this->mHasErrors = false;
 	}
 
@@ -474,15 +474,13 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @deprecated 2.3
+	 * @deprecated since 2.3
+	 *
 	 * @see DescriptionDeserializer::prepareValue
 	 *
 	 * This method should no longer be used for direct public access, instead a
 	 * DataValue is expected to register a DescriptionDeserializer with
 	 * DVDescriptionDeserializerRegistry.
-	 *
-	 * FIXME as of 2.3, SMGeoCoordsValue still uses this method and requires
-	 * migration before 3.0
 	 */
 	static public function prepareValue( &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
@@ -529,8 +527,10 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
+	 *
+	 * @param Linker|null|bool $linker
 	 */
-	abstract public function getShortWikiText( $linked = null );
+	abstract public function getShortWikiText( $linker = null );
 
 	/**
 	 * Returns a short textual representation for this data value. If the value
@@ -541,6 +541,8 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
+	 *
+	 * @param Linker|null|bool $linker
 	 */
 	abstract public function getShortHTMLText( $linker = null );
 
@@ -551,8 +553,10 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
+	 *
+	 * @param Linker|null|bool $linker
 	 */
-	abstract public function getLongWikiText( $linked = null );
+	abstract public function getLongWikiText( $linker = null );
 
 	/**
 	 * Return the long textual description of the value, as printed for
@@ -561,6 +565,8 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
+	 *
+	 * @param Linker|null|bool $linker
 	 */
 	abstract public function getLongHTMLText( $linker = null );
 
@@ -581,9 +587,12 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
+	 *
+	 * @param int $outputFormat
+	 * @param Linker|null|bool $linker
 	 */
-	public function getShortText( $outputformat, $linker = null ) {
-		switch ( $outputformat ) {
+	public function getShortText( $outputFormat, $linker = null ) {
+		switch ( $outputFormat ) {
 			case SMW_OUTPUT_WIKI:
 				return $this->getShortWikiText( $linker );
 			case SMW_OUTPUT_HTML:
@@ -600,9 +609,12 @@ abstract class SMWDataValue {
 	 *
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
+	 *
+	 * @param int $outputFormat
+	 * @param Linker|null|bool $linker
 	 */
-	public function getLongText( $outputformat, $linker = null ) {
-		switch ( $outputformat ) {
+	public function getLongText( $outputFormat, $linker = null ) {
+		switch ( $outputFormat ) {
 			case SMW_OUTPUT_WIKI:
 				return $this->getLongWikiText( $linker );
 			case SMW_OUTPUT_HTML:
@@ -616,12 +628,12 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
-	 * @param $linker
+	 * @param integer $outputFormat Element of the SMW_OUTPUT_ enum
+	 * @param Linker|null|bool $linker
 	 *
 	 * @return string
 	 */
-	public function getInfolinkText( $outputformat, $linker = null ) {
+	public function getInfolinkText( $outputFormat, $linker = null ) {
 
 		if ( $this->infoLinksProvider === null ) {
 			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
@@ -635,7 +647,7 @@ abstract class SMWDataValue {
 			$this->getOption( self::OPT_COMPACT_INFOLINKS, false )
 		);
 
-		return $this->infoLinksProvider->getInfolinkText( $outputformat, $linker );
+		return $this->infoLinksProvider->getInfolinkText( $outputFormat, $linker );
 	}
 
 	/**
@@ -678,9 +690,9 @@ abstract class SMWDataValue {
 	public function isNumeric() {
 		if ( isset( $this->m_dataitem ) ) {
 			return is_numeric( $this->m_dataitem->getSortKey() );
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -727,7 +739,7 @@ abstract class SMWDataValue {
 	 * @return mixed
 	 * @throws RuntimeException
 	 */
-	public function getExtraneousFunctionFor( $name, array $parameters = array() ) {
+	public function getExtraneousFunctionFor( $name, array $parameters = [] ) {
 		return $this->dataValueServiceFactory->newExtraneousFunctionByName( $name, $parameters );
 	}
 
@@ -805,19 +817,27 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * @since 2.4
+	 * @since 3.0
 	 *
 	 * @param integer $feature
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function hasFeature( $feature ) {
 
 		if ( $this->options !== null ) {
 			return $this->options->isFlagSet( 'smwgDVFeatures', (int)$feature );
 		}
 
 		return false;
+	}
+
+	/**
+	 * @deprecated since 3.0, use DataValue::hasFeature
+	 * @since 2.4
+	 */
+	public function isEnabledFeature( $feature ) {
+		return $this->hasFeature( $feature );
 	}
 
 	/**

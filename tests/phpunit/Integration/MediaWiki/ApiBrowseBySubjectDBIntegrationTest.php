@@ -132,7 +132,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 	private function newBrowseBySubject( $subject, $asRawMode = false ) {
 
 		$instance = new BrowseBySubject(
-			$this->apiFactory->newApiMain( array( 'subject' => $subject ) ),
+			$this->apiFactory->newApiMain( [ 'subject' => $subject ] ),
 			'browsebysubject'
 		);
 

@@ -61,10 +61,6 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	/**
-	 * @note MW 1.29+ showed transaction collisions when executed using the
-	 * JobQueue in connection with purging the BagOStuff cache, use
-	 * 'onTransactionIdle' to isolate the execution for some of the tasks.
-	 *
 	 * @since 2.5
 	 */
 	public function waitOnTransactionIdle() {
@@ -102,7 +98,7 @@ class PropertyTableIdReferenceDisposer {
 			return null;
 		}
 
-		$this->doRemoveEntityReferencesById( $id, false );
+		$this->cleanUpSecondaryReferencesById( $id, false );
 	}
 
 	/**
@@ -114,8 +110,8 @@ class PropertyTableIdReferenceDisposer {
 
 		$res = $this->connection->select(
 			SQLStore::ID_TABLE,
-			array( 'smw_id' ),
-			array( 'smw_iw' => SMW_SQL3_SMWDELETEIW ),
+			[ 'smw_id' ],
+			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
 			__METHOD__
 		);
 
@@ -146,6 +142,17 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 
+		if ( $this->onTransactionIdle ) {
+			return $this->connection->onTransactionIdle( function() use ( $id ) {
+				$this->cleanUpReferencesById( $id );
+			} );
+		} else {
+			$this->cleanUpReferencesById( $id );
+		}
+	}
+
+	private function cleanUpReferencesById( $id ) {
+
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
@@ -161,7 +168,7 @@ class PropertyTableIdReferenceDisposer {
 			);
 		}
 
-		$this->triggerCleanUpEvents( $subject, $this->onTransactionIdle );
+		$this->triggerCleanUpEvents( $subject );
 
 		$this->connection->beginAtomicTransaction( __METHOD__ );
 
@@ -169,7 +176,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( $proptable->usesIdSubject() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 's_id' => $id ),
+					[ 's_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -177,7 +184,7 @@ class PropertyTableIdReferenceDisposer {
 			if ( !$proptable->isFixedPropertyTable() ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'p_id' => $id ),
+					[ 'p_id' => $id ],
 					__METHOD__
 				);
 			}
@@ -188,13 +195,13 @@ class PropertyTableIdReferenceDisposer {
 			if ( isset( $fields['o_id'] ) ) {
 				$this->connection->delete(
 					$proptable->getName(),
-					array( 'o_id' => $id ),
+					[ 'o_id' => $id ],
 					__METHOD__
 				);
 			}
 		}
 
-		$this->doRemoveEntityReferencesById( $id, $isRedirect );
+		$this->cleanUpSecondaryReferencesById( $id, $isRedirect );
 		$this->connection->endAtomicTransaction( __METHOD__ );
 
 		\Hooks::run(
@@ -203,32 +210,32 @@ class PropertyTableIdReferenceDisposer {
 		);
 	}
 
-	private function doRemoveEntityReferencesById( $id, $isRedirect ) {
+	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
 
 		// When marked as redirect, don't remove the reference
 		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
 			$this->connection->delete(
 				SQLStore::ID_TABLE,
-				array( 'smw_id' => $id ),
+				[ 'smw_id' => $id ],
 				__METHOD__
 			);
 		}
 
 		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
-			array( 'p_id' => $id ),
+			[ 'p_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 's_id' => $id ),
+			[ 's_id' => $id ],
 			__METHOD__
 		);
 
 		$this->connection->delete(
 			SQLStore::QUERY_LINKS_TABLE,
-			array( 'o_id' => $id ),
+			[ 'o_id' => $id ],
 			__METHOD__
 		);
 
@@ -237,7 +244,7 @@ class PropertyTableIdReferenceDisposer {
 		try {
 			$this->connection->delete(
 				SQLStore::FT_SEARCH_TABLE,
-				array( 's_id' => $id ),
+				[ 's_id' => $id ],
 				__METHOD__
 			);
 		} catch ( \DBError $e ) {
@@ -245,7 +252,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerCleanUpEvents( $subject, $onTransactionIdle ) {
+	private function triggerCleanUpEvents( $subject ) {
 
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
@@ -255,12 +262,6 @@ class PropertyTableIdReferenceDisposer {
 		// subject is cleaning up all related cache entries
 		if ( $subject->getSubobjectName() !== '' ) {
 			return;
-		}
-
-		if ( $onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function() use( $subject ) {
-				$this->triggerCleanUpEvents( $subject, false );
-			} );
 		}
 
 		$eventHandler = EventHandler::getInstance();

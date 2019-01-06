@@ -58,7 +58,7 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( array( $pageMock, $pageMock, $pageMock ) ) );
+			->will( $this->returnValue( [ $pageMock, $pageMock, $pageMock ] ) );
 
 		$this->resultSet = new SearchResultSet( $this->queryResult, 42 );
 
@@ -166,6 +166,56 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			[ '\bFoo\b', '\bBar\b' ],
 			$resultSet->termMatches()
+		);
+	}
+
+	public function testNewSearchSuggestionSet() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$page = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getQueryToken' )
+			->will( $this->returnValue( $queryToken ) );
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( [ $page ] ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$resultSet = new SearchResultSet( $queryResult, 42 );
+
+		$this->assertInstanceOf(
+			'\SearchSuggestionSet',
+			$resultSet->newSearchSuggestionSet()
 		);
 	}
 

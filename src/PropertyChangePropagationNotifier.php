@@ -32,7 +32,7 @@ class PropertyChangePropagationNotifier {
 	/**
 	 * @var array
 	 */
-	private $propertyList = array();
+	private $propertyList = [];
 
 	/**
 	 * @var boolean
@@ -103,7 +103,7 @@ class PropertyChangePropagationNotifier {
 			return false;
 		}
 
-		$params = array();
+		$params = [];
 
 		if ( $this->isTypePropagation ) {
 			$params['isTypePropagation'] = true;
@@ -133,12 +133,12 @@ class PropertyChangePropagationNotifier {
 
 		// Check the type first
 		$propertyList = array_merge(
-			array(
+			[
 				'_TYPE',
 				'_CONV',
 				'_UNIT',
 				'_REDI'
-			),
+			],
 			$this->propertyList
 		);
 
@@ -195,7 +195,7 @@ class PropertyChangePropagationNotifier {
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.
-		$values = array();
+		$values = [];
 		foreach ( $oldDataValue as $v ) {
 			$values[] = $v->getHash();
 		}
@@ -203,7 +203,7 @@ class PropertyChangePropagationNotifier {
 		sort( $values );
 		$oldDataValueHash = implode( '___', $values );
 
-		$values = array();
+		$values = [];
 		foreach ( $newDataValue as $v ) {
 			$values[] = $v->getHash();
 		}

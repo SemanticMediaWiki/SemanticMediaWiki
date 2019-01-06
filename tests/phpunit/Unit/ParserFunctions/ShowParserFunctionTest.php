@@ -201,31 +201,31 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |default=no results
 		// |format=table
 		// }}
-		$params = array(
+		$params = [
 			'[[File:Fooo]]',
 			'?Modification date',
 			'default=no results',
 			'format=table'
-		);
+		];
 
 		$instance->parse( $params );
 
-		$expected = array(
+		$expected = [
 			'output' => 'class="smwtticon warning"', // lazy content check for the error
 			'propertyCount'  => 4,
-			'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-			'propertyValues' => array( 'table', 0, 1, '[[:]]' )
-		);
+			'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
+			'propertyValues' => [ 'table', 0, 1, '[[:]]' ]
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
-			$parserData->getSemanticData()->findSubSemanticData( '_QUERYda9bddddc9907eafb60792ca4bed3008' )
+			$parserData->getSemanticData()->findSubSemanticData( '_QUERY6ee7d0bb3ac4ed35537bcb89914b30ac' )
 		);
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_ERRP', '_ERRT' ),
-		);
+			'propertyKeys'   => [ '_ERRP', '_ERRT' ],
+		];
 
 		$errorID = null;
 
@@ -244,43 +244,43 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// {{#show: Foo-show
 		// |?Modification date
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'Foo-show',
 				'?Modification date',
-			),
-			array(
+			],
+			[
 				'output' => '',
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-				'propertyValues' => array( 'list', 0, 1, '[[:Foo]]' )
-			)
-		);
+				'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
+				'propertyValues' => [ 'list', 0, 1, '[[:Foo]]' ]
+			]
+		];
 
 		// #1
 		// {{#show: Help:Bar
 		// |?Modification date
 		// |default=no results
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'Help:Bar',
 				'?Modification date',
 				'default=no results'
-			),
-			array(
+			],
+			[
 				'output' => 'no results',
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ),
-				'propertyValues' => array( 'list', 0, 1, '[[:Help:Bar]]' )
-			)
-		);
+				'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
+				'propertyValues' => [ 'list', 0, 1, '[[:Help:Bar]]' ]
+			]
+		];
 
 		return $provider;
 	}

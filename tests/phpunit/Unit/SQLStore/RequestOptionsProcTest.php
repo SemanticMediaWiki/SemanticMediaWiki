@@ -33,10 +33,10 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->offset = 2;
 		$requestOptions->sort = true;
 
-		$expected = array(
+		$expected = [
 			'LIMIT'    => 1,
 			'OFFSET'   => 2
-		);
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -53,11 +53,11 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->offset = 2;
 		$requestOptions->sort = true;
 
-		$expected = array(
+		$expected = [
 			'LIMIT'    => 2,
 			'OFFSET'   => 2,
 			'ORDER BY' => 'Foo'
-		);
+		];
 
 		$this->assertEquals(
 			$expected,
@@ -101,18 +101,18 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 	public function requestOptionsToSqlConditionsProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		# 0
 		$requestOptions = new RequestOptions();
 		$requestOptions->boundary = true;
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'',
 			' AND Foo >= 1'
-		);
+		];
 
 		# 1
 		$requestOptions = new RequestOptions();
@@ -120,12 +120,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$requestOptions->addStringCondition( 'foobar', StringCondition::STRCOND_PRE );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
 			' AND Foo >= 1 AND Bar LIKE foobar%'
-		);
+		];
 
 		# 2
 		$requestOptions = new RequestOptions();
@@ -134,12 +134,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->addStringCondition( 'foobar', StringCondition::STRCOND_PRE, true );
 		$requestOptions->addStringCondition( 'foobaz', StringCondition::STRCOND_POST, true );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
 			' AND Foo >= 1 OR Bar LIKE foobar% OR Bar LIKE %foobaz'
-		);
+		];
 
 		# 3
 		$requestOptions = new RequestOptions();
@@ -147,12 +147,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar'
-		);
+			' AND Foo >= 1 AND Bar = foo_bar'
+		];
 
 		# 4
 		$requestOptions = new RequestOptions();
@@ -161,12 +161,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
 		$requestOptions->addExtraCondition( 'abd = 123' );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar AND abd = 123'
-		);
+			' AND Foo >= 1 AND Bar = foo_bar AND abd = 123'
+		];
 
 		# 5
 		$requestOptions = new RequestOptions();
@@ -175,12 +175,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ );
 		$requestOptions->addExtraCondition( [ 'OR' => 'abd = 123' ] );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' AND Foo >= 1 AND Bar = foo\_bar OR abd = 123'
-		);
+			' AND Foo >= 1 AND Bar = foo_bar OR abd = 123'
+		];
 
 		# 6
 		$requestOptions = new RequestOptions();
@@ -188,12 +188,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true, true );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( AND Foo >= 1) AND (Bar NOT = foo\_bar) '
-		);
+			' ( AND Foo >= 1) AND (Bar NOT = foo_bar) '
+		];
 
 		# 7
 		$requestOptions = new RequestOptions();
@@ -202,12 +202,12 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->addStringCondition( 'foo_bar', StringCondition::COND_EQ, true );
 		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, true, true );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) '
-		);
+			' ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) '
+		];
 
 		# 8
 		$requestOptions = new RequestOptions();
@@ -217,125 +217,125 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions->addStringCondition( 'foobar', StringCondition::COND_POST, false, true );
 		$requestOptions->addStringCondition( 'foobar_ex', StringCondition::COND_EQ, false, true );
 
-		$provider[] = array(
+		$provider[] = [
 			$requestOptions,
 			'Foo',
 			'Bar',
-			' ( ( AND Foo >= 1 OR Bar = foo\_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar\_ex) '
-		);
+			' ( ( AND Foo >= 1 OR Bar = foo_bar) AND (Bar NOT LIKE %foobar) ) AND (Bar NOT = foobar_ex) '
+		];
 
 		return $provider;
 	}
 
 	public function requestOptionsToApplyProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		#0
 		$requestOptions = new RequestOptions();
 		$requestOptions->boundary = true;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDIBlob( 'Foo' )
-			)
-		);
+			]
+		];
 
 		#1
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Foo', StringCondition::STRCOND_PRE );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDIBlob( 'Foo' )
-			)
-		);
+			]
+		];
 
 		#2 String not match
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Bar', StringCondition::STRCOND_POST );
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' )
-			),
+			],
 			$requestOptions,
-			array()
-		);
+			[]
+		];
 
 		#3 Limit
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' ),
 				new \SMWDIBlob( 'Bar' )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDIBlob( 'Foo' )
-			)
-		);
+			]
+		];
 
 		#4 ascending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = true;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' ),
 				new \SMWDIBlob( 'Bar' )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDIBlob( 'Bar' ),
 				new \SMWDIBlob( 'Foo' )
-			)
-		);
+			]
+		];
 
 		#5 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDIBlob( 'Foo' ),
 				new \SMWDIBlob( 'Bar' )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDIBlob( 'Foo' ),
 				new \SMWDIBlob( 'Bar' )
-			)
-		);
+			]
+		];
 
 		#6 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;
 
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				new \SMWDINumber( 10 ),
 				new \SMWDINumber( 200 )
-			),
+			],
 			$requestOptions,
-			array(
+			[
 				new \SMWDINumber( 200 ),
 				new \SMWDINumber( 10 )
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

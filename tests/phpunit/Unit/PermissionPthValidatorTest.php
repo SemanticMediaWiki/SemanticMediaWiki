@@ -42,7 +42,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->protectionValidator
@@ -75,7 +75,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $permission ) )
 			->will( $this->returnValue( false ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->protectionValidator
@@ -132,7 +132,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->protectionValidator
@@ -143,7 +143,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-edit-protection', $editProtectionRight ) ),
+			[ [ 'smw-edit-protection', $editProtectionRight ] ],
 			$result
 		);
 	}
@@ -226,7 +226,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-create-protection', null, 'Foo' ) ),
+			[ [ 'smw-create-protection', null, 'Foo' ] ],
 			$result
 		);
 	}
@@ -270,7 +270,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( array( 'smw-create-protection-exists', null, 'Foo' ) ),
+			[ [ 'smw-create-protection-exists', null, 'Foo' ] ],
 			$result
 		);
 	}
@@ -361,7 +361,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNoUserEditPermissionOnMissingRight_RuleNamespace() {
+	public function testNoUserEditPermissionOnMissingRight_SchemaNamespace() {
 
 		$editProtectionRight = 'Foo';
 
@@ -379,7 +379,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_RULE ) );
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -387,10 +387,10 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->once() )
 			->method( 'isAllowed' )
-			->with( $this->equalTo( 'smw-ruleedit' ) )
+			->with( $this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( false ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->protectionValidator
@@ -402,13 +402,13 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[
-				[ 'smw-rule-namespace-edit-protection', 'smw-ruleedit' ]
+				[ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ]
 			],
 			$result
 		);
 	}
 
-	public function testNoEditcontentmodelPermissionForAnyUser_RuleNamespace() {
+	public function testNoEditcontentmodelPermissionForAnyUser_SchemaNamespace() {
 
 		$editProtectionRight = 'Foo';
 
@@ -426,7 +426,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_RULE ) );
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -434,10 +434,10 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->once() )
 			->method( 'isAllowed' )
-			->with( $this->equalTo( 'smw-ruleedit' ) )
+			->with( $this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( true ) );
 
-		$result = array();
+		$result = [];
 
 		$instance = new PermissionPthValidator(
 			$this->protectionValidator
@@ -449,7 +449,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[
-				[ 'smw-rule-namespace-editcontentmodel-disallowed' ]
+				[ 'smw-schema-namespace-editcontentmodel-disallowed' ]
 			],
 			$result
 		);
@@ -457,26 +457,26 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function titleProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'edit',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'delete',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'move',
-			array( array( 'smw-patternedit-protection', 'smw-patternedit' ) )
-		);
+			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
+		];
 
 		return $provider;
 	}

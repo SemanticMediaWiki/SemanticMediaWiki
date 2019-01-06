@@ -44,7 +44,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
 			->will( $this->returnValue( [ 'Bar' => true ] ) );
 
 		$instance = new PostProcHandler(
@@ -94,7 +94,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
 			->will( $this->returnValue( [ 'Bar' => true ] ) );
 
 		$instance = new PostProcHandler(
@@ -124,6 +124,106 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
+	public function testGetHtml_CheckQuery() {
+
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'fetch' )
+			->will( $this->returnValue( true ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with( $this->stringContains( ':post' ) );
+
+		$this->parserOutput->expects( $this->at( 0 ) )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
+			->will( $this->returnValue( [ 'Bar' => true ] ) );
+
+		$this->parserOutput->expects( $this->at( 1 ) )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
+			->will( $this->returnValue( [ 'Foobar' ] ) );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'check-query' => true
+			]
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
+	public function testRunJobs() {
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'run-jobs' => [ 'fooJob' => 2 ]
+			]
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getCookie' )
+			->will( $this->returnValue( 'FakeCookie' ) );
+
+		$this->assertContains(
+			'<div class="smw-postproc" data-subject="Foo#0##" data-jobs="{&quot;fooJob&quot;:2}"></div>',
 			$instance->getHtml( $title,  $webRequest )
 		);
 	}
@@ -162,7 +262,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
 			->will( $this->returnValue( [ 'Bar' ] ) );
 
 		$instance = new PostProcHandler(
@@ -201,18 +301,18 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider queryRefProvider
+	 * @dataProvider queryProvider
 	 */
-	public function testAddQueryRef( $gExtensionData, $sExtensionData, $query ) {
+	public function testAddUpdate( $gExtensionData, $sExtensionData, $query ) {
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
 			->will( $this->returnValue( $gExtensionData ) );
 
 		$this->parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_PROC_QUERYREF ) )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
 			->will( $this->returnValue( $sExtensionData ) );
 
 		$instance = new PostProcHandler(
@@ -220,10 +320,39 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$instance->addQueryRef( $query );
+		$instance->addUpdate( $query );
 	}
 
-	public function queryRefProvider() {
+	/**
+	 * @dataProvider queryProvider
+	 */
+	public function testAddCheck( $gExtensionData, $sExtensionData, $query ) {
+
+		$this->parserOutput->expects( $this->once() )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
+			->will( $this->returnValue( $gExtensionData ) );
+
+		$this->parserOutput->expects( $this->once() )
+			->method( 'setExtensionData' )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_CHECK ) )
+			->will( $this->returnValue( $sExtensionData ) );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'check-query' => true
+			]
+		);
+
+		$instance->addCheck( $query );
+	}
+
+	public function queryProvider() {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -231,7 +360,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'toArray' )
-			->will( $this->returnValue( array( 'Foo' ) ) );
+			->will( $this->returnValue( [ 'Foo' ] ) );
 
 		$provider[] =[
 			null,

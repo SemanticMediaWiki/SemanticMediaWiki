@@ -71,11 +71,11 @@ class UpdateEntityCollation extends \Maintenance {
 
 		$res = $connection->select(
 			SQLStore::ID_TABLE,
-			array(
+			[
 				'smw_id',
 				'smw_title',
 				'smw_sortkey'
-			),
+			],
 			$condition,
 			__METHOD__
 		);
@@ -133,7 +133,7 @@ class UpdateEntityCollation extends \Maintenance {
 
 	private function getSortKey( $row, $pv ) {
 
-		if ( $pv !== array() ) {
+		if ( $pv !== [] ) {
 			return end( $pv )->getString();
 		}
 

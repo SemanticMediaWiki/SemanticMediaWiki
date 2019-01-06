@@ -101,7 +101,7 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		// Need to instantiate an extra object here since we cannot make this class itself
 		// into a MessageReporter since the maintenance script does not load the interface in time.
 		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$reporter->registerReporterCallback( array( $this, 'reportMessage' ) );
+		$reporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 
 		$searchTableRebuilder->setMessageReporter( $reporter );
 		$result = $searchTableRebuilder->rebuild();
@@ -129,13 +129,13 @@ class RebuildFulltextSearchTable extends \Maintenance {
 		}
 
 		$searchTable = $searchTableRebuilder->getSearchTable();
-		$indexableDataTypes = array();
+		$indexableDataTypes = [];
 
-		$dataTypes = array(
+		$dataTypes = [
 			DataItem::TYPE_BLOB => 'BLOB',
 			DataItem::TYPE_URI  => 'URI',
 			DataItem::TYPE_WIKIPAGE => 'WIKIPAGE'
-		);
+		];
 
 		foreach ( $dataTypes as $key => $value ) {
 			if ( $searchTable->isValidByType( $key ) ) {

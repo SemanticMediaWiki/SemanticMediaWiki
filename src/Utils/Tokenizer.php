@@ -29,7 +29,7 @@ class Tokenizer {
 		$intlRuleBasedBreakIterator->setText( $text );
 
 		$prev = 0;
-		$tokens = array();
+		$tokens = [];
 
 		foreach ( $intlRuleBasedBreakIterator as $token ) {
 

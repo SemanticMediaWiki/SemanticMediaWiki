@@ -32,6 +32,16 @@
 			"contents": "[[Has text::DEF]] [[Has number::123]] {{DISPLAYTITLE:Uses different title}} [[Category:S0027]]"
 		},
 		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/Q.1",
+			"contents": "{{#ask: [[Category:S0027]] |format=feed |type=atom |limit=10 |searchlabel=feed output }}"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0027/Q.2",
+			"contents": "{{#ask: [[Category:S0027]] |format=feed |type=atom |limit=10 |offset=3 |searchlabel=feed output }}"
+		},
+		{
 			"namespace": "NS_FILE",
 			"page": "S0027.png",
 			"contents": {
@@ -117,12 +127,33 @@
 					"Test file"
 				]
 			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (verify link, correct 0 offset)",
+			"subject": "S0027/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0027-5D-5D/mainlabel=/limit=10/order=desc/sort=/offset=0/format=feed/searchlabel=feed-20output/type=atom"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (verify link)",
+			"subject": "S0027/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:S0027-5D-5D/mainlabel=/offset=3/limit=10/order=desc/sort=/format=feed/searchlabel=feed-20output/type=atom"
+				]
+			}
 		}
 	],
 	"settings": {
 		"wgContLang": "en",
 		"wgLang": "en",
 		"wgLanguageCode": "en",
+		"smwgCompactLinkSupport": false,
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],

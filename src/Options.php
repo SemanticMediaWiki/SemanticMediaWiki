@@ -16,12 +16,12 @@ class Options {
 	/**
 	 * @var array
 	 */
-	protected $options = array();
+	protected $options = [];
 
 	/**
 	 * @since 2.3
 	 */
-	public function __construct( array $options = array() ) {
+	public function __construct( array $options = [] ) {
 		$this->options = $options;
 	}
 
@@ -53,6 +53,18 @@ class Options {
 	 */
 	public function has( $key ) {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param string $value
+	 *
+	 * @return boolean
+	 */
+	public function is( $key, $value ) {
+		return $this->get( $key ) === $value;
 	}
 
 	/**

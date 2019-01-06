@@ -1,0 +1,15 @@
+{
+    "description": "Specifies a formatting schema for a keyword type",
+    "type": "LINK_FORMAT_SCHEMA",
+    "rule": {
+        "link_to": "SPECIAL_ASK",
+        "parameters": {
+            "format": "list"
+        }
+    },
+    "tags": [
+        "formatter",
+        "link formatter",
+        "keyword"
+    ]
+}

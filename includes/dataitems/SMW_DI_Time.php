@@ -44,7 +44,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * Maximal number of days in a given month.
 	 * @var array
 	 */
-	protected static $m_daysofmonths = array( 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
+	protected static $m_daysofmonths = [ 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 ];
 
 	/**
 	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
@@ -267,10 +267,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 */
 	public function getCalendarModelLiteral() {
 
-		$literal = array(
+		$literal = [
 			self::CM_GREGORIAN => '',
 			self::CM_JULIAN    => 'JL'
-		);
+		];
 
 		return $literal[$this->m_model];
 	}
@@ -367,14 +367,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	public function getMwTimestamp( $outputtype = TS_UNIX ) {
 		return wfTimestamp(
 			$outputtype,
-			implode( '', array(
+			implode( '', [
 				str_pad( $this->m_year, 4, '0', STR_PAD_LEFT ),
 				str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ),
 				str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ),
 				str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ),
 				str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ),
 				str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ),
-			) )
+			] )
 		);
 	}
 
@@ -468,7 +468,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 8 );
-		$values = array();
+		$values = [];
 
 		if ( count( $parts ) <= 1 ) {
 			throw new DataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 
 /**
@@ -21,7 +22,7 @@ use SMW\ApplicationFactory;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RefreshJob extends JobBase {
+class RefreshJob extends Job {
 
 	/**
 	 * Constructor. The parameters optionally specified in the second
@@ -38,8 +39,8 @@ class RefreshJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public function __construct( $title, $params = array( 'spos' => 1, 'prog' => 0, 'rc' => 1 ) ) {
-		parent::__construct( 'SMW\RefreshJob', $title, $params );
+	public function __construct( $title, $params = [ 'spos' => 1, 'prog' => 0, 'rc' => 1 ] ) {
+		parent::__construct( 'smw.refresh', $title, $params );
 	}
 
 	/**
@@ -90,21 +91,21 @@ class RefreshJob extends JobBase {
 
 		if ( $spos > 0 ) {
 
-			$this->createNextJob( array(
+			$this->createNextJob( [
 				'spos' => $spos,
 				'prog' => $prog,
 				'rc'   => $this->getParameter( 'rc' ),
 				'run'  => $run
-			) );
+			] );
 
 		} elseif ( $this->hasParameter( 'rc' ) && $this->getParameter( 'rc' ) > $run ) { // do another run from the beginning
 
-			$this->createNextJob( array(
+			$this->createNextJob( [
 				'spos' => 1,
 				'prog' => 0,
 				'rc'   => $this->getParameter( 'rc' ),
 				'run'  => $run + 1
-			) );
+			] );
 
 		}
 
@@ -118,7 +119,8 @@ class RefreshJob extends JobBase {
 			$parameters
 		);
 
-		$job->isEnabledJobQueue( $this->isEnabledJobQueue )->insert();
+		$job->isEnabledJobQueue( $this->isEnabledJobQueue );
+		$job->insert();
 	}
 
 	protected function getNamespace( $run ) {

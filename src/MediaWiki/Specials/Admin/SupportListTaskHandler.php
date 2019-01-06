@@ -63,9 +63,9 @@ class SupportListTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$html = $this->createSupportForm() . $this->createRegistryForm();
-		$html .= Html::element( 'p', array(), '' );
+		$html .= Html::element( 'p', [], '' );
 
-		return Html::rawElement( 'div', array(), $html );
+		return Html::rawElement( 'div', [], $html );
 	}
 
 	/**
@@ -79,11 +79,11 @@ class SupportListTaskHandler extends TaskHandler {
 			->addHeader( 'h3', $this->msg('smw-admin-support' ) )
 			->addParagraph( $this->msg( 'smw-admin-supportdocu' ) )
 			->addParagraph(
-				Html::rawElement( 'ul', array(),
-					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-installfile' ) ) .
-					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-smwhomepage' ) ) .
-					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-bugsreport' ) ) .
-					Html::rawElement( 'li', array(), $this->msg( 'smw-admin-questions' ) )
+				Html::rawElement( 'ul', [],
+					Html::rawElement( 'li', [], $this->msg( 'smw-admin-installfile' ) ) .
+					Html::rawElement( 'li', [], $this->msg( 'smw-admin-smwhomepage' ) ) .
+					Html::rawElement( 'li', [], $this->msg( 'smw-admin-bugsreport' ) ) .
+					Html::rawElement( 'li', [], $this->msg( 'smw-admin-questions' ) )
 				)
 			);
 
@@ -105,9 +105,9 @@ class SupportListTaskHandler extends TaskHandler {
 			->addParagraph( $this->msg( 'smw-admin-announce-text' ) )
 			->addSubmitButton(
 				$this->msg( 'smw-admin-announce' ),
-				array(
+				[
 					'class' => ''
-				)
+				]
 			);
 
 		return $this->htmlFormRenderer->getForm();

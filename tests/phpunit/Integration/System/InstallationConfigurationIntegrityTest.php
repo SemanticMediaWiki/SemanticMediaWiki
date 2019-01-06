@@ -86,17 +86,17 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	 */
 	public function smwgNamespacesWithSemanticLinksProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'GLOBALS',
 			GlobalsProvider::getInstance()->get( 'smwgNamespacesWithSemanticLinks' )
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Settings',
 			ApplicationFactory::getInstance()->getSettings()->get( 'smwgNamespacesWithSemanticLinks' )
-		);
+		];
 
 		return $provider;
 	}

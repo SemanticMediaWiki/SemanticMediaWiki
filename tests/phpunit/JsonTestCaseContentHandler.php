@@ -35,7 +35,7 @@ class JsonTestCaseContentHandler {
 	/**
 	 * @var array
 	 */
-	private $pages = array();
+	private $pages = [];
 
 	/**
 	 * @var string
@@ -97,7 +97,7 @@ class JsonTestCaseContentHandler {
 
 		foreach ( $pages as $page ) {
 
-			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : array();
+			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : [];
 
 			if ( in_array( $this->skipOn, array_keys( $skipOn ) ) ) {
 				continue;

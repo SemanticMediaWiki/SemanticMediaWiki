@@ -18,7 +18,7 @@ abstract class Description {
 	/**
 	 * @var PrintRequest[]
 	 */
-	protected $m_printreqs = array();
+	protected $m_printreqs = [];
 
 	/**
 	 * @var string|null

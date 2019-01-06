@@ -153,7 +153,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->bufferedStatsdCollector
 		);
 
-		$instance->resetCacheBy( array( 'Foo' ) );
+		$instance->resetCacheBy( [ 'Foo' ] );
 	}
 
 	public function testNoCache() {
@@ -313,11 +313,11 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetStats() {
 
-		$stats = array(
+		$stats = [
 			'misses' => 1,
-			'hits'   => array( 'Foo' => 2, array( 'Bar' => 2 ) ),
+			'hits'   => [ 'Foo' => 2, [ 'Bar' => 2 ] ],
 			'meta'   => 'foo'
-		);
+		];
 
 		$this->bufferedStatsdCollector->expects( $this->once() )
 			->method( 'getStats' )
@@ -338,10 +338,10 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'hit'  => 0.8,
 				'miss' => 0.2
-			),
+			],
 			$stats['ratio']
 		);
 	}

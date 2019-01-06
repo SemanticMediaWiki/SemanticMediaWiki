@@ -65,12 +65,12 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		#0 Empty container
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
-		$provider[] = array( $foo );
+		$provider[] = [ $foo ];
 
 		#1 Single entry
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
-		$provider[] = array( $foo );
+		$provider[] = [ $foo ];
 
 		// #2 Single + single subobject entry
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
@@ -85,7 +85,7 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
-		$provider[] = array( $foo );
+		$provider[] = [ $foo ];
 
 		#3 Multiple entries
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
@@ -105,7 +105,7 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 			$subobject->getContainer()
 		);
 
-		$provider[] = array( $foo );
+		$provider[] = [ $foo ];
 
 		return $provider;
 	}

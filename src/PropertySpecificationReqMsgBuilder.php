@@ -129,11 +129,11 @@ class PropertySpecificationReqMsgBuilder {
 
 		if ( $this->propertySpecificationReqExaminer->reqLock() === false && ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {
 			$this->message .= $this->createMessage(
-				array(
+				[
 					'warning',
 					'smw-property-req-violation-change-propagation-pending',
 					ChangePropagationDispatchJob::getPendingJobsCount( $subject )
-				)
+				]
 			);
 		}
 
@@ -187,10 +187,10 @@ class PropertySpecificationReqMsgBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => $messsage[0],
 				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
-			),
+			],
 			Message::get( $messsage, Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}
@@ -209,10 +209,10 @@ class PropertySpecificationReqMsgBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => "$msgKey",
 				'class' => "plainlinks $msgKey " . $class
-			),
+			],
 			$message
 		);
 	}
@@ -220,10 +220,10 @@ class PropertySpecificationReqMsgBuilder {
 	private function createFixedTableMessage( $propertyName ) {
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-fixedtable-message',
 				'class' => 'plainlinks smw-callout smw-callout-info'
-			),
+			],
 			wfMessage( 'smw-property-userdefined-fixedtable', $propertyName )->parse()
 		);
 	}
@@ -267,10 +267,10 @@ class PropertySpecificationReqMsgBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-content-predefined-message',
 				'class' => 'smw-property-predefined-intro plainlinks'
-			),
+			],
 			$message
 		);
 	}
@@ -312,10 +312,10 @@ class PropertySpecificationReqMsgBuilder {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'id' => 'smw-property-uniqueness',
 				'class' => 'smw-callout smw-callout-error plainlinks'
-			),
+			],
 			Message::get( [ 'smw-property-label-uniqueness', $propertyName ], Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}

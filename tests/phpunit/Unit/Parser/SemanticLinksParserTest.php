@@ -47,49 +47,49 @@ class SemanticLinksParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function textProvider() {
 
-		$provider = array();
+		$provider = [];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
-			array()
-		);
+			[]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo]]',
-			array()
-		);
+			[]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo|Bar]]',
-			array()
-		);
+			[]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::[[Bar]]]]',
-			array()
-		);
+			[]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar]]',
-			array(
-				array(
+			[
+				[
 					'Foo'
-				),
+				],
 				'Bar',
 				false
-			)
-		);
+			]
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[[Foo::Bar|Foobar]]',
-			array(
-				array(
+			[
+				[
 					'Foo'
-				),
+				],
 				'Bar',
 				'Foobar'
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

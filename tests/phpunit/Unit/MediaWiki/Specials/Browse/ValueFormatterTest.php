@@ -42,7 +42,7 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getDataItem' ) )
+			->setMethods( [ 'getDataItem' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )

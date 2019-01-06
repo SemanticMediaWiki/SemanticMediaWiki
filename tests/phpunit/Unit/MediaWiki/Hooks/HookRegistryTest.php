@@ -138,7 +138,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$callback,
-			array( &$namespaces )
+			[ &$namespaces ]
 		);
 
 		// SpecialPage_initList
@@ -147,7 +147,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$callback,
-			array( &$specialPages )
+			[ &$specialPages ]
 		);
 
 		// ApiMain::moduleManager
@@ -159,7 +159,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$callback,
-			array( $apiModuleManager )
+			[ $apiModuleManager ]
 		);
 	}
 
@@ -172,12 +172,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$vars = array(
+		$vars = [
 			'IP' => 'bar',
 			'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
-		);
+		];
 
 		$instance = new HookRegistry( $vars, 'foo' );
 		$instance->register();
@@ -194,12 +194,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$vars = array(
+		$vars = [
 			'IP' => 'bar',
 			'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
-		);
+		];
 
 		$instance = new HookRegistry( $vars, 'foo' );
 		$instance->register();
@@ -246,6 +246,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ 'callBeforeDisplayNoArticleText' ],
 			[ 'callArticleFromTitle' ],
 			[ 'callTitleIsMovable' ],
+			[ 'callContentHandlerForModelID' ],
 			[ 'callEditPageForm' ],
 			[ 'callParserOptionsRegister' ],
 			[ 'callParserFirstCallInit' ],
@@ -288,7 +289,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$this->parser, &$text )
+			[ &$this->parser, &$text ]
 		);
 
 		return $handler;
@@ -322,7 +323,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $skinTemplate, &$toolbox )
+			[ $skinTemplate, &$toolbox ]
 		);
 
 		return $handler;
@@ -348,7 +349,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$data, $this->skin )
+			[ &$data, $this->skin ]
 		);
 
 		return $handler;
@@ -376,7 +377,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$this->outputPage, $parserOutput )
+			[ &$this->outputPage, $parserOutput ]
 		);
 
 		return $handler;
@@ -400,7 +401,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$this->outputPage, &$this->skin )
+			[ &$this->outputPage, &$this->skin ]
 		);
 
 		return $handler;
@@ -420,7 +421,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $specialSearch, $this->outputPage, '' )
+			[ $specialSearch, $this->outputPage, '' ]
 		);
 
 		return $handler;
@@ -529,7 +530,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$parser, &$text, &$stripState )
+			[ &$parser, &$text, &$stripState ]
 		);
 
 		return $handler;
@@ -583,7 +584,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $wikiPage, $revision, $baseId, $user )
+			[ $wikiPage, $revision, $baseId, $user ]
 		);
 
 		return $handler;
@@ -595,7 +596,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'deleteSubject' ) )
+			->setMethods( [ 'deleteSubject' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
@@ -633,7 +634,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$oldTitle, &$newTitle, &$user, $oldId, $newId )
+			[ &$oldTitle, &$newTitle, &$user, $oldId, $newId ]
 		);
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
@@ -680,7 +681,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$protections = array();
+		$protections = [];
 		$reason = '';
 
 		$this->assertTrue(
@@ -689,7 +690,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$wikiPage, &$user, $protections, $reason )
+			[ &$wikiPage, &$user, $protections, $reason ]
 		);
 
 		return $handler;
@@ -716,7 +717,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$page, &$outputDone, &$useParserCache )
+			[ &$page, &$outputDone, &$useParserCache ]
 		);
 
 		return $handler;
@@ -740,7 +741,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$wikiPage )
+			[ &$wikiPage ]
 		);
 
 		return $handler;
@@ -760,11 +761,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
@@ -799,7 +800,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$wikiPage, &$user, &$reason, &$error )
+			[ &$wikiPage, &$user, &$reason, &$error ]
 		);
 
 		return $handler;
@@ -810,12 +811,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'LinksUpdateConstructed';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists' ) )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'updateData' ) )
+			->setMethods( [ 'getObjectIds', 'updateData' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -852,7 +853,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $linksUpdate )
+			[ $linksUpdate ]
 		);
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
@@ -863,7 +864,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'SpecialStatsAddExtra';
 
-		$extraStats = array();
+		$extraStats = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -871,7 +872,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$extraStats )
+			[ &$extraStats ]
 		);
 
 		return $handler;
@@ -893,7 +894,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $file, $reupload )
+			[ $file, $reupload ]
 		);
 
 		return $handler;
@@ -903,7 +904,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'ResourceLoaderGetConfigVars';
 
-		$vars = array();
+		$vars = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -911,7 +912,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$vars )
+			[ &$vars ]
 		);
 
 		return $handler;
@@ -925,7 +926,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$preferences = array();
+		$preferences = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -933,7 +934,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $user, &$preferences )
+			[ $user, &$preferences ]
 		);
 
 		return $handler;
@@ -967,7 +968,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$personal_urls, $title, $skinTemplate )
+			[ &$personal_urls, $title, $skinTemplate ]
 		);
 
 		return $handler;
@@ -989,7 +990,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
 
-		$links = array();
+		$links = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -997,7 +998,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$skinTemplate, &$links )
+			[ &$skinTemplate, &$links ]
 		);
 
 		return $handler;
@@ -1017,7 +1018,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $databaseUpdater )
+			[ $databaseUpdater ]
 		);
 
 		return $handler;
@@ -1031,7 +1032,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$testModules = array();
+		$testModules = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -1039,7 +1040,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$testModules, &$resourceLoader )
+			[ &$testModules, &$resourceLoader ]
 		);
 
 		return $handler;
@@ -1049,7 +1050,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'ExtensionTypes';
 
-		$extTypes = array();
+		$extTypes = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -1057,7 +1058,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$extTypes )
+			[ &$extTypes ]
 		);
 
 		return $handler;
@@ -1075,7 +1076,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $this->title, &$result )
+			[ $this->title, &$result ]
 		);
 
 		return $handler;
@@ -1099,7 +1100,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $article )
+			[ $article ]
 		);
 
 		return $handler;
@@ -1123,7 +1124,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$this->title, &$article  )
+			[ &$this->title, &$article  ]
 		);
 
 		return $handler;
@@ -1141,7 +1142,26 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $this->title, &$isMovable  )
+			[ $this->title, &$isMovable  ]
+		);
+
+		return $handler;
+	}
+
+	public function callContentHandlerForModelID( $instance ) {
+
+		$handler = 'ContentHandlerForModelID';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$modelId = 'smw/schema';
+		$contentHandler = '';
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $modelId, &$contentHandler  ]
 		);
 
 		return $handler;
@@ -1179,7 +1199,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $editPage, $outputPage )
+			[ $editPage, $outputPage ]
 		);
 
 		return $handler;
@@ -1193,12 +1213,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			$instance->isRegistered( $handler )
 		);
 
-		$defaults = array();
-		$inCacheKey = array();
+		$defaults = [];
+		$inCacheKey = [];
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$defaults, &$inCacheKey )
+			[ &$defaults, &$inCacheKey ]
 		);
 
 		return $handler;
@@ -1222,7 +1242,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$parser )
+			[ &$parser ]
 		);
 
 		return $handler;
@@ -1239,7 +1259,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$action = '';
-		$errors = array();
+		$errors = [];
 		$rigor = '';
 		$short = '';
 
@@ -1249,7 +1269,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $title, $user, $action, &$errors, $rigor, $short )
+			[ $title, $user, $action, &$errors, $rigor, $short ]
 		);
 
 		return $handler;
@@ -1266,7 +1286,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$modifiedTimes )
+			[ &$modifiedTimes ]
 		);
 
 		return $handler;
@@ -1290,7 +1310,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$article )
+			[ &$article ]
 		);
 
 		return $handler;
@@ -1317,7 +1337,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $value, $wikiPage, $popts )
+			[ $value, $wikiPage, $popts ]
 		);
 
 		return $handler;
@@ -1358,7 +1378,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $block, $performer, $priorBlock )
+			[ $block, $performer, $priorBlock ]
 		);
 
 		return $handler;
@@ -1385,7 +1405,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $block, $performer, $priorBlock )
+			[ $block, $performer, $priorBlock ]
 		);
 
 		return $handler;
@@ -1409,7 +1429,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $user )
+			[ $user ]
 		);
 
 		return $handler;
@@ -1423,7 +1443,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $verbose )
+			[ $verbose ]
 		);
 
 		return $handler;
@@ -1443,7 +1463,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $this->store, $id, $subject, $isRedirect )
+			[ $this->store, $id, $subject, $isRedirect ]
 		);
 
 		return $handler;
@@ -1473,7 +1493,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( &$taskHandlers, $store, $outputFormatter, $user )
+			[ &$taskHandlers, $store, $outputFormatter, $user ]
 		);
 
 		return $handler;
@@ -1521,19 +1541,19 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->any() )
 			->method( 'getChangedEntityIdSummaryList' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getFixedPropertyRecords' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -1541,7 +1561,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $store, $semanticData, $changeOp )
+			[ $store, $semanticData, $changeOp ]
 		);
 
 		return $handler;
@@ -1567,7 +1587,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $this->store, $query, &$result, $queryEngine )
+			[ $this->store, $query, &$result, $queryEngine ]
 		);
 
 		return $handler;
@@ -1598,7 +1618,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $store, &$result )
+			[ $store, &$result ]
 		);
 
 		return $handler;
@@ -1609,12 +1629,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'SMW::Browse::AfterIncomingPropertiesLookupComplete';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( array( 'exists', 'getId' ) )
+			->setMethods( [ 'exists', 'getId' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getObjectIds', 'getPropertyValues' ) )
+			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -1647,7 +1667,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $store, $semanticData, $requestOptions )
+			[ $store, $semanticData, $requestOptions ]
 		);
 
 		return $handler;
@@ -1667,7 +1687,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $property, $subject, &$html, $this->store )
+			[ $property, $subject, &$html, $this->store ]
 		);
 
 		return $handler;
@@ -1697,7 +1717,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $tableBuilder, $messageReporter, $options )
+			[ $tableBuilder, $messageReporter, $options ]
 		);
 
 		return $handler;

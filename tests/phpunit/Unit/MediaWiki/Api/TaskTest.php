@@ -34,7 +34,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain( array() ),
+			$this->apiFactory->newApiMain( [] ),
 			'smwtask'
 		);
 
@@ -53,7 +53,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$updateJob->expects( $this->atLeastOnce() )
 			->method( 'run' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,12 +64,12 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
 		$instance = new Task(
-			$this->apiFactory->newApiMain( array(
+			$this->apiFactory->newApiMain( [
 					'action'   => 'smwtask',
 					'task'     => 'update',
 					'params'   => json_encode( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] ),
 					'token'    => 'foo'
-				)
+				]
 			),
 			'smwtask'
 		);
@@ -133,7 +133,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$nullJob->expects( $this->atLeastOnce() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\JobFactory' )
+		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -173,29 +173,14 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$nullJob->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
-
-		$nullJob->expects( $this->atLeastOnce() )
-			->method( 'run' );
-
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$jobQueue->expects( $this->atLeastOnce() )
-			->method( 'pop' )
-			->with( $this->equalTo( 'FooJob' ) )
-			->will( $this->returnValue( $nullJob ) );
-
-		$jobQueue->expects( $this->atLeastOnce() )
-			->method( 'ack' )
-			->with( $this->equalTo( $nullJob ) );
+			->method( 'runFromQueue' )
+			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
+			->will( $this->returnValue( '--job-done' ) );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
@@ -208,6 +193,51 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 						[
 							'subject' => 'Foo#0##',
 							'jobs' => [ 'FooJob' => 1 ]
+						]
+					),
+					'token'    => 'foo'
+				]
+			),
+			'smwtask'
+		);
+
+		$instance->execute();
+	}
+
+	public function testCheckQueryTask() {
+
+		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new Task(
+			$this->apiFactory->newApiMain(
+				[
+					'action'   => 'smwtask',
+					'task'     => 'check-query',
+					'params'   => json_encode(
+						[
+							'subject' => 'Foo#0##',
+							'query' => [
+								'query_hash_1#result_hash_2' => [
+									'parameters' => [
+										'limit' => 5,
+										'offset' => 0,
+										'querymode' => 1
+									],
+									'conditions' => ''
+								]
+							]
 						]
 					),
 					'token'    => 'foo'

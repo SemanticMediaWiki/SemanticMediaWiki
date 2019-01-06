@@ -221,6 +221,11 @@ class DataUpdater {
 		$this->checkChangePropagation();
 		$this->updateData();
 
+		if ( $this->semanticData->getOption( Enum::PURGE_ASSOC_PARSERCACHE ) === true ) {
+			$jobQueue = $applicationFactory->getJobQueue();
+			$jobQueue->runFromQueue( [ 'SMW\ParserCachePurgeJob' => 2 ] );
+		}
+
 		return true;
 	}
 
@@ -257,18 +262,22 @@ class DataUpdater {
 
 		// Standard text hooks are not run through a JSON content object therefore
 		// we attach possible annotations at this point
-		if ( $title->getNamespace() === SMW_NS_RULE ) {
+		if ( $title->getNamespace() === SMW_NS_SCHEMA ) {
 
-			$ruleFactory = $applicationFactory->singleton( 'RuleFactory' );
+			$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 
-			$ruleDefinition = $ruleFactory->newRuleDefinition(
-				$title->getDBKey(),
-				$wikiPage->getContent()->getNativeData()
-			);
+			try {
+				$schema = $schemaFactory->newSchema(
+					$title->getDBKey(),
+					$pageInfoProvider->getNativeData()
+				);
+			} catch ( \Exception $e ) {
+				$schema = null;
+			}
 
-			$propertyAnnotator = $propertyAnnotatorFactory->newRuleDefinitionPropertyAnnotator(
+			$propertyAnnotator = $propertyAnnotatorFactory->newSchemaPropertyAnnotator(
 				$propertyAnnotator,
-				$ruleDefinition
+				$schema
 			);
 		}
 
@@ -374,7 +383,7 @@ class DataUpdater {
 			new DIProperty( '_REDI' )
 		);
 
-		if ( $redirects !== array() && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
+		if ( $redirects !== [] && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
 			return $this->doUpdateUnknownRedirectTarget( $semanticData, end( $redirects ) );
 		}
 

@@ -56,7 +56,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
 
-		return $this->getSerializedQueryResult( $queryResult ) + array( 'serializer' => __CLASS__, 'version' => self::$version );
+		return $this->getSerializedQueryResult( $queryResult ) + [ 'serializer' => __CLASS__, 'version' => self::$version ];
 	}
 
 	/**
@@ -88,17 +88,17 @@ class QueryResultSerializer implements DispatchableSerializer {
 						$printRequest->getData()->getDataItem()
 					);
 
-					$recordDiValues = array();
+					$recordDiValues = [];
 
 					foreach ( $recordValue->getPropertyDataItems() as $property ) {
 						$label = $property->getLabel();
 
-						$recordDiValues[$label] = array(
+						$recordDiValues[$label] = [
 							'label'  => $label,
 							'key'    => $property->getKey(),
 							'typeid' => $property->findPropertyTypeID(),
-							'item'   => array()
-						);
+							'item'   => []
+						];
 
 						foreach ( $recordValue->getDataItem()->getSemanticData()->getPropertyValues( $property ) as $value ) {
 							$recordDiValues[$label]['item'][] = self::getSerialization( $value );
@@ -112,13 +112,13 @@ class QueryResultSerializer implements DispatchableSerializer {
 						$dataItem
 					);
 
-					$result = array(
+					$result = [
 						'fulltext' => $title->getFullText(),
 						'fullurl' => $title->getFullUrl(),
 						'namespace' => $title->getNamespace(),
 						'exists' => strval( $title->isKnown() ),
 						'displaytitle' => $wikiPageValue->getDisplayTitle()
-					);
+					];
 				}
 				break;
 			case DataItem::TYPE_NUMBER:
@@ -132,10 +132,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 					$diProperty = $printRequest->getData()->getDataItem();
 					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $diProperty );
 
-					$result = array(
+					$result = [
 						'value' => $dataValue->getNumber(),
 						'unit' => $dataValue->getUnit()
-					);
+					];
 				} else {
 					$result = $dataItem->getNumber();
 				}
@@ -144,10 +144,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 				$result = $dataItem->getCoordinateSet();
 				break;
 			case DataItem::TYPE_TIME:
-				$result = array(
+				$result = [
 					'timestamp' => $dataItem->getMwTimestamp(),
 					'raw' => $dataItem->getSerialization()
-				);
+				];
 				break;
 			default:
 				$result = $dataItem->getSerialization();
@@ -167,8 +167,8 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 * @return array
 	 */
 	public static function getSerializedQueryResult( QueryResult $queryResult ) {
-		$results = array();
-		$printRequests = array();
+		$results = [];
+		$printRequests = [];
 
 		foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 			$printRequests[] = self::serialize_printrequest( $printRequest );
@@ -184,7 +184,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				continue;
 			}
 
-			$result = array( 'printouts' => array() );
+			$result = [ 'printouts' => [] ];
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
 				$resultArray = new SMWResultArray( $diWikiPage, $printRequest, $queryResult->getStore() );
@@ -192,8 +192,8 @@ class QueryResultSerializer implements DispatchableSerializer {
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
 					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
-				} elseif ( $resultArray->getContent() !== array() ) {
-					$values = array();
+				} elseif ( $resultArray->getContent() !== [] ) {
+					$values = [];
 
 					foreach ( $resultArray->getContent() as $dataItem ) {
 						$values[] = self::getSerialization( $dataItem, $printRequest );
@@ -202,7 +202,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				} else {
 					// For those objects that are empty return an empty array
 					// to keep the output consistent
-					$result['printouts'][$printRequest->getLabel()] = array();
+					$result['printouts'][$printRequest->getLabel()] = [];
 				}
 			}
 
@@ -235,14 +235,14 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 	private static function serialize_printrequest( $printRequest ) {
 
-		$serialized = array(
+		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',
 			'redi'   => '',
 			'typeid' => $printRequest->getTypeID(),
 			'mode'   => $printRequest->getMode(),
 			'format' => $printRequest->getOutputFormat()
-		);
+		];
 
 		$data = $printRequest->getData();
 

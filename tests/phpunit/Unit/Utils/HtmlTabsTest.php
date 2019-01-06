@@ -25,7 +25,7 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(
 			'<div class="smw-tabs foo-bar">' .
 			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
-			'<label for="tab-foo" class="nav-label">FOO</label>' .
+			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
 			'<section id="tab-content-foo">< ... bar ... ></section>'.
 			'</div>',
 			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
@@ -41,7 +41,7 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(
 			'<div class="smw-tabs foo-bar">' .
 			'<input id="tab-foo" class="nav-tab" type="radio" name="tabs" checked=""/>' .
-			'<label for="tab-foo" class="nav-label">FOO</label>' .
+			'<label id="tab-label-foo" for="tab-foo" class="nav-label">FOO</label>' .
 			'<section id="tab-content-foo">< ... bar ... ></section>'.
 			'</div>',
 			$instance->buildHTML( [ 'class' => 'foo-bar' ] )

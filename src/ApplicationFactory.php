@@ -11,7 +11,7 @@ use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Jobs\JobFactory;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\Services\SharedServicesContainer;
 use SMWQueryParser as QueryParser;
@@ -121,12 +121,12 @@ class ApplicationFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string $serviceName
+	 * @param string $service
 	 *
 	 * @return mixed
 	 */
-	public function singleton( $serviceName ) {
-		return call_user_func_array( array( $this->containerBuilder, 'singleton' ), func_get_args() );
+	public function singleton( ...$service ) {
+		return $this->containerBuilder->singleton( ...$service );
 	}
 
 	/**
@@ -137,12 +137,12 @@ class ApplicationFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $serviceName
+	 * @param string $service
 	 *
 	 * @return mixed
 	 */
-	public function create( $serviceName ) {
-		return call_user_func_array( array( $this->containerBuilder, 'create' ), func_get_args() );
+	public function create( ...$service ) {
+		return $this->containerBuilder->create( ...$service );
 	}
 
 	/**
@@ -240,10 +240,10 @@ class ApplicationFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @return TitleCreator
+	 * @return TitleFactory
 	 */
-	public function newTitleCreator() {
-		return $this->containerBuilder->create( 'TitleCreator', $this->newPageCreator() );
+	public function newTitleFactory() {
+		return $this->containerBuilder->create( 'TitleFactory', $this->newPageCreator() );
 	}
 
 	/**
@@ -321,9 +321,10 @@ class ApplicationFactory {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->containerBuilder->create( 'LinksProcessor' );
+		$settings = $this->getSettings();
 
 		$linksProcessor->isStrictMode(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_STRICT )
 		);
 
 		$inTextAnnotationParser = new InTextAnnotationParser(
@@ -334,11 +335,11 @@ class ApplicationFactory {
 		);
 
 		$inTextAnnotationParser->isLinksInValues(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_LINV )
 		);
 
 		$inTextAnnotationParser->showErrors(
-			$this->getSettings()->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
+			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
 		return $inTextAnnotationParser;

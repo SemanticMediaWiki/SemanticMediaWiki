@@ -12,14 +12,20 @@ on how to install the latest version of Semantic MediaWiki (SMW), see the [insta
 		<th>Git branch</th>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
-		<td>Development version</td>
-		<td>Q1 2018</td>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.1.x</a></th>
+		<td>Future release</td>
+		<td>Q2 2019</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master">master</a></td>
 	</tr>
 	<tr>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/6">SMW 3.0.x</a></th>
+		<td>Stable release</td>
+		<td>2018-10-11</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/3.0.x">3.0.x</a></td>
+	</tr>
+	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">SMW 2.5.x</a></th>
-		<td>Stable version</td>
+		<td>Obsolete release</td>
 		<td>2017-03-14</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/2.5.x">2.5.x</a></td>
 	</tr>
@@ -102,16 +108,22 @@ Note that HHVM is only required if you do not use PHP.
 		<th>MediaWiki</th>
 	</tr>
 	<tr>
+		<th>SMW 3.1.x</th>
+		<td><strong><a href="https://php.net/supported-versions.php">7.1.0</a></strong> - latest</td>
+		<td>No support</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.31.0</a></strong> - ?</td>
+	</tr>
+	<tr>
 		<th>SMW 3.0.x</th>
 		<td><strong><a href="https://php.net/supported-versions.php">5.6.0</a></strong> - latest</td>
 		<td>3.5.0 - latest</td>
-		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.27.0</a></strong> - latest</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.27.0</a></strong> - 1.31.x</td>
 	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
 		<td><strong><a href="https://php.net/supported-versions.php">5.5.0</a></strong> - 7.1.x</td>
 		<td>3.5.0 - 3.12.x</td>
-		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.30</td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.23.0</a></strong> - 1.30.x</td>
 	</tr>
 	<tr>
 		<th>SMW 2.4.x</th>
@@ -194,6 +206,12 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
 	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
+	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
 		<td>Full support (5.x)</td>
@@ -262,6 +280,14 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
+	</tr>
+		<tr>
+		<th>SMW 3.0.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>SMW 2.5.x</th>
@@ -341,3 +367,4 @@ work with different versions, especially more recent ones, though this is not gu
 - <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.2](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/97294290)
 - <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
 - <sup>[t.3]</sup> [#1583](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1583)
+- [#2688](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2688) Removed HHVM support

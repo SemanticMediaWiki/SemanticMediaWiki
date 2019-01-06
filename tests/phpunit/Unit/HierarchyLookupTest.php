@@ -82,7 +82,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -110,9 +110,9 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'Foo' );
 
-		$expected = array(
+		$expected = [
 			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
-		);
+		];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -149,10 +149,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'Foo' );
 
-		$expected = array(
+		$expected = [
 			new DIProperty( 'Bar' ),
 			new DIProperty( 'Foobar' )
-		);
+		];
 
 		$a = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
@@ -205,10 +205,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'Foo' );
 
-		$expected = array(
+		$expected = [
 			new DIProperty( 'Bar' ),
 			new DIProperty( 'Foobar' )
-		);
+		];
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -238,10 +238,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
-		$expected = array(
+		$expected = [
 			new DIWikiPage( 'Bar', NS_CATEGORY ),
 			new DIWikiPage( 'Foobar', NS_CATEGORY )
-		);
+		];
 
 		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
 
@@ -294,10 +294,10 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
-		$expected = array(
+		$expected = [
 			new DIWikiPage( 'Bar', NS_CATEGORY ),
 			new DIWikiPage( 'Foobar', NS_CATEGORY )
-		);
+		];
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -339,9 +339,9 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
 
-		$expected = array(
+		$expected = [
 			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
-		);
+		];
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

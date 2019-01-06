@@ -9,6 +9,7 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\ParserData;
+use SMW\PostProcHandler;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
 use Title;
@@ -36,6 +37,11 @@ class ConceptParserFunction {
 	private $messageFormatter;
 
 	/**
+	 * @var PostProcHandler
+	 */
+	private $postProcHandler;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
@@ -44,6 +50,15 @@ class ConceptParserFunction {
 	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
 		$this->parserData = $parserData;
 		$this->messageFormatter = $messageFormatter;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param PostProcHandler $postProcHandler
+	 */
+	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+		$this->postProcHandler = $postProcHandler;
 	}
 
 	/**
@@ -98,6 +113,10 @@ class ConceptParserFunction {
 			->addFromArray( $query->getErrors() )
 			->addFromArray( $this->parserData->getErrors() );
 
+		if ( $this->postProcHandler !== null ) {
+			$this->postProcHandler->addCheck( $query );
+		}
+
 		$this->addQueryProfile( $query );
 
 		$this->parserData->pushSemanticDataToParserOutput();
@@ -116,21 +135,21 @@ class ConceptParserFunction {
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
 			$message = Html::rawElement(
 				'div',
-				array(
+				[
 					'class' => 'plainlinks smw-callout smw-callout-info'
-				),
+				],
 				wfMessage( 'smw-concept-introductory-message', $title->getText() )->text()
 			);
 		}
 
-		return $message . Html::rawElement( 'div', array( 'class' => 'smwfact' ),
-			Html::rawElement( 'span', array( 'class' => 'smwfactboxhead' ),
+		return $message . Html::rawElement( 'div', [ 'class' => 'smwfact' ],
+			Html::rawElement( 'span', [ 'class' => 'smwfactboxhead' ],
 				wfMessage( 'smw_concept_description', $title->getText() )->text() ) .
-			Html::rawElement( 'span', array( 'class' => 'smwrdflink' ), $this->getRdfLink( $title )->getWikiText() ) .
-			Html::element( 'br', array() ) .
-			Html::element( 'p', array( 'class' => 'concept-documenation' ), $documentation ? $documentation : '' ) .
-			Html::rawElement( 'pre', array(), str_replace( '[', '&#91;', $queryString ) ) .
-			Html::element( 'br', array() )
+			Html::rawElement( 'span', [ 'class' => 'smwrdflink' ], $this->getRdfLink( $title )->getWikiText() ) .
+			Html::element( 'br', [] ) .
+			Html::element( 'p', [ 'class' => 'concept-documenation' ], $documentation ? $documentation : '' ) .
+			Html::rawElement( 'pre', [], str_replace( '[', '&#91;', $queryString ) ) .
+			Html::element( 'br', [] )
 		);
 	}
 
@@ -142,7 +161,7 @@ class ConceptParserFunction {
 	}
 
 	private function buildQuery( $conceptQueryString ) {
-		$rawParams = array( $conceptQueryString );
+		$rawParams = [ $conceptQueryString ];
 
 		list( $query, ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,

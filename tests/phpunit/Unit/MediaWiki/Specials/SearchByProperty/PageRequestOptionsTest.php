@@ -18,7 +18,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$queryString = '';
-		$requestOptions = array();
+		$requestOptions = [];
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions',
@@ -47,238 +47,238 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 	public function pageRequestOptionsProvider() {
 
 		#0
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(),
-			array(
+			[],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'propertyString' => '',
 				'valueString' => '',
 				'value' => null
-			)
-		);
+			]
+		];
 
 		#1
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
-			array(),
-			array(
+			[],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'propertyString' => 'Foo',
 				'valueString'    => '',
-			)
-		);
+			]
+		];
 
 		#2
-		$provider[] = array(
+		$provider[] = [
 			'Foo_nu/Bar',
-			array(),
-			array(
+			[],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'propertyString' => 'Foo nu',
 				'valueString'    => 'Bar',
 				'nearbySearch'   => false
-			)
-		);
+			]
+		];
 
 		#3 @see 516
-		$provider[] = array(
+		$provider[] = [
 			':Foo("#^$&--2F)/("#^$&-)Bar',
-			array(),
-			array(
+			[],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'propertyString' => 'Foo("#^$&-/)',
 				'valueString'    => '("#^$&-)Bar',
 				'nearbySearch'   => false
-			)
-		);
+			]
+		];
 
 		#4
-		$provider[] = array(
+		$provider[] = [
 			'Foo("#^$&--2F)/("#^$&-)Bar',
-			array(
+			[
 				'property' => '("#^$&-/)李秀英',
 				'value'    => '田中("#^$&-)',
 				'nearbySearchForType' => true
-			),
-			array(
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => '("#^$&-/)李秀英',
 				'valueString'    => '田中("#^$&-)',
-			)
-		);
+			]
+		];
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => ' Foo ',
 				'value'    => '',
-				'nearbySearchForType' => array( '_txt' )
-			),
-			array(
+				'nearbySearchForType' => [ '_txt' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => 'Foo',
 				'valueString'    => '',
-			)
-		);
+			]
+		];
 
 		#6
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Foo',
 				'value'    => '',
-				'nearbySearchForType' => array( '_wpg' )
-			),
-			array(
+				'nearbySearchForType' => [ '_wpg' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => true,
 				'propertyString' => 'Foo',
 				'valueString'    => '',
-			)
-		);
+			]
+		];
 
 		#7
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => '',
 				'value'    => 'Foo',
-				'nearbySearchForType' => array( '_wpg' )
-			),
-			array(
+				'nearbySearchForType' => [ '_wpg' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => '',
 				'valueString'    => 'Foo',
-			)
-		);
+			]
+		];
 
 		#9
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Number',
 				'value'    => '2',
-				'nearbySearchForType' => array( '_wpg' )
-			),
-			array(
+				'nearbySearchForType' => [ '_wpg' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => 'Number',
 				'valueString'    => '2.0',
-			)
-		);
+			]
+		];
 
 		#10
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Temperature',
 				'value'    => '373,15 K',
-				'nearbySearchForType' => array( '_wpg' )
-			),
-			array(
+				'nearbySearchForType' => [ '_wpg' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => 'Temperature',
 				'valueString'    => '373,15 K',
-			)
-		);
+			]
+		];
 
 		#10
-		$provider[] = array(
+		$provider[] = [
 			':Temperature/373,15-20K',
-			array(
-				'nearbySearchForType' => array( '_wpg' )
-			),
-			array(
+			[
+				'nearbySearchForType' => [ '_wpg' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => 'Temperature',
 				'valueString'    => '373,15 K',
-			)
-		);
+			]
+		];
 
 		#11
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Telephone number',
 				'value'    => '%2B1-201-555-0123',
-				'nearbySearchForType' => array( '_tel' )
-			),
-			array(
+				'nearbySearchForType' => [ '_tel' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => true,
 				'propertyString' => 'Telephone number',
 				'valueString'    => '%2B1-201-555-0123',
-			)
-		);
+			]
+		];
 
 		#11
-		$provider[] = array(
+		$provider[] = [
 			':Telephone number/%2B1-2D201-2D555-2D0123',
-			array(
-				'nearbySearchForType' => array( '_tel' )
-			),
-			array(
+			[
+				'nearbySearchForType' => [ '_tel' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => true,
 				'propertyString' => 'Telephone number',
 				'valueString'    => '%2B1-201-555-0123',
-			)
-		);
+			]
+		];
 
 		#12
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Text',
 				'value'    => 'abc-123',
-				'nearbySearchForType' => array( '_txt' )
-			),
-			array(
+				'nearbySearchForType' => [ '_txt' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => true,
 				'propertyString' => 'Text',
 				'valueString'    => 'abc-123',
-			)
-		);
+			]
+		];
 
 		#13
-		$provider[] = array(
+		$provider[] = [
 			'',
-			array(
+			[
 				'property' => 'Text',
 				'value'    => 'foo-123#&^*%<1?=/->"\'',
-				'nearbySearchForType' => array( '_txt' )
-			),
-			array(
+				'nearbySearchForType' => [ '_txt' ]
+			],
+			[
 				'limit'  => 20,
 				'offset' => 0,
 				'nearbySearch' => true,
 				'propertyString' => 'Text',
 				'valueString'    => 'foo-123#&^*%<1?=/->"\'',
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

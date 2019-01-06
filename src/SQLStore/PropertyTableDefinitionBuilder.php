@@ -30,12 +30,12 @@ class PropertyTableDefinitionBuilder {
 	/**
 	 * @var TableDefinition[]
 	 */
-	protected $propertyTables = array();
+	protected $propertyTables = [];
 
 	/**
 	 * @var array
 	 */
-	protected $fixedPropertyTableIds = array();
+	protected $fixedPropertyTableIds = [];
 
 	/**
 	 * @since 1.9
@@ -61,11 +61,11 @@ class PropertyTableDefinitionBuilder {
 			$specialProperties
 		);
 
-		$customFixedProperties = array();
-		$fixedPropertyTablePrefix = array();
+		$customFixedProperties = [];
+		$fixedPropertyTablePrefix = [];
 
 		// Allow to alter the prefix by an extension
-		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', array( &$customFixedProperties, &$fixedPropertyTablePrefix ) );
+		Hooks::run( 'SMW::SQLStore::AddCustomFixedPropertyTables', [ &$customFixedProperties, &$fixedPropertyTablePrefix ] );
 
 		$this->addTableDefinitionForFixedProperties(
 			$customFixedProperties,
@@ -78,7 +78,7 @@ class PropertyTableDefinitionBuilder {
 			$userDefinedFixedProperties
 		);
 
-		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', array( &$this->propertyTables ) );
+		Hooks::run( 'SMW::SQLStore::updatePropertyTableDefinitions', [ &$this->propertyTables ] );
 
 		$this->createFixedPropertyTableIdIndex();
 	}
@@ -176,7 +176,7 @@ class PropertyTableDefinitionBuilder {
 		}
 	}
 
-	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = array() ) {
+	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [] ) {
 		foreach( $properties as $propertyKey => $propertyTableSuffix ) {
 
 			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;

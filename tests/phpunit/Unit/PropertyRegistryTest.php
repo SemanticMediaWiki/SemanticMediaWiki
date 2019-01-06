@@ -45,11 +45,11 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
 			->disableOriginalConstructor()
@@ -90,11 +90,11 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array( '_uri' => 'URL' ) ) );
+			->will( $this->returnValue( [ '_uri' => 'URL' ] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array( 'URI' => '_uri' ) ) );
+			->will( $this->returnValue( [ 'URI' => '_uri' ] ) );
 
 		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
 			->disableOriginalConstructor()
@@ -102,7 +102,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache,
-			array( 'Has type' => '_TYPE' )
+			[ 'Has type' => '_TYPE' ]
 		);
 
 		$instance = new PropertyRegistry(
@@ -112,9 +112,9 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array(
+			[
 				'Has type' => '_TYPE',
-				'URI' => '_uri' ),
+				'URI' => '_uri' ],
 			$instance->getKnownPropertyAliases()
 		);
 	}
@@ -127,11 +127,11 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
 			->disableOriginalConstructor()
@@ -155,7 +155,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			array( '_TYPE' => array( '__typ', true, true ) ),
+			[ '_TYPE' => [ '__typ', true, true ] ],
 			$instance->getPropertyList()
 		);
 
@@ -180,11 +180,11 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
 			->disableOriginalConstructor()
@@ -221,17 +221,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -277,17 +277,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -339,17 +339,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -388,17 +388,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -424,17 +424,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -460,17 +460,17 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
@@ -502,23 +502,23 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeLabels' )
-			->will( $this->returnValue( array( '_foo' => 'Foo', '_foobar' => 'Foobar' ) ) );
+			->will( $this->returnValue( [ '_foo' => 'Foo', '_foobar' => 'Foobar' ] ) );
 
 		$datatypeRegistry->expects( $this->once() )
 			->method( 'getKnownTypeAliases' )
-			->will( $this->returnValue( array( 'Bar' => '_bar' ) ) );
+			->will( $this->returnValue( [ 'Bar' => '_bar' ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyLabelFinder = new PropertyLabelFinder( $store, array() );
+		$propertyLabelFinder = new PropertyLabelFinder( $store, [] );
 
 		$propertyAliases = new PropertyAliasFinder(
 			$this->cache
 		);
 
-		$dataTypePropertyExemptionList = array( 'Foo', 'Bar' );
+		$dataTypePropertyExemptionList = [ 'Foo', 'Bar' ];
 
 		$instance = new PropertyRegistry(
 			$datatypeRegistry,
@@ -556,15 +556,15 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function typeToCanonicalLabelProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'_txt',
 			'Text'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'_TEXT',
 			'Text'
-		);
+		];
 
 		return $provider;
 	}

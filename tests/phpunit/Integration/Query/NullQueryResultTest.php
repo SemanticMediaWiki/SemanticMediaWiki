@@ -43,10 +43,10 @@ class NullQueryResultTest extends \PHPUnit_Framework_TestCase {
 		$namespacesDisjunction = new Disjunction(
 			array_map( function ( $ns ) {
 				return new NamespaceDescription( $ns );
-			}, array( NS_MAIN ) )
+			}, [ NS_MAIN ] )
 		);
 
-		$description = new Conjunction( array( $description, $namespacesDisjunction ) );
+		$description = new Conjunction( [ $description, $namespacesDisjunction ] );
 
 		$query->setDescription( $description );
 

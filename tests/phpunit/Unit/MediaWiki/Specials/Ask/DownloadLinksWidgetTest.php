@@ -32,7 +32,7 @@ class DownloadLinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setParameter' );
 
 		$this->assertContains(
-			'<span class="smw-ask-downloadlinks">',
+			'<div id="ask-export-links" class="smw-ask-downloadlinks export-links">',
 			DownloadLinksWidget::downloadLinks( $infolink )
 		);
 	}

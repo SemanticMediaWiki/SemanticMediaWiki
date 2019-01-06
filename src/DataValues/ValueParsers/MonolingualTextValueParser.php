@@ -17,7 +17,7 @@ class MonolingualTextValueParser implements ValueParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
+	private $errors = [];
 
 	/**
 	 * @since 2.4

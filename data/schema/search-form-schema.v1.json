@@ -1,0 +1,34 @@
+{
+  "$id": "https://www.semantic-mediawiki.org/search-profile-form.json",
+  "type": "object",
+  "properties": {
+    "type": {
+      "$id": "/properties/type",
+      "type": "string",
+      "title": "The Type Schema",
+      "default": "",
+      "examples": [
+        "SEARCH_FORM_SCHEMA"
+      ],
+      "enum": [
+        "SEARCH_FORM_SCHEMA"
+      ]
+    },
+    "forms": {
+      "$id": "/properties/forms",
+      "type": "object"
+    },
+    "namespaces": {
+      "$id": "/properties/namespaces",
+      "type": "object"
+    },
+    "descriptions": {
+      "$id": "/properties/descriptions",
+      "type": "object"
+    }
+  },
+  "required": [
+    "type",
+    "forms"
+  ]
+}

@@ -63,7 +63,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		$propertyTable = $this->getPropertyTableForType( $this->defaultPropertyType );
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
-			return array();
+			return [];
 		}
 
 		return $this->buildPropertyList( $this->selectPropertiesFromTable( $propertyTable ) );
@@ -107,13 +107,13 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		// clause or be used in an aggregate function
 		$options['GROUP BY'] = 'smw_id, smw_title';
 
-		$conditions = array(
+		$conditions = [
 			'smw_id > ' . SQLStore::FIXED_PROPERTY_ID_UPPERBOUND,
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_proptable_hash IS NULL',
 			'smw_iw' => '',
 			'smw_subobject' => ''
-		);
+		];
 
 		$joinCond = 'p_id';
 
@@ -124,16 +124,16 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		}
 
 		$res = $this->store->getConnection( 'mw.db' )->select(
-			array( $idTable, $propertyTable->getName() ),
-			array( 'smw_id', 'smw_title', 'COUNT(*) as count' ),
+			[ $idTable, $propertyTable->getName() ],
+			[ 'smw_id', 'smw_title', 'COUNT(*) as count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			array(
-				$idTable => array(
+			[
+				$idTable => [
 					'INNER JOIN', "$joinCond=smw_id"
-				)
-			)
+				]
+			]
 		);
 
 		return $res;
@@ -141,10 +141,10 @@ class UndeclaredPropertyListLookup implements ListLookup {
 
 	private function buildPropertyList( $res ) {
 
-		$result = array();
+		$result = [];
 
 		foreach ( $res as $row ) {
-			$result[] = array( $this->addPropertyFor( $row->smw_title ), $row->count );
+			$result[] = [ $this->addPropertyFor( $row->smw_title ), $row->count ];
 		}
 
 		return $result;
@@ -155,7 +155,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		try {
 			$property = new DIProperty( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new \Message( 'smw_noproperty', array( $title ) ) );
+			$property = new DIError( new \Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

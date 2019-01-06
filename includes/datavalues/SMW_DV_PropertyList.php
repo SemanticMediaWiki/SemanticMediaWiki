@@ -23,7 +23,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected function parseUserValue( $value ) {
 		global $wgContLang;
 
-		$this->m_diProperties = array();
+		$this->m_diProperties = [];
 		$stringValue = '';
 		$valueList = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
 		foreach ( $valueList as $propertyName ) {
@@ -33,7 +33,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$propertyName = $propertyNameParts[1];
 				$propertyNamespace = $wgContLang->getNsText( SMW_NS_PROPERTY );
 				if ( $namespace != $propertyNamespace ) {
-					$this->addErrorMsg( array( 'smw_wrong_namespace', $propertyNamespace ) );
+					$this->addErrorMsg( [ 'smw_wrong_namespace', $propertyNamespace ] );
 				}
 			}
 
@@ -43,7 +43,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );
 			} catch ( SMWDataItemException $e ) {
 				$diProperty = new SMW\DIProperty( 'Error' );
-				$this->addErrorMsg( array( 'smw_noproperty', $propertyName ) );
+				$this->addErrorMsg( [ 'smw_noproperty', $propertyName ] );
 			}
 
 			$this->m_diProperties[] = $diProperty;
@@ -67,7 +67,7 @@ class SMWPropertyListValue extends SMWDataValue {
 		}
 
 		$this->m_dataitem = $dataItem;
-		$this->m_diProperties = array();
+		$this->m_diProperties = [];
 
 		foreach ( explode( ';', $dataItem->getString() ) as $propertyKey ) {
 			$property = null;
@@ -76,7 +76,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$property = new SMW\DIProperty( $propertyKey );
 			} catch ( SMWDataItemException $e ) {
 				$property = new SMW\DIProperty( 'Error' );
-				$this->addErrorMsg( array( 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ) );
+				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}
 
 			if ( $property instanceof SMWDIProperty ) {

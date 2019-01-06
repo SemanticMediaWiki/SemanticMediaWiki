@@ -67,13 +67,13 @@ class OutputPageParserOutput {
 
 		$request = $this->outputPage->getContext()->getRequest();
 
-		$this->execFactbox( $request );
-		$this->execPostProc( $title, $request );
+		$this->factbox( $request );
+		$this->postProc( $title, $request );
 	}
 
-	private function execPostProc( $title, $request) {
+	private function postProc( $title, $request) {
 
-		if ( in_array( $request->getVal( 'action' ), array( 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ) ) ) {
+		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ] ) ) {
 			return '';
 		}
 
@@ -92,7 +92,7 @@ class OutputPageParserOutput {
 		}
 	}
 
-	protected function execFactbox( $request ) {
+	protected function factbox( $request ) {
 
 		if ( isset( $this->outputPage->mSMWFactboxText ) && $request->getCheck( 'wpPreview' ) ) {
 			return '';
@@ -104,6 +104,7 @@ class OutputPageParserOutput {
 
 		$cachedFactbox->prepareFactboxContent(
 			$this->outputPage,
+			$this->outputPage->getLanguage(),
 			$this->getParserOutput()
 		);
 

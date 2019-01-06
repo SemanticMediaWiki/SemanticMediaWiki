@@ -24,7 +24,7 @@ class HookRegistry {
 	/**
 	 * @var array
 	 */
-	private $handlers = array();
+	private $handlers = [];
 
 	/**
 	 * @var array
@@ -42,7 +42,7 @@ class HookRegistry {
 	 * @param array &$globalVars
 	 * @param string $directory
 	 */
-	public function __construct( &$globalVars = array(), $directory = '' ) {
+	public function __construct( &$globalVars = [], $directory = '' ) {
 		$this->globalVars =& $globalVars;
 		$this->basePath = $directory;
 		$this->addCallableHandlers( $directory, $globalVars );
@@ -55,7 +55,7 @@ class HookRegistry {
 	 */
 	public static function initExtension( array &$vars ) {
 
-		$vars['wgContentHandlers'][CONTENT_MODEL_RULE] = 'SMW\Rule\RuleContentHandler';
+		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\Schema\Content\ContentHandler';
 
 		/**
 		 * CanonicalNamespaces initialization
@@ -193,6 +193,7 @@ class HookRegistry {
 			'ArticleFromTitle' => [ $hookListener, 'onArticleFromTitle' ],
 			'ArticleProtectComplete' => [ $hookListener, 'onArticleProtectComplete' ],
 			'ArticleViewHeader' => [ $hookListener, 'onArticleViewHeader' ],
+			'ContentHandlerForModelID' => [ $hookListener, 'onContentHandlerForModelID' ],
 
 			'NewRevisionFromEditComplete' => [ $hookListener, 'onNewRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $hookListener, 'onLinksUpdateConstructed' ],

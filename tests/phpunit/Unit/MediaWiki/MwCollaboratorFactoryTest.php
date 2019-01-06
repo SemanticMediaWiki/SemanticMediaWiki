@@ -164,7 +164,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$settings->expects( $this->atLeastOnce() )
 			->method( 'get' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$this->applicationFactory->expects( $this->atLeastOnce() )
 			->method( 'getSettings' )

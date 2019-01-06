@@ -223,7 +223,9 @@ class ParserFunctionFactory {
 	 */
 	public function newConceptParserFunction( Parser $parser ) {
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$parserData = $applicationFactory->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
 		);
@@ -235,6 +237,10 @@ class ParserFunctionFactory {
 		$conceptParserFunction = new ConceptParserFunction(
 			$parserData,
 			$messageFormatter
+		);
+
+		$conceptParserFunction->setPostProcHandler(
+			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
 		);
 
 		return $conceptParserFunction;
@@ -379,7 +385,7 @@ class ParserFunctionFactory {
 			return $askParserFunction->parse( func_get_args() );
 		};
 
-		return array( 'ask', $askParserFunctionDefinition, 0 );
+		return [ 'ask', $askParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -405,7 +411,7 @@ class ParserFunctionFactory {
 			return $showParserFunction->parse( func_get_args() );
 		};
 
-		return array( 'show', $showParserFunctionDefinition, 0 );
+		return [ 'show', $showParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -426,7 +432,7 @@ class ParserFunctionFactory {
 			);
 		};
 
-		return array( 'subobject', $subobjectParserFunctionDefinition, 0 );
+		return [ 'subobject', $subobjectParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -447,7 +453,7 @@ class ParserFunctionFactory {
 			);
 		};
 
-		return array( 'set_recurring_event', $recurringEventsParserFunctionDefinition, 0 );
+		return [ 'set_recurring_event', $recurringEventsParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -468,7 +474,7 @@ class ParserFunctionFactory {
 			);
 		};
 
-		return array( 'set', $setParserFunctionDefinition, 0 );
+		return [ 'set', $setParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -487,7 +493,7 @@ class ParserFunctionFactory {
 			return $conceptParserFunction->parse( func_get_args() );
 		};
 
-		return array( 'concept', $conceptParserFunctionDefinition, 0 );
+		return [ 'concept', $conceptParserFunctionDefinition, 0 ];
 	}
 
 	/**
@@ -506,7 +512,7 @@ class ParserFunctionFactory {
 			return $declareParserFunction->parse( $frame, $args );
 		};
 
-		return array( 'declare', $declareParserFunctionDefinition, Parser::SFH_OBJECT_ARGS );
+		return [ 'declare', $declareParserFunctionDefinition, Parser::SFH_OBJECT_ARGS ];
 	}
 
 }

@@ -135,7 +135,7 @@ class DataValueFactory {
 		if ( !$this->dataTypeRegistry->hasDataTypeClassById( $typeId ) ) {
 			return new ErrorValue(
 				$typeId,
-				array( 'smw_unknowntype', $typeId ),
+				[ 'smw_unknowntype', $typeId ],
 				$valueString,
 				$caption
 			);
@@ -304,7 +304,7 @@ class DataValueFactory {
 
 		} elseif ( $propertyDI instanceof DIProperty && $propertyDI->isInverse() ) {
 			$dataValue = new ErrorValue( $propertyDV->getPropertyTypeID(),
-				array( 'smw_noinvannot' ),
+				[ 'smw_noinvannot' ],
 				$valueString,
 				$caption
 			);
@@ -313,7 +313,7 @@ class DataValueFactory {
 		} else {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-property-name-invalid', $propertyName ),
+				[ 'smw-property-name-invalid', $propertyName ],
 				$valueString,
 				$caption
 			);
@@ -324,7 +324,7 @@ class DataValueFactory {
 		if ( $dataValue->isValid() && !$dataValue->canUse() ) {
 			$dataValue = new ErrorValue(
 				$propertyDV->getPropertyTypeID(),
-				array( 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ),
+				[ 'smw-datavalue-restricted-use', implode( ',', $dataValue->getErrors() ) ],
 				$valueString,
 				$caption
 			);
@@ -398,48 +398,6 @@ class DataValueFactory {
 	 */
 	public function newPropertyValue( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
 		return $this->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataType
-	 */
-	public static function registerDatatype( $id, $className, $dataItemId, $label = false ) {
-		DataTypeRegistry::getInstance()->registerDataType( $id, $className, $dataItemId, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::registerDataTypeAlias
-	 */
-	public static function registerDatatypeAlias( $id, $label ) {
-		DataTypeRegistry::getInstance()->registerDataTypeAlias( $id, $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeId
-	 */
-	public static function findTypeID( $label ) {
-		return DataTypeRegistry::getInstance()->findTypeId( $label );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::findTypeLabel
-	 */
-	public static function findTypeLabel( $id ) {
-		return DataTypeRegistry::getInstance()->findTypeLabel( $id );
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getKnownTypeLabels
-	 */
-	public static function getKnownTypeLabels() {
-		return DataTypeRegistry::getInstance()->getKnownTypeLabels();
-	}
-
-	/**
-	 * @deprecated since 1.9, use DataTypeRegistry::getDataItemId
-	 */
-	public static function getDataItemId( $typeId ) {
-		return DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 	}
 
 }

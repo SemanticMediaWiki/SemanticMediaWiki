@@ -36,7 +36,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )
@@ -62,7 +62,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->never() )
@@ -87,7 +87,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->never() )

@@ -31,7 +31,17 @@ use WebRequest;
  */
 class PostProcHandler {
 
-	const POST_PROC_QUERYREF = 'smw-postproc-queryref';
+	/**
+	 * Identifier on whether an update to subject is to be carried out or not
+	 * given the query reference used as part of an @annotation request.
+	 */
+	const POST_EDIT_UPDATE = 'smw-postedit-update';
+
+	/**
+	 * Check registered queries and its results on wether the result_hash before
+	 * and after is different or not.
+	 */
+	const POST_EDIT_CHECK = 'smw-postedit-check';
 
 	/**
 	 * Specifies the TTL for the temporary tracking of a post edit
@@ -91,6 +101,23 @@ class PostProcHandler {
 	/**
 	 * @since 3.0
 	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = false ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
+		}
+
+		return $default;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return array|string
 	 */
 	public function getModules() {
@@ -129,6 +156,16 @@ class PostProcHandler {
 			\EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
 		);
 
+		$jobs = [];
+
+		if ( $postEdit !== null && isset( $this->options['run-jobs'] ) ) {
+			$jobs = $this->find_jobs( $this->options['run-jobs'] );
+		}
+
+		if ( $jobs !== [] ) {
+			$attributes['data-jobs'] = json_encode( $jobs );
+		}
+
 		// Was the edit SMW specific or contains it an unrelated (e.g altered
 		// some text unrelated to any property/value annotation) change?
 		if ( $postEdit !== null && ( $changeDiff = ChangeDiff::fetch( $this->cache, $subject ) ) !== false ) {
@@ -136,7 +173,7 @@ class PostProcHandler {
 		}
 
 		// Is `@annotation` available as part of a #ask query?
-		$refs = $this->parserOutput->getExtensionData( self::POST_PROC_QUERYREF );
+		$refs = $this->parserOutput->getExtensionData( self::POST_EDIT_UPDATE );
 
 		if ( $refs !== null && $refs !== [] ) {
 			$postEdit = $this->checkRef( $title, $postEdit );
@@ -146,29 +183,17 @@ class PostProcHandler {
 			$attributes['data-ref'] = json_encode( array_keys( $refs ) );
 		}
 
-		$jobs = [];
-
-		if ( isset( $this->options['job.task'] ) ) {
-			$jobs = $this->options['job.task'];
-
-			// Not enabled, no need to invoke a job!
-			if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
-				unset( $jobs['SMW\ParserCachePurgeJob'] );
-			}
-
-			if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
-				unset( $jobs['SMW\FulltextSearchTableUpdateJob'] );
-			}
-		}
-
-		if ( $postEdit !== null && $jobs !== [] ) {
-			$attributes['data-jobs'] = json_encode( $jobs );
+		if (
+			$postEdit !== null &&
+			isset( $this->options['check-query'] ) &&
+			( $queries = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK ) ) !== null ) {
+			$attributes['data-query'] = json_encode( $queries );
 		}
 
 		// The element is only added temporarily in the event of a postEdit, a
 		// reload of the page will not have the cookie being set and is therefore
 		// neglected
-		if ( $postEdit !== null ) {
+		if ( $postEdit !== null || $jobs !== [] ) {
 			return Html::rawElement( 'div', $attributes );
 		}
 
@@ -180,7 +205,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addQueryRef( Query $query ) {
+	public function addUpdate( Query $query ) {
 
 		// Query:getHash returns a hash based on a fingerprint
 		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
@@ -189,16 +214,51 @@ class PostProcHandler {
 		// alternating updates as in case of cascading value dependencies
 		$queryRef = HashBuilder::createFromArray( $query->toArray() );
 
-		$data = $this->parserOutput->getExtensionData( self::POST_PROC_QUERYREF );
+		$data = $this->parserOutput->getExtensionData( self::POST_EDIT_UPDATE );
 
 		if ( $data === null ) {
-			$data = array();
+			$data = [];
 		}
 
 		$data[$queryRef] = true;
 
 		$this->parserOutput->setExtensionData(
-			self::POST_PROC_QUERYREF,
+			self::POST_EDIT_UPDATE,
+			$data
+		);
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Query $query
+	 */
+	public function addCheck( Query $query ) {
+
+		if ( !isset( $this->options['check-query'] ) || $this->options['check-query'] === false ) {
+			return;
+		}
+
+		$q_array = $query->toArray();
+
+		// Build a concatenated hash from the query and the result_hash
+		$hash = md5( json_encode( $q_array ) ) . '#';
+		$data = $this->parserOutput->getExtensionData( self::POST_EDIT_CHECK );
+
+		if ( $data === null ) {
+			$data = [];
+		}
+
+		// Use the result hash to determine whether results differ during the
+		// post-edit examination when running the same query
+		if ( $query->getOption( 'result_hash' ) ) {
+			$hash .= $query->getOption( 'result_hash' );
+		}
+
+		$data[$hash] = $q_array;
+
+		$this->parserOutput->setExtensionData(
+			self::POST_EDIT_CHECK,
 			$data
 		);
 	}
@@ -283,6 +343,20 @@ class PostProcHandler {
 		// Avoid any update since the condition of the diff containing any altered
 		// SMW data was not meet.
 		return null;
+	}
+
+	private function find_jobs( $jobs ) {
+
+		// Not enabled, no need to invoke a job!
+		if ( isset( $this->options['smwgEnabledQueryDependencyLinksStore'] ) && $this->options['smwgEnabledQueryDependencyLinksStore'] === false ) {
+			unset( $jobs['smw.parserCachePurge'] );
+		}
+
+		if ( isset( $this->options['smwgEnabledFulltextSearch'] ) && $this->options['smwgEnabledFulltextSearch'] === false ) {
+			unset( $jobs['smw.fulltextSearchTableUpdate'] );
+		}
+
+		return $jobs;
 	}
 
 }

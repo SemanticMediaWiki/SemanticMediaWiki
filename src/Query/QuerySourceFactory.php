@@ -25,7 +25,7 @@ class QuerySourceFactory {
 	/**
 	 * @var array
 	 */
-	private $querySources = array();
+	private $querySources = [];
 
 	/**
 	 * @since 2.5
@@ -33,7 +33,7 @@ class QuerySourceFactory {
 	 * @param Store $store
 	 * @param array $querySources
 	 */
-	public function __construct( Store $store, $querySources = array() ) {
+	public function __construct( Store $store, $querySources = [] ) {
 		$this->store = $store;
 		$this->querySources = $querySources;
 

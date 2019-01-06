@@ -35,7 +35,7 @@ class HtmlTable {
 	 */
 	public function header( $content = '', $attributes = [] ) {
 		if ( $content !== '' ) {
-			$this->headers[] = array( 'content' => $content, 'attributes' => $attributes );
+			$this->headers[] = [ 'content' => $content, 'attributes' => $attributes ];
 		}
 	}
 
@@ -60,7 +60,7 @@ class HtmlTable {
 	 */
 	public function row( $attributes = [] ) {
 		if ( $this->cells !== [] ) {
-			$this->rows[] = array( 'cells' => $this->cells, 'attributes' => $attributes );
+			$this->rows[] = [ 'cells' => $this->cells, 'attributes' => $attributes ];
 			$this->cells = [];
 		}
 	}
@@ -170,7 +170,7 @@ class HtmlTable {
 		$attributes = [];
 
 		if ( isset( $row['attributes']['class'] ) && $row['attributes']['class'] === 'smwfooter' ) {
-			$attributes = array( 'class' => 'footer-cell' );
+			$attributes = [ 'class' => 'footer-cell' ];
 		}
 
 		return Html::rawElement( 'td', $attributes, '' );

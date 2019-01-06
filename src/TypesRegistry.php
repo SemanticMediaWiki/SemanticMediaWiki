@@ -77,7 +77,7 @@ class TypesRegistry {
 			 // Form page type for Semantic Forms
 			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Rule page
-			'_wpr'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wps'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Number type
 			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false, false ],
 			 // Temperature type
@@ -208,14 +208,15 @@ class TypesRegistry {
 			'_CHGPRO' => [ '_cod', true, false, true ], // "Change propagation"
 			'_PPGR' => [ '_boo', true, true, true ], // "Property group"
 
-			// Rule
-			'_RL_TYPE' => [ '_txt', true, false, false ], // "Rule type"
-			'_RL_DEF'  => [ '_cod', true, false, false ], // "Rule definition"
-			'_RL_DESC' => [ '_txt', true, false, false ], // "Rule description"
-			'_RL_TAG'  => [ '_txt', true, false, false ], // "Rule tag"
+			// Schema
+			'_SCHEMA_TYPE' => [ '_txt', true, false, false ], // "Schema type"
+			'_SCHEMA_DEF'  => [ '_cod', true, false, false ], // "Schema definition"
+			'_SCHEMA_DESC' => [ '_txt', true, false, false ], // "Schema description"
+			'_SCHEMA_TAG'  => [ '_txt', true, false, false ], // "Schema tag"
+			'_SCHEMA_LINK' => [ '_wps', true, false, false ], // "Schema link"
 
 			//
-			'_FORMAT_RL'  => [ '_wpr', true, true, false ], // "Formatter rule"
+			'_FORMAT_SCHEMA' => [ '_wps', true, true, false ], // "Formatter schema"
 
 			// File attachment
 			'_FILE_ATTCH'  => [ '__sob', false, false, false ], // "File attachment"
@@ -232,6 +233,24 @@ class TypesRegistry {
 			'_TRANS_SOURCE' => [ '_wpg', true, false, false ], // "Translation source"
 			'_TRANS_GROUP' => [ '_txt', true, false, false ], // "Translation group"
 		];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return array
+	 */
+	public static function getTypesByGroup( $group = '' ) {
+
+		if ( $group === 'primitive' ) {
+			return [ '_txt' => true , '_boo' => true , '_num' => true, '_dat' => true ];
+		}
+
+		if ( $group === 'compound' ) {
+			return [ '_ema' => true, '_tel' => true, '_tem' => true ];
+		}
+
+		return [];
 	}
 
 	/**

@@ -86,7 +86,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
 
 		$condition = '';
-		$namespaces = array();
+		$namespaces = [];
 		$instExpElement = $this->exporter->getSpecialPropertyResource( '_INST' );
 
 		foreach( $categories as $category ) {
@@ -112,7 +112,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			}
 		}
 
-		return array( $condition, $namespaces );
+		return [ $condition, $namespaces ];
 	}
 
 	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {

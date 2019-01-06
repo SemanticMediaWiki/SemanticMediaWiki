@@ -8,6 +8,7 @@ use Title;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Site;
+use SMW\Enum;
 
 /**
  * Run a deferred update job for a changed title instance to re-parse the content
@@ -67,12 +68,18 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 */
 	public function doUpdate() {
 
-		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$jobFactory = $applicationFactory->newJobFactory();
 
-		$parameters = array(
+		$parameters = [
 			UpdateJob::FORCED_UPDATE => true,
+
+			// Run purge job after the change has happened since no post-edit event
+			// will be triggered on a changed/redirect title
+			Enum::PURGE_ASSOC_PARSERCACHE => true,
+
 			'origin' => 'ChangeTitleUpdate'
-		);
+		];
 
 		if ( $this->oldTitle !== null ) {
 			$jobFactory->newUpdateJob( $this->oldTitle, $parameters )->run();

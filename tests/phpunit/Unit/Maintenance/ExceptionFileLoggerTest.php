@@ -38,9 +38,9 @@ class ExceptionFileLoggerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ExceptionFileLogger();
 
-		$instance->setOptions( new Options( array(
+		$instance->setOptions( new Options( [
 			'exception-log' => __DIR__
-		) ) );
+		] ) );
 
 		$this->assertInternalType(
 			'boolean',

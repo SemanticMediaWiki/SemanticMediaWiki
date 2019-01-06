@@ -8,12 +8,10 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
 use Title;
+use Language;
 
 /**
  * Factbox output caching
- *
- * Enable ($smwgFactboxUseCache) to use a CacheStore to avoid unaltered
- * content being re-parsed every time the OutputPage hook is executed
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -22,15 +20,12 @@ use Title;
  */
 class CachedFactbox {
 
+	const CACHE_NAMESPACE = 'smw:fc';
+
 	/**
 	 * @var Cache
 	 */
-	private $cache = null;
-
-	/**
-	 * @var CacheFactory
-	 */
-	private $cacheFactory = null;
+	private $cache;
 
 	/**
 	 * @var boolean
@@ -45,6 +40,11 @@ class CachedFactbox {
 	/**
 	 * @var integer
 	 */
+	private $featureSet = 0;
+
+	/**
+	 * @var integer
+	 */
 	private $expiryInSeconds = 0;
 
 	/**
@@ -55,16 +55,26 @@ class CachedFactbox {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Cache|null $cache
+	 * @param Cache $cache
 	 */
-	public function __construct( Cache $cache = null ) {
+	public function __construct( Cache $cache ) {
 		$this->cache = $cache;
+	}
 
-		$this->cacheFactory = ApplicationFactory::getInstance()->getCacheFactory();
+	/**
+	 * @since 3.0
+	 *
+	 * @param Title|integer $id
+	 *
+	 * @return string
+	 */
+	public static function makeCacheKey( $id ) {
 
-		if ( $this->cache === null ) {
-			$this->cache = $this->cacheFactory->newNullCache();
+		if ( $id instanceof Title ) {
+			$id = $id->getArticleID();
 		}
+
+		return smwfCacheKey( self::CACHE_NAMESPACE, $id );
 	}
 
 	/**
@@ -74,6 +84,15 @@ class CachedFactbox {
 	 */
 	public function isCached() {
 		return $this->isCached;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $featureSet
+	 */
+	public function setFeatureSet( $featureSet ) {
+		$this->featureSet = $featureSet;
 	}
 
 	/**
@@ -115,25 +134,24 @@ class CachedFactbox {
 	 * @since 1.9
 	 *
 	 * @param OutputPage &$outputPage
+	 * @param Language $language
 	 * @param ParserOutput $parserOutput
 	 */
-	public function prepareFactboxContent( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+	public function prepareFactboxContent( OutputPage &$outputPage, Language $language, ParserOutput $parserOutput ) {
 
 		$content = '';
 		$title = $outputPage->getTitle();
 
-		$revId = $this->findRevId( $title, $outputPage->getContext() );
-		$lang = $outputPage->getContext()->getLanguage()->getCode();
+		$rev_id = $this->findRevId( $title, $outputPage->getContext() );
+		$lang = $language->getCode();
 
-		$key = $this->cacheFactory->getFactboxCacheKey(
-			$title->getArticleID()
-		);
+		$key = self::makeCacheKey( $title );
 
 		if ( $this->cache->contains( $key ) ) {
 			$content = $this->retrieveFromCache( $key );
 		}
 
-		if ( $this->hasCachedContent( $revId, $lang, $content, $outputPage->getContext() ) ) {
+		if ( $this->hasCachedContent( $rev_id, $lang, $content, $outputPage->getContext() ) ) {
 			return $outputPage->mSMWFactboxText = $content['text'];
 		}
 
@@ -146,8 +164,9 @@ class CachedFactbox {
 		$this->addContentToCache(
 			$key,
 			$text,
-			$revId,
-			$lang
+			$rev_id,
+			$lang,
+			$this->featureSet
 		);
 
 		$outputPage->mSMWFactboxText = $text;
@@ -160,14 +179,15 @@ class CachedFactbox {
 	 * @param string $text
 	 * @param integer|null $revisionId
 	 */
-	public function addContentToCache( $key, $text, $revisionId = null, $lang = 'en' ) {
+	public function addContentToCache( $key, $text, $revisionId = null, $lang = 'en', $fset = null ) {
 		$this->saveToCache(
 			$key,
-			array(
+			[
 				'revId' => $revisionId,
 				'lang'  => $lang,
+				'fset'  => $fset,
 				'text'  => $text
-			)
+			]
 		);
 	}
 
@@ -194,11 +214,10 @@ class CachedFactbox {
 			$text = $outputPage->mSMWFactboxText;
 		} elseif ( $title instanceof Title ) {
 
-			$key = $this->cacheFactory->getFactboxCacheKey(
-				$title->getArticleID()
+			$content = $this->retrieveFromCache(
+				self::makeCacheKey( $title )
 			);
 
-			$content = $this->retrieveFromCache( $key );
 			$text = isset( $content['text'] ) ? $content['text'] : '';
 		}
 
@@ -227,7 +246,8 @@ class CachedFactbox {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$factbox = $applicationFactory->singleton( 'FactboxFactory' )->newFactbox(
-			$applicationFactory->newParserData( $title, $parserOutput )
+			$title,
+			$parserOutput
 		);
 
 		$factbox->setPreviewFlag(
@@ -256,7 +276,10 @@ class CachedFactbox {
 		}
 
 		if ( $revId !== 0 && isset( $content['revId'] ) && ( $content['revId'] === $revId ) && $content['text'] !== null ) {
-			if ( isset( $content['lang'] ) && ( $content['lang'] === $lang ) ) {
+
+			if (
+				( isset( $content['lang'] ) && $content['lang'] === $lang ) &&
+				( isset( $content['fset'] ) && $content['fset'] === $this->featureSet )  ) {
 				return $this->isCached = true;
 			}
 		}
@@ -267,7 +290,7 @@ class CachedFactbox {
 	private function retrieveFromCache( $key ) {
 
 		if ( !$this->cache->contains( $key ) || !$this->isEnabled ) {
-			return array();
+			return [];
 		}
 
 		$data = $this->cache->fetch( $key );
@@ -287,10 +310,10 @@ class CachedFactbox {
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 
-		$data = array(
+		$data = [
 			'time' => $this->timestamp,
 			'content' => serialize( $content )
-		);
+		];
 
 		$this->cache->save( $key, $data, $this->expiryInSeconds );
 	}

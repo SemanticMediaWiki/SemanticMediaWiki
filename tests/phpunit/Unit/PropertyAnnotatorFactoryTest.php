@@ -111,7 +111,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyAnnotators\CategoryPropertyAnnotator',
-			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, array() )
+			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, [] )
 		);
 	}
 
@@ -129,7 +129,7 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructRuleDefinitionPropertyAnnotator() {
+	public function testCanConstructSchemaPropertyAnnotator() {
 
 		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
 			->disableOriginalConstructor()
@@ -138,8 +138,8 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotators\RuleDefinitionPropertyAnnotator',
-			$instance->newRuleDefinitionPropertyAnnotator( $propertyAnnotator )
+			'\SMW\PropertyAnnotators\SchemaPropertyAnnotator',
+			$instance->newSchemaPropertyAnnotator( $propertyAnnotator )
 		);
 	}
 

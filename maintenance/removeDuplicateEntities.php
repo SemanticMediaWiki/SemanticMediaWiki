@@ -64,7 +64,7 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 		$duplicateEntitiesDisposer = $maintenanceFactory->newDuplicateEntitiesDisposer(
 			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
-			array( $this, 'reportMessage' )
+			[ $this, 'reportMessage' ]
 		);
 
 		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicates();

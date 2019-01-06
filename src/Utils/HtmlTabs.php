@@ -134,6 +134,7 @@ class HtmlTabs {
 		) . Html::rawElement(
 			'label',
 			[
+				'id'  => "tab-label-$id",
 				'for' => "tab-$id"
 			] + $this->mergeAttributes( 'nav-label', $params ),
 			$name
@@ -164,7 +165,7 @@ class HtmlTabs {
 
 	private function mergeAttributes( $class, $attr ) {
 
-		$attributes = array();
+		$attributes = [];
 
 		// A bit of attribute order
 		if ( isset( $attr['id'] ) ) {

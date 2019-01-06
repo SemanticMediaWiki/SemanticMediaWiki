@@ -78,7 +78,7 @@ class TitleIsMovableTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRulePageIsAlwaysNotMovable() {
 
-		$title = Title::newFromText( 'Foo', SMW_NS_RULE );
+		$title = Title::newFromText( 'Foo', SMW_NS_SCHEMA );
 		$isMovable = true;
 
 		$instance = new TitleIsMovable( $title );

@@ -39,7 +39,7 @@ class OrderCondition {
 	 *
 	 * @var string[]
 	 */
-	private $sortKeys = array();
+	private $sortKeys = [];
 
 	/**
 	 * @var boolean
@@ -127,7 +127,7 @@ class OrderCondition {
 			$querySegment
 		);
 
-		if ( $extraDescriptions !== array() ) {
+		if ( $extraDescriptions !== [] ) {
 			$this->addConjunctionFromExtraDescriptions( $querySegment, $extraDescriptions );
 		}
 
@@ -136,7 +136,7 @@ class OrderCondition {
 
 	private function collectExtraDescriptionsFromSortKeys( $querySegment ) {
 
-		$extraDescriptions = array();
+		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {
 

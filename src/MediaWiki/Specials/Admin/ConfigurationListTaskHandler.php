@@ -73,12 +73,12 @@ class ConfigurationListTaskHandler extends TaskHandler {
 
 		return Html::rawElement(
 			'li',
-			array(),
+			[],
 			$this->msg(
-				array(
+				[
 					'smw-admin-supplementary-settings-intro',
 					$link
-				)
+				]
 			)
 		);
 	}

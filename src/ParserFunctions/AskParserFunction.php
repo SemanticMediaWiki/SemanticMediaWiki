@@ -205,7 +205,8 @@ class AskParserFunction {
 			array_shift( $functionParams );
 		}
 
-		$extraKeys = array();
+		$extraKeys = [];
+		$previous = false;
 
 		// Filter invalid parameters
 		foreach ( $functionParams as $key => $value ) {
@@ -233,9 +234,22 @@ class AskParserFunction {
 				$this->parserData->addExtraParserKey( 'localTime' );
 			}
 
-			// First and marked printrequests
-			if (  $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+			// Skip the first (being the condition) and other marked
+			// printrequests
+			if ( $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
 				continue;
+			}
+
+			// The MW parser swallows any `|` char (as it is used as field
+			// separator) hence make an educated guess about the condition when
+			// it contains `[[`...`]]` and the previous value was empty (expected
+			// due to ||) then the string should be concatenated and interpret
+			// as [[Foo]] || [[Bar]]
+			if (
+				( $key > 0 && $previous === '' ) &&
+				( strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false ) ) {
+				$functionParams[0] .= " || $value";
+				unset( $functionParams[$key] );
 			}
 
 			// Filter parameters that can not be split into
@@ -243,9 +257,11 @@ class AskParserFunction {
 			if ( strpos( $value, '=' ) === false ) {
 				unset( $functionParams[$key] );
 			}
+
+			$previous = $value;
 		}
 
-		return array( $functionParams, $extraKeys );
+		return [ $functionParams, $extraKeys ];
 	}
 
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
@@ -278,7 +294,7 @@ class AskParserFunction {
 
 		if ( $this->postProcHandler !== null && isset( $extraKeys[self::IS_ANNOTATION] ) ) {
 			$status[] = 100;
-			$this->postProcHandler->addQueryRef( $query );
+			$this->postProcHandler->addUpdate( $query );
 		}
 
 		if ( $this->context === QueryProcessor::DEFERRED_QUERY ) {
@@ -316,12 +332,21 @@ class AskParserFunction {
 
 		$query->setOption( 'query.params', $params );
 
+		// Only request a result_hash in case the `check-query` is enabled
+		if ( $this->postProcHandler !== null ) {
+			$query->setOption( 'calc.result_hash', $this->postProcHandler->getOption( 'check-query' ) );
+		}
+
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
 			$this->context
 		);
+
+		if ( $this->postProcHandler !== null && $this->context !== QueryProcessor::DEFERRED_QUERY ) {
+			$this->postProcHandler->addCheck( $query );
+		}
 
 		$format = $this->params['format']->getValue();
 
@@ -355,7 +380,7 @@ class AskParserFunction {
 		}
 
 		// Adding to error in order to be discoverable
-		$this->addProcessingError( array( 'smw-parser-function-expensive-execution-limit' ) );
+		$this->addProcessingError( [ 'smw-parser-function-expensive-execution-limit' ] );
 
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
@@ -396,7 +421,7 @@ class AskParserFunction {
 
 	private function addProcessingError( $errors ) {
 
-		if ( $errors === array() ) {
+		if ( $errors === [] ) {
 			return;
 		}
 

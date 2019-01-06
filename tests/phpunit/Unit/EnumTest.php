@@ -28,9 +28,9 @@ class EnumTest extends \PHPUnit_Framework_TestCase {
 
 	public function constProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			Enum::OPT_SUSPEND_PURGE
-		);
+		];
 
 		return $provider;
 	}

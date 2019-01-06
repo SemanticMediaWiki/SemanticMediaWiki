@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use Title;
 
@@ -11,7 +12,7 @@ use Title;
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuildJob extends JobBase {
+class PropertyStatisticsRebuildJob extends Job {
 
 	/**
 	 * @since 2.5
@@ -19,8 +20,8 @@ class PropertyStatisticsRebuildJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
-		parent::__construct( 'SMW\PropertyStatisticsRebuildJob', $title, $params );
+	public function __construct( Title $title, $params = [] ) {
+		parent::__construct( 'smw.propertyStatisticsRebuild', $title, $params );
 		$this->removeDuplicates = true;
 	}
 

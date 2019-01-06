@@ -53,8 +53,8 @@ class ResourceLoaderTestModules extends HookHandler {
 	 */
 	public function process(  array &$testModules ) {
 
-		$testModules['qunit']['ext.smw.tests'] = array(
-			'scripts' => array(
+		$testModules['qunit']['ext.smw.tests'] = [
+			'scripts' => [
 				'tests/qunit/smw/ext.smw.test.js',
 				'tests/qunit/smw/util/ext.smw.util.tooltip.test.js',
 
@@ -74,18 +74,18 @@ class ResourceLoaderTestModules extends HookHandler {
 				'tests/qunit/smw/data/ext.smw.data.test.js',
 				'tests/qunit/smw/api/ext.smw.api.test.js',
 				'tests/qunit/smw/query/ext.smw.query.test.js',
-			),
-			'dependencies' => array(
+			],
+			'dependencies' => [
 				'ext.smw',
 				'ext.smw.tooltip',
 				'ext.smw.query',
 				'ext.smw.data',
 				'ext.smw.api'
-			),
+			],
 			'position' => 'top',
 			'localpath' => $this->path,
 			'remoteExtPath' => '..' . substr( $this->path, strlen( $this->ip ) ),
-		);
+		];
 
 		return true;
 	}

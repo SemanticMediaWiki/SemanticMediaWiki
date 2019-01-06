@@ -25,7 +25,7 @@ class FallbackFinder {
 	/**
 	 * @var array
 	 */
-	private $fallbackLanguages = array();
+	private $fallbackLanguages = [];
 
 	/**
 	 * @since 2.5

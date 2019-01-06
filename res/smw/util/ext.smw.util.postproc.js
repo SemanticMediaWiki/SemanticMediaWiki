@@ -27,6 +27,7 @@
 
 			var api = new mw.Api();
 			var ref = $( this ).data( 'ref' );
+			var query = $( this ).data( 'query' );
 
 			if ( ref !== undefined && ref !== '' ) {
 				mw.notify( mw.msg( 'smw-postproc-queryref' ), { type: 'info', autoHide: false } );
@@ -47,7 +48,28 @@
 				api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
 					location.reload( true );
 				} );
-			};
+			} else if ( query !== undefined ) {
+
+				var params = {
+					'subject': $( this ).data( 'subject' ),
+					'origin': 'api-postproc',
+					'query' : query,
+					'cache-key': $( this ).data( 'cache-key' )
+				};
+
+				var postArgs = {
+					'action': 'smwtask',
+					'task': 'check-query',
+					'params': JSON.stringify( params )
+				};
+
+				api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
+					if ( data.task.hasOwnProperty( 'reload' ) ) {
+						mw.notify( mw.msg( 'smw-postproc-queryref' ), { type: 'info', autoHide: false } );
+						location.reload( true );
+					};
+				} );
+			}
 
 			var jobs = $( this ).data( 'jobs' );
 

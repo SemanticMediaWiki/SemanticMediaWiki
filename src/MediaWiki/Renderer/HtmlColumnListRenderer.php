@@ -24,12 +24,12 @@ class HtmlColumnListRenderer {
 	/**
 	 * @var array
 	 */
-	private $contentsByIndex = array();
+	private $contentsByIndex = [];
 
 	/**
 	 * @var array
 	 */
-	private $itemAttributes = array();
+	private $itemAttributes = [];
 
 	/**
 	 * @var integer
@@ -167,7 +167,7 @@ class HtmlColumnListRenderer {
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ) {
 
-		$contentsByEmptyIndex[''] = array();
+		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
 			$contentsByEmptyIndex[''][] = $value;
@@ -213,7 +213,7 @@ class HtmlColumnListRenderer {
 
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
-			if ( $resultItems === array() ) {
+			if ( $resultItems === [] ) {
 					continue;
 			}
 
@@ -231,10 +231,10 @@ class HtmlColumnListRenderer {
 
 		return Html::rawElement(
 			'div',
-			array(
+			[
 				'class' => $this->columnListClass,
 				'dir'   => $this->isRTL ? 'rtl' : 'ltr'
-			),
+			],
 			$result . "\n" . '<br style="clear: both;"/>'
 		);
 	}
@@ -265,7 +265,7 @@ class HtmlColumnListRenderer {
 
 				if ( $key == $previousKey ) {
 					// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength.MaxExceeded
-					$result .= $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), "$key $listContinuesAbbrev" ) : '';
+					$result .= $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], "$key $listContinuesAbbrev" ) : '';
 					$result .= "<{$this->listType}$type start={$numRowsInColumn}>";
 					// @codingStandardsIgnoreEnd
 				}
@@ -275,7 +275,7 @@ class HtmlColumnListRenderer {
 			// the last list and start a new one
 			if ( $key != $previousKey ) {
 				$result .= $this->numRows % $this->rowsPerColumn > 0 ? "</{$this->listType}>" : '';
-				$result .= ( $key !== '' ? Html::element( 'div', array( 'class' => 'smw-column-header' ), $key ) : '' ) . "<{$this->listType}>";
+				$result .= ( $key !== '' ? Html::element( 'div', [ 'class' => 'smw-column-header' ], $key ) : '' ) . "<{$this->listType}>";
 			}
 
 			$previousKey = $key;

@@ -35,7 +35,7 @@ abstract class QueryPage extends \QueryPage {
 	protected $linker = null;
 
 	/** @var array */
-	protected $selectOptions = array();
+	protected $selectOptions = [];
 
 	/** @var array */
 	protected $useSerchForm = false;
@@ -70,7 +70,7 @@ abstract class QueryPage extends \QueryPage {
 	 */
 	public function linkParameters() {
 
-		$parameters = array();
+		$parameters = [];
 		$property   = $this->getRequest()->getVal( 'property' );
 
 		if ( $property !== null && $property !== '' ) {
@@ -145,27 +145,27 @@ abstract class QueryPage extends \QueryPage {
 		);
 
 		if ( $cacheDate !== '' ) {
-			$cacheDate = Xml::tags( 'p', array(), $cacheDate );
+			$cacheDate = Xml::tags( 'p', [], $cacheDate );
 		}
 
 		if ( $propertySearch ) {
-			$propertySearch = Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) .
+			$propertySearch = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) .
 				Xml::inputLabel( $this->msg( 'smw-special-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
 				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() );
 		}
 
 		if ( $filter !== '' ) {
-			$filter = Xml::tags( 'hr', array( 'style' => 'margin-bottom:10px;' ), '' ) . $filter;
+			$filter = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) . $filter;
 		}
 
-		return Xml::tags( 'form', array(
+		return Xml::tags( 'form', [
 			'method' => 'get',
 			'action' => htmlspecialchars( $GLOBALS['wgScript'] ),
 			'class' => 'plainlinks'
-		), Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
+		], Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
 			Xml::fieldset( $this->msg( 'smw-special-property-searchform-options' )->text(),
-				Xml::tags( 'p', array(), $resultCount ) .
-				Xml::tags( 'p', array(), $selection ) .
+				Xml::tags( 'p', [], $resultCount ) .
+				Xml::tags( 'p', [], $selection ) .
 				$cacheDate .
 				$propertySearch .
 				$filter
@@ -206,12 +206,12 @@ abstract class QueryPage extends \QueryPage {
 		// often disable 'next' link when we reach the end
 		$atend = $num < $limit;
 
-		$this->selectOptions = array(
+		$this->selectOptions = [
 			'offset' => $offset,
 			'limit'  => $limit,
 			'end'    => $atend,
 			'count'  => $num
-		);
+		];
 
 		$out->addHTML( $this->getPageHeader() );
 
@@ -222,7 +222,7 @@ abstract class QueryPage extends \QueryPage {
 		}
 
 		if ( $num > 0 ) {
-			$s = array();
+			$s = [];
 			if ( ! $this->listoutput ) {
 				$s[] = $this->openList( $offset );
 			}

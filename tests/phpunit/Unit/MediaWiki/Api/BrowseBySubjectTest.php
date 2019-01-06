@@ -46,7 +46,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new BrowseBySubject(
-			$this->apiFactory->newApiMain( array('subject' => 'Foo' ) ),
+			$this->apiFactory->newApiMain( ['subject' => 'Foo' ] ),
 			'browsebysubject'
 		);
 
@@ -72,15 +72,15 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$expectedResultToContainArrayKeys = array(
+		$expectedResultToContainArrayKeys = [
 			'error'  => false,
 			'result' => true
-		);
+		];
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 			'action'  => 'browsebysubject',
 			'subject' => 'Foo'
-		) );
+		] );
 
 		$this->assertToContainArrayKeys(
 			$expectedResultToContainArrayKeys,
@@ -91,15 +91,15 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	public function testExecuteForInvalidSubjectThrowsException() {
 		$this->setExpectedException( interface_exists( 'Throwable' ) ? 'Throwable' : 'Exception' );
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 			'action'  => 'browsebysubject',
 			'subject' => '{}'
-		) );
+		] );
 	}
 
 	public function testRawJsonPrintOutput() {
 
-		$parameters = array( 'subject' => 'Foo', 'subobject' => 'Bar'  );
+		$parameters = [ 'subject' => 'Foo', 'subobject' => 'Bar'  ];
 
 		$dataItem = new DIWikiPage(
 			'Foo',
@@ -150,11 +150,11 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 
 	public function testHtmlJsonPrintOutput() {
 
-		$parameters = array(
+		$parameters = [
 			'subject' => 'Foo',
 			'subobject' => 'Bar',
 			'type' => 'html'
-		);
+		];
 
 		$dataItem = new DIWikiPage(
 			'Foo',

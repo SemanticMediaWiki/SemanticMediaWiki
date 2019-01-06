@@ -148,7 +148,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$description
 		);
 
-		return array( $innerOrderByProperty, $innerCondition, $innerJoinVariable );
+		return [ $innerOrderByProperty, $innerCondition, $innerJoinVariable ];
 	}
 
 	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ) {
@@ -215,7 +215,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$nonInverseProperty = new DIProperty( $property->getKey(), false );
 		}
 
-		return array( $subjectName, $objectName, $nonInverseProperty );
+		return [ $subjectName, $objectName, $nonInverseProperty ];
 	}
 
 	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ) {

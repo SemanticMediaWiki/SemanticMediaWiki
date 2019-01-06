@@ -87,25 +87,25 @@ class NumberValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 
 	public function valueProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'42',
 			'\SMW\Query\Language\ValueDescription'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'~42',
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'~*42*',
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'~-42',
 			'\SMW\Query\Language\Conjunction'
-		);
+		];
 
 		return $provider;
 	}

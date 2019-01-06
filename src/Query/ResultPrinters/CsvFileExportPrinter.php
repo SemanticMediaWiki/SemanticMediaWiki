@@ -63,40 +63,40 @@ class CsvFileExportPrinter extends FileExportPrinter {
 			$this->msg( 'smw_csv_link' )->inContentLanguage()->text()
 		);
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'sep',
 			'message' => 'smw-paramdesc-csv-sep',
 			'default' => ',',
-		);
+		];
 
-		$params['valuesep'] = array(
+		$params['valuesep'] = [
 			'message' => 'smw-paramdesc-csv-valuesep',
 			'default' => ',',
-		);
+		];
 
-		$params['showsep'] = array(
+		$params['showsep'] = [
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-showsep',
-		);
+		];
 
-		$params[] = array(
+		$params[] = [
 			'name' => 'filename',
 			'message' => 'smw-paramdesc-filename',
 			'default' => 'result.csv',
-		);
+		];
 
-		$params['merge'] = array(
+		$params['merge'] = [
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-csv-merge',
-		);
+		];
 
-		$params['bom'] = array(
+		$params['bom'] = [
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-csv-bom',
-		);
+		];
 
 		return $params;
 	}

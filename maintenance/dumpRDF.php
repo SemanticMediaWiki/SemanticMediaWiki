@@ -51,7 +51,7 @@ class DumpRdf extends \Maintenance {
 	/**
 	 * @var array
 	 */
-	private $pages = array();
+	private $pages = [];
 
 	/**
 	 * @since 2.0
@@ -138,7 +138,7 @@ class DumpRdf extends \Maintenance {
 		} elseif ( $this->hasOption( 'concepts' ) ) {
 			$this->restrictNamespaceTo = SMW_NS_CONCEPT;
 		} elseif ( $this->hasOption( 'classes' ) ) {
-			$this->restrictNamespaceTo = array( NS_CATEGORY, SMW_NS_CONCEPT );
+			$this->restrictNamespaceTo = [ NS_CATEGORY, SMW_NS_CONCEPT ];
 		} elseif ( $this->hasOption( 'properties' ) ) {
 			$this->restrictNamespaceTo = SMW_NS_PROPERTY;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
@@ -160,7 +160,7 @@ class DumpRdf extends \Maintenance {
 
 		$exportController = new ExportController( new RDFXMLSerializer() );
 
-		if ( $this->pages !== array() ) {
+		if ( $this->pages !== [] ) {
 			return $exportController->printPages(
 				$this->pages
 			);

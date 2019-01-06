@@ -68,8 +68,8 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
 
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
-			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'isSetFlag' ) )
+			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
+			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
 
 		$conditionBuilder->expects( $this->once() )
@@ -120,8 +120,8 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$resultVariable = 'result';
 
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
-			->setConstructorArgs( array( $this->descriptionInterpreterFactory ) )
-			->setMethods( array( 'tryToFindRedirectVariableForDataItem' ) )
+			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
+			->setMethods( [ 'tryToFindRedirectVariableForDataItem' ] )
 			->getMock();
 
 		$conditionBuilder->expects( $this->once() )
@@ -201,11 +201,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '"SomePropertyValue" swivt:page ?url .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -221,11 +221,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result < "SomePropertyValue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 2 Less for a non-blob (DIWikiPage type) value
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -241,11 +241,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?resultsk < "SomePropertyValuePage" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -261,11 +261,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result < property:SomeProperty )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 4
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -281,11 +281,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result > "SomePropertyValue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 5
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -301,11 +301,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result <= "SomePropertyValue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 6
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -321,11 +321,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result >= "SomePropertyValue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 7
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -341,11 +341,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?result != "SomePropertyValue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 8
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -361,11 +361,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( regex( ?result, "^SomePropertyValue$", "s") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 9
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -381,11 +381,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( !regex( ?result, "^SomePropertyValue$", "s") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 10 Regex on a non-blob value
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
@@ -400,11 +400,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:page ?url .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 11 Regex on a non-blob (DIWikiPage type) value
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
@@ -420,11 +420,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 12 Regex on a non-blob (DIUri type) value
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
@@ -440,11 +440,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( regex( str( ?result ), "^.*//example\\\.org$", "i") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		# 13 Unknown comparator operator
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
@@ -457,11 +457,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:page ?url .' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$conditionType,
 			$expected
-		);
+		];
 
 		return $provider;
 	}
@@ -481,10 +481,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( !regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		# 1
 		$description = new ValueDescription(
@@ -497,10 +497,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( regex( ?result, "^SomePropertyValue$", "i") )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		# 2
 		$description = new ValueDescription(
@@ -513,10 +513,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( lcase(str(?result) ) = "somepropertyvalue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		# 3
 		$description = new ValueDescription(
@@ -529,10 +529,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( lcase(str(?result) ) != "somepropertyvalue" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		# 4
 		$description = new ValueDescription(
@@ -545,10 +545,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( lcase(str(?resultsk) ) = "somepropertyvaluepage" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		# 5
 		$description = new ValueDescription(
@@ -561,10 +561,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( lcase(str(?resultsk) ) != "somepropertyvaluepage" )' )->addNewLine()
 			->getString();
 
-		$provider[] = array(
+		$provider[] = [
 			$description,
 			$expected
-		);
+		];
 
 		return $provider;
 	}
@@ -575,17 +575,17 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItem
-		);
+		];
 
 		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = array(
+		$provider[] = [
 			$dataItem
-		);
+		];
 
 		return $provider;
 	}

@@ -75,7 +75,7 @@ class ContentsBuilder {
 			$type
 		);
 
-		if ( $result !== array() ) {
+		if ( $result !== [] ) {
 			 $html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
 		} else {
 			 $html .= $this->msg( 'smw-property-label-similarity-noresult' );
@@ -96,7 +96,7 @@ class ContentsBuilder {
 		}
 
 		$html = $this->msg(
-			array( 'smw-property-label-similarity-docu', $exemptionProperty ),
+			[ 'smw-property-label-similarity-docu', $exemptionProperty ],
 			Message::PARSE
 		);
 
@@ -125,15 +125,15 @@ class ContentsBuilder {
 				'yes',
 				$type === 'yes',
 				null,
-				array(
+				[
 					'style' => 'float:right'
-				)
+				]
 			)
 			->addQueryParameter( 'type', $type )
 			->addSubmitButton( $this->msg( 'allpagessubmit' ) )
 			->getForm();
 
-		return Html::rawElement( 'div', array( 'class' => 'plainlinks'), $html ) . Html::element( 'p', array(), '' );
+		return Html::rawElement( 'div', [ 'class' => 'plainlinks'], $html ) . Html::element( 'p', [], '' );
 	}
 
 	private function msg( $parameters, $type = Message::TEXT ) {

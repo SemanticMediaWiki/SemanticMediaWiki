@@ -132,14 +132,14 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTemplateSupport() {
 
-		$params = array( 'Foo=bar', 'Foo=foobar', 'BarFoo=9001', 'template=FooTemplate' );
+		$params = [ 'Foo=bar', 'Foo=foobar', 'BarFoo=9001', 'template=FooTemplate' ];
 
-		$expected = array(
+		$expected = [
 			'errors' => 0,
 			'propertyCount'  => 2,
-			'propertyLabels' => array( 'Foo', 'BarFoo' ),
-			'propertyValues' => array( 'Bar', '9001', 'Foobar' )
-		);
+			'propertyLabels' => [ 'Foo', 'BarFoo' ],
+			'propertyValues' => [ 'Bar', '9001', 'Foobar' ]
+		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
@@ -178,60 +178,60 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// {{#set:
 		// |Foo=bar
 		// }}
-		$provider[] = array(
-			array( 'Foo=bar' ),
-			array(
+		$provider[] = [
+			[ 'Foo=bar' ],
+			[
 				'errors' => 0,
 				'propertyCount'  => 1,
 				'propertyLabels' => 'Foo',
 				'propertyValues' => 'Bar'
-			)
-		);
+			]
+		];
 
 		// #1 Empty data set
 		// {{#set:
 		// |Foo=
 		// }}
-		$provider[] = array(
-			array( 'Foo=' ),
-			array(
+		$provider[] = [
+			[ 'Foo=' ],
+			[
 				'errors' => 0,
 				'propertyCount'  => 0,
 				'propertyLabels' => '',
 				'propertyValues' => ''
-			)
-		);
+			]
+		];
 
 		// #2 Multiple data set
 		// {{#set:
 		// |BarFoo=9001
 		// |Foo=bar
 		// }}
-		$provider[] = array(
-			array( 'Foo=bar', 'BarFoo=9001' ),
-			array(
+		$provider[] = [
+			[ 'Foo=bar', 'BarFoo=9001' ],
+			[
 				'errors' => 0,
 				'propertyCount'  => 2,
-				'propertyLabels' => array( 'Foo', 'BarFoo' ),
-				'propertyValues' => array( 'Bar', '9001' )
-			)
-		);
+				'propertyLabels' => [ 'Foo', 'BarFoo' ],
+				'propertyValues' => [ 'Bar', '9001' ]
+			]
+		];
 
 		// #3 Multiple data set with an error record
 		// {{#set:
 		// |_Foo=9001 --> will raise an error
 		// |Foo=bar
 		// }}
-		$provider[] = array(
-			array( 'Foo=bar', '_Foo=9001' ),
-			array(
+		$provider[] = [
+			[ 'Foo=bar', '_Foo=9001' ],
+			[
 				'errors' => 1,
 				'propertyCount'  => 2,
 				'strictPropertyValueMatch' => false,
-				'propertyKeys' => array( 'Foo', '_ERRC' ),
-				'propertyValues' => array( 'Bar' )
-			)
-		);
+				'propertyKeys' => [ 'Foo', '_ERRC' ],
+				'propertyValues' => [ 'Bar' ]
+			]
+		];
 
 		return $provider;
 	}

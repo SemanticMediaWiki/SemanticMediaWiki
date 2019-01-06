@@ -46,8 +46,8 @@ class FormsFinder {
 		$requestOptions->setOption( 'DISTINCT', false );
 
 		$subjects = $this->store->getPropertySubjects(
-			new DIProperty( '_RL_TYPE' ),
-			new DIBlob( SearchProfileForm::RULE_TYPE ),
+			new DIProperty( '_SCHEMA_TYPE' ),
+			new DIBlob( SearchProfileForm::SCHEMA_TYPE ),
 			$requestOptions
 		);
 

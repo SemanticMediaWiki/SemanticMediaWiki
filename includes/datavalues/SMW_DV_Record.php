@@ -75,12 +75,12 @@ class SMWRecordValue extends AbstractMultiValue {
 	protected function parseUserValue( $value ) {
 
 		if ( $value === '' ) {
-			$this->addErrorMsg( array( 'smw_novalues' ) );
+			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
 		}
 
 		$containerSemanticData = $this->newContainerSemanticData( $value );
-		$sortKeys = array();
+		$sortKeys = [];
 
 		$values = $this->getValuesFromString( $value );
 		$valueIndex = 0; // index in value array
@@ -89,7 +89,7 @@ class SMWRecordValue extends AbstractMultiValue {
 
 		foreach ( $this->getPropertyDataItems() as $diProperty ) {
 
-			if ( !array_key_exists( $valueIndex, $values ) || $this->getErrors() !== array() ) {
+			if ( !array_key_exists( $valueIndex, $values ) || $this->getErrors() !== [] ) {
 				break; // stop if there are no values left
 			}
 
@@ -119,8 +119,8 @@ class SMWRecordValue extends AbstractMultiValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty && $this->getErrors() === array()  ) {
-			$this->addErrorMsg( array( 'smw_novalues' ) );
+		if ( $empty && $this->getErrors() === []  ) {
+			$this->addErrorMsg( [ 'smw_novalues' ] );
 		}
 
 		// Remember the data to extend the sortkey
@@ -197,17 +197,6 @@ class SMWRecordValue extends AbstractMultiValue {
 		}
 	}
 
-////// Additional API for value lists
-
-	/**
-	 * @deprecated as of 1.6, use getDataItems instead
-	 *
-	 * @return array of DataItem
-	 */
-	public function getDVs() {
-		return $this->getDataItems();
-	}
-
 	/**
 	 * @since 1.6
 	 *
@@ -235,14 +224,12 @@ class SMWRecordValue extends AbstractMultiValue {
 
 		$this->m_diProperties = $this->getFieldProperties( $this->m_property );
 
-		if ( $this->m_diProperties  === array() ) { // TODO internalionalize
+		if ( $this->m_diProperties  === [] ) { // TODO internalionalize
 			$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 		}
 
 		return $this->m_diProperties;
 	}
-
-////// Internal helper functions
 
 	protected function makeOutputText( $type = 0, $linker = null ) {
 		if ( !$this->isValid() ) {
@@ -274,7 +261,7 @@ class SMWRecordValue extends AbstractMultiValue {
 		return $result;
 	}
 
-	protected function makeValueOutputText( $type, $dataValue, $linker ) {
+	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
 			return $dataValue->getShortWikiText( $linker );

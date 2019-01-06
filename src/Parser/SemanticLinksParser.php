@@ -33,7 +33,7 @@ class SemanticLinksParser {
 	 */
 	public function parse( $text ) {
 
-		$matches = array();
+		$matches = [];
 
 		preg_match(
 			$this->linksProcessor->getRegexpPattern(),
@@ -41,20 +41,20 @@ class SemanticLinksParser {
 			$matches
 		);
 
-		if ( $matches === array() ) {
-			return array();
+		if ( $matches === [] ) {
+			return [];
 		}
 
 		$semanticLinks = $this->linksProcessor->preprocess( $matches );
 
 		if ( is_string( $semanticLinks ) ) {
-			return array();
+			return [];
 		}
 
 		$semanticLinks = $this->linksProcessor->process( $semanticLinks );
 
 		if ( is_string( $semanticLinks ) ) {
-			return array();
+			return [];
 		}
 
 		return $semanticLinks;

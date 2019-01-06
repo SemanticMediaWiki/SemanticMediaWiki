@@ -58,7 +58,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 
 		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
 			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
-			array( $this, 'reportMessage' )
+			[ $this, 'reportMessage' ]
 		);
 
 		$statisticsRebuilder->rebuild();

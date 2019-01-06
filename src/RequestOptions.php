@@ -17,6 +17,8 @@ namespace SMW;
  */
 class RequestOptions {
 
+	const SEARCH_FIELD = 'search_field';
+
 	/**
 	 * The maximum number of results that should be returned.
 	 */
@@ -62,7 +64,7 @@ class RequestOptions {
 	 *
 	 * @var StringCondition[]
 	 */
-	private $stringConditions = array();
+	private $stringConditions = [];
 
 	/**
 	 * Contains extra conditions which a consumer is being allowed to interpret
@@ -70,7 +72,7 @@ class RequestOptions {
 	 *
 	 * @var array
 	 */
-	private $extraConditions = array();
+	private $extraConditions = [];
 
 	/**
 	 * @var array
@@ -194,7 +196,7 @@ class RequestOptions {
 			$stringConditions .= $stringCondition->getHash();
 		}
 
-		return json_encode( array(
+		return json_encode( [
 			$this->limit,
 			$this->offset,
 			$this->sort,
@@ -204,7 +206,7 @@ class RequestOptions {
 			$stringConditions,
 			$this->extraConditions,
 			$this->options,
-		) );
+		] );
 	}
 
 }

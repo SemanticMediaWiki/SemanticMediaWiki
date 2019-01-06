@@ -105,7 +105,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 				$description->getDataItem()->getSubobjectName()
 			);
 
-			$query->joinfield = array( $oid );
+			$query->joinfield = [ $oid ];
 		} else { // Join with SMW IDs table needed for other comparators (apply to title string).
 			$query->joinTable = SMWSql3SmwIds::TABLE_NAME;
 			$query->joinfield = "{$query->alias}.smw_id";
@@ -156,7 +156,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$query->joinTable = $valueMatchConditionBuilder->getTableName();
 		$query->joinfield = "{$query->alias}.s_id";
 		$query->indexField = 's_id';
-		$query->components = array();
+		$query->components = [];
 
 		$query->where = $valueMatchConditionBuilder->getWhereCondition(
 			new ValueDescription( new DIBlob( $value ), null, $comparator ),

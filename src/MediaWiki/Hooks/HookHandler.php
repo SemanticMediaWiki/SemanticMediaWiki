@@ -46,6 +46,11 @@ class HookHandler {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
+
+		if ( $this->options === null ) {
+			$this->setOptions( [] );
+		}
+
 		return $this->options->safeGet( $key, $default );
 	}
 
@@ -61,7 +66,7 @@ class HookHandler {
 		return $this->options->isFlagSet( $key, $flag );
 	}
 
-	protected function log( $message, $context = array() ) {
+	protected function log( $message, $context = [] ) {
 		if ( $this->logger instanceof LoggerInterface ) {
 			$this->logger->info( $message, $context );
 		}

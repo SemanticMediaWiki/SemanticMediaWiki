@@ -53,7 +53,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			array()
+			[]
 		);
 
 		$this->assertInstanceOf(
@@ -210,7 +210,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getRedirectTarget' ) )
+			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )
@@ -225,7 +225,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CategoryPropertyAnnotator(
 			new NullPropertyAnnotator( $semanticData ),
-			array( 'Bar' )
+			[ 'Bar' ]
 		);
 
 		$instance->useCategoryRedirect(
@@ -234,10 +234,10 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->addAnnotation();
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 1,
 			'propertyKeys'   => '_ERRC'
-		);
+		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -247,43 +247,43 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function categoriesDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		// Standard category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'  => NS_MAIN,
-				'categories' => array( 'Foo', 'Bar' ),
-				'settings'   => array(
+				'categories' => [ 'Foo', 'Bar' ],
+				'settings'   => [
 					'categoryHierarchy'  => false,
 					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => array( 'Foo',  'Bar' ),
-			)
-		);
+				'propertyValues' => [ 'Foo',  'Bar' ],
+			]
+		];
 
 		// Category hierarchy or Sub-category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'  => NS_CATEGORY,
-				'categories' => array( 'Foo', 'Bar' ),
-				'settings'   => array(
+				'categories' => [ 'Foo', 'Bar' ],
+				'settings'   => [
 					'categoryHierarchy'  => true,
 					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => true
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => array( 'Foo',  'Bar' ),
-			)
-		);
+				'propertyValues' => [ 'Foo',  'Bar' ],
+			]
+		];
 
 		return $provider;
 	}
@@ -293,7 +293,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function hiddenCategoriesDataProvider() {
 
-		$provider = array();
+		$provider = [];
 
 		$hidCategory = MockTitle::buildMock( __METHOD__ );
 
@@ -306,80 +306,80 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Bar' ) );
 
 		// #0 Standard category, show hidden category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'     => NS_MAIN,
-				'categories'    => array( 'Foo', 'Bar' ),
-				'hidCategories' => array( $hidCategory ),
-				'settings'   => array(
+				'categories'    => [ 'Foo', 'Bar' ],
+				'hidCategories' => [ $hidCategory ],
+				'settings'   => [
 					'categoryHierarchy'  => false,
 					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => array( 'Foo', 'Bar' ),
-			)
-		);
+				'propertyValues' => [ 'Foo', 'Bar' ],
+			]
+		];
 
 		// #1 Standard category, omit hidden category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'     => NS_MAIN,
-				'categories'    => array( 'Foo', 'Bar' ),
-				'hidCategories' => array( $hidCategory ),
-				'settings'   => array(
+				'categories'    => [ 'Foo', 'Bar' ],
+				'hidCategories' => [ $hidCategory ],
+				'settings'   => [
 					'categoryHierarchy'  => false,
 					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => false
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => array( 'Foo' ),
-			)
-		);
+				'propertyValues' => [ 'Foo' ],
+			]
+		];
 
 		// #2 Category hierarchy or Sub-category, show hidden category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'     => NS_CATEGORY,
-				'categories'    => array( 'Foo', 'Bar' ),
-				'hidCategories' => array( $hidCategory ),
-				'settings'   => array(
+				'categories'    => [ 'Foo', 'Bar' ],
+				'hidCategories' => [ $hidCategory ],
+				'settings'   => [
 					'categoryHierarchy'  => true,
 					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => true
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => array( 'Foo', 'Bar' ),
-			)
-		);
+				'propertyValues' => [ 'Foo', 'Bar' ],
+			]
+		];
 
 		// #3 Category hierarchy or Sub-category, omit hidden category
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'namespace'     => NS_CATEGORY,
-				'categories'    => array( 'Foo', 'Bar' ),
-				'hidCategories' => array( $hidCategory ),
-				'settings'   => array(
+				'categories'    => [ 'Foo', 'Bar' ],
+				'hidCategories' => [ $hidCategory ],
+				'settings'   => [
 					'categoryHierarchy'  => true,
 					'categoriesAsInstances' => false,
 					'showHiddenCategories'  => false
-				)
-			),
-			array(
+				]
+			],
+			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => array( 'Foo' ),
-			)
-		);
+				'propertyValues' => [ 'Foo' ],
+			]
+		];
 
 		return $provider;
 	}

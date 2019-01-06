@@ -166,15 +166,19 @@
 	"tests": [
 		{
 			"type": "parser-html",
-			"about": "#1 List format is called as standard output",
+			"about": "#1 Plainlist format is called as standard output",
 			"subject": "f-0402/Test-01",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
-					[
-						"span.list-format > span.smw-row > span.smw-field > span.smw-value > a[title]",
-						10
-					]
+						"a[title] ~ a[title]"
+				],
+				"not-contain": [
+					".smw-format",
+					".list-format",
+					".smw-row",
+					".smw-field",
+					".smw-value"
 				]
 			}
 		},

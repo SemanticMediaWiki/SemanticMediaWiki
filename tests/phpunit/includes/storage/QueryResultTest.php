@@ -28,8 +28,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
@@ -47,12 +47,12 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
+		$printRequests = [];
 
-		$results = array(
+		$results = [
 			new DIWikiPage( 'Foo', 0 ),
 			new DIWikiPage( 'Bar', 0 )
-		);
+		];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $store );
 
@@ -81,8 +81,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult(
 			$printRequests,
@@ -99,6 +99,32 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->isFromCache()
+		);
+	}
+
+	public function testGetHash() {
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$printRequests = [];
+		$results = [];
+
+		$instance = new QueryResult(
+			$printRequests,
+			$query,
+			$results,
+			$store
+		);
+
+		$this->assertNotSame(
+			$instance->getHash( 'quick' ),
+			$instance->getHash()
 		);
 	}
 

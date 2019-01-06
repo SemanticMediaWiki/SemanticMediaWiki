@@ -136,11 +136,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testHasReachedExpensiveLimit() {
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list'
-		);
+		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
@@ -219,64 +219,15 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$this->expensiveFuncExecutionWatcher
 		);
 
-		$params = array();
+		$params = [];
 
 		$this->assertEmpty(
 			$instance->parse( $params )
 		);
 	}
 
-	public function testQueryIdStabilityForFixedSetOfParameters() {
-
-		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
-		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
-
-		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
-			new ParserOutput()
-		);
-
-		$instance = new AskParserFunction(
-			$parserData,
-			$this->messageFormatter,
-			$this->circularReferenceGuard,
-			$this->expensiveFuncExecutionWatcher
-		);
-
-		$params = array(
-			'[[Modification date::+]]',
-			'?Modification date',
-			'format=list'
-		);
-
-		$instance->parse( $params );
-
-		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERY702bb82fc5ac212df176709f98b4f5b9' )
-		);
-
-		// Limit is a factor that influences the query id, count uses the
-		// max limit available in $GLOBALS['smwgQMaxLimit'] therefore we set
-		// the limit to make the test independent from possible other settings
-
-		$params = array(
-			'[[Modification date::+]]',
-			'?Modification date',
-			'format=count'
-		);
-
-		$instance->parse( $params );
-
-		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYf161b0f405d169d1f038812484619c1f' )
-		);
-	}
-
 	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
 
-		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
-		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', true );
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -289,11 +240,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$this->expensiveFuncExecutionWatcher
 		);
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=list'
-		);
+		];
 
 		$instance->parse( $params );
 
@@ -305,16 +256,16 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// max limit available in $GLOBALS['smwgQMaxLimit'] therefore we set
 		// the limit to make the test independent from possible other settings
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'?Modification date',
 			'format=count'
-		);
+		];
 
 		$instance->parse( $params );
 
 		$this->assertTrue(
-			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYaa38249db4bc6d3e8133588fb08d0f0d' )
+			$parserData->getSemanticData()->hasSubSemanticData( '_QUERYb6a190747f7d3c2775730f6bc6c5e469' )
 		);
 	}
 
@@ -353,15 +304,15 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testEmbeddedQueryWithError() {
 
-		$params = array(
+		$params = [
 			'[[--ABC·|DEF::123]]',
 			'format=table'
-		);
+		];
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 2,
-			'propertyKeys'   => array( '_ASK', '_ERRC' ),
-		);
+			'propertyKeys'   => [ '_ASK', '_ERRC' ],
+		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
@@ -385,14 +336,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testWithDisabledQueryProfiler() {
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'format=table'
-		);
+		];
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 0
-		);
+		];
 
 		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', false );
 
@@ -418,14 +369,14 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNoQueryProfileOnSpecialPages() {
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'format=table'
-		);
+		];
 
-		$expected = array(
+		$expected = [
 			'propertyCount'  => 0
-		);
+		];
 
 		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
 
@@ -451,18 +402,18 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testQueryWithAnnotationMarker() {
 
-		$params = array(
+		$params = [
 			'[[Modification date::+]]',
 			'format=table',
 			'@annotation'
-		);
+		];
 
 		$postProcHandler = $this->getMockBuilder( '\SMW\PostProcHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$postProcHandler->expects( $this->once() )
-			->method( 'addQueryRef' );
+			->method( 'addUpdate' );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
@@ -485,28 +436,28 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
 
-		$provider = array();
+		$provider = [];
 
 		// #0
 		// {{#ask: [[Modification date::+]]
 		// |?Modification date
 		// |format=list
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]]',
 				'?Modification date',
 				'format=list'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]' )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'list', 1, 1, '[[Modification date::+]]' ]
+			],
+			[
 				'smwgQueryProfiler' => true
-			)
-		);
+			]
+		];
 
 		// #1 Query string with spaces
 		// {{#ask: [[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]
@@ -514,23 +465,23 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |?Has title
 		// |format=list
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]] [[Category:Foo bar]] [[Has title::!Foo bar]]',
 				'?Modification date',
 				'?Has title',
 				'format=list'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'list', 4, 1, "[[Modification date::+]] [[$categoryNS:Foo bar]] [[Has title::!Foo bar]]" ]
+			],
+			[
 				'smwgCreateProtectionRight' => false,
 				'smwgQueryProfiler' => true
-			)
-		);
+			]
+		];
 
 		// #2
 		// {{#ask: [[Modification date::+]][[Category:Foo]]
@@ -538,22 +489,22 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |?Has title
 		// |format=list
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]][[Category:Foo]]',
 				'?Modification date',
 				'?Has title',
 				'format=list'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'list', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
+			],
+			[
 				'smwgQueryProfiler' => true
-			)
-		);
+			]
+		];
 
 		// #3 Known format
 		// {{#ask: [[File:Fooo]]
@@ -561,22 +512,22 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |default=no results
 		// |format=feed
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[File:Fooo]]',
 				'?Modification date',
 				'default=no results',
 				'format=feed'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'feed', 1, 1, "[[:$fileNS:Fooo]]" )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'feed', 1, 1, "[[:$fileNS:Fooo]]" ]
+			],
+			[
 				'smwgQueryProfiler' => true
-			)
-		);
+			]
+		];
 
 		// #4 Unknown format, default table
 		// {{#ask: [[Modification date::+]][[Category:Foo]]
@@ -584,22 +535,22 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |?Has title
 		// |format=bar
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]][[Category:Foo]]',
 				'?Modification date',
 				'?Has title',
 				'format=lula'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 4,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ),
-				'propertyValues' => array( 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
+				'propertyValues' => [ 'table', 2, 1, "[[Modification date::+]] [[$categoryNS:Foo]]" ]
+			],
+			[
 				'smwgQueryProfiler' => true
-			)
-		);
+			]
+		];
 
 		// #6 Invalid parameters
 		// {{#ask: [[Modification date::+]]
@@ -609,24 +560,24 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |{{{template}}}
 		// |@internal
 		// }}
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'[[Modification date::+]]',
 				'someParameterWithoutValue',
 				'{{{template}}}',
 				'format=list',
 				'@internal',
 				'?Modification date'
-			),
-			array(
+			],
+			[
 				'propertyCount'  => 5,
-				'propertyKeys'   => array( '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKPA' ),
-				'propertyValues' => array( 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' )
-			),
-			array(
+				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO', '_ASKPA' ],
+				'propertyValues' => [ 'list', 1, 1, '[[Modification date::+]]', '{"limit":50,"offset":0,"sort":[""],"order":["asc"],"mode":1}' ]
+			],
+			[
 				'smwgQueryProfiler' => SMW_QPRFL_PARAMS
-			)
-		);
+			]
+		];
 
 		return $provider;
 	}

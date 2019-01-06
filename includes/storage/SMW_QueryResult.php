@@ -1,6 +1,5 @@
 <?php
 
-use SMW\HashBuilder;
 use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -214,7 +213,7 @@ class SMWQueryResult {
 			return false;
 		}
 
-		$row = array();
+		$row = [];
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
@@ -422,15 +421,15 @@ class SMWQueryResult {
 		// @note count + offset equals total therefore we deploy both values
 		$serializeArray = $this->serializeToArray();
 
-		return array_merge( $serializeArray, array(
-			'meta'=> array(
-				'hash'   => HashBuilder::createFromContent( $serializeArray ),
+		return array_merge( $serializeArray, [
+			'meta'=> [
+				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
 				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
-				)
-			)
+				]
+			]
 		);
 	}
 
@@ -441,8 +440,23 @@ class SMWQueryResult {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
-		return HashBuilder::createFromContent( $this->serializeToArray() );
+	public function getHash( $type = null ) {
+
+		// Just iterate over available subjects to create a "quick" hash given
+		// that resolving the entire object tree is costly due to recursive
+		// processing of all data items including its printouts
+		if ( $type === 'quick' ) {
+			$hash = [];
+
+			foreach ( $this->mResults as $dataItem ) {
+				$hash[] = $dataItem->getHash();
+			}
+
+			reset( $this->mResults );
+			return 'q:' . md5( json_encode( $hash ) );
+		}
+
+		return md5( json_encode( $this->serializeToArray() ) );
 	}
 
 }

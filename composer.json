@@ -1,7 +1,7 @@
 {
 	"name": "mediawiki/semantic-media-wiki",
 	"type": "mediawiki-extension",
-	"description": "MediaWiki extension that lets you store and query structured data within wiki pages",
+	"description": "An extension to MediaWiki that lets you store and query structured data within wiki pages",
 	"keywords": [
 		"SMW",
 		"Semantic MediaWiki",
@@ -13,13 +13,13 @@
 	"authors": [
 		{
 			"name": "Markus Krötzsch",
-			"homepage": "http://korrekt.org",
+			"homepage": "http://korrekt.org/",
 			"role": "Original author"
 		},
 		{
 			"name": "Jeroen De Dauw",
 			"email": "jeroendedauw@gmail.com",
-			"homepage": "http://jeroendedauw.com",
+			"homepage": "https://www.entropywins.wtf/",
 			"role": "Core developer"
 		},
 		{
@@ -31,13 +31,12 @@
 	"support": {
 		"email": "semediawiki-user@lists.sourceforge.net",
 		"issues": "https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues",
-		"irc": "irc://irc.freenode.net/semantic-mediawiki",
 		"forum": "https://www.semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
 		"wiki": "https://www.semantic-mediawiki.org/wiki/",
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=5.5.0",
+		"php": ">=5.6.0",
 		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
 		"psr/log": "~1.0",
@@ -63,11 +62,11 @@
 		"mediawiki/semantic-mediawiki": "*"
 	},
 	"suggest": {
-		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries"
+		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.0.x-dev"
+			"dev-master": "3.1.x-dev"
 		}
 	},
 	"autoload": {

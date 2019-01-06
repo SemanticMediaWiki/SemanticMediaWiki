@@ -32,7 +32,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @var Title[]
 	 */
-	private $titles = array();
+	private $titles = [];
 
 	/**
 	 * @var string
@@ -67,7 +67,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @var array
 	 */
-	private $pendingUpdates = array();
+	private $pendingUpdates = [];
 
 	/**
 	 * @since 2.5
@@ -162,7 +162,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * @since 2.1
 	 */
 	public function clear() {
-		$this->titles = array();
+		$this->titles = [];
 	}
 
 	/**
@@ -201,10 +201,10 @@ class PageUpdater implements DeferrableUpdate {
 			$this->fingerprint
 		);
 
-		$this->transactionalCallableUpdate->setOrigin( array(
+		$this->transactionalCallableUpdate->setOrigin( [
 			__METHOD__,
 			$this->origin
-		) );
+		] );
 
 		$this->transactionalCallableUpdate->pushUpdate();
 	}
@@ -220,7 +220,7 @@ class PageUpdater implements DeferrableUpdate {
 			call_user_func( [ $this, $update ] );
 		}
 
-		$this->pendingUpdates = array();
+		$this->pendingUpdates = [];
 	}
 
 	/**
@@ -285,6 +285,29 @@ class PageUpdater implements DeferrableUpdate {
 
 		Timer::start( __METHOD__ );
 
+		// #3413
+		$byNamespace = [];
+
+		foreach ( $this->titles as $title ) {
+			$namespace = $title->getNamespace();
+			$pagename = $title->getDBkey();
+			$byNamespace[$namespace][] = $pagename;
+		}
+
+		$conds = [];
+
+		foreach ( $byNamespace as $namespaces => $pagenames ) {
+
+			$cond = [
+				'page_namespace' => $namespaces,
+				'page_title' => $pagenames,
+			];
+
+			$conds[] = $this->connection->makeList( $cond, LIST_AND );
+		}
+
+		$titleConds = $this->connection->makeList( $conds, LIST_OR );
+
 		// Required due to postgres and "Error: 22007 ERROR:  invalid input
 		// syntax for type timestamp with time zone: "20170408113703""
 		$now = $this->connection->timestamp();
@@ -292,7 +315,7 @@ class PageUpdater implements DeferrableUpdate {
 			'page',
 			'page_id',
 			[
-				'page_title' => array_keys( $this->titles ),
+				$titleConds,
 				'page_touched < ' . $this->connection->addQuotes( $now )
 			],
 			__METHOD__
@@ -308,7 +331,7 @@ class PageUpdater implements DeferrableUpdate {
 			$ids[] = $row->page_id;
 		}
 
-		if ( $ids === array() ) {
+		if ( $ids === [] ) {
 			return;
 		}
 

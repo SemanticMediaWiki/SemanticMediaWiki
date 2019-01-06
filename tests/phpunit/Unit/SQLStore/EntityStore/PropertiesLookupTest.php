@@ -64,12 +64,12 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection', 'getSQLOptions', 'getSQLConditions' ) )
+			->setMethods( [ 'getConnection', 'getSQLOptions', 'getSQLConditions' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLOptions' )
-			->will( $this->returnValue( array() ) );
+			->will( $this->returnValue( [] ) );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSQLConditions' )
@@ -121,7 +121,7 @@ class PropertiesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'getConnection' ) )
+			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )

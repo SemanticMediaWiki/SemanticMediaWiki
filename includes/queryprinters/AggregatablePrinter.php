@@ -60,10 +60,10 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
 		$data = $this->getResults( $queryResult, $outputMode );
 
-		if ( $data === array() ) {
-			$queryResult->addErrors( array(
+		if ( $data === [] ) {
+			$queryResult->addErrors( [
 				$this->msg( 'smw-qp-empty-data' )->inContentLanguage()->text()
-			) );
+			] );
 			return '';
 		} else {
 			$this->applyDistributionParams( $data );
@@ -125,7 +125,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @return array label => value
 	 */
 	protected function getDistributionResults( SMWQueryResult $result, $outputMode ) {
-		$values = array();
+		$values = [];
 
 		while ( /* array of SMWResultArray */ $row = $result->getNext() ) { // Objects (pages)
 			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // SMWResultArray for a sinlge property
@@ -162,7 +162,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @return array label => value
 	 */
 	protected function getNumericResults( SMWQueryResult $res, $outputMode ) {
-		$values = array();
+		$values = [];
 
 		// print all result rows
 		while ( $subject = $res->getNext() ) {
@@ -244,35 +244,35 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	public function getParamDefinitions( array $definitions ) {
 		$definitions = parent::getParamDefinitions( $definitions );
 
-		$definitions['distribution'] = array(
+		$definitions['distribution'] = [
 			'name' => 'distribution',
 			'type' => 'boolean',
 			'default' => false,
 			'message' => 'smw-paramdesc-distribution',
-		);
+		];
 
-		$definitions['distributionsort'] = array(
+		$definitions['distributionsort'] = [
 			'name' => 'distributionsort',
 			'type' => 'string',
 			'default' => 'none',
 			'message' => 'smw-paramdesc-distributionsort',
-			'values' => array( 'asc', 'desc', 'none' ),
-		);
+			'values' => [ 'asc', 'desc', 'none' ],
+		];
 
-		$definitions['distributionlimit'] = array(
+		$definitions['distributionlimit'] = [
 			'name' => 'distributionlimit',
 			'type' => 'integer',
 			'default' => false,
 			'manipulatedefault' => false,
 			'message' => 'smw-paramdesc-distributionlimit',
 			'lowerbound' => 1,
-		);
+		];
 
-		$definitions['aggregation'] = array(
+		$definitions['aggregation'] = [
 			'message' => 'smw-paramdesc-aggregation',
 			'default' => 'subject',
-			'values' => array( 'property', 'subject' ),
-		);
+			'values' => [ 'property', 'subject' ],
+		];
 
 		return $definitions;
 	}

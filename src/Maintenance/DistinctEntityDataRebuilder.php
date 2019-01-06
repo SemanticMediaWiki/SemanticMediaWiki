@@ -7,7 +7,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\TitleCreator;
+use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\ApplicationFactory;
 use SMW\Options;
@@ -29,9 +29,9 @@ class DistinctEntityDataRebuilder {
 	private $store;
 
 	/**
-	 * @var TitleCreator
+	 * @var TitleFactory
 	 */
-	private $titleCreator;
+	private $titleFactory;
 
 	/**
 	 * @var Options
@@ -62,11 +62,11 @@ class DistinctEntityDataRebuilder {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param TitleCreator $titleCreator
+	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleCreator $titleCreator ) {
+	public function __construct( Store $store, TitleFactory $titleFactory ) {
 		$this->store = $store;
-		$this->titleCreator = $titleCreator;
+		$this->titleFactory = $titleFactory;
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 
@@ -170,7 +170,7 @@ class DistinctEntityDataRebuilder {
 			$page,
 			[
 				UpdateJob::FORCED_UPDATE => true,
-				'pm' => $this->options->has( 'shallow-update' ) ? SMW_UJ_PM_CLASTMDATE : false
+				'shallowUpdate' => $this->options->has( 'shallow-update' )
 			]
 		);
 
@@ -186,7 +186,7 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function findFilters() {
-		$this->filters = array();
+		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
@@ -198,13 +198,13 @@ class DistinctEntityDataRebuilder {
 	}
 
 	private function hasFilters() {
-		return $this->filters !== array();
+		return $this->filters !== [];
 	}
 
 	private function getPagesFromQuery() {
 
 		if ( !$this->options->has( 'query' ) ) {
-			return array();
+			return [];
 		}
 
 		$queryString = $this->options->get( 'query' );
@@ -212,7 +212,7 @@ class DistinctEntityDataRebuilder {
 		// get number of pages and fix query limit
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array( 'format' => 'count' ) )
+			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
@@ -220,7 +220,7 @@ class DistinctEntityDataRebuilder {
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
 		$query = SMWQueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( array() )
+			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
@@ -230,7 +230,7 @@ class DistinctEntityDataRebuilder {
 
 	private function getPagesFromFilters() {
 
-		$pages = array();
+		$pages = [];
 
 		if ( !$this->hasFilters() ) {
 			return $pages;
@@ -248,7 +248,7 @@ class DistinctEntityDataRebuilder {
 	private function getRedirectPages() {
 
 		if ( !$this->options->has( 'redirects' ) ) {
-			return array();
+			return [];
 		}
 
 		$titleLookup = new TitleLookup(
@@ -271,7 +271,7 @@ class DistinctEntityDataRebuilder {
 				}
 
 				if ( !$page instanceof Title ) {
-					$page = $this->titleCreator->createFromText( $page );
+					$page = $this->titleFactory->newFromText( $page );
 				}
 
 				$id = $page->getPrefixedDBkey();

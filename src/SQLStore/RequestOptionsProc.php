@@ -30,7 +30,7 @@ class RequestOptionsProc {
 	 * @return array
 	 */
 	public static function getSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
-		$sqlConds = array();
+		$sqlConds = [];
 
 		if ( $requestOptions === null ) {
 			return $sqlConds;
@@ -108,13 +108,18 @@ class RequestOptionsProc {
 				$condition = 'LIKE';
 
 				switch ( $strcond->condition ) {
-					case StringCondition::COND_PRE:  $string .= '%';
+					case StringCondition::COND_PRE:
+						$string .= '%';
 					break;
-					case StringCondition::COND_POST: $string = '%' . $string;
+					case StringCondition::COND_POST:
+						$string = '%' . $string;
 					break;
-					case StringCondition::COND_MID:  $string = '%' . $string . '%';
+					case StringCondition::COND_MID:
+						$string = '%' . $string . '%';
 					break;
-					case StringCondition::COND_EQ:  $condition = '=';
+					case StringCondition::COND_EQ:
+						$string = $strcond->string;
+						$condition = '=';
 					break;
 				}
 
@@ -162,12 +167,12 @@ class RequestOptionsProc {
 	 */
 	public static function applyRequestOptions( Store $store, array $data, RequestOptions $requestOptions = null ) {
 
-		if ( $data === array() || $requestOptions === null ) {
+		if ( $data === [] || $requestOptions === null ) {
 			return $data;
 		}
 
-		$result = array();
-		$sortres = array();
+		$result = [];
+		$sortres = [];
 
 		$sampleDataItem = reset( $data );
 		$isNumeric = is_numeric( $sampleDataItem->getSortKey() );
@@ -250,7 +255,7 @@ class RequestOptionsProc {
 			$value = $item->getSortKey();
 		}
 
-		return array( $label, $value );
+		return [ $label, $value ];
 	}
 
 	private static function applySortRestriction( $requestOptions, &$result, $sortres, $isNumeric ) {
@@ -272,7 +277,7 @@ class RequestOptionsProc {
 			arsort( $sortres, $flag );
 		}
 
-		$newres = array();
+		$newres = [];
 
 		foreach ( $sortres as $key => $value ) {
 			$newres[] = $result[$key];

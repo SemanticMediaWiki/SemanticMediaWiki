@@ -122,6 +122,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
 		$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
 
+		// #3414
+		// NameTableAccessException: Expected unused ID from database insert for
+		// 'mw-changed-redirect-target'  into 'change_tag_def',
+		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
+
 		$this->testEnvironment->resetPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID );
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
@@ -132,7 +137,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 				'smwgQFilterDuplicates' => false,
 				'smwgExportResourcesAsIri' => false,
 				'smwgCompactLinkSupport' => false,
-				'smwgSparqlReplicationPropertyExemptionList' => array(),
+				'smwgSparqlReplicationPropertyExemptionList' => [],
+				'smwgPageSpecialProperties' => [ '_MDAT' ],
 				'smwgFieldTypeFeatures' => SMW_FIELDT_NONE,
 				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE,
 				'smwgCacheUsage' => [
@@ -160,7 +166,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 	 * @see JsonTestCaseScriptRunner::getAllowedTestCaseFiles
 	 */
 	protected function getAllowedTestCaseFiles() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -233,7 +239,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 
 		$this->registerConfigValueCallback( 'smwgElasticsearchConfig', $elasticsearchConfig );
 
-		return array(
+		return [
 			'smwgNamespacesWithSemanticLinks',
 			'smwgPageSpecialProperties',
 			'smwgNamespace',
@@ -284,7 +290,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'wgFileExtensions',
 			'wgDefaultUserOptions',
 			'wgLocalTZoffset'
-		);
+		];
 	}
 
 	private function prepareTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
@@ -308,7 +314,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFixedProperties' ) ) {
 			foreach ( $pageList as $page ) {
 				if ( isset( $page['namespace'] ) && $page['namespace'] === 'SMW_NS_PROPERTY' ) {
-					$this->doRunTableSetupBeforeContentCreation( array( $page ) );
+					$this->doRunTableSetupBeforeContentCreation( [ $page ] );
 				}
 			}
 		}

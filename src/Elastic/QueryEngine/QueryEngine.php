@@ -112,11 +112,11 @@ class QueryEngine implements IQueryEngine {
 		if ( ( $query->getDescription() instanceof ThingDescription ) &&
 				$query->querymode != Query::MODE_DEBUG &&
 				count( $query->getErrors() ) > 0 ) {
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), false );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], false );
 			// NOTE: we check this here to prevent unnecessary work, but we check
 			// it after query processing below again in case more errors occurred.
 		} elseif ( $query->querymode == Query::MODE_NONE || $query->getLimit() < 1 ) {
-			return $this->queryFactory->newQueryResult( $this->store, $query, array(), true );
+			return $this->queryFactory->newQueryResult( $this->store, $query, [], true );
 		}
 
 		$this->errors = [];
@@ -173,7 +173,7 @@ class QueryEngine implements IQueryEngine {
 		}
 
 		// If at all only consider the retrieval for Special:Search queries
-		if ( $query->getOption( 'is.special_search' ) !== false && $query->querymode !== Query::MODE_COUNT ) {
+		if ( $query->getOption( 'highlight.fragment' ) !== false && $query->querymode !== Query::MODE_COUNT ) {
 			$this->addHighlight( $body );
 		}
 
@@ -309,6 +309,14 @@ class QueryEngine implements IQueryEngine {
 
 		// Relocate to the original position that returned from Elastic
 		foreach ( $dataItems as $dataItem ) {
+
+			// In case of an update lag (Elasticsearch is near real time where
+			// some shards may not yet have seen an update) make sure to hide any
+			// outdated entities we retrieve from the SQL as ID master back-end
+			if ( $dataItem->getInterwiki() === SMW_SQL3_SMWDELETEIW ) {
+				continue;
+			}
+
 			$id = $dataItem->getId();
 			$results[$listPos[$id]] = $dataItem;
 
@@ -338,7 +346,7 @@ class QueryEngine implements IQueryEngine {
 
 	private function addHighlight( &$body ) {
 
-		if ( ( $type = $this->options->dotGet( 'query.special_search.highlight.fragment.type', false ) ) === false ) {
+		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
 			return;
 		}
 
@@ -348,8 +356,8 @@ class QueryEngine implements IQueryEngine {
 		}
 
 		$body['highlight'] = [
-			'number_of_fragments' => $this->options->dotGet( 'query.special_search.highlight.fragment.number', 1 ),
-			'fragment_size' => $this->options->dotGet( 'query.special_search.highlight.fragment.size', 150 ),
+			'number_of_fragments' => $this->options->dotGet( 'query.highlight.fragment.number', 1 ),
+			'fragment_size' => $this->options->dotGet( 'query.highlight.fragment.size', 150 ),
 			'fields' => [
 				'attachment.content' => [ "type" => $type ],
 				'text_raw' => [ "type" => $type ],

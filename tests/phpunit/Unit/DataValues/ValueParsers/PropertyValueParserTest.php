@@ -67,103 +67,103 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function nameProvider() {
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo',
-			array(),
+			[],
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[ Foo',
-			array(),
+			[],
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'[Foo',
-			array(),
+			[],
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo ]',
-			array(),
+			[],
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo]',
-			array(),
+			[],
 			'Foo',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'-Foo',
-			array(),
+			[],
 			'Foo',
 			true
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<Foo>',
-			array( '<', '>' ),
+			[ '<', '>' ],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'<Foo-<Bar>',
-			array( '<', '>' ),
+			[ '<', '>' ],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo-<Bar',
-			array( '<', '>' ),
+			[ '<', '>' ],
 			'Foo-',
 			false
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo#Bar',
-			array(),
+			[],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo|Bar',
-			array( '|' ),
+			[ '|' ],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo.Bar',
-			array(),
+			[],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo[Bar',
-			array( '[', ']' ),
+			[ '[', ']' ],
 			null,
 			null
-		);
+		];
 
-		$provider[] = array(
+		$provider[] = [
 			'Foo]Bar',
-			array( '[', ']' ),
+			[ '[', ']' ],
 			null,
 			null
-		);
+		];
 
 		return $provider;
 	}

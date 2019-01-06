@@ -22,7 +22,7 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 	/**
 	 * @var array
 	 */
-	private static $inMemoryLabelToLanguageTracer = array();
+	private static $inMemoryLabelToLanguageTracer = [];
 
 	/**
 	 * @since 2.5
@@ -60,10 +60,10 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 		// Annotated but not enabled
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PPLB ) ) {
 			return $dataValue->addErrorMsg(
-				array(
+				[
 					'smw-datavalue-feature-not-supported',
 					'SMW_DV_PPLB'
-				)
+				]
 			);
 		}
 
@@ -73,12 +73,12 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 		// Language has been already assigned!
 		if ( ( $isKnownBy = $this->isKnownByLabelAndLanguage( $value, $dbKey ) ) !== false ) {
 			$dataValue->addErrorMsg(
-				array(
+				[
 					'smw-property-preferred-label-language-combination-exists',
 					$value['_TEXT'],
 					$value['_LCODE'],
 					$isKnownBy
-				)
+				]
 			);
 		}
 	}
@@ -88,7 +88,7 @@ class PropertySpecificationConstraintValueValidator implements ConstraintValueVa
 		$lang = isset( $value['_LCODE'] ) ? $value['_LCODE'] : false;
 
 		if ( !isset( self::$inMemoryLabelToLanguageTracer[$dbkey] ) ) {
-			self::$inMemoryLabelToLanguageTracer[$dbkey] = array();
+			self::$inMemoryLabelToLanguageTracer[$dbkey] = [];
 		}
 
 		if ( $lang && !isset( self::$inMemoryLabelToLanguageTracer[$dbkey][$lang] ) ) {

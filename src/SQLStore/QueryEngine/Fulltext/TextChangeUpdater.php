@@ -198,11 +198,11 @@ class TextChangeUpdater {
 		$diffChangeOps = $changeDiff->getTableChangeOps();
 
 		$changeList = $changeDiff->getChangeListByType( 'insert' );
-		$updates = array();
+		$updates = [];
 
 		// Ensure that any delete operation is being accounted for to avoid that
 		// removed value annotation remain
-		if ( $diffChangeOps !== array() ) {
+		if ( $diffChangeOps !== [] ) {
 			$this->doDeleteFromTableChangeOps( $diffChangeOps );
 		}
 

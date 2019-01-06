@@ -40,12 +40,12 @@ class EntityIdListRelevanceDetectionFilter {
 	/**
 	 * @var array
 	 */
-	private $propertyExemptionList = array();
+	private $propertyExemptionList = [];
 
 	/**
 	 * @var array
 	 */
-	private $affiliatePropertyDetectionList = array();
+	private $affiliatePropertyDetectionList = [];
 
 	/**
 	 * @since 2.4
@@ -102,7 +102,7 @@ class EntityIdListRelevanceDetectionFilter {
 			$this->changeOp->getChangedEntityIdSummaryList()
 		);
 
-		$affiliateEntityList = array();
+		$affiliateEntityList = [];
 		$tableChangeOps = $this->changeOp->getTableChangeOps();
 
 		foreach ( $tableChangeOps as $tableChangeOp ) {

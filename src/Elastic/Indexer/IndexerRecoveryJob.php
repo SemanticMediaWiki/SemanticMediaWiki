@@ -4,9 +4,9 @@ namespace SMW\Elastic\Indexer;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
-use SMW\MediaWiki\Jobs\JobBase;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use Title;
 
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class IndexerRecoveryJob extends JobBase {
+class IndexerRecoveryJob extends Job {
 
 	/**
 	 * @since 3.0
@@ -24,7 +24,7 @@ class IndexerRecoveryJob extends JobBase {
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
-	public function __construct( Title $title, $params = array() ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.elasticIndexerRecovery', $title, $params );
 		$this->removeDuplicates = true;
 	}
@@ -60,7 +60,7 @@ class IndexerRecoveryJob extends JobBase {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$elasticFactory = new ElasticFactory();
+		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
 
 		$this->indexer = $elasticFactory->newIndexer(
 			$store
@@ -82,6 +82,7 @@ class IndexerRecoveryJob extends JobBase {
 
 		if ( $this->hasParameter( 'index' ) ) {
 			$this->index(
+				$connection,
 				$applicationFactory->getCache(),
 				$this->getParameter( 'index' )
 			);
@@ -121,15 +122,22 @@ class IndexerRecoveryJob extends JobBase {
 		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $cache, $hash ) {
+	private function index( $connection, $cache, $hash ) {
+
+		$subject = DIWikiPage::doUnserialize( $hash );
+		$text = '';
 
 		$changeDiff = ChangeDiff::fetch(
 			$cache,
-			DIWikiPage::doUnserialize( $hash )
+			$subject
 		);
 
+		if ( $connection->getConfig()->dotGet( 'indexer.raw.text', false ) ) {
+			$text = $this->indexer->fetchNativeData( $subject );
+		}
+
 		if ( $changeDiff !== false ) {
-			$this->indexer->index( $changeDiff );
+			$this->indexer->index( $changeDiff, $text );
 		}
 	}
 

@@ -44,7 +44,7 @@ use SMW\Site;
  *
  * @author mwjames
  */
-return array(
+return [
 
 	/**
 	 * PropertyValueParser
@@ -307,4 +307,4 @@ return array(
 		return new TimeValueParser();
 	},
 
-);
+];

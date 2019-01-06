@@ -304,10 +304,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( array(
+				$this->equalTo( [
 					'smw_iw' => 'Bar',
-					'smw_hash' => '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ) ),
-				$this->equalTo( array( 'smw_id' => 42 ) ) );
+					'smw_hash' => '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ] ),
+				$this->equalTo( [ 'smw_id' => 42 ] ) );
 
 		$store = $this->getMockBuilder( 'SMWSQLStore3' )
 			->disableOriginalConstructor()
@@ -451,17 +451,77 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$instance->warmUpCache( [ new DIWikiPage( 'Bar', NS_MAIN ) ] );
 	}
 
+	public function testFindAssociatedRev() {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sortkey' => 'Foo',
+			'smw_sort' => '',
+			'smw_rev' => 1001,
+		];
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idCacheManager->expects( $this->any() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$factory->expects( $this->any() )
+			->method( 'newIdCacheManager' )
+			->will( $this->returnValue( $idCacheManager ) );
+
+		$factory->expects( $this->any() )
+			->method( 'newIdEntityFinder' )
+			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)$row ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SMWSql3SmwIds(
+			$store,
+			$factory
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->findAssociatedRev( 'Foo', NS_MAIN, '', '' )
+		);
+	}
+
 	public function pageIdandSortProvider() {
 
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, false );
-		$provider[] = array( 'Foo', NS_MAIN, '' , '', 'FOO', true, true );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false );
-		$provider[] = array( 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false );
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, false ];
+		$provider[] = [ 'Foo', NS_MAIN, '' , '', 'FOO', true, true ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , '', 'FOO', false, false ];
+		$provider[] = [ 'Foo', NS_MAIN, 'quy' , 'xwoo', 'FOO', false, false ];
 
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false );
-		$provider[] = array( 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true );
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', false, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, false ];
+		$provider[] = [ 'pro', SMW_NS_PROPERTY, '' , '', 'PRO', true, true ];
 
 		return $this->createAssociativeArrayFromProviderDefinition( $provider );
 	}
@@ -469,7 +529,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private function createAssociativeArrayFromProviderDefinition( $definitions ) {
 
 		foreach ( $definitions as $map ) {
-			$provider[] = array( array(
+			$provider[] = [ [
 				'title'         => $map[0],
 				'namespace'     => $map[1],
 				'iw'            => $map[2],
@@ -477,7 +537,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				'sortkey'       => $map[4],
 				'canonical'     => $map[5],
 				'fetchHashes'   => $map[6]
-			) );
+			] ];
 		}
 
 		return $provider;

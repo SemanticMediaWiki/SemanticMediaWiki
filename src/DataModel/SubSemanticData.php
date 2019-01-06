@@ -52,7 +52,7 @@ class SubSemanticData {
 	 * @since 2.5
 	 * @var SemanticData[]
 	 */
-	private $subSemanticData = array();
+	private $subSemanticData = [];
 
 	/**
 	 * Internal flag that indicates if this semantic data will accept
@@ -99,7 +99,7 @@ class SubSemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'subject', 'subSemanticData' );
+		return [ 'subject', 'subSemanticData' ];
 	}
 
 	/**
@@ -139,7 +139,7 @@ class SubSemanticData {
 	 * @since 2.5
 	 */
 	public function clear() {
-		$this->subSemanticData = array();
+		$this->subSemanticData = [];
 	}
 
 	/**
@@ -151,7 +151,7 @@ class SubSemanticData {
 	 */
 	public function hasSubSemanticData( $subobjectName = null ) {
 
-		if ( $this->subSemanticData === array() || $subobjectName === '' ) {
+		if ( $this->subSemanticData === [] || $subobjectName === '' ) {
 			return false;
 		}
 

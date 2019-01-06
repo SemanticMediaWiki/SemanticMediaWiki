@@ -40,7 +40,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$instance = new Info(
-			$this->apiFactory->newApiMain( array() ),
+			$this->apiFactory->newApiMain( [] ),
 			'smwinfo'
 		);
 
@@ -55,10 +55,10 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testExecuteOnStore( $queryParameters, $expectedType ) {
 
-		$result = $this->apiFactory->doApiRequest( array(
+		$result = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => $queryParameters
-		) );
+		] );
 
 		if ( $expectedType === 'integer' ) {
 			return $this->assertGreaterThanOrEqual( 0, $result['info'][$queryParameters] );
@@ -86,7 +86,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new Info(
-			$this->apiFactory->newApiMain( array( 'info' => $type ) ),
+			$this->apiFactory->newApiMain( [ 'info' => $type ] ),
 			'smwinfo'
 		);
 
@@ -114,10 +114,10 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testUnknownQueryParameter() {
 
-		$data = $this->apiFactory->doApiRequest( array(
+		$data = $this->apiFactory->doApiRequest( [
 				'action' => 'smwinfo',
 				'info' => 'Foo'
-		) );
+		] );
 
 		$this->assertInternalType(
 			'array',
@@ -132,49 +132,49 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 1 ) );
 
 		$result = $this->apiFactory->doApiRequest(
-			array(
+			[
 				'action' => 'smwinfo',
 				'info' => 'jobcount'
-			)
+			]
 		);
 
 		$this->assertArrayHasKey(
-			'SMW\UpdateJob',
+			'smw.update',
 			$result['info']['jobcount']
 		);
 	}
 
 	public function countDataProvider() {
-		return array(
-			array( array( 'QUERYFORMATS' => array( 'table' => 3 ) ), 'formatcount', array( 'table' => 3 ) ),
-			array( array( 'PROPUSES'     => 34 ), 'propcount',         34 ),
-			array( array( 'ERRORUSES'    => 42 ), 'errorcount',        42 ),
-			array( array( 'USEDPROPS'    => 51 ), 'usedpropcount',     51 ),
-			array( array( 'TOTALPROPS'   => 52 ), 'totalpropcount',    52 ),
-			array( array( 'DECLPROPS'    => 67 ), 'declaredpropcount', 67 ),
-			array( array( 'OWNPAGE'      => 99 ), 'proppagecount',     99 ),
-			array( array( 'QUERY'        => 11 ), 'querycount',        11 ),
-			array( array( 'QUERYSIZE'    => 24 ), 'querysize',         24 ),
-			array( array( 'CONCEPTS'     => 17 ), 'conceptcount',      17 ),
-			array( array( 'SUBOBJECTS'   => 88 ), 'subobjectcount',    88 ),
-		);
+		return [
+			[ [ 'QUERYFORMATS' => [ 'table' => 3 ] ], 'formatcount', [ 'table' => 3 ] ],
+			[ [ 'PROPUSES'     => 34 ], 'propcount',         34 ],
+			[ [ 'ERRORUSES'    => 42 ], 'errorcount',        42 ],
+			[ [ 'USEDPROPS'    => 51 ], 'usedpropcount',     51 ],
+			[ [ 'TOTALPROPS'   => 52 ], 'totalpropcount',    52 ],
+			[ [ 'DECLPROPS'    => 67 ], 'declaredpropcount', 67 ],
+			[ [ 'OWNPAGE'      => 99 ], 'proppagecount',     99 ],
+			[ [ 'QUERY'        => 11 ], 'querycount',        11 ],
+			[ [ 'QUERYSIZE'    => 24 ], 'querysize',         24 ],
+			[ [ 'CONCEPTS'     => 17 ], 'conceptcount',      17 ],
+			[ [ 'SUBOBJECTS'   => 88 ], 'subobjectcount',    88 ],
+		];
 	}
 
 	public function typeDataProvider() {
-		return array(
-			array( 'proppagecount',     'integer' ),
-			array( 'propcount',         'integer' ),
-			array( 'errorcount',        'integer' ),
-			array( 'querycount',        'integer' ),
-			array( 'usedpropcount',     'integer' ),
-			array( 'totalpropcount',    'integer' ),
-			array( 'declaredpropcount', 'integer' ),
-			array( 'conceptcount',      'integer' ),
-			array( 'querysize',         'integer' ),
-			array( 'subobjectcount',    'integer' ),
-			array( 'formatcount',       'array'   ),
-			array( 'jobcount',          'array'   )
-		);
+		return [
+			[ 'proppagecount',     'integer' ],
+			[ 'propcount',         'integer' ],
+			[ 'errorcount',        'integer' ],
+			[ 'querycount',        'integer' ],
+			[ 'usedpropcount',     'integer' ],
+			[ 'totalpropcount',    'integer' ],
+			[ 'declaredpropcount', 'integer' ],
+			[ 'conceptcount',      'integer' ],
+			[ 'querysize',         'integer' ],
+			[ 'subobjectcount',    'integer' ],
+			[ 'formatcount',       'array'   ],
+			[ 'jobcount',          'array'   ]
+		];
 	}
 
 }

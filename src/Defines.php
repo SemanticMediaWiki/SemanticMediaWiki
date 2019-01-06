@@ -37,6 +37,11 @@ define( 'SMW_FACTBOX_HIDDEN', 1 );
 define( 'SMW_FACTBOX_SPECIAL', 2 );
 define( 'SMW_FACTBOX_NONEMPTY', 3 );
 define( 'SMW_FACTBOX_SHOWN', 5 );
+
+define( 'SMW_FACTBOX_CACHE', 16 );
+define( 'SMW_FACTBOX_PURGE_REFRESH', 32 );
+define( 'SMW_FACTBOX_DISPLAY_SUBOBJECT', 64 );
+
 /**@}*/
 
 /**@{
@@ -144,13 +149,6 @@ define( 'SMW_VL_SD', 1 ); // enables ValueLookupStore::getSemanticData
 define( 'SMW_VL_PL', 2 ); // enables ValueLookupStore::getProperties
 define( 'SMW_VL_PV', 4 ); // enables ValueLookupStore::getPropertyValues
 define( 'SMW_VL_PS', 8 ); // enables ValueLookupStore::getPropertySubject
-/**@}*/
-
-/**@{
-  * Constants for UpdateJob ParserMode
-  */
-define( 'SMW_UJ_PM_NP', 2 );    // use a new parser
-define( 'SMW_UJ_PM_CLASTMDATE', 4 ); // compare last modified
 /**@}*/
 
 /**@{
@@ -282,16 +280,21 @@ define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
 /**@}*/
 
 /**@{
-  * Constants for Rule groups
+  * Constants for Schema groups
   */
-define( 'SMW_RULE_GROUP_FORMAT', 'rule.group.format' );
-define( 'SMW_RULE_GROUP_FORM_DEFINITION', 'rule.group.form.definition' );
+define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema.group.format' );
+define( 'SMW_SCHEMA_GROUP_SEARCH_FORM', 'schema.group.search.form' );
 
+/**@{
+  * Constants for Special:Ask submit method
+  */
+define( 'SMW_SASK_SUBMIT_GET', 'get' );
+define( 'SMW_SASK_SUBMIT_GET_REDIRECT', 'get.redirect' );
+define( 'SMW_SASK_SUBMIT_POST', 'post' );
 /**@}*/
 
 /**@{
   * Constants for content types
   */
-define( 'CONTENT_MODEL_RULE', 'rule-json' );
-define( 'CONTENT_FORMAT_RULE', 'application/json' );
+define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );
 /**@}*/

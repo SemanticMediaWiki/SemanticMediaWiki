@@ -8,16 +8,16 @@
 		},
 		{
 			"page": "Page-one",
-			"contents": "[[Has description::Bar]]"
+			"contents": "[[Has description::Bar]] [[Category:Q0203]]"
 		},
 		{
 			"page": "Page-two",
-			"contents": "[[Has description::Foo]]"
+			"contents": "[[Has description::Foo]] [[Category:Q0203]]"
 		},
 		{
 			"namespace": "SMW_NS_CONCEPT",
 			"page": "Concept-for-any-description",
-			"contents": "{{#concept: [[Has description::+]] }}"
+			"contents": "{{#concept: [[Has description::+]] [[Category:Q0203]] }}"
 		}
 	],
 	"tests": [
