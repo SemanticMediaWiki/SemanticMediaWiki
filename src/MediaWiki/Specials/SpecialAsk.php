@@ -354,6 +354,8 @@ class SpecialAsk extends SpecialPage {
 		if ( $res instanceof QueryResult ) {
 			$isFromCache = $res->isFromCache();
 			$error = ErrorWidget::queryError( $queryobj );
+		} elseif ( is_string( $res ) ) {
+			$error = $res;
 		}
 
 		$infoText = $this->getInfoText(
