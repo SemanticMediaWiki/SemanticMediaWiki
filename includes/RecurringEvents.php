@@ -53,15 +53,6 @@ class RecurringEvents {
 	private $maxNumRecurringEvents = 25;
 
 	/**
-	 * @since 1.9
-	 *
-	 * @param array $parameters
-	 */
-	public function __construct( array $parameters ) {
-		$this->parse( $parameters );
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param integer $defaultNumRecurringEvents
@@ -157,7 +148,7 @@ class RecurringEvents {
 	 *
 	 * @param array $parameters
 	 */
-	private function parse( array $parameters ) {
+	public function parse( array $parameters ) {
 		// Initialize variables.
 		$all_date_strings = [];
 		$start_date = $end_date = $unit = $period = $week_num = null;
