@@ -214,13 +214,23 @@ class ParametersProcessor {
 		// MW's internal token
 		unset( $parameterList['wpEditToken'] );
 
-		// Split ?Has property=Foo|+index=1 into a [ '?Has property=Foo', '+index=1' ]
 		foreach ( $parameterList as $key => $value ) {
-			if (
-				( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) ||
-				( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) ) {
+			if ( self::hasPipe( $key, $value ) ) {
 
+				// #3523 `?TestAsk=[[Foo|Bar]]` replace `|`
+				if ( self::hasLink( $value ) ) {
+					$value = self::replace( '|', '0x7C', $value );
+				}
+
+				// #1407 Split: `?Has property=Foo|+index=1` into a [ '?Has property=Foo', '+index=1' ])
 				foreach ( explode( '|', $value ) as $k => $val ) {
+
+					// #3523 `?TestAsk=[[Foo|Bar]]|+index=1` decode
+					// the part that contains `0x7C`
+					if ( strpos( $val, '0x7C' ) !== false ) {
+						$val = self::replace( '0x7C', '|', $val );
+					}
+
 					$parameters[] = $k == 0 && $key{0} == '?' ? $key . '=' . $val : $val;
 				}
 			} elseif ( is_string( $key ) ) {
@@ -231,6 +241,33 @@ class ParametersProcessor {
 		}
 
 		return $parameters;
+	}
+
+	private static function hasPipe( $key, $value ) {
+
+		if ( $key !== '' && $key{0} == '?' && strpos( $value, '|' ) !== false ) {
+			return true;
+		}
+
+		if ( is_string( $value ) && $value !== '' && $value{0} == '?' && strpos( $value, '|' ) !== false ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private static function hasLink( $value ) {
+		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false ;
+	}
+
+	private static function replace( $source, $target, $value ) {
+		return preg_replace_callback(
+			'/\[\[([^\[\]]*)\]\]/xu',
+			function( array $matches ) use ( $source, $target ) {
+				return str_replace( [ $source ], [ $target ], $matches[0] );
+			},
+			$value
+		);
 	}
 
 }
