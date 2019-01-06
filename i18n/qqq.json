@@ -119,6 +119,7 @@
 	"smw-paramdesc-feedpagecontent": "This option allows to enable page content to be generated with the feed",
 	"smw-label-feed-link": "This is the text of the link that is triggering the results export to a RSS-file when clicked. {{optional}}",
 	"smw-label-feed-description": "This message is displayed as the feed description, e.g. \"News on translatewiki.net rss feed\".\n\nParameters:\n* $1 - a feed description, e.g. \"News on translatewiki.net\"\n* $2 - a feed type. either \"rss\" or \"atom\"\n{{Identical|Feed}}",
+	"smw-paramdesc-mimetype": "This is the description of the \"mimetype\" parameter of the \"templatefile\" [https://www.semantic-mediawiki.org/wiki/Help:Result_formats result format] for [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries inline queries].",
 	"smw_iq_disabled": "This is an information message.",
 	"smw_iq_moreresults": "This is the text of the link that points to further results in case the [https://semantic-mediawiki.org/wiki/Help:Inline_queries inline query] has more than currently displayed on the page. See also message {{msg-mw|Smw-paramdesc-searchlabel}}.",
 	"smw_parseerror": "This is an error/warning message.",
