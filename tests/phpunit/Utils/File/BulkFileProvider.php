@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\File;
 
 use RuntimeException;
+use SMW\Utils\FileFetcher;
 
 /**
  * @license GNU GPL v2+
@@ -47,38 +48,14 @@ class BulkFileProvider {
 	 */
 	public function getFiles() {
 
-		$path = $this->checkPathReadability( $this->path );
-
-		return $this->iterateToFindFilesForExtension(
-			$path,
-			$this->extension
-		);
-	}
-
-	private function checkPathReadability( $path ) {
-
-		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
-
-		if ( is_readable( $path ) ) {
-			return $path;
-		}
-
-		throw new RuntimeException( "Expected an accessible {$path} path" );
-	}
-
-	private function iterateToFindFilesForExtension( $path, $extension ) {
+		$fileFetcher = new FileFetcher( $this->path );
+		$iterator = $fileFetcher->findByExtension( $this->extension );
 
 		$files = [];
 
-		$directoryIterator = new \RecursiveDirectoryIterator( $path );
-
-		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
-			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
-
-				// Use a shortcut to be sortable while keep files with same name
-				// in different directories distinct
-				$files[$fileInfo->getFilename() . ' (' . substr( md5( $fileInfo->getPathname() ), 0, 5 ) .')'] = $fileInfo->getPathname();
-			}
+		foreach ( $iterator as $file => $value ) {
+			$fileInfo = pathinfo( $file );
+			$files[$fileInfo['filename'] . ' (' . substr( md5( $file ), 0, 5 ) .')'] = $file;
 		}
 
 		asort( $files );
