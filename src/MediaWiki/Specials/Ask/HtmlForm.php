@@ -134,11 +134,11 @@ class HtmlForm {
 	 * @since 3.0
 	 *
 	 * @param UrlArgs $urlArgs
-	 * @param QueryResult $queryResult
+	 * @param QueryResult|string|null $queryResult
 	 *
 	 * @return string
 	 */
-	public function getForm( UrlArgs $urlArgs, QueryResult $queryResult = null, $text = '' ) {
+	public function getForm( UrlArgs $urlArgs, $queryResult = null, $text = '' ) {
 
 		$html = $this->buildHTML( $urlArgs, $queryResult, $text );
 
