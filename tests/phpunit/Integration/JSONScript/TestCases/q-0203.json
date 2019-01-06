@@ -54,7 +54,12 @@
 		}
 	],
 	"settings": {
-		"smwgQConceptCaching": "CONCEPT_CACHE_ALL"
+		"smwgQConceptCaching": "CONCEPT_CACHE_ALL",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true
+		}
 	},
 	"meta": {
 		"skip-on": {
