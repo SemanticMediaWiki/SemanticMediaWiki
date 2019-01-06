@@ -113,6 +113,14 @@ class PHPUnitEnvironment {
 
 			if ( $this->gitHead['mw'] ) {
 				$this->gitHead['mw'] = substr( $this->gitHead['mw'], 0, 7 );
+			} elseif ( $this->command_exists( 'git' ) ) {
+				// The download of a zip package will not provide any git sha1
+				// reference therefore try to fetch it from github; `MW` is
+				// exported by the Travis-CI environment to point to the selected
+				// release/branch
+				$release = ( $env = getenv( 'MW' ) ) ? $env : 'master';
+				exec( "git ls-remote https://github.com/wikimedia/mediawiki refs/heads/$release", $output );
+				$this->gitHead['mw'] = substr( $output[0], 0, 7 ) . " (refs/heads/$release)";
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}
@@ -153,6 +161,31 @@ class PHPUnitEnvironment {
 		}
 
 		return print sprintf( "\n%-20s%s\n", $arg1, $arg2 );
+	}
+
+	private function command_exists( $command ) {
+		$isWin = strtolower( substr( PHP_OS, 0, 3 ) ) === 'win';
+
+		$spec = [
+			[ "pipe", "r" ],
+			[ "pipe", "w" ],
+			[ "pipe", "w" ]
+		];
+
+		$proc = proc_open( ( $isWin ? 'where' : 'which' ) . " $command", $spec, $pipes );
+
+		if ( is_resource( $proc ) ) {
+			$stdout = stream_get_contents( $pipes[1] );
+			$stderr = stream_get_contents( $pipes[2] );
+
+			fclose( $pipes[1] );
+			fclose( $pipes[2] );
+
+			proc_close( $proc );
+			return $stdout != '';
+		}
+
+		return false;
 	}
 
 }
