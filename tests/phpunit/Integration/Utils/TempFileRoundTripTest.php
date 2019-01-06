@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Integration\Utils;
 
 use SMW\Utils\TempFile;
 
