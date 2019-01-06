@@ -1,0 +1,95 @@
+{
+	"description": "Test `Special:Ask` output on `?...=[[...|...]]|+index...`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "Example/S0031/1",
+			"contents": "[[Has page::123]] [[Category:S0031]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (#3211, label `?Has page=[[Foo|bar]]` ",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BHas-20page::123-5D-5D-20-5B-5BCategory:S0031-5D-5D/-3FHas-20page%3D-5B-5BFoo-7Cbar-5D-5D/mainlabel%3D/offset%3D0/format%3Dtable/headers%3Dplain",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{#ask: [[Has page::123]] [[Category:S0031]]",
+					" |?Has page=[[Foo|bar]]",
+					" |order=asc",
+					" |headers=plain",
+					" |mainlabel="
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (#3211, label `?Has page=[[Foo|bar]]|+index=1` ",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BHas-20page::123-5D-5D-20-5B-5BCategory:S0031-5D-5D/-3FHas-20page%3D-5B-5BFoo-7Cbar-5D-5D-7C%2Bindex%3D1/mainlabel%3D/offset%3D0/format%3Dtable/headers%3Dplain",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{#ask: [[Has page::123]] [[Category:S0031]]",
+					" |?Has page=[[Foo|bar]]|+index=1",
+					" |order=asc",
+					" |headers=plain",
+					" |mainlabel="
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (#3211, label `?Has page=[[Foo|bar]]|+index=1` ",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": [],
+				"request-parameters": {
+					"p": {
+						"headers": "plain",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"searchlabel": ""
+					},
+					"q": "[[Has page::123]] [[Category:S0031]]",
+					"po": "?Has page=[[Foo|bar]]|+index=1"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{#ask: [[Has page::123]] [[Category:S0031]]",
+					" |?Has page=[[Foo|bar]]|+index=1",
+					" |order=asc",
+					" |headers=plain"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

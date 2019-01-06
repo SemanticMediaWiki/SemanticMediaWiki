@@ -46,6 +46,63 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testParameters_Printrequest_PlusPipe() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parameters = [
+			'[[Foo::bar]]',
+			'|?Foo=Bar|+index=1'
+		];
+
+		$result = ParametersProcessor::process( $request, $parameters );
+
+		$this->assertEquals(
+			'Bar|+index=1',
+			$result[1]['|?foo']
+		);
+	}
+
+	public function testParameters_Printrequest_WikiLink() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parameters = [
+			'[[Foo::bar]]',
+			'|?Foo=[[Some|other]]'
+		];
+
+		$result = ParametersProcessor::process( $request, $parameters );
+
+		$this->assertEquals(
+			'[[Some|other]]',
+			$result[1]['|?foo']
+		);
+	}
+
+	public function testParameters_Printrequest_WikiLink_PlusPipe() {
+
+		$request = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parameters = [
+			'[[Foo::bar]]',
+			'|?Foo=[[Some|other]]|+index=1'
+		];
+
+		$result = ParametersProcessor::process( $request, $parameters );
+
+		$this->assertEquals(
+			'[[Some|other]]|+index=1',
+			$result[1]['|?foo']
+		);
+	}
+
 	public function testParametersWithDefaults() {
 
 		$request = $this->getMockBuilder( '\WebRequest' )
