@@ -107,6 +107,7 @@
 	"smw-paramdesc-feedpagecontent": "Page content to be displayed with the feed",
 	"smw-label-feed-link": "RSS",
 	"smw-label-feed-description": "$1 $2 feed",
+	"smw-paramdesc-mimetype": "The media type (MIMI type) for the output file",
 	"smw_iq_disabled": "Semantic queries have been disabled for this wiki.",
 	"smw_iq_moreresults": "... further results",
 	"smw_parseerror": "The given value was not understood.",
