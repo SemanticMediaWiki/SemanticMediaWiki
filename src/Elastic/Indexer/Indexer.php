@@ -553,6 +553,9 @@ class Indexer {
 
 	private function map_data( $bulk, $changeDiff ) {
 
+		$dbType = $this->store->getInfo( 'db' );
+		$unescape_bytea = isset( $dbType['postgres'] );
+
 		$inserts = [];
 		$inverted = [];
 
@@ -580,7 +583,7 @@ class Indexer {
 					continue;
 				}
 
-				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted );
+				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $unescape_bytea );
 			}
 		}
 
@@ -593,7 +596,7 @@ class Indexer {
 		}
 	}
 
-	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows ) {
+	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $unescape_bytea ) {
 
 		// The structure to be expected in ES:
 		//
@@ -674,6 +677,13 @@ class Indexer {
 			$type = 'txtField';
 			$val = $ins['o_blob'] === null ? $ins['o_hash'] : $ins['o_blob'];
 
+			// Postgres requires special handling of blobs otherwise escaped
+			// text elements are used as index input
+			// Tests: P9010, Q0704, Q1206, and Q0103
+			if ( $unescape_bytea && $ins['o_blob'] !== null ) {
+				$val = pg_unescape_bytea( $val );
+			}
+
 			// #3020, 3035
 			if ( isset( $prop['_type'] ) && $prop['_type'] === '_keyw' ) {
 				$val = DIBlob::normalize( $ins['o_hash'] );
@@ -686,6 +696,11 @@ class Indexer {
 		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_blob' ) ) {
 			$type = 'uriField';
 			$val = $ins['o_blob'] === null ? $ins['o_serialized'] : $ins['o_blob'];
+
+			if ( $unescape_bytea && $ins['o_blob'] !== null ) {
+				$val = pg_unescape_bytea( $val );
+			}
+
 		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_sortkey' ) ) {
 			$type = strpos( $ins['o_serialized'], '/' ) !== false ? 'datField' : 'numField';
 			$val = (float)$ins['o_sortkey'];
