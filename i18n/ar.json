@@ -116,6 +116,7 @@
 	"smw-paramdesc-feeddescription": "نصُّ وصف التلقيمة",
 	"smw-paramdesc-feedpagecontent": "محتوى الصفحة المعروض مع التلقيمة",
 	"smw-label-feed-description": "تلقيمة $2 $1",
+	"smw-paramdesc-mimetype": "نوع الوسائط (نوع MIMI) لملف الإخراج",
 	"smw_iq_disabled": "الاستعلامات الدلالية مُعطّلة في هذه الويكي.",
 	"smw_iq_moreresults": "…مزيد من النتائج",
 	"smw_parseerror": "القيمة المعطاة لم يتم فهمها.",
