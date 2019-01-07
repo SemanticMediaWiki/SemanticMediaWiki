@@ -113,6 +113,7 @@
 	"smw-paramdesc-feeddescription": "Texten som ska användas som beskrivning av feeden",
 	"smw-paramdesc-feedpagecontent": "Sidinnehåll som ska visas tillsammans med feeden",
 	"smw-label-feed-description": "$1 $2-feed",
+	"smw-paramdesc-mimetype": "Mediatypen (MIMI-typen) för utmatningsfilen",
 	"smw_iq_disabled": "Beklagar. Semantiska sökning har slagits av på den här wikin.",
 	"smw_iq_moreresults": "… ytterligare resultat",
 	"smw_parseerror": "Det angivna värdet förstods inte.",

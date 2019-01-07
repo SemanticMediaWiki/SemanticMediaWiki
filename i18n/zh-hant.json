@@ -128,6 +128,7 @@
 	"smw-paramdesc-feeddescription": "訂閱來源的描述文字",
 	"smw-paramdesc-feedpagecontent": "訂閱來源顯示的頁面內容",
 	"smw-label-feed-description": "訂閱 $1 $2 feed",
+	"smw-paramdesc-mimetype": "用於輸出檔案的媒體類型（MIME 類型）",
 	"smw_iq_disabled": "此 wiki 的語義查詢已被停用",
 	"smw_iq_moreresults": "...更多結果",
 	"smw_parseerror": "輸入的值無法理解。",

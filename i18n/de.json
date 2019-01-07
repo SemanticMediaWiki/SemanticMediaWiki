@@ -121,6 +121,7 @@
 	"smw-paramdesc-feeddescription": "Legt fest, welcher Text als Beschreibung des Feeds bei der Ausgabe der Abfrageergebnisse verwendet werden soll",
 	"smw-paramdesc-feedpagecontent": "Legt fest, ob der Seiteninhalt zusammen mit dem Feed bei der Ausgabe der Abfrageergebnisse angezeigt werden soll",
 	"smw-label-feed-description": "$2-Feed: $1",
+	"smw-paramdesc-mimetype": "Der Medientyp (MIME-Typ) für die Ausgabe-Datei",
 	"smw_iq_disabled": "Semantische Abfragen wurden in diesem Wiki deaktiviert.",
 	"smw_iq_moreresults": "… weitere Ergebnisse",
 	"smw_parseerror": "Der eingegebene Wert wurde nicht verstanden.",

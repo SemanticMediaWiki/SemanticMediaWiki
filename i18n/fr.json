@@ -143,6 +143,7 @@
 	"smw-paramdesc-feeddescription": "Le texte à utiliser comme description du flux",
 	"smw-paramdesc-feedpagecontent": "Contenu de la page à afficher avec le flux",
 	"smw-label-feed-description": "Flux $1 $2",
+	"smw-paramdesc-mimetype": "Le type de média (type MIME) du fichier de sortie",
 	"smw_iq_disabled": "Les recherches sémantiques sur ce wiki sont désactivées.",
 	"smw_iq_moreresults": "&hellip; autres résultats",
 	"smw_parseerror": "La donnée indiquée n’a pas été comprise.",

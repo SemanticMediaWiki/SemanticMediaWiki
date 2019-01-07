@@ -121,6 +121,7 @@
 	"smw-paramdesc-feeddescription": "O texto a ser usado como descrição do ''feed''",
 	"smw-paramdesc-feedpagecontent": "O conteúdo da página a ser apresentado com o ''feed''",
 	"smw-label-feed-description": "''Feed'' $2 $1",
+	"smw-paramdesc-mimetype": "O tipo de multimédia (tipo MIMI) do ficheiro de saída.",
 	"smw_iq_disabled": "As consultas semânticas foram impossibilitadas nesta wiki.",
 	"smw_iq_moreresults": "… mais resultados",
 	"smw_parseerror": "O valor fornecido não foi compreendido.",
