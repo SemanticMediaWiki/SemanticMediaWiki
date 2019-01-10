@@ -22,7 +22,8 @@
 			"Nemo bis",
 			"MokaAkashiyaPT",
 			"Eduardo Addad de Oliveira",
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Mansil alfalb"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -121,7 +122,7 @@
 	"smw-paramdesc-feeddescription": "O texto a ser usado como descrição do ''feed''",
 	"smw-paramdesc-feedpagecontent": "O conteúdo da página a ser apresentado com o ''feed''",
 	"smw-label-feed-description": "''Feed'' $2 $1",
-	"smw-paramdesc-mimetype": "O tipo de multimédia (tipo MIMI) do ficheiro de saída.",
+	"smw-paramdesc-mimetype": "O tipo de multimédia (tipo MIME) para o ficheiro de saída.",
 	"smw_iq_disabled": "As consultas semânticas foram impossibilitadas nesta wiki.",
 	"smw_iq_moreresults": "… mais resultados",
 	"smw_parseerror": "O valor fornecido não foi compreendido.",

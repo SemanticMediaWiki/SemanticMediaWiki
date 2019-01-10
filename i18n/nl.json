@@ -25,7 +25,8 @@
 			"Patio",
 			"KlaasZ4usV",
 			"Goefie",
-			"Robin van der Linde"
+			"Robin van der Linde",
+			"Elroy"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken – voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -258,7 +259,7 @@
 	"smw-ask-no-cache": "Geen cache",
 	"smw-ask-no-cache-desc": "Resultaten zonder querycache",
 	"smw-ask-result": "Resultaat",
-	"smw-ask-empty": "Leeg",
+	"smw-ask-empty": "Alle vermeldingen wissen",
 	"smw-ask-download-link-desc": "Download opgevraagde resultaten in $1-formaat",
 	"smw-ask-format": "Indeling",
 	"smw-ask-format-selection-help": "Hulp voor het geselecteerde formaat: $1.",
@@ -303,7 +304,7 @@
 	"smw_result_next": "Volgende",
 	"smw_result_results": "Resultaten",
 	"smw_result_noresults": "Geen resultaten.",
-	"smwadmin": "Administratieve functies",
+	"smwadmin": "Beheer- en onderhoudsonderdelen",
 	"smw-admin-statistics-job-title": "Taakstatistieken",
 	"smw-admin-statistics-job-docu": "De taakstatistieken tonen informatie over geplande Semantic MediaWiki-taken die nog niet zijn uitgevoerd. Het aantal taken kan enigszins afwijken of mislukte pogingen bevatten. Raadpleeg de [https://www.mediawiki.org/wiki/Manual:Job_queue handleiding] voor meer informatie.",
 	"smw-admin-statistics-querycache-title": "Querycachestatistieken",
