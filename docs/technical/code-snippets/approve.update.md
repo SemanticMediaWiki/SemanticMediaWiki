@@ -1,4 +1,3 @@
-
 For certain user scenarios it may be necessary to refuse or alter an update by changing the revision used as basis for what the semantic data should represent.
 
 Please ensure that when changes are applied to [log][log] those to make them recoverable. See [`$wgLogTypes`][wgLogTypes] on how to add and use an appropriate type and action description.
@@ -69,7 +68,7 @@ Hooks::register( 'SMW::Parser::ChangeRevision', function( $title, &$revision ) {
 	}
 
 	// Forcibly change the revision to match the approved version
-	$currentRevison = $revision;
+	$currentRevision = $revision;
 	$revision = Revision::newFromId( $approvedRevID );
 
 	$log = new LogPage( 'myType' );
