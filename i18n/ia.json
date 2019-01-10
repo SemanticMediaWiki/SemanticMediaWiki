@@ -97,6 +97,7 @@
 	"smw-paramdesc-feeddescription": "Le texto a usar como description del syndication",
 	"smw-paramdesc-feedpagecontent": "Le contento del pagina a monstrar con le syndication",
 	"smw-label-feed-description": "Syndication $2 $1",
+	"smw-paramdesc-mimetype": "Le typo de multimedia (typo MIME) pro le file resultante",
 	"smw_iq_disabled": "Le consultas semantic ha essite disactivate pro iste wiki.",
 	"smw_iq_moreresults": "… ulterior resultatos",
 	"smw_parseerror": "Le valor date non esseva comprendite.",

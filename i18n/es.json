@@ -146,6 +146,7 @@
 	"smw-paramdesc-feedpagecontent": "Contenido de página que se mostrará con el suministro",
 	"smw-label-feed-link": "RSS",
 	"smw-label-feed-description": "Fuente de noticias $1 $2",
+	"smw-paramdesc-mimetype": "El tipo de medio (MIME) del archivo de salida",
 	"smw_iq_disabled": "Se han desactivado las consultas semánticas en este wiki.",
 	"smw_iq_moreresults": "... más resultados",
 	"smw_parseerror": "No se comprendió el valor provisto.",
