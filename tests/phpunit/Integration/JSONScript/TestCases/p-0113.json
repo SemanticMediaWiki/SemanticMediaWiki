@@ -1,5 +1,5 @@
 {
-	"description": "Test #set_recurring_event parser incluce and exclude parameters",
+	"description": "Test #set_recurring_event parser include and exclude parameters",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -20,27 +20,27 @@
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 0 - en",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |format=count }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |format=count }}"
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 1 - en",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |?Has date |format=plainlist }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |?Has date |format=plainlist }}"
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 2 - fr",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |format=count }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |format=count }}"
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 3 - fr",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |?Has date |format=plainlist }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |?Has date |format=plainlist }}"
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 4 - ISO",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |format=count }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |format=count }}"
 		},
 		{
 			"page": "Team meetings in first half of 2019 - 5 - ISO",
-			"contents": "{{#ask: [[Is team meeting::Team meetings]] |?Has date |format=plainlist }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |?Has date |format=plainlist }}"
 		}
 	],
 	"tests": [
