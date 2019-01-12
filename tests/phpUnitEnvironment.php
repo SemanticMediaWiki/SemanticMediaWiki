@@ -120,7 +120,7 @@ class PHPUnitEnvironment {
 				// release/branch
 				$release = ( $env = getenv( 'MW' ) ) ? $env : 'master';
 				exec( "git ls-remote https://github.com/wikimedia/mediawiki refs/heads/$release", $output );
-				$this->gitHead['mw'] = substr( $output[0], 0, 7 ) . " (refs/heads/$release)";
+				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " (refs/heads/$release)" : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}
