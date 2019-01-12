@@ -11,7 +11,7 @@ use SMWDITime;
  *
  * This class determines recurring events based on invoked parameters
  *
- * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
+ * @see https://www.semantic-mediawiki.org/wiki/Help:Recurring_events
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -294,7 +294,9 @@ class RecurringEvents {
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );
 				$all_date_strings = array_merge( $all_date_strings, $included_dates);
-				$cur_date_jd = $cur_date->getDataItem()->getJD();
+				if ( $cur_date->isValid() ) {
+					$cur_date_jd = $cur_date->getDataItem()->getJD();
+				}
 			} elseif ( $unit == 'dayofweekinmonth' ) {
 				// e.g., "3rd Monday of every month"
 				$prev_month = $cur_date->getMonth();
@@ -305,6 +307,10 @@ class RecurringEvents {
 					$new_month = 12;
 				}
 
+				if ( $cur_date->isValid() ) {
+					$cur_date_jd = $cur_date->getDataItem()->getJD();
+				}
+				
 				$new_year = $prev_year + floor( ( $prev_month + $period - 1 ) / 12 );
 				$cur_date_jd += ( 28 * $period ) - 7;
 
