@@ -198,6 +198,30 @@ class CsvTest extends \PHPUnit_Framework_TestCase {
 			true,
 			"sep=,\nH1,H2,H3,H4\nFoo,1,2,3\nBar,1,2,3\n"
 		];
+
+		// fputcsv ... delimiter must be a single character
+		yield [
+			[],
+			[
+				[ 'Foo', '1', '2', '3' ],
+				[ 'Bar', '1', '2', '3' ],
+			],
+			',..;',
+			false,
+			"Foo,1,2,3\nBar,1,2,3\n"
+		];
+
+		// fputcsv ... delimiter must be a single character
+		yield [
+			[],
+			[
+				[ 'Foo', '1', '2', '3' ],
+				[ 'Bar', '1', '2', '3' ],
+			],
+			'',
+			false,
+			"Foo,1,2,3\nBar,1,2,3\n"
+		];
 	}
 
 }

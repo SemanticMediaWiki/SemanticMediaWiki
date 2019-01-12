@@ -10,6 +10,8 @@ namespace SMW\Utils;
  */
 class Csv {
 
+	const DEFAULT_SEP = ',';
+
 	/**
 	 * @var boolean
 	 */
@@ -40,9 +42,12 @@ class Csv {
 	 *
 	 * @return string
 	 */
-	public function toString( array $header, array $rows, $sep = ',' ) {
+	public function toString( array $header, array $rows, $sep = self::DEFAULT_SEP ) {
 
 		$handle = fopen( 'php://temp', 'r+' );
+
+		// fputcsv(): delimiter must be a single character
+		$sep = $sep !== '' ? $sep{0} : self::DEFAULT_SEP;
 
 		// https://en.wikipedia.org/wiki/Comma-separated_values#Standardization
 		// http://php.net/manual/en/function.fputcsv.php
