@@ -33,6 +33,7 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
@@ -399,7 +400,8 @@ class SQLStoreFactory {
 		);
 
 		$tableIntegrityExaminer = new TableIntegrityExaminer(
-			$this->store
+			$this->store,
+			new HashField( $this->store )
 		);
 
 		$tableSchemaManager = new TableSchemaManager(

@@ -833,5 +833,7 @@
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Debug",
 	"smw-ask-tab-code": "Code",
-	"smw-helplink-concepts": "https://www.semantic-mediawiki.org/wiki/Help:Concepts"
+	"smw-helplink-concepts": "https://www.semantic-mediawiki.org/wiki/Help:Concepts",
+	"smw-install-incomplete-intro": "The installation (or upgrade) of <b>Semantic MediaWiki</b> has not been finalized and an administrator should run the following tasks to prevent data inconsistencies before users continue to create or alter content.",
+	"smw-install-incomplete-populate-hash-field": "The <code>smw_hash</code> field population was skipped during the setup, the [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] script is required to be executed."
 }

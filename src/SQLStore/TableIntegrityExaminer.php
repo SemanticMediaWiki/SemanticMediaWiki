@@ -2,14 +2,15 @@
 
 namespace SMW\SQLStore;
 
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\MessageReporterAware;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\DIProperty;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
 use SMW\PropertyRegistry;
 use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\Installer;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMWSql3SmwIds;
 
 /**
@@ -23,7 +24,9 @@ use SMWSql3SmwIds;
  *
  * @author mwjames
  */
-class TableIntegrityExaminer implements MessageReporterAware {
+class TableIntegrityExaminer {
+
+	use MessageReporterAwareTrait;
 
 	/**
 	 * @var SQLStore
@@ -31,9 +34,9 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	private $store;
 
 	/**
-	 * @var MessageReporter
+	 * @var HashField
 	 */
-	private $messageReporter;
+	private $hashField;
 
 	/**
 	 * @var array
@@ -44,22 +47,13 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	 * @since 2.5
 	 *
 	 * @param SQLStore $store
+	 * @param HashField $hashField
 	 */
-	public function __construct( SQLStore $store ) {
+	public function __construct( SQLStore $store, HashField $hashField ) {
 		$this->store = $store;
+		$this->hashField = $hashField;
 		$this->messageReporter = new NullMessageReporter();
 		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
-	}
-
-	/**
-	 * @see MessageReporterAware::setMessageReporter
-	 *
-	 * @since 2.5
-	 *
-	 * @param MessageReporter $messageReporter
-	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
-		$this->messageReporter = $messageReporter;
 	}
 
 	/**
@@ -93,7 +87,10 @@ class TableIntegrityExaminer implements MessageReporterAware {
 	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
 
 		$this->checkPredefinedPropertyIndices();
-		$this->checkHashField();
+
+		$this->hashField->setMessageReporter( $this->messageReporter );
+		$this->hashField->check();
+
 		$this->checkSortField( $tableBuilder->getLog() );
 
 		// Call out for RDBMS specific implementations
@@ -343,60 +340,5 @@ class TableIntegrityExaminer implements MessageReporterAware {
 		);
 	}
 
-	private function checkHashField() {
-
-		$this->messageReporter->reportMessage( "Checking smw_hash field ...\n" );
-		$connection = $this->store->getConnection( DB_MASTER );
-
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_title',
-				'smw_namespace',
-				'smw_iw',
-				'smw_subobject'
-			],
-			[
-				'smw_hash' => null
-			],
-			__METHOD__
-		);
-
-		$count = $rows !== null ? $rows->numRows() : 0;
-		$i = 0;
-
-		if ( $count == 0 ) {
-			return $this->messageReporter->reportMessage( "   ... done.\n"  );
-		}
-
-		$this->messageReporter->reportMessage( "   ... missing $count rows ...\n"  );
-
-		foreach ( $rows as $row ) {
-			$i++;
-
-			$hash = $this->store->getObjectIds()->computeSha1(
-				[
-					$row->smw_title,
-					(int)$row->smw_namespace,
-					$row->smw_iw,
-					$row->smw_subobject
-				]
-			);
-
-			$this->messageReporter->reportMessage(
-				"\r". sprintf( "%-35s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $row->smw_id, round( ( $i / $count ) * 100 ) ) )
-			);
-
-			$connection->update(
-				SQLStore::ID_TABLE,
-				[ 'smw_hash' => $hash ],
-				[ 'smw_id' => $row->smw_id ],
-				__METHOD__
-			);
-		}
-
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
-	}
 
 }

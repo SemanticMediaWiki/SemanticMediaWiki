@@ -14,6 +14,17 @@ use SMW\Exception\FileNotWritableException;
 class File {
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string $file
+	 *
+	 * @return string
+	 */
+	public static function dir( $file ) {
+		return str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $file
@@ -22,7 +33,7 @@ class File {
 	 */
 	public function write( $file, $contents, $flags = 0 ) {
 
-		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+		$file = self::dir( $file );
 
 		if ( !is_writable( dirname( $file ) ) ) {
 			throw new FileNotWritableException( "$file" );

@@ -28,6 +28,14 @@ Usage:
 - php dumpRDF.php
 - [--categories|--classes|--concepts|--conf|--d|--dbpass|--dbuser|--e|--file|--globals|--help|--individuals|--memory-limit|--page|--profiler|--properties|--quiet|--server|--types|--wiki]
 
+### populateHashField.php
+
+Populate the `smw_hash` field for all entities that have a missing entry.
+
+Usage:
+- php populateHashField.php
+- [--conf|--dbpass|--dbuser|--globals|--help|--memory-limit|--profiler|--quiet|--server|--wiki]
+
 ### rebuildConceptCache.php
 
 Manages concept caches in Semantic MediaWiki.
