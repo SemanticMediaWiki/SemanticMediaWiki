@@ -147,6 +147,15 @@ final class Setup {
 	}
 
 	/**
+	 * @since 3.0
+	 *
+	 * @param array &$vars
+	 */
+	public function loadSchema( &$vars ) {
+		Installer::loadSchema( $vars );
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param array &$vars

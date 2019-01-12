@@ -22,6 +22,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableSchemaManager;
 	private $tableBuilder;
 	private $tableIntegrityExaminer;
+	private $file;
 
 	protected function setUp() {
 		parent::setUp();
@@ -41,6 +42,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,6 +88,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setFile( $this->file );
 
 		$instance->setOptions(
 			[
@@ -126,6 +132,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setFile( $this->file );
+
 		$instance->setOptions(
 			[
 				Installer::OPT_SUPPLEMENT_JOBS => true
@@ -157,6 +165,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setFile( $this->file );
 
 		$this->assertTrue(
 			$instance->install( false )
@@ -282,6 +291,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$vars = [
+			'smwgConfigFileDir' => 'Foo/',
 			'smwgIP' => '',
 			'smwgUpgradeKey' => '',
 			'smwgFixedProperties' => [],

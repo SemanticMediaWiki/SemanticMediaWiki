@@ -3,6 +3,7 @@
 namespace SMW\Utils;
 
 use RuntimeException;
+use SMW\Exception\FileNotWritableException;
 
 /**
  * @license GNU GPL v2+
@@ -20,6 +21,13 @@ class File {
 	 * @param integer $flags
 	 */
 	public function write( $file, $contents, $flags = 0 ) {
+
+		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+
+		if ( !is_writable( dirname( $file ) ) ) {
+			throw new FileNotWritableException( "$file" );
+		}
+
 		file_put_contents( $file, $contents, $flags );
 	}
 
