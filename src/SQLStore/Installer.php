@@ -10,7 +10,9 @@ use SMW\CompatibilityMode;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\Options;
+use SMW\Site;
 use SMW\Utils\File;
+use SMW\Exception\FileNotWritableException;
 
 /**
  * @private
@@ -65,6 +67,11 @@ class Installer implements MessageReporter {
 	private $options;
 
 	/**
+	 * @var File
+	 */
+	private $file;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TableSchemaManager $tableSchemaManager
@@ -90,6 +97,15 @@ class Installer implements MessageReporter {
 		}
 
 		$this->options = $options;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param File $file
+	 */
+	public function setFile( File $file ) {
+		$this->file = $file;
 	}
 
 	/**
@@ -130,7 +146,9 @@ class Installer implements MessageReporter {
 		$this->table_optimization( $messageReporter );
 		$this->supplement_jobs( $messageReporter );
 
-		self::setUpgradeKey( new File(), $GLOBALS, $messageReporter );
+		$file = $this->file !== null ? $this->file : new File();
+
+		self::setUpgradeKey( $file, $GLOBALS, $messageReporter );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -188,6 +206,25 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 3.0
 	 *
+	 * @param array $vars
+	 */
+	public static function loadSchema( &$vars ) {
+
+		// @see #3506
+		$file = $vars['smwgConfigFileDir'] . '/.smw.json';
+		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+
+		// Doesn't exist? The `Setup::init` will take care of it by trying to create
+		// a new file and if it fails or unable to do so wail raise an exception
+		// as we expect to have access to it.
+		if ( is_readable( $file ) ) {
+			$vars['smw.json'] = json_decode( file_get_contents( $file ), true );
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param boolean $isCli
 	 *
 	 * @return boolean
@@ -202,11 +239,14 @@ class Installer implements MessageReporter {
 			return true;
 		}
 
-		if ( !isset( $GLOBALS['smw.json']['upgradeKey'] ) ) {
+		// #3563, Use the specific wiki-id as identifier for the instance in use
+		$id = Site::id();
+
+		if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
 			return false;
 		}
 
-		return self::getUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json']['upgradeKey'];
+		return self::getUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
 	}
 
 	/**
@@ -253,21 +293,43 @@ class Installer implements MessageReporter {
 
 		$key = self::getUpgradeKey( $vars );
 
-		if ( isset( $vars['smw.json']['upgradeKey'] ) && $key === $vars['smw.json']['upgradeKey'] ) {
+		// #3563, Use the specific wiki-id as identifier for the instance in use
+		$id = Site::id();
+
+		if (
+			isset( $vars['smw.json'][$id]['upgrade_key'] ) &&
+			$key === $vars['smw.json'][$id]['upgrade_key'] ) {
 			return false;
 		}
 
 		if ( $messageReporter !== null ) {
-			$messageReporter->reportMessage( "\nSetting upgrade key ..." );
+			$messageReporter->reportMessage( "\nSetting $id upgrade key ..." );
 		}
 
 		if ( !isset( $vars['smw.json'] ) ) {
 			$vars['smw.json'] = [];
 		}
 
-		$vars['smw.json']['upgradeKey'] = $key;
+		$vars['smw.json'][$id]['upgrade_key'] = $key;
 
-		$file->write( $vars['smwgIP'] . '/.smw.json', json_encode( $vars['smw.json'] ) );
+		$configFile = $vars['smwgConfigFileDir'] . '/.smw.json';
+		$configFile = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $configFile );
+
+		try {
+			$file->write(
+				$configFile,
+				json_encode( $vars['smw.json'] )
+			);
+		} catch( FileNotWritableException $e ) {
+			// Users may not have `wgShowExceptionDetails` enabled and would
+			// therefore not see the exception error message hence we fail hard
+			// and die
+			die(
+				"\n\nERROR: " . $e->getMessage() . "\n" .
+				"\n       The \"smwgConfigFileDir\" setting should point to a" .
+				"\n       directory that is persistent and writable!\n"
+			);
+		}
 
 		if ( $messageReporter !== null ) {
 			$messageReporter->reportMessage( "\n   ... done.\n" );

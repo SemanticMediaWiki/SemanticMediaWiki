@@ -229,7 +229,7 @@ class RemoteRequest implements QueryEngine {
 
 			$this->httpRequest->setOption(
 				ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX,
-				Site::prefix( 'smw:query:remote:' )
+				Site::id( 'smw:query:remote:' )
 			);
 		}
 
