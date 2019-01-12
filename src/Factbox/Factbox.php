@@ -407,7 +407,7 @@ class Factbox {
 				$outputFormat = $dataValue->getOutputFormat();
 				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
 
-				$dataValue->setOption( $dataValue::OPT_DISABLE_INFOLINKS, true );
+				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
 
 				if ( $dataValue->isValid() ) {
 					$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );

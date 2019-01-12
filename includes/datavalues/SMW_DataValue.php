@@ -72,9 +72,14 @@ abstract class SMWDataValue {
 	const OPT_QUERY_COMP_CONTEXT = 'query.comparator.context';
 
 	/**
-	 * Option to disable an infolinks highlight/tooltip
+	 * Option to disable related infolinks
 	 */
 	const OPT_DISABLE_INFOLINKS = 'disable.infolinks';
+
+	/**
+	 * Option to disable service links
+	 */
+	const OPT_DISABLE_SERVICELINKS = 'disable.servicelinks';
 
 	/**
 	 * Option to use compact infolinks
@@ -635,11 +640,15 @@ abstract class SMWDataValue {
 	 */
 	public function getInfolinkText( $outputFormat, $linker = null ) {
 
+		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
+			return '';
+		}
+
 		if ( $this->infoLinksProvider === null ) {
 			$this->infoLinksProvider = $this->dataValueServiceFactory->newInfoLinksProvider( $this );
 		}
 
-		if ( $this->getOption( self::OPT_DISABLE_INFOLINKS ) === true ) {
+		if ( $this->getOption( self::OPT_DISABLE_SERVICELINKS ) === true ) {
 			$this->infoLinksProvider->disableServiceLinks();
 		}
 

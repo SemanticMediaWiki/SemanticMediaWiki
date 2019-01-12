@@ -103,8 +103,12 @@ class ValueFormatter {
 		}
 
 		$html = $dataValue->getLongHTMLText( $linker );
-		$isCompactLink = $dataValue->getOption( DataValue::OPT_COMPACT_INFOLINKS, false );
 
+		if ( $dataValue->getOption( DataValue::OPT_DISABLE_INFOLINKS, false ) === true ) {
+			return $html;
+		}
+
+		$isCompactLink = $dataValue->getOption( DataValue::OPT_COMPACT_INFOLINKS, false );
 		$noInfolinks = [ '_INST', '_SKEY' ];
 
 		if ( in_array( $dataValue->getTypeID(), [ '_wpg', '_wpp', '__sob'] ) ) {

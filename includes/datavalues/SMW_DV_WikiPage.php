@@ -479,20 +479,45 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return Title
 	 */
 	public function getTitle() {
-		if ( ( $this->isValid() ) && is_null( $this->m_title ) ) {
-			$this->m_title = $this->m_dataitem->getTitle();
 
-			if ( is_null( $this->m_title ) ) { // should not normally happen, but anyway ...
-				$this->addErrorMsg(
-					[
-						'smw_notitle',
-						Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey()
-					]
+		if ( $this->m_title !== null ) {
+			return $this->m_title;
+		}
+
+		if ( $this->isValid() ) {
+
+			if ( ( $title = $this->m_dataitem->getTitle() ) !== null ) {
+				return $this->m_title = $title;
+			}
+
+			// #3278, Special handling of `>` in the user namespace, MW (1.31+)
+			// added a prefix to users that originate from imported content
+			if (
+				$this->m_dataitem->getNamespace() === NS_USER &&
+				strpos( $this->m_dataitem->getDBkey(), '>' ) !== false ) {
+
+				$this->setOption( self::OPT_DISABLE_INFOLINKS, true );
+
+				$this->m_title = Title::newFromText(
+					$this->m_dataitem->getDBkey()
 				);
+
+				return $this->m_title;
 			}
 		}
 
-		return $this->m_title;
+		$errArg = $this->m_caption;
+
+		if ( $this->isValid() ) {
+			$ns = Localizer::getInstance()->getNamespaceTextById(
+				$this->m_dataitem->getNamespace()
+			);
+
+			$errArg = "$ns:" . $this->m_dataitem->getDBkey();
+		}
+
+		// Should not normally happen, but anyway ...
+		$this->addErrorMsg( [ 'smw_notitle', $errArg ] );
 	}
 
 	/**
