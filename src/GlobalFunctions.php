@@ -99,6 +99,12 @@ function smwfAbort( $text ) {
 	$html .= "<title>Error</title></head><body><h2>Error</h2><hr style='border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3);'>";
 	$html .= "<p>{$text}</p></body></html>";
 
+	// MW 1.26
+	// Manages deferred updates, job insertion, final commit, and the logging of
+	// profiling data
+	$mediaWiki = new \MediaWiki();
+	$mediaWiki->doPostOutputShutdown( 'fast' );
+
 	die( $html );
 }
 
