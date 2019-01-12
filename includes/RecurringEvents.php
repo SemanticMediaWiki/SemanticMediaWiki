@@ -306,10 +306,6 @@ class RecurringEvents {
 				if ( $new_month == 0 ) {
 					$new_month = 12;
 				}
-
-				if ( $cur_date->isValid() ) {
-					$cur_date_jd = $cur_date->getDataItem()->getJD();
-				}
 				
 				$new_year = $prev_year + floor( ( $prev_month + $period - 1 ) / 12 );
 				$cur_date_jd += ( 28 * $period ) - 7;
