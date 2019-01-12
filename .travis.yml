@@ -39,8 +39,8 @@ matrix:
     - env: DB=mysql; MW=REL1_27; TYPE=relbuild; PHPUNIT=4.8.*
     # Can fail when pushed/used with newly Composer dependencies
     - env: DB=sqlite; MW=REL1_27; TYPE=composer; PHPUNIT=4.8.*
-    # This is MW master, you never know what WMF developers have put in for easter eggs
-    - env: DB=sqlite; MW=master; PHPUNIT=6.5.*
+    # This is MW master, you never know what WMF developers have put in for easter eggs, same for PHP conversely
+    - env: DB=mysql; MW=master; PHPUNIT=6.5.*
     # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_27; SESAME=2.8.7
