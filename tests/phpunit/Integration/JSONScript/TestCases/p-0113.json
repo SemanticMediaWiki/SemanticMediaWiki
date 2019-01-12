@@ -1,0 +1,126 @@
+{
+	"description": "Test #set_recurring_event parser include and exclude parameters",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Team meetings - en",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 14, 2019 9:30 am |end=June 30, 2019 |unit=week |period=2 |include=May 7, 2019 9:30 am; June 18, 2019 9:30 am; June 27, 2019 10:00 am |exclude=May 6, 2019 9:30 am; June 17, 2019 9:30 am }}"
+		},
+		{
+			"page": "Team meetings - fr",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=14 janvier 2019 9:30 am |end=30 juin 2019 |unit=week |period=2 |include=7 mai 2019 9:30 am; 18 juin 2019 9:30 am; 27 juin 2019 10:00 am |exclude=6 mai 2019 9:30 am; 17 juin 2019 9:30 am }}"
+		},
+		{
+			"page": "Team meetings - ISO",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=2019-01-14T09:30:00 |end=2019-06-30 |unit=week |period=2 |include=2019-05-07T09:30:00; 2019-06-18T09:30:00; 2019-06-27T10:00:00 |exclude=2019-05-06T09:30:00; 2019-06-17T09:30:00 }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 0 - en",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 1 - en",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |?Has date |format=plainlist }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 2 - fr",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 3 - fr",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |?Has date |format=plainlist }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 4 - ISO",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in first half of 2019 - 5 - ISO",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |?Has date |format=plainlist }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #set_recurring_event parser with end date, included and excluded dates - count",
+			"subject": "Team meetings in first half of 2019 - 0 - en",
+			"assert-output": {
+				"to-contain": [
+					"13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 #set_recurring_event parser with end date, included and excluded dates - print",
+			"subject": "Team meetings in first half of 2019 - 1 - en",
+			"assert-output": {
+				"to-contain": [
+					"27 juin 2019 10:00:00"
+				],
+				"not-contain": [
+					"6 mai 2019 09:30:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 #set_recurring_event parser with end date, included and excluded dates - count",
+			"subject": "Team meetings in first half of 2019 - 2 - fr",
+			"assert-output": {
+				"to-contain": [
+					"13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #set_recurring_event parser with end date, included and excluded dates - print",
+			"subject": "Team meetings in first half of 2019 - 3 - fr",
+			"assert-output": {
+				"to-contain": [
+					"27 juin 2019 10:00:00"
+				],
+				"not-contain": [
+					"6 mai 2019 09:30:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 #set_recurring_event parser with end date, included and excluded dates - count",
+			"subject": "Team meetings in first half of 2019 - 4 - ISO",
+			"assert-output": {
+				"to-contain": [
+					"13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #set_recurring_event parser with end date, included and excluded dates - print",
+			"subject": "Team meetings in first half of 2019 - 5 - ISO",
+			"assert-output": {
+				"to-contain": [
+					"27 juin 2019 10:00:00"
+				],
+				"not-contain": [
+					"6 mai 2019 09:30:00"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "fr",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
