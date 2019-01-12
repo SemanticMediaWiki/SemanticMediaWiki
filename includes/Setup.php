@@ -163,17 +163,16 @@ final class Setup {
 	 */
 	public function init( &$vars, $directory ) {
 
+		$this->initMessageCallbackHandler();
+
 		if ( $this->isValid() === false ) {
-
-			$text = 'Semantic MediaWiki was installed and enabled but is missing an appropriate ';
-			$text .= '<a href="https://www.semantic-mediawiki.org/wiki/Help:Upgrade">upgrade key</a>. ';
-			$text .= 'Please run MediaWiki\'s <a href="https://www.mediawiki.org/wiki/Manual:Update.php">update.php</a> ';
-			$text .= 'or Semantic MediaWiki\'s <a href="https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php">setupStore.php</a> maintenance script first. ';
-			$text .= 'You may also consult the following pages:';
-			$text .= '<ul><li><a href="https://www.semantic-mediawiki.org/wiki/Help:Installation">Installation</a></li>';
-			$text .= '<li><a href="https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting">Troubleshooting</a></li></ul>';
-
-			smwfAbort( $text );
+			smwfAbort(
+				Message::get( [ 'smw-upgrade-error', $vars['smwgUpgradeKey'] ], Message::PARSE ) .
+				'<h3>' . Message::get( 'smw-upgrade-error-why-title' ) . '</h3>' .
+				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
+				'<h3>' . Message::get( 'smw-upgrade-error-how-title' ) . '</h3>' .
+				Message::get( 'smw-upgrade-error-how-explain', Message::PARSE )
+			);
 		}
 
 		$this->addDefaultConfigurations( $vars );
@@ -183,7 +182,6 @@ final class Setup {
 		}
 
 		$this->initConnectionProviders( );
-		$this->initMessageCallbackHandler();
 
 		$this->registerJobClasses( $vars );
 		$this->registerPermissions( $vars );
