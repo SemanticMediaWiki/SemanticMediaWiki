@@ -11,6 +11,7 @@ use SMW\Tests\Utils\Fixtures\FixturesFactory;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
  * @license GNU GPL v2+
@@ -243,6 +244,15 @@ class UtilityFactory {
 	 */
 	public function newSpyMessageReporter() {
 		return new SpyMessageReporter();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return MockSuperUser
+	 */
+	public function newMockSuperUser() {
+		return new MockSuperUser();
 	}
 
 }
