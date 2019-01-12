@@ -1,0 +1,85 @@
+{
+	"description": "Test #set_recurring_event parser week number parameter",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Team meetings 1",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 15, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=2 }}"
+		},
+		{
+			"page": "Team meetings 2",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 31, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=-1 }}"
+		},
+		{
+			"page": "Team meetings in 2019 - 0",
+			"contents": "{{#ask: [[Is team meeting::Team meetings 1]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in 2019 - 1",
+			"contents": "{{#ask: [[Is team meeting::Team meetings 1]] |?Has date |format=plainlist }}"
+		},
+		{
+			"page": "Team meetings in 2019 - 2",
+			"contents": "{{#ask: [[Is team meeting::Team meetings 2]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in 2019 - 3",
+			"contents": "{{#ask: [[Is team meeting::Team meetings 2]] |?Has date |format=plainlist }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #set_recurring_event parser with end date and week number dates - count",
+			"subject": "Team meetings in 2019 - 0",
+			"assert-output": {
+				"to-contain": [
+					"12"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 #set_recurring_event parser with end date and week number dates - print",
+			"subject": "Team meetings in 2019 - 1",
+			"assert-output": {
+				"to-contain": [
+					"10 décembre 2019 09:30:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 #set_recurring_event parser with end date and week number dates - count",
+			"subject": "Team meetings in 2019 - 2",
+			"assert-output": {
+				"to-contain": [
+					"12"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #set_recurring_event parser with end date and week number dates - print",
+			"subject": "Team meetings in 2019 - 3",
+			"assert-output": {
+				"to-contain": [
+					"29 août 2019 09:30:00"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "fr",
+		"wgLang": "de"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
