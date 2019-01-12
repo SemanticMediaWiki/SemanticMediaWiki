@@ -198,7 +198,7 @@ class FileIndexer {
 		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
 		$file_headers = @get_headers( $url );
 
-		if ( $file_headers[0] !== 'HTTP/1.1 404 Not Found' && $file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
+		if ( $file_headers !== false && $file_headers[0] !== 'HTTP/1.1 404 Not Found' && $file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
 			$contents = file_get_contents( $url );
 		} else {
 			$this->logger->info( [ 'File indexer', "HTTP/1.1 404 Not Found for $url" ], $context );
