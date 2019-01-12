@@ -44,6 +44,11 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 	private $pageReader;
 
 	/**
+	 * @var User
+	 */
+	private $superUser;
+
+	/**
 	 * @var SerializerFactory
 	 */
 	private $serializerFactory;
@@ -65,6 +70,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$this->incomingSemanticDataValidator = $incomingSemanticDataValidator;
 		$this->stringValidator = $stringValidator;
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
+		$this->superUser = UtilityFactory::getInstance()->newMockSuperUser();
 		$this->serializerFactory = \SMW\ApplicationFactory::getInstance()->newSerializerFactory();
 	}
 
@@ -169,6 +175,11 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 				$title,
 				$parameters
 			);
+
+			// Avoid "... PermissionsError: The action you have requested is
+			// limited to users in the group ..."
+			$context->setUser( $this->superUser );
+
 			\Article::newFromTitle( $title, $context )->view();
 			$output = $context->getOutput()->getHtml();
 		} else {
