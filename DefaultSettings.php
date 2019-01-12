@@ -34,6 +34,41 @@ return [
 	##
 
 	###
+	# Configuration directory
+	# @see #3506
+	#
+	# The maintained directory needs to be writable in order for configuration
+	# information to be stored persistently and be accessible for Semantic
+	# MediaWiki throughout its operation.
+	#
+	# You may assign the same directory as in `wgUploadDirectory` (e.g
+	# $smwgConfigFileDir = $wgUploadDirectory;) or select an entire different
+	# location. The default location is the Semantic MediaWiki extension root.
+	#
+	# @since 3.0
+	##
+	'smwgConfigFileDir' => __DIR__,
+	##
+
+	###
+	# Upgrade key
+	#
+	# This key verifies that a correct upgrade (update.php/setupStore.php) path
+	# was selected and hereby ensures a consistent DB setup.
+	#
+	# Whenever a DB table change occurs, modify the key value (e.g. `smw:20...`)
+	# to reflect the requirement for the client to follow the processes as
+	# outlined in the installation manual.
+	#
+	# Once the installer is run, the `.smw.json` will be updated and no longer
+	# cause any exception.
+	#
+	# @since 3.0
+	##
+	'smwgUpgradeKey' => 'smw:2018-09-01',
+	##
+
+	###
 	# Content import
 	#
 	# Controls the content import directory and version that is expected to be
@@ -60,24 +95,6 @@ return [
 	# @since 2.4
 	##
 	'smwgSemanticsEnabled' => false,
-	##
-
-	###
-	# Upgrade key
-	#
-	# This key verifies that a correct upgrade (update.php/setupStore.php) path
-	# was selected and hereby ensures a consistent DB setup.
-	#
-	# Whenever a DB table change occurs, modify the key value (e.g. `DB-Foo...`)
-	# to reflect the requirement for the client to follow the processes as
-	# outlined in the installation manual.
-	#
-	# Once the installer is run, the `.smw.json` will be updated and no longer
-	# causes an exception.
-	#
-	# @since 3.0
-	##
-	'smwgUpgradeKey' => 'DB-2018-09-01',
 	##
 
 	###

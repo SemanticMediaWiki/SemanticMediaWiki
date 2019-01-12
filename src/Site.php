@@ -95,15 +95,17 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @param $affix string
+	 *
+	 * @return string
 	 */
-	public static function prefix( $name = '' ) {
+	public static function id( $affix = '' ) {
 
-		if ( $name{0} !== ':' ) {
-			$name = ':' . $name;
+		if ( $affix !== '' && $affix{0} !== ':' ) {
+			$affix = ':' . $affix;
 		}
 
-		return wfWikiID() . $name;
+		return wfWikiID() . $affix;
 	}
 
 	/**
