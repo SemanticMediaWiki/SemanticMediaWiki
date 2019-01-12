@@ -294,7 +294,9 @@ class RecurringEvents {
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = DataValueFactory::getInstance()->newTypeIDValue( '_dat', $date_str );
 				$all_date_strings = array_merge( $all_date_strings, $included_dates);
-				$cur_date_jd = $cur_date->getDataItem()->getJD();
+				if ( $cur_date->isValid() ) {
+					$cur_date_jd = $cur_date->getDataItem()->getJD();
+				}
 			} elseif ( $unit == 'dayofweekinmonth' ) {
 				// e.g., "3rd Monday of every month"
 				$prev_month = $cur_date->getMonth();
