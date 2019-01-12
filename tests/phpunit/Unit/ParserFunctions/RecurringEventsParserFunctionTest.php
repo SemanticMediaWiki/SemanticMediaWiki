@@ -6,6 +6,7 @@ use ParserOutput;
 use ReflectionClass;
 use SMW\MessageFormatter;
 use SMW\ParserData;
+use SMW\RecurringEvents;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserParameterProcessor;
 use SMW\Subobject;
@@ -35,11 +36,12 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\RecurringEventsParserFunction',
+			RecurringEventsParserFunction::class,
 			new RecurringEventsParserFunction(
 				$parserData,
 				$subobject,
-				$messageFormatter
+				$messageFormatter,
+				new RecurringEvents()
 			)
 		);
 	}
@@ -49,16 +51,18 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 
+		$recurringEvents = new RecurringEvents();
+		$recurringEvents->setDefaultNumRecurringEvents( 100 );
+		$recurringEvents->setMaxNumRecurringEvents( 100 );
+
 		$title = Title::newFromText( __METHOD__ );
 
 		$instance = new RecurringEventsParserFunction(
 			new ParserData( $title, new ParserOutput() ),
 			new Subobject( $title ),
-			new MessageFormatter( \Language::factory( 'en' ) )
+			new MessageFormatter( \Language::factory( 'en' ) ),
+			$recurringEvents
 		);
-
-		$instance->setDefaultNumRecurringEvents( 100 );
-		$instance->setMaxNumRecurringEvents( 100 );
 
 		$result = $instance->parse(
 			new ParserParameterProcessor( $params )
@@ -66,13 +70,9 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue( $result !== '' ? $expected['errors'] : !$expected['errors'] );
 
-		$reflector = new ReflectionClass( '\SMW\ParserFunctions\RecurringEventsParserFunction' );
-		$events = $reflector->getProperty( 'recurringEvents' );
-		$events->setAccessible( true );
-
 		$this->assertEquals(
 			$expected['parameters'],
-			$events->getValue( $instance )->getParameters()
+			$recurringEvents->getParameters()
 		);
 	}
 
