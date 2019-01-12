@@ -11,7 +11,7 @@ use SMWDITime;
  *
  * This class determines recurring events based on invoked parameters
  *
- * @see http://semantic-mediawiki.org/wiki/Help:Recurring_events
+ * @see https://www.semantic-mediawiki.org/wiki/Help:Recurring_events
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -303,6 +303,10 @@ class RecurringEvents {
 				$new_month = ( $prev_month + $period ) % 12;
 				if ( $new_month == 0 ) {
 					$new_month = 12;
+				}
+				
+				if ( $cur_date->isValid() ) {
+					$cur_date_jd = $cur_date->getDataItem()->getJD();
 				}
 
 				$new_year = $prev_year + floor( ( $prev_month + $period - 1 ) / 12 );
