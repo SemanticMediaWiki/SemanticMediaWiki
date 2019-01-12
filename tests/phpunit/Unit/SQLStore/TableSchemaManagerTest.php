@@ -112,4 +112,49 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindTableFullTextTable_Disabled() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new TableSchemaManager(
+			$store
+		);
+
+		$this->assertNull(
+			$instance->findTable( \SMW\SQLStore\SQLStore::FT_SEARCH_TABLE )
+		);
+	}
+
+	public function testFindTableFullTextTable_Enabled() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new TableSchemaManager(
+			$store
+		);
+
+		$instance->setOptions(
+			[
+				'smwgEnabledFulltextSearch' => true
+			]
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableBuilder\Table',
+			$instance->findTable( \SMW\SQLStore\SQLStore::FT_SEARCH_TABLE )
+		);
+	}
+
 }

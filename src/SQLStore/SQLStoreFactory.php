@@ -406,6 +406,13 @@ class SQLStoreFactory {
 			$this->store
 		);
 
+		$tableSchemaManager->setOptions(
+			[
+				'smwgEnabledFulltextSearch' => $settings->get( 'smwgEnabledFulltextSearch' ),
+				'smwgFulltextSearchTableOptions' => $settings->get( 'smwgFulltextSearchTableOptions' )
+			]
+		);
+
 		$tableSchemaManager->setFeatureFlags(
 			$settings->get( 'smwgFieldTypeFeatures' )
 		);

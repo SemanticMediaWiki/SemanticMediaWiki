@@ -201,4 +201,38 @@ class TextChangeUpdaterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNullUpdate() {
+
+		$this->searchTableUpdater->expects( $this->atLeastOnce() )
+			->method( 'isEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeOp->expects( $this->once() )
+			->method( 'newChangeDiff' )
+			->will( $this->returnValue( null ) );
+
+		$changeOp->expects( $this->never() )
+			->method( 'getSubject' );
+
+		$instance = new TextChangeUpdater(
+			$this->connection,
+			$this->cache,
+			$this->searchTableUpdater
+		);
+
+		$instance->setLogger(
+			$this->logger
+		);
+
+		$instance->isCommandLineMode( true );
+
+		$instance->pushUpdates(
+			$changeOp
+		);
+	}
+
 }

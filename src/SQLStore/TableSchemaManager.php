@@ -34,6 +34,11 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
+	 * @var []
+	 */
+	private $options = [];
+
+	/**
 	 * @var integer
 	 */
 	private $featureFlags = false;
@@ -64,6 +69,32 @@ class TableSchemaManager {
 		sort( $hash );
 
 		return md5( json_encode( $hash ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param array $options
+	 */
+	public function setOptions( array $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function getOption( $key, $default = false ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
+		}
+
+		return $default;
 	}
 
 	/**
@@ -119,6 +150,7 @@ class TableSchemaManager {
 		$this->addTable( $this->newConceptCacheTable() );
 		$this->addTable( $this->newQueryLinksTable() );
 		$this->addTable( $this->newFulltextSearchTable() );
+
 		$this->addTable( $this->newPropertyStatisticsTable() );
 
 		foreach ( $this->store->getPropertyTables() as $propertyTable ) {
@@ -223,6 +255,14 @@ class TableSchemaManager {
 
 	private function newFulltextSearchTable() {
 
+		// Avoid the creation unless it is enabled hereby avoids issues in
+		// regards to the default `MyISAM` storage engine (especially when mixed with
+		// InnoDB, transactional mode).Those who enable the full-text need to
+		// ensure that `smwgFulltextSearchTableOptions` matches their environment.
+		if ( !$this->getOption( 'smwgEnabledFulltextSearch', false ) ) {
+			return null;
+		}
+
 		// FT_SEARCH_TABLE
 		// TEXT and BLOB is stored off the table with the table just having a pointer
 		// VARCHAR is stored inline with the table
@@ -240,7 +280,7 @@ class TableSchemaManager {
 
 		$table->addOption(
 			'fulltextSearchTableOptions',
-			$GLOBALS['smwgFulltextSearchTableOptions']
+			 $this->getOption( 'smwgFulltextSearchTableOptions', [] )
 		);
 
 		return $table;
@@ -339,7 +379,12 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( Table $table ) {
+	private function addTable( Table $table = null ) {
+
+		if ( $table === null ) {
+			return;
+		}
+
 		$this->tables[] = $table;
 	}
 

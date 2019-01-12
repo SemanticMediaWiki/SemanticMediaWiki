@@ -239,12 +239,14 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
 		];
 
 		$var2 = [
 			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ]
 		];
@@ -259,12 +261,14 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
 		];
 
 		$var2 = [
 			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ]
 		];
@@ -294,6 +298,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			'smwgConfigFileDir' => 'Foo/',
 			'smwgIP' => '',
 			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => []
 		];

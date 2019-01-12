@@ -269,23 +269,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 				);
 
 				$formattedRows[$id] = (array)$row;
-
-				$row = $connection->selectRow(
-						SQLStore::FT_SEARCH_TABLE,
-						[
-							's_id',
-							'p_id',
-							'o_text'
-						],
-						[
-							's_id' => $id
-						],
-						__METHOD__
-				);
-
-				if ( $row !== false ) {
-					$references[$id][SQLStore::FT_SEARCH_TABLE] = (array)$row;
-				}
+				$this->addFulltextInfo( $id, $references );
 			}
 		}
 
@@ -320,6 +304,31 @@ class EntityLookupTaskHandler extends TaskHandler {
 		}
 
 		return [ $output, $error ];
+	}
+
+	private function addFulltextInfo( $id, &$references ) {
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE ) ) {
+			return;
+		}
+
+		$row = $connection->selectRow(
+				SQLStore::FT_SEARCH_TABLE,
+				[
+					's_id',
+					'p_id',
+					'o_text'
+				],
+				[
+					's_id' => $id
+				],
+				__METHOD__
+		);
+
+		if ( $row !== false ) {
+			$references[$id][SQLStore::FT_SEARCH_TABLE] = (array)$row;
+		}
 	}
 
 }
