@@ -186,9 +186,9 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff ) {
+	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff = null ) {
 
-		if ( !$this->searchTableUpdater->isEnabled() ) {
+		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
 

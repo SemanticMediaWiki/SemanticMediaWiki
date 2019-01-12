@@ -258,10 +258,6 @@ class Installer implements MessageReporter {
 	 */
 	public static function getUpgradeKey( $vars ) {
 
-		// The following settings influence the "shape" of the tables required
-		// therefore use the content to compute a key that reflects any
-		// changes to them
-
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
 			$vars['smwgPageSpecialProperties'],
@@ -272,15 +268,17 @@ class Installer implements MessageReporter {
 		sort( $vars['smwgFixedProperties'] );
 		sort( $pageSpecialProperties );
 
-		return sha1(
-			json_encode(
-				[
-					$vars['smwgUpgradeKey'],
-					$vars['smwgFixedProperties'],
-					$pageSpecialProperties
-				]
-			)
-		);
+		// The following settings influence the "shape" of the tables required
+		// therefore use the content to compute a key that reflects any
+		// changes to them
+		$components = [
+			$vars['smwgUpgradeKey'],
+			$vars['smwgFixedProperties'],
+			$vars['smwgEnabledFulltextSearch'],
+			$pageSpecialProperties
+		];
+
+		return sha1( json_encode( $components ) );
 	}
 
 	/**

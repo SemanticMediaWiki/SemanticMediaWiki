@@ -242,11 +242,9 @@ class PropertyTableIdReferenceDisposer {
 		// Avoid Query: DELETE FROM `smw_ft_search` WHERE s_id = '92575'
 		// Error: 126 Incorrect key file for table '.\mw@002d25@002d01\smw_ft_search.MYI'; ...
 		try {
-			$this->connection->delete(
-				SQLStore::FT_SEARCH_TABLE,
-				[ 's_id' => $id ],
-				__METHOD__
-			);
+			if ( $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE ) ) {
+				$this->connection->delete( SQLStore::FT_SEARCH_TABLE, [ 's_id' => $id ], __METHOD__ );
+			}
 		} catch ( \DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}

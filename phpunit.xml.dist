@@ -65,7 +65,7 @@
        <var name="smwgEntityLookupCacheType" value="hash"/>
        <var name="smwgEnabledDeferredUpdate" value="false"/>
        <var name="smwgImportReqVersion" value="false"/>
-       <var name="smwgEnabledFulltextSearch" value="false"/>
+       <var name="smwgEnabledFulltextSearch" value="true"/>
        <var name="smwgEnabledQueryDependencyLinksStore" value="true"/>
        <var name="smwgQueryResultCacheType" value="hash"/>
        <var name="benchmarkPageCopyCount" value="1000"/>
