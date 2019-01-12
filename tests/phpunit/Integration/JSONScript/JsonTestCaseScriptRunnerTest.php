@@ -277,6 +277,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgCacheUsage',
 			'smwgQSortFeatures',
 			'smwgElasticsearchConfig',
+			'smwgDefaultNumRecurringEvents',
 
 			// MW related
 			'wgLanguageCode',

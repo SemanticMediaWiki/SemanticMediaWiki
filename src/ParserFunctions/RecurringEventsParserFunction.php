@@ -29,42 +29,16 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	private $recurringEvents;
 
 	/**
-	 * @var integer
-	 */
-	private $defaultNumRecurringEvents = 25;
-
-	/**
-	 * @var integer
-	 */
-	private $maxNumRecurringEvents = 25;
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param ParserData $parserData
 	 * @param Subobject $subobject
 	 * @param MessageFormatter $messageFormatter
+	 * @param RecurringEvents $recurringEvents
 	 */
-	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $messageFormatter ) {
+	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $messageFormatter, RecurringEvents $recurringEvents ) {
 		parent::__construct ( $parserData, $subobject, $messageFormatter );
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param integer $defaultNumRecurringEvents
-	 */
-	public function setDefaultNumRecurringEvents( $defaultNumRecurringEvents ) {
-		$this->defaultNumRecurringEvents = $defaultNumRecurringEvents;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * @param integer $maxNumRecurringEvents
-	 */
-	public function setMaxNumRecurringEvents( $maxNumRecurringEvents ) {
-		$this->maxNumRecurringEvents = $maxNumRecurringEvents;
+		$this->recurringEvents = $recurringEvents;
 	}
 
 	/**
@@ -76,7 +50,11 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 */
 	public function parse( ParserParameterProcessor $parameters ) {
 
-		$this->initRecurringEvents( $parameters->toArray() );
+		$this->useFirstElementAsPropertyLabel( true );
+
+		$this->recurringEvents->parse(
+			$parameters->toArray()
+		);
 
 		$this->messageFormatter->addFromArray(
 			$this->recurringEvents->getErrors()
@@ -108,26 +86,11 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 		// Update ParserOutput
 		$this->parserData->pushSemanticDataToParserOutput();
 
-		return $this->messageFormatter->addFromArray( $this->parserData->getErrors() )->getHtml();
-	}
-
-	private function initRecurringEvents( $parameters ) {
-
-		$this->useFirstElementAsPropertyLabel( true );
-
-		if ( $this->recurringEvents !== null ) {
-			return $this->recurringEvents;
-		}
-
-		$this->recurringEvents = new RecurringEvents( $parameters );
-
-		$this->recurringEvents->setDefaultNumRecurringEvents(
-			$this->defaultNumRecurringEvents
+		$this->messageFormatter->addFromArray(
+			$this->parserData->getErrors()
 		);
 
-		$this->recurringEvents->setMaxNumRecurringEvents(
-			$this->maxNumRecurringEvents
-		);
+		return $this->messageFormatter->getHtml();
 	}
 
 }

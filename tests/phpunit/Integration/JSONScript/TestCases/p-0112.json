@@ -1,0 +1,58 @@
+{
+	"description": "Test #set_recurring_event parser (#3541, en)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "John Doe's Birthdays",
+			"contents": "{{#set_recurring_event: Is birthday |property=Has date |start=1948-11-03 |end=2019-01-06 |unit=year |period=1 }}"
+		},
+		{
+			"page": "John Doe's Number of Birthdays",
+			"contents": "{{#ask: [[Is birthday::John Doe's Birthdays]] |format=count }}"
+		},
+		{
+			"page": "Jane Doe's Birthdays",
+			"contents": "{{#set_recurring_event: Is birthday |property=Has date |start=1953-05-06 |unit=year |period=1 }}"
+		},
+		{
+			"page": "Jane Doe's Number of Birthdays",
+			"contents": "{{#ask: [[Is birthday::Jane Doe's Birthdays]] |format=count }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #set_recurring_event parser with end date",
+			"subject": "John Doe's Number of Birthdays",
+			"assert-output": {
+				"to-contain": [
+					"71"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 #set_recurring_event parser without end date",
+			"subject": "Jane Doe's Number of Birthdays",
+			"assert-output": {
+				"to-contain": [
+					"111"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgDefaultNumRecurringEvents": "110"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -316,22 +316,25 @@ class ParserFunctionFactory {
 			$parser->getTargetLanguage()
 		);
 
+		$recurringEvents = new RecurringEvents();
+
+		$recurringEvents->setDefaultNumRecurringEvents(
+			$settings->get( 'smwgDefaultNumRecurringEvents' )
+		);
+
+		$recurringEvents->setMaxNumRecurringEvents(
+			$settings->get( 'smwgMaxNumRecurringEvents' )
+		);
+
 		$recurringEventsParserFunction = new RecurringEventsParserFunc(
 			$parserData,
 			$subobject,
-			$messageFormatter
+			$messageFormatter,
+			$recurringEvents
 		);
 
 		$recurringEventsParserFunction->isCapitalLinks(
 			Site::isCapitalLinks()
-		);
-
-		$recurringEventsParserFunction->setDefaultNumRecurringEvents(
-			$settings->get( 'smwgDefaultNumRecurringEvents' )
-		);
-
-		$recurringEventsParserFunction->setMaxNumRecurringEvents(
-			$settings->get( 'smwgMaxNumRecurringEvents' )
 		);
 
 		$recurringEventsParserFunction->isComparableContent(

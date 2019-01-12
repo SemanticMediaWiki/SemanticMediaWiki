@@ -16,25 +16,11 @@ use SMW\RecurringEvents;
  */
 class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return RecurringEvents
-	 */
-	private function newInstance( array $params ) {
-
-		$parameters = new ParserParameterFormatter( $params );
-
-		$instance = new RecurringEvents( $parameters->toArray() );
-		$instance->setDefaultNumRecurringEvents( 10 );
-		$instance->setMaxNumRecurringEvents( 50 );
-
-		return $instance;
-	}
-
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\RecurringEvents',
-			new RecurringEvents( [] )
+			RecurringEvents::class,
+			new RecurringEvents()
 		);
 	}
 
@@ -44,7 +30,15 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetErrors( array $params, array $expected ) {
-		$this->assertCount( $expected['errors'], $this->newInstance( $params )->getErrors() );
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents();
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertCount(
+			$expected['errors'],
+			$instance->getErrors() );
 	}
 
 	/**
@@ -53,7 +47,16 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetProperty( array $params, array $expected ) {
-		$this->assertEquals( $expected['property'], $this->newInstance( $params )->getProperty() );
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents();
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertEquals(
+			$expected['property'],
+			$instance->getProperty()
+		);
 	}
 
 	/**
@@ -62,7 +65,16 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetParameters( array $params, array $expected ) {
-		$this->assertEquals( $expected['parameters'], $this->newInstance( $params )->getParameters() );
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents();
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertEquals(
+			$expected['parameters'],
+			$instance->getParameters()
+		);
 	}
 
 	/**
@@ -71,7 +83,16 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetDates( array $params, array $expected ) {
-		$this->assertEquals( $expected['dates'], $this->newInstance( $params )->getDates() );
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents();
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertEquals(
+			$expected['dates'],
+			$instance->getDates()
+		);
 	}
 
 	/**
@@ -103,7 +124,16 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.
 	 */
 	public function testMassInsert( array $params, array $expected ) {
-		$this->assertCount( $expected['count'], $this->newInstance( $params )->getDates() );
+
+		$parameters = new ParserParameterFormatter( $params );
+
+		$instance = new RecurringEvents();
+		$instance->parse( $parameters->toArray() );
+
+		$this->assertCount(
+			$expected['count'],
+			$instance->getDates()
+		);
 	}
 
 	/**
@@ -112,7 +142,8 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetJulianDay() {
-		$instance = $this->newInstance( [] );
+		$instance = new RecurringEvents();
+		$instance->parse( [] );
 
 		// SMWDIWikiPage stub object
 		$dataValue = $this->getMockBuilder( 'SMWTimeValue' )
@@ -123,7 +154,10 @@ class RecurringEventsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( null ) );
 
-		$this->assertEquals( null, $instance->getJulianDay( $dataValue ) );
+		$this->assertEquals(
+			null,
+			$instance->getJulianDay( $dataValue )
+		);
 	}
 
 	/**
