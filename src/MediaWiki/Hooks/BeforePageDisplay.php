@@ -6,6 +6,8 @@ use OutputPage;
 use Skin;
 use SpecialPage;
 use Title;
+use SMW\Message;
+use Html;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -49,6 +51,10 @@ class BeforePageDisplay extends HookHandler {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 
+		if ( ( $tasks = $this->getOption( 'installer.incomplete_tasks', [] ) ) !== [] ) {
+			$outputPage->prependHTML( $this->incompleteTasksHTML( $tasks ) );
+		}
+
 		// Add export link to the head
 		if ( $title instanceof Title && !$title->isSpecialPage() ) {
 			$link['rel']   = 'alternate';
@@ -65,6 +71,23 @@ class BeforePageDisplay extends HookHandler {
 		}
 
 		return true;
+	}
+
+	private function incompleteTasksHTML( array $messages ) {
+
+		$html = '';
+
+		foreach ( $messages as $message ) {
+			$html .= Html::rawElement( 'li', [], Message::get( $message, Message::PARSE ) );
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-callout smw-callout-error plainlinks'
+			],
+			Message::get( 'smw-install-incomplete-intro' ) . "<ul>$html</ul>"
+		);
 	}
 
 }

@@ -36,4 +36,12 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 		$instance->write( 'abc/Foo', '' );
 	}
 
+	public function testDir() {
+
+		$this->assertInternalType(
+			'string',
+			File::dir( 'foo' )
+		);
+	}
+
 }

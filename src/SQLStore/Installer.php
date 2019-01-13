@@ -47,6 +47,11 @@ class Installer implements MessageReporter {
 	const OPT_SCHEMA_UPDATE = 'installer.schema.update';
 
 	/**
+	 * `smw_hash` field population
+	 */
+	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
+
+	/**
 	 * @var TableSchemaManager
 	 */
 	private $tableSchemaManager;
@@ -148,7 +153,7 @@ class Installer implements MessageReporter {
 
 		$file = $this->file !== null ? $this->file : new File();
 
-		self::setUpgradeKey( $file, $GLOBALS, $messageReporter );
+		self::setUpgradeKey( $GLOBALS, $messageReporter, $file );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -211,8 +216,7 @@ class Installer implements MessageReporter {
 	public static function loadSchema( &$vars ) {
 
 		// @see #3506
-		$file = $vars['smwgConfigFileDir'] . '/.smw.json';
-		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+		$file = File::dir( $vars['smwgConfigFileDir'] . '/.smw.json' );
 
 		// Doesn't exist? The `Setup::init` will take care of it by trying to create
 		// a new file and if it fails or unable to do so wail raise an exception
@@ -246,7 +250,33 @@ class Installer implements MessageReporter {
 			return false;
 		}
 
-		return self::getUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+		return self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $vars
+	 *
+	 * @return []
+	 */
+	public static function incompleteTasks( $vars ) {
+
+		$id = Site::id();
+		$tasks = [];
+
+		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
+		$checks = [
+			self::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ]
+		];
+
+		foreach ( $checks as $key => $value ) {
+			if ( isset( $vars['smw.json'][$id][$key] ) && $vars['smw.json'][$id][$key] === $value[0] ) {
+				$tasks[] = $value[1];
+			}
+		}
+
+		return $tasks;
 	}
 
 	/**
@@ -256,7 +286,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @return string
 	 */
-	public static function getUpgradeKey( $vars ) {
+	public static function makeUpgradeKey( $vars ) {
 
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
@@ -284,14 +314,14 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param File $file
 	 * @param array $vars
+	 * @param MessageReporter $messageReporter|null
+	 * @param File $file|null
 	 */
-	public static function setUpgradeKey( File $file, $vars, $messageReporter = null ) {
-
-		$key = self::getUpgradeKey( $vars );
+	public static function setUpgradeKey( $vars, MessageReporter $messageReporter = null, File $file = null ) {
 
 		// #3563, Use the specific wiki-id as identifier for the instance in use
+		$key = self::makeUpgradeKey( $vars );
 		$id = Site::id();
 
 		if (
@@ -304,19 +334,41 @@ class Installer implements MessageReporter {
 			$messageReporter->reportMessage( "\nSetting $id upgrade key ..." );
 		}
 
+		self::setUpgradeFile( $vars, [ 'upgrade_key' => $key ], $file );
+
+		if ( $messageReporter !== null ) {
+			$messageReporter->reportMessage( "\n   ... done.\n" );
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param File $file
+	 * @param array $vars
+	 */
+	public static function setUpgradeFile( $vars, $args = [], File $file = null ) {
+
+		$configFile = $vars['smwgConfigFileDir'] . '/.smw.json';
+
+		if ( $file === null ) {
+			$file = new File();
+		}
+
+		$id = Site::id();
+
 		if ( !isset( $vars['smw.json'] ) ) {
 			$vars['smw.json'] = [];
 		}
 
-		$vars['smw.json'][$id]['upgrade_key'] = $key;
-
-		$configFile = $vars['smwgConfigFileDir'] . '/.smw.json';
-		$configFile = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $configFile );
+		foreach ( $args as $key => $value ) {
+			$vars['smw.json'][$id][$key] = $value;
+		}
 
 		try {
 			$file->write(
 				$configFile,
-				json_encode( $vars['smw.json'] )
+				json_encode( $vars['smw.json'], JSON_PRETTY_PRINT )
 			);
 		} catch( FileNotWritableException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
@@ -327,10 +379,6 @@ class Installer implements MessageReporter {
 				"\n       The \"smwgConfigFileDir\" setting should point to a" .
 				"\n       directory that is persistent and writable!\n"
 			);
-		}
-
-		if ( $messageReporter !== null ) {
-			$messageReporter->reportMessage( "\n   ... done.\n" );
 		}
 	}
 

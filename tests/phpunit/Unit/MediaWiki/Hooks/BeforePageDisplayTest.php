@@ -77,6 +77,30 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $this->outputPage, $this->skin );
 	}
 
+	public function testPrependHTML_InstallerIncompleteTasks() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'prependHTML' );
+
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'installer.incomplete_tasks' => [ 'Foo', 'Bar' ]
+			]
+		);
+
+		$instance->process( $this->outputPage, $this->skin );
+	}
+
 	/**
 	 * @dataProvider titleDataProvider
 	 */

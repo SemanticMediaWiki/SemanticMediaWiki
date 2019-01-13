@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore;
 
-use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Tests\TestEnvironment;
 use SMW\SQLStore\TableIntegrityExaminer;
 
 /**
@@ -17,21 +17,27 @@ use SMW\SQLStore\TableIntegrityExaminer;
 class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyMessageReporter;
+	private $hashField;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
+		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
+
+		$this->hashField = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\HashField' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableIntegrityExaminer',
-			new TableIntegrityExaminer( $store )
+			TableIntegrityExaminer::class,
+			new TableIntegrityExaminer( $this->store, $this->hashField )
 		);
 	}
 
@@ -84,7 +90,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'checkOn' );
 
 		$instance = new TableIntegrityExaminer(
-			$store
+			$store,
+			$this->hashField
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -152,7 +159,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'checkOn' );
 
 		$instance = new TableIntegrityExaminer(
-			$store
+			$store,
+			$this->hashField
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -204,7 +212,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'checkOn' );
 
 		$instance = new TableIntegrityExaminer(
-			$store
+			$store,
+			$this->hashField
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -263,7 +272,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'checkOn' );
 
 		$instance = new TableIntegrityExaminer(
-			$store
+			$store,
+			$this->hashField
 		);
 
 		$instance->setPredefinedPropertyList( [] );
@@ -308,7 +318,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'drop' );
 
 		$instance = new TableIntegrityExaminer(
-			$store
+			$store,
+			$this->hashField
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
