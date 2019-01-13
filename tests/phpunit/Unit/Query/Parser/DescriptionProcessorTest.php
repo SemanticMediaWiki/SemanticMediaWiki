@@ -22,7 +22,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'SMW\Query\Parser\DescriptionProcessor',
+			DescriptionProcessor::class,
 			new DescriptionProcessor()
 		);
 	}
@@ -55,7 +55,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testDescriptionForWikiPageValueChunk() {
+	public function testDescriptionForWikiPageValueChunkOnEqualMatch() {
 
 		$instance = new DescriptionProcessor();
 
@@ -67,7 +67,7 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'bar', NS_MAIN ),
+			new DIWikiPage( 'Bar', NS_MAIN ),
 			$valueDescription->getDataItem()
 		);
 	}
