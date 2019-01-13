@@ -1,12 +1,14 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use SMW\NamespaceManager;
 use WebRequest;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
 /**
  * @license GNU GPL v2+

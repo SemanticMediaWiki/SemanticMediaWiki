@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
-use SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -57,7 +57,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler',
+			EntityLookupTaskHandler::class,
 			new EntityLookupTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}

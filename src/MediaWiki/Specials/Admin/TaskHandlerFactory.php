@@ -8,6 +8,11 @@ use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
 use SMW\Store;
 use SMw\ApplicationFactory;
 use SMW\Utils\FileFetcher;
@@ -63,10 +68,7 @@ class TaskHandlerFactory {
 			$this->newDeprecationNoticeTaskHandler(),
 
 			// TaskHandler::SECTION_SUPPLEMENT
-			$this->newConfigurationListTaskHandler(),
-			$this->newOperationalStatisticsListTaskHandler(),
-			$this->newDuplicateLookupTaskHandler(),
-			$this->newEntityLookupTaskHandler( $user ),
+			$this->newSupplementTaskHandler( $adminFeatures, $user ),
 
 			// TaskHandler::SECTION_SUPPORT
 			$this->newSupportListTaskHandler()
@@ -135,6 +137,37 @@ class TaskHandlerFactory {
 	 */
 	public function newSupportListTaskHandler() {
 		return new SupportListTaskHandler( $this->htmlFormRenderer );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $adminFeatures
+	 * @param User|null $user
+	 *
+	 * @return SupplementTaskHandler
+	 */
+	public function newSupplementTaskHandler( $adminFeatures = 0 , $user = null ) {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$taskHandlers = [
+			$this->newConfigurationListTaskHandler(),
+			$this->newOperationalStatisticsListTaskHandler(),
+			$this->newDuplicateLookupTaskHandler(),
+			$this->newEntityLookupTaskHandler( $user ),
+		];
+
+		foreach ( $taskHandlers as $taskHandler ) {
+			$taskHandler->setFeatureSet( $adminFeatures );
+		}
+
+		$supplementTaskHandler = new SupplementTaskHandler(
+			$this->outputFormatter,
+			$taskHandlers
+		);
+
+		return $supplementTaskHandler;
 	}
 
 	/**
