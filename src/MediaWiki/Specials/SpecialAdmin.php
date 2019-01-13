@@ -127,35 +127,17 @@ class SpecialAdmin extends SpecialPage {
 
 	private function buildHTML( $taskHandlerList ) {
 
-		$maintenanceTaskList = $taskHandlerList[TaskHandler::SECTION_MAINTENANCE];
-		$maintenanceSection = end( $maintenanceTaskList )->getHtml();
+		$maintenanceSection = '';
 
-		$supplementarySection = Html::rawElement(
-			'p',
-			[
-				'class' => 'plainlinks'
-			],
-			$this->msg_text( 'smw-admin-supplementary-section-intro', Message::PARSE )
-		) . Html::rawElement(
-			'h3',
-			[],
-			$this->msg_text( 'smw-admin-supplementary-section-subtitle' )
-		);
-
-		$list = '';
-		$supplementaryTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPLEMENT];
-
-		foreach ( $supplementaryTaskList as $supplementaryTask ) {
-			$list .= $supplementaryTask->getHtml();
+		foreach ( $taskHandlerList[TaskHandler::SECTION_MAINTENANCE] as $maintenanceTask ) {
+			$maintenanceSection .= $maintenanceTask->getHtml();
 		}
 
-		$supplementarySection .= Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-admin-supplementary-section'
-			],
-			Html::rawElement( 'ul', [], $list )
-		);
+		$supplementarySection = '';
+
+		foreach ( $taskHandlerList[TaskHandler::SECTION_SUPPLEMENT] as $supplementaryTask ) {
+			$supplementarySection .= $supplementaryTask->getHtml();
+		}
 
 		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];
 		$deprecationNoticeTaskHandler = end( $deprecationNoticeTaskList );

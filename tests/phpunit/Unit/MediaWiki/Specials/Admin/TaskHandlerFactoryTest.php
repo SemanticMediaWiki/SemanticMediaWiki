@@ -99,17 +99,17 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'newConfigurationListTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\ConfigurationListTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler'
 		];
 
 		$provider[] = [
 			'newOperationalStatisticsListTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler'
 		];
 
 		$provider[] = [
 			'newEntityLookupTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\EntityLookupTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler'
 		];
 
 		$provider[] = [
@@ -139,12 +139,17 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'newDuplicateLookupTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler'
 		];
 
 		$provider[] = [
 			'newMaintenanceTaskHandler',
 			'\SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler'
+		];
+
+		$provider[] = [
+			'newSupplementTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\SupplementTaskHandler'
 		];
 
 		return $provider;

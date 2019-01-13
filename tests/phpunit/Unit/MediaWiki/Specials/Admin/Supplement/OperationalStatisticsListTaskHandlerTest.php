@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
-use SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\OperationalStatisticsListTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

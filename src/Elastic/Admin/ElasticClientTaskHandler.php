@@ -95,7 +95,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 			[ 'action' => 'elastic' ]
 		);
 
-		return Html::rawElement(
+		$html = Html::rawElement(
 			'li',
 			[],
 			$this->msg(
@@ -105,6 +105,18 @@ class ElasticClientTaskHandler extends TaskHandler {
 				]
 			)
 		);
+
+		$html = Html::rawElement(
+			'h3',
+			[],
+			$this->msg( 'smw-admin-supplementary-elastic-section-subtitle' )
+		) . Html::rawElement(
+			'ul',
+			[],
+			$html
+		);
+
+		return $html;
 	}
 
 	/**

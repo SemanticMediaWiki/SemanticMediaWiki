@@ -1,20 +1,20 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
-use SMW\MediaWiki\Specials\Admin\ConfigurationListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\ConfigurationListTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Supplement\CacheStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since 2.5
+ * @since 3.0
  *
  * @author mwjames
  */
-class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -44,14 +44,14 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ConfigurationListTaskHandler::class,
-			new ConfigurationListTaskHandler( $this->outputFormatter )
+			CacheStatisticsListTaskHandler::class,
+			new CacheStatisticsListTaskHandler( $this->outputFormatter )
 		);
 	}
 
 	public function testGetHtml() {
 
-		$instance = new ConfigurationListTaskHandler(
+		$instance = new CacheStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
@@ -61,12 +61,23 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsTaskFor() {
+
+		$instance = new CacheStatisticsListTaskHandler(
+			$this->outputFormatter
+		);
+
+		$this->assertTrue(
+			$instance->isTaskFor( 'stats/cache')
+		);
+	}
+
 	public function testHandleRequest() {
 
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 
-		$instance = new ConfigurationListTaskHandler(
+		$instance = new CacheStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
@@ -76,5 +87,6 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->handleRequest( $webRequest );
 	}
+
 
 }

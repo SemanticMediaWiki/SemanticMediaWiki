@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
-use SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
