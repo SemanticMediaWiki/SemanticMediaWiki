@@ -13,6 +13,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ValueDescription;
 use SMW\Site;
 use SMWDataValue as DataValue;
+use SMW\Query\QueryComparator;
 
 /**
  * @license GNU GPL v2+
@@ -167,6 +168,20 @@ class DescriptionProcessor {
 		$dataValue->setContextPage( $this->contextPage );
 
 		$dataValue->setOption( DataValue::OPT_QUERY_CONTEXT, true );
+
+		// #3587
+		// Requesting capital links is influenced by two factors, `wgCapitalLinks`
+		// is enabled sitewide and the `WikiPageValue` condition is identified
+		// as SMW_CMP_EQ/NEQ (e.g. [[Foo]], [[!Foo]]) with other expressions
+		// (e.g. [[~foo*]]) to remain in the form of the user input
+		$queryComparator = QueryComparator::getInstance();
+
+		if ( Site::isCapitalLinks() && (
+			$queryComparator->containsComparator( $chunk, SMW_CMP_EQ ) ||
+			$queryComparator->containsComparator( $chunk, SMW_CMP_NEQ ) ) ) {
+			$dataValue->setOption( 'isCapitalLinks', true );
+		}
+
 		$description = null;
 
 		$description = $dataValue->getQueryDescription( $chunk );
