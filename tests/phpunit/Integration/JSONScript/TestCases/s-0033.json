@@ -1,0 +1,59 @@
+{
+	"description": "Test output from `Special:SearchByProperty` to show all values for a property (#3531)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has vtext",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Test/S0033/1",
+			"contents": "[[Has vtext::123]] [[Has vtext::456]] [[Has vtext::abc]] [[Has vtext::def]] [[Has vtext::1001]] [[Has vtext::42]]"
+		},
+		{
+			"page": "Test/S0033/2",
+			"contents": "[[Has vtext::123]] [[Has vtext::456]] [[Has vtext::abc]] [[Has vtext::def]] [[Has vtext::1001]] [[Has vtext::42]]"
+		},
+		{
+			"page": "Test/S0033/3",
+			"contents": "[[Has vtext::123]] [[Has vtext::456]] [[Has vtext::abc]] [[Has vtext::def]] [[Has vtext::1001]] [[Has vtext::42]]"
+		},
+		{
+			"page": "Test/S0033/4",
+			"contents": "[[Has vtext::123]] [[Has vtext::456]] [[Has vtext::abc]] [[Has vtext::def]] [[Has vtext::1001]] [[Has vtext::42]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (find all values for property `Has vtext`)",
+			"special-page": {
+				"page": "SearchByProperty",
+				"query-parameters": "",
+				"request-parameters": {
+					"limit": 6,
+					"property": "Has vtext"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<li>1001.*</li>",
+					"<li>123.*</li>",
+					"<li>42.*</li>",
+					"<li>456.*</li>",
+					"<li>abc.*</li>",
+					"<li>def.*</ul>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

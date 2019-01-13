@@ -220,6 +220,8 @@ class SemanticDataLookup {
 					$query->condition( $query->eq( 'p_id', $extraCondition['p_id'] ) );
 				}
 			}
+		} else {
+			$requestOptions = new RequestOptions();
 		}
 
 		$valueCount = 0;
@@ -243,6 +245,39 @@ class SemanticDataLookup {
 			$fieldname
 		);
 
+		// Don't use DISTINCT for subject related value match but make sure
+		// (#3531) it is used when requesting other values in order to retrieve
+		// all available unique values within the range of the limit
+		if ( !$isSubject ) {
+			$requestOptions->setOption( 'DISTINCT', true );
+
+			// Don't sort, this avoids a SQL `filesort`/`temporary table` usage
+			// in combination with DISTINCT, values will be listed as-is instead
+			// of a lexical representation but can be compensated by selecting a
+			// wider range in case this is used as retrieving "all" values
+			// for a property
+
+			// SELECT DISTINCT o_id AS id0, o0.smw_title AS v0, o0.smw_namespace
+			// AS v1, o0.smw_iw AS v2, o0.smw_sortkey AS v3, o0.smw_subobject AS
+			// v4 FROM `smw_di_wikipage` INNER JOIN `smw_object_ids` AS o0 ON
+			// o_id=o0.smw_id WHERE (p_id='x') LIMIT 51
+			//
+			// 8.6281ms
+			//
+			// vs.
+			//
+			// SELECT DISTINCT o_id AS id0, o0.smw_title AS v0, o0.smw_namespace
+			// AS v1, o0.smw_iw AS v2, o0.smw_sortkey AS v3, o0.smw_subobject AS
+			// v4 FROM `smw_di_wikipage` INNER JOIN `smw_object_ids` AS o0 ON
+			// o_id=o0.smw_id WHERE (p_id='x') ORDER BY o_id LIMIT 51
+			//
+			// 24189.0128ms
+			//
+			// PS: In case of a `TYPE_WIKIPAGE` entity, sorting by `o_id`
+			// wouldn't make much sense as it does not guarantee any lexical order
+			$requestOptions->setOption( 'ORDER BY', false );
+		}
+
  		// Apply sorting/string matching; only with given property
 		if ( !$isSubject ) {
 			$conds = $this->store->getSQLConditions(
@@ -253,13 +288,13 @@ class SemanticDataLookup {
 			);
 
 			$query->condition( $conds );
-			$query->options( $this->store->getSQLOptions( $requestOptions, $valueField ) + [ 'DISTINCT' ] );
 		} else {
 			$valueField = '';
-
-			// Don't use DISTINCT for value of one subject:
-			$query->options( $this->store->getSQLOptions( $requestOptions, $valueField ) );
 		}
+
+		$query->options(
+			$this->store->getSQLOptions( $requestOptions, $valueField )
+		);
 
 		$res = $connection->query(
 			$query,
@@ -286,6 +321,13 @@ class SemanticDataLookup {
 		}
 
 		$connection->freeResult( $res );
+
+		// Sorting via PHP for an explicit disabled `ORDER BY` to ensure that
+		// the result set has at least a lexical order applied for the range of
+		// retrieved values
+		if ( $requestOptions->getOption( 'ORDER BY' ) === false ) {
+			sort( $result );
+		}
 
 		return $result;
 	}
