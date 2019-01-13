@@ -65,12 +65,6 @@ class SpecialAdmin extends SpecialPage {
 		$output->addModuleStyles( 'ext.smw.special.style' );
 		$output->addModules( 'ext.smw.admin' );
 
-		if ( $query !== null ) {
-			$this->getRequest()->setVal( 'action', $query );
-		}
-
-		$action = $this->getRequest()->getText( 'action' );
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
@@ -107,6 +101,12 @@ class SpecialAdmin extends SpecialPage {
 			$adminFeatures
 		);
 
+		if ( $query !== null ) {
+			$this->getRequest()->setVal( 'action', $query );
+		}
+
+		$action = $this->getRequest()->getText( 'action' );
+
 		foreach ( $taskHandlerList['actions'] as $actionTask ) {
 			if ( $actionTask->isTaskFor( $action ) ) {
 				return $actionTask->handleRequest( $this->getRequest() );
@@ -127,34 +127,8 @@ class SpecialAdmin extends SpecialPage {
 
 	private function buildHTML( $taskHandlerList ) {
 
-		$tableSchemaTaskList = $taskHandlerList[TaskHandler::SECTION_SCHEMA];
-
-		$dataRebuildSection = end( $tableSchemaTaskList )->getHtml();
-		$dataRebuildSection .= Html::rawElement(
-			'hr',
-			[
-				'class' => 'smw-admin-hr'
-			],
-			''
-		)  . Html::rawElement(
-			'p',
-			[
-				'class' => 'plainlinks',
-				'style' => 'margin-top:0.8em;'
-			],
-			$this->msg_text( 'smw-admin-job-scheduler-note', Message::PARSE )
-		);
-
-		$list = '';
-		$dataRepairTaskList = $taskHandlerList[TaskHandler::SECTION_DATAREPAIR];
-
-		foreach ( $dataRepairTaskList as $dataRepairTask ) {
-			$list .= $dataRepairTask->getHtml();
-		}
-
-		$dataRebuildSection .= Html::rawElement( 'div', [ 'class' => 'smw-admin-data-repair-section' ],
-			$list
-		);
+		$maintenanceTaskList = $taskHandlerList[TaskHandler::SECTION_MAINTENANCE];
+		$maintenanceSection = end( $maintenanceTaskList )->getHtml();
 
 		$supplementarySection = Html::rawElement(
 			'p',
@@ -208,30 +182,15 @@ class SpecialAdmin extends SpecialPage {
 			]
 		);
 
-		$htmlTabs->tab( 'rebuild', $this->msg_text( 'smw-admin-tab-rebuild' ) );
+		$htmlTabs->tab( 'maintenance', $this->msg_text( 'smw-admin-tab-maintenance' ) );
 		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
 		$supportTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPORT];
-		$supportListTaskHandler = end( $supportTaskList );
+		$supportSection = end( $supportTaskList )->getHtml();
 
-		$html = Html::rawElement(
-			'p',
-			[],
-			$this->msg_text( 'smw-admin-docu' )
-		) . Html::rawElement(
-			'h3',
-			[],
-			$this->msg_text( 'smw-admin-environment' )
-		) . Html::rawElement(
-			'pre',
-			[],
-			json_encode( $this->getInfo(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
-		) . $supportListTaskHandler->createSupportForm() .
-		$supportListTaskHandler->createRegistryForm();
-
-		$htmlTabs->content( 'general', $html );
+		$htmlTabs->content( 'general', $supportSection );
 		$htmlTabs->content( 'notices', $deprecationNotices );
-		$htmlTabs->content( 'rebuild', $dataRebuildSection );
+		$htmlTabs->content( 'maintenance', $maintenanceSection );
 		$htmlTabs->content( 'supplement', $supplementarySection );
 
 		$html = $htmlTabs->buildHTML(
@@ -239,18 +198,6 @@ class SpecialAdmin extends SpecialPage {
 		);
 
 		return $html;
-	}
-
-	private function getInfo() {
-
-		$store = ApplicationFactory::getInstance()->getStore();
-
-		return $store->getInfo() + [
-			'smw' => SMW_VERSION,
-			'mediawiki' => $GLOBALS['wgVersion']
-		] + (
-			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
-		);
 	}
 
 	private function msg_text( $key, $type = Message::TEXT) {

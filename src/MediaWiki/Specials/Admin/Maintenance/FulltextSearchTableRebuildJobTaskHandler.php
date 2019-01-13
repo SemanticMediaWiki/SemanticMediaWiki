@@ -1,11 +1,13 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Message;
 use Title;
 use WebRequest;
@@ -50,7 +52,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getSection() {
-		return self::SECTION_DATAREPAIR;
+		return self::SECTION_MAINTENANCE;
 	}
 
 	/**

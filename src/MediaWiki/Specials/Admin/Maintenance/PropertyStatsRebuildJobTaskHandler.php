@@ -1,11 +1,13 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Message;
 use Title;
 use WebRequest;
@@ -16,7 +18,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class DisposeJobTaskHandler extends TaskHandler {
+class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 	/**
 	 * @var HtmlFormRenderer
@@ -27,11 +29,6 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 * @var OutputFormatter
 	 */
 	private $outputFormatter;
-
-	/**
-	 * @var null|Job
-	 */
-	private $refreshjob = null;
 
 	/**
 	 * @var boolean
@@ -55,7 +52,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getSection() {
-		return self::SECTION_DATAREPAIR;
+		return self::SECTION_MAINTENANCE;
 	}
 
 	/**
@@ -82,7 +79,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( $task ) {
-		return $task === 'dispose';
+		return $task === 'pstatsrebuild';
 	}
 
 	/**
@@ -94,30 +91,24 @@ class DisposeJobTaskHandler extends TaskHandler {
 
 		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
-		// smw-admin-outdateddisposal
+		// smw-admin-propertystatistics
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-outdateddisposal-title' ) )
-				->addParagraph(
-					$this->msg( 'smw-admin-outdateddisposal-intro', Message::PARSE ),
-					[
-						'id' => 'smw-admin-outdated-disposal',
-						'class' => 'plainlinks'
-					]
-				);
+				->addHeader( 'h4', $this->msg( 'smw-admin-propertystatistics-title' ) )
+				->addParagraph( $this->msg( 'smw-admin-propertystatistics-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] );
 
-		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasPendingJob() ) {
+		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
-				->addHiddenField( 'action', 'dispose' )
+				->addHiddenField( 'action', 'pstatsrebuild' )
 				->addSubmitButton(
-					$this->msg( 'smw-admin-outdateddisposal-button' ),
+					$this->msg( 'smw-admin-propertystatistics-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
-						'data-job' => 'SMW\EntityIdDisposerJob',
+						'data-job' => 'SMW\PropertyStatisticsRebuildJob',
 						'data-subject' => $subject->getHash()
 					]
-				);
-		} elseif ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
+				 );
+		} elseif ( $this->isEnabledFeature( SMW_ADM_PSTATS ) ) {
 			$this->htmlFormRenderer->addParagraph(
 					Html::element(
 						'span',
@@ -129,9 +120,8 @@ class DisposeJobTaskHandler extends TaskHandler {
 						[
 							'style' => 'font-style:italic; margin-left:25px;'
 						],
-						$this->msg( 'smw-admin-outdateddisposal-active' )
-					),
-					[ 'id' => 'smw-admin-outdated-disposal-status' ]
+						$this->msg( 'smw-admin-propertystatistics-active' )
+					)
 				);
 		} else {
 			$this->htmlFormRenderer->addParagraph(
@@ -153,12 +143,12 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
+		if ( !$this->isEnabledFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
-			'smw.entityIdDisposer',
+			'smw.propertyStatisticsRebuild',
 			\SpecialPage::getTitleFor( 'SMWAdmin' )
 		);
 
@@ -168,7 +158,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 	}
 
 	private function hasPendingJob() {
-		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.entityIdDisposer' );
+		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.propertyStatisticsRebuild' );
 	}
 
 }

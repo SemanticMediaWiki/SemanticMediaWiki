@@ -74,7 +74,7 @@
  */
 .smw-admin #tab-general:checked ~ #tab-content-general,
 .smw-admin #tab-supplement:checked ~ #tab-content-supplement,
-.smw-admin #tab-rebuild:checked ~ #tab-content-rebuild,
+.smw-admin #tab-maintenance:checked ~ #tab-content-maintenance,
 .smw-admin #tab-registry:checked ~ #tab-content-registry,
 .smw-admin #tab-notices:checked ~ #tab-content-notices {
 	display: block;

@@ -18,15 +18,23 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+		//	->setMEthods( [ 'getInfo' ] )
+			->getMockForAbstractClass();
 
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -66,6 +74,8 @@ class SupportListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SupportListTaskHandler(
 			$this->htmlFormRenderer
 		);
+
+		$instance->setStore( $this->store );
 
 		$instance->getHtml();
 	}

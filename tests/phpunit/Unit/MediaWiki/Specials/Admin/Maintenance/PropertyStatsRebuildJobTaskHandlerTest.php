@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
-use SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -49,7 +49,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler',
+			PropertyStatsRebuildJobTaskHandler::class,
 			new PropertyStatsRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
@@ -116,7 +116,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$instance->isApiTask = false;
-		$instance->setEnabledFeatures( SMW_ADM_PSTATS );
+		$instance->setFeatureSet( SMW_ADM_PSTATS );
 		$instance->handleRequest( $webRequest );
 	}
 
@@ -145,7 +145,7 @@ class PropertyStatsRebuildJobTaskHandlerTest extends \PHPUnit_Framework_TestCase
 			$this->outputFormatter
 		);
 
-		$instance->setEnabledFeatures( SMW_ADM_PSTATS );
+		$instance->setFeatureSet( SMW_ADM_PSTATS );
 		$instance->handleRequest( $webRequest );
 	}
 
