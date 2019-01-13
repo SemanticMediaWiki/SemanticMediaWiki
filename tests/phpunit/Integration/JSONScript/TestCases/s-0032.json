@@ -1,0 +1,65 @@
+{
+	"description": "Test `format=json` output via `Special:Ask` for `_ref_rec`/`_qty` type (#3517)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Ref prop",
+			"contents": "[[Has type::Reference]] [[Has fields::Field prop;other prop]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Field prop",
+			"contents": "[[Has type::Quantity]] [[Corresponds to::1 km]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0032/1",
+			"contents": "[[Ref prop::123;S0032/2]] [[Category:S0032]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"prettyprint": false,
+						"unescape": true,
+						"format": "json"
+					},
+					"q": "[[Category:S0032]]",
+					"po": "?Ref prop.Field prop"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"\"chain\":\"Ref prop.Field prop\"",
+					"{\"Field prop\":[{\"value\":123,\"unit\":\"km\"}]}"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
