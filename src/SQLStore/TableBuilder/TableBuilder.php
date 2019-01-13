@@ -73,6 +73,10 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 			throw new RuntimeException( "Unknown or unsupported DB type " . $connection->getType() );
 		}
 
+		if ( !is_a( $instance, static::class ) ) {
+			throw new RuntimeException( get_class( $instance ) . " instance doesn't match " . static::class );
+		}
+
 		$instance->addConfig( 'wgDBname', $GLOBALS['wgDBname'] );
 		$instance->addConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
