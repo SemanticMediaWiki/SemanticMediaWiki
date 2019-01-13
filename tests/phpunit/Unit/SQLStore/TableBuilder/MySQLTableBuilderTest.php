@@ -87,8 +87,8 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'CREATE TABLE `xyz`."foo" (bar TEXT) tableoptions_foobar' ) );
 
 		$instance = MySQLTableBuilder::factory( $connection );
-		$instance->addConfig( 'wgDBname', 'xyz' );
-		$instance->addConfig( 'wgDBTableOptions', 'tableoptions_foobar' );
+		$instance->setConfig( 'wgDBname', 'xyz' );
+		$instance->setConfig( 'wgDBTableOptions', 'tableoptions_foobar' );
 
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );
@@ -108,10 +108,11 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->stringContains( 'CREATE TABLE `xyz`."foo"' ) );
+			->with( $this->equalTo( 'CREATE TABLE `xyz`."foo" (bar TEXT) tableoptions_foobar' ) );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
-		$instance->addConfig( 'wgDBname', 'xyz' );
+		$instance->setConfig( 'wgDBname', 'xyz' );
+		$instance->setConfig( 'wgDBTableOptions', 'tableoptions_foobar' );
 
 		$table = new Table( 'foo' );
 		$table->addColumn( 'bar', 'text' );

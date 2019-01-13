@@ -66,7 +66,7 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testTryToConstructOnInvalidTypeThrowsException() {
+	public function testConstructWithInvalidTypeThrowsException() {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
