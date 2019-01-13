@@ -53,7 +53,8 @@ class PostgresTableBuilder extends TableBuilder {
 			'char_nocase' => 'citext NOT NULL',
 			'char_long_nocase' => 'citext NOT NULL',
 			'usage_count'      => 'bigint',
-			'integer_unsigned' => 'INTEGER'
+			'integer_unsigned' => 'INTEGER',
+			'enum' => 'ENUM'
 		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );
@@ -163,7 +164,12 @@ EOT;
 		$currentFields = [];
 
 		foreach ( $res as $row ) {
-			$type = strtoupper( $row->Type );
+
+			if ( strpos( $row->Type, 'enum' ) !== false ) {
+				$type = str_replace( 'enum', 'ENUM', $row->Type );
+			} else {
+				$type = strtoupper( $row->Type );
+			}
 
 			if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 				$type = 'SERIAL NOT NULL';
@@ -186,7 +192,11 @@ EOT;
 			$fieldType = substr( $fieldType, 0, $keypos );
 		}
 
-		$fieldType = strtoupper( $fieldType );
+		// Avoid disrupting ENUM values
+		if ( strpos( $fieldType, 'ENUM' ) === false ) {
+			$fieldType = strtoupper( $fieldType );
+		}
+
 		$default = '';
 
 		if ( isset( $attributes['defaults'][$fieldName] ) ) {
@@ -195,6 +205,29 @@ EOT;
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+		} elseif ( strpos( $fieldType, 'ENUM' ) !== false ) {
+			$enum_type = strtolower( $currentFields[$fieldName] );
+			$current_enums = '';
+
+			// https://stackoverflow.com/questions/1616123/sql-query-to-get-all-values-a-enum-can-have/1616161
+			$res = $this->connection->query( "SELECT enum_range(NULL::$enum_type)", __METHOD__ );
+
+			foreach ( $res as $row ) {
+				if ( isset( $row->enum_range ) ) {
+					$current_enums = str_replace( [ '{', '}' ], '', $row->enum_range );
+				}
+			}
+
+			// Normalize the notation to make it comparable to what postgres returns
+			$expected_enums = str_replace( [ 'ENUM', "'", '(', ')' ], '', $fieldType );
+
+			if ( $current_enums === $expected_enums ) {
+				$this->reportMessage( "   ... field $fieldName with type '$enum_type' is fine.\n" );
+			} else {
+				// Recreate the field and type which is the simplest way of
+				// ensuring consistency
+				$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
+			}
 		} elseif ( $currentFields[$fieldName] != $fieldType ) {
 			$this->reportMessage( "   ... changing type of field $fieldName from '$currentFields[$fieldName]' to '$fieldType' ... " );
 
@@ -231,6 +264,16 @@ EOT;
 	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
 
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
+
+		// https://www.postgresql.org/docs/9.1/datatype-enum.html
+		if ( strpos( $fieldType, 'ENUM' ) !== false ) {
+			$enum_type = "{$fieldName}_t";
+			$this->reportMessage( "   ... dropping type $enum_type ... \n" );
+			$this->connection->query( "DROP TYPE IF EXISTS $enum_type CASCADE", __METHOD__ );
+			$this->reportMessage( "   ... creating type $enum_type ... \n" );
+			$this->connection->query( "CREATE TYPE $enum_type AS $fieldType", __METHOD__ );
+			$fieldType = $enum_type;
+		}
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
 		$this->connection->query( "ALTER TABLE $tableName ADD \"" . $fieldName . "\" $fieldType $default", __METHOD__ );

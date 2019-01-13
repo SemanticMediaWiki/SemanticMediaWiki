@@ -103,6 +103,22 @@ class FieldType {
 	const TYPE_DOUBLE = 'double';
 
 	/**
+	 * @var string
+	 */
+	const TYPE_ENUM = 'enum';
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $enum
+	 *
+	 * @return string
+	 */
+	public static function enum( array $enum ) {
+		return "('" . implode( "','", $enum ) . "')";
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string|array $type
@@ -116,7 +132,12 @@ class FieldType {
 		// [ FieldType::FIELD_ID, 'NOT NULL' ]
 		if ( is_array( $type ) && count( $type ) > 1 ) {
 			$fieldType = $type[0];
-			$auxilary = ' ' . $type[1];
+
+			if ( $type[0] === self::TYPE_ENUM ) {
+				$auxilary = '' . self::enum( $type[1] );
+			} else {
+				$auxilary = ' ' . $type[1];
+			}
 		} elseif ( is_array( $type ) ) {
 			$fieldType = $type[0];
 		}
