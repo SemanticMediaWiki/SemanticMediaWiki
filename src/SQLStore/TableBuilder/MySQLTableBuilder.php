@@ -100,10 +100,10 @@ class MySQLTableBuilder extends TableBuilder {
 			return $tableOption;
 		}
 
-		// @see $wgDBattributes, This replacement is needed for compatibility,
+		// @see $wgDBTableOptions, This replacement is needed for compatibility,
 		// http://bugs.mysql.com/bug.php?id=17501
-		if ( isset( $this->config['wgDBattributes'] ) ) {
-			return str_replace( 'TYPE', 'ENGINE', $this->config['wgDBattributes'] );
+		if ( isset( $this->config['wgDBTableOptions'] ) ) {
+			return str_replace( 'TYPE', 'ENGINE', $this->config['wgDBTableOptions'] );
 		}
 	}
 
