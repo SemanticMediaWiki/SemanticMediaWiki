@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\MySQLTableBuilder
@@ -15,6 +16,8 @@ use SMW\SQLStore\TableBuilder\Table;
  * @author mwjames
  */
 class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $connection;
 
@@ -44,6 +47,20 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			MySQLTableBuilder::class,
 			MySQLTableBuilder::factory( $this->connection )
 		);
+	}
+
+	public function testFactoryWithWrongTypeThrowsException() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'sqlite' ) );
+
+		$this->setExpectedException( '\RuntimeException' );
+		MySQLTableBuilder::factory( $connection );
 	}
 
 	public function testCreateNewTable() {
