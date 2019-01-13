@@ -77,8 +77,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 			throw new RuntimeException( get_class( $instance ) . " instance doesn't match " . static::class );
 		}
 
-		$instance->addConfig( 'wgDBname', $GLOBALS['wgDBname'] );
-		$instance->addConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
+		$instance->setConfig( 'wgDBname', $GLOBALS['wgDBname'] );
+		$instance->setConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
 		return $instance;
 	}
@@ -89,7 +89,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string|integer $key
 	 * @param mixed
 	 */
-	public function addConfig( $key, $value ) {
+	public function setConfig( $key, $value ) {
 		$this->config[$key] = $value;
 	}
 
