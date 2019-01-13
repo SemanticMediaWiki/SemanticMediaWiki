@@ -44,7 +44,7 @@ class SMWRefreshJob extends SMW\RefreshJob {
 abstract class SMWResultPrinter extends SMW\ResultPrinter {
 }
 
-class SMWCategoryResultPrinter extends SMW\CategoryResultPrinter {
+class SMWCategoryResultPrinter extends SMW\Query\ResultPrinters\CategoryResultPrinter {
 }
 
 class SMWDSVResultPrinter extends SMW\DsvResultPrinter {
