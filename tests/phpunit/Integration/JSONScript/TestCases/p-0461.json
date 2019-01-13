@@ -1,0 +1,92 @@
+{
+	"description": "Test `_wpg` value with lower/upper first case letter +DISPLAYTITLE (#3587, `wgRestrictDisplayTitle`, `wgCapitalLinks`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "P0461/1",
+			"contents": "[[Has number::123]] [[Has text::abc]] [[Category:P0461]] {{DISPLAYTITLE:p0461/1}}"
+		},
+		{
+			"page": "P0461/2",
+			"contents": "[[Category:P0461]] [[Has text::ABC]] {{DISPLAYTITLE:p0461/2}}"
+		},
+		{
+			"page": "P0461/Q.1",
+			"contents": "{{#show: p0461/1 |?Has number |intro=p0461: }}"
+		},
+		{
+			"page": "P0461/Q.2",
+			"contents": "{{#show: P0461/1 |?Has number |intro=P0461: }}"
+		},
+		{
+			"page": "P0461/Q.3",
+			"contents": "{{#ask: [[p0461/1]] |?Has text |intro=p0461: |format=plain |mainlabel=- |headers=hide }}"
+		},
+		{
+			"page": "P0461/Q.4",
+			"contents": "{{#ask: [[P0461/1]] |?Has text |intro=P0461: |format=plain |mainlabel=- |headers=hide }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (#show, lower case `p0461`)",
+			"subject": "P0461/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"p0461:123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#show, upper case `P0461`)",
+			"subject": "P0461/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"P0461:123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (#ask, lower case `p0461`)",
+			"subject": "P0461/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"p0461:abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#ask, upper case `P0461`)",
+			"subject": "P0461/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"P0461:abc"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgCapitalLinks": true,
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
