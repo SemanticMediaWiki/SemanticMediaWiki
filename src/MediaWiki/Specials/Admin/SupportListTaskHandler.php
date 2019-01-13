@@ -52,7 +52,7 @@ class SupportListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( $task ) {
-		return $false;
+		return false;
 	}
 
 	/**
@@ -62,18 +62,47 @@ class SupportListTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$html = $this->createSupportForm() . $this->createRegistryForm();
-		$html .= Html::element( 'p', [], '' );
+		$html = Html::rawElement(
+			'p',
+			[],
+			$this->msg( 'smw-admin-docu' )
+		);
 
-		return Html::rawElement( 'div', [], $html );
+		$html .= $this->ennvironmentSection();
+		$html .= $this->supportForm();
+		$html .= $this->registryForm();
+
+		return $html;
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
-	public function createSupportForm() {
+	public function handleRequest( WebRequest $webRequest ) {}
+
+	private function ennvironmentSection() {
+
+		$info = $this->getStore()->getInfo() + [
+			'smw' => SMW_VERSION,
+			'mediawiki' => $GLOBALS['wgVersion']
+		] + (
+			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
+		);
+
+		return Html::rawElement(
+			'h3',
+			[],
+			$this->msg( 'smw-admin-environment' )
+		) . Html::rawElement(
+			'pre',
+			[],
+			json_encode( $info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+		);
+	}
+
+	private function supportForm() {
 		$this->htmlFormRenderer
 			->setName( 'support' )
 			->addHeader( 'h3', $this->msg('smw-admin-support' ) )
@@ -90,12 +119,7 @@ class SupportListTaskHandler extends TaskHandler {
 		return $this->htmlFormRenderer->getForm();
 	}
 
-	/**
-	 * @since 2.5
-	 *
-	 * @return string
-	 */
-	public function createRegistryForm() {
+	private function registryForm() {
 
 		$this->htmlFormRenderer
 			->setName( 'announce' )
@@ -111,14 +135,6 @@ class SupportListTaskHandler extends TaskHandler {
 			);
 
 		return $this->htmlFormRenderer->getForm();
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * {@inheritDoc}
-	 */
-	public function handleRequest( WebRequest $webRequest ) {
 	}
 
 }

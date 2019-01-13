@@ -19,14 +19,14 @@ abstract class TaskHandler {
 	 */
 	const SECTION_SUPPLEMENT = 'section.supplement';
 	const SECTION_SCHEMA = 'section.schema';
-	const SECTION_DATAREPAIR = 'section.datarepair';
+	const SECTION_MAINTENANCE = 'section.maintenance';
 	const SECTION_DEPRECATION ='section.deprecation';
 	const SECTION_SUPPORT ='section.support';
 
 	/**
 	 * @var integer
 	 */
-	private $enabledFeatures = 0;
+	private $featureSet = 0;
 
 	/**
 	 * @var Store
@@ -39,6 +39,7 @@ abstract class TaskHandler {
 	protected $isApiTask = false;
 
 	/**
+	 * @deprecated since 3.1, use TaskHandler::hasFeature
 	 * @since 2.5
 	 *
 	 * @param integer $feature
@@ -46,16 +47,37 @@ abstract class TaskHandler {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return ( ( $this->enabledFeatures & $feature ) == $feature );
+		return $this->hasFeature( $feature );
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param integer $feature
+	 *
+	 * @return boolean
+	 */
+	public function hasFeature( $feature ) {
+		return ( ( $this->featureSet & $feature ) == $feature );
+	}
+
+	/**
+	 * @deprecated since 3.1, use TaskHandler::setFeatureSet
 	 * @since 2.5
 	 *
 	 * @param integer $enabledFeatures
 	 */
 	public function setEnabledFeatures( $enabledFeatures ) {
-		$this->enabledFeatures = $enabledFeatures;
+		$this->setFeatureSet( $enabledFeatures );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $enabledFeatures
+	 */
+	public function setFeatureSet( $featureSet ) {
+		$this->featureSet = $featureSet;
 	}
 
 	/**

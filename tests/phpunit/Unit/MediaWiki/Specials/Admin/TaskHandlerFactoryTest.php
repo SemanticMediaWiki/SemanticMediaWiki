@@ -89,7 +89,7 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'newTableSchemaTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler'
 		];
 
 		$provider[] = [
@@ -114,22 +114,22 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'newDataRefreshJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\DataRefreshJobTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler'
 		];
 
 		$provider[] = [
 			'newDisposeJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\DisposeJobTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler'
 		];
 
 		$provider[] = [
 			'newPropertyStatsRebuildJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\PropertyStatsRebuildJobTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler'
 		];
 
 		$provider[] = [
 			'newFulltextSearchTableRebuildJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler'
 		];
 
 		$provider[] = [
@@ -140,6 +140,11 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'newDuplicateLookupTaskHandler',
 			'\SMW\MediaWiki\Specials\Admin\DuplicateLookupTaskHandler'
+		];
+
+		$provider[] = [
+			'newMaintenanceTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler'
 		];
 
 		return $provider;

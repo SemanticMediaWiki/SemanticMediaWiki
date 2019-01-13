@@ -1,10 +1,12 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Store;
 use WebRequest;
 
@@ -114,7 +116,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->setPageTitle( $this->msg( 'smw-admin-db' ) );
-		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ] );
+		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ], 'smw-admin-tab-rebuild' );
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 

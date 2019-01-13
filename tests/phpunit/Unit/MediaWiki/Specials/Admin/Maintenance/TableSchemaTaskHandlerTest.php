@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
-use SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -49,7 +49,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\TableSchemaTaskHandler',
+			TableSchemaTaskHandler::class,
 			new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
@@ -102,7 +102,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$instance->setEnabledFeatures( SMW_ADM_SETUP );
+		$instance->setFeatureSet( SMW_ADM_SETUP );
 		$instance->handleRequest( $webRequest );
 	}
 

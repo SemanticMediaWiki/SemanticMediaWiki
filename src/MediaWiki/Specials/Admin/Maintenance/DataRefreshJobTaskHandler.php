@@ -1,10 +1,12 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use Title;
 use WebRequest;
 use SMW\MediaWiki\Job;
@@ -49,7 +51,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getSection() {
-		return self::SECTION_DATAREPAIR;
+		return self::SECTION_MAINTENANCE;
 	}
 
 	/**

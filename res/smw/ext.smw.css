@@ -352,6 +352,10 @@ label.smw-form-checkbox {
 	column-gap: 1em;
 }
 
+.smw-column-twofold-responsive li:first-child {
+	margin-top: -3px;
+}
+
 .smw-column[dir="rtl"] {
 	float: right;
 }

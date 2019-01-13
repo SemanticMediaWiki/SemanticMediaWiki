@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
-use SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -49,7 +49,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\FulltextSearchTableRebuildJobTaskHandler',
+			FulltextSearchTableRebuildJobTaskHandler::class,
 			new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter )
 		);
 	}
@@ -116,7 +116,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 		);
 
 		$instance->isApiTask = false;
-		$instance->setEnabledFeatures( SMW_ADM_FULLT );
+		$instance->setFeatureSet( SMW_ADM_FULLT );
 		$instance->handleRequest( $webRequest );
 	}
 
@@ -145,7 +145,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 			$this->outputFormatter
 		);
 
-		$instance->setEnabledFeatures( SMW_ADM_FULLT );
+		$instance->setFeatureSet( SMW_ADM_FULLT );
 		$instance->handleRequest( $webRequest );
 	}
 
