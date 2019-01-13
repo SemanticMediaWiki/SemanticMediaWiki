@@ -9,6 +9,7 @@ use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
 use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\SQLStore\Installer;
 use SMW\Site;
 use SMW\Store;
 use SMW\Options;
@@ -170,6 +171,12 @@ class HookListener {
 	public function onBeforePageDisplay( &$outputPage, &$skin ) {
 
 		$beforePageDisplay = new BeforePageDisplay();
+
+		$beforePageDisplay->setOptions(
+			[
+				'installer.incomplete_tasks' => Installer::incompleteTasks( $GLOBALS )
+			]
+		);
 
 		return $beforePageDisplay->process( $outputPage, $skin );
 	}

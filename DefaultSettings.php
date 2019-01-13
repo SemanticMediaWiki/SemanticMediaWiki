@@ -31,6 +31,7 @@ return [
 	'smwgExtraneousLanguageFileDir' => __DIR__ . '/i18n/extra',
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
 	'smwgResourceLoaderDefFiles' => [ 'smw' => __DIR__ . '/res/Resources.php' ],
+	'smwgMaintenanceDir' => __DIR__ . '/maintenance',
 	##
 
 	###

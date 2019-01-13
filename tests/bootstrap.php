@@ -1,7 +1,5 @@
 <?php
 
-use SMW\SQLStore\Installer;
-use SMW\Utils\File;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
@@ -38,10 +36,6 @@ register_shutdown_function( function() {
 	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 		return;
 	}
-
-	// Restore the smw.json upgrade key with the settings
-	// that match the LocalSettings.php
-	Installer::setUpgradeKey( new File(), $GLOBALS );
 
 	// Reset any sequence modified during the test
 	$sequence = new Sequence(

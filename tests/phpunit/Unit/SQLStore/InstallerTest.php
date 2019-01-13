@@ -235,7 +235,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetUpgradeKey() {
+	public function testMakeUpgradeKey() {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
@@ -250,12 +250,12 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertEquals(
-			Installer::getUpgradeKey( $var1 ),
-			Installer::getUpgradeKey( $var2 )
+			Installer::makeUpgradeKey( $var1 ),
+			Installer::makeUpgradeKey( $var2 )
 		);
 	}
 
-	public function testGetUpgradeKey_SpecialFixedProperties() {
+	public function testMakeUpgradeKey_SpecialFixedProperties() {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
@@ -270,8 +270,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertNotEquals(
-			Installer::getUpgradeKey( $var1 ),
-			Installer::getUpgradeKey( $var2 )
+			Installer::makeUpgradeKey( $var1 ),
+			Installer::makeUpgradeKey( $var2 )
 		);
 	}
 
@@ -298,7 +298,51 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			'smwgPageSpecialProperties' => []
 		];
 
-		$instance->setUpgradeKey( $file, $vars, $this->spyMessageReporter );
+		$instance->setUpgradeKey( $vars, $this->spyMessageReporter, $file );
+	}
+
+	public function testSetUpgradeFile() {
+
+		$expected = json_encode( [ \SMW\Site::id() => [ 'Foo' => 42 ] ], JSON_PRETTY_PRINT );
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->once() )
+			->method( 'write' )
+			->with(
+				$this->equalTo( 'Foo_dir/.smw.json' ),
+				$this->equalTo( $expected ) );
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableIntegrityExaminer
+		);
+
+		$vars = [
+			'smwgConfigFileDir' => 'Foo_dir'
+		];
+
+		$instance->setUpgradeFile( $vars, [ 'Foo' => 42 ], $file );
+	}
+
+	public function testIncompleteTasks() {
+
+		$vars = [
+			'smw.json' => [ \SMW\Site::id() => [ Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
+		];
+
+		$this->assertEquals(
+			[ 'smw-install-incomplete-populate-hash-field' ],
+			Installer::incompleteTasks( $vars )
+		);
+
+		$this->assertEquals(
+			[],
+			Installer::incompleteTasks( [] )
+		);
 	}
 
 }
