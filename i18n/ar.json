@@ -21,6 +21,11 @@
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
 	"smw-title": "ميدياويكي الدلالية",
+	"smw-upgrade-error": "تم تثبيت وتمكين ميدياويكي الدلالي لكنه يفتقد إلى  [https://www.semantic-mediawiki.org/wiki/Help:Upgrade مفتاح ترقية] مناسب يتطابق مع: <code>$1</code>.",
+	"smw-upgrade-error-why-title": "لماذا أرى هذا الخطأ؟",
+	"smw-upgrade-error-why-explain": "لقد تغير هيكل قاعدة البيانات الداخلية في ميدياويكي ويتطلب بعض التعديلات لكي تعمل بكامل طاقتها، يمكن أن يكون هناك العديد من الأسباب بما فيها: \n* تمت إضافة خصائص مرممة إضافية (يتطلب إعداد جدول إضافي)  \n* تحتوي الترقية على بعض التغييرات على الجداول أو الفهارس التي تقوم بإجراء اعتراض إلزامي قبل الوصول إلى البيانات",
+	"smw-upgrade-error-how-title": "كيف أقوم بإصلاح هذا الخطأ؟",
+	"smw-upgrade-error-how-explain": "يجب على الإداري (أو أي شخص لديه صلاحيات الإداري) أن يدير سكريبت الصيانة [https://www.mediawiki.org/wiki/Manual:Update.php update.php] بميدياويكي أو [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php] بميدياويكي الدلالي، يمكنك أيضا الرجوع إلى الصفحات التالية للمزيد من المساعدة:\n* تعليمات [https://www.semantic-mediawiki.org/wiki/Help:Installation التثبيت]\n* صفحة المساعدة [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting استكشاف الأخطاء وإصلاحها]",
 	"smw-semantics-not-enabled": "لم يتم تمكين وظائف ميدياويكي الدلالي لهذا الويكي.",
 	"smw_viewasrdf": "تلقيمة RDF",
 	"smw_finallistconjunct": " و",
@@ -511,7 +516,6 @@
 	"smw-admin-objectid": "معرف:",
 	"smw-admin-tab-general": "نظرة عامة",
 	"smw-admin-tab-notices": "إشعارات انتقاص",
-	"smw-admin-tab-rebuild": "صيانة",
 	"smw-admin-tab-supplement": "وظائف إضافية",
 	"smw-admin-tab-registry": "سجل",
 	"smw-livepreview-loading": "جارٍ التحميل...",
@@ -826,5 +830,7 @@
 	"smw-ask-tab-result": "النتيجة",
 	"smw-ask-tab-extra": "إضافات",
 	"smw-ask-tab-debug": "تصحيح",
-	"smw-ask-tab-code": "كود"
+	"smw-ask-tab-code": "كود",
+	"smw-install-incomplete-intro": "تنصيب (أو ترقية) <b>Semantic MediaWiki</b> لم ينتهي وينبغي على أحد الإداريين تنفيذ المهام التالية لمنع عدم تناسق البيانات قبل أن يواصل المستخدمون إنشاء أو تعديل المحتوى.",
+	"smw-install-incomplete-populate-hash-field": "ملء حقل <code>smw_hash</code> تم تجاهله أثناء التنصيب، سكريبت [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] مطلوب للتنفيذ."
 }

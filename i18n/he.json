@@ -395,7 +395,6 @@
 	"smw-admin-idlookup-input": "חיפוש:",
 	"smw-admin-objectid": "מזהה:",
 	"smw-admin-tab-general": "סקירה כללית",
-	"smw-admin-tab-rebuild": "תחזוקה",
 	"smw-admin-tab-registry": "רישום",
 	"smw-livepreview-loading": "בטעינה…",
 	"smw-sp-searchbyproperty-description": "הדף הזה מספק [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces ממשק עיון] פשוט למציאת ישויות שמתוארות על־ידי מאפיין וערך בעל־שם. ממשקי חיפוש זמינים אחרים הם [[Special:PageProperty|חיפוש מאפיין דף]] ו[[Special:Ask|בונה שאילתות]].",

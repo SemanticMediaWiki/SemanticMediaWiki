@@ -27,6 +27,11 @@
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
 	"smw-title": "Semantic MediaWiki",
+	"smw-upgrade-error": "Semantic MediaWiki wurde installiert und aktiviert, es fehlt jedoch der zugehörige [https://www.semantic-mediawiki.org/wiki/Help:Upgrade Aktualisierungsschlüssel]: <code>$1</code>.",
+	"smw-upgrade-error-why-title": "Warum wird diese Fehlermeldung angezeigt?",
+	"smw-upgrade-error-why-explain": "Die interne Struktur der von Semantic MediaWiki genutzten Datenbank hat sich verändert und erfordert Anpassungen, um störungsfrei funktionieren zu können. Für die Änderung kann es unter anderem mehrere Gründe geben:\n* ein feststehendes Attribut wurde hinzugefügt, das die Erstellung einer neuen Datenbanktabelle erfordert, bevor wieder auf die Datenbank zugegriffen werden kann\n* eine Softwareanpassung bedingt Änderungen an Tabellen oder Indizes der Datenbank, die eine Schemaaktualisierung bedingen, bevor wieder auf die Datenbank zugegriffen werden kann",
+	"smw-upgrade-error-how-title": "Wie kann dieser Fehler behoben werden?",
+	"smw-upgrade-error-how-explain": "Ein Administrator oder eine andere Person mit Administratorberechtigung muss entweder das Wartungsskript [https://www.mediawiki.org/wiki/Manual:Update.php „update.php“] von MediaWiki oder [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php „setupStore.php“] von Semantic MediaWiki ausführen. Weitergehende Informationen sind auf den folgenden Seiten verfügbar:\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation Installationsanweisungen]\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting Hilfeseite zu häufigen Problemen]",
 	"smw-semantics-not-enabled": "Momentan kann Semantic MediaWiki nicht auf diesem Wiki genutzt werden.",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": " und",
@@ -516,7 +521,6 @@
 	"smw-admin-objectid": "Kennung:",
 	"smw-admin-tab-general": "Übersicht",
 	"smw-admin-tab-notices": "Hinweise zur Konfiguration",
-	"smw-admin-tab-rebuild": "Wartung",
 	"smw-admin-tab-supplement": "Zusätzliche Funktionen",
 	"smw-admin-tab-registry": "Wikiregistrierung",
 	"smw-livepreview-loading": "Lade …",
@@ -831,5 +835,7 @@
 	"smw-ask-tab-result": "Ergebnis",
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Fehleranalyse",
-	"smw-ask-tab-code": "Code"
+	"smw-ask-tab-code": "Code",
+	"smw-install-incomplete-intro": "Die Installation oder Aktualisierung von <b>Semantic MediaWiki</b> wurde noch nicht vollständig abgeschlossen. Ein Administrator oder eine andere Person mit Administratorberechtigung muss daher die folgenden Aufgaben ausführen, um Dateninkonsistenzen zu vermeiden, bevor die Nutzer des Wikis bestehende Inhalte ändern oder weitere Inhalte erstellen:",
+	"smw-install-incomplete-populate-hash-field": "Die Befüllung des Datenbankfeldes <code>smw_hash</code> wurde während des Setups aufgrund des Umfangs der Datenbank abgebrochen. Das Wartungsskript [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php „populateHashField.php“] muss ausgeführt werden, um diese Aufgabe zu beenden."
 }

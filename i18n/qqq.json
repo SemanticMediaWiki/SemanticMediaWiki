@@ -21,6 +21,11 @@
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
 	"smw-title": "{{notranslate}}\n\nName of the extension as it should be displayed.\n\n{{Identical|Semantic MediaWiki}}",
+	"smw-upgrade-error": "This is an error message.\n\nParameter:\n* $1 - holds the upgrade key",
+	"smw-upgrade-error-why-title": "This is a section header.",
+	"smw-upgrade-error-why-explain": "This is an error message.",
+	"smw-upgrade-error-how-title": "This is a section header.",
+	"smw-upgrade-error-how-explain": "This is an error message.",
 	"smw-semantics-not-enabled": "This is an informatory message.",
 	"smw_viewasrdf": "This is the text of the link that is triggering the results export when clicked. It appears on pages in namespace Concept: or within the [https://semantic-mediawiki.org/wiki/Help:Browsing_interfaces#The_factbox factbox].",
 	"smw_finallistconjunct": "The last separator in a list. For example a list could look like this: \"A, B, and C\". The comma might not be appropriate in your language.\n\t{{Identical|And}}",
@@ -517,7 +522,6 @@
 	"smw-admin-objectid": "A label\n{{Identical|ID}}",
 	"smw-admin-tab-general": "This is the label of a tab.\n{{Identical|Overview}}",
 	"smw-admin-tab-notices": "This is the label of a tab.",
-	"smw-admin-tab-rebuild": "This is the label of a tab.",
 	"smw-admin-tab-supplement": "This is the label of a tab.",
 	"smw-admin-tab-registry": "This is the label of a tab.\n\n{{Identical|Registry}}",
 	"smw-livepreview-loading": "{{Identical|Loading}}Message displayed while data is loading.",
@@ -839,5 +843,7 @@
 	"smw-ask-tab-extra": "This is the label of a tab on special page \"Ask\".",
 	"smw-ask-tab-debug": "This is the label of a tab on special page \"Ask\".",
 	"smw-ask-tab-code": "This is the label of a tab on special page \"Ask\".",
-	"smw-helplink-concepts": "This message links to the respective help page on <semantic-mediawiki.org>.\n\n{{Optional}}"
+	"smw-helplink-concepts": "This message links to the respective help page on <semantic-mediawiki.org>.\n\n{{Optional}}",
+	"smw-install-incomplete-intro": "This is an error message.",
+	"smw-install-incomplete-populate-hash-field": "This is an error/informatory message."
 }
