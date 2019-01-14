@@ -419,7 +419,6 @@
 	"smw-admin-idlookup-input": "Sök:",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-tab-general": "Översikt",
-	"smw-admin-tab-rebuild": "Underhåll",
 	"smw-admin-tab-registry": "Register",
 	"smw-livepreview-loading": "Laddar…",
 	"smw-sp-searchbyproperty-description": "Denna sida erbjuder ett enkelt [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces navigeringsgränssnitt] för att hitta entiteter som beskrivs av en egenskap och ett namngivet värde. Andra tillgängliga sökgränssnitt inkluderar [[Special:PageProperty|sidegenskapssök]] och [[Special:Ask|ask-förfrågningsbyggare]].",

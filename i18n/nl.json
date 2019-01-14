@@ -424,7 +424,6 @@
 	"smw-admin-idlookup-input": "Zoeken:",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-tab-general": "Overzicht",
-	"smw-admin-tab-rebuild": "Onderhoud",
 	"smw-admin-tab-registry": "Register",
 	"smw-livepreview-loading": "Bezig met laden…",
 	"smw-sp-searchbyproperty-description": "Deze pagina biedt een eenvoudige [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces bladerinteractie] voor het vinden van entiteiten met een eigenschap met een bepaalde waarde. Andere beschikbare zoekinteracties zijn de [[Special:PageProperty|zoekpagina voor pagina-eigenschappen]] en de [[Special:Ask|querybouwer]].",
