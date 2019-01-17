@@ -1,0 +1,130 @@
+{
+	"description": "Test `#set_recurring_event` parser for events on 29th to 31st of the month (#3598 - `wgContLang=fr`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Team meetings - en",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 31, 2003 9:30 am |end=December 31, 2004 9:30 am |unit=month }}"
+		},
+		{
+			"page": "Team meetings - fr",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=30 janvier 2003 9:30 am |end=31 décembre 2004 9:30 am |unit=month }}"
+		},
+		{
+			"page": "Team meetings - ISO",
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=2003-01-29T09:30:00 |end=2004-12-31T09:30:00 |unit=month }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 0 - en",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 1 - en",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - en]] |?Has date |format=plainlist }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 2 - fr",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 3 - fr",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - fr]] |?Has date |format=plainlist }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 4 - ISO",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |format=count }}"
+		},
+		{
+			"page": "Team meetings in 2003 and 2004 - 5 - ISO",
+			"contents": "{{#ask: [[Is team meeting::Team meetings - ISO]] |?Has date |format=plainlist }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 #set_recurring_event parser for the 31st or alternatively the last day of a month - count",
+			"subject": "Team meetings in 2003 and 2004 - 0 - en",
+			"assert-output": {
+				"to-contain": [
+					"24"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 #set_recurring_event parser for the 31st or alternatively the last day of a month - print",
+			"subject": "Team meetings in 2003 and 2004 - 1 - en",
+			"assert-output": {
+				"to-contain": [
+					"31 mars 2003 09:30:00",
+					"30 avril 2003 09:30:00",
+					"30 novembre 2004 09:30:00",
+					"31 décembre 2004 09:30:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 #set_recurring_event parser for the 30th or alternatively the last day of a month - count",
+			"subject": "Team meetings in 2003 and 2004 - 2 - fr",
+			"assert-output": {
+				"to-contain": [
+					"24"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 #set_recurring_event parser for the 30th or alternatively the last day of a month - print",
+			"subject": "Team meetings in 2003 and 2004 - 3 - fr",
+			"assert-output": {
+				"to-contain": [
+					"28 février 2003 09:30:00",
+					"30 mars 2003 09:30:00",
+					"29 février 2004 09:30:00",
+					"30 mars 2004 09:30:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 #set_recurring_event parser for the 29th or alternatively the last day of a month - count",
+			"subject": "Team meetings in 2003 and 2004 - 4 - ISO",
+			"assert-output": {
+				"to-contain": [
+					"24"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 #set_recurring_event parser for the 29th or alternatively the last day of a month - print",
+			"subject": "Team meetings in 2003 and 2004 - 5 - ISO",
+			"assert-output": {
+				"to-contain": [
+					"28 février 2003 09:30:00",
+					"29 août 2003 09:30:00",
+					"29 février 2004 09:30:00",
+					"29 août 2004 09:30:00"
+				],
+				"not-contain": [
+					"29 février 2003 09:30:00",
+					"28 février 2004 09:30:00"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "fr",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
