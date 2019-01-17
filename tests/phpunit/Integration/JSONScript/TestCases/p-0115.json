@@ -8,15 +8,15 @@
 		},
 		{
 			"page": "Team meetings - en",
-			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 31, 2003 9:30 am |end=December 31, 2004 |unit=month }}"
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 31, 2003 9:30 am |end=December 31, 2004 9:30 am |unit=month }}"
 		},
 		{
 			"page": "Team meetings - fr",
-			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=30 janvier 2003 9:30 am |end=30 décembre 2004 |unit=month }}"
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=30 janvier 2003 9:30 am |end=31 décembre 2004 9:30 am |unit=month }}"
 		},
 		{
 			"page": "Team meetings - ISO",
-			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=2003-01-29T09:30:00 |end=2004-12-31 |unit=month }}"
+			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=2003-01-29T09:30:00 |end=2004-12-31T09:30:00 |unit=month }}"
 		},
 		{
 			"page": "Team meetings in 2003 and 2004 - 0 - en",
@@ -62,8 +62,8 @@
 				"to-contain": [
 					"31 mars 2003 09:30:00",
 					"30 avril 2003 09:30:00",
-					"31 octobre 2004 09:30:00",
-					"30 novembre 2004 09:30:00"
+					"30 novembre 2004 09:30:00",
+					"31 décembre 2004 09:30:00"
 				]
 			}
 		},
