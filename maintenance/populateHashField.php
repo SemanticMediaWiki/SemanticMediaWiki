@@ -44,7 +44,7 @@ class PopulateHashField extends \Maintenance {
 	 * @since 3.1
 	 */
 	public function __construct() {
-		$this->mDescription = 'Populate the `smw_hash` field for all entities that have a missing entry.';
+		$this->mDescription = "Populate the 'smw_hash' field for all entities that have a missing entry.";
 		parent::__construct();
 	}
 
@@ -56,7 +56,7 @@ class PopulateHashField extends \Maintenance {
 	public function setComplete( $incomplete ) {
 
 		$this->reportMessage(
-			"   ... writing the upgrade file ... \n"
+			"   ... writing the status to the setup information file ... \n"
 		);
 
 		Installer::setUpgradeFile(
@@ -105,7 +105,7 @@ class PopulateHashField extends \Maintenance {
 	public function execute() {
 
 		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
+			$this->reportMessage( "\nYou need to have Semantic MediaWiki enabled in order to run the maintenance script!\n" );
 			exit;
 		}
 
@@ -113,7 +113,7 @@ class PopulateHashField extends \Maintenance {
 			'SMW\SQLStore\SQLStore'
 		);
 
-		$this->reportMessage( "\nChecking smw_hash field consistency ...\n" );
+		$this->reportMessage( "\nChecking 'smw_hash' field consistency ...\n" );
 		$this->populate();
 
 		$this->reportMessage( "   ... done.\n" );
