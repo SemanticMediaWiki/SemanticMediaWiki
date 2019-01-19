@@ -34,11 +34,24 @@ class SMWDIUri extends SMWDataItem {
 	protected $m_fragment;
 
 	/**
-	 * Initialise a URI by providing its scheme (e.g. "html"), 'hierpart'
-	 * following "scheme:" (e.g. "//username@example.org/path), query (e.g.
-	 * "q=Search+term", and fragment (e.g. "section-one"). The complete URI
-	 * with these examples would be
+	 * URI to be defined by its components:
+	 *
+	 * - scheme (e.g. "html"),
+	 * - hierpart following the "scheme:" (e.g. "//username@example.org/path)
+	 * - query (e.g. "q=Search+term", and
+	 * - fragment (e.g. "section-one").
+	 *
+	 * The complete URI with these examples would be
 	 * http://username@example.org/path?q=Search+term#section-one
+	 *
+	 *         userinfo    host    port
+	 *         ┌─┴────┐ ┌────┴────┐ ┌┴┐
+	 * https://john.doe@example.com:123/search?name=ferret#nose
+	 * └─┬─┘ └───────┬────────────────┘└──┬──┘└──┬───────┘└┬─┘
+	 * scheme     authority             path   query   fragment
+	 * ┌─┴┐┌──────────────────────────────┴──────────────┐
+	 * urn:oasis:names:specification:docbook:dtd:xml:4.1.2
+	 *
 	 * @param $scheme string for the scheme
 	 * @param $hierpart string for the "hierpart"
 	 * @param $query string for the query
