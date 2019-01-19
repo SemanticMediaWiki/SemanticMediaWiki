@@ -9,6 +9,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleFactory;
+use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\Options;
 use SMW\Store;
 use Title;
@@ -456,41 +457,15 @@ class DataRebuilder {
 	private function dispose_outdated() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
-			Title::newFromText( __METHOD__ )
+		$title = Title::newFromText( __METHOD__ );
+
+		$outdatedDisposer = new OutdatedDisposer(
+			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),
+			$applicationFactory->getIteratorFactory()
 		);
 
-		$outdatedEntitiesResultIterator = $entityIdDisposerJob->newOutdatedEntitiesResultIterator();
-		$matchesCount = $outdatedEntitiesResultIterator->count();
-		$counter = 0;
-
-		$this->reportMessage( "Removing outdated entities ..." );
-
-		if ( $matchesCount > 0 ) {
-			$this->reportMessage( "\n" );
-
-			$chunkedIterator = $applicationFactory->getIteratorFactory()->newChunkedIterator(
-				$outdatedEntitiesResultIterator,
-				200
-			);
-
-			foreach ( $chunkedIterator as $chunk ) {
-				foreach ( $chunk as $row ) {
-					$counter++;
-					$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $matchesCount * 100 ) );
-
-					$this->reportMessage(
-						"\r". sprintf( "%-50s%s", "   ... cleaning up document no.", $msg )
-					);
-
-					$entityIdDisposerJob->dispose( $row );
-				}
-			}
-
-			$this->reportMessage( "\n   ... {$matchesCount} IDs removed ..." );
-		}
-
-		$this->reportMessage( "\n   ... done.\n" );
+		$outdatedDisposer->setMessageReporter( $this->reporter );
+		$outdatedDisposer->run();
 	}
 
 	private function is_writable( $startIdFile ) {

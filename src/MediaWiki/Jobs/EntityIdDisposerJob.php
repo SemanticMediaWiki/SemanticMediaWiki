@@ -23,6 +23,16 @@ class EntityIdDisposerJob extends Job {
 	const CHUNK_SIZE = 200;
 
 	/**
+	 * @var PropertyTableIdReferenceDisposer
+	 */
+	private $propertyTableIdReferenceDisposer;
+
+	/**
+	 * @var QueryLinksTableDisposer
+	 */
+	private $queryLinksTableDisposer;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Title $title
@@ -39,7 +49,54 @@ class EntityIdDisposerJob extends Job {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedEntitiesResultIterator() {
-		return $this->newPropertyTableIdReferenceDisposer()->newOutdatedEntitiesResultIterator();
+
+		if ( $this->propertyTableIdReferenceDisposer === null ) {
+			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
+		}
+
+		return $this->propertyTableIdReferenceDisposer->newOutdatedEntitiesResultIterator();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return ResultIterator
+	 */
+	public function newOutdatedQueryLinksResultIterator() {
+
+		if ( $this->queryLinksTableDisposer === null ) {
+			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
+		}
+
+		return $this->queryLinksTableDisposer->newOutdatedQueryLinksResultIterator();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return ResultIterator
+	 */
+	public function newUnassignedQueryLinksResultIterator() {
+
+		if ( $this->queryLinksTableDisposer === null ) {
+			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
+		}
+
+		return $this->queryLinksTableDisposer->newUnassignedQueryLinksResultIterator();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer|stdClass $id
+	 */
+	public function disposeQueryLinks( $id ) {
+
+		if ( $this->queryLinksTableDisposer === null ) {
+			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
+		}
+
+		$this->queryLinksTableDisposer->cleanUpTableEntriesById( $id );
 	}
 
 	/**
@@ -49,13 +106,15 @@ class EntityIdDisposerJob extends Job {
 	 */
 	public function dispose( $id ) {
 
-		$propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
-
-		if ( is_int( $id ) ) {
-			return $propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $id );
+		if ( $this->propertyTableIdReferenceDisposer === null ) {
+			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
 
-		$propertyTableIdReferenceDisposer->cleanUpTableEntriesByRow( $id );
+		if ( is_int( $id ) ) {
+			return $this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $id );
+		}
+
+		$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesByRow( $id );
 	}
 
 	/**
@@ -64,11 +123,6 @@ class EntityIdDisposerJob extends Job {
 	 * @since 2.5
 	 */
 	public function run() {
-
-		$propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
-
-		// MW 1.29+ Avoid transaction collisions during Job execution
-		$propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
@@ -108,17 +162,15 @@ class EntityIdDisposerJob extends Job {
 	}
 
 	private function newPropertyTableIdReferenceDisposer() {
+		return ApplicationFactory::getInstance()->getStore()->service( 'PropertyTableIdReferenceDisposer' );
+	}
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore();
+	private function newQueryLinksTableDisposer() {
 
-		// Expect access to the SQL table structure therefore enforce the
-		// SQLStore that provides those methods
-		if ( !is_a( $store, SQLStore::class ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
-		}
+		$store = ApplicationFactory::getInstance()->getStore();
+		$queryDependencyLinksStoreFactory = $store->service( 'QueryDependencyLinksStoreFactory' );
 
-		return new PropertyTableIdReferenceDisposer( $store );
+		return $queryDependencyLinksStoreFactory->newQueryLinksTableDisposer( $store );
 	}
 
 }

@@ -738,6 +738,27 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return QueryDependencyLinksStoreFactory
+	 */
+	public function newQueryDependencyLinksStoreFactory() {
+		return new QueryDependencyLinksStoreFactory();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return PropertyTableIdReferenceDisposer
+	 */
+	public function newPropertyTableIdReferenceDisposer() {
+		return new PropertyTableIdReferenceDisposer(
+			$this->store,
+			$this->getIteratorFactory()
+		);
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return ServicesContainer
@@ -753,6 +774,14 @@ class SQLStoreFactory {
 				'EntityValueUniquenessConstraintChecker' => [
 					'_service' => [ $this, 'newEntityValueUniquenessConstraintChecker' ],
 					'_type'    => EntityValueUniquenessConstraintChecker::class
+				],
+				'PropertyTableIdReferenceDisposer' => [
+					'_service' => [ $this, 'newPropertyTableIdReferenceDisposer' ],
+					'_type'    => PropertyTableIdReferenceDisposer::class
+				],
+				'QueryDependencyLinksStoreFactory' => [
+					'_service' => [ $this, 'newQueryDependencyLinksStoreFactory' ],
+					'_type'    => QueryDependencyLinksStoreFactory::class
 				],
 				'PropertyTableIdReferenceFinder' => function() {
 					static $singleton;

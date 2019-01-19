@@ -65,6 +65,48 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructOutdatedEntitiesResultIterator() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityIdDisposerJob( $title );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newOutdatedEntitiesResultIterator()
+		);
+	}
+
+	public function testCanConstructOutdatedQueryLinksResultIterator() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityIdDisposerJob( $title );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newOutdatedQueryLinksResultIterator()
+		);
+	}
+
+	public function testCanConstructUnassignedQueryLinksResultIterator() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityIdDisposerJob( $title );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newUnassignedQueryLinksResultIterator()
+		);
+	}
+
 	/**
 	 * @dataProvider parametersProvider
 	 */
