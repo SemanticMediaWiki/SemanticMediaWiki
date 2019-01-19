@@ -10,10 +10,10 @@ use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @license GNU GPL v2+
@@ -40,20 +40,36 @@ class QueryEngineFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return QuerySegmentListBuilder
+	 * @return ConditionBuilder
 	 */
-	public function newQuerySegmentListBuilder() {
+	public function newConditionBuilder() {
 
-		$querySegmentListBuilder = new QuerySegmentListBuilder(
+		$settings = ApplicationFactory::getInstance()->getSettings();
+		$orderCondition = new OrderCondition();
+
+		$orderCondition->isSupported(
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
+		);
+
+		$orderCondition->asUnconditional(
+			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_UNCONDITIONAL )
+		);
+
+		$circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
+		$circularReferenceGuard->setMaxRecursionDepth( 2 );
+
+		$conditionBuilder = new ConditionBuilder(
 			$this->store,
-			new DescriptionInterpreterFactory()
+			$orderCondition,
+			new DescriptionInterpreterFactory( $this->store, $circularReferenceGuard ),
+			$circularReferenceGuard
 		);
 
-		$querySegmentListBuilder->isFilterDuplicates(
-			ApplicationFactory::getInstance()->getSettings()->get( 'smwgQFilterDuplicates' )
+		$conditionBuilder->isFilterDuplicates(
+			$settings->get( 'smwgQFilterDuplicates' )
 		);
 
-		return $querySegmentListBuilder;
+		return $conditionBuilder;
 	}
 
 	/**
@@ -73,14 +89,18 @@ class QueryEngineFactory {
 			$temporaryTableBuilder
 		);
 
-		$hierarchyTempTableBuilder->setPropertyHierarchyTableDefinition(
-			$this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
-			$settings->get( 'smwgQSubpropertyDepth' )
-		);
+		$hierarchyTempTableBuilder->setTableDefinitions(
+			[
+				'property' => [
+					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
+					'depth' => $settings->get( 'smwgQSubpropertyDepth' )
+				],
+				'class' => [
+					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
+					'depth' => $settings->get( 'smwgQSubcategoryDepth' )
+				]
 
-		$hierarchyTempTableBuilder->setClassHierarchyTableDefinition(
-			$this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
-			$settings->get( 'smwgQSubcategoryDepth' )
+			]
 		);
 
 		$querySegmentListProcessor = new QuerySegmentListProcessor(
@@ -99,32 +119,11 @@ class QueryEngineFactory {
 	 */
 	public function newQueryEngine() {
 
-		$querySegmentListBuilder = $this->newQuerySegmentListBuilder();
 		$applicationFactory = ApplicationFactory::getInstance();
-
-		$settings = $applicationFactory->getSettings();
-
-		$orderCondition = new OrderCondition(
-			$querySegmentListBuilder
-		);
-
-		$orderCondition->isSupported(
-			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT )
-		);
-
-		$orderCondition->asUnconditional(
-			$settings->isFlagSet( 'smwgQSortFeatures', SMW_QSORT_UNCONDITIONAL )
-		);
-
-		$querySegmentListBuildManager = new QuerySegmentListBuildManager(
-			$this->store->getConnection( 'mw.db.queryengine' ),
-			$querySegmentListBuilder,
-			$orderCondition
-		);
 
 		$queryEngine = new QueryEngine(
 			$this->store,
-			$querySegmentListBuildManager,
+			$this->newConditionBuilder(),
 			$this->newQuerySegmentListProcessor(),
 			new EngineOptions()
 		);
@@ -146,7 +145,7 @@ class QueryEngineFactory {
 		$pplicationFactory = ApplicationFactory::getInstance();
 
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
-			$this->newQuerySegmentListBuilder(),
+			$this->newConditionBuilder(),
 			$this->newQuerySegmentListProcessor()
 		);
 

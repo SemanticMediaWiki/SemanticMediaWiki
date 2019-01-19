@@ -14,10 +14,12 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMWDataItem as DataItem;
-use SMWSql3SmwIds;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWSQLStore3Table;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -30,9 +32,19 @@ use SMWSQLStore3Table;
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QuerySegmentListBuilder
+	 * @var Store
 	 */
-	private $querySegmentListBuilder;
+	private $store;
+
+	/**
+	 * @var ConditionBuilder
+	 */
+	private $conditionBuilder;
+
+	/**
+	 * @var ValueMatchConditionBuilder
+	 */
+	private $valueMatchConditionBuilder;
 
 	/**
 	 * @var ComparatorMapper
@@ -47,12 +59,14 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param Store $store
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
-		$this->querySegmentListBuilder = $querySegmentListBuilder;
+	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ValueMatchConditionBuilder $valueMatchConditionBuilder ) {
+		$this->store = $store;
+		$this->conditionBuilder = $conditionBuilder;
+		$this->valueMatchConditionBuilder = $valueMatchConditionBuilder;
 		$this->comparatorMapper = new ComparatorMapper();
-		$this->fulltextSearchTableFactory = new FulltextSearchTableFactory();
 	}
 
 	/**
@@ -104,18 +118,17 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function interpretPropertyConditionForDescription( QuerySegment $query, SomeProperty $description ) {
 
-		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
-
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		$property = $description->getProperty();
 
-		$tableid = $this->querySegmentListBuilder->getStore()->findPropertyTableID( $property );
+		$tableid = $this->store->findPropertyTableID( $property );
 
 		if ( $tableid === '' ) { // Give up
 			$query->type = QuerySegment::Q_NOQUERY;
 			return;
 		}
 
-		$proptables = $this->querySegmentListBuilder->getStore()->getPropertyTables();
+		$proptables = $this->store->getPropertyTables();
 		$proptable = $proptables[$tableid];
 
 		if ( !$proptable->usesIdSubject() ) {
@@ -134,7 +147,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			return;
 		}
 
-		$diHandler = $this->querySegmentListBuilder->getStore()->getDataItemHandlerForDIType( $diType );
+		$diHandler = $this->store->getDataItemHandlerForDIType( $diType );
 		$indexField = $diHandler->getIndexField();
 
 		// TODO: strictly speaking, the DB key is not what we want here,
@@ -147,7 +160,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 		// *** Add conditions for selecting rows for this property ***//
 		if ( !$proptable->isFixedPropertyTable() ) {
-			$pid = $this->querySegmentListBuilder->getStore()->getObjectIds()->getSMWPropertyID( $property );
+			$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
 
 			// Construct property hierarchy:
 			$pqid = QuerySegment::$qnum;
@@ -157,7 +170,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$pquery->depth = $description->getHierarchyDepth();
 			$query->components[$pqid] = "{$query->alias}.p_id";
 
-			$this->querySegmentListBuilder->addQuerySegment( $pquery );
+			$this->conditionBuilder->addQuerySegment( $pquery );
 
 			// Alternative code without property hierarchies:
 			// $query->where = "{$query->alias}.p_id=" . $this->m_dbs->addQuotes( $pid );
@@ -175,12 +188,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->joinfield = "{$query->alias}.{$s_id}";
 
 			// process page description like main query
-			$sub = $this->querySegmentListBuilder->getQuerySegmentFrom(
+			$sub = $this->conditionBuilder->buildFromDescription(
 				$description->getDescription()
 			);
 
 			if ( $sub >= 0 ) {
-				$subQuery = $this->querySegmentListBuilder->findQuerySegment(
+				$subQuery = $this->conditionBuilder->findQuerySegment(
 					$sub
 				);
 
@@ -188,18 +201,18 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				$query->components[$sub] = "{$query->alias}.{$o_id}";
 			}
 
-			if ( array_key_exists( $sortkey, $this->querySegmentListBuilder->getSortKeys() ) ) {
+			if ( array_key_exists( $sortkey, $this->conditionBuilder->getSortKeys() ) ) {
 				// TODO: This SMW IDs table is possibly duplicated in the query.
 				// Example: [[has capital::!Berlin]] with sort=has capital
 				// Can we prevent that? (PERFORMANCE)
-				$query->from = ' INNER JOIN ' .	$db->tableName( SMWSql3SmwIds::TABLE_NAME ) .
+				$query->from = ' INNER JOIN ' .	$connection->tableName( SQLStore::ID_TABLE ) .
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
 				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sort";
 			}
 		} else { // non-page value description
 			$query->joinfield = "{$query->alias}.s_id";
 			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
-			if ( array_key_exists( $sortkey, $this->querySegmentListBuilder->getSortKeys() ) ) {
+			if ( array_key_exists( $sortkey, $this->conditionBuilder->getSortKeys() ) ) {
 				$query->sortfields[$sortkey] = isset( $query->sortIndexField ) ? $query->sortIndexField : "{$query->alias}.{$indexField}";
 			}
 		}
@@ -256,16 +269,11 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function mapValueDescription(
-			$query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
+	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, $operator ) {
 
 		$where = '';
 		$dataItem = $description->getDataItem();
-		$db = $this->querySegmentListBuilder->getStore()->getConnection( 'mw.db.queryengine' );
-
-		$valueMatchConditionBuilder = $this->fulltextSearchTableFactory->newValueMatchConditionBuilderByType(
-			$this->querySegmentListBuilder->getStore()
-		);
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
 		// TODO Better get the handle from the property type
 		// Some comparators (e.g. LIKE) could use DI values of
@@ -287,15 +295,23 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$where = $description->getSQLCondition(
 				$query->alias,
 				array_keys( $fields ),
-				$this->querySegmentListBuilder->getStore()->getConnection( DB_SLAVE )
+				$this->store->getConnection( DB_SLAVE )
 			);
 		}
 
-		if ( $where == '' && $valueMatchConditionBuilder->canApplyFulltextSearchMatchCondition( $description ) ) {
-			$query->joinTable = $valueMatchConditionBuilder->getTableName();
-			$query->sortIndexField = $valueMatchConditionBuilder->getSortIndexField( $query->alias );
+		if ( $where == '' && $this->valueMatchConditionBuilder->canHaveMatchCondition( $description ) ) {
+			$query->joinTable = $this->valueMatchConditionBuilder->getTableName();
+
+			$query->sortIndexField = $this->valueMatchConditionBuilder->getSortIndexField(
+				$query->alias
+			);
+
 			$query->components = [];
-			$where = $valueMatchConditionBuilder->getWhereCondition( $description, $query->alias );
+
+			$where = $this->valueMatchConditionBuilder->getWhereCondition(
+				$description,
+				$query->alias
+			);
 		} elseif ( $where == '' ) {
 
 			$comparator = $this->comparatorMapper->mapComparator(
@@ -303,7 +319,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				$value
 			);
 
-			$where = "$query->alias.{$indexField}{$comparator}" . $db->addQuotes( $value );
+			$where = "$query->alias.{$indexField}{$comparator}" . $connection->addQuotes( $value );
 		}
 
 		if ( $where !== '' ) {

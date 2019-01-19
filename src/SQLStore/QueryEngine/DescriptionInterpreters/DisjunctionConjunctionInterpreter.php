@@ -7,7 +7,7 @@ use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -19,18 +19,20 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
  */
 class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
+	// DisjunctionConjunctionInterpreter -> CompoundInterpreter
+
 	/**
-	 * @var QuerySegmentListBuilder
+	 * @var ConditionBuilder
 	 */
-	private $querySegmentListBuilder;
+	private $conditionBuilder;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
-		$this->querySegmentListBuilder = $querySegmentListBuilder;
+	public function __construct( ConditionBuilder $conditionBuilder ) {
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -52,11 +54,15 @@ class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 	public function interpretDescription( Description $description ) {
 
 		$query = new QuerySegment();
-		$query->type = $description instanceof Conjunction ? QuerySegment::Q_CONJUNCTION : QuerySegment::Q_DISJUNCTION;
+		$query->type = QuerySegment::Q_DISJUNCTION;
+
+		if ( $description instanceof Conjunction ) {
+			$query->type = QuerySegment::Q_CONJUNCTION;
+		}
 
 		foreach ( $description->getDescriptions() as $subDescription ) {
 
-			$subQueryId = $this->querySegmentListBuilder->getQuerySegmentFrom( $subDescription );
+			$subQueryId = $this->conditionBuilder->buildFromDescription( $subDescription );
 
 			if ( $subQueryId >= 0 ) {
 				$query->components[$subQueryId] = true;

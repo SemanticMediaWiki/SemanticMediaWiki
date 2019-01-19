@@ -17,7 +17,7 @@ use SMWQuery as Query;
 class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $querySegmentListBuildManager;
+	private $conditionBuilder;
 	private $querySegmentListProcessor;
 	private $engineOptions;
 
@@ -27,7 +27,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListBuildManager = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListBuildManager' )
+		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,8 +43,8 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryEngine',
-			new QueryEngine( $this->store, $this->querySegmentListBuildManager, $this->querySegmentListProcessor, $this->engineOptions )
+			QueryEngine::class,
+			new QueryEngine( $this->store, $this->conditionBuilder, $this->querySegmentListProcessor, $this->engineOptions )
 		);
 	}
 
@@ -58,7 +58,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->querySegmentListBuildManager->expects( $this->any() )
+		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( [] ) );
 
@@ -70,7 +70,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->querySegmentListBuildManager,
+			$this->conditionBuilder,
 			$this->querySegmentListProcessor,
 			$this->engineOptions
 		);
@@ -94,7 +94,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$this->querySegmentListBuildManager->expects( $this->any() )
+		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( [] ) );
 
@@ -102,7 +102,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QueryEngine(
 			$this->store,
-			$this->querySegmentListBuildManager,
+			$this->conditionBuilder,
 			$this->querySegmentListProcessor,
 			$this->engineOptions
 		);

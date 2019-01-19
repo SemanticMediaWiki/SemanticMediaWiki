@@ -13,14 +13,14 @@ use SMW\Query\Language\ValueDescription;
 class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 
 	/**
-	 * @see ValueMatchConditionBuilder::canApplyFulltextSearchMatchCondition
+	 * @see ValueMatchConditionBuilder::canHaveMatchCondition
 	 * @since 2.5
 	 *
 	 * @param ValueDescription $description
 	 *
 	 * @return boolean
 	 */
-	public function canApplyFulltextSearchMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ) {
 
 		if ( !$this->isEnabled() ) {
 			return false;

@@ -36,7 +36,7 @@ class HierarchyTempTableBuilder {
 	/**
 	 * @var array
 	 */
-	private $hierarchyTypeTable = [];
+	private $tableDefinitions = [];
 
 	/**
 	 * @since 2.3
@@ -68,21 +68,15 @@ class HierarchyTempTableBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param string $table
-	 * @param integer $depth
+	 * @param array $tableDefinitions
 	 */
-	public function setPropertyHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['property'] = [ $this->connection->tableName( $table ), $depth ];
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @param string $table
-	 * @param integer $depth
-	 */
-	public function setClassHierarchyTableDefinition( $table, $depth ) {
-		$this->hierarchyTypeTable['class'] = [ $this->connection->tableName( $table ), $depth ];
+	public function setTableDefinitions( array $tableDefinitions ) {
+		foreach ( $tableDefinitions as $key => $tableDefinition ) {
+			$this->tableDefinitions[$key] = [
+				$this->connection->tableName( $tableDefinition['table'] ),
+				$tableDefinition['depth']
+			];
+		}
 	}
 
 	/**
@@ -93,13 +87,13 @@ class HierarchyTempTableBuilder {
 	 * @return array
 	 * @throws RuntimeException
 	 */
-	public function getHierarchyTableDefinitionForType( $type ) {
+	public function getTableDefinitionByType( $type ) {
 
-		if ( !isset( $this->hierarchyTypeTable[$type] ) ) {
+		if ( !isset( $this->tableDefinitions[$type] ) ) {
 			throw new RuntimeException( "$type is unknown" );
 		}
 
-		return $this->hierarchyTypeTable[$type];
+		return $this->tableDefinitions[$type];
 	}
 
 	/**
@@ -112,11 +106,11 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function createHierarchyTempTableFor( $type, $tablename, $valueComposite, $depth = null ) {
+	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ) {
 
 		$this->temporaryTableBuilder->create( $tablename );
 
-		list( $smwtable, $d ) = $this->getHierarchyTableDefinitionForType( $type );
+		list( $smwtable, $d ) = $this->getTableDefinitionByType( $type );
 
 		if ( $depth === null ) {
 			$depth = $d;

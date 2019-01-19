@@ -3,11 +3,12 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
+use SMW\Store;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -20,17 +21,24 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
 class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var QuerySegmentListBuilder
+	 * @var Store
 	 */
-	private $querySegmentListBuilder;
+	private $store;
+
+	/**
+	 * @var ConditionBuilder
+	 */
+	private $conditionBuilder;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
+	 * @param Store $store
+	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
-		$this->querySegmentListBuilder = $querySegmentListBuilder;
+	public function __construct( Store $store, ConditionBuilder $conditionBuilder ) {
+		$this->store = $store;
+		$this->conditionBuilder = $conditionBuilder;
 	}
 
 	/**
@@ -61,7 +69,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 		foreach ( $description->getCategories() as $category ) {
 
-			$categoryId = $this->querySegmentListBuilder->getStore()->getObjectIds()->getSMWPageID(
+			$categoryId = $this->store->getObjectIds()->getSMWPageID(
 				$category->getDBkey(),
 				NS_CATEGORY,
 				$category->getInterwiki(),
@@ -78,11 +86,11 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
-			$query->joinTable = $this->querySegmentListBuilder->getStore()->findPropertyTableID( new DIProperty( '_INST' ) );
+			$query->joinTable = $this->store->findPropertyTableID( new DIProperty( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
 
-			$this->querySegmentListBuilder->addQuerySegment( $cquery );
+			$this->conditionBuilder->addQuerySegment( $cquery );
 		}
 
 		return $query;
