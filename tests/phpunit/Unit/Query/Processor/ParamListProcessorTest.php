@@ -122,6 +122,47 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
+		// #3560
+		yield [
+			[ '[[Foo::Bar=-3DFoo]]' ],
+			false,
+			[
+				'showMode'   => false,
+				'templateArgs' => false,
+				'query'      => '[[Foo::Bar=-3DFoo]]',
+				'printouts'  => [],
+				'parameters' => [],
+				'this'       => []
+			]
+		];
+
+		yield [
+			[ '[[Foo::Bar=-3DFoox003D]]' ],
+			false,
+			[
+				'showMode'   => false,
+				'templateArgs' => false,
+				'query'      => '[[Foo::Bar=-3DFoox003D]]',
+				'printouts'  => [],
+				'parameters' => [],
+				'this'       => []
+			]
+		];
+
+		// A user shouldn't use `0x003D` as representation for `=`
+		yield [
+			[ '[[Foo::Bar=-3DFoo0x003D]]' ],
+			false,
+			[
+				'showMode'   => false,
+				'templateArgs' => false,
+				'query'      => '[[Foo::Bar=-3DFoo=]]',
+				'printouts'  => [],
+				'parameters' => [],
+				'this'       => []
+			]
+		];
+
 		yield [
 			[ '[[Foo::Bar]]', 'mainlabel=-' ],
 			false,
