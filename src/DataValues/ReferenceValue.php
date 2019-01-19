@@ -212,7 +212,7 @@ class ReferenceValue extends AbstractMultiValue {
 					$property,
 					$values[$index],
 					false,
-					$this->getContextPage()
+					$containerSemanticData->getSubject()
 				);
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
