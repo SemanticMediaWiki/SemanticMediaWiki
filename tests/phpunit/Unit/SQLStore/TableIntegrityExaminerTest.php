@@ -19,12 +19,17 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $hashField;
 	private $store;
+	private $fixedProperties;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
 		$this->hashField = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\HashField' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->fixedProperties = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\FixedProperties' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +42,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			TableIntegrityExaminer::class,
-			new TableIntegrityExaminer( $this->store, $this->hashField )
+			new TableIntegrityExaminer( $this->store, $this->hashField, $this->fixedProperties )
 		);
 	}
 
@@ -91,7 +96,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableIntegrityExaminer(
 			$store,
-			$this->hashField
+			$this->hashField,
+			$this->fixedProperties
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -160,7 +166,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableIntegrityExaminer(
 			$store,
-			$this->hashField
+			$this->hashField,
+			$this->fixedProperties
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -213,7 +220,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableIntegrityExaminer(
 			$store,
-			$this->hashField
+			$this->hashField,
+			$this->fixedProperties
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -273,7 +281,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableIntegrityExaminer(
 			$store,
-			$this->hashField
+			$this->hashField,
+			$this->fixedProperties
 		);
 
 		$instance->setPredefinedPropertyList( [] );
@@ -319,7 +328,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableIntegrityExaminer(
 			$store,
-			$this->hashField
+			$this->hashField,
+			$this->fixedProperties
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );

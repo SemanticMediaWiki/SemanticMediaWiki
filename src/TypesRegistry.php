@@ -254,57 +254,114 @@ class TypesRegistry {
 	}
 
 	/**
-	 * Use pre-defined ids for Very Important Properties, avoiding frequent
-	 * ID lookups for those.
+	 * @private
 	 *
 	 * @note These constants also occur in the store. Changing them will
-	 * require to run setup.php again.
+	 * require to run `setup.php` again.
 	 *
-	 * @since 3.0
+	 * The highest assignable ID is defined by:
+	 * ( SQLStore::FIXED_PROPERTY_ID_UPPERBOUND - 1)
+	 *
+	 * - `id` refers to the fixed ID in the entity table assigned to a property
+	 *
+	 * - `default_fixed` refers to properties that by default are fixed and require
+	 * their own table space
+	 *
+	 * - `custom_fixed` refers to properties that are not enabled by default but
+	 * when the user enables them require their own table space
+	 *
+	 * - `id_conversion` contains properties planned to be converted and move to
+	 * a fixed ID
+	 *
+	 * @since 3.1
+	 *
+	 * @param string $key
 	 *
 	 * @return array
 	 */
-	public static function getFixedPropertyIdList() {
-		return [
-			'_TYPE' => 1,
-			'_URI'  => 2,
-			'_INST' => 4,
-			'_UNIT' => 7,
-			'_IMPO' => 8,
-			'_PPLB' => 9,
-			'_PDESC' => 10,
-			'_PREC' => 11,
-			'_CONV' => 12,
-			'_SERV' => 13,
-			'_PVAL' => 14,
-			'_REDI' => 15,
-			'_DTITLE' => 16,
-			'_SUBP' => 17,
-			'_SUBC' => 18,
-			'_CONC' => 19,
-			'_ERRP' => 22,
-	// 		'_1' => 23, // properties for encoding (short) lists
-	// 		'_2' => 24,
-	// 		'_3' => 25,
-	// 		'_4' => 26,
-	// 		'_5' => 27,
-	// 		'_SOBJ' => 27
-			'_LIST' => 28,
-			'_MDAT' => 29,
-			'_CDAT' => 30,
-			'_NEWP' => 31,
-			'_LEDT' => 32,
-			// properties related to query management
-			'_ASK'   => 33,
-			'_ASKST' => 34,
-			'_ASKFO' => 35,
-			'_ASKSI' => 36,
-			'_ASKDE' => 37,
-			'_ASKPA' => 38,
-			'_ASKSC' => 39,
-			'_LCODE' => 40,
-			'_TEXT'  => 41,
+	public static function getFixedProperties( $key = '' ) {
+
+		// PROP_ID => [ ID (SQL), default_fixed, custom_fixed ]
+		$fixedProperties = [
+
+			// FIXED ID
+			'_TYPE'   => [ 1,  true,  false ],
+			'_URI'    => [ 2,  true,  false ],
+			'_INST'   => [ 4,  true,  false ],
+			'_UNIT'   => [ 7,  true,  false ],
+			'_IMPO'   => [ 8,  true,  false ],
+			'_PPLB'   => [ 9,  true,  false ],
+			'_PDESC'  => [ 10, false, false ],
+			'_PREC'   => [ 11, true,  false ],
+			'_CONV'   => [ 12, true,  false ],
+			'_SERV'   => [ 13, true,  false ],
+			'_PVAL'   => [ 14, true,  false ],
+			'_REDI'   => [ 15, true,  false ],
+			'_DTITLE' => [ 16, true,  false ],
+			'_SUBP'   => [ 17, true,  false ],
+			'_SUBC'   => [ 18, true,  false ],
+			'_CONC'   => [ 19, true,  false ],
+			'_ERRP'   => [ 22, false, false ],
+
+			// Properties for encoding (short) lists
+			// '_1'  => [ 23, false, false ],
+			// '_2'  => [ 24, false, false ],
+			// '_3'  => [ 25, false, false ],
+			// '_4'  => [ 26, false, false ],
+			// '_5'  => [ 27, false, false ],
+			'_LIST'  => [ 28, true,  false ],
+			'_MDAT'  => [ 29, false, true  ],
+			'_CDAT'  => [ 30, false, true  ],
+			'_NEWP'  => [ 31, false, true  ],
+			'_LEDT'  => [ 32, false, true  ],
+
+			// Properties related to query management
+			'_ASK'   => [ 33, true,  false ],
+			'_ASKST' => [ 34, true,  false ],
+			'_ASKFO' => [ 35, true,  false ],
+			'_ASKSI' => [ 36, true,  false ],
+			'_ASKDE' => [ 37, true,  false ],
+			'_ASKPA' => [ 38, true,  false ],
+			'_ASKSC' => [ 39, false, false ],
+			'_LCODE' => [ 40, true,  false ],
+			'_TEXT'  => [ 41, true,  false ],
+
+			// NON FIXED ID
+			// If you convert an "non" ID fixed property (without an ID) to one
+			// with a fixed ID, add the property to the `id_conversion` array
+			// so that setup can start the conversion task.
+
+			'_SOBJ'   => [ false, true,  false ],
+			'_ASKDU'  => [ false, true,  false ],
+			'_MIME'   => [ false, false, true  ],
+			'_MEDIA'  => [ false, false, true  ],
+
 		];
+
+		if ( $key === 'id' ) {
+			array_walk( $fixedProperties, function( &$v, $k ) { $v = $v[0]; } );
+		}
+
+		// Default fixed property table for selected special properties
+		if ( $key === 'default_fixed' ) {
+			$fixedProperties = array_keys(
+				array_filter( $fixedProperties, function( $v ) { return $v[1]; } )
+			);
+		}
+
+		// Customizable (meaning that there are added or removed via a setting)
+		// special properties that can have their own fixed property table
+		if ( $key === 'custom_fixed' ) {
+			$fixedProperties = array_keys(
+				array_filter( $fixedProperties, function( $v ) { return $v[2]; } )
+			);
+		}
+
+		if ( $key === 'id_conversion' ) {
+			$fixedProperties = [];
+		}
+
+		return $fixedProperties;
 	}
 
 }
