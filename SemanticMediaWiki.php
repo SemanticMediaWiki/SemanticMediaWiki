@@ -63,6 +63,11 @@ class SemanticMediaWiki {
 
 		define( 'SMW_VERSION', isset( $credits['version'] ) ? $credits['version'] : 'N/A' );
 
+		// https://phabricator.wikimedia.org/T212738
+		if ( !defined( 'MW_VERSION' ) ) {
+			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
+		}
+
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
 	}
@@ -89,20 +94,6 @@ class SemanticMediaWiki {
 
 		$setup->loadSchema( $GLOBALS );
 		$setup->init( $GLOBALS, __DIR__ );
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string|null
-	 */
-	public static function getVersion() {
-
-		if ( !defined( 'SMW_VERSION' ) ) {
-			return null;
-		}
-
-		return SMW_VERSION;
 	}
 
 }

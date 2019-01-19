@@ -35,7 +35,7 @@ class MwApiFactory {
 	 */
 	public function newApiResult( array $params ) {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.25', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.25', '<' ) ) {
 			return new ApiResult( $this->newApiMain( $params ) );
 		}
 

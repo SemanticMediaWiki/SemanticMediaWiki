@@ -85,7 +85,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testValidPostAsyncUpdateJob() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 
@@ -111,7 +111,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testValidPostAsyncParserCachePurgeJob() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 
@@ -151,7 +151,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidPostRequestToken() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 
@@ -176,7 +176,7 @@ class SpecialDeferredRequestDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetRequestForAsyncJob() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.20', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because of missing method" );
 		}
 

@@ -154,10 +154,10 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
 
 		if ( $message === '' ) {
-			$message = "This test is skipped for MediaWiki version {$GLOBALS['wgVersion']}";
+			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
 		}
 
-		if ( version_compare( $GLOBALS['wgVersion'], $version, '<' ) ) {
+		if ( version_compare( MW_VERSION, $version, '<' ) ) {
 			$this->markTestSkipped( $message );
 		}
 	}

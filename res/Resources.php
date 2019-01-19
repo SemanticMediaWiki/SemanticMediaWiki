@@ -101,7 +101,7 @@ return [
 	// jStorage was added in MW 1.20
 	'ext.jquery.jStorage' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.jstorage.js',
-		'dependencies' => version_compare( $GLOBALS['wgVersion'], '1.29', '<' ) ? 'json' : [],
+		'dependencies' => version_compare( MW_VERSION, '1.29', '<' ) ? 'json' : [],
 	],
 
 	// md5 hash key generator

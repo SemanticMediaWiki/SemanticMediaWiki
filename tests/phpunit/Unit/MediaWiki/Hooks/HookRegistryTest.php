@@ -174,7 +174,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [
 			'IP' => 'bar',
-			'wgVersion' => '1.24',
+		//	'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
 		];
@@ -196,7 +196,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [
 			'IP' => 'bar',
-			'wgVersion' => '1.24',
+		//	'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
 		];

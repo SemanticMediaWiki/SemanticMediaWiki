@@ -78,20 +78,12 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSupportedLanguageForLowerCaseLetter() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
-		}
-
 		$this->assertTrue(
 			Localizer::isKnownLanguageTag( 'en' )
 		);
 	}
 
 	public function testSupportedLanguageForUpperCaseLetter() {
-
-		if ( version_compare( $GLOBALS['wgVersion'], '1.20', '<' ) ) {
-			$this->markTestSkipped( 'Skipping because `Language::isKnownLanguageTag` is not supported on 1.19' );
-		}
 
 		$this->assertTrue(
 			Localizer::isKnownLanguageTag( 'ZH-HANS' )
