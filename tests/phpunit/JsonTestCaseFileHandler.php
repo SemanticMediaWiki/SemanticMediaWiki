@@ -108,7 +108,7 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
-		$version = $GLOBALS['wgVersion'];
+		$version = MW_VERSION;
 
 		foreach ( $skipOn as $id => $value ) {
 
@@ -149,7 +149,7 @@ class JsonTestCaseFileHandler {
 			if ( strpos( $id, 'smw' ) !== false ) {
 				$version = SMW_VERSION;
 			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
-				$version = $GLOBALS['wgVersion'];
+				$version = MW_VERSION;
 			} elseif ( strpos( $id, 'hhvm' ) !== false ) {
 				$version = defined( 'HHVM_VERSION' ) ? HHVM_VERSION : 0;
 			} elseif ( strpos( $id, 'php' ) !== false ) {

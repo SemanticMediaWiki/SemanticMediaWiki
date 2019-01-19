@@ -80,7 +80,7 @@ class PHPUnitEnvironment {
 			);
 
 			$info = [
-				SemanticMediaWiki::getVersion(),
+				SMW_VERSION,
 				'git: ' . $this->getGitInfo( 'smw' ),
 				$store
 			] + $extra;
@@ -88,7 +88,7 @@ class PHPUnitEnvironment {
 
 		if ( $id === 'mw' ) {
 			$info = [
-				$GLOBALS['wgVersion'],
+				MW_VERSION,
 				'git: ' . $this->getGitInfo( 'mw' )
 			] + $extra;
 		}
@@ -118,9 +118,9 @@ class PHPUnitEnvironment {
 				// reference therefore try to fetch it from github; `MW` is
 				// exported by the Travis-CI environment to point to the selected
 				// release/branch
-				$release = ( $env = getenv( 'MW' ) ) ? $env : 'master';
-				exec( "git ls-remote https://github.com/wikimedia/mediawiki refs/heads/$release", $output );
-				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " (refs/heads/$release)" : 'n/a';
+				$refs = ( $env = getenv( 'MW' ) ) ? "refs/heads/$env" : "refs/tags/" . MW_VERSION;
+				exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
+				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)"  : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}

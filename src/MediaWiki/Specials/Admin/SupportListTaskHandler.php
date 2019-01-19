@@ -86,7 +86,7 @@ class SupportListTaskHandler extends TaskHandler {
 
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
-			'mediawiki' => $GLOBALS['wgVersion']
+			'mediawiki' => MW_VERSION
 		] + (
 			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
 		);

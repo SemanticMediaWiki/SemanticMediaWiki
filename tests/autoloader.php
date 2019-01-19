@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'MediaWiki is not available.' );
 }
 
-if ( !class_exists( 'SemanticMediaWiki' ) || SemanticMediaWiki::getVersion() === null ) {
+if ( !class_exists( 'SemanticMediaWiki' ) || !defined( 'SMW_VERSION' ) ) {
 	die( "\nSemantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
