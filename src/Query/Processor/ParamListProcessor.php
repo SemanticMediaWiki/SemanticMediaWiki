@@ -120,7 +120,7 @@ class ParamListProcessor {
 		}
 
 		$serialization['query'] = str_replace(
-			[ '&lt;', '&gt;', '-3D' ],
+			[ '&lt;', '&gt;', '0x003D' ],
 			['<', '>', '=' ],
 			$serialization['query']
 		);
@@ -173,11 +173,17 @@ class ParamListProcessor {
 
 	private function encodeEq ( $param ) {
 		// Bug 32955 / #640
-		// Modify (e.g. replace `=`) a condition string only if enclosed by [[ ... ]]
+		// Modify (e.g. replace `=`) a condition string only if enclosed by
+		// [[ ... ]]
+		//
+		// #3560
+		// Instead of `-3D` as temporary replacement, use the UTF representation
+		// to decode the `=` sign and eliminate possible collisions with a search
+		// request that contains `-3D` string
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
 			function( array $matches ) {
-				return str_replace( [ '=' ], [ '-3D' ], $matches[0] );
+				return str_replace( [ '=' ], [ '0x003D' ], $matches[0] );
 			},
 			$param
 		);
@@ -246,9 +252,9 @@ class ParamListProcessor {
 			// Don't trim here, some parameters care for " "
 			//
 			// #3196
-			// Ensure to decode `-3D` from encodeEq to support things like
+			// Ensure to decode `0x003D` from encodeEq to support things like
 			// `|intro=[[File:Foo.png|link=Bar]]`
-			$serialization['parameters'][$p] = str_replace( [ '-3D' ], [ '=' ], $parts[1] );
+			$serialization['parameters'][$p] = str_replace( [ '0x003D' ], [ '=' ], $parts[1] );
 		} else {
 			$serialization['query'] .= $param;
 		}

@@ -1,5 +1,5 @@
 {
-	"description": "Test `_wpg` object value that contains `=` (equals sign) (#640, #710, #1542, #1645, `wgContLang=en`, `wgLang=en`)",
+	"description": "Test `_wpg` object value that contains `=` (equals sign) (#640, #710, #1542, #1645, #3560)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -8,6 +8,10 @@
 		},
 		{
 			"page": "Example/Q0612/1(=)",
+			"contents": "[[Category:Q0612]] [[Has page::{{FULLPAGENAME}}]]"
+		},
+		{
+			"page": "Example/Q0612/-3D=",
 			"contents": "[[Category:Q0612]] [[Has page::{{FULLPAGENAME}}]]"
 		},
 		{
@@ -59,6 +63,21 @@
 				"count": 1,
 				"results": [
 					"Example/Q0612/1(=)#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Category:Q0612]] [[Has page::Example/Q0612/-3D=]]",
+			"printouts": [],
+			"parameters": {
+				"limit": 10
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Example/Q0612/-3D=#0##"
 				]
 			}
 		}
