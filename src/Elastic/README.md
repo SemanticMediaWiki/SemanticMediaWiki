@@ -129,9 +129,9 @@ Only query constructs that use a non-filtered context (`~/!~/in/phrase/not`) pro
 
 #### Property chains, paths, and subqueries
 
-ES doesn't support [subqueries][es:subqueries] or [joins][es:joins] natively but the `ElasticStore` facilitates the [terms lookup][es:terms-lookup] to execute path or chain of properties and hereby builds an iterative process allowing to create a set of results that match a path condition (e.g. `Foo.bar.foobar`) with each element holding a restricted list of results from the previous execution to traverse the property path.
+ES does not support [subqueries][es:subqueries] or [join][es:joins] constructs natively but it provides a so called [terms lookup][es:terms-lookup] which we faciliate to execute a path (chain of properties) building an iterative process allowing to create a set of results that match a path condition (e.g. `Foo.bar.foobar`) with each element holding a restricted list of results from the previous execution to traverse the property path.
 
-The introduced process allows to match the `SQLStore` behaviour in terms of path queries where the `QueryEngine` is splitting each path and computes a list of elements. To avoid issues with a possible output of a vast list of matches, Semantic MediaWiki will "park" those results in the `lookup` index with the `subquery.terms.lookup.index.write.threshold` setting (default is 100) directing as to when the results are move into a separate `lookup` index.
+The introduced process allows to match the `SQLStore` behaviour in terms of path queries where the `QueryEngine` splits each path and computes a list of elements. To avoid issues with a vast list of matches, Semantic MediaWiki will "park" those results in the `lookup` index with the `subquery.terms.lookup.index.write.threshold` setting (default is 100) directing as to when the results are moved into the separate `lookup` index.
 
 #### Hierarchies
 
@@ -139,7 +139,7 @@ Property and category hierarchies are supported by relying on a conjunctive bool
 
 #### Unstructured text
 
-Two experimental settings allow to handle unstructured text (content that does not provide any explicit property value annotations) using a separate field in ES.
+Two experimental settings allow to handle unstructured content (text that does not provide any explicit property value annotations) using a separate field in ES.
 
 ##### Raw text
 
@@ -147,9 +147,9 @@ The `indexer.raw.text` setting enables to replicate the entire raw text of a pag
 
 ##### File content
 
-This requires the ES [ingest-attachment plugin][es:ingest] and the ``indexer.experimental.file.ingest` setting.
+This requires the ES [ingest-attachment plugin][es:ingest] and the `indexer.experimental.file.ingest` setting.
 
-The [ingest][es:ingest] process provides a method to retrieve content from files and make them available to ES and Semantic MediaWiki without requiring the actual content to be stored within a wiki page.
+The [ingest][es:ingest] process provides a method to retrieve content from files and make them available to ES and Semantic MediaWiki without requiring the actual content to be stored within the wiki itself.
 
 In case where the ingestions and extraction was successful, a `File attachment` annotation will appear on the specific `File` entity and depending on the extraction quality of ES and Tika additional annotations will be added such as:
 
@@ -161,7 +161,7 @@ In case where the ingestions and extraction was successful, a `File attachment` 
 - `Content date`, and
 - `Content keyword`
 
-Due to size and memory consumption by ES/Tika, file content ingestions exclusively happens in background using the `smw.elasticFileIngest` job. Only after the job has been executed successfully, aforementioned annotations and file content will be accessible during a query request.
+Due to size and memory consumption by ES/Tika, file content ingestions happens exclusively in background using the `smw.elasticFileIngest` job. Only after the job has been executed successfully, aforementioned annotations and file content will be accessible during a query request.
 
 An "unstructured search" (i.e. searching without a property assignment) requires the wide proximity expression which conveniently are available as shortcut using `in:`, `phrase:`, or `not:`.
 
@@ -171,7 +171,7 @@ An "unstructured search" (i.e. searching without a property assignment) requires
 
 ### Special:Search integration
 
-In case [SMWSearch][smw:search] was enabled, it is possible to retrieve [highlighted][es:highlighting] text snippets for matched entities from ES given that `special_search.highlight.fragment.type` is set to one of the excepted types (`plain`, `unified`, and `fvh`). Type `plain` can be used without any specific requirements, for the other types please consult the ES documentation.
+In case [SMWSearch][smw:search] was enabled, it is possible to retrieve [highlighted][es:highlighting] text snippets for matched entities from ES given that `highlight.fragment.type` is set to one of the excepted types (`plain`, `unified`, and `fvh`). Type `plain` can be used without any specific requirements, for the other types please consult the ES documentation.
 
 ## Settings
 
@@ -226,7 +226,7 @@ When modifying a particular setting, use an appropriate key to change the value 
 // Uses a specific key and therefore replaces only the specific parameter
 $GLOBALS['smwgElasticsearchConfig']['query']['uri.field.case.insensitive'] = true;
 
-// !!Override!! the entire configuration
+// This !!overrides!! the entire configuration
 $GLOBALS['smwgElasticsearchConfig'] = [
 	'query' => [
 		'uri.field.case.insensitive' => true
@@ -236,12 +236,12 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 
 #### Shards and replicas
 
-A default shards and replica configuration is applied to with:
+The default shards/replica configuration is set to:
 
 - The `data` index has two primary shards and two replicas
-- The `lookup` index has one primary shard and no replica with the documentation noting that "... consider using an index with a single shard ... lookup terms filter will prefer to execute the get request on a local node if possible ..."
+- The `lookup` index has one primary shard and no replica (the ES documentation [notes][es:query-dsl-terms-lookup] that "... consider using an index with a single shard ... lookup terms filter will prefer to execute the get request on a local node if possible ...")
 
-If it is required to change the numbers of [shards][es:shards] and replicas then use the `$smwgElasticsearchConfig` setting.
+If it is required to change the numbers of [shards][es:shards] and replicas it is preferable to use the `$smwgElasticsearchConfig` setting for this with.
 
 <pre>
 $GLOBALS['smwgElasticsearchConfig']['settings']['data'] = [
@@ -252,21 +252,31 @@ $GLOBALS['smwgElasticsearchConfig']['settings']['data'] = [
 
 ES comes with a precondition that any change to the `number_of_shards` requires to rebuild the entire index, so changes to that setting should be made carefully and in advance.
 
-Read-heavy wikis might want to add (without the need re-index the data) replica shards at the time ES performance is in decline. As noted, [replica shards][es:replica-shards] should be put on an extra hardware.
+Read-heavy wikis might want to add (without the need re-index the data) replica shards where ES performance is in decline (the ES documentation notes that [replica shards][es:replica-shards] should be put on an extra hardware).
 
 #### Index mappings
 
-By default `index_def` points to the index definition and the `data` index is assigned the `smw-data-standard.json` to define its settings and mappings that influence how ES analyzes and index documents including fields that are identified to contain text and string elements. Those text fields use the [standard analyzer][es:standard:analyzer] and should work for most applications.
+The `index_def` settings points to the index definition with the `data` index to be assigned the `smw-data-standard.json` as default to define its settings and mappings that influence how ES analyzes and index documents including fields that are identified to contain text and string elements. Those text fields rely on the [standard analyzer][es:standard:analyzer] and should work for most applications.
 
-The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`), the wikiID, and a version indicator (used by the rollover) so that a single ES cluster can host different indices from different Semantic MediaWiki instances without interfering with each other.
+The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`), the wikiID, and a version indicator (part of the [rollover][es:alias-zero] support) so that a single ES cluster can host different indices from different Semantic MediaWiki instances without interfering with each other.
+
+<pre>
+{
+	"_index": "smw-data-mw-foo-v1",
+	"_type": "data",
+	"_id": "1",
+	"_version": 2,
+	"_source": ...
+}
+</pre>
 
 #### Text, languages, and analyzers
 
-For certain languages the `icu` analyzer (or any other language specific configuration) may provide better results therefore `index_def` provides a possibility to change the assignments and hereby allows custom settings such as different language [analyzer][es:lang:analyzer] to be used and increase the likelihood of better matching precision for text elements.
+For certain languages the `icu` analyzer (or any other language specific configuration) may provide better results, so one may alter the `index_def` index definitions hereby allowing custom settings such as deviating language [analyzers][es:lang:analyzer] to be used to increase the likelihood of better matching precision on text elements.
 
-`smw-data-icu.json` is provided as example on how to alter those settings. It should be noted that query results on text fields may differ compared to when one would use the standard analyzer and users are expected to evaluate whether those settings are more favorable or not to a query answering.
+For a non-latin language environment the [analysis-icu plugin][es:icu:tokenizer] provides better support for [unicode normalization][es:unicode:normalization] and [case folding][es:unicode:case:folding] and selecting `smw-data-icu.json` as `index_def` setting may prove to create a better match accuracy during query answering especially on unstructured text elements or wide proximity searches.
 
-Besides the different index mappings, it is recommended for a non-latin language environments to add the [analysis-icu plugin][es:icu:tokenizer] and select `smw-data-icu.json` as index definition (see also the [unicode normalization][es:unicode:normalization] guide) to make use of better unicode normalization and [case folding][es:unicode:case:folding].
+`smw-data-icu.json` is provided as an example on how to alter those settings. It should be noted that query results on text fields may differ compared to when one would use the standard analyzer and users are expected to evaluate whether those settings are more favorable or not to the query answering.
 
 Please note that any change to the index or its analyzer settings __requires__ to rebuild the entire index.
 
@@ -285,7 +295,7 @@ Please note that any change to the index or its analyzer settings __requires__ t
 }
 </pre>
 
-The profile is loaded last and will override any default or individual settings made in `$smwgElasticsearchConfig`.
+The profile is loaded last and will override any default or individual settings made to `$smwgElasticsearchConfig`.
 
 ## Technical notes
 
@@ -293,14 +303,15 @@ Classes and objects related to the Elasticsearch interface and implementation ar
 
 <pre>
 SMW\Elastic
-┃	┠━ Admin         # Classes used to extend `Special:SemanticMediaWiki`
-┃	┠━ Exception
-┃	┠━ Connection    # Responsible for building a connection to ES
-┃	┠━ Indexer       # Contains all necessary classes for updating the ES index
-┃	┕━ QueryEngine   # Hosts the query builder and `#ask` language interpreter classes
-┃
-┠━ ElasticFactory
-┕━ ElasticStore
+│	├─ Admin         # Classes used to extend `Special:SemanticMediaWiki`
+│	├─ Exception
+│	├─ Connection    # Responsible for building a connection to ES
+│	├─ Indexer       # Contains all necessary classes for updating the ES index
+│	├─ Lookup        # Provides additional lookup services
+│	└─ QueryEngine   # Hosts the query builder and `#ask` language interpreter classes
+│
+├─ ElasticFactory
+└─ ElasticStore
 </pre>
 
 ### Field mapping and serialization
@@ -338,7 +349,7 @@ SMW\Elastic
 
 It should remembered that besides specific available types in ES, text fields are generally divided into analyzed and not_analyzed fields.
 
-Semantic MediaWiki is [mapping][es:mapping] its internal structure using [`dynamic_templates`][es:dynamic:templates] to define expected data types, their attributes, and possibly add extra index fields (see [multi-fields][es:multi-fields]) to make use of certain query constructs.
+Semantic MediaWiki is [mapping][es:mapping] its internal structure using [`dynamic_templates`][es:dynamic:templates] to define expected data types, their attributes, and possibly add extra index fields (see [multi-fields][es:multi-fields]) to support certain query constructs.
 
 The naming convention follows a very pragmatic naming scheme, `P:<ID>.<type>Field` with each new field (aka property) being mapped dynamically to a corresponding field type.
 
@@ -346,17 +357,21 @@ The naming convention follows a very pragmatic naming scheme, `P:<ID>.<type>Fiel
 - `<type>Field` declares a typed field (e.g. `txtField` which is important in case the type changes from `wpg` to `txt` and vice versa) and holds the actual indexable data.
 - Dates are indexed using the julian day number (JDN) to allow for historic dates being applicable
 
-The `SemanticData` object is always serialized in its entirety to avoid the interface to keep delta information. Furthermore, ES itself creates always a new index document for each update therefore keeping deltas wouldn't make much difference for the update process. A complete object has the advantage to use the [bulk][es:bulk] updater making the update faster and more resilient while avoiding document comparison during an update process.
+The `SemanticData` object is always serialized in its entirety to avoid for the interface to keep delta information. Furthermore, ES itself always creates a new index document for each update therefore keeping deltas wouldn't make much of difference in terms of how the data are stored and updated and allows the indexer to take advantage of the [bulk][es:bulk] API making updates faster and more resilient while avoiding document comparison during an update process.
 
-To allow for exact matches as well as full-text searches on the same field most mapped fields will have at least two or three additional [multi-field][es:multi-fields] elements to store text as `not_analyzed` (or keyword) and as sortable entity.
+To allow for exact matches as well as full-text searches on the same field most mapped fields will have at least two or three additional [multi-field][es:multi-fields] elements to store text as `not_analyzed` (meaning as keyword) and as sortable entity.
 
-* The `text_copy` mapping (see [copy-to][es:copy-to]) is used to enable wide proximity searches on textual annotated elements. For example, `[[in:foo bar]]` (eq. `[[~~foo bar]]`) translates into "Find all entities that have `foo bar` in one of its assigned `_uri`, `_txt`, or `_wpg` properties. The `text_copy` field is a compound field for all strings to be searched when a specific property is unknown.
-* The `text_raw` (requires `indexer.raw.text` to be set `true`) contains unstructured and unprocessed raw text from an article so that it can be used in combination with the proximity operators `[[in:lorem ipsum]]` and `[[phrase:lorem ipsum]]`.
-* `attachment.{...}` will be added by the ingest processor
+An ES document can contain additional fields such as:
+
+* `text_copy` mapping (see [copy-to][es:copy-to]) is used to enable wide proximity searches on textual annotated elements. For example, `[[in:foo bar]]` (eq. `[[~~foo bar]]`) translates into "Find all entities that have `foo bar` in one of its assigned `_uri`, `_txt`, or `_wpg` properties. The `text_copy` field is a compound field for all strings to be searched when a specific property is unknown.
+* `text_raw` (requires `indexer.raw.text` to be set `true`) contains unstructured and unprocessed raw text from an article so that it can be used in combination with the proximity operators `[[in:lorem ipsum]]` and `[[phrase:lorem ipsum]]`.
+* `attachment.{...}` will be added by the `ingest processor` when file content was successfully processed
 
 ### ES DSL mapping
 
-For example, the ES DSL for a `[[in:lorem ipsum]]` query (find all entities that contains `lorem ipsum`) on structured and unstructured fields will look similar to:
+`#ask` queries are transformed to represent an equivalent expression in the ES DSL hereby allowing the `ElasticStore` to be used as drop-in replacement for queries expressed using `#ask` language constructs.
+
+For example, the `[[in:lorem ipsum]]` query (or as fully qualified `[[~~*lorem ipsum*]]`, find all entities that contains `lorem ipsum` on any document) on structured and unstructured fields written as ES DSL will look similar to:
 
 <pre>
 "bool": {
@@ -516,4 +531,5 @@ Yes, by adding `$wgSearchType = 'SMWSearch';` one can use the `#ask` syntax (e.g
 [es:parent-join]: https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html
 [es:replica-shards]:https://www.elastic.co/guide/en/elasticsearch/guide/current/replica-shards.html
 [es:highlighting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
+[es:query-dsl-terms-lookup]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-lookup
 [smw:search]: https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
