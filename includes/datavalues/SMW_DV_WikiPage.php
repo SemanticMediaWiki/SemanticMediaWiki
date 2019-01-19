@@ -139,7 +139,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
 		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
 
-			$title = Title::newFromText( $value );
+			$title = Title::newFromText( $value, $this->m_fixNamespace );
 
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`

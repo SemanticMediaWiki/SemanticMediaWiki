@@ -1,0 +1,85 @@
+{
+	"description": "Test query with `_SUBC`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0623",
+			"contents": ""
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0623/1",
+			"contents": "[[Category:Q0623]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0623/1/1",
+			"contents": "[[Category:Q0623/1]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Q0623/1/2",
+			"contents": "[[Category:Q0623/1]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0 (without `Category:` namespace, #3550)",
+			"condition": "[[Subcategory of::Q0623/1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0623/1/1#14##",
+					"Q0623/1/2#14##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (with `Category:` namespace)",
+			"condition": "[[Subcategory of::Category:Q0623/1]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 2,
+				"results": [
+					"Q0623/1/1#14##",
+					"Q0623/1/2#14##"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_HELP": true
+		},
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgQSubpropertyDepth": 10,
+		"smwgQSubcategoryDepth": 10,
+		"smwgSparqlQFeatures": [
+			"SMW_SPARQL_QF_SUBP",
+			"SMW_SPARQL_QF_SUBC"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
