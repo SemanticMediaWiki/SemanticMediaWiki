@@ -294,16 +294,9 @@ class SpecialAsk extends SpecialPage {
 		$duration = 0;
 
 		$error = '';
+		$printer = null;
 
 		if ( $this->queryString !== '' ) {
-
-			$printer = QueryProcessor::getResultPrinter(
-				$this->parameters['format'],
-				QueryProcessor::SPECIAL_PAGE
-			);
-
-			$printer->setShowErrors( false );
-
 			list( $result, $res, $duration ) = $this->fetchResults(
 				$printer,
 				$queryobj,
@@ -311,7 +304,7 @@ class SpecialAsk extends SpecialPage {
 			);
 		}
 
-		if ( isset( $printer ) && $printer->isExportFormat() ) {
+		if ( $printer !== null && $printer->isExportFormat() ) {
 
 			// Avoid a possible "Cannot modify header information - headers already sent by ..."
 			if ( defined( 'MW_PHPUNIT_TEST' ) && method_exists( $printer, 'disableHttpHeader' ) ) {
@@ -412,9 +405,16 @@ class SpecialAsk extends SpecialPage {
 		);
 	}
 
-	private function fetchResults( $printer, &$queryobj, &$urlArgs ) {
+	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
 
 		list( $res, $debug, $duration, $queryobj, $native_result ) = $this->getQueryResult();
+
+		$printer = QueryProcessor::getResultPrinter(
+			$this->parameters['format'],
+			QueryProcessor::SPECIAL_PAGE
+		);
+
+		$printer->setShowErrors( false );
 
 		$hidequery = $this->getRequest()->getVal( 'eq' ) == 'no';
 		$request_type = $this->getRequest()->getVal( 'request_type', '' );

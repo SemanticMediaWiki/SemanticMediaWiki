@@ -26,6 +26,50 @@
 					"<div id=\"ask-status\" class=\"smw-ask-status plainlinks\"><noscript><div class=\"smw-callout smw-callout-error\">"
 				]
 			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (@see #3542, `format= table`)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0018-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3D-20table",
+				"request-parameters": {}
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{#ask: [[Category:S0018]]",
+					" |?Has page",
+					" |format=table",
+					" |limit=50",
+					" |offset=0",
+					" |sort=",
+					" |order=asc",
+					" |mainlabel=",
+					"}}"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (`format=TABLE`)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0018-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3DTABLE",
+				"request-parameters": {}
+			},
+			"assert-output": {
+				"to-contain": [
+					"{{#ask: [[Category:S0018]]",
+					" |?Has page",
+					" |format=table",
+					" |limit=50",
+					" |offset=0",
+					" |sort=",
+					" |order=asc",
+					" |mainlabel=",
+					"}}"
+				]
+			}
 		}
 	],
 	"settings": {
