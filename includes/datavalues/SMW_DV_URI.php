@@ -146,6 +146,11 @@ class SMWURIValue extends SMWDataValue {
 					$hierpart = substr( $hierpart, 2 );
 				}
 
+				// #3540
+				if ( $hierpart !== '' && $hierpart[0] === '/' ) {
+					return $this->addErrorMsg( [ 'smw-datavalue-uri-invalid-authority-path-component', $value, $hierpart ] );
+				}
+
 				break;
 			case SMW_URI_MODE_TEL:
 				$scheme = 'tel';
