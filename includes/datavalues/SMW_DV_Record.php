@@ -101,7 +101,7 @@ class SMWRecordValue extends AbstractMultiValue {
 					$diProperty,
 					$values[$valueIndex],
 					false,
-					$this->getContextPage()
+					$containerSemanticData->getSubject()
 				);
 
 				if ( $dataValue->isValid() ) { // valid DV: keep
