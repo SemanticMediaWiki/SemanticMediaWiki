@@ -121,11 +121,6 @@ class SMWSql3SmwIds {
 	private $idEntityFinder;
 
 	/**
-	 * @var IdChanger
-	 */
-	private $idChanger;
-
-	/**
 	 * @var UniquenessLookup
 	 */
 	private $uniquenessLookup;
@@ -147,7 +142,6 @@ class SMWSql3SmwIds {
 		$this->uniquenessLookup = $this->factory->newUniquenessLookup();
 
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
-		$this->idChanger = $this->factory->newIdChanger();
 
 		self::$special_ids = TypesRegistry::getFixedPropertyIdList();
 	}
@@ -869,103 +863,33 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Change an internal id to another value. If no target value is given, the
-	 * value is changed to become the last id entry (based on the automatic id
-	 * increment of the database). Whatever currently occupies this id will be
-	 * moved consistently in all relevant tables. Whatever currently occupies
-	 * the target id will be ignored (it should be ensured that nothing is
-	 * moved to an id that is still in use somewhere).
+	 * @see IdChanger::move
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $curid
 	 * @param integer $targetid
 	 */
 	public function moveSMWPageID( $curid, $targetid = 0 ) {
-		$db = $this->store->getConnection();
+		$idChanger = $this->factory->newIdChanger();
 
-		$row = $db->selectRow(
-			self::TABLE_NAME,
-			'*',
-			[ 'smw_id' => $curid ],
-			__METHOD__
+		$row = $idChanger->move(
+			$curid,
+			$targetid
 		);
 
-		if ( $row === false ) {
-			return; // no id at current position, ignore
+		if ( $row === null ) {
+			return;
 		}
 
-		$db->beginAtomicTransaction( __METHOD__ );
-
-		if ( $targetid == 0 ) { // append new id
-
-			 // Bug 42659
-			$sequenceValue = $db->nextSequenceValue(
-				Sequence::makeSequence( SQLStore::ID_TABLE, 'smw_id' )
-			);
-
-			$db->insert(
-				self::TABLE_NAME,
-				[
-					'smw_id' => $sequenceValue,
-					'smw_title' => $row->smw_title,
-					'smw_namespace' => $row->smw_namespace,
-					'smw_iw' => $row->smw_iw,
-					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey,
-					'smw_sort' => $row->smw_sort
-				],
-				__METHOD__
-			);
-
-			$targetid = $db->insertId();
-		} else { // change to given id
-			$db->insert(
-				self::TABLE_NAME,
-				[ 'smw_id' => $targetid,
-					'smw_title' => $row->smw_title,
-					'smw_namespace' => $row->smw_namespace,
-					'smw_iw' => $row->smw_iw,
-					'smw_subobject' => $row->smw_subobject,
-					'smw_sortkey' => $row->smw_sortkey,
-					'smw_sort' => $row->smw_sort
-				],
-				__METHOD__
-			);
-		}
-
-		$db->delete(
-			self::TABLE_NAME,
-			[
-				'smw_id' => $curid
-			],
-			__METHOD__
-		);
-
-		$this->setCache(
+		$this->idCacheManager->setCache(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,
 			$row->smw_subobject,
-			$targetid,
+			$row->smw_id,
 			$row->smw_sortkey
 		);
-
-		$this->idChanger->change(
-			$curid,
-			$targetid,
-			$row->smw_namespace,
-			$row->smw_namespace
-		);
-
-		$db->endAtomicTransaction( __METHOD__ );
-
-		if ( ( $title = \Title::newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
-			$updateJob = new UpdateJob(
-				$title
-			);
-
-			$updateJob->insert();
-		}
 	}
 
 	/**
