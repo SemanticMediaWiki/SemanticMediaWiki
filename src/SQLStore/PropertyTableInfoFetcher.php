@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\DataTypeRegistry;
+use SMW\TypesRegistry;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 
@@ -37,43 +38,9 @@ class PropertyTableInfoFetcher {
 	private $fixedPropertyTableIds = null;
 
 	/**
-	 * Keys of special properties that should have their own
-	 * fixed property table.
-	 *
-	 * @var array
-	 */
-	private static $customizableSpecialProperties = [
-		'_MDAT', '_CDAT', '_NEWP', '_LEDT', '_MIME', '_MEDIA',
-	];
-
-	/**
 	 * @var array
 	 */
 	private $customSpecialPropertyList = [];
-
-	/**
-	 * @var array
-	 */
-	private $fixedSpecialProperties = [
-		// property declarations
-		'_TYPE', '_UNIT', '_CONV', '_PVAL', '_LIST', '_SERV', '_PREC', '_PPLB',
-		// query statistics (very frequently used)
-		'_ASK', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST', '_ASKDU', '_ASKPA',
-		// subproperties, classes, and instances
-		'_SUBP', '_SUBC', '_INST',
-		// redirects
-		'_REDI',
-		// has sub object
-		'_SOBJ',
-		// vocabulary import and URI assignments
-		'_IMPO', '_URI',
-		// Concepts
-		'_CONC',
-		// Monolingual text
-		'_LCODE', '_TEXT',
-		// Display title of
-		'_DTITLE'
-	];
 
 	/**
 	 * @var array
@@ -103,15 +70,6 @@ class PropertyTableInfoFetcher {
 	 */
 	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
 		$this->propertyTypeFinder = $propertyTypeFinder;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return array
-	 */
-	public static function getFixedSpecialPropertyList() {
-		return self::$customizableSpecialProperties;
 	}
 
 	/**
@@ -250,11 +208,14 @@ class PropertyTableInfoFetcher {
 
 	private function buildDefinitionsForPropertyTables() {
 
-		$enabledSpecialProperties = $this->fixedSpecialProperties;
-		$customizableSpecialProperties = array_flip( self::$customizableSpecialProperties );
+		$enabledSpecialProperties = TypesRegistry::getFixedProperties( 'default_fixed' );
+
+		$customFixedSpecialPropertyList = array_flip(
+			TypesRegistry::getFixedProperties( 'custom_fixed' )
+		);
 
 		foreach ( $this->customSpecialPropertyList as $property ) {
-			if ( isset( $customizableSpecialProperties[$property] ) ) {
+			if ( isset( $customFixedSpecialPropertyList[$property] ) ) {
 				$enabledSpecialProperties[] = $property;
 			}
 		}

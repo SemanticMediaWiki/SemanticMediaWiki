@@ -143,7 +143,7 @@ class SMWSql3SmwIds {
 
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 
-		self::$special_ids = TypesRegistry::getFixedPropertyIdList();
+		self::$special_ids = TypesRegistry::getFixedProperties( 'id' );
 	}
 
 	/**
@@ -482,7 +482,7 @@ class SMWSql3SmwIds {
 			$key = $property->getKey();
 
 			// Has a fixed ID?
-			if ( isset( self::$special_ids[$key] ) && $subject->getSubobjectName() === '' ) {
+			if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) && $subject->getSubobjectName() === '' ) {
 				return self::$special_ids[$key];
 			}
 
@@ -779,12 +779,22 @@ class SMWSql3SmwIds {
 	 * @return integer
 	 */
 	public function getSMWPropertyID( SMWDIProperty $property ) {
-		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
-			return self::$special_ids[$property->getKey()];
-		} else {
-			$sortkey = '';
-			return $this->getDatabaseIdAndSort( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', $sortkey, true, false );
+		$key = $property->getKey();
+		$sortkey = '';
+
+		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
+			return self::$special_ids[$key];
 		}
+
+		return $this->getDatabaseIdAndSort(
+			$key,
+			SMW_NS_PROPERTY,
+			$this->getPropertyInterwiki( $property ),
+			'',
+			$sortkey,
+			true,
+			false
+		);
 	}
 
 	/**
@@ -798,19 +808,22 @@ class SMWSql3SmwIds {
 	 * @return integer
 	 */
 	public function makeSMWPropertyID( SMWDIProperty $property ) {
-		if ( array_key_exists( $property->getKey(), self::$special_ids ) ) {
-			return (int)self::$special_ids[$property->getKey()];
-		} else {
-			return (int)$this->makeDatabaseId(
-				$property->getKey(),
-				SMW_NS_PROPERTY,
-				$this->getPropertyInterwiki( $property ),
-				'',
-				true,
-				$property->getLabel(),
-				false
-			);
+
+		$key = $property->getKey();
+
+		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
+			return self::$special_ids[$key];
 		}
+
+		return (int)$this->makeDatabaseId(
+			$key,
+			SMW_NS_PROPERTY,
+			$this->getPropertyInterwiki( $property ),
+			'',
+			true,
+			$property->getLabel(),
+			false
+		);
 	}
 
 	/**
@@ -854,7 +867,7 @@ class SMWSql3SmwIds {
 			}
 
 			// Check if this is a property with a fixed SMW ID:
-			if ( $subobjectName === '' && array_key_exists( $title, self::$special_ids ) ) {
+			if ( $subobjectName === '' && isset( self::$special_ids[$title] ) && is_int( self::$special_ids[$title] ) ) {
 				return self::$special_ids[$title];
 			}
 		}

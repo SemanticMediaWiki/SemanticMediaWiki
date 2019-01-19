@@ -11,6 +11,7 @@ use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\Options;
 use SMW\Site;
+use SMW\TypesRegistry;
 use SMW\Utils\File;
 use SMW\Exception\FileNotWritableException;
 
@@ -290,8 +291,11 @@ class Installer implements MessageReporter {
 
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
+			// Special properties enabled?
 			$vars['smwgPageSpecialProperties'],
-			PropertyTableInfoFetcher::getFixedSpecialPropertyList()
+
+			// Any custom fixed properties require their own table?
+			TypesRegistry::getFixedProperties( 'custom_fixed' )
 		);
 
 		// Sort to ensure the key contains the same order

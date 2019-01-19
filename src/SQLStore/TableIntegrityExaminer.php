@@ -11,6 +11,7 @@ use SMW\PropertyRegistry;
 use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\Installer;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMWSql3SmwIds;
 
 /**
@@ -39,6 +40,11 @@ class TableIntegrityExaminer {
 	private $hashField;
 
 	/**
+	 * @var FixedProperties
+	 */
+	private $fixedProperties;
+
+	/**
 	 * @var array
 	 */
 	private $predefinedProperties = [];
@@ -48,10 +54,12 @@ class TableIntegrityExaminer {
 	 *
 	 * @param SQLStore $store
 	 * @param HashField $hashField
+	 * @param FixedProperties $fixedProperties
 	 */
-	public function __construct( SQLStore $store, HashField $hashField ) {
+	public function __construct( SQLStore $store, HashField $hashField, FixedProperties $fixedProperties ) {
 		$this->store = $store;
 		$this->hashField = $hashField;
+		$this->fixedProperties = $fixedProperties;
 		$this->messageReporter = new NullMessageReporter();
 		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
 	}
@@ -69,9 +77,9 @@ class TableIntegrityExaminer {
 		foreach ( $propertyList as $key => $val ) {
 			$predefinedPropertyList[$key] = null;
 
-			if ( isset( $fixedPropertyList[$key] ) ) {
+			if ( isset( $fixedPropertyList[$key] ) && is_int( $fixedPropertyList[$key] ) ) {
 				$predefinedPropertyList[$key] = $fixedPropertyList[$key];
-			} elseif ( is_integer( $val ) ) {
+			} elseif ( is_int( $val ) ) {
 				$predefinedPropertyList[$key] = $val;
 			}
 		}
@@ -85,6 +93,9 @@ class TableIntegrityExaminer {
 	 * @param TableBuilder $tableBuilder
 	 */
 	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
+
+		$this->fixedProperties->setMessageReporter( $this->messageReporter );
+		$this->fixedProperties->check();
 
 		$this->checkPredefinedPropertyIndices();
 

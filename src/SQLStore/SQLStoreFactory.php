@@ -34,6 +34,7 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
@@ -401,7 +402,8 @@ class SQLStoreFactory {
 
 		$tableIntegrityExaminer = new TableIntegrityExaminer(
 			$this->store,
-			new HashField( $this->store )
+			new HashField( $this->store ),
+			new FixedProperties( $this->store )
 		);
 
 		$tableSchemaManager = new TableSchemaManager(
