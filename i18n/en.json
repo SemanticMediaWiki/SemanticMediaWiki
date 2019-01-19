@@ -794,6 +794,7 @@
 	"smw-property-reserved-category": "Category",
 	"smw-category": "Category",
 	"smw-datavalue-uri-invalid-scheme": " \"$1\" has not been listed as valid URI scheme.",
+	"smw-datavalue-uri-invalid-authority-path-component": "\"$1\" has been idendified to contain an invalid \"$2\" authority or path component.",
 	"smw-browse-property-group-title": "Property group",
 	"smw-browse-property-group-label": "Property group label",
 	"smw-browse-property-group-description": "Property group description",
