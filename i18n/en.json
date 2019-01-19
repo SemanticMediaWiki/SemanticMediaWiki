@@ -651,6 +651,7 @@
 	"smw-property-predefined-askco": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to describe the state of a query or its components.",
 	"smw-property-predefined-long-askco": "The number or numbers assigned represent an internal codified state that is explained on the [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler help page].",
 	"smw-property-predefined-prec": "\"$1\" is a predefined property that describes a [https://www.semantic-mediawiki.org/wiki/Help:Display_precision display precision] (in decimal digits) for numeric datatypes.",
+	"smw-property-predefined-attch-link": "\"$1\" is a predefined property that collects embedded file and image links found in a page and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-types-extra-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Extension:Maps Extension \"Maps\"] was not detected therefore \"$1\" is restricted in its capacity to operate.",
 	"smw-datavalue-monolingual-dataitem-missing": "An expected item for building a monolingual compound value is missing.",
 	"smw-datavalue-monolingual-lcode-parenthesis":"($1)",

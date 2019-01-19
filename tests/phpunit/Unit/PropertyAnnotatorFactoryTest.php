@@ -143,4 +143,18 @@ class PropertyAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructAttachmentLinkPropertyAnnotator() {
+
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new PropertyAnnotatorFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\PropertyAnnotators\AttachmentLinkPropertyAnnotator',
+			$instance->newAttachmentLinkPropertyAnnotator( $propertyAnnotator )
+		);
+	}
+
 }

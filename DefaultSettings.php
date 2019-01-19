@@ -915,6 +915,7 @@ return [
 	# - `_MDAT` Modification date is enabled by default for backward compatibility.
 	# - `_TRANS` Add annotations (language, source etc. ) when a page is
 	#   indentified as translation page (as done by the Translation extension)
+	# - `_ATTCH_LINK` tracks embedded files and images
 	#
 	#  Extend array to enable other properties:
 	#     $smwgPageSpecialProperties[ => '_CDAT',

@@ -13,6 +13,7 @@ use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
 use SMW\PropertyAnnotators\SchemaPropertyAnnotator;
 use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
 use SMW\PropertyAnnotators\TranslationPropertyAnnotator;
+use SMW\PropertyAnnotators\AttachmentLinkPropertyAnnotator;
 use SMW\Store;
 use SMW\Schema\Schema;
 use Title;
@@ -67,6 +68,28 @@ class PropertyAnnotatorFactory {
 		);
 
 		return $schemaPropertyAnnotator;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param array $images
+	 *
+	 * @return AttachmentLinkPropertyAnnotator
+	 */
+	public function newAttachmentLinkPropertyAnnotator( PropertyAnnotator $propertyAnnotator, array $images = [] ) {
+
+		$attachmentLinkPropertyAnnotator = new AttachmentLinkPropertyAnnotator(
+			$propertyAnnotator,
+			$images
+		);
+
+		$attachmentLinkPropertyAnnotator->setPredefinedPropertyList(
+			ApplicationFactory::getInstance()->getSettings()->get( 'smwgPageSpecialProperties' )
+		);
+
+		return $attachmentLinkPropertyAnnotator;
 	}
 
 	/**
