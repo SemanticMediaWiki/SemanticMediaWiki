@@ -26,13 +26,6 @@ class Client {
 	use LoggerAwareTrait;
 
 	/**
-	 * Identifies the cache namespace
-	 */
-	const CACHE_NAMESPACE = 'smw:elastic';
-
-	const CACHE_CHECK_TTL = 3600;
-
-	/**
 	 * @see https://www.elastic.co/blog/index-vs-type
 	 * @see https://www.elastic.co/guide/en/elasticsearch/reference/master/removal-of-types.html
 	 *
@@ -58,9 +51,9 @@ class Client {
 	private static $ping;
 
 	/**
-	 * @var Cache
+	 * @var LockManager
 	 */
-	private $cache;
+	private $lockManager;
 
 	/**
 	 * @var Options
@@ -81,18 +74,14 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param ElasticClient $client
-	 * @param Cache|null $cache
+	 * @param LockManager $lockManager
 	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, Cache $cache = null, Options $options = null ) {
+	public function __construct( ElasticClient $client, LockManager $lockManager, Options $options = null ) {
 		$this->client = $client;
-		$this->cache = $cache;
+		$this->lockManager = $lockManager;
 		$this->options = $options;
 		$this->inTest = defined( 'MW_PHPUNIT_TEST' );
-
-		if ( $this->cache === null ) {
-			$this->cache = new NullCache();
-		}
 
 		if ( $this->options === null ) {
 			$this->options = new Options();
@@ -400,17 +389,6 @@ class Client {
 		} catch ( Exception $e ) {
 			$response = $e->getMessage();
 		}
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[
-				$index,
-				// A modified file causes a new cache key!
-				$this->getIndexDefFileModificationTimeByType( $type )
-			]
-		);
-
-		$this->cache->delete( $key );
 
 		$context = [
 			'method' => __METHOD__,
@@ -828,13 +806,7 @@ class Client {
 	 * @param string $version
 	 */
 	public function setLock( $type, $version ) {
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[ 'lock', $type ]
-		);
-
-		$this->cache->save( $key, $version );
+		$this->lockManager->setLock( $type, $version );
 	}
 
 	/**
@@ -845,13 +817,7 @@ class Client {
 	 * @return boolean
 	 */
 	public function hasLock( $type ) {
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[ 'lock', $type ]
-		);
-
-		return $this->cache->fetch( $key ) !== false;
+		return $this->lockManager->hasLock( $type );
 	}
 
 	/**
@@ -862,13 +828,7 @@ class Client {
 	 * @return mixed
 	 */
 	public function getLock( $type ) {
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[ 'lock', $type ]
-		);
-
-		return $this->cache->fetch( $key );
+		return $this->lockManager->getLock( $type );
 	}
 
 	/**
@@ -877,13 +837,7 @@ class Client {
 	 * @param string $type
 	 */
 	public function releaseLock( $type ) {
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			[ 'lock', $type ]
-		);
-
-		$this->cache->delete( $key );
+		$this->lockManager->releaseLock( $type );
 	}
 
 }

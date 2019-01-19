@@ -20,7 +20,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $elasticClient;
-	private $cache;
+	private $lockManager;
 
 	protected function setUp() {
 
@@ -32,7 +32,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->lockManager = $this->getMockBuilder( '\SMW\Elastic\Connection\LockManager' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -41,7 +41,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Client::class,
-			new Client( $this->elasticClient )
+			new Client( $this->elasticClient, $this->lockManager )
 		);
 	}
 
@@ -63,7 +63,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Client(
 			$this->elasticClient,
-			$this->cache,
+			$this->lockManager,
 			$options
 		);
 

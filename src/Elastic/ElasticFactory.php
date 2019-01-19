@@ -13,6 +13,7 @@ use SMW\Elastic\Admin\NodesInfoProvider;
 use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Connection\LockManager;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Rollover;
@@ -97,8 +98,8 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connectionProvider = new ConnectionProvider(
-			$this->newConfig(),
-			$applicationFactory->getCache()
+			new LockManager( $applicationFactory->getCache() ),
+			$this->newConfig()
 		);
 
 		$connectionProvider->setLogger(
