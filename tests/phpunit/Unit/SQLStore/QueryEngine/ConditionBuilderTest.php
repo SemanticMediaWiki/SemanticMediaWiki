@@ -8,12 +8,12 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\QuerySegmentListBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListBuilder
+ * @covers \SMW\SQLStore\QueryEngine\ConditionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -21,22 +21,43 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	private $querySegmentValidator;
-	private $descriptionInterpreterFactory;
 	private $store;
+	private $connection;
+	private $orderCondition;
+	private $circularReferenceGuard;
+	private $descriptionInterpreterFactory;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
-		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
+		$this->orderCondition = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\OrderCondition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory(
+			$this->store,
+			$this->circularReferenceGuard
+		);
 
 		$testEnvironment = new TestEnvironment();
 		$this->querySegmentValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newQuerySegmentValidator();
@@ -49,33 +70,50 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListBuilder',
-			new QuerySegmentListBuilder( $this->store, $descriptionInterpreterFactory )
+			ConditionBuilder::class,
+			new ConditionBuilder( $this->store, $this->orderCondition, $descriptionInterpreterFactory, $this->circularReferenceGuard )
 		);
+	}
+
+	public function testBuildCondition() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->atLeastOnce() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $description ) );
+
+		$this->orderCondition->expects( $this->once() )
+			->method( 'addConditions' );
+
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
+		);
+
+		$instance->buildCondition( $query );
 	}
 
 	public function testNamespaceDescription() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$description = new NamespaceDescription( NS_HELP );
 
-		$instance = new QuerySegmentListBuilder(
-			$store,
-			$this->descriptionInterpreterFactory
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
-		$instance->getQuerySegmentFrom( $description );
+		$instance->buildFromDescription( $description );
 
 		$expected = new \stdClass;
 		$expected->type = 1;
@@ -92,28 +130,18 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDisjunctiveNamespaceDescription() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
 		$description = new Disjunction();
 		$description->addDescription( new NamespaceDescription( NS_HELP ) );
 		$description->addDescription( new NamespaceDescription( NS_MAIN ) );
 
-		$instance = new QuerySegmentListBuilder(
-			$store,
-			$this->descriptionInterpreterFactory
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
-		$instance->getQuerySegmentFrom( $description );
+		$instance->buildFromDescription( $description );
 
 		$expectedDisjunction = new \stdClass;
 		$expectedDisjunction->type = 3;
@@ -157,30 +185,20 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSMWPageID' )
 			->will( $this->returnValue( 42 ) );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIds ) );
 
 		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 
-		$instance = new QuerySegmentListBuilder(
-			$store,
-			$this->descriptionInterpreterFactory
+		$instance = new ConditionBuilder(
+			$this->store,
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
-		$instance->getQuerySegmentFrom( $description );
+		$instance->buildFromDescription( $description );
 
 		$expectedClass = new \stdClass;
 		$expectedClass->type = 1;
@@ -215,9 +233,11 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGivenNonInteger_getQuerySegmentThrowsException() {
 
-		$instance = new QuerySegmentListBuilder(
+		$instance = new ConditionBuilder(
 			$this->store,
-			$this->descriptionInterpreterFactory
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
 		$this->setExpectedException( 'InvalidArgumentException' );
@@ -226,9 +246,11 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGivenUnknownId_getQuerySegmentThrowsException() {
 
-		$instance = new QuerySegmentListBuilder(
+		$instance = new ConditionBuilder(
 			$this->store,
-			$this->descriptionInterpreterFactory
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
 		$this->setExpectedException( 'OutOfBoundsException' );
@@ -237,14 +259,15 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGivenKnownId_getQuerySegmentReturnsCorrectPart() {
 
-		$instance = new QuerySegmentListBuilder(
+		$instance = new ConditionBuilder(
 			$this->store,
-			$this->descriptionInterpreterFactory
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
 		$querySegment = new QuerySegment();
 
-	//	$querySegment->segmentNumber = 1;
 		$instance->addQuerySegment( $querySegment );
 
 		$this->assertSame(
@@ -255,9 +278,11 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testWhenNoQuerySegments_getQuerySegmentListReturnsEmptyArray() {
 
-		$instance = new QuerySegmentListBuilder(
+		$instance = new ConditionBuilder(
 			$this->store,
-			$this->descriptionInterpreterFactory
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
 		$this->assertSame(
@@ -268,9 +293,11 @@ class QuerySegmentListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testWhenSomeQuerySegments_getQuerySegmentListReturnsThemAll() {
 
-		$instance = new QuerySegmentListBuilder(
+		$instance = new ConditionBuilder(
 			$this->store,
-			$this->descriptionInterpreterFactory
+			$this->orderCondition,
+			$this->descriptionInterpreterFactory,
+			$this->circularReferenceGuard
 		);
 
 		$firstQuerySegment = new QuerySegment();

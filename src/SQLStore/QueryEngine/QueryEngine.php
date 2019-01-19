@@ -70,9 +70,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private $errors = [];
 
 	/**
-	 * @var QuerySegmentListBuildManager
+	 * @var ConditionBuilder
 	 */
-	private $querySegmentListBuildManager;
+	private $conditionBuilder;
 
 	/**
 	 * @var QuerySegmentListProcessor
@@ -93,13 +93,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @since 2.2
 	 *
 	 * @param SQLStore $store
-	 * @param QuerySegmentListBuildManager $querySegmentListBuildManager
+	 * @param ConditionBuilder $conditionBuilder
 	 * @param QuerySegmentListProcessor $querySegmentListProcessor
 	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SQLStore $store, QuerySegmentListBuildManager $querySegmentListBuildManager, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
+	public function __construct( SQLStore $store, ConditionBuilder $conditionBuilder, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
 		$this->store = $store;
-		$this->querySegmentListBuildManager = $querySegmentListBuildManager;
+		$this->conditionBuilder = $conditionBuilder;
 		$this->querySegmentListProcessor = $querySegmentListProcessor;
 		$this->engineOptions = $engineOptions;
 		$this->queryFactory = new QueryFactory();
@@ -168,13 +168,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		QuerySegment::$qnum = 0;
 		$this->sortKeys = $query->sortkeys;
 
-		$rootid = $this->querySegmentListBuildManager->getQuerySegmentFrom(
+		$rootid = $this->conditionBuilder->buildCondition(
 			$query
 		);
 
-		$this->querySegmentList = $this->querySegmentListBuildManager->getQuerySegmentList();
-		$this->sortKeys = $this->querySegmentListBuildManager->getSortKeys();
-		$this->errors = $this->querySegmentListBuildManager->getErrors();
+		$this->querySegmentList = $this->conditionBuilder->getQuerySegmentList();
+		$this->sortKeys = $this->conditionBuilder->getSortKeys();
+		$this->errors = $this->conditionBuilder->getErrors();
 
 		// Possibly stop if new errors happened:
 		if ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) &&
@@ -185,8 +185,13 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		}
 
 		// *** Now execute the computed query ***//
-		$this->querySegmentListProcessor->setQueryMode( $this->queryMode );
-		$this->querySegmentListProcessor->setQuerySegmentList( $this->querySegmentList );
+		$this->querySegmentListProcessor->setQueryMode(
+			$this->queryMode
+		);
+
+		$this->querySegmentListProcessor->setQuerySegmentList(
+			$this->querySegmentList
+		);
 
 		// execute query tree, resolve all dependencies
 		$this->querySegmentListProcessor->process(

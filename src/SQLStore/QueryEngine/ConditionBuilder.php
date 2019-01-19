@@ -8,7 +8,9 @@ use SMW\Message;
 use SMW\Query\Language\Conjuncton;
 use SMW\Query\Language\Description;
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CircularReferenceGuard;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +20,7 @@ use SMW\Utils\CircularReferenceGuard;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class QuerySegmentListBuilder {
+class ConditionBuilder {
 
 	/**
 	 * @var Store
@@ -26,9 +28,14 @@ class QuerySegmentListBuilder {
 	private $store;
 
 	/**
+	 * @var OrderCondition
+	 */
+	private $orderCondition;
+
+	/**
 	 * @var DispatchingDescriptionInterpreter
 	 */
-	private $dispatchingDescriptionInterpreter = null;
+	private $dispatchingDescriptionInterpreter;
 
 	/**
 	 * @var boolean
@@ -40,7 +47,7 @@ class QuerySegmentListBuilder {
 	 *
 	 * @var QuerySegment[]
 	 */
-	private $querySegments = [];
+	private $querySegmentList = [];
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -65,14 +72,15 @@ class QuerySegmentListBuilder {
 	 * @since 2.2
 	 *
 	 * @param Store $store
+	 * @param OrderCondition $orderCondition
 	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
+	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( Store $store, DescriptionInterpreterFactory $descriptionInterpreterFactory ) {
+	public function __construct( Store $store, OrderCondition $orderCondition, DescriptionInterpreterFactory $descriptionInterpreterFactory, CircularReferenceGuard $circularReferenceGuard ) {
 		$this->store = $store;
+		$this->orderCondition = $orderCondition;
+		$this->circularReferenceGuard = $circularReferenceGuard;
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
-		$this->circularReferenceGuard = new CircularReferenceGuard( 'sql-query' );
-		$this->circularReferenceGuard->setMaxRecursionDepth( 2 );
-
 		QuerySegment::$qnum = 0;
 	}
 
@@ -86,15 +94,6 @@ class QuerySegmentListBuilder {
 	 */
 	public function isFilterDuplicates( $isFilterDuplicates ) {
 		$this->isFilterDuplicates = (bool)$isFilterDuplicates;
-	}
-
-	/**
-	 * @since 2.2
-	 *
-	 * @return Store
-	 */
-	public function getStore() {
-		return $this->store;
 	}
 
 	/**
@@ -121,15 +120,6 @@ class QuerySegmentListBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @return CircularReferenceGuard
-	 */
-	public function getCircularReferenceGuard() {
-		return $this->circularReferenceGuard;
-	}
-
-	/**
-	 * @since 2.2
-	 *
 	 * @param int $id
 	 *
 	 * @return QuerySegment
@@ -142,11 +132,11 @@ class QuerySegmentListBuilder {
 			throw new InvalidArgumentException( '$id needs to be an integer' );
 		}
 
-		if ( !array_key_exists( $id, $this->querySegments ) ) {
+		if ( !array_key_exists( $id, $this->querySegmentList ) ) {
 			throw new OutOfBoundsException( 'There is no query segment with id ' . $id );
 		}
 
-		return $this->querySegments[$id];
+		return $this->querySegmentList[$id];
 	}
 
 	/**
@@ -155,7 +145,7 @@ class QuerySegmentListBuilder {
 	 * @return QuerySegment[]
 	 */
 	public function getQuerySegmentList() {
-		return $this->querySegments;
+		return $this->querySegmentList;
 	}
 
 	/**
@@ -164,7 +154,7 @@ class QuerySegmentListBuilder {
 	 * @param QuerySegment $query
 	 */
 	public function addQuerySegment( QuerySegment $query ) {
-		$this->querySegments[$query->queryNumber] = $query;
+		$this->querySegmentList[$query->queryNumber] = $query;
 	}
 
 	/**
@@ -195,6 +185,71 @@ class QuerySegmentListBuilder {
 	}
 
 	/**
+	 * Compute abstract representation of the query (compilation)
+	 *
+	 * @param Query $query
+	 *
+	 * @return integer
+	 */
+	public function buildCondition( Query $query ) {
+
+		$this->sortKeys = $query->sortkeys;
+		$connection = $this->store->getConnection( 'mw.db.queryengine' );
+
+		// Anchor ID_TABLE as root element
+		$rootSegmentNumber = QuerySegment::$qnum;
+		$rootSegment = new QuerySegment();
+		$rootSegment->joinTable = SQLStore::ID_TABLE;
+		$rootSegment->joinfield = "$rootSegment->alias.smw_id";
+
+		$this->addQuerySegment(
+			$rootSegment
+		);
+
+		// compile query, build query "plan"
+		$qid = $this->buildFromDescription(
+			$query->getDescription()
+		);
+
+		// no valid/supported condition; ensure that at least only proper pages
+		// are delivered
+		if ( $qid < 0 ) {
+			$qid = $rootSegmentNumber;
+			$qobj = $this->querySegmentList[$rootSegmentNumber];
+			$qobj->where = "$qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) .
+				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) .
+				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWBORDERIW ) .
+				" AND $qobj->alias.smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW );
+			$this->addQuerySegment( $qobj );
+		}
+
+		if ( isset( $this->querySegmentList[$qid]->joinTable ) && $this->querySegmentList[$qid]->joinTable != SQLStore::ID_TABLE ) {
+			// manually make final root query (to retrieve namespace,title):
+			$rootid = $rootSegmentNumber;
+			$qobj = $this->querySegmentList[$rootSegmentNumber];
+			$qobj->components = [ $qid => "$qobj->alias.smw_id" ];
+			$qobj->sortfields = $this->querySegmentList[$qid]->sortfields;
+			$this->addQuerySegment( $qobj );
+		} else { // not such a common case, but worth avoiding the additional inner join:
+			$rootid = $qid;
+		}
+
+		$this->orderCondition->setSortKeys(
+			$this->sortKeys
+		);
+
+		// Include order conditions (may extend query if needed for sorting):
+		$this->orderCondition->addConditions(
+			$this,
+			$rootid
+		);
+
+		$this->sortKeys = $this->orderCondition->getSortKeys();
+
+		return $rootid;
+	}
+
+	/**
 	 * Create a new QueryContainer object that can be used to obtain results
 	 * for the given description. The result is stored in $this->queries
 	 * using a numeric key that is returned as a result of the function.
@@ -204,7 +259,7 @@ class QuerySegmentListBuilder {
 	 *
 	 * @return integer
 	 */
-	public function getQuerySegmentFrom( Description $description ) {
+	public function buildFromDescription( Description $description ) {
 
 		$fingerprint = $description->getFingerprint();
 
@@ -264,7 +319,7 @@ class QuerySegmentListBuilder {
 			return false;
 		}
 
-		foreach ( $this->querySegments as $querySegment ) {
+		foreach ( $this->querySegmentList as $querySegment ) {
 			if ( $querySegment->fingerprint === $fingerprint ) {
 				return $querySegment->queryNumber;
 			};

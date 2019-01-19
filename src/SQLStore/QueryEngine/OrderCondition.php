@@ -53,11 +53,8 @@ class OrderCondition {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param QuerySegmentListBuilder $querySegmentListBuilder
 	 */
-	public function __construct( QuerySegmentListBuilder $querySegmentListBuilder ) {
-		$this->querySegmentListBuilder = $querySegmentListBuilder;
+	public function __construct() {
 		$this->descriptionFactory = new DescriptionFactory();
 	}
 
@@ -82,15 +79,6 @@ class OrderCondition {
 	/**
 	 * @since 2.5
 	 *
-	 * @return array
-	 */
-	public function getErrors() {
-		return $this->querySegmentListBuilder->getErrors();
-	}
-
-	/**
-	 * @since 2.5
-	 *
 	 * @param boolean $isSupported
 	 */
 	public function isSupported( $isSupported ) {
@@ -109,32 +97,39 @@ class OrderCondition {
 	/**
 	 * @since 2.5
 	 *
+	 * @param ConditionBuilder $conditionBuilder
 	 * @param integer $qid
-	 *
-	 * @return QuerySegment[]
 	 */
-	public function apply( $qid ) {
+	public function addConditions( ConditionBuilder $conditionBuilder, $qid ) {
 
 		if ( !$this->isSupported ) {
-			return $this->querySegmentListBuilder->getQuerySegmentList();
+			return $conditionBuilder->getQuerySegmentList();
 		}
 
-		$querySegment = $this->querySegmentListBuilder->findQuerySegment(
+		$querySegment = $conditionBuilder->findQuerySegment(
 			$qid
 		);
 
-		$extraDescriptions = $this->collectExtraDescriptionsFromSortKeys(
+		$extraDescriptions = $this->findDescriptionsFromSortKeys(
 			$querySegment
 		);
 
-		if ( $extraDescriptions !== [] ) {
-			$this->addConjunctionFromExtraDescriptions( $querySegment, $extraDescriptions );
-		}
+		// T:P0434
+		// Sorting (as in case of property chain members) fields may have changed
+		$conditionBuilder->setSortKeys(
+			$this->sortKeys
+		);
 
-		return $this->querySegmentListBuilder->getQuerySegmentList();
+		$this->extendConditions(
+			$conditionBuilder,
+			$querySegment,
+			$extraDescriptions
+		);
+
+		$conditionBuilder->getQuerySegmentList();
 	}
 
-	private function collectExtraDescriptionsFromSortKeys( $querySegment ) {
+	private function findDescriptionsFromSortKeys( $querySegment ) {
 
 		$extraDescriptions = [];
 
@@ -144,7 +139,7 @@ class OrderCondition {
 				throw new RuntimeException( "Expected a string value as sortkey" );
 			}
 
-			if ( ( $description = $this->findExtraDescriptionBy( $querySegment, $label, $order ) ) instanceof Description ) {
+			if ( ( $description = $this->findDescription( $querySegment, $label, $order ) ) instanceof Description ) {
 				$extraDescriptions[] = $description;
 			}
 		}
@@ -152,7 +147,7 @@ class OrderCondition {
 		return $extraDescriptions;
 	}
 
-	private function findExtraDescriptionBy( $querySegment, $label, $order ) {
+	private function findDescription( $querySegment, $label, $order ) {
 
 		$description = null;
 
@@ -217,19 +212,19 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function addConjunctionFromExtraDescriptions( $querySegment, array $extraDescriptions ) {
+	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ) {
 
-		$this->querySegmentListBuilder->setSortKeys(
-			$this->sortKeys
-		);
+		if ( $extraDescriptions === [] ) {
+			return;
+		}
 
-		$this->querySegmentListBuilder->getQuerySegmentFrom(
+		$conditionBuilder->buildFromDescription(
 			$this->descriptionFactory->newConjunction( $extraDescriptions )
 		);
 
 		// This is always an QuerySegment::Q_CONJUNCTION ...
-		$newQuerySegment = $this->querySegmentListBuilder->findQuerySegment(
-			$this->querySegmentListBuilder->getLastQuerySegmentId()
+		$newQuerySegment = $conditionBuilder->findQuerySegment(
+			$conditionBuilder->getLastQuerySegmentId()
 		);
 
 		 // ... so just re-wire its dependencies
@@ -237,16 +232,16 @@ class OrderCondition {
 			$querySegment->components[$cid] = $querySegment->joinfield;
 
 			if ( $this->asUnconditional ) {
-				$this->querySegmentListBuilder->findQuerySegment( $cid )->joinType = 'LEFT OUTER';
+				$conditionBuilder->findQuerySegment( $cid )->joinType = 'LEFT OUTER';
 			}
 
 			$querySegment->sortfields = array_merge(
 				$querySegment->sortfields,
-				$this->querySegmentListBuilder->findQuerySegment( $cid )->sortfields
+				$conditionBuilder->findQuerySegment( $cid )->sortfields
 			);
 		}
 
-		$this->querySegmentListBuilder->addQuerySegment( $querySegment );
+		$conditionBuilder->addQuerySegment( $querySegment );
 	}
 
 }

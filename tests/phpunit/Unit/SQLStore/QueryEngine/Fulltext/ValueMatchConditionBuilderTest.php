@@ -119,7 +119,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertFalse(
-			$instance->canApplyFulltextSearchMatchCondition( $description )
+			$instance->canHaveMatchCondition( $description )
 		);
 	}
 

@@ -131,7 +131,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( SMW_CMP_LIKE ) );
 
 		$this->assertTrue(
-			$instance->canApplyFulltextSearchMatchCondition( $description )
+			$instance->canHaveMatchCondition( $description )
 		);
 
 		$instance->getWhereCondition( $description );
