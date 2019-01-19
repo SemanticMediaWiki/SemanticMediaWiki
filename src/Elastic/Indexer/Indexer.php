@@ -239,7 +239,7 @@ class Indexer {
 		];
 
 		if ( $this->isSafe( $title, $params ) === false ) {
-			return $this->planRecoveryJob( $title, $params );
+			return $this->pushRecoveryJob( $title, $params );
 		}
 
 		$index = $this->getIndexName(
@@ -303,7 +303,7 @@ class Indexer {
 		];
 
 		if ( $this->isSafe() === false ) {
-			return $this->planRecoveryJob( $title, $params );
+			return $this->pushRecoveryJob( $title, $params );
 		}
 
 		if ( $dataItem->getId() == 0 ) {
@@ -318,14 +318,7 @@ class Indexer {
 			'id'    => $dataItem->getId()
 		];
 
-		$data['subject'] = [
-			'title' => str_replace( '_', ' ', $dataItem->getDBKey() ),
-			'subobject' => $dataItem->getSubobjectName(),
-			'namespace' => $dataItem->getNamespace(),
-			'interwiki' => $dataItem->getInterwiki(),
-			'sortkey'   => mb_convert_encoding( $dataItem->getSortKey(), 'UTF-8', 'UTF-8' )
-		];
-
+		$data['subject'] = $this->makeSubject( $dataItem );
 		$response = $connection->index( $params + [ 'body' => $data ] );
 
 		$this->logger->info(
@@ -360,7 +353,7 @@ class Indexer {
 		];
 
 		if ( $this->isSafe() === false ) {
-			return $this->planRecoveryJob( $subject->getTitle(), $params ) ;
+			return $this->pushRecoveryJob( $subject->getTitle(), $params ) ;
 		}
 
 		$this->index( $changeDiff, $text );
@@ -418,6 +411,13 @@ class Indexer {
 
 		$this->map_data( $bulk, $changeDiff );
 		$this->map_text( $bulk, $subject, $text );
+
+		// On occasions where the change didn't contain any data but the subject
+		// has been recognized to exists, create a subject body as reference
+		// point
+		if ( $bulk->isEmpty() ) {
+			$this->map_empty( $bulk, $subject );
+		}
 
 		$response = $bulk->execute();
 
@@ -498,7 +498,7 @@ class Indexer {
 		return false;
 	}
 
-	private function planRecoveryJob( $title, array $params ) {
+	private function pushRecoveryJob( $title, array $params ) {
 
 		$indexerRecoveryJob = new IndexerRecoveryJob(
 			$title,
@@ -508,16 +508,25 @@ class Indexer {
 		$indexerRecoveryJob->insert();
 
 		$this->logger->info(
+			[ 'Indexer', 'Insert IndexerRecoveryJob: {subject}' ],
+			[ 'method' => __METHOD__, 'role' => 'user', 'origin' => $this->origin, 'subject' => $title->getPrefixedDBKey() ]
+		);
+	}
+
+	private function map_empty( $bulk, $subject ) {
+
+		if ( $subject->getId() == 0 ) {
+			$subject->setId( $this->getId( $subject ) );
+		}
+
+		$data = [];
+		$data['subject'] = $this->makeSubject( $subject );
+
+		$bulk->index(
 			[
-				'Indexer',
-				'Insert IndexerRecoveryJob: {subject}',
+				'_id' => $subject->getId()
 			],
-			[
-				'method' => __METHOD__,
-				'role' => 'user',
-				'origin' => $this->origin,
-				'subject' => $title->getPrefixedDBKey()
-			]
+			$data
 		);
 	}
 
@@ -647,13 +656,9 @@ class Indexer {
 				CharArmor::removeControlChars( $sort )
 			);
 
-			$insertRows[$sid]['subject'] = [
-				'title' => str_replace( '_', ' ', $dataItem->getDBKey() ),
-				'subobject' => $dataItem->getSubobjectName(),
-				'namespace' => $dataItem->getNamespace(),
-				'interwiki' => $dataItem->getInterwiki(),
-				'sortkey'   => $sort
-			];
+			$subject = $this->makeSubject( $dataItem );
+			$subject['sortkey'] = $sort;
+			$insertRows[$sid]['subject'] = $subject;
 		}
 
 		// Avoid issues where the p_id is unknown as in case of an empty
@@ -738,15 +743,7 @@ class Indexer {
 
 				// Ensure we have something to sort on
 				// See also Q0105#8
-				$subject = [
-					'title' => str_replace( '_', ' ', $dataItem->getDBKey() ),
-					'subobject' => $dataItem->getSubobjectName(),
-					'namespace' => $dataItem->getNamespace(),
-					'interwiki' => $dataItem->getInterwiki(),
-					'sortkey'   => mb_convert_encoding( $dataItem->getSortKey(), 'UTF-8', 'UTF-8' )
-				];
-
-				$invertedRows[$val] = [ 'subject' => $subject ];
+				$invertedRows[$val] = [ 'subject' => $this->makeSubject( $dataItem ) ];
 			}
 
 			// A null, [] (an empty array), and [null] are all equivalent, they
@@ -772,6 +769,16 @@ class Indexer {
 
 			$insertRows[$sid][$pid]["dat_raw"][] = $ins['o_serialized'];
 		}
+	}
+
+	private function makeSubject( DIWikiPage $subject ) {
+		return [
+			'title'     => str_replace( '_', ' ', $subject->getDBKey() ),
+			'subobject' => $subject->getSubobjectName(),
+			'namespace' => $subject->getNamespace(),
+			'interwiki' => $subject->getInterwiki(),
+			'sortkey'   => mb_convert_encoding( $subject->getSortKey(), 'UTF-8', 'UTF-8' )
+		];
 	}
 
 }

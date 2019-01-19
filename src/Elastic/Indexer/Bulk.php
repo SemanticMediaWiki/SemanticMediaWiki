@@ -83,6 +83,13 @@ class Bulk {
 	}
 
 	/**
+	 * @since 3.1
+	 */
+	public function isEmpty() {
+		return $this->bulk === [];
+	}
+
+	/**
 	 * @since 3.0
 	 */
 	public function execute() {
