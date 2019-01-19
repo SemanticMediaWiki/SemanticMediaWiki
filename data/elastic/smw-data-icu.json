@@ -195,7 +195,7 @@
 						"path_match": "P:*.geoField",
 						"match_mapping_type": "string",
 						"mapping": {
-							"type": "text",
+							"type": "keyword",
 							"fields": {
 								"point": {
 									"type": "geo_point"
