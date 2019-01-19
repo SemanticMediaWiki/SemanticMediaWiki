@@ -5,6 +5,8 @@ namespace SMW\SQLStore\EntityStore;
 use RuntimeException;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\MediaWiki\Connection\Sequence;
+use SMW\MediaWiki\JobFactory;
 
 /**
  * @license GNU GPL v2+
@@ -20,12 +22,113 @@ class IdChanger {
 	private $store;
 
 	/**
+	 * @var JobFactory
+	 */
+	private $jobFactory;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param SQLStore $store
+	 * @param JobFactory|null $jobFactory
 	 */
-	public function __construct( SQLStore $store ) {
+	public function __construct( SQLStore $store, JobFactory $jobFactory = null ) {
 		$this->store = $store;
+		$this->jobFactory = $jobFactory;
+
+		if ( $this->jobFactory === null ) {
+			$this->jobFactory = new JobFactory();
+		}
+	}
+
+	/**
+	 * Change an internal id to another value. If no target value is given, the
+	 * value is changed to become the last id entry (based on the automatic id
+	 * increment of the database). Whatever currently occupies this id will be
+	 * moved consistently in all relevant tables. Whatever currently occupies
+	 * the target id will be ignored (it should be ensured that nothing is
+	 * moved to an id that is still in use somewhere).
+	 *
+	 * @since 3.1
+	 *
+	 * @param integer $curid
+	 * @param integer $targetid
+	 *
+	 * @return \stdClass
+	 */
+	public function move( $curid, $targetid = 0 ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$row = $connection->selectRow(
+			SQLStore::ID_TABLE,
+			'*',
+			[
+				'smw_id' => $curid
+			],
+			__METHOD__
+		);
+
+		// No id at current position, ignore
+		if ( $row === false ) {
+			return;
+		}
+
+		$connection->beginAtomicTransaction( __METHOD__ );
+
+		// Bug 42659
+		$sequence = Sequence::makeSequence( SQLStore::ID_TABLE, 'smw_id' );
+		$id = $targetid == 0 ? $connection->nextSequenceValue( $sequence ) : $targetid;
+
+		$hash = [
+			$row->smw_title,
+			(int)$row->smw_title,
+			$row->smw_iw,
+			$row->smw_subobject
+		];
+
+		$connection->insert(
+			SQLStore::ID_TABLE,
+			[
+				'smw_id' => $id,
+				'smw_title' => $row->smw_title,
+				'smw_namespace' => $row->smw_namespace,
+				'smw_iw' => $row->smw_iw,
+				'smw_subobject' => $row->smw_subobject,
+				'smw_sortkey' => $row->smw_sortkey,
+				'smw_sort' => $row->smw_sort,
+				'smw_hash' => IdCacheManager::computeSha1( $hash )
+			],
+			__METHOD__
+		);
+
+		$targetid = $targetid == 0 ? $connection->insertId() : $targetid;
+
+		$connection->delete(
+			SQLStore::ID_TABLE,
+			[
+				'smw_id' => $curid
+			],
+			__METHOD__
+		);
+
+		$row->smw_id = $targetid;
+
+		$this->change(
+			$curid,
+			$targetid,
+			$row->smw_namespace,
+			$row->smw_namespace
+		);
+
+		$connection->endAtomicTransaction( __METHOD__ );
+
+		if ( ( $title = \Title::newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
+			$updateJob = $this->jobFactory->newUpdateJob( $title, [ 'origin' => __METHOD__ ] );
+			$updateJob->insert();
+		}
+
+		return $row;
 	}
 
 	/**
