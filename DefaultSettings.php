@@ -66,7 +66,7 @@ return [
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'smw:2018-09-01',
+	'smwgUpgradeKey' => 'smw:2019-01-19',
 	##
 
 	###
@@ -1336,8 +1336,7 @@ return [
 	'smwgPostEditUpdate' => [
 		'check-query' => false,
 		'run-jobs' => [
-			'smw.fulltextSearchTableUpdate' => 1,
-			'smw.parserCachePurge' => 5
+			'smw.fulltextSearchTableUpdate' => 1
 		]
 	],
 	##
@@ -1347,9 +1346,6 @@ return [
 	#
 	# If enabled it will store dependencies for queries allowing it to purge
 	# the ParserCache on subjects with embedded queries that contain altered entities.
-	#
-	# The setting requires to run `update.php` (it creates an extra table). Also
-	# as noted in 	#1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
 	#
 	# @since 2.3 (experimental)
 	# @default false
@@ -1374,19 +1370,6 @@ return [
 	# @since 2.3 (experimental)
 	##
 	'smwgQueryDependencyPropertyExemptionList' => [ '_MDAT', '_SOBJ', '_ASKDU' ],
-	##
-
-	###
-	# Listed properties are marked as affiliate, meaning that when an alteration to
-	# a property value occurs query dependencies for the related entity are recorded
-	# as well. For example, _DTITLE is most likely such property where a change would
-	# normally not be reflected in query results (as it not directly linked to a
-	# query) but when added as an affiliated, changes to its content will be
-	# handled as if it is linked to an embedded entity.
-	#
-	# @since 2.4 (experimental)
-	##
-	'smwgQueryDependencyAffiliatePropertyDetectionList' => [],
 	##
 
 	###

@@ -82,61 +82,11 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHtmlOnLinksUpdateJournalEntry() {
-
-		$this->cache->expects( $this->atLeastOnce() )
-			->method( 'fetch' )
-			->will( $this->returnValue( true ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with( $this->stringContains( ':post' ) );
-
-		$this->parserOutput->expects( $this->once() )
-			->method( 'getExtensionData' )
-			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
-			->will( $this->returnValue( [ 'Bar' => true ] ) );
-
-		$instance = new PostProcHandler(
-			$this->parserOutput,
-			$this->cache
-		);
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
-
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertContains(
-			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]"></div>',
-			$instance->getHtml( $title,  $webRequest )
-		);
-	}
-
 	public function testGetHtml_CheckQuery() {
 
 		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
 			->will( $this->returnValue( true ) );
-
-		$this->cache->expects( $this->once() )
-			->method( 'save' )
-			->with( $this->stringContains( ':post' ) );
 
 		$this->parserOutput->expects( $this->at( 0 ) )
 			->method( 'getExtensionData' )
@@ -178,6 +128,10 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$webRequest->expects( $this->once() )
+			->method( 'getCookie' )
+			->will( $this->returnValue( 'FakeCookie' ) );
 
 		$this->assertContains(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',

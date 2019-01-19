@@ -120,10 +120,7 @@ final class Setup {
 			],
 			'WantedProperties' => [
 				'page' => 'SMW\SpecialWantedProperties'
-			],
-			'DeferredRequestDispatcher' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialDeferredRequestDispatcher'
-			],
+			]
 		];
 
 		// Register data
@@ -304,7 +301,6 @@ final class Setup {
 			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'smw.refresh' => 'SMW\MediaWiki\Jobs\RefreshJob',
 			'smw.updateDispatcher' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'smw.parserCachePurge' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 			'smw.fulltextSearchTableUpdate' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
 			'smw.entityIdDisposer' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
 			'smw.propertyStatisticsRebuild' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
@@ -319,7 +315,6 @@ final class Setup {
 			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
 			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
 			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'SMW\ParserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 			'SMW\FulltextSearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
 			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
 			'SMW\PropertyStatisticsRebuildJob' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',

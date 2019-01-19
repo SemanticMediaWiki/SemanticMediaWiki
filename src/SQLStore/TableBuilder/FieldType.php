@@ -105,6 +105,11 @@ class FieldType {
 	/**
 	 * @var string
 	 */
+	const TYPE_TIMESTAMP = 'timestamp';
+
+	/**
+	 * @var string
+	 */
 	const TYPE_ENUM = 'enum';
 
 	/**

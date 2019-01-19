@@ -236,7 +236,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'Properties',
 			'UnusedProperties',
 			'WantedProperties',
-			'DeferredRequestDispatcher',
 			'ProcessingErrorList',
 			'PropertyLabelSimilarity'
 		];
@@ -254,7 +253,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smw.update',
 			'smw.refresh',
 			'smw.updateDispatcher',
-			'smw.parserCachePurge',
 			'smw.fulltextSearchTableUpdate',
 			'smw.entityIdDisposer',
 			'smw.propertyStatisticsRebuild',
@@ -269,7 +267,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SMW\UpdateJob',
 			'SMW\RefreshJob',
 			'SMW\UpdateDispatcherJob',
-			'SMW\ParserCachePurgeJob',
 			'SMW\FulltextSearchTableUpdateJob',
 			'SMW\EntityIdDisposerJob',
 			'SMW\PropertyStatisticsRebuildJob',

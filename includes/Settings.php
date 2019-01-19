@@ -147,7 +147,6 @@ class Settings extends Options {
 			'smwgEnabledDeferredUpdate' => $GLOBALS['smwgEnabledDeferredUpdate'],
 			'smwgEnabledQueryDependencyLinksStore' => $GLOBALS['smwgEnabledQueryDependencyLinksStore'],
 			'smwgQueryDependencyPropertyExemptionList' => $GLOBALS['smwgQueryDependencyPropertyExemptionList'],
-			'smwgQueryDependencyAffiliatePropertyDetectionList' => $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionList'],
 			'smwgParserFeatures' => $GLOBALS['smwgParserFeatures'],
 			'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'],
 			'smwgEnabledFulltextSearch' => $GLOBALS['smwgEnabledFulltextSearch'],
@@ -352,10 +351,6 @@ class Settings extends Options {
 			$configuration['smwgQueryDependencyPropertyExemptionList'] = $GLOBALS['smwgQueryDependencyPropertyExemptionlist'];
 		}
 
-		if ( isset( $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'] ) ) {
-			$configuration['smwgQueryDependencyAffiliatePropertyDetectionList'] = $GLOBALS['smwgQueryDependencyAffiliatePropertyDetectionlist'];
-		}
-
 		// smwgPropertyListLimit
 		if ( isset( $GLOBALS['smwgSubPropertyListLimit'] ) ) {
 			$configuration['smwgPropertyListLimit']['subproperty'] = $GLOBALS['smwgSubPropertyListLimit'];
@@ -555,7 +550,6 @@ class Settings extends Options {
 			'replacement' => [
 				'smwgAdminRefreshStore' => 'smwgAdminFeatures',
 				'smwgQueryDependencyPropertyExemptionlist' => 'smwgQueryDependencyPropertyExemptionList',
-				'smwgQueryDependencyAffiliatePropertyDetectionlist' => 'smwgQueryDependencyAffiliatePropertyDetectionList',
 				'smwgSubPropertyListLimit' => 'smwgPropertyListLimit',
 				'smwgRedirectPropertyListLimit' => 'smwgPropertyListLimit',
 				'smwgSparqlDatabaseConnector' => 'smwgSparqlRepositoryConnector',
@@ -605,7 +599,8 @@ class Settings extends Options {
 				'smwgAutocompleteInSpecialAsk' => '3.0.0',
 				'smwgSparqlDatabaseMaster' => '3.0.0',
 				'smwgHistoricTypeNamespace' => '3.0.0',
-				'smwgEnabledHttpDeferredJobRequest' => '3.0.0'
+				'smwgEnabledHttpDeferredJobRequest' => '3.0.0',
+				'smwgQueryDependencyAffiliatePropertyDetectionList' => '3.1.0',
 			]
 		];
 	}

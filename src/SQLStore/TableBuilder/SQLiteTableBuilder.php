@@ -55,6 +55,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			'char_long_nocase' => "VARCHAR($charLongLength) NOT NULL COLLATE NOCASE",
 			'usage_count'      => 'INT(8)',
 			'integer_unsigned' => 'INTEGER',
+			'timestamp' => 'VARBINARY(14)',
 
 			// SQLite has not native support for an ENUM type
 			'enum' => 'TEXT'

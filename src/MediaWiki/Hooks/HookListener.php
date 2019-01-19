@@ -371,7 +371,7 @@ class HookListener {
 		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$rejectParserCacheValue = new RejectParserCacheValue(
-			$queryDependencyLinksStoreFactory->newDependencyLinksUpdateJournal()
+			$queryDependencyLinksStoreFactory->newDependencyLinksValidator()
 		);
 
 		// Return false to reject the parser cache

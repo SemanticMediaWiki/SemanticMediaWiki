@@ -26,7 +26,6 @@ $specialPageAliases['en'] = [
 	'URIResolver' => [ 'URIResolver' ],
 	'UnusedProperties' => [ 'UnusedProperties' ],
 	'WantedProperties' => [ 'WantedProperties' ],
-	'DeferredRequestDispatcher' => [ 'DeferredRequestDispatcher' ],
 ];
 
 /** Afrikaans (Afrikaans) */

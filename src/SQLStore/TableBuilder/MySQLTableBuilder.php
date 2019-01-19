@@ -50,7 +50,8 @@ class MySQLTableBuilder extends TableBuilder {
 			'char_long_nocase' => "VARCHAR($charLongLength) CHARSET utf8 COLLATE utf8_general_ci",
 			'usage_count'      => 'INT(8) UNSIGNED',
 			'integer_unsigned' => 'INT(8) UNSIGNED',
-			'enum' => 'ENUM'
+			'enum' => 'ENUM',
+			'timestamp' => 'BINARY(14)'
 		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );

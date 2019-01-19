@@ -95,12 +95,12 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'SMW\ParserCachePurgeJob',
-			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
+			'\SMW\MediaWiki\Jobs\NullJob'
 		];
 
 		$provider[] = [
 			'smw.parserCachePurge',
-			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
+			'\SMW\MediaWiki\Jobs\NullJob'
 		];
 
 		$provider[] = [

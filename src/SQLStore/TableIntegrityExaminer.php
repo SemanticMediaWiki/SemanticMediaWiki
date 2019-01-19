@@ -12,6 +12,7 @@ use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\Installer;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMWSql3SmwIds;
 
 /**
@@ -45,6 +46,11 @@ class TableIntegrityExaminer {
 	private $fixedProperties;
 
 	/**
+	 * @var TouchedField
+	 */
+	private $touchedField;
+
+	/**
 	 * @var array
 	 */
 	private $predefinedProperties = [];
@@ -56,10 +62,11 @@ class TableIntegrityExaminer {
 	 * @param HashField $hashField
 	 * @param FixedProperties $fixedProperties
 	 */
-	public function __construct( SQLStore $store, HashField $hashField, FixedProperties $fixedProperties ) {
+	public function __construct( SQLStore $store, HashField $hashField, FixedProperties $fixedProperties, TouchedField $touchedField ) {
 		$this->store = $store;
 		$this->hashField = $hashField;
 		$this->fixedProperties = $fixedProperties;
+		$this->touchedField = $touchedField;
 		$this->messageReporter = new NullMessageReporter();
 		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
 	}
@@ -103,6 +110,9 @@ class TableIntegrityExaminer {
 		$this->hashField->check();
 
 		$this->checkSortField( $tableBuilder->getLog() );
+
+		$this->touchedField->setMessageReporter( $this->messageReporter );
+		$this->touchedField->check();
 
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_CREATION );

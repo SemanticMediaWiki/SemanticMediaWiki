@@ -6,7 +6,6 @@ use Html;
 use Onoi\Cache\Cache;
 use ParserOutput;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
 use SMWQuery as Query;
 use Title;
 use WebRequest;
@@ -176,7 +175,7 @@ class PostProcHandler {
 		$refs = $this->parserOutput->getExtensionData( self::POST_EDIT_UPDATE );
 
 		if ( $refs !== null && $refs !== [] ) {
-			$postEdit = $this->checkRef( $title, $postEdit );
+			//$postEdit = $this->checkRef( $title, $postEdit );
 		}
 
 		if ( $postEdit !== null && $refs !== null && $refs !== [] ) {

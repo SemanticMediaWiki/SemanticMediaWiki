@@ -85,6 +85,14 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAddIndexWithSpaceThrowsException() {
+
+		$instance = new Table( 'Foo' );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->addIndex( 'foobar, bar' );
+	}
+
 	public function testAddOption() {
 
 		$instance = new Table( 'Foo' );
