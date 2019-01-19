@@ -12,6 +12,10 @@
 		{
 			"page": "Q1300/1",
 			"contents": "[[Has coordinates::52°31'N, 13°24'E]]"
+		},
+		{
+			"page": "Q1300/2",
+			"contents": "[[Has coordinates::52° 8' 13\", -0° 28' 0\"]]"
 		}
 	],
 	"tests": [
@@ -62,6 +66,21 @@
 				"count": 1,
 				"results": [
 					"Q1300/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (coordinates transformed to decimal representation => 52.136944444444,-0.46666666666667)",
+			"condition": "[[Has coordinates::52° 8' 13\", -0° 28' 0\"]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Q1300/2#0##"
 				]
 			}
 		}
