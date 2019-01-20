@@ -23,14 +23,14 @@ class ConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
+	 * @var Cache
+	 */
+	private $lockManager;
+
+	/**
 	 * @var Options
 	 */
 	private $options;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
 
 	/**
 	 * @var ElasticClient
@@ -40,12 +40,12 @@ class ConnectionProvider implements IConnectionProvider {
 	/**
 	 * @since 3.0
 	 *
+	 * @param LockManager $lockManager
 	 * @param Options $options
-	 * @param Cache $cache
 	 */
-	public function __construct( Options $options, Cache $cache ) {
+	public function __construct( LockManager $lockManager, Options $options ) {
+		$this->lockManager = $lockManager;
 		$this->options = $options;
-		$this->cache = $cache;
 	}
 
 	/**
@@ -79,12 +79,8 @@ class ConnectionProvider implements IConnectionProvider {
 			// 'handler' => ClientBuilder::singleHandler()
 		];
 
-		if ( $this->hasClientBuilder() ) {
-			$this->connection = new Client(
-				ClientBuilder::fromConfig( $params, true ),
-				$this->cache,
-				$this->options
-			);
+		if ( $this->hasAvailableClientBuilder() ) {
+			$this->connection = $this->newClient( ClientBuilder::fromConfig( $params, true ) );
 		} else {
 			$this->connection = new DummyClient();
 		}
@@ -117,7 +113,11 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function hasClientBuilder() {
+	private function newClient( $clientBuilder ) {
+		return new Client( $clientBuilder, $this->lockManager, $this->options );
+	}
+
+	private function hasAvailableClientBuilder() {
 
 		if ( $this->options->dotGet( 'is.elasticstore', false ) === false ) {
 			return false;

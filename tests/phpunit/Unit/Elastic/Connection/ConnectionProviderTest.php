@@ -22,7 +22,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $logger;
-	private $cache;
+	private $lockManager;
 
 	protected function setUp() {
 
@@ -30,7 +30,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->lockManager = $this->getMockBuilder( '\SMW\Elastic\Connection\LockManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +41,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
-			new ConnectionProvider( $this->options, $this->cache  )
+			new ConnectionProvider( $this->lockManager, $this->options )
 		);
 	}
 
@@ -55,8 +55,8 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new ConnectionProvider(
-			$options,
-			$this->cache
+			$this->lockManager,
+			$options
 		);
 
 		$instance->setLogger( $this->logger );
@@ -81,8 +81,8 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new ConnectionProvider(
-			$options,
-			$this->cache
+			$this->lockManager,
+			$options
 		);
 
 		$instance->setLogger( $this->logger );
@@ -96,7 +96,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetConnectionThrowsExceptionWhenNotInstalled() {
 
 		if ( class_exists( '\Elasticsearch\ClientBuilder' ) ) {
-			$this->markTestSkipped( "No exception thrown when ClientBuilder is available!" );
+			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}
 
 		$options = new Options (
@@ -107,8 +107,8 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new ConnectionProvider(
-			$options,
-			$this->cache
+			$this->lockManager,
+			$options
 		);
 
 		$this->setExpectedException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
