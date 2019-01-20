@@ -254,19 +254,30 @@ class CachedFactbox {
 			$requestContext->getRequest()->getCheck( 'wpPreview' )
 		);
 
-		if ( $factbox->doBuild()->isVisible() ) {
+		$factbox->doBuild();
 
-			$contentParser = $applicationFactory->newContentParser( $title );
-			$contentParser->parse( $factbox->getContent() );
-
-			$text = InTextAnnotationParser::removeAnnotation(
-				$contentParser->getOutput()->getText()
-			);
-
-			$text = $factbox->tabs( $text );
+		if ( !$factbox->isVisible() ) {
+			return $text;
 		}
 
-		return $text;
+		$contentParser = $applicationFactory->newContentParser( $title );
+		$content = '';
+
+		if ( ( $content = $factbox->getContent() ) !== '' ) {
+			$contentParser->parse( $content );
+			$content = InTextAnnotationParser::removeAnnotation(
+				$contentParser->getOutput()->getText()
+			);
+		}
+
+		$attachmentContent = '';
+
+		if ( ( $attachmentContent = $factbox->getAttachmentContent() ) !== '' ) {
+			$contentParser->parse( $attachmentContent );
+			$attachmentContent = $contentParser->getOutput()->getText();
+		}
+
+		return $factbox->tabs( $content, $attachmentContent );
 	}
 
 	private function hasCachedContent( $revId, $lang, $content, $requestContext ) {

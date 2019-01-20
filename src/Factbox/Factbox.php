@@ -19,6 +19,7 @@ use SMW\Utils\HtmlDivTable;
 use SMW\Utils\HtmlTabs;
 use SMWInfolink;
 use SMWSemanticData;
+use SMWDIBlob as DIBlob;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -64,6 +65,11 @@ class Factbox {
 	 * @var string
 	 */
 	protected $content = null;
+
+	/**
+	 * @var string
+	 */
+	private $attachments = [];
 
 	/**
 	 * @var boolean
@@ -115,7 +121,7 @@ class Factbox {
 
 		$this->content = $this->fetchContent( $this->getMagicWords() );
 
-		if ( $this->content !== '' ) {
+		if ( $this->content !== '' || $this->attachments !== [] ) {
 			$this->parserData->getOutput()->addModules( $this->getModules() );
 			$this->parserData->pushSemanticDataToParserOutput();
 			$this->isVisible = true;
@@ -136,14 +142,109 @@ class Factbox {
 	}
 
 	/**
-	 * Returns content
-	 *
 	 * @since 1.9
 	 *
 	 * @return string|null
 	 */
 	public function getContent() {
 		return $this->content;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $attachments
+	 */
+	public function setAttachments( array $attachments ) {
+		$this->attachments = $attachments;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getAttachmentContent() {
+
+		if ( $this->attachments === [] || !$this->hasFeature( SMW_FACTBOX_DISPLAY_ATTACHMENT ) ) {
+			return '';
+		}
+
+		$html = '';
+		$rows = '';
+		$header = $this->createHeader(
+			DIWikiPage::newFromTitle( $this->getTitle() )
+		);
+
+		$property = new DIProperty( '_ATTCH_LINK' );
+
+		foreach ( $this->attachments as $dataItem ) {
+
+			$dataValue = $this->dataValueFactory->newDataValueByItem(
+				$dataItem,
+				$property
+			);
+
+			$dataValue->setOption( $dataValue::NO_IMAGE, true );
+			$attachment = $dataValue->getShortWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+
+			$row = HtmlDivTable::cell( $attachment );
+
+			$pv = $this->store->getPropertyValues( $dataItem, new DIProperty( '_MIME' ) );
+			$pv = end( $pv );
+
+			$row .= HtmlDivTable::cell(
+				$pv instanceof DIBlob ? $pv->getString() : '',
+				[ 'style' => 'word-break: break-word;' ]
+			);
+
+			$prop = new DIProperty( '_MDAT' );
+			$pv = $this->store->getPropertyValues( $dataItem, $prop );
+			$pv = end( $pv );
+
+			$dv = $this->dataValueFactory->newDataValueByItem( $pv, $prop );
+			$dv->setOutputFormat( 'LOCL' );
+
+			$row .= HtmlDivTable::cell( $dv->getShortWikiText() );
+
+			$rows .= HtmlDivTable::row(
+				$row
+			);
+		}
+
+		$mime = $this->dataValueFactory->newDataValueByItem(
+			 ( new DIProperty( '_MIME' ) )->getDiWikiPage()
+		);
+
+		$mime->setOption( $mime::SHORT_FORM, true );
+		$mime->setOutputFormat( 'LOCL' );
+
+		$mdat = $this->dataValueFactory->newDataValueByItem(
+			 ( new DIProperty( '_MDAT' )  )->getDiWikiPage()
+		);
+
+		$mdat->setOption( $mime::SHORT_FORM, true );
+		$mdat->setOutputFormat( 'LOCL' );
+
+		$html .= Html::rawElement(
+			'div',
+			[
+				'class' => 'smwfact',
+				'style' => 'display:block;'
+			],
+			$header . HtmlDivTable::table(
+				HtmlDivTable::header(
+					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:60%;'] ) .
+					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
+					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;'] )
+				) . HtmlDivTable::body( $rows ),
+				[
+					'class' => 'smwfacttable'
+				]
+			)
+		);
+
+		return $html;
 	}
 
 	/**
@@ -165,19 +266,40 @@ class Factbox {
 	 *
 	 * @return string
 	 */
-	public static function tabs( $rendered, $derived = '' ) {
+	public static function tabs( $list, $attachment = '', $derived = '' ) {
 
 		$htmlTabs = new HtmlTabs();
-		$htmlTabs->setActiveTab( 'facts-rendered' );
+		$htmlTabs->setActiveTab(
+			$list !== '' ? 'facts-list' : 'facts-attachment'
+		);
+
 		$htmlTabs->tab(
-			'facts-rendered',
+			'facts-list',
 			Message::get( 'smw-factbox-facts' , Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'title' => Message::get( 'smw-factbox-facts-help' , Message::TEXT, Message::USER_LANGUAGE )
+				'title' => Message::get( 'smw-factbox-facts-help' , Message::TEXT, Message::USER_LANGUAGE ),
+				'hide' => $list === '' ? true : false
 			]
 		);
 
-		$htmlTabs->content( 'facts-rendered', $rendered );
+		$htmlTabs->content(
+			'facts-list',
+			$list
+		);
+
+		$htmlTabs->tab(
+			'facts-attachment',
+			Message::get( 'smw-factbox-attachments' , Message::TEXT, Message::USER_LANGUAGE ),
+			[
+				'title' => Message::get( 'smw-factbox-attachments-help' , Message::TEXT, Message::USER_LANGUAGE ),
+				'hide' => $attachment === '' ? true : false
+			]
+		);
+
+		$htmlTabs->content(
+			'facts-attachment',
+			$attachment
+		);
 
 		$htmlTabs->tab(
 			'facts-derived',
@@ -304,6 +426,10 @@ class Factbox {
 			$header = $this->createHeader( $semanticData->getSubject() );
 			$rows = $this->createRows( $semanticData );
 
+			if ( $rows === '' ) {
+				return $html;
+			}
+
 			$html .= Html::rawElement(
 				'div',
 				[
@@ -376,6 +502,7 @@ class Factbox {
 				continue;
 			}
 
+			$key = $property->getKey();
 			$propertyDv = $this->dataValueFactory->newDataValueByItem( $property, null );
 			$row = '';
 
@@ -402,15 +529,19 @@ class Factbox {
 
 			foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
 
-				$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
+				if ( $key === '_ATTCH_LINK' ) {
+					$this->attachments[] = $dataItem;
+				} else {
+					$dataValue = $this->dataValueFactory->newDataValueByItem( $dataItem, $property );
 
-				$outputFormat = $dataValue->getOutputFormat();
-				$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
+					$outputFormat = $dataValue->getOutputFormat();
+					$dataValue->setOutputFormat( $outputFormat ? $outputFormat : 'LOCL' );
 
-				$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
+					$dataValue->setOption( $dataValue::OPT_DISABLE_SERVICELINKS, true );
 
-				if ( $dataValue->isValid() ) {
-					$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+					if ( $dataValue->isValid() ) {
+						$list[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
+					}
 				}
 			}
 
@@ -422,6 +553,8 @@ class Factbox {
 				} else {
 					$html = implode( $comma, $list ) . '&nbsp;' . $and . '&nbsp;' . $last;
 				}
+			} else {
+				continue;
 			}
 
 			$row .= HtmlDivTable::cell(
@@ -452,7 +585,6 @@ class Factbox {
 
 		return $semanticData->isEmpty();
 	}
-
 
 	private function hasFeature( $feature ) {
 		return ( (int)$this->featureSet & $feature ) != 0;
