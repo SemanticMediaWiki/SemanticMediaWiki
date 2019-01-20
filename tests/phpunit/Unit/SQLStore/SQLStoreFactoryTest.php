@@ -425,6 +425,26 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryDependencyLinksStoreFactory() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryDependencyLinksStoreFactory',
+			$instance->newQueryDependencyLinksStoreFactory()
+		);
+	}
+
+	public function testCanConstructPropertyTableIdReferenceDisposer() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTableIdReferenceDisposer',
+			$instance->newPropertyTableIdReferenceDisposer()
+		);
+	}
+
 	public function testCanConstructServicesContainer() {
 
 		$instance = new SQLStoreFactory( $this->store );

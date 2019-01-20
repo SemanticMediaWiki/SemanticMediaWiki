@@ -312,6 +312,8 @@ class EntityRebuildDispatcher {
 				// to be changed with their pages
 				if ( $title !== null && !$title->exists() ) {
 					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
+				} elseif ( $row->smw_proptable_hash === null && substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX ) {
+					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
 				} else {
 					$this->dispatchedEntities[] = [ 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject ];
 				}

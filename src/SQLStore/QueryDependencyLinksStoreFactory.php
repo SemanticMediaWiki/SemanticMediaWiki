@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryDependency\EntityIdListRelevanceDetectionFilter;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
+use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
 use SMW\Store;
 
 /**
@@ -145,6 +146,25 @@ class QueryDependencyLinksStoreFactory {
 	 */
 	public function newQueryReferenceBacklinks( Store $store ) {
 		return new QueryReferenceBacklinks( $this->newQueryDependencyLinksStore( $store ) );
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param Store $store
+	 *
+	 * @return QueryLinksTableDisposer
+	 */
+	public function newQueryLinksTableDisposer( Store $store ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$queryLinksTableDisposer = new QueryLinksTableDisposer(
+			$store,
+			$applicationFactory->getIteratorFactory()
+		);
+
+		return $queryLinksTableDisposer;
 	}
 
 }

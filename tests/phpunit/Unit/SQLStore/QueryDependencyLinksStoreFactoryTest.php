@@ -93,4 +93,18 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructQueryLinksTableDisposer() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new QueryDependencyLinksStoreFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\QueryDependency\QueryLinksTableDisposer',
+			$instance->newQueryLinksTableDisposer( $store )
+		);
+	}
+
 }
