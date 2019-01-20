@@ -36,7 +36,7 @@ class TouchedField {
 	 */
 	public function check( array $opts = [] ) {
 
-		$this->messageReporter->reportMessage( "Checking `smw_touched` field ...\n" );
+		$this->messageReporter->reportMessage( "Checking smw_touched field ...\n" );
 		$connection = $this->store->getConnection( DB_MASTER );
 
 		$row = $connection->selectRow(
@@ -45,16 +45,17 @@ class TouchedField {
 				'COUNT(smw_id) as count'
 			],
 			[
-				'smw_touched IS NULL'
+				'smw_touched IS NULL',
+				'smw_iw!=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
 			],
 			__METHOD__
 		);
 
-		if ( $row !== false ) {
-			$count = $row->count;
+		if ( $row === false || $row->count == 0 ) {
+			return $this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		$this->messageReporter->reportMessage( "   ... updating $count rows with default date ...\n" );
+		$this->messageReporter->reportMessage( "   ... updating {$row->count} rows with default date ...\n" );
 
 		$connection->update(
 			SQLStore::ID_TABLE,
