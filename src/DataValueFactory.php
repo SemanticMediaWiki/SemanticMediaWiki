@@ -209,10 +209,11 @@ class DataValueFactory {
 	 * @param $dataItem DataItem
 	 * @param $property mixed null or SMWDIProperty property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
+	 * @param DIWikiPage|null $contextPage
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false ) {
+	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false, $contextPage = null ) {
 
 		if ( $property !== null ) {
 			$typeId = $property->findPropertyTypeID();
@@ -220,7 +221,14 @@ class DataValueFactory {
 			$typeId = $this->dataTypeRegistry->getDefaultDataItemByType( $dataItem->getDiType() );
 		}
 
-		$dataValue = $this->newDataValueByType( $typeId, false, $caption, $property );
+		$dataValue = $this->newDataValueByType(
+			$typeId,
+			false,
+			$caption,
+			$property,
+			$contextPage
+		);
+
 		$dataValue->setDataItem( $dataItem );
 
 		if ( $caption !== false ) {
