@@ -440,7 +440,7 @@ class Indexer {
 		// Of course, this will cause a delay for the file content being searchable
 		// but that should be acceptable to avoid blocking any online transaction.
 		if ( !$this->isRebuild && $subject->getNamespace() === NS_FILE ) {
-			$this->getFileIndexer()->planIngestJob( $subject->getTitle() );
+			$this->getFileIndexer()->pushIngestJob( $subject->getTitle() );
 		}
 
 		$this->logger->info(

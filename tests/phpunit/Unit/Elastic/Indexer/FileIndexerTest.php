@@ -43,13 +43,15 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIndex() {
 
+		$url = 'http://example.org/Foo.txt';
+
 		$file = $this->getMockBuilder( '\File' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$file->expects( $this->once() )
 			->method( 'getFullURL' )
-			->will( $this->returnValue( 'http://example.org/Foo.txt' ) );
+			->will( $this->returnValue( $url ) );
 
 		$ingest = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -74,6 +76,15 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new FileIndexer(
 			$this->indexer
 		);
+
+		$instance->setReadCallback( function( $read_url ) use( $url ) {
+
+			if ( $read_url !== $url ) {
+				throw new \RuntimeException( "Invalid read URL!" );
+			}
+
+			return 'Foo';
+		} );
 
 		$instance->setLogger( $this->logger );
 

@@ -256,7 +256,7 @@ class ElasticStore extends SQLStore {
 		);
 
 		if ( $subject->getNamespace() === NS_FILE && $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
-			$this->indexer->getFileIndexer()->planIngestJob( $subject->getTitle() );
+			$this->indexer->getFileIndexer()->pushIngestJob( $subject->getTitle() );
  		}
 	}
 
