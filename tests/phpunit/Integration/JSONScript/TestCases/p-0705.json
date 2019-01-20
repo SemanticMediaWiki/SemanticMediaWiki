@@ -1,10 +1,20 @@
 {
-	"description": "Test `#ask`/ NS_FILE option (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions')",
+	"description": "Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "Has text",
 			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has file",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has page::Page]]"
 		},
 		{
 			"namespace": "NS_FILE",
@@ -27,6 +37,14 @@
 		{
 			"page": "Example/P0705/Q.3",
 			"contents": "{{#ask: [[File:+]] }}"
+		},
+		{
+			"page": "Example/P0705/4",
+			"contents": "[[Has page::File:P0705.png]]"
+		},
+		{
+			"page": "Example/P0705/Q.4",
+			"contents": "{{#ask: [[Has page::<q>[[File:+]]</q>]] |?Has page#noimage |format=table |limit=1 }}"
 		}
 	],
 	"tests": [
@@ -68,6 +86,19 @@
 				"to-contain": [
 					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
 					"<a href=.*P0705.png\" class=\"image\"><img alt=\"P0705.png\" .*class=\"thumbborder\" .*</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#noimage)",
+			"subject": "Example/P0705/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype_wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
+				],
+				"not-contain": [
+					"P0705.png\" width=\"480\" height=\"480\""
 				]
 			}
 		}

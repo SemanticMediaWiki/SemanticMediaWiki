@@ -39,6 +39,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	const NO_TEXT_TRANSFORMATION = 'no.text.transformation';
 
 	/**
+	 * Whether images should be displayed as media or simple link.
+	 */
+	const NO_IMAGE = 'no.image';
+
+	/**
 	 * Whether to use the short form or not.
 	 */
 	const SHORT_FORM = 'short.form';
@@ -272,7 +277,13 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
 		}
 
-		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' ) {
+		$noImage = $this->getOption( self::NO_IMAGE, false );
+
+		if ( $this->m_outformat == 'noimage' ) {
+			$noImage = true;
+		}
+
+		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
 			$linkEscape = '';
 			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
@@ -356,9 +367,15 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
+		$noImage = $this->getOption( self::NO_IMAGE, false );
+
+		if ( $this->m_outformat == 'noimage' ) {
+			$noImage = true;
+		}
+
 		if ( is_null( $linked ) || $linked === false || $this->m_outformat == '-' ) {
 			return $this->getWikiValue();
-		} elseif ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' ) {
+		} elseif ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
 			// Embed images and other files
 			// Note that the embedded file links to the image, hence needs no additional link text.
 			// There should not be a linebreak after an impage, just like there is no linebreak after
