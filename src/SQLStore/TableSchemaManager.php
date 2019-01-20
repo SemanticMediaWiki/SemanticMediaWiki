@@ -226,7 +226,7 @@ class TableSchemaManager {
 		// $table->addIndex( 'smw_sort,smw_id,smw_iw' );
 
 		$table->addIndex( 'smw_rev,smw_id' );
-		$table->addIndex( 'smw_id,smw_touched' );
+		$table->addIndex( 'smw_touched,smw_id' );
 
 		return $table;
 	}
