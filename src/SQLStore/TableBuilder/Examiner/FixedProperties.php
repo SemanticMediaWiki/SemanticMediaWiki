@@ -78,6 +78,8 @@ class FixedProperties {
 		foreach ( $this->properties as $prop ) {
 			$this->checkAndMove( $prop );
 		}
+
+		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 	private function checkAndMove( $prop ) {
@@ -147,8 +149,6 @@ class FixedProperties {
 			],
 			__METHOD__
 		);
-
-		$this->messageReporter->reportMessage( "   ... done.\n"  );
 	}
 
 }
