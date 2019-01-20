@@ -6,6 +6,7 @@ use SMW\Query\QueryToken;
 use SMW\Query\Result\ResolverJournal;
 use SMW\Query\Result\ResultFieldMatchFinder;
 use SMWDataItem as DataItem;
+use SMW\DIWikiPage;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -53,6 +54,11 @@ class SMWResultArray {
 	 * @var QueryToken
 	 */
 	private $queryToken;
+
+	/**
+	 * @var DIWikiPage
+	 */
+	private $contextPage;
 
 	/**
 	 * Constructor.
@@ -111,6 +117,15 @@ class SMWResultArray {
 	 */
 	public function setQueryToken( QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DIWikiPage|null $contextPage
+	 */
+	public function setContextPage( DIWikiPage $contextPage = null ) {
+		$this->contextPage = $contextPage;
 	}
 
 	/**
@@ -182,13 +197,24 @@ class SMWResultArray {
 			return false;
 		}
 
+		$contextPage = $this->contextPage;
+
+		// The context page indicates an embedded query request therefore
+		// use this particular context (content language etc.) to guide
+		// formatting characteristics
+		if ( $contextPage === null ) {
+			$contextPage = $this->mResult;
+		}
+
 		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
 		    strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
 		    $this->mPrintRequest->getParameter( 'index' ) !== false ) {
 
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
-				$this->mPrintRequest->getData()->getDataItem()
+				$this->mPrintRequest->getData()->getDataItem(),
+				false,
+				$contextPage
 			);
 
 			$diProperty = $recordValue->getPropertyDataItemByIndex(
@@ -204,11 +230,9 @@ class SMWResultArray {
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
-			$diProperty
-		);
-
-		$dataValue->setContextPage(
-			$this->mResult
+			$diProperty,
+			false,
+			$contextPage
 		);
 
 		if ( $this->mPrintRequest->getOutputFormat() ) {

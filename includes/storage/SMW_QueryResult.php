@@ -219,6 +219,7 @@ class SMWQueryResult {
 			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
 			$resultArray->setResolverJournal( $this->resolverJournal );
 			$resultArray->setQueryToken( $this->mQuery->getQueryToken() );
+			$resultArray->setContextPage( $this->mQuery->getContextPage() );
 			$row[] = $resultArray;
 		}
 
