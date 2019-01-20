@@ -219,7 +219,7 @@ class TypesRegistry {
 			'_FORMAT_SCHEMA' => [ '_wps', true, true, false ], // "Formatter schema"
 
 			// File attachment
-			'_ATTCH_LINK'  => [ '_wpg', false, false, false ], // "Attachment link"
+			'_ATTCH_LINK'  => [ '_wpg', true, false, false ], // "Attachment link"
 			'_FILE_ATTCH'  => [ '__sob', false, false, false ], // "File attachment"
 			'_CONT_TYPE' => [ '_txt', true, true, false ], // "Content type"
 			'_CONT_AUTHOR' => [ '_txt', true, true, false ], // "Content author"

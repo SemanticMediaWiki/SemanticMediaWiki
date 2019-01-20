@@ -105,6 +105,51 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $instance->isVisible() );
 	}
 
+	public function testGetAttachmentContent() {
+
+		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $dataItem ] ) );
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = Title::newFromText( __METHOD__ );
+
+		$instance = new Factbox(
+			$store,
+			new ParserData( $title, $parserOutput )
+		);
+
+		$instance->setAttachments(
+			[
+				DIWikiPage::newFromText( 'Foo', NS_FILE )
+			]
+		);
+
+		$instance->setFeatureSet( SMW_FACTBOX_DISPLAY_ATTACHMENT );
+		$attachmentContent = $instance->getAttachmentContent();
+
+		$this->assertContains(
+			__METHOD__,
+			$attachmentContent
+		);
+
+		$this->assertContains(
+			'|Foo]]',
+			$attachmentContent
+		);
+	}
+
 	public function testGetContentRoundTripForNonEmptyContent() {
 
 		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
@@ -186,13 +231,18 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 	public function testTabs() {
 
 		$this->assertContains(
-			'tab-facts-rendered',
+			'tab-facts-list',
 			Factbox::tabs( 'Foo' )
 		);
 
 		$this->assertContains(
-			'tab-facts-derived',
+			'tab-facts-attachment',
 			Factbox::tabs( 'Foo', 'Bar' )
+		);
+
+		$this->assertContains(
+			'tab-facts-derived',
+			Factbox::tabs( 'Foo', 'Bar','Foobar' )
 		);
 	}
 

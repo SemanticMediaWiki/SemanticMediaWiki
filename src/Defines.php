@@ -41,6 +41,7 @@ define( 'SMW_FACTBOX_SHOWN', 5 );
 define( 'SMW_FACTBOX_CACHE', 16 );
 define( 'SMW_FACTBOX_PURGE_REFRESH', 32 );
 define( 'SMW_FACTBOX_DISPLAY_SUBOBJECT', 64 );
+define( 'SMW_FACTBOX_DISPLAY_ATTACHMENT', 128 );
 
 /**@}*/
 

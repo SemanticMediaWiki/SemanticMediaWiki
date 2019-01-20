@@ -361,9 +361,11 @@ return [
 	#
 	# - SMW_FACTBOX_DISPLAY_SUBOBJECT displays subobject references
 	#
+	# - SMW_FACTBOX_DISPLAY_ATTACHMENT displays attachment list
+	#
 	# @since 3.0
 	##
-	'smwgFactboxFeatures' => SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT,
+	'smwgFactboxFeatures' => SMW_FACTBOX_CACHE | SMW_FACTBOX_PURGE_REFRESH | SMW_FACTBOX_DISPLAY_SUBOBJECT | SMW_FACTBOX_DISPLAY_ATTACHMENT,
 
 	###
 	# This setting allows you to select in which cases you want to have a factbox

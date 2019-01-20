@@ -146,7 +146,8 @@
 /**
  * Tabbed factbox
  */
-.smw-factbox #tab-facts-rendered:checked ~ #tab-content-facts-rendered,
+.smw-factbox #tab-facts-list:checked ~ #tab-content-facts-list,
+.smw-factbox #tab-facts-attachment:checked ~ #tab-content-facts-attachment,
 .smw-factbox #tab-facts-derived:checked ~ #tab-content-facts-derived {
 	display: block;
 }
@@ -156,7 +157,7 @@
 }
 
 .smw-factbox label.nav-label {
-	padding: 3px 25px 1px 25px;
+	padding: 5px 25px 3px 25px;
 }
 
 .smw-factbox input.nav-tab:checked + label.nav-label {
