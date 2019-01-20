@@ -88,7 +88,7 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 			[
 				'<div class="smw-table-row header-row"><div class="smw-table-cell header-title"><div id="B">B</div>',
 				'title="SMW\Tests\Page\ListBuilder\ValueListBuilderTest::testCreateHtml',
-				'<span class="smwsearch">.*:Foo/Bar">+</a>'
+				'<span class="smwbrowse">.*:Bar">+</a>'
 			],
 			$instance->createHtml( $property, $dataItem, [ 'limit' => 10 ] )
 		);

@@ -8,6 +8,7 @@ use SMW\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\PropertySpecificationLookup;
 use SMWDataValue as DataValue;
+use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
 
@@ -145,6 +146,7 @@ class InfoLinksProvider {
 
 		// Avoid any localization when generating the value
 		$this->dataValue->setOutputFormat( '' );
+		$dataItem = $this->dataValue->getDataItem();
 
 		$value = $this->dataValue->getWikiValue();
 		$property = $this->dataValue->getProperty();
@@ -156,6 +158,9 @@ class InfoLinksProvider {
 		}
 
 		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
+			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
+			$infoLink->setCompactLink( $this->compactLink );
+		} elseif ( in_array( $dataItem->getDIType(), [ DataItem::TYPE_WIKIPAGE, DataItem::TYPE_CONTAINER ] ) ) {
 			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
 			$infoLink->setCompactLink( $this->compactLink );
 		} elseif ( $property !== null ) {
