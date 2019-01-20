@@ -635,7 +635,8 @@ class SMWSql3SmwIds {
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey,
 					'smw_sort' => $collator->getSortKey( $sortkey ),
-					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] )
+					'smw_hash' => $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] ),
+					'smw_touched' => $db->timestamp()
 				],
 				__METHOD__
 			);

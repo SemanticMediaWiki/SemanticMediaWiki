@@ -221,11 +221,6 @@ class DataUpdater {
 		$this->checkChangePropagation();
 		$this->updateData();
 
-		if ( $this->semanticData->getOption( Enum::PURGE_ASSOC_PARSERCACHE ) === true ) {
-			$jobQueue = $applicationFactory->getJobQueue();
-			$jobQueue->runFromQueue( [ 'SMW\ParserCachePurgeJob' => 2 ] );
-		}
-
 		return true;
 	}
 

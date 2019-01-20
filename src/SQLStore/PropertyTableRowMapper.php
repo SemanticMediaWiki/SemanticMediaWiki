@@ -158,9 +158,9 @@ class PropertyTableRowMapper {
 				continue;
 			}
 
-			// "Notice: Undefined index"
+			// "Notice: Undefined index ..." or when a type isn't registered
 			if ( !isset( $propertyTables[$tableId] ) ) {
-				throw new RuntimeException( "Unable to find a property table for " . $property->getKey() );
+				continue;
 			}
 
 			$propertyTable = $propertyTables[$tableId];

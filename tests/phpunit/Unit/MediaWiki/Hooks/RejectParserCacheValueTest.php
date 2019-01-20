@@ -18,14 +18,14 @@ use SMW\Tests\TestEnvironment;
 class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $dependencyLinksUpdateJournal;
+	private $dependencyLinksValidator;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->dependencyLinksUpdateJournal = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal' )
+		$this->dependencyLinksValidator = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksValidator' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -39,23 +39,21 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			RejectParserCacheValue::class,
-			new RejectParserCacheValue( $this->dependencyLinksUpdateJournal )
+			new RejectParserCacheValue( $this->dependencyLinksValidator )
 		);
 	}
 
-	public function testProcessOnJournalEntryToReject() {
+	public function testProcessOnArchaicDependencies_RejectParserCacheValue() {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$this->dependencyLinksUpdateJournal->expects( $this->once() )
-			->method( 'has' )
+		$this->dependencyLinksValidator->expects( $this->once() )
+			->method( 'hasArchaicDependencies' )
+			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( true ) );
 
-		$this->dependencyLinksUpdateJournal->expects( $this->once() )
-			->method( 'delete' );
-
 		$instance = new RejectParserCacheValue(
-			$this->dependencyLinksUpdateJournal
+			$this->dependencyLinksValidator
 		);
 
 		$this->assertFalse(

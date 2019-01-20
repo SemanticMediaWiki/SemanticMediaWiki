@@ -93,13 +93,10 @@ class DependencyLinksTableUpdater {
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'list' => implode( ' ,', $deleteIdList )
-		];
-
-		$this->logger->info( '[QueryDependency] Delete dependencies: {list}', $context );
+		$this->logger->info(
+			[ 'QueryDependency', 'Delete dependencies: {list}' ],
+			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]
+		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
@@ -125,6 +122,17 @@ class DependencyLinksTableUpdater {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
+
+		$connection->update(
+			SQLStore::ID_TABLE,
+			[
+				'smw_touched' => $connection->timestamp()
+			],
+			[
+				'smw_id' => $sid
+			],
+			__METHOD__
+		);
 
 		// Before an insert, delete all entries that for the criteria which is
 		// cheaper then doing an individual upsert or selectRow, this also ensures
@@ -174,13 +182,10 @@ class DependencyLinksTableUpdater {
 		// was used with a hash to avoid duplicate entries hence the re-copy
 		$inserts = array_values( $inserts );
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'id' => $sid
-		];
-
-		$this->logger->info( '[QueryDependency] Table insert: {id} ID', $context );
+		$this->logger->info(
+			[ 'QueryDependency', 'Table insert: {id} ID' ],
+			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $sid ]
+		);
 
 		$connection->insert(
 			SQLStore::QUERY_LINKS_TABLE,
@@ -231,15 +236,10 @@ class DependencyLinksTableUpdater {
 			false
 		);
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'developer',
-			'id' => $id,
-			'origin' => $subject->getHash() . $subobjectName
-
-		];
-
-		$this->logger->info( '[QueryDependency] Table update: new {id} ID; {origin}', $context );
+		$this->logger->info(
+			[ 'QueryDependency', 'Table update: new {id} ID; {origin}' ],
+			[ 'method' => __METHOD__, 'role' => 'developer', 'id' => $id, 'origin' => $subject->getHash() . $subobjectName ]
+		);
 
 		return $id;
 	}

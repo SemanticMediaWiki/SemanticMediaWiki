@@ -16,15 +16,29 @@ use SMW\SQLStore\TableSchemaManager;
  */
 class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
+	private $connection;
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+	protected function setUp() {
+
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
 			TableSchemaManager::class,
-			new TableSchemaManager( $store )
+			new TableSchemaManager( $this->store )
 		);
 	}
 
@@ -42,20 +56,16 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTableFields' )
 			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
 		$instance = new TableSchemaManager(
-			$store
+			$this->store
 		);
 
 		$this->assertInternalType(
@@ -83,20 +93,16 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTableFields' )
 			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
 
-		$store->expects( $this->once() )
+		$this->store->expects( $this->once() )
 			->method( 'getDataItemHandlerForDIType' )
 			->will( $this->returnValue( $dataItemHandler ) );
 
 		$instance = new TableSchemaManager(
-			$store
+			$this->store
 		);
 
 		$instance->setFeatureFlags(
@@ -114,16 +120,12 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindTableFullTextTable_Disabled() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new TableSchemaManager(
-			$store
+			$this->store
 		);
 
 		$this->assertNull(
@@ -133,16 +135,12 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindTableFullTextTable_Enabled() {
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->any() )
+		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new TableSchemaManager(
-			$store
+			$this->store
 		);
 
 		$instance->setOptions(

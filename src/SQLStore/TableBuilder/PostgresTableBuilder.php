@@ -54,7 +54,8 @@ class PostgresTableBuilder extends TableBuilder {
 			'char_long_nocase' => 'citext NOT NULL',
 			'usage_count'      => 'bigint',
 			'integer_unsigned' => 'INTEGER',
-			'enum' => 'ENUM'
+			'enum' => 'ENUM',
+			'timestamp' => 'TIMESTAMP'
 		];
 
 		return FieldType::mapType( $fieldType, $fieldTypes );

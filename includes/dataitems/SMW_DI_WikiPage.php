@@ -114,6 +114,15 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getSha1() {
+		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ) );
+	}
+
+	/**
 	 * @since  2.1
 	 *
 	 * @param string $sortkey

@@ -249,17 +249,6 @@ class HookRegistry {
 				$changeOp
 			);
 
-			$entityIdListRelevanceDetectionFilter = $queryDependencyLinksStoreFactory->newEntityIdListRelevanceDetectionFilter(
-				$store,
-				$changeOp
-			);
-
-			$queryDependencyLinksStore->isPrimary( $isPrimaryUpdate );
-
-			$queryDependencyLinksStore->pushParserCachePurgeJob(
-				$entityIdListRelevanceDetectionFilter
-			);
-
 			$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
 			$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(

@@ -172,6 +172,8 @@ class TableSchemaManager {
 
 	private function newEntityIdTable() {
 
+		$connection = $this->store->getConnection( DB_MASTER );
+
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );
 
@@ -190,6 +192,9 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_proptable_hash', FieldType::TYPE_BLOB );
 		$table->addColumn( 'smw_hash', FieldType::FIELD_HASH );
 		$table->addColumn( 'smw_rev', FieldType::FIELD_ID_UNSIGNED );
+
+		$table->addColumn( 'smw_touched', FieldType::TYPE_TIMESTAMP );
+		$table->addDefault( 'smw_touched', $connection->timestamp( '1970-01-01 00:00:00' ) );
 
 		$table->addIndex( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
@@ -221,6 +226,7 @@ class TableSchemaManager {
 		// $table->addIndex( 'smw_sort,smw_id,smw_iw' );
 
 		$table->addIndex( 'smw_rev,smw_id' );
+		$table->addIndex( 'smw_id,smw_touched' );
 
 		return $table;
 	}

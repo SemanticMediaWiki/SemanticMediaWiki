@@ -95,6 +95,7 @@ class PropertyTableUpdater {
 	private function doUpdate( array $insert_rows, array $delete_rows ) {
 
 		$propertyTables = $this->store->getPropertyTables();
+		$ids = [];
 
 		// Note: by construction, the inserts and deletes have the same table keys.
 		// Note: by construction, the inserts and deletes are currently disjoint;
@@ -113,7 +114,12 @@ class PropertyTableUpdater {
 
 			// Insert
 			$this->update_rows( $propertyTable, $insertRows, true );
+
+			$this->aggregate_ids( $ids, $propertyTable, $insertRows );
+			$this->aggregate_ids( $ids, $propertyTable, $delete_rows[$tableName] );
 		}
+
+		$this->update_touched( array_keys( $ids ) );
 	}
 
 	/**
@@ -225,6 +231,59 @@ class PropertyTableUpdater {
 			$tableName,
 			[ $condition ],
 			__METHOD__ . "-$tableName"
+		);
+	}
+
+	private function aggregate_ids( &$ids, $propertyTable, $rows ) {
+
+		$isCategory = false;
+
+		if ( $propertyTable->isFixedPropertyTable() ) {
+
+			$property = new DIProperty(
+				$propertyTable->getFixedProperty()
+			);
+
+			$pid = $this->store->getObjectIds()->makeSMWPropertyID( $property );
+			$isCategory = $property->getKey() === '_INST';
+		}
+
+		foreach ( $rows as $row ) {
+			$sid = $isCategory ? $row['o_id'] : $row['s_id'];
+			$ids[$sid] = true;
+
+			// Individual pid? or fixed?
+			if ( isset( $row['p_id'] ) ) {
+				$pid = $row['p_id'];
+			}
+
+			$ids[$pid] = true;
+		}
+	}
+
+	private function update_touched( $ids ) {
+
+		if ( $ids === [] ) {
+			return;
+		}
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$touched = $connection->timestamp();
+
+		// Updating across the entity table with some properties (Modification
+		// date etc.) to see more frequent updates than others. Do we need to use
+		// onTransctionIdle( ... ) to avoid locking the rows for succeeding
+		// updates?
+
+		$connection->update(
+			SQLStore::ID_TABLE,
+			[
+				'smw_touched' => $touched
+			],
+			[
+				'smw_id' => $ids
+			],
+			__METHOD__
 		);
 	}
 

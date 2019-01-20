@@ -6,7 +6,6 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\RequestOptions;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
@@ -56,15 +55,10 @@ class QueryDependencyLinksStore {
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
-	 */
-	private $isPrimary = false;
-
-	/**
 	 * Time factor to be used to determine whether an update should actually occur
-	 * or not. The comparison is made against the page_touched timestamp (updated
-	 * by the ParserCachePurgeJob) to a previous update to avoid unnecessary DB
-	 * transactions if it takes place within the computed time frame.
+	 * or not. The comparison is made against the page_touched timestamp to a
+	 * previous update to avoid unnecessary DB transactions if it takes place
+	 * within the computed time frame.
 	 *
 	 * @var integer
 	 */
@@ -102,15 +96,6 @@ class QueryDependencyLinksStore {
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean $isPrimary
-	 */
-	public function isPrimary( $isPrimary ) {
-		$this->isPrimary = $isPrimary;
 	}
 
 	/**
@@ -188,41 +173,6 @@ class QueryDependencyLinksStore {
 		);
 
 		return true;
-	}
-
-	/**
-	 * Build the ParserCachePurgeJob parameters on filtered entities to minimize
-	 * necessary update work.
-	 *
-	 * @since 2.3
-	 *
-	 * @param EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter
-	 */
-	public function pushParserCachePurgeJob( EntityIdListRelevanceDetectionFilter $entityIdListRelevanceDetectionFilter ) {
-
-		if ( !$this->isEnabled() ) {
-			return;
-		}
-
-		$filteredIdList = $entityIdListRelevanceDetectionFilter->getFilteredIdList();
-
-		if ( $filteredIdList === [] ) {
-			return;
-		}
-
-		$parserCachePurgeJob = ApplicationFactory::getInstance()->newJobFactory()->newParserCachePurgeJob(
-			$entityIdListRelevanceDetectionFilter->getSubject()->getTitle(),
-			[
-				'idlist' => $filteredIdList,
-				'exec.mode' => ParserCachePurgeJob::EXEC_JOURNAL
-			]
-		);
-
-		if ( $this->isPrimary || $this->isCommandLineMode ) {
-			$parserCachePurgeJob->run();
-		} else {
-			$parserCachePurgeJob->lazyPush();
-		}
 	}
 
 	/**

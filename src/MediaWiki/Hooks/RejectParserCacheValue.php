@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksUpdateJournal;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use SMW\DIWikiPage;
 use Title;
 
 /**
@@ -16,17 +17,17 @@ use Title;
 class RejectParserCacheValue extends HookHandler {
 
 	/**
-	 * @var DependencyLinksUpdateJournal
+	 * @var DependencyLinksValidator
 	 */
-	private $dependencyLinksUpdateJournal;
+	private $dependencyLinksValidator;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DependencyLinksUpdateJournal $dependencyLinksUpdateJournal
+	 * @param DependencyLinksValidator $dependencyLinksValidator
 	 */
-	public function __construct( DependencyLinksUpdateJournal $dependencyLinksUpdateJournal ) {
-		$this->dependencyLinksUpdateJournal = $dependencyLinksUpdateJournal;
+	public function __construct( DependencyLinksValidator $dependencyLinksValidator ) {
+		$this->dependencyLinksValidator = $dependencyLinksValidator;
 	}
 
 	/**
@@ -38,8 +39,11 @@ class RejectParserCacheValue extends HookHandler {
 	 */
 	public function process( Title $title ) {
 
-		if ( $this->dependencyLinksUpdateJournal->has( $title ) ) {
-			$this->dependencyLinksUpdateJournal->delete( $title );
+		$subject = DIWikiPage::newFromTitle( $title );
+
+		// Return false to reject an otherwise usable cached value from the
+		// parser cache
+		if ( $this->dependencyLinksValidator->hasArchaicDependencies( $subject ) ) {
 			return false;
 		}
 

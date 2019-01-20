@@ -34,6 +34,29 @@ class TableFieldUpdater {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param integer $id
+	 * @param string $tz
+	 */
+	public function updateTouchedField( $id, $tz = 0 ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$connection->beginAtomicTransaction( __METHOD__ );
+
+		$connection->update(
+			SQLStore::ID_TABLE,
+			[
+				'smw_touched' => $connection->timestamp( $tz )
+			],
+			[ 'smw_id' => $id ],
+			__METHOD__
+		);
+
+		$connection->endAtomicTransaction( __METHOD__ );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param integer $id

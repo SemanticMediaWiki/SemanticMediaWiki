@@ -6,7 +6,6 @@ use SMW\MediaWiki\Jobs\NullJob;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
@@ -60,9 +59,11 @@ class JobFactory {
 			case 'SMW\UpdateDispatcherJob':
 			case 'smw.updateDispatcher':
 				return $this->newUpdateDispatcherJob( $title, $parameters );
+			// Removed with 3.1, only left in case of some "old" reference
+			// to return a NullJob
 			case 'SMW\ParserCachePurgeJob':
 			case 'smw.parserCachePurge':
-				return $this->newParserCachePurgeJob( $title, $parameters );
+				return new NullJob( null );
 			case 'SMW\EntityIdDisposerJob':
 			case 'smw.entityIdDisposer':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
@@ -123,18 +124,6 @@ class JobFactory {
 	 */
 	public function newUpdateDispatcherJob( Title $title, array $parameters = [] ) {
 		return new UpdateDispatcherJob( $title, $parameters );
-	}
-
-	/**
-	 * @since 2.0
-	 *
-	 * @param Title $title
-	 * @param array $parameters
-	 *
-	 * @return ParserCachePurgeJob
-	 */
-	public function newParserCachePurgeJob( Title $title, array $parameters = [] ) {
-		return new ParserCachePurgeJob( $title, $parameters );
 	}
 
 	/**
