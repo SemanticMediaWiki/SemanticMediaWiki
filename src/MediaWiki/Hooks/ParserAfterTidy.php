@@ -116,6 +116,7 @@ class ParserAfterTidy extends HookHandler {
 		$parserOutput = $this->parser->getOutput();
 
 		if ( $parserOutput->getProperty( 'displaytitle' ) ||
+			$parserOutput->getImages() !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
 			$parserOutput->getCategoryLinks() ) {
 			return true;
@@ -199,6 +200,12 @@ class ParserAfterTidy extends HookHandler {
 		$propertyAnnotator = $propertyAnnotatorFactory->newTranslationPropertyAnnotator(
 			$propertyAnnotator,
 			$parserOutput->getExtensionData( 'translate-translation-page' )
+		);
+
+		// #3640
+		$propertyAnnotator = $propertyAnnotatorFactory->newAttachmentLinkPropertyAnnotator(
+			$propertyAnnotator,
+			$parserOutput->getImages()
 		);
 
 		$propertyAnnotator->addAnnotation();

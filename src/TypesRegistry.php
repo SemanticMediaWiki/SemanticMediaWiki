@@ -219,6 +219,7 @@ class TypesRegistry {
 			'_FORMAT_SCHEMA' => [ '_wps', true, true, false ], // "Formatter schema"
 
 			// File attachment
+			'_ATTCH_LINK'  => [ '_wpg', false, false, false ], // "Attachment link"
 			'_FILE_ATTCH'  => [ '__sob', false, false, false ], // "File attachment"
 			'_CONT_TYPE' => [ '_txt', true, true, false ], // "Content type"
 			'_CONT_AUTHOR' => [ '_txt', true, true, false ], // "Content author"
@@ -325,6 +326,10 @@ class TypesRegistry {
 			'_ASKSC' => [ 39, false, false ],
 			'_LCODE' => [ 40, true,  false ],
 			'_TEXT'  => [ 41, true,  false ],
+
+			// Due to the potential size of related links, make it a custom_fixed
+			// when enabled
+			'_ATTCH_LINK' => [ 60, false, true ],
 
 			// NON FIXED ID
 			// If you convert an "non" ID fixed property (without an ID) to one
