@@ -109,13 +109,13 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 	<tr>
 		<th>SMW 3.1.x</th>
-		<td><strong><a href="https://php.net/supported-versions.php">7.1.0</a></strong> - latest</td>
-		<td>No support</td>
-		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.31.0</a></strong> - ?</td>
+		<td><strong><a href="https://php.net/supported-versions.php">7.0.0</a></strong> - latest</td>
+		<td>No support<sup>[t.0]</sup></td>
+		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.31.0</a></strong> - 1.33.x</td>
 	</tr>
 	<tr>
 		<th>SMW 3.0.x</th>
-		<td><strong><a href="https://php.net/supported-versions.php">5.6.0</a></strong> - latest</td>
+		<td><strong><a href="https://php.net/supported-versions.php">5.6.0</a></strong> - 7.2.x</td>
 		<td>3.5.0 - latest</td>
 		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.27.0</a></strong> - 1.31.x</td>
 	</tr>
@@ -163,7 +163,8 @@ Note that HHVM is only required if you do not use PHP.
 	</tr>
 </table>
 
-* *Note:* It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.
+*Notes:*
+*  **It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.**
 * For the 1.28 MediaWiki release branch, 1.28.1 or later is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
 * For the 1.27 MediaWiki release branch, 1.27.4 or later is recommended due to [T100085](https://phabricator.wikimedia.org/T100085).
 * PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation. 
@@ -206,7 +207,13 @@ Note that HHVM is only required if you do not use PHP.
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
 	</tr>
-		<tr>
+	<tr>
+		<th>SMW 3.1.x</th>
+		<td>Full support (5.x)</td>
+		<td>Full support (3.x)</td>
+		<td>Full support (9.x)</td>
+	</tr>
+	<tr>
 		<th>SMW 3.0.x</th>
 		<td>Full support (5.x)</td>
 		<td>Full support (3.x)</td>
@@ -281,7 +288,15 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
 	</tr>
-		<tr>
+	<tr>
+		<th>SMW 3.1.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
+	</tr>
+	<tr>
 		<th>SMW 3.0.x</th>
 		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
 		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
@@ -364,7 +379,7 @@ work with different versions, especially more recent ones, though this is not gu
 
 ## Notes
 
+- <sup>[t.0]</sup> [#2688](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2688) Removed HHVM support
 - <sup>[t.1]</sup> On an irregular test plan with [Virtuoso 7.2](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/97294290)
 - <sup>[t.2]</sup> On an irregular test plan with [4store 1.1.4](https://travis-ci.org/mwjames/SemanticMediaWiki/builds/61200454)
 - <sup>[t.3]</sup> [#1583](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1583)
-- [#2688](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/2688) Removed HHVM support
