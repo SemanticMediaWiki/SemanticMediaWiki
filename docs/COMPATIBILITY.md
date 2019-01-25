@@ -116,7 +116,7 @@ Note that HHVM is only required if you do not use PHP.
 	<tr>
 		<th>SMW 3.0.x</th>
 		<td><strong><a href="https://php.net/supported-versions.php">5.6.0</a></strong> - 7.2.x</td>
-		<td>3.5.0 - latest</td>
+		<td>3.5.0 - 3.30.x</td>
 		<td><strong><a href="https://www.mediawiki.org/wiki/Version_lifecycle">1.27.0</a></strong> - 1.31.x</td>
 	</tr>
 	<tr>
@@ -194,7 +194,6 @@ Note that HHVM is only required if you do not use PHP.
 		<td>0.4.13 or 0.4.14</td>
 	</tr>
 </table>
-
 
 ## Database compatibility
 
