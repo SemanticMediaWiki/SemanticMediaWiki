@@ -1372,7 +1372,9 @@ return [
 	#
 	# @since 2.3 (experimental)
 	##
-	'smwgQueryDependencyPropertyExemptionList' => [ '_MDAT', '_SOBJ', '_ASKDU' ],
+	'smwgQueryDependencyPropertyExemptionList' => [
+		'_MDAT', '_SOBJ', '_ASKDU', '_ASKDE', '_ASKSI', '_ASKFO', '_ASKST'
+	],
 	##
 
 	###
