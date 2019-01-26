@@ -62,6 +62,22 @@
 	display: table-row-group;
 }
 
+.smw-table-sort-asc:after {
+	content: '▲';
+	float: right;
+	color: #999;
+	font-size: 10px;
+	padding-top:3px;
+}
+
+.smw-table-sort-desc:after {
+	content: '▼';
+	float: right;
+	color: #999;
+	font-size: 10px;
+	padding-top:3px;
+}
+
 /**
  * Responsive settings
  */
@@ -72,7 +88,22 @@
 		flex-wrap: wrap;
 	}
 
+	.smw-table-header .smw-table-cell {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 100% !important;
+		justify-content: space-between;
+		padding: 3px 0px 3px 0px;
+		margin-left: 10px;
+	}
+
 	.smw-table-row, .smw-table-header {
 		flex: 1 1 150px;
+	}
+
+	.smw-table-sort-asc:after, .smw-table-sort-desc:after {
+		clear: both;
+		padding-left: 10px;
+		margin-right: 20px;
 	}
 }
