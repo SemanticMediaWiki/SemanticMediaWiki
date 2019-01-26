@@ -140,6 +140,7 @@ class CachedFactbox {
 	public function prepareFactboxContent( OutputPage &$outputPage, Language $language, ParserOutput $parserOutput ) {
 
 		$content = '';
+		$outputPage->addModules( Factbox::getModules() );
 		$title = $outputPage->getTitle();
 
 		$rev_id = $this->findRevId( $title, $outputPage->getContext() );

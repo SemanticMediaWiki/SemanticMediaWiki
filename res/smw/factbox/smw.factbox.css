@@ -166,6 +166,12 @@
 	border-bottom: 1px solid #fff;
 }
 
+.smw-factbox input.nav-tab:checked + label#tab-label-facts-attachment.nav-label {
+	border: 1px solid #aaa;
+	border-top: 2px solid #42c0fb;
+	border-bottom: 1px solid #fff;
+}
+
 .smw-factbox .smwfact {
 	border:none;
 	background-color: #fff;
