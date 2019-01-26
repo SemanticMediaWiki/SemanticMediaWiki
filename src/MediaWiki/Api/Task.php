@@ -160,11 +160,11 @@ class Task extends ApiBase {
 				$printouts
 			);
 
-			$query->setLimit(
+			$query->setUnboundLimit(
 				$parameters['limit']
 			);
 
-			$query->setOffset(
+			$query->setUnboundOffset(
 				$parameters['offset']
 			);
 

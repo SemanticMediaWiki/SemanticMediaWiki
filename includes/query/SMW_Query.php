@@ -367,6 +367,17 @@ class SMWQuery implements QueryContext {
 		return $this->offset;
 	}
 
+	/**
+	 * @note Sets an unbound offset that is independent from GLOBAL settings
+	 *
+	 * @since 3.0
+	 *
+	 * @param integer $offset
+	 */
+	public function setUnboundOffset( $offset ) {
+		$this->offset = (int)$offset;
+	}
+
 	public function getLimit() {
 		return $this->limit;
 	}
