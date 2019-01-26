@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Parser;
+namespace SMW\Tests\Query;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
@@ -248,6 +248,18 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getWikiValue' )
 			->will( $this->returnValue( 'Bar' ) );
 
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getDescriptionBuilderRegistry' )
+			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+
+		$dataValue->setDataValueServiceFactory(
+			$dataValueServiceFactory
+		);
+
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
@@ -297,6 +309,10 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueParser' )
 			->will( $this->returnValue( $monolingualTextValueParser ) );
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getDescriptionBuilderRegistry' )
+			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -355,6 +371,10 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getValueParser' )
 			->will( $this->returnValue( $monolingualTextValueParser ) );
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getDescriptionBuilderRegistry' )
+			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory

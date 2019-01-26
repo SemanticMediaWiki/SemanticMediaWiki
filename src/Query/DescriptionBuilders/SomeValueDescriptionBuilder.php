@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
 use SMW\DIWikiPage;
@@ -14,14 +14,19 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
+class SomeValueDescriptionBuilder extends DescriptionBuilder {
+
+	/**
+	 * @var DataValue
+	 */
+	private $dataValue;
 
 	/**
 	 * @since 2.3
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeserializerFor( $serialization ) {
+	public function isBuilderFor( $serialization ) {
 		return $serialization instanceof DataValue;
 	}
 
@@ -33,7 +38,7 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function deserialize( $value ) {
+	public function newDescription( DataValue $dataValue, $value ) {
 
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
@@ -45,8 +50,11 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 		// a NS such as [[Help:>...]]
 		$value = str_replace( [ ':<', ':>' ], [ ':-3C', ':-3E' ], $value );
 
+		$this->dataValue = $dataValue;
+		$property = $this->dataValue->getProperty();
+
 		$comparator = SMW_CMP_EQ;
-		$this->prepareValue( $value, $comparator );
+		$this->prepareValue( $property, $value, $comparator );
 
 		$this->dataValue->setOption(
 			DataValue::OPT_QUERY_COMP_CONTEXT,
@@ -63,19 +71,19 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 
 		$description = $this->descriptionFactory->newValueDescription(
 			$dataItem,
-			$this->dataValue->getProperty(),
+			$property,
 			$comparator
 		);
 
 		// Ensure [[>Help:Foo]] === [[Help:>Foo]] / [[Help:~Foo*]] === [[~Help:Foo*]]
 		if ( $dataItem instanceof DIWikiPage && $dataItem->getNamespace() !== NS_MAIN ) {
-			$description = $this->findApproriateDescription( $comparator, $dataItem, $description );
+			$description = $this->makeDescription( $comparator, $property, $dataItem, $description );
 		}
 
 		return $description;
 	}
 
-	private function findApproriateDescription( $comparator, $dataItem, $description ) {
+	private function makeDescription( $comparator, $property, $dataItem, $description ) {
 
 		$value = $dataItem->getDBKey();
 
@@ -83,7 +91,7 @@ class SomeValueDescriptionDeserializer extends DescriptionDeserializer {
 		// QueryComparator::extractComparatorFromString to work its magic
 		if ( $comparator === SMW_CMP_EQ || $comparator === SMW_CMP_NEQ ) {
 			$value = str_replace( [ '-3C', '-3E' ], [ '<', '>' ], $value );
-			$this->prepareValue( $value, $comparator );
+			$this->prepareValue( $property, $value, $comparator );
 		}
 
 		// No approximate, use the normal ValueDescription

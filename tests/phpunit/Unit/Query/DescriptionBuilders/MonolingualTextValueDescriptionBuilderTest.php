@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Tests\Query\DescriptionBuilders;
 
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer;
+use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer
+ * @covers \SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,28 +16,28 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\DVDescriptionDeserializer\MonolingualTextValueDescriptionDeserializer',
-			new MonolingualTextValueDescriptionDeserializer()
+			MonolingualTextValueDescriptionBuilder::class,
+			new MonolingualTextValueDescriptionBuilder()
 		);
 	}
 
-	public function testIsDeserializerForTimeValue() {
+	public function testIsBuilderForTimeValue() {
 
 		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new MonolingualTextValueDescriptionDeserializer();
+		$instance = new MonolingualTextValueDescriptionBuilder();
 
 		$this->assertTrue(
-			$instance->isDeserializerFor( $dataValue )
+			$instance->isBuilderFor( $dataValue )
 		);
 	}
 
@@ -47,17 +47,16 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new MonolingualTextValueDescriptionDeserializer();
-		$instance->setDataValue( $recordValue );
+		$instance = new MonolingualTextValueDescriptionBuilder();
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( [] );
+		$instance->newDescription( $recordValue, [] );
 	}
 
 	/**
 	 * @dataProvider valueProvider
 	 */
-	public function testDeserialize( $value, $decription, $queryString, $dvFeatures ) {
+	public function testNewDescription( $value, $decription, $queryString, $dvFeatures ) {
 
 		$monolingualTextValue = DataValueFactory::getInStance()->newDataValueByType(
 			MonolingualTextValue::TYPE_ID
@@ -65,17 +64,16 @@ class MonolingualTextValueDescriptionDeserializerTest extends \PHPUnit_Framework
 
 		$monolingualTextValue->setOption( 'smwgDVFeatures', $dvFeatures );
 
-		$instance = new MonolingualTextValueDescriptionDeserializer();
-		$instance->setDataValue( $monolingualTextValue );
+		$instance = new MonolingualTextValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			$decription,
-			$instance->deserialize( $value )
+			$instance->newDescription( $monolingualTextValue, $value )
 		);
 
 		$this->assertEquals(
 			$queryString,
-			$instance->deserialize( $value )->getQueryString()
+			$instance->newDescription( $monolingualTextValue, $value )->getQueryString()
 		);
 	}
 

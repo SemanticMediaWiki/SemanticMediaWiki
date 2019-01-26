@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
-use Deserializers\DispatchableDeserializer;
 use SMW\ApplicationFactory;
 use SMW\DataItemFactory;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
 use SMWDataValue as DataValue;
+use SMW\DIProperty;
 
 /**
  * @private
@@ -34,7 +34,7 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-abstract class DescriptionDeserializer implements DispatchableDeserializer {
+abstract class DescriptionBuilder {
 
 	/**
 	 * @var DescriptionFactory
@@ -50,11 +50,6 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 * @var array
 	 */
 	protected $errors = [];
-
-	/**
-	 * @var DataValue
-	 */
-	protected $dataValue;
 
 	/**
 	 * @since 2.5
@@ -76,14 +71,11 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	}
 
 	/**
-	 * @since 2.3
+	 * @since 3.1
 	 *
-	 * @param DataValue $dataValue
+	 * @param DataValue|null $dataValue
 	 */
-	public function setDataValue( DataValue $dataValue ) {
-		$this->dataValue = $dataValue;
-		$this->errors = [];
-	}
+	public abstract function isBuilderFor( $dataValue );
 
 	/**
 	 * @since 2.3
@@ -109,6 +101,13 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	}
 
 	/**
+	 * @since 3.1
+	 */
+	public function clearErrors() {
+		$this->errors = [];
+	}
+
+	/**
 	 * Helper function for DescriptionDeserializer::deserialize that prepares a
 	 * single value string, possibly extracting comparators. $value is changed
 	 * to consist only of the remaining effective value string (without the
@@ -117,7 +116,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 	 * @param string $value
 	 * @param string|integer $comparator
 	 */
-	protected function prepareValue( &$value, &$comparator ) {
+	protected function prepareValue( DIProperty $property = null, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a
@@ -140,7 +139,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 
 			// No property and the assumption is [[in:...]] with the expected use
 			// of the wide proximity as indicated by an additional `~`
-			if ( $this->dataValue->getProperty() === null ) {
+			if ( $property === null ) {
 				$value = "~$value";
 			}
 		}
@@ -158,7 +157,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 
 			// Use as phrase to signal an exact term match for a wide proximity
 			// search
-			if ( $this->dataValue->getProperty() === null ) {
+			if ( $property === null ) {
 				$value = "~\"$value\"";
 			}
 		}
@@ -171,7 +170,7 @@ abstract class DescriptionDeserializer implements DispatchableDeserializer {
 			$comparator = SMW_CMP_LIKE;
 			$value = '"' . $value . '"';
 
-			if ( $this->dataValue->getProperty() === null ) {
+			if ( $property === null ) {
 				$value = "~$value";
 			}
 		}

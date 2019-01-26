@@ -26,6 +26,7 @@ use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
+use SMW\Query\DescriptionBuilderRegistry;
 use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
 use SMWQuantityValue as QuantityValue;
@@ -305,6 +306,15 @@ return [
 		);
 
 		return new TimeValueParser();
+	},
+
+	/**
+	 * TimeValueParser
+	 *
+	 * @return callable
+	 */
+	'DescriptionBuilderRegistry' => function( $containerBuilder ) {
+		return new DescriptionBuilderRegistry();
 	},
 
 ];

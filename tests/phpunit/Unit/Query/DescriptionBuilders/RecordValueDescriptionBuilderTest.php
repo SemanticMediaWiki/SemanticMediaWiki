@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer;
+use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\DIProperty;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer
+ * @covers \SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,35 +15,35 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\DVDescriptionDeserializer\RecordValueDescriptionDeserializer',
-			new RecordValueDescriptionDeserializer()
+			RecordValueDescriptionBuilder::class,
+			new RecordValueDescriptionBuilder()
 		);
 	}
 
-	public function testIsDeserializerForTimeValue() {
+	public function testIsBuilderForTimeValue() {
 
 		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new RecordValueDescriptionDeserializer();
+		$instance = new RecordValueDescriptionBuilder();
 
 		$this->assertTrue(
-			$instance->isDeserializerFor( $dataValue )
+			$instance->isBuilderFor( $dataValue )
 		);
 	}
 
 	/**
 	 * @dataProvider valueProvider
 	 */
-	public function testDeserialize( $value, $propertyDataItems, $decription ) {
+	public function testNewDescription( $value, $propertyDataItems, $decription ) {
 
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
@@ -60,12 +60,11 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 			->method( 'getPropertyDataItems' )
 			->will( $this->returnValue( $propertyDataItems ) );
 
-		$instance = new RecordValueDescriptionDeserializer();
-		$instance->setDataValue( $recordValue );
+		$instance = new RecordValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			$decription,
-			$instance->deserialize( $value )
+			$instance->newDescription( $recordValue, $value )
 		);
 	}
 
@@ -83,12 +82,11 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 			->method( 'getPropertyDataItems' )
 			->will( $this->returnValue( [] ) );
 
-		$instance = new RecordValueDescriptionDeserializer();
-		$instance->setDataValue( $recordValue );
+		$instance = new RecordValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			'\SMW\Query\Language\ThingDescription',
-			$instance->deserialize( 'Foo' )
+			$instance->newDescription( $recordValue, 'Foo' )
 		);
 	}
 
@@ -98,11 +96,10 @@ class RecordValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RecordValueDescriptionDeserializer();
-		$instance->setDataValue( $recordValue );
+		$instance = new RecordValueDescriptionBuilder();
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( [] );
+		$instance->newDescription( $recordValue, [] );
 	}
 
 	public function valueProvider() {

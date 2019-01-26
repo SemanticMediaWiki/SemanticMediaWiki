@@ -186,4 +186,22 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getPropertyRestrictionExaminer();
 	}
 
+	public function testGetDescriptionBuilderRegistry() {
+
+		$descriptionBuilderRegistry = $this->getMockBuilder( '\SMW\Query\DescriptionBuilderRegistry' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->containerBuilder->expects( $this->atLeastOnce() )
+			->method( 'singleton' )
+			->with( $this->stringContains( 'DescriptionBuilderRegistry' ) )
+			->will( $this->returnValue( $descriptionBuilderRegistry ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->getDescriptionBuilderRegistry();
+	}
+
 }
