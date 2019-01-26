@@ -20,9 +20,11 @@ if ( !class_exists( 'SemanticMediaWiki' ) || !defined( 'SMW_VERSION' ) ) {
 	die( "\nSemantic MediaWiki is not available, please check your LocalSettings or Composer settings.\n" );
 }
 
+$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
+
 if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
 	$autoloadType = "Extension vendor autoloader";
-} elseif ( is_readable( $path = __DIR__ . '/../../../vendor/autoload.php' ) ) {
+} elseif ( is_readable( $path = $basePath . '/vendor/autoload.php' ) ) {
 	$autoloadType = "MediaWiki vendor autoloader";
 } else {
 	die( 'To run the test suite it is required that packages are installed using Composer.' );
