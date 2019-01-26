@@ -36,6 +36,7 @@ use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
@@ -405,7 +406,8 @@ class SQLStoreFactory {
 			$this->store,
 			new HashField( $this->store ),
 			new FixedProperties( $this->store ),
-			new TouchedField( $this->store )
+			new TouchedField( $this->store ),
+			new IdBorder( $this->store )
 		);
 
 		$tableSchemaManager = new TableSchemaManager(
