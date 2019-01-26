@@ -36,32 +36,30 @@
 			this.form.method = this.checked ? 'post' : 'get';
 		} ).trigger( 'change' );
 
-		var nsList = $( '#mw-search-ns' ).css( 'display' ) !== 'none' ? mw.msg( 'smw-search-hide' ) : mw.msg( 'smw-search-show' );
+		var nsList = '';
 
-		/**
-		 * Append hide/show button to the NS section
-		 */
-		$( '#smw-search-togglensview' ).append(
-			$( '<input>' ).attr( 'type', 'button' )
-				.attr( 'id', 'smw-togglensview' )
-				.prop( 'value', nsList )
-				.click( function ( event ) {
+		if ( $( '#mw-search-ns' ).css( 'display' ) !== 'none' ) {
+			nsList = mw.msg( 'smw-search-hide' );
+		} else {
+			nsList = mw.msg( 'smw-search-show' );
+		};
 
-					// We carry the hidden `ns-list` on a submit so the status
-					// of the prevsious acion is retained to either show or hide
-					// the section
-					if ( $( '#mw-search-ns' ).css( 'display' ) !== 'none' ) {
-						$( 'input[name=ns-list]' ).attr( 'value', 1 );
-						event.target.value = mw.msg( 'smw-search-show' );
-						$( '#mw-search-ns' ).css( 'display', 'none' );
-					} else {
-						event.target.value = mw.msg( 'smw-search-hide' );
-						$( 'input[name=ns-list]' ).attr( 'value', 0 );
-						$( '#mw-search-ns' ).css( 'display', 'block' );
-					}
-				} )
-		)
-
+		$( document ).on( "click", "#smw-togglensview", function(){
+			// We carry the hidden `ns-list` on a submit so the status
+			// of the previous action is retained to either show or hide
+			// the section
+			if ( $( '#mw-search-ns' ).css( 'display' ) !== 'none' ) {
+				$( 'input[name=ns-list]' ).attr( 'value', 1 );
+				event.target.value = mw.msg( 'smw-search-show' );
+				$( '#mw-search-ns' ).css( 'display', 'none' );
+				$( '#smw-search-togglebox' ).css( 'display', 'none' );
+			} else {
+				event.target.value = mw.msg( 'smw-search-hide' );
+				$( 'input[name=ns-list]' ).attr( 'value', 0 );
+				$( '#mw-search-ns' ).css( 'display', 'block' );
+				$( '#smw-search-togglebox' ).css( 'display', 'block' );
+			}
+		} );
 	};
 
 	// Only load when it is Special:Search and the search type supports

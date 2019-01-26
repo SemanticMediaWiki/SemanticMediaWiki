@@ -244,8 +244,28 @@
     margin-top: 2px !important;
 }
 
-#smw-search-togglensview, #mw-search-togglebox {
+#smw-search-togglensview, #smw-search-togglebox {
     margin-top: 2px !important;
+}
+
+#smw-search-togglebox {
+    float: right;
+}
+
+#smw-search-togglebox label {
+    margin-right: 0.25em;
+}
+
+#smw-search-togglebox input {
+    margin-left: 0.25em;
+}
+
+.client-nojs #smw-search-togglebox, .client-nojs #smw-search-togglensview {
+    display: none;
+}
+
+.client-nojs #mw-search-ns {
+    display: block !important;
 }
 
 .searchresult {
@@ -313,7 +333,7 @@
     margin-bottom: 2px !important;
 }
 
-.skin-chameleon #smw-search-togglensview, .skin-chameleon #mw-search-togglebox {
+.skin-chameleon #smw-search-togglensview, .skin-chameleon #smw-search-togglebox {
     margin-top: 0px !important;
 }
 
