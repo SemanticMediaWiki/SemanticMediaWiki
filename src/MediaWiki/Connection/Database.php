@@ -7,7 +7,7 @@ use Exception;
 use ResultWrapper;
 use RuntimeException;
 use SMW\ApplicationFactory;
-use SMW\Connection\ConnectionProviderRef;
+use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 
 /**
@@ -36,9 +36,9 @@ class Database {
 	const TRIGGER_ROLLBACK = 3;
 
 	/**
-	 * @var ConnectionProviderRef
+	 * @var ConnRef
 	 */
-	private $connectionProviderRef;
+	private $connRef;
 
 	/**
 	 * @var ILBFactory
@@ -48,12 +48,10 @@ class Database {
 	/**
 	 * @var Database
 	 */
-	private $readConnection;
-
-	/**
-	 * @var Database
-	 */
-	private $writeConnection;
+	private $connections = [
+		'read' => null,
+		'write' => null
+	];
 
 	/**
 	 * @var string
@@ -83,16 +81,12 @@ class Database {
 	/**
 	 * @since 1.9
 	 *
-	 * @param ConnectionProviderRef $connectionProviderRef
+	 * @param ConnRef $connRef
 	 * @param ILBFactory|null $loadBalancerFactory
 	 */
-	public function __construct( ConnectionProviderRef $connectionProviderRef, $loadBalancerFactory = null ) {
-		$this->connectionProviderRef = $connectionProviderRef;
+	public function __construct( ConnRef $connRef, $loadBalancerFactory = null ) {
+		$this->connRef = $connRef;
 		$this->loadBalancerFactory = $loadBalancerFactory;
-
-		if ( $this->loadBalancerFactory === null ) {
-			$this->loadBalancerFactory = ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' );
-		}
 	}
 
 	/**
@@ -112,7 +106,7 @@ class Database {
 	 * @return boolean
 	 */
 	public function releaseConnection() {
-		$this->connectionProviderRef->releaseConnection();
+		$this->connRef->releaseConnections();
 	}
 
 	/**
@@ -146,7 +140,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->getType() === $type;
+		return $this->connections['read']->getType() === $type;
 	}
 
 	/**
@@ -162,7 +156,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return [ $this->getType() => $this->readConnection->getServerInfo() ];
+		return [ $this->getType() => $this->connections['read']->getServerInfo() ];
 	}
 
 	/**
@@ -178,7 +172,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->getType();
+		return $this->connections['read']->getType();
 	}
 
 	/**
@@ -209,7 +203,7 @@ class Database {
 			return $this->dbPrefix . $tableName;
 		}
 
-		return $this->readConnection->tableName( $tableName );
+		return $this->connections['read']->tableName( $tableName );
 	}
 
 	/**
@@ -227,7 +221,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->timestamp( $ts );
+		return $this->connections['read']->timestamp( $ts );
 	}
 
 	/**
@@ -245,7 +239,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->tablePrefix( $prefix );
+		return $this->connections['read']->tablePrefix( $prefix );
 	}
 
 	/**
@@ -263,7 +257,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->addQuotes( $value );
+		return $this->connections['read']->addQuotes( $value );
 	}
 
 	/**
@@ -281,7 +275,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->fetchObject( $res );
+		return $this->connections['read']->fetchObject( $res );
 	}
 
 	/**
@@ -299,7 +293,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->numRows( $results );
+		return $this->connections['read']->numRows( $results );
 	}
 
 	/**
@@ -315,7 +309,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		$this->readConnection->freeResult( $res );
+		$this->connections['read']->freeResult( $res );
 	}
 
 	/**
@@ -345,7 +339,7 @@ class Database {
 			// MW's SQLite implementation adds an auto prefix to the tableName but
 			// not to the conditions and since ::tableName will handle prefixing
 			// consistently ensure that the select doesn't add an extra prefix
-			$tablePrefix = $this->readConnection->tablePrefix( '' );
+			$tablePrefix = $this->connections['read']->tablePrefix( '' );
 
 			if ( isset( $options['ORDER BY'] ) ) {
 				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
@@ -353,7 +347,7 @@ class Database {
 		}
 
 		try {
-			$results = $this->readConnection->select(
+			$results = $this->connections['read']->select(
 				$tableName,
 				$fields,
 				$conditions,
@@ -366,7 +360,7 @@ class Database {
 		}
 
 		if ( $tablePrefix !== null ) {
-			$this->readConnection->tablePrefix( $tablePrefix );
+			$this->connections['read']->tablePrefix( $tablePrefix );
 		}
 
 		if ( $results instanceof ResultWrapper ) {
@@ -426,17 +420,17 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
 		if ( $this->autoCommit ) {
-			$autoTrx = $this->writeConnection->getFlag( DBO_TRX );
-			$this->writeConnection->clearFlag( DBO_TRX );
+			$autoTrx = $this->connections['write']->getFlag( DBO_TRX );
+			$this->connections['write']->clearFlag( DBO_TRX );
 
-			if ( $autoTrx && $this->writeConnection->trxLevel() ) {
-				$this->writeConnection->commit( __METHOD__ );
+			if ( $autoTrx && $this->connections['write']->trxLevel() ) {
+				$this->connections['write']->commit( __METHOD__ );
 			}
 		}
 
 		try {
 			$exception = null;
-			$results = $this->writeConnection->query(
+			$results = $this->connections['write']->query(
 				$sql,
 				$fname,
 				$ignoreException
@@ -445,7 +439,7 @@ class Database {
 		}
 
 		if ( $this->autoCommit && $autoTrx ) {
-			$this->writeConnection->setFlag( DBO_TRX );
+			$this->connections['write']->setFlag( DBO_TRX );
 		}
 
 		// State is only valid for a single transaction
@@ -469,7 +463,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->selectRow(
+		return $this->connections['read']->selectRow(
 			$table,
 			$vars,
 			$conds,
@@ -492,7 +486,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->affectedRows();
+		return $this->connections['read']->affectedRows();
 	}
 
 	/**
@@ -535,8 +529,8 @@ class Database {
 		// MW 1.31+
 		// https://github.com/wikimedia/mediawiki/commit/0a9c55bfd39e22828f2d152ab71789cef3b0897c#diff-278465351b7c14bbcadac82036080e9f
 		$safeseq = str_replace( "'", "''", $seqName );
-		$res = $this->writeConnection->query( "SELECT nextval('$safeseq')" );
-		$row = $this->readConnection->fetchRow( $res );
+		$res = $this->connections['write']->query( "SELECT nextval('$safeseq')" );
+		$row = $this->connections['read']->fetchRow( $res );
 
 		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
 	}
@@ -558,7 +552,7 @@ class Database {
 			return $this->insertId;
 		}
 
-		return (int)$this->writeConnection->insertId();
+		return (int)$this->connections['write']->insertId();
 	}
 
 	/**
@@ -572,7 +566,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		$this->writeConnection->clearFlag( $flag );
+		$this->connections['write']->clearFlag( $flag );
 	}
 
 	/**
@@ -586,7 +580,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->getFlag( $flag );
+		return $this->connections['write']->getFlag( $flag );
 	}
 
 	/**
@@ -604,7 +598,7 @@ class Database {
 			return $this->autoCommit = true;
 		}
 
-		$this->writeConnection->setFlag( $flag );
+		$this->connections['write']->setFlag( $flag );
 	}
 
 	/**
@@ -622,7 +616,7 @@ class Database {
 			true
 		);
 
-		$res = $this->writeConnection->insert( $table, $rows, $fname, $options );
+		$res = $this->connections['write']->insert( $table, $rows, $fname, $options );
 
 		$this->transactionProfiler->setSilenced(
 			$oldSilenced
@@ -646,7 +640,7 @@ class Database {
 			true
 		);
 
-		$res = $this->writeConnection->update( $table, $values, $conds, $fname, $options );
+		$res = $this->connections['write']->update( $table, $values, $conds, $fname, $options );
 
 		$this->transactionProfiler->setSilenced(
 			$oldSilenced
@@ -670,7 +664,7 @@ class Database {
 			true
 		);
 
-		$res = $this->writeConnection->delete( $table, $conds, $fname );
+		$res = $this->connections['write']->delete( $table, $conds, $fname );
 
 		$this->transactionProfiler->setSilenced(
 			$oldSilenced
@@ -694,7 +688,7 @@ class Database {
 			true
 		);
 
-		$res = $this->writeConnection->replace( $table, $uniqueIndexes, $rows, $fname );
+		$res = $this->connections['write']->replace( $table, $uniqueIndexes, $rows, $fname );
 
 		$this->transactionProfiler->setSilenced(
 			$oldSilenced
@@ -714,7 +708,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->writeConnection->makeList( $data, $mode );
+		return $this->connections['write']->makeList( $data, $mode );
 	}
 
 	/**
@@ -733,7 +727,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->tableExists( $table, $fname );
+		return $this->connections['read']->tableExists( $table, $fname );
 	}
 
 	/**
@@ -747,7 +741,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->selectField( $table, $fieldName, $conditions, $fname, $options );
+		return $this->connections['read']->selectField( $table, $fieldName, $conditions, $fname, $options );
 	}
 
 	/**
@@ -761,7 +755,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->readConnection->estimateRowCount(
+		return $this->connections['read']->estimateRowCount(
 			$table,
 			$vars,
 			$conditions,
@@ -829,12 +823,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		// MW 1.23
-		if ( !method_exists( $this->writeConnection, 'startAtomic' ) ) {
-			return null;
-		}
-
-		$this->writeConnection->startAtomic( $fname );
+		$this->connections['write']->startAtomic( $fname );
 	}
 
 	/**
@@ -848,12 +837,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		// MW 1.23
-		if ( !method_exists( $this->writeConnection, 'endAtomic' ) ) {
-			return null;
-		}
-
-		$this->writeConnection->endAtomic( $fname );
+		$this->connections['write']->endAtomic( $fname );
 	}
 
 	/**
@@ -867,8 +851,8 @@ class Database {
 			$this->initConnection();
 		}
 
-		if ( method_exists( $this->writeConnection, 'onTransactionResolution' ) && $this->writeConnection->trxLevel() ) {
-			$this->writeConnection->onTransactionResolution( $callback, $fname );
+		if ( method_exists( $this->connections['write'], 'onTransactionResolution' ) && $this->connections['write']->trxLevel() ) {
+			$this->connections['write']->onTransactionResolution( $callback, $fname );
 		}
 	}
 
@@ -883,22 +867,17 @@ class Database {
 			$this->initConnection();
 		}
 
-		// FIXME For 1.19 it is an unknown method hence execute without idle
-		if ( !method_exists( $this->writeConnection, 'onTransactionIdle' ) ) {
-			return call_user_func( $callback );
-		}
-
-		$this->writeConnection->onTransactionIdle( $callback );
+		$this->connections['write']->onTransactionIdle( $callback );
 	}
 
 	private function initConnection() {
 
-		if ( $this->readConnection === null ) {
-			$this->readConnection = $this->connectionProviderRef->getConnection( 'read' );
+		if ( $this->connections['read'] === null ) {
+			$this->connections['read'] = $this->connRef->getConnection( 'read' );
 		}
 
-		if ( $this->writeConnection === null && $this->connectionProviderRef->hasConnection( 'write' ) ) {
-			$this->writeConnection = $this->connectionProviderRef->getConnection( 'write' );
+		if ( $this->connections['write'] === null && $this->connRef->hasConnection( 'write' ) ) {
+			$this->connections['write'] = $this->connRef->getConnection( 'write' );
 		}
 
 		$this->initConnection = true;

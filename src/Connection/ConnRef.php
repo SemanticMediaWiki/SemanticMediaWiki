@@ -10,7 +10,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class ConnectionProviderRef {
+class ConnRef {
 
 	/**
 	 * @var array
@@ -57,7 +57,7 @@ class ConnectionProviderRef {
 	/**
 	 * @since 3.0
 	 */
-	public function releaseConnection() {
+	public function releaseConnections() {
 		foreach ( $this->connectionProviders as $connectionProvider ) {
 			$connectionProvider->releaseConnection();
 		}

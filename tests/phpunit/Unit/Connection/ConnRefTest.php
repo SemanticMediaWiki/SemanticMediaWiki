@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Connection;
 
-use SMW\Connection\ConnectionProviderRef;
+use SMW\Connection\ConnRef;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Connection\ConnectionProviderRef
+ * @covers \SMW\Connection\ConnRef
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,15 +14,15 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ConnectionProviderRefTest extends \PHPUnit_Framework_TestCase {
+class ConnRefTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ConnectionProviderRef::class,
-			new ConnectionProviderRef( [] )
+			ConnRef::class,
+			new ConnRef( [] )
 		);
 	}
 
@@ -39,7 +39,7 @@ class ConnectionProviderRefTest extends \PHPUnit_Framework_TestCase {
 		$connectionProvider->expects( $this->once() )
 			->method( 'releaseConnection' );
 
-		$instance = new ConnectionProviderRef(
+		$instance = new ConnRef(
 			[
 				'Foo' => $connectionProvider
 			]
@@ -50,12 +50,12 @@ class ConnectionProviderRefTest extends \PHPUnit_Framework_TestCase {
 			$instance->getConnection( 'Foo' )
 		);
 
-		$instance->releaseConnection();
+		$instance->releaseConnections();
 	}
 
 	public function testNoMatchableConnectionProviderThrowsException() {
 
-		$instance = new ConnectionProviderRef(
+		$instance = new ConnRef(
 			[
 				'Foo' => 'Bar'
 			]
@@ -67,7 +67,7 @@ class ConnectionProviderRefTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNoMatchableKeyThrowsException() {
 
-		$instance = new ConnectionProviderRef( [] );
+		$instance = new ConnRef( [] );
 
 		$this->setExpectedException( 'RuntimeException' );
 		$instance->getConnection( 'Foo' );
