@@ -115,14 +115,21 @@ class ChangePropagationDispatchJob extends Job {
 	public static function hasPendingJobs( DIWikiPage $subject ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$jobQueue = $applicationFactory->getJobQueue();
 
-		$jobType = 'smw.changePropagationUpdate';
+		$jobType = 'smw.changePropagationDispatch';
+
+		if ( $jobQueue->hasPendingJob( $jobType ) ) {
+			return true;
+		}
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
 			$jobType = 'smw.changePropagationClassUpdate';
+		} else {
+			$jobType = 'smw.changePropagationUpdate';
 		}
 
-		if ( $applicationFactory->getJobQueue()->hasPendingJob( $jobType ) ) {
+		if ( $jobQueue->hasPendingJob( $jobType ) ) {
 			return true;
 		}
 
@@ -148,14 +155,22 @@ class ChangePropagationDispatchJob extends Job {
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$jobQueue = $applicationFactory->getJobQueue();
 
-		$jobType = 'smw.changePropagationUpdate';
+		$jobType = 'smw.changePropagationDispatch';
+		$count = 0;
+
+		if ( $jobQueue->hasPendingJob( $jobType ) ) {
+			$count = $jobQueue->getQueueSize( $jobType );
+		}
 
 		if ( $subject->getNamespace() === NS_CATEGORY ) {
 			$jobType = 'smw.changePropagationClassUpdate';
+		} else {
+			$jobType = 'smw.changePropagationUpdate';
 		}
 
-		$count = $applicationFactory->getJobQueue()->getQueueSize( $jobType );
+		$count += $jobQueue->getQueueSize( $jobType );
 
 		// Fallback for when JobQueue::getQueueSize doesn't yet contain the
 		// updated stats
