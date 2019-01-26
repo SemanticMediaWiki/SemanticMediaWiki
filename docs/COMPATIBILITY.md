@@ -92,7 +92,10 @@ It is strongly recommended to also always upgrade the underlying MediaWiki softw
 
 * For the 1.28 MediaWiki release branch, 1.28.1 or later is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
 * For the 1.27 MediaWiki release branch, 1.27.4 or later is recommended due to [T100085](https://phabricator.wikimedia.org/T100085).
-* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation. 
+* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation.
+
+HHVM 3.3.0 to 3.30.0 which was only needed when not using PHP was supported in varying versions from SMW 2.1.x to 3.0.x
+but since it is no longer tested functionality can no longer be validated and assured.
 
 ## Database compatibility
 
