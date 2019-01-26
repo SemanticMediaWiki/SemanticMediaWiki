@@ -708,7 +708,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	public function makeList( $data, $mode ) {
+	public function makeList( $data, $mode = \Database::LIST_COMMA ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
