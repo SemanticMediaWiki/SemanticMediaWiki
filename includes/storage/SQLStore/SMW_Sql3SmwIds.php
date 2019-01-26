@@ -965,7 +965,7 @@ class SMWSql3SmwIds {
 			$hash = IdCacheManager::computeSha1( $hash );
 
 			if ( !$this->idCacheManager->hasCache( $hash ) ) {
-				$hashList[] = $hash;
+				$hashList[$hash] = true;
 			}
 		}
 
@@ -987,7 +987,7 @@ class SMWSql3SmwIds {
 				'smw_sort'
 			],
 			[
-				'smw_hash' => $hashList
+				'smw_hash' => array_keys( $hashList )
 			],
 			__METHOD__
 		);
