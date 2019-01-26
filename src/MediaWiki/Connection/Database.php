@@ -35,6 +35,9 @@ class Database {
 	 */
 	const TRIGGER_ROLLBACK = 3;
 
+	/** @var IDatabase::LIST_COMMA (Combine list with comma delimeters) */
+	const LIST_COMMA = 0;
+
 	/**
 	 * @var ConnectionProviderRef
 	 */
@@ -708,7 +711,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	public function makeList( $data, $mode = \Database::LIST_COMMA ) {
+	public function makeList( $data, $mode = self::LIST_COMMA ) {
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
