@@ -4,7 +4,7 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 
 ## Platform compatibility and release status
 
-<table>
+<table class="compatibility">
 	<tr>
 		<th>SMW</th>
 		<th>PHP</th>
@@ -98,7 +98,7 @@ It is strongly recommended to also always upgrade the underlying MediaWiki softw
 
 ### SQL support
 
-<table>
+<table class="compatibility">
 	<tr>
 		<th>SMW</th>
 		<th>MySQL</th>
@@ -165,7 +165,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 
 ### Triple store support
 
-<table>
+<table class="compatibility">
 	<tr>
 		<th>SMW</th>
 		<th><a href="https://jena.apache.org/">Fuseki</a></th>
