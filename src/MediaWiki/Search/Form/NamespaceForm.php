@@ -174,12 +174,29 @@ class NamespaceForm {
 			);
 		}
 
+		if ( !$this->hideList ) {
+			$val = $this->msg( 'smw-search-hide', Message::ESCAPED );
+		} else {
+			$val = $this->msg( 'smw-search-show', Message::ESCAPED );
+		}
+
 		return "<fieldset id='mw-searchoptions'>" .
 			"<legend>" . Message::get( 'powersearch-legend', Message::ESCAPED, Message::USER_LANGUAGE ) . '</legend>' .
 			"<h4>" . Message::get( 'powersearch-ns', Message::PARSE, Message::USER_LANGUAGE ) . '</h4>' .
 			// populated by js if available
-			"<div id='smw-search-togglensview'></div>" .
-			"<div id='mw-search-togglebox'></div>" .
+			"<div id='smw-search-togglensview'>" .
+			'<input type="button" id="smw-togglensview" value="' . $val . '">' .
+			'</div>' .
+			// Use `smw-search-togglebox` instead of `mw-search-togglebox` to avoid
+			// issues with the search JS before the changes of
+			// (MW 1.33) https://github.com/wikimedia/mediawiki/commit/c5a61564618e156d7aa9fc876d67cf4b736b2aea
+			"<div id='smw-search-togglebox' style='display:$display'>" .
+			'<label>' . $this->msg( 'powersearch-togglelabel', Message::ESCAPED ) . '</label>' .
+			'<input type="button" id="mw-search-toggleall" value="' .
+			$this->msg( 'powersearch-toggleall', Message::ESCAPED ) . '"/>' .
+			'<input type="button" id="mw-search-togglenone" value="' .
+			$this->msg( 'powersearch-togglenone', Message::ESCAPED ) . '"/>' .
+			'</div>' .
 			"<div id='mw-search-ns' style='display:$display'>" . $divider .
 			implode(
 				$divider,
@@ -187,6 +204,10 @@ class NamespaceForm {
 			) .
 			$remember . "</div>" .
 		"</fieldset>";
+	}
+
+	private function msg( $key, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
+		return Message::get( $key, $type, $lang );
 	}
 
 }
