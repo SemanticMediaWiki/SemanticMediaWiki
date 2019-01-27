@@ -42,7 +42,12 @@
 		this.messages = {};
 
 		this.html = mw.html;
-		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide, #ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result, #result-error, #ask-pagination, #ask-export-links, #tab-label-smw-askt-compact, #tab-label-smw-askt-code, #tab-label-smw-askt-debug, #tab-label-smw-askt-extra, #tab-label-smw-askt-result, #tab-label-smw-askt-clipboard, #search';
+
+		this.hideList = '#ask-embed, #inlinequeryembed, #ask-showhide,' +
+		'#ask-debug, #ask-clipboard, #ask-navinfo, #ask-cache, #result,' +
+		'#result-error, #ask-pagination, #ask-export-links, #tab-label-smw-askt-compact,' +
+		'#tab-label-smw-askt-code, #tab-label-smw-askt-debug, #tab-label-smw-askt-extra,' +
+		'#tab-label-smw-askt-result, #tab-label-smw-askt-clipboard, #search';
 
 		return this;
 	};
@@ -118,7 +123,7 @@
 		$( this.hideList ).hide();
 
 		$( '#status-format-change' ).remove();
-		$( '#ask-status' ).append( html );
+		$( '#ask-change-info' ).append( html );
 	}
 
 	/**
@@ -291,23 +296,26 @@
 		// Options toggle icon
 		$( '.options-toggle-action label' ).click( function() {
 			if ( $( '#options-toggle' ).prop( 'checked' ) ) {
-				$( this).html( '+' );
-				$( this).attr( 'title', mw.msg( 'smw-section-expand' ) );
+				$( this ).html( '+' );
+				$( this ).attr( 'title', mw.msg( 'smw-section-expand' ) );
 			} else {
-				$( this).html( '-' );
-				$( this).attr( 'title', mw.msg( 'smw-section-collapse' ) );
+				$( this ).html( '-' );
+				$( this ).attr( 'title', mw.msg( 'smw-section-collapse' ) );
 			}
 		} );
 
-		// Submit the form via CTRL + q
-		$( "form" ).keypress( function ( event ) {
-			if ( event.ctrlKey && event.keyCode == 17 ) {
-				$( '#search input[type=submit]' ).click();
+		// `CTRL + q` shortcut support to invoke a query/search with a keystroke
+		// Char check for `q` means in:
+		// - Chrome: event.charCode == 17
+		// - FF: event.charCode == 113
+		$( "#mw-content-text" ).keypress( function ( event ) {
+			if ( event.ctrlKey && ( event.charCode == 17 || event.charCode == 113 ) ) {
+				$( '#search-action' ).click();
 				event.preventDefault();
 				return false;
-			} else {
-				return true;
 			};
+
+			return true;
 		} );
 
 		// Changed condition
