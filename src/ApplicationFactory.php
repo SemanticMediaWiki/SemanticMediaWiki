@@ -238,6 +238,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return EventDispatcher
+	 */
+	public function getEventDispatcher() {
+		return EventHandler::getInstance()->getEventDispatcher();
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return TitleFactory
@@ -577,6 +586,7 @@ class ApplicationFactory {
 		$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'MediaWikiServices.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'ImporterServices.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'events.php' );
 
 		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
 		//		$containerBuilder,

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DIWikiPage;
 use Title;
 
@@ -15,6 +16,8 @@ use Title;
  * @author mwjames
  */
 class RejectParserCacheValue extends HookHandler {
+
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var DependencyLinksValidator
@@ -41,13 +44,21 @@ class RejectParserCacheValue extends HookHandler {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		// Return false to reject an otherwise usable cached value from the
-		// parser cache
-		if ( $this->dependencyLinksValidator->hasArchaicDependencies( $subject ) ) {
-			return false;
+		if ( $this->dependencyLinksValidator->hasArchaicDependencies( $subject ) === false ) {
+			return true;
 		}
 
-		return true;
+		$context = [
+			'context' => 'RejectParserCacheValue',
+			'subject' => $subject->getHash(),
+			'dependency_list' => $this->dependencyLinksValidator->getCheckedDependencies()
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
+
+		// Return false to reject an otherwise usable cached value from the
+		// parser cache
+		return false;
 	}
 
 }

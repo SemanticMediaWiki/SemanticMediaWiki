@@ -281,6 +281,14 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructEventDispatcher() {
+
+		$this->assertInstanceOf(
+			'\Onoi\EventDispatcher\EventDispatcher',
+			$this->applicationFactory->getEventDispatcher()
+		);
+	}
+
 	public function testCanConstructJobQueue() {
 
 		$this->assertInstanceOf(

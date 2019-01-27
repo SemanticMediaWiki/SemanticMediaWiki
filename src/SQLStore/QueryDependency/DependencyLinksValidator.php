@@ -29,6 +29,11 @@ class DependencyLinksValidator {
 	private $checkDependencies = false;
 
 	/**
+	 * @var []
+	 */
+	private $checkedDependencies = [];
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
@@ -44,6 +49,15 @@ class DependencyLinksValidator {
 	 */
 	public function canCheckDependencies( $checkDependencies ) {
 		$this->checkDependencies = (bool)$checkDependencies;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	public function getCheckedDependencies() {
+		return $this->checkedDependencies;
 	}
 
 	/**
@@ -67,6 +81,8 @@ class DependencyLinksValidator {
 	 * @return boolean
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
+
+		$this->checkedDependencies = [];
 
 		if ( $this->checkDependencies === false ) {
 			return false;
@@ -96,7 +112,7 @@ class DependencyLinksValidator {
 		$rows = $connection->select(
 			[ $proptables[$tableid]->getName(), $id_table . ' AS p', $id_table . ' AS v' ],
 			[
-				'v.smw_id', 'v.smw_touched'
+				'v.smw_id', 'v.smw_subobject', 'v.smw_touched'
 			],
 			[
 				'p.smw_hash' => $subject->getSha1(),
@@ -124,6 +140,7 @@ class DependencyLinksValidator {
 			}
 
 			$list[] = $row->smw_id;
+			$this->checkedDependencies[] = $row->smw_subobject;
 		}
 
 		if ( $list === [] ) {
