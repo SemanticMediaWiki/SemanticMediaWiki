@@ -54,7 +54,8 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'schema_body',
 			[
 				'text' => 'Foo',
-				'unknown_type' => 'bar'
+				'unknown_type' => 'bar',
+				'isYaml' => false
 			]
 		];
 

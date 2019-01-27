@@ -134,6 +134,10 @@ class Content extends JsonContent {
 			$this->contentFormatter->getModuleStyles()
 		);
 
+		$output->addModules(
+			$this->contentFormatter->getModules()
+		);
+
 		$parserData = new ParserData( $title, $output );
 		$schema = null;
 

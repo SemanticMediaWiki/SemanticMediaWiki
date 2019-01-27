@@ -105,6 +105,27 @@
     padding-top:5px;
 }
 
+.smw-schema-placeholder {
+    opacity:0.5;
+    position: relative;
+}
+
+.client-nojs .smw-schema-placeholder {
+    opacity: 1;
+}
+
+.client-nojs .smw-schema-placeholder-message {
+    display: none;
+}
+
+.smw-schema-data {
+    display: none;
+}
+
+.client-nojs .smw-schema-data {
+    display: block;
+}
+
 /**
  * Tabs
  */
