@@ -148,6 +148,9 @@ class Task extends ApiBase {
 
 				$parameters['sort'] = implode( ',', $sort );
 				$parameters['order'] = implode( ',', $order );
+				// Avoid "PHP Notice:  Undefined index: original-value ... 
+				// param-processor\src\Processor.php"
+				unset( $parameters['sortkeys'] );
 			}
 
 			QueryProcessor::addThisPrintout( $printouts, $parameters );
@@ -160,11 +163,11 @@ class Task extends ApiBase {
 				$printouts
 			);
 
-			$query->setLimit(
+			$query->setUnboundLimit(
 				$parameters['limit']
 			);
 
-			$query->setOffset(
+			$query->setUnboundOffset(
 				$parameters['offset']
 			);
 

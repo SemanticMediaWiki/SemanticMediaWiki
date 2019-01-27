@@ -36,7 +36,7 @@ return [
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
-			'smw/ext.smw.factbox.css'
+			'smw/factbox/smw.factbox.css'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
@@ -658,6 +658,13 @@ return [
 		'targets' => [
 			'mobile',
 			'desktop'
+		]
+	],
+
+	'smw.factbox'  => $moduleTemplate + [
+		'scripts'  => [
+			'libs/tinysort/tinysort.min.js',
+			'smw/factbox/smw.factbox.js'
 		]
 	],
 

@@ -186,8 +186,17 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetQueryDescription( $properties, $value, $expected ) {
 
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\dataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getDescriptionBuilderRegistry' )
+			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );
+		$instance->setDataValueServiceFactory( $dataValueServiceFactory );
 
 		$description = $instance->getQueryDescription( htmlspecialchars( $value ) );
 

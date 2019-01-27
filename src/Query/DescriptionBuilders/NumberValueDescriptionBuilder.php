@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
 use SMWDINumber as DINumber;
 use SMWNumberValue as NumberValue;
@@ -13,14 +13,19 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class NumberValueDescriptionDeserializer extends DescriptionDeserializer {
+class NumberValueDescriptionBuilder extends DescriptionBuilder {
+
+	/**
+	 * @var DataValue
+	 */
+	private $dataValue;
 
 	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeserializerFor( $serialization ) {
+	public function isBuilderFor( $serialization ) {
 		return $serialization instanceof NumberValue;
 	}
 
@@ -31,10 +36,14 @@ class NumberValueDescriptionDeserializer extends DescriptionDeserializer {
 	 *
 	 * @return Description
 	 */
-	public function deserialize( $value ) {
+	public function newDescription( NumberValue $dataValue, $value ) {
 
 		$comparator = SMW_CMP_EQ;
-		$this->prepareValue( $value, $comparator );
+
+		$this->dataValue = $dataValue;
+		$property = $this->dataValue->getProperty();
+
+		$this->prepareValue( $property, $value, $comparator );
 
 		if( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_PRIM_LIKE ) {
 
@@ -43,7 +52,7 @@ class NumberValueDescriptionDeserializer extends DescriptionDeserializer {
 			if ( $this->dataValue->isValid() ) {
 				return $this->descriptionFactory->newValueDescription(
 					$this->dataValue->getDataItem(),
-					$this->dataValue->getProperty(),
+					$property,
 					$comparator
 				);
 			} else {
@@ -61,7 +70,6 @@ class NumberValueDescriptionDeserializer extends DescriptionDeserializer {
 		}
 
 		$dataItem = $this->dataValue->getDataItem();
-		$property = $this->dataValue->getProperty();
 
 		if ( $this->getErrors() !== [] ) {
 			return $this->descriptionFactory->newThingDescription();

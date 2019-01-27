@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
 use SMW\DataValueFactory;
@@ -19,14 +19,19 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserializer {
+class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
+
+	/**
+	 * @var DataValue
+	 */
+	private $dataValue;
 
 	/**
 	 * @since 2.4
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeserializerFor( $serialization ) {
+	public function isBuilderFor( $serialization ) {
 		return $serialization instanceof MonolingualTextValue;
 	}
 
@@ -38,7 +43,7 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function deserialize( $value ) {
+	public function newDescription( MonolingualTextValue $dataValue, $value ) {
 
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
@@ -48,6 +53,8 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
 			return new ThingDescription();
 		}
+
+		$this->dataValue = $dataValue;
 
 		$subdescriptions = [];
 		list( $text, $languageCode ) = $this->dataValue->getValuesFromString( $value );
@@ -59,14 +66,14 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			if (
 				( $languageCode === '' ) &&
 				( $property->getKey() === '_LCODE' ) &&
-				( !$this->dataValue->isEnabledFeature( SMW_DV_MLTV_LCODE ) ) ) {
+				( !$this->dataValue->hasFeature( SMW_DV_MLTV_LCODE ) ) ) {
 				continue;
 			}
 
 			$value = $property->getKey() === '_LCODE' ? $languageCode : $text;
 			$comparator = SMW_CMP_EQ;
 
-			$this->prepareValue( $value, $comparator );
+			$this->prepareValue( $this->dataValue->getProperty(), $value, $comparator );
 
 			// Directly use the DI instead of going through the DVFactory to
 			// avoid having ~zh-* being validated when building a DV
@@ -87,10 +94,10 @@ class MonolingualTextValueDescriptionDeserializer extends DescriptionDeserialize
 			$subdescriptions[] = $this->newSubdescription( $dataValue, $comparator );
 		}
 
-		return $this->getFinalDescriptionFor( $subdescriptions );
+		return $this->newConjunction( $subdescriptions );
 	}
 
-	private function getFinalDescriptionFor( $subdescriptions ) {
+	private function newConjunction( $subdescriptions ) {
 
 		$count = count( $subdescriptions );
 

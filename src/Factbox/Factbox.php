@@ -122,7 +122,7 @@ class Factbox {
 		$this->content = $this->fetchContent( $this->getMagicWords() );
 
 		if ( $this->content !== '' || $this->attachments !== [] ) {
-			$this->parserData->getOutput()->addModules( $this->getModules() );
+			$this->parserData->getOutput()->addModules( self::getModules() );
 			$this->parserData->pushSemanticDataToParserOutput();
 			$this->isVisible = true;
 		}
@@ -239,6 +239,8 @@ class Factbox {
 					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;'] )
 				) . HtmlDivTable::body( $rows ),
 				[
+					// ID is used for the sorting JS!
+					'id'    => 'smw-factbox-attachments',
 					'class' => 'smwfacttable'
 				]
 			)
@@ -360,10 +362,11 @@ class Factbox {
 	 *
 	 * @return array
 	 */
-	protected function getModules() {
+	public static function getModules() {
 		return [
 			'ext.smw.style',
-			'ext.smw.table.styles'
+			'ext.smw.table.styles',
+			'smw.factbox'
 		];
 	}
 

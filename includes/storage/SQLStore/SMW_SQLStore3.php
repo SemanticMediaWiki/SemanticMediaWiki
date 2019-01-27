@@ -51,7 +51,7 @@ class SMWSQLStore3 extends SMWStore {
 	 * in the ID_TABLE
 	 *
 	 * When changing the upper bound, please make sure to copy the current upper
-	 * bound as legcy to the TableIntegrityExaminer::checkPredefinedPropertyUpperbound
+	 * bound as legacy to the TableIntegrityExaminer::checkOnPostCreation
 	 */
 	const FIXED_PROPERTY_ID_UPPERBOUND = 500;
 

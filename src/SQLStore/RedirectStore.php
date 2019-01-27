@@ -85,7 +85,7 @@ class RedirectStore {
 	 */
 	public function findRedirect( $title, $namespace ) {
 
-		$hash = HashBuilder::createHashIdFromSegments(
+		$hash = $this->makeHash(
 			$title,
 			$namespace
 		);
@@ -112,7 +112,7 @@ class RedirectStore {
 
 		$this->insert( $id, $title, $namespace );
 
-		$hash = HashBuilder::createHashIdFromSegments(
+		$hash = $this->makeHash(
 			$title,
 			$namespace
 		);
@@ -195,7 +195,7 @@ class RedirectStore {
 
 		$this->delete( $title, $namespace );
 
-		$hash = HashBuilder::createHashIdFromSegments(
+		$hash = $this->makeHash(
 			$title,
 			$namespace
 		);
@@ -269,6 +269,10 @@ class RedirectStore {
 		}
 
 		$connection->freeResult( $res );
+	}
+
+	private function makeHash( $title, $namespace ) {
+		return "$title#$namespace";
 	}
 
 }

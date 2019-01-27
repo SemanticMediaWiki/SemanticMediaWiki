@@ -13,6 +13,7 @@ use SMW\SQLStore\Installer;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMWSql3SmwIds;
 
 /**
@@ -51,6 +52,11 @@ class TableIntegrityExaminer {
 	private $touchedField;
 
 	/**
+	 * @var IdBorder
+	 */
+	private $idBorder;
+
+	/**
 	 * @var array
 	 */
 	private $predefinedProperties = [];
@@ -61,12 +67,14 @@ class TableIntegrityExaminer {
 	 * @param SQLStore $store
 	 * @param HashField $hashField
 	 * @param FixedProperties $fixedProperties
+	 * @param IdBorder $idBorder
 	 */
-	public function __construct( SQLStore $store, HashField $hashField, FixedProperties $fixedProperties, TouchedField $touchedField ) {
+	public function __construct( SQLStore $store, HashField $hashField, FixedProperties $fixedProperties, TouchedField $touchedField, IdBorder $idBorder ) {
 		$this->store = $store;
 		$this->hashField = $hashField;
 		$this->fixedProperties = $fixedProperties;
 		$this->touchedField = $touchedField;
+		$this->idBorder = $idBorder;
 		$this->messageReporter = new NullMessageReporter();
 		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
 	}
@@ -103,6 +111,16 @@ class TableIntegrityExaminer {
 
 		$this->fixedProperties->setMessageReporter( $this->messageReporter );
 		$this->fixedProperties->check();
+
+		$this->idBorder->setMessageReporter( $this->messageReporter );
+
+		$this->idBorder->check(
+			[
+				// #3314 (3.0-)
+				IdBorder::LEGACY_BOUND => 50,
+				IdBorder::UPPER_BOUND  => SQLStore::FIXED_PROPERTY_ID_UPPERBOUND
+			]
+		);
 
 		$this->checkPredefinedPropertyIndices();
 
@@ -150,13 +168,9 @@ class TableIntegrityExaminer {
 	 */
 	private function checkPredefinedPropertyIndices() {
 
-		$connection = $this->store->getConnection( DB_MASTER );
-
-		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
-		$this->checkPredefinedPropertyUpperbound();
-
 		// now write actual properties; do that each time, it is cheap enough
 		// and we can update sortkeys by current language
+		$this->messageReporter->reportMessage( "Checking predefined properties ...\n" );
 		$this->messageReporter->reportMessage( "   ... initialize predefined properties ...\n" );
 
 		foreach ( $this->predefinedPropertyList as $prop => $id ) {
@@ -176,73 +190,6 @@ class TableIntegrityExaminer {
 		}
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
-	}
-
-	private function checkPredefinedPropertyUpperbound() {
-
-		$connection = $this->store->getConnection( DB_MASTER );
-
-		// Check if we already have this structure
-		$upperbound = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
-		$legacyBound = 50;
-
-		$row = $connection->selectRow(
-			SQLStore::ID_TABLE,
-			'smw_id',
-			'smw_iw=' . $connection->addQuotes( SMW_SQL3_SMWBORDERIW )
-		);
-
-		if ( $row !== false && $row->smw_id == $upperbound ) {
-			return $this->messageReporter->reportMessage( "   ... space for internal properties already allocated.\n" );
-		} elseif ( $row === false ) {
-			$currentUpperbound = $legacyBound;
-		} else {
-			$currentUpperbound = $row->smw_id;
-
-			// Delete the current upperbound to avoid having a duplicate border
-			$connection->delete(
-				SQLStore::ID_TABLE,
-				[ 'smw_id' => $currentUpperbound ],
-				__METHOD__
-			);
-		}
-
-		$this->messageReporter->reportMessage( "   ... allocating space for internal properties ...\n" );
-		$this->store->getObjectIds()->moveSMWPageID( $upperbound );
-
-		$connection->insert(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id' => $upperbound,
-				'smw_title' => '',
-				'smw_namespace' => 0,
-				'smw_iw' => SMW_SQL3_SMWBORDERIW,
-				'smw_subobject' => '',
-				'smw_sortkey' => ''
-			],
-			__METHOD__
-		);
-
-		if ( $currentUpperbound == $upperbound ) {
-			return $this->messageReporter->reportMessage( "   ... done.\n" );
-		}
-
-		if ( $currentUpperbound < $upperbound ) {
-			$this->messageReporter->reportMessage( "   ... moving from $currentUpperbound to $upperbound upperbound (may take a moment) ..." );
-			$this->messageReporter->reportMessage( "       " );
-		}
-
-		for ( $i = $currentUpperbound; $i < $upperbound; $i++ ) {
-
-			if ( ( $i - $currentUpperbound ) % 60 === 0 ) {
-				$this->messageReporter->reportMessage( "\n       " );
-			}
-
-			$this->messageReporter->reportMessage( "." );
-			$this->store->getObjectIds()->moveSMWPageID( $i );
-		}
-
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
 	private function checkSortField( $log ) {

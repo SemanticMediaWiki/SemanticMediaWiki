@@ -285,6 +285,23 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIn() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'makeList' )
+			->with( $this->equalTo( [ 'a', 'b' ] ) )
+			->will( $this->returnValue( 'a, b' ) );
+
+		$instance = new Query(
+			$this->connection
+		);
+
+		$this->assertSame(
+			'Foo IN (a, b)',
+			$instance->in( 'Foo', [ 'a', 'b' ] )
+		);
+	}
+
 	public function testNeq() {
 
 		$this->connection->expects( $this->once() )

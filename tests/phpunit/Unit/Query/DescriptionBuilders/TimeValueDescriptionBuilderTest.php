@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer;
+use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer
+ * @covers \SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,35 +14,35 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\DVDescriptionDeserializer\TimeValueDescriptionDeserializer',
-			new TimeValueDescriptionDeserializer()
+			TimeValueDescriptionBuilder::class,
+			new TimeValueDescriptionBuilder()
 		);
 	}
 
-	public function testIsDeserializerForTimeValue() {
+	public function testIsBuilderForTimeValue() {
 
 		$dataValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new TimeValueDescriptionDeserializer();
+		$instance = new TimeValueDescriptionBuilder();
 
 		$this->assertTrue(
-			$instance->isDeserializerFor( $dataValue )
+			$instance->isBuilderFor( $dataValue )
 		);
 	}
 
 	/**
 	 * @dataProvider valueProvider
 	 */
-	public function testDeserialize( $value, $decription ) {
+	public function testNewDescription( $value, $decription ) {
 
 		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
 			->disableOriginalConstructor()
@@ -60,12 +60,11 @@ class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getProperty' )
 			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
 
-		$instance = new TimeValueDescriptionDeserializer();
-		$instance->setDataValue( $timeValue );
+		$instance = new TimeValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			$decription,
-			$instance->deserialize( $value )
+			$instance->newDescription( $timeValue, $value )
 		);
 	}
 
@@ -79,12 +78,11 @@ class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isValid' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new TimeValueDescriptionDeserializer();
-		$instance->setDataValue( $timeValue );
+		$instance = new TimeValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			'\SMW\Query\Language\ThingDescription',
-			$instance->deserialize( 'Foo' )
+			$instance->newDescription( $timeValue, 'Foo' )
 		);
 	}
 
@@ -94,11 +92,10 @@ class TimeValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new TimeValueDescriptionDeserializer();
-		$instance->setDataValue( $timeValue );
+		$instance = new TimeValueDescriptionBuilder();
 
 		$this->setExpectedException( 'InvalidArgumentException' );
-		$instance->deserialize( [] );
+		$instance->newDescription( $timeValue, [] );
 	}
 
 	public function valueProvider() {

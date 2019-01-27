@@ -121,6 +121,13 @@ class RequestOptions {
 	}
 
 	/**
+	 * @since 3.1
+	 */
+	public function emptyExtraConditions() {
+		$this->extraConditions = [];
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $key

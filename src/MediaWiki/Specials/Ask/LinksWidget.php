@@ -206,21 +206,31 @@ class LinksWidget {
 			return '';
 		}
 
-		return Html::rawElement( 'div', [ 'class' => 'smw-ask-button-submit' ], Html::element(
-			'input',
+		return  Html::rawElement(
+			'div',
+				[
+					'id' => 'ask-change-info'
+				]
+			) . Html::rawElement(
+			'div',
 			[
-				'type'  => 'submit',
-				'class' => '',
-				'value' => wfMessage( 'smw_ask_submit' )->escaped()
-			], ''
-		) . ' ' . Html::element(
-			'input',
-			[
-				'type'  => 'hidden',
-				'name'  => 'eq',
-				'value' => 'yes'
-			], ''
-		) );
+				'class' => 'smw-ask-button-submit'
+			], Html::element(
+				'input',
+				[
+					'id' => 'search-action',
+					'type'  => 'submit',
+					'value' => wfMessage( 'smw_ask_submit' )->escaped()
+				]
+			) . Html::element(
+				'input',
+				[
+					'type'  => 'hidden',
+					'name'  => 'eq',
+					'value' => 'yes'
+				]
+			)
+		);
 	}
 
 	/**

@@ -19,6 +19,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $hashField;
 	private $touchedField;
+	private $idBorder;
 	private $store;
 	private $fixedProperties;
 
@@ -38,6 +39,10 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->idBorder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\IdBorder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +52,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			TableIntegrityExaminer::class,
-			new TableIntegrityExaminer( $this->store, $this->hashField, $this->fixedProperties, $this->touchedField )
+			new TableIntegrityExaminer( $this->store, $this->hashField, $this->fixedProperties, $this->touchedField, $this->idBorder )
 		);
 	}
 
@@ -103,7 +108,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
-			$this->touchedField
+			$this->touchedField,
+			$this->idBorder
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -131,11 +137,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->at( 1 ) )
-			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'smw_id' => \SMW\SQLStore\SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ] ) );
-
-		$connection->expects( $this->at( 2 ) )
+		$connection->expects( $this->at( 0 ) )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
@@ -146,7 +148,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 					'smw_subobject' => '' ] ) )
 			->will( $this->returnValue( (object)$row ) );
 
-		$connection->expects( $this->at( 3 ) )
+		$connection->expects( $this->at( 1 ) )
 			->method( 'selectRow' )
 			->will( $this->returnValue( (object)$row ) );
 
@@ -174,7 +176,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
-			$this->touchedField
+			$this->touchedField,
+			$this->idBorder
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -187,9 +190,6 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckOnPostCreationOnInvalidProperty() {
 
-		$row = new \stdClass;
-		$row->smw_id = 42;
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
 			->getMock();
@@ -200,10 +200,6 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -229,7 +225,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
-			$this->touchedField
+			$this->touchedField,
+			$this->idBorder
 		);
 
 		$instance->setPredefinedPropertyList( [
@@ -291,7 +288,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
-			$this->touchedField
+			$this->touchedField,
+			$this->idBorder
 		);
 
 		$instance->setPredefinedPropertyList( [] );
@@ -339,7 +337,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
-			$this->touchedField
+			$this->touchedField,
+			$this->idBorder
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );

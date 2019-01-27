@@ -176,6 +176,11 @@ abstract class SMWDataValue {
 	protected $dataValueServiceFactory;
 
 	/**
+	 * @var DescriptionBuilderRegistry
+	 */
+	private $descriptionBuilderRegistry;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $typeid
@@ -468,10 +473,13 @@ abstract class SMWDataValue {
 	 */
 	public function getQueryDescription( $value ) {
 
-		$descriptionDeserializer = DVDescriptionDeserializerRegistry::getInstance()->getDescriptionDeserializerBy( $this );
-		$description = $descriptionDeserializer->deserialize( $value );
+		$descriptionBuilderRegistry = $this->dataValueServiceFactory->getDescriptionBuilderRegistry();
+		$descriptionBuilder = $descriptionBuilderRegistry->getDescriptionBuilder( $this );
 
-		foreach ( $descriptionDeserializer->getErrors() as $error ) {
+		$descriptionBuilder->clearErrors();
+		$description = $descriptionBuilder->newDescription( $this, $value );
+
+		foreach ( $descriptionBuilder->getErrors() as $error ) {
 			$this->addError( $error );
 		}
 
@@ -481,10 +489,10 @@ abstract class SMWDataValue {
 	/**
 	 * @deprecated since 2.3
 	 *
-	 * @see DescriptionDeserializer::prepareValue
+	 * @see DescriptionBuilder::prepareValue
 	 *
 	 * This method should no longer be used for direct public access, instead a
-	 * DataValue is expected to register a DescriptionDeserializer with
+	 * DataValue is expected to register a DescriptionBuilder with
 	 * DVDescriptionDeserializerRegistry.
 	 */
 	static public function prepareValue( &$value, &$comparator ) {

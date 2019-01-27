@@ -75,7 +75,7 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)[ 'smw_id' => 42, 'smw_touched' => '99999' ] ] ) );
+			->will( $this->returnValue( [ (object)[ 'smw_id' => 42, 'smw_subobject' => '_foo', 'smw_touched' => '99999' ] ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -105,6 +105,11 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->hasArchaicDependencies( $subject )
+		);
+
+		$this->assertEquals(
+			[ '_foo' ],
+			$instance->getCheckedDependencies()
 		);
 	}
 
