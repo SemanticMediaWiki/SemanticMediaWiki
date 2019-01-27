@@ -208,6 +208,16 @@ class DataValueServiceFactory {
 		return $propertyRestrictionExaminer;
 	}
 
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return DescriptionBuilderRegistry
+	 */
+	public function getDescriptionBuilderRegistry() {
+		return $this->containerBuilder->singleton( 'DescriptionBuilderRegistry' );
+	}
+
 	private function getDispatchableValueFormatter( $dataValue ) {
 
 		if ( $this->dispatchingDataValueFormatter === null ) {

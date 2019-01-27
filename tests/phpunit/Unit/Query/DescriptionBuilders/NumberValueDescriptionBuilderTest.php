@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer;
+use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 
 /**
- * @covers \SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializer
+ * @covers \SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,33 +13,33 @@ use SMW\Deserializers\DVDescriptionDeserializer\NumberValueDescriptionDeserializ
  *
  * @author mwjames
  */
-class NumberValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase {
+class NumberValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			NumberValueDescriptionDeserializer::class,
-			new NumberValueDescriptionDeserializer()
+			NumberValueDescriptionBuilder::class,
+			new NumberValueDescriptionBuilder()
 		);
 	}
 
-	public function testIsDeserializerForNumberValue() {
+	public function testIsBuilderForNumberValue() {
 
 		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new NumberValueDescriptionDeserializer();
+		$instance = new NumberValueDescriptionBuilder();
 
 		$this->assertTrue(
-			$instance->isDeserializerFor( $dataValue )
+			$instance->isBuilderFor( $dataValue )
 		);
 	}
 
 	/**
 	 * @dataProvider valueProvider
 	 */
-	public function testDeserialize( $value, $decription ) {
+	public function testNewDescription( $value, $decription ) {
 
 		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
 			->disableOriginalConstructor()
@@ -57,12 +57,11 @@ class NumberValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 			->method( 'getProperty' )
 			->will( $this->returnValue( new \SMW\DIProperty( 'Foo' ) ) );
 
-		$instance = new NumberValueDescriptionDeserializer();
-		$instance->setDataValue( $numberValue );
+		$instance = new NumberValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			$decription,
-			$instance->deserialize( $value )
+			$instance->newDescription( $numberValue, $value )
 		);
 	}
 
@@ -76,12 +75,11 @@ class NumberValueDescriptionDeserializerTest extends \PHPUnit_Framework_TestCase
 			->method( 'isValid' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new NumberValueDescriptionDeserializer();
-		$instance->setDataValue( $numberValue );
+		$instance = new NumberValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
 			'\SMW\Query\Language\ThingDescription',
-			$instance->deserialize( 'Foo' )
+			$instance->newDescription( $numberValue, 'Foo' )
 		);
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
 use DateInterval;
 use InvalidArgumentException;
@@ -15,40 +15,49 @@ use SMWTimeValue as TimeValue;
  *
  * @author mwjames
  */
-class TimeValueDescriptionDeserializer extends DescriptionDeserializer {
+class TimeValueDescriptionBuilder extends DescriptionBuilder {
+
+	/**
+	 * @var DataValue
+	 */
+	private $dataValue;
 
 	/**
 	 * @since 2.3
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeserializerFor( $serialization ) {
+	public function isBuilderFor( $serialization ) {
 		return $serialization instanceof TimeValue;
 	}
 
 	/**
 	 * @since 2.3
 	 *
+	 * @param TimeValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function deserialize( $value ) {
+	public function newDescription( TimeValue $dataValue, $value ) {
 
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'The value needs to be a string' );
 		}
 
+		$this->dataValue = $dataValue;
+		$property = $this->dataValue->getProperty();
+
 		$comparator = SMW_CMP_EQ;
-		$this->prepareValue( $value, $comparator );
+		$this->prepareValue( $property, $value, $comparator );
 
 		if( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_NLKE ) {
 
 			$this->dataValue->setUserValue( $value );
 
 			if ( $this->dataValue->isValid() ) {
-				return $this->descriptionFactory->newValueDescription( $this->dataValue->getDataItem(), $this->dataValue->getProperty(), $comparator );
+				return $this->descriptionFactory->newValueDescription( $this->dataValue->getDataItem(), $property, $comparator );
 			} else {
 				return $this->descriptionFactory->newThingDescription();
 			}

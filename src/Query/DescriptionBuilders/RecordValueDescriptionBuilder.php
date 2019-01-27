@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Deserializers\DVDescriptionDeserializer;
+namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
 use SMW\DataValueFactory;
@@ -18,14 +18,19 @@ use SMWRecordValue as RecordValue;
  *
  * @author mwjames
  */
-class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
+class RecordValueDescriptionBuilder extends DescriptionBuilder {
+
+	/**
+	 * @var DataValue
+	 */
+	private $dataValue;
 
 	/**
 	 * @since 2.3
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeserializerFor( $serialization ) {
+	public function isBuilderFor( $serialization ) {
 		return $serialization instanceof RecordValue || $serialization instanceof ReferenceValue;
 	}
 
@@ -37,11 +42,13 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function deserialize( $value ) {
+	public function newDescription( $dataValue, $value ) {
 
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'value needs to be a string' );
 		}
+
+		$this->dataValue = $dataValue;
 
 		if ( $value === '' ) {
 			$this->addError( wfMessage( 'smw_novalues' )->text() );
@@ -101,7 +108,7 @@ class RecordValueDescriptionDeserializer extends DescriptionDeserializer {
 		$description = null;
 		$comparator = SMW_CMP_EQ;
 
-		$this->prepareValue( $values[$valueIndex], $comparator );
+		$this->prepareValue( $this->dataValue->getProperty(), $values[$valueIndex], $comparator );
 
 		// generating the DVs:
 		if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
