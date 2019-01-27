@@ -5,7 +5,8 @@ namespace SMW\MediaWiki\Connection;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
-use SMW\Connection\ConnectionProviderRef;
+use SMW\Connection\ConnRef;
+use SMW\ApplicationFactory;
 
 /**
  * @license GNU GPL v2+
@@ -123,7 +124,8 @@ class ConnectionProvider implements IConnectionProvider {
 		$transactionProfiler->silenceTransactionProfiler();
 
 		$connection = new Database(
-			new ConnectionProviderRef( $connectionProviders )
+			new ConnRef( $connectionProviders ),
+			ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);
 
 		$connection->setTransactionProfiler(
