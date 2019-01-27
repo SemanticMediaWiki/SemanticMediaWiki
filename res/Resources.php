@@ -90,6 +90,16 @@ return [
 		]
 	],
 
+	'jquery.jsonview' => $moduleTemplate + [
+		'scripts' => 'jquery/jquery.jsonview.js',
+		'styles' => 'jquery/jquery.jsonview.css',
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
 	// Load the module explicitly, otherwise mobile will complain with
 	// "Uncaught Error: Unknown dependency: jquery.async"
 	'ext.jquery.async' => $moduleTemplate + [
@@ -651,7 +661,7 @@ return [
 	// Schema content styles
 	'smw.content.schema' => $moduleTemplate + [
 		'styles' => [
-			'smw/smw.schema.css',
+			'smw/content/smw.schema.css',
 			'smw/ext.smw.table.css'
 		],
 		'position' => 'top',
@@ -665,6 +675,46 @@ return [
 		'scripts'  => [
 			'libs/tinysort/tinysort.min.js',
 			'smw/factbox/smw.factbox.js'
+		]
+	],
+
+	'smw.content.schemaview' => $moduleTemplate + [
+		'scripts' => [
+			'smw/content/smw.schemaview.js'
+		],
+		'dependencies'  => [
+			'smw.jsonview'
+		],
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.jsonview' => $moduleTemplate + [
+		'scripts' => [
+			'smw/smw.jsonview.js'
+		],
+		'styles' => [
+			'smw/smw.jsonview.css'
+		],
+		'messages' => [
+			'smw-expand',
+			'smw-collapse',
+			'smw-copy',
+			'smw-copy-clipboard-title',
+			'smw-jsonview-expand-title',
+			'smw-jsonview-collapse-title'
+		],
+		'dependencies'  => [
+			'jquery.jsonview',
+			'ext.smw'
+		],
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
 		]
 	],
 

@@ -4,6 +4,7 @@ namespace SMW\Schema\Content;
 
 use Html;
 use SMW\Utils\HtmlTabs;
+use SMW\Message;
 
 /**
  * @license GNU GPL v2+
@@ -95,14 +96,54 @@ class HtmlBuilder {
 
 	private function schema_body( $params ) {
 
-		$class = $params['unknown_type'] !== false ? ' unknown-type' : '';
+		$class = '';
+		$placeholder = '';
+
+		if ( $params['unknown_type'] !== false ) {
+			$class = ' unknown-type';
+		}
+
+		if ( $params['isYaml'] === false ) {
+			$placeholder = Html::rawElement(
+				'div',
+				[
+					'class' => 'smw-schema-placeholder-message',
+				],
+				Message::get( 'smw-data-lookup-with-wait' ) .
+				"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
+			) .	Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-overlay-spinner medium',
+					'style' => 'transform: translate(-50%, -50%);'
+				]
+			);
+		}
 
 		return Html::rawElement(
 			'div',
 			[
-				'class' => 'schema-body' . $class
+				'class' => 'schema-body' . $class,
 			],
-			$params['text']
+			Html::rawElement(
+				'div',
+				[
+					'id' => 'smw-schema',
+					'class' => 'smw-schema-placeholder',
+				],  Html::rawElement(
+				'pre',
+				[
+					'id' => 'smw-schema-container'
+				],
+				$placeholder . Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-schema-data' . ( $params['isYaml'] ? '-yaml' : '' ),
+					],
+					$params['text']
+				)
+			)
+			)
 		);
 	}
 

@@ -64,6 +64,15 @@ class ContentFormatter {
 	/**
 	 * @since 3.0
 	 *
+	 * @return []
+	 */
+	public function getModules() {
+		return [ 'smw.content.schemaview' ];
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param Schema $schema
 	 *
 	 * @return string
@@ -173,12 +182,11 @@ class ContentFormatter {
 			if ( !$isYaml ) {
 				$text = json_encode( json_decode( $text ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 			}
-
-			$text = Html::rawElement( 'pre', [ 'class' => 'content-no-highlight' ], $text );
 		}
 
 		$params = [
 			'text' => $text,
+			'isYaml' => $isYaml,
 			'unknown_type' => $this->unknownType
 		];
 

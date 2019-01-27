@@ -43,6 +43,18 @@
 	clear: both;
 }
 
+.clientnojs {
+  display: none;
+}
+
+.client-nojs .clientnojs {
+  display: block;
+}
+
+.client-nojs .smw-overlay-spinner {
+	 display: none;
+}
+
 .smw-placeholder {
 	list-style: none;
 	background-color: #f5f5f5;
