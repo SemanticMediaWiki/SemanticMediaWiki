@@ -164,7 +164,9 @@ class MySQLTableBuilder extends TableBuilder {
 				$type .= ' NOT NULL';
 			}
 
-			if ( $row->Key == 'PRI' ) { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
+			// Indicates PRIMARY KEY or index and since updating "KEY" is not
+			// possible only allow it in combination with a `auto_increment`
+			if ( $row->Key == 'PRI' && $row->Extra == 'auto_increment' ) {
 				$type .= ' KEY';
 			}
 
@@ -290,6 +292,14 @@ class MySQLTableBuilder extends TableBuilder {
 		// the length information from the temporary mirror when comparing new and
 		// old; of course we won't detect length changes!
 		foreach ( $indices as $k => $columns ) {
+
+			// Avoid "Error: 1068 Multiple primary key defined " when a primary
+			// index already exists and you try to add another one (e.g. defined
+			// for the same DI type but a fixed table)
+			if ( isset( $currentIndices['PRIMARY'] ) && is_array( $columns ) && $columns[1] === 'PRIMARY KEY' ) {
+				unset( $indices[$k] );
+			}
+
 			$idx[$k] = preg_replace("/\([^)]+\)/", "", $columns );
 		}
 

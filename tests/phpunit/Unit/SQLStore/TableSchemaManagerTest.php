@@ -155,4 +155,118 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPropertyTable_UniqueIndex() {
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'foo_table' ) );
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getTableIndexes' ] )
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableFields' )
+			->will( $this->returnValue( [] ) );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getIndexField' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableIndexes' )
+			->will( $this->returnValue( [ 'foo', [ 'cols', 'type'], 'foo' ] ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
+
+		$instance = new TableSchemaManager(
+			$this->store
+		);
+
+		$table = $instance->findTable( 'foo_table' );
+
+		$this->assertEquals(
+			[
+				'sp' => 's_id,p_id',
+				'po' => 'foo',
+				[ 'cols', 'type' ]
+			],
+			$table->get( 'indices' )
+		);
+	}
+
+	public function testPropertyTable_FixedTable() {
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'foo_fixed_table' ) );
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTableDefinition->expects( $this->once() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( true ) );
+
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getTableIndexes' ] )
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableFields' )
+			->will( $this->returnValue( [] ) );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getIndexField' )
+			->will( $this->returnValue( 'bar' ) );
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableIndexes' )
+			->will( $this->returnValue( [ 'foo' ] ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
+
+		$instance = new TableSchemaManager(
+			$this->store
+		);
+
+		$table = $instance->findTable( 'foo_fixed_table' );
+
+		$this->assertEquals(
+			[
+				'sp' => 's_id',
+				'po' => 'bar',
+				'foo',
+			],
+			$table->get( 'indices' )
+		);
+	}
+
 }

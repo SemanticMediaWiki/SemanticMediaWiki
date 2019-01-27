@@ -351,22 +351,31 @@ class TableSchemaManager {
 
 		foreach ( $diHandler->getTableIndexes() as $value ) {
 
-			if ( strpos( $value, 'p_id' ) !== false && $propertyTable->isFixedPropertyTable() ) {
+			// For an array, the first defines the column, the second the type
+			// (e.g. `[ 'p_id,s_id,o_hash', 'PRIMARY KEY' ]`)
+			$val = is_array( $value ) ? $value[0] : $value;
+
+			// Unique?
+			if ( array_search( $val, $indexes ) !== false ) {
 				continue;
 			}
 
-			if ( strpos( $value, 'o_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+			// Test that a selected index can actually be created given it field
+			// constraints
+			if ( strpos( $val, 'p_id' ) !== false && $propertyTable->isFixedPropertyTable() ) {
 				continue;
 			}
 
-			if ( strpos( $value, 's_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+			if ( strpos( $val, 'o_id' ) !== false && !$propertyTable->usesIdSubject() ) {
+				continue;
+			}
+
+			if ( strpos( $val, 's_id' ) !== false && !$propertyTable->usesIdSubject() ) {
 				continue;
 			}
 
 			$indexes = array_merge( $indexes, [ $value ] );
 		}
-
-		$indexes = array_unique( $indexes );
 
 		foreach ( $diHandler->getTableFields() as $fieldname => $fieldType ) {
 			$fieldarray[$fieldname] = $fieldType;
