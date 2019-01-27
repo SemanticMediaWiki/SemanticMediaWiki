@@ -196,6 +196,9 @@ class PropertySubjectsLookup {
 					$extraCondition( $query );
 				}
 			}
+
+			// Avoid `getSQLConditions` to work on the condition
+			$requestOptions->emptyExtraConditions();
 		}
 
 		if ( $proptable->usesIdSubject() ) {
