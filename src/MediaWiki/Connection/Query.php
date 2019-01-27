@@ -192,6 +192,18 @@ class Query {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string $k
+	 * @param array $v
+	 *
+	 * @return string
+	 */
+	public function in( $k, array $v ) {
+		return "$k IN (" . $this->connection->makeList( $v ) . ')';
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $k
@@ -248,6 +260,10 @@ class Query {
 	 */
 	public function condition( $condition ) {
 
+		if ( $condition === '' ) {
+			return;
+		}
+
 		if ( is_string( $condition ) ) {
 			$condition = [ $condition ];
 		}
@@ -262,6 +278,16 @@ class Query {
 	 */
 	public function options( array $options ) {
 		$this->options = $options;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function option( $key, $value ) {
+		$this->options[$key] = $value;
 	}
 
 	/**
@@ -283,6 +309,15 @@ class Query {
 		];
 
 		return json_encode( $params );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getSQL() {
+		return $this->sql();
 	}
 
 	/**
