@@ -34,6 +34,10 @@
 			"contents": "[[Has text:=[[Has number:=42]] [[Has number::1001]]]] [[Category:P0449]]"
 		},
 		{
+			"page": "Example/P0449/5",
+			"contents": "AAA[[Has text::[[Lorem ipsum]]| ]]BBB"
+		},
+		{
 			"page": "Example/P0449/Q.1",
 			"contents": "{{#ask: [[Category:P0449]] |format=embedded }}"
 		}
@@ -133,6 +137,28 @@
 					],
 					"propertyValues": []
 				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 hidden annotation",
+			"subject": "Example/P0449/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": []
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAABBB"
+				]
 			}
 		}
 	],
