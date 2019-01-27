@@ -45,6 +45,14 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcessOnArchaicDependencies_RejectParserCacheValue() {
 
+		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$eventDispatcher->expects( $this->once() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( 'InvalidateResultCache' ) );
+
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
@@ -52,8 +60,16 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $subject ) )
 			->will( $this->returnValue( true ) );
 
+		$this->dependencyLinksValidator->expects( $this->once() )
+			->method( 'getCheckedDependencies' )
+			->will( $this->returnValue( [] ) );
+
 		$instance = new RejectParserCacheValue(
 			$this->dependencyLinksValidator
+		);
+
+		$instance->setEventDispatcher(
+			$eventDispatcher
 		);
 
 		$this->assertFalse(

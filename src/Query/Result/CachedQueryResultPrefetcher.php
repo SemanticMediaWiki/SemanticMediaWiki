@@ -15,6 +15,7 @@ use SMW\Utils\BufferedStatsdCollector;
 use SMW\Utils\Timer;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
+use SMW\SQLStore\SQLStore;
 
 /**
  * The prefetcher only caches the subject list from a computed a query
@@ -278,6 +279,16 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 		}
 
 		return $queryResult;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $ids
+	 * @param string $context
+	 */
+	public function invalidate( array $queryList, $context = '' ) {
+		$this->resetCacheBy( $queryList, $context );
 	}
 
 	/**

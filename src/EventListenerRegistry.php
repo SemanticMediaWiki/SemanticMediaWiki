@@ -39,7 +39,18 @@ class EventListenerRegistry implements EventListenerCollection {
 	 * @since 2.2
 	 */
 	public function getCollection() {
-		return $this->addListenersToCollection()->getCollection();
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$invalidateResultCacheEventListener = $applicationFactory->create( 'InvalidateResultCacheEventListener' );
+
+		$invalidateResultCacheEventListener->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$this->eventListenerCollection->registerListener( 'InvalidateResultCache', $invalidateResultCacheEventListener );
+		$this->addListenersToCollection();
+
+		return $this->eventListenerCollection->getCollection();
 	}
 
 	private function addListenersToCollection() {
