@@ -27,7 +27,7 @@
 			$checkboxes.prop( 'checked', true );
 		} );
 
-		$( document ).on( "click", "#mw-search-togglenone", function(){
+		$( document ).on( "click", "#mw-search-togglenone", function() {
 			$checkboxes.prop( 'checked', false );
 		} );
 
@@ -44,7 +44,7 @@
 			nsList = mw.msg( 'smw-search-show' );
 		};
 
-		$( document ).on( "click", "#smw-togglensview", function(){
+		$( document ).on( "click", "#smw-togglensview", function( event ) {
 			// We carry the hidden `ns-list` on a submit so the status
 			// of the previous action is retained to either show or hide
 			// the section
