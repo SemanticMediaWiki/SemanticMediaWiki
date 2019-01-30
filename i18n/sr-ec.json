@@ -19,7 +19,6 @@
 		]
 	},
 	"smw-desc": "Чини вики приступачнијим — за машине  „и” људе ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документација на мрежи])",
-	"smw-title": "Семантички Медијавики",
 	"smw-upgrade-error-why-title": "Зашто видим ову грешку?",
 	"smw-upgrade-error-how-title": "Како да исправим ову грешку?",
 	"smw-semantics-not-enabled": "Функционалност Семантичког MediaWiki-ја није омогућена за овај вики.",
@@ -292,7 +291,6 @@
 	"smw-type-tab-types": "Типови",
 	"smw-type-tab-errors": "Грешке",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-specials-types-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Types",
 	"smw-limitreport-intext-parsertime": "[SMW] Време рашчлањивања унутартекстуалних анотација",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунд|секунда|секунди}}",
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|секунд|секунде|секунди}}",
@@ -338,6 +336,5 @@
 	"smw-concept-tab-list": "Листа",
 	"smw-concept-tab-errors": "Грешке",
 	"smw-ask-tab-extra": "Додатно",
-	"smw-ask-tab-code": "Кôд",
-	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Помоћ:$1"
+	"smw-ask-tab-code": "Кôд"
 }

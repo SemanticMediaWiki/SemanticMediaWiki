@@ -7,7 +7,6 @@
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Firwat gesinn ech dëse Feeler?",
 	"smw-upgrade-error-how-title": "Wéi kann ech dëse Feeler flécken?",
 	"smw-semantics-not-enabled": "D'Semantic MediaWiki Funktioun gouf op dëser Wiki net ageschalt.",
@@ -312,6 +311,10 @@
 	"smw-help": "Hëllef",
 	"smw-property-predefined-label-skey": "Zortéierschlëssel",
 	"smw-processing": "Verschaffen...",
+	"smw-loading": "Lueden ...",
+	"smw-expand": "Opklappen",
+	"smw-collapse": "Zesummeklappen",
+	"smw-copy": "Kopéieren",
 	"smw-types-title": "Typ: $1",
 	"smw-schema-error": "Validéierungsfeeler",
 	"smw-schema-error-violation": "Violatioun (\"$1\", \"$2\")",

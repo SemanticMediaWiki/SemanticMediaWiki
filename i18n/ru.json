@@ -56,7 +56,6 @@
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "Функциональность Semantic MediaWiki не подключена на этой вики.",
 	"smw_viewasrdf": "RDF источник",
 	"smw_finallistconjunct": " и",
@@ -635,7 +634,6 @@
 	"smw-type-contextual": "Зависимые",
 	"smw-type-compound": "Составные",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-specials-types-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Types",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-special-pageproperty-description": "На этой странице представлен интерфейс просмотра для поиска всех значений свойства и заданной страницы. Другие доступные интерфейсы поиска включают в себя [[Special:SearchByProperty|поиск свойств]] и [[Special:Ask|построитель поисковых запросов]].",
 	"smw-property-predefined-errc": "«$1» — это предварительно определённое свойство, обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] и представляет ошибки, которые возникли в связи с неправильными аннотациями значений или обработкой ввода.",
@@ -794,6 +792,10 @@
 	"smw-personal-jobqueue-watchlist": "Список наблюдения (очередь заданий)",
 	"smw-property-predefined-label-skey": "Ключ сортировки",
 	"smw-processing": "Обработка…",
+	"smw-loading": "Загрузка …",
+	"smw-expand": "Развернуть",
+	"smw-collapse": "Свернуть",
+	"smw-copy": "Копировать",
 	"smw-types-title": "Тип: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Изменение контентной модели [https://www.semantic-mediawiki.org/wiki/Help:Schema страницы схемы] не разрешено.",
 	"smw-schema-namespace-edit-protection": "Эта страница защищена, править её могут только участники с [https://www.semantic-mediawiki.org/wiki/Help:Permissions правом] <code>smw-schemaedit</code>.",
@@ -816,6 +818,5 @@
 	"smw-ask-tab-result": "Результат",
 	"smw-ask-tab-extra": "Дополнительно",
 	"smw-ask-tab-debug": "Отладка",
-	"smw-ask-tab-code": "Код",
-	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1"
+	"smw-ask-tab-code": "Код"
 }

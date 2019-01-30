@@ -32,7 +32,6 @@
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-upgrade-error": "O Semantic MediaWiki foi instalado e ativado mas está faltando um [https://www.semantic-mediawiki.org/wiki/Help:Upgrade código de atualização] apropriado que corresponda: <code>$1</code>.",
 	"smw-upgrade-error-why-title": "Por que eu vejo este erro?",
 	"smw-upgrade-error-why-explain": "A estrutura interna do banco de dados do Semantic MediaWiki foi alterada e necessita alguns ajustes para estar totalmente funcional. Pode haver vários motivos incluindo: \n* Propriedades fixas adicionais (requer configuração de tabelas) foram adicionadas\n* Uma atualização contém algumas mudanças nas tabelas ou índices tornando uma interceptação obrigatória antes de acessar os dados",
@@ -44,6 +43,8 @@
 	"smw-factbox-head": "... mais sobre \"$1\"",
 	"smw-factbox-facts": "Fatos",
 	"smw-factbox-facts-help": "Mostra declarações e fatos que foram criados por um usuário",
+	"smw-factbox-attachments": "Anexos",
+	"smw-factbox-attachments-help": "Mostra anexos disponíveis",
 	"smw-factbox-facts-derived": "Fatos derivados",
 	"smw-factbox-facts-derived-help": "Mostra fatos que foram derivados de regras ou com a ajuda de outras técnicas de raciocínio",
 	"smw_isspecprop": "Esta propriedade é uma propriedade especial neste wiki.",
@@ -645,7 +646,6 @@
 	"smw-type-contextual": "Contextual",
 	"smw-type-compound": "Composto",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-specials-types-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Types",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-special-pageproperty-description": "Esta página fornece uma interface de navegação para encontrar todos os valores de uma propriedade e uma determinada página. Entre as outras interfaces de pesquisa disponíveis, incluem-se a [[Special:SearchByProperty|pesquisa de propriedades]] e o [[Special:Ask|construtor de consultas ''ask'']].",
 	"smw-property-predefined-errc": "\"$1\" é uma propriedade predefinida fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] que apresenta os erros que aparecem em relação às marcações impróprias de valores ou de erros de processamento de entrada desses valores.",
@@ -666,6 +666,7 @@
 	"smw-property-predefined-askco": "\"$1\" é uma propriedade predefinida fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico] para descrever o estado de uma consulta ou dos seus componentes.",
 	"smw-property-predefined-long-askco": "O número ou números atribuídos representam um estado interno codificado que é explicado na [https://www.semantic-mediawiki.org/wiki/Help:Query_profiler página de ajuda].",
 	"smw-property-predefined-prec": "\"$1\" é uma propriedade predefinida que descreve a [https://www.semantic-mediawiki.org/wiki/Help:Display_precision precisão de apresentação] (em casas decimais) para os tipos de dados numéricos.",
+	"smw-property-predefined-attch-link": "\"$1\" é uma propriedade predefinida que coleta links de arquivos e imagens incorporados encontrados em uma página e é fornecida por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-types-extra-geo-not-available": "Não foi detetada a extensão [https://www.semantic-mediawiki.org/wiki/Extension:Maps \"Mapas\"], portanto, \"$1\" está restringido na sua capacidade operacional.",
 	"smw-datavalue-monolingual-dataitem-missing": "Um item esperado para construir um valor composto monolíngue está faltando.",
 	"smw-datavalue-languagecode-missing": "Para a marcação \"$1\" o analisador sintático não conseguiu determinar o código de idioma (exemplo: \"foo@en\").",
@@ -827,7 +828,6 @@
 	"smw-schema-error-type-missing": "Falta um tipo ao conteúdo para este ser reconhecido e utilizável no [https://www.semantic-mediawiki.org/wiki/Help:Schema espaço nominal/domínio do esquema].",
 	"smw-schema-error-type-unknown": "O tipo \"$1\" não está registado e, portanto, não pode ser usado para conteúdo no [https://www.semantic-mediawiki.org/wiki/Help:Schema espaço nominal/domínio do esquema].",
 	"smw-schema-title": "Esquema",
-	"smw-schema-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/$1",
 	"smw-schema-type": "Tipo",
 	"smw-schema-description-link-format-schema": "É esperado que este tipo de esquema defina características para criar hiperligações dependentes do contexto com relação a uma propriedade atribuída de [[Property:Formatter schema|esquema formatador]].",
 	"smw-schema-description-search-form-schema": "É esperado que este tipo de esquema seja usado para definir formulários de entrada, e características para o perfil de [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch pesquisa avançada], onde este contém instruções para gerar campos de introdução de dados, definir espaços nominais /domínios padrão, ou declarar expressões prefixo para um pedido de pesquisa.",
@@ -858,6 +858,5 @@
 	"smw-ask-tab-debug": "Depurar",
 	"smw-ask-tab-code": "Código",
 	"smw-install-incomplete-intro": "A instalação (ou atualização) de <b>Semantic MediaWiki</b> não foi finalizado e um administrador deve executar as seguintes tarefas para evitar inconsistências de dados antes que os usuários continuem a criar ou alterar o conteúdo.",
-	"smw-install-incomplete-populate-hash-field": "O passo de preenchimento do campo <code>smw_hash</code> foi pulado durante a configuração; é necessário executar o ''script'' [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php].",
-	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1"
+	"smw-install-incomplete-populate-hash-field": "O passo de preenchimento do campo <code>smw_hash</code> foi pulado durante a configuração; é necessário executar o ''script'' [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php]."
 }

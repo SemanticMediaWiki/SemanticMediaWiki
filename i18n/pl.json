@@ -27,7 +27,6 @@
 		]
 	},
 	"smw-desc": "Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])",
-	"smw-title": "Semantyczna MediaWiki",
 	"smw-semantics-not-enabled": "Funkcjonalność Semantycznej MediaWiki dla tej wiki nie została włączona.",
 	"smw_viewasrdf": "Kanał RDF",
 	"smw_finallistconjunct": " i",
@@ -457,7 +456,6 @@
 	"smw-type-tab-types": "Typy",
 	"smw-type-tab-errors": "Błędy",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-specials-types-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Types",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-property-predefined-errt": "„$1” jest predefiniowaną właściwością, zawierającą tekstowy opis błędu i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantycznej MediaWiki].",
 	"smw-property-predefined-mdat": "„$1” jest predefiniowaną właściwością, która odpowiada dacie ostatniej modyfikacji tematu i pochodzi z [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantycznej MediaWiki].",
@@ -539,7 +537,6 @@
 	"smw-processing": "Przetwarzanie...",
 	"smw-redirect-target-unresolvable": "Cel jest nierozwiązalny z powodu „$1”",
 	"smw-types-title": "Typ: $1",
-	"smw-schema-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/$1",
 	"smw-schema-type": "Typ",
 	"smw-schema-tag": "{{PLURAL:$1|Znacznik|Znaczniki}}",
 	"smw-ask-title-keyword-type": "Wyszukiwanie słów kluczowych",

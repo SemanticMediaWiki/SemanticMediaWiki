@@ -12,7 +12,6 @@
 		]
 	},
 	"smw-desc": "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
-	"smw-title": "Сэмантычная MediaWiki",
 	"smw_viewasrdf": "RDF-крыніца",
 	"smw_finallistconjunct": " і",
 	"smw-factbox-head": "… болей пра «$1»",
@@ -381,6 +380,7 @@
 	"smw-search-profile": "Пашырана",
 	"smw-search-profile-sort-recent": "Самыя нядаўнія",
 	"smw-search-profile-sort-title": "Назва",
+	"smw-search-profile-extended-help-sort-title": "* «Назва» з выкарыстаньнем назвы старонкі (ці назвы, абранай для паказу) як крытэр сартаваньня",
 	"smw-search-profile-extended-help-find-forms": "даступныя формы",
 	"smw-search-profile-extended-section-sort": "Сартаваць па",
 	"smw-search-profile-extended-section-form": "Формы",

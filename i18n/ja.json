@@ -33,7 +33,6 @@
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "この wiki では Semantic MediaWiki の機能が有効化されていませんでした。",
 	"smw_viewasrdf": "RDF フィード",
 	"smw_finallistconjunct": ",",

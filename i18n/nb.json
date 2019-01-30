@@ -20,7 +20,6 @@
 		]
 	},
 	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-semantics-not-enabled": "Semantic MediaWiki-funksjonalitet har ikke blitt slått på på denne wikien.",
 	"smw_viewasrdf": "RDF-kilde",
 	"smw_finallistconjunct": " og",

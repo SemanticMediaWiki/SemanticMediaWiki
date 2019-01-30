@@ -31,7 +31,6 @@
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
-	"smw-title": "Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Varför ser jag detta fel?",
 	"smw-upgrade-error-how-title": "Hur fixar jag detta fel?",
 	"smw-semantics-not-enabled": "Semantic MediaWiki-funktionalitet är inte aktiverad på denna wiki.",
@@ -473,7 +472,6 @@
 	"smw-type-tab-errors": "Fel",
 	"smw-type-primitive": "Grundläggande",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
-	"smw-specials-types-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Types",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-types-extra-mlt-lcode": "Datatypen {{PLURAL:$2|kräver inte}} en språkkod (t.ex. {{PLURAL:$2|ett värde utan en språkkod accepteras inte}}).",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekund|sekunder}}",

@@ -17,12 +17,12 @@
 		]
 	},
 	"smw-desc": "Lisää wikisi saavutettavuutta – niin koneille kuin ihmisille ([https://www.semantic-mediawiki.org/wiki/Help:User_manual verkko-opas])",
-	"smw-title": "Semanttinen MediaWiki",
 	"smw-upgrade-error-why-title": "Miksi näen tämän virheen?",
 	"smw-upgrade-error-how-title": "Miten korjaan tämän virheen?",
 	"smw-semantics-not-enabled": "Semanttisen MediaWikin toiminnallisuutta ei ole otettu käyttöön tässä wikissä.",
 	"smw_viewasrdf": "RDF-syöte",
 	"smw_finallistconjunct": " ja",
+	"smw-factbox-head": "... lisää sivusta \"$1\"",
 	"smw-factbox-facts": "Faktat",
 	"smw_isspecprop": "Tämä on erikoisominaisuus.",
 	"smw-concept-cache-header": "Välimuistin käyttö",

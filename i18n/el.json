@@ -20,7 +20,6 @@
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
-	"smw-title": "Σημασιολογικό MediaWiki",
 	"smw-semantics-not-enabled": "Η λειτουργικότητα Σημασιολογικού MediaWiki δεν είναι ενεργοποιημένη για αυτό το wiki.",
 	"smw_viewasrdf": "Ροή RDF",
 	"smw_finallistconjunct": " και",
