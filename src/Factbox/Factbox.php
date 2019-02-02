@@ -20,6 +20,7 @@ use SMW\Utils\HtmlTabs;
 use SMWInfolink;
 use SMWSemanticData;
 use SMWDIBlob as DIBlob;
+use SMWDataItem as DataItem;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -199,13 +200,18 @@ class Factbox {
 			);
 
 			$prop = new DIProperty( '_MDAT' );
+			$text = '';
+
 			$pv = $this->store->getPropertyValues( $dataItem, $prop );
 			$pv = end( $pv );
 
-			$dv = $this->dataValueFactory->newDataValueByItem( $pv, $prop );
-			$dv->setOutputFormat( 'LOCL' );
+			if ( $pv instanceof DataItem ) {
+				$dv = $this->dataValueFactory->newDataValueByItem( $pv, $prop );
+				$dv->setOutputFormat( 'LOCL' );
+				$text = $dv->getShortWikiText();
+			}
 
-			$row .= HtmlDivTable::cell( $dv->getShortWikiText() );
+			$row .= HtmlDivTable::cell( $text );
 
 			$rows .= HtmlDivTable::row(
 				$row
