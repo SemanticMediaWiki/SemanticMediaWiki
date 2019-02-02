@@ -97,9 +97,20 @@ class SMWRecordValue extends AbstractMultiValue {
 			if ( ( $values[$valueIndex] === '' ) || ( $values[$valueIndex] == '?' ) ) { // explicit omission
 				$valueIndex++;
 			} else {
+
+				$val = $values[$valueIndex];
+
+				// If an annotation starts with `#` and remains unmodified
+				// then the wiki parser would interpret it as list element
+				// and format it accordingly eventhough it is not suppose to
+				// be an ul/ol list item.
+				if ( $val !== '' && $val{0} === '#' ) {
+					$val = str_replace( "#", '&#x23;', $val );
+				}
+
 				$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 					$diProperty,
-					$values[$valueIndex],
+					$val,
 					false,
 					$containerSemanticData->getSubject()
 				);
