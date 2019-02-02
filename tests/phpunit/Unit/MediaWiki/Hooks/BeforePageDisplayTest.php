@@ -65,7 +65,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
 			->will( $this->returnValue( true ) );
 
-		$this->outputPage->expects( $this->exactly( 2 ) )
+		$this->outputPage->expects( $this->exactly( 1 ) )
 			->method( 'addModules' );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
