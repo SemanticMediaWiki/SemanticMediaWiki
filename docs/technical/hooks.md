@@ -393,6 +393,27 @@ Hooks::register( 'SMW::DataUpdater::ContentProcessor', function( $semanticData, 
 } );
 </pre>
 
+### SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete
+
+* Version: 3.1
+* Description: Hook allows to add additional indices
+* Reference class: `SMW\SQLStore\Installer`
+
+When using this hook, please make sure you understand the implications adding auxiliary indices which are not part of the core declaration and may alter performance expectations.
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete', function( &$auxiliaryIndices ) {
+
+	$auxiliaryIndices = [
+		// SMW table name => index declaration
+		'smw_query_links' => [ "s_id,o_id", "PRIMARY KEY" ],
+	];
+
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
