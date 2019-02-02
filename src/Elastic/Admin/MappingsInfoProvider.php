@@ -82,6 +82,12 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			)
 		];
 
+		$limits = [
+			ElasticClient::TYPE_DATA => [
+				'index.mapping.total_fields.limit' => $connection->getConfig()->dotGet( 'settings.data.index.mapping.total_fields.limit' )
+			]
+		];
+
 		$this->outputFormatter->addHtml(
 			Html::rawElement( 'p', [], $this->msg( 'smw-admin-supplementary-elastic-mappings-docu' ) )
 		);
@@ -90,14 +96,23 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		$htmlTabs->setGroup( 'es-mapping' );
 		$htmlTabs->setActiveTab( 'summary' );
 
-		$htmlTabs->tab( 'summary', $this->msg( 'smw-admin-supplementary-elastic-mappings-summary' ) );
+		$htmlTabs->tab(
+			'summary',
+			$this->msg( 'smw-admin-supplementary-elastic-mappings-summary' )
+		);
 
 		$htmlTabs->content(
 			'summary',
-			'<pre>' . $this->outputFormatter->encodeAsJson( $this->buildSummary( $mappings ) ) . '</pre>'
+			'<p style="margin-top:0.8em;">' . $this->msg('smw-admin-supplementary-elastic-mappings-docu-extra' ) . '</p>' .
+			'<pre>' . $this->outputFormatter->encodeAsJson( $this->getSummary( $mappings ) ) . '</pre>' .
+			'<h3>' . $this->msg( 'smw-admin-supplementary-elastic-settings-title' ) . '</h3>' .
+			'<pre>' . $this->outputFormatter->encodeAsJson( $limits ) . '</pre>'
 		);
 
-		$htmlTabs->tab( 'fields', $this->msg( 'smw-admin-supplementary-elastic-mappings-fields' ) );
+		$htmlTabs->tab(
+			'fields',
+			$this->msg( 'smw-admin-supplementary-elastic-mappings-fields' )
+		);
 
 		$htmlTabs->content(
 			'fields',
@@ -117,9 +132,9 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildSummary( $mappings ) {
+	private function getSummary( $mappings ) {
 
-		$count = [
+		$summary = [
 			ElasticClient::TYPE_DATA => [
 				'fields' => [
 					'property_fields' => 0,
@@ -138,59 +153,42 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 		foreach ( $mappings as $inx ) {
 			foreach ( $inx as $key => $value ) {
+				$this->countFields( $value, ElasticClient::TYPE_DATA, $summary );
+				$this->countFields( $value, ElasticClient::TYPE_LOOKUP, $summary );
+			}
+		}
 
-				if ( isset( $value['mappings'][ElasticClient::TYPE_DATA] ) ) {
-					foreach ( $value['mappings'][ElasticClient::TYPE_DATA]['properties'] as $k => $val ) {
-						foreach ( $val as $p => $v ) {
-							if ( $p === 'properties' ) {
-								foreach ( $v as $field => $mappings ) {
-									if ( is_string( $field ) ) {
-										$count[ElasticClient::TYPE_DATA]['fields']['property_fields']++;
-									}
+		return $summary;
+	}
 
-									if ( isset( $mappings['fields'] ) ) {
-										$count[ElasticClient::TYPE_DATA]['fields']['nested_fields'] += count( $mappings['fields'] );
-									}
-								}
-							} elseif ( $p === 'type' ) {
-								$count[ElasticClient::TYPE_DATA]['fields']['property_fields']++;
-							} elseif ( $p === 'fields' ) {
-								$count[ElasticClient::TYPE_DATA]['fields']['nested_fields'] += count( $v );
-							}
+	private function countFields( $value, $type, &$count ) {
+
+		if ( !isset( $value['mappings'][$type] ) ) {
+			return;
+		}
+
+		foreach ( $value['mappings'][$type]['properties'] as $k => $val ) {
+			foreach ( $val as $p => $v ) {
+				if ( $p === 'properties' ) {
+					foreach ( $v as $field => $mappings ) {
+						if ( is_string( $field ) ) {
+							$count[$type]['fields']['property_fields']++;
+						}
+
+						if ( isset( $mappings['fields'] ) ) {
+							$count[$type]['fields']['nested_fields'] += count( $mappings['fields'] );
 						}
 					}
-
-					$count[ElasticClient::TYPE_DATA]['total'] = $count[ElasticClient::TYPE_DATA]['fields']['property_fields'] +
-					$count[ElasticClient::TYPE_DATA]['fields']['nested_fields'];
-				}
-
-				if ( isset( $value['mappings'][ElasticClient::TYPE_LOOKUP] ) ) {
-					foreach ( $value['mappings'][ElasticClient::TYPE_LOOKUP]['properties'] as $k => $val ) {
-						foreach ( $val as $p => $v ) {
-
-							if ( $p === 'properties' ) {
-								foreach ( $v as $field => $mappings ) {
-									if ( is_string( $field ) ) {
-										$count[ElasticClient::TYPE_LOOKUP]['fields']['property_fields']++;
-									}
-
-									if ( isset( $mappings['fields'] ) ) {
-										$count[ElasticClient::TYPE_LOOKUP]['fields']['nested_fields'] += count( $mappings['fields'] );
-									}
-								}
-							} elseif ( $p === 'type' ) {
-								$count[ElasticClient::TYPE_LOOKUP]['fields']['property_fields']++;
-							}
-						}
-					}
-
-					$count[ElasticClient::TYPE_LOOKUP]['total'] = $count[ElasticClient::TYPE_LOOKUP]['fields']['property_fields'] +
-					$count[ElasticClient::TYPE_LOOKUP]['fields']['nested_fields'];
+				} elseif ( $p === 'type' ) {
+					$count[$type]['fields']['property_fields']++;
+				} elseif ( $p === 'fields' ) {
+					$count[$type]['fields']['nested_fields'] += count( $v );
 				}
 			}
 		}
 
-		return $count;
+		$count[$type]['total'] = $count[$type]['fields']['property_fields'] +
+		$count[$type]['fields']['nested_fields'];
 	}
 
 }
