@@ -43,9 +43,6 @@ class BeforePageDisplay extends HookHandler {
 			]
 		);
 
-		// Add style resources to avoid unstyled content
-		$outputPage->addModules( 'ext.smw.style' );
-
 		// #2726
 		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
