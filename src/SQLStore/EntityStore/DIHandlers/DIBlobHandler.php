@@ -223,7 +223,7 @@ class DIBlobHandler extends DataItemHandler {
 
 		$length = 72;
 
-		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
 			$length = FieldType::CHAR_LONG_LENGTH;
 		}
 
@@ -234,15 +234,15 @@ class DIBlobHandler extends DataItemHandler {
 
 		$fieldType = FieldType::FIELD_TITLE;
 
-		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
+		if ( $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
 			$fieldType = FieldType::TYPE_CHAR_NOCASE;
 		}
 
-		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) ) {
+		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
 			$fieldType = FieldType::TYPE_CHAR_LONG;
 		}
 
-		if ( $this->isEnabledFeature( SMW_FIELDT_CHAR_LONG ) && $this->isEnabledFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
+		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) && $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
 			$fieldType = FieldType::TYPE_CHAR_LONG_NOCASE;
 		}
 

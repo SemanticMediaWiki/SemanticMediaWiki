@@ -55,7 +55,7 @@ abstract class DataItemHandler {
 	 *
 	 * @return boolean
 	 */
-	public function isEnabledFeature( $feature ) {
+	public function hasFeature( $feature ) {
 		return ( (int)$this->fieldTypeFeatures & $feature ) != 0;
 	}
 
