@@ -66,29 +66,50 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testProcessOnSQLStore() {
+	public function testProcess_FakeStats() {
 
 		$extraStats = [];
 
+		$statistics = [
+			'QUERY' => 2002,
+			'QUERYFORMATS' => [ 'foo' => 9999 ]
+		];
+
+		$expected = [
+			'smw-statistics' => [
+				[ 'name' => "<span class='plainlinks'>&nbsp;&nbsp;-&nbsp;&nbsp;smw-statistics-query-inline</span>", 'number' => 2002 ],
+				[ 'name' => '&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;smw-statistics-query-format.foo', 'number' => 9999 ],
+				[ 'name' => 'smw-statistics-datatype-count', 'number' => 1 ]
+			]
+		];
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getStatistics' )
+			->will( $this->returnValue( $statistics ) );
+
 		$instance = new SpecialStatsAddExtra(
-			ApplicationFactory::getInstance()->getStore()
+			$store
 		);
+
+		$instance->setDataTypeLabels( [ 'Bar' ] );
 
 		$instance->setOptions(
 			[
-				'smwgSemanticsEnabled' => true
+				'smwgSemanticsEnabled' => true,
+				'plain.msg_key' => true,
+				'no.tooltip' => true
 			]
 		);
 
-		$this->assertTrue(
-			$instance->process( $extraStats )
-		);
+		$instance->process( $extraStats );
 
-		// This is a "cheap" check against the SQLStore as it could return any
-		// value therefore we use a message key as only known constant to verify
-		// that the matching process was successful
-		$this->assertTrue(
-			$this->matchArray( $extraStats, 'smw-statistics-property-instance' )
+		$this->assertEquals(
+			$extraStats,
+			$expected
 		);
 	}
 

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
+use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
@@ -474,12 +475,21 @@ class HookListener {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 	 */
-	public function onSpecialStatsAddExtra( &$extraStats ) {
+	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$context->getOutput()->addModules( 'smw.tippy' );
 
 		$specialStatsAddExtra = new SpecialStatsAddExtra(
 			$applicationFactory->getStore()
+		);
+
+		$specialStatsAddExtra->setLanguage(
+			$context->getLanguage()
+		);
+
+		$specialStatsAddExtra->setDataTypeLabels(
+			DataTypeRegistry::getInstance()->getKnownTypeLabels()
 		);
 
 		$specialStatsAddExtra->setOptions(
@@ -488,7 +498,9 @@ class HookListener {
 			]
 		);
 
-		return $specialStatsAddExtra->process( $extraStats );
+		$specialStatsAddExtra->process( $extraStats );
+
+		return true;
 	}
 
 	/**
