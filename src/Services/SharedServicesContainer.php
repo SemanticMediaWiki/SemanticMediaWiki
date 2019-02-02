@@ -53,6 +53,7 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\QueryFactory;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\Processor\ParamListProcessor;
+use SMW\MediaWiki\IndicatorRegistry;
 
 /**
  * @license GNU GPL v2+
@@ -70,6 +71,7 @@ class SharedServicesContainer implements CallbackContainer {
 	public function register( ContainerBuilder $containerBuilder ) {
 
 		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
+		$containerBuilder->registerCallback( 'IndicatorRegistry', [ $this, 'newIndicatorRegistry' ] );
 
 		$this->registerCallbackHandlers( $containerBuilder );
 		$this->registerCallableFactories( $containerBuilder );
@@ -110,6 +112,29 @@ class SharedServicesContainer implements CallbackContainer {
 		);
 
 		return $store;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return IndicatorRegistry
+	 */
+	public function newIndicatorRegistry( $containerBuilder ) {
+
+		$indicatorRegistry = new IndicatorRegistry();
+		$store = $containerBuilder->singleton( 'Store', null );
+
+		try{
+			$indicatorProvider = $store->service( 'IndicatorProvider' );
+		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+			$indicatorProvider = null;
+		}
+
+		$indicatorRegistry->addIndicatorProvider(
+			$indicatorProvider
+		);
+
+		return $indicatorRegistry;
 	}
 
 	private function registerCallbackHandlers( $containerBuilder ) {
