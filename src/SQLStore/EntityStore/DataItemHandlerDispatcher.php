@@ -69,10 +69,6 @@ class DataItemHandlerDispatcher {
 			$this->handlers[$type] = $this->newHandlerByType( $type );
 		}
 
-	//	$this->handlers[$type]->setFieldTypeFeatures(
-	//		$this->fieldTypeFeatures
-	//	);
-
 		return $this->handlers[$type];
 	}
 
