@@ -5,6 +5,8 @@ namespace SMW\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\Table;
 use SMWDataItem as DataItem;
+use RuntimeException;
+use Hooks;
 
 /**
  * @private
@@ -32,6 +34,11 @@ class TableSchemaManager {
 	 * @var Table[]
 	 */
 	private $tables = [];
+
+	/**
+	 * @var []
+	 */
+	private $auxiliaryIndices = [];
 
 	/**
 	 * @var []
@@ -133,6 +140,15 @@ class TableSchemaManager {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $auxiliaryIndices
+	 */
+	public function addAuxiliaryIndices( array $auxiliaryIndices ) {
+		$this->auxiliaryIndices = $auxiliaryIndices;
 	}
 
 	/**
@@ -398,6 +414,12 @@ class TableSchemaManager {
 
 		if ( $table === null ) {
 			return;
+		}
+
+		$name = $table->getName();
+
+		if ( isset( $this->auxiliaryIndices[$name] ) ) {
+			$table->addIndex( $this->auxiliaryIndices[$name] );
 		}
 
 		$this->tables[] = $table;
