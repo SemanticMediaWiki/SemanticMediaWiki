@@ -34,6 +34,30 @@
 			"contents": "[[Has text:=[[Has number:=42]] [[Has number::1001]]]] [[Category:P0449]]"
 		},
 		{
+			"page": "Example/P0449/5",
+			"contents": "AAA[[Has text::[[Lorem ipsum]]| ]]BBB"
+		},
+		{
+			"page": "Example/P0449/6",
+			"contents": "AAA[[Has text::[[Has number::42]] [[Lorem ipsum]]| ]]BBB"
+		},
+		{
+			"page": "Example/P0449/7",
+			"contents": "AAA[[Has text::[[Has number::42| ]] [[Lorem ipsum]]| ]]BBB"
+		},
+		{
+			"page": "Example/P0449/8",
+			"contents": "AAA[[Has text::[[Has number::42|Foo]] [[Lorem ipsum]]| ]]BBB"
+		},
+		{
+			"page": "Example/P0449/9",
+			"contents": "AAA[[Has text::[[Has number::42| ]] [[Lorem ipsum]] ]]BBB"
+		},
+		{
+			"page": "Example/P0449/10",
+			"contents": "AAA[[Has text::[[Has number::42]] [[Lorem ipsum]] Foo| ]]BBB"
+		},
+		{
 			"page": "Example/P0449/Q.1",
 			"contents": "{{#ask: [[Category:P0449]] |format=embedded }}"
 		}
@@ -133,6 +157,161 @@
 					],
 					"propertyValues": []
 				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 hidden annotation",
+			"subject": "Example/P0449/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"[[Lorem ipsum]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAABBB"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 hidden annotation with inner annotation",
+			"subject": "Example/P0449/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42",
+						"42 [[Lorem ipsum]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAABBB"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 hidden annotation with hidden inner annotation",
+			"subject": "Example/P0449/7",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42",
+						"[[Lorem ipsum]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAABBB"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 hidden annotation with inner annotation and alternate text",
+			"subject": "Example/P0449/8",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42",
+						"Foo [[Lorem ipsum]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAABBB"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 inner hidden annotation",
+			"subject": "Example/P0449/9",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42",
+						"[[Lorem ipsum]]"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					">Lorem ipsum</a>BBB"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 hidden annotation text before pipe",
+			"subject": "Example/P0449/10",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text",
+						"Has number"
+					],
+					"propertyValues": [
+						"42",
+						"42 [[Lorem ipsum]] Foo"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"AAA42",
+					">Lorem ipsum</a> Foo|BBB"
+				]
 			}
 		}
 	],

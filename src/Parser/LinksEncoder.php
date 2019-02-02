@@ -228,6 +228,11 @@ class LinksEncoder {
 			$match
 		) );
 
+		// Decode the pipe as part of a hidden marker (`...]]|`) to ensure that
+		// the standard MediaWiki parser can work its magic to hide the part of
+		// the string
+		$replace = str_replace( "&#x005D;&#x005D;&#124;", "&#x005D;&#x005D;|",  $replace );        
+        
 		// Restore the square brackets
 		return '[[' . $replace . ']]';
 	}
