@@ -78,7 +78,8 @@ class TableFieldUpdater {
 			SQLStore::ID_TABLE,
 			[
 				'smw_sortkey' => $searchKey,
-				'smw_sort'    => $this->collator->getSortKey( $searchKey )
+				'smw_sort'    => $this->collator->getSortKey( $searchKey ),
+				'smw_touched' => $connection->timestamp()
 			],
 			[ 'smw_id' => $id ],
 			__METHOD__
@@ -100,7 +101,8 @@ class TableFieldUpdater {
 		$connection->update(
 			SQLStore::ID_TABLE,
 			[
-				'smw_rev' => $rev_id
+				'smw_rev' => $rev_id,
+				'smw_touched' => $connection->timestamp()
 			],
 			[
 				'smw_id' => $sid
