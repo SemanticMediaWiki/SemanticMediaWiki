@@ -19,16 +19,16 @@ var jsonview = ( function( mw ) {
 
 	s.init = function( container, json ) {
 
-		container.before(
+		// https://github.com/yesmeck/jquery-jsonview
+		container.JSONView( json, { collapsed: true } )
+		container.JSONView( 'toggle', 1 );
+
+		container.find( '.jsonview' ).before(
 			'<div class="smw-jsonview-button-group">' +
 			'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + mw.msg( 'smw-copy' ) + '</button>' +
 			'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button">' + mw.msg( 'smw-expand' ) + '</button>' +
 			'</div>'
 		);
-
-		// https://github.com/yesmeck/jquery-jsonview
-		container.JSONView( json, { collapsed: true } )
-		container.JSONView( 'toggle', 1 );
 
 		$( "#smw-jsonview-copy-btn" ).on('click', function() {
 			s.copyToClipboard( json );

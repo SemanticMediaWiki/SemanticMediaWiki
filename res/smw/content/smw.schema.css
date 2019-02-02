@@ -144,6 +144,10 @@
 	padding: 8px 20px;
 }
 
+.schema-body pre {
+    margin-top: 10px
+}
+
 .smw-schema input.nav-tab:checked + label.nav-label  {
 	border: 1px solid #ddd;
 	border-top: 2px solid #337ab7;

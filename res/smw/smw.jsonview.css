@@ -31,8 +31,8 @@
 .smw-jsonview-button-group {
     float: right;
     margin-left: 10px;
-    margin-top: 10px;
-    margin-right: 10px;
+    margin-top: 0px;
+    margin-right: 0px;
     clear: right;
 }
 
@@ -67,4 +67,8 @@
 
 .smw-jsonview-button:focus {
     outline:0;
+}
+
+.jsonview .collapsible {
+    list-style: unset;
 }
