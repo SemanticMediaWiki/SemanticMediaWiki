@@ -198,10 +198,6 @@ return [
 	// Tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
-			// Style dependencies don't work
-			// therefore make sure to load it
-			// together
-			'jquery/jquery.qtip.css',
 			'smw/util/ext.smw.util.tooltip.css'
 		],
 		'position' => 'top',
@@ -209,7 +205,7 @@ return [
 	],
 
 	// Tooltip
-	'ext.smw.tooltip' => $moduleTemplate + [
+	'ext.smw.tooltip.old' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
 		'dependencies' => [
 			'ext.smw.tooltip.styles',
@@ -228,10 +224,18 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
+	// Tooltip
+	'ext.smw.tooltip' => $moduleTemplate + [
+		'dependencies' => [
+			'ext.smw.tooltip.styles',
+			'smw.tippy'
+		]
+	],
+
 	'ext.smw.tooltips' => $moduleTemplate + [
 		'dependencies' => [
 			'ext.smw.style',
-			'ext.smw.tooltip'
+			'smw.tippy'
 		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
@@ -712,6 +716,50 @@ return [
 			'ext.smw'
 		],
 		'position' => 'top',
+	],
+
+	'ext.libs.tippy'  => $moduleTemplate + [
+		'position' => 'top',
+		'styles' => [
+			'libs/tippy/tippy.css',
+			'libs/tippy/light-border.css',
+			'libs/tippy/light.css'
+		],
+		'scripts'  => [
+			'libs/tippy/tippy.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.tippy'  => $moduleTemplate + [
+		'position' => 'top',
+		'styles' => [
+			'smw/util/smw.tippy.css'
+		],
+		'scripts'  => [
+			'smw/util/smw.tippy.js'
+		],
+		'dependencies'  => [
+			'ext.smw',
+			'mediawiki.api',
+			'ext.libs.tippy',
+		],
+		'messages' => [
+			'smw-ui-tooltip-title-property',
+			'smw-ui-tooltip-title-quantity',
+			'smw-ui-tooltip-title-info',
+			'smw-ui-tooltip-title-service',
+			'smw-ui-tooltip-title-warning',
+			'smw-ui-tooltip-title-parameter',
+			'smw-ui-tooltip-title-event',
+			'smw-ui-tooltip-title-error',
+			'smw-ui-tooltip-title-note',
+			'smw-ui-tooltip-title-legend',
+			'smw-ui-tooltip-title-reference'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'

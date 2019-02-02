@@ -143,7 +143,7 @@
 	 * Support and helper methods
 	 * @ignore
 	 */
-	var tooltip = new smw.util.tooltip();
+	var tooltip = smw.Factory.newTooltip();
 
 	var _init = {
 

@@ -1,0 +1,102 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @see https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
+ *
+ * @since 3.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+.tippy-header {
+    padding: .5rem .8rem .3rem .8rem;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: inherit;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ebebeb;
+    border-top-left-radius: calc(.3rem - 1px);
+    border-top-right-radius: calc(.3rem - 1px);
+    text-align: left;
+}
+
+.tippy-bottom {
+    padding: .5rem .8rem .5rem .8rem;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: inherit;
+    background-color: #fff;
+    border-top: 1px solid #ebebeb;
+    border-bottom-left-radius: calc(.3rem - 1px);
+    border-bottom-right-radius: calc(.3rem - 1px);
+    text-align: left;
+}
+
+.tippy-content-container {
+    padding: .3rem .8rem;
+    margin-bottom: 0.2rem;
+    text-align: initial;
+    word-break: break-word;
+   /* max-width: 260px; */
+}
+
+.tippy-content-overlay {
+    height: 40px;
+    width: 260px;
+    margin-top: 10px;
+}
+
+.tippy-tooltip.light-border-theme, .tippy-tooltip.light-theme {
+    padding: 0;
+}
+
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow,
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-theme .tippy-arrow,
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow:after,
+.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-theme .tippy-arrow:after {
+    border-bottom-color: #f7f7f7
+}
+
+.tippy-cancel {
+    width: auto;
+    height: auto;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    margin-left: 10px;
+}
+
+.tippy-cancel:after {
+    content: '×';
+}
+
+.tippy-cancel:hover {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.4;
+}

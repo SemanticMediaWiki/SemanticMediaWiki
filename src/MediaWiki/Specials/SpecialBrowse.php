@@ -83,7 +83,7 @@ class SpecialBrowse extends SpecialPage {
 
 		$out->addModules( [
 			'ext.smw.browse',
-			'ext.smw.tooltip'
+			'ext.smw.tooltips'
 		] );
 
 		$out->addHTML(
