@@ -21,6 +21,10 @@
 			"contents": "[[Has record::Foo;123]]"
 		},
 		{
+			"page": "Example/P0431/2",
+			"contents": "[[Has record::#abc;123]]"
+		},
+		{
 			"page": "Example/P0431/Q1.1",
 			"contents": "{{#ask: [[Has record::+]] |?Has record|+index=Has text}}"
 		},
@@ -68,6 +72,19 @@
 				"to-contain": [
 					"Property:Has record",
 					"<td class=\"Property-description smwtype&#95;_lcode\">en</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (no ul/ol list output for #... annotated value)",
+			"subject": "Example/P0431/2",
+			"assert-output": {
+				"to-contain": [
+					"&#x23;abc (123)"
+				],
+				"not-contain": [
+					"<ol><li>abc</li></ol>"
 				]
 			}
 		}
