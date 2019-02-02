@@ -173,8 +173,8 @@
 						"Has text"
 					],
 					"propertyValues": [
-                        "[[Lorem ipsum]]"
-                    ]
+						"[[Lorem ipsum]]"
+					]
 				}
 			},
 			"assert-output": {
@@ -183,7 +183,7 @@
 				]
 			}
 		},
-		{       
+		{
 			"type": "parser",
 			"about": "#6 hidden annotation with inner annotation",
 			"subject": "Example/P0449/6",
@@ -195,12 +195,12 @@
 						"_SKEY",
 						"_MDAT",
 						"Has text",
-                        "Has number"
+						"Has number"
 					],
 					"propertyValues": [
-                        "42",
-                        "42 [[Lorem ipsum]]"
-                    ]
+						"42",
+						"42 [[Lorem ipsum]]"
+					]
 				}
 			},
 			"assert-output": {
@@ -209,7 +209,7 @@
 				]
 			}
 		},
-		{       
+		{
 			"type": "parser",
 			"about": "#7 hidden annotation with hidden inner annotation",
 			"subject": "Example/P0449/7",
@@ -221,12 +221,12 @@
 						"_SKEY",
 						"_MDAT",
 						"Has text",
-                        "Has number"
+						"Has number"
 					],
 					"propertyValues": [
-                        "42",
-                        "[[Lorem ipsum]]"
-                    ]
+						"42",
+						"[[Lorem ipsum]]"
+					]
 				}
 			},
 			"assert-output": {
@@ -235,7 +235,7 @@
 				]
 			}
 		},
-		{       
+		{
 			"type": "parser",
 			"about": "#8 hidden annotation with inner annotation and alternate text",
 			"subject": "Example/P0449/8",
@@ -247,12 +247,12 @@
 						"_SKEY",
 						"_MDAT",
 						"Has text",
-                        "Has number"
+						"Has number"
 					],
 					"propertyValues": [
-                        "42",
-                        "Foo [[Lorem ipsum]]"
-                    ]
+						"42",
+						"Foo [[Lorem ipsum]]"
+					]
 				}
 			},
 			"assert-output": {
@@ -261,7 +261,7 @@
 				]
 			}
 		},
-		{              
+		{
 			"type": "parser",
 			"about": "#9 inner hidden annotation",
 			"subject": "Example/P0449/9",
@@ -273,12 +273,12 @@
 						"_SKEY",
 						"_MDAT",
 						"Has text",
-                        "Has number"
+						"Has number"
 					],
 					"propertyValues": [
-                        "42",
-                        "[[Lorem ipsum]]"
-                    ]
+						"42",
+						"[[Lorem ipsum]]"
+					]
 				}
 			},
 			"assert-output": {
@@ -287,7 +287,7 @@
 				]
 			}
 		},
-		{              
+		{
 			"type": "parser",
 			"about": "#10 hidden annotation text before pipe",
 			"subject": "Example/P0449/10",
@@ -299,17 +299,17 @@
 						"_SKEY",
 						"_MDAT",
 						"Has text",
-                        "Has number"
+						"Has number"
 					],
 					"propertyValues": [
-                        "42",
-                        "42 [[Lorem ipsum]] Foo"
-                    ]
+						"42",
+						"42 [[Lorem ipsum]] Foo"
+					]
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-                    "AAA42",
+					"AAA42",
 					">Lorem ipsum</a> Foo|BBB"
 				]
 			}
