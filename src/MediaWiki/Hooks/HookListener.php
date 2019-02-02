@@ -146,24 +146,6 @@ class HookListener {
 	}
 
 	/**
-	 * Hook: Allow an extension to disable file caching on pages
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/IsFileCacheable
-	 */
-	public function onIsFileCacheable( &$article ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $article->getTitle()->getNamespace() ) ) {
-			return true;
-		}
-
-		// Disallow the file cache to avoid skipping the ArticleViewHeader hook
-		// on Article::tryFileCache
-		return !$applicationFactory->getSettings( 'smwgEnabledQueryDependencyLinksStore' );
-	}
-
-	/**
 	 * Hook: Add changes to the output page, e.g. adding of CSS or JavaScript
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay

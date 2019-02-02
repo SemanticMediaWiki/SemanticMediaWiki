@@ -173,7 +173,6 @@ class HookRegistry {
 			'ParserFirstCallInit' => [ $hookListener, 'onParserFirstCallInit' ],
 			'InternalParseBeforeLinks' => [ $hookListener, 'onInternalParseBeforeLinks' ],
 			'RejectParserCacheValue' => [ $hookListener, 'onRejectParserCacheValue' ],
-			'IsFileCacheable' => [ $hookListener, 'onIsFileCacheable' ],
 
 			'BaseTemplateToolbox' => [ $hookListener, 'onBaseTemplateToolbox' ],
 			'SkinAfterContent' => [ $hookListener, 'onSkinAfterContent' ],

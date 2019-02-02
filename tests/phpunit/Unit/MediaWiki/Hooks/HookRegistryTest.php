@@ -252,7 +252,6 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ 'callParserFirstCallInit' ],
 			[ 'callTitleQuickPermissions' ],
 			[ 'callOutputPageCheckLastModified' ],
-			[ 'callIsFileCacheable' ],
 			[ 'callRejectParserCacheValue' ],
 			[ 'callSoftwareInfo' ],
 			[ 'callBlockIpComplete' ],
@@ -1287,30 +1286,6 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$modifiedTimes ]
-		);
-
-		return $handler;
-	}
-
-	public function callIsFileCacheable( $instance ) {
-
-		$handler = 'IsFileCacheable';
-
-		$article = $this->getMockBuilder( '\Article' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$article->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ &$article ]
 		);
 
 		return $handler;
