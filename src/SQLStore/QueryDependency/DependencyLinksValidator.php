@@ -71,8 +71,9 @@ class DependencyLinksValidator {
 	 *   -> contains Query Y (last touched 12:00)
 	 *      -> contains result subject Foo (last touched 12:05)
 	 *         -> since Foo is "younger" it could contain new/altered assignments
-	 *             -> presents the likelihood of being outdated therefore makes
-	 *                it a (or contain) archaic dependency to X/Y
+	 *            (e.g. display title changed, sortkey altered, was deleted etc.)
+	 *             -> represents a likelihood of being outdated therefore it is
+	 *                categorized as a archaic dependency to X/Y
 	 *
 	 * @since 3.1
 	 *
@@ -149,9 +150,9 @@ class DependencyLinksValidator {
 
 		// Check the links table for a list of entities associated with selected
 		// queries for any reference object that has a more recent touched than
-		// the query (meaning something changed an entity reference with the query
-		// holding an outdated reference === containing an "older" view of the
-		// data)
+		// the query (meaning something changed an entity reference with the com
+		// current query is holding an outdated reference === containing an
+		// "older" view of the data)
 		//
 		// SELECT smw_id FROM "smw_object_ids"
 		// INNER JOIN smw_query_links AS p ON ((p.o_id=smw_id))
@@ -175,17 +176,16 @@ class DependencyLinksValidator {
 			]
 		);
 
-		// Could we match? If yes, an outdated reference was detected and we use
-		// this is as a state for precautionary measure to declare a "archaic"
-		// dependency state (the actual state of being or not is not important,
-		// only the likelihood of being outdated is enough) to force queries to
-		// be re-evaluated by allowing the parser cache to be evicted and commands
-		// that embedded queries are refreshed and its links table where it may
-		// fetch "assumed" outdated dependencies.
+		// Something matched? If yes, an outdated reference was detected and we
+		// use this as a decision parameter to declare a "archaic" dependency (or
+		// staleness) state for the subject in question (the actual state of any
+		// particular entity is unimportant, only the likelihood of being outdated
+		// is enough) to force queries to be re-evaluated by signaling the parser
+		// cache to be evicted so that embedded queries are refreshed together
+		// with the links table and their outdated dependencies.
 		//
 		// We don't have any interest in any specific entities that may have been
-		// the trigger only that there is a probability to require an update for
-		// an embedded query by comparing the `touched` of dependent entities.
+		// the trigger only that there is a significant probability.
 		return $row !== false;
 	}
 
