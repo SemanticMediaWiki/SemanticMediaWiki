@@ -29,35 +29,36 @@
  */
 
 .tippy-header {
-    padding: .5rem .8rem .3rem .8rem;
+    padding: .5em .8em .3em .8em;
     margin-bottom: 0;
     font-size: 14px;
     color: inherit;
     background-color: #f7f7f7;
     border-bottom: 1px solid #ebebeb;
-    border-top-left-radius: calc(.3rem - 1px);
-    border-top-right-radius: calc(.3rem - 1px);
+    border-top-left-radius: calc(.3em - 1px);
+    border-top-right-radius: calc(.3em - 1px);
     text-align: left;
 }
 
 .tippy-bottom {
-    padding: .5rem .8rem .5rem .8rem;
+    padding: .5em .8em .5em .8em;
     margin-bottom: 0;
     font-size: 14px;
     color: inherit;
     background-color: #fff;
     border-top: 1px solid #ebebeb;
-    border-bottom-left-radius: calc(.3rem - 1px);
-    border-bottom-right-radius: calc(.3rem - 1px);
+    border-bottom-left-radius: calc(.3em - 1px);
+    border-bottom-right-radius: calc(.3em - 1px);
     text-align: left;
 }
 
 .tippy-content-container {
-    padding: .3rem .8rem;
-    margin-bottom: 0.2rem;
+    padding: .3em .8em;
+    margin-bottom: 0.2em;
     text-align: initial;
     word-break: break-word;
    /* max-width: 260px; */
+   font-size: 14px;
 }
 
 .tippy-content-overlay {
