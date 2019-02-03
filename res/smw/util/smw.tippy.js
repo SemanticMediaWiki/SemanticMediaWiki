@@ -47,12 +47,14 @@
 		onShow: function ( tip ) {
 
 			var isRTL = document.documentElement.dir === "rtl";
+			var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
 
-			// To narrow offset, start with `top-start`; for RTL the
-			// boundaries aren't honored hence leave it
-			if ( tip.reference.offsetLeft < 80 ) {
-				tip.set( { placement: isRTL ? "top" : "top-start" } );
-			};
+			// Move away from the `bodyContent` border
+			if ( distance == 0 ) {
+				tip.set( { offset: 40 } );
+			} else if ( distance < 40 ) {
+				tip.set( { offset: distance } );
+			}
 
 			// Initialized? Track state information per instance in order
 			// to mimic known behaviour of the SMW qTip2 tooltip
