@@ -120,12 +120,19 @@ class HookListener {
 	 */
 	public function onOutputPageParserOutput( &$outputPage, $parserOutput ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$outputPageParserOutput = new OutputPageParserOutput(
-			$outputPage,
-			$parserOutput
+			$applicationFactory->getNamespaceExaminer()
 		);
 
-		return $outputPageParserOutput->process();
+		$outputPageParserOutput->setIndicatorRegistry(
+			$applicationFactory->create( 'IndicatorRegistry' )
+		);
+
+		$outputPageParserOutput->process( $outputPage, $parserOutput );
+
+		return true;
 	}
 
 	/**
