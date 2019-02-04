@@ -110,6 +110,7 @@
 	"smw-special-types-no-such-type": "Den Datentyp deen ugi gouf gëtt et net",
 	"smw-statistics": "Semantesch Statistiken",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Ufro|Ufroen}}",
+	"smw-statistics-query-format": "<code>$1</code> Format",
 	"smw-statistics-query-size": "Gréisst vun der Ufro",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Konzept|Konzepter}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Konzept|Konzepter}}]]",

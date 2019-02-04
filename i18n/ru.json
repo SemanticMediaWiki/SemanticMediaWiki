@@ -52,7 +52,8 @@
 			"Infovarius",
 			"Soul Train",
 			"Alex Mashin",
-			"Nk88"
+			"Nk88",
+			"Athena Atterdag"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -796,6 +797,7 @@
 	"smw-expand": "Развернуть",
 	"smw-collapse": "Свернуть",
 	"smw-copy": "Копировать",
+	"smw-copy-clipboard-title": "Копирование содержимого в буфер обмена",
 	"smw-types-title": "Тип: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Изменение контентной модели [https://www.semantic-mediawiki.org/wiki/Help:Schema страницы схемы] не разрешено.",
 	"smw-schema-namespace-edit-protection": "Эта страница защищена, править её могут только участники с [https://www.semantic-mediawiki.org/wiki/Help:Permissions правом] <code>smw-schemaedit</code>.",

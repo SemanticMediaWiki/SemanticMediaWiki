@@ -123,7 +123,7 @@
 	"smw-propertylist-count": "Näytetään $1 liittyvä(ä) {{PLURAL:$1|kokonaisuus|kokonaisuutta}}.",
 	"smw-propertylist-count-more-available": "Näytetään $1 liittyvää {{PLURAL:$1|aihe|aihetta}} (lisää on saatavilla).",
 	"specialpages-group-smw_group": "Semanttinen MediaWiki",
-	"exportrdf": "Vie sivut RDF:nä",
+	"exportrdf": "Vie sivut RDF-muodossa",
 	"smw_exportrdf_docu": "Tämän sivun avulla voit noutaa sivun tiedot RDF-muodossa.\nSyötä vietävien sivujen otsikot alla olevaan tekstiruutuun, yksi otsikko yhdellä rivillä.",
 	"smw_exportrdf_recursive": "Tee vienti rekursiivisesti kaikista liittyvistä sivuista.\nHuomioi, että tulos saattaa olla suuri.",
 	"smw_exportrdf_backlinks": "Vie myös sivut, joilta viitataan vietäville sivuille.\nGeneroi selailtavan RDF:n.",
