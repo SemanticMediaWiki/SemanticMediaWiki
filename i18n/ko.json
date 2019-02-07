@@ -202,6 +202,7 @@
 	"smw-statistics-property-type": "(데이터유형으로 할당된) {{PLURAL:$1|속성}}",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|쿼리|쿼리}}",
 	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|쿼리|쿼리}}]]",
+	"smw-statistics-query-format": "<code>$1</code> 포맷",
 	"smw-statistics-query-size": "쿼리 크기",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|개념}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|개념}}]]",
