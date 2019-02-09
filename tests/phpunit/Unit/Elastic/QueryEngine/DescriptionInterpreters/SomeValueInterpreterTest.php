@@ -35,6 +35,12 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->setMethods( [ 'getID' ] )
 			->getMock();
+
+		$this->conditionBuilder->setOptions( new Options(
+			[
+				'maximum.value.length' => 500
+			]
+		) );
 	}
 
 	public function testCanConstruct() {
@@ -168,7 +174,8 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->setOptions( new Options(
 			[
-				'cjk.best.effort.proximity.match' => true
+				'cjk.best.effort.proximity.match' => true,
+				'maximum.value.length' => 500
 			]
 		) );
 

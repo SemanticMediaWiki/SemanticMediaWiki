@@ -108,6 +108,10 @@ class ValueDescriptionInterpreter {
 			$value = $dataItem->getSerialization();
 		}
 
+		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
+			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
+		}
+
 		if ( $dataItem instanceof DIWikiPage && $this->isRange( $comparator ) ) {
 			$params = $this->fieldMapper->range( "$field.keyword", $value, $comparator );
 		} elseif ( $dataItem instanceof DIBlob && $comparator === SMW_CMP_EQ ) {

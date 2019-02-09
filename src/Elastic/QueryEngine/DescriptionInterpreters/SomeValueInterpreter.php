@@ -145,6 +145,10 @@ class SomeValueInterpreter {
 			$value = $dataItem->getSortKey();
 		}
 
+		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
+			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
+		}
+
 		if ( $this->isRange( $comparator ) ) {
 			$match = $this->fieldMapper->range( "$pid.$field", $value, $comparator );
 		} elseif ( $isSubDataType && $dataItem->getDBKey() === '' && $comparator === SMW_CMP_NEQ ) {
@@ -271,6 +275,10 @@ class SomeValueInterpreter {
 		$type = $options['type'];
 
 		$value = $dataItem->getSerialization();
+
+		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
+			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
+		}
 
 		if ( $this->isRange( $comparator ) ) {
 			// Use a not_analyzed field
@@ -440,6 +448,10 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function plain( $value, array &$options ) {
+
+		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
+			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
+		}
 
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
