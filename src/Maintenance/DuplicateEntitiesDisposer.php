@@ -65,7 +65,7 @@ class DuplicateEntitiesDisposer {
 		}
 
 		if ( $this->cache !== null ) {
-			$this->cache->delete( \SMW\MediaWiki\Api\Task::makeCacheKey( 'duplookup' ) );
+			$this->cache->delete( \SMW\MediaWiki\Api\Tasks\Task::makeCacheKey( 'duplicate-lookup' ) );
 		}
 	}
 
