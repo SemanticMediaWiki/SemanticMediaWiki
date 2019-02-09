@@ -94,8 +94,8 @@ class CheckReplicationTask extends Task {
 			$html = $this->buildHTML( $title->getPrefixedText(), $id, $isRTL );
 		} elseif ( !end( $pv )->equals( $dataItem ) ) {
 			$dates = [
-				'time_es' => $dataItem->getSerialization(),
-				'time_store' => end( $pv )->getSerialization()
+				'time_es' => $dataItem->asDateTime()->format( 'Y-m-d H:i:s' ),
+				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
 			];
 			$html = $this->buildHTML( $title->getPrefixedText(), $id, $isRTL, $dates );
 		}
