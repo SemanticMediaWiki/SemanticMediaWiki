@@ -35,11 +35,15 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCheckReplicatioIndicator() {
+	public function testCheckReplicationIndicator() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
@@ -66,6 +70,31 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertArrayHasKey(
 			'smw-es-replication',
+			$instance->getIndicators()
+		);
+	}
+
+	public function testNoCheckReplicationOnNonExistingTitle() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new IndicatorProvider(
+			$this->store
+		);
+
+		$instance->canCheckReplication( true );
+
+		$this->assertFalse(
+			$instance->hasIndicator( $title, [] )
+		);
+
+		$this->assertEmpty(
 			$instance->getIndicators()
 		);
 	}

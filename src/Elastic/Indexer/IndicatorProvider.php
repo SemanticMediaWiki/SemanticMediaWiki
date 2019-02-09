@@ -60,8 +60,8 @@ class IndicatorProvider implements IIndicatorProvider {
 	 */
 	public function hasIndicator( Title $title, $options ) {
 
-		if ( $this->checkReplication ) {
-			return $this->checkReplication( $title, $options );
+		if ( $this->checkReplication && $title->exists() ) {
+			$this->checkReplication( $title, $options );
 		}
 
 		return $this->indicators !== [];
@@ -88,7 +88,7 @@ class IndicatorProvider implements IIndicatorProvider {
 	private function checkReplication( $title, $options ) {
 
 		if ( $options['action'] === 'edit' || $options['diff'] !== null || $options['action'] === 'history' ) {
-			return false;
+			return;
 		}
 
 		$subject = DIWikiPage::newFromTitle(
@@ -110,8 +110,6 @@ class IndicatorProvider implements IIndicatorProvider {
 				'data-dir' => $dir,
 			]
 		);
-
-		return true;
 	}
 
 }
