@@ -2,15 +2,12 @@
 
 namespace SMW\Elastic\Indexer;
 
-use SMWDITime as DITime;
-use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
-use SMW\SemanticData;
-use SMW\MediaWiki\IndicatorProvider as IIndicatorProvider;
-use Title;
-use Html;
 use SMW\Message;
+use SMW\MediaWiki\IndicatorProvider as IIndicatorProvider;
+use Html;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -107,7 +104,8 @@ class IndicatorProvider implements IIndicatorProvider {
 		$this->indicators['smw-es-replication'] = Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-es-replication',
+				'class' => 'smw-es-replication smw-icon-indicator-placeholder',
+				'title' => Message::get( 'smw-es-replication-check' ),
 				'data-subject' => $subject->getHash(),
 				'data-dir' => $dir,
 			]

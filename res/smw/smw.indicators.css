@@ -25,19 +25,34 @@
  * @licence GNU GPL v2+
  * @author mwjames
  */
+.smw-icon-indicator-placeholder {
+    height: 22px;
+    width: 22px;
+    background-color: #eee;
+    border-radius: 50%;
+    display: inline-block;
+    margin-top:2px;
+    margin-right:3px;
+    vertical-align: middle;
+    line-height: 24px;
+}
+
 .smw-icon-indicator-replication-error {
     background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cstyle type='text/css'%3E* %7B fill: %23e67e22 %7D%3C/style%3E%3Cpath d='M10 0a10 10 0 1 0 10 10A10 10 0 0 0 10 0zm1 16H9v-2h2zm0-4H9V4h2z'/%3E%3C/svg%3E%0A") center left no-repeat;
     padding-left: 20px;
     display: inline-block;
-    height: 28px;
+    height: 20px;
 }
 
 .smw-icon-indicator-replication-error {
     background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg stroke='%23d33' stroke-width='2.23'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='8.5652'/%3E%3Cpath d='M10,4.188V12.657M10,13.438V15.813'/%3E%3C/g%3E%3C/svg%3E") center left no-repeat;
     padding-left: 20px;
     display: inline-block;
-    height: 28px;
+    height: 20px;
     margin-right: 5px;
+    vertical-align: middle;
+    line-height: 24px;
+    margin-top: 2px;
 }
 
 .smw-icon-constraint-violation {
@@ -70,18 +85,18 @@
 }
 
 .smw-rule-constraint-violation ul.smw-list-rule {
-	margin: 0;
+    margin: 0;
 }
 
 .smw-rule-constraint-violation ul.smw-list-rule li {
-	margin: 0;
-	margin-bottom: 0.2em;
+    margin: 0;
+    margin-bottom: 0.2em;
 }
 
 .smw-list-rule {
-	list-style-image: none;
-	list-style-type: none;
-	margin: 0.2em 0 0 0.6em;
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0.2em 0 0 0.6em;
 }
 
 .smw-list-rule-title {
