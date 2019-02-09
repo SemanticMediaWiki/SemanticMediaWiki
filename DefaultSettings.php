@@ -2137,6 +2137,12 @@ return [
 			// when resolved in connection with a query
 			'debug.description.log' => true,
 
+			// #3698
+			// Restrict the length of an individual input value to avoid a potential
+			// "... "java.lang.IllegalArgumentException:input automaton is too
+			// large: 1001 ..."
+			'maximum.value.length' => 500,
+
 			// When `!...` is used make sure that the condition is only applied
 			// on entities where the property exists together with the negated
 			// value condition otherwise the ! condition becomes unrestricted
