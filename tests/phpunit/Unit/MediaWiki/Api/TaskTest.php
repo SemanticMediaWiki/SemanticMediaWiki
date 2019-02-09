@@ -113,8 +113,8 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 			$this->apiFactory->newApiMain(
 				[
 					'action'   => 'smwtask',
-					'task'     => 'duplookup',
-					'params'   => [],
+					'task'     => 'duplicate-lookup',
+					'params'   => json_encode( [] ),
 					'token'    => 'foo'
 				]
 			),
@@ -151,7 +151,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 			$this->apiFactory->newApiMain(
 				[
 					'action'   => 'smwtask',
-					'task'     => 'job',
+					'task'     => 'insert-job',
 					'params'   => json_encode(
 						[
 							'subject' => 'Foo#0##',

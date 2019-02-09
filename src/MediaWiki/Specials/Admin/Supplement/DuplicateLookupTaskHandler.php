@@ -54,7 +54,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function isTaskFor( $task ) {
-		return $task === 'duplookup';
+		return $task === 'duplicate-lookup';
 	}
 
 	/**
@@ -67,7 +67,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-duplookup-title' ),
 			[
-				'action' => 'duplookup'
+				'action' => 'duplicate-lookup'
 			]
 		);
 
@@ -118,7 +118,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 		$html = Html::rawElement(
 				'div',
 				[
-					'class' => 'smw-admin-supplementary-duplookup',
+					'class' => 'smw-admin-supplementary-duplicate-lookup',
 					'style' => 'opacity:0.5;position: relative;',
 					'data-config' => json_encode(
 						[
