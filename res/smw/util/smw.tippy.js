@@ -47,13 +47,20 @@
 		onShow: function ( tip ) {
 
 			var isRTL = document.documentElement.dir === "rtl";
-			var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
 
 			// Move away from the `bodyContent` border
-			if ( distance == 0 ) {
-				tip.set( { offset: 40 } );
-			} else if ( distance < 40 ) {
-				tip.set( { offset: distance } );
+			if ( tip.reference.offsetWidth < tip.props.maxWidth ) {
+
+				var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
+
+				var width = tip.reference.offsetWidth <= 16 ? tip.props.maxWidth : tip.reference.offsetWidth;
+				var center = ( width / 2 ) - 20;
+
+				if ( distance == 0 ) {
+					tip.set( { offset: center } );
+				} else if ( distance < center ) {
+					tip.set( { offset: center - distance } );
+				}
 			}
 
 			// Initialized? Track state information per instance in order
