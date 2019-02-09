@@ -67,7 +67,7 @@ class Field {
 		$highlighter->setContent(
 			[
 				'content' => $msg,
-				'style' => 'margin-left:10px;vertical-align:-1px;'
+				'style' => 'margin-left:5px;vertical-align:-1px;'
 			]
 		);
 
