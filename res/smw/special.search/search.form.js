@@ -183,14 +183,8 @@
 					// Handle the hide/show of the NS section
 					if ( $( '#ns-list' ).css( 'display' ) === 'block' && initialForm === '' ) {
 						$( '#ns-list' ).css( 'display', 'none' );
-						$( '#smw-search-togglensview input' ).prop( 'value', 'Show' );
 						$( 'input[name=ns-list]' ).attr( 'value', 1 );
 						initialForm = $( "#smw-search-forms select" ).val();
-					} else {
-						$( '#smw-search-togglensview input' ).prop(
-							'value',
-							( $( '#ns-list' ).css( 'display' ) !== 'none' ? 'Hide': 'Show' )
-						);
 					}
 				} else {
 					$( '#smw-searchoptions .divider' ).hide();
