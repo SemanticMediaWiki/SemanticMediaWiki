@@ -39,7 +39,7 @@
 			"subject": "Example/P0425/2",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwtext\">310.928 K</span><span class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></span></span>"
+					"<span class=\"smwtext\">310.928 K</span><span class=\"smwttcontent\">37.778&#160;°C &lt;br /&gt;100&#160;°F &lt;br /&gt;559.67&#160;°R &lt;br /&gt;</span></span>"
 				]
 			}
 		},
@@ -49,7 +49,7 @@
 			"subject": "Example/P0425/3",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwtext\">310,928 K</span><span class=\"smwttcontent\">37.778&#160;°C <br />100&#160;°F <br />559.67&#160;°R <br /></span></span>"
+					"<span class=\"smwtext\">310,928 K</span><span class=\"smwttcontent\">37.778&#160;°C &lt;br /&gt;100&#160;°F &lt;br /&gt;559.67&#160;°R &lt;br /&gt;</span></span>"
 				]
 			}
 		}

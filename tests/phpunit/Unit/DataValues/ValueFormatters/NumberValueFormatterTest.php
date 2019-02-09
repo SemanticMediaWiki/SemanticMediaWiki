@@ -191,7 +191,7 @@ class NumberValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			'notNull',
 			'<span class="smw-highlighter" data-type="3" data-state="inline" data-title="Unit conversion" title="-173.15 °C -279.67 °F 180 °R ">' .
 			'<span class="smwtext">100 K</span>' .
-			'<span class="smwttcontent">-173.15&#160;°C <br />-279.67&#160;°F <br />180&#160;°R <br /></span></span>'
+			'<span class="smwttcontent">-173.15&#160;°C &lt;br /&gt;-279.67&#160;°F &lt;br /&gt;180&#160;°R &lt;br /&gt;</span></span>'
 		];
 
 		$provider['wl.1'] = [

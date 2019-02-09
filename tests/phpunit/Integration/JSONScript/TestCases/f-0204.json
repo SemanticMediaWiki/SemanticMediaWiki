@@ -26,12 +26,12 @@
 			"subject": "Example/F0204/3",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwtext\">€&#160;12</span><span class=\"smwttcontent\">8.4&#160;£ <br />¥&#160;1,370.545 <br /></span></span>",
-					"<span class=\"smwtext\">€&#160;4.378</span><span class=\"smwttcontent\">3.064&#160;£ <br />¥&#160;500 <br /></span></span>",
-					"<span class=\"smwtext\">€&#160;2.857</span><span class=\"smwttcontent\">2&#160;£ <br />¥&#160;326.32 <br /></span></span>",
-					"<span class=\"smwtext\">€&#160;20</span><span class=\"smwttcontent\">14&#160;£ <br />¥&#160;2,284.242 <br /></span></span>",
-					"<span class=\"smwtext\">€&#160;17.511</span><span class=\"smwttcontent\">12.258&#160;£ <br />¥&#160;2,000 <br /></span></span>",
-					"<span class=\"smwtext\">€&#160;0.714</span><span class=\"smwttcontent\">0.5&#160;£ <br />¥&#160;81.58 <br /></span></span>"
+					"<span class=\"smwtext\">€&#160;12</span><span class=\"smwttcontent\">8.4&#160;£ &lt;br /&gt;¥&#160;1,370.545 &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">€&#160;4.378</span><span class=\"smwttcontent\">3.064&#160;£ &lt;br /&gt;¥&#160;500 &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">€&#160;2.857</span><span class=\"smwttcontent\">2&#160;£ &lt;br /&gt;¥&#160;326.32 &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">€&#160;20</span><span class=\"smwttcontent\">14&#160;£ &lt;br /&gt;¥&#160;2,284.242 &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">€&#160;17.511</span><span class=\"smwttcontent\">12.258&#160;£ &lt;br /&gt;¥&#160;2,000 &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">€&#160;0.714</span><span class=\"smwttcontent\">0.5&#160;£ &lt;br /&gt;¥&#160;81.58 &lt;br /&gt;</span></span>"
 				]
 			}
 		}

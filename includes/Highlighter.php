@@ -274,7 +274,11 @@ class Highlighter {
 				[
 					'class' => 'smwttcontent'
 				],
-				htmlspecialchars_decode( $this->options['content'] )
+				// Embedded wiki content that has other elements like (e.g. <ul>/<ol>)
+				// will make the parser go berserk (injecting <p> elements etc.)
+				// hence encode the identifying </> and decode it within the
+				// tooltip
+				str_replace( [ '<', '>' ], [ '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ) )
 			)
 		);
 
