@@ -1208,7 +1208,7 @@ class Hooks {
 		return true;
 	}
 
-	public function onPageSchemasRegisterHandlers( \ALTree $admin_links_tree ) {
+	public function onPageSchemasRegisterHandlers() {
 		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMWPageSchemas';
 		return true;
 	}
