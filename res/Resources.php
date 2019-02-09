@@ -36,7 +36,8 @@ return [
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
-			'smw/factbox/smw.factbox.css'
+			'smw/factbox/smw.factbox.css',
+			'smw/smw.indicators.css'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
@@ -759,6 +760,21 @@ return [
 			'smw-ui-tooltip-title-note',
 			'smw-ui-tooltip-title-legend',
 			'smw-ui-tooltip-title-reference'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.check.replication'  => $moduleTemplate + [
+		'position' => 'top',
+		'scripts'  => [
+			'smw/util/smw.check.replication.js'
+		],
+		'dependencies'  => [
+			'mediawiki.api',
+			'smw.tippy',
 		],
 		'targets' => [
 			'mobile',

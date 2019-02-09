@@ -1,11 +1,12 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMWDITime as DITime;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use RuntimeException;
 
 /**
@@ -51,6 +52,44 @@ class ReplicationStatus {
 		}
 
 		return $this->{$key}();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 * @throws RuntimeException
+	 */
+	public function getModificationDate( $id ) {
+
+		$params = [
+			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
+			'type'  => ElasticClient::TYPE_DATA,
+			'id'    => $id,
+		];
+
+		if ( !$this->connection->exists( $params ) ) {
+			return false;
+		}
+
+		$pid = $this->fieldMapper->getPID( \SMWSql3SmwIds::$special_ids['_MDAT'] );
+		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
+
+		$doc = $this->connection->get( $params + [ '_source_include' => [ "$pid.$field" ] ] );
+
+		if ( !isset( $doc['_source'][$pid][$field] ) ) {
+			return false;
+		}
+
+		$dataItem = DITime::newFromJD(
+			end( $doc['_source'][$pid][$field] ),
+			DITime::CM_GREGORIAN,
+			DITime::PREC_YMDT
+		);
+
+		return $dataItem;
 	}
 
 	/**
@@ -110,7 +149,11 @@ class ReplicationStatus {
 			foreach ( $result['hits'] as $key => $value ) {
 				foreach ( $value as $key => $v ) {
 					if ( $key === '_source' ) {
-						$time = DITime::newFromJD( end( $v[$pid][$field] ) );
+						$time = DITime::newFromJD(
+							end( $v[$pid][$field] ),
+							DITime::CM_GREGORIAN,
+							DITime::PREC_YMDT
+						);
 					}
 				}
 			}

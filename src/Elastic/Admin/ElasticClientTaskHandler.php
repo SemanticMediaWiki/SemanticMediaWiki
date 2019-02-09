@@ -189,16 +189,25 @@ class ElasticClientTaskHandler extends TaskHandler {
 			$this->outputFormatter->encodeAsJson( $connection->info() )
 		);
 
-		$replicationStatus = new ReplicationStatus(
+		$applicationFactory = ApplicationFactory::getInstance();
+		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
+
+		$replicationStatus = $elasticFactory->newReplicationStatus(
 			$connection
 		);
 
-		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
+		$jobQueue = $applicationFactory->getJobQueue();
 
 		$html .= Html::element(
 			'li',
 			[],
 			$this->msg( [ 'smw-admin-supplementary-elastic-status-last-active-replication', $replicationStatus->get( 'last_update' ) ] )
+		);
+
+		$html .= Html::element(
+			'li',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-status-replication-monitoring', $connection->getConfig()->dotGet( 'indexer.monitor.entity.replication' ) ? '✓' : '✗' ] )
 		);
 
 		$html .= Html::rawElement(

@@ -16,18 +16,22 @@
 		canFetch: true
 	}
 
-	var container = function( title, content, isPersistent ) {
+	var container = function( title, content, tip ) {
 
-		var cancel = '';
+		var cancel = '', head = '', bottom = '', theme = '';
+		var theme = tip.smw.theme;
 
-		if ( isPersistent ) {
+		if ( tip.smw.isPersistent ) {
 			cancel = '<span class="tippy-cancel"></span>';
 		};
 
-		var head = '<div class="tippy-header">' + cancel + title + '</div>';
-		//var bottom = '<div class="tippy-bottom">' + cancel + title + '</div>';
+		head = '<div class="tippy-header ' + theme + '">' + cancel + title + '</div>';
 
-		return head + '<div class="tippy-content-container">' + content + '</div>';
+		if ( tip.reference.getAttribute( "data-bottom" ) ) {
+			bottom = '<div class="tippy-bottom ' + theme + '">' + tip.reference.getAttribute( "data-bottom" ) + '</div>';
+		};
+
+		return head + '<div class="tippy-content-container ' + theme + '">' + content + '</div>' + bottom;
 	}
 
 	var options = {
@@ -73,6 +77,7 @@
 					isDeferred: false,
 					hasContent: false,
 					wasClicked: false,
+					theme: '',
 					title: ''
 				};
 
@@ -82,6 +87,10 @@
 
 				if ( tip.reference.getAttribute( "data-maxwidth" ) ) {
 					tip.set( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
+				}
+
+				if ( tip.reference.getAttribute( "data-theme" ) ) {
+					tip.smw.theme = tip.reference.getAttribute( "data-theme" );
 				}
 
 				tip.reference.setAttribute( "title", '' );
@@ -131,7 +140,7 @@
 				}
 
 				tip.setContent(
-					container( title, content, tip.smw.isPersistent )
+					container( title, content, tip )
 				);
 			}
 
@@ -267,9 +276,14 @@
 		return self;
 	};
 
+	if ( document.getElementsByClassName( "smw-highlighter.is-disabled" ).length > 0 ) {
+		document.getElementsByClassName( "smw-highlighter.is-disabled" )[0].classList.remove( 'is-disabled' );
+	};
+
 	// Running in default mode which would be on
 	// $( document ).ready( function() { ... } ); when relying on jQuery
 	tippy( '#bodyContent', options )
+	tippy( '.mw-indicators', options )
 
 	/**
 	 * Factory

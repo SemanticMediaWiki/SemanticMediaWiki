@@ -269,6 +269,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callUserGroupsChanged' ],
 			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
 			[ 'callSMWAdminTaskHandlerFactory' ],
+			[ 'callSMWApiAddTasks' ],
 			[ 'callSMWSQLStorAfterDataUpdateComplete' ],
 			[ 'callSMWStoreBeforeQueryResultLookupComplete' ],
 			[ 'callSMWStoreAfterQueryResultLookupComplete' ],
@@ -1498,6 +1499,24 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$taskHandlers, $store, $outputFormatter, $user ]
+		);
+
+		return $handler;
+	}
+
+	public function callSMWApiAddTasks( $instance ) {
+
+		$handler = 'SMW::Api::AddTasks';
+
+		if ( !$instance->getHandlerFor( $handler ) ) {
+			return $this->markTestSkipped( "$handler not used" );
+		}
+
+		$services = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ &$services ]
 		);
 
 		return $handler;

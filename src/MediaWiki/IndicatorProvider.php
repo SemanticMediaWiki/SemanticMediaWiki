@@ -28,4 +28,11 @@ interface IndicatorProvider {
 	 */
 	public function getIndicators();
 
+	/**
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	public function getModules();
+
 }

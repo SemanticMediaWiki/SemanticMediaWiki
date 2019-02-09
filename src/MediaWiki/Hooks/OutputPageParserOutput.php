@@ -77,7 +77,16 @@ class OutputPageParserOutput extends HookHandler {
 			return true;
 		}
 
-		if ( $this->indicatorRegistry !== null && $this->indicatorRegistry->hasIndicator( $title, $parserOutput ) ) {
+		$context = $outputPage->getContext();
+		$request = $context->getRequest();
+
+		$options = [
+			'action' => $request->getVal( 'action' ),
+			'diff' => $request->getVal( 'diff' ),
+			'isRTL' => $context->getLanguage()->isRTL()
+		];
+
+		if ( $this->indicatorRegistry !== null && $this->indicatorRegistry->hasIndicator( $title, $options ) ) {
 			$this->indicatorRegistry->attachIndicators( $outputPage );
 		}
 

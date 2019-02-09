@@ -59,6 +59,8 @@
     word-break: break-word;
    /* max-width: 260px; */
    font-size: 14px;
+   max-height: 250px;
+   overflow-y: auto;
 }
 
 .tippy-content-overlay {
@@ -100,4 +102,24 @@
     text-decoration: none;
     cursor: pointer;
     opacity: 0.4;
+}
+
+.tippy-header.wide-popup {
+    padding: .8em .8em .6em .8em;
+}
+
+.tippy-content-container.wide-popup {
+    padding: .5em .8em;
+    margin-bottom: 0px;
+    font-size: 14px;
+    max-height: unset;
+    overflow: unset;
+}
+
+.tippy-content-container.wide-popup ul {
+    font-size: 12px;
+}
+
+.tippy-bottom.wide-popup {
+     padding: .8em .8em .95em .8em;
 }

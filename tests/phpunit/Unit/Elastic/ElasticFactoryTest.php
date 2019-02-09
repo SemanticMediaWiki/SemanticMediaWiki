@@ -22,6 +22,10 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
+		$options = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -37,6 +41,10 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $options ) );
 	}
 
 	public function testCanConstruct() {
@@ -128,6 +136,44 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\Rebuilder',
 			$instance->newRebuilder( $this->store )
+		);
+	}
+
+	public function testCanConstructReplicationStatus() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\Replication\ReplicationStatus',
+			$instance->newReplicationStatus( $this->connection )
+		);
+	}
+
+	public function testCanConstructCheckReplicationTask() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\Replication\CheckReplicationTask',
+			$instance->newCheckReplicationTask()
+		);
+	}
+
+	public function testCanConstructIndicatorProvider() {
+
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\IndicatorProvider',
+			$instance->newIndicatorProvider( $store )
 		);
 	}
 
@@ -238,6 +284,21 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->onTaskHandlerFactory( $taskHandlers, $this->store, $outputFormatter, null )
+		);
+	}
+
+	public function testOnApiTasks() {
+
+		$instance = new ElasticFactory();
+		$services = [];
+
+		$this->assertTrue(
+			$instance->onApiTasks( $services )
+		);
+
+		$this->assertArrayHasKey(
+			'check-es-replication',
+			$services
 		);
 	}
 

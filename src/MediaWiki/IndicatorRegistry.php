@@ -24,6 +24,11 @@ class IndicatorRegistry {
 	private $indicators = [];
 
 	/**
+	 * @var []
+	 */
+	private $modules = [];
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
@@ -53,6 +58,7 @@ class IndicatorRegistry {
 			}
 
 			$this->indicators = array_merge( $this->indicators, $indicatorProvider->getIndicators() );
+			$this->modules = array_merge( $this->modules, $indicatorProvider->getModules() );
 		}
 
 		return $this->indicators !== [];
@@ -64,6 +70,7 @@ class IndicatorRegistry {
 	 * @param OutputPage $outputPage
 	 */
 	public function attachIndicators( OutputPage $outputPage ) {
+		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
 	}
 
