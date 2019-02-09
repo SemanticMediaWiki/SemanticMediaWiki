@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use RuntimeException;
-use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\MediaWiki\Hooks;
 
 /**
  * @license GNU GPL v2+
@@ -124,7 +124,7 @@ class MwHooksHandler {
 	 * @return MwHooksHandler
 	 */
 	public function invokeHooksFromRegistry() {
-		$this->getHookRegistry()->register();
+		$this->getHookRegistry()->register( $GLOBALS );
 		return $this;
 	}
 
@@ -136,7 +136,7 @@ class MwHooksHandler {
 	public function getHookRegistry() {
 
 		if ( $this->hookRegistry === null ) {
-			 $this->hookRegistry = new HookRegistry( $GLOBALS, '' );
+			 $this->hookRegistry = new Hooks( '' );
 		}
 
 		return $this->hookRegistry;

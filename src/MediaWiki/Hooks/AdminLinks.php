@@ -1,44 +1,29 @@
 <?php
 
+namespace SMW\MediaWiki\Hooks;
+
+use ALTree;
+use ALSection;
+use ALItem;
+use ALRow;
+
 /**
- * Static class for hooks handled by the Semantic MediaWiki extension.
+ * @license GNU GPL v2+
+ * @since 3.1
  *
- * @since 1.7
- *
- * @file SemanticMediaWiki.hooks.php
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-final class SMWExternalHooks {
+class AdminLinks extends HookHandler {
 
 	/**
-	 * TODO
-	 *
-	 * @since 1.7
-	 *
-	 * @return boolean
-	 */
-	public static function onPageSchemasRegistration() {
-		// @codeCoverageIgnoreStart
-		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMWPageSchemas';
-
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
-	 * Adds links to Admin Links page.
-	 *
-	 * @since 1.7
+	 * @since 3.1
 	 *
 	 * @param ALTree $admin_links_tree
 	 *
-	 * @return boolean
+	 * @return true
 	 */
-	public static function addToAdminLinks( ALTree $admin_links_tree ) {
+	public function process( ALTree $admin_links_tree ) {
+
 		// @codeCoverageIgnoreStart
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
@@ -55,14 +40,14 @@ final class SMWExternalHooks {
 		$smw_docu_row = new ALRow( 'smw_docu' );
 		$smw_name = wfMessage( 'specialpages-group-smw_group' )->text();
 		$smw_docu_label = wfMessage( 'adminlinks_documentation', $smw_name )->text();
-		$smw_docu_row->addItem( AlItem::newFromExternalLink( 'http://semantic-mediawiki.org/wiki/Help:User_manual', $smw_docu_label ) );
+		$smw_docu_row->addItem( AlItem::newFromExternalLink( 'https://semantic-mediawiki.org/wiki/Help:User_manual', $smw_docu_label ) );
 
 		$data_structure_section->addRow( $smw_docu_row );
 		$admin_links_tree->addSection( $data_structure_section, wfMessage( 'adminlinks_browsesearch' )->text() );
 		$smw_row = new ALRow( 'smw' );
 		$displaying_data_section = new ALSection( wfMessage( 'smw_adminlinks_displayingdata' )->text() );
 		$smw_row->addItem( AlItem::newFromExternalLink(
-			'http://semantic-mediawiki.org/wiki/Help:Inline_queries',
+			'https://semantic-mediawiki.org/wiki/Help:Inline_queries',
 			wfMessage( 'smw_adminlinks_inlinequerieshelp' )->text()
 		) );
 
