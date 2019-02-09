@@ -51,7 +51,7 @@ class ResourceLoaderTestModules extends HookHandler {
 	 *
 	 * @return boolean
 	 */
-	public function process(  array &$testModules ) {
+	public function process( array &$testModules ) {
 
 		$testModules['qunit']['ext.smw.tests'] = [
 			'scripts' => [
@@ -84,7 +84,7 @@ class ResourceLoaderTestModules extends HookHandler {
 			],
 			'position' => 'top',
 			'localpath' => $this->path,
-			'remoteExtPath' => '..' . substr( $this->path, strlen( $this->ip ) ),
+			'remoteExtPath' => 'SemanticMediaWiki',
 		];
 
 		return true;

@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Hooks;
+namespace SMW\Tests\MediaWiki;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\MediaWiki\Hooks;
 use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\HookRegistry
+ * @covers \SMW\MediaWiki\Hooks
  * @group semantic-mediawiki
  * @group medium
  *
@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class HookRegistryTest extends \PHPUnit_Framework_TestCase {
+class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	private $parser;
 	private $title;
@@ -121,8 +121,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$vars = [];
 
 		$this->assertInstanceOf(
-			HookRegistry::class,
-			new HookRegistry( $vars, 'foo' )
+			Hooks::class,
+			new Hooks( 'foo' )
 		);
 	}
 
@@ -130,7 +130,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [];
 
-		HookRegistry::initExtension( $vars );
+		Hooks::registerEarly( $vars );
 
 		// CanonicalNamespaces
 		$callback = end( $vars['wgHooks']['CanonicalNamespaces'] );
@@ -179,8 +179,8 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledDeferredUpdate' => false
 		];
 
-		$instance = new HookRegistry( $vars, 'foo' );
-		$instance->register();
+		$instance = new Hooks( 'foo' );
+		$instance->register( $vars );
 
 		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
 	}
@@ -189,6 +189,11 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
      * @depends testRegister
      */
 	public function testCheckOnMissingHandlers() {
+
+		$disabled = [
+			'PageSchemasRegisterHandlers',
+			'AdminLinks'
+		];
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -201,13 +206,18 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledDeferredUpdate' => false
 		];
 
-		$instance = new HookRegistry( $vars, 'foo' );
-		$instance->register();
+		$instance = new Hooks( 'foo' );
+		$instance->register( $vars );
 
 		$handlerList = $instance->getHandlerList();
 		$handlers = array_flip( self::$handlers );
 
 		foreach ( $handlerList as $handler ) {
+
+			if ( array_search( $handler, $disabled ) !== false ) {
+				continue;
+			}
+
 			$this->assertArrayHasKey( $handler, $handlers, "Missing a `$handler` test!" );
 		}
 

@@ -4,14 +4,11 @@ namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
 use SMW\Setup;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Setup
- *
- * @group SMW
- * @group SMWExtension
- *
- * @group medium
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -20,7 +17,7 @@ use SMW\Setup;
  */
 class SetupTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $testEnvironment;
 	private $defaultConfig;
 
 	protected function setUp() {
@@ -42,16 +39,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->applicationFactory = ApplicationFactory::getInstance();
-		$this->applicationFactory->registerObject( 'Store', $store );
-
 		$this->defaultConfig = [
 			'smwgMainCacheType' => CACHE_NONE,
 			'smwgNamespacesWithSemanticLinks' => [],
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => [],
 			'wgExtensionAssetsPath'    => false,
-			'smwgResourceLoaderDefFiles' => [],
+			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
@@ -63,35 +57,28 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgConfigFileDir' => ''
 		];
 
-		foreach ( $this->defaultConfig as $key => $value ) {
-			$this->applicationFactory->getSettings()->set( $key, $value );
-		}
+		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
-
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
-		$applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			Setup::class,
-			new Setup( $applicationFactory )
+			new Setup()
 		);
 	}
 
 	public function testResourceModules() {
 
 		$config = $this->defaultConfig;
-		$config['smwgResourceLoaderDefFiles'] = $GLOBALS['smwgResourceLoaderDefFiles'];
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $config, '' );
 
 		$this->assertNotEmpty(
@@ -138,7 +125,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config = $this->defaultConfig;
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -173,7 +160,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$localConfig
 		);
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
@@ -196,7 +183,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$config['wgParamDefinitions']['smwformat']
 		);
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -210,7 +197,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$config['wgFooterIcons']['poweredby'] = [];
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -306,7 +293,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			"Asserts that {$entry} is empty"
 		);
 
-		$instance = new Setup( $this->applicationFactory );
+		$instance = new Setup();
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty( $config[$target][$entry] );

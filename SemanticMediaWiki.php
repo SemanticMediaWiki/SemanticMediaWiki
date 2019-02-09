@@ -1,7 +1,6 @@
 <?php
 
 use SMW\NamespaceManager;
-use SMW\ApplicationFactory;
 use SMW\Setup;
 
 /**
@@ -85,13 +84,10 @@ class SemanticMediaWiki {
 	 */
 	public static function onExtensionFunction() {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$namespace = new NamespaceManager();
 		$namespace->init( $GLOBALS );
 
-		$setup = new Setup( $applicationFactory );
-
+		$setup = new Setup();
 		$setup->loadSchema( $GLOBALS );
 		$setup->init( $GLOBALS, __DIR__ );
 	}

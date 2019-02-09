@@ -2,9 +2,8 @@
 
 namespace SMW;
 
-use Hooks;
 use SMW\Connection\ConnectionManager;
-use SMW\MediaWiki\Hooks\HookRegistry;
+use SMW\MediaWiki\Hooks;
 use SMW\SQLStore\Installer;
 
 /**
@@ -16,20 +15,6 @@ use SMW\SQLStore\Installer;
  * @author mwjames
  */
 final class Setup {
-
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
-	 * @since 1.9
-	 *
-	 * @param ApplicationFactory $applicationFactory
-	 */
-	public function __construct( ApplicationFactory $applicationFactory ) {
-		$this->applicationFactory = $applicationFactory;
-	}
 
 	/**
 	 * Runs at the earliest possible event to initialize functions or hooks that
@@ -46,11 +31,11 @@ final class Setup {
 		$vars['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = $vars['smwgIP'] . 'i18n/extra/SemanticMediaWiki.alias.php';
 		$vars['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = $vars['smwgIP'] . 'i18n/extra/SemanticMediaWiki.magic.php';
 
-		HookRegistry::initExtension( $vars );
+		Hooks::registerEarly( $vars );
 	}
 
 	/**
-	 * @see HookRegistry::initExtension
+	 * @see Hooks::initExtension
 	 */
 	public static function getAPIModules() {
 
@@ -70,7 +55,7 @@ final class Setup {
 	}
 
 	/**
-	 * @see HookRegistry::initExtension
+	 * @see Hooks::initExtension
 	 */
 	public static function initSpecialPageList( array &$specialPages ) {
 
@@ -156,9 +141,9 @@ final class Setup {
 	 * @since 1.9
 	 *
 	 * @param array &$vars
-	 * @param string $directory
+	 * @param string $localDirectory
 	 */
-	public function init( &$vars, $directory ) {
+	public function init( &$vars, $localDirectory ) {
 
 		$this->initMessageCallbackHandler();
 
@@ -184,10 +169,10 @@ final class Setup {
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
-		$this->registerFooterIcon( $vars, $directory );
-		$this->registerHooks( $vars, $directory );
+		$this->registerFooterIcon( $vars, $localDirectory );
+		$this->registerHooks( $vars, $localDirectory );
 
-		Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
+		\Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
 	}
 
 	private function addDefaultConfigurations( &$vars ) {
@@ -211,8 +196,10 @@ final class Setup {
 
 	private function initConnectionProviders() {
 
-		$mwCollaboratorFactory = $this->applicationFactory->newMwCollaboratorFactory();
-		$connectionManager = $this->applicationFactory->getConnectionManager();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
+		$connectionManager = $applicationFactory->getConnectionManager();
 
 		$connectionManager->registerConnectionProvider(
 			DB_MASTER,
@@ -237,7 +224,7 @@ final class Setup {
 
 		$connectionManager->registerConnectionProvider(
 			'elastic',
-			$this->applicationFactory->singleton( 'ElasticFactory' )->newConnectionProvider()
+			$applicationFactory->singleton( 'ElasticFactory' )->newConnectionProvider()
 		);
 	}
 
@@ -339,7 +326,10 @@ final class Setup {
 	 */
 	private function registerPermissions( &$vars ) {
 
-		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
+		if ( !$settings->get( 'smwgSemanticsEnabled' ) ) {
 			return;
 		}
 
@@ -376,7 +366,7 @@ final class Setup {
 		}
 
 		// Add an additional protection level restricting edit/move/etc
-		if ( ( $editProtectionRight = $this->applicationFactory->getSettings()->get( 'smwgEditProtectionRight' ) ) !== false ) {
+		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
 			$vars['wgRestrictionLevels'][] = $editProtectionRight;
 		}
 	}
@@ -392,7 +382,9 @@ final class Setup {
 	 */
 	private function registerFooterIcon( &$vars, $path ) {
 
-		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( !$applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
 			return;
 		}
 
@@ -419,18 +411,9 @@ final class Setup {
 	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
 	 */
-	private function registerHooks( &$vars, $directory ) {
-
-		$hookRegistry = new HookRegistry( $vars, $directory );
-		$hookRegistry->register();
-
-		if ( !$this->applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
-			return;
-		}
-
-		// Old-style registration
-		$vars['wgHooks']['AdminLinks'][] = 'SMWExternalHooks::addToAdminLinks';
-		$vars['wgHooks']['PageSchemasRegisterHandlers'][] = 'SMWExternalHooks::onPageSchemasRegistration';
+	private function registerHooks( &$vars, $localDirectory ) {
+		$hooks = new Hooks( $localDirectory );
+		$hooks->register( $vars );
 	}
 
 }

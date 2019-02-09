@@ -1,47 +1,267 @@
 <?php
 
-namespace SMW\MediaWiki\Hooks;
+namespace SMW\MediaWiki;
 
+use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
-use ParserHooks\HookRegistrant;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\NamespaceManager;
+use SMW\SemanticData;
+use SMW\Setup;
+use SMW\Site;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use ParserHooks\HookRegistrant;
 use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
-use SMW\MediaWiki\Search\SearchProfileForm;
 use SMW\SQLStore\Installer;
-use SMW\Site;
 use SMW\Store;
 use SMW\Options;
+use SMW\MediaWiki\Hooks\ArticleDelete;
+use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use SMW\MediaWiki\Hooks\ArticleProtectComplete;
+use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\MediaWiki\Hooks\ArticleViewHeader;
+use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
+use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
+use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\MediaWiki\Hooks\EditPageForm;
+use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
+use SMW\MediaWiki\Hooks\ExtensionTypes;
+use SMW\MediaWiki\Hooks\FileUpload;
+use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\MediaWiki\Hooks\PersonalUrls;
+use SMW\MediaWiki\Hooks\RejectParserCacheValue;
+use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
+use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
+use SMW\MediaWiki\Hooks\SkinAfterContent;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
+use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
+use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
+use SMW\MediaWiki\Hooks\TitleIsMovable;
+use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\UserChange;
+use SMW\MediaWiki\Hooks\AdminLinks;
 
 /**
  * @license GNU GPL v2+
- * @since 3.0
+ * @since 2.1
  *
  * @author mwjames
  */
-class HookListener {
+class Hooks {
 
 	/**
 	 * @var array
 	 */
-	private $vars;
+	private $handlers = [];
 
 	/**
 	 * @var string
 	 */
-	private $basePath;
+	private $localDirectory;
+
+	/**
+	 * @since 2.1
+	 *
+	 * @param string $localDirectory
+	 */
+	public function __construct( $localDirectory = '' ) {
+		$this->localDirectory = $localDirectory;
+		$this->registerHandlers();
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $name
+	 *
+	 * @return boolean
+	 */
+	public function isRegistered( $name ) {
+		// return \Hooks::isRegistered( $name );
+		return isset( $this->handlers[$name] );
+	}
+
+	/**
+	 * @since 2.3
+	 */
+	public function clear() {
+		foreach ( $this->getHandlerList() as $name ) {
+			\Hooks::clear( $name );
+		}
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @param string $name
+	 *
+	 * @return Callable|false
+	 */
+	public function getHandlerFor( $name ) {
+		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
+	}
+
+	/**
+	 * @since 2.3
+	 *
+	 * @return array
+	 */
+	public function getHandlerList() {
+		return array_keys( $this->handlers );
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public function register( &$vars ) {
+		foreach ( $this->handlers as $name => $callback ) {
+			//\Hooks::register( $name, $callback );
+			$vars['wgHooks'][$name][] = $callback;
+		}
+	}
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
-	 * @param string $basePath
 	 */
-	public function __construct( &$vars = [], $basePath = '' ) {
-		$this->vars = $vars;
-		$this->basePath = $basePath;
+	public static function registerEarly( array &$vars ) {
+
+		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\Schema\Content\ContentHandler';
+
+		/**
+		 * CanonicalNamespaces initialization
+		 *
+		 * @note According to T104954 registration via wgExtensionFunctions can be
+		 * too late and should happen before that in case RequestContext::getLanguage
+		 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
+		 *
+		 * @see https://phabricator.wikimedia.org/T104954#2391291
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
+		 * @Bug 34383
+		 */
+		$vars['wgHooks']['CanonicalNamespaces'][] = function( array &$namespaces ) {
+
+			NamespaceManager::initCanonicalNamespaces(
+				$namespaces
+			);
+
+			return true;
+		};
+
+		/**
+		 * To add to or remove pages from the special page list. This array has
+		 * the same structure as $wgSpecialPages.
+		 *
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
+		 *
+		 * #2813
+		 */
+		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
+
+			Setup::initSpecialPageList(
+				$specialPages
+			);
+
+			return true;
+		};
+
+		/**
+		 * Called when ApiMain has finished initializing its module manager. Can
+		 * be used to conditionally register API modules.
+		 *
+		 * #2813
+		 */
+		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $apiModuleManager ) {
+
+			$apiModuleManager->addModules(
+				Setup::getAPIModules(),
+				'action'
+			);
+
+			return true;
+		};
+	}
+
+	private function registerHandlers() {
+
+		$elasticFactory = ApplicationFactory::getInstance()->singleton( 'ElasticFactory' );
+
+		$this->handlers = [
+			'ParserAfterTidy' => [ $this, 'onParserAfterTidy' ],
+			'ParserOptionsRegister' => [ $this, 'onParserOptionsRegister' ],
+			'ParserFirstCallInit' => [ $this, 'onParserFirstCallInit' ],
+			'InternalParseBeforeLinks' => [ $this, 'onInternalParseBeforeLinks' ],
+			'RejectParserCacheValue' => [ $this, 'onRejectParserCacheValue' ],
+
+			'BaseTemplateToolbox' => [ $this, 'onBaseTemplateToolbox' ],
+			'SkinAfterContent' => [ $this, 'onSkinAfterContent' ],
+			'OutputPageParserOutput' => [ $this, 'onOutputPageParserOutput' ],
+			'OutputPageCheckLastModified' => [ $this, 'onOutputPageCheckLastModified' ],
+			'BeforePageDisplay' => [ $this, 'onBeforePageDisplay' ],
+			'BeforeDisplayNoArticleText' => [ $this, 'onBeforeDisplayNoArticleText' ],
+			'EditPage::showEditForm:initial' => [ $this, 'onEditPageShowEditFormInitial' ],
+
+			'TitleMoveComplete' => [ $this, 'onTitleMoveComplete' ],
+			'TitleIsAlwaysKnown' => [ $this, 'onTitleIsAlwaysKnown' ],
+			'TitleQuickPermissions' => [ $this, 'onTitleQuickPermissions' ],
+			'TitleIsMovable' => [ $this, 'onTitleIsMovable' ],
+
+			'ArticlePurge' => [ $this, 'onArticlePurge' ],
+			'ArticleDelete' => [ $this, 'onArticleDelete' ],
+			'ArticleFromTitle' => [ $this, 'onArticleFromTitle' ],
+			'ArticleProtectComplete' => [ $this, 'onArticleProtectComplete' ],
+			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
+			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
+
+			'NewRevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
+			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
+			'FileUpload' => [ $this, 'onFileUpload' ],
+
+			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
+			'ResourceLoaderTestModules' => [ $this, 'onResourceLoaderTestModules' ],
+			'GetPreferences' => [ $this, 'onGetPreferences' ],
+			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
+			'SkinTemplateNavigation' => [ $this, 'onSkinTemplateNavigation' ],
+			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
+
+			'ExtensionTypes' => [ $this, 'onExtensionTypes' ],
+			'SpecialStatsAddExtra' => [ $this, 'onSpecialStatsAddExtra' ],
+			'SpecialSearchResultsPrepend' => [ $this, 'onSpecialSearchResultsPrepend' ],
+			'SpecialSearchProfileForm' => [ $this, 'onSpecialSearchProfileForm' ],
+			'SpecialSearchProfiles' => [ $this, 'onSpecialSearchProfiles' ],
+			'SoftwareInfo' => [ $this, 'onSoftwareInfo' ],
+
+			'BlockIpComplete' => [ $this, 'onBlockIpComplete' ],
+			'UnblockUserComplete' => [ $this, 'onUnblockUserComplete' ],
+			'UserGroupsChanged' => [ $this, 'onUserGroupsChanged' ],
+
+			'SMW::SQLStore::AfterDataUpdateComplete' => [ $this, 'onAfterDataUpdateComplete'],
+			'SMW::SQLStore::Installer::AfterCreateTablesComplete' => [ $this, 'onAfterCreateTablesComplete' ],
+
+			'SMW::Store::BeforeQueryResultLookupComplete' => [ $this, 'onBeforeQueryResultLookupComplete'],
+			'SMW::Store::AfterQueryResultLookupComplete'  => [ $this, 'onAfterQueryResultLookupComplete'],
+
+			'SMW::Browse::AfterIncomingPropertiesLookupComplete' => [ $this, 'onAfterIncomingPropertiesLookupComplete' ],
+			'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate' => [ $this, 'onBeforeIncomingPropertyValuesFurtherLinkCreate' ],
+
+			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
+			'SMW::Admin::TaskHandlerFactory' => [ $elasticFactory, 'onTaskHandlerFactory' ],
+
+			'AdminLinks' => [ $this, 'onAdminLinks' ],
+			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
+		];
 	}
 
 	/**
@@ -614,8 +834,7 @@ class HookListener {
 
 		$resourceLoaderTestModules = new ResourceLoaderTestModules(
 			$resourceLoader,
-			$this->basePath,
-			$this->vars['IP']
+			$this->localDirectory
 		);
 
 		return $resourceLoaderTestModules->process( $testModules );
@@ -840,6 +1059,157 @@ class HookListener {
 			$software[$info['component']] = $info['version'];
 		}
 
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::SQLStore::AfterDataUpdateComplete
+	 */
+	public function onAfterDataUpdateComplete( $store, $semanticData, $changeOp ) {
+
+		// A delete infused change should trigger an immediate update
+		// without having to wait on the job queue
+		$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );
+
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+			$store
+		);
+
+		$queryDependencyLinksStore->pruneOutdatedTargetLinks(
+			$changeOp
+		);
+
+		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
+
+		$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(
+			$store
+		);
+
+		$textChangeUpdater->isPrimary( $isPrimaryUpdate );
+
+		$textChangeUpdater->pushUpdates(
+			$changeOp
+		);
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::BeforeQueryResultLookupComplete
+	 */
+	public function onBeforeQueryResultLookupComplete ( $store, $query, &$result, $queryEngine ) {
+
+		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
+
+		$cachedQueryResultPrefetcher->setQueryEngine(
+			$queryEngine
+		);
+
+		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
+			return true;
+		}
+
+		$result = $cachedQueryResultPrefetcher->getQueryResult(
+			$query
+		);
+
+		return false;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
+	 */
+	public function onAfterQueryResultLookupComplete ( $store, &$result ) {
+
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
+			$store
+		);
+
+		$queryDependencyLinksStore->updateDependencies( $result );
+
+		ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
+
+		$store->getObjectIds()->warmUpCache( $result );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::AfterIncomingPropertiesLookupComplete
+	 */
+	public function onAfterIncomingPropertiesLookupComplete ( $store, $semanticData, $requestOptions ) {
+
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+			$store
+		);
+
+		$queryReferenceBacklinks->addReferenceLinksTo(
+			$semanticData,
+			$requestOptions
+		);
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
+	 */
+	public function onBeforeIncomingPropertyValuesFurtherLinkCreate ( $property, $subject, &$html, $store ) {
+
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
+			$store
+		);
+
+		$doesRequireFurtherLink = $queryReferenceBacklinks->doesRequireFurtherLink(
+			$property,
+			$subject,
+			$html
+		);
+
+		// Return false in order to stop the link creation process to replace the
+		// standard link
+		return $doesRequireFurtherLink;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
+	 */
+	public function onAfterCreateTablesComplete ( $tableBuilder, $messageReporter, $options ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
+
+		$importer = $importerServiceFactory->newImporter(
+			$importerServiceFactory->newJsonContentIterator(
+				$applicationFactory->getSettings()->get( 'smwgImportFileDirs' )
+			)
+		);
+
+		$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::OPT_IMPORT, false ) );
+		$importer->setMessageReporter( $messageReporter );
+		$importer->doImport();
+
+		return true;
+	}
+
+	public function onAdminLinks( \ALTree $admin_links_tree ) {
+
+		$adminLinks = new AdminLinks();
+		$adminLinks->process( $admin_links_tree );
+
+		return true;
+	}
+
+	public function onPageSchemasRegisterHandlers( \ALTree $admin_links_tree ) {
+		$GLOBALS['wgPageSchemasHandlerClasses'][] = 'SMWPageSchemas';
 		return true;
 	}
 
