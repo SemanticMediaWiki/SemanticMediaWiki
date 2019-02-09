@@ -30,9 +30,9 @@
 			"subject": "Example/F0210/Q1.1",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smwtext\">10&#160;km²</span><span class=\"smwttcontent\">3.861&#160;sq mi <br />10,000&#160;m² <br /></span></span>",
-					"<span class=\"smwtext\">7.77&#160;km²</span><span class=\"smwttcontent\">3&#160;sq mi <br />7,770.008&#160;m² <br /></span></span>",
-					"<span class=\"smwtext\">0.05&#160;km²</span><span class=\"smwttcontent\">0.0193&#160;sq mi <br />50&#160;m² <br /></span></span>"
+					"<span class=\"smwtext\">10&#160;km²</span><span class=\"smwttcontent\">3.861&#160;sq mi &lt;br /&gt;10,000&#160;m² &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">7.77&#160;km²</span><span class=\"smwttcontent\">3&#160;sq mi &lt;br /&gt;7,770.008&#160;m² &lt;br /&gt;</span></span>",
+					"<span class=\"smwtext\">0.05&#160;km²</span><span class=\"smwttcontent\">0.0193&#160;sq mi &lt;br /&gt;50&#160;m² &lt;br /&gt;</span></span>"
 				]
 			}
 		},

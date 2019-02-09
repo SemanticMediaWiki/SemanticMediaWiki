@@ -120,6 +120,7 @@
 
 				if ( content === null ) {
 					content = tip.reference.getElementsByClassName( "smwttcontent" )[0].innerHTML;
+					content = content.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 				};
 
 				if ( content === '' ) {

@@ -33,7 +33,7 @@
 			"subject": "Test/P0109/1",
 			"assert-output": {
 				"to-contain": [
-					"Info: Test some error </p><span class=\"smw-highlighter\" data-type=\"4\""
+					"Info: Test some error <span class=\"smw-highlighter\" data-type=\"4\""
 				],
 				"not-contain": [
 					"Info: <span class=\"smw-highlighter\" data-type=\"5\"",
