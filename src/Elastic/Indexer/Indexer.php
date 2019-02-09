@@ -471,17 +471,19 @@ class Indexer {
 	 */
 	public function removeLinks( $text ) {
 
+		// [[Has foo::Bar]]
+		$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
+
 		// {{DEFAULTSORT: ... }}
 		$text = preg_replace( "/\\{\\{([^|]+?)\\}\\}/", "", $text );
-		$text = preg_replace( '/\\[\\[[\s\S]+?::/', '[[', $text );
+
+		// Removed too much ...
+		//	$text = preg_replace( '/\\[\\[[\s\S]+?::/', '[[', $text );
 
 		// [[:foo|bar]]
 		$text = preg_replace( '/\\[\\[:[^|]+?\\|/', '[[', $text );
 		$text = preg_replace( "/\\{\\{([^|]+\\|)(.*?)\\}\\}/", "\\2", $text );
 		$text = preg_replace( "/\\[\\[([^|]+?)\\]\\]/", "\\1", $text );
-
-		// [[Has foo::Bar]]
-		//	$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
 
 		return $text;
 	}

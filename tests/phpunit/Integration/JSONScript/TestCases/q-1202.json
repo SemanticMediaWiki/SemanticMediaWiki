@@ -30,6 +30,10 @@
 		{
 			"page": "Q1202/5",
 			"contents": "[[Category:Q1202]] free text without a bar property or value"
+		},
+		{
+			"page": "Test:Q1202/6",
+			"contents": "* avoid material that challenges their views or create [[cognitive dissonance]] \n* seek concurrence with their predispositions [[Has page::Media studies]], [[Has page::Communication theories]] [[Category:Q1202/1]]"
 		}
 	],
 	"tests": [
@@ -163,6 +167,42 @@
 				"count": 1,
 				"results": [
 					"Q1202/3#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#7 (`in:cognitive dissonance` text of link remains intact)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1202/1]] [[in:cognitive dissonance]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Test:Q1202/6#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#8 (`in:Media studies` text of link remains intact)",
+			"skip-on": {
+				"elastic": [ "not", "Only works with ES out of the box." ]
+			},
+			"condition": "[[Category:Q1202/1]] [[in:Media studies]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Test:Q1202/6#0##"
 				]
 			}
 		}
