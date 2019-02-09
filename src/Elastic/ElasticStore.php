@@ -70,6 +70,12 @@ class ElasticStore extends SQLStore {
 			// $this->servicesContainer->add( 'ProximityPropertyValueLookup', function() {
 			//	return $this->elasticFactory->newProximityPropertyValueLookup( $this );
 			// } );
+			//
+			$this->servicesContainer->add( 'IndicatorProvider', function() {
+				return $this->elasticFactory->newIndicatorProvider(
+					$this
+				);
+			} );
 		}
 
 		return $this->servicesContainer->get( $service, ...$args );

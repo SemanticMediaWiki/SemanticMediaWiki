@@ -47,6 +47,10 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getIndicators' )
 			->will( $this->returnValue( [] ) );
 
+		$this->indicatorProvider->expects( $this->once() )
+			->method( 'getModules' )
+			->will( $this->returnValue( [] ) );
+
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->indicatorProvider );
 

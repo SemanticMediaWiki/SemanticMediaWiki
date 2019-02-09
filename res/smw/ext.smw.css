@@ -217,6 +217,7 @@ span.smwwarning {
 	background-repeat: no-repeat;
 	height: 28px;
 	width: 28px;
+	display: inline-block;
 }
 
 /* Search, browse, RDF icons/ FIXME: this was only used for Factbox docu, should be removed from code */
@@ -826,27 +827,22 @@ a.smw-ask-action-btn-dblue:focus {
 
 .smw-protection-indicator {
 	display: inline-block;
-	/* font-weight: normal; */
-	/* line-height: 1.25; */
-	/* text-align: center; */
-	/* white-space: nowrap; */
-	vertical-align: middle;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 	border: 1px solid transparent;
-	padding: 0.5rem 1rem;
 	/* font-size: 1rem; */
 	border-radius: 0.25rem;
 	-webkit-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
-	padding: 0.15rem 0.25rem;
 	/* font-size: 0.875rem; */
 	border-radius: 0.2rem;
 	color: #292b2c;
 	border-color: transparent;
+	width: 28px;
+	height: 28px;
 }
 
 .smw-protection-indicator.with-border {

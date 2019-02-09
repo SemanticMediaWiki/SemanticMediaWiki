@@ -2111,7 +2111,13 @@ return [
 			'job.recovery.retries' => 5,
 
 			// Number of max. retries before the file ingest
-			'job.file.ingest.retries' => 3
+			'job.file.ingest.retries' => 3,
+
+			// Compare and report the status of the replication on a page view
+			// about entities hereby allowing users to immediately comprehend a
+			// possible discrepancy between the stored on-wiki data and the data
+			// replicated to Elasticsearch.
+			'monitor.entity.replication' => true,
 		],
 		'query' => [
 

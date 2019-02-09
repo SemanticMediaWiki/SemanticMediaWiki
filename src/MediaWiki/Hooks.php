@@ -258,6 +258,7 @@ class Hooks {
 
 			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
 			'SMW::Admin::TaskHandlerFactory' => [ $elasticFactory, 'onTaskHandlerFactory' ],
+			'SMW::Api::AddTasks' => [ $elasticFactory, 'onApiTasks' ],
 
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]

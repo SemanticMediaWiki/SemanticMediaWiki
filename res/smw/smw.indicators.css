@@ -1,0 +1,91 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://www.semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+.smw-icon-indicator-replication-error {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cstyle type='text/css'%3E* %7B fill: %23e67e22 %7D%3C/style%3E%3Cpath d='M10 0a10 10 0 1 0 10 10A10 10 0 0 0 10 0zm1 16H9v-2h2zm0-4H9V4h2z'/%3E%3C/svg%3E%0A") center left no-repeat;
+    padding-left: 20px;
+    display: inline-block;
+    height: 28px;
+}
+
+.smw-icon-indicator-replication-error {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg stroke='%23d33' stroke-width='2.23'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='8.5652'/%3E%3Cpath d='M10,4.188V12.657M10,13.438V15.813'/%3E%3C/g%3E%3C/svg%3E") center left no-repeat;
+    padding-left: 20px;
+    display: inline-block;
+    height: 28px;
+    margin-right: 5px;
+}
+
+.smw-icon-constraint-violation {
+    background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='26' height='26' viewBox='0 0 24 24'%3E%3Cpath fill='%23ce4844' d='M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' /%3E%3C/svg%3E")
+    no-repeat
+    left center;
+    padding: 28px 0 0px 28px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.smw-icon-es-engine {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='20px' height='20px' viewBox='0 0 30 30' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg id='es-logo' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='Group-11' transform='translate(1.000000, 0.000000)'%3E%3Cpath d='M0,15 C0,16.388 0.203,17.725 0.556,19 L19,19 C21.209,19 23,17.209 23,15 C23,12.791 21.209,11 19,11 L0.556,11 C0.203,12.275 0,13.612 0,15' id='Fill-1' fill='%23343741'%3E%3C/path%3E%3Cpath d='M25.3301,6.8613 C25.7831,6.4353 26.2111,5.9823 26.6051,5.5003 C23.8541,2.1433 19.6791,0.0003 15.0001,0.0003 C9.2481,0.0003 4.2721,3.2473 1.7601,8.0003 L22.3371,8.0003 C23.4401,8.0003 24.5251,7.6173 25.3301,6.8613' id='Fill-3' fill='%23FEC514'%3E%3C/path%3E%3Cpath d='M22.3369,22 L1.7599,22 C4.2729,26.753 9.2479,30 14.9999,30 C19.6789,30 23.8549,27.856 26.6059,24.5 C26.2109,24.018 25.7829,23.564 25.3299,23.139 C24.5249,22.383 23.4409,22 22.3369,22' id='Fill-5' fill='%2300BFB3'%3E%3C/path%3E%3Cpath d='M11.1035,19 L0.5555,19 L11.1035,19 Z' id='Fill-7' fill='%23FFC100'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+    no-repeat
+    left center;
+    padding: 28px 0 0px 28px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.smw-issue-label {
+    border-radius: 2px;
+    box-shadow: inset 0 -1px 0 rgba(27,31,35,.12);
+    font-size: 12px;
+    font-weight: 600;
+    height: 20px;
+    line-height: 15px;
+    padding: .15em 4px;
+}
+
+.smw-rule-constraint-violation ul.smw-list-rule {
+	margin: 0;
+}
+
+.smw-rule-constraint-violation ul.smw-list-rule li {
+	margin: 0;
+	margin-bottom: 0.2em;
+}
+
+.smw-list-rule {
+	list-style-image: none;
+	list-style-type: none;
+	margin: 0.2em 0 0 0.6em;
+}
+
+.smw-list-rule-title {
+    border-bottom: 0px solid #ddd;
+    border-collapse: collapse;
+    color: #000;
+}

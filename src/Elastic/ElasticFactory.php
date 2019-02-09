@@ -18,7 +18,10 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Rollover;
 use SMW\Elastic\Indexer\Rebuilder;
+use SMW\Elastic\Indexer\IndicatorProvider;
 use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Replication\ReplicationStatus;
+use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
@@ -195,6 +198,54 @@ class ElasticFactory {
 	 */
 	public function newFileIndexer( Indexer $indexer ) {
 		return new FileIndexer( $indexer );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param ElasticClient $connection
+	 *
+	 * @return ReplicationStatus
+	 */
+	public function newReplicationStatus( ElasticClient $connection ) {
+		return new ReplicationStatus( $connection );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return CheckReplicationTask
+	 */
+	public function newCheckReplicationTask() {
+
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		return new CheckReplicationTask(
+			$store,
+			$this->newReplicationStatus( $store->getConnection( 'elastic' ) )
+		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 *
+	 * @return IndicatorProvider
+	 */
+	public function newIndicatorProvider( ElasticStore $store ) {
+
+		$options = $store->getConnection( 'elastic' )->getConfig();
+
+		$indicatorProvider = new IndicatorProvider(
+			$store
+		);
+
+		$indicatorProvider->canCheckReplication(
+			$options->dotGet( 'indexer.monitor.entity.replication' )
+		);
+
+		return $indicatorProvider;
 	}
 
 	/**
@@ -420,6 +471,16 @@ class ElasticFactory {
 			$store,
 			$outputFormatter
 		);
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Api::AddTasks
+	 * @since 3.1
+	 */
+	public function onApiTasks( &$services ) {
+		$services['check-es-replication'] = [ $this, 'newCheckReplicationTask' ];
 
 		return true;
 	}

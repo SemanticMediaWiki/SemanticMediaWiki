@@ -427,6 +427,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Recovery job backlog: $1 (estimation)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Injest (file) job backlog: $1 (estimation)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replication locked: $1 (rebuild in-progress)",
+	"smw-admin-supplementary-elastic-status-replication-monitoring":"Replication monitoring (active): $1",
 	"smw-list-count": "The list contains $1 {{PLURAL:$1|entry|entries}}.",
 	"smw-list-count-from-cache": "The list contains $1 {{PLURAL:$1|entry|entries}} and was retrieved from cache (UTC: $2).",
 	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property representation. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve this issue.",
@@ -871,5 +872,10 @@
 	"smw-helplink-concepts": "https://www.semantic-mediawiki.org/wiki/Help:Concepts",
 	"smw-install-incomplete-intro": "The installation (or upgrade) of <b>Semantic MediaWiki</b> has not been finalized and an administrator should run the following tasks to prevent data inconsistencies before users continue to create or alter content.",
 	"smw-install-incomplete-populate-hash-field": "The <code>smw_hash</code> field population was skipped during the setup, the [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] script is required to be executed.",
-	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1"
+	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1",
+	"smw-es-replication-error": "Replication issue",
+	"smw-es-replication-error-missing-id": "The replication monitoring has found that article \"$1\" (ID: $2) is missing from the Elasticsearch backend.",
+	"smw-es-replication-error-divergent-date": "The replication monitoring has found that for the \"$1\" article (ID: $2) the modification date shows a discrepancy.",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-es-replication-error-suggestions": "It is suggested to edit or purge the page to remove the discrepancy. If the issue remains then check the Elasticsearch cluster itself (allocator, exceptions, disk space etc.)."
 }

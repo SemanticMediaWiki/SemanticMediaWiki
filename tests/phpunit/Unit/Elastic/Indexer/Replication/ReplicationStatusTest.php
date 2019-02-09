@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer;
+namespace SMW\Tests\Elastic\Indexer\Replication;
 
-use SMW\Elastic\Indexer\ReplicationStatus;
+use SMW\Elastic\Indexer\Replication\ReplicationStatus;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Elastic\Indexer\ReplicationStatus
+ * @covers \SMW\Elastic\Indexer\Replication\ReplicationStatus
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
