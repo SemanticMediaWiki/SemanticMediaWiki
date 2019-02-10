@@ -843,6 +843,7 @@ a.smw-ask-action-btn-dblue:focus {
 	border-color: transparent;
 	width: 28px;
 	height: 28px;
+	vertical-align: middle;
 }
 
 .smw-protection-indicator.with-border {
