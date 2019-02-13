@@ -307,6 +307,10 @@ class Indexer {
 		}
 
 		if ( $dataItem->getId() == 0 ) {
+			$dataItem->setId( $this->getId( $dataItem ) );
+		}
+
+		if ( $dataItem->getId() == 0 ) {
 			throw new RuntimeException( "Missing ID: " . $dataItem );
 		}
 
