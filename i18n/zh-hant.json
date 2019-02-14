@@ -441,6 +441,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "積壓修復任務：$1（估計值）",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "積壓收取（檔案）任務：$1（估計值）",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "複製已鎖定：$1（進行中的重建）",
+	"smw-admin-supplementary-elastic-status-replication-monitoring": "複製監測（有效）：$1",
 	"smw-list-count": "清單包含 $1 個{{PLURAL:$1|項目|項目}}。",
 	"smw-list-count-from-cache": "清單包含 $1 個{{PLURAL:$1|實體}}，並自快取還原（UTC：$2）。",
 	"smw-property-label-uniqueness": "「$1」標籤符合了至少一個其它屬性表示內容。請查閱[https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness 幫助頁面]瞭解如何解决該問題。",
@@ -874,5 +875,11 @@
 	"smw-ask-tab-debug": "除錯",
 	"smw-ask-tab-code": "代碼",
 	"smw-install-incomplete-intro": "<b>Semantic MediaWiki</b> 的安裝（或更新）尚未結束，在使用者繼續創建或更動內容之前，管理員需執行以下任務來防止資料不一致。",
-	"smw-install-incomplete-populate-hash-field": "在設定過程中裡有略過填充 <code>smw_hash</code> 欄位，需要 [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] 手稿來執行。"
+	"smw-install-incomplete-populate-hash-field": "在設定過程中裡有略過填充 <code>smw_hash</code> 欄位，需要 [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] 手稿來執行。",
+	"smw-es-replication-check": "複製檢查（Elasticsearch）",
+	"smw-es-replication-error": "複製問題",
+	"smw-es-replication-error-missing-id": "複製監測發現 Elasticsearch 後端缺少條目「$1」（ID：$2）。",
+	"smw-es-replication-error-divergent-date": "複製監測發現有關條目「$1」（ID：$2）的變動日期出現差異。",
+	"smw-es-replication-error-divergent-date-detail": "*$1（Elasticsearch）\n*$2（SQLStore）",
+	"smw-es-replication-error-suggestions": "建議編輯或清除頁面來移除掉差異。如果問題持續存在，請檢查看看 Elasticsearch 叢集本身（配置器、例外狀況、磁碟空間等等）。"
 }

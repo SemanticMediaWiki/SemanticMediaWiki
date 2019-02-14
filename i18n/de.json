@@ -437,6 +437,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Rückstand an Datenwiederherstellungsaufträgen: $1 (Schätzung)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Rückstand an Dateiindexierungsaufträgen: $1 (Schätzung)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replikation gesperrt: $1 (Datenwiederherstellung wird durchgeführt)",
+	"smw-admin-supplementary-elastic-status-replication-monitoring": "Überwachung der Datenreplikation (aktiv): $1",
 	"smw-list-count": "Die Liste enthält {{PLURAL:$1|einen Eintrag|$1 Einträge}}.",
 	"smw-list-count-from-cache": "Die Liste enthält {{PLURAL:$1|einen Eintrag|$1 Einträge}} aus dem Cache. (Zuletzt aktualisiert: $2 UTC)",
 	"smw-property-label-uniqueness": "Die Bezeichnung „$1“ entspricht mindestens der eines weiteren Attributs. Siehe hierzu die [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness Hilfeseite] mit Informationen zur Lösung dieses Problems.",
@@ -870,5 +871,11 @@
 	"smw-ask-tab-debug": "Fehleranalyse",
 	"smw-ask-tab-code": "Code",
 	"smw-install-incomplete-intro": "Die Installation oder Aktualisierung von <b>Semantic MediaWiki</b> wurde noch nicht vollständig abgeschlossen. Ein Administrator oder eine andere Person mit Administratorberechtigung muss daher die folgenden Aufgaben ausführen, um Dateninkonsistenzen zu vermeiden, bevor die Nutzer des Wikis bestehende Inhalte ändern oder weitere Inhalte erstellen:",
-	"smw-install-incomplete-populate-hash-field": "Die Befüllung des Datenbankfeldes <code>smw_hash</code> wurde während des Setups aufgrund des Umfangs der Datenbank abgebrochen. Das Wartungsskript [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php „populateHashField.php“] muss ausgeführt werden, um diese Aufgabe zu beenden."
+	"smw-install-incomplete-populate-hash-field": "Die Befüllung des Datenbankfeldes <code>smw_hash</code> wurde während des Setups aufgrund des Umfangs der Datenbank abgebrochen. Das Wartungsskript [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php „populateHashField.php“] muss ausgeführt werden, um diese Aufgabe zu beenden.",
+	"smw-es-replication-check": "Datenreplikationsprüfung (Elasticsearch)",
+	"smw-es-replication-error": "Datenreplikationsproblem",
+	"smw-es-replication-error-missing-id": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: $2) in der Elasticsearch-Datenbank nicht enthalten ist.",
+	"smw-es-replication-error-divergent-date": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: $2) in der Elasticsearch-Datenbank ein abweichendes Änderungsdatum aufweist.",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch-Datenbank)\n*$2 (SQL-Datenbank)",
+	"smw-es-replication-error-suggestions": "Es wird empfohlen, die Seite zu bearbeiten oder deren Cache zu leeren, um die Unstimmigkeit zu beseitigen. Sofern das Problem weiterhin besteht, ist der Elasticsearch-Cluster selbst (Datenzuteilung, Fehlermeldungen, Speicherplatz usw.) zu prüfen."
 }

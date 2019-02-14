@@ -459,6 +459,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Carnet de commandes de tâches de récupération : $1 (estimation)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Intégrer (le fichier) de carnet de commande de tâches : $1 (estimation)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Réplication verrouillée : $1 (reconstruction en cours)",
+	"smw-admin-supplementary-elastic-status-replication-monitoring": "Suivi de la réplication (actif) : $1",
 	"smw-list-count": "La liste contient $1 entrée{{PLURAL:$1||s}}.",
 	"smw-list-count-from-cache": "La liste contient $1 entrées{{PLURAL:$1||s}} venant du cache (UTC: $2).",
 	"smw-property-label-uniqueness": "L’étiquette « $1 » représente également au moins une autre propriété. Veuillez vous reporter à la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness page d’aide] pour trouver comment résoudre ce problème.",
@@ -892,5 +893,11 @@
 	"smw-ask-tab-debug": "Déboguage",
 	"smw-ask-tab-code": "Code",
 	"smw-install-incomplete-intro": "L’installation (ou la mise à jour) de <b>MédiaWiki Sémantique</b> n’a pas été achevée et un administrateur doit lancer les tâches suivantes pour éviter les incohérences de données avant que les utilisateurs ne continuent à créer ou modifier du contenu.",
-	"smw-install-incomplete-populate-hash-field": "Le remplissage du champ <code>smw_hash</code> a été sauté lors de l’installation, le script [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] doit être exécuté."
+	"smw-install-incomplete-populate-hash-field": "Le remplissage du champ <code>smw_hash</code> a été sauté lors de l’installation, le script [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] doit être exécuté.",
+	"smw-es-replication-check": "Vérification de la réplication (Elasticsearch)",
+	"smw-es-replication-error": "Problème de réplication",
+	"smw-es-replication-error-missing-id": "Le suivi de la réplication a trouvé que l’article « $1 » (ID : $2) manque sur le serveur Elasticsearch.",
+	"smw-es-replication-error-divergent-date": "Le suivi de la réplication a trouvé que pour l’article « $1 » (ID : $2), la date de modification montre une divergence.",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou purger la page pour supprimer la divergence. Si le problème persiste, alors vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.)."
 }

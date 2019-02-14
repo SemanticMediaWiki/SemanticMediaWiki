@@ -239,6 +239,7 @@
 	"smw-statistics-property-type": "{{PLURAL:$1|Propriedade|Propriedades}} (atribuída ao tipo de dado)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Consulta|Consultas}}",
 	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Consulta|Consultas}}]] (incorporada(s), total)",
+	"smw-statistics-query-format": "formato <code>$1</code> format",
 	"smw-statistics-query-size": "Tamanho da consulta",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Conceito|Conceitos}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Conceito|Conceitos}}]]",
@@ -442,6 +443,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Tarefas de recuperação em atraso: $1 (estimativa)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Tarefas de ingestão (de ficheiros) em atraso: $1 (estimativa)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replicação trancada: $1 (recriação em progresso)",
+	"smw-admin-supplementary-elastic-status-replication-monitoring": "Monitoramento de replicação (ativo): $1",
 	"smw-list-count": "A lista contém $1 {{PLURAL:$1|item|itens}}.",
 	"smw-list-count-from-cache": "A lista contém $1 {{PLURAL:$1|item e foi obtido|itens e foram obtidos}} do cache (UTC: $2).",
 	"smw-property-label-uniqueness": "O nome \"$1\" foi correspondido por pelo menos uma outra representação de propriedade. Por favor, consulte a [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness página de ajuda] sobre como resolver este problema.",
@@ -875,5 +877,11 @@
 	"smw-ask-tab-debug": "Depurar",
 	"smw-ask-tab-code": "Código",
 	"smw-install-incomplete-intro": "A instalação (ou atualização) de <b>Semantic MediaWiki</b> não foi finalizado e um administrador deve executar as seguintes tarefas para evitar inconsistências de dados antes que os usuários continuem a criar ou alterar o conteúdo.",
-	"smw-install-incomplete-populate-hash-field": "O passo de preenchimento do campo <code>smw_hash</code> foi pulado durante a configuração; é necessário executar o ''script'' [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php]."
+	"smw-install-incomplete-populate-hash-field": "O passo de preenchimento do campo <code>smw_hash</code> foi pulado durante a configuração; é necessário executar o ''script'' [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php].",
+	"smw-es-replication-check": "Situação da replicação (Elasticsearch)",
+	"smw-es-replication-error": "Problema de replicação",
+	"smw-es-replication-error-missing-id": "O monitoramento de replicação descobriu que o artigo \"$1\" (ID: $2) está faltando no back-end do Elasticsearch.",
+	"smw-es-replication-error-divergent-date": "O monitoramento de replicação descobriu que, para o artigo \"$1\" (ID: $2), a data de modificação mostra uma discrepância.",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-es-replication-error-suggestions": "Sugere-se editar ou limpar a página para remover a discrepância. Se o problema persistir, verifique o próprio cluster do Elasticsearch (alocador, exceções, espaço em disco, etc.)."
 }

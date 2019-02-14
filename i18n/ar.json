@@ -434,6 +434,7 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "تراكم وظيفة الاسترداد: $1 (تقدير)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "تراكم (ملف) العمل: $1 (تقدير)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "تم قفل النسخ المتماثل: $1 (إعادة البناء قيد التقدم)",
+	"smw-admin-supplementary-elastic-status-replication-monitoring": "مراقبة التكرار (نشط): $1",
 	"smw-list-count": "تحتوي القائمة على $1 {{PLURAL:$1|إدخال واحد|إدخالات}}.",
 	"smw-list-count-from-cache": "تحتوي القائمة على $1 {{PLURAL:$1|إدخال واحد|إدخالات}} وتم استرجاعها من ذاكرة التخزين المؤقت (ت ع م): $2.",
 	"smw-property-label-uniqueness": "تمت مطابقة التصنيف \"$1\" مع تمثيل خاصية أخرى واحدة على الأقل، يُرجَى الرجوع إلى [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness صفحة المساعدة] حول كيفية حل هذه المشكلة.",
@@ -867,5 +868,11 @@
 	"smw-ask-tab-debug": "تصحيح",
 	"smw-ask-tab-code": "كود",
 	"smw-install-incomplete-intro": "تنصيب (أو ترقية) <b>Semantic MediaWiki</b> لم ينتهي وينبغي على أحد الإداريين تنفيذ المهام التالية لمنع عدم تناسق البيانات قبل أن يواصل المستخدمون إنشاء أو تعديل المحتوى.",
-	"smw-install-incomplete-populate-hash-field": "ملء حقل <code>smw_hash</code> تم تجاهله أثناء التنصيب، سكريبت [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] مطلوب للتنفيذ."
+	"smw-install-incomplete-populate-hash-field": "ملء حقل <code>smw_hash</code> تم تجاهله أثناء التنصيب، سكريبت [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] مطلوب للتنفيذ.",
+	"smw-es-replication-check": "فحص النسخ المتماثل (إلاستيك سيرش)",
+	"smw-es-replication-error": "قضية تكرار",
+	"smw-es-replication-error-missing-id": "مراقبة التكرار وجد أن المقالة \"$1\" (ID: $2) مفقودة من قاعدة بيانات Elasticsearch.",
+	"smw-es-replication-error-divergent-date": "مراقبة التكرار وجد أن تاريخ التعديل للمقالة \"$1\" (ID: $2) تظهر تعارضا.",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (بحث Elasticsearch)\n*$2 (متجر SQL)",
+	"smw-es-replication-error-suggestions": "يوصى بتعديل أو إزالة كاش الصفحة لإزالة التعارض. لو استمرت المشكلة فتحقق من عنقود Elasticsearch نفسه (allocator, exceptions, disk space etc.)."
 }

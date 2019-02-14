@@ -12,6 +12,8 @@
 		]
 	},
 	"smw-desc": "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
+	"smw-upgrade-error-why-title": "Чаму я бачу гэтую памылку?",
+	"smw-upgrade-error-how-title": "Як мне выправіць гэтую памылку?",
 	"smw_viewasrdf": "RDF-крыніца",
 	"smw_finallistconjunct": " і",
 	"smw-factbox-head": "… болей пра «$1»",

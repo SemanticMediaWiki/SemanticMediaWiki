@@ -26,7 +26,9 @@
 			"KlaasZ4usV",
 			"Goefie",
 			"Robin van der Linde",
-			"Elroy"
+			"Elroy",
+			"Optilete",
+			"Xbaked potatox"
 		]
 	},
 	"smw-desc": "Uw wiki toegankelijker maken – voor machines ''en'' mensen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -207,14 +209,16 @@
 	"smw_types_docu": "Lijst van [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes beschikbare datatypes] waarvan elk [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] een unieke set attributen vertegenwoordigt om een waarde te beschrijven in termen van opslag en weergavekenmerken die erfelijk zijn voor een toegewezen eigenschap.",
 	"smw-special-types-no-such-type": "Het opgegeven datatype bestaat niet",
 	"smw-statistics": "Semantische statistieken",
+	"smw-statistics-entities-total": "Entiteiten (totaal)",
 	"smw-statistics-property-instance": "Eigenschapswaarde{{PLURAL:$1||n}} (totaal)",
 	"smw-statistics-property-total": "[[Special:Properties|Eigenschap{{PLURAL:$1||pen}}]] (totaal)",
 	"smw-statistics-property-total-legacy": "Eigenschap{{PLURAL:$1||pen}} (totaal)",
-	"smw-statistics-property-used": "[[Special:Properties|{{PLURAL:$1|Eigenschap|Eigenschappen}}]] (gebruikt met ten minste één waarde)",
+	"smw-statistics-property-used": "{{PLURAL:$1|Eigenschap|Eigenschappen}} (gebruikt met ten minste één waarde)",
 	"smw-statistics-property-page": "Eigenschap{{PLURAL:$1||pen}} (geregistreerd bij een pagina)",
 	"smw-statistics-property-type": "Eigenschap{{PLURAL:$1||pen}} (toegewezen aan een datatype)",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Zoekopdracht|Zoekopdrachten}}",
-	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Zoekopdracht|Zoekopdrachten}}]]",
+	"smw-statistics-query-inline": "[[Property:Has query|{{PLURAL:$1|Zoekopdracht|Zoekopdrachten}}]](embedded, total)",
+	"smw-statistics-query-format": "<code>$1</code> format",
 	"smw-statistics-query-size": "Grootte van zoekopdracht",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Concept|Concepten}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Concept|Concepten}}]]",
@@ -223,7 +227,7 @@
 	"smw-statistics-datatype-count": "[[Special:Types|Datatype{{PLURAL:$1||s}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Eigenschapswaarde|Eigenschapswaarden}} ([[Special:ProcessingErrorList|{{PLURAL:$1|ongeldige annotatie|ongeldige annotaties}}]])",
 	"smw-statistics-error-count-legacy": "{{PLURAL:$1|Eigenschapswaarde|Eigenschapswaarden}} ({{PLURAL:$1|verkeerde annotatie|verkeerde annotaties}})",
-	"smw-statistics-delete-count": "Verouderde {{PLURAL:$1|entiteit|entiteiten}} (gemarkeerd voor verwijdering)",
+	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities Verouderd {{PLURAL:$1|entiteit|entiteiten}}]",
 	"smw_uri_doc": "De URI-resolver implementeert de [$1 W3C TAG finding on httpRange-14].\nDit zorgt ervoor dat mensen niet veranderen in websites.",
 	"ask": "Semantisch zoeken",
 	"smw_ask_sortby": "Sorteren op kolom (optioneel)",
@@ -509,5 +513,6 @@
 	"smw-concept-tab-list": "Lijst",
 	"smw-concept-tab-errors": "Fouten",
 	"smw-ask-tab-result": "Resultaat",
-	"smw-ask-tab-extra": "Extra"
+	"smw-ask-tab-extra": "Extra",
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)"
 }

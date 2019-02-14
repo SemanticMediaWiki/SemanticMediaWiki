@@ -193,7 +193,7 @@
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Податочен тип|Податочни типови}}]]",
 	"smw-statistics-error-count": "{{PLURAL:$1|Вредност на својството|Вредности на својството}} ([[Special:ProcessingErrorList|{{PLURAL:$1|несоодветна прибелешка|несоодветни прибелешки}}]])",
 	"smw-statistics-error-count-legacy": "{{PLURAL:$1|Вредност за својство|Вредности за својства}} ({{PLURAL:$1|несоодветен запис|несоодветни записи}})",
-	"smw-statistics-delete-count": "{{PLURAL:$1|Застарена единица (означена за отстранување)|Застарени единици (означени за отстранување)}}",
+	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities {{PLURAL:$1|Застарена единица|Застарени единици}}]",
 	"smw_uri_doc": "URI-претварачот применува [$1 W3C пронаоѓање на ознаки на httpRange-14].\nТој има за задача да внимава луѓето да не се претворат во мрежни места.",
 	"ask": "Семантичко пребарување",
 	"smw_ask_sortby": "Подреди по столб (незадолжително)",
