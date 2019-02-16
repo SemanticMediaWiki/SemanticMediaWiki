@@ -85,6 +85,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	public function testGetURL() {
 
 		$instance = new Infolink( true, 'Foo', 'Bar/Foobar' );
+		$instance->setCompactLink( true );
 
 		$this->assertContains(
 			'/Bar/Foobar',
