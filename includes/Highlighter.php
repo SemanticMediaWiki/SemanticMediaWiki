@@ -278,7 +278,7 @@ class Highlighter {
 				// will make the parser go berserk (injecting <p> elements etc.)
 				// hence encode the identifying </> and decode it within the
 				// tooltip
-				str_replace( [ '<', '>' ], [ '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ) )
+				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ) )
 			)
 		);
 
