@@ -435,6 +435,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSortLetter() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SortLetter',
+			$instance->newSortLetter()
+		);
+	}
+
 	public function testCanConstructPropertyTableIdReferenceDisposer() {
 
 		$instance = new SQLStoreFactory( $this->store );
@@ -442,6 +452,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableIdReferenceDisposer',
 			$instance->newPropertyTableIdReferenceDisposer()
+		);
+	}
+
+	public function testCanConstructMissingRedirectLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\MissingRedirectLookup',
+			$instance->newMissingRedirectLookup()
 		);
 	}
 
