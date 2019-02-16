@@ -3,6 +3,7 @@
 namespace SMW\Services;
 
 use SMW\Events\InvalidateResultCacheEventListener;
+use SMW\Events\InvalidateEntityCacheEventListener;
 
 /**
  * @codeCoverageIgnore
@@ -29,6 +30,20 @@ return [
 		);
 
 		return $invalidateResultCacheEventListener;
+	},
+
+	/**
+	 * InvalidateEntityCacheEventListener
+	 *
+	 * @return callable
+	 */
+	'InvalidateEntityCacheEventListener' => function( $containerBuilder ) {
+
+		$invalidateEntityCacheEventListener = new InvalidateEntityCacheEventListener(
+			$containerBuilder->singleton( 'EntityCache' )
+		);
+
+		return $invalidateEntityCacheEventListener;
 	}
 
 ];

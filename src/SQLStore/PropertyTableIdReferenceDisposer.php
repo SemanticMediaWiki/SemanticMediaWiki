@@ -263,19 +263,30 @@ class PropertyTableIdReferenceDisposer {
 		}
 
 		$eventHandler = EventHandler::getInstance();
+		$eventDispatcher = $eventHandler->getEventDispatcher();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
 		$dispatchContext->set( 'subject', $subject );
 		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
 
-		$eventHandler->getEventDispatcher()->dispatch(
+		$eventDispatcher->dispatch(
 			'cached.prefetcher.reset',
 			$dispatchContext
 		);
 
-		$eventHandler->getEventDispatcher()->dispatch(
+		$eventDispatcher->dispatch(
 			'factbox.cache.delete',
 			$dispatchContext
+		);
+
+		$context = [
+			'context' => 'PropertyTableIdReferenceDisposal',
+			'title' => $subject->getTitle()
+		];
+
+		$eventDispatcher->dispatch(
+			'InvalidateEntityCache',
+			$context
 		);
 	}
 

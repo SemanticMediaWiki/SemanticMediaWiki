@@ -48,6 +48,15 @@ class EventListenerRegistry implements EventListenerCollection {
 		);
 
 		$this->eventListenerCollection->registerListener( 'InvalidateResultCache', $invalidateResultCacheEventListener );
+
+		$invalidateEntityCacheEventListener = $applicationFactory->create( 'InvalidateEntityCacheEventListener' );
+
+		$invalidateEntityCacheEventListener->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$this->eventListenerCollection->registerListener( 'InvalidateEntityCache', $invalidateEntityCacheEventListener );
+
 		$this->addListenersToCollection();
 
 		return $this->eventListenerCollection->getCollection();

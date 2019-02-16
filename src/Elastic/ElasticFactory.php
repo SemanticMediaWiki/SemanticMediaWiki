@@ -218,12 +218,23 @@ class ElasticFactory {
 	 */
 	public function newCheckReplicationTask() {
 
-		$store = ApplicationFactory::getInstance()->getStore();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$store = $applicationFactory->getStore();
 
-		return new CheckReplicationTask(
+		$connection = $store->getConnection( 'elastic' );
+		$options = $connection->getConfig();
+
+		$checkReplicationTask = new CheckReplicationTask(
 			$store,
-			$this->newReplicationStatus( $store->getConnection( 'elastic' ) )
+			$this->newReplicationStatus( $connection ),
+			$applicationFactory->getEntityCache()
 		);
+
+		$checkReplicationTask->setCacheTTL(
+			$options->dotGet( 'indexer.monitor.entity.replication.cache.lifetime' )
+		);
+
+		return $checkReplicationTask;
 	}
 
 	/**
@@ -235,10 +246,12 @@ class ElasticFactory {
 	 */
 	public function newIndicatorProvider( ElasticStore $store ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
 		$options = $store->getConnection( 'elastic' )->getConfig();
 
 		$indicatorProvider = new IndicatorProvider(
-			$store
+			$store,
+			$applicationFactory->getEntityCache()
 		);
 
 		$indicatorProvider->canCheckReplication(

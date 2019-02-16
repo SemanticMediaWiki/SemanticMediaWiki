@@ -321,6 +321,15 @@ class ApplicationFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return EntityCache
+	 */
+	public function getEntityCache() {
+		return $this->containerBuilder->singleton( 'EntityCache' );
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @return InTextAnnotationParser

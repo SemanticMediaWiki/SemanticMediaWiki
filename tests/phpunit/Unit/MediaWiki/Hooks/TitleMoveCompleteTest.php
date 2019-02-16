@@ -20,6 +20,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $user;
 	private $testEnvironment;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -36,6 +37,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->withConfiguration(
 			$settings
 		);
+
+		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() {
@@ -64,6 +69,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testChangeSubjectForSupportedSemanticNamespace() {
 
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+
 		$oldTitle = \Title::newFromText( 'Old' );
 		$newTitle = \Title::newFromText( 'New' );
 
@@ -84,12 +93,20 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			0
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$this->assertTrue(
 			$instance->process()
 		);
 	}
 
 	public function testDeleteSubjectForNotSupportedSemanticNamespace() {
+
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( 'InvalidateEntityCache' ) );
 
 		$oldTitle = \Title::newFromText( 'Old' );
 		$newTitle = \Title::newFromText( 'New', NS_HELP );
@@ -111,6 +128,10 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 			$this->user,
 			0,
 			0
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertTrue(

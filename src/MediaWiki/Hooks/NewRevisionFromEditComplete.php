@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
@@ -27,6 +28,8 @@ use Title;
  * @author mwjames
  */
 class NewRevisionFromEditComplete extends HookHandler {
+
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var Title
@@ -112,6 +115,13 @@ class NewRevisionFromEditComplete extends HookHandler {
 		}
 
 		$parserData->pushSemanticDataToParserOutput();
+
+		$context = [
+			'context' => 'NewRevisionFromEditComplete',
+			'title' => $this->title
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 
 		return true;
 	}

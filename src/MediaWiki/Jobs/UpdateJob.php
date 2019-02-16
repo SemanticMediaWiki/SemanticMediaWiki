@@ -237,6 +237,7 @@ class UpdateJob extends Job {
 		);
 
 		$eventHandler = EventHandler::getInstance();
+		$eventDispatcher = $eventHandler->getEventDispatcher();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
 		$dispatchContext->set( 'title', $this->getTitle() );
@@ -250,6 +251,8 @@ class UpdateJob extends Job {
 			'cached.propertyvalues.prefetcher.reset',
 			$dispatchContext
 		);
+
+		$eventDispatcher->dispatch( 'InvalidateEntityCache', [ 'context' => 'UpdateJob', 'title' => $this->getTitle() ] );
 
 		// TODO
 		// Rebuild the factbox

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
@@ -20,6 +21,8 @@ use Wikipage;
  * @author mwjames
  */
 class ArticleDelete extends HookHandler {
+
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var
@@ -122,6 +125,13 @@ class ArticleDelete extends HookHandler {
 			'cached.update.marker.delete',
 			$dispatchContext
 		);
+
+		$context = [
+			'context' => 'ArticleDelete',
+			'title' => $title
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 	}
 
 }

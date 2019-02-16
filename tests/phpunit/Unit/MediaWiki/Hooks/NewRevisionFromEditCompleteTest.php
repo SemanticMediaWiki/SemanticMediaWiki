@@ -23,6 +23,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -36,6 +37,10 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() {
@@ -68,12 +73,20 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $settings, $title, $editInfoProvider, $pageInfoProvider, $expected ) {
 
+		$this->eventDispatcher->expects( $expected ? $this->atLeastOnce() : $this->never() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+
 		$this->testEnvironment->withConfiguration( $settings );
 
 		$instance = new NewRevisionFromEditComplete(
 			$title,
 			$editInfoProvider,
 			$pageInfoProvider
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertTrue(

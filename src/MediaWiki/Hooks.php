@@ -486,7 +486,8 @@ class Hooks {
 	 */
 	public function onNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
 
-		$mwCollaboratorFactory = ApplicationFactory::getInstance()->newMwCollaboratorFactory();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
 		$editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
 			$wikiPage,
@@ -504,6 +505,10 @@ class Hooks {
 			$wikiPage->getTitle(),
 			$editInfoProvider,
 			$pageInfoProvider
+		);
+
+		$newRevisionFromEditComplete->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
 		);
 
 		return $newRevisionFromEditComplete->process();
@@ -604,12 +609,18 @@ class Hooks {
 	 */
 	public function onTitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$titleMoveComplete = new TitleMoveComplete(
 			$oldTitle,
 			$newTitle,
 			$user,
 			$oldId,
 			$newId
+		);
+
+		$titleMoveComplete->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
 		);
 
 		return $titleMoveComplete->process();
@@ -622,7 +633,12 @@ class Hooks {
 	 */
 	public function onArticlePurge( &$wikiPage ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
 		$articlePurge = new ArticlePurge();
+
+		$articlePurge->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
+		);
 
 		return $articlePurge->process( $wikiPage );
 	}
@@ -643,6 +659,10 @@ class Hooks {
 
 		$articleDelete->setLogger(
 			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$articleDelete->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
 		);
 
 		$articleDelete->setOptions(
