@@ -17,7 +17,7 @@ use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
-use SMW\SQLStore\Installer;
+use SMW\SetupFile;
 use SMW\Store;
 use SMW\Options;
 use SMW\MediaWiki\Hooks\ArticleDelete;
@@ -385,7 +385,7 @@ class Hooks {
 
 		$beforePageDisplay->setOptions(
 			[
-				'installer.incomplete_tasks' => Installer::incompleteTasks( $GLOBALS )
+				'incomplete_tasks' => SetupFile::findIncompleteTasks( $GLOBALS )
 			]
 		);
 

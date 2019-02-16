@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
-use SMW\SQLStore\Installer;
 
 /**
  * Extension setup and registration
@@ -125,7 +124,7 @@ final class Setup {
 	 * @since 3.0
 	 */
 	public static function isValid( $isCli = false ) {
-		return Installer::isGoodSchema( $isCli );
+		return SetupFile::isGoodSchema( $isCli );
 	}
 
 	/**
@@ -134,7 +133,7 @@ final class Setup {
 	 * @param array &$vars
 	 */
 	public function loadSchema( &$vars ) {
-		Installer::loadSchema( $vars );
+		SetupFile::loadSchema( $vars );
 	}
 
 	/**

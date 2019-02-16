@@ -22,7 +22,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableSchemaManager;
 	private $tableBuilder;
 	private $tableIntegrityExaminer;
-	private $file;
+	private $SetupFile;
 
 	protected function setUp() {
 		parent::setUp();
@@ -45,7 +45,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +88,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->setFile( $this->file );
+		$instance->setSetupFile( $this->setupFile );
 
 		$instance->setOptions(
 			[
@@ -132,7 +132,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->setFile( $this->file );
+		$instance->setSetupFile( $this->setupFile );
 
 		$instance->setOptions(
 			[
@@ -165,7 +165,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->setFile( $this->file );
+		$instance->setSetupFile( $this->setupFile );
 
 		$this->assertTrue(
 			$instance->install( false )
@@ -218,135 +218,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Foo',
 			$this->testEnvironment->outputFromCallbackExec( $callback )
-		);
-	}
-
-	public function testIsGoodSchema() {
-
-		$instance = new Installer(
-			$this->tableSchemaManager,
-			$this->tableBuilder,
-			$this->tableIntegrityExaminer
-		);
-
-		$this->assertInternalType(
-			'boolean',
-			$instance->isGoodSchema()
-		);
-	}
-
-	public function testMakeUpgradeKey() {
-
-		$var1 = [
-			'smwgUpgradeKey' => '',
-			'smwgEnabledFulltextSearch' => '',
-			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
-			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
-		];
-
-		$var2 = [
-			'smwgUpgradeKey' => '',
-			'smwgEnabledFulltextSearch' => '',
-			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
-			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ]
-		];
-
-		$this->assertEquals(
-			Installer::makeUpgradeKey( $var1 ),
-			Installer::makeUpgradeKey( $var2 )
-		);
-	}
-
-	public function testMakeUpgradeKey_SpecialFixedProperties() {
-
-		$var1 = [
-			'smwgUpgradeKey' => '',
-			'smwgEnabledFulltextSearch' => '',
-			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
-			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
-		];
-
-		$var2 = [
-			'smwgUpgradeKey' => '',
-			'smwgEnabledFulltextSearch' => '',
-			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
-			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ]
-		];
-
-		$this->assertNotEquals(
-			Installer::makeUpgradeKey( $var1 ),
-			Installer::makeUpgradeKey( $var2 )
-		);
-	}
-
-	public function testSetUpgradeKey() {
-
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' );
-
-		$instance = new Installer(
-			$this->tableSchemaManager,
-			$this->tableBuilder,
-			$this->tableIntegrityExaminer
-		);
-
-		$vars = [
-			'smwgConfigFileDir' => 'Foo/',
-			'smwgIP' => '',
-			'smwgUpgradeKey' => '',
-			'smwgEnabledFulltextSearch' => '',
-			'smwgFixedProperties' => [],
-			'smwgPageSpecialProperties' => []
-		];
-
-		$instance->setUpgradeKey( $vars, $this->spyMessageReporter, $file );
-	}
-
-	public function testSetUpgradeFile() {
-
-		$expected = json_encode( [ \SMW\Site::id() => [ 'Foo' => 42 ] ], JSON_PRETTY_PRINT );
-
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$file->expects( $this->once() )
-			->method( 'write' )
-			->with(
-				$this->equalTo( 'Foo_dir/.smw.json' ),
-				$this->equalTo( $expected ) );
-
-		$instance = new Installer(
-			$this->tableSchemaManager,
-			$this->tableBuilder,
-			$this->tableIntegrityExaminer
-		);
-
-		$vars = [
-			'smwgConfigFileDir' => 'Foo_dir'
-		];
-
-		$instance->setUpgradeFile( $vars, [ 'Foo' => 42 ], $file );
-	}
-
-	public function testIncompleteTasks() {
-
-		$vars = [
-			'smw.json' => [ \SMW\Site::id() => [ Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
-		];
-
-		$this->assertEquals(
-			[ 'smw-install-incomplete-populate-hash-field' ],
-			Installer::incompleteTasks( $vars )
-		);
-
-		$this->assertEquals(
-			[],
-			Installer::incompleteTasks( [] )
 		);
 	}
 
