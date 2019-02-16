@@ -16,6 +16,11 @@ use SMWDataItem as DataItem;
 abstract class DataItemHandler {
 
 	/**
+	 * Specifies a property subject index hint.
+	 */
+	const IHINT_PSUBJECTS = 'ihint.psubjects';
+
+	/**
 	 * @var SQLStore
 	*/
 	protected $store;

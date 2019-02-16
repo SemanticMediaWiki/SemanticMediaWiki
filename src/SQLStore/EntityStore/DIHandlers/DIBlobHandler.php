@@ -86,7 +86,7 @@ class DIBlobHandler extends DataItemHandler {
 		// GROUP BY smw_sort, smw_id LIMIT 26
 		//
 		// 23482.1451ms SMWSQLStore3Readers::getPropertySubjects
-		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+		if ( $key === self::IHINT_PSUBJECTS && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
 

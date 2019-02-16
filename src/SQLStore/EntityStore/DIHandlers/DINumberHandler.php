@@ -85,7 +85,7 @@ class DINumberHandler extends DataItemHandler {
 		// LIMIT 26
 		//
 		// 21448.2622ms	SMWSQLStore3Readers::getPropertySubjects
-		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+		if ( $key === self::IHINT_PSUBJECTS && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
 
