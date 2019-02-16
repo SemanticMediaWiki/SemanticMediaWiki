@@ -211,20 +211,28 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->onConsecutiveCalls( [ $table ] ) );
 
 		$this->connection->expects( $this->at( 0 ) )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( [ 's_id' => 42 ] ) )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
 				$this->equalTo( [ 's_id' => 1001 ] ),
 				$this->equalTo( [ 's_id' => 42 ] ) );
 
-		$this->connection->expects( $this->at( 1 ) )
+		$this->connection->expects( $this->at( 2 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
 				$this->equalTo( [ 'p_id' => 1001 ] ),
 				$this->equalTo( [ 'p_id' => 42 ] ) );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
@@ -261,19 +269,27 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->onConsecutiveCalls( [ $table ] ) );
 
 		$this->connection->expects( $this->at( 0 ) )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( [ 's_id' => 42 ] ) )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
 				$this->equalTo( [ 's_id' => 1001 ] ),
 				$this->equalTo( [ 's_id' => 42 ] ) );
 
-		$this->connection->expects( $this->at( 1 ) )
+		$this->connection->expects( $this->at( 2 ) )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
 				$this->equalTo( [ 'p_id' => 42 ] ) );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
@@ -310,16 +326,18 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->onConsecutiveCalls( [ $table ] ) );
 
 		$this->connection->expects( $this->at( 0 ) )
+			->method( 'selectRow' )
+			->with(
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo( [ 's_id' => 42 ] ) )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->at( 1 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),
 				$this->equalTo( [ 's_id' => 1001 ] ),
-				$this->equalTo( [ 's_id' => 42 ] ) );
-
-		$this->connection->expects( $this->at( 1 ) )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
 				$this->equalTo( [ 's_id' => 42 ] ) );
 
 		$this->connection->expects( $this->at( 2 ) )
@@ -329,6 +347,12 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( [ 's_id' => 42 ] ) );
 
 		$this->connection->expects( $this->at( 3 ) )
+			->method( 'delete' )
+			->with(
+				$this->anything(),
+				$this->equalTo( [ 's_id' => 42 ] ) );
+
+		$this->connection->expects( $this->at( 4 ) )
 			->method( 'update' )
 			->with(
 				$this->anything(),

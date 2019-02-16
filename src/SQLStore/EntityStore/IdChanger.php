@@ -163,6 +163,18 @@ class IdChanger {
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 
 			if ( $s_data && $proptable->usesIdSubject() ) {
+
+				$row = $connection->selectRow(
+					$proptable->getName(),
+					[ 's_id' ],
+					[ 's_id' => $old_id ],
+					__METHOD__
+				);
+
+				if ( $row === false ) {
+					continue;
+				}
+
 				$connection->update(
 					$proptable->getName(),
 					[ 's_id' => $new_id ],
@@ -190,14 +202,28 @@ class IdChanger {
 				}
 
 				foreach ( $proptable->getFields( $this->store ) as $fieldName => $fieldType ) {
-					if ( $fieldType === FieldType::FIELD_ID ) {
-						$connection->update(
-							$proptable->getName(),
-							[ $fieldName => $new_id ],
-							[ $fieldName => $old_id ],
-							__METHOD__
-						);
+
+					if ( $fieldType !== FieldType::FIELD_ID ) {
+						continue;
 					}
+
+					$row = $connection->selectRow(
+						$proptable->getName(),
+						[ $fieldName ],
+						[ $fieldName => $old_id ],
+						__METHOD__
+					);
+
+					if ( $row === false ) {
+						continue;
+					}
+
+					$connection->update(
+						$proptable->getName(),
+						[ $fieldName => $new_id ],
+						[ $fieldName => $old_id ],
+						__METHOD__
+					);
 				}
 			}
 		}
