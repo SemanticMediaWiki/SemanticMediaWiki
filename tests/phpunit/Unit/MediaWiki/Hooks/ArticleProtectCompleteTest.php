@@ -36,6 +36,19 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 

@@ -140,6 +140,29 @@ class DataUpdater {
 	}
 
 	/**
+	 * Is the update skippable given that a revision has already been stored in
+	 * SMW?
+	 *
+	 * MW 1.29 made the LinksUpdate a EnqueueableDataUpdate which creates updates
+	 * as JobSpecification (refreshLinksPrioritized) and posses a possibility of
+	 * running an update more than once for the same RevID.
+	 *
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function isSkippable( Title $title ) {
+
+		$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
+			$title->getDBKey(),
+			$title->getNamespace(),
+			$title->getInterwiki()
+		);
+
+		return $associatedRev == $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @return boolean

@@ -821,7 +821,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$handler = 'LinksUpdateConstructed';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
