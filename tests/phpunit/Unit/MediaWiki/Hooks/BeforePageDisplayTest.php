@@ -77,7 +77,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $this->outputPage, $this->skin );
 	}
 
-	public function testPrependHTML_InstallerIncompleteTasks() {
+	public function testPrependHTML_IncompleteTasks() {
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -94,7 +94,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOptions(
 			[
-				'installer.incomplete_tasks' => [ 'Foo', 'Bar' ]
+				'incomplete_tasks' => [ 'Foo', 'Bar' ]
 			]
 		);
 

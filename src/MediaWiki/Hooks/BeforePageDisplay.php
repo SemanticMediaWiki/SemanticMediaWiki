@@ -48,7 +48,7 @@ class BeforePageDisplay extends HookHandler {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 
-		if ( ( $tasks = $this->getOption( 'installer.incomplete_tasks', [] ) ) !== [] ) {
+		if ( ( $tasks = $this->getOption( 'incomplete_tasks', [] ) ) !== [] ) {
 			$outputPage->prependHTML( $this->incompleteTasksHTML( $tasks ) );
 		}
 

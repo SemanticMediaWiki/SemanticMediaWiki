@@ -12,8 +12,7 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
-use SMW\Utils\File;
-use SMW\Exception\FileNotWritableException;
+use SMW\SetupFile;
 
 /**
  * @private
@@ -73,9 +72,9 @@ class Installer implements MessageReporter {
 	private $options;
 
 	/**
-	 * @var File
+	 * @var SetupFile
 	 */
-	private $file;
+	private $setupFile;
 
 	/**
 	 * @since 2.5
@@ -106,12 +105,12 @@ class Installer implements MessageReporter {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
-	 * @param File $file
+	 * @param SetupFile $setupFile
 	 */
-	public function setFile( File $file ) {
-		$this->file = $file;
+	public function setSetupFile( SetupFile $setupFile ) {
+		$this->setupFile = $setupFile;
 	}
 
 	/**
@@ -166,9 +165,12 @@ class Installer implements MessageReporter {
 		$this->table_optimization( $messageReporter );
 		$this->supplement_jobs( $messageReporter );
 
-		$file = $this->file !== null ? $this->file : new File();
+		if ( $this->setupFile === null ) {
+			$this->setupFile = new SetupFile();
+		}
 
-		self::setUpgradeKey( $GLOBALS, $messageReporter, $file );
+		$this->setupFile->setMessageReporter( $messageReporter );
+		$this->setupFile->setUpgradeKey( $GLOBALS );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -221,183 +223,6 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "have been removed successfully.\n" );
 
 		return true;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param array $vars
-	 */
-	public static function loadSchema( &$vars ) {
-
-		// @see #3506
-		$file = File::dir( $vars['smwgConfigFileDir'] . '/.smw.json' );
-
-		// Doesn't exist? The `Setup::init` will take care of it by trying to create
-		// a new file and if it fails or unable to do so wail raise an exception
-		// as we expect to have access to it.
-		if ( is_readable( $file ) ) {
-			$vars['smw.json'] = json_decode( file_get_contents( $file ), true );
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean $isCli
-	 *
-	 * @return boolean
-	 */
-	public static function isGoodSchema( $isCli = false ) {
-
-		if ( $isCli && defined( 'MW_PHPUNIT_TEST' ) ) {
-			return true;
-		}
-
-		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
-			return true;
-		}
-
-		// #3563, Use the specific wiki-id as identifier for the instance in use
-		$id = Site::id();
-
-		if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
-			return false;
-		}
-
-		return self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return []
-	 */
-	public static function incompleteTasks( $vars ) {
-
-		$id = Site::id();
-		$tasks = [];
-
-		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
-		$checks = [
-			self::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ]
-		];
-
-		foreach ( $checks as $key => $value ) {
-			if ( isset( $vars['smw.json'][$id][$key] ) && $vars['smw.json'][$id][$key] === $value[0] ) {
-				$tasks[] = $value[1];
-			}
-		}
-
-		return $tasks;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param array $vars
-	 *
-	 * @return string
-	 */
-	public static function makeUpgradeKey( $vars ) {
-
-		// Only recognize those properties that require a fixed table
-		$pageSpecialProperties = array_intersect(
-			// Special properties enabled?
-			$vars['smwgPageSpecialProperties'],
-
-			// Any custom fixed properties require their own table?
-			TypesRegistry::getFixedProperties( 'custom_fixed' )
-		);
-
-		// Sort to ensure the key contains the same order
-		sort( $vars['smwgFixedProperties'] );
-		sort( $pageSpecialProperties );
-
-		// The following settings influence the "shape" of the tables required
-		// therefore use the content to compute a key that reflects any
-		// changes to them
-		$components = [
-			$vars['smwgUpgradeKey'],
-			$vars['smwgFixedProperties'],
-			$vars['smwgEnabledFulltextSearch'],
-			$pageSpecialProperties
-		];
-
-		return sha1( json_encode( $components ) );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param array $vars
-	 * @param MessageReporter $messageReporter|null
-	 * @param File $file|null
-	 */
-	public static function setUpgradeKey( $vars, MessageReporter $messageReporter = null, File $file = null ) {
-
-		// #3563, Use the specific wiki-id as identifier for the instance in use
-		$key = self::makeUpgradeKey( $vars );
-		$id = Site::id();
-
-		if (
-			isset( $vars['smw.json'][$id]['upgrade_key'] ) &&
-			$key === $vars['smw.json'][$id]['upgrade_key'] ) {
-			return false;
-		}
-
-		if ( $messageReporter !== null ) {
-			$messageReporter->reportMessage( "\nSetting $id upgrade key ..." );
-		}
-
-		self::setUpgradeFile( $vars, [ 'upgrade_key' => $key ], $file );
-
-		if ( $messageReporter !== null ) {
-			$messageReporter->reportMessage( "\n   ... done.\n" );
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param File $file
-	 * @param array $vars
-	 */
-	public static function setUpgradeFile( $vars, $args = [], File $file = null ) {
-
-		$configFile = $vars['smwgConfigFileDir'] . '/.smw.json';
-
-		if ( $file === null ) {
-			$file = new File();
-		}
-
-		$id = Site::id();
-
-		if ( !isset( $vars['smw.json'] ) ) {
-			$vars['smw.json'] = [];
-		}
-
-		foreach ( $args as $key => $value ) {
-			$vars['smw.json'][$id][$key] = $value;
-		}
-
-		try {
-			$file->write(
-				$configFile,
-				json_encode( $vars['smw.json'], JSON_PRETTY_PRINT )
-			);
-		} catch( FileNotWritableException $e ) {
-			// Users may not have `wgShowExceptionDetails` enabled and would
-			// therefore not see the exception error message hence we fail hard
-			// and die
-			die(
-				"\n\nERROR: " . $e->getMessage() . "\n" .
-				"\n       The \"smwgConfigFileDir\" setting should point to a" .
-				"\n       directory that is persistent and writable!\n"
-			);
-		}
 	}
 
 	/**

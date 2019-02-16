@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\Installer;
+use SMW\SetupFile;
 use SMW\Setup;
 use SMW\Store;
 
@@ -59,7 +60,9 @@ class PopulateHashField extends \Maintenance {
 			"   ... writing the status to the setup information file ... \n"
 		);
 
-		Installer::setUpgradeFile(
+		$setupFile = new SetupFile();
+
+		$setupFile->write(
 			$GLOBALS,
 			[
 				Installer::POPULATE_HASH_FIELD_COMPLETE => $incomplete
