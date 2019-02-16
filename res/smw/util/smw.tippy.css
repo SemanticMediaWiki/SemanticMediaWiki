@@ -63,6 +63,11 @@
    overflow-y: auto;
 }
 
+.tippy-content-container ul {
+    padding-inline-start: 20px;
+    margin: 0.3em 0.3em 0.3em 0.5em;
+}
+
 .tippy-content-overlay {
     height: 40px;
     width: 260px;
