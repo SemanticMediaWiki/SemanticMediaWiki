@@ -152,6 +152,50 @@ class TableSchemaManager {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return Table[]
+	 */
+	public function getOrphanedTables() {
+
+		$connection = $this->store->getConnection( DB_MASTER );
+		$tables = $this->getTables();
+
+		// Consider those table as fixed and not orphanable
+		$unOrphanable = [
+			PropertyTableDefinitionBuilder::makeTableName( '_TYPE' ),
+			PropertyTableDefinitionBuilder::makeTableName( '_REDI' ),
+			PropertyTableDefinitionBuilder::makeTableName( '_MDAT' )
+		];
+
+		$unOrphanable = array_flip( $unOrphanable );
+		$orphanedTables = [];
+
+		// Find tables that are orphaned which means they exists but are no longer
+		// listed as part of the current schema
+		foreach ( $connection->listTables() as $table ) {
+
+			// Convention is that any table with `smw_` will be inspected (no
+			// other extension is expected to use this table prefix!)
+			if ( strpos( $table, TableBuilder::TABLE_PREFIX ) === false ) {
+				continue;
+			}
+
+			$tableName = strstr( $table, TableBuilder::TABLE_PREFIX );
+
+			if ( isset( $unOrphanable[$tableName] ) ) {
+				continue;
+			}
+
+			if ( !isset( $tables[$tableName] ) ) {
+				$orphanedTables[$tableName] = new Table( $tableName );
+			}
+		}
+
+		return $orphanedTables;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @return Table[]
@@ -422,7 +466,8 @@ class TableSchemaManager {
 			$table->addIndex( $this->auxiliaryIndices[$name] );
 		}
 
-		$this->tables[] = $table;
+		$this->tables[$name] = $table;
+
 	}
 
 }

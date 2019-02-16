@@ -269,4 +269,73 @@ class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetOrphanedTables() {
+
+		$tables = [
+			// Prefix smw_
+			'smw_foo',
+			'xyz_smw_table',
+
+			// unrelated
+			'unrelated_table',
+			'smwunrelated_table',
+
+			// Not orphanable
+			'smw_fpt_mdat'
+		];
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'listTables', 'timestamp' ] )
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'listTables' )
+			->will( $this->returnValue( $tables ) );
+
+		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->once() )
+			->method( 'getTableFields' )
+			->will( $this->returnValue( [] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
+
+		$store->expects( $this->once() )
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new TableSchemaManager(
+			$store
+		);
+
+		$res = $instance->getOrphanedTables();
+
+		$this->assertCount(
+			2,
+			$res
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableBuilder\Table',
+			$res['smw_foo']
+		);
+	}
+
 }

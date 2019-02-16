@@ -138,7 +138,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function createTableNameFrom( $tableName ) {
+	public static function makeTableName( $tableName ) {
 		return self::PROPERTY_TABLE_PREFIX . strtolower( $tableName );
 	}
 
@@ -150,7 +150,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHashedTableNameFrom( $tableName ) {
+	public static function makeHashedTableName( $tableName ) {
 		return self::PROPERTY_TABLE_PREFIX . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
 	}
 
@@ -196,7 +196,7 @@ class PropertyTableDefinitionBuilder {
 	private function addRedirectTableDefinition() {
 		// Redirect table uses another subject scheme for historic reasons
 		// TODO This should be changed if possible
-		$redirectTableName = $this->createTableNameFrom( '_REDI' );
+		$redirectTableName = $this->makeTableName( '_REDI' );
 
 		if ( isset( $this->propertyTables[$redirectTableName]) ) {
 			$this->propertyTables[$redirectTableName]->setUsesIdSubject( false );
@@ -212,7 +212,7 @@ class PropertyTableDefinitionBuilder {
 	private function addTableDefinitionForUserDefinedFixedProperties( array $fixedProperties ) {
 
 		$this->propertyTypeFinder->setTypeTableName(
-			$this->createTableNameFrom( '_TYPE' )
+			$this->makeTableName( '_TYPE' )
 		);
 
 		foreach( $fixedProperties as $propertyKey ) {
@@ -224,7 +224,7 @@ class PropertyTableDefinitionBuilder {
 
 			$this->addPropertyTable(
 				DataTypeRegistry::getInstance()->getDataItemByType( $this->propertyTypeFinder->findTypeID( $property ) ),
-				$this->createHashedTableNameFrom( $propertyKey ),
+				$this->makeHashedTableName( $propertyKey ),
 				$propertyKey
 			);
 		}

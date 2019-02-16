@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\SQLStore\TableBuilder;
 
-use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
@@ -21,7 +20,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
  */
 class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
-	private $messageReporterFactory;
+	private $spyMessageReporter;
 	private $TableBuilder;
 	private $stringValidator;
 	private $tableName = 'rdbms_test';
@@ -29,13 +28,12 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->messageReporterFactory = MessageReporterFactory::getInstance();
-
 		$this->tableBuilder = TableBuilder::factory(
 			$this->getStore()->getConnection( DB_MASTER )
 		);
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
+		$this->spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 	}
 
 	protected function tearDown() {
@@ -44,10 +42,8 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testCreateTable() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -63,16 +59,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testUpdateTableWithNewField() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -91,16 +85,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testUpdateTableWithNewFieldType() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -124,16 +116,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testCreateIndex() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -161,16 +151,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testUpdateIndex_ReplaceIndex() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -198,16 +186,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testUpdateIndex_RemoveIndexWithArrayNotation() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -233,16 +219,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testUpdateIndex_NoIndexChange() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -267,16 +251,14 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testDropTable() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( $this->tableName );
@@ -284,21 +266,19 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->tableBuilder->drop( $table );
 
 		$expected = [
-			'dropped table rdbms_test'
+			'dropping table rdbms_test'
 		];
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
 	public function testTryToDropTableWhichNotExists() {
 
-		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
-
 		$this->tableBuilder->setMessageReporter(
-			$messageReporter
+			$this->spyMessageReporter
 		);
 
 		$table = new Table( 'foo_test' );
@@ -311,7 +291,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$messageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 

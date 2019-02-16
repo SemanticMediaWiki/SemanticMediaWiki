@@ -305,23 +305,9 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckOnPostDestruction() {
 
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'listTables' ] )
-			->getMockForAbstractClass();
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'listTables' )
-			->will( $this->returnValue( [ 'abcsmw_foo' ] ) );
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getConnection' ] )
 			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
 			->disableOriginalConstructor()
@@ -329,9 +315,6 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
-
-		$tableBuilder->expects( $this->once() )
-			->method( 'drop' );
 
 		$instance = new TableIntegrityExaminer(
 			$store,

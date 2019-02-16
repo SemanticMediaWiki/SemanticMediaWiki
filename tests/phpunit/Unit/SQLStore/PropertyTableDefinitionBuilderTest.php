@@ -103,7 +103,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$fixed
 		);
 
-		$tableName = $instance->createHashedTableNameFrom( $expectedKey );
+		$tableName = $instance->makeHashedTableName( $expectedKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
 		$expected = [

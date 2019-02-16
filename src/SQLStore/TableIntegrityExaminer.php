@@ -143,19 +143,6 @@ class TableIntegrityExaminer {
 	 */
 	public function checkOnPostDestruction( TableBuilder $tableBuilder ) {
 
-		$connection = $this->store->getConnection( DB_MASTER );
-
-		// Find orphaned tables that have not been removed but were produced and
-		// handled by SMW
-		foreach ( $connection->listTables() as $table ) {
-			if ( strpos( $table, TableBuilder::TABLE_PREFIX ) !== false ) {
-
-				// Remove any MW specific prefix at this point which will be
-				// handled by the DB class (abcsmw_foo -> smw_foo)
-				$tableBuilder->drop( new Table( strstr( $table, TableBuilder::TABLE_PREFIX ) ) );
-			}
-		}
-
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_DESTRUCTION );
 	}

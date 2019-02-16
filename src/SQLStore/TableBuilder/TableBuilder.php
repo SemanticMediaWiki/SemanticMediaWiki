@@ -171,11 +171,11 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		$tableName = $table->getName();
 
 		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
-			return $this->reportMessage( " ... $tableName not found, skipping removal.\n" );
+			return $this->reportMessage( "   ... $tableName not found, skipping removal.\n" );
 		}
 
+		$this->reportMessage( "   ... dropping table $tableName.\n" );
 		$this->doDropTable( $tableName );
-		$this->reportMessage( " ... dropped table $tableName.\n" );
 	}
 
 	/**
