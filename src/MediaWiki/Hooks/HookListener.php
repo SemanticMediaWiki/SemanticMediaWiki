@@ -160,7 +160,7 @@ class HookListener {
 
 		// Disallow the file cache to avoid skipping the ArticleViewHeader hook
 		// on Article::tryFileCache
-		return !$applicationFactory->getSettings( 'smwgEnabledQueryDependencyLinksStore' );
+		return true;
 	}
 
 	/**
