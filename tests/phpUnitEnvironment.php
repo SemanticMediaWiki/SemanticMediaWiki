@@ -76,7 +76,7 @@ class PHPUnitEnvironment {
 			$store = str_replace(
 				[ '{', '}', '"', '(SMW', ':(', '))', ',' ],
 				[ '(', ')', '', 'SMW', ' (', ')', ', ' ],
-				json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES )
+				json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 			);
 
 			$info = [
