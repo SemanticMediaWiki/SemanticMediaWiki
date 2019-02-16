@@ -5,11 +5,13 @@ namespace SMW\SQLStore;
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
+use SMW\MediaWiki\Collator;
 use SMW\ApplicationFactory;
 use SMW\ChangePropListener;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Site;
+use SMW\SortLetter;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -32,6 +34,7 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
+use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
@@ -753,6 +756,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @return SortLetter
+	 */
+	public function newSortLetter() {
+		return new SortLetter( $this->store, Collator::singleton() );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return PropertyTableIdReferenceDisposer
 	 */
 	public function newPropertyTableIdReferenceDisposer() {
@@ -760,6 +772,15 @@ class SQLStoreFactory {
 			$this->store,
 			$this->getIteratorFactory()
 		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return MissingRedirectLookup
+	 */
+	public function newMissingRedirectLookup() {
+		return new MissingRedirectLookup( $this->store );
 	}
 
 	/**
@@ -786,6 +807,14 @@ class SQLStoreFactory {
 				'QueryDependencyLinksStoreFactory' => [
 					'_service' => [ $this, 'newQueryDependencyLinksStoreFactory' ],
 					'_type'    => QueryDependencyLinksStoreFactory::class
+				],
+				'SortLetter' => [
+					'_service' => [ $this, 'newSortLetter' ],
+					'_type'    => SortLetter::class
+				],
+				'MissingRedirectLookup' => [
+					'_service' => [ $this, 'newMissingRedirectLookup' ],
+					'_type'    => MissingRedirectLookup::class
 				],
 				'PropertyTableIdReferenceFinder' => function() {
 					static $singleton;

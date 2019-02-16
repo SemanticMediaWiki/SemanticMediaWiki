@@ -22,6 +22,7 @@ $specialPageAliases['en'] = [
 	'SearchByProperty' => [ 'SearchByProperty' ],
 	'ProcessingErrorList' => [ 'ProcessingErrorList' ],
 	'PropertyLabelSimilarity' => [ 'PropertyLabelSimilarity' ],
+	'MissingRedirectAnnotations' => [ 'MissingRedirectAnnotations' ],
 	'Types' => [ 'Types' ],
 	'URIResolver' => [ 'URIResolver' ],
 	'UnusedProperties' => [ 'UnusedProperties' ],

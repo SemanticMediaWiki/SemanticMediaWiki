@@ -81,6 +81,9 @@ final class Setup {
 			'PropertyLabelSimilarity' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity'
 			],
+			'MissingRedirectAnnotations' => [
+				'page' => 'SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations'
+			],
 			'SMWAdmin' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin'
 			],
