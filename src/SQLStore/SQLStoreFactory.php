@@ -16,6 +16,7 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
@@ -784,6 +785,18 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return PrefetchItemLookup
+	 */
+	public function newPrefetchItemLookup() {
+		return new PrefetchItemLookup(
+			$this->store,
+			$this->newSemanticDataLookup()
+		);
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return ServicesContainer
@@ -819,7 +832,11 @@ class SQLStoreFactory {
 				'PropertyTableIdReferenceFinder' => function() {
 					static $singleton;
 					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
-				}
+				},
+				'PrefetchItemLookup' => [
+					'_service' => [ $this, 'newPrefetchItemLookup' ],
+					'_type'    => PrefetchItemLookup::class
+				]
 			]
 		);
 

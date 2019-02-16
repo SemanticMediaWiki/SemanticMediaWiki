@@ -238,9 +238,24 @@ class ValueListBuilder {
 		$html = '';
 		$prev_start_char = 'None';
 
+		$requestOptions = new RequestOptions();
+		$requestOptions->limit = $this->maxPropertyValues;
+
+		$prefetchItemLookup = $this->store->service( 'PrefetchItemLookup' );
+		$prefetchItemLookup->asItemIndex( true );
+
+		$propertyValuesArray = $prefetchItemLookup->getPropertyValues(
+			$diWikiPages,
+			$property,
+			$requestOptions
+		);
+
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $diWikiPages[$index];
+			$hash = $diWikiPage->getHash();
+
 			$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null );
+			$values = [];
 
 			$sortKey = $this->store->getWikiPageSortKey( $diWikiPage );
 			$start_char = Collator::singleton()->getFirstLetter( $sortKey );
@@ -266,17 +281,9 @@ class ValueListBuilder {
 				$prev_start_char = $start_char;
 			}
 
-			// Property values
-			$ropts = new RequestOptions();
-			$ropts->limit = $this->maxPropertyValues + 1;
-
-			// Restrict the request otherwise the entire SemanticData record
-			// is fetched which can in case of a subject with a large
-			// subobject/subpage pool create excessive DB queries that are not
-			// used for the display
-			$ropts->conditionConstraint = true;
-
-			$values = $this->store->getPropertyValues( $diWikiPage, $property, $ropts );
+			if ( isset( $propertyValuesArray[$hash] ) ) {
+				$values = $propertyValuesArray[$hash];
+			}
 
 			// May return an iterator
 			if ( $values instanceof \Iterator ) {

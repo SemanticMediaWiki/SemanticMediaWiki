@@ -61,22 +61,32 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateHtml() {
 
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$prefetchItemLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PrefetchItemLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$prefetchItemLookup->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] ) );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey' ] )
+			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( __METHOD__ ) ] ) );
+			->will( $this->returnValue( [ $subject ] ) );
 
 		$store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
 			->will( $this->returnValue( 'Bar' ) );
 
 		$store->expects( $this->once() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Bar' ) ] ) );
+			->method( 'service' )
+			->will( $this->returnValue( $prefetchItemLookup ) );
 
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );

@@ -57,6 +57,11 @@ class CachingSemanticDataLookup {
 	private static $lookupCount = 0;
 
 	/**
+	 * @var array
+	 */
+	private $prefetch = [];
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param SemanticDataLookup $semanticDataLookup
@@ -191,6 +196,52 @@ class CachingSemanticDataLookup {
 	 */
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
 		return $this->semanticDataLookup->newRequestOptions( $propertyTableDef, $property, $requestOptions );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $subjects
+	 * @param DataItem $dataItem
+	 * @param PropertyTableDefinition $propertyTableDef
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return []
+	 */
+	public function prefetchDataFromTable( array $subjects, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
+
+		$hash = '';
+
+		if ( $dataItem !== null ) {
+			$hash .= $dataItem->getSerialization();
+		}
+
+		if (  $requestOptions !== null ) {
+			$hash .= $requestOptions->getHash();
+		}
+
+		// Use `PREFETCH_FINGERPRINT` if available otherwise make a fingerprint
+		// to allow for caching possible repeated requests
+		if ( $requestOptions === null || $requestOptions->getOption( RequestOptions::PREFETCH_FINGERPRINT ) === null ) {
+			foreach ( $subjects as $subject ) {
+				$hash .= $subject->getHash();
+			}
+		}
+
+		$hash = md5( $hash );
+
+		if ( isset( $this->prefetch[$hash] ) ) {
+			return $this->prefetch[$hash];
+		}
+
+		$data = $this->semanticDataLookup->prefetchDataFromTable(
+			$subjects,
+			$dataItem,
+			$propertyTableDef,
+			$requestOptions
+		);
+
+		return $this->prefetch[$hash] = $data;
 	}
 
 	/**
