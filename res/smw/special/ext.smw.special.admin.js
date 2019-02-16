@@ -127,8 +127,16 @@
 						data.task.list
 					)
 				);
+			} else if ( data.task.hasOwnProperty( 'isFromCache' ) ) {
+				pre_content = smw.merge(
+					data.task.list,
+					{
+						'isFromCache': data.task.isFromCache,
+						'timestamp': data.task.time
+					}
+				);
 			} else {
-				pre_content.push( data.task.list );
+				pre_content = data.task.list;
 			};
 
 			this.jsonview( JSON.stringify( pre_content, null, 2 ) );
@@ -290,6 +298,7 @@
 			instance.api( {
 				action: 'smwtask',
 				task: 'duplicate-lookup',
+				formatversion:2,
 				params: JSON.stringify( [] )
 			} );
 		} );

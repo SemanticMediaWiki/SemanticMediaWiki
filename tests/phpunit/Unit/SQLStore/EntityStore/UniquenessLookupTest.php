@@ -96,7 +96,7 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFindDuplicates() {
+	public function testFindDuplicates_ID_Table() {
 
 		$row = new \stdClass;
 		$row->count = 42;
@@ -104,6 +104,14 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
 		$row->smw_subobject ='';
+
+		$expected = [
+			'count' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => ''
+		];
 
 		$query = new Query( $this->connection );
 
@@ -120,14 +128,71 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 			new IteratorFactory()
 		);
 
+		$res = $instance->findDuplicates();
+
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->findDuplicates()
+			$res
 		);
 
 		$this->assertContains(
 			'HAVING":"count(*) > 1',
 			$query->__toString()
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			iterator_to_array( $res )
+		);
+	}
+
+	public function testFindDuplicates_REDI_Table() {
+
+		$row = new \stdClass;
+		$row->count = 42;
+		$row->s_title = 'Foo';
+		$row->s_namespace = 0;
+		$row->o_id = 1001;
+
+		$expected = [
+			'count' => 42,
+			's_title' => 'Foo',
+			's_namespace' => 0,
+			'o_id' => 1001
+		];
+
+		$query = new Query( $this->connection );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$instance = new UniquenessLookup(
+			$this->store,
+			new IteratorFactory()
+		);
+
+		$res = $instance->findDuplicates(
+			\SMW\SQLStore\RedirectStore::TABLE_NAME
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\MappingIterator',
+			$res
+		);
+
+		$this->assertContains(
+			'HAVING":"count(*) > 1',
+			$query->__toString()
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			iterator_to_array( $res )
 		);
 	}
 

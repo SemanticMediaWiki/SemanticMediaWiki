@@ -340,8 +340,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$row = $expected;
 
-		$this->uniquenessLookup->expects( $this->once() )
+		$this->uniquenessLookup->expects( $this->at( 0 ) )
 			->method( 'findDuplicates' )
+			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$instance = new SMWSql3SmwIds(
@@ -350,8 +351,12 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			[ $expected ],
-			$instance->findDuplicates()
+			[
+				'smw_object_ids' => [ $expected ],
+				'smw_fpt_redi' => null,
+				'smw_di_wikipage' => null
+			],
+			$instance->findDuplicates( \SMW\SQLStore\SQLStore::ID_TABLE )
 		);
 	}
 

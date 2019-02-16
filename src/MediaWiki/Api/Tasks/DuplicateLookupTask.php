@@ -74,9 +74,9 @@ class DuplicateLookupTask extends Task {
 		}
 
 		$result = [
-			'list' => $rows,
+			'list'  => $rows,
 			'count' => count( $rows ),
-			'time' => time()
+			'time'  => date( 'Y-m-d H:i:s' )
 		];
 
 		$this->cache->save( $key, $result, $cacheTTL );

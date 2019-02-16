@@ -54,10 +54,10 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 		$this->reportMessage(
 			"\nThe script will only dispose of those duplicate entities that have no active\n" .
-			"references. The log section 'untouched' contains IDs that have not been\n" .
-			"removed and the user is asked to verify the content and manually remove\n".
-			"those listed entities.\n\n"
+			"references.\n"
 		);
+
+		$this->reportMessage( "\nQuering registered tables ...\n" );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();

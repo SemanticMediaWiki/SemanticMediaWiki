@@ -178,7 +178,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$duplicates = [
-			$record
+			\SMW\SQLStore\SQLStore::ID_TABLE => [ $record ]
 		];
 
 		$instance->verifyAndDispose( $duplicates );

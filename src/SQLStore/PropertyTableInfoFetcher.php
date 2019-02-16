@@ -52,7 +52,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @var array
 	 */
-	private $defaultDiTypeTableIdMap = [
+	private static $defaultDiTypeTableIdMap = [
 		DataItem::TYPE_NUMBER     => 'smw_di_number',
 		DataItem::TYPE_BLOB       => 'smw_di_blob',
 		DataItem::TYPE_BOOLEAN    => 'smw_di_bool',
@@ -118,10 +118,10 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return string
 	 */
-	public function findTableIdForDataItemTypeId( $dataItemId ) {
+	public static function findTableIdForDataItemTypeId( $dataItemId ) {
 
-		if ( array_key_exists( $dataItemId, $this->defaultDiTypeTableIdMap ) ) {
-			return $this->defaultDiTypeTableIdMap[$dataItemId];
+		if ( array_key_exists( $dataItemId, self::$defaultDiTypeTableIdMap ) ) {
+			return self::$defaultDiTypeTableIdMap[$dataItemId];
 		}
 
 		return '';
@@ -133,7 +133,7 @@ class PropertyTableInfoFetcher {
 	 * @return array
 	 */
 	public function getDefaultDataItemTables() {
-		return array_values( $this->defaultDiTypeTableIdMap );
+		return array_values( self::$defaultDiTypeTableIdMap );
 	}
 
 	/**
@@ -225,7 +225,7 @@ class PropertyTableInfoFetcher {
 		);
 
 		$definitionBuilder->doBuild(
-			$this->defaultDiTypeTableIdMap,
+			self::$defaultDiTypeTableIdMap,
 			$enabledSpecialProperties,
 			$this->customFixedPropertyList
 		);
