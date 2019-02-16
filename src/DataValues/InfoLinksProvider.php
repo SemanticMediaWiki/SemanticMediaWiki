@@ -65,7 +65,7 @@ class InfoLinksProvider {
 	/**
 	 * @var []
 	 */
-	private $browseLinks = [ '__sob' ];
+	private $disabledBrowseLinksByType = [ '_ref_rec' ];
 
 	/**
 	 * @since 2.4
@@ -157,8 +157,8 @@ class InfoLinksProvider {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-		if ( in_array( $this->dataValue->getTypeID(), $this->browseLinks ) ) {
-			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
+		if ( in_array( $this->dataValue->getTypeID(), $this->disabledBrowseLinksByType ) ) {
+			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
 			$infoLink->setCompactLink( $this->compactLink );
 		} elseif ( in_array( $dataItem->getDIType(), [ DataItem::TYPE_WIKIPAGE, DataItem::TYPE_CONTAINER ] ) ) {
 			$infoLink = Infolink::newBrowsingLink( '+', $this->dataValue->getLongWikiText() );
