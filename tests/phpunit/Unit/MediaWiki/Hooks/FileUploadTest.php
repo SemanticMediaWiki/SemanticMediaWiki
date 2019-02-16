@@ -31,7 +31,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

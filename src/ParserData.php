@@ -72,11 +72,6 @@ class ParserData {
 	private $parserOutput;
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var ParserOptions
 	 */
 	private $parserOptions;
@@ -113,17 +108,10 @@ class ParserData {
 	 *
 	 * @param Title $title
 	 * @param ParserOutput $parserOutput
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Title $title, ParserOutput $parserOutput, Cache $cache = null ) {
+	public function __construct( Title $title, ParserOutput $parserOutput ) {
 		$this->title = $title;
 		$this->parserOutput = $parserOutput;
-		$this->cache = $cache;
-
-		if ( $this->cache === null ) {
-			$this->cache = ApplicationFactory::getInstance()->getCache();
-		}
-
 		$this->initSemanticData();
 	}
 
@@ -394,20 +382,6 @@ class ParserData {
 	}
 
 	/**
-	 * Persistent marker to identify an update with a revision ID and allow
-	 * to filter successive updates with that very same ID.
-	 *
-	 * @see LinksUpdateConstructed::process
-	 *
-	 * @since 3.0
-	 *
-	 * @param integer $rev
-	 */
-	public function markUpdate( $rev ) {
-		$this->cache->save( smwfCacheKey( self::CACHE_NAMESPACE, $this->semanticData->getSubject()->getHash() ), $rev, 3600 );
-	}
-
-	/**
 	 * @private This method is not for public use
 	 *
 	 * @since 1.9
@@ -428,17 +402,6 @@ class ParserData {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$latestRevID = $this->title->getLatestRevID( Title::GAID_FOR_UPDATE );
-
-		if ( $this->skipUpdate( $latestRevID ) ) {
-
-			$this->logger->info(
-				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
-				[ 'role' => 'user', 'revID' => $latestRevID ]
-			);
-
-			return false;
-		}
 
 		$this->semanticData->setOption(
 			Enum::OPT_SUSPEND_PURGE,
@@ -448,6 +411,18 @@ class ParserData {
 		$dataUpdater = $applicationFactory->newDataUpdater(
 			$this->semanticData
 		);
+
+		if (
+			$this->getOption( self::OPT_FORCED_UPDATE, false ) === false &&
+			$dataUpdater->isSkippable( $this->title ) ) {
+
+			$this->logger->info(
+				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
+				[ 'role' => 'user', 'revID' => $this->title->getLatestRevID( Title::GAID_FOR_UPDATE ) ]
+			);
+
+			return false;
+		}
 
 		$dataUpdater->canCreateUpdateJob(
 			$this->getOption( self::OPT_CREATE_UPDATE_JOB, true )
@@ -493,20 +468,6 @@ class ParserData {
 		if ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->setEmptySemanticData();
 		}
-	}
-
-	private function skipUpdate( $rev ) {
-
-		if ( $this->getOption( self::OPT_FORCED_UPDATE, false ) ) {
-			return false;
-		}
-
-		$key = smwfCacheKey(
-			self::CACHE_NAMESPACE,
-			$this->semanticData->getSubject()->getHash()
-		);
-
-		return $this->cache->fetch( $key ) === $rev;
 	}
 
 }

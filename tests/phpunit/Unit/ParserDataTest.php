@@ -228,12 +228,16 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	public function testUpdateStore() {
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists' ] )
+			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
+
+		$idTable->expects( $this->any() )
+			->method( 'findAssociatedRev' )
+			->will( $this->returnValue( 42 ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -261,11 +265,30 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSkipUpdateOnMatchedMarker() {
 
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'findAssociatedRev' ] )
+			->getMock();
+
+		$idTable->expects( $this->once() )
+			->method( 'findAssociatedRev' )
+			->will( $this->returnValue( 42 ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->any() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
@@ -277,27 +300,12 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$cache->expects( $this->once() )
-			->method( 'fetch' )
-			->with( $this->stringContains( ':smw:update:7fe0bc8114c23c928b25316e4858fceb' ) )
-			->will( $this->returnValue( 42 ) );
-
-		$cache->expects( $this->once() )
-			->method( 'save' )
-			->with( $this->stringContains( ':smw:update:7fe0bc8114c23c928b25316e4858fceb' ) );
-
 		$instance = new ParserData(
 			$title,
-			new ParserOutput(),
-			$cache
+			new ParserOutput()
 		);
 
 		$instance->setLogger( $logger );
-		$instance->markUpdate( 42 );
 
 		$this->assertFalse(
 			$instance->updateStore()

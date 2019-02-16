@@ -120,12 +120,6 @@ class LinksUpdateConstructed extends HookHandler {
 		$parserData->setOrigin( 'LinksUpdateConstructed' );
 		$parserData->updateStore( $opts );
 
-		// Track the update on per revision because MW 1.29 made the LinksUpdate a
-		// EnqueueableDataUpdate which creates updates as JobSpecification
-		// (refreshLinksPrioritized) and posses a possibility of running an
-		// update more than once for the same RevID
-		$parserData->markUpdate( $latestRevID );
-
 		return true;
 	}
 
