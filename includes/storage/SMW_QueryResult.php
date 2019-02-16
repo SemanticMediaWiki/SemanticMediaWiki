@@ -216,10 +216,8 @@ class SMWQueryResult {
 		$row = [];
 
 		foreach ( $this->mPrintRequests as $p ) {
-			$resultArray = new SMWResultArray( $page, $p, $this->mStore );
+			$resultArray = SMWResultArray::factory( $page, $p, $this );
 			$resultArray->setResolverJournal( $this->resolverJournal );
-			$resultArray->setQueryToken( $this->mQuery->getQueryToken() );
-			$resultArray->setContextPage( $this->mQuery->getContextPage() );
 			$row[] = $resultArray;
 		}
 
