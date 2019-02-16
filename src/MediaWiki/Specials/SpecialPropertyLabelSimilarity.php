@@ -5,7 +5,9 @@ namespace SMW\MediaWiki\Specials;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SMW\Message;
 use SpecialPage;
+use Html;
 
 /**
  * @license GNU GPL v2+
@@ -70,6 +72,10 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		);
 
 		$output->addHtml(
+			$this->makeSpecialPageBreadcrumbLink()
+		);
+
+		$output->addHtml(
 			$contentsBuilder->getHtml( $requestOptions )
 		);
 
@@ -83,4 +89,24 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		return 'smw_group';
 	}
 
+	private static function makeSpecialPageBreadcrumbLink( $query = [] ) {
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-breadcrumb-link'
+			],
+			Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-breadcrumb-arrow-right'
+				]
+			) . Html::rawElement(
+				'a',
+				[
+					'href' => \SpecialPage::getTitleFor( 'Specialpages' )->getFullURL( $query ) . '#Semantic_MediaWiki'
+				],
+				Message::get( 'specialpages', Message::TEXT, Message::USER_LANGUAGE )
+		) );
+	}
 }
