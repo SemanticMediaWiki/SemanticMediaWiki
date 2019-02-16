@@ -19,19 +19,24 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $store;
+	private $entityCache;
 
 	protected function setUp() {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			IndicatorProvider::class,
-			new IndicatorProvider( $this->store )
+			new IndicatorProvider( $this->store, $this->entityCache )
 		);
 	}
 
@@ -54,7 +59,8 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( NS_MAIN ) );
 
 		$instance = new IndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$instance->canCheckReplication( true );
@@ -85,7 +91,8 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new IndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$instance->canCheckReplication( true );

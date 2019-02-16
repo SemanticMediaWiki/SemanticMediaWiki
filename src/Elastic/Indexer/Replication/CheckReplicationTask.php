@@ -2,11 +2,13 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use Onoi\Cache\Cache;
 use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\Message;
+use SMW\EntityCache;
 use Html;
 
 /**
@@ -28,14 +30,46 @@ class CheckReplicationTask extends Task {
 	private $replicationStatus;
 
 	/**
+	 * @var EntityCache
+	 */
+	private $entityCache;
+
+	/**
+	 * @var integer
+	 */
+	private $cacheTTL = 3600;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
 	 * @param ReplicationStatus $replicationStatus
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, ReplicationStatus $replicationStatus ) {
+	public function __construct( Store $store, ReplicationStatus $replicationStatus, EntityCache $entityCache ) {
 		$this->store = $store;
 		$this->replicationStatus = $replicationStatus;
+		$this->entityCache = $entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return string
+	 */
+	public static function makeCacheKey( $subject ) {
+		return EntityCache::makeCacheKey( 'es-replication-check', $subject->getHash() );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $cacheTTL
+	 */
+	public function setCacheTTL( $cacheTTL ) {
+		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;
 	}
 
 	/**
@@ -98,6 +132,16 @@ class CheckReplicationTask extends Task {
 				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
 			];
 			$html = $this->buildHTML( $title->getPrefixedText(), $id, $isRTL, $dates );
+		}
+
+		$key = $this->makeCacheKey( $subject );
+
+		// Only keep the cache around when ES has successful replicated the entity
+		if ( $html === '' ) {
+			$this->entityCache->save( $key, 'success', $this->cacheTTL );
+			$this->entityCache->associate( $subject, $key );
+		} else {
+			$this->entityCache->delete( $key );
 		}
 
 		return $html;

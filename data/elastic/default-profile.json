@@ -17,7 +17,9 @@
 		"experimental.file.ingest": false,
 		"throw.exception.on.illegal.argument.error": true,
 		"job.recovery.retries": 5,
-		"job.file.ingest.retries": 3
+		"job.file.ingest.retries": 3,
+		"monitor.entity.replication": true,
+		"monitor.entity.replication.cache.lifetime": 3600,
 	},
 	"query": {
 		"fallback.no.connection": false,
@@ -36,6 +38,7 @@
 		"concept.terms.lookup": true,
 		"concept.terms.lookup.result.size.index.write.threshold": 10,
 		"concept.terms.lookup.cache.lifetime": 3600,
+		"cjk.best.effort.proximity.match": true,
 		"wide.proximity.as.match_phrase": true,
 		"wide.proximity.fields": [
 			"subject.title^8",

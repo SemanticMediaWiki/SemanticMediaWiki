@@ -21,6 +21,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $replicationStatus;
+	private $entityCache;
 
 	protected function setUp() {
 
@@ -40,13 +41,17 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->replicationStatus = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationStatus' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			CheckReplicationTask::class,
-			new CheckReplicationTask( $this->store, $this->replicationStatus )
+			new CheckReplicationTask( $this->store, $this->replicationStatus, $this->entityCache )
 		);
 	}
 
@@ -62,7 +67,8 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus
+			$this->replicationStatus,
+			$this->entityCache
 		);
 
 		$html = $instance->checkReplication( DIWikiPage::newFromText( 'Foo' ), [] );

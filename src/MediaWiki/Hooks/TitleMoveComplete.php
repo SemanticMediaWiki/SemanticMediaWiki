@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
 use SMW\Factbox\FactboxCache;
@@ -21,6 +22,8 @@ use SMW\Factbox\FactboxCache;
  * @author mwjames
  */
 class TitleMoveComplete {
+
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var Title
@@ -113,6 +116,13 @@ class TitleMoveComplete {
 			'cached.prefetcher.reset',
 			$dispatchContext
 		);
+
+		$context = [
+			'context' => 'TitleMoveComplete'
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $this->oldTitle ] );
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $this->newTitle ] );
 
 		return true;
 	}

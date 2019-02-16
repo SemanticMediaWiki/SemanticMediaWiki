@@ -54,6 +54,7 @@ use SMW\QueryFactory;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\MediaWiki\IndicatorRegistry;
+use SMW\EntityCache;
 
 /**
  * @license GNU GPL v2+
@@ -198,6 +199,11 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PageUpdater', function( $containerBuilder, $connection, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
 			return new PageUpdater( $connection, $transactionalCallableUpdate );
+		} );
+
+		$containerBuilder->registerCallback( 'EntityCache', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'EntityCache', '\SMW\EntityCache' );
+			return new EntityCache( $containerBuilder->singleton( 'Cache' ) );
 		} );
 
 		/**

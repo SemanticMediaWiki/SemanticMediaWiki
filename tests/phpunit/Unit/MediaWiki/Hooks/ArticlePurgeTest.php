@@ -23,6 +23,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $testEnvironment;
 	private $cache;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -38,6 +39,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
 		$this->applicationFactory->registerObject( 'Cache', $this->cache );
+
+		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function tearDown() {
@@ -64,6 +69,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $setup, $expected ) {
 
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
 
@@ -83,6 +92,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new ArticlePurge();
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
 		$factboxCacheKey = \SMW\Factbox\CachedFactbox::makeCacheKey( $pageId );
@@ -136,6 +149,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 9999 ) );
 
+		$validIdTitle->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
 		#0 Id = cache
 		$provider[] = [
 			[
@@ -159,6 +176,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 9099 ) );
 
+		$validIdTitle->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
 		$provider[] = [
 			[
 				'title'  => $validIdTitle,
@@ -180,6 +201,10 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		$nullIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 0 ) );
+
+		$nullIdTitle->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$provider[] = [
 			[

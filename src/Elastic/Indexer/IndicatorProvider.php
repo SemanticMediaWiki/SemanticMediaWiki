@@ -6,6 +6,8 @@ use SMW\DIWikiPage;
 use SMW\Store;
 use SMW\Message;
 use SMW\MediaWiki\IndicatorProvider as IIndicatorProvider;
+use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\EntityCache;
 use Html;
 use Title;
 
@@ -23,6 +25,11 @@ class IndicatorProvider implements IIndicatorProvider {
 	private $store;
 
 	/**
+	 * @var EntityCache
+	 */
+	private $entityCache;
+
+	/**
 	 * @var []
 	 */
 	private $indicators = [];
@@ -36,9 +43,11 @@ class IndicatorProvider implements IIndicatorProvider {
 	 * @since 3.1
 	 *
 	 * @param Store $store
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, EntityCache $entityCache ) {
 		$this->store = $store;
+		$this->entityCache = $entityCache;
 	}
 
 	/**
@@ -94,6 +103,10 @@ class IndicatorProvider implements IIndicatorProvider {
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
+
+		if ( $this->entityCache->fetch( CheckReplicationTask::makeCacheKey( $subject ) ) === 'success' ) {
+			return;
+		}
 
 		$dir = 'ltr';
 

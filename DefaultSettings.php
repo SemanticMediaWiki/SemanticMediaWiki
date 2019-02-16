@@ -2118,6 +2118,7 @@ return [
 			// possible discrepancy between the stored on-wiki data and the data
 			// replicated to Elasticsearch.
 			'monitor.entity.replication' => true,
+			'monitor.entity.replication.cache.lifetime' => 3660,
 		],
 		'query' => [
 

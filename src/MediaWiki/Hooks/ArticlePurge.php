@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -23,6 +24,8 @@ use WikiPage;
  */
 class ArticlePurge {
 
+	use EventDispatcherAwareTrait;
+
 	/**
 	 * @since 1.9
 	 *
@@ -32,7 +35,9 @@ class ArticlePurge {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$pageId = $wikiPage->getTitle()->getArticleID();
+		$title = $wikiPage->getTitle();
+		$pageId = $title->getArticleID();
+
 		$settings = $applicationFactory->getSettings();
 
 		$cache = $applicationFactory->getCache();
@@ -46,7 +51,7 @@ class ArticlePurge {
 		}
 
 		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $wikiPage->getTitle() );
+		$dispatchContext->set( 'title', $title );
 		$dispatchContext->set( 'context', 'ArticlePurge' );
 
 		if ( $settings->isFlagSet( 'smwgFactboxFeatures', SMW_FACTBOX_PURGE_REFRESH ) ) {
@@ -59,7 +64,7 @@ class ArticlePurge {
 		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
 
 			$dispatchContext->set( 'ask', $applicationFactory->getStore()->getPropertyValues(
-				DIWikiPage::newFromTitle( $wikiPage->getTitle() ),
+				DIWikiPage::newFromTitle( $title ),
 				new DIProperty( '_ASK') )
 			);
 
@@ -68,6 +73,13 @@ class ArticlePurge {
 				$dispatchContext
 			);
 		}
+
+		$context = [
+			'context' => 'ArticlePurge',
+			'title' => $title
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 
 		return true;
 	}
