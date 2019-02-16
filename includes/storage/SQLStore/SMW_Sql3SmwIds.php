@@ -7,6 +7,7 @@ use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\IdToDataItemMatchFinder;
+use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
@@ -398,7 +399,40 @@ class SMWSql3SmwIds {
 	 * @return []
 	 */
 	public function findDuplicates() {
-		return $this->uniquenessLookup->findDuplicates();
+
+		$ids = $this->uniquenessLookup->findDuplicates(
+			SQLStore::ID_TABLE
+		);
+
+		if ( $ids instanceof Iterator ) {
+			$ids = iterator_to_array( $ids );
+		}
+
+		$redi = $this->uniquenessLookup->findDuplicates(
+			RedirectStore::TABLE_NAME
+		);
+
+		if ( $redi instanceof Iterator ) {
+			$redi = iterator_to_array( $redi );
+		}
+
+		$wikipage_table = PropertyTableInfoFetcher::findTableIdForDataItemTypeId(
+			DataItem::TYPE_WIKIPAGE
+		);
+
+		$page = $this->uniquenessLookup->findDuplicates(
+			$wikipage_table
+		);
+
+		if ( $page instanceof Iterator ) {
+			$page = iterator_to_array( $page );
+		}
+
+		return [
+			SQLStore::ID_TABLE => $ids,
+			RedirectStore::TABLE_NAME => $redi,
+			$wikipage_table => $page
+		];
 	}
 
 	/**
