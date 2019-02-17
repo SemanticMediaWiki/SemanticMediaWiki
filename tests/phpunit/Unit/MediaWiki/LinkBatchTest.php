@@ -54,13 +54,22 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$linkBatch->expects( $this->once() )
+		$linkBatch->expects( $this->exactly( 3 ) )
 			->method( 'add' );
 
 		$linkBatch->expects( $this->once() )
 			->method( 'execute' );
 
 		$instance = new LinkBatch( $linkBatch );
+
+		$instance->addFromList(
+			[
+				DIWikiPage::newFromText( 'Foo/1' ),
+				DIWikiPage::newFromText( 'Foo/2' ),
+				$subject
+			]
+		);
+
 		$instance->add( $subject );
 
 		$instance->execute();
