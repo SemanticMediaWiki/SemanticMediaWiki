@@ -95,6 +95,38 @@ class DIWikiPageHandler extends DataItemHandler {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getIndexHint( $key ) {
+
+		// Store::getPropertySubjects has seen to choose the wrong index
+
+		// ELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids` INNER JOIN `smw_di_wikipage` AS t1
+		// FORCE INDEX(s_id) ON t1.s_id=smw_id
+		// WHERE (t1.p_id='310172') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+		// GROUP BY smw_sort, smw_id LIMIT 51
+		//
+		// 698.8220ms SMW\SQLStore\EntityStore\PropertySubjectsLookup::fetchFromTable
+		//
+		// vs.
+		//
+		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
+		// FROM `smw_object_ids` INNER JOIN `smw_di_wikipage` AS t1 ON t1.s_id=smw_id
+		// WHERE (t1.p_id='310172') AND (smw_iw!=':smw') AND (smw_iw!=':smw-delete') AND (smw_iw!=':smw-redi')
+		// GROUP BY smw_sort, smw_id LIMIT 51
+		//
+		// 6880.1949ms SMW\SQLStore\EntityStore\PropertySubjectsLookup::fetchFromTable
+		if ( $key === self::IHINT_PSUBJECTS && $this->isDbType( 'mysql' ) ) {
+			return 's_id';
+		}
+
+		return '';
+	}
+
+	/**
 	 * @since 1.8
 	 *
 	 * {@inheritDoc}
