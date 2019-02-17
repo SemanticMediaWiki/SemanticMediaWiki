@@ -203,8 +203,8 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function fetchSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
-		return $this->semanticDataLookup->fetchSemanticData( $id, $dataItem, $propertyTableDef, $requestOptions );
+	public function fetchSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
+		return $this->semanticDataLookup->fetchSemanticDataFromTable( $id, $dataItem, $propertyTableDef, $requestOptions );
 	}
 
 	/**
@@ -217,7 +217,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
+	public function getSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propertyTableDef, RequestOptions $requestOptions = null ) {
 
 		// Avoid the cache when a request is constrainted
 		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
@@ -252,7 +252,7 @@ class CachingSemanticDataLookup {
 			return self::$data[$id];
 		}
 
-		$data = $this->semanticDataLookup->fetchSemanticData(
+		$data = $this->semanticDataLookup->fetchSemanticDataFromTable(
 			$id,
 			$dataItem,
 			$propertyTableDef
