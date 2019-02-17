@@ -7,6 +7,7 @@ use SMW\Query\Result\ResolverJournal;
 use SMW\Query\Result\ResultFieldMatchFinder;
 use SMWDataItem as DataItem;
 use SMW\DIWikiPage;
+use SMWQueryResult as QueryResult;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -59,6 +60,31 @@ class SMWResultArray {
 	 * @var DIWikiPage
 	 */
 	private $contextPage;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param SMWDIWikiPage $resultPage
+	 * @param PrintRequest $printRequest
+	 * @param QueryResult $queryResult
+	 *
+	 * @return ResultArray
+	 */
+	public static function factory( SMWDIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
+
+		$resultArray = new self(
+			$resultPage,
+			$printRequest,
+			$queryResult->getStore()
+		);
+
+		$query = $queryResult->getQuery();
+
+		$resultArray->setQueryToken( $query->getQueryToken() );
+		$resultArray->setContextPage( $query->getContextPage() );
+
+		return $resultArray;
+	}
 
 	/**
 	 * Constructor.
