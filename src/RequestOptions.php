@@ -17,12 +17,37 @@ namespace SMW;
  */
 class RequestOptions {
 
+	/**
+	 * Used to identify a constraint conition set forth by the QueryResult
+	 * process which doesn't modify the `limit`.
+	 */
+	const CONDITION_CONSTRAINT_RESULT = 'condition.constraint.result';
+
+	/**
+	 * Used to identify a constraint conidtion set forth by any other query
+	 * process.
+	 */
+	const CONDITION_CONSTRAINT = 'conditon.constraint';
+
+	/**
+	 * Defines a prefetch fingerprint
+	 */
+	const PREFETCH_FINGERPRINT = 'prefetch.fingerprint';
+
 	const SEARCH_FIELD = 'search_field';
 
 	/**
 	 * The maximum number of results that should be returned.
 	 */
 	public $limit = -1;
+
+	/**
+	 * For certain queries (e.g. prefetch using WHERE IN) using the limit will
+	 * cause the whole retrievable set to be restricted instead of just be
+	 * applied to a subset therefore allow to exclude the limit and apply an
+	 * restriction during the post-processing.
+	 */
+	public $exclude_limit = false;
 
 	/**
 	 * A numerical offset. The first $offset results are skipped.
@@ -210,6 +235,7 @@ class RequestOptions {
 			$this->ascending,
 			$this->boundary,
 			$this->include_boundary,
+			$this->exclude_limit,
 			$stringConditions,
 			$this->extraConditions,
 			$this->options,

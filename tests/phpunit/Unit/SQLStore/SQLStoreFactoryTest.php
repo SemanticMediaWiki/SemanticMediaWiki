@@ -465,6 +465,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPrefetchItemLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\PrefetchItemLookup',
+			$instance->newPrefetchItemLookup()
+		);
+	}
+
 	public function testCanConstructServicesContainer() {
 
 		$instance = new SQLStoreFactory( $this->store );

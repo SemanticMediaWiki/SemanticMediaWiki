@@ -57,6 +57,7 @@ class SemanticDataLookup {
 		}
 
 		$ropts = new RequestOptions();
+		$ropts->setOption( RequestOptions::CONDITION_CONSTRAINT, true );
 
 		$ropts->setLimit( $requestOptions->getLimit() );
 		$ropts->setOffset( $requestOptions->getOffset() );
@@ -144,6 +145,103 @@ class SemanticDataLookup {
 		}
 
 		return $stubSemanticData;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $subjects
+	 * @param DIProperty $property
+	 * @param PropertyTableDefinition $propTable
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return array
+	 */
+	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+
+		$ids = [];
+		$isSubject = true;
+
+		foreach ( $subjects as $k => $subject ) {
+
+			if ( !$subject instanceof DIWikiPage ) {
+				continue;
+			}
+
+			$id = $this->store->getObjectIds()->getSMWPageID(
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
+				true
+			);
+
+			$subject->setId( $id );
+			$ids[$id] = true;
+		}
+
+		if ( $ids === [] ) {
+			return [];
+		}
+
+		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
+		$this->fname = __METHOD__;
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$query = $connection->newQuery();
+
+		$query->type( 'select' );
+		$query->table( $propTable->getName() );
+
+		// Restrict property only
+		if ( !$propTable->isFixedPropertyTable() ) {
+			$query->condition( $query->eq( 'p_id', $pid ) );
+		}
+
+		// Restrict subject, select property
+		if ( $propTable->usesIdSubject() ) {
+			$query->condition( $query->in( 's_id', array_keys( $ids ) ) );
+			$query->field( 's_id' );
+		} else {
+			throw new RuntimeException( "Need a table that has an ID subject column (property: " . $property->getKey() . ')!' );
+		}
+
+		// Select property name
+		// In case of a fixed property, no select needed
+		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
+			$query->join(
+				'INNER JOIN',
+				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
+			);
+
+			$query->field( 'p.smw_title', 'prop' );
+
+			// Avoid displaying any property that has been marked deleted or outdated
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+		}
+
+		$res = $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+		$result = [];
+
+		foreach ( $res as $key => $data ) {
+			list( $sid, $i, $h ) = explode( '#', $key );
+
+			if ( !isset( $result[$sid] ) ) {
+				$result[$sid] = [];
+			}
+
+			$result[$sid]["$i#$h"] = $data[1];
+		}
+
+	// Avoiding any sorting to avoid distrupting the output for the integration
+	// tests as part of introducing the prefetch mode
+	//	foreach ( $result as $id => &$value ) {
+	//	 	ksort( $value );
+	//	}
+
+		return $result;
+
 	}
 
 	/**
@@ -343,6 +441,21 @@ class SemanticDataLookup {
 		$query->options(
 			$this->store->getSQLOptions( $requestOptions, $valueField )
 		);
+
+		if (
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false ) ||
+			$requestOptions->getOption( RequestOptions::CONDITION_CONSTRAINT, false ) ) {
+			$sort = 'ASC';
+
+			if ( $requestOptions->sort ) {
+				$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
+				$query->option( 'ORDER BY', $map[$sortField] . " $sort" );
+			}
+		}
+
+		if ( $requestOptions->exclude_limit ) {
+			$query->option( 'LIMIT', null );
+		}
 
 		$res = $connection->query(
 			$query,
