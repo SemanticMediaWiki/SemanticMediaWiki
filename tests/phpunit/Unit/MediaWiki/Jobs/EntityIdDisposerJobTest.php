@@ -18,17 +18,18 @@ use SMW\Tests\TestEnvironment;
 class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $connection;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->any() )
+		$this->connection->expects( $this->any() )
 			->method( 'select' )
 			->will( $this->returnValue( [ 'Foo' ] ) );
 
@@ -41,7 +42,7 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$store->setConnectionManager( $connectionManager );
 
@@ -111,6 +112,21 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testJobRun( $parameters ) {
+
+		$row = [
+			'smw_id' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => NS_MAIN,
+			'smw_iw' => '',
+			'smw_subobject' => '',
+			'smw_sort' => '',
+			'smw_sortkey' => '',
+			'smw_hash' => ''
+		];
+
+		$this->connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)$row ) );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
