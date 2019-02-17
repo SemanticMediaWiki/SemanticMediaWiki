@@ -149,6 +149,49 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewRequestOptions_NULL() {
+
+		$property =  new DIProperty( 'Foo' );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertEquals(
+			null,
+			$instance->newRequestOptions( $propertyTable, $property )
+		);
+	}
+
+	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
+
+		$property =  new DIProperty( 'Foo' );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( true ) );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->conditionConstraint = true;
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\RequestOptions',
+			$instance->newRequestOptions( $propertyTable, $property, $requestOptions )
+		);
+	}
+
 	public function testSemanticDataFromTable() {
 
 		$row = new \stdClass;
@@ -181,7 +224,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$semanticData = $instance->fetchSemanticData(
+		$semanticData = $instance->fetchSemanticDataFromTable(
 			42,
 			$subject,
 			$propertyTable
@@ -251,7 +294,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$requestOptions
 		);
 
-		$instance->fetchSemanticData( 42, $subject, $propertyTable, $requestOptions );
+		$instance->fetchSemanticDataFromTable( 42, $subject, $propertyTable, $requestOptions );
 
 		$this->assertEquals(
 			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
@@ -262,7 +305,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSemanticData_NoDataItem() {
+	public function testFetchSemanticDataFromTable_NoDataItem() {
 
 		$row = new \stdClass;
 		$row->prop = 'FOO';
@@ -296,7 +339,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->fetchSemanticData( 42, null, $propertyTable );
+		$instance->fetchSemanticDataFromTable( 42, null, $propertyTable );
 
 		$this->assertEquals(
 			"SELECT p.smw_title AS prop, fooField AS v0 FROM  " .
@@ -306,7 +349,109 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchSemanticData_NonWikiPageTable_DISTINCT_SELECT() {
+	public function testFetchSemanticDataFromTable_NoIdSubject() {
+
+		$row = new \stdClass;
+		$row->prop = 'FOO';
+		$row->v0 = '1001';
+
+		$this->dataItemHandler->expects( $this->any() )
+			->method( 'getFetchFields' )
+			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( false ) );
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'bar_table' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'query' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$dataItem = DIWikiPage::newFromText( 'no_id_subject' );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$instance->fetchSemanticDataFromTable( 42, $dataItem, $propertyTable );
+
+		$this->assertEquals(
+			"SELECT p.smw_title AS prop, fooField AS v0 FROM bar_table " .
+			"INNER JOIN smw_object_ids AS p ON p_id=p.smw_id " .
+			"WHERE (s_title='no_id_subject') AND (s_namespace='0') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
+			$this->query->build()
+		);
+	}
+
+	public function testFetchSemanticDataFromTable_Empty() {
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertEquals(
+			[],
+			$instance->fetchSemanticDataFromTable( 42, null, $propertyTable )
+		);
+	}
+
+	public function testGetSemanticData() {
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItem = DIWikiPage::newFromText( 'Foo' );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			$instance->getSemanticData( 42, $dataItem, $propertyTable )
+		);
+	}
+
+	public function testGetSemanticData_NonWikiPage_ThrowsException() {
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->getSemanticData( 42, null, $propertyTable );
+	}
+
+	public function testFetchSemanticDataFromTable_NonWikiPageTable_DISTINCT_SELECT() {
 
 		$row = new \stdClass;
 		$row->prop = 'FOO';
@@ -345,7 +490,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->fetchSemanticData( 42, $dataItem, $propertyTable, $requestOptions );
+		$instance->fetchSemanticDataFromTable( 42, $dataItem, $propertyTable, $requestOptions );
 
 		$this->assertEquals(
 			"SELECT DISTINCT fooField AS v0 FROM bar_table WHERE (p_id='42') LIMIT 4",

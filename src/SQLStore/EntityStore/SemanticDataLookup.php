@@ -29,6 +29,11 @@ class SemanticDataLookup {
 	private $store;
 
 	/**
+	 * @var string
+	 */
+	private $fname = '';
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param SQLStore $store
@@ -127,7 +132,7 @@ class SemanticDataLookup {
 
 		$stubSemanticData = $this->newStubSemanticData( $dataItem );
 
-		$data = $this->fetchSemanticData(
+		$data = $this->fetchSemanticDataFromTable(
 			$id,
 			$dataItem,
 			$propTable,
@@ -176,7 +181,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticData( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, DataItem $dataItem = null, PropertyTableDefinition $propTable, RequestOptions $requestOptions = null ) {
 
 		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
 
@@ -191,6 +196,7 @@ class SemanticDataLookup {
 
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
+		$this->fname = __METHOD__;
 
 		// Build something like:
 		//
@@ -207,12 +213,47 @@ class SemanticDataLookup {
 		// INNER JOIN `smw_object_ids` AS p ON p_id=p.smw_id
 		// WHERE s_id='80' AND p.smw_iw!=':smw' AND p.smw_iw!=':smw-delete'
 
-		$query = $this->newQuery(
-			$propTable,
-			$id,
-			$isSubject,
-			$dataItem
-		);
+		$connection = $this->store->getConnection( 'mw.db' );
+		$query = $connection->newQuery();
+
+		$query->type( 'select' );
+		$query->table( $propTable->getName() );
+
+		// Restrict property only
+		if ( !$isSubject && !$propTable->isFixedPropertyTable() ) {
+			$query->condition( $query->eq( 'p_id', $id ) );
+		}
+
+		// Restrict subject, select property
+		if ( $isSubject && $propTable->usesIdSubject() ) {
+			$query->condition( $query->eq( 's_id', $id ) );
+		} elseif ( $isSubject ) {
+			$query->condition( $query->eq( 's_title', $dataItem->getDBkey() ) );
+			$query->condition( $query->eq( 's_namespace', $dataItem->getNamespace() ) );
+		}
+
+		// Select property name
+		// In case of a fixed property, no select needed
+		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
+			$query->join(
+				'INNER JOIN',
+				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
+			);
+
+			$query->field( 'p.smw_title', 'prop' );
+
+			// Avoid displaying any property that has been marked deleted or outdated
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
+			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+		}
+
+		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+	}
+
+	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
+
+		$result = [];
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
@@ -232,12 +273,15 @@ class SemanticDataLookup {
 		);
 
 		$valueField = $diHandler->getIndexField();
+		$sortField = $valueField;
 		$labelField = $diHandler->getLabelField();
 
 		$fields = $diHandler->getFetchFields();
+		$map = [];
 
 		$this->addFields(
 			$query,
+			$map,
 			$fields,
 			$valueField,
 			$labelField,
@@ -292,13 +336,17 @@ class SemanticDataLookup {
 			$valueField = '';
 		}
 
+		if ( $field !== '' ) {
+			$query->field( $field );
+		}
+
 		$query->options(
 			$this->store->getSQLOptions( $requestOptions, $valueField )
 		);
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			$this->fname
 		);
 
 		foreach ( $res as $row ) {
@@ -311,6 +359,7 @@ class SemanticDataLookup {
 
 			$this->resultFromRow(
 				$result,
+				$map,
 				$row,
 				$fields,
 				$fieldname,
@@ -323,7 +372,7 @@ class SemanticDataLookup {
 		$connection->freeResult( $res );
 
 		// Sorting via PHP for an explicit disabled `ORDER BY` to ensure that
-		// the result set has at least a lexical order applied for the range of
+		// the result set at least a lexical order is applied for range of
 		// retrieved values
 		if ( $requestOptions->getOption( 'ORDER BY' ) === false ) {
 			sort( $result );
@@ -371,7 +420,7 @@ class SemanticDataLookup {
 		return $query;
 	}
 
-	private function addFields( &$query, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
+	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
 
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
@@ -388,6 +437,8 @@ class SemanticDataLookup {
 				$query->field( "o$valueCount.smw_namespace AS v" . ( $valueCount + 1 ) );
 				$query->field( "o$valueCount.smw_iw AS v" . ( $valueCount + 2 ) );
 				$query->field( "o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 ) );
+				$map[$fieldname] = "v" . ( $valueCount + 3 );
+
 				$query->field( "o$valueCount.smw_subobject AS v" . ( $valueCount + 4 ) );
 
 				if ( $valueField == $fieldname ) {
@@ -399,6 +450,7 @@ class SemanticDataLookup {
 
 				$valueCount += 4;
 			} else {
+				$map[$fieldname] = "v$valueCount";
 				$query->field( $fieldname, "v$valueCount" );
 			}
 
@@ -409,13 +461,19 @@ class SemanticDataLookup {
 		// Function: SMWSQLStore3Readers::fetchSemanticData
 		// Error: 42P10 ERROR: for SELECT DISTINCT, ORDER BY expressions must appear in select list
 		if ( !$query->hasField( $valueField ) ) {
+			$map[$valueField] = "v" . ( $valueCount + 1 );
 			$query->field( $valueField, "v" . ( $valueCount + 1 ) );
 		}
 	}
 
-	private function resultFromRow( &$result, $row, $fields, $fieldname, $valueCount, $isSubject, $propertykey ) {
+	private function resultFromRow( &$result, $map, $row, $fields, $fieldname, $valueCount, $isSubject, $propertykey ) {
 
 		$hash = '';
+		$sortField = '';
+
+		if ( isset( $map[$fieldname] ) ) {
+			$sortField = $map[$fieldname];
+		}
 
 		if ( $isSubject ) { // use joined or predefined property name
 			$hash = $propertykey;
@@ -443,6 +501,15 @@ class SemanticDataLookup {
 			$hash = md5( $hash . implode( '#', $valueKeys ) );
 		} else {
 			$hash = md5( $hash . $valueKeys );
+		}
+
+		if ( $sortField !== '' ) {
+			//Avoid issues with `$row->$sortField` containing other `#` as for example in case of a subobject name
+			$hash = mb_substr( str_replace( '#', '|', $row->$sortField ), 0, 32 ) . '#' . $hash;
+		}
+
+		if ( isset( $row->s_id ) ) {
+			$hash = $row->s_id . '#' . $hash;
 		}
 
 		// Filter out any accidentally retrieved internal things (interwiki starts with ":"):

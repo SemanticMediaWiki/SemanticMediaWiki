@@ -128,7 +128,7 @@ class SMWSQLStore3Readers {
 				}
 			}
 
-			$data = $this->semanticDataLookup->getSemanticDataFromTable( $sid, $subject, $proptable, $opts );
+			$data = $this->semanticDataLookup->getSemanticData( $sid, $subject, $proptable, $opts );
 
 			if ( $semanticData !== null ) {
 				$semanticData->importDataFrom( $data );
@@ -211,7 +211,7 @@ class SMWSQLStore3Readers {
 					$requestOptions
 				);
 
-				$semanticData = $this->semanticDataLookup->getSemanticDataFromTable(
+				$semanticData = $this->semanticDataLookup->getSemanticData(
 					$sid,
 					$subject,
 					$propertyTableDef,
@@ -235,7 +235,7 @@ class SMWSQLStore3Readers {
 			}
 
 			$proptables =  $this->store->getPropertyTables();
-			$data = $this->semanticDataLookup->fetchSemanticData(
+			$data = $this->semanticDataLookup->fetchSemanticDataFromTable(
 				$pid,
 				$property,
 				$proptables[$tableid],
