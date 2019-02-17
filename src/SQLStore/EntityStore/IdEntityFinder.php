@@ -149,54 +149,41 @@ class IdEntityFinder {
 			return $dataItem;
 		}
 
-		$rows = $this->fetchFromTable(
+		$row = $this->fetchFromTable(
 			[ 'smw_id' => $id ],
-			[ 'LIMIT' => 1 ]
+			true
 		);
 
-		if ( $rows === false ) {
+		if ( $row === false ) {
 			return false;
 		}
 
-		foreach ( $rows as $row ) {
-
-			if ( !isset( $row->smw_title ) ) {
-				continue;
-			}
-
-			if ( $row->smw_title !== '' && $row->smw_title{0} === '_' && (int)$row->smw_namespace === SMW_NS_PROPERTY ) {
-			//	$row->smw_title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $row->smw_title ) );
-			}
-
-			$row->smw_id = $id;
-			$dataItem = $this->newFromRow( $row );
-		}
-
+		$dataItem = $this->newFromRow( $row );
 		$cache->save( $id, $dataItem );
 
 		return $dataItem;
 	}
 
-	private function fetchFromTable( $conditions, $options = [] ) {
+	private function fetchFromTable( $conditions, $selectRow = false ) {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		return $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_title',
-				'smw_namespace',
-				'smw_iw',
-				'smw_subobject',
-				'smw_sortkey',
-				'smw_sort',
-				'smw_hash'
-			],
-			$conditions,
-			__METHOD__,
-			$options
-		);
+		$fields = [
+			'smw_id',
+			'smw_title',
+			'smw_namespace',
+			'smw_iw',
+			'smw_subobject',
+			'smw_sortkey',
+			'smw_sort',
+			'smw_hash'
+		];
+
+		if ( $selectRow ) {
+			return $connection->selectRow( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
+		}
+
+		return $connection->select( SQLStore::ID_TABLE, $fields, $conditions, __METHOD__ );
 	}
 
 }
