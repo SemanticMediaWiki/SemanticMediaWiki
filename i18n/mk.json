@@ -166,7 +166,7 @@
 	"smw-special-concept-count": "Во списокот {{PLURAL:$1|е наведен следниов концепт|се наведени следниве $1 концепти}}.",
 	"smw-special-concept-empty": "Не пронајдов ниеден концепт.",
 	"unusedproperties": "Неискористени својства",
-	"smw-unusedproperties-docu": "Следниве својства постојат, но ниедна друга страница не ги користи.",
+	"smw-unusedproperties-docu": "На страницава се наведени [https://www.semantic-mediawiki.org/wiki/Unused_properties неискористени својства] кои се изјавени, иако ниедна друга страница не ги користи. За диференциран изглед погледајте ги службените страници за [[Special:Properties|сите]] или [[Special:WantedProperties|потребни својства]].",
 	"smw-unusedproperty-template": "$1 од типот $2",
 	"wantedproperties": "Потребни својства",
 	"smw-wantedproperties-docu": "Следниве својства се користат во викито, но сè уште немаат своја описна страница.",

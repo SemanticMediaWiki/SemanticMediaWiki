@@ -899,5 +899,5 @@
 	"smw-es-replication-error-missing-id": "Le suivi de la réplication a trouvé que l’article « $1 » (ID : $2) manque sur le serveur Elasticsearch.",
 	"smw-es-replication-error-divergent-date": "Le suivi de la réplication a trouvé que pour l’article « $1 » (ID : $2), la date de modification montre une divergence.",
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
-	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou purger la page pour supprimer la divergence. Si le problème persiste, alors vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.)."
+	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou de purger la page pour supprimer la divergence. Si le problème persiste, vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.)."
 }
