@@ -86,7 +86,6 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
 			$this->htmlFormRenderer->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
 		} elseif ( $this->getRefreshJob() !== null ) {
-			var_dump('expression');
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'refreshstore' )
