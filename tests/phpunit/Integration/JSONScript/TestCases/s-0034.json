@@ -1,0 +1,70 @@
+{
+	"description": "Test `format=embedded` output via `Special:Ask`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Test:S0034/1",
+			"contents": "Has page: [[Has page::Test:S0034/2]] [[Category:S0034]]"
+		},
+		{
+			"page": "Test:S0034/2",
+			"contents": "Has text: [[Has text::S0034]] [[Category:S0034]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"skip-on": {
+				"mediawiki": [ "<1.29.x", "mw-selflink, <a> vs. <strong>" ]
+			},
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "embedded"
+					},
+					"q": "[[Category:S0034]]"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<h1>.*Test:S0034.2F1.*</h1>",
+					"Has page: <a class=\".*selflink\">Test:S0034/2</a>",
+					"<h1>.*Test:S0034/2.*</h1>",
+					"<b>Test:S0034/2</b>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

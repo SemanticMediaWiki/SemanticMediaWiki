@@ -255,4 +255,13 @@ class UtilityFactory {
 		return new MockSuperUser();
 	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * @return ResultPrinterReflector
+	 */
+	public function newResultPrinterReflector() {
+		return new ResultPrinterReflector();
+	}
+
 }

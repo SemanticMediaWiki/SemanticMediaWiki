@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
 use Title;
 
 /**
@@ -22,24 +22,11 @@ use Title;
  */
 class EmbeddedResultPrinter extends ResultPrinter {
 
-	protected $m_showhead;
-	protected $m_embedformat;
-
 	/**
-	 * @see SMWResultPrinter::handleParameters
+	 * @see ResultPrinter::getName
 	 *
-	 * @since 1.7
-	 *
-	 * @param array $params
-	 * @param $outputmode
+	 * {@inheritDoc}
 	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		parent::handleParameters( $params, $outputmode );
-
-		$this->m_showhead = !$params['embedonly'];
-		$this->m_embedformat = $params['embedformat'];
-	}
-
 	public function getName() {
 		return wfMessage( 'smw_printername_embedded' )->text();
 	}
@@ -53,84 +40,12 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return true;
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-
-		// Ensure that there is an annotation block in place before starting the
-		// parse and transclution process. Unfortunately we are unable to block
-		// the inclusion of categories which are attached to a MediaWiki
-		// object we have no immediate access or control.
-		$this->transcludeAnnotation = false;
-
-		global $wgParser;
-		// No page should embed itself, find out who we are:
-		if ( $wgParser->getTitle() instanceof Title ) {
-			$title = $wgParser->getTitle()->getPrefixedText();
-		} else { // this is likely to be in vain -- this case is typical if we run on special pages
-			global $wgTitle;
-			$title = $wgTitle->getPrefixedText();
-		}
-
-		// print header
-		$result = '';
-		$footer = '';
-		$embstart = '';
-		$embend = '';
-		$headstart = '';
-		$headend = '';
-		$this->hasTemplates = true;
-
-		switch ( $this->m_embedformat ) {
-			case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
-				$headstart = '<' . $this->m_embedformat . '>';
-				$headend = '</' . $this->m_embedformat . ">\n";
-			break;
-			case 'ul': case 'ol':
-				$result .= '<' . $this->m_embedformat . '>';
-				$footer = '</' . $this->m_embedformat . '>';
-				$embstart = '<li>';
-				$headend = "<br />\n";
-				$embend = "</li>\n";
-			break;
-		}
-
-		// Print all result rows:
-		foreach ( $res->getResults() as $diWikiPage ) {
-			if ( $diWikiPage instanceof DIWikiPage  ) { // ensure that we deal with title-likes
-				$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null );
-				$result .= $embstart;
-
-				if ( $this->m_showhead ) {
-					$result .= $headstart . $dvWikiPage->getLongWikiText( $this->mLinker ) . $headend;
-				}
-
-				if ( $dvWikiPage->getLongWikiText() != $title ) {
-					if ( $diWikiPage->getNamespace() == NS_MAIN ) {
-						$result .= '{{:' . $diWikiPage->getDBkey() . '}}';
-					} else {
-						$result .= '{{' . $dvWikiPage->getLongWikiText() . '}}';
-					}
-				} else { // block recursion
-					$result .= '<b>' . $dvWikiPage->getLongWikiText() . '</b>';
-				}
-
-				$result .= $embend;
-			}
-		}
-
-		// show link to more results
-		if ( $this->linkFurtherResults( $res ) ) {
-			$result .= $embstart
-				. $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker )
-				. $embend;
-		}
-
-		$result .= $footer;
-
-		return $result;
-	}
-
 	/**
-	 * @inheritdoc
+	 * @see ResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$definitions = parent::getParamDefinitions( $definitions );
@@ -149,7 +64,104 @@ class EmbeddedResultPrinter extends ResultPrinter {
 			'default' => false,
 		];
 
-
 		return $definitions;
 	}
+
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function getResultText( QueryResult $queryResult, $outputMode ) {
+
+		/**
+		 * @see ResultPrinter::transcludeAnnotation
+		 *
+		 * Ensure that there is an annotation block in place before starting the
+		 * parse and transclution process. Unfortunately we are unable to block
+		 * the inclusion of categories which are attached to a MediaWiki
+		 * object we have no immediate access or control.
+		 */
+		$this->transcludeAnnotation = false;
+
+		/**
+		 * @see ResultPrinter::hasTemplates
+		 */
+		$this->hasTemplates = true;
+
+		return $this->buildText( $queryResult, $outputMode );
+	}
+
+	private function buildText( $queryResult, $outputMode ) {
+
+		// REMOVE the parser reference
+		// Use $queryResult->getQuery()->getContextPage()
+		global $wgParser;
+		// No page should embed itself, find out who we are:
+		if ( $wgParser->getTitle() instanceof Title ) {
+			$title = $wgParser->getTitle()->getPrefixedText();
+		} else { // this is likely to be in vain -- this case is typical if we run on special pages
+			global $wgTitle;
+			$title = $wgTitle->getPrefixedText();
+		}
+
+		// print header
+		$result = '';
+		$footer = '';
+		$embstart = '';
+		$embend = '';
+		$headstart = '';
+		$headend = '';
+
+		switch ( $this->params['embedformat'] ) {
+			case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
+				$headstart = '<' . $this->params['embedformat'] . '>';
+				$headend = '</' . $this->params['embedformat'] . ">\n";
+			break;
+			case 'ul': case 'ol':
+				$result .= '<' . $this->params['embedformat'] . '>';
+				$footer = '</' . $this->params['embedformat'] . '>';
+				$embstart = '<li>';
+				$headend = "<br />\n";
+				$embend = "</li>\n";
+			break;
+		}
+
+		$dataValueFactory = DataValueFactory::getInstance();
+
+		// Print all result rows:
+		foreach ( $queryResult->getResults() as $diWikiPage ) {
+			if ( $diWikiPage instanceof DIWikiPage  ) { // ensure that we deal with title-likes
+				$dvWikiPage = $dataValueFactory->newDataValueByItem( $diWikiPage, null );
+				$result .= $embstart;
+
+				if ( !$this->params['embedonly'] ) {
+					$result .= $headstart . $dvWikiPage->getLongWikiText( $this->mLinker ) . $headend;
+				}
+
+				if ( $dvWikiPage->getLongWikiText() != $title ) {
+					if ( $diWikiPage->getNamespace() == NS_MAIN ) {
+						$result .= '{{:' . $diWikiPage->getDBkey() . '}}';
+					} else {
+						$result .= '{{' . $dvWikiPage->getLongWikiText() . '}}';
+					}
+				} else { // block recursion
+					$result .= '<b>' . $dvWikiPage->getLongWikiText() . '</b>';
+				}
+
+				$result .= $embend;
+			}
+		}
+
+		// show link to more results
+		if ( $this->linkFurtherResults( $queryResult ) ) {
+			$link = $this->getFurtherResultsLink( $queryResult, $outputMode );
+			$result .= $embstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $embend;
+		}
+
+		$result .= $footer;
+
+		return $result;
+	}
+
 }

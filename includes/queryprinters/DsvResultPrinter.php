@@ -3,10 +3,11 @@
 namespace SMW;
 
 use Sanitizer;
-use SMWQueryResult;
+use SMWQueryResult  as QueryResult;
 
 /**
- * Result printer to print results in UNIX-style DSV (deliminter separated value) format.
+ * Result printer to print results in UNIX-style DSV (deliminter separated value)
+ * format.
  *
  * @license GNU GPL v2+
  * @since 1.6
@@ -15,80 +16,117 @@ use SMWQueryResult;
  */
 class DsvResultPrinter extends FileExportPrinter {
 
-	protected $separator = ':';
-	protected $fileName = 'result.dsv';
-
 	/**
-	 * @see SMWResultPrinter::handleParameters
+	 * @see ResultPrinter::getName
 	 *
-	 * @since 1.6
-	 *
-	 * @param array $params
-	 * @param $outputmode
+	 * {@inheritDoc}
 	 */
-	protected function handleParameters( array $params, $outputmode ) {
-		parent::handleParameters( $params, $outputmode );
-
-		// Do not allow backspaces as delimiter, as they'll break stuff.
-		if ( trim( $params['separator'] ) != '\\' ) {
-			$this->separator = trim( $params['separator'] );
-		}
-
-		$this->fileName = str_replace( ' ', '_', $params['filename'] );
-	}
-
-	/**
-	 * @see SMWIExportPrinter::getMimeType
-	 *
-	 * @since 1.8
-	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string
-	 */
-	public function getMimeType( SMWQueryResult $queryResult ) {
-		return 'text/dsv';
-	}
-
-	/**
-	 * @see SMWIExportPrinter::getFileName
-	 *
-	 * @since 1.8
-	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string|boolean
-	 */
-	public function getFileName( SMWQueryResult $queryResult ) {
-		return $this->fileName;
-	}
-
 	public function getName() {
 		return wfMessage( 'smw_printername_dsv' )->text();
 	}
 
-	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-		if ( $outputMode == SMW_OUTPUT_FILE ) { // Make the DSV file.
-			return $this->getResultFileContents( $res );
-		}
-		else { // Create a link pointing to the DSV file.
-			return $this->getLinkToFile( $res, $outputMode );
-		}
+	/**
+	 * @see FileExportPrinter::getMimeType
+	 *
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getMimeType( QueryResult $queryResult ) {
+		return 'text/dsv';
 	}
 
 	/**
-	 * Returns the query result in DSV.
+	 * @see FileExportPrinter::getMimeType
 	 *
-	 * @since 1.6
+	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $res
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
-	protected function getResultFileContents( SMWQueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ) {
+
+		if ( $this->params['filename'] === '' ) {
+			return 'result.dsv';
+		}
+
+		if ( substr( $this->params['filename'], -4 ) === '.dsv' ) {
+			return  str_replace( ' ', '_', $this->params['filename'] );
+		}
+
+		return  str_replace( ' ', '_', $this->params['filename'] . '.dsv' );
+	}
+
+	/**
+	 * @see ResultPrinter::getParamDefinitions
+	 *
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getParamDefinitions( array $definitions ) {
+		$params = parent::getParamDefinitions( $definitions );
+
+		$params['searchlabel']->setDefault( wfMessage( 'smw_dsv_link' )->text() );
+
+		$params['limit']->setDefault( 100 );
+
+		$params[] = [
+			'name' => 'separator',
+			'message' => 'smw-paramdesc-dsv-separator',
+			'default' => ':',
+			'aliases' => 'sep',
+		];
+
+		$params[] = [
+			'name' => 'filename',
+			'message' => 'smw-paramdesc-dsv-filename',
+			'default' => 'result.dsv',
+		];
+
+		return $params;
+	}
+
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function getResultText( QueryResult $queryResult, $outputMode ) {
+
+		if ( $outputMode !== SMW_OUTPUT_FILE ) {
+			return $this->getDsvLink( $queryResult, $outputMode );
+		}
+
+		return $this->buildContents( $queryResult );
+	}
+
+	private function getDsvLink( QueryResult $queryResult, $outputMode ) {
+
+		// Can be viewed as HTML if requested, no more parsing needed
+		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );
+
+		$link = $this->getLink(
+			$queryResult,
+			$outputMode
+		);
+
+		return $link->getText( $outputMode, $this->mLinker );
+	}
+
+	private function buildContents( QueryResult $queryResult ) {
 		$lines = [];
 
-		if ( $this->mShowHeaders ) {
+		// Do not allow backspaces as delimiter, as they'll break stuff.
+		if ( trim( $this->params['separator'] ) != '\\' ) {
+			$this->params['separator'] = trim( $this->params['separator'] );
+		}
+
+		/**
+		 * @var ResultPrinter::mShowHeaders
+		 */
+		$showHeaders = $this->mShowHeaders;
+
+		if ( $showHeaders ) {
 			$headerItems = [];
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
@@ -124,87 +162,22 @@ class DsvResultPrinter extends FileExportPrinter {
 		return implode( "\n", $lines );
 	}
 
-	/**
-	 * Returns a single DSV line.
-	 *
-	 * @since 1.6
-	 *
-	 * @param array $fields
-	 *
-	 * @return string
-	 */
-	protected function getDSVLine( array $fields ) {
-		return implode( $this->separator, array_map( [ $this, 'encodeDSV' ], $fields ) );
+	private function getDSVLine( array $fields ) {
+		return implode( $this->params['separator'], array_map( [ $this, 'encodeDSV' ], $fields ) );
 	}
 
-	/**
-	 * Encodes a single DSV.
-	 *
-	 * @since 1.6
-	 *
-	 * @param string $value
-	 *
-	 * @return string
-	 */
-	protected function encodeDSV( $value ) {
+	private function encodeDSV( $value ) {
+		$sep = $this->params['separator'];
 		// TODO
 		// \nnn or \onnn or \0nnn for the character with octal value nnn
 		// \xnn for the character with hexadecimal value nn
 		// \dnnn for the character with decimal value nnn
 		// \unnnn for a hexadecimal Unicode literal.
 		return str_replace(
-			[ '\n', '\r', '\t', '\b', '\f', '\\', $this->separator ],
-			[ "\n", "\r", "\t", "\b", "\f", '\\\\', "\\$this->separator" ],
+			[ '\n', '\r', '\t', '\b', '\f', '\\', $sep ],
+			[ "\n", "\r", "\t", "\b", "\f", '\\\\', "\\$sep" ],
 			$value
 		);
-	}
-
-	/**
-	 * Returns html for a link to a query that returns the DSV file.
-	 *
-	 * @since 1.6
-	 *
-	 * @param SMWQueryResult $res
-	 * @param $outputMode
-	 *
-	 * @return string
-	 */
-	protected function getLinkToFile( SMWQueryResult $res, $outputMode ) {
-		// yes, our code can be viewed as HTML if requested, no more parsing needed
-		$this->isHTML = ( $outputMode == SMW_OUTPUT_HTML );
-		return $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
-	}
-
-	/**
-	 * @see SMWResultPrinter::getParamDefinitions
-	 *
-	 * @since 1.8
-	 *
-	 * @param ParamDefinition[] $definitions
-	 *
-	 * @return array
-	 */
-	public function getParamDefinitions( array $definitions ) {
-		$params = parent::getParamDefinitions( $definitions );
-
-		$params['searchlabel']->setDefault( wfMessage( 'smw_dsv_link' )->text() );
-
-		$params['limit']->setDefault( 100 );
-
-		$params[] = [
-			'name' => 'separator',
-			'message' => 'smw-paramdesc-dsv-separator',
-			'default' => $this->separator,
-			'aliases' => 'sep',
-		];
-
-		$params[] = [
-			'name' => 'filename',
-			'message' => 'smw-paramdesc-dsv-filename',
-			'default' => $this->fileName,
-		];
-
-		return $params;
 	}
 
 }

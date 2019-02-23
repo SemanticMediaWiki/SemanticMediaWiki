@@ -3,39 +3,42 @@
 namespace SMW\Test;
 
 use SMW\EmbeddedResultPrinter;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\EmbeddedResultPrinter
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
-class EmbeddedResultPrinterTest extends QueryPrinterTestCase {
+class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\EmbeddedResultPrinter';
+	private $queryResult;
+	private $resultPrinterReflector;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
-	/**
-	 * @return SMWEmbeddedResultPrinter
-	 */
-	private function getInstance( $parameters = [] ) {
-		return $this->setParameters( new EmbeddedResultPrinter( 'embedded' ), $parameters );
-	}
-
-	public function testcanConstruct() {
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\EmbeddedResultPrinter',
-			$this->getInstance()
+			EmbeddedResultPrinter::class,
+			new EmbeddedResultPrinter( 'embedded' )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\ResultPrinter',
+			new EmbeddedResultPrinter( 'embedded' )
 		);
 	}
 
