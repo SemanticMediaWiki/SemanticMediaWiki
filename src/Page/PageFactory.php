@@ -4,10 +4,9 @@ namespace SMW\Page;
 
 use RuntimeException;
 use SMW\ApplicationFactory;
-use SMW\PropertySpecificationReqExaminer;
-use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\Store;
 use Title;
+use SMW\Property\DeclarationExaminerFactory;
 
 /**
  * @license GNU GPL v2+
@@ -47,7 +46,7 @@ class PageFactory {
 			return $this->newConceptPage( $title );
 		}
 
-		throw new RuntimeException( 'No supported ContentPage instance for namespace ' . $title->getNamespace() );
+		throw new RuntimeException( 'Not supported page instance for namespace ' . $title->getNamespace() );
 	}
 
 	/**
@@ -62,28 +61,10 @@ class PageFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$propertySpecificationReqExaminer = new PropertySpecificationReqExaminer(
-			$this->store,
-			$applicationFactory->singleton( 'ProtectionValidator' )
-		);
-
-		$propertySpecificationReqExaminer->setChangePropagationProtection(
-			$settings->get( 'smwgChangePropagationProtection' )
-		);
-
-		$propertySpecificationReqMsgBuilder = new PropertySpecificationReqMsgBuilder(
-			$this->store,
-			$propertySpecificationReqExaminer
-		);
-
-		$propertySpecificationReqMsgBuilder->setPropertyReservedNameList(
-			$settings->get( 'smwgPropertyReservedNameList' )
-		);
-
 		$propertyPage = new PropertyPage(
 			$title,
 			$this->store,
-			$propertySpecificationReqMsgBuilder
+			new DeclarationExaminerFactory()
 		);
 
 		$propertyPage->setOption(

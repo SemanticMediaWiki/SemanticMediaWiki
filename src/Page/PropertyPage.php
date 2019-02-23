@@ -11,12 +11,12 @@ use SMW\Message;
 use SMW\Page\ListBuilder\ListBuilder as SimpleListBuilder;
 use SMW\Page\ListBuilder\ValueListBuilder;
 use SMW\PropertyRegistry;
-use SMW\PropertySpecificationReqMsgBuilder;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
 use Title;
 use SMW\Utils\HtmlTabs;
+use SMW\Property\DeclarationExaminerFactory;
 
 /**
  * @license GNU GPL v2+
@@ -32,9 +32,9 @@ class PropertyPage extends Page {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationReqMsgBuilder
+	 * @var DeclarationExaminerFactory
 	 */
-	private $propertySpecificationReqMsgBuilder;
+	private $declarationExaminerFactory;
 
 	/**
 	 * @var DIProperty
@@ -52,16 +52,21 @@ class PropertyPage extends Page {
 	private $listBuilder;
 
 	/**
+	 * @var boolean
+	 */
+	private $isLockedView = false;
+
+	/**
 	 * @see 3.0
 	 *
 	 * @param Title $title
 	 * @param Store $store
-	 * @param PropertySpecificationReqMsgBuilder $propertySpecificationReqMsgBuilder
+	 * @param DeclarationExaminerFactory $declarationExaminerFactory
 	 */
-	public function __construct( Title $title, Store $store, PropertySpecificationReqMsgBuilder $propertySpecificationReqMsgBuilder ) {
+	public function __construct( Title $title, Store $store, DeclarationExaminerFactory $declarationExaminerFactory ) {
 		parent::__construct( $title );
 		$this->store = $store;
-		$this->propertySpecificationReqMsgBuilder = $propertySpecificationReqMsgBuilder;
+		$this->declarationExaminerFactory = $declarationExaminerFactory;
 	}
 
 	/**
@@ -89,15 +94,17 @@ class PropertyPage extends Page {
 			return '';
 		}
 
-		$this->propertySpecificationReqMsgBuilder->setSemanticData(
+		$declarationExaminer = $this->declarationExaminerFactory->newDeclarationExaminer(
+			$this->store,
 			$this->fetchSemanticDataFromEditInfo()
 		);
 
-		$this->propertySpecificationReqMsgBuilder->check(
-			$this->property
-		);
+		$declarationExaminer->check( $this->property );
+		$this->isLockedView = $declarationExaminer->isLocked();
 
-		return $this->propertySpecificationReqMsgBuilder->getMessage();
+		$declarationExaminerMsgBuilder = $this->declarationExaminerFactory->newDeclarationExaminerMsgBuilder();
+
+		return $declarationExaminerMsgBuilder->buildHTML( $declarationExaminer );
 	}
 
 	/**
@@ -108,7 +115,7 @@ class PropertyPage extends Page {
 	 * @return boolean
 	 */
 	protected function isLockedView() {
-		return $this->propertySpecificationReqMsgBuilder->reqLock();
+		return $this->isLockedView;
 	}
 
 	/**
