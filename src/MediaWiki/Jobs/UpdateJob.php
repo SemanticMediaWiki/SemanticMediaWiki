@@ -276,7 +276,7 @@ class UpdateJob extends Job {
 
 		$parserData->setOption(
 			$parserData::OPT_FORCED_UPDATE,
-			$this->getParameter( self::FORCED_UPDATE )
+			true
 		);
 
 		$parserData->setOption(
