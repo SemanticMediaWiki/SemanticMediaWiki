@@ -185,7 +185,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			->method( 'exists' )
 			->will( $this->returnValue( true ) );
 
-		$idTable->expects( $this->atLeastOnce() )
+		$idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
 
