@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
-use SMW\AggregatablePrinter;
+use SMW\Query\ResultPrinters\AggregatablePrinter;
 use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\AggregatablePrinter
+ * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

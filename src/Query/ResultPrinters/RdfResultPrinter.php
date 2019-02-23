@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\PrintRequest;
+use SMW\DIProperty;
 use SMWExporter as Exporter;
 use SMWQueryResult as QueryResult;
 use SMWRDFXMLSerializer;

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
-use SMW\EmbeddedResultPrinter;
+use SMW\Query\ResultPrinters\EmbeddedResultPrinter;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\EmbeddedResultPrinter
+ * @covers \SMW\Query\ResultPrinters\EmbeddedResultPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

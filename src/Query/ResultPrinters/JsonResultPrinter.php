@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use SMWQueryResult as QueryResult;
 

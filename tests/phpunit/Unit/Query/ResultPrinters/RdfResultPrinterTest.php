@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
-use SMW\RdfResultPrinter;
+use SMW\Query\ResultPrinters\RdfResultPrinter;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\RdfResultPrinter
+ * @covers \SMW\Query\ResultPrinters\RdfResultPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
-use SMW\JsonResultPrinter;
+use SMW\Query\ResultPrinters\JsonResultPrinter;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\JsonResultPrinter
+ * @covers \SMW\Query\ResultPrinters\JsonResultPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
