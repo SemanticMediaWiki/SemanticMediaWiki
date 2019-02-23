@@ -372,26 +372,6 @@ Hooks::register( 'SMW::Admin::TaskHandlerFactory', function( &$taskHandlers, $st
 } );
 </pre>
 
-### SMW::DataUpdater::ContentProcessor
-
-* Version: 3.0
-* Description: Hook allows to extend the `SemanticData` with information from the `Content` object
-* Reference class: `SMW\DataUpdater`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::DataUpdater::ContentProcessor', function( $semanticData, $content ) {
-
-	if ( $content->getModel() === ' ... ' ) {
-		// $data = $content->getNativeData();
-		// ...
-		// $semanticData->addPropertyObjectValue( ... );
-	}
-
-	return true;
-} );
-</pre>
 
 ### SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete
 
@@ -411,6 +391,22 @@ Hooks::register( 'SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTable
 		'smw_query_links' => [ "s_id,o_id", "PRIMARY KEY" ],
 	];
 
+} );
+</pre>
+
+### SMW::Factbox::OverrideRevisionID
+
+* Version: 3.1
+* Description: Hook allows to forcibly change the revision ID used in the `Factbox` to build the content.
+* Reference class: `SMW\Factbox\CachedFactbox`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Factbox::OverrideRevisionID', function( $title, &$latestRevID ) {
+
+	// Set a revision ID
+	// $latestRevID = 42;
 } );
 </pre>
 

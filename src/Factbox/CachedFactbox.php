@@ -231,11 +231,15 @@ class CachedFactbox {
 	 */
 	private function findRevId( Title $title, $requestContext ) {
 
-		if ( $requestContext->getRequest()->getCheck( 'oldid' ) ) {
+		if ( $requestContext->getRequest()->getCheck( 'oldid' ) !== null ) {
 			return (int)$requestContext->getRequest()->getVal( 'oldid' );
 		}
 
-		return $title->getLatestRevID();
+		$latestRevID = $title->getLatestRevID();
+
+		\Hooks::run( 'SMW::Factbox::OverrideRevisionID', [ $title, &$latestRevID ] );
+
+		return $latestRevID;
 	}
 
 	/**
