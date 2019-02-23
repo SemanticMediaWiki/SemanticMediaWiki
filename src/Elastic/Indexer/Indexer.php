@@ -663,7 +663,11 @@ class Indexer {
 			);
 
 			$subject = $this->makeSubject( $dataItem );
-			$subject['sortkey'] = $sort;
+
+			if ( $sort !== '' ) {
+				$subject['sortkey'] = $sort;
+			}
+
 			$insertRows[$sid]['subject'] = $subject;
 		}
 
