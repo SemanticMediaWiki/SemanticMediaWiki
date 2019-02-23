@@ -765,16 +765,16 @@ return [
 		'ol'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ul'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'category'   => 'SMW\Query\ResultPrinters\CategoryResultPrinter',
-		'embedded'   => 'SMW\EmbeddedResultPrinter',
+		'embedded'   => 'SMW\Query\ResultPrinters\EmbeddedResultPrinter',
 		'template'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'count'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
 		'debug'      => 'SMW\Query\ResultPrinters\NullResultPrinter',
 		'feed'       => 'SMW\Query\ResultPrinters\FeedExportPrinter',
 		'csv'        => 'SMW\Query\ResultPrinters\CsvFileExportPrinter',
 		'templatefile' => 'SMW\Query\ResultPrinters\TemplateFileExportPrinter',
-		'dsv'        => 'SMW\DsvResultPrinter',
-		'json'       => 'SMW\JsonResultPrinter',
-		'rdf'        => 'SMW\RdfResultPrinter'
+		'dsv'        => 'SMW\Query\ResultPrinters\DsvResultPrinter',
+		'json'       => 'SMW\Query\ResultPrinters\JsonResultPrinter',
+		'rdf'        => 'SMW\Query\ResultPrinters\RdfResultPrinter'
 	],
 	##
 

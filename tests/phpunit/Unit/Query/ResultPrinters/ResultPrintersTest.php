@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
-use SMW\ResultPrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
- * @covers \SMW\ResultPrinter
+ * @covers \SMW\Query\ResultPrinters\ResultPrinter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

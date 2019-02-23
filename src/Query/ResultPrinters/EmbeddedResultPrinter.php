@@ -1,9 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query\ResultPrinters;
 
 use SMWQueryResult as QueryResult;
 use Title;
+use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 
 /**
  * Printer for embedded data.
