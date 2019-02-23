@@ -279,6 +279,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgQSortFeatures',
 			'smwgElasticsearchConfig',
 			'smwgDefaultNumRecurringEvents',
+			'smwgMandatorySubpropertyParentTypeInheritance',
 
 			// MW related
 			'wgLanguageCode',

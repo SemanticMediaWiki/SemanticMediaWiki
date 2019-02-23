@@ -231,4 +231,32 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testEnforcedMandatoryTypeForSubproperty() {
+
+		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
+			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+		);
+
+		$parent = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
+
+		$subpro = DataValueFactory::getInstance()->newDataValueByItem(
+			$parent,
+			new DIProperty( '_SUBP' )
+		);
+
+		$semanticData->addDataValue( $subpro );
+
+		$instance = new MandatoryTypePropertyAnnotator(
+			new NullPropertyAnnotator( $semanticData )
+		);
+
+		$instance->setSubpropertyParentTypeInheritance( true );
+		$instance->addAnnotation();
+
+		$this->assertEquals(
+			$parent,
+			$semanticData->getOption( MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE  )
+		);
+	}
+
 }

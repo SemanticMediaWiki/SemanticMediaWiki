@@ -1,0 +1,48 @@
+{
+	"description": "Test property page, parent type/subproperty type enforcement",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page test",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page subproperty",
+			"contents": "[[Has type::Number]] [[Subproperty of::Has page test]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (show error on wrong type)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Has page subproperty",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {}
+				},
+				"to-contain": [
+					"<div id=\"smw-property-req-violation-forced-removal-annotated-type\" class=\"plainlinks smw-property-req-violation-forced-removal-annotated-type smw-callout smw-callout-error\">"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgMandatorySubpropertyParentTypeInheritance": true,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

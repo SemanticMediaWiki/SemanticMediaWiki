@@ -4,6 +4,7 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -169,6 +170,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		$imported_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 		$user_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_dat' );
 
+		$this->semanticData->expects( $this->at( 0 ) )
+			->method( 'hasProperty' )
+			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_IMPO' ) ) )
+			->will( $this->returnValue( true ) );
+
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
 			->with( $this->equalTo( \SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) )
@@ -193,6 +199,102 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'["warning","smw-property-req-violation-import-type","Foo"]',
+			$instance->getMessagesAsString()
+		);
+	}
+
+	public function testCheckSubpropertyParentTypeMismatch_ForcedInheritance() {
+
+		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$declarationExaminer->expects( $this->any() )
+			->method( 'getMessages' )
+			->will( $this->returnValue( [] ) );
+
+		$dataItemFactory = new DataItemFactory();
+
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$semanticData = new SemanticData(
+			$property->getDIWikiPage()
+		);
+
+		$semanticData->setOption(
+			\SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE,
+			$dataItemFactory->newDIWikiPage( 'Bar' )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_SUBP' ),
+			$dataItemFactory->newDIWikiPage( 'Parent' )
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_TYPE' ),
+			$dataItemFactory->newDIProperty( 'Bar' )
+		);
+
+		$declarationExaminer->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$instance = new UserdefinedPropertyExaminer(
+			$declarationExaminer,
+			$this->store
+		);
+
+		$instance->check(
+			$property
+		);
+
+		$this->assertContains(
+			'["error","smw-property-req-violation-forced-removal-annotated-type","Foo","Bar"]',
+			$instance->getMessagesAsString()
+		);
+	}
+
+	public function testCheckSubpropertyParentTypeMismatch() {
+
+		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$declarationExaminer->expects( $this->any() )
+			->method( 'getMessages' )
+			->will( $this->returnValue( [] ) );
+
+		$dataItemFactory = new DataItemFactory();
+
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$semanticData = new SemanticData(
+			$property->getDIWikiPage()
+		);
+
+		$semanticData->addPropertyObjectValue(
+			$dataItemFactory->newDIProperty( '_SUBP' ),
+			$dataItemFactory->newDIWikiPage( 'Parent' )
+		);
+
+		$declarationExaminer->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
+
+		$instance = new UserdefinedPropertyExaminer(
+			$declarationExaminer,
+			$this->store
+		);
+
+		$instance->check(
+			$property
+		);
+
+		$this->assertContains(
+			'["warning","smw-property-req-violation-parent-type","Foo","Parent"]',
 			$instance->getMessagesAsString()
 		);
 	}

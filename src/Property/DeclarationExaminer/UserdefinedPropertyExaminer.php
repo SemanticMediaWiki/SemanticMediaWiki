@@ -53,6 +53,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkExternalIdentifierType( $type, $property );
 		$this->checkGeoType( $type, $property );
 		$this->checkImportedVocabType( $property );
+		$this->checkSubpropertyParentType( $type, $property );
 	}
 
 	private function checkMessages( $property ) {
@@ -134,6 +135,10 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 		$semanticData = $this->getSemanticData();
 
+		if ( !$semanticData->hasProperty( new DIProperty( '_IMPO' ) ) ) {
+			return;
+		}
+
 		if ( !$semanticData->getOption( MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) ) {
 			return;
 		}
@@ -156,6 +161,53 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 			'warning',
 			'smw-property-req-violation-import-type',
 			$property->getLabel()
+		];
+	}
+
+	private function checkSubpropertyParentType( $type, $property ) {
+
+		$semanticData = $this->getSemanticData();
+
+		if ( !$semanticData->hasProperty( new DIProperty( '_SUBP' ) ) ) {
+			return;
+		}
+
+		$dataItem = $semanticData->getOption(
+			MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE
+		);
+
+		if ( $dataItem instanceof DataItem ) {
+
+			$parentProperty = new DIProperty( $dataItem->getDBKey() );
+
+			$this->messages[] = [
+				'error',
+				'smw-property-req-violation-forced-removal-annotated-type',
+				$property->getLabel(),
+				$parentProperty->getLabel()
+			];
+		}
+
+		$pv = $semanticData->getPropertyValues(
+			new DIProperty( '_SUBP' )
+		);
+
+		if ( $pv === null || $pv === [] ) {
+			return;
+		}
+
+		$key = end( $pv )->getDBKey();
+		$parentProperty = new DIProperty( $key );
+
+		if ( $type === $parentProperty->findPropertyTypeID() ) {
+			return;
+		}
+
+		$this->messages[] = [
+			'warning',
+			'smw-property-req-violation-parent-type',
+			$property->getLabel(),
+			$parentProperty->getLabel(),
 		];
 	}
 
