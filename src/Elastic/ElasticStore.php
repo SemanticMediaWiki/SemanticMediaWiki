@@ -55,6 +55,15 @@ class ElasticStore extends SQLStore {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param ElasticFactory $elasticFactory
+	 */
+	public function setElasticFactory( ElasticFactory $elasticFactory ) {
+		$this->elasticFactory = $elasticFactory;
+	}
+
+	/**
 	 * @see Store::service
 	 *
 	 * {@inheritDoc}
@@ -278,13 +287,18 @@ class ElasticStore extends SQLStore {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
 		}
 
-		$this->indexer->setup();
+		$indices = $this->indexer->setup();
 
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( 'Selected query engine: "SMWElasticStore"' );
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( "\nSetting up indices ...\n" );
+
+			foreach ( $indices as $index ) {
+				$this->messageReporter->reportMessage( "   ... $index ...\n" );
+			}
+
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
@@ -303,13 +317,18 @@ class ElasticStore extends SQLStore {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
 		}
 
-		$this->indexer->drop();
+		$indices = $this->indexer->drop();
 
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( 'Selected query engine: "SMWElasticStore"' );
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( "\nDropping indices ...\n" );
+
+			foreach ( $indices as $index ) {
+				$this->messageReporter->reportMessage( "   ... $index ...\n" );
+			}
+
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 

@@ -130,6 +130,8 @@ class Rollover {
 
 		$params['body'] = [ 'actions' => $actions ];
 		$indices->updateAliases( $params );
+
+		return $index;
 	}
 
 	/**
@@ -165,6 +167,8 @@ class Rollover {
 		}
 
 		$this->connection->releaseLock( $type );
+
+		return $index;
 	}
 
 }
