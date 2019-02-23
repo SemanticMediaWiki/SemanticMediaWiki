@@ -102,6 +102,41 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUpgradeKey( $vars );
 	}
 
+	public function testSetMaintenanceMode() {
+
+		$fields = [
+			'upgrade_key' => 'abede9f6b2c43db901f6255e26b8d951f84f5d7c',
+			'in.maintenance_mode' => true
+		];
+
+		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->once() )
+			->method( 'write' )
+			->with(
+				$this->anything(),
+				$this->equalTo( $expected ) );
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$vars = [
+			'smwgConfigFileDir' => 'Foo/',
+			'smwgIP' => '',
+			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
+			'smwgFixedProperties' => [],
+			'smwgPageSpecialProperties' => []
+		];
+
+		$instance->setMaintenanceMode( $vars );
+	}
+
 	public function testSetUpgradeFile() {
 
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
