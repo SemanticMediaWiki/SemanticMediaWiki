@@ -3,41 +3,83 @@
 namespace SMW\Test;
 
 use SMW\DsvResultPrinter;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DsvResultPrinter
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
-class DsvResultPrinterTest extends QueryPrinterTestCase {
+class DsvResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\DsvResultPrinter';
+	private $queryResult;
+	private $resultPrinterReflector;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
-	/**
-	 * @return DsvResultPrinter
-	 */
-	private function getInstance( $parameters = [] ) {
-		return $this->setParameters( new DsvResultPrinter( 'dsv' ), $parameters );
-	}
-
-	public function testCanConstruc() {
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\DsvResultPrinter',
-			$this->getInstance()
+			DsvResultPrinter::class,
+			new DsvResultPrinter( 'dsv' )
 		);
+
+		$this->assertInstanceOf(
+			'\SMW\ResultPrinter',
+			new DsvResultPrinter( 'dsv' )
+		);
+	}
+
+	public function testGetMimeType() {
+
+		$instance = new DsvResultPrinter( 'dsv' );
+
+		$this->assertEquals(
+			'text/dsv',
+			$instance->getMimeType( $this->queryResult )
+		);
+	}
+
+	/**
+	 * @dataProvider filenameDataProvider
+	 */
+	public function testGetFileName( $filename, $expected ) {
+
+		$instance = new DsvResultPrinter( 'dsv' );
+
+		$this->resultPrinterReflector->addParameters(
+			$instance,
+			[ 'filename' => $filename ]
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->getFileName( $this->queryResult )
+		);
+	}
+
+	public function filenameDataProvider() {
+
+		$provider = [];
+
+		$provider[] = [ 'Lala', 'Lala.dsv' ];
+		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.dsv' ];
+		$provider[] = [ 'Foo.jso' , 'Foo.jso.dsv'];
+		$provider[] = [ '' , 'result.dsv'];
+
+		return $provider;
 	}
 
 }

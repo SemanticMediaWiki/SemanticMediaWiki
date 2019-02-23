@@ -7,49 +7,52 @@ use SMW\AggregatablePrinter;
 use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
-
-/**
- * Tests for the AggregatablePrinter class
- *
- * @file
- *
- * @license GNU GPL v2+
- * @since   1.9
- *
- * @author mwjames
- */
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\AggregatablePrinter
+ * @group semantic-mediawiki
  *
+ * @license GNU GPL v2+
+ * @since 1.9
  *
- * @group SMW
- * @group SMWExtension
+ * @author mwjames
  */
-class AggregatablePrinterTest extends QueryPrinterTestCase {
+class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\AggregatablePrinter';
+	private $queryResult;
+	private $resultPrinterReflector;
+	private $aggregatablePrinter;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->aggregatablePrinter = $this->getMockBuilder( AggregatablePrinter::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 	}
 
-	/**
-	 * Helper method that returns a AggregatablePrinter object
-	 *
-	 * @return AggregatablePrinter
-	 */
-	private function newInstance( $parameters = [] ) {
-		return $this->setParameters( $this->getMockForAbstractClass( $this->getClass(), [ 'table' ] ), $parameters );
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			AggregatablePrinter::class,
+			$this->aggregatablePrinter
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\ResultPrinter',
+			$this->aggregatablePrinter
+		);
 	}
 
 	/**
 	 * @dataProvider errorMessageProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetResultTextErrorMessage( $setup, $expected ) {
 
@@ -66,14 +69,16 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 			->method( 'getErrors' )
 			->will( $this->returnValue( [ $expected['message'] ] ) );
 
-		$instance    = $this->newInstance( $setup['parameters'] );
-	//	$queryResult = $setup['queryResult'];
+		$this->resultPrinterReflector->addParameters(
+			$this->aggregatablePrinter,
+			$setup['parameters']
+		);
 
-		$reflection = new ReflectionClass( '\SMW\AggregatablePrinter' );
-		$method = $reflection->getMethod( 'getResultText' );
-		$method->setAccessible( true );
-
-		$result = $method->invoke( $instance, $queryResult, SMW_OUTPUT_HTML );
+		$result = $this->resultPrinterReflector->invoke(
+			$this->aggregatablePrinter,
+			$queryResult,
+			SMW_OUTPUT_HTML
+		);
 
 		$this->assertEmpty( $result );
 
@@ -82,18 +87,13 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 		}
 	}
 
-	/**
-	 * @test AggregatablePrinter::addNumbersForDataItem
-	 *
-	 * @since 1.9
-	 */
 	public function testAddNumbersForDataItem() {
 
 		$values = [];
 		$expected = [];
 		$keys = [ 'test', 'foo', 'bar' ];
 
-		$reflector = new ReflectionClass( '\SMW\AggregatablePrinter' );
+		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'addNumbersForDataItem' );
 		$method->setAccessible( true );
 
@@ -112,8 +112,14 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 			$this->assertEquals( $random, $dataItem->getNumber() );
 			$this->assertEquals( SMWDataItem::TYPE_NUMBER, $dataItem->getDIType() );
 
-			// Invoke the instance
-			$result = $method->invokeArgs( $this->newInstance(), [ $dataItem, &$values, $name ] );
+			$result = $method->invokeArgs(
+				$this->aggregatablePrinter,
+				[
+					$dataItem,
+					&$values,
+					$name
+				]
+			);
 
 			$this->assertInternalType( 'integer', $values[$name] );
 			$this->assertEquals( $expected[$name], $values[$name] );
@@ -122,68 +128,35 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 
 	/**
 	 * @dataProvider numberDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetNumericResults( $setup, $expected ) {
 
-		$instance  = $this->newInstance( $setup['parameters'] );
+		$this->resultPrinterReflector->addParameters(
+			$this->aggregatablePrinter,
+			$setup['parameters']
+		);
 
-		$reflector = new ReflectionClass( '\SMW\AggregatablePrinter' );
+		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'getNumericResults' );
 		$method->setAccessible( true );
 
-		$result = $method->invoke( $instance, $setup['queryResult'], SMW_OUTPUT_HTML );
+		$result = $method->invoke(
+			$this->aggregatablePrinter,
+			$setup['queryResult'],
+			SMW_OUTPUT_HTML
+		);
 
 		$this->assertInternalType(
 			'array',
-			$result,
-			'Asserts that getNumericResults() returns an array'
+			$result
 		);
 
 		$this->assertEquals(
 			$expected['result'],
-			$result,
-			'Asserts that the getNumericResults() output matches the expected result'
+			$result
 		);
-
 	}
 
-	/**
-	 * @return array
-	 */
-	public function errorMessageProvider() {
-
-		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
-
-		$provider = [];
-
-		$provider[] = [
-			[
-				'parameters'  => [ 'distribution' => true ],
-		//		'queryResult' => $queryResult
-				],
-			[
-				'message'     => $message
-			]
-		];
-
-		// #1
-		$provider[] = [
-			[
-				'parameters'  => [ 'distribution' => false ],
-			//	'queryResult' => $queryResult
-				],
-			[
-				'message'     => $message
-			]
-		];
-		return $provider;
-	}
-
-	/**
-	 * @return array
-	 */
 	public function numberDataProvider() {
 
 		$provider = [];
@@ -230,6 +203,35 @@ class AggregatablePrinterTest extends QueryPrinterTestCase {
 			]
 		];
 
+		return $provider;
+	}
+
+	public function errorMessageProvider() {
+
+		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
+
+		$provider = [];
+
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => true ],
+		//		'queryResult' => $queryResult
+				],
+			[
+				'message'     => $message
+			]
+		];
+
+		// #1
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => false ],
+			//	'queryResult' => $queryResult
+				],
+			[
+				'message'     => $message
+			]
+		];
 		return $provider;
 	}
 

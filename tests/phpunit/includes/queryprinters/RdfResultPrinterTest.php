@@ -3,39 +3,52 @@
 namespace SMW\Test;
 
 use SMW\RdfResultPrinter;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\RdfResultPrinter
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   1.9
+ * @since 1.9
  *
  * @author mwjames
  */
-class RdfResultPrinterTest extends QueryPrinterTestCase {
+class RdfResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\RdfResultPrinter';
+	private $queryResult;
+	private $resultPrinterReflector;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
-	/**
-	 * @return RdfResultPrinter
-	 */
-	private function getInstance( $parameters = [] ) {
-		return $this->setParameters( new RdfResultPrinter( 'rdf' ), $parameters );
-	}
-
-	public function testConstructor() {
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\RdfResultPrinter',
-			$this->getInstance()
+			RdfResultPrinter::class,
+			new RdfResultPrinter( 'rdf' )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\ResultPrinter',
+			new RdfResultPrinter( 'rdf' )
+		);
+	}
+
+	public function testGetMimeType() {
+
+		$instance = new RdfResultPrinter( 'json' );
+
+		$this->assertEquals(
+			'application/xml',
+			$instance->getMimeType( $this->queryResult )
 		);
 	}
 

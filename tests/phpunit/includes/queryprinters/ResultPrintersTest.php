@@ -4,35 +4,47 @@ namespace SMW\Test;
 
 use ParamProcessor\ParamDefinition;
 use SMW\ResultPrinter;
-use SMWQueryProcessor;
-
-/**
- * Does some basic tests for the SMW\ResultPrinter deriving classes
- *
- * @since 1.9
- *
- * @file
- *
- * @license GNU GPL v2+
- * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- */
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @covers \SMW\ResultPrinter
+ * @group semantic-mediawiki
  *
+ * @license GNU GPL v2+
+ * @since 1.9
  *
- * @group SMW
- * @group SMWExtension
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ResultPrintersTest extends QueryPrinterTestCase {
+class ResultPrintersTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
+	 * @dataProvider constructorProvider
 	 */
-	public function getClass() {
-		return false;
+	public function testConstructor( $format, $class, $isInline ) {
+
+		$instance = new $class( $format, $isInline );
+
+		$this->assertInstanceOf(
+			'\SMWIResultPrinter',
+			$instance
+		);
+	}
+
+	/**
+	 * @dataProvider instanceProvider
+	 */
+	public function testGetParamDefinitions( ResultPrinter $printer ) {
+
+		$params = $printer->getParamDefinitions(
+			QueryProcessor::getParameters( null, $printer )
+		);
+
+		$params = ParamDefinition::getCleanDefinitions( $params );
+
+		$this->assertInternalType(
+			'array',
+			$params
+		);
 	}
 
 	public function constructorProvider() {
@@ -48,18 +60,6 @@ class ResultPrintersTest extends QueryPrinterTestCase {
 		return $formats;
 	}
 
-	/**
-	 * @dataProvider constructorProvider
-	 *
-	 * @param string $format
-	 * @param string $class
-	 * @param boolean $isInline
-	 */
-	public function testConstructor( $format, $class, $isInline ) {
-		$instance = new $class( $format, $isInline );
-		$this->assertInstanceOf( '\SMWIResultPrinter', $instance );
-	}
-
 	public function instanceProvider() {
 		global $smwgResultFormats;
 
@@ -69,20 +69,7 @@ class ResultPrintersTest extends QueryPrinterTestCase {
 			$instances[] = new $class( $format, true );
 		}
 
-		return $this->arrayWrap( $instances );
-	}
-
-	/**
-	 * @dataProvider instanceProvider
-	 *
-	 * @param \SMWResultPrinter $printer
-	 */
-	public function testGetParamDefinitions( ResultPrinter $printer ) {
-		$params = $printer->getParamDefinitions( SMWQueryProcessor::getParameters( null, $printer ) );
-
-		$params = ParamDefinition::getCleanDefinitions( $params );
-
-		$this->assertInternalType( 'array', $params );
+		yield $instances;
 	}
 
 }

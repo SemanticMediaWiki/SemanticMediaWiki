@@ -46,7 +46,6 @@ class_alias( \SMW\DsvResultPrinter::class, 'SMWDSVResultPrinter' );
 class_alias( \SMW\EmbeddedResultPrinter::class, 'SMWEmbeddedResultPrinter' );
 class_alias( \SMW\RdfResultPrinter::class, 'SMWRDFResultPrinter' );
 class_alias( \SMW\ListResultPrinter::class, 'SMWListResultPrinter' );
-class_alias( \SMW\RawResultPrinter::class, 'SMW\ApiResultPrinter' );
 
 // 2.0
 class_alias( \SMW\SPARQLStore\SPARQLStore::class, 'SMWSparqlStore' );

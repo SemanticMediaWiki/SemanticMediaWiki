@@ -2,126 +2,70 @@
 
 namespace SMW;
 
-use FormatJson;
-use SMWQueryResult;
+use SMWQueryResult as QueryResult;
 
 /**
  * Print links to JSON files representing query results.
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:JSON_format
  *
+ * @license GNU GPL v2 or later
  * @since 1.5.3
  *
- *
- * @license GNU GPL v2 or later
  * @author mwjames
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Fabian Howahl
  */
-
-/**
- * Print links to JSON files representing query results.
- *
- * @ingroup QueryPrinter
- */
 class JsonResultPrinter extends FileExportPrinter {
 
+	// Rename to JsonFileResultPrinter
+
 	/**
-	 * Returns human readable label for this printer
-	 * @codeCoverageIgnore
+	 * @see ResultPrinter::getName
 	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getName() {
 		return $this->msg( 'smw_printername_json' )->text();
 	}
 
 	/**
-	 * @see SMWIExportPrinter::getMimeType
+	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
-	public function getMimeType( SMWQueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ) {
 		return 'application/json';
 	}
 
 	/**
-	 * @see SMWIExportPrinter::getFileName
+	 * @see FileExportPrinter::getMimeType
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
-	 *
-	 * @return string|boolean
+	 * {@inheritDoc}
 	 */
-	public function getFileName( SMWQueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ) {
 
-		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) !== '' ) {
-			return str_replace( ' ', '_', $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) . '.json';
+		if ( $this->params['filename'] === '' ) {
+			return 'result.json';
 		}
 
-		return 'result.json';
+		if ( substr( $this->params['filename'], -5 ) === '.json' ) {
+			return str_replace( ' ', '_', $this->params['filename'] ) ;
+		}
+
+		return str_replace( ' ', '_', $this->params['filename'] . '.json' );
 	}
 
 	/**
-	 * Returns a filename that is to be sent to the caller
-	 *
-	 * @param SMWQueryResult $res
-	 * @param $outputMode integer
-	 *
-	 * @return string
-	 */
-	protected function getResultText( SMWQueryResult $res, $outputMode ) {
-
-		if ( $outputMode == SMW_OUTPUT_FILE ) {
-
-			// No results, just bailout
-			if ( $res->getCount() == 0 ){
-				return $this->params['default'] !== '' ? $this->params['default'] : '';
-			}
-
-			$flags = $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
-			$flags = $flags | ( $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
-
-			// Serialize queryResult
-			if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
-				$result = $this->serializeAsSimpleList( $res );
-			} else {
-				$result = array_merge(
-					$res->serializeToArray(),
-					[ 'rows' => $res->getCount() ]
-				);
-			}
-
-			$result = json_encode(
-				$result,
-				$flags
-			);
-
-		} else {
-			// Create a link that points to the JSON file
-			$result = $this->getLink( $res, $outputMode )->getText( $outputMode, $this->mLinker );
-
-			// Code can be viewed as HTML if requested, no more parsing needed
-			$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * @see SMWResultPrinter::getParamDefinitions
-	 * @codeCoverageIgnore
+	 * @see ResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8
 	 *
-	 * @param ParamDefinition[] $definitions
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$params = parent::getParamDefinitions( $definitions );
@@ -148,10 +92,62 @@ class JsonResultPrinter extends FileExportPrinter {
 			'message' => 'smw-paramdesc-json-unescape',
 		];
 
+		$params[] = [
+			'name' => 'filename',
+			'message' => 'smw-paramdesc-filename',
+			'default' => 'result.json',
+		];
+
 		return $params;
 	}
 
-	private function serializeAsSimpleList( $res ) {
+	/**
+	 * @see ResultPrinter::getResultText
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function getResultText( QueryResult $res, $outputMode ) {
+
+		if ( $outputMode !== SMW_OUTPUT_FILE ) {
+			return $this->getJsonLink( $res, $outputMode );
+		}
+
+		// No results, just bailout
+		if ( $res->getCount() == 0 ){
+			return $this->params['default'] !== '' ? $this->params['default'] : '';
+		}
+
+		return $this->buildJSON( $res, $outputMode );
+	}
+
+	private function getJsonLink( QueryResult $res, $outputMode ) {
+
+		// Can be viewed as HTML if requested, no more parsing needed
+		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
+
+		$link = $this->getLink(
+			$res,
+			$outputMode
+		);
+
+		return $link->getText( $outputMode, $this->mLinker );
+	}
+
+	private function buildJSON( QueryResult $res, $outputMode ) {
+
+		$flags = $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
+		$flags = $flags | ( $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
+
+		if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
+			$result = $this->buildSimpleList( $res );
+		} else {
+			$result = array_merge( $res->serializeToArray(), [ 'rows' => $res->getCount() ] );
+		}
+
+		return json_encode( $result, $flags );
+	}
+
+	private function buildSimpleList( $res ) {
 
 		$result = [];
 

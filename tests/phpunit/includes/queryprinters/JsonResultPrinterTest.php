@@ -4,125 +4,119 @@ namespace SMW\Test;
 
 use ReflectionClass;
 use SMW\JsonResultPrinter;
-use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
-use SMW\Tests\Utils\Mock\MockObjectBuilder;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\JsonResultPrinter
+ * @group semantic-mediawiki
  *
- *
- * @group SMW
- * @group SMWExtension
- *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class JsonResultPrinterTest extends QueryPrinterTestCase {
+class JsonResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
-	protected $mockBuilder;
+	private $queryResult;
+	private $resultPrinterReflector;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->mockBuilder = new MockObjectBuilder();
-		$this->mockBuilder->registerRepository( new CoreMockObjectRepository() );
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
-	/**
-	 * @return string|false
-	 */
-	public function getClass() {
-		return '\SMW\JsonResultPrinter';
+	public function testCanConstruct() {
+
+		$this->assertInstanceOf(
+			JsonResultPrinter::class,
+			new JsonResultPrinter( 'json' )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\ResultPrinter',
+			new JsonResultPrinter( 'json' )
+		);
 	}
 
-	/**
-	 * @since 1.9
-	 *
-	 * @return JsonResultPrinter
-	 */
-	private function newInstance( $parameters = [] ) {
-		return $this->setParameters( new JsonResultPrinter( 'json' ), $parameters );
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testConstructor() {
-		$this->assertInstanceOf( $this->getClass(), $this->newInstance() );
-	}
-
-	/**
-	 * @since 1.9
-	 */
 	public function testGetMimeType() {
+
+		$instance = new JsonResultPrinter( 'json' );
 
 		$this->assertEquals(
 			'application/json',
-			$this->newInstance()->getMimeType( $this->mockBuilder->newObject( 'QueryResult' ) ),
-			'Asserts that getMimeType() yields an expected result'
+			$instance->getMimeType( $this->queryResult )
 		);
-
 	}
 
 	/**
 	 * @dataProvider filenameDataProvider
-	 *
-	 * @since 1.9
 	 */
 	public function testGetFileName( $filename, $expected ) {
 
-		$instance = $this->newInstance( [ 'searchlabel' => $filename ] );
+		$instance = new JsonResultPrinter( 'json' );
+
+		$this->resultPrinterReflector->addParameters(
+			$instance,
+			[ 'filename' => $filename ]
+		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->getFileName( $this->mockBuilder->newObject( 'QueryResult' ) ),
-			'Asserts that getFileName() yields an expected result');
+			$instance->getFileName( $this->queryResult )
+		);
 	}
 
-	/**
-	 * @return array
-	 */
+	public function testGetResultText() {
+
+		$res = [
+			'lala' => __METHOD__,
+			'lula' => 999388383838
+		];
+
+		$expected = array_merge( $res, [ 'rows' => count( $res ) ] );
+
+		$this->queryResult->expects( $this->any() )
+			->method( 'serializeToArray' )
+			->will( $this->returnValue( $res ) );
+
+		$this->queryResult->expects( $this->any() )
+			->method( 'getCount' )
+			->will( $this->returnValue( count( $res ) ) );
+
+		$instance = new JsonResultPrinter( 'json' );
+
+		$results = $this->resultPrinterReflector->invoke(
+			$instance,
+			$this->queryResult,
+			SMW_OUTPUT_FILE
+		);
+
+		$this->assertInternalType(
+			'string',
+			$results
+		);
+
+		$this->assertEquals(
+			json_encode( $expected ),
+			$results
+		);
+	}
+
 	public function filenameDataProvider() {
 
 		$provider = [];
 
 		$provider[] = [ 'Lala', 'Lala.json' ];
 		$provider[] = [ 'Lala Lilu', 'Lala_Lilu.json' ];
+		$provider[] = [ 'Foo.jso' , 'Foo.jso.json'];
 		$provider[] = [ '' , 'result.json'];
 
 		return $provider;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public function testGetResultText() {
-
-		$result = [
-			'lala' => __METHOD__,
-			'lula' => 999388383838
-		];
-
-		$expected = array_merge( $result, [ 'rows' => count( $result ) ] );
-
-		$instance = $this->newInstance( [ 'prettyprint' => false, 'unescape' => false ] );
-
-		$reflector = new ReflectionClass( '\SMW\JsonResultPrinter' );
-		$getResultText = $reflector->getMethod( 'getResultText' );
-		$getResultText->setAccessible( true );
-
-		$queryResult = $this->mockBuilder->newObject( 'QueryResult', [
-			'serializeToArray' => $result,
-			'getCount'         => count( $result )
-		] );
-
-		$results = $getResultText->invoke( $instance, $queryResult, SMW_OUTPUT_FILE );
-
-		$this->assertInternalType( 'string', $results );
-		$this->assertEquals( json_encode( $expected ), $results );
-
 	}
 
 }
