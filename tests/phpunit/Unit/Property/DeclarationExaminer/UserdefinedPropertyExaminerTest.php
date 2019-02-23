@@ -94,9 +94,21 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRecordType_FieldList() {
+	/**
+	 * @dataProvider recordTypeProvider
+	 */
+	public function testRecordType_FieldList( $type, $name ) {
 
 		$dataItemFactory = new DataItemFactory();
+
+		$this->semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
+			->will( $this->returnValue( [] ) );
+
+		$this->declarationExaminer->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $this->semanticData ) );
 
 		$instance = new UserdefinedPropertyExaminer(
 			$this->declarationExaminer,
@@ -104,14 +116,52 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
-		$property->setPropertyValueType( '_rec' );
+		$property->setPropertyValueType( $type );
 
 		$instance->check(
 			$property
 		);
 
 		$this->assertContains(
-			'["error","smw-property-req-violation-missing-fields","Foo","Record"]',
+			'["error","smw-property-req-violation-missing-fields","Foo","' . $name . '"]',
+			$instance->getMessagesAsString()
+		);
+	}
+
+	/**
+	 * @dataProvider recordTypeProvider
+	 */
+	public function testRecordType_MultipleFieldList( $type, $name ) {
+
+		$dataItemFactory = new DataItemFactory();
+
+		$this->semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->with( $this->equalTo( $dataItemFactory->newDIProperty( '_LIST' ) ) )
+			->will( $this->returnValue(
+				[
+					$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_PROPERTY ),
+					$dataItemFactory->newDIWikiPage( 'Bar', SMW_NS_PROPERTY )
+				] ) );
+
+		$this->declarationExaminer->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $this->semanticData ) );
+
+		$instance = new UserdefinedPropertyExaminer(
+			$this->declarationExaminer,
+			$this->store
+		);
+
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyValueType( $type );
+
+		$instance->check(
+			$property
+		);
+
+		$this->assertContains(
+			'["error","smw-property-req-violation-multiple-fields","Foo","' . $name . '"]',
 			$instance->getMessagesAsString()
 		);
 	}
@@ -297,6 +347,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 			'["warning","smw-property-req-violation-parent-type","Foo","Parent"]',
 			$instance->getMessagesAsString()
 		);
+	}
+
+	public function recordTypeProvider() {
+		yield [ '_rec', 'Record' ];
+		yield [ '_ref_rec', 'Reference' ];
 	}
 
 }

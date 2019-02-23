@@ -76,21 +76,29 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 
 		$semanticData = $this->getSemanticData();
+		$prop = new DIProperty( $property->findPropertyTypeID() );
+		$pv = $semanticData->getPropertyValues( new DIProperty( '_LIST' ) );
 
-		// A violation occurs when a Reference or Record typed property does not
-		// denote a `Has fields` declaration.
-		if ( $semanticData->hasProperty( new DIProperty( '_LIST' ) ) ) {
-			return;
+		// #3522
+		// Multiple `Has fields`
+		if ( count( $pv ) > 1 ) {
+			$this->messages[] = [
+				'error',
+				'smw-property-req-violation-multiple-fields',
+				$property->getLabel(),
+				$prop->getCanonicalLabel()
+			];
 		}
 
-		$prop = new DIProperty( $property->findPropertyTypeID() );
-
-		$this->messages[] = [
-			'error',
-			'smw-property-req-violation-missing-fields',
-			$property->getLabel(),
-			$prop->getCanonicalLabel()
-		];
+		// No `Has fields`
+		if ( count( $pv ) == 0 ) {
+			$this->messages[] = [
+				'error',
+				'smw-property-req-violation-missing-fields',
+				$property->getLabel(),
+				$prop->getCanonicalLabel()
+			];
+		}
 	}
 
 	private function checkExternalIdentifierType( $type, $property ) {
