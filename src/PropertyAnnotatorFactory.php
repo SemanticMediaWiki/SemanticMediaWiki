@@ -241,9 +241,18 @@ class PropertyAnnotatorFactory {
 	 * @return MandatoryTypePropertyAnnotator
 	 */
 	public function newMandatoryTypePropertyAnnotator( PropertyAnnotator $propertyAnnotator ) {
-		return new MandatoryTypePropertyAnnotator(
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$mandatoryTypePropertyAnnotator = new MandatoryTypePropertyAnnotator(
 			$propertyAnnotator
 		);
+
+		$mandatoryTypePropertyAnnotator->setSubpropertyParentTypeInheritance(
+			$settings->get( 'smwgMandatorySubpropertyParentTypeInheritance' )
+		);
+
+		return $mandatoryTypePropertyAnnotator;
 	}
 
 }

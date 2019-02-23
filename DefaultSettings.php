@@ -2018,6 +2018,18 @@ return [
 	##
 
 	##
+	# Subproperty type inheritance
+	#
+	# This setting enforces a type inheritance between a parent property and its
+	# subproperties.
+	#
+	# @since 3.1
+	# @default false
+	##
+	'smwgMandatorySubpropertyParentTypeInheritance' => false,
+	##
+
+	##
 	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first

@@ -15,9 +15,28 @@ use SMW\DIProperty;
 class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * Indicates a forced removal
+	 * Indicates a forced removal for imported type annotation
 	 */
 	const IMPO_REMOVED_TYPE = 'mandatorytype.propertyannotator.impo.removed.type';
+
+	/**
+	 * Indicates a forced removal for subproperty/parent type mismatch
+	 */
+	const ENFORCED_PARENTTYPE_INHERITANCE = 'mandatorytype.propertyannotator.subproperty.parent.type.inheritance';
+
+	/**
+	 * @var boolean
+	 */
+	private $subpropertyParentTypeInheritance = false;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $subpropertyParentTypeInheritance
+	 */
+	public function setSubpropertyParentTypeInheritance( $subpropertyParentTypeInheritance ) {
+		$this->subpropertyParentTypeInheritance = (bool)$subpropertyParentTypeInheritance;
+	}
 
 	protected function addPropertyValues() {
 
@@ -35,10 +54,44 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$this->findMandatoryTypeForImportVocabulary();
+		$this->enforceMandatoryTypeForImportVocabulary();
+
+		// #3528
+		$this->enforceMandatoryTypeForSubproperty();
 	}
 
-	private function findMandatoryTypeForImportVocabulary() {
+	private function enforceMandatoryTypeForSubproperty() {
+
+		if ( !$this->subpropertyParentTypeInheritance ) {
+			return;
+		}
+
+		$property = new DIProperty( '_SUBP' );
+		$semanticData = $this->getSemanticData();
+
+		if ( !$semanticData->hasProperty( $property ) ) {
+			return;
+		}
+
+		$dataItems = $semanticData->getPropertyValues(
+			$property
+		);
+
+		$dataItem = end( $dataItems );
+
+		$parentProperty = new DIProperty( $dataItem->getDBKey() );
+		$semanticData->removeProperty( new DIProperty( '_TYPE' ) );
+
+		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
+			new DIProperty( '_TYPE' ),
+			$parentProperty->findPropertyTypeID()
+		);
+
+		$semanticData->setOption( self::ENFORCED_PARENTTYPE_INHERITANCE, $dataItem );
+		$semanticData->addDataValue( $dataValue );
+	}
+
+	private function enforceMandatoryTypeForImportVocabulary() {
 
 		$property = new DIProperty( '_IMPO' );
 
