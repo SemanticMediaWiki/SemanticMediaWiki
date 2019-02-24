@@ -116,7 +116,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->setPageTitle( $this->msg( 'smw-admin-db' ) );
-		$this->outputFormatter->addParentLink( [ 'tab' => 'rebuild' ], 'smw-admin-tab-rebuild' );
+		$this->outputFormatter->addParentLink( [ 'tab' => 'maintenance' ], 'smw-admin-tab-maintenance' );
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 

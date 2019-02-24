@@ -141,7 +141,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		if ( !$this->isEnabledFeature( SMW_ADM_FULLT ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
@@ -154,7 +154,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler {
 
 		$job->insert();
 
-		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
 	private function hasPendingJob() {
