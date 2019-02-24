@@ -172,6 +172,24 @@ class Rebuilder {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function hasIndices() {
+
+		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
+			return false;
+		}
+
+		if ( !$this->client->hasIndex( ElasticClient::TYPE_LOOKUP ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @since 3.0
 	 */
 	public function createIndices() {

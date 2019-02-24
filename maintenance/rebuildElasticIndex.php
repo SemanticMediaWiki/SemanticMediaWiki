@@ -244,6 +244,11 @@ class RebuildElasticIndex extends \Maintenance {
 		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) ) {
 			$this->reportMessage( "\n" . '   ... creating required indices and aliases ...' );
 			$this->rebuilder->createIndices();
+		} else {
+			if ( !$this->rebuilder->hasIndices() ) {
+				$this->reportMessage( "\n" . '   ... creating required indices and aliases ...' );
+				$this->rebuilder->createIndices();
+			}
 		}
 
 		$this->rebuilder->prepare();

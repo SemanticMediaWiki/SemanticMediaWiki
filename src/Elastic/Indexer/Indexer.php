@@ -152,13 +152,10 @@ class Indexer {
 			$this->store->getConnection( 'elastic' )
 		);
 
-		$rollover->update(
-			ElasticClient::TYPE_DATA
-		);
-
-		$rollover->update(
-			ElasticClient::TYPE_LOOKUP
-		);
+		return [
+			$rollover->update( ElasticClient::TYPE_DATA ),
+			$rollover->update( ElasticClient::TYPE_LOOKUP )
+		];
 	}
 
 	/**
@@ -171,13 +168,10 @@ class Indexer {
 			$this->store->getConnection( 'elastic' )
 		);
 
-		$rollover->delete(
-			ElasticClient::TYPE_DATA
-		);
-
-		$rollover->delete(
-			ElasticClient::TYPE_LOOKUP
-		);
+		return [
+			$rollover->delete( ElasticClient::TYPE_DATA ),
+			$rollover->delete( ElasticClient::TYPE_LOOKUP )
+		];
 	}
 
 	/**
