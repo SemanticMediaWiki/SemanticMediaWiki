@@ -149,14 +149,10 @@ final class Setup {
 
 		$this->initMessageCallbackHandler();
 
-		if ( $this->isValid() === false ) {
-			smwfAbort(
-				Message::get( [ 'smw-upgrade-error', $vars['smwgUpgradeKey'] ], Message::PARSE ) .
-				'<h3>' . Message::get( 'smw-upgrade-error-why-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
-				'<h3>' . Message::get( 'smw-upgrade-error-how-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-error-how-explain', Message::PARSE )
-			);
+		if ( SetupFile::isMaintenanceMode( $vars ) ) {
+			$this->abortOnMaintenanceMode();
+		} elseif ( SetupFile::isGoodSchema() === false ) {
+			$this->abortOnDeficientSchema( $vars );
 		}
 
 		$this->addDefaultConfigurations( $vars );
@@ -416,6 +412,29 @@ final class Setup {
 	private function registerHooks( &$vars, $localDirectory ) {
 		$hooks = new Hooks( $localDirectory );
 		$hooks->register( $vars );
+	}
+
+	private function abortOnMaintenanceMode() {
+		smwfAbort(
+			Message::get( 'smw-upgrade-maintenance-note', Message::PARSE ) .
+			'<h3>' . Message::get( 'smw-upgrade-maintenance-why-title' ) . '</h3>' .
+			Message::get( 'smw-upgrade-maintenance-explain', Message::PARSE ),
+			Message::get( 'smw-upgrade-maintenance-title' ),
+			'maintenance'
+		);
+	}
+
+	private function abortOnDeficientSchema( $vars ) {
+		smwfAbort(
+			Message::get( [ 'smw-upgrade-error', $vars['smwgUpgradeKey'] ], Message::PARSE ) .
+			'<h3>' . Message::get( 'smw-upgrade-error-why-title' ) . '</h3>' .
+			Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
+			'<h3>' . Message::get( 'smw-upgrade-error-how-title' ) . '</h3>' .
+			Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
+			Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE ),
+			Message::get( 'smw-upgrade-error-title' ),
+			'error'
+		);
 	}
 
 }

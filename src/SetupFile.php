@@ -79,7 +79,37 @@ class SetupFile {
 			return false;
 		}
 
-		return self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+
+		if (
+			isset( $GLOBALS['smw.json'][$id]['in.maintenance_mode'] ) &&
+			$GLOBALS['smw.json'][$id]['in.maintenance_mode'] === true ) {
+			$isGoodSchema = false;
+		}
+
+		return $isGoodSchema;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $vars
+	 *
+	 * @return boolean
+	 */
+	public static function isMaintenanceMode( $vars ) {
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
+			return false;
+		}
+
+		$id = Site::id();
+
+		if ( !isset( $vars['smw.json'][$id]['in.maintenance_mode'] ) ) {
+			return false;
+		}
+
+		return $vars['smw.json'][$id]['in.maintenance_mode'] === true;
 	}
 
 	/**
@@ -100,7 +130,12 @@ class SetupFile {
 		];
 
 		foreach ( $checks as $key => $value ) {
-			if ( isset( $vars['smw.json'][$id][$key] ) && $vars['smw.json'][$id][$key] === $value[0] ) {
+
+			if ( !isset( $vars['smw.json'][$id][$key] ) ) {
+				continue;
+			}
+
+			if ( $vars['smw.json'][$id][$key] === $value[0] ) {
 				$tasks[] = $value[1];
 			}
 		}
@@ -146,6 +181,30 @@ class SetupFile {
 	/**
 	 * @since 3.1
 	 *
+	 * @param boolean $isCli
+	 *
+	 * @return boolean
+	 */
+	public function setMaintenanceMode( $vars ) {
+
+		// #3563, Use the specific wiki-id as identifier for the instance in use
+		$key = self::makeUpgradeKey( $vars );
+		$id = Site::id();
+
+		if ( $this->messageReporter !== null ) {
+			$this->messageReporter->reportMessage( "\nSetting maintenance mode for $id ..." );
+		}
+
+		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => true ] );
+
+		if ( $this->messageReporter !== null ) {
+			$this->messageReporter->reportMessage( "\n   ... done.\n" );
+		}
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param array $vars
 	 */
 	public function setUpgradeKey( $vars ) {
@@ -156,7 +215,8 @@ class SetupFile {
 
 		if (
 			isset( $vars['smw.json'][$id]['upgrade_key'] ) &&
-			$key === $vars['smw.json'][$id]['upgrade_key'] ) {
+			$key === $vars['smw.json'][$id]['upgrade_key'] &&
+			$vars['smw.json'][$id]['in.maintenance_mode'] === false ) {
 			return false;
 		}
 
@@ -164,7 +224,7 @@ class SetupFile {
 			$this->messageReporter->reportMessage( "\nSetting upgrade key for $id ..." );
 		}
 
-		$this->write( $vars, [ 'upgrade_key' => $key ] );
+		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => false ] );
 
 		if ( $this->messageReporter !== null ) {
 			$this->messageReporter->reportMessage( "\n   ... done.\n" );
@@ -188,6 +248,11 @@ class SetupFile {
 
 		foreach ( $args as $key => $value ) {
 			$vars['smw.json'][$id][$key] = $value;
+		}
+
+		// Remove legacy
+		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
+			unset( $vars['smw.json']['upgradeKey'] );
 		}
 
 		try {

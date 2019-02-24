@@ -120,6 +120,10 @@ class Installer implements MessageReporter {
 	 */
 	public function install( $verbose = true ) {
 
+		if ( $this->setupFile === null ) {
+			$this->setupFile = new SetupFile();
+		}
+
 		// If for some reason the enableSemantics was not yet enabled
 		// still allow to run the tables create in order for the
 		// setup to be completed
@@ -131,6 +135,9 @@ class Installer implements MessageReporter {
 
 		$messageReporter->reportMessage( "\nSelected storage engine: \"SMWSQLStore3\" (or an extension thereof)\n" );
 		$messageReporter->reportMessage( "\nSetting up standard database configuration for SMW ...\n\n" );
+
+		$this->setupFile->setMessageReporter( $messageReporter );
+		$this->setupFile->setMaintenanceMode( $GLOBALS );
 
 		$this->tableBuilder->setMessageReporter(
 			$messageReporter
@@ -169,7 +176,6 @@ class Installer implements MessageReporter {
 			$this->setupFile = new SetupFile();
 		}
 
-		$this->setupFile->setMessageReporter( $messageReporter );
 		$this->setupFile->setUpgradeKey( $GLOBALS );
 
 		Hooks::run(
