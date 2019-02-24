@@ -531,8 +531,7 @@ return [
 		],
 		'messages' => [
 			'smw-no-data-available',
-			'smw-list-count',
-			'smw-list-count-from-cache'
+			'smw-list-count'
 		],
 		'position' => 'top',
 		'targets' => [

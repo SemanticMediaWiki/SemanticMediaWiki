@@ -434,7 +434,6 @@
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replication locked: $1 (rebuild in-progress)",
 	"smw-admin-supplementary-elastic-status-replication-monitoring":"Replication monitoring (active): $1",
 	"smw-list-count": "The list contains $1 {{PLURAL:$1|entry|entries}}.",
-	"smw-list-count-from-cache": "The list contains $1 {{PLURAL:$1|entry|entries}} and was retrieved from cache (UTC: $2).",
 	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property representation. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve this issue.",
 	"smw-property-label-similarity-title": "Property label similarity report",
 	"smw-property-label-similarity-intro": "<u>$1</u> calculates similarities for existing property labels",
