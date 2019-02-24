@@ -144,7 +144,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		if ( !$this->isEnabledFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
-			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}
 
 		$job = ApplicationFactory::getInstance()->newJobFactory()->newByType(
@@ -154,7 +154,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 
 		$job->insert();
 
-		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
 	private function hasPendingJob() {

@@ -153,7 +153,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			$jobQueue->delete( 'SMW\RefreshJob' );
 		}
 
-		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'rebuild' ] );
+		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
 	private function getProgressBar( $prog ) {
