@@ -477,7 +477,7 @@ class SMWExportController {
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( $ontologyuri ) );
+		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( $ontologyuri ) );
 
 		while ( count( $this->element_queue ) > 0 ) {
 			$diPage = reset( $this->element_queue );
@@ -537,7 +537,7 @@ class SMWExportController {
 		$this->delay_flush = 10;
 
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
 
 		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; // DEBUG
@@ -603,7 +603,7 @@ class SMWExportController {
 		$linkCache = LinkCache::singleton();
 
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
 
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
@@ -710,7 +710,7 @@ class SMWExportController {
 		}
 
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->getOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
 		$this->serializer->serializeExpData( $expData );
 
 		// link to list of existing pages:

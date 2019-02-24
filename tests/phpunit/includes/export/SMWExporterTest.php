@@ -46,15 +46,15 @@ class SMWExporterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider dataItemExpElementProvider
 	 */
-	public function testGetDataItemExpElement( DataItem $dataItem, $instance ) {
+	public function testnewExpElement( DataItem $dataItem, $instance ) {
 
 		if ( $instance === null ) {
-			return $this->assertNull( Exporter::getInstance()->getDataItemExpElement( $dataItem ) );
+			return $this->assertNull( Exporter::getInstance()->newExpElement( $dataItem ) );
 		}
 
 		$this->assertInstanceOf(
 			$instance,
-			Exporter::getInstance()->getDataItemExpElement( $dataItem )
+			Exporter::getInstance()->newExpElement( $dataItem )
 		);
 	}
 

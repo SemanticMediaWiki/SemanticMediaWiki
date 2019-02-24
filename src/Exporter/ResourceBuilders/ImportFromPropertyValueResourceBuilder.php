@@ -62,7 +62,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 
 		$expData->addPropertyObjectValue(
 			$expNsResource,
-			$this->exporter->getDataItemExpElement( new DIBlob( $dataValue->getImportReference() ) )
+			$this->exporter->newExpElement( new DIBlob( $dataValue->getImportReference() ) )
 		);
 
 		$this->addResourceHelperValue(

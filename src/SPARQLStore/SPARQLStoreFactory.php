@@ -97,8 +97,11 @@ class SPARQLStoreFactory {
 	 */
 	public function newTurtleTriplesBuilder() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
-			$this->newRepositoryRedirectLookup()
+			$this->newRepositoryRedirectLookup(),
+			$applicationFactory->getInMemoryPoolCache()->getPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID )
 		);
 
 		$turtleTriplesBuilder->setTriplesChunkSize( 80 );

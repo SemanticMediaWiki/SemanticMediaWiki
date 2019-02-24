@@ -111,7 +111,7 @@ class ExpResourceMapper {
 	 *
 	 * @note $useAuxiliaryModifier is to determine whether an auxiliary
 	 * property resource is to store a helper value
-	 * (see Exporter::getDataItemHelperExpElement) should be generated
+	 * (see Exporter::newAuxiliaryExpElement) should be generated
 	 *
 	 * @param DIProperty $property
 	 * @param boolean $useAuxiliaryModifier

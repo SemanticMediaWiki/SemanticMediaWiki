@@ -21,21 +21,16 @@ class ElementFactory {
 	/**
 	 * @var array
 	 */
-	private $dataItemMapper = [];
-
-	/**
-	 * @var array
-	 */
-	private $dataItemToElementMapper = [];
+	private $dataItemMappers = [];
 
 	/**
 	 * @since 2.2
 	 *
 	 * @param integer $type
-	 * @param Closure $dataItemEncoder
+	 * @param callable $dataItemMapper
 	 */
-	public function registerDataItemMapper( $type, \Closure $dataItemEncoder ) {
-		$this->dataItemMapper[$type] = $dataItemEncoder;
+	public function registerCallableMapper( $type, callable $dataItemMapper ) {
+		$this->dataItemMappers[$type] = $dataItemMapper;
 	}
 
 	/**
@@ -50,127 +45,168 @@ class ElementFactory {
 	 */
 	public function newFromDataItem( DataItem $dataItem ) {
 
-		if ( $this->dataItemMapper === [] ) {
-			$this->initDataItemMap();
+		if ( $this->dataItemMappers === [] ) {
+			$this->initDefaultMappers();
 		}
 
-		if ( $this->dataItemToElementMapper === [] ) {
-			$this->initDataItemToElementMapper();
-		}
-
-		$element = $this->findElementByDataItem( $dataItem );
+		$element = $this->newElement( $dataItem );
 
 		if ( $element instanceof Element || $element === null ) {
 			return $element;
 		}
 
-		throw new RuntimeException( 'Encoder did not return a valid element' );
+		throw new RuntimeException( "Couldn't map an element to " . get_class( $dataItem ) );
 	}
 
-	private function findElementByDataItem( $dataItem ) {
+	private function newElement( DataItem $dataItem ) {
 
-		foreach ( $this->dataItemToElementMapper as $dataItemToElementMapper ) {
-			if ( $dataItemToElementMapper->isMapperFor( $dataItem ) ) {
-				return $dataItemToElementMapper->getElementFor( $dataItem );
-			}
+		$type = $dataItem->getDIType();
+
+		if ( isset( $this->dataItemMappers[$type] ) && is_callable( $this->dataItemMappers[$type] ) ) {
+			return $this->dataItemMappers[$type]( $dataItem );
 		}
 
-		foreach ( $this->dataItemMapper as $type => $callback ) {
-			if ( $type === $dataItem->getDIType() ) {
-				return $callback( $dataItem );
+		foreach ( $this->dataItemMappers as $service ) {
+			if ( $service instanceof DataItemMapper && $service->isMapperFor( $dataItem ) ) {
+				return $service->newElement( $dataItem );
 			}
 		}
+	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpLiteral
+	 */
+	public function newFromNumber( DataItem $dataItem ) {
+
+		list( $type, $value ) = XsdValueMapper::map(
+			$dataItem
+		);
+
+		return new ExpLiteral( $value, $type, '', $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpLiteral
+	 */
+	public function newFromBlob( DataItem $dataItem ) {
+
+		list( $type, $value ) = XsdValueMapper::map(
+			$dataItem
+		);
+
+		return new ExpLiteral( $value, $type, '', $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpLiteral
+	 */
+	public function newFromBoolean( DataItem $dataItem ) {
+
+		list( $type, $value ) = XsdValueMapper::map(
+			$dataItem
+		);
+
+		return new ExpLiteral( $value, $type, '', $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpResource
+	 */
+	public function newFromURI( DataItem $dataItem ) {
+		return new ExpResource( $dataItem->getURI(), $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpLiteral
+	 */
+	public function newFromTime( DataItem $dataItem ) {
+
+		$dataItem = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
+
+		list( $type, $value ) = XsdValueMapper::map(
+			$dataItem
+		);
+
+		return new ExpLiteral( $value, $type, '', $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpData
+	 */
+	public function newFromContainer( DataItem $dataItem ) {
+		return Exporter::getInstance()->makeExportData( $dataItem->getSemanticData() );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpResource
+	 */
+	public function newFromWikiPage( DataItem $dataItem ) {
+		return Exporter::getInstance()->getResourceElementForWikiPage( $dataItem );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return ExpResource
+	 */
+	public function newFromProperty( DataItem $dataItem ) {
+		return Exporter::getInstance()->getResourceElementForProperty( $dataItem );
+	}
+
+	/**
+	 * Not implemented !
+	 *
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 */
+	public function newFromGeo( DataItem $dataItem ) {
 		return null;
 	}
 
-	private function initDataItemToElementMapper() {
-		$this->dataItemToElementMapper[] = new ConceptMapper();
-	}
+	private function initDefaultMappers() {
 
-	private function initDataItemMap() {
+		$this->dataItemMappers[DataItem::TYPE_NUMBER] = [ $this, 'newFromNumber' ];
+		$this->dataItemMappers[DataItem::TYPE_BLOB] = [ $this, 'newFromBlob' ];
+		$this->dataItemMappers[DataItem::TYPE_BOOLEAN] = [ $this, 'newFromBoolean' ];
+		$this->dataItemMappers[DataItem::TYPE_URI] = [ $this, 'newFromURI' ];
+		$this->dataItemMappers[DataItem::TYPE_TIME] = [ $this, 'newFromTime' ];
+		$this->dataItemMappers[DataItem::TYPE_CONTAINER] = [ $this, 'newFromContainer' ];
+		$this->dataItemMappers[DataItem::TYPE_WIKIPAGE] = [ $this, 'newFromWikiPage' ];
+		$this->dataItemMappers[DataItem::TYPE_PROPERTY] = [ $this, 'newFromProperty' ];
+		$this->dataItemMappers[DataItem::TYPE_GEO] = [ $this, 'newFromGeo' ];
 
-		$lang = '';
-		$xsdValueMapper = new XsdValueMapper();
-
-		$this->registerDataItemMapper( DataItem::TYPE_NUMBER, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
-
-			$xsdValueMapper->map( $dataItem );
-
-			return new ExpLiteral(
-				$xsdValueMapper->getXsdValue(),
-				$xsdValueMapper->getXsdType(),
-				$lang,
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_BLOB, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
-
-			$xsdValueMapper->map( $dataItem );
-
-			return new ExpLiteral(
-				$xsdValueMapper->getXsdValue(),
-				$xsdValueMapper->getXsdType(),
-				$lang,
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_BOOLEAN, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
-
-			$xsdValueMapper->map( $dataItem );
-
-			return new ExpLiteral(
-				$xsdValueMapper->getXsdValue(),
-				$xsdValueMapper->getXsdType(),
-				$lang,
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_URI, function( $dataItem ) {
-			return new ExpResource(
-				$dataItem->getURI(),
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_TIME, function( $dataItem ) use ( $lang, $xsdValueMapper ) {
-
-			$gregorianTime = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
-			$xsdValueMapper->map( $gregorianTime );
-
-			return new ExpLiteral(
-				$xsdValueMapper->getXsdValue(),
-				$xsdValueMapper->getXsdType(),
-				$lang,
-				$gregorianTime
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_CONTAINER, function( $dataItem ) {
-			return Exporter::getInstance()->makeExportData(
-				$dataItem->getSemanticData()
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_WIKIPAGE, function( $dataItem ) {
-			return Exporter::getInstance()->getResourceElementForWikiPage(
-				$dataItem
-			);
-		} );
-
-		$this->registerDataItemMapper( DataItem::TYPE_PROPERTY, function( $dataItem ) {
-			return Exporter::getInstance()->getResourceElementForProperty(
-				$dataItem
-			);
-		} );
-
-		// Not implemented
-		$this->registerDataItemMapper( DataItem::TYPE_GEO, function( $dataItem ) {
-			return null;
-		} );
+		$this->dataItemMappers[] = new ConceptMapper();
 	}
 
 }

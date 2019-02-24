@@ -25,6 +25,7 @@ use SMWDataItem as DataItem;
 use SMWNumberValue as NumberValue;
 use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
+use SMWExporter as Exporter;
 
 /**
  * @license GNU GPL v2+
@@ -367,6 +368,43 @@ class TypesRegistry {
 		}
 
 		return $fixedProperties;
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public static function getOWLPropertyByType( $type ) {
+
+		$types = [
+			'_anu' => Exporter::OWL_ANNOTATION_PROPERTY,
+
+			'' => Exporter::OWL_OBJECT_PROPERTY,
+
+			// Page related
+			'_wpg' => Exporter::OWL_OBJECT_PROPERTY,
+			'_wpp' => Exporter::OWL_OBJECT_PROPERTY,
+			'_wpc' => Exporter::OWL_OBJECT_PROPERTY,
+			'_wpf' => Exporter::OWL_OBJECT_PROPERTY,
+			'_wps' => Exporter::OWL_OBJECT_PROPERTY,
+			'_rec' => Exporter::OWL_OBJECT_PROPERTY,
+		//	'_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
+		//	'_ref_rec' => Exporter::OWL_OBJECT_PROPERTY,
+
+			// URI related
+			'_uri' => Exporter::OWL_OBJECT_PROPERTY,
+			'_ema' => Exporter::OWL_OBJECT_PROPERTY,
+			'_tel' => Exporter::OWL_OBJECT_PROPERTY,
+
+			'__typ' => Exporter::OWL_OBJECT_PROPERTY,
+			'__spf' => Exporter::OWL_OBJECT_PROPERTY,
+			'__spu' => Exporter::OWL_OBJECT_PROPERTY
+		];
+
+		if ( isset( $types[$type] ) ) {
+			return $types[$type];
+		}
+
+		return Exporter::OWL_DATATYPE_PROPERTY;
 	}
 
 }

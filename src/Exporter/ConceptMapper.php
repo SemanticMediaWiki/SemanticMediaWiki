@@ -26,7 +26,7 @@ use SMWExporter as Exporter;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class ConceptMapper {
+class ConceptMapper implements DataItemMapper {
 
 	/**
 	 * @var Exporter
@@ -64,7 +64,7 @@ class ConceptMapper {
 	 *
 	 * @return ExpData|null
 	 */
-	public function getElementFor( DIConcept $concept ) {
+	public function newElement( DataItem $concept ) {
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$concept
@@ -79,7 +79,11 @@ class ConceptMapper {
 		);
 
 		$exact = true;
-		$owlDescription = $this->getExpDataFromDescription( $description, $exact );
+
+		$owlDescription = $this->newExpDataFromDescription(
+			$description,
+			$exact
+		);
 
 		if ( $owlDescription === false ) {
 			$result = new ExpData(
@@ -119,32 +123,32 @@ class ConceptMapper {
 	 *
 	 * @return Element|false
 	 */
-	public function getExpDataFromDescription( Description $description, &$exact ) {
+	public function newExpDataFromDescription( Description $description, &$exact ) {
 
 		if ( ( $description instanceof Conjunction ) || ( $description instanceof Disjunction ) ) {
-			$result = $this->doMapConjunctionDisjunction( $description, $exact );
+			$expData = $this->mapConjunctionDisjunction( $description, $exact );
 		} elseif ( $description instanceof ClassDescription ) {
-			$result = $this->doMapClassDescription( $description, $exact );
+			$expData = $this->mapClassDescription( $description, $exact );
 		} elseif ( $description instanceof ConceptDescription ) {
-			$result = $this->doMapConceptDescription( $description, $exact );
+			$expData = $this->mapConceptDescription( $description, $exact );
 		} elseif ( $description instanceof SomeProperty ) {
-			$result = $this->doMapSomeProperty( $description, $exact );
+			$expData = $this->mapSomeProperty( $description, $exact );
 		} elseif ( $description instanceof ValueDescription ) {
-			$result = $this->doMapValueDescription( $description, $exact );
+			$expData = $this->mapValueDescription( $description, $exact );
 		} elseif ( $description instanceof ThingDescription ) {
-			$result = false;
+			$expData = false;
 		} else {
-			$result = false;
+			$expData = false;
 			$exact = false;
 		}
 
-		return $result;
+		return $expData;
 	}
 
-	private function doMapValueDescription( ValueDescription $description, &$exact ) {
+	private function mapValueDescription( ValueDescription $description, &$exact ) {
 
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
-			$result = $this->exporter->getDataItemExpElement( $description->getDataItem() );
+			$result = $this->exporter->newExpElement( $description->getDataItem() );
 		} else {
 			// OWL cannot represent <= and >= ...
 			$exact = false;
@@ -154,7 +158,7 @@ class ConceptMapper {
 		return $result;
 	}
 
-	private function doMapConceptDescription( ConceptDescription $description, &$exact ) {
+	private function mapConceptDescription( ConceptDescription $description, &$exact ) {
 
 		$result = new ExpData(
 			$this->exporter->getResourceElementForWikiPage( $description->getConcept() )
@@ -163,7 +167,7 @@ class ConceptMapper {
 		return $result;
 	}
 
-	private function doMapSomeProperty( SomeProperty $description, &$exact ) {
+	private function mapSomeProperty( SomeProperty $description, &$exact ) {
 
 		$result = new ExpData(
 			new ExpResource( '' )
@@ -187,7 +191,7 @@ class ConceptMapper {
 			)
 		);
 
-		$subdata = $this->getExpDataFromDescription(
+		$subdata = $this->newExpDataFromDescription(
 			$description->getDescription(),
 			$exact
 		);
@@ -202,14 +206,14 @@ class ConceptMapper {
 			if ( $subdata === false ) {
 
 				$owltype = $this->exporter->getOWLPropertyType(
-					$description->getProperty()->findPropertyTypeID()
+					$description->getProperty()
 				);
 
-				if ( $owltype == 'ObjectProperty' ) {
+				if ( $owltype === Exporter::OWL_OBJECT_PROPERTY ) {
 					$subdata = new ExpData(
 						$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
 					);
-				} elseif ( $owltype == 'DatatypeProperty' ) {
+				} elseif ( $owltype === Exporter::OWL_DATATYPE_PROPERTY ) {
 					$subdata = new ExpData(
 						$this->exporter->getSpecialNsResource( 'rdfs', 'Literal' )
 					);
@@ -229,7 +233,7 @@ class ConceptMapper {
 		return $result;
 	}
 
-	private function doMapClassDescription( ClassDescription $description, &$exact ) {
+	private function mapClassDescription( ClassDescription $description, &$exact ) {
 
 		if ( count( $description->getCategories() ) == 1 ) { // single category
 			$categories = $description->getCategories();
@@ -266,7 +270,7 @@ class ConceptMapper {
 		return $result;
 	}
 
-	private function doMapConjunctionDisjunction( Description $description, &$exact ) {
+	private function mapConjunctionDisjunction( Description $description, &$exact ) {
 
 		$result = new ExpData(
 			new ExpResource( '' )
@@ -282,7 +286,7 @@ class ConceptMapper {
 		$elements = [];
 
 		foreach ( $description->getDescriptions() as $subdesc ) {
-			$element = $this->getExpDataFromDescription( $subdesc, $exact );
+			$element = $this->newExpDataFromDescription( $subdesc, $exact );
 
 			if ( $element === false ) {
 				$element = new ExpData(

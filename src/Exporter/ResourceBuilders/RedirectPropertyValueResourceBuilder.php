@@ -34,7 +34,7 @@ class RedirectPropertyValueResourceBuilder extends PredefinedPropertyValueResour
 
 		parent::addResourceValue( $expData, $property, $dataItem );
 
-		$expElement = $this->exporter->getDataItemExpElement(
+		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
 

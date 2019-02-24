@@ -54,7 +54,7 @@ class ExternalIdentifierPropertyValueResourceBuilder extends PropertyValueResour
 		if ( $uri instanceof DIUri ) {
 			$expData->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'skos', 'exactMatch' ),
-				$this->exporter->getDataItemExpElement( $uri )
+				$this->exporter->newExpElement( $uri )
 			);
 		}
 	}

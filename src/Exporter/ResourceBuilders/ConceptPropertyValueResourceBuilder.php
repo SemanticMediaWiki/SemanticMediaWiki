@@ -32,7 +32,7 @@ class ConceptPropertyValueResourceBuilder extends PredefinedPropertyValueResourc
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
 
-		$expElement = $this->exporter->getDataItemExpElement(
+		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
 

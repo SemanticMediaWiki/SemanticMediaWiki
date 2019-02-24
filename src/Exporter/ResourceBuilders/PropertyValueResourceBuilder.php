@@ -62,7 +62,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
 
-		$expElement = $this->exporter->getDataItemExpElement(
+		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
 
@@ -81,17 +81,23 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	}
 
 	protected function addResourceHelperValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+		return $this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
+	}
 
-		$expElementHelper = $this->exporter->getDataItemHelperExpElement(
+	protected function addAuxiliaryResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+
+		$auxiliaryExpElement = $this->exporter->newAuxiliaryExpElement(
 			$dataItem
 		);
 
-		if ( $expElementHelper !== null ) {
-			$expData->addPropertyObjectValue(
-				$this->getResourceElementHelperForProperty( $property ),
-				$expElementHelper
-			);
+		if ( $auxiliaryExpElement === null ) {
+			return;
 		}
+
+		$expData->addPropertyObjectValue(
+			$this->getResourceElementHelperForProperty( $property ),
+			$auxiliaryExpElement
+		);
 	}
 
 	protected function getResourceElementForProperty( $property ) {

@@ -25,18 +25,16 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testMatchSupportedTypes( $dataItem, $xsdValue, $xsdType ) {
 
-		$instance = new XsdValueMapper();
-
-		$instance->map( $dataItem );
+		list( $type, $value ) = XsdValueMapper::map( $dataItem );
 
 		$this->assertEquals(
 			$xsdValue,
-			$instance->getXsdValue()
+			$value
 		);
 
 		$this->assertContains(
 			$xsdType,
-			$instance->getXsdType()
+			$type
 		);
 	}
 
@@ -45,10 +43,8 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryToMatchUnsupportedTypeThrowsException( $dataItem ) {
 
-		$instance = new XsdValueMapper();
-
 		$this->setExpectedException( 'RuntimeException' );
-		$instance->map( $dataItem );
+		XsdValueMapper::map( $dataItem );
 	}
 
 	public function supportedDataItemProvider() {

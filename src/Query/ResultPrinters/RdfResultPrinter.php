@@ -85,7 +85,7 @@ class RdfResultPrinter extends FileExportPrinter {
 			return $this->getRdfLink( $res, $outputMode );
 		}
 
-		return $this->serializeContent( $res, $outputMode );
+		return $this->makeExport( $res, $outputMode );
 	}
 
 	private function getRdfLink( QueryResult $res, $outputMode ) {
@@ -101,26 +101,16 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function serializeContent( QueryResult $res, $outputMode ) {
+	private function makeExport( QueryResult $res, $outputMode ) {
 
 		$exporter = Exporter::getInstance();
-
-		if ( $this->params['syntax'] === 'turtle' ) {
-			$serializer = new SMWTurtleSerializer();
-		} else {
-			$serializer = new SMWRDFXMLSerializer();
-		}
+		$serializer = $exporter->newExportSerializer( $this->params['syntax'] );
 
 		$serializer->startSerialization();
-
-		$serializer->serializeExpData(
-			$exporter->getOntologyExpData( '' )
-		);
+		$serializer->serializeExpData( $exporter->newOntologyExpData( '' ) );
 
 		while ( $row = $res->getNext() ) {
-			$serializer->serializeExpData(
-				$this->newExpData( $exporter, $row )
-			);
+			$serializer->serializeExpData( $this->makeExportData( $exporter, $row ) );
 		}
 
 		$serializer->finishSerialization();
@@ -128,10 +118,10 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $serializer->flushContent();
 	}
 
-	private function newExpData( $exporter, $row ) {
+	private function makeExportData( $exporter, $row ) {
 
 		$subject = reset( $row )->getResultSubject();
-		$data = $exporter->makeExportDataForSubject( $subject );
+		$expData = $exporter->makeExportDataForSubject( $subject );
 
 		foreach ( $row as $resultarray ) {
 			$printRequest = $resultarray->getPrintRequest();
@@ -153,11 +143,11 @@ class RdfResultPrinter extends FileExportPrinter {
 			}
 
 			if ( $property !== null ) {
-				$exporter->addPropertyValues( $property, $resultarray->getContent(), $data );
+				$exporter->addPropertyValues( $property, $resultarray->getContent(), $expData );
 			}
 		}
 
-		return $data;
+		return $expData;
 	}
 
 }

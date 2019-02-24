@@ -61,7 +61,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @var Cache
 	 */
-	private $dataItemExportInMemoryCache;
+	private $cache;
 
 	/**
 	 * @since 2.0
@@ -71,7 +71,7 @@ class TurtleTriplesBuilder {
 	 */
 	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
-		$this->dataItemExportInMemoryCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
+		$this->cache = $cache;
 	}
 
 	/**
@@ -273,11 +273,11 @@ class TurtleTriplesBuilder {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 
-			if ( !$this->dataItemExportInMemoryCache->contains( $hash ) ) {
-				$this->dataItemExportInMemoryCache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
+			if ( !$this->cache->contains( $hash ) ) {
+				$this->cache->save( $hash, Exporter::getInstance()->makeExportDataForSubject( $diWikiPage, true ) );
 			}
 
-			$auxiliaryExpData[$hash] = $this->dataItemExportInMemoryCache->fetch( $hash );
+			$auxiliaryExpData[$hash] = $this->cache->fetch( $hash );
 		}
 
 		return $elementTarget;
