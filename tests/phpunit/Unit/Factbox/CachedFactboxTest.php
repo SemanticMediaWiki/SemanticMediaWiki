@@ -160,7 +160,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			'Asserts that content from the outputpage property and retrieveContent() is equal'
 		);
 
-		if ( $expected['text'] ) {
+		if ( isset( $expected['isCached'] ) &&  $expected['isCached'] ) {
 
 			$this->assertTrue(
 				$instance->isCached(),
@@ -311,7 +311,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 				'parserOutput'    => $this->makeParserOutput( $semanticData )
 			],
 			[
-				'text'            => $subject->getDBKey()
+				'text'            => $subject->getDBKey(),
+				'isCached'        => true
 			]
 		];
 
