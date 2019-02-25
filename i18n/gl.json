@@ -402,7 +402,6 @@
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalo de actualización: $1",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replicación bloqueada: $1 (reconstrución en proceso)",
 	"smw-list-count": "A lista contén $1 {{PLURAL:$1|entrada|entradas}}.",
-	"smw-list-count-from-cache": "A lista contén $1 {{PLURAL:$1|entrada|entradas}} e recuperouse da caché (UTC: $2).",
 	"smw-property-label-uniqueness": "Atopouse unha correspondencia entre a etiqueta \"$1\" e polo menos outra representación de propiedade. Consulte a [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness páxina de axuda] sobre a resolución deste problema, por favor.",
 	"smw-property-label-similarity-title": "Informe de similitude de etiquetas de propiedade",
 	"smw-property-label-similarity-intro": "<u>$1</u> calcula a similitude das etiquetas de propiedade existentes",

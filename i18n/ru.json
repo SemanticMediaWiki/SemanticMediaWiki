@@ -451,7 +451,6 @@
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Журнал невыполненных работ (файл): $1 (оценка)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Репликация заблокирована: $1 (перепостроение в процессе)",
 	"smw-list-count": "Список содержит $1 {{PLURAL:$1|запись|записи|записей}}.",
-	"smw-list-count-from-cache": "В списке, полученном из кэша в (UTC: $2), $1 {{PLURAL:$1|значение|значения|значений}}.",
 	"smw-property-label-uniqueness": "Метка \"$1\" была сопоставлена по крайней мере с одним другим представлением свойств. Пожалуйста, проконсультируйтесь со [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness страницей помощи] о том, как устранить эту проблему.",
 	"smw-property-label-similarity-title": "Сообщение о подобности названий свойств",
 	"smw-property-label-similarity-intro": "<u>$1</u> вычисляет подобие существующих названий свойств",

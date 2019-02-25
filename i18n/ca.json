@@ -414,7 +414,6 @@
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Interval de refrescament: $1",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replicació bloquejada: $1 (reconstrucció en procés)",
 	"smw-list-count": "La llista conté $1 {{PLURAL:$1|entrada|entrades}}.",
-	"smw-list-count-from-cache": "La llista conté $1 {{PLURAL:$1|entrada|entrades}} i s'ha recuperat de la memòria cau (UTC: $2).",
 	"smw-property-label-similarity-title": "Informe de similitud d'etiquetes de propietat",
 	"smw-property-label-similarity-intro": "<u>$1</u> calcula les similituds de les etiquetes de propietats existents",
 	"smw-property-label-similarity-threshold": "Llindar:",

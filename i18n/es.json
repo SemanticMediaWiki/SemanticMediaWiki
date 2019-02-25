@@ -447,7 +447,6 @@
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Última replicación activa: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalo de refrescado: $1",
 	"smw-list-count": "La lista contiene $1 {{PLURAL:$1|entrada|entradas}}.",
-	"smw-list-count-from-cache": "La lista contiene $1 {{PLURAL:$1|entrada|entradas}} y se recuperó de la antememoria (UTC: $2).",
 	"smw-property-label-uniqueness": "La etiqueta «$1» corresponde con por lo menos una representación de propiedad diferente. Consulta la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness página de ayuda] para saber cómo solucionar este problema.",
 	"smw-property-label-similarity-title": "Informe de similitud de etiqueta de propiedad",
 	"smw-property-label-similarity-intro": "<u>$1</u> calcula las semejanzas para etiquetas de propiedades existentes",

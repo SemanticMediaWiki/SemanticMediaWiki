@@ -351,7 +351,6 @@
 	"smw-admin-supplementary-elastic-status-last-active-replication": "Ostatnia aktywna replikacja: $1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Interwał odświeżania: $1",
 	"smw-list-count": "Lista zawiera $1 {{PLURAL:$1|pozycję|pozycje}}.",
-	"smw-list-count-from-cache": "Lista zawiera $1 {{PLURAL:$1|wpis|wpisy|wpisów}} i została pobrana z pamięci podręcznej (UTC: $2).",
 	"smw-property-label-similarity-title": "Raport podobieństwa etykiet właściwości",
 	"smw-property-label-similarity-intro": "<u>$1</u> oblicza podobieństwa dla istniejących etykiet właściwości",
 	"smw-property-label-similarity-threshold": "Próg:",

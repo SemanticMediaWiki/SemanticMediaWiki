@@ -425,7 +425,6 @@
 	"smw-admin-supplementary-elastic-status-last-active-replication": "最近一次活动复制：$1",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "刷新间隔：$1",
 	"smw-list-count": "列表包含$1个{{PLURAL:$1|实体}}。",
-	"smw-list-count-from-cache": "列表包含$1个{{PLURAL:$1|实体}}，并恢复自缓存（UTC：$2）。",
 	"smw-property-label-uniqueness": "“$1”标签匹配了至少一个其他属性表现。请查阅[https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness 帮助页面]了解如何解决该问题。",
 	"smw-property-label-similarity-title": "属性标签相似性报告",
 	"smw-property-label-similarity-intro": "<u>$1</u>可对现有属性标签的相似性进行计算",

@@ -394,7 +394,6 @@
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervalu d'enfrescáu: $1",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Replicación bloquiada: $1 (en procesu de reconstrucción)",
 	"smw-list-count": "La llista contien $1{{PLURAL:$1|entrada|entraes}}.",
-	"smw-list-count-from-cache": "La llista contien $1 {{PLURAL:$1|entrada|entraes}} y recuperóse de la caché (UTC: $2).",
 	"smw-property-label-uniqueness": "La etiqueta «$1» casa polo menos con otra representación de propiedá. Consulta la [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness páxina d'ayuda] pa saber cómo iguar esti problema.",
 	"smw-property-label-similarity-title": "Informe de semeyanza na etiqueta Propiedá",
 	"smw-property-label-similarity-intro": "<u>$1</u> calcula la semeyanza de les etiquetes de propiedá qu'esisten",
