@@ -39,6 +39,15 @@ class EntityCache {
 	 * @return string
 	 */
 	public static function makeCacheKey( ...$params ) {
+
+		if ( $params[0] instanceof Title ) {
+			$params[0] = DIWikiPage::newFromTitle( $params[0] );
+		}
+
+		if ( $params[0] instanceof DIWikiPage ) {
+			$params[0] = $params[0]->getHash();
+		}
+
 		return smwfCacheKey( self::CACHE_NAMESPACE, $params + [ 'version' => self::VERSION ] );
 	}
 
@@ -140,7 +149,7 @@ class EntityCache {
 			return;
 		}
 
-		$k = $this->makeCacheKey( $subject->getHash() );
+		$k = $this->makeCacheKey( $subject );
 		$res = $this->cache->fetch( $k );
 
 		// Initialize the record that binds the "page" entity to all associated
@@ -178,7 +187,7 @@ class EntityCache {
 			return;
 		}
 
-		$k = $this->makeCacheKey( $subject->getHash() );
+		$k = $this->makeCacheKey( $subject );
 		$res = $this->cache->fetch( $k );
 
 		if ( isset( $res['__assoc'] ) ) {
