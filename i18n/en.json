@@ -464,7 +464,7 @@
 	"smw-info-par-icon": "Icon to show, either \"info\" or \"warning\".",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "General options",
-	"prefs-ask-options": "Special:Ask options",
+	"prefs-ask-options": "Semantic search options",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (and related extensions) provide individual customization for some selected functions. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help page] for a detailed description.",
 	"smw-prefs-ask-options-tooltip-display": "Display parameter text as an info tooltip",
 	"smw-prefs-ask-options-compact-view-basic": "Enable basic compact view",

@@ -43,6 +43,14 @@ class BeforePageDisplay extends HookHandler {
 			]
 		);
 
+		if ( $title->getNamespace() === NS_SPECIAL ) {
+			$outputPage->addModuleStyles(
+				[
+					'ext.smw.special.styles'
+				]
+			);
+		}
+
 		// #2726
 		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );

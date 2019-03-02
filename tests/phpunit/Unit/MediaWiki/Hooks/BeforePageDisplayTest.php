@@ -21,6 +21,10 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->request = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -36,6 +40,10 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->outputPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
