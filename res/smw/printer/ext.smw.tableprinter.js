@@ -60,9 +60,11 @@
 			// https://datatables.net/reference/api/order()
 			// [1, 'asc'], [2, 'desc']
 			$.map( column.sort, function( val, i ) {
-				if ( val === '' ) {
+
+				if ( val === '' || $.inArray( val, column.list ) < 0 ) {
 					return;
 				};
+
 				order.push( [
 					$.inArray( val, column.list ), // Find matchable index from the list
 					column.order[i] === undefined ? 'asc' : orderMap[column.order[i]]
