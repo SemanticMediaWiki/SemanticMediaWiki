@@ -80,6 +80,15 @@ class SchemaDefinition implements Schema, JsonSerializable {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	 public function toArray() {
+		return $this->definition;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return string
