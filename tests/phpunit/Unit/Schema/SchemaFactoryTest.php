@@ -38,6 +38,20 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSchemaFinder() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new SchemaFactory();
+
+		$this->assertInstanceof(
+			'\SMW\Schema\SchemaFinder',
+			$instance->newSchemaFinder( $store )
+		);
+	}
+
 	public function testIsRegisteredType() {
 
 		$instance = new SchemaFactory(

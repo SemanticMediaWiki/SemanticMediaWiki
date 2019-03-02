@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+
@@ -132,6 +133,17 @@ class SchemaFactory {
 
 	public static function newTest( $name, $data ) {
 		return '';
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 *
+	 * @return SchemaFinder
+	 */
+	public function newSchemaFinder( Store $store ) {
+		return new SchemaFinder( $store );
 	}
 
 	/**
