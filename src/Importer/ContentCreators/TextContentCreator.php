@@ -152,7 +152,17 @@ class TextContentCreator implements ContentCreator {
 			$page->getUser()
 		);
 
-		return $page->getCreator()->equals( $lastEditor );
+		if ( !$lastEditor instanceof \User ) {
+			return false;
+		}
+
+		$creator = $page->getCreator();
+
+		if ( !$creator instanceof \User ) {
+			return false;
+		}
+
+		return $creator->equals( $lastEditor );
 	}
 
 }

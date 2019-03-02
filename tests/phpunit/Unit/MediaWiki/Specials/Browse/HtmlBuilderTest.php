@@ -33,6 +33,10 @@ class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 

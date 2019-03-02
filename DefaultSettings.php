@@ -2058,6 +2058,11 @@ return [
 			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
 			'type_description' => 'smw-schema-description-search-form-schema'
+		],
+		'PROPERTY_GROUP_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/property-group-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_PROPERTY,
+			'type_description' => 'smw-schema-description-property-group-schema'
 		]
 	],
 	##
