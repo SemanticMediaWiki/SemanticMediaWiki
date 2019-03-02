@@ -447,6 +447,14 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructPropertyTableIdReferenceDisposer() {
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -472,6 +480,24 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\EntityStore\PrefetchItemLookup',
 			$instance->newPrefetchItemLookup()
+		);
+	}
+
+	public function testCanConstructPropertyTypeFinder() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTypeFinder',
+			$instance->newPropertyTypeFinder()
 		);
 	}
 

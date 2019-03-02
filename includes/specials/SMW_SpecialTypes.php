@@ -205,6 +205,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$this->addHelpLink( wfMessage( 'smw-specials-bytype-helplink', $typeLabel )->escaped(), true );
 		$applicationFactory = ApplicationFactory::getInstance();
+		$store = $applicationFactory->getStore();
 
 		$pagingLimit = $applicationFactory->getSettings()->dotGet( 'smwgPagingLimit.type' );
 
@@ -221,7 +222,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$requestOptions->setLimit( $limit + 1 );
 		$requestOptions->setOffset( $offset );
 
-		$dataItems = $applicationFactory->getStore()->getPropertySubjects(
+		$dataItems = $store->getPropertySubjects(
 			new DIProperty( '_TYPE' ),
 			$typeValue->getDataItem(),
 			$requestOptions
@@ -239,6 +240,20 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			$typeId
+		);
+
+		$propertyTypeFinder = $store->service( 'PropertyTypeFinder' );
+
+		$count = $propertyTypeFinder->countByType(
+			$typeId
+		);
+
+		$itemCount = Html::rawElement(
+			'span',
+			[
+				'class' => 'item-count'
+			],
+			$count
 		);
 
 		$label = htmlspecialchars( $typeValue->getWikiValue() );
@@ -281,7 +296,7 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 
 		$listBuilder = new ListBuilder(
-			ApplicationFactory::getInstance()->getStore()
+			$store
 		);
 
 		$listBuilder->setItemFormatter( [ $this, 'formatItem' ] );
@@ -299,7 +314,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$errors !==  null ? 'smw-type-errors' : 'smw-type-list'
 		);
 
-		$htmlTabs->tab( 'smw-type-list', $this->msg( 'smw-type-tab-properties' ) );
+		$htmlTabs->tab( 'smw-type-list', $this->msg( 'smw-type-tab-properties' ) . $itemCount );
 		$htmlTabs->content( 'smw-type-list', "<div>$html</div>" );
 
 		$htmlTabs->tab(

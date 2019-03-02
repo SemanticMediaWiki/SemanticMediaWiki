@@ -357,7 +357,7 @@ class SQLStoreFactory {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyTableInfoFetcher = new PropertyTableInfoFetcher(
-			new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) )
+			$this->newPropertyTypeFinder()
 		);
 
 		$propertyTableInfoFetcher->setCustomFixedPropertyList(
@@ -797,6 +797,15 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return PropertyTypeFinder
+	 */
+	public function newPropertyTypeFinder() {
+		return new PropertyTypeFinder( $this->store->getConnection( 'mw.db' ) );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return ServicesContainer
@@ -828,6 +837,10 @@ class SQLStoreFactory {
 				'MissingRedirectLookup' => [
 					'_service' => [ $this, 'newMissingRedirectLookup' ],
 					'_type'    => MissingRedirectLookup::class
+				],
+				'PropertyTypeFinder' => [
+					'_service' => [ $this, 'newPropertyTypeFinder' ],
+					'_type'    => PropertyTypeFinder::class
 				],
 				'PropertyTableIdReferenceFinder' => function() {
 					static $singleton;

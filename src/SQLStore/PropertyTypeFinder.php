@@ -45,6 +45,31 @@ class PropertyTypeFinder {
 	}
 
 	/**
+	* @since 3.1
+	*
+	* @param string $type
+	*
+	* @return integer
+	*/
+	public function countByType( $type ) {
+
+		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
+			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
+		}
+
+		$row = $this->connection->selectRow(
+			PropertyTableDefinitionBuilder::makeTableName( '_TYPE' ),
+			'COUNT(*) AS count',
+			[
+				'o_serialized' => $type
+			],
+			__METHOD__
+		);
+
+		return isset( $row->count ) ? (int)$row->count : 0;
+	}
+
+	/**
 	* @since 2.5
 	*
 	* @param DIProperty $property
