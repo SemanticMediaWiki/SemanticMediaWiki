@@ -26,11 +26,11 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->containerBuilder->registerObject( 'PageCreator', $pageCreator );
+		$this->containerBuilder->registerObject( 'TitleFactory', $titleFactory );
 
 		$importStringSource = $this->getMockBuilder( '\ImportStringSource' )
 			->disableOriginalConstructor()

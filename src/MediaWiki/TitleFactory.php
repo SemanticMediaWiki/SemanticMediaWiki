@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki;
 
 use Title;
+use WikiFilePage;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -49,6 +51,7 @@ class TitleFactory {
 	public function newFromIDs( $ids ) {
 		return Title::newFromIDs( $ids );
 	}
+
 	/**
 	 * @since 3.0
 	 *
@@ -61,6 +64,28 @@ class TitleFactory {
 	 */
 	public function makeTitleSafe( $ns, $title, $fragment = '', $interwiki = '' ) {
 		return Title::makeTitleSafe( $ns, $title, $fragment, $interwiki );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title $title
+	 *
+	 * @return WikiPage
+	 */
+	public function createPage( Title $title ) {
+		return WikiPage::factory( $title );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title $title
+	 *
+	 * @return WikiFilePage
+	 */
+	public function createFilePage( Title $title ) {
+		return new WikiFilePage( $title );
 	}
 
 }
