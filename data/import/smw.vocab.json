@@ -8,7 +8,7 @@
 				"importFrom": "/vocabularies/skos.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -18,7 +18,7 @@
 				"importFrom": "/vocabularies/foaf.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -28,7 +28,7 @@
 				"importFrom": "/vocabularies/owl.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -38,7 +38,7 @@
 				"importFrom": "/properties/foaf.knows.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -48,7 +48,7 @@
 				"importFrom": "/properties/foaf.name.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -58,7 +58,7 @@
 				"importFrom": "/properties/foaf.homepage.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		},
 		{
@@ -68,7 +68,7 @@
 				"importFrom": "/properties/owl.differentFrom.txt"
 			},
 			"options": {
-				"canReplace": false
+				"replaceable": false
 			}
 		}
 	],

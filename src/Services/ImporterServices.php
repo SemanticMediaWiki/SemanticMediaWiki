@@ -55,7 +55,7 @@ return [
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
 
 		$textContentCreator = new TextContentCreator(
-			$containerBuilder->create( 'PageCreator' ),
+			$containerBuilder->create( 'TitleFactory' ),
 			$connectionManager->getConnection( 'mw.db' )
 		);
 
