@@ -39,13 +39,12 @@ class Deserializer {
 			$text
 		);
 
+		// default
+		$label = '';
 		$data = null;
 
 		if ( $printRequestLabel === '' ) { // print "this"
 			$printmode = PrintRequest::PRINT_THIS;
-
-			// default
-			$label = '';
 
 			// Distinguish the case of an empty format
 			if ( $outputFormat === '' ) {
@@ -54,17 +53,24 @@ class Deserializer {
 
 		} elseif ( self::isCategory( $printRequestLabel ) ) { // print categories
 			$printmode = PrintRequest::PRINT_CATS;
-			$label = $showMode ? '' : Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ); // default
-		} elseif ( PropertyChainValue::isChained( $printRequestLabel ) ) {
 
-			$data = DataValueFactory::getInstance()->newDataValueByType( PropertyChainValue::TYPE_ID );
+			if ( $showMode === false ) {
+				$label = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+			}
+		} elseif ( PropertyChainValue::isChained( $printRequestLabel ) ) {
+			$printmode = PrintRequest::PRINT_CHAIN;
+
+			$data = DataValueFactory::getInstance()->newDataValueByType(
+				PropertyChainValue::TYPE_ID
+			);
+
 			$data->setUserValue( $printRequestLabel );
 
-			$printmode = PrintRequest::PRINT_CHAIN;
-			$label = $showMode ? '' : $data->getLastPropertyChainValue()->getWikiValue();  // default
-
+			if ( $showMode === false ) {
+				$label = $data->getLastPropertyChainValue()->getWikiValue();
+			}
 		} else { // print property or check category
-			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY ); // trim needed for \n
+			$title = Title::newFromText( $printRequestLabel, SMW_NS_PROPERTY );
 
 			// not a legal property/category name; give up
 			if ( $title === null ) {
@@ -74,14 +80,26 @@ class Deserializer {
 			if ( $title->getNamespace() == NS_CATEGORY ) {
 				$printmode = PrintRequest::PRINT_CCAT;
 				$data = $title;
-				$label = $showMode ? '' : $title->getText();  // default
-			} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
+
+				if ( $showMode === false ) {
+					$label = $title->getText();
+				}
+			} else {
 				$printmode = PrintRequest::PRINT_PROP;
-				$data = DataValueFactory::getInstance()->newPropertyValueByLabel( $printRequestLabel );
+
+				// Enforce interpretation as property (even if it starts with
+				// something that looks like another namespace)
+				$data = DataValueFactory::getInstance()->newPropertyValueByLabel(
+					$printRequestLabel
+				);
+
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;
 				}
-				$label = $showMode ? '' : $data->getWikiValue();  // default
+
+				if ( $showMode === false ) {
+					$label = $data->getWikiValue();
+				}
 			}
 		}
 
@@ -123,12 +141,14 @@ class Deserializer {
 
 	private static function isCategory( $text ) {
 
+		$text = mb_convert_case( $text, MB_CASE_TITLE );
+
 		// Check for the canonical form (singular, plural)
 		if ( $text == 'Category' || $text == 'Categories' ) {
 			return true;
 		}
 
-		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $text, MB_CASE_TITLE );
+		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == $text;
 	}
 
 	private static function getPartsFromText( $text ) {
