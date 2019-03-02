@@ -58,7 +58,7 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 		if ( $uri instanceof DIUri ) {
 			$expData->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'skos', 'relatedMatch' ),
-				$this->exporter->getDataItemExpElement( $uri )
+				$this->exporter->newExpElement( $uri )
 			);
 		}
 	}

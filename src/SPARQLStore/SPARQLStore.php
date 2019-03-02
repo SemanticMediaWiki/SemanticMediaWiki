@@ -130,8 +130,8 @@ class SPARQLStore extends Store {
 
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
-		$oldExpResource = Exporter::getInstance()->getDataItemExpElement( $oldWikiPage );
-		$newExpResource = Exporter::getInstance()->getDataItemExpElement( $newWikiPage );
+		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
+		$newExpResource = Exporter::getInstance()->newExpElement( $newWikiPage );
 		$namespaces = [ $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() ];
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = TurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
@@ -244,7 +244,7 @@ class SPARQLStore extends Store {
 
 		$extraNamespaces = [];
 
-		$expResource = Exporter::getInstance()->getDataItemExpElement( $dataItem );
+		$expResource = Exporter::getInstance()->newExpElement( $dataItem );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		if ( $expResource instanceof ExpNsResource ) {
