@@ -619,14 +619,7 @@ class SemanticData {
 		// Find and remove associated assignments (e.g. _ASK as subobject
 		// contains _ASKSI ...)
 		foreach ( $this->mPropVals[$key] as $dataItem ) {
-
-			if ( !$dataItem instanceof DIWikiPage || $dataItem->getSubobjectName() === '' ) {
-				continue;
-			}
-
-			if ( ( $subSemanticData = $this->findSubSemanticData( $dataItem->getSubobjectName() ) ) !== null ) {
-				$this->removeSubSemanticData( $subSemanticData );
-			}
+			$this->removePropertyObjectValue( $property, $dataItem );
 		}
 
 		unset( $this->mPropVals[$key] );
