@@ -15,7 +15,8 @@ tools:
     php_analyzer: true
     sensiolabs_security_checker: true
     external_code_coverage:
-        timeout: 1800 # Timeout in seconds
+        timeout: 3600 # Timeout in seconds
+        runs: 4 # Split tests across multiple runs
 
 checks:
     php:

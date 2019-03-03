@@ -28,10 +28,16 @@
         </testsuite>
         <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
-            <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
-            <exclude>tests/phpunit/Integration/System</exclude>
         </testsuite>
-        <testsuite name="semantic-mediawiki-import">
+        <testsuite name="semantic-mediawiki-integration-others">
+            <directory>tests/phpunit/Integration</directory>
+            <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
+            <exclude>tests/phpunit/Integration/JSONScript</exclude>
+        </testsuite>
+        <testsuite name="semantic-mediawiki-integration-jsonscript">
+            <directory>tests/phpunit/Integration/JSONScript</directory>
+        </testsuite>
+        <testsuite name="semantic-mediawiki-integration-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-system">

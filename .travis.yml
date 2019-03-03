@@ -8,44 +8,14 @@ dist: trusty
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_29; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; PHPUNIT=5.7.*; TYPE=coverage; COVERAGE_FILTER="--testsuite semantic-mediawiki-unit"
       php: 7.1
-    - env: DB=mysql; MW=master; PHPUNIT=6.5.*
-      php: 7.3
-    - env: DB=mysql; MW=REL1_28; FUSEKI=2.4.0; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; VIRTUOSO=6.1; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; SESAME=2.8.7; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=sqlite; MW=REL1_27; SITELANG=ja; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=postgres; MW=REL1_31; PHPUNIT=6.5.*
-      php: 7.2
-    - env: DB=mysql; MW=REL1_27; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; PHPUNIT=5.7.*; TYPE=coverage; COVERAGE_FILTER="--testsuite semantic-mediawiki-integration-jsonscript"
       php: 7.1
-    - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
-      php: 7.2
-    - env: DB=sqlite; MW=REL1_32; PHPUNIT=6.5.*
-      php: 7.3
-    - env: DB=sqlite; MW=REL1_27; TYPE=composer; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; TYPE=relbuild; PHPUNIT=4.8.*
-      php: 5.6
-  allow_failures:
-    # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=mysql; MW=REL1_27; TYPE=relbuild; PHPUNIT=4.8.*
-    # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=sqlite; MW=REL1_27; TYPE=composer; PHPUNIT=4.8.*
-    # This is MW master, you never know what WMF developers have put in for easter eggs, same for PHP conversely
-    - env: DB=mysql; MW=master; PHPUNIT=6.5.*
-    # May take a moment and is non-critical therefore allow it to run without delaying the status
-    - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
-    - env: DB=mysql; MW=REL1_27; SESAME=2.8.7
-    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
-
+    - env: DB=mysql; MW=REL1_31; PHPUNIT=5.7.*; TYPE=coverage; COVERAGE_FILTER="--testsuite semantic-mediawiki-integration-import"
+      php: 7.1
+    - env: DB=mysql; MW=REL1_31; PHPUNIT=5.7.*; TYPE=coverage; COVERAGE_FILTER="--testsuite semantic-mediawiki-integration-others"
+      php: 7.1
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
@@ -71,18 +41,20 @@ install:
   - bash ./tests/travis/install-semantic-mediawiki.sh
 
 before_script:
+  # https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received
+  - while sleep 9m; do echo ". [ $SECONDS seconds still running ] ."; done &
   - bash ./tests/travis/update-configuration-settings.sh
 
 script:
   - bash ./tests/travis/run-tests.sh
 
 after_script:
+  - bash ./tests/travis/upload-coverage-report.sh
   - if [ ls /tmp/stacktrace* 1> /dev/null 2>&1 ] ; then cat /tmp/stacktrace*.log ; fi
   - if [ -f php.log ] ; then cat php.log ; fi
   - if [ -f /tmp/mediawiki-debug.log ] ; then cat /tmp/mediawiki-debug.log ; fi
 
 after_success:
-  - bash ./tests/travis/upload-coverage-report.sh
 
 cache:
   directories:
