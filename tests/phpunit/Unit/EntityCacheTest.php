@@ -43,6 +43,18 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 			EntityCache::CACHE_NAMESPACE,
 			$instance->makeCacheKey( 'Foo' )
 		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->assertEquals(
+			$instance->makeCacheKey( $subject ),
+			$instance->makeCacheKey( 'Foo#0##' )
+		);
+
+		$this->assertEquals(
+			$instance->makeCacheKey( $subject->getTitle() ),
+			$instance->makeCacheKey( 'Foo#0##' )
+		);
 	}
 
 	public function testFetch() {
