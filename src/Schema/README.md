@@ -1,3 +1,5 @@
+## Objective
+
 The objective of the `SMW_NS_SCHEMA` (aka Schema) namespace is to allow for a structured definition of different schemata where types define the interpreter, syntax elements, and constraints.
 
 The namespace expects a JSON format (or if available, YAML as superset of JSON) as input format to ensure that content elements are structured and a validation a [JSON schema][json:schema] can help enforce requirements and constraints for a specific type.
@@ -18,15 +20,15 @@ Extensibility for new schema types and interpreters is provided by adding a type
 $GLOBALS['smwgSchemaTypes'] = [
 	'LINK_FORMAT_schema' => [
 		'validator_schema => __DIR__ . '/data/schema/...',
-		'group' => SMW_schema_GROUP_FORMAT,
+		'group' => SMW_SCHEMA_GROUP_FORMAT,
 	]
 ];
 </pre>
 
 [json:schema]: http://json-schema.org/
 
-## Availble schema types
+## Available schema types
 
-- [LINK_FORMAT_SCHEMA]
-- [SEARCH_FORM_SCHEMA]
-- [PROPERTY_GROUP_SCHEMA](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)
+- [`LINK_FORMAT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/link.format.md)
+- [`SEARCH_FORM_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/search.form.md)
+- [`PROPERTY_GROUP_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)
