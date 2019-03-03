@@ -272,6 +272,8 @@ class Hooks {
 	 */
 	public function onParserAfterTidy( &$parser, &$text ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$parserAfterTidy = new ParserAfterTidy(
 			$parser
 		);
@@ -285,6 +287,10 @@ class Hooks {
 		// or update the Store
 		$parserAfterTidy->isReadOnly(
 			Site::isBlocked()
+		);
+
+		$parserAfterTidy->setLogger(
+			$applicationFactory->getMediaWikiLogger()
 		);
 
 		$parserAfterTidy->process( $text );

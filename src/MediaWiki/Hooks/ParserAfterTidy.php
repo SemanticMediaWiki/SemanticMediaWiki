@@ -107,6 +107,14 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
+		// Allow to perform even without a `[[...::...]]` text so that a change
+		// (such as an approved file version) is run through the annotation and
+		// update process
+		// @see SemanticApprovedRevs#2
+		if ( $title->getNamespace() === NS_FILE ) {
+			return true;
+		}
+
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
@@ -153,7 +161,7 @@ class ParserAfterTidy extends HookHandler {
 		// Only carry out a purge where the InTextAnnotationParser have set
 		// an appropriate context reference otherwise it is assumed that the hook
 		// call is part of another non SMW related parse
-		if ( $subject->getContextReference() !== null || $subject->getNamespace() === SMW_NS_SCHEMA ) {
+		if ( $subject->getContextReference() !== null || $subject->getNamespace() === NS_FILE ) {
 			$this->checkPurgeRequest( $parserData );
 		}
 	}
