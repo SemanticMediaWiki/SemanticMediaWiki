@@ -153,6 +153,28 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
+
+		$wikiPage->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $parameters['title'] ) );
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->any() )
+			->method( 'createPage' )
+			->will( $this->returnValue( $wikiPage ) );
+
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
+
 		$cache = $this->newMockCache(
 			$parameters['title']->getArticleID(),
 			$parameters['cache-contains'],
@@ -318,16 +340,28 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 NS_FILE, no store update
+		#3 NS_FILE, store update
 		$store = $this->getMockBuilder( 'SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->never() )
+		$store->expects( $this->atLeastOnce() )
 			->method( 'updateData' );
 
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$title = MockTitle::buildMock( __METHOD__ );
+
+		$title->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$title->expects( $this->any() )
+			->method( 'getRestrictions' )
+			->will( $this->returnValue( [] ) );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )
@@ -337,10 +371,16 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_FILE ) );
 
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getArticleID' )
+			->will( $this->returnValue( 3001 ) );
+
+
 		$provider[] = [
 			[
 				'store'    => $store,
 				'title'    => $title,
+				'revision' => $revision,
 				'cache-contains' => true,
 				'cache-fetch'    => true,
 				'data-status' => true
