@@ -1825,11 +1825,15 @@ return [
 	# Listed characters are categorized as invalid for a property label and will
 	# result in an error.
 	#
-	# @see #1568, #1638, 3134
+	# @see #1568, #1638, #3134
 	#
 	# @since 2.5
 	##
-	'smwgPropertyInvalidCharacterList' => [ '[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n" ],
+	'smwgPropertyInvalidCharacterList' => [
+		// Common characters
+		'[', ']' , '|' , '<' , '>', '{', '}', '+', '–', '%', "\r", "\n",
+		'?', '*', '!'
+	],
 	##
 
 	##
