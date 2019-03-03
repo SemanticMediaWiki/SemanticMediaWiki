@@ -1,0 +1,75 @@
+{
+	"description": "Test category printrequest (`PRINT_CCAT`, `PRINT_CATS`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P0917",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "P0917",
+			"contents": "..."
+		},
+		{
+			"page": "P0917/1",
+			"contents": "[[P0917::123]] [[Category:P0917]]"
+		},
+		{
+			"page": "P0917/2",
+			"contents": "[[P0917::123]]"
+		},
+		{
+			"page": "P0917/Q.1",
+			"contents": "{{#ask: [[P0917::123]] |?Category:P0917 }}"
+		},
+		{
+			"page": "P0917/Q.2",
+			"contents": "{{#ask: [[P0917::123]] |?category }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (a match to `?Category:P0917` produces `X`)",
+			"subject": "P0917/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a>",
+					"<td class=\"P0917 smwtype_boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
+					"<td class=\"P0917 smwtype_boo\" data-sort-value=\"0\">&#160;</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (display categories as literal)",
+			"subject": "P0917/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=\".*/P0917/1\" title=\"P0917/1\">P0917/1</a></td>",
+					"<td class=\"Category smwtype_wpg\"><a href=\".*/Category:P0917\" title=\"Category:P0917\">P0917</a>",
+					"<td class=\"smwtype_wpg\"><a href=\".*/P0917/2\" title=\"P0917/2\">P0917/2</a></td>",
+					"<td class=\"Category smwtype_wpg\"></td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -82,8 +82,11 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		#3
-		 // Category
-		$categoryName = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		// Category
+		$categoryName = Localizer::getInstance()->getNamespaceTextById(
+			NS_CATEGORY
+		);
+
 		$provider[] = [
 			'Category',
 			false,
@@ -94,7 +97,22 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		#4
-		 // Category
+		// Category
+		$categoryName = Localizer::getInstance()->getNamespaceTextById(
+			NS_CATEGORY
+		);
+
+		$provider[] = [
+			'category',
+			false,
+			$categoryName,
+			PrintRequest::PRINT_CATS,
+			null,
+			''
+		];
+
+		#5
+		// Category
 		$provider[] = [
 			'Categories',
 			false,
@@ -104,7 +122,28 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#5
+		#6
+		// "... ask for one particular category ... contains X for all pages
+		// that directly belong to that category ..."
+		$label = Localizer::getInstance()->createTextWithNamespacePrefix(
+			NS_CATEGORY,
+			'Foo'
+		);
+
+		$provider[] = [
+			$label,
+			false,
+			// Label
+			'Foo',
+			// Mode
+			PrintRequest::PRINT_CCAT,
+			//DataInstance
+			null,
+			// OutputFormat
+			'x'
+		];
+
+		#7
 		$provider[] = [
 			'Bar#foobar',
 			false,
@@ -114,7 +153,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'foobar'
 		];
 
-		#6
+		#8
 		$provider[] = [
 			'Foo#',
 			false,
@@ -124,7 +163,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'-'
 		];
 
-		#7, 1464
+		#9, 1464
 		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,
@@ -134,7 +173,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>'
 		];
 
-		#8
+		#10
 		$provider[] = [
 			'Foo.Bar',
 			false,
@@ -144,7 +183,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#9
+		#11
 		$provider[] = [
 			'Foo.Bar#foobar',
 			false,
@@ -154,7 +193,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'foobar'
 		];
 
-		#10 ...
+		#12
 		$provider[] = [
 			'Foo = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
@@ -164,7 +203,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#11 ...
+		#13
 		$provider[] = [
 			'Foo#Bar = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
@@ -174,7 +213,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'Bar'
 		];
 
-		#12 #481
+		#14 #481
 		$provider[] = [
 			'#=Foo',
 			false,
@@ -184,7 +223,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#13 #481
+		#15 #481
 		$provider[] = [
 			'#=Foo#',
 			false,
@@ -194,7 +233,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'-'
 		];
 
-		#13 #481
+		#16 #481
 		$provider[] = [
 			'#=Foo#-',
 			false,
