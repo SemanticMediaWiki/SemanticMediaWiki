@@ -153,13 +153,21 @@ class DataUpdater {
 	 */
 	public function isSkippable( Title $title ) {
 
+		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+
+		// Allow a third-party extension to suppress the update process
+		// @see SemanticApprovedRevs
+		if ( \Hooks::run( 'SMW::DataUpdater::SkipUpdate', [ $title, $latestRevID ] ) === false ) {
+			return true;
+		}
+
 		$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
 			$title->getDBKey(),
 			$title->getNamespace(),
 			$title->getInterwiki()
 		);
 
-		return $associatedRev == $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+		return $associatedRev == $latestRevID;
 	}
 
 	/**
