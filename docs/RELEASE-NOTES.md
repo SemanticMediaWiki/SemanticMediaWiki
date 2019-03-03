@@ -17,6 +17,7 @@ Changes to the DB are triggered by #3644.
 ### Setup
 
 * [#3605](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3605) Conditionally create the full-text ([`smw_ft_search`](https://www.semantic-mediawiki.org/wiki/Table:smw_ft_search)) table
+* [#3738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3738) Show an "in maintenance" message while the [upgrade](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) is progressing
 
 ### Store
 
@@ -58,10 +59,14 @@ Changes to the DB are triggered by #3644.
 * [#3720](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3720) Addd `Special:MissingRedirectAnnotations` to show [missing redirect annotations](https://www.semantic-mediawiki.org/wiki/Help:Missing_redirect_annotations)
 * [#3733](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3733) Added support for enforced property [parent type inheritance](https://www.semantic-mediawiki.org/wiki/Help:Mandatory_parent_datatype_inheritance) (disabled by default, can be enabled using the [`$smwgMandatorySubpropertyParentTypeInheritance`](https://www.semantic-mediawiki.org/wiki/Help:$smwgMandatorySubpropertyParentTypeInheritance) setting)
 * [#3735](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3735) Added declaration check for when multiple `Has fields` declarations are used
+* [#3747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3747) Added an option to define `LAST_EDITOR`, `IS_IMPORTER`
+* [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added `PROPERTY_GROUP_SCHEMA` as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
+* [#3751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3751) Added `?`, `*`, and `!` as invalid characters for a property name
+* [#3756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3756) Added properties count in use for a specific type to `Special:Types`
 
 ## Bug fixes
 
-...
+* [#3750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3750) Checks whether the sort argument can be accessed or not in the datatable
 
 ## Breaking changes and deprecations
 
@@ -79,7 +84,8 @@ Changes to the DB are triggered by #3644.
 * [#3712](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3712) Uses `smw_rev` field to check if an update is skippable
 * [#3721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3721) Added index hint for page types
 * [#3723](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3723) Added prefetch support for the property value list retrievable
-
+* [#3739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3739) Added the `SMW::Factbox::OverrideRevisionID` hook
+* [#3762](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3762) Added the `SMW::DataUpdater::SkipUpdate` hook
 
 ## Contributors
 
