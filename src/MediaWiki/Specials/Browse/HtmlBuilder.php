@@ -368,9 +368,11 @@ class HtmlBuilder {
 		$diProperties = $semanticData->getProperties();
 
 		$showGroup = $this->getOption( 'showGroup' ) && $this->getOption( 'group' ) !== 'hide';
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$groupFormatter = new GroupFormatter(
-			ApplicationFactory::getInstance()->getPropertySpecificationLookup()
+			$applicationFactory->getPropertySpecificationLookup(),
+			$applicationFactory->singleton( 'SchemaFactory' )->newSchemaFinder( $this->store )
 		);
 
 		$groupFormatter->showGroup( $showGroup );

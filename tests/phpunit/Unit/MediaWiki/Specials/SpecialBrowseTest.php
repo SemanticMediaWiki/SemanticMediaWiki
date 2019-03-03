@@ -31,6 +31,10 @@ class SpecialBrowseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}

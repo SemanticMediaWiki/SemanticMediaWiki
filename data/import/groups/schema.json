@@ -1,0 +1,22 @@
+{
+    "type": "PROPERTY_GROUP_SCHEMA",
+    "manifest_version": 1,
+    "groups": {
+        "schema_properties": {
+            "group_name": "Schema properties",
+            "msg_key": "smw-property-group-label-schema-group",
+            "property_list": [
+                "_SCHEMA_TYPE",
+                "_SCHEMA_DEF",
+                "_SCHEMA_DESC",
+                "_SCHEMA_TAG",
+                "_SCHEMA_LINK",
+                "_FORMAT_SCHEMA"
+            ]
+        }
+    },
+    "tags": [
+        "group",
+        "property group"
+    ]
+}

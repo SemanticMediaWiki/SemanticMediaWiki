@@ -47,6 +47,10 @@ class SubjectLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $semanticData ) );
 
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
 		$instance = new SubjectLookup(
 			$this->store
 		);

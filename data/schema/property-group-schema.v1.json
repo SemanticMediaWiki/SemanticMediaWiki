@@ -1,0 +1,99 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_GROUP_SCHEMA",
+	"type": "object",
+	"title": "Property group validation schema",
+	"required": [
+		"type",
+		"groups"
+	],
+	"properties": {
+		"type": {
+			"$id": "#/properties/type",
+			"type": "string",
+			"enum": [
+				"PROPERTY_GROUP_SCHEMA"
+			],
+			"title": "Schema type",
+			"default": "PROPERTY_GROUP_SCHEMA"
+		},
+		"manifest_version": {
+			"$id": "#/properties/manifest_version",
+			"type": "number",
+			"title": "Manifest version",
+			"default": 1
+		},
+		"tags": {
+			"$id": "#/properties/tags",
+			"type": "array",
+			"title": "tags",
+			"default": null,
+			"items": {
+				"$id": "#/properties/tags/items",
+				"type": "string",
+				"title": "tags, keywords etc.",
+				"default": "",
+				"pattern": "^(.*)$"
+			}
+		},
+		"groups": {
+			"$id": "#/properties/groups",
+			"type": "object",
+			"title": "group list",
+			"minProperties": 1,
+			"propertyNames": {
+				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+			},
+			"additionalProperties": {
+				"$ref": "#/definitions/group"
+			}
+		}
+	},
+	"definitions": {
+		"msg_key": {
+			"type": "string",
+			"title": "message key/label",
+			"default": "",
+			"examples": [
+				"smw-property-group-label-schema-group"
+			],
+			"pattern": "^(smw|sesp|sbl|scite|sg)-property-group-label-(.*)$"
+		},
+		"group_name": {
+			"type": "string",
+			"title": "Simple group label",
+			"default": "",
+			"pattern": "^(.*)$"
+		},
+		"property_list": {
+			"type": "array",
+			"title": "property list",
+			"minItems": 1,
+			"items": {
+				"type": "string",
+				"title": "property",
+				"default": "",
+				"pattern": "^(.*)$"
+			}
+		},
+		"group": {
+			"type": "object",
+			"title": "group",
+			"properties": {
+				"msg_key": {
+					"$ref": "#/definitions/msg_key"
+				},
+				"group_name": {
+					"$ref": "#/definitions/group_name"
+				},
+				"property_list": {
+					"$ref": "#/definitions/property_list"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"property_list"
+			]
+		}
+	}
+}

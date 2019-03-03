@@ -18,11 +18,16 @@ use SMW\MediaWiki\Specials\Browse\GroupFormatter;
 class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertySpecificationLookup;
+	private $schemaFinder;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -31,7 +36,7 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GroupFormatter::class,
-			new GroupFormatter( $this->propertySpecificationLookup )
+			new GroupFormatter( $this->propertySpecificationLookup, $this->schemaFinder )
 		);
 	}
 
@@ -41,8 +46,21 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyGroup' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
 
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaList->expects( $this->any() )
+			->method( 'getList' )
+			->will( $this->returnValue( [] ) );
+
+		$this->schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
 		$instance = new GroupFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
 		);
 
 		$properties = [
@@ -70,14 +88,92 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testFindGroupMembershipFromSchema() {
+
+		$data = [
+			'Foo_schema' => [ 'properties' => [ 'Foo' ] ]
+		];
+
+		$schemaDefinition = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaDefinition->expects( $this->any() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'Foo schema' ) );
+
+		$schemaDefinition->expects( $this->any() )
+			->method( 'get' )
+			->with( $this->equalTo( 'groups') )
+			->will( $this->returnValue( $data ) );
+
+		$this->propertySpecificationLookup->expects( $this->any() )
+			->method( 'getPropertyGroup' )
+			->will( $this->returnValue( null ) );
+
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaList->expects( $this->any() )
+			->method( 'getList' )
+			->will( $this->returnValue( [ $schemaDefinition ] ) );
+
+		$this->schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
+		$instance = new GroupFormatter(
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
+		);
+
+		$properties = [
+			new DIProperty( 'Foo' )
+		];
+
+		$instance->findGroupMembership( $properties );
+
+		$this->assertTrue(
+			$instance->hasGroups()
+		);
+
+		$this->assertTrue(
+			$instance->isLastGroup( 'Foo schema' )
+		);
+
+		$this->assertArrayHasKey(
+			'Foo schema',
+			$properties
+		);
+
+		$this->assertContains(
+			'<span class="group-link">',
+			$instance->getGroupLink( 'Foo schema' )
+		);
+	}
+
 	public function testFindGroupMembershipWhereShowGroupIsDisabled() {
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
 
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaList->expects( $this->any() )
+			->method( 'getList' )
+			->will( $this->returnValue( [] ) );
+
+		$this->schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
 		$instance = new GroupFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
 		);
 
 		$instance->showGroup( false );
@@ -100,7 +196,8 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testGetMessageClassLink() {
 
 		$instance = new GroupFormatter(
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->schemaFinder
 		);
 
 		$di = new DIWikiPage( 'Foo bar', NS_CATEGORY );
