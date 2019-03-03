@@ -1,0 +1,77 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://www.semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/**
+ * Special:Preferences
+ */
+fieldset#mw-prefsection-smw-general-options,
+fieldset#mw-prefsection-smw-ask-options,
+fieldset#mw-prefsection-smw-srf {
+	border: 0px solid #2a4b8d;
+	border-top: 1px solid #ddd;
+	margin-top: -5px;
+	margin-bottom: 1px;
+	padding-bottom: 5px;
+	box-shadow: 0;
+}
+
+fieldset#mw-prefsection-smw-general-options .htmlform-tip,
+fieldset#mw-prefsection-smw-ask-options .htmlform-tip,
+fieldset#mw-prefsection-smw-srf .htmlform-tip{
+	padding-left: 25px !important;
+}
+
+#mw-prefsection-smw-general-options legend,
+#mw-prefsection-smw-ask-options legend {
+	font-weight: 100;
+}
+
+#mw-prefsection-smw-srf.oo-ui-layout legend::before {
+	content: '' !important;
+}
+
+#mw-prefsection-smw .oo-ui-fieldsetLayout-header {
+	float: unset !important;
+	width: unset !important;
+	margin-bottom: 10px;
+}
+
+#mw-prefsection-smw .oo-ui-labelElement-label {
+	margin-bottom: unset !important;
+	margin-right: 10px;
+}
+
+#mw-prefsection-smw .oo-ui-panelLayout-framed {
+	margin-top: 15px !important;
+}
+
+#mw-prefsection-smw-general-options.oo-ui-layout,
+#mw-prefsection-smw-ask-options.oo-ui-layout,
+#mw-prefsection-smw-srf.oo-ui-layout {
+	margin-top: 5px;
+}

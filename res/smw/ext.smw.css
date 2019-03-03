@@ -1056,32 +1056,3 @@ a.smw-ask-action-btn-dblue:focus {
 .mw-json .value, .mw-json-single-value {
     word-break: break-word;
 }
-
-/**
- * User preference
- */
-fieldset#mw-prefsection-smw-general-options,
-fieldset#mw-prefsection-smw-ask-options,
-fieldset#mw-prefsection-smw-srf {
-	border: 0px solid #2a4b8d;
-	border-top: 1px solid #ddd;
-	margin-top: -5px;
-	margin-bottom: 1px;
-	padding-bottom: 5px;
-	box-shadow: 0;
-}
-
-fieldset#mw-prefsection-smw-general-options .htmlform-tip,
-fieldset#mw-prefsection-smw-ask-options .htmlform-tip,
-fieldset#mw-prefsection-smw-srf .htmlform-tip{
-	padding-left: 25px !important;
-}
-
-#mw-prefsection-smw-general-options legend,
-#mw-prefsection-smw-ask-options legend {
-	font-weight: 100;
-}
-
-#mw-prefsection-smw-srf legend::before {
-	content: '▼ ';
-}
