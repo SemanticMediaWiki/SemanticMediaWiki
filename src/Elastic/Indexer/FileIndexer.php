@@ -8,6 +8,7 @@ use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Store;
@@ -79,10 +80,13 @@ class FileIndexer {
 	 *
 	 * @param File|null $file
 	 */
-	public function pushIngestJob( Title $title ) {
+	public function pushIngestJob( Title $title, array $params = [] ) {
+
+		$params = $params + [ 'waitOnCommandLine' => true ];
 
 		$fileIngestJob = new FileIngestJob(
-			$title
+			$title,
+			array_merge( $params, FileIngestJob::newRootJobParams( 'smw.fileIngestJob', $title ) )
 		);
 
 		$fileIngestJob->lazyPush();
@@ -154,6 +158,19 @@ class FileIndexer {
 	 */
 	public function index( DIWikiPage $dataItem, File $file = null ) {
 
+		$title = $dataItem->getTitle();
+
+		// Allow any third-party extension to modify the file used as base for
+		// the index process
+		\Hooks::run( 'SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete', [ $title, &$file ] );
+
+		if ( $file !== null && isset( $file->file_sha1 ) ) {
+			$this->logger->info(
+				[ 'File indexer', 'Forced file_sha1 change: {file_sha1}' ],
+				[ 'file_sha1' => $file->file_sha1 ]
+			);
+		}
+
 		if ( $dataItem->getId() == 0 ) {
 			$dataItem->setId( $this->indexer->getId( $dataItem ) );
 		}
@@ -188,7 +205,7 @@ class FileIndexer {
 		$connection->ingest()->putPipeline( $params );
 
 		if ( $file === null ) {
-			$file = wfFindFile( $dataItem->getTitle() );
+			$file = wfFindFile( $title );
 		}
 
 		if ( $file === false || $file === null ) {
@@ -253,12 +270,14 @@ class FileIndexer {
 
 		$context['response'] = $connection->index( $params );
 		$context['procTime'] = microtime( true ) + $time;
+		$context['file_sha1'] = $sha1;
 
 		$msg = [
 			'File indexer',
 			'Ingest process completed ({subject})',
 			'procTime (in sec): {procTime}',
-			'Response: {response}'
+			'Response: {response}',
+			'file_sha1:{file_sha1}'
 		];
 
 		$this->logger->info( $msg, $context );
@@ -361,7 +380,9 @@ class FileIndexer {
 
 		// Remove any existing `_FILE_ATTCH` in case it was a reupload with a different
 		// content sha1
-		$semanticData->removeProperty( $property );
+		foreach ( $semanticData->getPropertyValues( $property ) as $pv ) {
+			$semanticData->removePropertyObjectValue( $property, $pv );
+		}
 
 		$semanticData->addPropertyObjectValue(
 			$property,
@@ -369,6 +390,7 @@ class FileIndexer {
 		);
 
 		$callableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function() use( $store, $semanticData, $attachmentAnnotator ) {
+
 			// Update the SQLStore with the annotated information which will NOT
 			// trigger another ES index update BUT ...
 			$store->updateData( $semanticData );

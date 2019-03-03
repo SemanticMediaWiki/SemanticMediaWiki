@@ -428,6 +428,23 @@ Hooks::register( 'SMW::DataUpdater::SkipUpdate', function( $title, $latestRevID 
 } );
 </pre>
 
+## SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete
+
+* Version: 3.1
+* Description: Hook allows to forcibly change the file version used for the ingest process.
+* Reference class: `SMW\Elastic\Indexer\FileIndexer`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete', function( $title, &$file ) {
+
+	// $file = ...;
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.

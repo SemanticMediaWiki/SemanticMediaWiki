@@ -270,8 +270,8 @@ class ElasticStore extends SQLStore {
 			]
 		);
 
-		if ( $subject->getNamespace() === NS_FILE && $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
-			$this->indexer->getFileIndexer()->pushIngestJob( $subject->getTitle() );
+		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
+			$this->ingestFile( $subject->getTitle() );
  		}
 	}
 
@@ -373,6 +373,15 @@ class ElasticStore extends SQLStore {
 		return [
 			'SMWElasticStore' => $database->getInfo() + [ 'es' => $client->getVersion() ]
 		];
+	}
+
+	private function ingestFile( $title, array $params = [] ) {
+
+		if ( $title->getNamespace() !== NS_FILE ) {
+			return;
+		}
+
+		$this->indexer->getFileIndexer()->pushIngestJob( $title, $params );
 	}
 
 }
