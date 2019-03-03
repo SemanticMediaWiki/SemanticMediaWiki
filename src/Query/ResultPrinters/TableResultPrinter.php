@@ -362,7 +362,7 @@ class TableResultPrinter extends ResultPrinter {
 	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
 
 		$tableAttrs['width'] = '100%';
-		$tableAttrs['style'] = 'opacity:.0';
+		$tableAttrs['style'] = 'opacity:.0; display:none;';
 
 		$tableAttrs['data-column-sort'] = json_encode(
 			[
