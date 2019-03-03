@@ -24,3 +24,9 @@ $GLOBALS['smwgSchemaTypes'] = [
 </pre>
 
 [json:schema]: http://json-schema.org/
+
+## Availble schema types
+
+- [LINK_FORMAT_SCHEMA]
+- [SEARCH_FORM_SCHEMA]
+- [PROPERTY_GROUP_SCHEMA](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)

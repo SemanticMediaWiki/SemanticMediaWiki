@@ -20,6 +20,7 @@ This document collects technical resources to help improve the understanding of 
   - [Importer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Importer/README.md) contains a summary about the process and technical background of the content importer
   - [Lang](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Lang/README.md)
   - [Serializers](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.serializers.md) contains information about the Semantic MediaWiki serializers
+  - [Schema](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/README.md) contains information about schemata provided by Semantic MediaWiki
   - MediaWiki
     - [API](api.md) provides an overview for available API modules
     - [Hooks](hooks.md) provided by Semantic MediaWiki
