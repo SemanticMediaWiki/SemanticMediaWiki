@@ -35,6 +35,16 @@ class CheckReplicationTask extends Task {
 	private $entityCache;
 
 	/**
+	 * @var boolean
+	 */
+	private $isRTL = false;
+
+	/**
+	 * @var boolean
+	 */
+	private $errorTitle = '';
+
+	/**
 	 * @var integer
 	 */
 	private $cacheTTL = 3600;
@@ -107,7 +117,7 @@ class CheckReplicationTask extends Task {
 	 */
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
 
-		$isRTL = isset( $options['dir'] ) && $options['dir'] === 'rtl';
+		$this->isRTL = isset( $options['dir'] ) && $options['dir'] === 'rtl';
 		$html = '';
 
 		$id = $this->store->getObjectIds()->getID( $subject );
@@ -125,13 +135,15 @@ class CheckReplicationTask extends Task {
 		);
 
 		if ( $dataItem === false || $pv === [] ) {
-			$html = $this->buildHTML( $title->getPrefixedText(), $id, $isRTL );
+			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id );
 		} elseif ( !end( $pv )->equals( $dataItem ) ) {
 			$dates = [
 				'time_es' => $dataItem->asDateTime()->format( 'Y-m-d H:i:s' ),
 				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
 			];
-			$html = $this->buildHTML( $title->getPrefixedText(), $id, $isRTL, $dates );
+			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $dates );
+		} elseif ( $subject->getNamespace() === NS_FILE ) {
+			$html = $this->checkFileIngest( $subject );
 		}
 
 		$key = $this->makeCacheKey( $subject );
@@ -144,7 +156,82 @@ class CheckReplicationTask extends Task {
 			$this->entityCache->delete( $key );
 		}
 
-		return $html;
+		return $this->wrapHTML( $html );
+	}
+
+	private function replicationErrorMsg( $title_text, $id, $dates = [] ) {
+
+		$content = '';
+		$this->errorTitle = 'smw-es-replication-error';
+
+		if ( $dates !== [] ) {
+			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $id ] );
+			$content .= '--LINE--';
+			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date-detail', $dates['time_es'], $dates['time_store'] ], Message::PARSE );
+			$content .= '--LINE--';
+			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
+		} else {
+			$content .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $id ] );
+			$content .= '--LINE--';
+			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
+		}
+
+		return $content;
+	}
+
+	private function checkFileIngest( $subject ) {
+
+		$config = $this->store->getConnection( 'elastic' )->getConfig();
+		$content = '';
+
+		$this->errorTitle = 'smw-es-replication-file-ingest-error';
+
+		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) === false ) {
+			return '';
+		}
+
+		$pv = $this->store->getPropertyValues(
+			$subject,
+			new DIProperty( '_FILE_ATTCH' )
+		);
+
+		if ( $pv === [] ) {
+			$title = $subject->getTitle();
+			$content .= $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title->getPrefixedText() ], Message::PARSE );
+			$content .= '--LINE--';
+			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE ) . '</span>';
+		};
+
+		return $content;
+	}
+
+	private function wrapHTML( $content ) {
+
+		if ( $content === '' ) {
+			return '';
+		}
+
+		if ( $this->isRTL ) {
+			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-right: -10px;width: 280px;"></div>';
+		} else {
+			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div>';
+		}
+
+		$content = str_replace( '--LINE--', $line, $content );
+
+		$attribs = [
+			'class' => 'smw-highlighter smw-icon-indicator-replication-error',
+			'data-maxWidth' => '280',
+			'data-state' => 'inline',
+			'data-placement' => 'auto',
+			'data-animation' => 'fade',
+			'data-theme' => 'wide-popup',
+			'data-title' => $this->msg( $this->errorTitle ),
+			'data-content' => $content,
+			'data-bottom' => '<span class="smw-issue-label" style="background-color: #cc317c;color: #ffffff;">elastic</span>'
+		];
+
+		return Html::rawElement( 'div', $attribs );
 	}
 
 	private function buildHTML( $title_text, $id, $isRTL = false, $dates = [] ) {

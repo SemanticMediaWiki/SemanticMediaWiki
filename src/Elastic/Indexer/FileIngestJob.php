@@ -36,6 +36,12 @@ class FileIngestJob extends Job {
 	 */
 	public function run() {
 
+		// Make sure the script is only executed from the command line to avoid
+		// Special:RunJobs to execute a queued job
+		if ( $this->waitOnCommandLineMode() ) {
+			return true;
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$store = $applicationFactory->getStore();
 
