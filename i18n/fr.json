@@ -44,7 +44,8 @@
 			"Oupsa",
 			"Eduardo Addad de Oliveira",
 			"Hmevidia",
-			"Tartare"
+			"Tartare",
+			"Dinoxel"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -326,7 +327,7 @@
 	"propertylabelsimilarity": "Compte rendu de similitude des étiquettes de propriété",
 	"missingredirectannotations": "Absence d’annotations de redirection",
 	"smw-processingerrorlist-intro": "La liste suivante fournit une vue d'ensemble du traitement des erreurs qui sont apparues en relation avec [https://www.semantic-mediawiki.org/ Semantic MediaWiki]. Il est recommandé de suivre cette liste régulièrement et de corriger les lignes 'valeur non valide'.",
-	"smw-missingredirects-intro": "La section suivante listera les pages qui n’ont pas de [https://www.semantic-mediawiki.org/wiki/Redirects redirection] d’annotations dans MédiaWiki Sémantique (en comparant avec l’information stockée dans MédiaWiki) pour restaurer ces annotations soit manuellement [https://www.semantic-mediawiki.org/wiki/Help:Purge purger] la page ou lanccer le script de maintenance <code>rebuildData.php</code> (avec l’option <code>--redirects</code>).",
+	"smw-missingredirects-intro": "La section suivante listera les pages qui n’ont pas d’annotations de [https://www.semantic-mediawiki.org/wiki/Redirects redirection] dans MédiaWiki Sémantique (en comparant avec l’information stockée dans MédiaWiki); il faut pour restaurer ces annotations, soit manuellement [https://www.semantic-mediawiki.org/wiki/Help:Purge purger] la page, soit lancer le script de maintenance <code>rebuildData.php</code> (avec l’option <code>--redirects</code>).",
 	"smw-missingredirects-list": "Pages avec des annotations manquantes",
 	"smw-missingredirects-list-intro": "Affichage de $1 {{PLURAL:$1|page|pages}} avec les annotations de redirection manquantes.",
 	"smw-missingredirects-noresult": "Aucune annotation de redirection manquante trouvée.",
@@ -496,7 +497,7 @@
 	"smw-info-par-icon": "Icône à afficher, soit « info » ou « attention ».",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Options générales",
-	"prefs-ask-options": "Options de Special:Ask",
+	"prefs-ask-options": "Options de recherche sémantique",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (et ses extensions) permettent d'adapter individuellement certaines fonctions sélectionnées. Veuillez consulter la [https://www.semantic-mediawiki.org/wiki/Help:User_preferences page d'aide] pour plus de détails.",
 	"smw-prefs-ask-options-tooltip-display": "Afficher le texte du paramètre comme info-bulle",
 	"smw-prefs-ask-options-compact-view-basic": "Activer l’affichage compact de base",
@@ -880,6 +881,7 @@
 	"smw-schema-type": "Type",
 	"smw-schema-description-link-format-schema": "Ce type de schéma est censé définir des caractétistiques pour créer des liens dépendants du contexte, en rapport avec une propriété affectée du [[Property:Formatter schema|schéma de mise en forme]].",
 	"smw-schema-description-search-form-schema": "Ce type de schéma est sensé être utilisé pour définir des formulaires de saisie et des caractéristiques pour le profil de [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch recherche étendue], où il contient des instructions sur la manière de générer les champs de saisie, définir les espaces de noms par défaut, ou déclarer les expressions de préfixe pour une requête de recherche.",
+	"smw-schema-description-property-group-schema": "Ce type de schéma définit [https://www.semantic-mediawiki.org/wiki/Help:Property_group des groupes de propriété] pour aider à structurer l’interface de [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse navigation].",
 	"smw-schema-tag": "{{PLURAL:$1|balise|balises}}",
 	"smw-property-predefined-schema-desc": "« $1 » est une propriété prédéfinie qui stocke une description de schéma et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-property-predefined-schema-def": "« $1 » est une propriété prédéfinie qui stocke le contenu du schéma et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
@@ -910,8 +912,11 @@
 	"smw-install-incomplete-populate-hash-field": "Le remplissage du champ <code>smw_hash</code> a été sauté lors de l’installation, le script [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] doit être exécuté.",
 	"smw-es-replication-check": "Vérification de la réplication (Elasticsearch)",
 	"smw-es-replication-error": "Problème de réplication",
+	"smw-es-replication-file-ingest-error": "Problème d’ingestion de fichier",
 	"smw-es-replication-error-missing-id": "Le suivi de la réplication a trouvé que l’article « $1 » (ID : $2) manque sur le serveur Elasticsearch.",
 	"smw-es-replication-error-divergent-date": "Le suivi de la réplication a trouvé que pour l’article « $1 » (ID : $2), la date de modification montre une divergence.",
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
-	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou de purger la page pour supprimer la divergence. Si le problème persiste, vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.)."
+	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou de purger la page pour supprimer la divergence. Si le problème persiste, vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.).",
+	"smw-es-replication-error-file-ingest-missing-file-attachment": "La surveillance de la réplication a trouvé que « $1 » n’a pas d’annotation d’[[Property:File attachment|File attachement]] indiquant que le moteur d’ingestion de fichiers n’a pas commencé ou n’est pas encore terminé.",
+	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Veuillez vous assurer que la tâche d’[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion ingestion de fichier] est programmée et exécutée avant que l’annotation et l’index du fichier puissent être rendus disponibles."
 }

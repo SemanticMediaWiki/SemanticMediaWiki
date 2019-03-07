@@ -57,6 +57,7 @@
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
+	"smw-upgrade-error-title": "Ошибка",
 	"smw-semantics-not-enabled": "Функциональность Semantic MediaWiki не подключена на этой вики.",
 	"smw_viewasrdf": "RDF источник",
 	"smw_finallistconjunct": " и",

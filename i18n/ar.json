@@ -471,7 +471,7 @@
 	"smw-info-par-icon": "أيقونة تظهر، إما \"info\" أو \"warning\".",
 	"prefs-smw": "ميدياويكي الدلالية",
 	"prefs-general-options": "خيارات عامة",
-	"prefs-ask-options": "خاص:خيارات السؤال",
+	"prefs-ask-options": "خيارات البحث الدلالي",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ ميدياويكي الدلالي] (والملحقات ذات الصلة) يوفر التخصيص الفردي لبعض الوظائف المحددة، يُرجَى الرجوع إلى [https://www.semantic-mediawiki.org/wiki/Help:User_preferences صفحة المساعدة] للحصول على وصف تفصيلي.",
 	"smw-prefs-ask-options-tooltip-display": "اعرض نص المعامل كبالون تلميحة",
 	"smw-prefs-ask-options-compact-view-basic": "تمكين العرض المضغوط الأساسي",
@@ -855,6 +855,7 @@
 	"smw-schema-type": "النوع",
 	"smw-schema-description-link-format-schema": "من المتوقع أن يقوم نوع المخطط هذا بتعريف الخصائص الخاصة بإنشاء وصلات حساسة للسياق فيما يتعلق بخاصية [[Property:Formatter schema|مخطط المنسق]].",
 	"smw-schema-description-search-form-schema": "من المتوقع استخدام نوع المخطط هذا لتحديد نماذج المدخلات والخصائص لملف تعريف [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] حيث يحتوي على إرشادات حول كيفية إنشاء حقول الإدخال وتحديد النطاقات الافتراضية، أو بيان تعبيرات بادئة لطلب بحث.",
+	"smw-schema-description-property-group-schema": "يعرِّف نوع المخطط هذا [https://www.semantic-mediawiki.org/wiki/Help:Property_group مجموعات الخواص] للمساعدة في بناء واجهة [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse التصفح].",
 	"smw-schema-tag": "{{PLURAL:$1|وسم|وسوم}}",
 	"smw-property-predefined-schema-desc": "\"$1\" خاصية محددة مسبقا تقوم بتخزين وصف المخطط ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
 	"smw-property-predefined-schema-def": "\"$1\" خاصية محددة مسبقا تقوم بتخزين محتويات المخطط ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
@@ -885,8 +886,11 @@
 	"smw-install-incomplete-populate-hash-field": "ملء حقل <code>smw_hash</code> تم تجاهله أثناء التنصيب، سكريبت [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] مطلوب للتنفيذ.",
 	"smw-es-replication-check": "فحص النسخ المتماثل (إلاستيك سيرش)",
 	"smw-es-replication-error": "قضية تكرار",
+	"smw-es-replication-file-ingest-error": "مسألة تناول الملف",
 	"smw-es-replication-error-missing-id": "مراقبة التكرار وجد أن المقالة \"$1\" (ID: $2) مفقودة من قاعدة بيانات Elasticsearch.",
 	"smw-es-replication-error-divergent-date": "مراقبة التكرار وجد أن تاريخ التعديل للمقالة \"$1\" (ID: $2) تظهر تعارضا.",
 	"smw-es-replication-error-divergent-date-detail": "*$1 (بحث Elasticsearch)\n*$2 (متجر SQL)",
-	"smw-es-replication-error-suggestions": "يوصى بتعديل أو إزالة كاش الصفحة لإزالة التعارض. لو استمرت المشكلة فتحقق من عنقود Elasticsearch نفسه (allocator, exceptions, disk space etc.)."
+	"smw-es-replication-error-suggestions": "يوصى بتعديل أو إزالة كاش الصفحة لإزالة التعارض. لو استمرت المشكلة فتحقق من عنقود Elasticsearch نفسه (allocator, exceptions, disk space etc.).",
+	"smw-es-replication-error-file-ingest-missing-file-attachment": "وجد رصد النسخ المتماثل أن \"$1\" ينقصه تعليق [[Property:File attachment|ملف مرفق]]  يشير إلى أن معالج استيعاب المحتوى لم يبدأ أو لم ينته.",
+	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "يُرجَى التأكد من جدولة وتنفيذ مهمة [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion استيعاب الملف] قبل إتاحة شرح وفهرس الملف."
 }

@@ -31,6 +31,7 @@
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
+	"smw-upgrade-error-title": "Fel",
 	"smw-upgrade-error-why-title": "Varför ser jag detta fel?",
 	"smw-upgrade-error-how-title": "Hur fixar jag detta fel?",
 	"smw-semantics-not-enabled": "Semantic MediaWiki-funktionalitet är inte aktiverad på denna wiki.",

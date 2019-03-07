@@ -7,8 +7,10 @@
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-upgrade-error-title": "Feeler",
 	"smw-upgrade-error-why-title": "Firwat gesinn ech dëse Feeler?",
 	"smw-upgrade-error-how-title": "Wéi kann ech dëse Feeler flécken?",
+	"smw-upgrade-maintenance-why-title": "Firwat gesinn ech dës Säit?",
 	"smw-semantics-not-enabled": "D'Semantic MediaWiki Funktioun gouf op dëser Wiki net ageschalt.",
 	"smw_viewasrdf": "RDF-Feed",
 	"smw_finallistconjunct": ", an",

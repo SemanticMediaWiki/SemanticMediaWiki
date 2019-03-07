@@ -49,6 +49,9 @@
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
+	"smw-upgrade-error-title": "Error",
+	"smw-upgrade-error-why-title": "¿Por qué veo esta página?",
+	"smw-upgrade-maintenance-why-title": "¿Por qué veo esta página?",
 	"smw-semantics-not-enabled": "No se ha habilitado la funcionalidad de Semantic MediaWiki para esta wiki.",
 	"smw_viewasrdf": "Feed RDF",
 	"smw_finallistconjunct": "y",
@@ -419,7 +422,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> muestra un conjunto extendido de estadísticas",
 	"smw-admin-supplementary-idlookup-title": "Búsqueda y eliminación de la entidad",
 	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> contiene funciones para buscar y desechar entidades individuales",
-	"smw-admin-supplementary-duplookup-title": "Entidades duplicadas",
+	"smw-admin-supplementary-duplookup-title": "Búsqueda de entidades duplicadas",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> para enumerar entradas que estén categorizadas por contener duplicados en la tabla de entidades",
 	"smw-admin-supplementary-duplookup-docu": "Esta página lista entradas que han sido categorizadas como duplicadas en la [https://www.semantic-mediawiki.org/wiki/Help:Entity_table tabla de entidades]. Las entradas duplicadas solo deberían ocurrir (como mucho) en raras ocasiones potencialmente causadas por un proceso terminado durante una actualización de la base de datos o una transacción de reversión fallida.",
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",

@@ -385,7 +385,7 @@
 	"smw-admin-supplementary-operational-statistics-intro": "<u>$1</u> mostra un conjunt estès d'estadístiques",
 	"smw-admin-supplementary-idlookup-title": "Cerca i eliminació d'entitats",
 	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> conté funcions per a cercar i eliminar entitats individuals",
-	"smw-admin-supplementary-duplookup-title": "Entitats duplicades",
+	"smw-admin-supplementary-duplookup-title": "Cerca d’entitats duplicades",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> per a llistar les entrades que estan categoritzades per contenir duplicats en la taula d'entitats",
 	"smw-admin-supplementary-duplookup-docu": "Aquesta pàgina llista entrades de [https://www.semantic-mediawiki.org/wiki/Help:Entity_table taules d'entitats] que s'han categoritzat com a duplicades. Les entrades duplicades, si mai n'hi ha, haurien de tenir lloc només en rares ocasions a causa d'un procés terminat durant una actualització de base dades o d'una transacció de reversió que ha fallat.",
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",

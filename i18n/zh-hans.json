@@ -29,7 +29,8 @@
 			"夢蝶葬花",
 			"A Chinese Wikipedian",
 			"Phenolla",
-			"Angrydog001"
+			"Angrydog001",
+			"Zazzzz"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -776,6 +777,7 @@
 	"smw-personal-jobqueue-watchlist": "监视列表（工作队列）",
 	"smw-property-predefined-label-skey": "Sortkey",
 	"smw-processing": "处理中...",
+	"smw-copy": "复制",
 	"smw-redirect-target-unresolvable": "目标无法解决，原因是“$1”",
 	"smw-types-title": "类型：$1",
 	"smw-schema-error": "验证错误",
