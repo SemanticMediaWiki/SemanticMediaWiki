@@ -41,6 +41,7 @@ to the version of the code it comes bundled with. The most important files are l
 
 * [User documentation](docs/README.md)
 * [Technical documentation](docs/technical/README.md)
+* [Hacking Semantic MediaWiki](docs/architecture/README.md)
 
 ## Contribution and support
 

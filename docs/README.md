@@ -14,6 +14,7 @@ technical documentation.
 
 ## Technical documentation
 
+* [Hacking Semantic MediaWiki](architecture/README.md)
 * [Technical documentation](technical/README.md)
 
 ## Repository documentation
