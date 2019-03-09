@@ -2,7 +2,7 @@
 	"description": "Semantic MediaWiki group import",
 	"import": [
 		{
-			"page": "Group:schema properties",
+			"page": "Group:Schema properties",
 			"namespace": "SMW_NS_SCHEMA",
 			"contents": {
 				"importFrom": "/groups/schema.json"
