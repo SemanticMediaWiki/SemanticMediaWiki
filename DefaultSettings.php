@@ -32,6 +32,7 @@ return [
 	'smwgServicesFileDir' => __DIR__ . '/src/Services',
 	'smwgResourceLoaderDefFiles' => [ 'smw' => __DIR__ . '/res/Resources.php' ],
 	'smwgMaintenanceDir' => __DIR__ . '/maintenance',
+	'smwgTemplateDir' => __DIR__ . '/data/template',
 	##
 
 	###
