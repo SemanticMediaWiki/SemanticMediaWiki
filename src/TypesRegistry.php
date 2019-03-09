@@ -157,7 +157,7 @@ class TypesRegistry {
 			// ID => [ valueType, isVisible, isAnnotable, isDeclarative ]
 
 			'_TYPE' => [ '__typ', true, true, true ], // "has type"
-			'_URI'  => [ '__spu', true, true, true ], // "equivalent URI"
+			'_URI'  => [ '__spu', true, true, false ], // "equivalent URI"
 			'_INST' => [ '__sin', false, true, false ], // instance of a category
 			'_UNIT' => [ '__sps', true, true, true ], // "displays unit"
 			'_IMPO' => [ '__imp', true, true, true ], // "imported from"
