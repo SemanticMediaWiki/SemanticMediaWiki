@@ -363,7 +363,7 @@ class Client {
 			'method' => __METHOD__,
 			'role' => 'user',
 			'index' => $index,
-			'reponse' => json_encode( $response )
+			'reponse' => $response
 		];
 
 		$this->logger->info( 'Created index {index} with: {reponse}', $context );
@@ -394,7 +394,7 @@ class Client {
 			'method' => __METHOD__,
 			'role' => 'user',
 			'index' => $index,
-			'reponse' => json_encode( $response )
+			'reponse' => $response
 		];
 
 		$this->logger->info( 'Deleted index {index} with: {reponse}', $context );
@@ -582,11 +582,11 @@ class Client {
 		try {
 			$context['response'] = $this->client->update( $params );
 		} catch( Exception $e ) {
-			$context['exception'] = $e->getMessage();
-			$this->logger->info( 'Updated failed for document {id} with: {exception}, DOC: {doc}', $context );
+			$context['response'] = $e->getMessage();
+			$this->logger->info( 'Updated failed for document {id} with: {response}, DOC: {doc}', $context );
 		}
 
-		return json_encode( $context['response'] );
+		return $context['response'];
 	}
 
 	/**
@@ -610,11 +610,11 @@ class Client {
 		try {
 			$context['response'] = $this->client->index( $params );
 		} catch( Exception $e ) {
-			$context['exception'] = $e->getMessage();
-			$this->logger->info( 'Index failed for document {id} with: {exception}', $context );
+			$context['response'] = $e->getMessage();
+			$this->logger->info( 'Index failed for document {id} with: {response}', $context );
 		}
 
-		return json_encode( $context['response'] );
+		return $context['response'];
 	}
 
 	/**
@@ -668,10 +668,11 @@ class Client {
 		} catch( ReplicationException $e ) {
 			throw new ReplicationException( $e->getMessage() );
 		} catch( Exception $e ) {
-			$this->logger->info( 'Bulk update failed with' .  $e->getMessage(), $context );
+			$context['response'] = $e->getMessage();
+			$this->logger->info( 'Bulk update failed with {response}', $context );
 		}
 
-		return json_encode( $context['response'] );
+		return $context['response'];
 	}
 
 	/**
