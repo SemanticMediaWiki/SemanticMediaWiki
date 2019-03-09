@@ -26,6 +26,8 @@ class ArticlePurge {
 
 	use EventDispatcherAwareTrait;
 
+	const CACHE_NAMESPACE = 'smw:arc';
+
 	/**
 	 * @since 1.9
 	 *
@@ -36,16 +38,15 @@ class ArticlePurge {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $wikiPage->getTitle();
-		$pageId = $title->getArticleID();
+		$articleID = $title->getArticleID();
 
 		$settings = $applicationFactory->getSettings();
 
 		$cache = $applicationFactory->getCache();
-		$cacheFactory = $applicationFactory->newCacheFactory();
 
-		if ( $pageId > 0 ) {
+		if ( $articleID > 0 ) {
 			$cache->save(
-				$cacheFactory->getPurgeCacheKey( $pageId ),
+				smwfCacheKey( self::CACHE_NAMESPACE, $articleID ),
 				$settings->get( 'smwgAutoRefreshOnPurge' )
 			);
 		}

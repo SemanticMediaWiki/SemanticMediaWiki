@@ -60,7 +60,7 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$title->expects( $this->any() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 42 ) );
 
@@ -68,6 +68,16 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
+			$instance->getPurgeCacheKey( $title )
+		);
+
+		$this->assertSame(
+			smwfCacheKey( 'smw:arc', 42 ),
+			$instance->getPurgeCacheKey( $title )
+		);
+
+		$this->assertSame(
+			smwfCacheKey( \SMW\MediaWiki\Hooks\ArticlePurge::CACHE_NAMESPACE, 42 ),
 			$instance->getPurgeCacheKey( $title )
 		);
 	}
