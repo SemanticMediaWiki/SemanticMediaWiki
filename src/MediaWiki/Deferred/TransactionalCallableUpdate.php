@@ -171,7 +171,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 */
 	public function cancelOnRollback( $trigger ) {
 		if ( $trigger === Database::TRIGGER_ROLLBACK ) {
-			$this->callback = null;
+			$this->callback = [ $this, 'emptyCancelCallback' ];
 		}
 	}
 
@@ -263,6 +263,13 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 			call_user_func( $postCallback, $this->transactionTicket );
 		}
+	}
+
+	protected function emptyCancelCallback() {
+		$this->logger->info(
+			[ 'DeferrableUpdate', 'cancelOnRollback' ],
+			[ 'role' => 'developer', 'method' => __METHOD__ ]
+		);
 	}
 
 }
