@@ -10,6 +10,7 @@ use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\Message;
 use SMW\EntityCache;
 use Html;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @license GNU GPL v2+
@@ -35,9 +36,9 @@ class CheckReplicationTask extends Task {
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var TemplateEngine
 	 */
-	private $isRTL = false;
+	private $templateEngine;
 
 	/**
 	 * @var boolean
@@ -117,8 +118,17 @@ class CheckReplicationTask extends Task {
 	 */
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
 
-		$this->isRTL = isset( $options['dir'] ) && $options['dir'] === 'rtl';
 		$html = '';
+		$this->templateEngine = new TemplateEngine();
+
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskLine.ms', 'line_template' );
+
+		$this->templateEngine->compile(
+			'line_template',
+			[
+				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
+			]
+		);
 
 		$id = $this->store->getObjectIds()->getID( $subject );
 		$title = $subject->getTitle();
@@ -164,16 +174,25 @@ class CheckReplicationTask extends Task {
 		$content = '';
 		$this->errorTitle = 'smw-es-replication-error';
 
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+			]
+		);
+
 		if ( $dates !== [] ) {
 			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $id ] );
-			$content .= '--LINE--';
+			$content .= $this->templateEngine->code( 'line_template' );
 			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date-detail', $dates['time_es'], $dates['time_store'] ], Message::PARSE );
-			$content .= '--LINE--';
-			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
+			$content .= $this->templateEngine->code( 'line_template' );
+			$content .= $this->templateEngine->code( 'comment_template' );
 		} else {
 			$content .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $id ] );
-			$content .= '--LINE--';
-			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
+			$content .= $this->templateEngine->code( 'line_template' );
+			$content .= $this->templateEngine->code( 'comment_template' );
 		}
 
 		return $content;
@@ -196,10 +215,20 @@ class CheckReplicationTask extends Task {
 		);
 
 		if ( $pv === [] ) {
+
+			$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template_ingest' );
+
+			$this->templateEngine->compile(
+				'comment_template_ingest',
+				[
+					'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE )
+				]
+			);
+
 			$title = $subject->getTitle();
 			$content .= $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title->getPrefixedText() ], Message::PARSE );
-			$content .= '--LINE--';
-			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE ) . '</span>';
+			$content .= $this->templateEngine->code( 'line_template' );
+			$content .= $this->templateEngine->code( 'comment_template_ingest' );
 		};
 
 		return $content;
@@ -211,66 +240,17 @@ class CheckReplicationTask extends Task {
 			return '';
 		}
 
-		if ( $this->isRTL ) {
-			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-right: -10px;width: 280px;"></div>';
-		} else {
-			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div>';
-		}
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskHighlighter.ms', 'highlighter_template' );
 
-		$content = str_replace( '--LINE--', $line, $content );
-
-		$attribs = [
-			'class' => 'smw-highlighter smw-icon-indicator-replication-error',
-			'data-maxWidth' => '280',
-			'data-state' => 'inline',
-			'data-placement' => 'auto',
-			'data-animation' => 'fade',
-			'data-theme' => 'wide-popup',
-			'data-title' => $this->msg( $this->errorTitle ),
-			'data-content' => $content,
-			'data-bottom' => '<span class="smw-issue-label" style="background-color: #cc317c;color: #ffffff;">elastic</span>'
-		];
-
-		return Html::rawElement( 'div', $attribs );
-	}
-
-	private function buildHTML( $title_text, $id, $isRTL = false, $dates = [] ) {
-
-		if ( $isRTL ) {
-			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-right: -10px;width: 280px;"></div>';
-		} else {
-			$line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 280px;"></div>';
-		}
-
-		$content = '';
-		$bottom = '<span class="smw-issue-label" style="background-color: #cc317c;color: #ffffff;">elastic</span>';
-
-		if ( $dates !== [] ) {
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $id ] );
-			$content .= $line;
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date-detail', $dates['time_es'], $dates['time_store'] ], Message::PARSE );
-			$content .= $line;
-			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
-		} else {
-			$content .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $id ] );
-			$content .= $line;
-			$content .= '<span style="font-size:12px;">' . $this->msg( 'smw-es-replication-error-suggestions' ) . '</span>';
-		}
-
-		return Html::rawElement(
-			'div',
+		$this->templateEngine->compile(
+			'highlighter_template',
 			[
-				'class' => 'smw-highlighter smw-icon-indicator-replication-error',
-				'data-maxWidth' => '280',
-				'data-state' => 'inline',
-				'data-placement' => 'auto',
-				'data-animation' => 'fade',
-				'data-theme' => 'wide-popup',
-				'data-title' => $this->msg( 'smw-es-replication-error' ),
-				'data-content' => $content,
-				'data-bottom' => $bottom
+				'title' => $this->msg( $this->errorTitle ),
+				'content' => $content
 			]
 		);
+
+		return $this->templateEngine->code( 'highlighter_template' );
 	}
 
 	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
