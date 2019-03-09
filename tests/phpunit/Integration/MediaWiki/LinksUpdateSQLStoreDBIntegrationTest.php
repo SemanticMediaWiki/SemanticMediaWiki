@@ -233,7 +233,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 					'msg'     => 'Asserts property Aa, Fuyu, _SKEY, and _MDAT from the previous state as no update has been made yet'
 				],
 				'poAfter'    => [
-					'count'  => 0,
+					'count'  => 1,
 					'msg'    => 'Asserts property _MDAT exists after the update'
 				],
 				'storeAfter' => [

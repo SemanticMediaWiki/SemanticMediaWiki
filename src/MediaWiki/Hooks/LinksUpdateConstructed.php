@@ -96,9 +96,9 @@ class LinksUpdateConstructed extends HookHandler {
 			// #347 showed that an external process (e.g. RefreshLinksJob) can inject a
 			// ParserOutput without/cleared SemanticData which forces the Store updater
 			// to create an empty container that will clear all existing data.
-			if ( $parserData->getSemanticData()->isEmpty() ) {
-				$this->updateSemanticData( $parserData, $title, 'empty data' );
-			}
+			//if ( $parserData->getSemanticData()->isEmpty() ) {
+			//	$this->updateSemanticData( $parserData, $title, 'empty data' );
+			//}
 		}
 
 		// Push updates on properties directly without delay
