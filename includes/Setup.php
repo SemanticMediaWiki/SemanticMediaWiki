@@ -63,11 +63,20 @@ final class Setup {
 		}
 
 		$specials = [
+			'ExportRDF' => [
+				'page' => 'SMWSpecialOWLExport'
+			],
+			'SMWAdmin' => [
+				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin'
+			],
 			'Ask' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'
 			],
 			'Browse' => [
 				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse'
+			],
+			'Concepts' => [
+				'page' => 'SMW\SpecialConcepts'
 			],
 			'PageProperty' => [
 				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty'
@@ -75,23 +84,14 @@ final class Setup {
 			'SearchByProperty' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty'
 			],
-			'ProcessingErrorList' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList'
-			],
 			'PropertyLabelSimilarity' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity'
 			],
+			'ProcessingErrorList' => [
+				'page' => 'SMW\MediaWiki\Specials\SpecialProcessingErrorList'
+			],
 			'MissingRedirectAnnotations' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations'
-			],
-			'SMWAdmin' => [
-				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin'
-			],
-			'Concepts' => [
-				'page' => 'SMW\SpecialConcepts'
-			],
-			'ExportRDF' => [
-				'page' => 'SMWSpecialOWLExport'
 			],
 			'Types' => [
 				'page' => 'SMWSpecialTypes'
