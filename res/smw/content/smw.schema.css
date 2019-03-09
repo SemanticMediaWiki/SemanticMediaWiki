@@ -69,6 +69,11 @@
     margin-top: 1em;
     clear: both;
 }
+
+.schema-tags:last-child {
+    margin-bottom: 5px;
+}
+
 .schema-tags ul {
     display: inline;
     margin: 0 !important;
