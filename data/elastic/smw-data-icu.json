@@ -276,6 +276,9 @@
 							"analyzer": "nfkc_cf_normalized_lowercase"
 						}
 					}
+				},
+				"subject.rev_id": {
+					"type": "integer"
 				}
 			}
 		}

@@ -309,9 +309,12 @@ class RebuildElasticIndex extends \Maintenance {
 			return;
 		}
 
+		$semanticData = $this->store->getSemanticData( $dataItem );
+		$semanticData->setExtensionData( 'revision_id', $row->smw_rev );
+
 		$this->rebuilder->rebuild(
 			$row->smw_id,
-			$this->store->getSemanticData( $dataItem )
+			$semanticData
 		);
 	}
 

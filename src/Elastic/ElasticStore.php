@@ -244,13 +244,16 @@ class ElasticStore extends SQLStore {
 		}
 
 		$text = '';
+		$changeDiff = $this->extensionData['change.diff'];
+		$rev_id = $semanticData->getExtensionData( 'revision_id' );
+		$changeDiff->setAssociatedRev( $rev_id );
 
-		if ( $config->dotGet( 'indexer.raw.text', false ) && ( $revID = $semanticData->getExtensionData( 'revision_id' ) ) !== null ) {
-			$text = $this->indexer->fetchNativeData( $revID );
+		if ( $config->dotGet( 'indexer.raw.text', false ) && $rev_id !== null ) {
+			$text = $this->indexer->fetchNativeData( $rev_id );
 		}
 
 		$this->indexer->safeReplicate(
-			$this->extensionData['change.diff'],
+			$changeDiff,
 			$text
 		);
 
