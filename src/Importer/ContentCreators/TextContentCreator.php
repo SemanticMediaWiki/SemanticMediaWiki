@@ -62,6 +62,7 @@ class TextContentCreator implements ContentCreator {
 		}
 
 		$indent = '   ...';
+		$indent_e = '      ';
 		$name = $importContents->getName();
 
 		if ( $name === '' ) {
@@ -93,13 +94,13 @@ class TextContentCreator implements ContentCreator {
 		}
 
 		if ( $title->exists() && !$replaceable ) {
-			return $this->messageReporter->reportMessage( "$indent skipping $prefixedText, already exists ...\n" );
+			return $this->messageReporter->reportMessage( "$indent skipping $prefixedText\n$indent_e already exists ...\n" );
 		} elseif( $title->exists() && $replaceable ) {
-			$this->messageReporter->reportMessage( "$indent replacing $prefixedText contents, importer was last editor ...\n" );
+			$this->messageReporter->reportMessage( "$indent replacing $prefixedText\n$indent_e importer was last editor ...\n" );
 		} elseif( $title->exists() ) {
-			$this->messageReporter->reportMessage( "$indent replacing $prefixedText contents ...\n" );
+			$this->messageReporter->reportMessage( "$indent replacing $prefixedText ...\n" );
 		} else {
-			$this->messageReporter->reportMessage( "$indent creating $prefixedText contents ...\n" );
+			$this->messageReporter->reportMessage( "$indent creating $prefixedText ...\n" );
 		}
 
 		// Avoid a possible "Notice: WikiPage::doEditContent: Transaction already
