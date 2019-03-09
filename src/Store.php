@@ -229,17 +229,16 @@ abstract class Store implements QueryEngine {
 		 */
 		\Hooks::run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
 
-		$context = [
-			'method' => __METHOD__,
-			'role' => 'production',
-			'origin' => $hash,
-			'procTime' => Timer::getElapsedTime( __METHOD__, 5 ),
-		];
+		$rev = $semanticData->getExtensionData( 'revision_id' );
+		$procTime = Timer::getElapsedTime( __METHOD__, 5 );
 
-		$this->logger->info( '[Store] Update completed: {origin} (procTime in sec: {procTime})', $context );
+		$this->logger->info(
+			[ 'Store', 'Update completed: {hash}', 'rev: {rev}', 'procTime: {procTime}'],
+			[ 'method' => __METHOD__, 'role' => 'production', 'hash' => $hash, 'rev' => $rev, 'procTime' => $procTime ]
+		);
 
 		if ( !$this->getOption( 'smwgAutoRefreshSubject' ) || $semanticData->getOption( Enum::OPT_SUSPEND_PURGE ) ) {
-			return $this->logger->info( '[Store] Skipping html, parser cache purge', [ 'role' => 'user' ] );
+			return $this->logger->info( [ 'Store', 'Skipping html, parser cache purge' ], [ 'role' => 'user' ] );
 		}
 
 		$pageUpdater = $applicationFactory->newPageUpdater();
