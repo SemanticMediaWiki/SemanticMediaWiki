@@ -1,0 +1,49 @@
+{
+	"description": "Test Equivalent URI (`__spu`)",
+	"setup": [
+		{
+			"namespace": "NS_MAIN",
+			"page": "Test:P0504/1",
+			"contents": "[[Equivalent URI::http://www.wikidata.org/entity/Q20728]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#3601, Equivalent URI property must not be declarative, (i. e., it can be used on subject pages, as well as property and category pages)",
+			"subject": "Test:P0504/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_URI",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"http://www.wikidata.org/entity/Q20728"
+					]
+				}
+			},
+			"assert-output": {
+				"not-contain": [
+					"is a declarative property"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
