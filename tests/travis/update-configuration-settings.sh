@@ -7,6 +7,7 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 cd $MW_INSTALL_PATH
 
 # Namespace related settings
+echo 'define("SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB", true);' >> LocalSettings.php
 echo 'define("NS_TRAVIS", 998);' >> LocalSettings.php
 echo 'define("NS_TRAVIS_TALK", 999);' >> LocalSettings.php
 echo '$wgExtraNamespaces[NS_TRAVIS] = "Travis";' >> LocalSettings.php
