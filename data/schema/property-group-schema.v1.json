@@ -57,7 +57,7 @@
 			"examples": [
 				"smw-property-group-label-schema-group"
 			],
-			"pattern": "^(smw|sesp|sbl|scite|sg)-property-group-label-(.*)$"
+			"pattern": "^(smw|sar|sesp|sbl|scite|sg)-property-group-label-(.*)$"
 		},
 		"group_name": {
 			"type": "string",

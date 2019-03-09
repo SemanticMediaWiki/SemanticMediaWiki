@@ -257,7 +257,7 @@ class GroupFormatter {
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
 			foreach ( $schemaDefinition->get( 'groups' ) as $group => $data ) {
 
-				if (! isset( $data['properties'] ) ) {
+				if (! isset( $data['property_list'] ) ) {
 					continue;
 				}
 
@@ -269,7 +269,7 @@ class GroupFormatter {
 				}
 
 				$list[$group] = [
-					'properties' => array_flip( $data['properties'] ),
+					'properties' => array_flip( $data['property_list'] ),
 					'msg_key' => $msg_key,
 					'item' => DIWikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
 				];
