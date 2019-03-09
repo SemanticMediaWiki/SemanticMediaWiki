@@ -396,7 +396,11 @@ class ApplicationFactory {
 		);
 
 		$dataUpdater->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			Site::isCommandLineMode()
+		);
+
+		$dataUpdater->setLogger(
+			$this->getMediaWikiLogger()
 		);
 
 		return $dataUpdater;
@@ -506,7 +510,7 @@ class ApplicationFactory {
 		);
 
 		$deferredCallableUpdate->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			Site::isCommandLineMode()
 		);
 
 		return $deferredCallableUpdate;
@@ -536,7 +540,7 @@ class ApplicationFactory {
 		);
 
 		$deferredTransactionalUpdate->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			Site::isCommandLineMode()
 		);
 
 		return $deferredTransactionalUpdate;

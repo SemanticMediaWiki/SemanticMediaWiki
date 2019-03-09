@@ -12,6 +12,7 @@ class_alias( \SMW\Query\ResultPrinters\AggregatablePrinter::class, 'SMWAggregata
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );
+class_alias( \SMW\MediaWiki\Deferred\TransactionalCallableUpdate::class, 'SMW\DeferredTransactionalCallableUpdate' );
 class_alias( \SMW\Parser\InTextAnnotationParser::class, 'SMW\InTextAnnotationParser' );
 class_alias( \SMW\Encoder::class, 'SMW\UrlEncoder' );
 class_alias( \SMW\Query\ResultPrinter::class, 'SMW\QueryResultPrinter' );
