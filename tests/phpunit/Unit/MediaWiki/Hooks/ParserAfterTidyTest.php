@@ -25,6 +25,9 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $parserFactory;
 	private $spyLogger;
 	private $testEnvironment;
+	private $parser;
+	private $namespaceExaminer;
+	private $cache;
 
 	protected function setUp() {
 		parent::setUp();
@@ -49,6 +52,18 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
+
+		$this->parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() {
@@ -58,26 +73,23 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$parser = $this->getMockBuilder( 'Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ParserAfterTidy',
-			new ParserAfterTidy( $parser )
+			ParserAfterTidy::class,
+			new ParserAfterTidy( $this->parser, $this->namespaceExaminer, $this->cache )
 		);
 	}
 
 	public function testIsReadOnly() {
 
-		$parser = $this->getMockBuilder( 'Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parser->expects( $this->never() )
+		$this->parser->expects( $this->never() )
 			->method( 'getTitle' );
 
-		$instance = new ParserAfterTidy( $parser );
+		$instance = new ParserAfterTidy(
+			$this->parser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
+
 		$instance->isReadOnly( true );
 
 		$text = '';
@@ -86,15 +98,9 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNotEnabledNamespace() {
 
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$namespaceExaminer->expects( $this->once() )
+		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
-
-		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
 
 		$title = MockTitle::buildMock( __METHOD__ );
 
@@ -111,15 +117,15 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->never() )
 			->method( 'isSpecialPage' );
 
-		$parser = $this->getMockBuilder( 'Parser' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$parser->expects( $this->any() )
+		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$instance = new ParserAfterTidy( $parser );
+		$instance = new ParserAfterTidy(
+			$this->parser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
 
 		$text = '';
 		$instance->process( $text );
@@ -129,7 +135,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
 
-		$cache = $this->getMockBuilder( 'Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,6 +156,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $parameters ) {
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
@@ -181,8 +191,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$parameters['cache-fetch']
 		);
 
-		$this->testEnvironment->registerObject( 'Cache', $cache );
-
 		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
 
 		$parser->getOutput()->setProperty(
@@ -197,14 +205,73 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$text   = '';
 
-		$instance = new ParserAfterTidy( $parser );
+		$instance = new ParserAfterTidy(
+			$parser,
+			$this->namespaceExaminer,
+			$cache
+		);
 
 		$this->assertTrue(
 			$instance->process( $text )
 		);
 	}
 
+	public function testCanPerformOnExternalEvent() {
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOutput->expects( $this->any() )
+			->method( 'getCategoryLinks' )
+			->will( $this->returnValue( [] ) );
+
+		$parserOutput->expects( $this->any() )
+			->method( 'getImages' )
+			->will( $this->returnValue( [] ) );
+
+		$this->cache->expects( $this->any() )
+			->method( 'fetch' )
+			->with( $this->stringContains( "smw:parseraftertidy" ) )
+			->will( $this->returnValue( true ) );
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
+
+		$text = '';
+		$title = Title::newFromText( __METHOD__ );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->will( $this->returnValue( $parserOptions ) );
+
+		$this->parser->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$instance = new ParserAfterTidy(
+			$this->parser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
+
+		$instance->process( $text );
+	}
+
 	public function testSemanticDataParserOuputUpdateIntegration() {
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$settings = [
 			'smwgMainCacheType'             => 'hash',
@@ -224,7 +291,11 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
 		$parser->getOutput()->setProperty( 'smw-semanticdata-status', true );
 
-		$instance = new ParserAfterTidy( $parser );
+		$instance = new ParserAfterTidy(
+			$parser,
+			$this->namespaceExaminer,
+			$this->cache
+		);
 
 		$this->assertTrue(
 			$instance->process( $text  )

@@ -7,6 +7,8 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\MediaWiki;
 use SMW\ParserData;
 use SMW\SemanticData;
+use Onoi\Cache\Cache;
+use SMW\NamespaceExaminer;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -21,6 +23,8 @@ use SMW\SemanticData;
  */
 class ParserAfterTidy extends HookHandler {
 
+	const CACHE_NAMESPACE = 'smw:parseraftertidy';
+
 	/**
 	 * @var Parser
 	 */
@@ -30,6 +34,11 @@ class ParserAfterTidy extends HookHandler {
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
+
+	/**
+	 * @var Cache
+	 */
+	private $cache;
 
 	/**
 	 * @var boolean
@@ -45,10 +54,13 @@ class ParserAfterTidy extends HookHandler {
 	 * @since  1.9
 	 *
 	 * @param Parser $parser
+	 * @param NamespaceExaminer $NamespaceExaminer
+	 * @param Cache $cache
 	 */
-	public function __construct( Parser &$parser ) {
+	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
 		$this->parser = $parser;
-		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
+		$this->namespaceExaminer = $namespaceExaminer;
+		$this->cache = $cache;
 	}
 
 	/**
@@ -133,6 +145,15 @@ class ParserAfterTidy extends HookHandler {
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
 			$title->isProtected( 'edit' ) ||
 			$this->parser->getDefaultSort() ) {
+			return true;
+		}
+
+		// Allow an external event to trigger a processing,if set so that
+		// the an update can happen when for example as part of a programtic
+		// purge request even when no text (or annotations) are available
+		$key = smwfCacheKey( self::CACHE_NAMESPACE, $title->getPrefixedDBKey() );
+
+		if( $this->cache->fetch( $key ) !== false ) {
 			return true;
 		}
 
@@ -230,15 +251,14 @@ class ParserAfterTidy extends HookHandler {
 	 */
 	private function checkPurgeRequest( $parserData ) {
 
-		$cache = ApplicationFactory::getInstance()->getCache();
 		$start = microtime( true );
+		$title = $this->parser->getTitle();
 
-		$key = ApplicationFactory::getInstance()->getCacheFactory()->getPurgeCacheKey(
-			$this->parser->getTitle()->getArticleID()
-		);
+		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $title->getArticleID() );
 
-		if( $cache->contains( $key ) && $cache->fetch( $key ) ) {
-			$cache->delete( $key );
+		if( $this->cache->contains( $key ) && $this->cache->fetch( $key ) ) {
+			$this->cache->delete( $key );
+			$this->cache->delete( smwfCacheKey( self::CACHE_NAMESPACE, $title->getPrefixedDBKey() ) );
 
 			// Avoid a Parser::lock for when a PurgeRequest remains intact
 			// during an update process while being executed from the cmdLine

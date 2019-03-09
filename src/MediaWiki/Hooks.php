@@ -275,7 +275,9 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserAfterTidy = new ParserAfterTidy(
-			$parser
+			$parser,
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->getCache()
 		);
 
 		$parserAfterTidy->isCommandLineMode(
