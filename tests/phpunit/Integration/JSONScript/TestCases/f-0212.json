@@ -1,0 +1,43 @@
+{
+	"description": "Test `format=plainlist` and `&nbsp;`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Test:F0212/1",
+			"contents": "{{#set:Has text=&nbsp;}}"
+		},
+		{
+			"page": "Test:F2012/Q.1",
+			"contents": "{{#show: Test:F0212/1|?Has text}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 (#show with default format `plainlist`)",
+			"subject": "Test:F2012/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<p>&#160;"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
