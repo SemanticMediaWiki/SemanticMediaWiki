@@ -351,4 +351,45 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 	}
 
+	public function testCancelOnRollback() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->never() )
+			->method( 'getEmptyTransactionTicket' );
+
+		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		$test = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'doTest' ] )
+			->getMock();
+
+		$test->expects( $this->never() )
+			->method( 'doTest' );
+
+		$callback = function() use ( $test ) {
+			$test->doTest();
+		};
+
+		$instance = new TransactionalCallableUpdate(
+			$callback,
+			$connection
+		);
+
+		$instance->setLogger( $this->spyLogger );
+
+		$instance->isDeferrableUpdate( false );
+		$instance->commitWithTransactionTicket();
+
+		// #3765
+		$instance->cancelOnRollback( \SMW\MediaWiki\Database::TRIGGER_ROLLBACK );
+
+		$instance->pushUpdate();
+
+		$this->testEnvironment->executePendingDeferredUpdates();
+	}
+
 }

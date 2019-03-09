@@ -323,7 +323,7 @@ class CallableUpdate implements DeferrableUpdate {
 		];
 	}
 
-	private function emptyCallback() {
+	protected function emptyCallback() {
 		$this->logger->info(
 			[
 				'DeferrableUpdate',
