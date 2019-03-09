@@ -27,8 +27,15 @@
 		// Observed on the chameleon skin
 		$( "#ca-purge a" ).removeClass( 'is-disabled' );
 
-		$( "#ca-purge a" ).on( 'click', function ( e ) {
-			var postArgs = { action: 'purge', titles: mw.config.get( 'wgPageName' ) };
+		$( "#ca-purge a, .purge" ).on( 'click', function ( e ) {
+
+			if ( $( this ).data( 'title' ) ) {
+				var title = $( this ).data( 'title' );
+			} else {
+				var title = mw.config.get( 'wgPageName' );
+			}
+
+			var postArgs = { action: 'purge', titles: title };
 			new mw.Api().post( postArgs ).then( function () {
 				location.reload();
 			}, function () {
