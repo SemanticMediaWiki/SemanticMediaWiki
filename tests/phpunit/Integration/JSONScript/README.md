@@ -12,7 +12,7 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 
 ## TestCases
 
-Contains 280 files with a total of 1251 tests:
+Contains 294 files with a total of 1308 tests:
 
 ### A
 * [a-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0001.json) Test API `action=smwbrowse`
@@ -37,6 +37,7 @@ Contains 280 files with a total of 1251 tests:
 * [f-0209.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0209.json) Test `format=table` on `_tem`/ `_num` with `LOCAL@...` output (#1591, `wgContLang=es`, `wgLang=en`)
 * [f-0210.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0210.json) Test `format=table` on `_qty` for unit labels with spaces (#1718, `wgContLang=en`, `SMW_DV_NUMV_USPACE`)
 * [f-0211.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0211.json) Test `format=plainlist` with `limit=0` (further result links) for `mainlabel/?#...` (#481)
+* [f-0212.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0212.json) Test `format=plainlist` and `&nbsp;`
 * [f-0301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0301.json) Test `format=category` with template usage (#699, en, skip postgres)
 * [f-0302.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0302.json) Test `format=category` and defaultsort (#699, en)
 * [f-0303.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0303.json) Test `format=category` sort output using a template and DEFAULTSORT (#1459, en)
@@ -61,6 +62,10 @@ Contains 280 files with a total of 1251 tests:
 * [p-0109.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0109.json) Test `#info`, `#ask`/`#show` with error output (`wgContLang=en`, `wgLang=en`)
 * [p-0110.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0110.json) Test tooltip with error output on `_PVUC` (`smwgDVFeatures`, `wgContLang=en`, `wgLang=en`)
 * [p-0111.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0111.json) Test reserved property names
+* [p-0112.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0112.json) Test #set_recurring_event parser (#3541, en)
+* [p-0113.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0113.json) Test #set_recurring_event parser include and exclude parameters
+* [p-0114.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0114.json) Test #set_recurring_event parser week number parameter
+* [p-0115.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0115.json) Test `#set_recurring_event` parser for events on 29th to 31st of the month (#3598 - `wgContLang=fr`, `wgLang=en`)
 * [p-0202.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0202.json) Test #set parser to use template for output (#1146, en)
 * [p-0203.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0203.json) Test #set parser in combination with #subobject and template output (#1067, regression check)
 * [p-0204.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0204.json) Test #set parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)
@@ -117,7 +122,7 @@ Contains 280 files with a total of 1251 tests:
 * [p-0440.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0440.json) Test in-text annotation `_mlt_rec` (Monolingual text) with `|+lang`/`|+order` parameter (`wgContLang=en`, `wgLang=en`)
 * [p-0441.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0441.json) Test in-text `_txt` 00 string/loose comparison (#2061)
 * [p-0442.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0442.json) Test in-text `#REDIRECT` to verify target subobject isn't removed (#, `wgContLang=en`, `wgLang=en`)
-* [p-0443.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0443.json) Test conditions and strict constraint validations for uniqueness `_PVUC` (#1463, `wgContLang=en`, `wgLang=en`, `smwgDVFeatures`)
+* [p-0443.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0443.json) Test conditions and strict constraint validations for uniqueness `_PVUC` on `_txt`/`_rec`/`_ref_rec` with unique field (#1463, #3547, `smwgDVFeatures`)
 * [p-0444.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0444.json) Test in-text annotation with links in values (#2153, `wgContLang=en`)
 * [p-0445.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0445.json) Test in-text annotation for `_ref_rec` type with errors (#..., `wgContLang=en`)
 * [p-0446.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0446.json) Test in-text annotation `_uri`/`_ema`/`_tel` with spaces/underscore (`wgContLang=en`)
@@ -135,14 +140,15 @@ Contains 280 files with a total of 1251 tests:
 * [p-0458.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0458.json) Test keyword type `_keyw`
 * [p-0459.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0459.json) Test keyword type `_keyw` with a formatter schema (`smwgCompactLinkSupport`)
 * [p-0460.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0460.json) Test in-text `_num`, `_qty` in combination with an "Allows value" range, bounds
+* [p-0461.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0461.json) Test `_wpg` value with lower/upper first case letter +DISPLAYTITLE (#3587, `wgRestrictDisplayTitle`, `wgCapitalLinks`)
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0502.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0502.json) Test in-text annotation allows value list (#2295, `wgContLang=en`, `wgLang=en`)
-* [p-0503.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0503.json) Test in-text annotation `_uri` on valid/invalid scheme
+* [p-0503.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0503.json) Test in-text annotation `_uri` on valid/invalid scheme/path
 * [p-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0701.json) Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)
 * [p-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0702.json) Test #ask with `format=table` on inverse property/printrequest (#1270, #1360)
 * [p-0703.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0703.json) Test `#ask` on `format=table` using different printrequest label output (#1270, `wgContLang=en`, `wgLang=en`)
 * [p-0704.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0704.json) Test `#ask` sanitization of printrequest labels to avoid XSS injection (`wgContLang=en`, `wgLang=en`)
-* [p-0705.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json) Test `#ask`/ NS_FILE option (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions')
+* [p-0705.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json) Test `#ask`/ NS_FILE option, `noimage` (`wgEnableUploads`, `wgFileExtensions`, `wgDefaultUserOptions`)
 * [p-0706.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0706.json) Test `#ask` on `format=template` with message parse (`wgContLang=en`, `wgLang=en`)
 * [p-0707.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0707.json) Test `#ask` with enabled execution limit (`wgContLang=en`, `wgLang=en`, `smwgQExpensiveThreshold`, `smwgQExpensiveExecutionLimit`)
 * [p-0708.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0708.json) Test `#ask` NS_FILE and DISPLAYTITLE (`wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`, 'wgDefaultUserOptions', `wgRestrictDisplayTitle`)
@@ -165,6 +171,7 @@ Contains 280 files with a total of 1251 tests:
 * [p-0914.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0914.json) Test the description optimization on `_ref_rec` type with property chain query/sort (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)
 * [p-0915.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0915.json) Test category redirect (`SMW_CAT_REDIRECT`)
 * [p-0916.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0916.json) Test `_ref_rec` with a `_eid` field (#2985)
+* [p-0917.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0917.json) Test category printrequest (`PRINT_CCAT`, `PRINT_CATS`)
 * [p-1000.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1000.json) Test property page with redirect(synonym)/displayTitle (`wgContLang=en`, `wgLang=en`, `wgAllowDisplayTitle`)
 * [p-1001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1001.json) Test property page with parameters (#2479, `wgContLang=en`, `wgLang=en`)
 * [p-1002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1002.json) Test property page with improper assignment list (`wgContLang=en`, `wgLang=en`)
@@ -173,6 +180,7 @@ Contains 280 files with a total of 1251 tests:
 * [p-1005.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1005.json) Test property page with parameters/sort
 * [p-1006.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1006.json) Test property page sorting (`wgRestrictDisplayTitle`, `smwgEntityCollation`)
 * [p-1007.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1007.json) Test sorting on Pages will not exclude non-existent pages from result (#540)
+* [p-1008.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-1008.json) Test property page, parent type/subproperty type enforcement
 
 ### Q
 * [q-0101.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0101.json) Test `_txt` query for simple assignments, NS_HELP, and special chars
@@ -202,7 +210,7 @@ Contains 280 files with a total of 1251 tests:
 * [q-0609.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0609.json) Test `_wpg` for single value approximate (`~/!~`) queries with conjunctive category hierarchy (#1246, en, skip virtuoso)
 * [q-0610.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0610.json) Test `_wpg` range queries (#1291, `smwStrictComparators=false`, skip virtuoso)
 * [q-0611.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0611.json) Test `_wpg` namespace any value queries (#1301, en)
-* [q-0612.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0612.json) Test `_wpg` object value that contains `=` (equals sign) (#640, #710, #1542, #1645, `wgContLang=en`, `wgLang=en`)
+* [q-0612.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0612.json) Test `_wpg` object value that contains `=` (equals sign) (#640, #710, #1542, #1645, #3560)
 * [q-0613.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0613.json) Test single value (`~/!~`/`<`/`>`) queries on namespaced entity (#1652, `NS_HELP`, `smwStrictComparators=false`, skip-on virtuoso)
 * [q-0614.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0614.json) Test query with category hierarchy depth (#2662, `wgContLang=en`, `smwgQSubpropertyDepth`, `smwgQSubcategoryDepth`, skip virtuoso)
 * [q-0615.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0615.json) Test query with property hierarchy depth (#2662, `wgContLang=en`, `smwgQSubpropertyDepth`, `smwgQSubcategoryDepth`, skip virtuoso)
@@ -213,6 +221,7 @@ Contains 280 files with a total of 1251 tests:
 * [q-0620.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0620.json) Test `_wpg` and category using subquery construct
 * [q-0621.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0621.json) Test `_wpg` and namespace using subquery construct
 * [q-0622.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0622.json) Test query with category hierarchy
+* [q-0623.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0623.json) Test query with `_SUBC`
 * [q-0701.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0701.json) Test `_uri` with some annotation/search pattern (T45264, #679)
 * [q-0702.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0702.json) Test `_uri` with additional annotation/search (#1129)
 * [q-0703.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-0703.json) Test to map `Foaf` property from back-end / using a localized predefined property `A le type@fr` (en)
@@ -305,8 +314,13 @@ Contains 280 files with a total of 1251 tests:
 * [s-0028.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0028.json) Test `Special:Browse` limited value list
 * [s-0029.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0029.json) Test `Special:Ask` output on `mainlabel=.../?#...`, `format=table`
 * [s-0030.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0030.json) Test `Special:Concepts`
+* [s-0031.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0031.json) Test `Special:Ask` output on `?...=[[...|...]]|+index...`
+* [s-0032.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0032.json) Test `format=json` output via `Special:Ask` for `_ref_rec`/`_qty` type (#3517)
+* [s-0033.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0033.json) Test output from `Special:SearchByProperty` to show all values for a property (#3531)
+* [s-0034.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0034.json) Test `format=embedded` output via `Special:Ask`
+* [s-0035.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0035.json) Test `format=dsv` output via `Special:Ask`
 
--- Last updated on 2018-09-30 by `readmeContentsBuilder.php`
+-- Last updated on 2019-03-09 by `readmeContentsBuilder.php`
 
 <!-- End of generated contents by readmeContentsBuilder.php -->
 
