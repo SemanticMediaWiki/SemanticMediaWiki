@@ -119,7 +119,12 @@ class PHPUnitEnvironment {
 				// exported by the Travis-CI environment to point to the selected
 				// release/branch
 				$refs = ( $env = getenv( 'MW' ) ) ? "refs/heads/$env" : "refs/tags/" . MW_VERSION;
-				exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
+				$output = null;
+
+				if ( defined( 'SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB' ) && SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB ) {
+					exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
+				}
+
 				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)"  : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
