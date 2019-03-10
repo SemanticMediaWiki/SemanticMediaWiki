@@ -174,7 +174,7 @@ class Deserializer {
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
-		return [ $parts, $outputFormat, $printRequestLabel ];
+		return [ $parts, $outputFormat, smwfNormalTitleText( $printRequestLabel ) ];
 	}
 
 }

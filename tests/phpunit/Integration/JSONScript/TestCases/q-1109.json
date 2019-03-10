@@ -1,0 +1,98 @@
+{
+	"description": "Test `_rec` on two spaced (#3764)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has two spaced record",
+			"contents": "[[Has type::Record]] [[Has fields::Two_spaced__field;other field]]"
+		},
+		{
+			"page": "Test:Q1109/1",
+			"contents": "[[Has two spaced record::abc;def]]"
+		},
+		{
+			"page": "Test:Q1109/2",
+			"contents": "{{#ask: [[Has two spaced record::+]] |?Has two spaced record.Two_spaced__field }}"
+		},
+		{
+			"page": "Test:Q1109/3",
+			"contents": "{{#ask: [[Has two spaced record::+]] |?Has two spaced record.Two spaced  field }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Has two spaced record.Two_spaced_field::Abc]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Test:Q1109/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1 (`__` is converted to `_`)",
+			"condition": "[[Has two spaced record.Two_spaced__field::Abc]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Test:Q1109/1#0##"
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2 (`__` is converted to `_`)",
+			"condition": "[[Has two spaced record.Two spaced  field::Abc]]",
+			"printouts": [],
+			"parameters": {
+				"limit": "10"
+			},
+			"assert-queryresult": {
+				"count": 1,
+				"results": [
+					"Test:Q1109/1#0##"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (`__` is converted to `_`)",
+			"subject": "Test:Q1109/2",
+			"assert-output": {
+				"to-contain": [
+					"Abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (`__` is converted to `_`)",
+			"subject": "Test:Q1109/3",
+			"assert-output": {
+				"to-contain": [
+					"Abc"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -194,7 +194,10 @@ class PropertyValueParser implements ValueParser {
 			$text = Localizer::getInstance()->getContentLanguage()->ucfirst( $text );
 		}
 
-		return str_replace( '_', ' ', $text );
+		// https://www.mediawiki.org/wiki/Manual:Page_title
+		// Titles beginning or ending with a space (underscore), or containing two
+		// or more consecutive spaces (underscores).
+		return str_replace( [ '__', '_', '  ' ], ' ', $text );
 	}
 
 }
