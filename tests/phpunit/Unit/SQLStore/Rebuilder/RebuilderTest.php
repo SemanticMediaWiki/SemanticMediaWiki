@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Rebuilder;
 
 use SMW\ApplicationFactory;
-use SMW\SQLStore\EntityRebuildDispatcher;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\EntityRebuildDispatcher
+ * @covers \SMW\SQLStore\Rebuilder\Rebuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,10 +16,11 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
+class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $titleFactory;
+	private $entityValidator;
 
 	protected function setUp() {
 		parent::setUp();
@@ -38,6 +39,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->entityValidator = $this->getMockBuilder( '\SMW\SQLStore\Rebuilder\EntityValidator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,8 +85,8 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityRebuildDispatcher',
-			new EntityRebuildDispatcher( $store, $this->titleFactory )
+			Rebuilder::class,
+			new Rebuilder( $store, $this->titleFactory, $this->entityValidator )
 		);
 	}
 
@@ -115,9 +120,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new EntityRebuildDispatcher(
+		$instance = new Rebuilder(
 			$store,
-			$this->titleFactory
+			$this->titleFactory,
+			$this->entityValidator
 		);
 
 		$instance->setDispatchRangeLimit( 1 );
@@ -142,6 +148,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRevisionMode() {
+
+		$this->entityValidator->expects( $this->any() )
+			->method( 'hasLatestRevID' )
+			->will( $this->returnValue( true ) );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -173,11 +183,6 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable->expects( $this->once() )
-			->method( 'findAssociatedRev' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 1001 ) );
-
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -203,9 +208,10 @@ class EntityRebuildDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$instance = new EntityRebuildDispatcher(
+		$instance = new Rebuilder(
 			$store,
-			$this->titleFactory
+			$this->titleFactory,
+			$this->entityValidator
 		);
 
 		$instance->setDispatchRangeLimit( 1 );

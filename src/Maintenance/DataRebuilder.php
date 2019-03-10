@@ -395,19 +395,20 @@ class DataRebuilder {
 		}
 
 		// Indicates whether this is a MW page (*) or SMW's object table
-		$text = $id . ( isset( $entities['t'] ) ? '*' : ' ' );
+		$text = $id;
 
+		$prefix = isset( $entities['t'] ) ? 'T:' : 'S:';
 		$entity = end( $entities );
 
 		if ( $entity instanceof \Title ) {
-			return [ $text, '[' . $entity->getPrefixedDBKey() .']' ];
+			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() .']' ];
 		}
 
 		if ( $entity instanceof DIWikiPage ) {
-			return [ $text, '[' . $entity->getHash() .']' ];
+			return [ $text, "[$prefix " . $entity->getHash() .']' ];
 		}
 
-		return [ $text, '[' . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
+		return [ $text, "[$prefix " . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
 	}
 
 	private function performFullDelete() {

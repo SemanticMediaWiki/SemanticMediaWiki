@@ -40,6 +40,8 @@ use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\Rebuilder\EntityValidator;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
@@ -298,27 +300,33 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.3
 	 *
-	 * @return EntityRebuildDispatcher
+	 * @return Rebuilder
 	 */
-	public function newEntityRebuildDispatcher() {
+	public function newRebuilder() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$entityRebuildDispatcher = new EntityRebuildDispatcher(
+		$entityValidator = new EntityValidator(
 			$this->store,
-			$applicationFactory->newTitleFactory()
+			$applicationFactory->getNamespaceExaminer()
 		);
 
-		$entityRebuildDispatcher->setPropertyInvalidCharacterList(
+		$entityValidator->setPropertyInvalidCharacterList(
 			$settings->get( 'smwgPropertyInvalidCharacterList' )
 		);
 
-		$entityRebuildDispatcher->setPropertyRetiredList(
+		$entityValidator->setPropertyRetiredList(
 			$settings->get( 'smwgPropertyRetiredList' )
 		);
 
-		return $entityRebuildDispatcher;
+		$rebuilder = new Rebuilder(
+			$this->store,
+			$applicationFactory->newTitleFactory(),
+			$entityValidator
+		);
+
+		return $rebuilder;
 	}
 
 	/**
