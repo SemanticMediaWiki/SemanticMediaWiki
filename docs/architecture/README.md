@@ -5,7 +5,7 @@ This document should help newcomers and developers to navigate around Semantic M
 The main objective of the `Semantic MediaWiki` software is to provide "semantic" functions on top of MediaWiki to enable machine-reading of wiki-content and allow structured content to be queried by means of different backends the software supports including:
 
 - SQL (see [SQLStore](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md))
-- Elasticsearch (see [ElasticSearch](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md))
+- Elasticsearch (see [ElasticStore](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md))
 - SPARQL (see [SPARQLStore](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md))
 
 ## Getting started ...
