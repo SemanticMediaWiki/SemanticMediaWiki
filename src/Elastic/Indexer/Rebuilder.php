@@ -112,7 +112,8 @@ class Rebuilder {
 			SQLStore::ID_TABLE,
 			[
 				'smw_id',
-				'smw_iw'
+				'smw_iw',
+				'smw_rev'
 			],
 			$conditions,
 			__METHOD__,
@@ -273,8 +274,11 @@ class Rebuilder {
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
 
+		$changeDiff = $changeOp->newChangeDiff();
+		$changeDiff->setAssociatedRev( $semanticData->getExtensionData( 'revision_id', 0 ) );
+
 		$this->indexer->index(
-			$changeOp->newChangeDiff(),
+			$changeDiff,
 			$this->raw_text( $dataItem )
 		);
 

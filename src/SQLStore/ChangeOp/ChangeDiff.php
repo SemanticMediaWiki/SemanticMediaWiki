@@ -60,6 +60,11 @@ class ChangeDiff {
 	private $changeList = [];
 
 	/**
+	 * @var integer
+	 */
+	private $associatedRev = 0;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage $subject
@@ -75,6 +80,24 @@ class ChangeDiff {
 		$this->dataOps = $dataOps;
 		$this->propertyList = $propertyList;
 		$this->textItems = $textItems;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $associatedRev
+	 */
+	public function setAssociatedRev( $associatedRev ) {
+		$this->associatedRev = $associatedRev;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return integer
+	 */
+	public function getAssociatedRev() {
+		return $this->associatedRev;
 	}
 
 	/**
@@ -210,7 +233,8 @@ class ChangeDiff {
 				'change_list' => $this->changeList,
 				'data' => $data,
 				'text_items' => $this->textItems,
-				'property_list' => $this->propertyList
+				'property_list' => $this->propertyList,
+				'associated_rev' => $this->associatedRev
 			],
 			$flags
 		);

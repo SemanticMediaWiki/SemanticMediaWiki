@@ -267,6 +267,9 @@
 							"normalizer": "lowercase_normalizer"
 						}
 					}
+				},
+				"subject.rev_id": {
+					"type": "integer"
 				}
 			}
 		}

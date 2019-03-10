@@ -147,6 +147,23 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAssociatedRev() {
+
+		$instance = new ChangeDiff(
+			DIWikiPage::newFromText( 'Foo' ),
+			[],
+			[],
+			[]
+		);
+
+		$instance->setAssociatedRev( 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getAssociatedRev()
+		);
+	}
+
 	public function FetchFromCache() {
 
 		$changeDiff = ChangeDiff::fetch(

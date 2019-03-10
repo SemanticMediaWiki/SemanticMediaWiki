@@ -567,6 +567,7 @@ class Indexer {
 
 		$inserts = [];
 		$inverted = [];
+		$rev = $changeDiff->getAssociatedRev();
 
 		// In the event that a _SOBJ (or hereafter any inherited object)
 		// is deleted, remove the reference directly from the index since
@@ -592,7 +593,7 @@ class Indexer {
 					continue;
 				}
 
-				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $unescape_bytea );
+				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $unescape_bytea, $rev );
 			}
 		}
 
@@ -605,7 +606,7 @@ class Indexer {
 		}
 	}
 
-	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $unescape_bytea ) {
+	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $unescape_bytea, $rev ) {
 
 		// The structure to be expected in ES:
 		//
@@ -660,6 +661,10 @@ class Indexer {
 
 			if ( $sort !== '' ) {
 				$subject['sortkey'] = $sort;
+			}
+
+			if ( $rev != 0 && $subject['subobject'] === '' ) {
+				$subject['rev_id'] = $rev;
 			}
 
 			$insertRows[$sid]['subject'] = $subject;
