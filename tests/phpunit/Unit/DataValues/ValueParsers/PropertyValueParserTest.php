@@ -75,6 +75,34 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
+			'Fo o',
+			[],
+			'Fo o',
+			false
+		];
+
+		$provider[] = [
+			'Fo o  bar',
+			[],
+			'Fo o bar',
+			false
+		];
+
+		$provider[] = [
+			'Fo_o__bar',
+			[],
+			'Fo o bar',
+			false
+		];
+
+		$provider[] = [
+			'Fo_o____bar',
+			[],
+			'Fo o bar',
+			false
+		];
+
+		$provider[] = [
 			'[ Foo',
 			[],
 			'Foo',
