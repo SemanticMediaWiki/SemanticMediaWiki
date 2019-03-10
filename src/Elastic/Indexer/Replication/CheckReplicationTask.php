@@ -246,7 +246,7 @@ class CheckReplicationTask extends Task {
 			'highlighter_template',
 			[
 				'title' => $this->msg( $this->errorTitle ),
-				'content' => $content
+				'content' => htmlspecialchars( $content, ENT_QUOTES )
 			]
 		);
 
