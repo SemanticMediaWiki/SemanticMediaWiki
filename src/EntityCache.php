@@ -6,6 +6,12 @@ use Onoi\Cache\Cache;
 use Title;
 
 /**
+ * Class provides a simple interface the link independent cache entries as
+ * associates (to a wikipage) hereby allowing them to be invalidated at once.
+ *
+ * `...Sub` methods provide a convenient support layer to extend or remove values
+ * from a cache entry.
+ *
  * @license GNU GPL v2+
  * @since 3.1
  *
@@ -76,6 +82,25 @@ class EntityCache {
 	 * @param string $key
 	 * @param mixed $value
 	 */
+	public function save( $key, $value = null, $ttl = 0 ) {
+		 $this->cache->save( $key, $value, $ttl );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 */
+	public function delete( $key ) {
+		 $this->cache->delete( $key );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
 	public function fetchSub( $key, $sub ) {
 
 		$res = $this->cache->fetch( $key );
@@ -92,17 +117,9 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
+	 * @param string $sub
 	 * @param mixed $value
-	 */
-	public function save( $key, $value = null, $ttl = 0 ) {
-		 $this->cache->save( $key, $value, $ttl );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @param integer $ttl
 	 */
 	public function saveSub( $key, $sub, $value = null, $ttl = 0 ) {
 
@@ -122,9 +139,21 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
+	 * @param string $sub
+	 * @param integer $ttl
 	 */
-	public function delete( $key ) {
-		 $this->cache->delete( $key );
+	public function deleteSub( $key, $sub, $ttl = 0 ) {
+
+		$res = $this->cache->fetch( $key );
+		$sub = md5( $sub );
+
+		if ( !is_array( $res ) ) {
+			$res = [];
+		}
+
+		unset( $res[$sub] );
+
+		$this->cache->save( $key, $res, $ttl );
 	}
 
 	/**

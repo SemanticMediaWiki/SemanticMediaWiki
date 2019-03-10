@@ -136,6 +136,26 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 		$instance->saveSub( 'Foo', 'bar', '123' );
 	}
 
+	public function tesDeleteSub() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->with( $this->equalTo( 'Foo' ) )
+			->will( $this->returnValue( [ md5( 'bar' ) => 'Foobar', md5( 'foobar' ) => '123' ] ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->equalTo( 'Foo' ),
+				$this->equalTo( [ md5( 'foobar' ) => '123' ] ) );
+
+		$instance = new EntityCache(
+			$this->cache
+		);
+
+		$instance->deleteSub( 'Foo', 'bar' );
+	}
+
 	public function testAssociate() {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
