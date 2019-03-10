@@ -45,6 +45,11 @@
 				api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
 					self.replaceWith( data.task.html );
 					self.find( '.is-disabled' ).removeClass( 'is-disabled' );
+
+					// Enable the `mw-indicator-mw-helplink` in case it was disabled
+					if ( data.task.html === '' && document.getElementById( 'mw-indicator-mw-helplink' ) !== null ) {
+						document.getElementById( 'mw-indicator-mw-helplink' ).style.display = 'inline-block';
+					};
 				} );
 			}
 
