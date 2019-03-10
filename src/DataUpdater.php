@@ -5,6 +5,8 @@ namespace SMW;
 use Title;
 use User;
 use WikiPage;
+use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * This function takes care of storing the collected semantic data and
@@ -25,6 +27,8 @@ use WikiPage;
  */
 class DataUpdater {
 
+	use LoggerAwareTrait;
+
 	/**
 	 * @var Store
 	 */
@@ -34,11 +38,6 @@ class DataUpdater {
 	 * @var SemanticData
 	 */
 	private $semanticData;
-
-	/**
-	 * @var TransactionalCallableUpdate
-	 */
-	private $transactionalCallableUpdate;
 
 	/**
 	 * @var boolean|null
@@ -79,7 +78,6 @@ class DataUpdater {
 	public function __construct( Store $store, SemanticData $semanticData ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
-		$this->transactionalCallableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate();
 	}
 
 	/**
@@ -181,30 +179,39 @@ class DataUpdater {
 			return false;
 		}
 
-		DeferredCallableUpdate::releasePendingUpdates();
+		DeferredUpdate::releasePendingUpdates();
 
 		if ( $this->isDeferrableUpdate === false || $this->isCommandLineMode ) {
 			return $this->performUpdate();
 		}
 
-		$this->transactionalCallableUpdate->setCallback( function() {
-			$this->performUpdate();
-		} );
+		$hash = $this->getSubject()->getHash();
+		$connection = $this->store->getConnection( 'mw.db' );
 
-		$this->transactionalCallableUpdate->setOrigin(
+		$deferredUpdate = DeferredUpdate::newUpdate( function(){ $this->performUpdate(); }, $connection );
+
+		$deferredUpdate->setOrigin(
 			[
 				__METHOD__,
 				$this->origin,
-				$this->getSubject()->getHash()
+				$hash
 			]
 		);
 
-		$this->transactionalCallableUpdate->isDeferrableUpdate(
+		$deferredUpdate->setFingerprint(
+			$hash
+		);
+
+		$deferredUpdate->setLogger(
+			$this->logger
+		);
+
+		$deferredUpdate->isDeferrableUpdate(
 			$this->isDeferrableUpdate
 		);
 
-		$this->transactionalCallableUpdate->commitWithTransactionTicket();
-		$this->transactionalCallableUpdate->pushUpdate();
+		$deferredUpdate->commitWithTransactionTicket();
+		$deferredUpdate->pushUpdate();
 
 		return true;
 	}

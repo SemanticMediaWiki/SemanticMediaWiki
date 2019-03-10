@@ -40,24 +40,26 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->setMethods( [ 'exists' ] )
 			->getMock();
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
+			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
 		$this->store->setLogger( $this->spyLogger );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
-
-		$this->transactionalCallableUpdate = $this->getMockBuilder( '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'DeferredTransactionalCallableUpdate', $this->transactionalCallableUpdate );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 	}
@@ -95,9 +97,6 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	public function testDeferredUpdate() {
 
-		$this->transactionalCallableUpdate->expects( $this->once() )
-			->method( 'pushUpdate' );
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$instance = new DataUpdater(
@@ -105,8 +104,14 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$semanticData
 		);
 
+		$instance->setLogger( $this->spyLogger );
 		$instance->isDeferrableUpdate( true );
 		$instance->doUpdate();
+
+		$this->assertContains(
+			'DeferrableUpdate',
+			$this->spyLogger->getMessagesAsString()
+		);
 	}
 
 	/**

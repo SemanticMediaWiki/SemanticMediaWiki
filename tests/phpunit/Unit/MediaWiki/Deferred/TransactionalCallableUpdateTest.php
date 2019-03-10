@@ -46,6 +46,11 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 			TransactionalCallableUpdate::class,
 			new TransactionalCallableUpdate( $callback, $this->connection )
 		);
+
+		$this->assertInstanceOf(
+			TransactionalCallableUpdate::class,
+			TransactionalCallableUpdate::newUpdate( $callback, $this->connection )
+		);
 	}
 
 	public function testUpdate() {
