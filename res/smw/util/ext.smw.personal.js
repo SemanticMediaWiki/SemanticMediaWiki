@@ -22,19 +22,27 @@
 
 			for ( var prop in watchlist ) {
 				if ( watchlist.hasOwnProperty( prop ) ) {
-					text = text + '<tr><td style="width:80%;">' + prop + '</td><td style="width:50px;"><span class="item-count active">' + watchlist[prop] + '</span></td></tr>';
+					text = text + '<li style="font-size:80%;">'+ '[&nbsp;<span class="">' + watchlist[prop] + '</span>&nbsp;]&nbsp;' + prop +'</li>';
 				}
 			}
 
 			if ( text !== '' ) {
-				text = '<table class="smw-personal-table"><tbody>' + text + '</tbody></table>';
+
+				if ( document.documentElement.dir === "rtl" ) {
+					var line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-right: -10px;width: 259px;"></div>';
+				} else{
+					var line = '<div style="border-top: 1px solid #ebebeb;margin-top: 10px;margin-bottom: 8px;margin-left: -10px;width: 259px;"></div>';
+				}
+
+				text = '<p style="font-size:12px;">' + mw.msg( 'smw-personal-jobqueue-watchlist-explain' ) + '</p>' + line + '<ul>' + text + '</ul>';
 
 				var tooltip = smw.Factory.newTooltip();
 				tooltip.show ( {
 					context: $( this ),
 					title: mw.msg( 'smw-personal-jobqueue-watchlist' ),
 					type: 'inline',
-					content: text
+					content: text,
+					maxWidth: 280
 				} );
 			};
 		} );

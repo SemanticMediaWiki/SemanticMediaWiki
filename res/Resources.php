@@ -555,7 +555,9 @@ return [
 			'mediawiki.api'
 		],
 		'messages' => [
-			'smw-personal-jobqueue-watchlist'
+			'smw-personal-jobqueue-watchlist',
+			'smw-personal-jobqueue-watchlist-explain',
+			'brackets'
 		],
 		'position' => 'top',
 		'targets' => [
