@@ -119,14 +119,6 @@ class ParserAfterTidy extends HookHandler {
 			return false;
 		}
 
-		// Allow to perform even without a `[[...::...]]` text so that a change
-		// (such as an approved file version) is run through the annotation and
-		// update process
-		// @see SemanticApprovedRevs#2
-		if ( $title->getNamespace() === NS_FILE ) {
-			return true;
-		}
-
 		// ParserOptions::getInterfaceMessage is being used to identify whether a
 		// parse was initiated by `Message::parse`
 		if ( $title->isSpecialPage() || $this->parser->getOptions()->getInterfaceMessage() ) {
@@ -148,11 +140,13 @@ class ParserAfterTidy extends HookHandler {
 			return true;
 		}
 
-		// Allow an external event to trigger a processing,if set so that
-		// the an update can happen when for example as part of a programtic
-		// purge request even when no text (or annotations) are available
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, $title->getPrefixedDBKey() );
 
+		// Allow to continue the processing even without a `[[...::...]]` text
+		// so that a change (such as an approved file, page version) is run
+		// through the annotation and update process as part of a programtic
+		// purge request.
+		// @see SemanticApprovedRevs#2
 		if( $this->cache->fetch( $key ) !== false ) {
 			return true;
 		}
