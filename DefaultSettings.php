@@ -1838,6 +1838,25 @@ return [
 	##
 
 	##
+	# Properties classified as retired/no longer in use
+	#
+	# Listed properties will be removed from the entity table hereby avoids
+	# references or display of those classified as retired.
+	#
+	# The system normally leaves properties untouched (once created) but this
+	# setting allows them to be marked as retired and eventually removed from
+	# the system.
+	#
+	# @since 3.1
+	##
+	'smwgPropertyRetiredList' => [
+
+		// No longer valid predefined property prefixes
+		'_SF_', '_SD_'
+	],
+	##
+
+	##
 	# Reserved property names
 	#
 	# Listed names are reserved as they may interfere with Semantic MediaWiki or

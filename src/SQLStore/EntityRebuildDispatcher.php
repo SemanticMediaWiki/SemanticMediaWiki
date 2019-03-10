@@ -52,6 +52,16 @@ class EntityRebuildDispatcher {
 	/**
 	 * @var array
 	 */
+	private $propertyInvalidCharacterList = [];
+
+	/**
+	 * @var array
+	 */
+	private $propertyRetiredList = [];
+
+	/**
+	 * @var array
+	 */
 	private $options;
 
 	/**
@@ -97,6 +107,24 @@ class EntityRebuildDispatcher {
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 		$this->lru = new Lru( 10000 );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $propertyInvalidCharacterList
+	 */
+	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ) {
+		$this->propertyInvalidCharacterList = $propertyInvalidCharacterList;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $propertyRetiredList
+	 */
+	public function setPropertyRetiredList( array $propertyRetiredList ) {
+		$this->propertyRetiredList = $propertyRetiredList;
 	}
 
 	/**
@@ -363,6 +391,8 @@ class EntityRebuildDispatcher {
 
 			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
 				$this->findDuplicateProperties( $row );
+				$this->checkAndMarkInvalidProperties( $this->propertyInvalidCharacterList, $row );
+				$this->checkAndMarkInvalidProperties( $this->propertyRetiredList, $row );
 			}
 		}
 
@@ -384,6 +414,23 @@ class EntityRebuildDispatcher {
 			$row->smw_title{0} != '_' &&
 			// smw_proptable_hash === null means it is not a subject but an object value
 			$row->smw_proptable_hash === null;
+	}
+
+	private function checkAndMarkInvalidProperties( $list, $row ) {
+
+		foreach ( $list as $v ) {
+
+			if ( strpos( $row->smw_title, $v ) === false ) {
+				continue;
+			}
+
+			$this->store->getObjectIds()->updateInterwikiField(
+				$row->smw_id,
+				new DIWikiPage( $row->smw_title, $row->smw_namespace, SMW_SQL3_SMWDELETEIW )
+			);
+
+			break;
+		}
 	}
 
 	private function findDuplicateProperties( $row ) {

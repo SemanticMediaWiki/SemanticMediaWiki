@@ -179,10 +179,6 @@ class TypesRegistry {
 			'_LIST' => [ '__pls', true, true, true ], // "has fields"
 			'_SKEY' => [ '__key', false, true, false ], // sort key of a page
 
-			// FIXME SF related properties to be removed with 3.0
-			'_SF_DF' => [ '__spf', true, true, false ], // Semantic Form's default form property
-			'_SF_AF' => [ '__spf', true, true, false ],  // Semantic Form's alternate form property
-
 			'_SOBJ' => [ '__sob', true, false, false ], // "has subobject"
 			'_ASK'  => [ '__sob', false, false, false ], // "has query"
 			'_ASKST' => [ '_cod', true, false, false ], // "Query string"
