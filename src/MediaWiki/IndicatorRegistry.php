@@ -29,6 +29,11 @@ class IndicatorRegistry {
 	private $modules = [];
 
 	/**
+	 * @var []
+	 */
+	private $inlineStyles = [];
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
@@ -59,6 +64,7 @@ class IndicatorRegistry {
 
 			$this->indicators = array_merge( $this->indicators, $indicatorProvider->getIndicators() );
 			$this->modules = array_merge( $this->modules, $indicatorProvider->getModules() );
+			$this->inlineStyles[] = $indicatorProvider->getInlineStyle();
 		}
 
 		return $this->indicators !== [];
@@ -72,6 +78,7 @@ class IndicatorRegistry {
 	public function attachIndicators( OutputPage $outputPage ) {
 		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
+		$outputPage->addInlineStyle( implode( '', $this->inlineStyles ) );
 	}
 
 }
