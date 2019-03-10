@@ -104,9 +104,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			case '_wpc' : case '__suc': case '__sin':
 				$this->m_fixNamespace = NS_CATEGORY;
 			break;
-			case '_wpf' : case '__spf':
-				$this->m_fixNamespace = SF_NS_FORM;
-			break;
 			case '_wps' :
 				$this->m_fixNamespace = SMW_NS_SCHEMA;
 			break;

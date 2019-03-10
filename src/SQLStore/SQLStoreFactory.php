@@ -302,10 +302,24 @@ class SQLStoreFactory {
 	 * @return EntityRebuildDispatcher
 	 */
 	public function newEntityRebuildDispatcher() {
-		return new EntityRebuildDispatcher(
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
+		$entityRebuildDispatcher = new EntityRebuildDispatcher(
 			$this->store,
-			ApplicationFactory::getInstance()->newTitleFactory()
+			$applicationFactory->newTitleFactory()
 		);
+
+		$entityRebuildDispatcher->setPropertyInvalidCharacterList(
+			$settings->get( 'smwgPropertyInvalidCharacterList' )
+		);
+
+		$entityRebuildDispatcher->setPropertyRetiredList(
+			$settings->get( 'smwgPropertyRetiredList' )
+		);
+
+		return $entityRebuildDispatcher;
 	}
 
 	/**
