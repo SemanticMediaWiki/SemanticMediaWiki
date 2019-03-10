@@ -472,6 +472,158 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->commitAndWaitForReplication( __METHOD__, 123 );
 	}
 
+	public function testBeginSectionTransaction() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'startAtomic' );
+
+		$write->expects( $this->never() )
+			->method( 'endAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $write ) );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
+		);
+
+		$instance->beginSectionTransaction( __METHOD__ );
+
+		// Other atomic requests are disabled
+		$instance->beginAtomicTransaction( 'Foo' );
+		$instance->endAtomicTransaction( 'Foo' );
+	}
+
+	public function testBeginSectionTransactionWithAnotherActiveThrowsException() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'startAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $write ) );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
+		);
+
+		$instance->beginSectionTransaction( __METHOD__ );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->beginSectionTransaction( 'Foo' );
+	}
+
+	public function testBeginEndSectionTransaction() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'startAtomic' );
+
+		$write->expects( $this->once() )
+			->method( 'endAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $write ) );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
+		);
+
+		$instance->beginSectionTransaction( __METHOD__ );
+		$instance->endSectionTransaction( __METHOD__ );
+	}
+
+	public function testBeginEndSectionTransactionDoNotMatchThrowsException() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$write->expects( $this->once() )
+			->method( 'startAtomic' );
+
+		$write->expects( $this->never() )
+			->method( 'endAtomic' );
+
+		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$writeConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $write ) );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			)
+		);
+
+		$instance->beginSectionTransaction( __METHOD__ );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->endSectionTransaction( 'Foo' );
+	}
+
 	public function testDoQueryWithAutoCommit() {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )

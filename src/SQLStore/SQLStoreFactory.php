@@ -528,6 +528,8 @@ class SQLStoreFactory {
 			Site::isCommandLineMode()
 		);
 
+		$propertyStatisticsStore->waitOnTransactionIdle();
+
 		return $propertyStatisticsStore;
 	}
 
