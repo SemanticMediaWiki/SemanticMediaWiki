@@ -94,6 +94,17 @@ class IndicatorProvider implements IIndicatorProvider {
 		return [ 'smw.check.replication' ];
 	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getInlineStyle() {
+		// The standard helplink interferes with the alignment (due to a text
+		// component) therefore disabled it when indicators are present
+		return '#mw-indicator-mw-helplink {display:none;}';
+	}
+
 	private function checkReplication( $title, $options ) {
 
 		if ( $options['action'] === 'edit' || $options['diff'] !== null || $options['action'] === 'history' ) {

@@ -40,6 +40,32 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetModules() {
+
+		$instance = new IndicatorProvider(
+			$this->store,
+			$this->entityCache
+		);
+
+		$this->assertContains(
+			'smw.check.replication',
+			$instance->getModules()
+		);
+	}
+
+	public function testGetInlineStyle() {
+
+		$instance = new IndicatorProvider(
+			$this->store,
+			$this->entityCache
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getInlineStyle()
+		);
+	}
+
 	public function testCheckReplicationIndicator() {
 
 		$title = $this->getMockBuilder( '\Title' )

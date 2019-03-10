@@ -35,4 +35,11 @@ interface IndicatorProvider {
 	 */
 	public function getModules();
 
+	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getInlineStyle();
+
 }
