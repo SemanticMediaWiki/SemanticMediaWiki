@@ -70,7 +70,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read' => $connectionProvider
 				]
@@ -104,7 +104,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read' => $connectionProvider
 				]
@@ -145,7 +145,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read' => $connectionProvider
 				]
@@ -186,7 +186,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read' => $connectionProvider
 				]
@@ -220,7 +220,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read' => $connectionProvider
 				]
@@ -278,7 +278,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $write ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $readConnectionProvider,
 					'write' => $writeConnectionProvider
@@ -323,7 +323,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $connectionProvider
 				]
@@ -360,7 +360,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $connectionProvider,
 					'write' => $connectionProvider
@@ -394,7 +394,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $readConnectionProvider,
 					'write' => $writeConnectionProvider
@@ -428,7 +428,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getEmptyTransactionTicket' );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $readConnectionProvider,
 					'write' => $writeConnectionProvider
@@ -460,7 +460,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->method( 'commitAndWaitForReplication' );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $readConnectionProvider,
 					'write' => $writeConnectionProvider
@@ -510,7 +510,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $database ) );
 
 		$instance = new Database(
-			new connRef(
+			new ConnRef(
 				[
 					'read'  => $readConnectionProvider,
 					'write' => $writeConnectionProvider
@@ -532,7 +532,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new Database(
-			new connRef( [] )
+			new ConnRef( [] )
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
