@@ -33,7 +33,7 @@ In general, code layout is guided by the [MediaWiki coding conventions](http://w
 - Do not use a closing "?>" tag in your source files. It is a source for errors that is not needed in files.
 - Document all your code (see source documentation for details)
 - Avoid single lines of code becoming too long.
-- '''Indenting''' of program blocks is done with tabulators, not with spaces.All program blocks are indented.
+- '''Indenting''' of program blocks is done with tabulators, not with spaces. All program blocks are indented.
 - All indented program blocks should be enclosed with { and }, even if they have one line only.
 - Using in-line conditionals for value computations is fine ("condition?thenvalue:elsevalue").
 - Spaces around "=" (variable assignment) and all operators, including "." (string concatenation), are recommended.
