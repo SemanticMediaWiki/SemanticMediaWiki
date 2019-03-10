@@ -373,10 +373,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$database->expects( $this->atLeastOnce() )
-			->method( 'beginAtomicTransaction' );
+			->method( 'beginSectionTransaction' );
 
 		$database->expects( $this->atLeastOnce() )
-			->method( 'endAtomicTransaction' );
+			->method( 'endSectionTransaction' );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()

@@ -77,6 +77,11 @@ class Database {
 	private $autoCommit = false;
 
 	/**
+	 * @var string
+	 */
+	private $sectionTransaction;
+
+	/**
 	 * @var integer
 	 */
 	private $insertId = null;
@@ -816,11 +821,71 @@ class Database {
 	}
 
 	/**
+	 * Register a `section` as transaction
+	 *
+	 * The intent is to make it possible to mark a section and disable any other
+	 * atomic transaction request while being part of a section hereby allowing
+	 * to bundle all requests and encapsulate them into one coherent atomic
+	 * transaction without changing pending callers that may require individual
+	 * atomic transactions when they are not part of a section request.
+	 *
+	 * Only one active a section transaction is allowed at a time otherwise an
+	 * `Exception` is thrown.
+	 *
+	 * @since 3.1
+	 *
+	 * @param string $fname
+	 * @throws RuntimeException
+	 */
+	public function beginSectionTransaction( $fname = __METHOD__ ) {
+
+		if ( $this->sectionTransaction !== null ) {
+			throw new RuntimeException(
+				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
+			);
+		}
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		$this->sectionTransaction = $fname;
+		$this->connections['write']->startAtomic( $fname );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $fname
+	 */
+	public function endSectionTransaction( $fname = __METHOD__ ) {
+
+		if ( $this->sectionTransaction !== $fname ) {
+			throw new RuntimeException(
+				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
+			);
+		}
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		$this->sectionTransaction = null;
+		$this->connections['write']->endAtomic( $fname );
+	}
+
+	/**
 	 * @since 2.3
 	 *
 	 * @param string $fname
 	 */
 	public function beginAtomicTransaction( $fname = __METHOD__ ) {
+
+		// Disable all individual atomic transactions as long as a section
+		// transaction is registered.
+		if ( $this->sectionTransaction !== null ) {
+			return;
+		}
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();
@@ -835,6 +900,12 @@ class Database {
 	 * @param string $fname
 	 */
 	public function endAtomicTransaction( $fname = __METHOD__ ) {
+
+		// Disable all individual atomic transactions as long as a section
+		// transaction is registered.
+		if ( $this->sectionTransaction !== null ) {
+			return;
+		}
 
 		if ( $this->initConnection === false ) {
 			$this->initConnection();

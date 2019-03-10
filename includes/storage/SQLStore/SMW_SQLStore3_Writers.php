@@ -177,7 +177,11 @@ class SMWSQLStore3Writers {
 		\Hooks::run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
 		$subject = $semanticData->getSubject();
+
 		$connection = $this->store->getConnection( 'mw.db' );
+
+		// MW 1.33+
+		$connection->beginSectionTransaction( __METHOD__ );
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
@@ -209,8 +213,6 @@ class SMWSQLStore3Writers {
 		$subSemanticData = $semanticData->getSubSemanticData();
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$connection->beginAtomicTransaction( __METHOD__ );
-
 		foreach( $subSemanticData as $subobjectData ) {
 			$this->doFlatDataUpdate( $subobjectData );
 		}
@@ -236,9 +238,6 @@ class SMWSQLStore3Writers {
 			$this->store->getObjectIds()->updateRevField( $sid, $rev_id );
 		}
 
-		$connection->endAtomicTransaction( __METHOD__ );
-		$connection->beginAtomicTransaction( __METHOD__ );
-
 		// Store the diff in cache so any post processing has a chance to find
 		// what entities and values were changed
 		$changeDiff = $changeOp->newChangeDiff();
@@ -258,7 +257,7 @@ class SMWSQLStore3Writers {
 			$changeOp
 		] );
 
-		$connection->endAtomicTransaction( __METHOD__ );
+		$connection->endSectionTransaction( __METHOD__ );
 	}
 
 	/**
