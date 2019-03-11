@@ -869,6 +869,7 @@
 	"smw-schema-type": "This is the label of a tab on a page in namespace \"smw/schema\". \n\n{{Identical|Type}}",
 	"smw-schema-description-link-format-schema": "This is an informatory message shown on a type page in namespace \"smw/schema\".",
 	"smw-schema-description-search-form-schema": "This is an informatory message shown on a type page in namespace \"smw/schema\".",
+	"smw-schema-description-property-group-schema": "This is an informatory message shown on a type page in namespace \"smw/schema\".",
 	"smw-schema-tag": "This is the label of a Link to a special property on a page in namespace \"smw/schema\".",
 	"smw-property-predefined-schema-desc": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
 	"smw-property-predefined-schema-def": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 holds the name of the special property.",
@@ -901,8 +902,11 @@
 	"smw-helplink": "This is the URL formatter for an link to the homepage to Semantic MediaWiki.\n{{Optional}} \n\nor\n\n{{Notranslate}}",
 	"smw-es-replication-check": "This is a header.",
 	"smw-es-replication-error": "This is the label of a tooltip.",
+	"smw-es-replication-file-ingest-error": "This is the label of a tooltip.",
 	"smw-es-replication-error-missing-id": "This is an error message.\n\nParameters:\n* $1 - holds the name of the page\n* $2 - holds the ID of the page",
 	"smw-es-replication-error-divergent-date": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the page\n* $2 - Holds the identifier (number) of the page",
 	"smw-es-replication-error-divergent-date-detail": "This is a status message within a tooltip.\n\nParameters:\n- $1 and $2: Hold timestamps",
-	"smw-es-replication-error-suggestions": "This is an informatory message in a tooltip."
+	"smw-es-replication-error-suggestions": "This is an informatory message in a tooltip.",
+	"smw-es-replication-error-file-ingest-missing-file-attachment": "This is an error message.\n\nParaameter:\n* $1 - this is the name of a page.",
+	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "This is an informatory message."
 }

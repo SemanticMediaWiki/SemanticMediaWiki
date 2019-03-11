@@ -453,7 +453,7 @@
 	"smw-info-par-icon": "Значок, щоб показати \"info\" або \"warning\".",
 	"prefs-smw": "Семантична MediaWiki",
 	"prefs-general-options": "Загальні опції",
-	"prefs-ask-options": "Опції Special:Ask",
+	"prefs-ask-options": "Опції семантичного пошуку",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Семантична Медіавікі] (та пов'язані розширення), забезпечують можливість індивідуальних налаштувань для обраних функцій. Для отримання додаткової інформації, будь ласка, перегляньте цю [http://semantic-mediawiki.org/wiki/Help:User_preferences сторінку довідки].",
 	"smw-prefs-ask-options-tooltip-display": "Показувати текст параметра як інформаційну підказку",
 	"smw-prefs-ask-options-compact-view-basic": "Увімкнути базовий компактний режим перегляду",
