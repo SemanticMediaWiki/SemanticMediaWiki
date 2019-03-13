@@ -120,12 +120,12 @@ function smwfAbort( $text, $title = 'Error',  $type = 'error' ) {
  *
  * @param array $messages
  * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
- * @param string $seperator
+ * @param string $separator
  * @param boolean $escape Should the messages be escaped or not (ie when they already are)
  *
  * @return string
  */
-function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' <!--br-->', $escape = true ) {
+function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' <!--br-->', $escape = true ) {
 
 	$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
@@ -144,7 +144,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $seperator = ' 
 			$message = '<li>' . $message . '</li>';
 		}
 
-		$content = '<ul>' . implode( $seperator, $messages ) . '</ul>';
+		$content = '<ul>' . implode( $separator, $messages ) . '</ul>';
 	}
 
 	// Stop when a previous processing produced an error and it is expected to be
