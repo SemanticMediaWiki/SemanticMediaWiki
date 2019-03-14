@@ -84,6 +84,7 @@
 	"smw_attribute_header": "Säiten déi d'Eegeschaft \"$1\" benotzen",
 	"smw_attributearticlecount": "Et {{PLURAL:$1|gëtt eng Säit|gi(nn) $1 Säite}} gewisen, déi dës Eegenschaft {{PLURAL:$1|benotzt|benotzen}}:",
 	"smw-propertylist-redirect-header": "Synonymmen",
+	"specialpages-group-smw_group-maintenance": "Maintenance",
 	"exportrdf": "Säiten als RDF exportéieren",
 	"smw_exportrdf_backlinks": "Och all Säiten déi op déi exportéiert Säite referéieren exportéieren.\nEt gët en RDF ugeluecht dee liicht duerchsicht ka ginn.",
 	"smw_exportrdf_lastdate": "Keng Säiten exportéieren déi zënter dem Zäitpunkt deen uginn ass net geännert goufen.",
