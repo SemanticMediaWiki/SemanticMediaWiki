@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\EditInfoProvider;
 use SMW\Message;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use Title;
 
 /**

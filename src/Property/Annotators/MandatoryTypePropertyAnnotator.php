@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\PropertyAnnotators;
+namespace SMW\Property\Annotators;
 
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;

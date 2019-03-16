@@ -33,7 +33,7 @@ use SMW\Parser\LinksProcessor;
 use SMW\PermissionPthValidator;
 use SMW\ParserData;
 use SMW\PostProcHandler;
-use SMW\PropertyAnnotatorFactory;
+use SMW\Property\AnnotatorFactory;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRestrictionExaminer;
 use SMW\PropertySpecificationLookup;
@@ -264,8 +264,8 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var PropertyAnnotatorFactory
 		 */
 		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', '\SMW\PropertyAnnotatorFactory' );
-			return new PropertyAnnotatorFactory();
+			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', AnnotatorFactory::class );
+			return new AnnotatorFactory();
 		} );
 
 		/**

@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Message;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\SemanticData;
 use User;
 use WikiPage;

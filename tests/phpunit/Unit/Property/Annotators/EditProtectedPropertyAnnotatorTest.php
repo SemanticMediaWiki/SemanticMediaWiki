@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotators;
+namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertyAnnotators\EditProtectedPropertyAnnotator
+ * @covers \SMW\Property\Annotators\EditProtectedPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -48,7 +48,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotators\EditProtectedPropertyAnnotator',
+			'\SMW\Property\Annotators\EditProtectedPropertyAnnotator',
 			$instance
 		);
 	}

@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
+use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
 
 /**

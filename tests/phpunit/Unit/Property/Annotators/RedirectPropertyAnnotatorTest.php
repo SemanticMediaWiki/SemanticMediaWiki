@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotators;
+namespace SMW\Tests\Property\Annotators;
 
 use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\RedirectPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @covers \SMW\PropertyAnnotators\RedirectPropertyAnnotator
+ * @covers \SMW\Property\Annotators\RedirectPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -44,7 +44,7 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyAnnotators\RedirectPropertyAnnotator',
+			'\SMW\Property\Annotators\RedirectPropertyAnnotator',
 			$instance
 		);
 	}

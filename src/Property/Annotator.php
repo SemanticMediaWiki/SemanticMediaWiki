@@ -1,18 +1,16 @@
 <?php
 
-namespace SMW;
+namespace SMW\Property;
 
 /**
  * Interface specifying available methods to interact with the Decorator
- *
- * @ingroup SMW
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-interface PropertyAnnotator {
+interface Annotator {
 
 	/**
 	 * Returns a SemanticData container
