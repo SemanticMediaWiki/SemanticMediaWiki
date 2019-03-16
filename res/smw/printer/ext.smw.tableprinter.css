@@ -289,3 +289,7 @@
 .smw-datatable-button a {
 	text-decoration: none;
 }
+
+.smw-datatable td ul, .smw-datatable td ol, .smwtable td ul, .smwtable td ol  {
+	margin: 0.3em 0 0 1.6em;
+}

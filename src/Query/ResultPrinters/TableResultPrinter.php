@@ -334,7 +334,17 @@ class TableResultPrinter extends ResultPrinter {
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
 
-		return implode( $this->params['sep'], $values );
+		$sep = strtolower( $this->params['sep'] );
+
+		if ( !$isSubject && $sep === 'ul' && count( $values ) > 1 ) {
+			$html = '<ul><li>' . implode( '</li><li>', $values ) . '</li></ul>';
+		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
+			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
+		} else {
+			$html = implode( $this->params['sep'], $values );
+		}
+
+		return $html;
 	}
 
 	/**
@@ -345,7 +355,12 @@ class TableResultPrinter extends ResultPrinter {
 		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {
-			return [];
+			return [
+				'styles' => [
+					'onoi.dataTables.styles',
+					'smw.tableprinter.datatable.styles'
+				]
+			];
 		}
 
 		return [
