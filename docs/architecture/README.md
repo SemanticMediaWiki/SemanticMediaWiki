@@ -71,6 +71,7 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 - [Developing an extension](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/developing.extension.md)
 - [Register a custom datatype][datatype]
 - [Extending consistency checks on a property page](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.declarationexaminer.md)
+- [Extending property annotators](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.propertyannotator.md) for a core predefined property, also the [Semantic Extra Special Properties](https://github.com/SemanticMediaWiki/SemanticExtraSpecialProperties) extension provides a development space for deploying other predefined (special) property annotations
 
 ## See also
 
