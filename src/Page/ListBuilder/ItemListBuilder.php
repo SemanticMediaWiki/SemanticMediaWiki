@@ -7,7 +7,8 @@ use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWPageLister as PageLister;
+use SMW\Message;
+use SMW\Page\ListBuilder as ColsListBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -15,7 +16,7 @@ use SMWPageLister as PageLister;
  *
  * @author mwjames
  */
-class ListBuilder {
+class ItemListBuilder {
 
 	/**
 	 * @var Store
@@ -124,7 +125,7 @@ class ListBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
 
 		$subjectList =  $this->store->getPropertySubjects(
 			$property,
@@ -148,43 +149,47 @@ class ListBuilder {
 		$result = '';
 		$this->itemCount = is_array( $subjectList ) ? count( $subjectList ) : 0;
 
+		$colsListBuilder = new ColsListBuilder(
+			$this->store
+		);
+
+		if ( $this->checkProperty ) {
+			$colsListBuilder->setProperty( $property );
+		}
+
+		if ( $this->itemCount == 0 ) {
+			return '';
+		}
+
 		$callback = null;
-		$message = wfMessage( 'smw-propertylist-count', $this->itemCount )->text();
+		$message = $this->msg( [ 'smw-propertylist-count', $this->itemCount ] );
 
 		if ( $more ) {
-			$callback = function() use ( $property, $dataItem ) {
-				return \Html::element(
-					'a',
-					[
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
-							'property' => $property->getLabel(),
-							'value' => $dataItem->getDBKey()
-						] )
-					],
-					wfMessage( 'smw_browse_more' )->text()
-				);
-			};
-
-			$message = wfMessage( 'smw-propertylist-count-more-available', $this->itemCount )->text();
+			$message = $this->msg( ['smw-propertylist-count-more-available', $this->itemCount ] );
+			$colsListBuilder->setLastItemFormatter( $this->getLastItemFormatter( $property, $dataItem ) );
 		}
 
-		if ( $this->itemCount > 0 ) {
-			$titleText = htmlspecialchars( str_replace( '_', ' ', $dataItem->getDBKey() ) );
-			$result .= "<div id=\"{$this->listHeader}\">" . "\n<p>";
-
-			$result .= $message . "</p>";
-			$property = $this->checkProperty ? $property : null;
-
-			if ( $this->itemCount < 6 ) {
-				$result .= PageLister::getShortList( 0, $this->itemCount, $subjectList, $property, $callback );
-			} else {
-				$result .= PageLister::getColumnList( 0, $this->itemCount, $subjectList, $property, $callback );
-			}
-
-			$result .= "\n</div>";
-		}
-
-		return $result;
+		return "\n<p>" . $message . $colsListBuilder->getColumnList( $subjectList, 5 );
 	}
 
+	private function getLastItemFormatter( $property, $dataItem ) {
+		return function() use ( $property, $dataItem ) {
+			return \Html::element(
+				'a',
+				[
+					'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
+						[
+							'property' => $property->getLabel(),
+							'value' => $dataItem->getDBKey()
+						]
+					)
+				],
+				$this->msg( 'smw_browse_more' )
+			);
+		};
+	}
+
+	private function msg( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, $this->languageCode );
+	}
 }

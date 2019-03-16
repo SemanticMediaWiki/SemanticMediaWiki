@@ -4,11 +4,11 @@ namespace SMW\Tests\Page\ListBuilder;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Page\ListBuilder\ListBuilder;
+use SMW\Page\ListBuilder\ItemListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Page\ListBuilder\ListBuilder
+ * @covers \SMW\Page\ListBuilder\ItemListBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $stringValidator;
@@ -34,8 +34,8 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ListBuilder::class,
-			new ListBuilder( $this->store )
+			ItemListBuilder::class,
+			new ItemListBuilder( $this->store )
 		);
 	}
 
@@ -45,23 +45,32 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ListBuilder( $this->store );
+		$instance = new ItemListBuilder( $this->store );
 
 		$property = new DIProperty( 'Foo' );
 		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
 
 		$this->assertEquals(
 			'',
-			$instance->createHtml( $property, $dataItem, $requestOptions )
+			$instance->buildHTML( $property, $dataItem, $requestOptions )
 		);
 	}
 
 	public function testCreateHtml() {
 
+		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertySubjects' ] )
+			->setMethods( [ 'getPropertySubjects', 'service' ] )
 			->getMockForAbstractClass();
+
+		$store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'SortLetter' ) )
+			->will( $this->returnValue( $sortLetter ) );
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
@@ -71,7 +80,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ListBuilder( $store );
+		$instance = new ItemListBuilder( $store );
 		$instance->setListLimit( 10 );
 
 		$property = new DIProperty( 'Foo' );
@@ -79,9 +88,9 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'title="SMW\Tests\Page\ListBuilder\ListBuilderTest::testCreateHtml'
+				'title="SMW\Tests\Page\ListBuilder\ItemListBuilderTest::testCreateHtml'
 			],
-			$instance->createHtml( $property, $dataItem, $requestOptions )
+			$instance->buildHTML( $property, $dataItem, $requestOptions )
 		);
 	}
 
