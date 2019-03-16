@@ -151,31 +151,7 @@ class SetupFile {
 	 * @return string
 	 */
 	public static function makeUpgradeKey( $vars ) {
-
-		// Only recognize those properties that require a fixed table
-		$pageSpecialProperties = array_intersect(
-			// Special properties enabled?
-			$vars['smwgPageSpecialProperties'],
-
-			// Any custom fixed properties require their own table?
-			TypesRegistry::getFixedProperties( 'custom_fixed' )
-		);
-
-		// Sort to ensure the key contains the same order
-		sort( $vars['smwgFixedProperties'] );
-		sort( $pageSpecialProperties );
-
-		// The following settings influence the "shape" of the tables required
-		// therefore use the content to compute a key that reflects any
-		// changes to them
-		$components = [
-			$vars['smwgUpgradeKey'],
-			$vars['smwgFixedProperties'],
-			$vars['smwgEnabledFulltextSearch'],
-			$pageSpecialProperties
-		];
-
-		return sha1( json_encode( $components ) );
+		return sha1( self::makeKey( $vars ) );
 	}
 
 	/**
@@ -192,13 +168,13 @@ class SetupFile {
 		$id = Site::id();
 
 		if ( $this->messageReporter !== null ) {
-			$this->messageReporter->reportMessage( "\nSetting maintenance mode for $id ..." );
+			$this->messageReporter->reportMessage( "Switching into the maintenance mode for $id ..." );
 		}
 
 		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => true ] );
 
 		if ( $this->messageReporter !== null ) {
-			$this->messageReporter->reportMessage( "\n   ... done.\n" );
+			$this->messageReporter->reportMessage( "\n   ... done.\n\n" );
 		}
 	}
 
@@ -221,7 +197,7 @@ class SetupFile {
 		}
 
 		if ( $this->messageReporter !== null ) {
-			$this->messageReporter->reportMessage( "\nSetting upgrade key for $id ..." );
+			$this->messageReporter->reportMessage( "\nReleasing the maintenance mode for $id ..." );
 		}
 
 		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => false ] );
@@ -250,6 +226,11 @@ class SetupFile {
 			$vars['smw.json'][$id][$key] = $value;
 		}
 
+		// Log the base elements used for computing the key
+		// $vars['smw.json'][$id]['upgrade_key_base'] = self::makeKey(
+		//	$vars
+		// );
+
 		// Remove legacy
 		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
 			unset( $vars['smw.json']['upgradeKey'] );
@@ -270,6 +251,34 @@ class SetupFile {
 				"\n       directory that is persistent and writable!\n"
 			);
 		}
+	}
+
+	private static function makeKey( $vars ) {
+
+		// Only recognize those properties that require a fixed table
+		$pageSpecialProperties = array_intersect(
+			// Special properties enabled?
+			$vars['smwgPageSpecialProperties'],
+
+			// Any custom fixed properties require their own table?
+			TypesRegistry::getFixedProperties( 'custom_fixed' )
+		);
+
+		// Sort to ensure the key contains the same order
+		sort( $vars['smwgFixedProperties'] );
+		sort( $pageSpecialProperties );
+
+		// The following settings influence the "shape" of the tables required
+		// therefore use the content to compute a key that reflects any
+		// changes to them
+		$components = [
+			$vars['smwgUpgradeKey'],
+			$vars['smwgFixedProperties'],
+			$vars['smwgEnabledFulltextSearch'],
+			$pageSpecialProperties
+		];
+
+		return json_encode( $components );
 	}
 
 }
