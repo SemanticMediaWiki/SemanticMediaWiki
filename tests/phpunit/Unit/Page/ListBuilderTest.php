@@ -18,18 +18,23 @@ use SMW\Tests\TestEnvironment;
 class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
-	private $Collator;
+	private $sortLetter;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
+		$this->sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'SortLetter' ) )
+			->will( $this->returnValue( $this->sortLetter ) );
 	}
 
 	public function testCanConstruct() {
@@ -42,17 +47,12 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetList() {
 
-		$this->store->expects( $this->once() )
-			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'FOO' ) );
-
-		$this->collator->expects( $this->once() )
+		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
 
 		$instance = new ListBuilder(
-			$this->store,
-			$this->collator
+			$this->store
 		);
 
 		$this->assertArrayHasKey(
@@ -68,25 +68,16 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'ABC' )
 		];
 
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'FOO' ) );
-
-		$this->collator->expects( $this->at( 0 ) )
+		$this->sortLetter->expects( $this->at( 0 ) )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
 
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Abc' ) );
-
-		$this->collator->expects( $this->at( 1 ) )
+		$this->sortLetter->expects( $this->at( 1 ) )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'A' ) );
 
 		$instance = new ListBuilder(
-			$this->store,
-			$this->collator
+			$this->store
 		);
 
 		$this->assertEquals(
@@ -97,17 +88,12 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetColumnList() {
 
-		$this->store->expects( $this->once() )
-			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'FOO' ) );
-
-		$this->collator->expects( $this->once() )
+		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
 
 		$instance = new ListBuilder(
-			$this->store,
-			$this->collator
+			$this->store
 		);
 
 		$instance->setLinker( null );
@@ -126,17 +112,12 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetColumnList_ItemFormatter() {
 
-		$this->store->expects( $this->once() )
-			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'FOO' ) );
-
-		$this->collator->expects( $this->once() )
+		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
 			->will( $this->returnValue( 'F' ) );
 
 		$instance = new ListBuilder(
-			$this->store,
-			$this->collator
+			$this->store
 		);
 
 		$instance->setItemFormatter( function( $dataValue, $linker ) {

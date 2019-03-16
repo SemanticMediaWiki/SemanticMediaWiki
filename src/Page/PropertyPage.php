@@ -8,7 +8,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Message;
-use SMW\Page\ListBuilder\ListBuilder as SimpleListBuilder;
+use SMW\Page\ListBuilder\ItemListBuilder;
 use SMW\Page\ListBuilder\ValueListBuilder;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
@@ -47,9 +47,9 @@ class PropertyPage extends Page {
 	private $propertyValue;
 
 	/**
-	 * @var ListBuilder
+	 * @var ItemListBuilder
 	 */
-	private $listBuilder;
+	private $itemListBuilder;
 
 	/**
 	 * @var boolean
@@ -168,15 +168,15 @@ class PropertyPage extends Page {
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )
 		);
 
-		$this->listBuilder = new SimpleListBuilder(
+		$this->itemListBuilder = new ItemListBuilder(
 			$this->store
 		);
 
-		$this->listBuilder->setLanguageCode(
+		$this->itemListBuilder->setLanguageCode(
 			$languageCode
 		);
 
-		$this->listBuilder->isUserDefined(
+		$this->itemListBuilder->isUserDefined(
 			$this->property->isUserDefined()
 		);
 
@@ -200,21 +200,21 @@ class PropertyPage extends Page {
 		$htmlTabs->content( 'smw-property-value', $html );
 
 		// Redirects
-		list( $html, $itemCount ) = $this->makeList( 'redirect', '_REDI', true );
+		list( $html, $itemCount ) = $this->makeItemList( 'redirect', '_REDI', true );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ) . $itemCount, [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-redi', $html );
 
 		// Subproperties
-		list( $html, $itemCount ) = $this->makeList( 'subproperty', '_SUBP', true );
+		list( $html, $itemCount ) = $this->makeItemList( 'subproperty', '_SUBP', true );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ) . $itemCount,  [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-subp', $html );
 
 		// Improperty values
-		list( $html, $itemCount ) = $this->makeList( 'error', '_ERRP', false );
+		list( $html, $itemCount ) = $this->makeItemList( 'error', '_ERRP', false );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
@@ -260,7 +260,7 @@ class PropertyPage extends Page {
 		return $editInfoProvider->fetchSemanticData();
 	}
 
-	private function makeList( $key, $propertyKey, $checkProperty = true ) {
+	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
 
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
@@ -279,19 +279,19 @@ class PropertyPage extends Page {
 			$listLimit + 1
 		);
 
-		$this->listBuilder->setListLimit(
+		$this->itemListBuilder->setListLimit(
 			$listLimit
 		);
 
-		$this->listBuilder->setListHeader(
+		$this->itemListBuilder->setListHeader(
 			'smw-propertylist-' . $key
 		);
 
-		$this->listBuilder->checkProperty(
+		$this->itemListBuilder->checkProperty(
 			$checkProperty
 		);
 
-		$html = $this->listBuilder->createHtml(
+		$html = $this->itemListBuilder->buildHTML(
 			new DIProperty( $propertyKey ),
 			$this->getDataItem(),
 			$requestOptions
@@ -302,7 +302,7 @@ class PropertyPage extends Page {
 			[
 				'class' => 'item-count'
 			],
-			$this->listBuilder->getItemCount()
+			$this->itemListBuilder->getItemCount()
 		);
 
 		return [ $html, $itemCount ];

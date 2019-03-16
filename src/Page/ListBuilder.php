@@ -6,6 +6,7 @@ use SMW\Store;
 use SMW\Message;
 use SMW\MediaWiki\Collator;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMWInfolink as Infolink;
 use SMWDataItem as DataItem;
 use SMW\Utils\HtmlColumns;
@@ -22,27 +23,42 @@ class ListBuilder {
 	/**
 	 * @var Store
 	 */
-	public $store;
+	private $store;
 
 	/**
 	 * @var Collator
 	 */
-	public $collator;
+	private $collator;
 
 	/**
 	 * @var callable
 	 */
-	public $itemFormatter;
+	private $itemFormatter;
+
+	/**
+	 * @var DIProperty
+	 */
+	private $property;
+
+	/**
+	 * @var boolean
+	 */
+	private $isRTL = false;
+
+	/**
+	 * @var callable
+	 */
+	private $lastItemFormatter;
 
 	/**
 	 * @var Linker
 	 */
-	public $linker = false;
+	private $linker = false;
 
 	/**
 	 * @var integer
 	 */
-	public $sort = SORT_NATURAL;
+	private $sort = SORT_NATURAL;
 
 	/**
 	 * @since 3.0
@@ -56,12 +72,39 @@ class ListBuilder {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param DIProperty $property
+	 */
+	public function setProperty( DIProperty $property ) {
+		$this->property = $property;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $isRTL
+	 */
+	public function isRTL( $isRTL ) {
+		$this->isRTL = (bool)$isRTL;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param callable $itemFormatter
 	 */
 	public function setItemFormatter( callable $itemFormatter ) {
 		$this->itemFormatter = $itemFormatter;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param callable $lastItemFormatter
+	 */
+	public function setLastItemFormatter( callable $lastItemFormatter ) {
+		$this->lastItemFormatter = $lastItemFormatter;
 	}
 
 	/**
@@ -135,11 +178,22 @@ class ListBuilder {
 		}
 
 		$contents = [];
+		$startChar = '';
+
+		// PHP 7.0 (only)
+		$itemFormatter = $this->itemFormatter;
+		$sortLetter = $this->store->service( 'SortLetter' );
 
 		foreach ( $dataItems as $dataItem ) {
 
-			$dataValue = $dataValueFactory->newDataValueByItem( $dataItem, null );
-			$startChar = $this->getFirstLetter( $dataItem );
+			$dataValue = $dataValueFactory->newDataValueByItem( $dataItem, $this->property );
+
+			// For a redirect, disable the DisplayTitle to show the original (aka source) page
+			if ( $this->property !== null && $this->property->getKey() == '_REDI' ) {
+				$dataValue->setOption( 'smwgDVFeatures', ( $dataValue->getOption( 'smwgDVFeatures' ) & ~SMW_DV_WPV_DTITLE ) );
+			}
+
+			$startChar = $sortLetter->getFirstLetter( $dataItem );
 
 			if ( $startChar === '' ) {
 				$startChar = '...';
@@ -157,6 +211,10 @@ class ListBuilder {
 				$searchlink = Infolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 				$contents[$startChar][] = $dataValue->getLongHTMLText( $this->linker ) . '&#160;' . $searchlink->getHTML( $this->linker );
 			}
+		}
+
+		if ( is_callable( $this->lastItemFormatter ) && $startChar !== '' ) {
+			$contents[$startChar][] = call_user_func_array( $this->lastItemFormatter, [] );
 		}
 
 		ksort( $contents, $this->sort );
