@@ -175,6 +175,7 @@ class TypesRegistry {
 			'_LEDT' => [ '_wpg', false, false, false ], // "last editor is"
 			'_ERRC' => [ '__sob', false, false, false ], // "has error"
 			'_ERRT' => [ '__errt', false, false, false ], // "has error text"
+			'_ERR_TYPE' => [ '_txt', false, false, false ], // "Error type"
 			'_ERRP' => [ '_wpp', false, false, false ], // "has improper value for"
 			'_LIST' => [ '__pls', true, true, true ], // "has fields"
 			'_SKEY' => [ '__key', false, true, false ], // sort key of a page
