@@ -232,7 +232,13 @@ class DIBlobHandler extends DataItemHandler {
 
 	private function getCharFieldType() {
 
-		$fieldType = FieldType::FIELD_TITLE;
+		// http://sqlite.1065341.n5.nabble.com/Leading-zeros-disappear-td60515.html
+		// @Test:[p-0430]
+		if ( $this->isDbType( 'sqlite' ) ) {
+			$fieldType = FieldType::TYPE_TEXT;
+		} else {
+			$fieldType = FieldType::FIELD_TITLE;
+		}
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {
 			$fieldType = FieldType::TYPE_CHAR_NOCASE;
