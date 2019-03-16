@@ -17,6 +17,7 @@ use SMW\Options;
 use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;
+use SMW\ProcessingError;
 
 /**
  * Objects of this type represent all that is known about a certain user-provided
@@ -142,6 +143,11 @@ abstract class SMWDataValue {
 	 * @var array
 	 */
 	private $mErrors = [];
+
+	/**
+	 * @var array
+	 */
+	private $errorsByType = [];
 
 	/**
 	 * Boolean indicating if there where any errors.
@@ -392,7 +398,19 @@ abstract class SMWDataValue {
 	 * @param mixed $error A single string, or array of strings.
 	 */
 	public function addError( $error ) {
-		if ( is_array( $error ) ) {
+
+		if ( $error instanceof ProcessingError ) {
+			$hash = $error->getHash();
+			$type = $error->getType();
+
+			if ( !isset( $this->errorsByType[$type] ) ) {
+				$this->errorsByType[$type] = [];
+			}
+
+			$this->mErrors[$hash] = $error->encode();
+			$this->errorsByType[$type][] = $hash;
+			$this->mHasErrors = true;
+		} elseif ( is_array( $error ) ) {
 			$this->mErrors = array_merge( $this->mErrors, $error );
 			$this->mHasErrors = $this->mHasErrors || ( count( $error ) > 0 );
 		} else {
@@ -409,12 +427,26 @@ abstract class SMWDataValue {
 	 *
 	 * @since 2.4
 	 *
-	 * @param $parameters
+	 * @param array|string|ProcessingError $error
 	 * @param integer|null $type
 	 * @param integer|null $language
 	 */
-	public function addErrorMsg( $parameters, $type = null ) {
-		$this->mErrors[Message::getHash( $parameters, $type )] = Message::encode( $parameters, $type );
+	public function addErrorMsg( $error, $type = null ) {
+
+		if ( $error instanceof ProcessingError ) {
+			$hash = $error->getHash();
+			$type = $error->getType();
+
+			if ( !isset( $this->errorsByType[$type] ) ) {
+				$this->errorsByType[$type] = [];
+			}
+
+			$this->mErrors[$hash] = $error->encode();
+			$this->errorsByType[$type][] = $hash;
+		} else {
+			$this->mErrors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
+		}
+
 		$this->mHasErrors = true;
 	}
 
@@ -436,6 +468,26 @@ abstract class SMWDataValue {
 	 */
 	public function getErrors() {
 		return $this->mErrors;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string|null $type
+	 *
+	 * @return array
+	 */
+	public function getErrorsByType( $type = null ) {
+
+		if ( $type === null ) {
+			return $this->errorsByType;
+		}
+
+		if ( isset( $this->errorsByType[$type] ) ) {
+			return $this->errorsByType[$type];
+		}
+
+		return [];
 	}
 
 	/**

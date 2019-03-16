@@ -114,6 +114,43 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetErrorContainerFromMsg_TypedError() {
+
+		$processingError = $this->getMockBuilder( '\SMW\ProcessingError' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$processingError->expects( $this->atLeastOnce() )
+			->method( 'encode' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$processingError->expects( $this->atLeastOnce() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'foobar' ) );
+
+		$instance = new ProcessingErrorMsgHandler(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
+		$container = $instance->newErrorContainerFromMsg( $processingError, $property );
+
+		$this->assertInstanceOf(
+			'\SMWDIContainer',
+			$container
+		);
+
+		$expected = [
+			'propertyCount' => 3,
+			'propertyKeys'  => [ '_ERRP', '_ERRT', '_ERR_TYPE' ],
+		];
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$container->getSemanticData()
+		);
+	}
+
 	public function testGetErrorContainerFromMsgWithoutProperty() {
 
 		$instance = new ProcessingErrorMsgHandler(
@@ -162,6 +199,47 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'propertyCount' => 2,
 			'propertyKeys'  => [ '_ERRP', '_ERRT' ],
+		];
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$container->getSemanticData()
+		);
+	}
+
+	public function testGetErrorContainerFromDataValue_TypedError() {
+
+		$instance = new ProcessingErrorMsgHandler(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getErrors', 'getErrorsByType', 'getProperty' ] )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [ '_123' => 'Foo' ] ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getErrorsByType' )
+			->will( $this->returnValue( [ '_type_1' => [ '_123' ] ] ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+
+		$container = $instance->newErrorContainerFromDataValue( $dataValue );
+
+		$this->assertInstanceOf(
+			'\SMWDIContainer',
+			$container
+		);
+
+		$expected = [
+			'propertyCount' => 3,
+			'propertyKeys'  => [ '_ERRP', '_ERRT', '_ERR_TYPE' ],
 		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
