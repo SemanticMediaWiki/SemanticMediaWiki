@@ -40,6 +40,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $servicesFileDir;
 	private $mediaWikiNsContentReader;
 	private $propertySpecificationLookup;
+	private $logger;
 
 	protected function setUp() {
 		parent::setUp();
@@ -53,6 +54,10 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,6 +81,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 		$containerBuilder->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$containerBuilder->registerObject( 'Store', $this->store );
+		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'DataValueServices.php' );
 

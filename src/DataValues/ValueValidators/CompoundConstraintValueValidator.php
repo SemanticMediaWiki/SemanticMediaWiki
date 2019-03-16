@@ -3,6 +3,8 @@
 namespace SMW\DataValues\ValueValidators;
 
 use RuntimeException;
+use Psr\Log\LoggerAwareTrait;
+use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -14,10 +16,19 @@ use RuntimeException;
  */
 class CompoundConstraintValueValidator implements ConstraintValueValidator {
 
+	use LoggerAwareTrait;
+
 	/**
 	 * @var boolean
 	 */
 	private $hasConstraintViolation = false;
+
+	/**
+	 * @var integer
+	 */
+	private $time = 0;
+	private $count = 0;
+	private $contextPage = '';
 
 	/**
 	 * @var array
@@ -50,6 +61,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	public function validate( $dataValue ) {
 
 		$this->hasConstraintViolation = false;
+		$time = -microtime( true );
 
 		if ( $this->constraintValueValidators === [] ) {
 			throw new RuntimeException( "Missing a registered ConstraintValueValidator" );
@@ -62,9 +74,26 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 
 			if ( $constraintValueValidator->hasConstraintViolation() ) {
 				$this->hasConstraintViolation = true;
+			}
+
+			if ( $this->hasConstraintViolation ) {
 				break;
 			}
 		}
+
+		$this->count++;
+		$this->time += microtime( true ) + $time;
+
+		if ( $dataValue instanceof DataValue && ( $contextPage = $dataValue->getContextPage() ) !== null ) {
+			$this->contextPage = $contextPage->getSerialization();
+		}
+	}
+
+	function __destruct() {
+		$this->logger->info(
+			[ 'CompoundConstraintValueValidator', 'page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {time}' ],
+			[ 'role' => 'developer', 'count' => $this->count, 'time' => $this->time, 'contextPage' => $this->contextPage ]
+		);
 	}
 
 }
