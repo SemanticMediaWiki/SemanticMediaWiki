@@ -78,13 +78,19 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		$dataItem = end( $dataItems );
+		$parentProperty = DIProperty::newFromUserLabel( $dataItem->getDBKey() );
 
-		$parentProperty = new DIProperty( $dataItem->getDBKey() );
+		if ( $parentProperty->isUserDefined() ) {
+			$type_id = $parentProperty->findPropertyTypeID();
+		} else {
+			$type_id = $parentProperty->getKey();
+		}
+
 		$semanticData->removeProperty( new DIProperty( '_TYPE' ) );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
 			new DIProperty( '_TYPE' ),
-			$parentProperty->findPropertyTypeID()
+			$type_id
 		);
 
 		$semanticData->setOption( self::ENFORCED_PARENTTYPE_INHERITANCE, $dataItem );
