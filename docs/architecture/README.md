@@ -70,6 +70,7 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 - [Writing a result printer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/writing.resultprinter.md)
 - [Developing an extension](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/developing.extension.md)
 - [Register a custom datatype][datatype]
+- [Extending consistency checks on a property page](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.declarationexaminer.md)
 
 ## See also
 
