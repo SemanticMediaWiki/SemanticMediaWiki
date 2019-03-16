@@ -247,6 +247,12 @@ class Highlighter {
 			$style = [ 'style' => $this->options['style'] ];
 		}
 
+		// In case the text contains HTML, remove trailing line feeds to avoid breaking
+		// the display
+		if ( $this->options['content'] != strip_tags( $this->options['content'] ) ) {
+			$this->options['content'] = str_replace( [ "\n" ], [ '' ], $this->options['content'] );
+		}
+
 		// #1875
 		// title attribute contains stripped content to allow for a display in
 		// no-js environments, the tooltip will remove the element once it is
