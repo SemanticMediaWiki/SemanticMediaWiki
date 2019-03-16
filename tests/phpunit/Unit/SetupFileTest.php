@@ -106,7 +106,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$fields = [
 			'upgrade_key' => 'abede9f6b2c43db901f6255e26b8d951f84f5d7c',
-			'in.maintenance_mode' => true
+			'in.maintenance_mode' => true,
+			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
 		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
@@ -140,7 +141,13 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	public function testSetUpgradeFile() {
 
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
-		$expected = json_encode( [ \SMW\Site::id() => [ 'Foo' => 42 ] ], JSON_PRETTY_PRINT );
+
+		$fields = [
+			'Foo' => 42,
+			//"upgrade_key_base" => '["",[],"",[]]'
+		];
+
+		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
@@ -157,7 +164,12 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$vars = [
-			'smwgConfigFileDir' => 'Foo_dir'
+			'smwgConfigFileDir' => 'Foo_dir',
+			'smwgIP' => '',
+			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
+			'smwgFixedProperties' => [],
+			'smwgPageSpecialProperties' => []
 		];
 
 		$instance->write( $vars, [ 'Foo' => 42 ] );
