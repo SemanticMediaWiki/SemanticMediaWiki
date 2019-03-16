@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMWDIBlob as DIBlob;
 use SMW\PropertyChangePropagationNotifier;
 
 /**
@@ -189,7 +190,8 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 			[ $subjects, $subjects, [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
 			[ $subject,  $subject,  [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
 			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ]
+			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
+			[ [ new DIBlob( '>100') ],  [ new DIBlob( '&gt;100') ],  [ '_PVAL', '_PVAL' ], [ 'diff' => false,  'job' => false ] ]
 		];
 	}
 

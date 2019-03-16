@@ -197,7 +197,7 @@ class PropertyChangePropagationNotifier {
 		// of the data value arrays. These are compared.
 		$values = [];
 		foreach ( $oldDataValue as $v ) {
-			$values[] = $v->getHash();
+			$values[] = htmlspecialchars_decode( $v->getHash() );
 		}
 
 		sort( $values );
@@ -205,7 +205,7 @@ class PropertyChangePropagationNotifier {
 
 		$values = [];
 		foreach ( $newDataValue as $v ) {
-			$values[] = $v->getHash();
+			$values[] = htmlspecialchars_decode( $v->getHash() );
 		}
 
 		sort( $values );
