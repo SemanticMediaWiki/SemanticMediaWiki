@@ -6,6 +6,7 @@ use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\CheckReplicationTask
@@ -24,10 +25,11 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 	private $replicationStatus;
 	private $entityCache;
 	private $elasticClient;
+	private $idTable;
 
 	protected function setUp() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$this->idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +40,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->will( $this->returnValue( $this->idTable ) );
 
 		$this->replicationStatus = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationStatus' )
 			->disableOriginalConstructor()
@@ -85,6 +87,113 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckReplication_ModificationDate() {
+
+		$config = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$config->expects( $this->any() )
+			->method( 'dotGet' )
+			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $config ) );
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$time_es = DITime::newFromTimestamp( 1272508900 );
+		$time_store = DITime::newFromTimestamp( 1272508903 );
+
+		$this->replicationStatus->expects( $this->once() )
+			->method( 'getModificationDate' )
+			->will( $this->returnValue( $time_es ) );
+
+		$this->store->expects( $this->at( 2 ) )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $time_store ] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
+
+		$instance = new CheckReplicationTask(
+			$this->store,
+			$this->replicationStatus,
+			$this->entityCache
+		);
+
+		$html = $instance->checkReplication( $subject, [] );
+
+		$this->assertContains(
+			'smw-highlighter',
+			$html
+		);
+
+		$this->assertContains(
+			'2010-04-29 02:41:43',
+			$html
+		);
+	}
+
+	public function testCheckReplication_AssociateRev() {
+
+		$config = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$config->expects( $this->any() )
+			->method( 'dotGet' )
+			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $config ) );
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$time = DITime::newFromTimestamp( 1272508903 );
+
+		$this->replicationStatus->expects( $this->once() )
+			->method( 'getModificationDate' )
+			->will( $this->returnValue( $time ) );
+
+		$this->replicationStatus->expects( $this->once() )
+			->method( 'getAssociatedRev' )
+			->will( $this->returnValue( 99999 ) );
+
+		$this->idTable->expects( $this->at( 1 ) )
+			->method( 'findAssociatedRev' )
+			->will( $this->returnValue( 42 ) );
+
+		$this->store->expects( $this->at( 2 ) )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $time ] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
+
+		$instance = new CheckReplicationTask(
+			$this->store,
+			$this->replicationStatus,
+			$this->entityCache
+		);
+
+		$html = $instance->checkReplication( $subject, [] );
+
+		$this->assertContains(
+			'smw-highlighter',
+			$html
+		);
+
+		$this->assertContains(
+			'99999',
+			$html
+		);
+	}
+
 	public function testCheckReplication_File() {
 
 		$config = $this->getMockBuilder( '\SMW\Options' )
@@ -101,16 +210,17 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $config ) );
 
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
+		$time = DITime::newFromTimestamp( 1272508903 );
 
 		$this->replicationStatus->expects( $this->once() )
 			->method( 'getModificationDate' )
-			->will( $this->returnValue( $subject ) );
+			->will( $this->returnValue( $time ) );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->at( 2 ) )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $subject ] ) );
+			->will( $this->returnValue( [ $time ] ) );
 
-		$this->store->expects( $this->at( 3 ) )
+		$this->store->expects( $this->at( 4 ) )
 			->method( 'getPropertyValues' )
 			->with(
 				$this->equalTo( $subject ),
