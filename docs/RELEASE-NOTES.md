@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.1
 
-Not a release yet. A release is tentatively planned for Q1/Q2 2019.
+Not a release yet. A release is tentatively planned for Q2 2019.
 
 ## Compatibility
 
@@ -23,6 +23,7 @@ Changes to the DB are triggered by #3644.
 
 * [#3642](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3642) Extended [`rebuildData.php`](https://www.semantic-mediawiki.org/wiki/rebuildData.php) to support the removal of outdated query links
 * [#3686](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3686) Improved statistics output
+* [#3782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3782) Added check for retired properties
 
 #### ElasticStore
 
@@ -31,6 +32,9 @@ Changes to the DB are triggered by #3644.
 * [#3693](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3693) Relaxed link removal in raw text
 * [#3697](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3697) Added replication monitoring (`indexer.monitor.entity.replication`) on per entity base and [#3713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3713) (`indexer.monitor.entity.replication.cache.lifetime`)
 * [#3699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3699) Added length restriction to value inputs for a query construct  (`query.maximum.value.length`)
+* [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
+* [#](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
+
 
 ### Query
 
@@ -63,6 +67,7 @@ Changes to the DB are triggered by #3644.
 * [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added `PROPERTY_GROUP_SCHEMA` as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
 * [#3751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3751) Added `?`, `*`, and `!` as invalid characters for a property name
 * [#3756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3756) Added properties count in use for a specific type to `Special:Types`
+* [#3779](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3779) Added normalization for `__` in propery names
 
 ## Bug fixes
 
@@ -86,6 +91,9 @@ Changes to the DB are triggered by #3644.
 * [#3723](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3723) Added prefetch support for the property value list retrievable
 * [#3739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3739) Added the `SMW::Factbox::OverrideRevisionID` hook
 * [#3762](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3762) Added the `SMW::DataUpdater::SkipUpdate` hook
+* [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Added the `SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete` hook
+* [#3770](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3770) Extended `ParserAfterTidy` hook event listening
+* [#3780](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3780) Added `Database::beginSectionTransaction` due to MW 1.33
 
 ## Contributors
 
