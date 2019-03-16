@@ -8,6 +8,7 @@ use WikiPage;
 use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
+use Revision;
 
 /**
  * This function takes care of storing the collected semantic data and
@@ -249,11 +250,24 @@ class DataUpdater {
 			$this->canCreateUpdateJob( $applicationFactory->getSettings()->get( 'smwgEnableUpdateJobs' ) );
 		}
 
+		$user = null;
 		$title = $this->getSubject()->getTitle();
-		$wikiPage = $applicationFactory->newPageCreator()->createPage( $title );
+
+		$wikiPage = $applicationFactory->newPageCreator()->createPage(
+			$title
+		);
 
 		$revision = $wikiPage->getRevision();
-		$user = $revision !== null ? User::newFromId( $revision->getUser() ) : null;
+
+		// For example, when using `SemanticApprovedRevs` the hook here ensures
+		// that the revision reference is the same that lead to an update during
+		// a content parse, the revision for the parsed text and the `smw_rev`
+		// reference field should both point to the same revision
+		\Hooks::run( 'SMW::Parser::ChangeRevision', [ $title, &$revision ] );
+
+		if ( $revision instanceof Revision ) {
+			$user = User::newFromId( $revision->getUser() );
+		}
 
 		$this->addAnnotations( $title, $wikiPage, $revision, $user );
 
