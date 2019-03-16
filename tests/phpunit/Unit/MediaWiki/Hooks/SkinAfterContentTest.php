@@ -28,7 +28,9 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$settings = Settings::newFromArray( [
 			'smwgFactboxFeatures'  => SMW_FACTBOX_CACHE,
 			'smwgMainCacheType'        => 'hash',
-			'smwgSemanticsEnabled' => true
+			'smwgSemanticsEnabled' => true,
+			'smwgShowFactboxEdit' => false,
+			'smwgShowFactbox' => false
 		] );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );
@@ -139,9 +141,12 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $outputPage ) );
 
+		$requestContext = new \RequestContext();
+		$requestContext->setLanguage( 'en' );
+
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->will( $this->returnValue( $requestContext ) );
 
 		$provider[] = [
 			[ 'skin' => $skin ],
@@ -167,6 +172,13 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
+		$requestContext = new \RequestContext();
+		$requestContext->setLanguage( 'en' );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getContext' )
+			->will( $this->returnValue( $requestContext ) );
+
 		$text = __METHOD__ . 'text-1';
 
 		$skin = $this->getMockBuilder( '\Skin' )
@@ -183,7 +195,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->will( $this->returnValue( new \RequestContext() ) );
+			->will( $this->returnValue( $requestContext ) );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text, 'title' => $outputPage->getTitle() ],

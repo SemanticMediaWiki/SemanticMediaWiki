@@ -3,7 +3,6 @@
 namespace SMW\Tests\Factbox;
 
 use SMW\Factbox\FactboxFactory;
-use Title;
 
 /**
  * @covers \SMW\Factbox\FactboxFactory
@@ -19,7 +18,7 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\FactboxFactory',
+			FactboxFactory::class,
 			new FactboxFactory()
 		);
 	}
@@ -31,6 +30,16 @@ class FactboxFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Factbox\CachedFactbox',
 			$instance->newCachedFactbox()
+		);
+	}
+
+	public function testCanConstructCheckMagicWords() {
+
+		$instance = new FactboxFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Factbox\CheckMagicWords',
+			$instance->newCheckMagicWords( [] )
 		);
 	}
 

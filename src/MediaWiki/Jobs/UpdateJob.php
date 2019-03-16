@@ -243,11 +243,6 @@ class UpdateJob extends Job {
 		$dispatchContext->set( 'title', $this->getTitle() );
 
 		$eventHandler->getEventDispatcher()->dispatch(
-			'factbox.cache.delete',
-			$dispatchContext
-		);
-
-		$eventHandler->getEventDispatcher()->dispatch(
 			'cached.propertyvalues.prefetcher.reset',
 			$dispatchContext
 		);

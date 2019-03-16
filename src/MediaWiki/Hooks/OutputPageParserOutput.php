@@ -129,9 +129,8 @@ class OutputPageParserOutput extends HookHandler {
 
 		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
-		$cachedFactbox->prepareFactboxContent(
+		$cachedFactbox->prepare(
 			$outputPage,
-			$outputPage->getLanguage(),
 			$this->getParserOutput( $outputPage, $parserOutput )
 		);
 
