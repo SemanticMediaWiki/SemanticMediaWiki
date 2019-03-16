@@ -13,7 +13,6 @@ use SMW\Options;
 use SMW\Site;
 use SMW\SortLetter;
 use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\SQLStore\EntityStore\CachingEntityLookup;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
@@ -21,7 +20,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\UniquenessLookup;
-use SMW\SQLStore\EntityStore\NativeEntityLookup;
+use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
@@ -328,37 +327,8 @@ class SQLStoreFactory {
 	 * @return EntityLookup
 	 */
 	public function newEntityLookup() {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
-		$nativeEntityLookup = new NativeEntityLookup( $this->store );
-
-		if ( $settings->get( 'smwgEntityLookupCacheType' ) === CACHE_NONE ) {
-			return $nativeEntityLookup;
-		}
-
-		$circularReferenceGuard = new CircularReferenceGuard( 'store:entitylookup' );
-		$circularReferenceGuard->setMaxRecursionDepth( 2 );
-
-		$cacheFactory = $applicationFactory->newCacheFactory();
-
-		$blobStore = $cacheFactory->newBlobStore(
-			'smw:store:entitylookup:',
-			$settings->get( 'smwgEntityLookupCacheType' ),
-			$settings->get( 'smwgEntityLookupCacheLifetime' )
-		);
-
-		$cachingEntityLookup = new CachingEntityLookup(
-			$nativeEntityLookup,
-			new RedirectTargetLookup( $this->store, $circularReferenceGuard ),
-			$blobStore
-		);
-
-		$cachingEntityLookup->setLookupFeatures(
-			$settings->get( 'smwgEntityLookupFeatures' )
-		);
-
-		return $cachingEntityLookup;
+		$entityLookup = new EntityLookup( $this->store );
+		return $entityLookup;
 	}
 
 	/**

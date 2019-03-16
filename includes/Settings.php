@@ -135,9 +135,6 @@ class Settings extends Options {
 			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
-			'smwgEntityLookupCacheType' => $GLOBALS['smwgEntityLookupCacheType'],
-			'smwgEntityLookupCacheLifetime' => $GLOBALS['smwgEntityLookupCacheLifetime'],
-			'smwgEntityLookupFeatures' => $GLOBALS['smwgEntityLookupFeatures'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
 			'smwgPropertyLowUsageThreshold' => $GLOBALS['smwgPropertyLowUsageThreshold'],
 			'smwgPropertyZeroCountDisplay' => $GLOBALS['smwgPropertyZeroCountDisplay'],
@@ -447,19 +444,6 @@ class Settings extends Options {
 			$configuration['smwgImportFileDirs'] = (array)$GLOBALS['smwgImportFileDir'];
 		}
 
-		// smwgValueLookupFeatures
-		if ( isset( $GLOBALS['smwgValueLookupCacheType'] ) ) {
-			$configuration['smwgEntityLookupCacheType'] = $GLOBALS['smwgValueLookupCacheType'];
-		}
-
-		if ( isset( $GLOBALS['smwgValueLookupCacheLifetime'] ) ) {
-			$configuration['smwgEntityLookupCacheLifetime'] = $GLOBALS['smwgValueLookupCacheLifetime'];
-		}
-
-		if ( isset( $GLOBALS['smwgValueLookupFeatures'] ) ) {
-			$configuration['smwgEntityLookupFeatures'] = $GLOBALS['smwgValueLookupFeatures'];
-		}
-
 		// smwgPagingLimit
 		if ( isset( $GLOBALS['smwgTypePagingLimit'] ) ) {
 			$configuration['smwgPagingLimit']['type'] = $GLOBALS['smwgTypePagingLimit'];
@@ -572,9 +556,6 @@ class Settings extends Options {
 				'smwgQSortingSupport' => 'smwgQSortFeatures',
 				'smwgQRandSortingSupport' => 'smwgQSortFeatures',
 				'smwgImportFileDir' => 'smwgImportFileDirs',
-				'smwgValueLookupCacheType' => 'smwgEntityLookupCacheType',
-				'smwgValueLookupCacheLifetime' => 'smwgEntityLookupCacheLifetime',
-				'smwgValueLookupFeatures' => 'smwgEntityLookupFeatures',
 				'smwgTypePagingLimit'  => 'smwgPagingLimit',
 				'smwgConceptPagingLimit'  => 'smwgPagingLimit',
 				'smwgPropertyPagingLimit'  => 'smwgPagingLimit',
@@ -604,6 +585,9 @@ class Settings extends Options {
 				'smwgHistoricTypeNamespace' => '3.0.0',
 				'smwgEnabledHttpDeferredJobRequest' => '3.0.0',
 				'smwgQueryDependencyAffiliatePropertyDetectionList' => '3.1.0',
+				'smwgEntityLookupCacheType' => '3.1.0',
+				'smwgEntityLookupCacheLifetime' => '3.1.0',
+				'smwgEntityLookupFeatures' => '3.1.0',
 			]
 		];
 	}

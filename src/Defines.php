@@ -144,15 +144,6 @@ define( 'SMW_SPARQL_QF_NOCASE', 32 ); // support case insensitive pattern matche
 /**@}*/
 
 /**@{
-  * Constants for ValueLookupStore
-  */
-define( 'SMW_VL_SD', 1 ); // enables ValueLookupStore::getSemanticData
-define( 'SMW_VL_PL', 2 ); // enables ValueLookupStore::getProperties
-define( 'SMW_VL_PV', 4 ); // enables ValueLookupStore::getPropertyValues
-define( 'SMW_VL_PS', 8 ); // enables ValueLookupStore::getPropertySubject
-/**@}*/
-
-/**@{
   * Deprecated since 3.0, remove options after complete removal in 3.1
   */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );

@@ -58,6 +58,9 @@
 			"type": "parser",
 			"about": "#1",
 			"subject": "Example/P0904/2",
+			"store": {
+				"clear-cache": true
+			},
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"smwtype_wpg\">Help:Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"

@@ -4,7 +4,7 @@ namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\EntityLookup;
+use SMW\EntityLookup as IEntityLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
@@ -15,7 +15,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class NativeEntityLookup implements EntityLookup {
+class EntityLookup implements IEntityLookup {
 
 	/**
 	 * @var SQLStore
@@ -96,12 +96,5 @@ class NativeEntityLookup implements EntityLookup {
 	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null ) {
 		return $this->store->getReader()->getInProperties( $object, $requestOptions );
 	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function invalidateCache() {}
 
 }
