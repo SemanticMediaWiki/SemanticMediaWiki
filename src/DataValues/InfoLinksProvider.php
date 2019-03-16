@@ -65,7 +65,12 @@ class InfoLinksProvider {
 	/**
 	 * @var []
 	 */
-	private $disabledBrowseLinksByType = [ '_ref_rec' ];
+	private $disabledBrowseLinksByType = [ '_rec', '_mlt_rec', '_ref_rec' ];
+
+	/**
+	 * @var []
+	 */
+	private $disabledLinksByKey = [ '_ERRT' ];
 
 	/**
 	 * @since 2.4
@@ -150,6 +155,10 @@ class InfoLinksProvider {
 
 		$value = $this->dataValue->getWikiValue();
 		$property = $this->dataValue->getProperty();
+
+		if ( $property !== null && in_array( $property->getKey(), $this->disabledLinksByKey ) ) {
+			return [];
+		}
 
 		// InTextAnnotationParser will detect :: therefore avoid link
 		// breakage by encoding the string
