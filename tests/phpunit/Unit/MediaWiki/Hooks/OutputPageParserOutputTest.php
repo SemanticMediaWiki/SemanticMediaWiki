@@ -77,6 +77,12 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( $parameters['smwgNamespacesWithSemanticLinks'] ) );
 
+		$entityCache = new \SMW\EntityCache(
+			$this->applicationFactory->newCacheFactory()->newFixedInMemoryCache()
+		);
+
+		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -101,7 +107,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newCachedFactbox' )
 			->will( $this->returnValue( $cachedFactbox ) );
 
-		$this->applicationFactory->registerObject( 'FactboxFactory', $factboxFactory );
+		$this->testEnvironment->registerObject( 'FactboxFactory', $factboxFactory );
 
 		$this->assertEmpty(
 			$cachedFactbox->retrieveContent( $outputPage )
@@ -199,7 +205,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
-		$outputPage->expects( $this->atLeastOnce() )
+		$outputPage->expects( $this->any() )
 			->method( 'getLanguage' )
 			->will( $this->returnValue( $language ) );
 
@@ -341,7 +347,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( $context ) );
 
-		$outputPage->expects( $this->atLeastOnce() )
+		$outputPage->expects( $this->any() )
 			->method( 'getLanguage' )
 			->will( $this->returnValue( $language ) );
 

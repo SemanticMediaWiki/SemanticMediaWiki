@@ -274,11 +274,6 @@ class PropertyTableIdReferenceDisposer {
 			$dispatchContext
 		);
 
-		$eventDispatcher->dispatch(
-			'factbox.cache.delete',
-			$dispatchContext
-		);
-
 		$context = [
 			'context' => 'PropertyTableIdReferenceDisposal',
 			'title' => $subject->getTitle()

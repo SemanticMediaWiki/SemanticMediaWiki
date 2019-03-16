@@ -66,26 +66,6 @@ class EventListenerRegistry implements EventListenerCollection {
 
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
-		/**
-		 * Emitted during UpdateJob, ArticlePurge
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'factbox.cache.delete', function( $dispatchContext ) {
-
-				if ( $dispatchContext->has( 'subject' ) ) {
-					$title = $dispatchContext->get( 'subject' )->getTitle();
-				} else {
-					$title = $dispatchContext->get( 'title' );
-				}
-
-				$applicationFactory = ApplicationFactory::getInstance();
-
-				$applicationFactory->getCache()->delete(
-					\SMW\Factbox\CachedFactbox::makeCacheKey( $title )
-				);
-			}
-		);
-
 		$this->eventListenerCollection->registerCallback(
 			'exporter.reset', function() {
 				Exporter::getInstance()->clear();

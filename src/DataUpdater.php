@@ -449,14 +449,6 @@ class DataUpdater {
 			$target->getArticleID()
 		);
 
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $subject->getTitle() );
-
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'factbox.cache.delete',
-			$dispatchContext
-		);
-
 		return $semanticData;
 	}
 

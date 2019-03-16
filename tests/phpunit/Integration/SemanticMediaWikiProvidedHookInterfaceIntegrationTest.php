@@ -154,7 +154,14 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	 */
 	public function testRegisteredFactboxBeforeContentGenerationToSuppressDefaultTableCreation( $storeClass ) {
 
-		$this->applicationFactory->getSettings()->set( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+		$factboxFactory = $this->applicationFactory->singleton( 'FactboxFactory' );
+
+		$checkMagicWords = $factboxFactory->newCheckMagicWords(
+			[
+				'smwgShowFactboxEdit' => SMW_FACTBOX_NONEMPTY,
+				'showFactbox' => SMW_FACTBOX_NONEMPTY
+			]
+		);
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -204,7 +211,15 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
 
-		$instance = $this->applicationFactory->singleton( 'FactboxFactory' )->newFactbox( $title, new \ParserOutput() );
+		$instance = $factboxFactory->newFactbox(
+			$title,
+			new \ParserOutput()
+		);
+
+		$instance->setCheckMagicWords(
+			$checkMagicWords
+		);
+
 		$instance->doBuild();
 
 		$this->assertEquals(

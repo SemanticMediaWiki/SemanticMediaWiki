@@ -21,6 +21,7 @@ use SMWInfolink;
 use SMWSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDataItem as DataItem;
+use SMW\PropertyRegistry;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -73,9 +74,9 @@ class Factbox {
 	private $attachments = [];
 
 	/**
-	 * @var boolean
+	 * @var CheckMagicWords
 	 */
-	private $previewFlag = false;
+	private $checkMagicWords;
 
 	/**
 	 * @since 1.9
@@ -100,14 +101,12 @@ class Factbox {
 	}
 
 	/**
-	 * @note contains information about wpPreview
+	 * @since 3.1
 	 *
-	 * @since 2.1
-	 *
-	 * @param boolean $previewFlag
+	 * @param CheckMagicWords $checkMagicWords
 	 */
-	public function setPreviewFlag( $previewFlag ) {
-		$this->previewFlag = $previewFlag;
+	public function setCheckMagicWords( CheckMagicWords $checkMagicWords ) {
+		$this->checkMagicWords = $checkMagicWords;
 	}
 
 	/**
@@ -120,7 +119,9 @@ class Factbox {
 	 */
 	public function doBuild() {
 
-		$this->content = $this->fetchContent( $this->getMagicWords() );
+		$this->content = $this->fetchContent(
+			$this->getMagicWords()
+		);
 
 		if ( $this->content !== '' || $this->attachments !== [] ) {
 			$this->parserData->getOutput()->addModules( self::getModules() );
@@ -218,6 +219,8 @@ class Factbox {
 			);
 		}
 
+		$propertyRegistry = PropertyRegistry::getInstance();
+
 		$mime = $this->dataValueFactory->newDataValueByItem(
 			 ( new DIProperty( '_MIME' ) )->getDiWikiPage()
 		);
@@ -225,12 +228,26 @@ class Factbox {
 		$mime->setOption( $mime::SHORT_FORM, true );
 		$mime->setOutputFormat( 'LOCL' );
 
+		$mime->setCaption(
+			$propertyRegistry->findPropertyLabelFromIdByLanguageCode(
+				'_MIME',
+				$mime->getOption( $mime::OPT_USER_LANGUAGE )
+			)
+		);
+
 		$mdat = $this->dataValueFactory->newDataValueByItem(
 			 ( new DIProperty( '_MDAT' )  )->getDiWikiPage()
 		);
 
 		$mdat->setOption( $mime::SHORT_FORM, true );
 		$mdat->setOutputFormat( 'LOCL' );
+
+		$mdat->setCaption(
+			$propertyRegistry->findPropertyLabelFromIdByLanguageCode(
+				'_MDAT',
+				$mdat->getOption( $mdat::OPT_USER_LANGUAGE )
+			)
+		);
 
 		$html .= Html::rawElement(
 			'div',
@@ -335,30 +352,15 @@ class Factbox {
 	 */
 	protected function getMagicWords() {
 
-		$settings = $this->applicationFactory->getSettings();
-		$parserOutput = $this->parserData->getOutput();
-
-		// Prior MW 1.21 mSMWMagicWords is used (see SMW\ParserTextProcessor)
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			$smwMagicWords = $parserOutput->getExtensionData( 'smwmagicwords' );
-			$mws = $smwMagicWords === null ? [] : $smwMagicWords;
-		} else {
-			// @codeCoverageIgnoreStart
-			$mws = isset( $parserOutput->mSMWMagicWords ) ? $parserOutput->mSMWMagicWords : [];
-			// @codeCoverageIgnoreEnd
+		if ( $this->checkMagicWords === null ) {
+			return SMW_FACTBOX_HIDDEN;
 		}
 
-		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {
-			$showfactbox = SMW_FACTBOX_NONEMPTY;
-		} elseif ( in_array( 'SMW_NOFACTBOX', $mws ) ) {
-			$showfactbox = SMW_FACTBOX_HIDDEN;
-		} elseif ( $this->previewFlag ) {
-			$showfactbox = $settings->get( 'smwgShowFactboxEdit' );
-		} else {
-			$showfactbox = $settings->get( 'smwgShowFactbox' );
-		}
+		$magicWords = $this->checkMagicWords->getMagicWords(
+			$this->parserData->getOutput()
+		);
 
-		return $showfactbox;
+		return $magicWords;
 	}
 
 	/**
