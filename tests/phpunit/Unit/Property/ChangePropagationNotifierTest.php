@@ -1,14 +1,15 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
-use SMW\PropertyChangePropagationNotifier;
+use SMW\Property\ChangePropagationNotifier;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertyChangePropagationNotifier
+ * @covers \SMW\Property\ChangePropagationNotifier
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +17,7 @@ use SMW\PropertyChangePropagationNotifier;
  *
  * @author mwjames
  */
-class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 	protected $mockedStoreValues;
 	private $semanticData;
@@ -62,8 +63,8 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			PropertyChangePropagationNotifier::class,
-			new PropertyChangePropagationNotifier( $this->store, $this->serializerFactory )
+			ChangePropagationNotifier::class,
+			new ChangePropagationNotifier( $this->store, $this->serializerFactory )
 		);
 	}
 
@@ -151,7 +152,7 @@ class PropertyChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase 
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( $dataValues ) );
 
-		$instance = new PropertyChangePropagationNotifier(
+		$instance = new ChangePropagationNotifier(
 			$store,
 			$this->serializerFactory
 		);

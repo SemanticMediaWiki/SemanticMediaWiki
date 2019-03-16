@@ -24,6 +24,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 	private $spyLogger;
 	private $store;
+	private $changePropagationNotifier;
 
 	protected function setUp() {
 		parent::setUp();
@@ -35,6 +36,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->changePropagationNotifier = $this->getMockBuilder( '\SMW\Property\ChangePropagationNotifier' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'exists' ] )
@@ -77,7 +82,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DataUpdater::class,
-			new DataUpdater( $this->store, $semanticData )
+			new DataUpdater( $this->store, $semanticData, $this->changePropagationNotifier )
 		);
 	}
 
@@ -87,7 +92,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$this->store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$this->assertTrue(
@@ -101,7 +107,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$this->store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -161,7 +168,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$instance->canCreateUpdateJob(
@@ -217,7 +225,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$instance->canCreateUpdateJob(
@@ -241,7 +250,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$this->store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$this->assertInternalType(
@@ -262,7 +272,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$this->store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$this->assertFalse(
@@ -337,7 +348,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataUpdater(
 			$store,
-			$semanticData
+			$semanticData,
+			$this->changePropagationNotifier
 		);
 
 		$instance->canCreateUpdateJob( true );

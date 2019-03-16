@@ -7,6 +7,7 @@ use User;
 use WikiPage;
 use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Property\ChangePropagationNotifier;
 
 /**
  * This function takes care of storing the collected semantic data and
@@ -38,6 +39,11 @@ class DataUpdater {
 	 * @var SemanticData
 	 */
 	private $semanticData;
+
+	/**
+	 * @var ChangePropagationNotifier
+	 */
+	private $changePropagationNotifier;
 
 	/**
 	 * @var boolean|null
@@ -74,10 +80,12 @@ class DataUpdater {
 	 *
 	 * @param Store $store
 	 * @param SemanticData $semanticData
+	 * @param ChangePropagationNotifier $changePropagationNotifier
 	 */
-	public function __construct( Store $store, SemanticData $semanticData ) {
+	public function __construct( Store $store, SemanticData $semanticData, ChangePropagationNotifier $changePropagationNotifier ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
+		$this->changePropagationNotifier = $changePropagationNotifier;
 	}
 
 	/**
@@ -352,30 +360,7 @@ class DataUpdater {
 			return;
 		}
 
-		$namespace = $this->semanticData->getSubject()->getNamespace();
-
-		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
-			return;
-		}
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$propertyChangePropagationNotifier = new PropertyChangePropagationNotifier(
-			$this->store,
-			$applicationFactory->newSerializerFactory()
-		);
-
-		$propertyChangePropagationNotifier->setPropertyList(
-			$applicationFactory->getSettings()->get( 'smwgChangePropagationWatchlist' )
-		);
-
-		$propertyChangePropagationNotifier->isCommandLineMode(
-			$this->isCommandLineMode
-		);
-
-		$propertyChangePropagationNotifier->checkAndNotify(
-			$this->semanticData
-		);
+		$this->changePropagationNotifier->checkAndNotify( $this->semanticData );
 	}
 
 	private function updateData() {
