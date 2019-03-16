@@ -390,9 +390,23 @@ class ApplicationFactory {
 	 */
 	public function newDataUpdater( SemanticData $semanticData ) {
 
+		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
+			$this->getStore(),
+			$this->newSerializerFactory()
+		);
+
+		$changePropagationNotifier->setPropertyList(
+			$this->getSettings()->get( 'smwgChangePropagationWatchlist' )
+		);
+
+		$changePropagationNotifier->isCommandLineMode(
+			Site::isCommandLineMode()
+		);
+
 		$dataUpdater = new DataUpdater(
 			$this->getStore(),
-			$semanticData
+			$semanticData,
+			$changePropagationNotifier
 		);
 
 		$dataUpdater->isCommandLineMode(

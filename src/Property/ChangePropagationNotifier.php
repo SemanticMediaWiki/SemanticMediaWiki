@@ -1,10 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\Property;
 
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMWDataItem;
 use SMWDIBlob as DIBlob;
+use SMW\SerializerFactory;
+use SMW\Store;
+use SMW\SemanticData;
+use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 /**
  * Before a new set of data (type, constraints etc.) is stored about a property
@@ -17,7 +22,7 @@ use SMWDIBlob as DIBlob;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class PropertyChangePropagationNotifier {
+class ChangePropagationNotifier {
 
 	/**
 	 * @var Store
@@ -97,9 +102,7 @@ class PropertyChangePropagationNotifier {
 	 */
 	public function notify( DIWikiPage $subject ) {
 
-		$namespace = $subject->getNamespace();
-
-		if ( !$this->hasDiff() || ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) ) {
+		if ( !$this->hasDiff() || !$this->inNamespace( $subject ) ) {
 			return false;
 		}
 
@@ -113,6 +116,17 @@ class PropertyChangePropagationNotifier {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param DIWikiPage $subject
+	 *
+	 * @return boolean
+	 */
+	public function inNamespace( DIWikiPage $subject ) {
+		return $subject->getNamespace() === SMW_NS_PROPERTY || $subject->getNamespace() === NS_CATEGORY;
+	}
+
+	/**
 	 * Compare and detect differences between the invoked semantic data
 	 * and the current stored data
 	 *
@@ -123,9 +137,7 @@ class PropertyChangePropagationNotifier {
 	 */
 	public function checkAndNotify( SemanticData &$semanticData ) {
 
-		$namespace = $semanticData->getSubject()->getNamespace();
-
-		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
+		if ( !$this->inNamespace( $semanticData->getSubject() ) ) {
 			return;
 		}
 
