@@ -5,7 +5,7 @@ namespace SMW\Property\DeclarationExaminer;
 use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\DataTypeRegistry;
-use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
+use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMWDataItem as DataItem;
 use SMW\Store;
 use SMW\Message;

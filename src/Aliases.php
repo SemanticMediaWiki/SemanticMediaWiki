@@ -9,6 +9,7 @@ class_alias( \SMW\Query\ResultPrinters\RdfResultPrinter::class, 'SMWRDFResultPri
 class_alias( \SMW\Query\ResultPrinters\EmbeddedResultPrinter::class, 'SMWEmbeddedResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\DsvResultPrinter::class, 'SMWDSVResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\AggregatablePrinter::class, 'SMWAggregatablePrinter' );
+class_alias( \SMW\Property\Annotator::class, 'SMW\PropertyAnnotator' );
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );

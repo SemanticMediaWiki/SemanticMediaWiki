@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotators;
+namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
 use SMW\SemanticData;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\PropertyAnnotators\AttachmentLinkPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
 use SMW\Localizer;
 
 /**
- * @covers \SMW\PropertyAnnotators\AttachmentLinkPropertyAnnotator
+ * @covers \SMW\Property\Annotators\AttachmentLinkPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

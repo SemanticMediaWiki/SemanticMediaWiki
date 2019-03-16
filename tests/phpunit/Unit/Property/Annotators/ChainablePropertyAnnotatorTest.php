@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotators;
+namespace SMW\Tests\Property\Annotators;
 
 use SMW\DIProperty;
-use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
+use SMW\Property\Annotators\CategoryPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\PredefinedPropertyAnnotator;
+use SMW\Property\Annotators\SortKeyPropertyAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

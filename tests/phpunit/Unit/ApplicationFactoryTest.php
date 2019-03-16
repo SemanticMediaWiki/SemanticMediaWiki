@@ -327,7 +327,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'PropertyAnnotatorFactory',
 			[],
-			'SMW\PropertyAnnotatorFactory'
+			'SMW\Property\AnnotatorFactory'
 		];
 
 		return $provider;

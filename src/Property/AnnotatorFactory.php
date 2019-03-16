@@ -1,21 +1,25 @@
 <?php
 
-namespace SMW;
+namespace SMW\Property;
 
 use SMw\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotators\CategoryPropertyAnnotator;
-use SMW\PropertyAnnotators\DisplayTitlePropertyAnnotator;
-use SMW\PropertyAnnotators\EditProtectedPropertyAnnotator;
-use SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\PropertyAnnotators\PredefinedPropertyAnnotator;
-use SMW\PropertyAnnotators\RedirectPropertyAnnotator;
-use SMW\PropertyAnnotators\SchemaPropertyAnnotator;
-use SMW\PropertyAnnotators\SortKeyPropertyAnnotator;
-use SMW\PropertyAnnotators\TranslationPropertyAnnotator;
-use SMW\PropertyAnnotators\AttachmentLinkPropertyAnnotator;
+use SMW\Property\Annotators\CategoryPropertyAnnotator;
+use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;
+use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\PredefinedPropertyAnnotator;
+use SMW\Property\Annotators\RedirectPropertyAnnotator;
+use SMW\Property\Annotators\SchemaPropertyAnnotator;
+use SMW\Property\Annotators\SortKeyPropertyAnnotator;
+use SMW\Property\Annotators\TranslationPropertyAnnotator;
+use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Store;
 use SMW\Schema\Schema;
+use SMW\SemanticData;
+use SMW\ApplicationFactory;
+use SMW\PropertyAnnotator;
+use SMW\PageInfo;
 use Title;
 
 /**
@@ -24,7 +28,7 @@ use Title;
  *
  * @author mwjames
  */
-class PropertyAnnotatorFactory {
+class AnnotatorFactory {
 
 	/**
 	 * @since 2.0

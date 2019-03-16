@@ -227,7 +227,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( \SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) )
+			->with( $this->equalTo( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) )
 			->will( $this->returnValue( $imported_type ) );
 
 		$this->semanticData->expects( $this->any() )
@@ -273,7 +273,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$semanticData->setOption(
-			\SMW\PropertyAnnotators\MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE,
+			\SMW\Property\Annotators\MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE,
 			$dataItemFactory->newDIWikiPage( 'Bar' )
 		);
 

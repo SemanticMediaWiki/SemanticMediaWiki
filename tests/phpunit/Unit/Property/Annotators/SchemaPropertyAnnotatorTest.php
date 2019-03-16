@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests\PropertyAnnotators;
+namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\PropertyAnnotators\NullPropertyAnnotator;
-use SMW\PropertyAnnotators\SchemaPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Schema\SchemaDefinition;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertyAnnotators\SchemaPropertyAnnotator
+ * @covers \SMW\Property\Annotators\SchemaPropertyAnnotator
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
