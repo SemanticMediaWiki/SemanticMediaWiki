@@ -498,4 +498,12 @@ class ElasticFactory {
 		return true;
 	}
 
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Event::RegisterEventListeners
+	 * @since 3.1
+	 */
+	public function onRegisterEventListeners( $eventListener ) {
+		return true;
+	}
+
 }

@@ -445,6 +445,23 @@ Hooks::register( 'SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessC
 } );
 </pre>
 
+## SMW::Event::RegisterEventListeners
+
+* Version: 3.1
+* Description: Hook to register additional event listeners
+* Reference class: `SMW\EventListenerRegistry`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::Event::RegisterEventListeners', function( $eventListener ) {
+
+	// $eventListener->registerCallback( 'FooEvent' , [ $this, 'onFooEvent' ] );
+
+	return true;
+} );
+</pre>
+
 ## Other available hooks
 
 Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.

@@ -302,4 +302,14 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnRegisterEventListeners() {
+
+		$instance = new ElasticFactory();
+		$eventListener = null;
+
+		$this->assertTrue(
+			$instance->onRegisterEventListeners( $eventListener )
+		);
+	}
+
 }

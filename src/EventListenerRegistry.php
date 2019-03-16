@@ -59,6 +59,8 @@ class EventListenerRegistry implements EventListenerCollection {
 
 		$this->addListenersToCollection();
 
+		\Hooks::run( 'SMW::Event::RegisterEventListeners', [ $this->eventListenerCollection ] );
+
 		return $this->eventListenerCollection->getCollection();
 	}
 
