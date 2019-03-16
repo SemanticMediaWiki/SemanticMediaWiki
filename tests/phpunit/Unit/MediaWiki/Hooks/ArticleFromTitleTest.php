@@ -63,12 +63,12 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			SMW_NS_PROPERTY,
-			'SMW\Page\PropertyPage'
+			'SMW\MediaWiki\Page\PropertyPage'
 		];
 
 		$provider[] = [
 			SMW_NS_CONCEPT,
-			'SMW\Page\ConceptPage'
+			'SMW\MediaWiki\Page\ConceptPage'
 		];
 
 		return $provider;

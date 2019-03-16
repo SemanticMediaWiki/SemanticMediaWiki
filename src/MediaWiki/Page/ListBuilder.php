@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\MediaWiki\Page;
 
 use SMW\Store;
 use SMW\Message;
@@ -220,17 +220,6 @@ class ListBuilder {
 		ksort( $contents, $this->sort );
 
 		return $contents;
-	}
-
-	private function getFirstLetter( DataItem $dataItem ) {
-
-		$sortKey = $dataItem->getSortKey();
-
-		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
-			$sortKey = $this->store->getWikiPageSortKey( $dataItem );
-		}
-
-		return $this->collator->getFirstLetter( $sortKey );
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\MediaWiki\Page;
 
 use Html;
 use SMW\ApplicationFactory;
@@ -8,8 +8,8 @@ use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\Message;
-use SMW\Page\ListBuilder\ItemListBuilder;
-use SMW\Page\ListBuilder\ValueListBuilder;
+use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
+use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use SMW\Store;
@@ -80,13 +80,13 @@ class PropertyPage extends Page {
 	}
 
 	/**
-	 * @see Page::getIntroductoryText
+	 * @see Page::initHtml
 	 *
 	 * @since 3.0
 	 *
 	 * @return string
 	 */
-	protected function getIntroductoryText() {
+	protected function initHtml() {
 
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 

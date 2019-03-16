@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\Utils;
 
 use Html;
 use SMW\Localizer;
@@ -13,7 +13,7 @@ use Title;
  *
  * @author mwjames
  */
-class ListPager {
+class Pager {
 
 	/**
 	 * @var string

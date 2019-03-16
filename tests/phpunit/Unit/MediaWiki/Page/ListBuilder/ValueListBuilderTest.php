@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Page\ListBuilder;
+namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Page\ListBuilder\ValueListBuilder;
+use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Page\ListBuilder\ValueListBuilder
+ * @covers \SMW\MediaWiki\Page\ListBuilder\ValueListBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -97,7 +97,7 @@ class ValueListBuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator->assertThatStringContains(
 			[
 				'<div class="smw-table-row header-row"><div class="smw-table-cell header-title"><div id="B">B</div>',
-				'title="SMW\Tests\Page\ListBuilder\ValueListBuilderTest::testCreateHtml',
+				'title="SMW\Tests\MediaWiki\Page\ListBuilder\ValueListBuilderTest::testCreateHtml',
 				'<span class="smwbrowse">.*:Bar">+</a>'
 			],
 			$instance->createHtml( $property, $dataItem, [ 'limit' => 10 ] )

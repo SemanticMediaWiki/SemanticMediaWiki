@@ -3,8 +3,8 @@
 namespace SMW;
 
 use Html;
-use SMW\Page\ListPager;
-use SMW\Page\ListBuilder;
+use SMW\Utils\Pager;
+use SMW\MediaWiki\Page\ListBuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HtmlTabs;
 use SMW\ApplicationFactory;
@@ -145,7 +145,7 @@ class SpecialConcepts extends \SpecialPage {
 			Html::rawElement(
 				'div',
 				[ 'class' => 'smw-page-navigation' ],
-				ListPager::pagination( $this->getPageTitle(), $limit, $offset, $count )
+				Pager::pagination( $this->getPageTitle(), $limit, $offset, $count )
 			) . Html::element(
 				'div',
 				[ 'class' => $key, 'style' => 'margin-top:10px;margin-bottom:10px;' ],
