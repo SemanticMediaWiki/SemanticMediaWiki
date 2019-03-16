@@ -47,7 +47,7 @@ Some simple rules that developers and the project tries to follow (of course the
 
 ### Testing
 
-Tests are commonly divided into unit and integration tests.
+The `SemanticMediaWiki` software alone deploys ~7000 tests (as of 16 March 2019) that are required to be passed before changes can be merged into the repository and are commonly divided into unit and integration tests.
 
 - Read the [introduction](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md) to the Semantic MediaWiki test environment and how to use `PHPUnit` and how to write `JSONScript` integration tests
 - It is expected that each new class is covered by unit test and if the functionality spans into different components integration tests are provided as well to ensure the behaviour sought is actually observable and builds the base to define the behavioural boundaries.
