@@ -18,14 +18,22 @@
 
 	var container = function( title, content, tip ) {
 
-		var cancel = '', head = '', bottom = '', theme = '';
+		var cancel = '', head = '', bottom = '', theme = '', hint = '';
 		var theme = tip.smw.theme;
 
 		if ( tip.smw.isPersistent ) {
 			cancel = '<span class="tippy-cancel"></span>';
+		} else if ( tip.reference.getAttribute( "data-type" ) ) {
+			if ( tip.reference.getAttribute( "data-type" ) === '4' ) {
+				hint = '<span class="tippy-hint-warning"></span>';
+			};
+
+			if ( tip.reference.getAttribute( "data-type" ) === '5' ) {
+				hint = '<span class="tippy-hint-error"></span>';
+			};
 		};
 
-		head = '<div class="tippy-header ' + theme + '">' + cancel + title + '</div>';
+		head = '<div class="tippy-header ' + theme + '">' + cancel + title + hint + '</div>';
 
 		if ( tip.reference.getAttribute( "data-bottom" ) ) {
 			bottom = '<div class="tippy-bottom ' + theme + '">' + tip.reference.getAttribute( "data-bottom" ) + '</div>';
