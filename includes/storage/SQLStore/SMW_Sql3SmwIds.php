@@ -16,6 +16,7 @@ use SMWDataItem as DataItem;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
+use SMW\MediaWiki\Deferred\HashFieldUpdate;
 
 /**
  * @ingroup SMWStore
@@ -277,6 +278,7 @@ class SMWSql3SmwIds {
 		global $smwgQEqualitySupport;
 
 		$db = $this->store->getConnection( 'mw.db' );
+		$sha1 = $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] );
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
@@ -297,9 +299,9 @@ class SMWSql3SmwIds {
 			if ( $id != 0 ) {
 
 				if ( $fetchHashes ) {
-					$select = [ 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
+					$select = [ 'smw_sortkey', 'smw_sort', 'smw_proptable_hash', 'smw_hash' ];
 				} else {
-					$select = [ 'smw_sortkey', 'smw_sort' ];
+					$select = [ 'smw_sortkey', 'smw_sort', 'smw_hash' ];
 				}
 
 				$row = $db->selectRow(
@@ -315,6 +317,11 @@ class SMWSql3SmwIds {
 					if ( $fetchHashes ) {
 						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash );
 					}
+
+					// Prevent any irregularities caused by a delayed, or redirect update
+					if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
+						HashFieldUpdate::addUpdate( $db, $id, $sha1 );
+					}
 				} else { // inconsistent DB; just recover somehow
 					$sortkey = str_replace( '_', ' ', $title );
 				}
@@ -325,9 +332,9 @@ class SMWSql3SmwIds {
 		} else {
 
 			if ( $fetchHashes ) {
-				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash' ];
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash', 'smw_hash' ];
 			} else {
-				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort' ];
+				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_hash' ];
 			}
 
 			// #2001
@@ -362,6 +369,11 @@ class SMWSql3SmwIds {
 				$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
 				if ( $fetchHashes ) {
 					$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
+				}
+
+				// Prevent any irregularities caused by a delayed, or redirect update
+				if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
+					HashFieldUpdate::addUpdate( $db, $id, $sha1 );
 				}
 			} else {
 				$id = 0;
@@ -733,8 +745,6 @@ class SMWSql3SmwIds {
 	 */
 	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ) {
 
-		$connection = $this->store->getConnection( 'mw.db' );
-
 		if ( $interwiki === null ) {
 			$interwiki = $subject->getInterWiki();
 		}
@@ -746,14 +756,10 @@ class SMWSql3SmwIds {
 			$subject->getSubobjectName()
 		];
 
-		$connection->update(
-			self::TABLE_NAME,
-			[
-				'smw_iw' => $interwiki,
-				'smw_hash' => $this->computeSha1( $hash )
-			],
-			[ 'smw_id' => $sid ],
-			__METHOD__
+		$this->tableFieldUpdater->updateIwField(
+			$sid,
+			$interwiki,
+			$this->computeSha1( $hash )
 		);
 
 		$this->setCache(

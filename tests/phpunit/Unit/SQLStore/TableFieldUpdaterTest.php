@@ -132,4 +132,32 @@ class TableFieldUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance->updateTouchedField( 42 );
 	}
 
+	public function testUpdateIwField() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'update' )
+				->with(
+					$this->anything(),
+					$this->equalTo( [ 'smw_iw' => 'foo', 'smw_hash' => 'abc1234' ] ),
+					$this->equalTo( [ 'smw_id'  => 42 ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new TableFieldUpdater(
+			$store
+		);
+
+		$instance->updateIwField( 42,'foo', 'abc1234' );
+	}
+
 }

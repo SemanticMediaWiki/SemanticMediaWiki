@@ -661,6 +661,7 @@ class SMWSQLStore3Writers {
 
 		$count = 0; //track count changes for redi property
 		$db = $this->store->getConnection();
+		$tableFieldUpdater = $this->factory->newTableFieldUpdater();
 
 		// *** First get id of subject, old redirect target, and current (new) redirect target ***//
 
@@ -737,11 +738,14 @@ class SMWSQLStore3Writers {
 						false
 					);
 				} else {
-					$db->update(
-						SMWSql3SmwIds::TABLE_NAME,
-						[ 'smw_iw' => SMW_SQL3_SMWREDIIW ],
-						[ 'smw_id' => $sid ],
-						__METHOD__
+					$sha1 = $this->store->getObjectIds()->computeSha1(
+						[ $subject_t, $subject_ns, SMW_SQL3_SMWREDIIW , '' ]
+					);
+
+					$tableFieldUpdater->updateIwField(
+						$sid,
+						SMW_SQL3_SMWREDIIW,
+						$sha1
 					);
 
 					$this->store->getObjectIds()->setCache(
@@ -778,11 +782,14 @@ class SMWSQLStore3Writers {
 			// This shows that $sid != 0 here.
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
 
-				$db->update(
-					SMWSql3SmwIds::TABLE_NAME,
-					[ 'smw_iw' => '' ],
-					[ 'smw_id' => $sid ],
-					__METHOD__
+				$sha1 = $this->store->getObjectIds()->computeSha1(
+					[ $subject_t, $subject_ns, '' , '' ]
+				);
+
+				$tableFieldUpdater->updateIwField(
+					$sid,
+					'',
+					$sha1
 				);
 
 				$this->store->getObjectIds()->setCache(

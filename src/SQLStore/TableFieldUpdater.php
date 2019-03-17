@@ -91,8 +91,8 @@ class TableFieldUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
-	 * @param intege $rev_id
+	 * @param integer $sid
+	 * @param integer $rev_id
 	 */
 	public function updateRevField( $sid, $rev_id ) {
 
@@ -103,6 +103,30 @@ class TableFieldUpdater {
 			[
 				'smw_rev' => $rev_id,
 				'smw_touched' => $connection->timestamp()
+			],
+			[
+				'smw_id' => $sid
+			],
+			__METHOD__
+		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $sid
+	 * @param string $iw
+	 * @param string $hash
+	 */
+	public function updateIwField( $sid, $iw, $hash ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$connection->update(
+			SQLStore::ID_TABLE,
+			[
+				'smw_iw' => $iw,
+				'smw_hash' => $hash
 			],
 			[
 				'smw_id' => $sid
