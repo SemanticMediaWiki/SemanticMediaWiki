@@ -45,21 +45,25 @@ class ReplicationStatus {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function get( $key ) {
+	public function get( $key, ...$args ) {
+
+		if ( $key === 'associated_revision' ) {
+			$key = 'getAssociatedRev';
+		}
 
 		if ( !is_callable( [ $this, $key ] ) ) {
 			throw new RuntimeException( "`$key` as accessor is unknown!" );
 		}
 
-		return $this->{$key}();
+		return $this->{$key}( ...$args );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $key
+	 * @param string $id
 	 *
-	 * @return string
+	 * @return boolean|DITime
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ) {
@@ -90,6 +94,34 @@ class ReplicationStatus {
 		);
 
 		return $dataItem;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param integer $id
+	 *
+	 * @return integer
+	 */
+	public function getAssociatedRev( $id ) {
+
+		$params = [
+			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
+			'type'  => ElasticClient::TYPE_DATA,
+			'id'    => $id,
+		];
+
+		if ( !$this->connection->exists( $params ) ) {
+			return 0;
+		}
+
+		$doc = $this->connection->get( $params + [ '_source_include' => [ "subject.rev_id" ] ] );
+
+		if ( !isset( $doc['_source']['subject']['rev_id'] ) ) {
+			return 0;
+		}
+
+		return $doc['_source']['subject']['rev_id'];
 	}
 
 	/**

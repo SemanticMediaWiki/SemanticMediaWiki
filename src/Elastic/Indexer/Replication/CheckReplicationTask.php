@@ -119,8 +119,8 @@ class CheckReplicationTask extends Task {
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
 
 		$html = '';
-		$this->templateEngine = new TemplateEngine();
 
+		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskLine.ms', 'line_template' );
 
 		$this->templateEngine->compile(
@@ -131,6 +131,13 @@ class CheckReplicationTask extends Task {
 		);
 
 		$id = $this->store->getObjectIds()->getID( $subject );
+
+		$rev_store = $this->store->getObjectIds()->findAssociatedRev(
+			$subject->getDBKey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki()
+		);
+
 		$title = $subject->getTitle();
 
 		// Find the time from elastic
@@ -152,6 +159,12 @@ class CheckReplicationTask extends Task {
 				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
 			];
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $dates );
+		} elseif ( ( $rev_es = $this->replicationStatus->getAssociatedRev( $id ) ) != $rev_store ) {
+			$revs = [
+				'rev_es' => $rev_es,
+				'rev_store' => $rev_store
+			];
+			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, [], $revs );
 		} elseif ( $subject->getNamespace() === NS_FILE ) {
 			$html = $this->checkFileIngest( $subject );
 		}
@@ -169,7 +182,7 @@ class CheckReplicationTask extends Task {
 		return $this->wrapHTML( $html );
 	}
 
-	private function replicationErrorMsg( $title_text, $id, $dates = [] ) {
+	private function replicationErrorMsg( $title_text, $id, $dates = [], $revs = [] ) {
 
 		$content = '';
 		$this->errorTitle = 'smw-es-replication-error';
@@ -187,6 +200,12 @@ class CheckReplicationTask extends Task {
 			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $id ] );
 			$content .= $this->templateEngine->code( 'line_template' );
 			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date-detail', $dates['time_es'], $dates['time_store'] ], Message::PARSE );
+			$content .= $this->templateEngine->code( 'line_template' );
+			$content .= $this->templateEngine->code( 'comment_template' );
+		} elseif ( $revs !== [] ) {
+			$content .= $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $id ] );
+			$content .= $this->templateEngine->code( 'line_template' );
+			$content .= $this->msg( [ 'smw-es-replication-error-divergent-revision-detail', $revs['rev_es'], $revs['rev_store'] ], Message::PARSE );
 			$content .= $this->templateEngine->code( 'line_template' );
 			$content .= $this->templateEngine->code( 'comment_template' );
 		} else {

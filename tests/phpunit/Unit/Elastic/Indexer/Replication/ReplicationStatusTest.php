@@ -101,4 +101,84 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetAssociatedRev() {
+
+		$doc = [
+			'_source' => [
+				'subject' =>[
+					'rev_id' => 1001
+				]
+			]
+		];
+
+		$params = [
+			'index' => 'FOO',
+			'type' => 'data',
+			'id' => 42,
+			'_source_include' => [ 'subject.rev_id' ]
+		];
+
+		$this->connection->expects( $this->once() )
+			->method( 'getIndexName' )
+			->will( $this->returnValue( "FOO" ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'get' )
+			->with(	$this->equalTo( $params ) )
+			->will( $this->returnValue( $doc ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->getAssociatedRev( 42 )
+		);
+	}
+
+	public function testGet_associated_revision() {
+
+		$doc = [
+			'_source' => [
+				'subject' =>[
+					'rev_id' => 1001
+				]
+			]
+		];
+
+		$params = [
+			'index' => 'FOO',
+			'type' => 'data',
+			'id' => 42,
+			'_source_include' => [ 'subject.rev_id' ]
+		];
+
+		$this->connection->expects( $this->once() )
+			->method( 'getIndexName' )
+			->will( $this->returnValue( "FOO" ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'get' )
+			->with(	$this->equalTo( $params ) )
+			->will( $this->returnValue( $doc ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->get( 'associated_revision', 42 )
+		);
+	}
+
 }

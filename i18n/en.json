@@ -899,6 +899,8 @@
 	"smw-es-replication-error-missing-id": "The replication monitoring has found that article \"$1\" (ID: $2) is missing from the Elasticsearch backend.",
 	"smw-es-replication-error-divergent-date": "The replication monitoring has found that for the \"$1\" article (ID: $2) the modification date shows a discrepancy.",
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-es-replication-error-divergent-revision": "The replication monitoring has found that for the \"$1\" article (ID: $2) the <b>associated revision</b> shows a discrepancy.",
+	"smw-es-replication-error-divergent-revision-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
 	"smw-es-replication-error-suggestions": "It is suggested to edit or purge the page to remove the discrepancy. If the issue remains then check the Elasticsearch cluster itself (allocator, exceptions, disk space etc.).",
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "The replication monitoring has found that \"$1\" is missing a [[Property:File attachment|File attachment]] annotation indicating that the file ingest processor hasn't started or isn't finished.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Please ensure that the [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion file ingest] job is scheduled and executed before the annotation and file index can be made available."
