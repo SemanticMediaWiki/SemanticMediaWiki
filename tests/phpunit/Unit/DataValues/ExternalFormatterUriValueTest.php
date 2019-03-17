@@ -43,6 +43,16 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasMultiSubstitute() {
+
+		$instance = new ExternalFormatterUriValue();
+		$instance->setUserValue( 'http://example.org/Foo?a=$1,$2' );
+
+		$this->assertTrue(
+			$instance->hasMultiSubstitute()
+		);
+	}
+
 	/**
 	 * @dataProvider uriProvider
 	 */
@@ -53,7 +63,21 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->getUriWithPlaceholderSubstitution( $replacement )
+			$instance->substituteAndFormatUri( $replacement )
+		);
+	}
+
+	/**
+	 * @dataProvider uriWithParametersProvider
+	 */
+	public function testFormattedUriWithParameters( $uri, $replacement, $parameters, $expected ) {
+
+		$instance = new ExternalFormatterUriValue();
+		$instance->setUserValue( $uri );
+
+		$this->assertEquals(
+			$expected,
+			$instance->substituteAndFormatUri( $replacement, $parameters )
 		);
 	}
 
@@ -171,6 +195,30 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
+	}
+
+	public function uriWithParametersProvider() {
+
+		yield [
+			'http://example.org/$1',
+			'foo',
+			[],
+			'http://example.org/foo'
+		];
+
+		yield [
+			'http://example.org/$1&id=$2',
+			'foo',
+			[ 1001 ],
+			'http://example.org/foo&id=1001'
+		];
+
+		yield [
+			'http://example.org/$1&id=$2',
+			'foo',
+			[ "a%2Cb" ],
+			'http://example.org/foo&id=a,b'
+		];
 	}
 
 }

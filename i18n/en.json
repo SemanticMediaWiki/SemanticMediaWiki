@@ -725,6 +725,7 @@
 	"smw-datavalue-external-formatter-uri-missing-placeholder": "Formatter URI is missing the ''$1'' placeholder.",
 	"smw-datavalue-external-formatter-invalid-uri": " \"$1\" is an invalid URL.",
 	"smw-datavalue-external-identifier-formatter-missing": "The property is missing an [[Property:External formatter uri|\"External formatter URI\"]] assignment.",
+	"smw-datavalue-external-identifier-multi-substitute-parameters-missing": "The \"$1\" external identifier expects a multi field substitution but the current \"$2\" value is missing at least one value parameter to match the requirement.",
 	"smw-datavalue-keyword-maximum-length": "The keyword exceeded the maximum length of $1 {{PLURAL:$1|character|characters}}.",
 	"smw-property-predefined-eid": "\"$1\" is a [[Special:Types/External identifier|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent external identifiers.",
 	"smw-property-predefined-peid": "\"$1\" is a predefined property that specifies an external identifier and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

@@ -8,12 +8,26 @@
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
+			"page": "wikipedia",
+			"contents": "[[Has type::External identifier]][[External formatter uri::https://en.wikipedia.org/w/index.php?title=$1&oldid=$2]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
 			"page": "WD reference",
 			"contents": "[[Has type::Reference]] [[Has fields::URL;WDID]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Wikipedia reference",
+			"contents": "[[Has type::Reference]] [[Has fields::Number;wikipedia]]"
+		},
+		{
 			"page": "Example/P0916/1",
 			"contents": "[[WD reference::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
+		},
+		{
+			"page": "Test:P0916/2",
+			"contents": "[[Wikipedia reference::837787373;Truid Aagesen{837787373}]]"
 		}
 	],
 	"tests": [
@@ -39,6 +53,27 @@
 				],
 				"not-contain": [
 					"title=&quot;.*:WDID&quot;&gt;WDID&lt;/a&gt;: &lt;span class=&quot;plainlinks smw-eid&quot;&gt;<a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a>&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;\" title=\"WDID: <a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a>\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (external id with multiple substitutes)",
+			"subject": "Test:P0916/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Wikipedia reference"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Wikipedia&quot;&gt;Wikipedia&lt;/a&gt;: &lt;a href=&quot;https://en.wikipedia.org/w/index.php?title=Truid_Aagesen&amp;amp;oldid=837787373&quot; target=&quot;_blank&quot;&gt;Truid Aagesen"
 				]
 			}
 		}
