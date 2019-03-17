@@ -1,5 +1,5 @@
 /**!
-* tippy.js v4.1.0
+* tippy.js v4.2.0
 * (c) 2017-2019 atomiks
 * MIT License
 */
@@ -29,7 +29,7 @@
     return _extends.apply(this, arguments);
   }
 
-  var version = "4.1.0";
+  var version = "4.2.0";
 
   var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
   var ua = isBrowser ? navigator.userAgent : '';
@@ -1195,6 +1195,37 @@
           arrow = _instance$popperChild.arrow;
       var preventOverflowModifier = getModifier(popperOptions, 'preventOverflow');
 
+      function applyMutations(data) {
+        if (instance.props.flip && !instance.props.flipOnUpdate) {
+          if (data.flipped) {
+            instance.popperInstance.options.placement = data.placement;
+          }
+
+          setFlipModifierEnabled(instance.popperInstance.modifiers, false);
+        }
+
+        tooltip.setAttribute('x-placement', data.placement);
+        var basePlacement = getPopperPlacement(instance.popper);
+        var styles = tooltip.style; // Account for the `distance` offset
+
+        styles.top = styles.bottom = styles.left = styles.right = '';
+        styles[basePlacement] = getOffsetDistanceInPx(instance.props.distance);
+        var padding = preventOverflowModifier && preventOverflowModifier.padding !== undefined ? preventOverflowModifier.padding : PADDING;
+        var isPaddingNumber = typeof padding === 'number';
+
+        var computedPadding = _extends({
+          top: isPaddingNumber ? padding : padding.top,
+          bottom: isPaddingNumber ? padding : padding.bottom,
+          left: isPaddingNumber ? padding : padding.left,
+          right: isPaddingNumber ? padding : padding.right
+        }, !isPaddingNumber && padding);
+
+        computedPadding[basePlacement] = isPaddingNumber ? padding + instance.props.distance : (padding[basePlacement] || 0) + instance.props.distance;
+        instance.popperInstance.modifiers.filter(function (m) {
+          return m.name === 'preventOverflow';
+        })[0].padding = computedPadding;
+      }
+
       var config = _extends({
         placement: instance.props.placement
       }, popperOptions, {
@@ -1218,34 +1249,20 @@
             offset: instance.props.offset
           }, getModifier(popperOptions, 'offset'))
         }),
-        onUpdate: function onUpdate(data) {
-          if (instance.props.flip && !instance.props.flipOnUpdate) {
-            if (data.flipped) {
-              instance.popperInstance.options.placement = data.placement;
-            }
+        // This gets invoked when calling `.set()` and updating a popper
+        // instance dependency, since a new popper instance gets created
+        onCreate: function onCreate(data) {
+          applyMutations(data);
 
-            setFlipModifierEnabled(instance.popperInstance.modifiers, false);
+          if (popperOptions && popperOptions.onCreate) {
+            popperOptions.onCreate(data);
           }
-
-          var basePlacement = getPopperPlacement(instance.popper);
-          var styles = tooltip.style; // Account for the `distance` offset
-
-          styles.top = styles.bottom = styles.left = styles.right = '';
-          styles[basePlacement] = getOffsetDistanceInPx(instance.props.distance);
-          var padding = preventOverflowModifier && preventOverflowModifier.padding !== undefined ? preventOverflowModifier.padding : PADDING;
-          var isPaddingNumber = typeof padding === 'number';
-
-          var computedPadding = _extends({
-            top: isPaddingNumber ? padding : padding.top,
-            bottom: isPaddingNumber ? padding : padding.bottom,
-            left: isPaddingNumber ? padding : padding.left,
-            right: isPaddingNumber ? padding : padding.right
-          }, !isPaddingNumber && padding);
-
-          computedPadding[basePlacement] = isPaddingNumber ? padding + instance.props.distance : (padding[basePlacement] || 0) + instance.props.distance;
-          instance.popperInstance.modifiers.filter(function (m) {
-            return m.name === 'preventOverflow';
-          })[0].padding = computedPadding;
+        },
+        // This gets invoked on initial create and show()/scroll/resize update.
+        // This is due to `afterPopperPositionUpdates` overwriting onCreate()
+        // with onUpdate()
+        onUpdate: function onUpdate(data) {
+          applyMutations(data);
 
           if (popperOptions && popperOptions.onUpdate) {
             popperOptions.onUpdate(data);

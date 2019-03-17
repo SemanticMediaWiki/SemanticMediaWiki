@@ -47,6 +47,7 @@
 		arrow: true,
 		interactive: true,
 		placement: "top",
+		flipOnUpdate: true,
 		theme: 'light-border',
 		animation: 'scale',
 		hideOnClick: false,
@@ -63,13 +64,19 @@
 			// Move away from the `bodyContent` border
 			if ( tip.reference.offsetWidth < tip.props.maxWidth ) {
 
-				var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
+				if ( isRTL ) {
+					var distance = $( '#bodyContent' ).width() - $( tip.reference ).offset().left;
+				} else {
+					var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
+				}
 
 				var width = tip.reference.offsetWidth <= 16 ? tip.props.maxWidth : tip.reference.offsetWidth;
 				var center = ( width / 2 ) - 20;
 
 				if ( distance == 0 ) {
 					tip.set( { offset: center } );
+				} else if ( distance < center && isRTL ) {
+					tip.set( { offset: -center + distance } );
 				} else if ( distance < center ) {
 					tip.set( { offset: center - distance } );
 				}
