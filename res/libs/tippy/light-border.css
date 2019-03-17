@@ -33,115 +33,115 @@
 	fill: rgba(0, 8, 16, .15)
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-roundarrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-roundarrow:after {
 	top: 1px;
 	-webkit-transform: rotate(180deg);
 	transform: rotate(180deg)
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow {
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow {
 	border-top-color: #fff
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow:after {
 	border-top: 7px solid #fff;
 	top: -7px
 }
 
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow:before {
 	border-top: 7px solid rgba(0, 8, 16, .2);
 	bottom: -1px
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-roundarrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-roundarrow:after {
 	top: -1px
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow {
 	border-bottom-color: #fff
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow:after {
 	border-bottom: 7px solid #fff;
 	bottom: -7px
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow:before {
 	border-bottom: 7px solid rgba(0, 8, 16, .2);
 	bottom: -6px
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-roundarrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-roundarrow:after {
 	left: 1px;
 	top: 0;
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg)
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow {
 	border-left-color: #fff
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow:after {
 	border-left: 7px solid #fff;
 	left: -7px
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow:before {
 	border-left: 7px solid rgba(0, 8, 16, .2);
 	left: -6px
 }
 
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-roundarrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-roundarrow:after {
 	left: -1px;
 	top: 0;
 	-webkit-transform: rotate(-90deg);
 	transform: rotate(-90deg)
 }
 
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow {
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow {
 	border-right-color: #fff
 }
 
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow:after {
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow:after {
 	border-right: 7px solid #fff;
 	right: -7px
 }
 
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow:before {
 	border-right: 7px solid rgba(0, 8, 16, .2);
 	right: -6px
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow,
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-roundarrow,
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow,
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-roundarrow {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-roundarrow,
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow,
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-roundarrow {
 	-webkit-transform: translateX(-1px);
 	transform: translateX(-1px)
 }
 
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow:after,
-.tippy-popper[x-placement^=bottom] .tippy-tooltip.light-border-theme .tippy-arrow:before,
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow:after,
-.tippy-popper[x-placement^=top] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-border-theme[x-placement^=bottom] .tippy-arrow:before,
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow:after,
+.tippy-tooltip.light-border-theme[x-placement^=top] .tippy-arrow:before {
 	left: -7px;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow,
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-roundarrow,
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow,
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-roundarrow {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow,
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-roundarrow,
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow,
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-roundarrow {
 	-webkit-transform: translateY(-1px);
 	transform: translateY(-1px)
 }
 
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow:after,
-.tippy-popper[x-placement^=left] .tippy-tooltip.light-border-theme .tippy-arrow:before,
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow:after,
-.tippy-popper[x-placement^=right] .tippy-tooltip.light-border-theme .tippy-arrow:before {
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow:after,
+.tippy-tooltip.light-border-theme[x-placement^=left] .tippy-arrow:before,
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow:after,
+.tippy-tooltip.light-border-theme[x-placement^=right] .tippy-arrow:before {
 	top: -7px;
 	border-top: 7px solid transparent;
 	border-bottom: 7px solid transparent
