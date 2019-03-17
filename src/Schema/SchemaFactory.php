@@ -6,7 +6,10 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
+use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
 use SMW\Store;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -84,6 +87,40 @@ class SchemaFactory {
 		}
 
 		return $registeredTypes;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Schema|null $schema
+	 */
+	public function pushPossibleChangePropagationDispatchJob( Schema $schema = null ) {
+
+		if ( $schema === null ) {
+			return;
+		}
+
+		$type = $this->getType( $schema->get( 'type' ) );
+
+		if ( !isset( $type['change_propagation'] ) || $type['change_propagation'] === false ) {
+			return;
+		}
+
+		if ( !is_array( $type['change_propagation'] ) ) {
+			throw new SchemaParameterTypeMismatchException( 'change_propagation', 'array' );
+		}
+
+		$subject = DIWikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
+
+		foreach ( $type['change_propagation'] as $property ) {
+			$params = [
+				'schema_change_propagation' => true,
+				'property_key' => $property,
+				'origin' => 'SchemaFactory'
+			];
+
+			ChangePropagationDispatchJob::planAsJob( $subject, $params );
+		}
 	}
 
 	/**
