@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Localizer;
+
 /**
  * @ingroup SMWDataValues
  */
@@ -21,19 +23,28 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected $m_diProperties;
 
 	protected function parseUserValue( $value ) {
-		global $wgContLang;
 
 		$this->m_diProperties = [];
 		$stringValue = '';
+
 		$valueList = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
+		$propertyNamespace = Localizer::getInstance()->getNamespaceTextById(
+			SMW_NS_PROPERTY
+		);
+
 		foreach ( $valueList as $propertyName ) {
 			$propertyNameParts = explode( ':', $propertyName, 2 );
 			if ( count( $propertyNameParts ) > 1 ) {
 				$namespace = smwfNormalTitleText( $propertyNameParts[0] );
-				$propertyName = $propertyNameParts[1];
-				$propertyNamespace = $wgContLang->getNsText( SMW_NS_PROPERTY );
-				if ( $namespace != $propertyNamespace ) {
-					$this->addErrorMsg( [ 'smw_wrong_namespace', $propertyNamespace ] );
+
+				// Is it a registered namespace? Or just a property with a `:`
+				// divider such as `foaf:name`?
+				if ( Localizer::getInstance()->getNamespaceIndexByName( $namespace ) ) {
+					$propertyName = $propertyNameParts[1];
+
+					if ( $namespace != $propertyNamespace ) {
+						$this->addErrorMsg( [ 'smw_wrong_namespace', $propertyNamespace ] );
+					}
 				}
 			}
 

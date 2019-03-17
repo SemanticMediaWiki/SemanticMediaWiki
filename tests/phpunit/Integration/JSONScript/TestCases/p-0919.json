@@ -1,0 +1,89 @@
+{
+	"description": "Test `_ref_rec`, `_eid`, and `:` property names (`wgAllowDisplayTitle`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "WDID",
+			"contents": "[[Has type::External identifier]][[External formatter uri::https://www.wikidata.org/entity/$1]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "wp:article",
+			"contents": "[[Has type::External identifier]][[External formatter uri::https://en.wikipedia.org/wiki/$1]] {{DISPLAYTITLE:wp:article}}"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "WD reference",
+			"contents": "[[Has type::Reference]] [[Has fields::URL;WDID]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "wp:reference",
+			"contents": "[[Has type::Reference]] [[Has fields::Text;wp:article]] {{DISPLAYTITLE:wp:reference}}"
+		},
+		{
+			"page": "Test:P0919/1",
+			"contents": "[[WD reference::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
+		},
+		{
+			"page": "Test:P0919/2",
+			"contents": "[[wp:reference::Franz Schubert;Franz Schubert]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (correct formatting for external identifier)",
+			"subject": "Test:P0919/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"WD reference"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;.*:WDID&quot;",
+					"title=&quot;.*:WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a href=&quot;https://www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\" title=\"WDID: Q7312\">"
+				],
+				"not-contain": [
+					"title=&quot;.*:WDID&quot;&gt;WDID&lt;/a&gt;: &lt;span class=&quot;plainlinks smw-eid&quot;&gt;<a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a>&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;\" title=\"WDID: <a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a>\">"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (external identifier, lower case property label)",
+			"subject": "Test:P0919/2",
+			"assert-output": {
+				"to-contain": [
+					"https://en.wikipedia.org/wiki/Franz_Schubert",
+					"wp:article: Franz Schubert"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgAllowDisplayTitle": true,
+		"wgRestrictDisplayTitle": false,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
