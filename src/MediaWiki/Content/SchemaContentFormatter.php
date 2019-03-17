@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Schema\Content;
+namespace SMW\MediaWiki\Content;
 
 use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class ContentFormatter {
+class SchemaContentFormatter {
 
 	/**
 	 * @var HtmlBuilder

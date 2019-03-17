@@ -14,7 +14,7 @@ The following properties are provided to make elements of a schema definition di
 
 ## Registration
 
-Extensibility is provided by adding a new type to the `$smwgSchemaTypes` setting.
+Extensibility for new schema types and interpreters is provided by adding a new type to the `$smwgSchemaTypes` setting.
 
 <pre>
 $GLOBALS['smwgSchemaTypes'] = [
@@ -32,3 +32,20 @@ $GLOBALS['smwgSchemaTypes'] = [
 - [`PROPERTY_GROUP_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)
 
 [json:schema]: http://json-schema.org/
+
+## Technical notes
+
+<pre>
+SMW\Schema
+│	│
+│	├─ Schema
+│	├─ SchemaDefinition
+│	├─ SchemaFactory
+│	└─ SchemaValidator
+│
+SMW\MediaWiki
+	└─ Content
+		├─ SchemaContent
+		├─ SchemaContentFormatter
+		└─ SchemaContentHandler
+</pre>

@@ -138,7 +138,7 @@ class Hooks {
 	 */
 	public static function registerEarly( array &$vars ) {
 
-		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\Schema\Content\ContentHandler';
+		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\MediaWiki\Content\SchemaContentHandler';
 
 		/**
 		 * CanonicalNamespaces initialization
@@ -721,7 +721,7 @@ class Hooks {
 
 		// 'rule-json' being a legacy model, remove with 3.1
 		if ( $modelId === 'rule-json' || $modelId === 'smw/schema' ) {
-			$contentHandler = new \SMW\Schema\Content\ContentHandler();
+			$contentHandler = new \SMW\MediaWiki\Content\SchemaContentHandler();
 		}
 
 		return true;

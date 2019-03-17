@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Schema\Content;
+namespace SMW\Tests\MediaWiki\Content;
 
-use SMW\Schema\Content\Content;
+use SMW\MediaWiki\Content\SchemaContent;
 
 /**
- * @covers \SMW\Schema\Content\Content
+ * @covers \SMW\MediaWiki\Content\SchemaContent
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,13 +13,13 @@ use SMW\Schema\Content\Content;
  *
  * @author mwjames
  */
-class ContentTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceof(
 			'\JsonContent',
-			new Content( 'foo' )
+			new SchemaContent( 'foo' )
 		);
 	}
 
@@ -27,7 +27,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 
 		$text = json_encode( [ 'Foo' => 42 ] );
 
-		$instance = new Content( $text );
+		$instance = new SchemaContent( $text );
 
 		$this->assertEquals(
 			$text,
@@ -43,7 +43,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 
 		$text = json_encode( [ 'Foo' => 42 ] );
 
-		$instance = new Content( $text );
+		$instance = new SchemaContent( $text );
 
 		$this->assertFalse(
 			$instance->isYaml()
@@ -64,19 +64,19 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new Content(
+		$instance = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
 		);
 
 		$this->assertInstanceof(
-			Content::class,
+			SchemaContent::class,
 			$instance->preSaveTransform( $title, $user, $parserOptions )
 		);
 	}
 
 	public function testFillParserOutput() {
 
-		$schemaDefinition = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
+		$schema = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,13 +94,13 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchema' )
-			->will( $this->returnValue( $schemaDefinition ) );
+			->will( $this->returnValue( $schema ) );
 
 		$schemaFactory->expects( $this->any() )
 			->method( 'newSchemaValidator' )
 			->will( $this->returnValue( $schemaValidator ) );
 
-		$contentFormatter = $this->getMockBuilder( '\SMW\Schema\Content\ContentFormatter' )
+		$contentFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Content\SchemaContentFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -130,7 +130,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput->expects( $this->once() )
 			->method( 'setIndicator' );
 
-		$instance = new Content(
+		$instance = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
 		);
 
@@ -142,7 +142,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 		$instance->fillParserOutput( $title, $revId, $parserOptions, $generateHtml, $parserOutput );
 	}
 
-	public function testFillParserOutput_SchemaTypeNotFoundException() {
+	public function testFillParserOutput_MediaWikiTypeNotFoundException() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -170,7 +170,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput->expects( $this->never() )
 			->method( 'setIndicator' );
 
-		$instance = new Content(
+		$instance = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
 		);
 

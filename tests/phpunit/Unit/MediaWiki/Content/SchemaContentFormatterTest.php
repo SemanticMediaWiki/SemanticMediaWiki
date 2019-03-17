@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Schema\Content;
+namespace SMW\Tests\MediaWiki\Content;
 
-use SMW\Schema\Content\ContentFormatter;
+use SMW\MediaWiki\Content\SchemaContentFormatter;
 use SMW\Schema\Schema;
 
 /**
- * @covers \SMW\Schema\Content\ContentFormatter
+ * @covers \SMW\MediaWiki\Content\SchemaContentFormatter
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,8 +19,8 @@ class ContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceof(
-			ContentFormatter::class,
-			new ContentFormatter()
+			SchemaContentFormatter::class,
+			new SchemaContentFormatter()
 		);
 	}
 
@@ -30,7 +30,7 @@ class ContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new ContentFormatter();
+		$instance = new SchemaContentFormatter();
 
 		$this->assertInternalType(
 			'string',
@@ -52,7 +52,7 @@ class ContentFormatterTest extends \PHPUnit_Framework_TestCase {
 		$isYaml = false;
 		$errors = [];
 
-		$instance = new ContentFormatter();
+		$instance = new SchemaContentFormatter();
 
 		$this->assertInternalType(
 			'string',
@@ -77,7 +77,7 @@ class ContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			[ 'property' => 'foo', 'message' => '---' ]
 		];
 
-		$instance = new ContentFormatter();
+		$instance = new SchemaContentFormatter();
 
 		$this->assertInternalType(
 			'string',

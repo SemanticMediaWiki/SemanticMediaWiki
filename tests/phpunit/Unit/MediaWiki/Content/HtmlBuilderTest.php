@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Schema\Content;
+namespace SMW\Tests\MediaWiki\Content;
 
-use SMW\Schema\Content\HtmlBuilder;
+use SMW\MediaWiki\Content\HtmlBuilder;
 use SMW\Schema\Schema;
 
 /**
- * @covers \SMW\Schema\Content\HtmlBuilder
+ * @covers \SMW\MediaWiki\Content\HtmlBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
