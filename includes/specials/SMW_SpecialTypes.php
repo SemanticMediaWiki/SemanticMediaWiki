@@ -16,6 +16,7 @@ use SMWInfolink as Infolink;
 use SMW\DataValues\TypesValue;
 use SMWErrorValue as ErrorValue;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Message;
 
 /**
  * This special page for MediaWiki provides information about available types
@@ -110,71 +111,54 @@ class SMWSpecialTypes extends SpecialPage {
 
 	private function getTypesList() {
 
-		$this->addHelpLink( wfMessage( 'smw-specials-types-helplink' )->escaped(), true );
+		$this->addHelpLink(
+			Message::get( "smw-specials-types-helplink", Message::ESCAPED, Message::USER_LANGUAGE ),
+			true
+		);
 
 		$typeLabels = DataTypeRegistry::getInstance()->getKnownTypeLabels();
-		$linker = smwfGetLinker();
 		asort( $typeLabels, SORT_STRING );
 
-		$primitive = TypesRegistry::getTypesByGroup( 'primitive' );
-		$compound = TypesRegistry::getTypesByGroup( 'compound' );
+		$list = $this->makeTypeList( $typeLabels );
+		$types = [];
 
-		$pr_text = wfMessage( 'smw-type-primitive' )->text();
-		$cx_text = wfMessage( 'smw-type-contextual' )->text();
-		$cp_text = wfMessage( 'smw-type-compound' )->text();
+		$htmlColumns = new HtmlColumns();
+		$htmlColumns->setColumns( 1 );
+		$htmlColumns->addContents( $list, HtmlColumns::INDX_CONTENT );
 
-		$contents = [
-			$pr_text => [],
-			$cx_text => [],
-			$cp_text => []
-		];
+		$list = Html::rawElement(
+			'div',
+			[
+				'style' => 'margin-top: 1.2em;'
+			],
+			$htmlColumns->getHtml()
+		);
 
-		foreach ( $typeLabels as $typeId => $label ) {
-			$typeValue = TypesValue::newFromTypeId( $typeId );
-			$msgKey = 'smw-type' . str_replace( '_', '-', strtolower( $typeId ) );
-
-			$text = $typeValue->getLongHTMLText( $linker );
-
-			if ( wfMessage( $msgKey )->exists() ) {
-				$msg = wfMessage( $msgKey, '' )->parse();
-				$text .= Html::rawElement(
-					'span' ,
-					[
-						'class' => 'plainlinks',
-						'style' => 'font-size:85%'
-					],
-
-					// Remove the first two chars which are a localized
-					// diacritical, quotation mark
-					str_replace( mb_substr( $msg, 0, 2 ), '', $msg )
-				);
-			}
-
-			if ( isset( $primitive[$typeId] ) ) {
-				$contents[$pr_text][] = $typeValue->getLongHTMLText( $linker );
-			} elseif ( isset( $compound[$typeId] ) ) {
-				$contents[$cp_text][] = $text;
-			} else {
-				$contents[$cx_text][] = $text;
-			}
+		foreach ( $typeLabels as $id => $label ) {
+			$types[] = "<code>$id</code> ($label)";
 		}
 
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setColumnClass( 'smw-column-responsive' );
+		$htmlColumns->setColumns( 1 );
+		$htmlColumns->addContents( $types, HtmlColumns::LIST_CONTENT );
 
-		$htmlColumns->setContinueAbbrev(
-			wfMessage( 'listingcontinuesabbrev' )->text()
+		$ids = Html::rawElement(
+			'div',
+			[
+				'style' => 'margin-top: 1.2em;'
+			],
+			$htmlColumns->getHtml()
 		);
-
-		$htmlColumns->setColumns( 2 );
-		$htmlColumns->addContents( $contents, HtmlColumns::INDX_CONTENT );
-		$html = $htmlColumns->getHtml();
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'types' );
 
 		$htmlTabs->tab( 'smw-type-list', $this->msg( 'smw-type-tab-types' ) );
-		$htmlTabs->content( 'smw-type-list', "<div class='smw-page-navigation'>$html</div>" );
+		$htmlTabs->content( 'smw-type-list', $list );
+
+		$htmlTabs->tab( 'smw-type-ids', $this->msg( 'smw-type-tab-type-ids' ) );
+		$htmlTabs->content( 'smw-type-ids', $ids );
 
 		$html = $htmlTabs->buildHTML(
 			[
@@ -403,6 +387,71 @@ class SMWSpecialTypes extends SpecialPage {
 				$this->msg( 'types' )->escaped()
 			)
 		);
+	}
+
+	private function makeTypeList( $typeLabels ) {
+
+		$contents = [];
+		$linker = smwfGetLinker();
+
+		$groups = TypesRegistry::getTypesByGroup();
+
+		foreach ( $groups as $key => $types ) {
+
+			// Allows to use isset during the match process
+			$groups[$key] = array_flip( $types );
+
+			if ( !isset( $contents[$key] ) ) {
+				$contents[$key] = [];
+			}
+		}
+
+		$contents['no-group'] = [];
+
+		foreach ( $typeLabels as $typeId => $label ) {
+			$typeValue = TypesValue::newFromTypeId( $typeId );
+			$msgKey = 'smw-type' . str_replace( '_', '-', strtolower( $typeId ) );
+
+			$text = $typeValue->getLongHTMLText( $linker );
+
+			if ( Message::exists( $msgKey ) ) {
+				$msg = Message::get( [ $msgKey, '' ], Message::PARSE, Message::USER_LANGUAGE );
+				$text .= Html::rawElement(
+					'span' ,
+					[
+						'class' => 'plainlinks',
+						'style' => 'font-size:85%'
+					],
+
+					// Remove the first two chars which are a localized
+					// diacritical, quotation mark
+					str_replace( mb_substr( $msg, 0, 2 ), '', $msg )
+				);
+			}
+
+			foreach ( $groups as $group => $types ) {
+
+				if ( !isset( $types[$typeId] ) ) {
+					continue;
+				}
+
+				$contents[$group][] = $text;
+				unset( $typeLabels[$typeId] );
+			}
+
+			if ( isset( $typeLabels[$typeId] ) ) {
+				$contents['no-group'][] = $text;
+			}
+		}
+
+		// Add human readable group label
+		foreach ( $contents as $group => $values ) {
+			$groupLabel = Message::get( "smw-type-$group", Message::TEXT, Message::USER_LANGUAGE );
+			$contents[$groupLabel] = $values;
+			unset( $contents[$group] );
+		}
+
+		return $contents;
 	}
 
 }
