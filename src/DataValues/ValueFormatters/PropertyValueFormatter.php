@@ -226,6 +226,9 @@ class PropertyValueFormatter extends DataValueFormatter {
 			$wikiPageValue->setCaption( $preferredLabel );
 		} elseif ( ( $translatedPropertyLabel = $this->findTranslatedPropertyLabel( $property ) ) !== '' ) {
 			$wikiPageValue->setCaption( $translatedPropertyLabel );
+		} elseif ( ( $preferredCaption = $wikiPageValue->getPreferredCaption() ) !== '' ) {
+			// Do care for the displaytitle!
+			$wikiPageValue->setCaption( $preferredCaption );
 		} else {
 			$wikiPageValue->setCaption( $property->getLabel() );
 		}
