@@ -163,6 +163,13 @@ class ExternalFormatterUriValueTest extends \PHPUnit_Framework_TestCase {
 			'http://foo/bar/A/B/C'
 		];
 
+		// #...
+		$provider[] = [
+			'http://foo/bar/$1',
+			'A b C',
+			'http://foo/bar/A_b_C'
+		];
+
 		return $provider;
 	}
 

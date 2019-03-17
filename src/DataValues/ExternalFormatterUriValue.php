@@ -64,6 +64,9 @@ class ExternalFormatterUriValue extends UriValue {
 			return '';
 		}
 
+		// Convert MediWiki's ` ` as `_`
+		$value = str_replace( ' ' , '_', $value );
+
 		// Avoid already encoded values like `W%D6LLEKLA01` to be
 		// encoded twice
 		$value = $this->encode( rawurldecode( $value ) );
