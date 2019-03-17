@@ -50,7 +50,7 @@
 		theme: 'light-border',
 		animation: 'scale',
 		hideOnClick: false,
-		performance: true,
+		ignoreAttributes: true,
 		maxWidth:260,
 
 		/**

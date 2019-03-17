@@ -735,6 +735,7 @@ return [
 			'libs/tippy/light.css'
 		],
 		'scripts'  => [
+			'libs/tippy/popper.min.js',
 			'libs/tippy/tippy.js'
 		],
 		'targets' => [
