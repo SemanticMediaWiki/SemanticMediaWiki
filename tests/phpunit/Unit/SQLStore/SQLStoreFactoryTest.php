@@ -147,17 +147,8 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SQLStoreFactory( $this->store );
 
-		$this->testEnvironment->addConfiguration( 'smwgEntityLookupCacheType', CACHE_NONE );
-
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\NativeEntityLookup',
-			$instance->newEntityLookup()
-		);
-
-		$this->testEnvironment->addConfiguration( 'smwgEntityLookupCacheType', 'hash' );
-
-		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\CachingEntityLookup',
+			'SMW\SQLStore\EntityStore\EntityLookup',
 			$instance->newEntityLookup()
 		);
 	}

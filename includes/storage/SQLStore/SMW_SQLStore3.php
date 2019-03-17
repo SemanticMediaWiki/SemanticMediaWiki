@@ -179,37 +179,89 @@ class SMWSQLStore3 extends SMWStore {
 		return $this->reader;
 	}
 
+	/**
+	 * @see EntityLookup::getSemanticData
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
-		return $this->getEntityLookup()->getSemanticData( $subject, $filter );
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getSemanticData( $subject, $filter );
 	}
 
 	/**
-	 * @param mixed $subject
-	 * @param DIProperty $property
-	 * @param null $requestOptions
+	 * @see EntityLookup::getPropertyValues
 	 *
-	 * @return SMWDataItem[]
+	 * {@inheritDoc}
 	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
-		return $this->getEntityLookup()->getPropertyValues(	$subject, $property, $requestOptions );
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getPropertyValues(	$subject, $property, $requestOptions );
 	}
 
+	/**
+	 * @see EntityLookup::getProperties
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
-		return $this->getEntityLookup()->getProperties( $subject, $requestOptions );
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getProperties( $subject, $requestOptions );
 	}
 
+	/**
+	 * @see EntityLookup::getPropertySubjects
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
-		return $this->getEntityLookup()->getPropertySubjects( $property, $dataItem, $requestOptions );
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getPropertySubjects( $property, $dataItem, $requestOptions );
 	}
 
+	/**
+	 * @see EntityLookup::getAllPropertySubjects
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
-		return $this->getEntityLookup()->getAllPropertySubjects( $property, $requestoptions );
+
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getAllPropertySubjects( $property, $requestoptions );
 	}
 
+	/**
+	 * @see EntityLookup::getInProperties
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
-		return $this->getEntityLookup()->getInProperties( $value, $requestoptions );
-	}
 
+		if ( $this->entityLookup === null ) {
+			$this->entityLookup = $this->factory->newEntityLookup();
+		}
+
+		return $this->entityLookup->getInProperties( $value, $requestoptions );
+	}
 
 ///// Writing methods /////
 
@@ -226,10 +278,6 @@ class SMWSQLStore3 extends SMWStore {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->getEntityLookup()->invalidateCache(
-			$subject
-		);
-
 		$this->getWriter()->deleteSubject( $title );
 
 		$this->doDeferredCachedListLookupUpdate(
@@ -239,10 +287,6 @@ class SMWSQLStore3 extends SMWStore {
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
 
-		$this->getEntityLookup()->invalidateCache(
-			$semanticData->getSubject()
-		);
-
 		$this->getWriter()->doDataUpdate( $semanticData );
 
 		$this->doDeferredCachedListLookupUpdate(
@@ -251,14 +295,6 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-
-		$this->getEntityLookup()->invalidateCache(
-			DIWikiPage::newFromTitle( $oldtitle )
-		);
-
-		$this->getEntityLookup()->invalidateCache(
-			DIWikiPage::newFromTitle( $newtitle )
-		);
 
 		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 
@@ -636,18 +672,6 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	protected function newServicesContainer() {
 		return $this->factory->newServicesContainer();
-	}
-
-	/**
-	 * @return EntityLookup
-	 */
-	private function getEntityLookup() {
-
-		if ( $this->entityLookup === null ) {
-			$this->entityLookup = $this->factory->newEntityLookup();
-		}
-
-		return $this->entityLookup;
 	}
 
 }

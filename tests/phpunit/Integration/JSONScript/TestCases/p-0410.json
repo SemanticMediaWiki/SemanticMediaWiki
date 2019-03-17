@@ -123,15 +123,15 @@
 		},
 		{
 			"page": "Example/P0410/6a",
-			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p2 |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p2|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/6b",
-			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p4 |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p4|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/6c",
-			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p3-n |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/6/*]] |?Has number#-p3-n|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/7/1",
@@ -139,15 +139,15 @@
 		},
 		{
 			"page": "Example/P0410/7a",
-			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-p2 |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-p2|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/7b",
-			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#m²-p3 |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#m²-p3|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/7c",
-			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-n-p2 |format=table }}"
+			"contents": "{{#ask: [[~Example/P0410/7/*]] |?Has area#-n-p2|+order=desc |format=table }}"
 		},
 		{
 			"page": "Example/P0410/8/1",
