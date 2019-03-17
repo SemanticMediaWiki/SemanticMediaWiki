@@ -24,6 +24,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $idMatchFinder;
 	private $uniquenessLookup;
+	private $tableFieldUpdater;
 	private $factory;
 
 	protected function setUp() {
@@ -50,6 +51,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->uniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\UniquenessLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tableFieldUpdater = $this->getMockBuilder( '\SMW\SQLStore\TableFieldUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -90,6 +95,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newidEntityFinder' )
 			->will( $this->returnValue( $this->idEntityFinder ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newTableFieldUpdater' )
+			->will( $this->returnValue( $this->tableFieldUpdater ) );
 	}
 
 	public function testCanConstruct() {
@@ -142,6 +151,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
+		$selectRow->smw_hash = '___hash___';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -179,6 +189,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
+		$selectRow->smw_hash = '___hash___';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -227,6 +238,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
+		$selectRow->smw_hash = '___hash___';
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -296,29 +308,15 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateInterwikiField() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
+		$this->tableFieldUpdater->expects( $this->once() )
+			->method( 'updateIwField' )
 			->with(
-				$this->anything(),
-				$this->equalTo( [
-					'smw_iw' => 'Bar',
-					'smw_hash' => '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ] ),
-				$this->equalTo( [ 'smw_id' => 42 ] ) );
-
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+				$this->equalTo( 42 ),
+				$this->equalTo( 'Bar' ),
+				$this->equalTo( '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ) );
 
 		$instance = new SMWSql3SmwIds(
-			$store,
+			$this->store,
 			$this->factory
 		);
 
