@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Schema\Content;
+namespace SMW\MediaWiki\Content;
 
 use Html;
 use SMW\Utils\HtmlTabs;

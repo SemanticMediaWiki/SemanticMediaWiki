@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Schema\Content;
+namespace SMW\MediaWiki\Content;
 
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
@@ -31,7 +31,7 @@ use Html;
  *
  * @author mwjames
  */
-class Content extends JsonContent {
+class SchemaContent extends JsonContent {
 
 	/**
 	 * @var SchemaFactory
@@ -224,7 +224,7 @@ class Content extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param ContentFormatter $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, ContentFormatter $contentFormatter ) {
+	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter ) {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}
@@ -246,7 +246,7 @@ class Content extends JsonContent {
 		}
 
 		if ( $this->contentFormatter === null ) {
-			$this->contentFormatter = new ContentFormatter();
+			$this->contentFormatter = new SchemaContentFormatter();
 		}
 	}
 

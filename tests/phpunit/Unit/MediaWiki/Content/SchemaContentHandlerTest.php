@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Schema\Content;
+namespace SMW\Tests\MediaWiki\Content;
 
-use SMW\Schema\Content\ContentHandler;
+use SMW\MediaWiki\Content\SchemaContentHandler;
 
 /**
- * @covers \SMW\Schema\Content\ContentHandler
+ * @covers \SMW\MediaWiki\Content\SchemaContentHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -19,7 +19,7 @@ class ContentHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceof(
 			'\JsonContentHandler',
-			new ContentHandler()
+			new SchemaContentHandler()
 		);
 	}
 

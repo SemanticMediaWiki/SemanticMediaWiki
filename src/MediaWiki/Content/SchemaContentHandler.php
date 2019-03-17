@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Schema\Content;
+namespace SMW\MediaWiki\Content;
 
 use JsonContentHandler;
 
@@ -10,7 +10,7 @@ use JsonContentHandler;
  *
  * @author mwjames
  */
-class ContentHandler extends JsonContentHandler {
+class SchemaContentHandler extends JsonContentHandler {
 
 	/**
 	 * @since 3.0
@@ -41,7 +41,7 @@ class ContentHandler extends JsonContentHandler {
 	 * {@inheritDoc}
 	 */
 	protected function getContentClass() {
-		return Content::class;
+		return SchemaContent::class;
 	}
 
 	/**
