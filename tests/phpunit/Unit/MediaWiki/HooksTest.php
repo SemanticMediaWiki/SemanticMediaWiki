@@ -270,6 +270,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
 			[ 'callSMWAdminTaskHandlerFactory' ],
 			[ 'callSMWApiAddTasks' ],
+			[ 'callSMWEventRegisterEventListeners' ],
 			[ 'callSMWSQLStorAfterDataUpdateComplete' ],
 			[ 'callSMWStoreBeforeQueryResultLookupComplete' ],
 			[ 'callSMWStoreAfterQueryResultLookupComplete' ],
@@ -1517,6 +1518,24 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$services ]
+		);
+
+		return $handler;
+	}
+
+	public function callSMWEventRegisterEventListeners( $instance ) {
+
+		$handler = 'SMW::Event::RegisterEventListeners';
+
+		if ( !$instance->getHandlerFor( $handler ) ) {
+			return $this->markTestSkipped( "$handler not used" );
+		}
+
+		$eventhandler = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $eventhandler ]
 		);
 
 		return $handler;
