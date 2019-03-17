@@ -1,0 +1,108 @@
+{
+	"description": "Test `_eid` with multiple substitutes",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "wikipedia",
+			"contents": "[[Has type::External identifier]][[External formatter uri::https://en.wikipedia.org/w/index.php?title=$1&oldid=$2]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "wikipedia:diff",
+			"contents": "[[Has type::External identifier]][[External formatter uri::https://en.wikipedia.org/w/index.php?title=$1&oldid=$2&diff=$3]]"
+		},
+		{
+			"page": "Test:P0918/1",
+			"contents": "[[wikipedia::Truid Aagesen{837787373,90}]]"
+		},
+		{
+			"page": "Test:P0918/2",
+			"contents": "[[wikipedia:diff::The Good, the Bad and the Ugly{886770575,887548148}]]"
+		},
+		{
+			"page": "Test:P0918/3",
+			"contents": "[[wikipedia:diff::The Good, the Bad and the Ugly{886770575,887548148\\,comma}]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (multiple substitutes)",
+			"subject": "Test:P0918/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Wikipedia"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/w/index.php?title=Truid_Aagesen&amp;oldid=837787373\">Truid Aagesen</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (multiple substitutes, different commas)",
+			"subject": "Test:P0918/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Wikipedia:diff"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/w/index.php?title=The_Good,_the_Bad_and_the_Ugly&amp;oldid=886770575&amp;diff=887548148\">The Good, the Bad and the Ugly</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (multiple substitutes, different commas)",
+			"subject": "Test:P0918/3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Wikipedia:diff"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/w/index.php?title=The_Good,_the_Bad_and_the_Ugly&amp;oldid=886770575&amp;diff=887548148,comma\">The Good, the Bad and the Ugly</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

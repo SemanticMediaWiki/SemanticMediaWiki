@@ -55,6 +55,8 @@ class ExternalIdentifierValue extends StringValue {
 			$this->m_caption = $this->m_dataitem->getString();
 		}
 
+		$this->m_caption = str_replace( '\,', ',', $this->m_caption );
+
 		if ( $linker === null ) {
 			return $this->m_caption;
 		}
@@ -94,6 +96,8 @@ class ExternalIdentifierValue extends StringValue {
 		if ( !$this->m_caption ) {
 			$this->m_caption = $this->m_dataitem->getString();
 		}
+
+		$this->m_caption = str_replace( '\,', ',', $this->m_caption );
 
 		if ( $linker === null ) {
 			return $this->m_caption;
@@ -175,7 +179,51 @@ class ExternalIdentifierValue extends StringValue {
 			return;
 		}
 
-		return $this->uri = $dataValue->getUriWithPlaceholderSubstitution( $value );
+		$parameters = [];
+
+		// Requires multi substitution? Convention is: Foo(param1,param2,...)
+		if ( $dataValue->hasMultiSubstitute() ) {
+			$parameters = $this->filterParameters( $value );
+
+			if ( $parameters === [] ) {
+				$this->addErrorMsg(
+					[
+						'smw-datavalue-external-identifier-multi-substitute-parameters-missing',
+						$this->getProperty()->getLabel(),
+						$value
+					]
+				);
+			}
+		}
+
+		return $this->uri = $dataValue->substituteAndFormatUri( $value, $parameters );
+	}
+
+	private function filterParameters( &$value ) {
+
+		$parameters = [];
+		$matches = [];
+
+		if ( strpos( $value, '{' ) === false || strpos( $value, '}' ) === false ) {
+			return $parameters;
+		}
+
+		// [[wp:article::Truid Aagesen{837787373}]]
+		preg_match("/\{([^\]]*)\}/", $value, $matches );
+
+		if ( $matches !== [] ) {
+			// Remove extra parameters from caption
+			$value = trim(
+				str_replace( [ $matches[0] ], [ '' ], $value )
+			);
+
+			// Decode `\,` to distinguish it from the separator comma
+			$parameters = explode( ',', str_replace( '\,', '%2C', $matches[1] ) );
+		}
+
+		$this->m_caption = $value;
+
+		return $parameters;
 	}
 
 	private function makeNonlinkedWikiText( $url ) {
