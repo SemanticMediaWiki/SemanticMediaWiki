@@ -1,5 +1,5 @@
 /**!
-* tippy.js v4.0.2
+* tippy.js v4.1.0
 * (c) 2017-2019 atomiks
 * MIT License
 */
@@ -29,15 +29,15 @@
     return _extends.apply(this, arguments);
   }
 
-  var version = "4.0.2";
+  var version = "4.1.0";
 
-  var isBrowser = typeof window !== 'undefined';
-  var ua = isBrowser && navigator.userAgent;
+  var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+  var ua = isBrowser ? navigator.userAgent : '';
   var isIE = /MSIE |Trident\//.test(ua);
   var isUCBrowser = /UCBrowser\//.test(ua);
   var isIOS = isBrowser && /iPhone|iPad|iPod/.test(navigator.platform) && !window.MSStream;
 
-  var Defaults = {
+  var defaultProps = {
     a11y: true,
     allowHTML: true,
     animateFill: true,
@@ -50,7 +50,7 @@
     arrowType: 'sharp',
     boundary: 'scrollParent',
     content: '',
-    delay: [0, 20],
+    delay: 0,
     distance: 10,
     duration: [325, 275],
     flip: true,
@@ -107,8 +107,6 @@
   var matches = elementProto.matches || elementProto.matchesSelector || elementProto.webkitMatchesSelector || elementProto.mozMatchesSelector || elementProto.msMatchesSelector;
   /**
    * Ponyfill for Array.from - converts iterable values to an array
-   * @param {ArrayLike} value
-   * @return {any[]}
    */
 
   function arrayFrom(value) {
@@ -116,49 +114,121 @@
   }
   /**
    * Ponyfill for Element.prototype.closest
-   * @param {Element} element
-   * @param {String} parentSelector
-   * @return {Element}
    */
 
   function closest(element, parentSelector) {
     return (elementProto.closest || function (selector) {
+      // @ts-ignore
       var el = this;
 
       while (el) {
-        if (matches.call(el, selector)) return el;
+        if (matches.call(el, selector)) {
+          return el;
+        }
+
         el = el.parentElement;
       }
     }).call(element, parentSelector);
   }
   /**
    * Works like Element.prototype.closest, but uses a callback instead
-   * @param {Element} element
-   * @param {Function} callback
-   * @return {Element}
    */
 
   function closestCallback(element, callback) {
     while (element) {
-      if (callback(element)) return element;
+      if (callback(element)) {
+        return element;
+      }
+
       element = element.parentElement;
     }
   }
 
+  var PASSIVE = {
+    passive: true
+  };
+  var PADDING = 4;
+
+  var keys = Object.keys(defaultProps);
   /**
-   * Determines if a value is a plain object
-   * @param {any} value
-   * @return {Boolean}
+   * Returns an object of optional props from data-tippy-* attributes
    */
 
-  function isPlainObject(value) {
-    return {}.toString.call(value) === '[object Object]';
+  function getDataAttributeOptions(reference) {
+    return keys.reduce(function (acc, key) {
+      var valueAsString = (reference.getAttribute("data-tippy-".concat(key)) || '').trim();
+
+      if (!valueAsString) {
+        return acc;
+      }
+
+      if (key === 'content') {
+        acc[key] = valueAsString;
+      } else {
+        try {
+          acc[key] = JSON.parse(valueAsString);
+        } catch (e) {
+          acc[key] = valueAsString;
+        }
+      }
+
+      return acc;
+    }, {});
+  }
+  /**
+   * Polyfills the virtual reference (plain object) with Element.prototype props
+   * Mutating because DOM elements are mutated, adds `_tippy` property
+   */
+
+  function polyfillElementPrototypeProperties(virtualReference) {
+    var polyfills = {
+      isVirtual: true,
+      attributes: virtualReference.attributes || {},
+      setAttribute: function setAttribute(key, value) {
+        virtualReference.attributes[key] = value;
+      },
+      getAttribute: function getAttribute(key) {
+        return virtualReference.attributes[key];
+      },
+      removeAttribute: function removeAttribute(key) {
+        delete virtualReference.attributes[key];
+      },
+      hasAttribute: function hasAttribute(key) {
+        return key in virtualReference.attributes;
+      },
+      addEventListener: function addEventListener() {},
+      removeEventListener: function removeEventListener() {},
+      classList: {
+        classNames: {},
+        add: function add(key) {
+          virtualReference.classList.classNames[key] = true;
+        },
+        remove: function remove(key) {
+          delete virtualReference.classList.classNames[key];
+        },
+        contains: function contains(key) {
+          return key in virtualReference.classList.classNames;
+        }
+      }
+    };
+
+    for (var key in polyfills) {
+      virtualReference[key] = polyfills[key];
+    }
+  }
+
+  /**
+   * Determines if a value is a "bare" virtual element (before mutations done
+   * by `polyfillElementPrototypeProperties()`). JSDOM elements show up as
+   * [object Object], we can check if the value is "element-like" if it has
+   * `addEventListener`
+   */
+
+  function isBareVirtualElement(value) {
+    return {}.toString.call(value) === '[object Object]' && !value.addEventListener;
   }
   /**
    * Safe .hasOwnProperty check, for prototype-less objects
-   * @param {Object} obj
-   * @param {String} key
-   * @return {Boolean}
    */
 
   function hasOwnProperty(obj, key) {
@@ -166,12 +236,11 @@
   }
   /**
    * Returns an array of elements based on the value
-   * @param {any} value
-   * @return {Array}
    */
 
   function getArrayOfElements(value) {
     if (isSingular(value)) {
+      // TODO: VirtualReference is not compatible to type Element
       return [value];
     }
 
@@ -191,9 +260,6 @@
   }
   /**
    * Returns a value at a given index depending on if it's an array or number
-   * @param {any} value
-   * @param {Number} index
-   * @param {any} defaultValue
    */
 
   function getValue(value, index, defaultValue) {
@@ -206,8 +272,6 @@
   }
   /**
    * Debounce utility
-   * @param {Function} fn
-   * @param {Number} ms
    */
 
   function debounce(fn, ms) {
@@ -216,7 +280,8 @@
       var _this = this,
           _arguments = arguments;
 
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId); // @ts-ignore
+
       timeoutId = setTimeout(function () {
         return fn.apply(_this, _arguments);
       }, ms);
@@ -225,9 +290,6 @@
   /**
    * Prevents errors from being thrown while accessing nested modifier objects
    * in `popperOptions`
-   * @param {Object} obj
-   * @param {String} key
-   * @return {Object|undefined}
    */
 
   function getModifier(obj, key) {
@@ -235,9 +297,6 @@
   }
   /**
    * Determines if an array or string includes a value
-   * @param {Array|String} a
-   * @param {any} b
-   * @return {Boolean}
    */
 
   function includes(a, b) {
@@ -245,16 +304,13 @@
   }
   /**
    * Determines if the value is singular-like
-   * @param {any} value
-   * @return {Boolean}
    */
 
   function isSingular(value) {
-    return isPlainObject(value) || value instanceof Element;
+    return !!(value && hasOwnProperty(value, 'isVirtual')) || value instanceof Element;
   }
   /**
-   * Tricking bundlers, linters, and minifiers
-   * @return {String}
+   * Firefox extensions don't allow setting .innerHTML directly, this will trick it
    */
 
   function innerHTML() {
@@ -262,9 +318,6 @@
   }
   /**
    * Evaluates a function if one, or returns the value
-   * @param {any} value
-   * @param {any[]} args
-   * @return {Boolean}
    */
 
   function evaluateValue(value, args) {
@@ -272,8 +325,6 @@
   }
   /**
    * Sets a popperInstance `flip` modifier's enabled state
-   * @param {Object[]} modifiers
-   * @param {any} value
    */
 
   function setFlipModifierEnabled(modifiers, value) {
@@ -281,42 +332,71 @@
       return m.name === 'flip';
     })[0].enabled = value;
   }
+  /**
+   * Determines if an element can receive focus
+   * Always returns true for virtual objects
+   */
 
+  function canReceiveFocus(element) {
+    return element instanceof Element ? matches.call(element, 'a[href],area[href],button,details,input,textarea,select,iframe,[tabindex]') && !element.hasAttribute('disabled') : true;
+  }
   /**
    * Returns a new `div` element
-   * @return {HTMLDivElement}
    */
 
   function div() {
     return document.createElement('div');
   }
   /**
-   * Sets the innerHTML of an element while tricking linters & minifiers
-   * @param {HTMLElement} el
-   * @param {Element|String} html
+   * Evaluates the props object by merging data attributes and
+   * disabling conflicting options where necessary
    */
 
-  function setInnerHTML(el, html) {
-    el[innerHTML()] = html instanceof Element ? html[innerHTML()] : html;
+  function evaluateProps(reference, props) {
+    var out = _extends({}, props, {
+      content: evaluateValue(props.content, [reference])
+    }, props.ignoreAttributes ? {} : getDataAttributeOptions(reference));
+
+    if (out.arrow || isUCBrowser) {
+      out.animateFill = false;
+    }
+
+    return out;
+  }
+  /**
+   * Validates an object of options with the valid default props object
+   */
+
+  function validateOptions(options, defaultProps) {
+    Object.keys(options).forEach(function (option) {
+      if (!hasOwnProperty(defaultProps, option)) {
+        throw new Error("[tippy]: `".concat(option, "` is not a valid option"));
+      }
+    });
+  }
+
+  /**
+   * Sets the innerHTML of an element
+   */
+
+  function setInnerHTML(element, html) {
+    element[innerHTML()] = html instanceof Element ? html[innerHTML()] : html;
   }
   /**
    * Sets the content of a tooltip
-   * @param {HTMLElement} contentEl
-   * @param {Object} props
    */
 
   function setContent(contentEl, props) {
     if (props.content instanceof Element) {
       setInnerHTML(contentEl, '');
       contentEl.appendChild(props.content);
-    } else {
-      contentEl[props.allowHTML ? 'innerHTML' : 'textContent'] = props.content;
+    } else if (typeof props.content !== 'function') {
+      var key = props.allowHTML ? 'innerHTML' : 'textContent';
+      contentEl[key] = props.content;
     }
   }
   /**
    * Returns the child elements of a popper element
-   * @param {HTMLElement} popper
-   * @return {Object}
    */
 
   function getChildren(popper) {
@@ -329,7 +409,6 @@
   }
   /**
    * Adds `data-inertia` attribute
-   * @param {HTMLElement} tooltip
    */
 
   function addInertia(tooltip) {
@@ -337,7 +416,6 @@
   }
   /**
    * Removes `data-inertia` attribute
-   * @param {HTMLElement} tooltip
    */
 
   function removeInertia(tooltip) {
@@ -345,7 +423,6 @@
   }
   /**
    * Creates an arrow element and returns it
-   * @return {HTMLDivElement}
    */
 
   function createArrowElement(arrowType) {
@@ -353,7 +430,7 @@
 
     if (arrowType === 'round') {
       arrow.className = 'tippy-roundarrow';
-      setInnerHTML(arrow, '<svg viewBox="0 0 24 8" xmlns="http://www.w3.org/2000/svg"><path d="M3 8s2.021-.015 5.253-4.218C9.584 2.051 10.797 1.007 12 1c1.203-.007 2.416 1.035 3.761 2.782C19.012 8.005 21 8 21 8H3z"/></svg>');
+      setInnerHTML(arrow, '<svg viewBox="0 0 18 7" xmlns="http://www.w3.org/2000/svg"><path d="M0 7s2.021-.015 5.253-4.218C6.584 1.051 7.797.007 9 0c1.203-.007 2.416 1.035 3.761 2.782C16.012 7.005 18 7 18 7H0z"/></svg>');
     } else {
       arrow.className = 'tippy-arrow';
     }
@@ -362,7 +439,6 @@
   }
   /**
    * Creates a backdrop element and returns it
-   * @return {HTMLDivElement}
    */
 
   function createBackdropElement() {
@@ -373,8 +449,6 @@
   }
   /**
    * Adds interactive-related attributes
-   * @param {HTMLElement} popper
-   * @param {HTMLElement} tooltip
    */
 
   function addInteractive(popper, tooltip) {
@@ -383,8 +457,6 @@
   }
   /**
    * Removes interactive-related attributes
-   * @param {HTMLElement} popper
-   * @param {HTMLElement} tooltip
    */
 
   function removeInteractive(popper, tooltip) {
@@ -393,8 +465,6 @@
   }
   /**
    * Applies a transition duration to a list of elements
-   * @param {Array} els
-   * @param {Number} value
    */
 
   function applyTransitionDuration(els, value) {
@@ -406,21 +476,16 @@
   }
   /**
    * Add/remove transitionend listener from tooltip
-   * @param {Element} tooltip
-   * @param {String} action
-   * @param {Function} listener
    */
 
   function toggleTransitionEndListener(tooltip, action, listener) {
     // UC Browser hasn't adopted the `transitionend` event despite supporting
     // unprefixed transitions...
-    var eventName = isUCBrowser && document.body.style.WebkitTransition !== undefined ? 'webkitTransitionEnd' : 'transitionend';
+    var eventName = isUCBrowser && document.body.style.webkitTransition !== undefined ? 'webkitTransitionEnd' : 'transitionend';
     tooltip[action + 'EventListener'](eventName, listener);
   }
   /**
    * Returns the popper's placement, ignoring shifting (top-start, etc)
-   * @param {Element} popper
-   * @return {String}
    */
 
   function getPopperPlacement(popper) {
@@ -429,8 +494,6 @@
   }
   /**
    * Sets the visibility state to elements so they can begin to transition
-   * @param {Array} els
-   * @param {String} state
    */
 
   function setVisibilityState(els, state) {
@@ -442,7 +505,6 @@
   }
   /**
    * Triggers reflow
-   * @param {Element} popper
    */
 
   function reflow(popper) {
@@ -450,9 +512,6 @@
   }
   /**
    * Adds/removes theme from tooltip's classList
-   * @param {HTMLDivElement} tooltip
-   * @param {String} action
-   * @param {String} theme
    */
 
   function toggleTheme(tooltip, action, theme) {
@@ -462,16 +521,13 @@
   }
   /**
    * Constructs the popper element and returns it
-   * @param {Number} id
-   * @param {Object} props
-   * @return {HTMLDivElement}
    */
 
   function createPopperElement(id, props) {
     var popper = div();
     popper.className = 'tippy-popper';
     popper.id = "tippy-".concat(id);
-    popper.style.zIndex = props.zIndex;
+    popper.style.zIndex = '' + props.zIndex;
 
     if (props.role) {
       popper.setAttribute('role', props.role);
@@ -512,9 +568,6 @@
   }
   /**
    * Updates the popper element based on the new props
-   * @param {HTMLDivElement} popper
-   * @param {Object} prevProps
-   * @param {Object} nextProps
    */
 
   function updatePopperElement(popper, prevProps, nextProps) {
@@ -524,7 +577,7 @@
         backdrop = _getChildren.backdrop,
         arrow = _getChildren.arrow;
 
-    popper.style.zIndex = nextProps.zIndex;
+    popper.style.zIndex = '' + nextProps.zIndex;
     tooltip.setAttribute('data-size', nextProps.size);
     tooltip.setAttribute('data-animation', nextProps.animation);
     tooltip.style.maxWidth = nextProps.maxWidth + (typeof nextProps.maxWidth === 'number' ? 'px' : '');
@@ -584,8 +637,6 @@
    * Runs the callback after the popper's position has been updated
    * update() is debounced with Promise.resolve() or setTimeout()
    * scheduleUpdate() is update() wrapped in requestAnimationFrame()
-   * @param {Popper} popperInstance
-   * @param {Function} callback
    */
 
   function afterPopperPositionUpdates(popperInstance, callback) {
@@ -597,14 +648,17 @@
     options.onCreate = options.onUpdate = function (data) {
       reflow(popper);
       callback();
-      onUpdate(data);
+
+      if (onUpdate) {
+        onUpdate(data);
+      }
+
       options.onCreate = onCreate;
       options.onUpdate = onUpdate;
     };
   }
   /**
    * Hides all visible poppers on the document
-   * @param {Object} options
    */
 
   function hideAll() {
@@ -624,11 +678,6 @@
   /**
    * Determines if the mouse cursor is outside of the popper's interactive border
    * region
-   * @param {String} popperPlacement
-   * @param {ClientRect} popperRect
-   * @param {MouseEvent} event
-   * @param {Object} props
-   * @return {Boolean}
    */
 
   function isCursorOutsideInteractiveBorder(popperPlacement, popperRect, event, props) {
@@ -649,18 +698,11 @@
   /**
    * Returns the distance offset, taking into account the default offset due to
    * the transform: translate() rule (10px) in CSS
-   * @param {Number} distance
-   * @return {String}
    */
 
   function getOffsetDistanceInPx(distance) {
     return -(distance - 10) + 'px';
   }
-
-  var PASSIVE = {
-    passive: true
-  };
-  var PADDING = 3;
 
   var isUsingTouch = false;
   function onDocumentTouch() {
@@ -693,42 +735,43 @@
 
     lastMouseMoveTime = now;
   }
-  function onDocumentClick(_ref) {
-    var target = _ref.target;
-
+  function onDocumentClick(event) {
     // Simulated events dispatched on the document
-    if (!(target instanceof Element)) {
+    if (!(event.target instanceof Element)) {
       return hideAll();
     } // Clicked on an interactive popper
 
 
-    var popper = closest(target, Selectors.POPPER);
+    var popper = closest(event.target, Selectors.POPPER);
 
     if (popper && popper._tippy && popper._tippy.props.interactive) {
       return;
     } // Clicked on a reference
 
 
-    var reference = closestCallback(target, function (el) {
+    var reference = closestCallback(event.target, function (el) {
       return el._tippy && el._tippy.reference === el;
     });
 
     if (reference) {
       var instance = reference._tippy;
-      var isClickTrigger = includes(instance.props.trigger, 'click');
 
-      if (isUsingTouch || isClickTrigger) {
-        return hideAll({
-          exclude: instance,
-          checkHideOnClick: true
-        });
+      if (instance) {
+        var isClickTrigger = includes(instance.props.trigger || '', 'click');
+
+        if (isUsingTouch || isClickTrigger) {
+          return hideAll({
+            exclude: instance,
+            checkHideOnClick: true
+          });
+        }
+
+        if (instance.props.hideOnClick !== true || isClickTrigger) {
+          return;
+        }
+
+        instance.clearDelayTimeouts();
       }
-
-      if (instance.props.hideOnClick !== true || isClickTrigger) {
-        return;
-      }
-
-      instance.clearDelayTimeouts();
     }
 
     hideAll({
@@ -753,129 +796,11 @@
     window.addEventListener('blur', onWindowBlur);
   }
 
-  var keys = Object.keys(Defaults);
-  /**
-   * Determines if an element can receive focus
-   * @param {Element|Object} el
-   * @return {Boolean}
-   */
-
-  function canReceiveFocus(el) {
-    return el instanceof Element ? matches.call(el, 'a[href],area[href],button,details,input,textarea,select,iframe,[tabindex]') && !el.hasAttribute('disabled') : true;
-  }
-  /**
-   * Returns an object of optional props from data-tippy-* attributes
-   * @param {Element|Object} reference
-   * @return {Object}
-   */
-
-  function getDataAttributeOptions(reference) {
-    return keys.reduce(function (acc, key) {
-      var valueAsString = (reference.getAttribute("data-tippy-".concat(key)) || '').trim();
-
-      if (!valueAsString) {
-        return acc;
-      }
-
-      if (key === 'content') {
-        acc[key] = valueAsString;
-      } else {
-        try {
-          acc[key] = JSON.parse(valueAsString);
-        } catch (e) {
-          acc[key] = valueAsString;
-        }
-      }
-
-      return acc;
-    }, {});
-  }
-  /**
-   * Polyfills the virtual reference (plain object) with Element.prototype props
-   * Mutating because DOM elements are mutated, adds `_tippy` property
-   * @param {Object} virtualReference
-   */
-
-  function polyfillElementPrototypeProperties(virtualReference) {
-    var polyfills = {
-      isVirtual: true,
-      attributes: virtualReference.attributes || {},
-      setAttribute: function setAttribute(key, value) {
-        virtualReference.attributes[key] = value;
-      },
-      getAttribute: function getAttribute(key) {
-        return virtualReference.attributes[key];
-      },
-      removeAttribute: function removeAttribute(key) {
-        delete virtualReference.attributes[key];
-      },
-      hasAttribute: function hasAttribute(key) {
-        return key in virtualReference.attributes;
-      },
-      addEventListener: function addEventListener() {},
-      removeEventListener: function removeEventListener() {},
-      classList: {
-        classNames: {},
-        add: function add(key) {
-          virtualReference.classList.classNames[key] = true;
-        },
-        remove: function remove(key) {
-          delete virtualReference.classList.classNames[key];
-        },
-        contains: function contains(key) {
-          return key in virtualReference.classList.classNames;
-        }
-      }
-    };
-
-    for (var key in polyfills) {
-      virtualReference[key] = polyfills[key];
-    }
-  }
-
-  /**
-   * Evaluates the props object by merging data attributes and
-   * disabling conflicting options where necessary
-   * @param {Element} reference
-   * @param {Object} props
-   * @return {Object}
-   */
-
-  function evaluateProps(reference, props) {
-    var out = _extends({}, props, {
-      content: evaluateValue(props.content, [reference])
-    }, props.ignoreAttributes ? {} : getDataAttributeOptions(reference));
-
-    if (out.arrow || isUCBrowser) {
-      out.animateFill = false;
-    }
-
-    return out;
-  }
-  /**
-   * Validates an object of options with the valid default props object
-   * @param {Object} options
-   * @param {Object} defaults
-   */
-
-  function validateOptions() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var defaults = arguments.length > 1 ? arguments[1] : undefined;
-    Object.keys(options).forEach(function (option) {
-      if (!hasOwnProperty(defaults, option)) {
-        throw new Error("[tippy]: `".concat(option, "` is not a valid option"));
-      }
-    });
-  }
-
   var idCounter = 1;
   /**
    * Creates and returns a Tippy object. We're using a closure pattern instead of
    * a class so that the exposed object API is clean without private members
    * prefixed with `_`.
-   * @param {Element} reference
-   * @param {Object} collectionProps
-   * @return {Object} instance
    */
 
   function createTippy(reference, collectionProps) {
@@ -885,63 +810,50 @@
       return null;
     }
     /* ======================= 🔒 Private members 🔒 ======================= */
-    // The last trigger event object that caused the tippy to show
+    // The last trigger event type that caused the tippy to show
 
 
-    var lastTriggerEvent = {}; // The last mousemove event object created by the document mousemove event
+    var lastTriggerEventType; // The last mousemove event object created by the document mousemove event
 
-    var lastMouseMoveEvent = null; // Timeout created by the show delay
+    var lastMouseMoveEvent; // Timeout created by the show delay
 
-    var showTimeoutId = 0; // Timeout created by the hide delay
+    var showTimeoutId; // Timeout created by the hide delay
 
-    var hideTimeoutId = 0; // Flag to determine if the tippy is preparing to show due to the show timeout
+    var hideTimeoutId; // Frame created by scheduleHide()
 
-    var isPreparingToShow = false; // The current `transitionend` callback reference
+    var animationFrameId; // Flag to determine if the tippy is scheduled to show due to the show timeout
 
-    var transitionEndListener = function transitionEndListener() {}; // Array of event listeners currently attached to the reference element
+    var isScheduledToShow = false; // The current `transitionend` callback reference
 
+    var transitionEndListener; // Array of event listeners currently attached to the reference element
 
     var listeners = []; // Private onMouseMove handler reference, debounced or not
 
     var debouncedOnMouseMove = props.interactiveDebounce > 0 ? debounce(onMouseMove, props.interactiveDebounce) : onMouseMove; // Node the tippy is currently appended to
 
-    var parentNode = null;
+    var parentNode;
     /* ======================= 🔑 Public members 🔑 ======================= */
     // id used for the `aria-describedby` / `aria-labelledby` attribute
 
     var id = idCounter++; // Popper element reference
 
-    var popper = createPopperElement(id, props); // Prevent a tippy with a delay from hiding if the cursor left then returned
-    // before it started hiding
+    var popper = createPopperElement(id, props); // Popper element children: { arrow, backdrop, content, tooltip }
 
-    popper.addEventListener('mouseenter', function (event) {
-      if (instance.props.interactive && instance.state.isVisible && lastTriggerEvent.type === 'mouseenter') {
-        prepareShow(event);
-      }
-    });
-    popper.addEventListener('mouseleave', function () {
-      if (instance.props.interactive && lastTriggerEvent.type === 'mouseenter') {
-        document.addEventListener('mousemove', debouncedOnMouseMove);
-      }
-    }); // Popper element children: { arrow, backdrop, content, tooltip }
-
-    var popperChildren = getChildren(popper); // The state of the tippy
-
+    var popperChildren = getChildren(popper);
     var state = {
-      // If the tippy is currently enabled
+      // Is the instance currently enabled?
       isEnabled: true,
-      // show() invoked, not currently transitioning out
+      // Is the tippy currently showing and not transitioning out?
       isVisible: false,
-      // If the tippy has been destroyed
+      // Has the instance been destroyed?
       isDestroyed: false,
-      // If the tippy is on the DOM (transitioning out or in)
+      // Is the tippy currently mounted to the DOM?
       isMounted: false,
-      // show() transition finished
+      // Has the tippy finished transitioning in?
       isShown: false // Popper.js instance for the tippy is lazily created
 
     };
-    var popperInstance = null; // 🌟 tippy instance
-
+    var popperInstance = null;
     var instance = {
       // properties
       id: id,
@@ -969,14 +881,26 @@
     }
 
     if (props.showOnInit) {
-      prepareShow();
+      scheduleShow();
     } // Ensure the reference element can receive focus (and is not a delegate)
 
 
     if (props.a11y && !props.target && !canReceiveFocus(reference)) {
       reference.setAttribute('tabindex', '0');
-    } // Install shortcuts
+    } // Prevent a tippy with a delay from hiding if the cursor left then returned
+    // before it started hiding
 
+
+    popper.addEventListener('mouseenter', function (event) {
+      if (instance.props.interactive && instance.state.isVisible && lastTriggerEventType === 'mouseenter') {
+        scheduleShow(event);
+      }
+    });
+    popper.addEventListener('mouseleave', function () {
+      if (instance.props.interactive && lastTriggerEventType === 'mouseenter') {
+        document.addEventListener('mousemove', debouncedOnMouseMove);
+      }
+    }); // Install shortcuts
 
     reference._tippy = instance;
     popper._tippy = instance;
@@ -984,7 +908,7 @@
     /* ======================= 🔒 Private methods 🔒 ======================= */
 
     /**
-     * Positions the virtual reference near the mouse cursor
+     * Positions the virtual reference near the cursor
      */
 
     function positionVirtualReferenceNearCursor(event) {
@@ -999,7 +923,7 @@
 
 
       var placement = getPopperPlacement(instance.popper);
-      var padding = instance.popperChildren.arrow ? PADDING + 16 : PADDING;
+      var padding = instance.props.arrow ? PADDING + (instance.props.arrowType === 'round' ? 18 : 16) : PADDING;
       var isVerticalPlacement = includes(['top', 'bottom'], placement);
       var isHorizontalPlacement = includes(['left', 'right'], placement); // Top / left boundary
 
@@ -1018,7 +942,7 @@
       var followCursor = instance.props.followCursor;
       var isHorizontal = followCursor === 'horizontal';
       var isVertical = followCursor === 'vertical';
-      instance.popperInstance.reference = {
+      instance.popperInstance.reference = _extends({}, instance.popperInstance.reference, {
         getBoundingClientRect: function getBoundingClientRect() {
           return {
             width: 0,
@@ -1031,7 +955,7 @@
         },
         clientWidth: 0,
         clientHeight: 0
-      };
+      });
       instance.popperInstance.scheduleUpdate();
 
       if (followCursor === 'initial' && instance.state.isVisible) {
@@ -1044,16 +968,18 @@
 
 
     function createDelegateChildTippy(event) {
-      var targetEl = closest(event.target, instance.props.target);
+      if (event) {
+        var targetEl = closest(event.target, instance.props.target);
 
-      if (targetEl && !targetEl._tippy) {
-        createTippy(targetEl, _extends({}, instance.props, {
-          content: evaluateValue(collectionProps.content, [targetEl]),
-          appendTo: collectionProps.appendTo,
-          target: '',
-          showOnInit: true
-        }));
-        prepareShow(event);
+        if (targetEl && !targetEl._tippy) {
+          createTippy(targetEl, _extends({}, instance.props, {
+            content: evaluateValue(collectionProps.content, [targetEl]),
+            appendTo: collectionProps.appendTo,
+            target: '',
+            showOnInit: true
+          }));
+          scheduleShow(event);
+        }
       }
     }
     /**
@@ -1061,7 +987,7 @@
      */
 
 
-    function prepareShow(event) {
+    function scheduleShow(event) {
       clearDelayTimeouts();
 
       if (instance.state.isVisible) {
@@ -1073,14 +999,14 @@
         return createDelegateChildTippy(event);
       }
 
-      isPreparingToShow = true;
+      isScheduledToShow = true;
 
       if (instance.props.wait) {
         return instance.props.wait(instance, event);
       } // If the tooltip has a delay, we need to be listening to the mousemove as
       // soon as the trigger event is fired, so that it's in the correct position
       // upon mount.
-      // Edge case: if the tooltip is still mounted, but then prepareShow() is
+      // Edge case: if the tooltip is still mounted, but then scheduleShow() is
       // called, it causes a jump.
 
 
@@ -1088,7 +1014,7 @@
         document.addEventListener('mousemove', positionVirtualReferenceNearCursor);
       }
 
-      var delay = getValue(instance.props.delay, 0, Defaults.delay);
+      var delay = getValue(instance.props.delay, 0, defaultProps.delay);
 
       if (delay) {
         showTimeoutId = setTimeout(function () {
@@ -1103,15 +1029,15 @@
      */
 
 
-    function prepareHide() {
+    function scheduleHide() {
       clearDelayTimeouts();
 
       if (!instance.state.isVisible) {
         return removeFollowCursorListener();
       }
 
-      isPreparingToShow = false;
-      var delay = getValue(instance.props.delay, 1, Defaults.delay);
+      isScheduledToShow = false;
+      var delay = getValue(instance.props.delay, 1, defaultProps.delay);
 
       if (delay) {
         hideTimeoutId = setTimeout(function () {
@@ -1120,7 +1046,11 @@
           }
         }, delay);
       } else {
-        hide();
+        // Fixes a `transitionend` problem when it fires 1 frame too
+        // late sometimes, we don't want hide() to be called.
+        animationFrameId = requestAnimationFrame(function () {
+          hide();
+        });
       }
     }
     /**
@@ -1130,7 +1060,6 @@
 
     function removeFollowCursorListener() {
       document.removeEventListener('mousemove', positionVirtualReferenceNearCursor);
-      lastMouseMoveEvent = null;
     }
     /**
      * Cleans up old listeners
@@ -1138,7 +1067,7 @@
 
 
     function cleanupOldMouseListeners() {
-      document.body.removeEventListener('mouseleave', prepareHide);
+      document.body.removeEventListener('mouseleave', scheduleHide);
       document.removeEventListener('mousemove', debouncedOnMouseMove);
     }
     /**
@@ -1152,19 +1081,18 @@
       }
 
       if (!instance.state.isVisible) {
-        lastTriggerEvent = event; // Use the `mouseenter` event as a "mock" mousemove event for touch
-        // devices
+        lastTriggerEventType = event.type;
 
-        if (isUsingTouch && includes(event.type, 'mouse')) {
+        if (event instanceof MouseEvent) {
           lastMouseMoveEvent = event;
         }
       } // Toggle show/hide when clicking click-triggered tooltips
 
 
       if (event.type === 'click' && instance.props.hideOnClick !== false && instance.state.isVisible) {
-        prepareHide();
+        scheduleHide();
       } else {
-        prepareShow(event);
+        scheduleShow(event);
       }
     }
     /**
@@ -1186,7 +1114,7 @@
 
       if (isCursorOutsideInteractiveBorder(getPopperPlacement(instance.popper), instance.popper.getBoundingClientRect(), event, instance.props)) {
         cleanupOldMouseListeners();
-        prepareHide();
+        scheduleHide();
       }
     }
     /**
@@ -1200,12 +1128,12 @@
       }
 
       if (instance.props.interactive) {
-        document.body.addEventListener('mouseleave', prepareHide);
+        document.body.addEventListener('mouseleave', scheduleHide);
         document.addEventListener('mousemove', debouncedOnMouseMove);
         return;
       }
 
-      prepareHide();
+      scheduleHide();
     }
     /**
      * Event listener invoked upon blur
@@ -1221,7 +1149,7 @@
         return;
       }
 
-      prepareHide();
+      scheduleHide();
     }
     /**
      * Event listener invoked when a child target is triggered
@@ -1230,7 +1158,7 @@
 
     function onDelegateShow(event) {
       if (closest(event.target, instance.props.target)) {
-        prepareShow(event);
+        scheduleShow(event);
       }
     }
     /**
@@ -1240,7 +1168,7 @@
 
     function onDelegateHide(event) {
       if (closest(event.target, instance.props.target)) {
-        prepareHide();
+        scheduleHide();
       }
     }
     /**
@@ -1265,14 +1193,16 @@
       var _instance$popperChild = instance.popperChildren,
           tooltip = _instance$popperChild.tooltip,
           arrow = _instance$popperChild.arrow;
-      instance.popperInstance = new Popper(instance.reference, instance.popper, _extends({
+      var preventOverflowModifier = getModifier(popperOptions, 'preventOverflow');
+
+      var config = _extends({
         placement: instance.props.placement
       }, popperOptions, {
         modifiers: _extends({}, popperOptions ? popperOptions.modifiers : {}, {
           preventOverflow: _extends({
             boundariesElement: instance.props.boundary,
             padding: PADDING
-          }, getModifier(popperOptions, 'preventOverflow')),
+          }, preventOverflowModifier),
           arrow: _extends({
             element: arrow,
             enabled: !!arrow
@@ -1289,7 +1219,7 @@
           }, getModifier(popperOptions, 'offset'))
         }),
         onUpdate: function onUpdate(data) {
-          if (!instance.props.flipOnUpdate) {
+          if (instance.props.flip && !instance.props.flipOnUpdate) {
             if (data.flipped) {
               instance.popperInstance.options.placement = data.placement;
             }
@@ -1297,14 +1227,33 @@
             setFlipModifierEnabled(instance.popperInstance.modifiers, false);
           }
 
-          var styles = tooltip.style;
-          styles.top = '';
-          styles.bottom = '';
-          styles.left = '';
-          styles.right = '';
-          styles[getPopperPlacement(instance.popper)] = getOffsetDistanceInPx(instance.props.distance);
+          var basePlacement = getPopperPlacement(instance.popper);
+          var styles = tooltip.style; // Account for the `distance` offset
+
+          styles.top = styles.bottom = styles.left = styles.right = '';
+          styles[basePlacement] = getOffsetDistanceInPx(instance.props.distance);
+          var padding = preventOverflowModifier && preventOverflowModifier.padding !== undefined ? preventOverflowModifier.padding : PADDING;
+          var isPaddingNumber = typeof padding === 'number';
+
+          var computedPadding = _extends({
+            top: isPaddingNumber ? padding : padding.top,
+            bottom: isPaddingNumber ? padding : padding.bottom,
+            left: isPaddingNumber ? padding : padding.left,
+            right: isPaddingNumber ? padding : padding.right
+          }, !isPaddingNumber && padding);
+
+          computedPadding[basePlacement] = isPaddingNumber ? padding + instance.props.distance : (padding[basePlacement] || 0) + instance.props.distance;
+          instance.popperInstance.modifiers.filter(function (m) {
+            return m.name === 'preventOverflow';
+          })[0].padding = computedPadding;
+
+          if (popperOptions && popperOptions.onUpdate) {
+            popperOptions.onUpdate(data);
+          }
         }
-      }));
+      });
+
+      instance.popperInstance = new Popper(instance.reference, instance.popper, config);
     }
     /**
      * Mounts the tooltip to the DOM, callback to show tooltip is run **after**
@@ -1330,7 +1279,7 @@
           }
         }
 
-        setFlipModifierEnabled(instance.popperInstance.modifiers, true);
+        setFlipModifierEnabled(instance.popperInstance.modifiers, instance.props.flip);
       } // If the instance previously had followCursor behavior, it will be
       // positioned incorrectly if triggered by `focus` afterwards.
       // Update the reference back to the real DOM element
@@ -1344,13 +1293,20 @@
           arrow.style.margin = '0';
         }
 
-        var delay = getValue(instance.props.delay, 0, Defaults.delay);
-
-        if (lastTriggerEvent.type) {
-          positionVirtualReferenceNearCursor(delay && lastMouseMoveEvent ? lastMouseMoveEvent : lastTriggerEvent);
+        if (lastMouseMoveEvent) {
+          positionVirtualReferenceNearCursor(lastMouseMoveEvent);
         }
       } else if (arrow) {
         arrow.style.margin = '';
+      } // Allow followCursor: 'initial' on touch devices
+
+
+      if (isUsingTouch && lastMouseMoveEvent && instance.props.followCursor === 'initial') {
+        positionVirtualReferenceNearCursor(lastMouseMoveEvent);
+
+        if (arrow) {
+          arrow.style.margin = '0';
+        }
       }
 
       afterPopperPositionUpdates(instance.popperInstance, callback);
@@ -1369,17 +1325,17 @@
 
 
     function hasFollowCursorBehavior() {
-      return instance.props.followCursor && !isUsingTouch && lastTriggerEvent.type !== 'focus';
+      return instance.props.followCursor && !isUsingTouch && lastTriggerEventType !== 'focus';
     }
     /**
-     * Updates the tooltip's position on each animation frame + timeout
+     * Updates the tooltip's position on each animation frame
      */
 
 
     function makeSticky() {
       applyTransitionDuration([instance.popper], isIE ? 0 : instance.props.updateDuration);
 
-      var updatePosition = function updatePosition() {
+      function updatePosition() {
         if (instance.popperInstance) {
           instance.popperInstance.scheduleUpdate();
         }
@@ -1389,7 +1345,7 @@
         } else {
           applyTransitionDuration([instance.popper], 0);
         }
-      };
+      }
 
       updatePosition();
     }
@@ -1419,19 +1375,23 @@
 
 
     function onTransitionEnd(duration, callback) {
-      // Make callback synchronous if duration is 0
-      if (duration === 0) {
-        return callback();
-      }
-
       var tooltip = instance.popperChildren.tooltip;
+      /**
+       * Listener added as the `transitionend` handler
+       */
 
-      var listener = function listener(e) {
-        if (e.target === tooltip) {
+      function listener(event) {
+        if (event.target === tooltip) {
           toggleTransitionEndListener(tooltip, 'remove', listener);
           callback();
         }
-      };
+      } // Make callback synchronous if duration is 0
+      // `transitionend` won't fire otherwise
+
+
+      if (duration === 0) {
+        return callback();
+      }
 
       toggleTransitionEndListener(tooltip, 'remove', transitionEndListener);
       toggleTransitionEndListener(tooltip, 'add', listener);
@@ -1465,7 +1425,8 @@
       instance.props.trigger.trim().split(' ').forEach(function (eventType) {
         if (eventType === 'manual') {
           return;
-        }
+        } // Non-delegates
+
 
         if (!instance.props.target) {
           on(eventType, onTrigger);
@@ -1480,6 +1441,7 @@
               break;
           }
         } else {
+          // Delegates
           switch (eventType) {
             case 'mouseenter':
               on('mouseover', onDelegateShow);
@@ -1546,20 +1508,22 @@
     function clearDelayTimeouts() {
       clearTimeout(showTimeoutId);
       clearTimeout(hideTimeoutId);
+      cancelAnimationFrame(animationFrameId);
     }
     /**
      * Sets new props for the instance and redraws the tooltip
      */
 
 
-    function set() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      validateOptions(options, Defaults);
+    function set(options) {
+      // Backwards-compatible after TypeScript change
+      options = options || {};
+      validateOptions(options, defaultProps);
       var prevProps = instance.props;
       var nextProps = evaluateProps(instance.reference, _extends({}, instance.props, options, {
         ignoreAttributes: true
       }));
-      nextProps.ignoreAttributes = hasOwnProperty(options, 'ignoreAttributes') ? options.ignoreAttributes : prevProps.ignoreAttributes;
+      nextProps.ignoreAttributes = hasOwnProperty(options, 'ignoreAttributes') ? options.ignoreAttributes || false : prevProps.ignoreAttributes;
       instance.props = nextProps;
 
       if (hasOwnProperty(options, 'trigger') || hasOwnProperty(options, 'touchHold')) {
@@ -1569,7 +1533,7 @@
 
       if (hasOwnProperty(options, 'interactiveDebounce')) {
         cleanupOldMouseListeners();
-        debouncedOnMouseMove = debounce(onMouseMove, options.interactiveDebounce);
+        debouncedOnMouseMove = debounce(onMouseMove, options.interactiveDebounce || 0);
       }
 
       updatePopperElement(instance.popper, prevProps, nextProps);
@@ -1610,14 +1574,14 @@
 
 
     function show() {
-      var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getValue(instance.props.duration, 0, Defaults.duration[0]);
+      var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getValue(instance.props.duration, 0, defaultProps.duration[1]);
 
       if (instance.state.isDestroyed || !instance.state.isEnabled || isUsingTouch && !instance.props.touch) {
         return;
       } // Destroy tooltip if the reference element is no longer on the DOM
 
 
-      if (!instance.reference.isVirtual && !document.documentElement.contains(instance.reference)) {
+      if (!hasOwnProperty(instance.reference, 'isVirtual') && !document.documentElement.contains(instance.reference)) {
         return destroy();
       } // Do not show tooltip if the reference element has a `disabled` attribute
 
@@ -1647,11 +1611,6 @@
 
         if (!hasFollowCursorBehavior()) {
           instance.popperInstance.update();
-        } // Allow followCursor: 'initial' on touch devices
-
-
-        if (isUsingTouch && instance.props.followCursor === 'initial') {
-          positionVirtualReferenceNearCursor(lastMouseMoveEvent);
         }
 
         applyTransitionDuration([instance.popper], props.updateDuration);
@@ -1684,7 +1643,7 @@
 
 
     function hide() {
-      var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getValue(instance.props.duration, 1, Defaults.duration[1]);
+      var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getValue(instance.props.duration, 1, defaultProps.duration[1]);
 
       if (instance.state.isDestroyed || !instance.state.isEnabled) {
         return;
@@ -1706,7 +1665,7 @@
       applyTransitionDuration(getInnerElements(), duration);
       setVisibilityState(getInnerElements(), 'hidden');
       onTransitionedOut(duration, function () {
-        if (!isPreparingToShow) {
+        if (!isScheduledToShow) {
           removeFollowCursorListener();
         }
 
@@ -1759,9 +1718,8 @@
   /**
    * Groups an array of instances by taking control of their props during
    * certain lifecycles.
-   * @param {Object[]} targets
-   * @param {Object} options
    */
+
   function group(instances) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         _ref$delay = _ref.delay,
@@ -1769,14 +1727,17 @@
         _ref$duration = _ref.duration,
         duration = _ref$duration === void 0 ? 0 : _ref$duration;
 
+    // Already grouped. Cannot group instances more than once (yet) or stale lifecycle
+    // closures will be invoked, causing a stack overflow
+    if (instances.some(function (instance) {
+      return hasOwnProperty(instance, '_originalProps');
+    })) {
+      return;
+    }
+
     var isAnyTippyOpen = false;
     instances.forEach(function (instance) {
-      instance._originalProps = {
-        duration: instance.props.duration,
-        onHide: instance.props.onHide,
-        onShow: instance.props.onShow,
-        onShown: instance.props.onShown
-      };
+      instance._originalProps = _extends({}, instance.props);
     });
 
     function setIsAnyTippyOpen(value) {
@@ -1828,24 +1789,21 @@
   var globalEventListenersBound = false;
   /**
    * Exported module
-   * @param {String|Element|Element[]|NodeList|Object} targets
-   * @param {Object} options
-   * @return {Object}
    */
 
   function tippy(targets, options) {
-    validateOptions(options, Defaults);
+    validateOptions(options || {}, defaultProps);
 
     if (!globalEventListenersBound) {
       bindGlobalEventListeners();
       globalEventListenersBound = true;
     }
 
-    var props = _extends({}, Defaults, options); // If they are specifying a virtual positioning reference, we need to polyfill
+    var props = _extends({}, defaultProps, options); // If they are specifying a virtual positioning reference, we need to polyfill
     // some native DOM props
 
 
-    if (isPlainObject(targets)) {
+    if (isBareVirtualElement(targets)) {
       polyfillElementPrototypeProperties(targets);
     }
 
@@ -1866,14 +1824,15 @@
 
 
   tippy.version = version;
-  tippy.defaults = Defaults;
+  tippy.defaults = defaultProps;
   /**
    * Static methods
    */
 
   tippy.setDefaults = function (partialDefaults) {
     Object.keys(partialDefaults).forEach(function (key) {
-      Defaults[key] = partialDefaults[key];
+      // @ts-ignore
+      defaultProps[key] = partialDefaults[key];
     });
   };
 
