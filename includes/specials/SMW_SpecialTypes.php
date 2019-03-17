@@ -4,7 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\Utils\HtmlTabs;
-use SMW\Page\ListPager;
+use SMW\Utils\Pager;
 use SMW\Utils\HtmlColumns;
 use SMWDataItem as DataItem;
 use SMW\MediaWiki\Collator;
@@ -15,7 +15,7 @@ use SMW\RequestOptions;
 use SMWInfolink as Infolink;
 use SMW\DataValues\TypesValue;
 use SMWErrorValue as ErrorValue;
-use SMW\Page\ListBuilder;
+use SMW\MediaWiki\Page\ListBuilder;
 
 /**
  * This special page for MediaWiki provides information about available types
@@ -286,7 +286,7 @@ class SMWSpecialTypes extends SpecialPage {
 			[
 				'class' => 'smw-page-navigation'
 			],
-			ListPager::pagination(
+			Pager::pagination(
 				$this->getTitleFor( 'Types', $typeLabel ),
 				$limit,
 				$offset,

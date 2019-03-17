@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Page\ListBuilder;
+namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Page\ListBuilder\ItemListBuilder;
+use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Page\ListBuilder\ItemListBuilder
+ * @covers \SMW\MediaWiki\Page\ListBuilder\ItemListBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -88,7 +88,7 @@ class ItemListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator->assertThatStringContains(
 			[
-				'title="SMW\Tests\Page\ListBuilder\ItemListBuilderTest::testCreateHtml'
+				'title="SMW\Tests\MediaWiki\Page\ListBuilder\ItemListBuilderTest::testCreateHtml'
 			],
 			$instance->buildHTML( $property, $dataItem, $requestOptions )
 		);

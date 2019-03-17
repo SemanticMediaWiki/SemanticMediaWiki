@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page\ListBuilder;
+namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Html;
 use SMW\DIProperty;
@@ -8,7 +8,7 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMW\Message;
-use SMW\Page\ListBuilder as ColsListBuilder;
+use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
 
 /**
  * @license GNU GPL v2+

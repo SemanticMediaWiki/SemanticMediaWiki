@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\MediaWiki\Page;
 
 use Article;
 use SMW\DIWikiPage;
@@ -159,15 +159,6 @@ abstract class Page extends Article {
 	 * @return string
 	 */
 	protected function initHtml() {
-		return $this->getIntroductoryText();
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
-	protected function getIntroductoryText() {
 		return '';
 	}
 

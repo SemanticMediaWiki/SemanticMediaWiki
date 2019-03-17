@@ -6,7 +6,7 @@ use Html;
 use SMW\Localizer;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
-use SMW\Page\ListPager;
+use SMW\Utils\Pager;
 use SMWInfolink as Infolink;
 use Title;
 use SMW\Utils\HtmlTabs;
@@ -182,7 +182,7 @@ class NavigationLinksWidget {
 			[
 				'id' => 'ask-pagination'
 			],
-			ListPager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray() + [ '_target' => '#search' ] , $html )
+			Pager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray() + [ '_target' => '#search' ] , $html )
 		);
 	}
 

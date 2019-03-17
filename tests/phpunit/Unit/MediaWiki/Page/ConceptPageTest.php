@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Page;
+namespace SMW\MediaWiki\Tests\Page;
 
 use SMW\DIWikiPage;
-use SMW\Page\ConceptPage;
+use SMW\MediaWiki\Page\ConceptPage;
 
 /**
- * @covers \SMW\Page\ConceptPage
+ * @covers \SMW\MediaWiki\Page\ConceptPage
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

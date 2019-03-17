@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Page;
+namespace SMW\Tests\MediaWiki\Page;
 
-use SMW\Page\ListBuilder;
+use SMW\MediaWiki\Page\ListBuilder;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Page\ListBuilder
+ * @covers \SMW\MediaWiki\Page\ListBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

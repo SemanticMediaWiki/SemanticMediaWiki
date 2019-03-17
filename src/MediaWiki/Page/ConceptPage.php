@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\MediaWiki\Page;
 
 use Html;
 use SMW\ApplicationFactory;
@@ -11,7 +11,8 @@ use SMW\MediaWiki\Collator;
 use SMW\Message;
 use SMWDataItem as DataItem;
 use SMW\Utils\HtmlTabs;
-use SMW\Page\ListBuilder;
+use SMW\Utils\Pager;
+use SMW\MediaWiki\Page\ListBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -110,7 +111,7 @@ class ConceptPage extends Page {
 				[
 					'class' => 'clearfix'
 				],
-				ListPager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query + [ '_target' => '#smw-result' ] )
+				Pager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query + [ '_target' => '#smw-result' ] )
 			) . Html::rawElement(
 				'div',
 				[

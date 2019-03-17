@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Page;
+namespace SMW\Tests\MediaWiki\Page;
 
 use SMW\DIWikiPage;
-use SMW\Page\PropertyPage;
+use SMW\MediaWiki\Page\PropertyPage;
 
 /**
- * @covers \SMW\Page\PropertyPage
+ * @covers \SMW\MediaWiki\Page\PropertyPage
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

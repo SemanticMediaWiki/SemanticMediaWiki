@@ -1,12 +1,14 @@
 <?php
 
-namespace SMW\Page;
+namespace SMW\MediaWiki;
 
 use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Store;
 use Title;
 use SMW\Property\DeclarationExaminerFactory;
+use SMW\MediaWiki\Page\PropertyPage;
+use SMW\MediaWiki\Page\ConceptPage;
 
 /**
  * @license GNU GPL v2+

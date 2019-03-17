@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Page\ListBuilder;
+namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Html;
 use SMW\ApplicationFactory;
@@ -9,7 +9,7 @@ use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\Message;
-use SMW\Page\ListPager;
+use SMW\Utils\Pager;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
 use SMW\Store;
@@ -118,7 +118,7 @@ class ValueListBuilder {
 		} else {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
-		
+
 		if ( $dataItems instanceof \Traversable ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
@@ -185,13 +185,13 @@ class ValueListBuilder {
 				[
 					'class' => 'smw-page-nav-left'
 				],
-				ListPager::pagination( $title, $limit, $offset, $resultCount, $query )
+				Pager::pagination( $title, $limit, $offset, $resultCount, $query )
 			) . Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-page-nav-right'
 				],
-				ListPager::filter( $title, $limit, $offset, $filter )
+				Pager::filter( $title, $limit, $offset, $filter )
 			)
 		);
 

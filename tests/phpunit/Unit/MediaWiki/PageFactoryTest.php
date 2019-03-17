@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Page;
+namespace SMW\Tests\MediaWiki;
 
-use SMW\Page\PageFactory;
+use SMW\MediaWiki\PageFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Page\PageFactory
+ * @covers \SMW\MediaWiki\PageFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -77,12 +77,12 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			SMW_NS_PROPERTY,
-			'SMW\Page\PropertyPage'
+			'SMW\MediaWiki\Page\PropertyPage'
 		];
 
 		$provider[] = [
 			SMW_NS_CONCEPT,
-			'SMW\Page\ConceptPage'
+			'SMW\MediaWiki\Page\ConceptPage'
 		];
 
 		return $provider;
