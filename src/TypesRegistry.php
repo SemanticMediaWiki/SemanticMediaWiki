@@ -239,17 +239,28 @@ class TypesRegistry {
 	 *
 	 * @return array
 	 */
-	public static function getTypesByGroup( $group = '' ) {
+	public static function getTypesByGroup( $key = '' ) {
 
-		if ( $group === 'primitive' ) {
-			return [ '_txt' => true , '_boo' => true , '_num' => true, '_dat' => true ];
+		$groups = [
+			'primitive' => [
+				'_txt', '_boo', '_num', '_dat'
+			],
+			'contextual' => [
+				'_anu', '_cod', '_eid', '_geo', '_keyw', '_wpg', '_qty', '_uri'
+			],
+			'container' => [
+				'_rec', '_mlt_rec', '_ref_rec'
+			],
+			'compound' => [
+				'_ema', '_tel', '_tem'
+			]
+		];
+
+		if ( isset( $groups[$key] ) ) {
+			return $groups[$key];
 		}
 
-		if ( $group === 'compound' ) {
-			return [ '_ema' => true, '_tel' => true, '_tem' => true ];
-		}
-
-		return [];
+		return $groups;
 	}
 
 	/**

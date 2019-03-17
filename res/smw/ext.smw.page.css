@@ -357,6 +357,7 @@
 .smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi,
 .smw-property #tab-smw-property-spec:checked ~ #tab-content-smw-property-spec,
 .smw-types #tab-smw-type-errors:checked ~ #tab-content-smw-type-errors,
+.smw-types #tab-smw-type-ids:checked ~ #tab-content-smw-type-ids,
 .smw-types #tab-smw-type-list:checked ~ #tab-content-smw-type-list {
 	display: block;
 }
