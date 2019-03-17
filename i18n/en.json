@@ -893,6 +893,7 @@
 	"smw-install-incomplete-intro": "The installation (or upgrade) of <b>Semantic MediaWiki</b> has not been finalized and an administrator should run the following tasks to prevent data inconsistencies before users continue to create or alter content.",
 	"smw-install-incomplete-populate-hash-field": "The <code>smw_hash</code> field population was skipped during the setup, the [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] script is required to be executed.",
 	"smw-helplink": "https://www.semantic-mediawiki.org/wiki/Help:$1",
+	"smw-filter-count": "Filter count",
 	"smw-es-replication-check": "Replication check (Elasticsearch)",
 	"smw-es-replication-error": "Replication issue",
 	"smw-es-replication-file-ingest-error": "File ingest issue",
