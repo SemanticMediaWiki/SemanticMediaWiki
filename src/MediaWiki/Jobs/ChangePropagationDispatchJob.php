@@ -199,6 +199,10 @@ class ChangePropagationDispatchJob extends Job {
 			return $this->dispatchFromFile( $subject, $this->getParameter( 'dataFile' ) );
 		}
 
+		if ( $this->hasParameter( 'schema_change_propagation' ) ) {
+			return $this->dispatchFromSchema( $subject, $this->getParameter( 'property_key' ) );
+		}
+
 		$this->findAndDispatch();
 
 		return true;
@@ -356,6 +360,31 @@ class ChangePropagationDispatchJob extends Job {
 		);
 
 		$tempFile->delete( $file );
+
+		return true;
+	}
+
+	private function dispatchFromSchema( $subject, $property_key ) {
+
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		// Find all properties that point to the schema and hereby require
+		// an update (!! using the inverse relationship)
+		$dataItems = $store->getPropertyValues(
+			$subject,
+			new DIProperty( $property_key, true )
+		);
+
+		// Scheduling the actual dispatch for those properties connected to
+		// the schema change
+		foreach ( $dataItems as $dataItem ) {
+
+			$changePropagationDispatchJob = new ChangePropagationDispatchJob(
+				$dataItem->getTitle()
+			);
+
+			$changePropagationDispatchJob->insert();
+		}
 
 		return true;
 	}

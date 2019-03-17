@@ -226,4 +226,48 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 		$instance->run();
 	}
 
+	public function testDispatchSchemaChangePropagation() {
+
+		$dataItem = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $dataItem ] ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		// Check that it is the dataItem from `getPropertyValues`
+		$checkJobParameterCallback = function( $jobs ) use( $dataItem ) {
+			foreach ( $jobs as $job ) {
+				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
+			}
+		};
+
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueue->expects( $this->once() )
+			->method( 'push' )
+			->with( $this->callback( $checkJobParameterCallback ) );
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
+
+		$instance = new ChangePropagationDispatchJob(
+			$subject->getTitle(),
+			[
+				'schema_change_propagation' => true,
+				'property_key' => 'Foo'
+			]
+		);
+
+		$instance->run();
+	}
+
 }
