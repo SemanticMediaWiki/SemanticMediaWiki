@@ -425,18 +425,18 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {
 
-		$entityRebuildDispatcher = $this->factory->newEntityRebuildDispatcher();
+		$rebuilder = $this->factory->newRebuilder();
 
-		$entityRebuildDispatcher->setDispatchRangeLimit( $count );
-		$entityRebuildDispatcher->setRestrictionToNamespaces( $namespaces );
+		$rebuilder->setDispatchRangeLimit( $count );
+		$rebuilder->setRestrictionToNamespaces( $namespaces );
 
-		$entityRebuildDispatcher->setOptions(
+		$rebuilder->setOptions(
 			[
 				'use-job' => $usejobs
 			]
 		);
 
-		return $entityRebuildDispatcher;
+		return $rebuilder;
 	}
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Rebuilder;
 
 use Hooks;
 use SMW\ApplicationFactory;
@@ -9,6 +9,8 @@ use SMW\PropertyRegistry;
 use SMW\SemanticData;
 use SMW\Utils\Lru;
 use SMW\MediaWiki\TitleFactory;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 /**
@@ -22,7 +24,7 @@ use Title;
  * @author Nischay Nahata
  * @author mwjames
  */
-class EntityRebuildDispatcher {
+class Rebuilder {
 
 	/**
 	 * @var SQLStore
@@ -33,6 +35,11 @@ class EntityRebuildDispatcher {
 	 * @var TitleFactory
 	 */
 	private $titleFactory;
+
+	/**
+	 * @var EntityValidator
+	 */
+	private $entityValidator;
 
 	/**
 	 * @var PropertyTableIdReferenceDisposer
@@ -48,16 +55,6 @@ class EntityRebuildDispatcher {
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
-
-	/**
-	 * @var array
-	 */
-	private $propertyInvalidCharacterList = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyRetiredList = [];
 
 	/**
 	 * @var array
@@ -100,40 +97,39 @@ class EntityRebuildDispatcher {
 	 * @param SQLStore $store
 	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( SQLStore $store, TitleFactory $titleFactory ) {
+	public function __construct( SQLStore $store, TitleFactory $titleFactory, EntityValidator $entityValidator ) {
 		$this->store = $store;
 		$this->titleFactory = $titleFactory;
+		$this->entityValidator = $entityValidator;
 		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
-		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 		$this->lru = new Lru( 10000 );
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $propertyInvalidCharacterList
+	 * @param array $options
 	 */
-	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ) {
-		$this->propertyInvalidCharacterList = $propertyInvalidCharacterList;
+	public function setOptions( array $options ) {
+		$this->options = $options;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $propertyRetiredList
-	 */
-	public function setPropertyRetiredList( array $propertyRetiredList ) {
-		$this->propertyRetiredList = $propertyRetiredList;
-	}
-
-	/**
-	 * @since 2.3
+	 * @param string $key
+	 * @param mixed $default
 	 *
-	 * @param array $options
+	 * @return mixed
 	 */
-	public function setOptions( array $options ) {
-		$this->options = $options;
+	public function getOption( $key, $default = false ) {
+
+		if ( isset( $this->options[$key] ) ) {
+			return $this->options[$key];
+		}
+
+		return $default;
 	}
 
 	/**
@@ -214,6 +210,10 @@ class EntityRebuildDispatcher {
 		$this->updateJobs = [];
 		$this->dispatchedEntities = [];
 
+		$this->entityValidator->setNamespaceRestriction(
+			$this->namespaces
+		);
+
 		// was nothing done in this run?
 		$emptyRange = true;
 
@@ -230,7 +230,7 @@ class EntityRebuildDispatcher {
 
 		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
-		if ( isset( $this->options['use-job'] ) && $this->options['use-job'] ) {
+		if ( $this->getOption( 'use-job' ) ) {
 			$this->jobFactory->batchInsert( $this->updateJobs );
 		} else {
 			foreach ( $this->updateJobs as $job ) {
@@ -277,13 +277,13 @@ class EntityRebuildDispatcher {
 	private function match_subject( $id, &$emptyRange ) {
 
 		// update by internal SMW id --> make sure we get all objects in SMW
-		$db = $this->store->getConnection( 'mw.db' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		// MW 1.29+ "Exception thrown with an uncommitted database transaction ...
 		// MWCallableUpdate::doUpdate: transaction round 'SMW\MediaWiki\Jobs\RefreshJob::run' already started"
 		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
-		$res = $db->select(
+		$res = $connection->select(
 			\SMWSql3SmwIds::TABLE_NAME,
 			[
 				'smw_id',
@@ -297,15 +297,17 @@ class EntityRebuildDispatcher {
 			],
 			[
 				"smw_id >= $id ",
-				" smw_id < " . $db->addQuotes( $id + $this->iterationLimit )
+				" smw_id < " . $connection->addQuotes( $id + $this->iterationLimit )
 			],
 			__METHOD__
 		);
 
 		foreach ( $res as $row ) {
-			$emptyRange = false; // note this even if no jobs were created
 
-			if ( $this->namespaces && !in_array( $row->smw_namespace, $this->namespaces ) ) {
+			// note this even if no jobs were created
+			$emptyRange = false;
+
+			if ( !$this->entityValidator->inNamespace( $row ) ) {
 				continue;
 			}
 
@@ -315,150 +317,106 @@ class EntityRebuildDispatcher {
 			// The check is required to ensure that annotations let's say
 			// [[Foo::SomeNS:Bar]] (where SomeNS is not enabled for SMW) are not
 			// removed and is kept as long as a reference to `SomeNS:Bar` exists
-			if ( !$this->namespaceExaminer->isSemanticEnabled( (int)$row->smw_namespace ) ) {
+			if ( !$this->entityValidator->isSemanticEnabled( $row ) ) {
 				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
-				continue;
-			}
-
-			// Find page to refresh, even for special properties:
-			if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
-				$titleKey = $row->smw_title;
-			} elseif ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $row->smw_title ) );
 			} else {
-				$titleKey = '';
+				$this->checkRow( $row );
 			}
+		}
+	}
 
-			$hash = $titleKey . '#' . $row->smw_namespace;
+	private function checkRow( $row ) {
 
-			if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
+		// Find page to refresh, even for special properties:
+		if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
+			$titleKey = $row->smw_title;
+		} elseif ( $this->entityValidator->isProperty( $row ) ) {
+			$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $row->smw_title ) );
+		} else {
+			$titleKey = '';
+		}
 
-				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
+		$hash = $titleKey . '#' . $row->smw_namespace;
 
-				// Remove tangling subobjects without a real page (created by a
-				// page preview etc.) otherwise leave subobjects alone; they ought
-				// to be changed with their pages
-				if ( $title !== null && !$title->exists() ) {
-					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-				} elseif ( $row->smw_proptable_hash === null && substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX ) {
-					$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-				} else {
-					$this->dispatchedEntities[] = [ 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject ];
-				}
-			} elseif ( $this->isPlainObjectValue( $row ) ) {
-				$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
-			} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
+		if ( $row->smw_subobject !== '' && $row->smw_iw !== SMW_SQL3_SMWDELETEIW ) {
 
-				if ( $this->lru->get( $hash ) !== null ) {
-					continue;
-				}
+			$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
-				// objects representing pages
-				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
-
-				if ( $title !== null ) {
-					$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
-					$this->add_update( $title, $row );
-				}
-			} elseif ( $row->smw_iw == SMW_SQL3_SMWREDIIW && $titleKey != '' ) {
-
-				if ( $this->lru->get( $hash ) !== null ) {
-					continue;
-				}
-
-				// TODO: special treatment of redirects needed, since the store will
-				// not act on redirects that did not change according to its records
-				$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
-
-				if ( $title !== null && !$title->exists() ) {
-					$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
-					$this->add_update( $title, $row );
-				}
-
+			// Remove tangling subobjects without a real page (created by a
+			// page preview etc.) otherwise leave subobjects alone; they ought
+			// to be changed with their pages
+			if ( $title !== null && !$title->exists() ) {
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-			} elseif ( $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW ) { // remove outdated internal object references
+			} elseif ( $row->smw_proptable_hash === null && substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX ) {
 				$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-			} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
+			} else {
+				$this->dispatchedEntities[] = [ 's' => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject ];
+			}
+		} elseif ( $this->entityValidator->isPlainObjectValue( $row ) ) {
+			$this->propertyTableIdReferenceDisposer->removeOutdatedEntityReferencesById( $row->smw_id );
+		} elseif ( $row->smw_iw === '' && $titleKey != '' ) {
 
-				if ( $this->lru->get( $hash ) !== null ) {
-					continue;
-				}
-
-				$subject = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
-				$this->store->updateData( new SemanticData( $subject ) );
-				$this->dispatchedEntities[] = [ 's' => $subject ];
+			if ( $this->lru->get( $hash ) !== null ) {
+				return;
 			}
 
-			if ( $row->smw_namespace == SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '' ) {
-				$this->findDuplicateProperties( $row );
-				$this->checkAndMarkInvalidProperties( $this->propertyInvalidCharacterList, $row );
-				$this->checkAndMarkInvalidProperties( $this->propertyRetiredList, $row );
+			// objects representing pages
+			$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
+
+			if ( $title !== null ) {
+				$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
+				$this->add_update( $title, $row );
 			}
-		}
+		} elseif ( $this->entityValidator->isRedirect( $row ) ) {
 
-		$db->freeResult( $res );
-	}
-
-	private function isPlainObjectValue( $row ) {
-
-		// A rogue title should never happen
-		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
-			return true;
-		}
-
-		return $row->smw_iw != SMW_SQL3_SMWDELETEIW &&
-			$row->smw_iw != SMW_SQL3_SMWREDIIW &&
-			$row->smw_iw != SMW_SQL3_SMWIW_OUTDATED &&
-			// Leave any pre-defined property (_...) untouched
-			$row->smw_title != '' &&
-			$row->smw_title{0} != '_' &&
-			// smw_proptable_hash === null means it is not a subject but an object value
-			$row->smw_proptable_hash === null;
-	}
-
-	private function checkAndMarkInvalidProperties( $list, $row ) {
-
-		foreach ( $list as $v ) {
-
-			if ( strpos( $row->smw_title, $v ) === false ) {
-				continue;
+			if ( $this->lru->get( $hash ) !== null || $titleKey === '' ) {
+				return;
 			}
 
-			$this->store->getObjectIds()->updateInterwikiField(
-				$row->smw_id,
-				new DIWikiPage( $row->smw_title, $row->smw_namespace, SMW_SQL3_SMWDELETEIW )
-			);
+			// TODO: special treatment of redirects needed, since the store will
+			// not act on redirects that did not change according to its records
+			$title = $this->titleFactory->makeTitleSafe( $row->smw_namespace, $titleKey );
 
-			break;
+			if ( $title !== null && !$title->exists() ) {
+				$this->dispatchedEntities[] = [ 's' => $title->getPrefixedDBKey() ];
+				$this->add_update( $title, $row );
+			}
+
+			$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
+		} elseif ( $this->entityValidator->isOutdated( $row ) ) { // remove outdated internal object references
+			$this->propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
+		} elseif ( $titleKey != '' ) { // "normal" interwiki pages or outdated internal objects -- delete
+
+			if ( $this->lru->get( $hash ) !== null ) {
+				return;
+			}
+
+			$subject = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
+			$this->store->updateData( new SemanticData( $subject ) );
+			$this->dispatchedEntities[] = [ 's' => $subject ];
+		}
+
+		if ( $this->entityValidator->isProperty( $row ) ) {
+			$this->removeDuplicates( $row, $this->entityValidator->findDuplicates( $row ) );
+		}
+
+		if ( $this->entityValidator->hasPropertyInvalidCharacter( $row ) ) {
+			$this->setDeleteFlag( $row->smw_id, $row->smw_title, $row->smw_namespace );
+		}
+
+		if ( $this->entityValidator->isRetiredProperty( $row ) ) {
+			$this->setDeleteFlag( $row->smw_id, $row->smw_title, $row->smw_namespace );
 		}
 	}
 
-	private function findDuplicateProperties( $row ) {
-
-		$db = $this->store->getConnection( 'mw.db' );
-
-		// Use the sortkey (comparing the label and not the "_..." key) in order
-		// to match possible duplicate properties by label (not by key)
-		$duplicates = $db->select(
-			\SMWSql3SmwIds::TABLE_NAME,
-			[
-				'smw_id',
-				'smw_title' ],
-			[
-				"smw_id !=" . $db->addQuotes( $row->smw_id ),
-				"smw_sortkey =" . $db->addQuotes( $row->smw_sortkey ),
-				"smw_namespace =" . $row->smw_namespace,
-				"smw_subobject =" . $db->addQuotes( $row->smw_subobject )
-			],
-			__METHOD__,
-			[
-				'ORDER BY' => "smw_id ASC"
-			]
+	private function setDeleteFlag( $id, $title, $ns ) {
+		$this->store->getObjectIds()->updateInterwikiField(
+			$id,
+			new DIWikiPage( $title, $ns, SMW_SQL3_SMWDELETEIW )
 		);
+	}
 
-		if ( $duplicates === false ) {
-			return;
-		}
+	private function removeDuplicates( $row, $duplicates ) {
 
 		// Instead of copying ID's across DB tables have the re-parse to ensure
 		// that all property value ID's are reassigned together while the duplicate
@@ -472,10 +430,7 @@ class EntityRebuildDispatcher {
 				continue;
 			}
 
-			$this->store->getObjectIds()->updateInterwikiField(
-				$duplicate->smw_id,
-				new DIWikiPage( $row->smw_title, $row->smw_namespace, SMW_SQL3_SMWDELETEIW )
-			);
+			$this->setDeleteFlag( $duplicate->smw_id, $row->smw_title, $row->smw_namespace );
 		}
 	}
 
@@ -514,12 +469,21 @@ class EntityRebuildDispatcher {
 		$id = $nextPosition ? $nextPosition : -1;
 	}
 
+	private function hasSkippableRevision( $title, $row = false ) {
+
+		if ( $this->getOption( 'force-update' ) ) {
+			return false;
+		}
+
+		return $this->getOption( 'revision-mode' ) && $this->entityValidator->hasLatestRevID( $title, $row );
+	}
+
 	private function add_update( $title, $row = false ) {
 
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 
-		if ( isset( $this->options['revision-mode'] ) && $this->options['revision-mode'] && !$this->options['force-update'] && $this->matchesLatestRevID( $title, $row ) ) {
+		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
 			return $this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
 		}
 
@@ -527,9 +491,9 @@ class EntityRebuildDispatcher {
 			'origin' => 'EntityRebuildDispatcher'
 		];
 
-		if ( isset( $this->options['shallow-update'] ) && $this->options['shallow-update'] ) {
+		if ( $this->getOption( 'shallow-update' ) ) {
 			$params += [ 'shallowUpdate' => true ];
-		} elseif ( isset( $this->options['force-update'] ) && $this->options['force-update'] ) {
+		} elseif ( $this->getOption( 'force-update' ) ) {
 			$params += [ 'forcedUpdate' => true ];
 		}
 
@@ -539,23 +503,6 @@ class EntityRebuildDispatcher {
 		);
 
 		$this->updateJobs[] = $updateJob;
-	}
-
-	private function matchesLatestRevID( $title, $row = false ) {
-
-		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
-
-		if ( $row !== false ) {
-			return $latestRevID == $row->smw_rev;
-		};
-
-		$rev = $this->store->getObjectIds()->findAssociatedRev(
-			$title->getDBKey(),
-			$title->getNamespace(),
-			$title->getInterwiki()
-		);
-
-		return $latestRevID == $rev;
 	}
 
 }
