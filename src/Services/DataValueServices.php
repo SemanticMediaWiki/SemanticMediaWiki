@@ -161,6 +161,10 @@ return [
 			new PropertySpecificationConstraintValueValidator()
 		);
 
+		$compoundConstraintValueValidator->setLogger(
+			$containerBuilder->singleton( 'MediaWikiLogger' )
+		);
+
 		return $compoundConstraintValueValidator;
 	},
 
