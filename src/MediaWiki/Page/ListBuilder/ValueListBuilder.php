@@ -42,6 +42,11 @@ class ValueListBuilder {
 	/**
 	 * @var integer
 	 */
+	private $filterCount = 0;
+
+	/**
+	 * @var integer
+	 */
 	private $maxPropertyValues = 3;
 
 	/**
@@ -56,6 +61,15 @@ class ValueListBuilder {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer
+	 */
+	public function getFilterCount() {
+		return $this->filterCount;
 	}
 
 	/**
@@ -100,6 +114,8 @@ class ValueListBuilder {
 		$from = isset( $query['from'] ) ? $query['from'] : 0;
 		$until = isset( $query['until'] ) ? $query['until'] : 0;
 		$filter = isset( $query['filter'] ) ? $query['filter'] : '';
+
+		$this->filterCount = 0;
 
 		// limit==0: configuration setting to disable this completely
 		if ( $limit < 1 ) {
@@ -392,6 +408,11 @@ class ValueListBuilder {
 		// Sort on the spot via PHP, which should be enough for the search
 		// and match functionality
 		ksort( $sort );
+		$this->filterCount =  $res->getCount() + $options->offset;
+
+		if ( $res->hasFurtherResults() ) {
+			$this->filterCount = ( $this->filterCount - 1 ) . '+';
+		}
 
 		return array_values( $sort );
 	}

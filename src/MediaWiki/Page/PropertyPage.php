@@ -57,6 +57,11 @@ class PropertyPage extends Page {
 	private $isLockedView = false;
 
 	/**
+	 * @var integer
+	 */
+	private $filterCount = 0;
+
+	/**
 	 * @see 3.0
 	 *
 	 * @param Title $title
@@ -196,7 +201,7 @@ class PropertyPage extends Page {
 		$html = $this->makeValueList( $languageCode );
 		$isFirst = $html === '';
 
-		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ) . $this->getUsageCount(), [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ) . $this->getCount(), [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-value', $html );
 
 		// Redirects
@@ -328,7 +333,7 @@ class PropertyPage extends Page {
 			$this->getOption( 'smwgMaxPropertyValues' )
 		);
 
-		return $valueListBuilder->createHtml(
+		$html = $valueListBuilder->createHtml(
 			$this->property,
 			$this->getDataItem(),
 			[
@@ -339,13 +344,28 @@ class PropertyPage extends Page {
 				'filter' => $request->getVal( 'filter', '' )
 			]
 		);
+
+		$this->filterCount = $valueListBuilder->getFilterCount();
+
+		return $html;
 	}
 
 	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
 		return Message::get( $params, $type, $lang );
 	}
 
-	private function getUsageCount() {
+	private function getCount() {
+
+		if ( $this->filterCount > 0 ) {
+			return Html::rawElement(
+				'span',
+				[
+					'title' =>  $this->msg( 'smw-filter-count' ),
+					'class' => 'usage-count'
+				],
+				$this->filterCount
+			);
+		}
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( 1 );
