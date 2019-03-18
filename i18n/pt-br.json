@@ -479,7 +479,7 @@
 	"smw-info-par-icon": "Ícone para mostrar, \"info\" ou \"aviso\".",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Opções gerais",
-	"prefs-ask-options": "Opções da página Especial:Consultar",
+	"prefs-ask-options": "Opções da busca semântica",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (e extensões relacionadas) fornecem personalização individual para algumas funções selecionadas. Consulte o [https://www.semantic-mediawiki.org/wiki/Help:User_preferences página de ajuda] para uma descrição detalhada.",
 	"smw-prefs-ask-options-tooltip-display": "Exibir o texto do parâmetro em forma de dica",
 	"smw-prefs-ask-options-compact-view-basic": "Ativar visão compacta básica",
