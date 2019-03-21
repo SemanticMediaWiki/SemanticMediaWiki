@@ -749,5 +749,7 @@
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Depuració",
 	"smw-ask-tab-code": "Codi",
-	"smw-install-incomplete-intro": "La instal·lació (o actualització) de <b>Semantic MediaWiki</b> no ha finalitzat i cal que un administrador executi les tasques següents per evitar inconsistències de dades abans que altres usuaris en creïn o n'alterin el contingut."
+	"smw-install-incomplete-intro": "La instal·lació (o actualització) de <b>Semantic MediaWiki</b> no ha finalitzat i cal que un administrador executi les tasques següents per evitar inconsistències de dades abans que altres usuaris en creïn o n'alterin el contingut.",
+	"smw-filter-count": "Recompte de filtres",
+	"smw-es-replication-error-divergent-revision-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)"
 }

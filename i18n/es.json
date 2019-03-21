@@ -626,6 +626,7 @@
 	"smw-type-tel": "«$1» es un tipo de datos especial para describir números telefónicos internacionales de conformidad con RFC 3966.",
 	"smw-type-txt": "\"$1\" es un tipo de dato primitivo que describe cadenas de longitud arbitraria.",
 	"smw-type-dat": "«$1» es un tipo de datos para representar puntos en el tiempo en un formato unificado.",
+	"smw-type-no-group": "Sin clasificar",
 	"smw-special-pageproperty-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Special:PageProperty",
 	"smw-special-pageproperty-description": "Esta página provee una interfaz de búsqueda para encontrar todos los valores de una propiedad o página dada. Otras interfazes de búsqueda incluyen [[Special:SearchByProperty|búsqueda de propiedad]] y el [[Special:Ask|constructor de preguntas]].",
 	"smw-property-predefined-errc": "«$1» es una propiedad predefinida, proporcionada por [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], que representa errores que aparecen en la conexión con anotaciones de valores o procesamiento de entradas inapropiados.",

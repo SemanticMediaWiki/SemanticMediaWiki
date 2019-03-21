@@ -290,6 +290,7 @@
 	"smw-type-tab-properties": "Својства",
 	"smw-type-tab-types": "Типови",
 	"smw-type-tab-errors": "Грешке",
+	"smw-type-no-group": "Неразврстано",
 	"smw-specials-bytype-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Type_$1",
 	"smw-limitreport-intext-parsertime": "[SMW] Време рашчлањивања унутартекстуалних анотација",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|секунд|секунда|секунди}}",
