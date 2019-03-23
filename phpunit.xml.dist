@@ -55,6 +55,7 @@
     </filter>
     <php>
        <var name="smwgSemanticsEnabled" value="true"/>
+       <var name="smwgMainCacheType" value="hash"/>
        <var name="wgUseFileCache" value="false"/>
        <var name="smwgEntityCollation" value="identity"/>
        <var name="smwgFieldTypeFeatures" value="false"/>
