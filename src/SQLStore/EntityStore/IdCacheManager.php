@@ -15,9 +15,9 @@ use SMW\SQLStore\SQLStore;
 class IdCacheManager {
 
 	/**
-	 * @var SQLStore
+	 * @var []
 	 */
-	private $store;
+	private $caches;
 
 	/**
 	 * @since 3.0

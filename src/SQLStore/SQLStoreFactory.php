@@ -17,6 +17,7 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\UniquenessLookup;
@@ -584,6 +585,23 @@ class SQLStoreFactory {
 		);
 
 		return $idMatchFinder;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param IdCacheManager $idCacheManager
+	 *
+	 * @return CacheWarmer
+	 */
+	public function newCacheWarmer( IdCacheManager $idCacheManager ) {
+
+		$cacheWarmer = new CacheWarmer(
+			$this->store,
+			$idCacheManager
+		);
+
+		return $cacheWarmer;
 	}
 
 	/**
