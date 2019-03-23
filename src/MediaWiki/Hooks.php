@@ -597,17 +597,30 @@ class Hooks {
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$rejectParserCacheValue = new RejectParserCacheValue(
-			$queryDependencyLinksStoreFactory->newDependencyLinksValidator()
+			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
+			$applicationFactory->getEntityCache()
 		);
 
 		$rejectParserCacheValue->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
+		$rejectParserCacheValue->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$rejectParserCacheValue->setCacheTTL(
+			Site::getCacheExpireTime( 'parser' )
+		);
+
+		// Get the key to distinguish between an anon and logged-in user stored
+		// parser cache
+		$eTag = \ParserCache::singleton()->getETag( $wikiPage, $popts );
+
 		// Return false to reject the parser cache
 		// The log will contain something like "[ParserCache] ParserOutput
 		// key valid, but rejected by RejectParserCacheValue hook handler."
-		return $rejectParserCacheValue->process( $wikiPage->getTitle() );
+		return $rejectParserCacheValue->process( $wikiPage->getTitle(), $eTag );
 	}
 
 	/**

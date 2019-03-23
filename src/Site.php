@@ -93,6 +93,20 @@ class Site {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return int
+	 */
+	public static function getCacheExpireTime( $key ) {
+
+		if ( $key === 'parser' ) {
+			return $GLOBALS['wgParserCacheExpireTime'];
+		}
+
+		return 0;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param $affix string

@@ -57,6 +57,19 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testContains() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'contains' )
+			->with( $this->equalTo( 'Foo' ) );
+
+		$instance = new EntityCache(
+			$this->cache
+		);
+
+		$instance->contains( 'Foo' );
+	}
+
 	public function testFetch() {
 
 		$this->cache->expects( $this->once() )
@@ -134,6 +147,21 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->saveSub( 'Foo', 'bar', '123' );
+	}
+
+	public function tesOverrideSub() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->equalTo( 'Foo' ),
+				$this->equalTo( [ md5( 'bar' ) => '123' ] ) );
+
+		$instance = new EntityCache(
+			$this->cache
+		);
+
+		$instance->overrideSub( 'Foo', 'bar', '123' );
 	}
 
 	public function tesDeleteSub() {
