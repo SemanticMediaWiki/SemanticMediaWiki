@@ -7,7 +7,8 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDIBlob as DIBlob;
 use Title;
-use WikiPage;
+use SMW\DIWikiPage;
+use SMW\PropertySpecificationLookup;
 
 /**
  * @private
@@ -25,13 +26,48 @@ class SchemaFinder {
 	private $store;
 
 	/**
+	 * @var PropertySpecificationLookup
+	 */
+	private $propertySpecificationLookup;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
 		$this->store = $store;
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return SchemaList|[]
+	 */
+	public function getConstraintSchema( DIProperty $property ) {
+
+		$dataItems = $this->propertySpecificationLookup->getSpecification(
+			$property,
+			new DIProperty( '_CONSTRAINT_SCHEMA' )
+		);
+
+		if ( $dataItems === null || $dataItems === false ) {
+			return [];
+		}
+
+		$schemaList = [];
+
+		foreach ( $dataItems as $subject ) {
+			$this->findSchemaDefinition( $subject, $schemaList );
+		}
+
+		return new SchemaList( $schemaList );
+	}
+
 
 	/**
 	 * @since 3.1
@@ -43,7 +79,7 @@ class SchemaFinder {
 	public function getSchemaListByType( $type ) {
 
 		$data = [];
-		$list = [];
+		$schemaList = [];
 
 		$subjects = $this->store->getPropertySubjects(
 			new DIProperty( '_SCHEMA_TYPE' ),
@@ -51,29 +87,31 @@ class SchemaFinder {
 		);
 
 		foreach ( $subjects as $subject ) {
-
-			$dataItems = $this->store->getPropertyValues(
-				$subject,
-				new DIProperty( '_SCHEMA_DEF' )
-			);
-
-			if ( $dataItems === [] ) {
-				continue;
-			}
-
-			$dataItem = end( $dataItems );
-			$subject = str_replace( '_', ' ', $subject->getDBKey() );
-
-			$data = json_decode( $dataItem->getString(), true );
-
-			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				continue;
-			}
-
-			$list[] = new SchemaDefinition( $subject, $data );
+			$this->findSchemaDefinition( $subject, $schemaList );
 		}
 
-		return new SchemaList( $list );
+		return new SchemaList( $schemaList );
+	}
+
+	private function findSchemaDefinition( $subject, &$schemaList ) {
+
+		if ( !$subject instanceof DIWikiPage ) {
+			return;
+		}
+
+		$definitions = $this->propertySpecificationLookup->getSpecification(
+			$subject,
+			new DIProperty( '_SCHEMA_DEF' )
+		);
+
+		$name = str_replace( '_', ' ', $subject->getDBKey() );
+
+		foreach ( $definitions as $definition ) {
+			$schemaList[] = new SchemaDefinition(
+				$name,
+				json_decode( $definition->getString(), true )
+			);
+		}
 	}
 
 }

@@ -180,7 +180,10 @@ class SchemaFactory {
 	 * @return SchemaFinder
 	 */
 	public function newSchemaFinder( Store $store ) {
-		return new SchemaFinder( $store );
+		return new SchemaFinder(
+			$store,
+			ApplicationFactory::getInstance()->getPropertySpecificationLookup()
+		);
 	}
 
 	/**

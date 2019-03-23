@@ -7,7 +7,7 @@ use MWNamespace;
 use SMW;
 use SMW\MediaWiki\Search\Form\FormsBuilder;
 use SMW\MediaWiki\Search\Form\FormsFactory;
-use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaFactory;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Utils\HtmlModal;
 use SMW\Store;
@@ -98,8 +98,15 @@ class SearchProfileForm {
 			return $data;
 		}
 
-		$schemaFinder = new SchemaFinder( $store );
-		$schemaList = $schemaFinder->getSchemaListByType( self::SCHEMA_TYPE );
+		$schemaFactory = new SchemaFactory();
+
+		$schemaFinder = $schemaFactory->newSchemaFinder(
+			$store
+		);
+
+		$schemaList = $schemaFinder->getSchemaListByType(
+			self::SCHEMA_TYPE
+		);
 
 		return $data = $schemaList->merge( $schemaList );
 	}
