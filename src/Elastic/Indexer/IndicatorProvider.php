@@ -3,6 +3,7 @@
 namespace SMW\Elastic\Indexer;
 
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\Store;
 use SMW\Message;
 use SMW\MediaWiki\IndicatorProvider as IIndicatorProvider;
@@ -114,6 +115,14 @@ class IndicatorProvider implements IIndicatorProvider {
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
+
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+
+			if ( !$property->isUserDefined() ) {
+				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+			}
+		}
 
 		if ( $this->entityCache->fetch( CheckReplicationTask::makeCacheKey( $subject ) ) === 'success' ) {
 			return;
