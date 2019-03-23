@@ -124,6 +124,7 @@
             "_SCHEMA_DEF": "Schema definition",
             "_SCHEMA_LINK": "Schema link",
             "_FORMAT_SCHEMA": "Formatter schema",
+            "_CONSTRAINT_SCHEMA": "Constraint schema",
             "_ATTCH_LINK": "Attachment link",
             "_FILE_ATTCH": "File attachment",
             "_CONT_TYPE": "Content type",
@@ -198,6 +199,8 @@
             "Schema definition": "_SCHEMA_DEF",
             "Schema link": "_SCHEMA_LINK",
             "Formatter schema": "_FORMAT_SCHEMA",
+            "Constraint schema": "_CONSTRAINT_SCHEMA",
+            "Property constraint schema": "_CONSTRAINT_SCHEMA",
             "File attachment": "_FILE_ATTCH",
             "Has file attachment": "_FILE_ATTCH",
             "Has translation":"_TRANS"

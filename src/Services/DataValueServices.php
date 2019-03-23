@@ -26,6 +26,7 @@ use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
+use SMW\DataValues\ValueValidators\ConstraintSchemaValueValidator;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMWNumberValue as NumberValue;
 use SMWPropertyValue as PropertyValue;
@@ -129,14 +130,17 @@ return [
 			CompoundConstraintValueValidator::class
 		);
 
+		$propertySpecificationLookup = $containerBuilder->singleton( 'PropertySpecificationLookup' );
+		$store = $containerBuilder->singleton( 'Store' );
+
 		$compoundConstraintValueValidator = new CompoundConstraintValueValidator();
 
 		// Any registered ConstraintValueValidator becomes weaker(diminished) in the context
 		// of a preceding validator
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
 			new UniquenessConstraintValueValidator(
-				$containerBuilder->singleton( 'Store' ),
-				$containerBuilder->singleton( 'PropertySpecificationLookup' )
+				$store,
+				$propertySpecificationLookup
 			)
 		);
 
@@ -150,7 +154,7 @@ return [
 
 		$allowsListConstraintValueValidator = new AllowsListConstraintValueValidator(
 			$containerBuilder->create( DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID ),
-			$containerBuilder->singleton( 'PropertySpecificationLookup' )
+			$propertySpecificationLookup
 		);
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
@@ -159,6 +163,18 @@ return [
 
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
 			new PropertySpecificationConstraintValueValidator()
+		);
+
+		$constraintSchemaValueValidator = new ConstraintSchemaValueValidator(
+			$containerBuilder->singleton( 'SchemaFactory' )->newSchemaFinder( $store )
+		);
+
+		$constraintSchemaValueValidator->isCommandLineMode(
+			Site::isCommandLineMode()
+		);
+
+		$compoundConstraintValueValidator->registerConstraintValueValidator(
+			$constraintSchemaValueValidator
 		);
 
 		$compoundConstraintValueValidator->setLogger(
