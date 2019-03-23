@@ -321,7 +321,11 @@ class CachedFactbox {
 
 		\Hooks::run( 'SMW::Factbox::OverrideRevisionID', [ $title, &$latestRevID ] );
 
-		return $latestRevID;
+		if ( $latestRevID > 0 ) {
+			return $latestRevID;
+		}
+
+		return $title->getLatestRevID();
 	}
 
 	/**
