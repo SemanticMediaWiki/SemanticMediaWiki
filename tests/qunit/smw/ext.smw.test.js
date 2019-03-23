@@ -167,7 +167,7 @@
 		assert.ok( context.find( '#' + argument ), '.async.load() was executed and created an element using the invoked argument' );
 
 		// Make sure async plug-in is loaded, iterate, and create some content
-		mw.loader.using( 'jquery.async', function() {
+		mw.loader.using( 'ext.jquery.async', function() {
 			context = $( '<div id="test-4"></div>', '#qunit-fixture' );
 			for ( var i = 0; i < 4; i++ ) {
 				argument = 'lila-' + i;
