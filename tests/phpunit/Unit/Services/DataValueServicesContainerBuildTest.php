@@ -67,6 +67,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( null )
 			->getMock();
 
+		$this->constraintFactory = $this->getMockBuilder( '\SMW\Property\ConstraintFactory' )
+			->disableOriginalConstructor()
+			->setMethods( null )
+			->getMock();
+
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];
 	}
@@ -89,6 +94,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'Store', $this->store );
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
 		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
+		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'DataValueServices.php' );
 
