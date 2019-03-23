@@ -2,17 +2,17 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\ApplicationFactory;
-use SMW\CachedPropertyValuesPrefetcher;
+use SMW\PropertySpecificationLookup;
+use SMW\EntityCache;
 use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 
 /**
- * Returns conversion data from a cache instance to enable a responsive query
+ * Returns conversion data from a cached instance to enable a responsive query
  * feedback and eliminate possible repeated DB requests.
  *
- * The cache is evicted as soon as the property that contains "Corresponds to"
+ * The cache is evicted as soon as the subject that contains "Corresponds to"
  * is altered.
  *
  * @license GNU GPL v2+
@@ -23,14 +23,14 @@ use SMWNumberValue as NumberValue;
 class UnitConverter {
 
 	/**
-	 * @var NumberValue
+	 * @var PropertySpecificationLookup
 	 */
-	private $numberValue;
+	private $propertySpecificationLookup;
 
 	/**
-	 * @var CachedPropertyValuesPrefetcher
+	 * @var EntityCache
 	 */
-	private $cachedPropertyValuesPrefetcher;
+	private $entityCache;
 
 	/**
 	 * @var array
@@ -60,16 +60,12 @@ class UnitConverter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param NumberValue $numberValue
-	 * @param CachedPropertyValuesPrefetcher|null $cachedPropertyValuesPrefetcher
+	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( NumberValue $numberValue, CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher = null ) {
-		$this->numberValue = $numberValue;
-		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
-
-		if ( $this->cachedPropertyValuesPrefetcher === null ) {
-			$this->cachedPropertyValuesPrefetcher = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher();
-		}
+	public function __construct( PropertySpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
+		$this->propertySpecificationLookup = $propertySpecificationLookup;
+		$this->entityCache = $entityCache;
 	}
 
 	/**
@@ -120,9 +116,37 @@ class UnitConverter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param NumberValue $numberValue
 	 */
-	public function fetchConversionData( DIProperty $property ) {
+	public function loadConversionData( NumberValue $numberValue ) {
+
+		$this->errors = [];
+		$property = $numberValue->getProperty();
+
+		if ( $property === null || ( $subject = $property->getDiWikiPage() ) === null ) {
+			return;
+		}
+
+		$key = $this->entityCache->makeCacheKey( 'unit', $subject->getHash() );
+
+		if ( ( $data = $this->entityCache->fetch( $key ) ) !== false ) {
+			$this->unitIds = $data['ids'];
+			$this->unitFactors = $data['factors'];
+			$this->mainUnit = $data['main'];
+			$this->prefixalUnitPreference = $data['prefix'];
+		} else {
+			$this->initConversionData( $subject, $key, $numberValue );
+		}
+	}
+
+	/**
+	 * @since 2.4
+	 *
+	 * @param NumberValue $numberValue
+	 */
+	public function fetchConversionData( NumberValue $numberValue ) {
+
+		$property = $numberValue->getProperty();
 
 		$this->unitIds = [];
 		$this->unitFactors = [];
@@ -130,12 +154,12 @@ class UnitConverter {
 		$this->prefixalUnitPreference = [];
 		$this->errors = [];
 
-		$factors = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+		$factors = $this->propertySpecificationLookup->getSpecification(
 			$property->getDiWikiPage(),
 			new DIProperty( '_CONV' )
 		);
 
-		$this->numberValue->setContextPage( $property->getDiWikiPage() );
+		$numberValue->setContextPage( $property->getDiWikiPage() );
 
 		if ( $factors === null || $factors === [] ) { // no custom type
 			return $this->errors[] = 'smw_nounitsdeclared';
@@ -149,12 +173,13 @@ class UnitConverter {
 
 			// ignore corrupted data and bogus inputs
 			if ( !( $di instanceof DIBlob ) ||
-			     ( $this->numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
+			     ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
 			     ( $number == 0 ) ) {
 				continue;
 			}
 
 			$this->matchUnitAliases(
+				$numberValue,
 				$number,
 				$asPrefix,
 				preg_split( '/\s*,\s*/u', $unit )
@@ -175,41 +200,13 @@ class UnitConverter {
 		$this->unitIds[''] = '';
 	}
 
-	/**
-	 * @since 2.4
-	 *
-	 * @param DIProperty|null $property
-	 */
-	public function initConversionData( DIProperty $property = null ) {
+	private function initConversionData( $subject, $key, $numberValue ) {
 
-		if ( $property === null || ( $propertyDiWikiPage = $property->getDiWikiPage() ) === null ) {
-			return;
+		$this->fetchConversionData( $numberValue );
+
+		foreach ( $this->errors as $error ) {
+			$numberValue->addErrorMsg( $error );
 		}
-
-		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
-
-		// Ensure that when the property page is altered the cache gets
-		// evicted
-		$hash = $this->cachedPropertyValuesPrefetcher->getRootHashFrom(
-			$propertyDiWikiPage
-		);
-
-		$container = $blobStore->read(
-			$hash
-		);
-
-		$key = '--conv';
-
-		if ( $container->has( $key ) ) {
-			$data = $container->get( $key );
-			$this->unitIds = $data['ids'];
-			$this->unitFactors = $data['factors'];
-			$this->mainUnit = $data['main'];
-			$this->prefixalUnitPreference = $data['prefix'];
-			return;
-		}
-
-		$this->fetchConversionData( $property );
 
 		if ( $this->errors !== [] ) {
 			return;
@@ -222,22 +219,22 @@ class UnitConverter {
 			'prefix' => $this->prefixalUnitPreference
 		];
 
-		$container->set( $key, $data );
+		$this->entityCache->save( $key, $data );
 
-		$blobStore->save(
-			$container
-		);
+		// Connect to the property page so that it can be flushed once the
+		// property page content changes
+		$this->entityCache->associate( $subject, $key );
 	}
 
-	private function matchUnitAliases( $number, $asPrefix, array $unitAliases ) {
+	private function matchUnitAliases( $numberValue, $number, $asPrefix, array $unitAliases ) {
 		$first = true;
 
 		foreach ( $unitAliases as $unit ) {
-			$unit = $this->numberValue->normalizeUnit( $unit );
+			$unit = $numberValue->normalizeUnit( $unit );
 
 			// Legacy match the preserve some behaviour where spaces where normalized
 			// no matter what
-			$normalizedUnit = $this->numberValue->normalizeUnit(
+			$normalizedUnit = $numberValue->normalizeUnit(
 				str_replace( [ '&nbsp;', '&#160;', '&thinsp;', ' ' ], '', $unit )
 			);
 

@@ -33,6 +33,7 @@ use SMWPropertyValue as PropertyValue;
 use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
 use SMW\Site;
+use SMW\DataValues\Number\UnitConverter;
 
 /**
  * @codeCoverageIgnore
@@ -47,6 +48,26 @@ use SMW\Site;
  * @author mwjames
  */
 return [
+
+	/**
+	 * UnitConverter
+	 *
+	 * @return callable
+	 */
+	'UnitConverter' => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType(
+			'UnitConverter',
+			UnitConverter::class
+		);
+
+		$unitConverter = new UnitConverter(
+			$containerBuilder->singleton( 'PropertySpecificationLookup' ),
+			$containerBuilder->singleton( 'EntityCache' )
+		);
+
+		return $unitConverter;
+	},
 
 	/**
 	 * PropertyValueParser

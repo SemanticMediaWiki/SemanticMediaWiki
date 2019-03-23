@@ -193,6 +193,15 @@ class DataValueServiceFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return UnitConverter
+	 */
+	public function getUnitConverter() {
+		return $this->containerBuilder->singleton( 'UnitConverter' );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return PropertyRestrictionExaminer

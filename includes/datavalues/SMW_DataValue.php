@@ -429,9 +429,8 @@ abstract class SMWDataValue {
 	 *
 	 * @param array|string|ProcessingError $error
 	 * @param integer|null $type
-	 * @param integer|null $language
 	 */
-	public function addErrorMsg( $error, $type = null ) {
+	public function addErrorMsg( $error, $type = Message::TEXT ) {
 
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();

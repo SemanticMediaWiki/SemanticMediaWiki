@@ -204,4 +204,22 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->getDescriptionBuilderRegistry();
 	}
 
+	public function testGetUnitConverter() {
+
+		$unitConverter = $this->getMockBuilder( '\SMW\DataValues\Number\UnitConverter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->containerBuilder->expects( $this->atLeastOnce() )
+			->method( 'singleton' )
+			->with( $this->stringContains( 'UnitConverter' ) )
+			->will( $this->returnValue( $unitConverter ) );
+
+		$instance = new DataValueServiceFactory(
+			$this->containerBuilder
+		);
+
+		$instance->getUnitConverter();
+	}
+
 }
