@@ -245,4 +245,48 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testMakeCacheKey() {
+
+		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+
+		$this->assertSame(
+			CheckReplicationTask::makeCacheKey( $subject->getHash() ),
+			CheckReplicationTask::makeCacheKey( $subject )
+		);
+	}
+
+	public function testGetReplicationFailures() {
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetch' )
+			->with( $this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ) );
+
+		$instance = new CheckReplicationTask(
+			$this->store,
+			$this->replicationStatus,
+			$this->entityCache
+		);
+
+		$instance->getReplicationFailures();
+	}
+
+	public function testDeleteReplicationTrail() {
+
+		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'deleteSub' )
+			->with(
+				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
+				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
+
+		$instance = new CheckReplicationTask(
+			$this->store,
+			$this->replicationStatus,
+			$this->entityCache
+		);
+
+		$instance->deleteReplicationTrail( $subject->getTitle() );
+	}
+
 }

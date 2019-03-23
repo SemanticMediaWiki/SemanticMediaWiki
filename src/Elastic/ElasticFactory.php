@@ -11,6 +11,7 @@ use SMW\Elastic\Admin\IndicesInfoProvider;
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Admin\NodesInfoProvider;
 use SMW\Elastic\Admin\SettingsInfoProvider;
+use SMW\Elastic\Admin\ReplicationInfoProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Connection\LockManager;
@@ -214,12 +215,17 @@ class ElasticFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @param Store $store
+	 *
 	 * @return CheckReplicationTask
 	 */
-	public function newCheckReplicationTask() {
+	public function newCheckReplicationTask( Store $store = null ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore();
+
+		if ( $store === null  ) {
+			$store = $applicationFactory->getStore();
+		}
 
 		$connection = $store->getConnection( 'elastic' );
 		$options = $connection->getConfig();
@@ -347,11 +353,20 @@ class ElasticFactory {
 	 */
 	public function newInfoTaskHandler( Store $store, $outputFormatter ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$replicationInfoProvider = new ReplicationInfoProvider(
+			$outputFormatter,
+			$this->newCheckReplicationTask( $store ),
+			$applicationFactory->getEntityCache()
+		);
+
 		$taskHandlers = [
 			new SettingsInfoProvider( $outputFormatter ),
 			new MappingsInfoProvider( $outputFormatter ),
 			new IndicesInfoProvider( $outputFormatter ),
-			new NodesInfoProvider( $outputFormatter )
+			new NodesInfoProvider( $outputFormatter ),
+			$replicationInfoProvider
 		];
 
 		return new ElasticClientTaskHandler( $outputFormatter, $taskHandlers );
@@ -494,8 +509,31 @@ class ElasticFactory {
 	 */
 	public function onApiTasks( &$services ) {
 		$services['check-es-replication'] = [ $this, 'newCheckReplicationTask' ];
-
 		return true;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DispatchContext $dispatchContext
+	 */
+	public function onInvalidateEntityCache( $dispatchContext ) {
+
+		$store = ApplicationFactory::getInstance()->getStore();
+
+		if ( !$store instanceof ElasticStore ) {
+			return true;
+		}
+
+		$title = $dispatchContext->get( 'title' );
+
+		$checkReplicationTask = $this->newCheckReplicationTask(
+			$store
+		);
+
+		$checkReplicationTask->deleteReplicationTrail(
+			$title
+		);
 	}
 
 	/**
@@ -503,6 +541,8 @@ class ElasticFactory {
 	 * @since 3.1
 	 */
 	public function onRegisterEventListeners( $eventListener ) {
+		$eventListener->registerCallback( 'InvalidateEntityCache', [ $this, 'onInvalidateEntityCache' ] );
+
 		return true;
 	}
 
