@@ -194,6 +194,11 @@ class PropertyValueParser implements ValueParser {
 			$text = Localizer::getInstance()->getContentLanguage()->ucfirst( $text );
 		}
 
+		// Leave predefined properties untouched!
+		if ( $text !== '' && $text[0] === '_' ) {
+			return $text;
+		}
+
 		// https://www.mediawiki.org/wiki/Manual:Page_title
 		// Titles beginning or ending with a space (underscore), or containing two
 		// or more consecutive spaces (underscores).

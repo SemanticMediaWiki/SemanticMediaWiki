@@ -95,10 +95,19 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 			false
 		];
 
+		// User property
 		$provider[] = [
 			'Fo_o____bar',
 			[],
 			'Fo o bar',
+			false
+		];
+
+		// Predefined property
+		$provider[] = [
+			'_Fo_o____bar',
+			[],
+			'_Fo_o____bar',
 			false
 		];
 
