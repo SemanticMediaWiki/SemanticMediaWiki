@@ -374,7 +374,7 @@ class Highlighter {
 			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
 		}
 
-		return strip_tags( htmlspecialchars_decode( str_replace( [ "[", '&#160;' ], [ "&#91;", ' ' ], $content ) ) );
+		return strip_tags( htmlspecialchars_decode( str_replace( [ "[", '&#160;', "&#10;", "\n" ], [ "&#91;", ' ', '', '' ], $content ) ) );
 	}
 
 }
