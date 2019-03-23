@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore\DIHandlers;
+namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
-use SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIBlob as DIBlob;
+use SMWDIUri as DIUri;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler
+ * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -40,15 +40,19 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->assertInstanceOf(
-			DIBlobHandler::class,
-			new DIBlobHandler( $this->store )
+			DIUriHandler::class,
+			new DIUriHandler( $this->store )
 		);
 	}
 
 	public function testImmutableMethodAccess() {
 
-		$instance = new DIBlobHandler(
+		$instance = new DIUriHandler(
 			$this->store
 		);
 
@@ -80,20 +84,20 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testMutableMethodAccess() {
 
-		$blob = new DIBlob( 'Foo' );
+		$uri = new DIUri( 'http', 'example.org', '', '' );
 
-		$instance = new DIBlobHandler(
+		$instance = new DIUriHandler(
 			$this->store
 		);
 
 		$this->assertInternalType(
 			'array',
-			$instance->getWhereConds( $blob )
+			$instance->getWhereConds( $uri )
 		);
 
 		$this->assertInternalType(
 			'array',
-			$instance->getInsertValues( $blob )
+			$instance->getInsertValues( $uri )
 		);
 	}
 
@@ -102,7 +106,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
 
-		$instance = new DIBlobHandler(
+		$instance = new DIUriHandler(
 			$this->store
 		);
 
@@ -121,48 +125,17 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testMutableInsertValuesOnVariableLength() {
-
-		$instance = new DIBlobHandler( $this->store );
-
-		$s72  = 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcT4J6h4197dQpSW5PK5f8HigRk0yEsLC2F';
-		$blob = new DIBlob( $s72 );
-
-		$expected = [
-			'o_blob' => '',
-			'o_hash' => $blob->getString()
-		];
-
-		$this->assertEquals(
-			$expected,
-			$instance->getInsertValues( $blob )
-		);
-
-		$s73  = 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcT4J6h4197dQpSW5PK5f8HigRk0yEsLC2Fs';
-		$blob = new DIBlob( $s73 );
-
-		$expected = [
-			'o_blob' => $blob->getString(),
-			'o_hash' => 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcTcf085df3633862a2d74e393fa84944e2'
-		];
-
-		$this->assertEquals(
-			$expected,
-			$instance->getInsertValues( $blob )
-		);
-	}
-
 	/**
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
 
-		$instance = new DIBlobHandler(
+		$instance = new DIUriHandler(
 			$this->store
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIBlob',
+			'\SMWDIUri',
 			$instance->dataItemFromDBKeys( $dbKeys )
 		);
 	}
@@ -172,7 +145,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
 
-		$instance = new DIBlobHandler(
+		$instance = new DIUriHandler(
 			$this->store
 		);
 
@@ -183,11 +156,11 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	public function dbKeysProvider() {
 
 		$provider[] = [
-			[ 'Foo', '' ]
+			[ 'http://example.org', '' ]
 		];
 
 		$provider[] = [
-			[ '', 'Foo' ]
+			[ '', 'http://example.org' ]
 		];
 
 		return $provider;
@@ -202,17 +175,13 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 		return $provider;
 	}
 
-	private function createRandomString( $length = 10 ) {
-		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-	}
-
 	public function fieldTypeProvider() {
 
 		$provider[] = [
 			SMW_FIELDT_NONE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
-				'o_hash' => FieldType::FIELD_TITLE
+				'o_serialized' => FieldType::FIELD_TITLE
 			]
 		];
 
@@ -220,7 +189,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 			SMW_FIELDT_CHAR_NOCASE,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
-				'o_hash' => FieldType::TYPE_CHAR_NOCASE
+				'o_serialized' => FieldType::TYPE_CHAR_NOCASE
 			]
 		];
 
@@ -228,7 +197,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 			SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
-				'o_hash' => FieldType::TYPE_CHAR_LONG
+				'o_serialized' => FieldType::TYPE_CHAR_LONG
 			]
 		];
 
@@ -236,7 +205,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 			SMW_FIELDT_CHAR_NOCASE | SMW_FIELDT_CHAR_LONG,
 			[
 				'o_blob' => FieldType::TYPE_BLOB,
-				'o_hash' => FieldType::TYPE_CHAR_LONG_NOCASE
+				'o_serialized' => FieldType::TYPE_CHAR_LONG_NOCASE
 			]
 		];
 

@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
+use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\DataItemHandlerDispatcher
+ * @covers \SMW\SQLStore\EntityStore\DataItemHandlerFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
+class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,8 +26,8 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\DataItemHandlerDispatcher',
-			new DataItemHandlerDispatcher( $store )
+			DataItemHandlerFactory::class,
+			new DataItemHandlerFactory( $store )
 		);
 	}
 
@@ -40,7 +40,7 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataItemHandlerDispatcher( $store );
+		$instance = new DataItemHandlerFactory( $store );
 
 		$this->assertInstanceOf(
 			$expected,
@@ -57,7 +57,7 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new DataItemHandlerDispatcher( $store );
+		$instance = new DataItemHandlerFactory( $store );
 
 		$this->setExpectedException( 'SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->getHandlerByType( $type );
@@ -67,42 +67,42 @@ class DataItemHandlerDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			DataItem::TYPE_NUMBER,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DINumberHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_BLOB,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_BOOLEAN,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIBooleanHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_URI,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_TIME,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DITimeHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DITimeHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_GEO,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIGeoCoordinateHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIGeoCoordinateHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_WIKIPAGE,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler'
 		];
 
 		$provider[] = [
 			DataItem::TYPE_CONCEPT,
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIConceptHandler'
+			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler'
 		];
 
 		return $provider;

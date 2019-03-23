@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore\DIHandlers;
+namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler
+ * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -26,7 +26,7 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler',
+			DIWikiPageHandler::class,
 			new DIWikiPageHandler( $store )
 		);
 	}

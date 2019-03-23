@@ -163,13 +163,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructDataItemHandlerDispatcher() {
+	public function testCanConstructDataItemHandlerFactory() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\DataItemHandlerDispatcher',
-			$instance->newDataItemHandlerDispatcher()
+			'SMW\SQLStore\EntityStore\DataItemHandlerFactory',
+			$instance->newDataItemHandlerFactory()
 		);
 	}
 

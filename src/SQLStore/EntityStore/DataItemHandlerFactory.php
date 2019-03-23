@@ -2,14 +2,14 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\DIHandlers\DIBlobHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DIBooleanHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DIConceptHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DIGeoCoordinateHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DINumberHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DITimeHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DIUriHandler;
-use SMW\SQLStore\EntityStore\DIHandlers\DIWikiPageHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIGeoCoordinateHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DITimeHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
@@ -20,7 +20,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class DataItemHandlerDispatcher {
+class DataItemHandlerFactory {
 
 	/**
 	 * @var SQLStore
