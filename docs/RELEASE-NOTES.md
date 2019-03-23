@@ -27,6 +27,8 @@ Changes to the DB are triggered by #3644.
 * [#3686](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3686) Improved statistics output
 * [#3782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3782) Added check for retired properties
 * [#3803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3803)
+* [#3809](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3809)
+* [#3822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3822)
 
 #### ElasticStore
 
@@ -37,6 +39,7 @@ Changes to the DB are triggered by #3644.
 * [#3699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3699) Added length restriction to value inputs for a query construct  (`query.maximum.value.length`)
 * [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
+* [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810)
 
 
 ### Query
@@ -74,6 +77,11 @@ Changes to the DB are triggered by #3644.
 * [#3790](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3790)
 * [#3792](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3792) Added the `_ERR_TYPE` predefine property
 * [#3795](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3795)
+* [#3816](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3816)
+* [#3817](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3817)
+* [#3818](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3818)
+* [#3819](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3819)
+* [#3821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3821)
 
 ## Bug fixes
 
@@ -81,7 +89,7 @@ Changes to the DB are triggered by #3644.
 
 ## Breaking changes and deprecations
 
-...
+* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808)
 
 ## Other changes
 
@@ -91,7 +99,7 @@ Changes to the DB are triggered by #3644.
 * [#3675](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3675) Support definition of field index type
 * [#3682](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3682) Removed `IsFileCacheable` hook usage
 * [#3683](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3683) Added the `SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete` hook
-* [#3685](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3685) Replaced qTip with tippy.js (3.4+) 
+* [#3685](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3685) Replaced qTip with tippy.js (3.4+) (#3811, #3812, #3813)
 * [#3712](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3712) Uses `smw_rev` field to check if an update is skippable
 * [#3721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3721) Added index hint for page types
 * [#3723](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3723) Added prefetch support for the property value list retrievable
@@ -101,7 +109,10 @@ Changes to the DB are triggered by #3644.
 * [#3770](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3770) Extended `ParserAfterTidy` hook event listening
 * [#3780](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3780) Added `Database::beginSectionTransaction` due to MW 1.33
 * [#3801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3801) Class and namespace reorg
-* [#3792](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3792) Added the `ProcessingError` interface to describe  error types 
+* [#3792](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3792) Added the `ProcessingError` interface to describe  error types
+* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808)
+* [#3807](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Added `SMW::Event::RegisterEventListeners` hook
+* [#3815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3815)
 
 ## Contributors
 
