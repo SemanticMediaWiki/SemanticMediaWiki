@@ -166,6 +166,7 @@ return [
 		);
 
 		$constraintSchemaValueValidator = new ConstraintSchemaValueValidator(
+			$containerBuilder->singleton( 'ConstraintFactory' )->newConstraintCheckRunner(),
 			$containerBuilder->singleton( 'SchemaFactory' )->newSchemaFinder( $store )
 		);
 

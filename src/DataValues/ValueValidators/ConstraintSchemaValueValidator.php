@@ -7,6 +7,8 @@ use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Schema\SchemaFinder;
+use SMW\Property\Constraint\ConstraintCheckRunner;
+use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 
 /**
  * @private
@@ -17,6 +19,11 @@ use SMW\Schema\SchemaFinder;
  * @author mwjames
  */
 class ConstraintSchemaValueValidator implements ConstraintValueValidator {
+
+	/**
+	 * @var ConstraintCheckRunner
+	 */
+	private $constraintCheckRunner;
 
 	/**
 	 * @var SchemaFinder
@@ -51,9 +58,11 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	/**
 	 * @since 3.1
 	 *
+	 * @param ConstraintCheckRunner $schemaFinder
 	 * @param SchemaFinder $schemaFinder
 	 */
-	public function __construct( SchemaFinder $schemaFinder ) {
+	public function __construct( ConstraintCheckRunner $constraintCheckRunner, SchemaFinder $schemaFinder ) {
+		$this->constraintCheckRunner = $constraintCheckRunner;
 		$this->schemaFinder = $schemaFinder;
 	}
 
@@ -102,6 +111,27 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 		if ( $schemaList === null ) {
 			return;
 		}
+
+		$this->constraintCheckRunner->load(
+			$key,
+			$schemaList
+		);
+
+		$this->constraintCheckRunner->check( $dataValue );
+		$this->hasConstraintViolation = $this->constraintCheckRunner->hasViolation();
+
+		if ( $this->constraintCheckRunner->hasDeferrableConstraint() ) {
+			$this->triggerDeferredCheck( $dataValue->getContextPage() );
+		}
+	}
+
+	private function triggerDeferredCheck( $contextPage ) {
+
+		if ( $contextPage === null || $this->isCommandLineMode ) {
+			return;
+		}
+
+		DeferredConstraintCheckUpdateJob::pushJob( $contextPage->getTitle() );
 	}
 
 }
