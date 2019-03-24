@@ -42,6 +42,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $logger;
 	private $schemaFactory;
+	private $entityCache;
 
 	protected function setUp() {
 		parent::setUp();
@@ -72,6 +73,10 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( null )
 			->getMock();
 
+		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->callbackContainerFactory = new CallbackContainerFactory();
 		$this->servicesFileDir = $GLOBALS['smwgServicesFileDir'];
 	}
@@ -95,6 +100,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
 		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
 		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
+		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'DataValueServices.php' );
 
@@ -183,6 +189,12 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			[],
 			TimeValueFormatter::class
 		];
+
+		$provider[] = array(
+			'UnitConverter',
+			[],
+			'\SMW\DataValues\Number\UnitConverter'
+		);
 
 		return $provider;
 	}

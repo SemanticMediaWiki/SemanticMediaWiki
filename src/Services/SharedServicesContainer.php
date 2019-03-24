@@ -204,7 +204,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$containerBuilder->registerCallback( 'EntityCache', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'EntityCache', '\SMW\EntityCache' );
-			return new EntityCache( $containerBuilder->singleton( 'Cache' ) );
+			return new EntityCache( $containerBuilder->singleton( 'Cache', $GLOBALS['smwgMainCacheType'] ) );
 		} );
 
 		/**

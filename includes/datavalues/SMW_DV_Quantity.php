@@ -171,18 +171,11 @@ class SMWQuantityValue extends SMWNumberValue {
 			return;
 		}
 
-		$unitConverter = new UnitConverter( $this );
-		$unitConverter->initConversionData( $this->m_property );
+		$unitConverter = $this->dataValueServiceFactory->getUnitConverter();
 
-		if ( $unitConverter->getErrors() !== [] ) {
-			foreach ( $unitConverter->getErrors() as $error ) {
-				$this->addErrorMsg(
-					$error,
-					Message::TEXT,
-					Message::USER_LANGUAGE
-				);
-			}
-		}
+		$unitConverter->loadConversionData(
+			$this
+		);
 
 		$this->m_unitids = $unitConverter->getUnitIds();
 		$this->m_unitfactors = $unitConverter->getUnitFactors();
