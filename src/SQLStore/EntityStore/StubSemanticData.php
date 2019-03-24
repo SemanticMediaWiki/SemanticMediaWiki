@@ -11,6 +11,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
 use SMWDataItem as DataItem;
 use SMWSemanticData as SemanticData;
+use SMW\MediaWiki\LinkBatch;
 
 /**
  * This class provides a subclass of SemanticData that can store prefetched values
@@ -174,6 +175,14 @@ class StubSemanticData extends SemanticData {
 			}
 
 			unset( $this->mStubPropVals[$property->getKey()] );
+			$linkBatch = LinkBatch::singleton();
+
+			if ( $propertyDiId === DataItem::TYPE_WIKIPAGE ) {
+				$linkBatch->addFromList( $this->mPropVals[$property->getKey()] );
+			}
+
+			$linkBatch->add( $property->getDIWikiPage() );
+			$linkBatch->execute();
 		}
 
 		return parent::getPropertyValues( $property );
@@ -308,6 +317,7 @@ class StubSemanticData extends SemanticData {
 	 */
 	public function clear() {
 		$this->mStubPropVals = [];
+		LinkBatch::reset();
 		parent::clear();
 	}
 
