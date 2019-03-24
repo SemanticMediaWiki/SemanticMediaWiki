@@ -50,7 +50,11 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->canCheckDependencies( false );
+		$instance->setCheckDependencies( false );
+
+		$this->assertFalse(
+			$instance->canCheckDependencies()
+		);
 
 		$this->assertFalse(
 			$instance->hasArchaicDependencies( $subject )
@@ -101,7 +105,11 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->canCheckDependencies( true );
+		$instance->setCheckDependencies( true );
+
+		$this->assertTrue(
+			$instance->canCheckDependencies()
+		);
 
 		$this->assertTrue(
 			$instance->hasArchaicDependencies( $subject )

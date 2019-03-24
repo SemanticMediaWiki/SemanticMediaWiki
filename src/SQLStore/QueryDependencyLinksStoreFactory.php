@@ -37,7 +37,7 @@ class QueryDependencyLinksStoreFactory {
 			$applicationFactory->getStore()
 		);
 
-		$dependencyLinksValidator->canCheckDependencies(
+		$dependencyLinksValidator->setCheckDependencies(
 			$applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
 		);
 

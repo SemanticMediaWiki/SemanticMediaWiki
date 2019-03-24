@@ -47,8 +47,17 @@ class DependencyLinksValidator {
 	 *
 	 * @param boolean $checkDependencies
 	 */
-	public function canCheckDependencies( $checkDependencies ) {
+	public function setCheckDependencies( $checkDependencies ) {
 		$this->checkDependencies = (bool)$checkDependencies;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function canCheckDependencies() {
+		return $this->checkDependencies;
 	}
 
 	/**
