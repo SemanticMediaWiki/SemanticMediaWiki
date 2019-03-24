@@ -29,6 +29,11 @@ class ItemListBuilder {
 	private $languageCode = 'en';
 
 	/**
+	 * @var boolean
+	 */
+	private $isRTL = false;
+
+	/**
 	 * @var integer
 	 */
 	private $listLimit = 0;
@@ -69,6 +74,15 @@ class ItemListBuilder {
 	 */
 	public function setLanguageCode( $languageCode ) {
 		$this->languageCode = $languageCode;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $isRTL
+	 */
+	public function isRTL( $isRTL ) {
+		$this->isRTL = (bool)$isRTL;
 	}
 
 	/**
@@ -151,6 +165,10 @@ class ItemListBuilder {
 
 		$colsListBuilder = new ColsListBuilder(
 			$this->store
+		);
+
+		$colsListBuilder->isRTL(
+			$this->isRTL
 		);
 
 		if ( $this->checkProperty ) {

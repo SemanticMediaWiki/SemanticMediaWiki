@@ -75,4 +75,18 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsRTL() {
+
+		$instance = new HtmlTabs();
+		$instance->isRTL( true );
+
+		$instance->tab( 'foo', 'FOO' );
+		$instance->content( 'foo', '< ... bar ... >' );
+
+		$this->assertContains(
+			'<div class="smw-tabs" dir="rtl">',
+			$instance->buildHTML()
+		);
+	}
+
 }

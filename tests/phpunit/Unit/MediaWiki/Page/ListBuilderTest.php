@@ -102,7 +102,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValidator->assertThatStringContains(
 			[
-				'<div class="smw-columnlist-container" dir="ltr"><div class="smw-column" style="width:100%;" dir="ltr">',
+				'<div class="smw-columnlist-container" dir="ltr"><div class="smw-column-responsive" style="width:100%;columns:1 20em;" dir="ltr">',
 				'<div class="smw-column-header">F</div>',
 				'<ul><li>Foo&#160;<span class="smwbrowse">'
 			],
@@ -128,7 +128,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$stringValidator->assertThatStringContains(
 			[
-				'<div class="smw-columnlist-container" dir="ltr"><div class="smw-column" style="width:100%;" dir="ltr">',
+				'<div class="smw-columnlist-container" dir="ltr"><div class="smw-column-responsive" style="width:100%;columns:1 20em;" dir="ltr">',
 				'<ul><li>Bar</li></ul></div>'
 			],
 			$instance->getColumnList( [ DIWikiPage::newFromText( 'Foo' ) ] )

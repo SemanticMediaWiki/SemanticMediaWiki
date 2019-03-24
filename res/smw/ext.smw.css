@@ -333,17 +333,15 @@ label.smw-form-checkbox {
 	font-weight: bold;
 	font-size: 1.17em;
 	line-height: 1.6;
-	margin-top: 0.3em;
+	margin-top: 0.5em;
 	margin-bottom: 0;
 	padding-bottom: 0;
 	color: black;
 	overflow: hidden;
-	padding-top: .5em;
 }
 
-.smw-column-header:first-child {
+.smw-column-header:first-of-type {
 	margin-top: 0em;
-	padding-top: 0em;
 }
 
 .smw-column {
@@ -379,12 +377,12 @@ label.smw-form-checkbox {
 	float: right;
 }
 
-.smw-column-responsive[dir="rtl"] {
+.smw-column-responsive[dir="rtl"], .smw-column-twofold-responsive[dir="rtl"] {
 	float: right;
 }
 
 .smw-columnlist-container .smw-column-responsive {
-	margin-bottom: -2em;
+	margin-bottom: -1em;
 }
 
 .smw-note {

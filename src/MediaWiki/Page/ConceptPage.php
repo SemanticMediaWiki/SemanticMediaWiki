@@ -88,6 +88,7 @@ class ConceptPage extends Page {
 
 		// Make navigation point to the result list.
 		$this->mTitle->setFragment( '#smw-result' );
+		$isRTL = $context->getLanguage()->isRTL();
 
 		$titleText = htmlspecialchars( $this->mTitle->getText() );
 		$resultCount = count( $diWikiPages );
@@ -124,10 +125,19 @@ class ConceptPage extends Page {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
 
+
+		$htmlTabs->isRTL(
+			$isRTL
+		);
+
 		if ( $this->mTitle->exists() ) {
 
 			$listBuilder = new ListBuilder(
 				$store
+			);
+
+			$listBuilder->isRTL(
+				$isRTL
 			);
 
 			$html = $navigationLinks . $listBuilder->getColumnList( $diWikiPages );

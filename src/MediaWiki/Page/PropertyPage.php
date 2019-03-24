@@ -163,7 +163,7 @@ class PropertyPage extends Page {
 		}
 
 		$context = $this->getContext();
-		$languageCode = $context->getLanguage()->getCode();
+		$language = $context->getLanguage();
 
 		$html = '';
 		$matches = [];
@@ -179,8 +179,12 @@ class PropertyPage extends Page {
 			$this->store
 		);
 
+		$this->itemListBuilder->isRTL(
+			$language->isRTL()
+		);
+
 		$this->itemListBuilder->setLanguageCode(
-			$languageCode
+			$language->getCode()
 		);
 
 		$this->itemListBuilder->isUserDefined(
@@ -200,7 +204,11 @@ class PropertyPage extends Page {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'property' );
 
-		$html = $this->makeValueList( $languageCode );
+		$htmlTabs->isRTL(
+			$language->isRTL()
+		);
+
+		$html = $this->makeValueList();
 		$isFirst = $html === '';
 
 		$htmlTabs->tab( 'smw-property-value', $this->msg( 'smw-property-tab-usage' ) . $this->getCount(), [ 'hide' => $html === '' ] );
@@ -224,7 +232,12 @@ class PropertyPage extends Page {
 		list( $html, $itemCount ) = $this->makeItemList( 'error', '_ERRP', false );
 		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
+		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [
+				'hide' => $html === '',
+				'class' => 'smw-tab-warning'
+			]
+		);
+
 		$htmlTabs->content( 'smw-property-errp', $html );
 
 		// Constraint schema
@@ -337,16 +350,21 @@ class PropertyPage extends Page {
 		return [ $html, $itemCount ];
 	}
 
-	private function makeValueList( $languageCode ) {
+	private function makeValueList() {
 
 		$request = $this->getContext()->getRequest();
+		$language = $this->getContext()->getLanguage();
 
 		$valueListBuilder = new ValueListBuilder(
 			$this->store
 		);
 
+		$valueListBuilder->isRTL(
+			$language->isRTL()
+		);
+
 		$valueListBuilder->setLanguageCode(
-			$languageCode
+			$language->getCode()
 		);
 
 		$valueListBuilder->setPagingLimit(
