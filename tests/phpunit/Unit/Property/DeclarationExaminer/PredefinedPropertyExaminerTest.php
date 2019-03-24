@@ -107,4 +107,36 @@ class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGeoProperty_MissingMapsExtension() {
+
+		if ( defined( 'SM_VERSION' ) ) {
+			$this->markTestSkipped( 'Skipping test because the Maps extension is installed!' );
+		}
+
+		$this->semanticData->expects( $this->any() )
+			->method( 'hasProperty' )
+			->will( $this->returnValue( false ) );
+
+		$this->declarationExaminer->expects( $this->any() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $this->semanticData ) );
+
+		$dataItemFactory = new DataItemFactory();
+
+		$instance = new PredefinedPropertyExaminer(
+			$this->declarationExaminer
+		);
+
+		$property = $dataItemFactory->newDIProperty( '_geo' );
+
+		$instance->check(
+			$property
+		);
+
+		$this->assertContains(
+			'["error","smw-property-req-violation-missing-maps-extension","Geographic coordinates"]',
+			$instance->getMessagesAsString()
+		);
+	}
+
 }
