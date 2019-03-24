@@ -16,6 +16,7 @@ use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 use SMW\Utils\NextPager;
 use SMWDataItem as DataItem;
+use SMWDITime as DITime;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 use SMWPageLister as PageLister;
@@ -55,6 +56,11 @@ class ValueListBuilder {
 	private $languageCode = 'en';
 
 	/**
+	 * @var boolean
+	 */
+	private $localTimeOffset = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
@@ -88,6 +94,15 @@ class ValueListBuilder {
 	 */
 	public function setLanguageCode( $languageCode ) {
 		$this->languageCode = $languageCode;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $localTimeOffset
+	 */
+	public function applyLocalTimeOffset( $localTimeOffset ) {
+		$this->localTimeOffset = $localTimeOffset;
 	}
 
 	/**
@@ -254,6 +269,8 @@ class ValueListBuilder {
 		$html = '';
 		$prev_start_char = 'None';
 
+		$dataValueFactory = DataValueFactory::getInstance();
+
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $this->maxPropertyValues;
 
@@ -270,7 +287,7 @@ class ValueListBuilder {
 			$diWikiPage = $diWikiPages[$index];
 			$hash = $diWikiPage->getHash();
 
-			$dvWikiPage = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPage, null );
+			$dvWikiPage = $dataValueFactory->newDataValueByItem( $diWikiPage, null );
 			$values = [];
 
 			$sortKey = $this->store->getWikiPageSortKey( $diWikiPage );
@@ -306,8 +323,6 @@ class ValueListBuilder {
 				$values = iterator_to_array( $values );
 			}
 
-			$hasLocalTimeOffsetPreference = Localizer::getInstance()->hasLocalTimeOffsetPreference();
-
 			$i = 0;
 			$pvCells = '';
 
@@ -318,11 +333,21 @@ class ValueListBuilder {
 				$i++;
 
 				if ( $i < $this->maxPropertyValues + 1 ) {
-					$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $di, $property );
+					$dataValue = $dataValueFactory->newDataValueByItem( $di, $property );
+
+					$dataValue->setOption(
+						$dataValue::OPT_USER_LANGUAGE,
+						$this->languageCode
+					);
+
 					$outputFormat = $dataValue->getOutputFormat();
 
 					if ( $outputFormat === false ) {
-						$outputFormat = 'LOCL' . ( $hasLocalTimeOffsetPreference ? '#TO' : '' );
+						$outputFormat = 'LOCL';
+					}
+
+					if ( $di instanceof DITime && $this->localTimeOffset ) {
+						$outputFormat .= '#TO';
 					}
 
 					$dataValue->setOutputFormat( $outputFormat );
