@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore\EntityStore\DIHandlers;
+namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

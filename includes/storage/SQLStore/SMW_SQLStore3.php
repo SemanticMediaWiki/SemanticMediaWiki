@@ -103,9 +103,9 @@ class SMWSQLStore3 extends SMWStore {
 	private $propertyTableIdReferenceFinder;
 
 	/**
-	 * @var DataItemHandlerDispatcher
+	 * @var dataItemHandlerFactory
 	 */
-	private $dataItemHandlerDispatcher;
+	private $dataItemHandlerFactory;
 
 	/**
 	 * @var EntityLookup
@@ -162,11 +162,11 @@ class SMWSQLStore3 extends SMWStore {
 	 */
 	public function getDataItemHandlerForDIType( $diType ) {
 
-		if ( $this->dataItemHandlerDispatcher === null ) {
-			$this->dataItemHandlerDispatcher = $this->factory->newDataItemHandlerDispatcher( $this );
+		if ( $this->dataItemHandlerFactory === null ) {
+			$this->dataItemHandlerFactory = $this->factory->newDataItemHandlerFactory( $this );
 		}
 
-		return $this->dataItemHandlerDispatcher->getHandlerByType( $diType );
+		return $this->dataItemHandlerFactory->getHandlerByType( $diType );
 	}
 
 ///// Reading methods /////

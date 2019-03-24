@@ -14,7 +14,7 @@ use SMW\Site;
 use SMW\SortLetter;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
-use SMW\SQLStore\EntityStore\DataItemHandlerDispatcher;
+use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\CacheWarmer;
@@ -449,21 +449,21 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItemHandlerDispatcher
+	 * @return DataItemHandlerFactory
 	 */
-	public function newDataItemHandlerDispatcher() {
+	public function newDataItemHandlerFactory() {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$dataItemHandlerDispatcher = new DataItemHandlerDispatcher(
+		$dataItemHandlerFactory = new DataItemHandlerFactory(
 			$this->store
 		);
 
-		$dataItemHandlerDispatcher->setFieldTypeFeatures(
+		$dataItemHandlerFactory->setFieldTypeFeatures(
 			$settings->get( 'smwgFieldTypeFeatures' )
 		);
 
-		return $dataItemHandlerDispatcher;
+		return $dataItemHandlerFactory;
 	}
 
 	/**
