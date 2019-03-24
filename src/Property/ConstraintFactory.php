@@ -5,7 +5,9 @@ namespace SMW\Property;
 use SMW\Property\Constraint\ConstraintCheckRunner;
 use SMW\Property\Constraint\ConstraintRegistry;
 use SMW\Property\Constraint\Constraints\NullConstraint;
+use SMW\Property\Constraint\ConstraintSchemaCompiler;
 use SMW\Site;
+use SMW\Store;
 use SMW\ApplicationFactory;
 
 /**
@@ -52,6 +54,26 @@ class ConstraintFactory {
 	 */
 	public function newNullConstraint() {
 		return new NullConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 *
+	 * @return ConstraintSchemaCompiler
+	 */
+	public function newConstraintSchemaCompiler( Store $store ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$schemaFactory = $applicationFactory->create( 'SchemaFactory');
+
+		$constraintSchemaCompiler = new ConstraintSchemaCompiler(
+			$schemaFactory->newSchemaFinder( $store ),
+			$applicationFactory->getPropertySpecificationLookup()
+		);
+
+		return $constraintSchemaCompiler;
 	}
 
 }

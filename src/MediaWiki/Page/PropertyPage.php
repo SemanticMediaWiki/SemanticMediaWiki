@@ -18,6 +18,7 @@ use SMW\StringCondition;
 use Title;
 use SMW\Utils\HtmlTabs;
 use SMW\Property\DeclarationExaminerFactory;
+use SMW\Property\Constraint\ConstraintSchemaCompiler;
 
 /**
  * @license GNU GPL v2+
@@ -226,6 +227,28 @@ class PropertyPage extends Page {
 		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [ 'hide' => $html === '', 'class' => 'smw-tab-warning' ] );
 		$htmlTabs->content( 'smw-property-errp', $html );
 
+		// Constraint schema
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$constraintSchemaCompiler = $applicationFactory->create( 'ConstraintFactory' )->newConstraintSchemaCompiler(
+			$this->store
+		);
+
+		$html = $constraintSchemaCompiler->prettify(
+			$constraintSchemaCompiler->compileConstraintSchema( $this->property )
+		);
+
+		$isFirst = $isFirst && $html === '';
+
+		$htmlTabs->tab( 'smw-property-constraint', $this->msg( 'smw-property-tab-constraint-schema' ), [
+				'hide' => $html === '',
+				'title' => $this->msg( 'smw-property-tab-constraint-schema-title' )
+			]
+		);
+
+		$htmlTabs->content( 'smw-property-constraint', "<pre>$html</pre>" );
+
+		// ... more
 		if ( isset( $matches[2] ) && $matches[2] !== [] ) {
 			$html = "<div>" . implode('</div><div>', $matches[2] ) . "</div>";
 		} else {

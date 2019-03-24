@@ -55,6 +55,20 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructConstraintSchemaCompiler() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new ConstraintFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Property\Constraint\ConstraintSchemaCompiler',
+			$instance->newConstraintSchemaCompiler( $store )
+		);
+	}
+
 	/**
 	 * @dataProvider constraintByClass
 	 */

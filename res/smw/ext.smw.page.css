@@ -352,6 +352,7 @@
 }
 
 .smw-property #tab-smw-property-value:checked ~ #tab-content-smw-property-value,
+.smw-property #tab-smw-property-constraint:checked ~ #tab-content-smw-property-constraint,
 .smw-property #tab-smw-property-subp:checked ~ #tab-content-smw-property-subp,
 .smw-property #tab-smw-property-errp:checked ~ #tab-content-smw-property-errp,
 .smw-property #tab-smw-property-redi:checked ~ #tab-content-smw-property-redi,
@@ -376,6 +377,10 @@
 .smw-property input.nav-tab:checked + label.nav-label.smw-tab-spec,
 .smw-concept input.nav-tab:checked + label.nav-label.smw-tab-spec {
     border-top: 2px solid orange;
+}
+
+.smw-property input.nav-tab:checked + label#tab-label-smw-property-constraint.nav-label {
+	border-top: 2px solid #42c0fb;
 }
 
 /**
