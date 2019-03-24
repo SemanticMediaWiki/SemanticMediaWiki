@@ -58,6 +58,11 @@ class ValueListBuilder {
 	/**
 	 * @var boolean
 	 */
+	private $isRTL = false;
+
+	/**
+	 * @var boolean
+	 */
 	private $localTimeOffset = false;
 
 	/**
@@ -94,6 +99,15 @@ class ValueListBuilder {
 	 */
 	public function setLanguageCode( $languageCode ) {
 		$this->languageCode = $languageCode;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $isRTL
+	 */
+	public function isRTL( $isRTL ) {
+		$this->isRTL = (bool)$isRTL;
 	}
 
 	/**
@@ -385,7 +399,7 @@ class ValueListBuilder {
 			[
 				'class' => "smw-property-page-results",
 				'style' => "width: 100%;"
-			]
+			] + ( $this->isRTL ? [ 'dir' => 'rtl' ] : [] )
 		);
 	}
 

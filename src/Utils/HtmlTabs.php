@@ -38,6 +38,20 @@ class HtmlTabs {
 	private $group = 'tabs';
 
 	/**
+	 * @var boolean
+	 */
+	private $isRTL = false;
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isRTL
+	 */
+	public function isRTL( $isRTL ) {
+		$this->isRTL = (bool)$isRTL;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $activeTab
@@ -71,6 +85,10 @@ class HtmlTabs {
 		$this->contents = [];
 
 		$attributes = $this->mergeAttributes( 'smw-tabs', $attributes );
+
+		if ( $this->isRTL ) {
+			$attributes['dir'] = 'rtl';
+		}
 
 		return Html::rawElement(
 			'div',

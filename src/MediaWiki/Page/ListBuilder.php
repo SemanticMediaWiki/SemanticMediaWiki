@@ -143,19 +143,18 @@ class ListBuilder {
 	 *
 	 * @return string
 	 */
-	public function getColumnList( array $dataItems ) {
+	public function getColumnList( array $dataItems, $colsThreshold = 10 ) {
 
 		$htmlColumns = new HtmlColumns();
 
-		if ( count( $dataItems ) > 10 ) {
-			$htmlColumns->setColumnClass( 'smw-column-responsive' );
-		}
+		$htmlColumns->setResponsiveCols();
+		$htmlColumns->setResponsiveColsThreshold( $colsThreshold );
+		$htmlColumns->setColumns( 2 );
+		$htmlColumns->isRTL( $this->isRTL );
 
 		$htmlColumns->setContinueAbbrev(
 			Message::get( 'listingcontinuesabbrev', Message::PARSE, Message::USER_LANGUAGE )
 		);
-
-		$htmlColumns->setColumns( 1 );
 
 		$htmlColumns->setContents(
 			$this->buildList( $dataItems ),

@@ -139,6 +139,10 @@ class SpecialConcepts extends \SpecialPage {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
 
+		$htmlTabs->isRTL(
+			$this->getLanguage()->isRTL()
+		);
+
 		$html = Html::rawElement(
 				'div',
 				[ 'id' => 'mw-pages'],

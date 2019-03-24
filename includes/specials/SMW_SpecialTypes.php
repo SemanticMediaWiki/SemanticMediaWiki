@@ -124,7 +124,7 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setColumns( 1 );
-		$htmlColumns->addContents( $list, HtmlColumns::INDX_CONTENT );
+		$htmlColumns->addContents( $list, HtmlColumns::INDEXED_LIST );
 
 		$list = Html::rawElement(
 			'div',
@@ -139,9 +139,10 @@ class SMWSpecialTypes extends SpecialPage {
 		}
 
 		$htmlColumns = new HtmlColumns();
-		$htmlColumns->setColumnClass( 'smw-column-responsive' );
-		$htmlColumns->setColumns( 1 );
-		$htmlColumns->addContents( $types, HtmlColumns::LIST_CONTENT );
+		$htmlColumns->setResponsiveCols();
+		$htmlColumns->setColumns( 2 );
+		$htmlColumns->isRTL( $this->getLanguage()->isRTL() );
+		$htmlColumns->addContents( $types, HtmlColumns::PLAIN_LIST );
 
 		$ids = Html::rawElement(
 			'div',
@@ -289,6 +290,10 @@ class SMWSpecialTypes extends SpecialPage {
 			$store
 		);
 
+		$listBuilder->isRTL(
+			$this->getLanguage()->isRTL()
+		);
+
 		$listBuilder->setItemFormatter( [ $this, 'formatItem' ] );
 
 		$html .= $listBuilder->getColumnList(
@@ -299,6 +304,10 @@ class SMWSpecialTypes extends SpecialPage {
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'type' );
+
+		$htmlTabs->isRTL(
+			$this->getLanguage()->isRTL()
+		);
 
 		$htmlTabs->setActiveTab(
 			$errors !==  null ? 'smw-type-errors' : 'smw-type-list'
