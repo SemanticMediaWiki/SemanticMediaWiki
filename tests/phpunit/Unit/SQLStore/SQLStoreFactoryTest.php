@@ -302,6 +302,20 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructCacheWarmer() {
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\CacheWarmer',
+			$instance->newCacheWarmer( $idCacheManager )
+		);
+	}
+
 	public function testCanConstructIdChanger() {
 
 		$instance = new SQLStoreFactory( $this->store );

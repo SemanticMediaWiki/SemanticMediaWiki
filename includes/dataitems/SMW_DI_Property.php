@@ -121,6 +121,15 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getSha1() {
+		return sha1( json_encode( [ $this->m_key, SMW_NS_PROPERTY, '', '' ] ) );
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSortKey() {
