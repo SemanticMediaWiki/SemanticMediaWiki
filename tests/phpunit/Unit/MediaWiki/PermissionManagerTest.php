@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\MediaWiki;
 
-use SMW\PermissionPthValidator;
+use SMW\MediaWiki\PermissionManager;
 use Title;
 
 /**
- * @covers \SMW\PermissionPthValidator
+ * @covers \SMW\MediaWiki\PermissionManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
+class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $protectionValidator;
 
@@ -29,8 +29,8 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			PermissionPthValidator::class,
-			new PermissionPthValidator( $this->protectionValidator  )
+			PermissionManager::class,
+			new PermissionManager( $this->protectionValidator  )
 		);
 	}
 
@@ -44,7 +44,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -77,7 +77,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -134,7 +134,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -178,7 +178,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = '';
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -217,7 +217,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -261,7 +261,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -303,7 +303,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -347,7 +347,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -392,7 +392,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
@@ -439,7 +439,7 @@ class PermissionPthValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionPthValidator(
+		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 

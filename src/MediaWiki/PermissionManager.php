@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
 
 use SMW\DataValues\AllowsPatternValue;
 use SMW\Protection\ProtectionValidator;
@@ -13,7 +13,7 @@ use User;
  *
  * @author mwjames
  */
-class PermissionPthValidator {
+class PermissionManager {
 
 	/**
 	 * @var ProtectionValidator
