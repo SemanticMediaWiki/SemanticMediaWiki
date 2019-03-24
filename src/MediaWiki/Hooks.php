@@ -975,9 +975,9 @@ class Hooks {
 	 */
 	public function onTitleQuickPermissions( $title, $user, $action, &$errors, $rigor, $short ) {
 
-		$permissionPthValidator = ApplicationFactory::getInstance()->singleton( 'PermissionPthValidator' );
+		$permissionManager = ApplicationFactory::getInstance()->singleton( 'PermissionManager' );
 
-		$ret = $permissionPthValidator->checkQuickPermission(
+		$ret = $permissionManager->checkQuickPermission(
 			$title,
 			$user,
 			$action,

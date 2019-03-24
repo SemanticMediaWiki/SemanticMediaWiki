@@ -30,7 +30,7 @@ use SMW\MediaWiki\TitleFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
-use SMW\PermissionPthValidator;
+use SMW\MediaWiki\PermissionManager;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\Property\AnnotatorFactory;
@@ -627,8 +627,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', '\SMW\Protection\ProtectionValidator' );
 
 			$protectionValidator = new ProtectionValidator(
-				$containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' ),
-				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( ProtectionValidator::POOLCACHE_ID )
+				$containerBuilder->singleton( 'Store' ),
+				$containerBuilder->singleton( 'EntityCache' )
 			);
 
 			$protectionValidator->setEditProtectionRight(
@@ -647,16 +647,16 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PermissionPthValidator
+		 * @var PermissionManager
 		 */
-		$containerBuilder->registerCallback( 'PermissionPthValidator', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PermissionPthValidator', '\SMW\PermissionPthValidator' );
+		$containerBuilder->registerCallback( 'PermissionManager', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PermissionManager', '\SMW\MediaWiki\PermissionManager' );
 
-			$permissionPthValidator = new PermissionPthValidator(
+			$permissionManager = new PermissionManager(
 				$containerBuilder->create( 'ProtectionValidator' )
 			);
 
-			return $permissionPthValidator;
+			return $permissionManager;
 		} );
 
 
