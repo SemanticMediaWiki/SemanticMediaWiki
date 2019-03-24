@@ -100,9 +100,63 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasIndicator( $title, $options )
 		);
 
+		$res = $instance->getIndicators();
+
 		$this->assertArrayHasKey(
 			'smw-es-replication',
-			$instance->getIndicators()
+			$res
+		);
+
+		$this->assertContains(
+			'data-subject="Foo#0##"',
+			$res['smw-es-replication']
+		);
+	}
+
+	public function testCheckReplicationIndicatorForPredefinedProperty() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->once() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Modification date' ) );
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+
+		$instance = new IndicatorProvider(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->canCheckReplication( true );
+
+		$options = [
+			'action' => 'foo',
+			'diff' => null
+		];
+
+		$this->assertTrue(
+			$instance->hasIndicator( $title, $options )
+		);
+
+		$res = $instance->getIndicators();
+
+		$this->assertArrayHasKey(
+			'smw-es-replication',
+			$res
+		);
+
+		$this->assertContains(
+			'data-subject="_MDAT#102##"',
+			$res['smw-es-replication']
 		);
 	}
 
