@@ -1534,11 +1534,13 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			return $this->markTestSkipped( "$handler not used" );
 		}
 
-		$eventhandler = [];
+		$eventListener = $this->getMockBuilder( '\Onoi\EventDispatcher\Listener\GenericCallbackEventListener' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $eventhandler ]
+			[ $eventListener ]
 		);
 
 		return $handler;

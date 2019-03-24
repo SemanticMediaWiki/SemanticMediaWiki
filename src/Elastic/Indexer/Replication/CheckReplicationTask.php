@@ -11,6 +11,7 @@ use SMW\Message;
 use SMW\EntityCache;
 use Html;
 use SMW\Utils\TemplateEngine;
+use Title;
 
 /**
  * @license GNU GPL v2+
@@ -71,7 +72,33 @@ class CheckReplicationTask extends Task {
 	 * @return string
 	 */
 	public static function makeCacheKey( $subject ) {
-		return EntityCache::makeCacheKey( 'es-replication-check', $subject->getHash() );
+
+		if ( $subject instanceof DIWikiPage ) {
+			$subject = $subject->getHash();
+		}
+
+		return EntityCache::makeCacheKey( 'es-replication-check', $subject );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	public function getReplicationFailures() {
+		return $this->entityCache->fetch( $this->makeCacheKey( 'CheckReplicationTask' ) );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title $title
+	 */
+	public function deleteReplicationTrail( Title $title ) {
+		$this->entityCache->deleteSub(
+			$this->makeCacheKey( 'CheckReplicationTask' ),
+			$this->makeCacheKey( DIWikiPage::newFromTitle( $title ) )
+		);
 	}
 
 	/**
@@ -175,8 +202,10 @@ class CheckReplicationTask extends Task {
 		if ( $html === '' ) {
 			$this->entityCache->save( $key, 'success', $this->cacheTTL );
 			$this->entityCache->associate( $subject, $key );
+			$this->entityCache->deleteSub( $this->makeCacheKey( 'CheckReplicationTask' ), $key );
 		} else {
 			$this->entityCache->delete( $key );
+			$this->entityCache->saveSub( $this->makeCacheKey( 'CheckReplicationTask' ), $key, $subject->getHash() );
 		}
 
 		return $this->wrapHTML( $html );

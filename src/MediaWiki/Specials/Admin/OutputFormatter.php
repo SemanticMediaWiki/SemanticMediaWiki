@@ -76,6 +76,15 @@ class OutputFormatter {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string|array $modules
+	 */
+	public function addModules( $modules ) {
+		$this->outputPage->addModules( $modules );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $html
