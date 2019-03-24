@@ -24,6 +24,18 @@ class LinkBatchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSingleton() {
+
+		$instance = LinkBatch::singleton();
+
+		$this->assertSame(
+			$instance,
+			LinkBatch::singleton()
+		);
+
+		$instance->reset();
+	}
+
 	public function testAdd_NoPage() {
 
 		$instance = new LinkBatch();

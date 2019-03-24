@@ -10,6 +10,7 @@ use SMW\DIProperty;
 use SMW\Message;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
+use SMW\Localizer;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use SMW\Store;
@@ -333,7 +334,12 @@ class PropertyPage extends Page {
 			$this->getOption( 'smwgMaxPropertyValues' )
 		);
 
+		$valueListBuilder->applyLocalTimeOffset(
+			Localizer::getInstance()->hasLocalTimeOffsetPreference( $this->getUser() )
+		);
+
 		$html = $valueListBuilder->createHtml(
+
 			$this->property,
 			$this->getDataItem(),
 			[

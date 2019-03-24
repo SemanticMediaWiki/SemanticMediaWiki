@@ -17,6 +17,11 @@ use SMW\DIWikiPage;
 class LinkBatch {
 
 	/**
+	 * @var LinkBatch
+	 */
+	private static $instance;
+
+	/**
 	 * @var []
 	 */
 	private $log = [];
@@ -33,6 +38,27 @@ class LinkBatch {
 	 */
 	public function __construct( \LinkBatch $linkBatch = null ) {
 		$this->linkBatch = $linkBatch;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return LinkBatch
+	 */
+	public static function singleton() {
+
+		if ( self::$instance === null ) {
+			self::$instance = new self( new \LinkBatch() );
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public static function reset() {
+		self::$instance = null;
 	}
 
 	/**

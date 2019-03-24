@@ -30,6 +30,8 @@ class FileIndexer {
 	use MessageReporterAwareTrait;
 	use LoggerAwareTrait;
 
+	const INGEST_RESPONSE = 'es.ingest.response';
+
 	/**
 	 * @var Indexer
 	 */
@@ -282,14 +284,24 @@ class FileIndexer {
 
 		$this->logger->info( $msg, $context );
 
+		// Store the response temporary to allow the `replication status` board
+		// to show whether some files had issues during the indexing and need
+		// intervention from a user
+		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
+		$key = $entityCache->makeCacheKey( $title, self::INGEST_RESPONSE );
+
+		$entityCache->save( $key, $context['response'] );
+		$entityCache->associate( $title, $key );
+
 		// Don't use the ElasticStore otherwise we index the added fields once more
 		// and hereby remove the content from the attachment! and start a circle
 		// since the annotation update can only happen after the information is
 		// retrieved from ES.
-		$this->addAnnotation(
-			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' ),
-			$dataItem
+		$store = ApplicationFactory::getInstance()->getStore(
+			'\SMW\SQLStore\SQLStore'
 		);
+
+		$this->addAnnotation( $store, $dataItem );
 	}
 
 	/**

@@ -127,6 +127,15 @@ abstract class SMWDataItem {
 	abstract public function getSerialization();
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getSha1() {
+		return sha1( $this->getSerialization() );
+	}
+
+	/**
 	 * Get a hash string for this data item. Might be overwritten in
 	 * subclasses to obtain shorter or more efficient hashes.
 	 *

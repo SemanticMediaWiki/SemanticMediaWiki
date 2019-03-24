@@ -293,6 +293,7 @@ final class Setup {
 			'smw.changePropagationDispatch' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
 			'smw.changePropagationUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
 			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
+			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
 			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
 			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
 

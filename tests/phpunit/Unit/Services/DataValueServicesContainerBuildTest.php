@@ -68,6 +68,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( null )
 			->getMock();
 
+		$this->constraintFactory = $this->getMockBuilder( '\SMW\Property\ConstraintFactory' )
+			->disableOriginalConstructor()
+			->setMethods( null )
+			->getMock();
+
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -94,6 +99,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'Store', $this->store );
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
 		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
+		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
 		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'DataValueServices.php' );

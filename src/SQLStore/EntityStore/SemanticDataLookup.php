@@ -132,16 +132,55 @@ class SemanticDataLookup {
 		}
 
 		$stubSemanticData = $this->newStubSemanticData( $dataItem );
+		$matchLimit = false;
 
-		$data = $this->fetchSemanticDataFromTable(
-			$id,
-			$dataItem,
-			$propTable,
-			$requestOptions
-		);
+		if ( $requestOptions !== null && $requestOptions->limit > 0 ) {
+			$matchLimit = true;
 
-		foreach ( $data as $d ) {
-			$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
+			// An external limit was set for a specific property?
+			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
+				if ( isset( $extraCondition['p_id'] ) ) {
+					$matchLimit = false;
+				}
+			}
+		}
+
+		// A request has set a limit on how many values should be retrieved, yet
+		// without specifying which property the limit is for it is assumed
+		// that for the referenced table (`$propTable`) to apply the limit to all
+		// available properties assigned to (`id`) and merge them into the
+		// `StubSemanticData`
+		if ( $matchLimit && !$propTable->isFixedPropertyTable() && $propTable->usesIdSubject() ) {
+			$res = $this->fetchPropertiesFromTable( $id, $propTable );
+			$opts = clone $requestOptions;
+
+			foreach ( $res as $row ) {
+
+				$opts->emptyExtraConditions();
+				$opts->addExtraCondition( [ 'p_id' => $row->p_id ] );
+
+				$data = $this->fetchSemanticDataFromTable(
+					$id,
+					$dataItem,
+					$propTable,
+					$opts
+				);
+
+				foreach ( $data as $d ) {
+					$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
+				}
+			}
+		} else {
+			$data = $this->fetchSemanticDataFromTable(
+				$id,
+				$dataItem,
+				$propTable,
+				$requestOptions
+			);
+
+			foreach ( $data as $d ) {
+				$stubSemanticData->addPropertyStubValue( reset( $d ), end( $d ) );
+			}
 		}
 
 		return $stubSemanticData;
@@ -317,7 +356,7 @@ class SemanticDataLookup {
 		$query->type( 'select' );
 		$query->table( $propTable->getName() );
 
-		// Restrict property only
+		// Restrict to property
 		if ( !$isSubject && !$propTable->isFixedPropertyTable() ) {
 			$query->condition( $query->eq( 'p_id', $id ) );
 		}
@@ -641,6 +680,32 @@ class SemanticDataLookup {
 				$result[$hash] = $valueKeys;
 			}
 		}
+	}
+
+	private function fetchPropertiesFromTable( $id, $propTable ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$query = $connection->newQuery();
+
+		$query->type( 'select' );
+		$query->table( $propTable->getName() );
+
+		$query->condition( $query->eq( 's_id', $id ) );
+
+		$query->join(
+			'INNER JOIN',
+			[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
+		);
+
+		$query->field( 'p_id' );
+
+		// Avoid displaying any property that have been marked deleted or outdated
+		$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
+		$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
+
+		$query->option( 'DISTINCT', true );
+
+		return $query->execute( __METHOD__ );
 	}
 
 	private function reportDuplicate( $propertykey, $valueKeys ) {

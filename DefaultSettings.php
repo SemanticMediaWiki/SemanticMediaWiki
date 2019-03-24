@@ -514,7 +514,7 @@ return [
 
 		// Special:Browse
 		'browse' => [
-			'valuelist.outgoing' => 200,
+			'valuelist.outgoing' => 30,
 			'valuelist.incoming' => 20,
 		]
 	],

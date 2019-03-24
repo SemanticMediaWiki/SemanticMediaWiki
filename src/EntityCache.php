@@ -70,6 +70,17 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
+	 *
+	 * @return boolean
+	 */
+	public function contains( $key ) {
+		return $this->cache->contains( $key );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
 	 * @param mixed $value
 	 */
 	public function fetch( $key ) {
@@ -92,7 +103,7 @@ class EntityCache {
 	 * @param string $key
 	 */
 	public function delete( $key ) {
-		 $this->cache->delete( $key );
+		$this->cache->delete( $key );
 	}
 
 	/**
@@ -131,6 +142,23 @@ class EntityCache {
 		}
 
 		$res[$sub] = $value;
+
+		$this->cache->save( $key, $res, $ttl );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param string $sub
+	 * @param mixed $value
+	 * @param integer $ttl
+	 */
+	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ) {
+
+		$res = [
+			md5( $sub ) => $value
+		];
 
 		$this->cache->save( $key, $res, $ttl );
 	}

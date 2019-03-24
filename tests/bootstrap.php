@@ -1,6 +1,7 @@
 <?php
 
 use SMW\MediaWiki\Connection\Sequence;
+use SMW\MediaWiki\Connection\CleanUpTables;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 
@@ -37,11 +38,19 @@ register_shutdown_function( function() {
 		return;
 	}
 
+	$connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
+
 	// Reset any sequence modified during the test
 	$sequence = new Sequence(
-		ApplicationFactory::getInstance()->getConnectionManager()->getConnection( 'mw.db' )
+		$connectionManager->getConnection( 'mw.db' )
 	);
 
 	$sequence->tablePrefix( '' );
 	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+
+	$cleanUpTables =  new CleanUpTables(
+		$connectionManager->getConnection( DB_MASTER )
+	);
+
+	$cleanUpTables->dropTables( 'sunittest_' );
 } );

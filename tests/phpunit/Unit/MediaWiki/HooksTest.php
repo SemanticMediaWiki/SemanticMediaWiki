@@ -1307,6 +1307,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'RejectParserCacheValue';
 
+		$parseOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -1339,11 +1343,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$value = '';
-		$popts = '';
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $value, $wikiPage, $popts ]
+			[ $value, $wikiPage, $parseOptions ]
 		);
 
 		return $handler;
@@ -1531,11 +1534,13 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			return $this->markTestSkipped( "$handler not used" );
 		}
 
-		$eventhandler = [];
+		$eventListener = $this->getMockBuilder( '\Onoi\EventDispatcher\Listener\GenericCallbackEventListener' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $eventhandler ]
+			[ $eventListener ]
 		);
 
 		return $handler;

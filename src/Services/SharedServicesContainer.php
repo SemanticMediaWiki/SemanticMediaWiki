@@ -42,6 +42,7 @@ use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Schema\SchemaFactory;
+use SMW\Property\ConstraintFactory;
 use SMW\Settings;
 use SMW\Options;
 use SMW\StoreFactory;
@@ -349,6 +350,14 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $schemaFactory;
+		} );
+
+		/**
+		 * @var ConstraintFactory
+		 */
+		$containerBuilder->registerCallback( 'ConstraintFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'ConstraintFactory', ConstraintFactory::class );
+			return new ConstraintFactory();
 		} );
 
 		/**

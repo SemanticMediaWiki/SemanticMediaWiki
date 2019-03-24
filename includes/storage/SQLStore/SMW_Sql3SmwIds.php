@@ -118,6 +118,11 @@ class SMWSql3SmwIds {
 	private $idCacheManager;
 
 	/**
+	 * @var CacheWarmer
+	 */
+	private $cacheWarmer;
+
+	/**
 	 * @var IdEntityFinder
 	 */
 	private $idEntityFinder;
@@ -963,87 +968,7 @@ class SMWSql3SmwIds {
 	 * @param array $list
 	 */
 	public function warmUpCache( $list = [] ) {
-
-		$hashList = [];
-
-		if ( $list instanceof \SMWQueryResult ) {
-			$list = $list->getResults();
-		}
-
-		if ( !$list instanceof \Iterator && !is_array( $list ) ) {
-			return;
-		}
-
-		foreach ( $list as $item ) {
-
-			$hash = null;
-
-			if ( $item instanceof DIWikiPage ) {
-				$hash = [
-					$item->getDBKey(),
-					(int)$item->getNamespace(),
-					$item->getInterwiki(),
-					$item->getSubobjectName()
-				];
-			}
-
-			if ( $item instanceof DIProperty ) {
-
-				// Avoid _SKEY as it is not used during an entity lookup to
-				// match an ID
-				if ( $item->getKey() === '_SKEY' ) {
-					continue;
-				}
-
-				$hash = [ $item->getKey(), SMW_NS_PROPERTY, '', '' ];
-			}
-
-			if ( $hash === null ) {
-				continue;
-			}
-
-			$hash = IdCacheManager::computeSha1( $hash );
-
-			if ( !$this->idCacheManager->hasCache( $hash ) ) {
-				$hashList[$hash] = true;
-			}
-		}
-
-		if ( $hashList === [] ) {
-			return;
-		}
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$rows = $connection->select(
-			SQLStore::ID_TABLE,
-			[
-				'smw_id',
-				'smw_title',
-				'smw_namespace',
-				'smw_iw',
-				'smw_subobject',
-				'smw_sortkey',
-				'smw_sort'
-			],
-			[
-				'smw_hash' => array_keys( $hashList )
-			],
-			__METHOD__
-		);
-
-		foreach ( $rows as $row ) {
-			$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
-
-			$this->idCacheManager->setCache(
-				$row->smw_title,
-				$row->smw_namespace,
-				$row->smw_iw,
-				$row->smw_subobject,
-				$row->smw_id,
-				$sortkey
-			);
-		}
+		$this->cacheWarmer->fillFromList( $list );
 	}
 
 	/**
@@ -1144,7 +1069,12 @@ class SMWSql3SmwIds {
 				'entity.sort' => self::MAX_CACHE_SIZE,
 				'entity.lookup' => 2000,
 				'table.hash' => self::MAX_CACHE_SIZE,
+				'warmup.byid' => self::MAX_CACHE_SIZE,
 			]
+		);
+
+		$this->cacheWarmer = $this->factory->newCacheWarmer(
+			$this->idCacheManager
 		);
 	}
 

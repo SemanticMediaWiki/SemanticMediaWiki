@@ -3,6 +3,7 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\ElasticFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\ElasticFactory
@@ -19,6 +20,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $outputFormatter;
 	private $conditionBuilder;
 	private $connection;
+	private $testEnvironment;
 
 	protected function setUp() {
 
@@ -45,6 +47,23 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $options ) );
+
+		$this->testEnvironment = new TestEnvironment();
+
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -151,11 +170,19 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructCheckReplicationTask() {
 
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\Replication\CheckReplicationTask',
-			$instance->newCheckReplicationTask()
+			$instance->newCheckReplicationTask( $store )
 		);
 	}
 
@@ -179,11 +206,19 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructInfoTaskHandler() {
 
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Admin\ElasticClientTaskHandler',
-			$instance->newInfoTaskHandler( $this->store, $this->outputFormatter )
+			$instance->newInfoTaskHandler( $store, $this->outputFormatter )
 		);
 	}
 
@@ -305,11 +340,41 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testOnRegisterEventListeners() {
 
 		$instance = new ElasticFactory();
-		$eventListener = null;
+
+		$eventListener = $this->getMockBuilder( '\Onoi\EventDispatcher\Listener\GenericCallbackEventListener' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->assertTrue(
 			$instance->onRegisterEventListeners( $eventListener )
 		);
+	}
+
+	public function testOnInvalidateEntityCache() {
+
+		$instance = new ElasticFactory();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$dispatchContext = $this->getMockBuilder( '\Onoi\EventDispatcher\DispatchContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dispatchContext->expects( $this->once() )
+			->method( 'get' )
+			->will( $this->returnValue( $title ) );
+
+		$instance->onInvalidateEntityCache( $dispatchContext );
 	}
 
 }

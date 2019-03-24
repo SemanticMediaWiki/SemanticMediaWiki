@@ -55,7 +55,7 @@ class PrefetchItemLookup {
 		// Help reduce the amount of queries by allowing to prefetch those
 		// links we know will be used for the display
 		if ( $this->linkBatch === null ) {
-			$this->linkBatch = new LinkBatch();
+			$this->linkBatch = LinkBatch::singleton();
 		}
 	}
 

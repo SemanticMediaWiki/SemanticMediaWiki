@@ -39,6 +39,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 
 		$this->checkMessages( $property );
 		$this->checkTypeDeclaration( $property );
+		$this->checkGeoProperty( $property );
 	}
 
 	private function checkMessages( $property ) {
@@ -112,6 +113,19 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 			'smw-property-req-violation-predefined-type',
 			$property->getCanonicalLabel(),
 			$prop->getCanonicalLabel()
+		];
+	}
+
+	private function checkGeoProperty( $property ) {
+
+		if ( $property->getKey() !== '_geo' || defined( 'SM_VERSION' ) ) {
+			return;
+		}
+
+		$this->messages[] = [
+			'error',
+			'smw-property-req-violation-missing-maps-extension',
+			$property->getLabel()
 		];
 	}
 
