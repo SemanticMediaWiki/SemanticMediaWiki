@@ -53,10 +53,6 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$this->connection->expects( $this->any() )
-			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
-
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -218,6 +214,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
+
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -278,6 +278,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
+
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new SemanticDataLookup(
@@ -335,6 +339,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
+
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
@@ -382,6 +390,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
 
 		$dataItem = DIWikiPage::newFromText( 'no_id_subject' );
 
@@ -481,6 +493,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
+
 		$dataItem = new DIBlob( __METHOD__ );
 
 		$requestOptions = new RequestOptions();
@@ -495,6 +511,76 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			"SELECT DISTINCT fooField AS v0 FROM bar_table WHERE (p_id='42') LIMIT 4",
 			$this->query->build()
+		);
+	}
+
+	public function testGetSemanticData_OnLimit() {
+
+		$query_1 = new \SMW\MediaWiki\Connection\Query( $this->connection );
+		$query_2 = new \SMW\MediaWiki\Connection\Query( $this->connection );
+
+		$row = new \stdClass;
+		$row->p_id = 9000;
+		$row->prop = 'FOO';
+		$row->v0 = '1001';
+
+		$this->dataItemHandler->expects( $this->any() )
+			->method( 'getFetchFields' )
+			->will( $this->returnValue( [ 'fooField' => 'fieldType' ] ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->any() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( false ) );
+
+		$propertyTable->expects( $this->any() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'getDIType' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'bar_table' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
+
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'query' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->onConsecutiveCalls( $query_1, $query_2 ) );
+
+		$dataItem = DIWikiPage::newFromText( 'Bar' );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( 4 );
+
+		$instance = new SemanticDataLookup(
+			$this->store
+		);
+
+		$instance->getSemanticData( 42, $dataItem, $propertyTable, $requestOptions );
+
+		$this->assertEquals(
+			"SELECT DISTINCT p_id FROM bar_table INNER JOIN smw_object_ids " .
+			"AS p ON p_id=p.smw_id WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete')",
+			$query_1->build()
+		);
+
+		$this->assertEquals(
+			"SELECT p.smw_title AS prop, fooField AS v0 FROM bar_table INNER JOIN smw_object_ids " .
+			"AS p ON p_id=p.smw_id WHERE (s_id='42') AND (p.smw_iw!=':smw') AND (p.smw_iw!=':smw-delete') AND (p_id='9000') LIMIT 4",
+			$query_2->build()
 		);
 	}
 
