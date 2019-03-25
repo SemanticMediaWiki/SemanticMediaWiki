@@ -47,7 +47,7 @@ abstract class TaskHandler {
 	 * @return boolean
 	 */
 	public function isEnabledFeature( $feature ) {
-		return $this->hasFeature( $feature );
+		return ( ( (int)$this->featureSet & $feature ) == $feature );
 	}
 
 	/**
