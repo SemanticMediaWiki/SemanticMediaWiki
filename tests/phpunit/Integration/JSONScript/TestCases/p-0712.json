@@ -32,7 +32,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<b>Parse 1 result:</b><br />Modify to link: <a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Test:P0712/1</a>",
-					"<b>Parse 2 result:</b><br />Modify to link: <a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Test:P0712/1</a><br/>As-is output:Test:P0712/1"
+					"<b>Parse 2 result:</b><br />Modify to link: <a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Test:P0712/1 </a><br />As-is output: Test:P0712/1"
 				]
 			}
 		},
@@ -43,7 +43,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<b>Parse 1 result:</b><br />Modify to link: [[<a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Displaytitle P0712</a>]]<br />",
-					"<b>Parse 2 result:</b><br />Modify to link: [[<ahref=\".*/Test:P0712/1\" title=\"Test:P0712/1\">Displaytitle P0712</a>]]"
+					"<b>Parse 2 result:</b><br />Modify to link: [[<a href=\".*/Test:P0712/1\" title=\"Test:P0712/1\">Displaytitle P0712</a> ]]"
 				]
 			}
 		}
