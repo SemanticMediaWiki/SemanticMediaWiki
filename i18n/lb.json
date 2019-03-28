@@ -7,6 +7,7 @@
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-error": "Feeler",
 	"smw-upgrade-error-title": "Feeler",
 	"smw-upgrade-error-why-title": "Firwat gesinn ech dëse Feeler?",
 	"smw-upgrade-error-how-title": "Wéi kann ech dëse Feeler flécken?",
@@ -218,6 +219,7 @@
 	"smw-admin-supplementary-elastic-indices-title": "Hiweiser",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistiken",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Aktualisatiounsintervall: $1",
+	"smw-admin-supplementary-elastic-replication-pages": "Säiten",
 	"smw_adminlinks_datastructure": "Datestruktur",
 	"smw_adminlinks_displayingdata": "Donnéeë weisen",
 	"smw_adminlinks_inlinequerieshelp": "Hëllef fir intern Ufroen",

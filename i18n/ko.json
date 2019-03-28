@@ -20,6 +20,7 @@
 		]
 	},
 	"smw-desc": "위키를 기계와 사람이 더 접근하기 쉽게 합니다 ([https://www.semantic-mediawiki.org/wiki/Help:User_manual 온라인 설명서])",
+	"smw-error": "오류",
 	"smw-upgrade-error-title": "오류",
 	"smw-upgrade-error-why-title": "이 페이지가 왜 표시됩니까?",
 	"smw-upgrade-error-how-title": "이 오류를 어떻게 수정합니까?",
@@ -371,6 +372,8 @@
 	"smw-admin-supplementary-elastic-statistics-title": "통계",
 	"smw-admin-supplementary-elastic-status-replication": "레플리케이션 상태",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "새로 고침 주기: $1",
+	"smw-admin-supplementary-elastic-replication-files": "파일",
+	"smw-admin-supplementary-elastic-replication-pages": "페이지",
 	"smw-list-count": "이 목록은 {{PLURAL:$1|항목}} $1개를 갖고 있습니다.",
 	"smw-property-label-similarity-title": "속성 레이블 유사성 보고서",
 	"smw-property-label-similarity-intro": "<u>$1</u> 문서는 기존 속성 레이블의 유사성을 계산합니다",

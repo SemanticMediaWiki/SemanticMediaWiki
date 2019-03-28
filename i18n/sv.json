@@ -31,6 +31,7 @@
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
+	"smw-error": "Fel",
 	"smw-upgrade-error-title": "Fel",
 	"smw-upgrade-error-why-title": "Varför ser jag detta fel?",
 	"smw-upgrade-error-how-title": "Hur fixar jag detta fel?",
@@ -358,6 +359,8 @@
 	"smw-admin-supplementary-elastic-nodes-title": "Noder",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistik",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Uppdateringsintervall: $1",
+	"smw-admin-supplementary-elastic-replication-files": "Filer",
+	"smw-admin-supplementary-elastic-replication-pages": "Sidor",
 	"smw-list-count": "Listan innehåller $1 {{PLURAL:$1|element}}.",
 	"smw-property-label-similarity-intro": "<u>$1</u> beräknar liknelser för befintliga egenskapsetiketter",
 	"smw-property-label-similarity-threshold": "Gränsvärde:",

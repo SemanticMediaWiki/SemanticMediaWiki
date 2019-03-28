@@ -36,6 +36,7 @@
 		]
 	},
 	"smw-desc": "Rende la tua wiki più accessibile - per le macchine ''e'' per gli umani ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentazione in linea])",
+	"smw-error": "Errore",
 	"smw-upgrade-error-title": "Errore",
 	"smw-upgrade-error-why-title": "Perché visualizzo questa pagina?",
 	"smw-upgrade-error-how-title": "Come risolvo questo errore?",
@@ -286,6 +287,8 @@
 	"smw-admin-supplementary-elastic-nodes-title": "Nodi",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistiche",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Intervallo di aggiornamento: $1",
+	"smw-admin-supplementary-elastic-replication-files": "File",
+	"smw-admin-supplementary-elastic-replication-pages": "Pagine",
 	"smw-property-label-similarity-threshold": "Soglia:",
 	"smw_adminlinks_datastructure": "Struttura dei dati",
 	"smw_adminlinks_displayingdata": "Visualizzazione dati",
