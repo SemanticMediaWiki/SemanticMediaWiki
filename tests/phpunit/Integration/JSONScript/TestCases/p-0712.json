@@ -1,0 +1,64 @@
+{
+	"description": "Test `#ask` on `format=template`/`link=none`/DISPLAYTITLE with nested template",
+	"setup": [
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/P0712/Parse 1",
+			"contents": "<includeonly>'''Parse 1 result:'''<br>Modify to link: [[{{{1|}}}]]<br>As-is output: {{{1|}}} '''Parse 2 result:'''<br>{{Example/P0712/Parse 2|{{{1|}}} }}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/P0712/Parse 2",
+			"contents": "<includeonly>Modify to link: [[{{{1|}}}]]<br>As-is output: {{{1|}}}</includeonly>"
+		},
+		{
+			"page": "Test:P0712/1",
+			"contents": "[[Issue::3853]] {{DISPLAYTITLE:Displaytitle P0712}}"
+		},
+		{
+			"page": "Test:P0712/Q.1",
+			"contents": "{{#ask: [[Issue::3853]] |link=none |template=Example/P0712/Parse 1 |format=template }}"
+		},
+		{
+			"page": "Test:P0712/Q.2",
+			"contents": "{{#ask: [[Issue::3853]] |template=Example/P0712/Parse 1 |format=template }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 `link=none`",
+			"subject": "Test:P0712/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<b>Parse 1 result:</b><br />Modify to link: <a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Test:P0712/1</a>",
+					"<b>Parse 2 result:</b><br />Modify to link: <a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Test:P0712/1 </a><br />As-is output: Test:P0712/1"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 ",
+			"subject": "Test:P0712/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<b>Parse 1 result:</b><br />Modify to link: [[<a href=\".*Test:P0712/1\" title=\"Test:P0712/1\">Displaytitle P0712</a>]]<br />",
+					"<b>Parse 2 result:</b><br />Modify to link: [[<a href=\".*/Test:P0712/1\" title=\"Test:P0712/1\">Displaytitle P0712</a> ]]"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgRestrictDisplayTitle": false,
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
