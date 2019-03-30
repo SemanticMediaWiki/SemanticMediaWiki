@@ -122,7 +122,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Foo',
-			$instance->getTextValueByLanguage( 'en' )->getDataItem()->getString()
+			$instance->getTextValueByLanguageCode( 'en' )->getDataItem()->getString()
 		);
 	}
 
@@ -137,7 +137,7 @@ class MonolingualTextValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo@en' );
 
 		$this->assertNull(
-			$instance->getTextValueByLanguage( 'bar' )
+			$instance->getTextValueByLanguageCode( 'bar' )
 		);
 	}
 

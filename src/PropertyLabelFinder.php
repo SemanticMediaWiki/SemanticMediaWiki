@@ -141,7 +141,7 @@ class PropertyLabelFinder {
 		// Lookup is cached in PropertySpecificationLookup
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
-		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelBy(
+		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelByLanguageCode(
 			new DIProperty( str_replace( ' ', '_', $id ) ),
 			$languageCode
 		);

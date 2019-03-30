@@ -189,7 +189,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testFindPreferredPropertyLabelByLanguageCode() {
 
 		$this->propertySpecificationLookup->expects( $this->once() )
-			->method( 'getPreferredPropertyLabelBy' )
+			->method( 'getPreferredPropertyLabelByLanguageCode' )
 			->with( $this->equalTo( 'Foo' ) )
 			->will( $this->returnValue( 'ABC' ) );
 
