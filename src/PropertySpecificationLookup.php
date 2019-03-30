@@ -138,7 +138,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return string
 	 */
-	public function getPreferredPropertyLabelBy( DIProperty $property, $languageCode = '' ) {
+	public function getPreferredPropertyLabelByLanguageCode( DIProperty $property, $languageCode = '' ) {
 
 		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
 		$key = 'ppl:' . $languageCode  . ':'. $property->getKey();
@@ -494,7 +494,7 @@ class PropertySpecificationLookup {
 
 			// Here a MonolingualTextValue was retunred therefore the method
 			// can be called without validation
-			$dv = $dataValue->getTextValueByLanguage( $languageCode );
+			$dv = $dataValue->getTextValueByLanguageCode( $languageCode );
 
 			if ( $dv !== null ) {
 				return $dv;

@@ -130,7 +130,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'',
-			$instance->getPreferredPropertyLabelBy( $property )
+			$instance->getPreferredPropertyLabelByLanguageCode( $property )
 		);
 	}
 

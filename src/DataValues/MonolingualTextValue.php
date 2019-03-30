@@ -253,7 +253,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return DataValue|null
 	 */
-	public function getTextValueByLanguage( $languageCode ) {
+	public function getTextValueByLanguageCode( $languageCode ) {
 
 		if ( ( $list = $this->toArray() ) === [] ) {
 			return null;

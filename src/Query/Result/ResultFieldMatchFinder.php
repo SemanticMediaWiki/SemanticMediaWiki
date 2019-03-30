@@ -224,7 +224,7 @@ class ResultFieldMatchFinder {
 
 			$multiValue->setOption( $multiValue::OPT_QUERY_CONTEXT, true );
 
-			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguage( $lang ) ) !== null ) {
+			if ( $multiValue instanceof MonolingualTextValue && $lang !== false && ( $textValue = $multiValue->getTextValueByLanguageCode( $lang ) ) !== null ) {
 
 				// Return the text representation without a language reference
 				// (tag) since the value has been filtered hence only matches
