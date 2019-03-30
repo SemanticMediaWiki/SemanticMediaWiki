@@ -160,6 +160,13 @@ abstract class Store implements QueryEngine {
 			$wikipage = $dataItem;
 		}
 
+		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
+		$key = $entityCache->makeCacheKey( 'redirect', $wikipage->getHash() );
+
+		if ( $type === DataItem::TYPE_PROPERTY && ( $serialization = $entityCache->fetch( $key ) ) !== false ) {
+			return DataItem::newFromSerialization( $type, $serialization );
+		}
+
 		$dataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
 
 		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
@@ -171,6 +178,11 @@ abstract class Store implements QueryEngine {
 			} else {
 				$dataItem = $redirectDataItem;
 			}
+		}
+
+		if ( $type === DataItem::TYPE_PROPERTY ) {
+			$entityCache->save( $key, $dataItem->getSerialization(), $entityCache::TTL_DAY );
+			$entityCache->associate( $wikipage, $key );
 		}
 
 		return $dataItem;

@@ -20,8 +20,15 @@ use Title;
 class EntityCache {
 
 	const CACHE_NAMESPACE = 'smw:entity';
-
 	const VERSION = 1;
+
+	const TTL_SECOND = 1;
+	const TTL_MINUTE = 60;
+	const TTL_HOUR = 3600;
+	const TTL_DAY = 86400; // 24 * 3600
+	const TTL_WEEK = 604800; // 7 * 24 * 3600
+	const TTL_MONTH = 2592000; // 30 * 24 * 3600
+	const TTL_YEAR = 31536000; // 365 * 24 * 3600
 
 	/**
 	 * @var Cache
