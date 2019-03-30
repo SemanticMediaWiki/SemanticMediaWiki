@@ -228,6 +228,7 @@ class Hooks {
 			'NewRevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
+			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
 			'ResourceLoaderTestModules' => [ $this, 'onResourceLoaderTestModules' ],
@@ -783,6 +784,18 @@ class Hooks {
 		);
 
 		return $fileUpload->process( $file, $reupload );
+	}
+
+	/**
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/MaintenanceUpdateAddParams
+	 */
+	public function onMaintenanceUpdateAddParams( &$params ) {
+
+		ExtensionSchemaUpdates::addMaintenanceUpdateParams(
+			$params
+		);
+
+		return true;
 	}
 
 	/**

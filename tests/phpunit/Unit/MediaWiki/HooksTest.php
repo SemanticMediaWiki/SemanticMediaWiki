@@ -245,6 +245,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callLinksUpdateConstructed' ],
 			[ 'callSpecialStatsAddExtra' ],
 			[ 'callFileUpload' ],
+			[ 'callMaintenanceUpdateAddParams' ],
 			[ 'callResourceLoaderGetConfigVars' ],
 			[ 'callGetPreferences' ],
 			[ 'callPersonalUrls' ],
@@ -906,6 +907,24 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $file, $reupload ]
+		);
+
+		return $handler;
+	}
+
+	public function callMaintenanceUpdateAddParams( $instance ) {
+
+		$handler = 'MaintenanceUpdateAddParams';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$params = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ &$params ]
 		);
 
 		return $handler;
