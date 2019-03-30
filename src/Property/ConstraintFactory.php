@@ -4,8 +4,10 @@ namespace SMW\Property;
 
 use SMW\Property\Constraint\ConstraintCheckRunner;
 use SMW\Property\Constraint\ConstraintRegistry;
+use SMW\Property\Constraint\ConstraintErrorFinder;
 use SMW\Property\Constraint\Constraints\NullConstraint;
 use SMW\Property\Constraint\ConstraintSchemaCompiler;
+use SMW\Property\Constraint\Constraints\CommonConstraint;
 use SMW\Site;
 use SMW\Store;
 use SMW\ApplicationFactory;
@@ -44,7 +46,26 @@ class ConstraintFactory {
 	 * @return Constraint
 	 */
 	public function newConstraintByClass( $class ) {
-		return $this->newNullConstraint();
+
+		switch ( $class ) {
+			case CommonConstraint::class:
+				$constraint = $this->newCommonConstraint();
+				break;
+			default:
+				$constraint = $this->newNullConstraint();
+				break;
+		}
+
+		return $constraint;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return CommonConstraint
+	 */
+	public function newCommonConstraint() {
+		return new CommonConstraint();
 	}
 
 	/**
@@ -74,6 +95,17 @@ class ConstraintFactory {
 		);
 
 		return $constraintSchemaCompiler;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 *
+	 * @return ConstraintErrorFinder
+	 */
+	public function newConstraintErrorFinder( Store $store ) {
+		return new ConstraintErrorFinder( $store );
 	}
 
 }

@@ -13,6 +13,8 @@ use SMW\ProcessingError;
  */
 class ConstraintError implements ProcessingError {
 
+	const ERROR_TYPE = 'constraint';
+
 	/**
 	 * @var []
 	 */
@@ -49,7 +51,7 @@ class ConstraintError implements ProcessingError {
 	 * @return string
 	 */
 	public function getType() {
-		return 'constraint';
+		return self::ERROR_TYPE;
 	}
 
 	/**

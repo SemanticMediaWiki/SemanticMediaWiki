@@ -112,4 +112,28 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider constraintKeyProvider
+	 */
+	public function testGetConstraintByKey( $key, $expected ) {
+
+		$this->constraintFactory->expects( $this->atLeastOnce() )
+			->method( 'newConstraintByClass' )
+			->with( $this->equalTo( $expected ) );
+
+		$instance = new ConstraintRegistry(
+			$this->constraintFactory
+		);
+
+		$instance->getConstraintByKey( $key );
+	}
+
+	public function constraintKeyProvider() {
+
+		yield[
+			'allowed_namespaces',
+			'SMW\Property\Constraint\Constraints\CommonConstraint'
+		];
+	}
+
 }

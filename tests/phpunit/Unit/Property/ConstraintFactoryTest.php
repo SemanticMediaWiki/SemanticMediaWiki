@@ -69,6 +69,20 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructConstraintErrorFinder() {
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new ConstraintFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Property\Constraint\ConstraintErrorFinder',
+			$instance->newConstraintErrorFinder( $store )
+		);
+	}
+
 	/**
 	 * @dataProvider constraintByClass
 	 */
@@ -92,6 +106,11 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		yield[
 			'null',
 			'\SMW\Property\Constraint\Constraints\NullConstraint'
+		];
+
+		yield[
+			'SMW\Property\Constraint\Constraints\CommonConstraint',
+			'\SMW\Property\Constraint\Constraints\CommonConstraint'
 		];
 	}
 

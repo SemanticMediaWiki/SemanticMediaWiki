@@ -26,7 +26,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isType( $type ){
+	public function isType( $type ) {
 		return $type === Constraint::TYPE_INSTANT;
 	}
 
