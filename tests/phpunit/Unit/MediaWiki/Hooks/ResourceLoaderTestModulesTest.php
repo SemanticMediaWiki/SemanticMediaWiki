@@ -42,6 +42,16 @@ class ResourceLoaderTestModulesTest extends \PHPUnit_Framework_TestCase {
 			'ext.smw.tests',
 			$testModules['qunit']
 		);
+
+		$this->assertArrayHasKey(
+			'localBasePath',
+			$testModules['qunit']['ext.smw.tests']
+		);
+
+		$this->assertArrayHasKey(
+			'remoteExtPath',
+			$testModules['qunit']['ext.smw.tests']
+		);
 	}
 
 }
