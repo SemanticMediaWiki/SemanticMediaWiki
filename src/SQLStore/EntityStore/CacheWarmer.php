@@ -93,7 +93,7 @@ class CacheWarmer {
 			$hashList[$hash] = true;
 		}
 
-		$this->fillFromHash( array_keys( $hashList ) );
+		$this->fillFromTableByHash( array_keys( $hashList ) );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function fillFromHash( $hashList = [] ) {
+	public function fillFromTableByHash( $hashList = [] ) {
 
 		if ( $hashList === [] ) {
 			return;
@@ -154,7 +154,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function fillFromIds( $idList = [] ) {
+	public function fillFromTableIds( $idList = [] ) {
 
 		if ( $idList === [] ) {
 			return;
