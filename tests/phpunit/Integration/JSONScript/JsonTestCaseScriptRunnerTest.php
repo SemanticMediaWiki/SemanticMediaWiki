@@ -317,9 +317,11 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		if ( $jsonTestCaseFileHandler->hasSetting( 'smwgFixedProperties' ) ) {
 			foreach ( $pageList as $page ) {
 				if ( isset( $page['namespace'] ) && $page['namespace'] === 'SMW_NS_PROPERTY' ) {
-					$this->doRunTableSetupBeforeContentCreation( [ $page ] );
+					$this->createPagesFrom( [ $page ] );
 				}
 			}
+
+			$this->doRunTableSetupBeforeContentCreation();
 		}
 
 		$this->createPagesFrom(
