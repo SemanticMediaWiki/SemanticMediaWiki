@@ -83,8 +83,8 @@ class ResourceLoaderTestModules extends HookHandler {
 				'ext.smw.api'
 			],
 			'position' => 'top',
-			'localpath' => $this->path,
-			'remoteExtPath' => '..' . substr( $this->path, strlen( $this->ip ) ),
+			'localBasePath' => $this->path,
+			'remoteExtPath' => 'SemanticMediaWiki',
 		];
 
 		return true;
