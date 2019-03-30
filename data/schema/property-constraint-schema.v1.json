@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_CONSTRAINT_SCHEMA",
+  "type": "object",
+  "title": "Property constraint validation schema",
+  "required": [
+    "type",
+    "constraints"
+  ],
+  "properties": {
+    "type": {
+      "$id": "#/properties/type",
+      "type": "string",
+      "enum": [
+        "PROPERTY_CONSTRAINT_SCHEMA"
+      ],
+      "title": "Schema type",
+      "default": "PROPERTY_CONSTRAINT_SCHEMA"
+    },
+    "tags": {
+      "$id": "#/properties/tags",
+      "type": "array",
+      "title": "tags",
+      "default": null,
+      "items": {
+        "$id": "#/properties/tags/items",
+        "type": "string",
+        "title": "tags, keywords etc.",
+        "default": "",
+        "pattern": "^(.*)$"
+      }
+    },
+    "constraints": {
+      "$id": "#/properties/constraints",
+      "type": "object",
+      "title": "constraint rules",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+      },
+      "properties": {
+        "allowed_namespaces": {
+          "$ref": "#/definitions/allowed_namespaces"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "allowed_namespaces": {
+      "$id": "#/definitions/allowed_namespaces",
+      "type": "array",
+      "title": "Specifies allowed namespaces",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "title": "namespace",
+        "default": "",
+        "pattern": "^(NS_|SMW_NS_)(.*)$"
+      }
+    }
+  }
+}

@@ -2072,6 +2072,12 @@ return [
 			'validation_schema' => __DIR__ . '/data/schema/property-group-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_PROPERTY,
 			'type_description' => 'smw-schema-description-property-group-schema'
+		],
+		'PROPERTY_CONSTRAINT_SCHEMA' => [
+			'validation_schema' => __DIR__ . '/data/schema/property-constraint-schema.v1.json',
+			'group' => SMW_SCHEMA_GROUP_PROPERTY,
+			'type_description' => 'smw-schema-description-property-constraint-schema',
+			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ]
 		]
 	],
 	##

@@ -67,18 +67,17 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 			throw new RuntimeException( "Missing a registered ConstraintValueValidator" );
 		}
 
-		// Any constraint violation by a ConstraintValueValidator registered will
-		// force an immediate halt without checking any other possible constraint
 		foreach ( $this->constraintValueValidators as $constraintValueValidator ) {
-			$constraintValueValidator->validate( $dataValue );
 
-			if ( $constraintValueValidator->hasConstraintViolation() ) {
-				$this->hasConstraintViolation = true;
-			}
-
+			// Any constraint violation by a ConstraintValueValidator registered
+			// will force an immediate halt without checking any other possible
+			// constraints/validators
 			if ( $this->hasConstraintViolation ) {
 				break;
 			}
+
+			$constraintValueValidator->validate( $dataValue );
+			$this->hasConstraintViolation = $constraintValueValidator->hasConstraintViolation();
 		}
 
 		$this->count++;
@@ -91,8 +90,8 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 
 	function __destruct() {
 		$this->logger->info(
-			[ 'CompoundConstraintValueValidator', 'page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {time}' ],
-			[ 'role' => 'developer', 'count' => $this->count, 'time' => $this->time, 'contextPage' => $this->contextPage ]
+			[ 'CompoundConstraintValueValidator', 'Page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {procTime}' ],
+			[ 'role' => 'developer', 'count' => $this->count, 'procTime' => $this->time, 'contextPage' => $this->contextPage ]
 		);
 	}
 

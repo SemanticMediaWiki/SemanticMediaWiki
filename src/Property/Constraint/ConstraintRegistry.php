@@ -5,6 +5,7 @@ namespace SMW\Property\Constraint;
 use RuntimwException;
 use SMW\Property\ConstraintFactory;
 use SMW\Property\Constraint\Constraints\NullConstraint;
+use SMW\Property\Constraint\Constraints\CommonConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -80,7 +81,8 @@ class ConstraintRegistry {
 
 	private function initConstraints() {
 		return [
-			'null' => NullConstraint::class
+			'null' => NullConstraint::class,
+			'allowed_namespaces' => CommonConstraint::class
 		];
 	}
 
