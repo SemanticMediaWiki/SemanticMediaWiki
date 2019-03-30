@@ -30,6 +30,7 @@ $GLOBALS['smwgSchemaTypes'] = [
 - [`LINK_FORMAT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/link.format.md)
 - [`SEARCH_FORM_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/search.form.md)
 - [`PROPERTY_GROUP_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)
+- [`PROPERTY_CONSTRAINT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.constraint.md)
 
 [json:schema]: http://json-schema.org/
 
