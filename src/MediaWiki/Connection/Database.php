@@ -739,6 +739,25 @@ class Database {
 	}
 
 	/**
+	 * @see DatabaseBase::listTables
+	 *
+	 * @since 3.1
+	 *
+	 * @param string|null $prefix
+	 * @param string $fname
+	 *
+	 * @return []
+	 */
+	public function listTables( $prefix = null, $fname = __METHOD__ ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		return $this->connections['read']->listTables( $prefix, $fname );
+	}
+
+	/**
 	 * @see DatabaseBase::selectField
 	 *
 	 * @since 1.9.2

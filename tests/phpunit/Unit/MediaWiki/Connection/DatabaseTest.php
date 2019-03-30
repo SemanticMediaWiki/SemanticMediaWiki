@@ -585,6 +585,34 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$instance->endSectionTransaction( __METHOD__ );
 	}
 
+	public function testListTables() {
+
+		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$read = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$read->expects( $this->once() )
+			->method( 'listTables' );
+
+		$readConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $read ) );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider
+				]
+			)
+		);
+
+		$instance->listTables( __METHOD__ );
+	}
+
 	public function testBeginEndSectionTransactionDoNotMatchThrowsException() {
 
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
