@@ -2009,6 +2009,36 @@ return [
 	##
 
 	##
+	# Find and remove remnant entities
+	#
+	# So called remnant entities or ghosts (i.e. assignments in tables without a
+	# corresponding entry in a `smw_proptable_hash` field) should rarely happen
+	# but can and to enable the updater to re-balance the content of the
+	# `smw_proptable_hash` field (by checking and removing any ghosts in tables
+	# currently not in use for a particular subject). This setting can be enabled
+	# to force the updater/differ to make additional inquiries during an update
+	# to find and remove remnants that have no assignments in a table for a
+	# selected subject.
+	#
+	# The impact (in terms of performance) on the updater is unknown since each
+	# update is expected to run additional queries therefore the setting is
+	# set on purge only by default.
+	#
+	# - `purge` enables the check to happen only during a purge action which
+	#    limits a possible performance impact to a single subject request hereby
+	#    avoids impacting regular updates
+	# - `true` as setting will carry out the check on every update
+	# - `false` will disable the check all together
+	#
+	# @see #3849#issuecomment-477605049
+	#
+	# @since 3.1
+	# @default 'purge'
+	##
+	'smwgCheckForRemnantEntities' => 'purge',
+	##
+
+	##
 	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first

@@ -205,6 +205,10 @@ class SMWSQLStore3Writers {
 			$this->store
 		);
 
+		if ( $semanticData->getOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES ) ) {
+			$this->propertyTableRowDiffer->checkRemnantEntities( true );
+		}
+
 		// Update data about our main subject
 		$this->doFlatDataUpdate( $semanticData );
 		$sid = $subject->getId();

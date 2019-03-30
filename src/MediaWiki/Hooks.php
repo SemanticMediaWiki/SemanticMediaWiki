@@ -274,6 +274,7 @@ class Hooks {
 	public function onParserAfterTidy( &$parser, &$text ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$parserAfterTidy = new ParserAfterTidy(
 			$parser,
@@ -294,6 +295,12 @@ class Hooks {
 
 		$parserAfterTidy->setLogger(
 			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$parserAfterTidy->setOptions(
+			[
+				'smwgCheckForRemnantEntities' => $settings->get( 'smwgCheckForRemnantEntities' )
+			]
 		);
 
 		$parserAfterTidy->process( $text );

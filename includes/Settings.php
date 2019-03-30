@@ -180,6 +180,7 @@ class Settings extends Options {
 			'smwgSpecialAskFormSubmitMethod' => $GLOBALS['smwgSpecialAskFormSubmitMethod'],
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
 			'smwgMandatorySubpropertyParentTypeInheritance' => $GLOBALS['smwgMandatorySubpropertyParentTypeInheritance'],
+			'smwgCheckForRemnantEntities' => $GLOBALS['smwgCheckForRemnantEntities'],
 		];
 
 		self::initLegacyMapping( $configuration );
