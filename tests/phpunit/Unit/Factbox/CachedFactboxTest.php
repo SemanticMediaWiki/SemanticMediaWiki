@@ -46,6 +46,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
+			->setMethods( ['fetch', 'save', 'saveSub' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
