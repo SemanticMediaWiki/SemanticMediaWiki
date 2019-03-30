@@ -1,14 +1,15 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Property;
 
 use SMW\DataItemFactory;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\PropertySpecificationLookup
+ * @covers \SMW\Property\SpecificationLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +17,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
+class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $monolingualTextLookup;
 	private $dataItemFactory;
@@ -48,8 +49,8 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\PropertySpecificationLookup',
-			new PropertySpecificationLookup( $this->store, $this->entityCache )
+			SpecificationLookup::class,
+			new SpecificationLookup( $this->store, $this->entityCache )
 		);
 	}
 
@@ -68,7 +69,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -98,7 +99,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -129,7 +130,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -156,7 +157,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -182,7 +183,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -211,7 +212,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -239,7 +240,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -271,7 +272,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -298,7 +299,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -327,7 +328,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -357,7 +358,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -379,7 +380,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'en:0' ) )
 			->will( $this->returnValue( 1001 ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -423,7 +424,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
@@ -462,7 +463,7 @@ class PropertySpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PropertySpecificationLookup(
+		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);

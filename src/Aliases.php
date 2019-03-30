@@ -10,6 +10,7 @@ class_alias( \SMW\Query\ResultPrinters\EmbeddedResultPrinter::class, 'SMWEmbedde
 class_alias( \SMW\Query\ResultPrinters\DsvResultPrinter::class, 'SMWDSVResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\AggregatablePrinter::class, 'SMWAggregatablePrinter' );
 class_alias( \SMW\Property\Annotator::class, 'SMW\PropertyAnnotator' );
+class_alias( \SMW\Property\SpecificationLookup::class, 'SMW\PropertySpecificationLookup' );
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );

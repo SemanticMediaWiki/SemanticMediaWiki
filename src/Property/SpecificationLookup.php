@@ -1,13 +1,19 @@
 <?php
 
-namespace SMW;
+namespace SMW\Property;
 
-use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\Query\DescriptionFactory;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWQuery as Query;
+use SMW\Store;
+use SMW\EntityCache;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Message;
+use SMW\DataValueFactory;
+use SMW\PropertyRegistry;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
@@ -18,7 +24,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class PropertySpecificationLookup {
+class SpecificationLookup {
 
 	/**
 	 * @var Store
