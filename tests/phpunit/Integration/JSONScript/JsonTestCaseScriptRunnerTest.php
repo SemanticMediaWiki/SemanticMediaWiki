@@ -127,7 +127,6 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		// 'mw-changed-redirect-target'  into 'change_tag_def',
 		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
 
-		$this->testEnvironment->resetPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID );
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings

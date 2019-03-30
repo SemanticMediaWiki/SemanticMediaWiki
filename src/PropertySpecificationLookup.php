@@ -13,9 +13,6 @@ use SMWQuery as Query;
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
  *
- * Changes to a property should trigger a PropertySpecificationLookup::resetCacheBy to
- * evict all cached item store to that property.
- *
  * @license GNU GPL v2+
  * @since 2.4
  *
@@ -24,14 +21,14 @@ use SMWQuery as Query;
 class PropertySpecificationLookup {
 
 	/**
-	 * Reference used in InMemoryPoolCache
+	 * @var Store
 	 */
-	const POOLCACHE_ID = 'property.specification.lookup';
+	private $store;
 
 	/**
-	 * @var CachedPropertyValuesPrefetcher
+	 * @var Cache
 	 */
-	private $cachedPropertyValuesPrefetcher;
+	private $entityCache;
 
 	/**
 	 * @var string
@@ -39,20 +36,23 @@ class PropertySpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var Cache
-	 */
-	private $intermediaryMemoryCache;
-
-	/**
 	 * @since 2.4
 	 *
-	 * @param CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher
-	 * @param Cache $intermediaryMemoryCache
+	 * @param Store $store
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( CachedPropertyValuesPrefetcher $cachedPropertyValuesPrefetcher, Cache $intermediaryMemoryCache ) {
-		$this->cachedPropertyValuesPrefetcher = $cachedPropertyValuesPrefetcher;
-		$this->intermediaryMemoryCache = $intermediaryMemoryCache;
-		$this->languageCode = Localizer::getInstance()->getContentLanguage()->getCode();
+	public function __construct( Store $store, EntityCache $entityCache ) {
+		$this->store = $store;
+		$this->entityCache = $entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $languageCode
+	 */
+	public function setLanguageCode( $languageCode ) {
+		$this->languageCode = $languageCode;
 	}
 
 	/**
@@ -61,8 +61,7 @@ class PropertySpecificationLookup {
 	 * @param DIWikiPage $subject
 	 */
 	public function resetCacheBy( DIWikiPage $subject ) {
-		$this->cachedPropertyValuesPrefetcher->resetCacheBy( $subject );
-		$this->intermediaryMemoryCache->delete( $subject->getHash() );
+		$this->entityCache->invalidate( $subject );
 	}
 
 	/**
@@ -76,28 +75,22 @@ class PropertySpecificationLookup {
 	public function getSpecification( $source, DIProperty $target ) {
 
 		if ( $source instanceof DIProperty ) {
-			$dataItem = $source->getCanonicalDiWikiPage();
+			$subject = $source->getCanonicalDiWikiPage();
 		} elseif( $source instanceof DIWikiPage ) {
-			$dataItem = $source;
+			$subject = $source;
 		} else {
 			throw new RuntimeException( "Invalid request instance type" );
 		}
 
-		$hash = $dataItem->getHash();
-		$key = $target->getKey();
+		$key = $this->entityCache->makeCacheKey( 'propertyspecification', $subject->getHash() );
+		$sub_key = $target->getKey();
 
-		$definition = $this->intermediaryMemoryCache->fetch( $hash );
-
-		if ( $definition === false ) {
-			$definition = [];
+		if ( ( $specification = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
+			return $specification;
 		}
 
-		if ( isset( $definition[$key] ) ) {
-			return $definition[$key];
-		}
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$dataItem,
+		$dataItems = $this->store->getPropertyValues(
+			$subject,
 			$target
 		);
 
@@ -105,8 +98,8 @@ class PropertySpecificationLookup {
 			$dataItems = [];
 		}
 
-		$definition[$key] = $dataItems;
-		$this->intermediaryMemoryCache->save( $hash, $definition );
+		$this->entityCache->saveSub( $key, $sub_key, $dataItems );
+		$this->entityCache->associate( $subject, $key );
 
 		return $dataItems;
 	}
@@ -140,22 +133,23 @@ class PropertySpecificationLookup {
 	 */
 	public function getPreferredPropertyLabelByLanguageCode( DIProperty $property, $languageCode = '' ) {
 
-		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
-		$key = 'ppl:' . $languageCode  . ':'. $property->getKey();
+		$subject = $property->getCanonicalDiWikiPage();
+		$key = $this->entityCache->makeCacheKey( 'preferredpropertylabel', $subject->getHash() );
 
-		// Guard against high frequency lookup
-		if ( ( $preferredPropertyLabel = $this->intermediaryMemoryCache->fetch( $key ) ) !== false ) {
-			return $preferredPropertyLabel;
+		if ( ( $text = $this->entityCache->fetchSub( $key, $languageCode ) ) !== false ) {
+			return $text;
 		}
 
-		$preferredPropertyLabel = $this->findPreferredPropertyLabel(
-			$property,
+		$text = $this->getTextByLanguageCode(
+			$subject,
+			new DIProperty( '_PPLB' ),
 			$languageCode
 		);
 
-		$this->intermediaryMemoryCache->save( $key, $preferredPropertyLabel );
+		$this->entityCache->saveSub( $key, $languageCode, $text );
+		$this->entityCache->associate( $subject, $key );
 
-		return $preferredPropertyLabel;
+		return $text;
 	}
 
 	/**
@@ -165,7 +159,7 @@ class PropertySpecificationLookup {
 	 *
 	 * @return DIProperty|false
 	 */
-	public function getPropertyFromDisplayTitle( $displayTitle ) {
+	private function getPropertyFromDisplayTitle( $displayTitle ) {
 
 		$descriptionFactory = new DescriptionFactory();
 
@@ -228,7 +222,7 @@ class PropertySpecificationLookup {
 		if ( is_array( $dataItems ) && $dataItems !== [] ) {
 
 			foreach ( $dataItems as $dataItem ) {
-				$pv = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
+				$pv = $this->store->getPropertyValues(
 					$dataItem,
 					new DIProperty( '_PPGR' )
 				);
@@ -350,11 +344,7 @@ class PropertySpecificationLookup {
 	public function getDisplayUnits( DIProperty $property ) {
 
 		$units = [];
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			new DIProperty( '_UNIT' )
-		);
+		$dataItems = $this->getSpecification( $property, new DIProperty( '_UNIT' ) );
 
 		if ( $dataItems !== false && $dataItems !== [] ) {
 			foreach ( $dataItems as $dataItem ) {
@@ -366,12 +356,6 @@ class PropertySpecificationLookup {
 	}
 
 	/**
-	 * We try to cache anything to avoid unnecessary store connections or DB
-	 * lookups. For cases where a property was changed, the EventDipatcher will
-	 * receive a 'property.specification.change' event (emitted as soon as the content of
-	 * a property page was altered) with PropertySpecificationLookup::resetCacheBy
-	 * being invoked to remove the cache entry for that specific property.
-	 *
 	 * @since 2.4
 	 *
 	 * @param DIProperty $property
@@ -382,42 +366,36 @@ class PropertySpecificationLookup {
 	 */
 	public function getPropertyDescriptionByLanguageCode( DIProperty $property, $languageCode = '', $linker = null ) {
 
-		// Take the linker into account (Special vs. in page rendering etc.)
-		$languageCode = $languageCode === '' ? $this->languageCode : $languageCode;
-		$key = '--pdesc:' . $languageCode . ':' . ( $linker === null ? '0' : '1' );
+		$subject = $property->getCanonicalDiWikiPage();
+		$key = $this->entityCache->makeCacheKey( 'propertydescription', $subject->getHash() );
 
-		$blobStore = $this->cachedPropertyValuesPrefetcher->getBlobStore();
+		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 
-		$container = $blobStore->read(
-			$this->cachedPropertyValuesPrefetcher->getRootHashFrom( $property->getCanonicalDiWikiPage() )
-		);
-
-		if ( $container->has( $key ) ) {
-			return $container->get( $key );
+		if ( ( $text = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
+			return $text;
 		}
 
-		$localPropertyDescription = $this->findLocalPropertyDescription(
-			$property,
-			$linker,
+		$text = $this->getTextByLanguageCode(
+			$subject,
+			new DIProperty( '_PDESC' ),
 			$languageCode
 		);
 
 		// If a local property description wasn't available for a predefined property
 		// the try to find a system translation
-		if ( trim( $localPropertyDescription ) === '' && !$property->isUserDefined() ) {
-			$localPropertyDescription = $this->getPredefinedPropertyDescription( $property, $linker, $languageCode );
+		if ( trim( $text ) === '' && !$property->isUserDefined() ) {
+			$text = $this->getPredefinedPropertyDescription( $property, $languageCode, $linker );
 		}
 
-		$container->set( $key, $localPropertyDescription );
+		$text = trim( $text );
 
-		$blobStore->save(
-			$container
-		);
+		$this->entityCache->saveSub( $key, $sub_key, $text );
+		$this->entityCache->associate( $subject, $key );
 
-		return $localPropertyDescription;
+		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( $property, $linker, $languageCode ) {
+	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ) {
 
 		$description = '';
 		$key = $property->getKey();
@@ -445,63 +423,33 @@ class PropertySpecificationLookup {
 		return $message;
 	}
 
-	private function findLocalPropertyDescription( $property, $linker, $languageCode ) {
+	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
 
-		$text = '';
-		$descriptionProperty = new DIProperty( '_PDESC' );
+		try {
+			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
+		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+			return '';
+		}
 
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			$descriptionProperty
+		if ( $monolingualTextLookup === null ) {
+			return '';
+		}
+
+		$dataValue = $monolingualTextLookup->newDataValue(
+			$subject,
+			$property,
+			$languageCode
 		);
 
-		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $descriptionProperty, $languageCode ) ) !== null ) {
-			$text = $dataValue->getShortWikiText( $linker );
+		if ( $dataValue === null ) {
+			return '';
 		}
 
-		return $text;
-	}
-
-	private function findPreferredPropertyLabel( $property, $languageCode ) {
-
-		$text = '';
-		$preferredProperty = new DIProperty( '_PPLB' );
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->getPropertyValues(
-			$property->getCanonicalDiWikiPage(),
-			$preferredProperty
+		$dv = $dataValue->getTextValueByLanguageCode(
+			$languageCode
 		);
 
-		if ( ( $dataValue = $this->findTextValueByLanguage( $dataItems, $preferredProperty, $languageCode ) ) !== null ) {
-			$text = $dataValue->getShortWikiText();
-		}
-
-		return $text;
-	}
-
-	private function findTextValueByLanguage( $dataItems, $property, $languageCode ) {
-
-		if ( $dataItems === null || $dataItems === [] ) {
-			return null;
-		}
-
-		foreach ( $dataItems as $dataItem ) {
-
-			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				$dataItem,
-				$property
-			);
-
-			// Here a MonolingualTextValue was retunred therefore the method
-			// can be called without validation
-			$dv = $dataValue->getTextValueByLanguageCode( $languageCode );
-
-			if ( $dv !== null ) {
-				return $dv;
-			}
-		}
-
-		return null;
+		return $dv->getShortWikiText();
 	}
 
 }

@@ -478,6 +478,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructMonolingualTextLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\MonolingualTextLookup',
+			$instance->newMonolingualTextLookup()
+		);
+	}
+
 	public function testCanConstructPrefetchItemLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );

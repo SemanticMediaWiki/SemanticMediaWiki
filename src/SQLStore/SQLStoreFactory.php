@@ -36,6 +36,7 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
@@ -805,6 +806,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @return MonolingualTextLookup
+	 */
+	public function newMonolingualTextLookup() {
+		return new MonolingualTextLookup( $this->store );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return PrefetchItemLookup
 	 */
 	public function newPrefetchItemLookup() {
@@ -855,6 +865,10 @@ class SQLStoreFactory {
 				'MissingRedirectLookup' => [
 					'_service' => [ $this, 'newMissingRedirectLookup' ],
 					'_type'    => MissingRedirectLookup::class
+				],
+				'MonolingualTextLookup' => [
+					'_service' => [ $this, 'newMonolingualTextLookup' ],
+					'_type'    => MonolingualTextLookup::class
 				],
 				'PropertyTypeFinder' => [
 					'_service' => [ $this, 'newPropertyTypeFinder' ],

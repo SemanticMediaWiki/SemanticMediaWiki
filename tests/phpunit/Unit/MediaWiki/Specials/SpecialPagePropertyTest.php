@@ -27,7 +27,7 @@ class SpecialPagePropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyValues' ] )
+			->setMethods( [ 'getPropertyValues', 'service' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
