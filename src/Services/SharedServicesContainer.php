@@ -56,6 +56,7 @@ use SMW\Query\Processor\QueryCreator;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\EntityCache;
+use SMW\DisplayTitleFinder;
 
 /**
  * @license GNU GPL v2+
@@ -742,6 +743,22 @@ class SharedServicesContainer implements CallbackContainer {
 				$lang->getPropertyLabels(),
 				$lang->getCanonicalPropertyLabels(),
 				$lang->getCanonicalDatatypeLabels()
+			);
+
+			return $propertyLabelFinder;
+		} );
+
+		/**
+		 * @var DisplayTitleFinder
+		 */
+		$containerBuilder->registerCallback( 'DisplayTitleFinder', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', '\SMW\DisplayTitleFinder' );
+
+			$lang = Localizer::getInstance()->getLang();
+
+			$propertyLabelFinder = new DisplayTitleFinder(
+				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'EntityCache' )
 			);
 
 			return $propertyLabelFinder;

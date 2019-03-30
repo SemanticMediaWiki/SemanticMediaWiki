@@ -55,6 +55,11 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->makeCacheKey( $subject->getTitle() ),
 			$instance->makeCacheKey( 'Foo#0##' )
 		);
+
+		$this->assertEquals(
+			EntityCache::makeCacheKey( $subject->getTitle() ),
+			$instance->makeKey( 'Foo#0##' )
+		);
 	}
 
 	public function testContains() {
