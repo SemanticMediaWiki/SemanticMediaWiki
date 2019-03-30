@@ -41,4 +41,18 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 		$instance->process();
 	}
 
+	public function testAddMaintenanceUpdateParams() {
+
+		$params = [];
+
+		ExtensionSchemaUpdates::addMaintenanceUpdateParams(
+			$params
+		);
+
+		$this->assertArrayHasKey(
+			'skip-optimize',
+			$params
+		);
+	}
+
 }
