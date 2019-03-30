@@ -37,6 +37,11 @@ class SemanticData {
 	const OPT_LAST_MODIFIED = 'opt.last.modified';
 
 	/**
+	 * @see $smwgCheckForRemnantEntities
+	 */
+	const OPT_CHECK_REMNANT_ENTITIES = 'opt.check.remnant.entities';
+
+	/**
 	 * Identifies that a data block was created by a user.
 	 */
 	const PROC_USER = 'proc.user';

@@ -164,4 +164,82 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testChangeOpWithUnknownFixedProperty_Ghost() {
+
+		$row = [
+			'smw_proptable_hash' => null
+		];
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( [] ) );
+
+		$connection->expects( $this->any() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( (object)$row ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->atLeastOnce() )
+			->method( 'usesIdSubject' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->once() )
+			->method( 'isFixedPropertyTable' )
+			->will( $this->returnValue( true ) );
+
+		$propertyTable->expects( $this->once() )
+			->method( 'getFixedProperty' )
+			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$semanticData = new SemanticData( $subject );
+
+		$propertyTables = [ $propertyTable ];
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->setMethods( [ 'getPropertyTables', 'getConnection' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( $propertyTables ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( $propertyTables ) );
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new PropertyTableRowDiffer(
+			$store,
+			$this->propertyTableRowMapper
+		);
+
+		$instance->setChangeOp( new ChangeOp( $subject ) );
+		$instance->checkRemnantEntities( true );
+
+		$result = $instance->computeTableRowDiff(
+			42,
+			$semanticData
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			$instance->getChangeOp()
+		);
+
+		$this->assertEmpty(
+			$instance->getChangeOp()->getFixedPropertyRecords()
+		);
+	}
+
 }

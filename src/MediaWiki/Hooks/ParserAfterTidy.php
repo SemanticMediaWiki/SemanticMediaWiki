@@ -260,21 +260,27 @@ class ParserAfterTidy extends HookHandler {
 				return true;
 			}
 
-			$parserData->setOrigin( 'ParserAfterTidy' );
+			$semanticData = $parserData->getSemanticData();
 
 			// Set an explicit timestamp to create a new hash for the property
 			// table change row differ and force a data comparison (this doesn't
 			// change the _MDAT annotation)
-			$parserData->getSemanticData()->setOption(
+			$semanticData->setOption(
 				SemanticData::OPT_LAST_MODIFIED,
 				wfTimestamp( TS_UNIX )
 			);
+
+			// #3849
+			if ( $this->getOption( 'smwgCheckForRemnantEntities' ) === 'purge' ) {
+				$semanticData->setOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES, true );
+			}
 
 			$parserData->setOption(
 				$parserData::OPT_FORCED_UPDATE,
 				true
 			);
 
+			$parserData->setOrigin( 'ParserAfterTidy' );
 			$parserData->updateStore( true );
 
 			$parserData->addLimitReport(

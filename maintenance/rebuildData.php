@@ -88,6 +88,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'categories', 'Only refresh category pages (and other explicitly named namespaces)', false, false, 'c' );
 		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
 		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
+		$this->addOption( 'check-remnantentities', 'Check and remove remnant entities (ghosts) from tables without a corresponding hash field entry', false );
 
 		$this->addOption( 'skip-properties', 'Skip the default properties rebuild (only recommended when successive build steps are used)', false );
 		$this->addOption( 'shallow-update', 'Skip processing of entities that compare to the last known revision date', false );
@@ -135,6 +136,10 @@ class RebuildData extends \Maintenance {
 
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();
+
+		if ( $this->hasOption( 'check-remnantentities' ) ) {
+			$maintenanceHelper->setGlobalToValue( 'smwgCheckForRemnantEntities', true );
+		}
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );

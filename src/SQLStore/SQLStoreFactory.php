@@ -557,6 +557,8 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyTableRowDiffer() {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$propertyTableRowMapper = new PropertyTableRowMapper(
 			$this->store
 		);
@@ -564,6 +566,10 @@ class SQLStoreFactory {
 		$propertyTableRowDiffer = new PropertyTableRowDiffer(
 			$this->store,
 			$propertyTableRowMapper
+		);
+
+		$propertyTableRowDiffer->checkRemnantEntities(
+			$settings->is( 'smwgCheckForRemnantEntities', true )
 		);
 
 		return $propertyTableRowDiffer;
