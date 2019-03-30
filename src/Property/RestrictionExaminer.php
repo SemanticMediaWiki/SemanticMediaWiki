@@ -1,7 +1,11 @@
 <?php
 
-namespace SMW;
+namespace SMW\Property;
 
+use SMW\Message;
+use SMW\DIProperty;
+use SMW\PropertyRegistry;
+use SMW\DIWikiPage;
 use Title;
 use User;
 
@@ -11,7 +15,7 @@ use User;
  *
  * @author mwjames
  */
-class PropertyRestrictionExaminer {
+class RestrictionExaminer {
 
 	const CREATE_RESTRICTION = 'smw-datavalue-property-create-restriction';
 
