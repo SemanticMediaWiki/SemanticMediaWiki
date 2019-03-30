@@ -11,11 +11,11 @@ Please find relevant notes about the platform and database compatibility for thi
 - Attachment links and factbox display
 - Elasticsearch replication monitoring
 - Dependency links validation and invalidation
-- Add [[Constraint schema::...]] to a property
+- Add `[[Constraint schema::...]]` to a property
 
 ## New features and enhancements
 
-Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Introduce `DependencyLinksValidator`, refactor update logic. 
+Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Introduce `DependencyLinksValidator`, refactor update logic (#3831). 
 
 ### Setup
 
@@ -40,7 +40,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3699) Added length restriction to value inputs for a query construct  (`query.maximum.value.length`)
 * [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
-* [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810) Check for associated revisiion
+* [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810) Check for associated revision
+* [#3835](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3835)
 
 
 ### Query
@@ -71,6 +72,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3733](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3733) Added support for enforced property [parent type inheritance](https://www.semantic-mediawiki.org/wiki/Help:Mandatory_parent_datatype_inheritance) (disabled by default, can be enabled using the [`$smwgMandatorySubpropertyParentTypeInheritance`](https://www.semantic-mediawiki.org/wiki/Help:$smwgMandatorySubpropertyParentTypeInheritance) setting)
 * [#3735](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3735) Added declaration check for when multiple `Has fields` declarations are used
 * [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746) Add [`PROPERTY_CONSTRAINT_SCHEMA`] as a new schema type and introduce an approach by assigning a [[Constraint schema::...]] to a property
+* [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746)
 * [#3747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3747) Added an option to define `LAST_EDITOR`, `IS_IMPORTER`
 * [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added [`PROPERTY_GROUP_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_GROUP_SCHEMA) as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
 * [#3751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3751) Added `?`, `*`, and `!` as invalid characters for a property name
@@ -84,10 +86,16 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3818](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3818) External identifier to support multi substitutes using {...}
 * [#3819](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3819) Support `Has fields` to allow property names with `:`
 * [#3821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3821) Support schema change to push a change propagation dispatch job
+* [#3829](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3829)
+* [#3843](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3843)
+* [#3864](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3864) Added core hook to suppport `--skip-optimize` in `update.php` again with MW 1.33+
+* [#3866](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3866) [remnant entities](https://www.semantic-mediawiki.org/wiki/Help:Remnant_entities), `$smwgCheckForRemnantEntities `
 
 ## Bug fixes
 
 * [#3750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3750) Checks whether the sort argument can be accessed or not in the datatable
+* [#3839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3839)
+* [#3840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3840) Fixed `Special:Browse` and display of properties when more than 200 are available
 
 ## Breaking changes and deprecations
 
@@ -115,6 +123,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808)
 * [#3807](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Added `SMW::Event::RegisterEventListeners` hook
 * [#3815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3815) EntityValidator
+* [#3823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3823)
+* [#3830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3830)
 
 ## Contributors
 
