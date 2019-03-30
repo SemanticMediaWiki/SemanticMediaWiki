@@ -612,9 +612,15 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'PropertySpecificationLookup', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\PropertySpecificationLookup' );
 
+			$contentLanguage = Localizer::getInstance()->getContentLanguage();
+
 			$propertySpecificationLookup = new PropertySpecificationLookup(
-				$containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' ),
-				$containerBuilder->singleton( 'InMemoryPoolCache' )->getPoolCacheById( PropertySpecificationLookup::POOLCACHE_ID )
+				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'EntityCache' )
+			);
+
+			$propertySpecificationLookup->setLanguageCode(
+				$contentLanguage->getCode()
 			);
 
 			return $propertySpecificationLookup;
@@ -627,7 +633,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', '\SMW\Protection\ProtectionValidator' );
 
 			$protectionValidator = new ProtectionValidator(
-				$containerBuilder->singleton( 'Store' ),
+				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'EntityCache' )
 			);
 
