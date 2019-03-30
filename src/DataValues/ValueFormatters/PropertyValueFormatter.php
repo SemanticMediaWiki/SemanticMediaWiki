@@ -177,8 +177,9 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$property = $this->dataValue->getDataItem();
 		$languageCode = $this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE );
+		$asCanonicalLabel = $this->dataValue->getOption( PropertyValue::OPT_CANONICAL_LABEL, false );
 
-		if ( ( $preferredLabel = $property->getPreferredLabel( $languageCode ) ) !== '' ) {
+		if ( $asCanonicalLabel === false && ( $preferredLabel = $property->getPreferredLabel( $languageCode ) ) !== '' ) {
 			return $preferredLabel;
 		}
 

@@ -24,7 +24,11 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDeserialize( $text, $showMode, $expectedLabel, $expectedMode, $expectedDataInstance, $expectedOutputFormat ) {
 
-		$instance = Deserializer::deserialize( $text, $showMode );
+		$options = [
+			'show_mode' => $showMode
+		];
+
+		$instance = Deserializer::deserialize( $text, $options );
 
 		$this->assertEquals(
 			$expectedLabel,

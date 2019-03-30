@@ -61,6 +61,11 @@ class PropertyValue extends DataValue {
 	const OPT_NO_PREF_LHNT = 'no.preflabel.marker';
 
 	/**
+	 * Indicates to use a canonical label
+	 */
+	const OPT_CANONICAL_LABEL = 'canonical.label';
+
+	/**
 	 * Special formatting of the label/preferred label
 	 */
 	const FORMAT_LABEL = 'format.label';
