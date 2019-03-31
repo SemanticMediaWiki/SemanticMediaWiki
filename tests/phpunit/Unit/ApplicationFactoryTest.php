@@ -229,14 +229,6 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructCachedPropertyValuesPrefetcher() {
-
-		$this->assertInstanceOf(
-			'\SMW\CachedPropertyValuesPrefetcher',
-			$this->applicationFactory->getCachedPropertyValuesPrefetcher()
-		);
-	}
-
 	public function testCanConstructQueryFactory() {
 
 		$this->assertInstanceOf(

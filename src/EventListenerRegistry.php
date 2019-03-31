@@ -81,36 +81,6 @@ class EventListenerRegistry implements EventListenerCollection {
 		);
 
 		/**
-		 * Emitted during UpdateJob
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'cached.propertyvalues.prefetcher.reset', function( $dispatchContext ) {
-
-				if ( $dispatchContext->has( 'title' ) ) {
-					$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
-				} else{
-					$subject = $dispatchContext->get( 'subject' );
-				}
-
-				$applicationFactory = ApplicationFactory::getInstance();
-
-				$logContext = [
-					'role' => 'developer',
-					'event' => 'cached.propertyvalues.prefetcher.reset',
-					'origin' => $subject
-				];
-
-				$this->logger->info( '[Event] {event}: {origin}', $logContext );
-
-				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
-					$subject
-				);
-
-				$dispatchContext->set( 'propagationstop', true );
-			}
-		);
-
-		/**
 		 * Emitted during NewRevisionFromEditComplete, ArticleDelete, TitleMoveComplete,
 		 * PropertyTableIdReferenceDisposer, ArticlePurge
 		 */
@@ -134,10 +104,6 @@ class EventListenerRegistry implements EventListenerCollection {
 				];
 
 				$this->logger->info( '[Event] {event}: {origin}', $logContext );
-
-				$applicationFactory->singleton( 'CachedPropertyValuesPrefetcher' )->resetCacheBy(
-					$subject
-				);
 
 				$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
 					$subject,
