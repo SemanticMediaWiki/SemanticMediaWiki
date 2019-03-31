@@ -41,7 +41,7 @@ class CleanUpTables {
 		$tables = $this->connection->listTables();
 
 		foreach ( $tables as $table ) {
-			if ( strpos( $table, $tablePrefix ) !== false ) {
+			if ( strpos( $table, $tablePrefix ) !== false && $this->connection->tableExists( $table ) ) {
 				if ( $this->connection->getType() === 'postgres' ) {
 					$this->connection->query( "DROP TABLE IF EXISTS $table CASCADE", __METHOD__ );
 				} else {
