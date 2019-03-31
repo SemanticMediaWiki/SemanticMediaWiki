@@ -43,8 +43,12 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'listTables', 'query' ] )
+			->setMethods( [ 'listTables', 'query', 'tableExists' ] )
 			->getMockForAbstractClass();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'listTables' )
@@ -65,8 +69,12 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 
 		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'listTables', 'query', 'getType' ] )
+			->setMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )
 			->getMockForAbstractClass();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'tableExists' )
+			->will( $this->returnValue( true ) );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
