@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\PropertyRestrictionExaminer;
+use SMW\Property\RestrictionExaminer;
 
 /**
- * @covers \SMW\PropertyRestrictionExaminer
+ * @covers \SMW\Property\RestrictionExaminer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\PropertyRestrictionExaminer;
  *
  * @author mwjames
  */
-class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
+class RestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $user;
 
@@ -30,8 +30,14 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			PropertyRestrictionExaminer::class,
-			new PropertyRestrictionExaminer()
+			RestrictionExaminer::class,
+			new RestrictionExaminer()
+		);
+
+		//@ legavy
+		$this->assertInstanceOf(
+			'\SMW\PropertyRestrictionExaminer',
+			new RestrictionExaminer()
 		);
 	}
 
@@ -41,13 +47,13 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			DIProperty::class,
-			PropertyRestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $msg )
+			RestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $msg )
 		);
 	}
 
 	public function testRestrictionForPredefinedProperty() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction( new DIProperty( '_MDAT' )  );
 
@@ -58,7 +64,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRestrictionForPredefinedPropertyOnQueryContext() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 		$instance->isQueryContext( true );
 
 		$instance->checkRestriction( new DIProperty( '_MDAT' )  );
@@ -70,7 +76,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRestrictionForUserPropertyOnFalseCreateProtectionRight() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->setCreateProtectionRight( false );
 		$instance->setUser( $this->user );
@@ -84,7 +90,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRestrictionForUserPropertyOnCreateProtectionRight() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->setCreateProtectionRight( 'foo' );
 		$instance->setUser( $this->user );
@@ -105,7 +111,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $right ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->setCreateProtectionRight( $right );
 		$instance->setUser( $this->user );
@@ -119,7 +125,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDeclarativePropertyOnMainNamespace() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(
 			new DIProperty( '_TYPE' ),
@@ -133,7 +139,7 @@ class PropertyRestrictionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDeclarativePropertyOnPropertyNamespace() {
 
-		$instance = new PropertyRestrictionExaminer();
+		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(
 			new DIProperty( '_TYPE' ),
