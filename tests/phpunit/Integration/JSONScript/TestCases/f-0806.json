@@ -1,0 +1,70 @@
+{
+	"description": "Test `format=template`, `named args` and preferred property labells (#3548)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Some text",
+			"contents": "[[Has type::Text]] [[Preferred property label::ABC@en]] [[Preferred property label::DEF@fr]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Template/F0806ByNumber",
+			"contents": "<includeonly>{{{1}}}, {{{2}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Template/F0806ByPreferredPropLabel",
+			"contents": "<includeonly>{{{Some text}}}</includeonly>"
+		},
+		{
+			"page": "Example/F0806/1",
+			"contents": "[[Some text::123]]"
+		},
+		{
+			"page": "Example/F0806/Q.1",
+			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/F0806ByNumber }}"
+		},
+		{
+			"page": "Example/F0806/Q.2",
+			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/F0806ByPreferredPropLabel |named args=yes }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (#ask, `format=template` default)",
+			"subject": "Example/F0806/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#ask, `format=template`, `named args`, use canonical label instead of preferred label)",
+			"subject": "Example/F0806/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"123"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

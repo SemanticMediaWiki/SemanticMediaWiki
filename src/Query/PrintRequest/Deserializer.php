@@ -5,6 +5,7 @@ namespace SMW\Query\PrintRequest;
 use InvalidArgumentException;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
+use SMW\DataValues\PropertyValue;
 use SMW\Localizer;
 use SMW\Query\PrintRequest;
 use Title;
@@ -29,11 +30,21 @@ class Deserializer {
 	 * @since 2.5
 	 *
 	 * @param string $text
-	 * @param boolean $showMode = false
+	 * @param array $options
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function deserialize( $text, $showMode = false ) {
+	public static function deserialize( $text, array $options = [] ) {
+		$showMode = false;
+		$useCanonicalLabel = false;
+
+		if ( isset( $options['show_mode'] ) ) {
+			$showMode = $options['show_mode'];
+		}
+
+		if ( isset( $options['canonical_label'] ) ) {
+			$useCanonicalLabel = $options['canonical_label'];
+		}
 
 		list( $parts, $outputFormat, $printRequestLabel ) = self::getPartsFromText(
 			$text
@@ -64,6 +75,7 @@ class Deserializer {
 				PropertyChainValue::TYPE_ID
 			);
 
+			$data->setOption( PropertyValue::OPT_CANONICAL_LABEL, $useCanonicalLabel );
 			$data->setUserValue( $printRequestLabel );
 
 			if ( $showMode === false ) {
@@ -92,6 +104,8 @@ class Deserializer {
 				$data = DataValueFactory::getInstance()->newPropertyValueByLabel(
 					$printRequestLabel
 				);
+
+				$data->setOption( PropertyValue::OPT_CANONICAL_LABEL, $useCanonicalLabel );
 
 				if ( !$data->isValid() ) { // not a property; give up
 					return null;
