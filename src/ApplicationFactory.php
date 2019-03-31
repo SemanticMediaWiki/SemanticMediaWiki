@@ -468,15 +468,6 @@ class ApplicationFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return CachedPropertyValuesPrefetcher
-	 */
-	public function getCachedPropertyValuesPrefetcher() {
-		return $this->containerBuilder->singleton( 'CachedPropertyValuesPrefetcher' );
-	}
-
-	/**
-	 * @since 2.4
-	 *
 	 * @return MediaWikiNsContentReader
 	 */
 	public function getMediaWikiNsContentReader() {

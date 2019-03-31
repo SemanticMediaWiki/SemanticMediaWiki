@@ -40,25 +40,6 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$container = $this->getMockBuilder( '\Onoi\BlobStore\Container' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore = $this->getMockBuilder( '\Onoi\BlobStore\BlobStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$blobStore->expects( $this->any() )
-			->method( 'read' )
-			->will( $this->returnValue( $container ) );
-
-		$cachedPropertyValuesPrefetcher = $this->getMockBuilder( '\SMW\CachedPropertyValuesPrefetcher' )
-			->setConstructorArgs( [ $this->store, $blobStore ] )
-			->setMethods( null )
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'CachedPropertyValuesPrefetcher', $cachedPropertyValuesPrefetcher );
-
 		$this->settings = Settings::newFromArray( [] );
 
 		$this->dataItemFactory = new DataItemFactory();

@@ -6,7 +6,6 @@ use JsonSchema\Validator as SchemaValidator;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
-use SMW\CachedPropertyValuesPrefetcher;
 use SMW\CacheFactory;
 use SMW\ContentParser;
 use SMW\DataItemFactory;
@@ -573,20 +572,6 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $cachedQueryResultPrefetcher;
-		} );
-
-		/**
-		 * @var CachedPropertyValuesPrefetcher
-		 */
-		$containerBuilder->registerCallback( 'CachedPropertyValuesPrefetcher', function( $containerBuilder, $cacheType = null, $ttl = 604800 ) {
-			$containerBuilder->registerExpectedReturnType( 'CachedPropertyValuesPrefetcher', CachedPropertyValuesPrefetcher::class );
-
-			$cachedPropertyValuesPrefetcher = new CachedPropertyValuesPrefetcher(
-				$containerBuilder->singleton( 'Store', null ),
-				$containerBuilder->create( 'BlobStore', CachedPropertyValuesPrefetcher::CACHE_NAMESPACE, $cacheType, $ttl )
-			);
-
-			return $cachedPropertyValuesPrefetcher;
 		} );
 
 		/**
