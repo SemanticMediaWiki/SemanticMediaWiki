@@ -67,6 +67,17 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
+	 * @param string|array $key
+	 *
+	 * @return string
+	 */
+	public function makeKey( ...$params ) {
+		return self::makeCacheKey( ...$params );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return []
 	 */
 	public function getStats() {

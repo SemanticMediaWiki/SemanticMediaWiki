@@ -740,26 +740,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			return '';
 		}
 
-		return $this->findDisplayTitleFor( $this->m_dataitem );
-	}
+		// Should come from the DataValueServiceFactory
+		$displayTitleFinder = ApplicationFactory::getInstance()->singleton( 'DisplayTitleFinder' );
 
-	private function findDisplayTitleFor( $subject ) {
-
-		$displayTitle = '';
-
-		$dataItems = ApplicationFactory::getInstance()->getCachedPropertyValuesPrefetcher()->getPropertyValues(
-			$subject,
-			new DIProperty( '_DTITLE' )
-		);
-
-		if ( $dataItems !== null && $dataItems !== [] ) {
-			$displayTitle = end( $dataItems )->getString();
-		} elseif ( $subject->getSubobjectName() !== '' ) {
-			// Check whether the base subject has a DISPLAYTITLE
-			return $this->findDisplayTitleFor( $subject->asBase() );
-		}
-
-		return $displayTitle;
+		return $displayTitleFinder->findDisplayTitle( $this->m_dataitem );
 	}
 
 }
