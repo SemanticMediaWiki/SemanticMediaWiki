@@ -41,6 +41,10 @@ For details also see the [change description.](https://gist.github.com/s7eph4n/2
 - Deprecated `PropertyValue::makeUserProperty`, use DataValueFactory::getInstance()->newPropertyValueByLabel;
 - Removed `PropertyValue::makeProperty`, use DataValueFactory
 
+### Result formats
+
+- Removed `RequestContext` from the `ResultPrinter` class; If for some reason someone requires access to the `RequestContext` then it is suggested to use `RequestContext::getMain()`.
+
 ### Hooks
 
 - Renamed `smwAddToRDFExport` to `SMW::Exporter::Controller::AddExpData`
