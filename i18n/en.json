@@ -879,7 +879,7 @@
 	"smw-schema-description-property-group-schema": "This schema type defines [https://www.semantic-mediawiki.org/wiki/Help:Property_group property groups] to help structure the [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse browsing] interface.",
 	"smw-schema-description-property-constraint-schema": "This schema type is expected to be used to define constraint rules for a property instance as well as those values assigned to it.",
 	"smw-schema-tag": "{{PLURAL:$1|Tag|Tags}}",
-	"smw-property-predefined-constraint-schema": "\"$1\" is a predefined property tat defines a constraint schema and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-property-predefined-constraint-schema": "\"$1\" is a predefined property that defines a constraint schema and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-desc": "\"$1\" is a predefined property that stores a schema description and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-def": "\"$1\" is a predefined property that stores the schema content and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-tag": "\"$1\" is a predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to identify a collection of schemata.",
