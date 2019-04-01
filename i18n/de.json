@@ -22,7 +22,8 @@
 			"Wnme",
 			"Das Schäfchen",
 			"FriedhelmW",
-			"Nemo bis"
+			"Nemo bis",
+			"Krabina"
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
@@ -53,7 +54,7 @@
 	"smw-concept-cache-count": "Der [https://www.semantic-mediawiki.org/wiki/Help:Konzeptcaching Konzeptcache] enthält {{PLURAL:$1|'''ein''' Objekt|'''$1''' Objekte}} (Stand: $2).",
 	"smw-concept-no-cache": "Kein Cache verfügbar.",
 	"smw_concept_description": "Beschreibung des Konzepts „$1“",
-	"smw_no_concept_namespace": "Konzepte können nur im Konzeptnamensraum (''Konzept:'') erstellt werden.",
+	"smw_no_concept_namespace": "Konzepte können nur im Namensraum (''Konzept:'') erstellt werden.",
 	"smw_multiple_concepts": "Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.",
 	"smw_concept_cache_miss": "Das Konzept „$1“ kann im Moment nicht genutzt werden, da es, gemäß der Konfiguration des Wikis, offline zu berechnen ist.\nFalls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte deinen Websiteadministrator, die Daten dieses Konzepts zu aktualisieren.",
 	"smw_noinvannot": "Inversen Attributen können keine Werte zugewiesen werden.",
@@ -148,6 +149,8 @@
 	"smw_notinenum": "„$1“ gehört nicht zu den [[Property:Allows value|zulässigen Werten]] ($2) für das Attribut „$3“.",
 	"smw-datavalue-constraint-error-allows-value-list": "„$1“ befindet sich nicht in der Liste ($2) [[Property:Allows value|zulässiger Werte]] für das Attribut „$3“.",
 	"smw-datavalue-constraint-error-allows-value-range": "„$1“ liegt nicht innerhalb des zulässigen Bereichs „$2“, der durch die Einschränkung mit „[[Property:Allows value|zulässigen Werten]]“ für das Attribut „$3“ festgelegt wurde.",
+	"smw-constraint-schema-violation-allowed-namespace-no-match": "„$1“ als Wert verletzt die Namensraumeinschränkung („$2“), die von einem Schema definiert wird, das dem Attribut „$3“ zugewiesen ist.",
+	"smw-constraint-schema-violation-requires-page-type": "Die Einschränkung erfordert einen Seitentyp.",
 	"smw_noboolean": "„$1“ ist kein Wahrheitswert (wahr/falsch).",
 	"smw_true_words": "wahr,w,ja,j",
 	"smw_false_words": "falsch,f,nein,n",
@@ -875,7 +878,9 @@
 	"smw-schema-description-link-format-schema": "Dieser Schematyp definiert, entsprechend der Festlegung mit dem Attribut [[Property:Formatter schema|Formatierungsregel]], kontextsensitive Links.",
 	"smw-schema-description-search-form-schema": "Dieser Schematyp definiert Eingabeformulare und Inhaltsausprägungen für das [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch erweiterte Suchprofil]. Es enthält Festlegungen zur Erstellung von Eingabefeldern, zu Standardnamensräumen oder zu Suchausdrücken für Suchanfragen.",
 	"smw-schema-description-property-group-schema": "Dieser Schematyp definiert [https://www.semantic-mediawiki.org/wiki/Help:Property_group Attributgruppen], mit denen die Anzeige der [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse Spezialseite zum Durchsuchen von Annotationen] strukturiert und somit übersichtlicher gestaltet werden kann.",
+	"smw-schema-description-property-constraint-schema": "Es wird erwartet, dass dieser Schematyp verwendet wird, um Einschränkungsregeln für eine Attributinstanz sowie solche Werte zu definieren, die ihr zugewiesen sind.",
 	"smw-schema-tag": "{{PLURAL:$1|Schemakennzeichen}}",
+	"smw-property-predefined-constraint-schema": "„$1“ ist ein softwareseitig fest definiertes Attribut, das ein Einschränkungsschema definiert und von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt wird.",
 	"smw-property-predefined-schema-desc": "„$1“ ist ein softwareseitig fest definiertes Attribut, das die Schemabeschreibung speichert. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
 	"smw-property-predefined-schema-def": "„$1“ ist ein softwareseitig fest definiertes Attribut, das die Definition des Schemas speichert. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",
 	"smw-property-predefined-schema-tag": "„$1“ ist ein softwareseitig fest definiertes Attribut, das das Kennzeichen des Schemas speichert. Es wird von [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] zur Verfügung gestellt.",

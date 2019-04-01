@@ -121,6 +121,7 @@
 	"smw_notinenum": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용된 값]] 목록($2)에 없습니다.",
 	"smw-datavalue-constraint-error-allows-value-list": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용된 값]] 목록($2)에 없습니다.",
 	"smw-datavalue-constraint-error-allows-value-range": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용값]] 제한을 통해 지정된 \"$2\"의 범위에 속하지 않습니다.",
+	"smw-constraint-schema-violation-requires-page-type": "제약 조건에 페이지 유형은 필수입니다.",
 	"smw_noboolean": "\"$1\"은(는) 불리언(참/거짓) 값으로 인식하지 않습니다.",
 	"smw_true_words": "true,t,yes,y",
 	"smw_false_words": "false,f,no,n",
