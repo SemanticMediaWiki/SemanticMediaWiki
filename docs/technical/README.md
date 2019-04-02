@@ -25,7 +25,7 @@ This document collects technical resources to help improve the understanding of 
     - [API](api.md) provides an overview for available API modules
     - [Hooks](hooks.md) provided by Semantic MediaWiki
     - [Search](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/MediaWiki/Search/README.md) `Special:Search` integration
-  - SQLStore ( [Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md), [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md), [Installer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.installer.md))
+  - SQLStore ( [Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md), [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md))
   - SPARQLStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md))
   - ElasticStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md))
 - tests

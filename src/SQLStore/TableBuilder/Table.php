@@ -14,6 +14,10 @@ use RuntimeException;
  */
 class Table {
 
+	const TYPE_FIELDS = 'fields';
+	const TYPE_INDICES = 'indices';
+	const TYPE_DEFAULTS = 'defaults';
+
 	/**
 	 * @var string
 	 */
@@ -83,7 +87,16 @@ class Table {
 	 * @param string|array $fieldType
 	 */
 	public function addColumn( $fieldName, $fieldType ) {
-		$this->attributes['fields'][$fieldName] = $fieldType;
+		$this->attributes[self::TYPE_FIELDS][$fieldName] = $fieldType;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 */
+	public function setPrimaryKey( $key ) {
+		$this->addIndex( [ $key, "PRIMARY KEY" ], 'pri' );
 	}
 
 	/**
@@ -101,9 +114,9 @@ class Table {
 		}
 
 		if ( $key !== null ) {
-			$this->attributes['indices'][$key] = $index;
+			$this->attributes[self::TYPE_INDICES][$key] = $index;
 		} else {
-			$this->attributes['indices'][] = $index;
+			$this->attributes[self::TYPE_INDICES][] = $index;
 		}
 	}
 
@@ -114,7 +127,7 @@ class Table {
 	 * @param string|int $default
 	 */
 	public function addDefault( $fieldName, $default ) {
-		$this->attributes['defaults'][$fieldName] = $default;
+		$this->attributes[self::TYPE_DEFAULTS][$fieldName] = $default;
 	}
 
 	/**
@@ -127,7 +140,7 @@ class Table {
 	 */
 	public function addOption( $key, $option ) {
 
-		if ( $key === 'fields' || $key === 'indices' || $key === 'defaults' ) {
+		if ( in_array( $key, [ self::TYPE_FIELDS, self::TYPE_INDICES, self::TYPE_DEFAULTS ] ) ) {
 			throw new RuntimeException( "$key is a reserved option key." );
 		}
 

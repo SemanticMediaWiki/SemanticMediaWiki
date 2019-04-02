@@ -38,11 +38,6 @@ class TableSchemaManager {
 	/**
 	 * @var []
 	 */
-	private $auxiliaryIndices = [];
-
-	/**
-	 * @var []
-	 */
 	private $options = [];
 
 	/**
@@ -140,15 +135,6 @@ class TableSchemaManager {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $auxiliaryIndices
-	 */
-	public function addAuxiliaryIndices( array $auxiliaryIndices ) {
-		$this->auxiliaryIndices = $auxiliaryIndices;
 	}
 
 	/**
@@ -416,13 +402,7 @@ class TableSchemaManager {
 			return;
 		}
 
-		$name = $table->getName();
-
-		if ( isset( $this->auxiliaryIndices[$name] ) ) {
-			$table->addIndex( $this->auxiliaryIndices[$name] );
-		}
-
-		$this->tables[] = $table;
+		$this->tables[$table->getName()] = $table;
 	}
 
 }
