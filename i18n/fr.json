@@ -902,7 +902,7 @@
 	"smw-schema-description-property-group-schema": "Ce type de schéma définit [https://www.semantic-mediawiki.org/wiki/Help:Property_group des groupes de propriété] pour aider à structurer l’interface de [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse navigation].",
 	"smw-schema-description-property-constraint-schema": "Ce type de schéma est sensé être utilisé pour définir des règles de contraintes pour une instance de propriété comme les valeurs qui lui sont assignées.",
 	"smw-schema-tag": "{{PLURAL:$1|balise|balises}}",
-	"smw-property-predefined-constraint-schema": "« $1 » est une propriété prédéfinie qui définit un schéma de contraintes et qui est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
+	"smw-property-predefined-constraint-schema": "« $1 » est une propriété prédéfinie qui définit un schéma de contraintes et qui est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-desc": "« $1 » est une propriété prédéfinie qui stocke une description de schéma et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-property-predefined-schema-def": "« $1 » est une propriété prédéfinie qui stocke le contenu du schéma et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
 	"smw-property-predefined-schema-tag": "« $1 » est une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] pour identifier une collection de schémas.",

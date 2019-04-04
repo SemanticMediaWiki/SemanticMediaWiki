@@ -17,6 +17,7 @@
 		]
 	},
 	"smw-desc": "Lisää wikisi saavutettavuutta – niin koneille kuin ihmisille ([https://www.semantic-mediawiki.org/wiki/Help:User_manual verkko-opas])",
+	"smw-error": "Virhe",
 	"smw-upgrade-error-why-title": "Miksi näen tämän virheen?",
 	"smw-upgrade-error-how-title": "Miten korjaan tämän virheen?",
 	"smw-semantics-not-enabled": "Semanttisen MediaWikin toiminnallisuutta ei ole otettu käyttöön tässä wikissä.",
@@ -259,6 +260,7 @@
 	"smw-admin-supplementary-elastic-settings-title": "Asetukset",
 	"smw-admin-supplementary-elastic-mappings-summary": "Yhteenveto",
 	"smw-admin-supplementary-elastic-statistics-title": "Tilastot",
+	"smw-admin-supplementary-elastic-replication-files": "Tiedostot",
 	"smw-property-label-similarity-threshold": "Kynnys:",
 	"smw-property-label-similarity-noresult": "Valituilla asetuksilla ei löytynyt yhtään tulosta.",
 	"smw_adminlinks_datastructure": "Tietorakenne",
