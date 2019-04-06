@@ -223,40 +223,6 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExtraneousCallbackFunction() {
-
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$lang->expects( $this->once() )
-			->method( 'getDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
-
-		$lang->expects( $this->once() )
-			->method( 'getDatatypeAliases' )
-			->will( $this->returnValue( [] ) );
-
-		$lang->expects( $this->once() )
-			->method( 'getCanonicalDatatypeLabels' )
-			->will( $this->returnValue( [] ) );
-
-		$instance = new DataTypeRegistry( $lang );
-		$arg = 'foo';
-
-		$instance->registerExtraneousFunction(
-			'foo',
-			function ( $arg ) {
-				return 'bar' . $arg;
-			}
-		);
-
-		$this->assertInternalType(
-			'array',
-			$instance->getExtraneousFunctions()
-		);
-	}
-
 	public function testLookupByLabelIsCaseInsensitive() {
 		$caseVariants = [
 			'page',
@@ -434,7 +400,11 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function testExtensionData() {
+	public function testRegisterCallableGetCallablesByTypeId() {
+
+		$callback = function() {
+			return 'foo';
+		};
 
 		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
 			->disableOriginalConstructor()
@@ -460,11 +430,13 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			'__foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue'
 		);
 
-		$instance->setExtensionData( '__foo', [ 'ext.test' => 'test' ] );
+		$instance->registerCallable(
+			'__foo', 'ext.test', $callback
+		);
 
 		$this->assertEquals(
-			[ 'ext.test' => 'test' ],
-			$instance->getExtensionData( '__foo' )
+			[ 'ext.test' => $callback ],
+			$instance->getCallablesByTypeId( '__foo' )
 		);
 	}
 
