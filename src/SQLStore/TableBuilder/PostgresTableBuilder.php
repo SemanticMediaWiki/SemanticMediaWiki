@@ -359,7 +359,7 @@ EOT;
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$indexName = $this->getCumulatedIndexName( $tableName, $columns );
 
-		$this->reportMessage( "   ... creating new index $columns ..." );
+		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 
 		if ( $this->connection->indexInfo( $tableName, $indexName ) === false ) {
 			$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );

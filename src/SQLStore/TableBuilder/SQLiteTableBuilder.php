@@ -348,7 +348,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$indexName = "{$tableName}_index{$indexName}";
 
-		$this->reportMessage( "   ... creating new index $columns ..." );
+		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 		$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );
 		$this->reportMessage( "done.\n" );
 	}
