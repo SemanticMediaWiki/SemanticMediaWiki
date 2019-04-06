@@ -27,7 +27,7 @@ Data tables follow individual schema definitions to serve a specific purpose for
 
 User defined properties with an assigned datatype are stored in tables with a predefined structure and relevant fields required by the [`DataItem`][dataitem] to represent its literal value.
 
-```
+<pre>
 [
 	DataItem::TYPE_NUMBER     => 'smw_di_number',
 	DataItem::TYPE_BLOB       => 'smw_di_blob',
@@ -39,7 +39,7 @@ User defined properties with an assigned datatype are stored in tables with a pr
 	DataItem::TYPE_WIKIPAGE   => 'smw_di_wikipage',
 	DataItem::TYPE_CONCEPT    => 'smw_conc'
 ]
-```
+</pre>
 
 Available fields include:
 
