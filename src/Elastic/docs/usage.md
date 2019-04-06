@@ -45,7 +45,7 @@ The `ElasticStore` has set its query execution to a `compat.mode` where queries 
 
 ### Filter and query context
 
-Most searches with a discrete value in Semantic MediaWiki will be classified as [structured search][es:structured:search] that operates with a [filter context][es:filter:context] while full-text or proximity searches use a [query context][es:query:context] that assigns based on a relevancy score. A filter context will always yield a `1` relevancy score as it is translated into on a boolean operation which either matches or neglects a result as part of a set.
+Most searches with a discrete value in Semantic MediaWiki will be classified as [structured search][es:structured:search] that operates with a [filter context][es:filter:context] while full-text or proximity searches use a [query context][es:query:context] that assigns relevancy scores to a match pool. A filter context will always yield a `1` relevancy score as it is translated into a boolean operation which either matches or neglects a result as part of a set.
 
 * `[[Has page::Foo]]` (filter context) to match entities with value `Foo` for the property `Has page`
 * `[[Has page::~*Foo*]]` (query context) to match entities with any value that contains `Foo` (and `FOO`,`foo` etc. ) for the `Has page` property
@@ -95,15 +95,15 @@ The introduced process allows matching the `SQLStore` behaviour in terms of path
 
 Property and category hierarchies are supported by relying on a conjunctive boolean expression for hierarchy members that are computed outside of the ES framework (the ES [parent join][es:parent-join] type is not used for this).
 
-### Unstructured text
+## Unstructured text
 
-Two experimental settings allow handling of unstructured content (text that does not provide any explicit property value annotations) using a separate field in ES.
+Two experimental settings allow to handle unstructured content (text that does not provide any explicit property value annotations) using a separate index field in ES. An "unstructured search" (i.e. searching without a property assignment) requires the wide proximity expression. For convenience, we provide different shortcuts including `in:`, `phrase:`, or `not:`.
 
-#### Raw text
+### Article content (raw text)
 
-The `indexer.raw.text` setting enables replication of the entire raw text of a page together with existing annotations so that unprocessed text can be searched in tandem with structured queries.
+The `indexer.raw.text` setting enables to replicate the entire raw text of a page (including its annotations) so that unprocessed text can be searched together with structured elements.
 
-#### Files and content ingestion
+### File content ingestion
 
 This requires the ES [ingest-attachment plugin][es:ingest] and the `indexer.experimental.file.ingest` setting.
 
@@ -119,9 +119,7 @@ In the event the ingestions and extraction are successful, a `File attachment` a
 - `Content date`, and
 - `Content keyword`
 
-Due to size and memory consumption by ES/Tika, file content ingestions happen exclusively in the background using the `smw.elasticFileIngest` job. Only after the job has been executed successfully will the aforementioned annotations and file content be accessible during a query request.
-
-An "unstructured search" (i.e. searching without a property assignment) requires a wide proximity expression which are conveniently available as shortcuts using `in:`, `phrase:`, or `not:` (see above).
+Due to size and memory consumption required by Elasticsearch (actually it is the [Tika][tika] component), file content ingestions happens exclusively in background using the `smw.elasticFileIngest` job and only after the job has been executed successfully, aforementioned annotations and file content will be accessible as indexed content and be searched as part of a query request.
 
 ## Query debugging
 
@@ -169,3 +167,4 @@ In the event [SMWSearch][smw:search] is enabled, it is possible to retrieve [hig
 [es:highlighting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
 [es:query-dsl-terms-lookup]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-lookup
 [smw:search]: https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
+[tika]: https://tika.apache.org/
