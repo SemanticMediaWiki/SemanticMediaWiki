@@ -68,6 +68,15 @@ class SetParserFunction {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return SemanticData
+	 */
+	public function getSemanticData() {
+		return $this->parserData->getSemanticData();
+	}
+
+	/**
 	 * @since  1.9
 	 *
 	 * @param ParserParameterProcessor $parameters
@@ -87,6 +96,11 @@ class SetParserFunction {
 			unset( $parametersToArray['template'] );
 		}
 
+		$dataValueFactory = DataValueFactory::getInstance();
+
+		// Set context
+		$dataValueFactory->addCallable( 'semantic.data', [ $this, 'getSemanticData' ] );
+
 		foreach ( $parametersToArray as $property => $values ) {
 
 			$last = count( $values ) - 1; // -1 because the key starts with 0
@@ -97,7 +111,7 @@ class SetParserFunction {
 					$value = $this->stripMarkerDecoder->decode( $value );
 				}
 
-				$dataValue = DataValueFactory::getInstance()->newDataValueByText(
+				$dataValue = $dataValueFactory->newDataValueByText(
 						$property,
 						$value,
 						false,
@@ -121,7 +135,10 @@ class SetParserFunction {
 			}
 		}
 
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
+
+		// Remove context
+		$dataValueFactory->clearCallable( 'semantic.data' );
 
 		$html = $this->templateRenderer->render() . $this->messageFormatter
 			->addFromArray( $parameters->getErrors() )

@@ -142,6 +142,15 @@ class SubobjectParserFunction {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return SemanticData
+	 */
+	public function getSemanticData() {
+		return $this->parserData->getSemanticData();
+	}
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ParserParameterProcessor $params
@@ -157,7 +166,7 @@ class SubobjectParserFunction {
 			$this->parserData->getSemanticData()->addSubobject( $this->subobject );
 		}
 
-		$this->parserData->pushSemanticDataToParserOutput();
+		$this->parserData->copyToParserOutput();
 
 		$html = $this->messageFormatter->addFromArray( $this->subobject->getErrors() )
 			->addFromArray( $this->parserData->getErrors() )
@@ -193,6 +202,10 @@ class SubobjectParserFunction {
 		);
 
 		$subject = $this->subobject->getSubject();
+		$dataValueFactory = DataValueFactory::getInstance();
+
+		// Set context
+		$dataValueFactory->addCallable( 'semantic.data', [ $this, 'getSemanticData' ] );
 
 		foreach ( $parameters as $property => $values ) {
 
@@ -206,7 +219,7 @@ class SubobjectParserFunction {
 
 			foreach ( $values as $value ) {
 
-				$dataValue = DataValueFactory::getInstance()->newDataValueByText(
+				$dataValue = $dataValueFactory->newDataValueByText(
 						$property,
 						$value,
 						false,
@@ -214,10 +227,14 @@ class SubobjectParserFunction {
 					);
 
 				$this->subobject->addDataValue( $dataValue );
+
 			}
 		}
 
 		$this->augment( $this->subobject->getSemanticData() );
+
+		// Remove context
+		$dataValueFactory->clearCallable( 'semantic.data' );
 
 		return true;
 	}
