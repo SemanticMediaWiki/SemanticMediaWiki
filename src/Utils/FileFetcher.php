@@ -18,6 +18,11 @@ class FileFetcher {
 	private $dir = '';
 
 	/**
+	 * @var string
+	 */
+	private $sort;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param string $dir
@@ -38,6 +43,31 @@ class FileFetcher {
 	/**
 	 * @since 3.1
 	 *
+	 * @param string $sort
+	 */
+	public function sort( $sort ) {
+
+		$sort = strtolower( $sort );
+
+		if ( in_array( $sort, [ 'asc', 'desc' ] ) ) {
+			$this->sort = $sort;
+		}
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $file
+	 *
+	 * @return string
+	 */
+	public static function normalize( $file ) {
+		return str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param string $extension
 	 *
 	 * @return Iterator
@@ -52,7 +82,28 @@ class FileFetcher {
 			new \RecursiveDirectoryIterator( $this->dir )
 		);
 
-		return new \RegexIterator( $iterator, '/^.+\.' . $extension . '$/i', \RecursiveRegexIterator::GET_MATCH );
+		$matches = new \RegexIterator(
+			$iterator, '/^.+\.' . $extension . '$/i',
+			\RecursiveRegexIterator::GET_MATCH
+		);
+
+		if ( $this->sort !== null ) {
+			$matches = iterator_to_array(
+				$matches
+			);
+
+			usort( $matches, [ $this, "sort_$this->sort" ] );
+		}
+
+		return $matches;
+	}
+
+	private function sort_asc( $a, $b ) {
+		return strnatcasecmp( $a[0], $b[0] );
+	}
+
+	private function sort_desc( $a, $b ) {
+		return strnatcasecmp( $b[0], $a[0] );
 	}
 
 }
