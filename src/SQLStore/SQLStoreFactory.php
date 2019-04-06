@@ -38,6 +38,8 @@ use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
@@ -400,7 +402,7 @@ class SQLStoreFactory {
 			$this->messageReporter
 		);
 
-		$tableIntegrityExaminer = new TableIntegrityExaminer(
+		$tableBuildExaminer = new TableBuildExaminer(
 			$this->store,
 			new HashField( $this->store ),
 			new FixedProperties( $this->store ),
@@ -426,7 +428,7 @@ class SQLStoreFactory {
 		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
-			$tableIntegrityExaminer
+			$tableBuildExaminer
 		);
 
 		$installer->setMessageReporter(

@@ -1,9 +1,8 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\TableBuilder;
 
-use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use RuntimeException;
 use Hooks;
