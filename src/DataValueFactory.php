@@ -8,6 +8,7 @@ use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
 use SMWErrorValue as ErrorValue;
+use RuntimeException;
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or
@@ -28,14 +29,14 @@ use SMWErrorValue as ErrorValue;
 class DataValueFactory {
 
 	/**
-	 * @var DataTypeRegistry
+	 * @var DataValueFactory
 	 */
-	private static $instance = null;
+	private static $instance;
 
 	/**
 	 * @var DataTypeRegistry
 	 */
-	private $dataTypeRegistry = null;
+	private $dataTypeRegistry;
 
 	/**
 	 * @var DataValueServiceFactory
@@ -43,9 +44,19 @@ class DataValueFactory {
 	private $dataValueServiceFactory;
 
 	/**
+	 * @var integer
+	 */
+	private $featureSet = 0;
+
+	/**
 	 * @var array
 	 */
 	private $defaultOutputFormatters;
+
+	/**
+	 * @var []
+	 */
+	private $callables = [];
 
 	/**
 	 * @since 1.9
@@ -70,23 +81,51 @@ class DataValueFactory {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
 		$dataValueServiceFactory = $applicationFactory->create( 'DataValueServiceFactory' );
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
-		$dataValueServiceFactory->importExtraneousFunctions(
-			$dataTypeRegistry->getExtraneousFunctions()
-		);
-
-		self::$instance = new self(
+		$instance = new self(
 			$dataTypeRegistry,
 			$dataValueServiceFactory
 		);
 
-		self::$instance->setDefaultOutputFormatters(
-			$applicationFactory->getSettings()->get( 'smwgDefaultOutputFormatters' )
+		$instance->setFeatureSet(
+			$settings->get( 'smwgDVFeatures' )
 		);
 
-		return self::$instance;
+		$instance->setDefaultOutputFormatters(
+			$settings->get( 'smwgDefaultOutputFormatters' )
+		);
+
+		return self::$instance = $instance;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param callable $callable
+	 *
+	 * @throws RuntimeException
+	 */
+	public function addCallable( $key, callable $callable ) {
+
+		if ( isset( $this->callables[$key] ) ) {
+			throw new RuntimeException( "`$key` is already in use, please clear the callable first!" );
+		}
+
+		$this->callables[$key] = $callable;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 */
+	public function clearCallable( $key ) {
+		unset( $this->callables[$key] );
 	}
 
 	/**
@@ -94,7 +133,17 @@ class DataValueFactory {
 	 */
 	public function clear() {
 		$this->dataTypeRegistry->clear();
+		$this->callables = [];
 		self::$instance = null;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $featureSet
+	 */
+	public function setFeatureSet( $featureSet ) {
+		$this->featureSet = $featureSet;
 	}
 
 	/**
@@ -150,17 +199,14 @@ class DataValueFactory {
 			$this->dataValueServiceFactory
 		);
 
-		$dataValue->copyOptions(
-			$this->dataTypeRegistry->getOptions()
-		);
+		$dataValue->setOption( 'smwgDVFeatures', $this->featureSet );
 
-		foreach ( $this->dataTypeRegistry->getExtensionData( $typeId ) as $key => $value ) {
+		foreach ( $this->callables as $key => $callable ) {
+			$dataValue->addCallable( $key, $callable );
+		}
 
-			if ( !is_string( $key ) ) {
-				continue;
-			}
-
-			$dataValue->setExtensionData( $key, $value );
+		foreach ( $this->dataTypeRegistry->getCallablesByTypeId( $typeId ) as $key => $value ) {
+			$dataValue->addCallable( $key, $value );
 		}
 
 		$localizer = Localizer::getInstance();
@@ -192,7 +238,7 @@ class DataValueFactory {
 			}
 		}
 
-		if ( !is_null( $contextPage ) ) {
+		if ( $contextPage !== null ) {
 			$dataValue->setContextPage( $contextPage );
 		}
 
