@@ -41,7 +41,6 @@ class ArticlePurge {
 		$articleID = $title->getArticleID();
 
 		$settings = $applicationFactory->getSettings();
-
 		$cache = $applicationFactory->getCache();
 
 		if ( $articleID > 0 ) {
@@ -51,21 +50,8 @@ class ArticlePurge {
 			);
 		}
 
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $title );
-		$dispatchContext->set( 'context', 'ArticlePurge' );
-
 		if ( $settings->get( 'smwgQueryResultCacheRefreshOnPurge' ) ) {
-
-			$dispatchContext->set( 'ask', $applicationFactory->getStore()->getPropertyValues(
-				DIWikiPage::newFromTitle( $title ),
-				new DIProperty( '_ASK') )
-			);
-
-			EventHandler::getInstance()->getEventDispatcher()->dispatch(
-				'cached.prefetcher.reset',
-				$dispatchContext
-			);
+			$this->invalidateResultCache( $applicationFactory->getStore(), $title );
 		}
 
 		$context = [
@@ -76,6 +62,22 @@ class ArticlePurge {
 		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 
 		return true;
+	}
+
+	private function invalidateResultCache( $store, $title ) {
+
+		$dependency_list = $store->getPropertyValues(
+			DIWikiPage::newFromTitle( $title ),
+			new DIProperty( '_ASK' )
+		);
+
+		$context = [
+			'context' => 'ArticlePurge',
+			'title' => $title,
+			'dependency_list' => $dependency_list
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 	}
 
 }

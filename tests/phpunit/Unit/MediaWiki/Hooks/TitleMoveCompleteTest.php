@@ -66,6 +66,8 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
@@ -99,6 +101,8 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 

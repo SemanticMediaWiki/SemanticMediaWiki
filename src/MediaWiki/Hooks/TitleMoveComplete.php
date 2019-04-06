@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
-use SMW\EventHandler;
 use SMW\NamespaceExaminer;
 
 /**
@@ -61,32 +60,14 @@ class TitleMoveComplete {
 			);
 		}
 
-		$eventHandler = EventHandler::getInstance();
-
-		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'title', $oldTitle );
-		$dispatchContext->set( 'context', 'ArticleMove' );
-
-		$eventHandler->getEventDispatcher()->dispatch(
-			'cached.prefetcher.reset',
-			$dispatchContext
-		);
-
-		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'title', $newTitle );
-		$dispatchContext->set( 'context', 'ArticleMove' );
-
-		$eventHandler->getEventDispatcher()->dispatch(
-			'cached.prefetcher.reset',
-			$dispatchContext
-		);
-
 		$context = [
 			'context' => 'TitleMoveComplete'
 		];
 
-		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $oldTitle ] );
-		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $newTitle ] );
+		foreach ( [ 'InvalidateResultCache', 'InvalidateEntityCache' ] as $event ) {
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $oldTitle ] );
+			$this->eventDispatcher->dispatch( $event, $context + [ 'title' => $newTitle ] );
+		}
 
 		return true;
 	}

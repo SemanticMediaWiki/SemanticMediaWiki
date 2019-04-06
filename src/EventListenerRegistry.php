@@ -80,72 +80,7 @@ class EventListenerRegistry implements EventListenerCollection {
 			}
 		);
 
-		/**
-		 * Emitted during NewRevisionFromEditComplete, ArticleDelete, TitleMoveComplete,
-		 * PropertyTableIdReferenceDisposer, ArticlePurge
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'cached.prefetcher.reset', function( $dispatchContext ) {
-
-				if ( $dispatchContext->has( 'title' ) ) {
-					$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
-				} else{
-					$subject = $dispatchContext->get( 'subject' );
-				}
-
-				$context = $dispatchContext->has( 'context' ) ? $dispatchContext->get( 'context' ) : '';
-
-				$applicationFactory = ApplicationFactory::getInstance();
-
-				$logContext = [
-					'role' => 'developer',
-					'event' => 'cached.prefetcher.reset',
-					'origin' => $subject
-				];
-
-				$this->logger->info( '[Event] {event}: {origin}', $logContext );
-
-				$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
-					$subject,
-					$context
-				);
-
-				if ( $dispatchContext->has( 'ask' ) ) {
-					$applicationFactory->singleton( 'CachedQueryResultPrefetcher' )->resetCacheBy(
-						$dispatchContext->get( 'ask' ),
-						$context
-					);
-				}
-
-				$dispatchContext->set( 'propagationstop', true );
-			}
-		);
-
-		$this->registerStateChangeEvents();
-
 		return $this->eventListenerCollection;
-	}
-
-	private function registerStateChangeEvents() {
-
-		/**
-		 * Emitted during ArticleDelete
-		 */
-		$this->eventListenerCollection->registerCallback(
-			'cached.update.marker.delete', function( $dispatchContext ) {
-
-				$cache = ApplicationFactory::getInstance()->getCache();
-
-				if ( $dispatchContext->has( 'subject' ) ) {
-					$cache->delete(
-						smwfCacheKey(
-							ParserData::CACHE_NAMESPACE,
-							$dispatchContext->get( 'subject' )->getHash()
-						)
-					);
-				}
-			}
-		);
 	}
 
 }

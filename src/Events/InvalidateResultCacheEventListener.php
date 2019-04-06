@@ -5,6 +5,7 @@ namespace SMW\Events;
 use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
+use SMW\DIWikiPage;
 use Psr\Log\LoggerAwareTrait;
 
 /**
@@ -36,11 +37,30 @@ class InvalidateResultCacheEventListener implements EventListener {
 	 */
 	public function execute( DispatchContext $dispatchContext = null ) {
 
-		$context = $dispatchContext->get( 'context' );
-		$subject = $dispatchContext->get( 'subject' );
+		if ( $dispatchContext === null ) {
+			return;
+		}
+
+		if ( $dispatchContext->has( 'title' ) ) {
+			$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+		} else{
+			$subject = $dispatchContext->get( 'subject' );
+		}
+
+		if ( $dispatchContext->has( 'context' ) ) {
+			$context = $dispatchContext->get( 'context' );
+		} else {
+			$context = 'n/a';
+		}
+
+		if ( $dispatchContext->has( 'dependency_list' ) ) {
+			$items = $dispatchContext->get( 'dependency_list' );
+		} else {
+			$items = [ $subject ];
+		}
 
 		$this->cachedQueryResultPrefetcher->invalidate(
-			$dispatchContext->get( 'dependency_list' ),
+			$items,
 			$context
 		);
 

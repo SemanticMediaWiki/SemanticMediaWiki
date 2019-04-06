@@ -265,24 +265,13 @@ class PropertyTableIdReferenceDisposer {
 		$eventHandler = EventHandler::getInstance();
 		$eventDispatcher = $eventHandler->getEventDispatcher();
 
-		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'subject', $subject );
-		$dispatchContext->set( 'context', 'PropertyTableIdReferenceDisposal' );
-
-		$eventDispatcher->dispatch(
-			'cached.prefetcher.reset',
-			$dispatchContext
-		);
-
 		$context = [
 			'context' => 'PropertyTableIdReferenceDisposal',
 			'title' => $subject->getTitle()
 		];
 
-		$eventDispatcher->dispatch(
-			'InvalidateEntityCache',
-			$context
-		);
+		$eventDispatcher->dispatch( 'InvalidateResultCache', $context );
+		$eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 	}
 
 }
