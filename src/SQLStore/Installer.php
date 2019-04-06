@@ -148,20 +148,17 @@ class Installer implements MessageReporter {
 		);
 
 		// #3559
-		$auxiliaryIndices = [];
+		$tables = $this->tableSchemaManager->getTables();
 
 		Hooks::run(
-			'SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete',
+			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
 			[
-				&$auxiliaryIndices
+				$tables,
+				$messageReporter
 			]
 		);
 
-		$this->tableSchemaManager->addAuxiliaryIndices(
-			$auxiliaryIndices
-		);
-
-		foreach ( $this->tableSchemaManager->getTables() as $table ) {
+		foreach ( $tables as $table ) {
 			$this->tableBuilder->create( $table );
 		}
 

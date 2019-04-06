@@ -372,27 +372,24 @@ Hooks::register( 'SMW::Admin::TaskHandlerFactory', function( &$taskHandlers, $st
 } );
 </pre>
 
-
-### SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete
+### SMW::SQLStore::Installer::BeforeCreateTablesComplete
 
 * Version: 3.1
 * Description: Hook allows to add additional indices
 * Reference class: `SMW\SQLStore\Installer`
 
-When using this hook, please make sure you understand the implications adding auxiliary indices which are not part of the core declaration and may alter performance expectations.
+When using this hook, please make sure you understand the implications of modifying the standard table definition (e.g add auxiliary indices) which are not part of the core declaration and may alter performance expectations.
 
 <pre>
 use Hooks;
 
-Hooks::register( 'SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete', function( &$auxiliaryIndices ) {
+Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
 
-	$auxiliaryIndices = [
-		// SMW table name => index declaration
-		'smw_query_links' => [ "s_id,o_id", "PRIMARY KEY" ],
-	];
-
+	// Modify the table definitions
 } );
 </pre>
+
+[`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/hook.sqlstore.installer.beforecreatetablescomplete.md)
 
 ### SMW::Factbox::OverrideRevisionID
 

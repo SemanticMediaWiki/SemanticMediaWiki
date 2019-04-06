@@ -108,7 +108,6 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3666](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3666) Uses HTML instead of JS for the SMWSearch namespace buttons
 * [#3675](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3675) Support definition of field index type
 * [#3682](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3682) Removed `IsFileCacheable` hook usage
-* [#3683](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3683) Added the `SMW::SQLStore::Installer::AddAuxiliaryIndicesBeforeCreateTablesComplete` hook
 * [#3685](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3685) Replaced qTip with tippy.js (3.4+) (#3811, #3812, #3813)
 * [#3712](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3712) Uses `smw_rev` field to check if an update is skippable
 * [#3721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3721) Added index hint for page types

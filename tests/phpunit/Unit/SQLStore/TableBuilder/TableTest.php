@@ -85,6 +85,23 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSetPrimaryKey() {
+
+		$instance = new Table( 'Foo' );
+		$instance->setPrimaryKey( 'abc,def' );
+
+		$expected = [
+			'indices' => [
+				'pri' => [ 'abc,def', 'PRIMARY KEY' ]
+			]
+		];
+
+		$this->assertEquals(
+			$expected,
+			$instance->getAttributes()
+		);
+	}
+
 	public function testAddIndexWithSpaceThrowsException() {
 
 		$instance = new Table( 'Foo' );

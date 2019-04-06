@@ -28,7 +28,6 @@ The general policy of the `Semantic MediaWiki` software and the development ther
 - No MediaWiki classes are modified, patched, or otherwise changed
 - Semantic MediaWiki tries to depend only on a selected pool of MediaWiki core classes (`Title`, `Wikipage`, `ParserOutput`, `Revision`, `Language` ... ) to minimize the potential for breakage during release changes
 - Use publicly available `Hooks` and `API` interfaces to extend MediaWiki with Semantic MediaWiki functions
-- Object interaction with MediaWiki objects should be done using accessors in the `SMW\MediaWiki` namespace
 
 ### Conventions
 
@@ -37,6 +36,7 @@ Some simple rules that developers and the project tries to follow (of course the
 - A `class` has a defined responsibility and boundary
 - Dependency injection goes before inheritance, meaning that all objects used in a class should be injected.
 - Instance creation (e.g. `new Foo( ... )`) is delegated to a factory service
+- Object interaction with MediaWiki objects should be done using accessors in the `SMW\MediaWiki` namespace
 - A factory service should avoid using conditionals (`if ... then ...`) to create an instance
 - Instance creation and dependency injection are done using a service locator or dependency builder
 - The top-level namespace is `SMW` and each component should be placed in a namespace that represents the main responsibility of the component
@@ -72,8 +72,9 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 - [Developing an extension](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/developing.extension.md)
 - [Register a custom datatype][datatype]
 - [Extending consistency checks on a property page](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.declarationexaminer.md)
-- [Extending property annotators](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.propertyannotator.md) for a core predefined property, also the [Semantic Extra Special Properties](https://github.com/SemanticMediaWiki/SemanticExtraSpecialProperties) extension provides a development space for deploying other predefined (special) property annotations
-- [Extending constraints and checks](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md)
+- [Extending property annotators](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.propertyannotator.md) for core predefined properties, see also the [Semantic Extra Special Properties](https://github.com/SemanticMediaWiki/SemanticExtraSpecialProperties) extension that provides a development space for deploying other predefined (special) properties
+- [Extending constraints](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md) and their checks
+- Working with and [changing the table schema](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/changing.tableschema.md) of Semantic MediaWiki
 
 ## See also
 
