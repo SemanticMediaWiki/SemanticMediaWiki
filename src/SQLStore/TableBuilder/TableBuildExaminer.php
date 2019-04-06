@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\TableBuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\NullMessageReporter;
@@ -8,8 +8,9 @@ use SMW\DIProperty;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
 use SMW\PropertyRegistry;
-use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\Installer;
+use SMW\SQLStore\TableBuilder as ITableBuilder;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
@@ -27,7 +28,7 @@ use SMWSql3SmwIds;
  *
  * @author mwjames
  */
-class TableIntegrityExaminer {
+class TableBuildExaminer {
 
 	use MessageReporterAwareTrait;
 
@@ -107,7 +108,7 @@ class TableIntegrityExaminer {
 	 *
 	 * @param TableBuilder $tableBuilder
 	 */
-	public function checkOnPostCreation( TableBuilder $tableBuilder ) {
+	public function checkOnPostCreation( ITableBuilder $tableBuilder ) {
 
 		$this->fixedProperties->setMessageReporter( $this->messageReporter );
 		$this->fixedProperties->check();
@@ -141,7 +142,7 @@ class TableIntegrityExaminer {
 	 *
 	 * @param TableBuilder $tableBuilder
 	 */
-	public function checkOnPostDestruction( TableBuilder $tableBuilder ) {
+	public function checkOnPostDestruction( ITableBuilder $tableBuilder ) {
 
 		$connection = $this->store->getConnection( DB_MASTER );
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\SQLStore\TableSchemaManager;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 
 /**
- * @covers \SMW\SQLStore\TableSchemaManager
+ * @covers \SMW\SQLStore\TableBuilder\TableSchemaManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

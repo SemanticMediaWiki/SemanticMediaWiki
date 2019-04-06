@@ -9,6 +9,8 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\CompatibilityMode;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
@@ -62,9 +64,9 @@ class Installer implements MessageReporter {
 	private $tableBuilder;
 
 	/**
-	 * @var TableIntegrityExaminer
+	 * @var TableBuildExaminer
 	 */
-	private $tableIntegrityExaminer;
+	private $tableBuildExaminer;
 
 	/**
 	 * @var Options
@@ -81,12 +83,12 @@ class Installer implements MessageReporter {
 	 *
 	 * @param TableSchemaManager $tableSchemaManager
 	 * @param TableBuilder $tableBuilder
-	 * @param TableIntegrityExaminer $tableIntegrityExaminer
+	 * @param TableBuildExaminer $tableBuildExaminer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableIntegrityExaminer $tableIntegrityExaminer ) {
+	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer ) {
 		$this->tableSchemaManager = $tableSchemaManager;
 		$this->tableBuilder = $tableBuilder;
-		$this->tableIntegrityExaminer = $tableIntegrityExaminer;
+		$this->tableBuildExaminer = $tableBuildExaminer;
 		$this->options = new Options();
 	}
 
@@ -143,7 +145,7 @@ class Installer implements MessageReporter {
 			$messageReporter
 		);
 
-		$this->tableIntegrityExaminer->setMessageReporter(
+		$this->tableBuildExaminer->setMessageReporter(
 			$messageReporter
 		);
 
@@ -162,7 +164,7 @@ class Installer implements MessageReporter {
 			$this->tableBuilder->create( $table );
 		}
 
-		$this->tableIntegrityExaminer->checkOnPostCreation( $this->tableBuilder );
+		$this->tableBuildExaminer->checkOnPostCreation( $this->tableBuilder );
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
@@ -211,7 +213,7 @@ class Installer implements MessageReporter {
 			$this->tableBuilder->drop( $table );
 		}
 
-		$this->tableIntegrityExaminer->checkOnPostDestruction( $this->tableBuilder );
+		$this->tableBuildExaminer->checkOnPostDestruction( $this->tableBuilder );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterDropTablesComplete',

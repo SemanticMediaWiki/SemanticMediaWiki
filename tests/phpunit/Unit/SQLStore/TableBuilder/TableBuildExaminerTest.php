@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\Tests\TestEnvironment;
-use SMW\SQLStore\TableIntegrityExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 
 /**
- * @covers \SMW\SQLStore\TableIntegrityExaminer
+ * @covers \SMW\SQLStore\TableBuilder\TableBuildExaminer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\SQLStore\TableIntegrityExaminer;
  *
  * @author mwjames
  */
-class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
+class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 	private $spyMessageReporter;
 	private $hashField;
@@ -51,8 +51,8 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			TableIntegrityExaminer::class,
-			new TableIntegrityExaminer( $this->store, $this->hashField, $this->fixedProperties, $this->touchedField, $this->idBorder )
+			TableBuildExaminer::class,
+			new TableBuildExaminer( $this->store, $this->hashField, $this->fixedProperties, $this->touchedField, $this->idBorder )
 		);
 	}
 
@@ -104,7 +104,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
 
-		$instance = new TableIntegrityExaminer(
+		$instance = new TableBuildExaminer(
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
@@ -172,7 +172,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
 
-		$instance = new TableIntegrityExaminer(
+		$instance = new TableBuildExaminer(
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
@@ -221,7 +221,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
 
-		$instance = new TableIntegrityExaminer(
+		$instance = new TableBuildExaminer(
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
@@ -284,7 +284,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'checkOn' );
 
-		$instance = new TableIntegrityExaminer(
+		$instance = new TableBuildExaminer(
 			$store,
 			$this->hashField,
 			$this->fixedProperties,
@@ -333,7 +333,7 @@ class TableIntegrityExaminerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'drop' );
 
-		$instance = new TableIntegrityExaminer(
+		$instance = new TableBuildExaminer(
 			$store,
 			$this->hashField,
 			$this->fixedProperties,

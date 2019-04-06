@@ -21,7 +21,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $tableSchemaManager;
 	private $tableBuilder;
-	private $tableIntegrityExaminer;
+	private $tableBuildExaminer;
 	private $SetupFile;
 
 	protected function setUp() {
@@ -29,7 +29,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
 
-		$this->tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableSchemaManager' )
+		$this->tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableSchemaManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +37,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableIntegrityExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableIntegrityExaminer' )
+		$this->tableBuildExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuildExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +56,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Installer::class,
-			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableIntegrityExaminer )
+			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableBuildExaminer )
 		);
 	}
 
@@ -78,13 +78,13 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'create' );
 
-		$this->tableIntegrityExaminer->expects( $this->once() )
+		$this->tableBuildExaminer->expects( $this->once() )
 			->method( 'checkOnPostCreation' );
 
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableIntegrityExaminer
+			$this->tableBuildExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -122,13 +122,13 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$tableBuilder->expects( $this->once() )
 			->method( 'create' );
 
-		$this->tableIntegrityExaminer->expects( $this->once() )
+		$this->tableBuildExaminer->expects( $this->once() )
 			->method( 'checkOnPostCreation' );
 
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableIntegrityExaminer
+			$this->tableBuildExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -161,7 +161,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableIntegrityExaminer
+			$this->tableBuildExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -193,7 +193,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableIntegrityExaminer
+			$this->tableBuildExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -208,7 +208,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
-			$this->tableIntegrityExaminer
+			$this->tableBuildExaminer
 		);
 
 		$callback = function() use( $instance ) {
