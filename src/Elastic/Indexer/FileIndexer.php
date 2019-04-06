@@ -13,6 +13,7 @@ use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -164,7 +165,7 @@ class FileIndexer {
 
 		// Allow any third-party extension to modify the file used as base for
 		// the index process
-		\Hooks::run( 'SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete', [ $title, &$file ] );
+		$file = RevisionGuard::getFile( $title, $file );
 
 		if ( $file !== null && isset( $file->file_sha1 ) ) {
 			$this->logger->info(

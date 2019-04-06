@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\SemanticData;
 use SMW\NamespaceExaminer;
 use Title;
+use SMW\MediaWiki\RevisionGuard;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
@@ -75,12 +76,8 @@ class LinksUpdateConstructed extends HookHandler {
 		}
 
 		$title = $linksUpdate->getTitle();
-		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
 
-		$opts = [ 'defer' => $this->enabledDeferredUpdate ];
-
-		// Allow any third-party extension to suppress the update process
-		if ( \Hooks::run( 'SMW::LinksUpdate::ApprovedUpdate', [ $title, $latestRevID ] ) === false ) {
+		if ( RevisionGuard::isSkippableUpdate( $title ) ) {
 			return true;
 		}
 
@@ -100,6 +97,8 @@ class LinksUpdateConstructed extends HookHandler {
 				$this->updateSemanticData( $parserData, $title, 'empty data' );
 			}
 		}
+
+		$opts = [ 'defer' => $this->enabledDeferredUpdate ];
 
 		// Push updates on properties directly without delay
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {

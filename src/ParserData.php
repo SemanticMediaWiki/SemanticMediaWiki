@@ -7,6 +7,7 @@ use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
 use SMWDataValue as DataValue;
+use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -418,7 +419,7 @@ class ParserData {
 
 			$this->logger->info(
 				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
-				[ 'role' => 'user', 'revID' => $this->title->getLatestRevID( Title::GAID_FOR_UPDATE ) ]
+				[ 'role' => 'user', 'revID' => RevisionGuard::getLatestRevID( $this->title ) ]
 			);
 
 			return false;

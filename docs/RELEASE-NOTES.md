@@ -112,9 +112,6 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3712](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3712) Uses `smw_rev` field to check if an update is skippable
 * [#3721](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3721) Added index hint for page types
 * [#3723](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3723) Added prefetch support for the property value list retrievable
-* [#3739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3739) Added the `SMW::Factbox::OverrideRevisionID` hook
-* [#3762](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3762) Added the `SMW::DataUpdater::SkipUpdate` hook
-* [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Added the `SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete` hook
 * [#3770](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3770) Extended `ParserAfterTidy` hook event listening
 * [#3780](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3780) Added `Database::beginSectionTransaction` due to MW 1.33
 * [#3801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3801) Class and namespace reorg

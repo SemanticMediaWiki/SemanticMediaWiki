@@ -7,6 +7,7 @@ use ParserOptions;
 use Revision;
 use Title;
 use User;
+use SMW\MediaWiki\RevisionGuard;
 
 /**
  * Fetches the ParserOutput either by parsing an invoked text component,
@@ -244,7 +245,10 @@ class ContentParser {
 			$this->revision = Revision::newFromTitle( $this->getTitle() );
 		}
 
-		\Hooks::run( 'SMW::Parser::ChangeRevision', [ $this->getTitle(), &$this->revision ] );
+		$this->revision = RevisionGuard::getRevision(
+			$this->getTitle(),
+			$this->revision
+		);
 
 		return $this->revision;
 	}

@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Rebuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -301,7 +302,7 @@ class EntityValidator {
 	 */
 	public function hasLatestRevID( Title $title, $row = false ) {
 
-		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+		$latestRevID = RevisionGuard::getLatestRevID( $title );
 
 		if ( $row !== false ) {
 			return $latestRevID == $row->smw_rev;
