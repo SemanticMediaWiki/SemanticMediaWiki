@@ -176,12 +176,17 @@ class ContentParser {
 			$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
 		}
 
-		$this->parserOutput = $content->getParserOutput(
-			$this->getTitle(),
-			$this->getRevision()->getId(),
-			null,
-			true
-		);
+		// Avoid "The content model 'xyz' is not registered on this wiki."
+		try {
+			$this->parserOutput = $content->getParserOutput(
+				$this->getTitle(),
+				$this->getRevision()->getId(),
+				null,
+				true
+			);
+		} catch( \MWUnknownContentModelException $e ) {
+			$this->parserOutput = null;
+		}
 
 		return $this;
 	}
