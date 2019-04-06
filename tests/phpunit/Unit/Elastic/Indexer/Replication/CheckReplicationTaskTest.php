@@ -65,9 +65,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_NotExists() {
 
+		$replicationStatus = [
+			'modification_date' => false
+		];
+
 		$this->replicationStatus->expects( $this->once() )
-			->method( 'getModificationDate' )
-			->will( $this->returnValue( false ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->will( $this->returnValue( $replicationStatus ) );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
@@ -106,9 +111,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$time_es = DITime::newFromTimestamp( 1272508900 );
 		$time_store = DITime::newFromTimestamp( 1272508903 );
 
+		$replicationStatus = [
+			'modification_date' => $time_es
+		];
+
 		$this->replicationStatus->expects( $this->once() )
-			->method( 'getModificationDate' )
-			->will( $this->returnValue( $time_es ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->will( $this->returnValue( $replicationStatus ) );
 
 		$this->store->expects( $this->at( 2 ) )
 			->method( 'getPropertyValues' )
@@ -155,13 +165,15 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$this->replicationStatus->expects( $this->once() )
-			->method( 'getModificationDate' )
-			->will( $this->returnValue( $time ) );
+		$replicationStatus = [
+			'modification_date' => $time,
+			'associated_revision' => 99999
+		];
 
 		$this->replicationStatus->expects( $this->once() )
-			->method( 'getAssociatedRev' )
-			->will( $this->returnValue( 99999 ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->will( $this->returnValue( $replicationStatus ) );
 
 		$this->idTable->expects( $this->at( 1 ) )
 			->method( 'findAssociatedRev' )
@@ -212,9 +224,19 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
+		$replicationStatus = [
+			'modification_date' => $time,
+			'associated_revision' => 9999
+		];
+
 		$this->replicationStatus->expects( $this->once() )
-			->method( 'getModificationDate' )
-			->will( $this->returnValue( $time ) );
+			->method( 'get' )
+			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+			->will( $this->returnValue( $replicationStatus ) );
+
+		$this->idTable->expects( $this->any() )
+			->method( 'findAssociatedRev' )
+			->will( $this->returnValue( 9999 ) );
 
 		$this->store->expects( $this->at( 2 ) )
 			->method( 'getPropertyValues' )
