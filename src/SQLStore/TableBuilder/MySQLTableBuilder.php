@@ -359,7 +359,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$indexOption = '';
 
-		$this->reportMessage( "   ... creating new index $columns ..." );
+		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 
 		// @see MySQLTableBuilder::createExtraSQLFromattributes
 		// @see https://dev.mysql.com/doc/refman/5.7/en/fulltext-search-ngram.html

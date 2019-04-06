@@ -151,12 +151,12 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		$expected = [
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
-			'creating new index t_num'
+			'creating new INDEX t_num'
 		];
 
 		// ID message, Primary doesn't implicitly exists before
 		if ( $this->tableBuilder instanceof PostgresTableBuilder || $this->tableBuilder instanceof SQLiteTableBuilder ) {
-			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = str_replace( 'index id is fine', 'creating new INDEX id', $expected );
 		}
 
 		$this->stringValidator->assertThatStringContains(
@@ -188,11 +188,11 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 			'Checking index structures for table rdbms_test',
 			'index id is fine',
 			'removing index t_num',
-			'creating new index t_num,t_int',
+			'creating new INDEX t_num,t_int',
 		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
-			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = str_replace( 'index id is fine', 'creating new INDEX id', $expected );
 			$expected = 'removing index';
 		}
 
@@ -227,7 +227,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
-			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = str_replace( 'index id is fine', 'creating new INDEX id', $expected );
 			$expected = 'removing index';
 		}
 
@@ -261,7 +261,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		];
 
 		if ( $this->tableBuilder instanceof SQLiteTableBuilder ) {
-			$expected = str_replace( 'index id is fine', 'creating new index id', $expected );
+			$expected = str_replace( 'index id is fine', 'creating new INDEX id', $expected );
 			$expected = 'removing index';
 		}
 
