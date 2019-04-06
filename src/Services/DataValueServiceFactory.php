@@ -135,6 +135,10 @@ class DataValueServiceFactory {
 			return $this->containerBuilder->create( self::TYPE_INSTANCE . $typeId );
 		}
 
+		if ( is_callable( $class ) ) {
+			return $class( $typeId );
+		}
+
 		// Legacy invocation, for those that have not been defined yet!s
 		return new $class( $typeId );
 	}
