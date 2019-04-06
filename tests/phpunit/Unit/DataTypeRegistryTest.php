@@ -61,6 +61,26 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterDatatypeWithCallable() {
+
+		$callback = function() {
+			return new FooValue();
+		};
+
+		$this->dataTypeRegistry->registerDataType(
+			'_foo', $callback, DataItem::TYPE_NOTYPE, 'FooValue'
+		);
+
+		$this->assertTrue(
+			$this->dataTypeRegistry->hasDataTypeClassById( '_foo' )
+		);
+
+		$this->assertInstanceOf(
+			'\Closure',
+			$this->dataTypeRegistry->getDataTypeClassById( '_foo' )
+		);
+	}
+
 	public function testRegisterDatatype() {
 
 		$this->assertNull(
