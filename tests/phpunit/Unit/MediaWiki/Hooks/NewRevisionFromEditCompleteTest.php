@@ -75,7 +75,9 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->eventDispatcher->expects( $expected ? $this->atLeastOnce() : $this->never() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
 		$this->testEnvironment->withConfiguration( $settings );
 

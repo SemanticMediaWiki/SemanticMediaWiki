@@ -66,8 +66,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->verifyExporterResetEvent( $instance );
-		$this->verifyCachedPrefetcherResetEvent( $instance );
-		$this->verifyCachedUpdateMarkerDeleteEvent( $instance );
 	}
 
 	public function verifyExporterResetEvent( EventListenerCollection $instance ) {
@@ -76,53 +74,6 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function verifyQueryComparatorResetEvent( EventListenerCollection $instance ) {
 		$this->assertListenerExecuteFor( 'query.comparator.reset', $instance, null );
-	}
-
-	public function verifyCachedPrefetcherResetEvent( EventListenerCollection $instance ) {
-
-		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->atLeastOnce() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
-
-		$dispatchContext->set(
-			'title',
-			$title
-		);
-
-		$this->assertListenerExecuteFor(
-			'cached.prefetcher.reset',
-			$instance,
-			$dispatchContext
-		);
-	}
-
-	public function verifyCachedUpdateMarkerDeleteEvent( EventListenerCollection $instance ) {
-
-		$dispatchContext = $this->eventDispatcherFactory->newDispatchContext();
-
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$subject->expects( $this->atLeastOnce() )
-			->method( 'getHash' );
-
-		$dispatchContext->set(
-			'subject',
-			$subject
-		);
-
-		$this->assertListenerExecuteFor(
-			'cached.update.marker.delete',
-			$instance,
-			$dispatchContext
-		);
 	}
 
 	private function assertListenerExecuteFor( $eventName, $instance, $dispatchContext = null ) {

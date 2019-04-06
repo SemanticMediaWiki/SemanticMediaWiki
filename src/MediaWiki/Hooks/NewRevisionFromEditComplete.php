@@ -100,26 +100,19 @@ class NewRevisionFromEditComplete extends HookHandler {
 			$schema
 		);
 
-		$dispatchContext = EventHandler::getInstance()->newDispatchContext();
-		$dispatchContext->set( 'title', $this->title );
-		$dispatchContext->set( 'context', 'NewRevisionFromEditComplete' );
+		$context = [
+			'context' => 'NewRevisionFromEditComplete',
+			'title' => $this->title
+		];
 
-		EventHandler::getInstance()->getEventDispatcher()->dispatch(
-			'cached.prefetcher.reset',
-			$dispatchContext
-		);
+		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 
 		// If the concept was altered make sure to delete the cache
 		if ( $this->title->getNamespace() === SMW_NS_CONCEPT ) {
 			$applicationFactory->getStore()->deleteConceptCache( $this->title );
 		}
 
-		$parserData->pushSemanticDataToParserOutput();
-
-		$context = [
-			'context' => 'NewRevisionFromEditComplete',
-			'title' => $this->title
-		];
+		$parserData->copyToParserOutput();
 
 		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 

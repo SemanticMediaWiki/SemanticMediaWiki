@@ -108,29 +108,13 @@ class ArticleDelete extends HookHandler {
 
 		$this->store->deleteSubject( $title );
 
-		$eventHandler = EventHandler::getInstance();
-		$dispatchContext = $eventHandler->newDispatchContext();
-
-		$dispatchContext->set( 'title', $title );
-		$dispatchContext->set( 'subject', $subject );
-		$dispatchContext->set( 'context', 'ArticleDelete' );
-
-		$eventHandler->getEventDispatcher()->dispatch(
-			'cached.prefetcher.reset',
-			$dispatchContext
-		);
-
-		// Removes any related update marker
-		$eventHandler->getEventDispatcher()->dispatch(
-			'cached.update.marker.delete',
-			$dispatchContext
-		);
-
 		$context = [
 			'context' => 'ArticleDelete',
-			'title' => $title
+			'title' => $title,
+			'subject' => $subject
 		];
 
+		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 	}
 

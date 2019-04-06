@@ -108,7 +108,9 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
 		$instance = new ArticleDelete(
 			$store
