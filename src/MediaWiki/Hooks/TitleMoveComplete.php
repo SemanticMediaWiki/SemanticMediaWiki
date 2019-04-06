@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use SMW\Factbox\FactboxCache;
+use SMW\NamespaceExaminer;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -26,81 +26,45 @@ class TitleMoveComplete {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var Title
+	 * @var NamespaceExaminer
 	 */
-	protected $oldTitle = null;
-
-	/**
-	 * @var Title
-	 */
-	protected $newTitle = null;
-
-	/**
-	 * @var User
-	 */
-	protected $user = null;
-
-	/**
-	 * @var integer
-	 */
-	protected $oldId;
-
-	/**
-	 * @var integer
-	 */
-	protected $newId;
+	private $namespaceExaminer;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param Title $oldTitle old title
-	 * @param Title $newTitle: new title
-	 * @param Use $user user who did the move
-	 * @param $oldId database ID of the page that's been moved
-	 * @param $newId database ID of the created redirect
+	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( &$oldTitle, &$newTitle, &$user, $oldId, $newId ) {
-		$this->oldTitle = $oldTitle;
-		$this->newTitle = $newTitle;
-		$this->user = $user;
-		$this->oldId = $oldId;
-		$this->newId = $newId;
+	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+		$this->namespaceExaminer = $namespaceExaminer;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param $oldTitle
+	 * @param $newTitle
+	 * @param $user
+	 * @param $oldId
+	 * @param $newId
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( $oldTitle, $newTitle, $user, $oldId, $newId ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Delete all data for a non-enabled target NS
-		if ( !$applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $this->newTitle->getNamespace() ) || $this->newId == 0 ) {
-
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $newTitle->getNamespace() ) || $newId == 0 ) {
 			$applicationFactory->getStore()->deleteSubject(
-				$this->oldTitle
+				$oldTitle
 			);
-
-		} else {
-
-		// Using a different approach since the hook is not triggered
-		// by #REDIRECT which can cause inconsistencies
-		// @see 2.3 / StoreUpdater
-
-		//	$applicationFactory->getStore()->changeTitle(
-		//		$this->oldTitle,
-		//		$this->newTitle,
-		//		$this->oldId,
-		//		$this->newId
-		//	);
 		}
 
 		$eventHandler = EventHandler::getInstance();
 
 		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'title', $this->oldTitle );
+		$dispatchContext->set( 'title', $oldTitle );
 		$dispatchContext->set( 'context', 'ArticleMove' );
 
 		$eventHandler->getEventDispatcher()->dispatch(
@@ -109,7 +73,7 @@ class TitleMoveComplete {
 		);
 
 		$dispatchContext = $eventHandler->newDispatchContext();
-		$dispatchContext->set( 'title', $this->newTitle );
+		$dispatchContext->set( 'title', $newTitle );
 		$dispatchContext->set( 'context', 'ArticleMove' );
 
 		$eventHandler->getEventDispatcher()->dispatch(
@@ -121,8 +85,8 @@ class TitleMoveComplete {
 			'context' => 'TitleMoveComplete'
 		];
 
-		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $this->oldTitle ] );
-		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $this->newTitle ] );
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $oldTitle ] );
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context + [ 'title' => $newTitle ] );
 
 		return true;
 	}
