@@ -68,7 +68,7 @@ class DataTypeRegistry {
 	/**
 	 * @var string[]
 	 */
-	private $subDataTypes = [];
+	private $subTypes = [];
 
 	/**
 	 * @var []
