@@ -314,46 +314,6 @@ Hooks::register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( $sto
 } );
 </pre>
 
-### SMW::LinksUpdate::ApprovedUpdate
-
-* Version: 3.0
-* Description: Hook allows to suppress an update where for example the `latestRevID` is not the revision that is approved an should not be used for the `SemanticData` representation.
-* Reference class: `SMW\MediaWiki\Hooks\LinksUpdateConstructed`
-
-If you do suppress a revision, please log the event and make it visible to a user (or administrator) that an update was refused.
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::LinksUpdate::ApprovedUpdate', function( $title, $latestRevID ) {
-
-	// If you need to decline an update
-	// return false;
-
-	return true;
-} );
-</pre>
-
-### SMW::Parser::ChangeRevision
-
-* Version: 3.0
-* Description: Hook allows to forcibly change a revision used during content parsing as in case of the `UpdateJob` execution or when running `rebuildData.php`.
-* Reference class: `SMW\ContentParser`
-
-If you do alter a revision, please log the event and make it visible to a user (or administrator) that it was changed.
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::Parser::ChangeRevision', function( $title, &$revision ) {
-
-	// Set a revision
-	// $revision = \Revision::newFromId( $id );
-
-	return true;
-} );
-</pre>
-
 ### SMW::Admin::TaskHandlerFactory
 
 * Version: 3.0
@@ -391,32 +351,52 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 
 [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/hook.sqlstore.installer.beforecreatetablescomplete.md)
 
-### SMW::Factbox::OverrideRevisionID
+### SMW::RevisionGuard::ChangeRevision
 
 * Version: 3.1
-* Description: Hook allows to forcibly change the revision ID used in the `Factbox` to build the content.
-* Reference class: `SMW\Factbox\CachedFactbox`
+* Description: Hook allows to forcibly change a revision used during content parsing as in case of the `UpdateJob` execution or when running `rebuildData.php`.
+* Reference class: `SMW\MediaWiki\RevisionGuard`
+
+If you do alter a revision, please log the event and make it visible to a user (or administrator) that it was changed.
 
 <pre>
 use Hooks;
 
-Hooks::register( 'SMW::Factbox::OverrideRevisionID', function( $title, &$latestRevID ) {
+Hooks::register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) {
+
+	// Set a revision
+	// $revision = \Revision::newFromId( $id );
+
+	return true;
+} );
+</pre>
+
+### SMW::RevisionGuard::ChangeRevisionID
+
+* Version: 3.1
+* Description: Hook allows to forcibly change the revision ID used in the `Factbox` to build the content.
+* Reference class: `SMW\MediaWiki\RevisionGuard`
+
+<pre>
+use Hooks;
+
+Hooks::register( 'SMW::RevisionGuard::ChangeRevisionID', function( $title, &$latestRevID ) {
 
 	// Set a revision ID
 	// $latestRevID = 42;
 } );
 </pre>
 
-## SMW::DataUpdater::SkipUpdate
+## SMW::RevisionGuard::IsApprovedRevision
 
 * Version: 3.1
 * Description: Hook allows to suppress an update, for example the `latestRevID` is not the revision that is approved an should not be used for the `SemanticData` representation.
-* Reference class: `SMW\DataUpdater`
+* Reference class: `SMW\MediaWiki\RevisionGuard`
 
 <pre>
 use Hooks;
 
-Hooks::register( 'SMW::DataUpdater::SkipUpdate', function( $title, $latestRevID ) {
+Hooks::register( 'SMW::RevisionGuard::IsApprovedRevision', function( $title, $latestRevID ) {
 
 	// If you need to decline an update
 	// return false;
@@ -425,16 +405,16 @@ Hooks::register( 'SMW::DataUpdater::SkipUpdate', function( $title, $latestRevID 
 } );
 </pre>
 
-## SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete
+## SMW::RevisionGuard::ChangeFile
 
 * Version: 3.1
-* Description: Hook allows to forcibly change the file version used for the ingest process.
-* Reference class: `SMW\Elastic\Indexer\FileIndexer`
+* Description: Hook allows to forcibly change the file version used, this for example is required as part of the ingest process in the ElasticStore.
+* Reference class: `SMW\MediaWiki\RevisionGuard`
 
 <pre>
 use Hooks;
 
-Hooks::register( 'SMW::ElasticStore::FileIndexer::ChangeFileBeforeIngestProcessComplete', function( $title, &$file ) {
+Hooks::register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) {
 
 	// $file = ...;
 

@@ -12,6 +12,7 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
 use SMW\Utils\CharArmor;
+use SMW\MediaWiki\RevisionGuard;
 use SMWDIBlob as DIBlob;
 use Title;
 use Revision;
@@ -371,7 +372,7 @@ class Indexer {
 		}
 
 		if ( $id instanceof Title ) {
-			$id = $id->getLatestRevID( \Title::GAID_FOR_UPDATE );
+			$id = RevisionGuard::getLatestRevID( $id );
 		}
 
 		if ( $id == 0 ) {
