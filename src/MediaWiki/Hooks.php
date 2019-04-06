@@ -642,18 +642,16 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$titleMoveComplete = new TitleMoveComplete(
-			$oldTitle,
-			$newTitle,
-			$user,
-			$oldId,
-			$newId
+			$applicationFactory->getNamespaceExaminer()
 		);
 
 		$titleMoveComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		return $titleMoveComplete->process();
+		$titleMoveComplete->process( $oldTitle, $newTitle, $user, $oldId, $newId );
+
+		return true;
 	}
 
 	/**
