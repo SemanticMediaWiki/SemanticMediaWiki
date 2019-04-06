@@ -62,6 +62,7 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 ## Architecture guide
 
 - [`Datamodel`][datamodel] contains the most essential architectural choice of Semantic MediaWiki for the management of its data including [`DataItem`][dataitem], [`SemanticData`][semanticdata], [`DataValue`][datavalue], and [`DataTypes`][datatype]
+- [`Database schema`][db-schema] and table definitions in Semantic MediaWiki
 
 ## Hacking by examples
 
@@ -86,3 +87,4 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 [semanticdata]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.semanticdata.md
 [datavalue]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.datavalue.md
 [datatype]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.datatype.md
+[db-schema]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/database.schema.md
