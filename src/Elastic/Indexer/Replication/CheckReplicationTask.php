@@ -166,11 +166,7 @@ class CheckReplicationTask extends Task {
 		);
 
 		$title = $subject->getTitle();
-
-		// Find the time from elastic
-		$dataItem = $this->replicationStatus->getModificationDate(
-			$id
-		);
+		$replicationStatus = $this->replicationStatus->get( 'modification_date_associated_revision', $id );
 
 		// What is stored in the DB
 		$pv = $this->store->getPropertyValues(
@@ -178,17 +174,17 @@ class CheckReplicationTask extends Task {
 			new DIProperty( '_MDAT' )
 		);
 
-		if ( $dataItem === false || $pv === [] ) {
+		if ( $replicationStatus['modification_date'] === false || $pv === [] ) {
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id );
-		} elseif ( !end( $pv )->equals( $dataItem ) ) {
+		} elseif ( !end( $pv )->equals( $replicationStatus['modification_date'] ) ) {
 			$dates = [
-				'time_es' => $dataItem->asDateTime()->format( 'Y-m-d H:i:s' ),
+				'time_es' => $replicationStatus['modification_date']->asDateTime()->format( 'Y-m-d H:i:s' ),
 				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
 			];
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $dates );
-		} elseif ( ( $rev_es = $this->replicationStatus->getAssociatedRev( $id ) ) != $rev_store ) {
+		} elseif ( $replicationStatus['associated_revision'] != $rev_store ) {
 			$revs = [
-				'rev_es' => $rev_es,
+				'rev_es' => $replicationStatus['associated_revision'],
 				'rev_store' => $rev_store
 			];
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, [], $revs );
