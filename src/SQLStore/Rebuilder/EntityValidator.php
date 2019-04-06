@@ -142,6 +142,49 @@ class EntityValidator {
 	/**
 	 * @since 3.1
 	 *
+	 * @param $title
+	 * @param $row
+	 *
+	 * @return boolean
+	 */
+	public function isDetachedSubobject( $title, $row ) {
+
+		if ( $row->smw_subobject === '' ) {
+			return false;
+		}
+
+		// Has subobject or fragment but doesn't contain a `proptable` map
+		// so it is conceived to represent something like `[[Has page::Foo#bar]]`
+		if ( $row->smw_proptable_hash === null ) {
+			return false;
+		}
+
+		// Is it a detached subobject? Meaning without a real page (for example
+		// created by a page preview etc.)
+		return $title !== null && !$title->exists();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param $row
+	 *
+	 * @return boolean
+	 */
+	public function isDetachedQueryRef( $row ) {
+
+		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
+			return false;
+		}
+
+		// Any query reference without a `proptable` map is considered
+		// detached (doesn't belong to any subject, or is outdated)
+		return substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param $row
 	 *
 	 * @return boolean

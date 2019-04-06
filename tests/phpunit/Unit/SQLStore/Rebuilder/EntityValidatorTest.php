@@ -80,6 +80,56 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsDetachedSubobject() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$row = (object)[
+			'smw_subobject' => 'foo',
+			'smw_proptable_hash' => []
+		];
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityValidator(
+			$store,
+			$this->namespaceExaminer
+		);
+
+		$this->assertTrue(
+			$instance->isDetachedSubobject( $title, $row )
+		);
+	}
+
+	public function testIsDetachedQueryRef() {
+
+		$row = (object)[
+			'smw_subobject' => '_QUERY-Foo',
+			'smw_proptable_hash' => null
+		];
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityValidator(
+			$store,
+			$this->namespaceExaminer
+		);
+
+		$this->assertTrue(
+			$instance->isDetachedQueryRef( $row )
+		);
+	}
+
 	/**
 	 * @dataProvider propertyRetiredListProvider
 	 */
