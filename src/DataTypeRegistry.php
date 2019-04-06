@@ -217,7 +217,7 @@ class DataTypeRegistry {
 	 * @return boolean
 	 */
 	public function isSubDataType( $typeId ) {
-		return isset( $this->subDataTypes[$typeId] ) && $this->subDataTypes[$typeId];
+		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
 	}
 
 	/**
@@ -257,7 +257,7 @@ class DataTypeRegistry {
 	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
-		$this->subDataTypes[$id] = $isSubDataType;
+		$this->subTypes[$id] = $isSubDataType;
 		$this->browsableTypes[$id] = $isBrowsableType;
 
 		if ( $label !== false ) {
@@ -494,7 +494,7 @@ class DataTypeRegistry {
 			}
 
 			$this->typeDataItemIds[$id] = $definition[1];
-			$this->subDataTypes[$id] = $definition[2];
+			$this->subTypes[$id] = $definition[2];
 			$this->browsableTypes[$id] = $definition[3];
 		}
 
