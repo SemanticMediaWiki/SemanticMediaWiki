@@ -64,6 +64,20 @@ class LinkBatch {
 	/**
 	 * @since 3.1
 	 *
+	 * @param string $caller
+	 */
+	public function setCaller( $caller ) {
+
+		if ( $this->linkBatch === null ) {
+			$this->linkBatch = new \LinkBatch();
+		}
+
+		$this->linkBatch->setCaller( $caller );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param DataItem[] $dataItems
 	 */
 	public function addFromList( array $dataItems ) {
@@ -79,7 +93,7 @@ class LinkBatch {
 	 */
 	public function add( $dataItem ) {
 
-		if ( !$dataItem instanceof DIWikiPage || isset( $this->log[$dataItem->getHash()] ) ) {
+		if ( !$dataItem instanceof DIWikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
 			return;
 		}
 
@@ -94,7 +108,7 @@ class LinkBatch {
 
 		// Track which have already been registered because \LinkBatch doesn't
 		// check for it
-		$this->log[$dataItem->getHash()] = true;
+		$this->log[$dataItem->getSha1()] = true;
 		$this->batch[] = $dataItem;
 	}
 
@@ -107,7 +121,7 @@ class LinkBatch {
 	 */
 	public function has( $dataItem ) {
 
-		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getHash()] ) ) {
+		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
 			return true;
 		}
 

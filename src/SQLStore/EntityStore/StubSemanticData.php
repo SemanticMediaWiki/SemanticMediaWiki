@@ -176,6 +176,7 @@ class StubSemanticData extends SemanticData {
 
 			unset( $this->mStubPropVals[$property->getKey()] );
 			$linkBatch = LinkBatch::singleton();
+			$linkBatch->setCaller( __METHOD__ );
 
 			if ( $propertyDiId === DataItem::TYPE_WIKIPAGE ) {
 				$linkBatch->addFromList( $this->mPropVals[$property->getKey()] );
@@ -317,7 +318,6 @@ class StubSemanticData extends SemanticData {
 	 */
 	public function clear() {
 		$this->mStubPropVals = [];
-		LinkBatch::reset();
 		parent::clear();
 	}
 
