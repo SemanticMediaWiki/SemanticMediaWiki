@@ -1055,3 +1055,35 @@ a.smw-ask-action-btn-dblue:focus {
 .mw-json .value, .mw-json-single-value {
     word-break: break-word;
 }
+
+.ns-112.action-submit .error {
+padding: 10px;
+    margin: 0.5em 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+	border: 1px solid #f2dede;
+    background-color: #f2dede;
+    border-left-width: 5px;
+    border-left-color: #ce4844;
+    margin-bottom: 10px;
+}
+
+.ns-112.action-submit .error ul {
+	margin: 0em 0 0 0.9em;
+}
+
+.ns-112.action-submit .error:before {
+	content: "Error";
+    font-weight: bold;
+    padding: 0px 15px 0px 15px;
+    /* display: block; */
+    /* margin-bottom: 5px; */
+    color: #f5c6cb;
+    background-color: #ce4844;
+    /* border-color: #721c24; */
+    border: 1px solid #ce4844;
+    font-weight: 600;
+    float: right;
+    border-radius: 3px;
+}
