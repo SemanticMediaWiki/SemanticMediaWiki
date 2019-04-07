@@ -561,6 +561,7 @@
 	"smw-admin-maintenance-script-description-setupstore": "Sets up the storage backend selected in <code>LocalSettings.php</code>.",
 	"smw-admin-maintenance-script-description-updateentitycollation": "Updates the <code>smw_sort</code> field in the <code>SQLStore</code> (in accordance with the [https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation $smwgEntityCollation] setting).",
 	"smw-admin-maintenance-script-description-populatehashfield": "Populates the <code>smw_hash</code> field for rows missing the value.",
+	"smw-admin-maintenance-script-description-purgeentitycache": "Purge cache entries for known entities and their associated data.",
 	"smw-livepreview-loading": "Loading...",
 	"smw-sp-searchbyproperty-description": "This page provides a simple [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces browsing interface] for finding entities described by a property and a named value. Other available search interfaces include the [[Special:PageProperty|page property search]], and the [[Special:Ask|ask query builder]].",
 	"smw-sp-searchbyproperty-resultlist-header": "List of results",

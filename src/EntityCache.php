@@ -224,6 +224,9 @@ class EntityCache {
 			return;
 		}
 
+		// Associate only with the main subject (given that a Title can be injected)
+		$subject = $subject->asBase();
+
 		$k = $this->makeCacheKey( $subject );
 		$res = $this->cache->fetch( $k );
 
@@ -261,6 +264,8 @@ class EntityCache {
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}
+
+		$subject = $subject->asBase();
 
 		$k = $this->makeCacheKey( $subject );
 		$res = $this->cache->fetch( $k );
