@@ -8,6 +8,7 @@ use SMW\Property\Constraint\ConstraintErrorFinder;
 use SMW\Property\Constraint\Constraints\NullConstraint;
 use SMW\Property\Constraint\ConstraintSchemaCompiler;
 use SMW\Property\Constraint\Constraints\CommonConstraint;
+use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Site;
 use SMW\Store;
 use SMW\ApplicationFactory;
@@ -51,6 +52,9 @@ class ConstraintFactory {
 			case CommonConstraint::class:
 				$constraint = $this->newCommonConstraint();
 				break;
+			case UniqueValueConstraint::class:
+				$constraint = $this->newUniqueValueConstraint();
+				break;
 			default:
 				$constraint = $this->newNullConstraint();
 				break;
@@ -66,6 +70,23 @@ class ConstraintFactory {
 	 */
 	public function newCommonConstraint() {
 		return new CommonConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return UniqueValueConstraint
+	 */
+	public function newUniqueValueConstraint() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$uniqueValueConstraint = new UniqueValueConstraint(
+			$applicationFactory->getStore(),
+			$applicationFactory->getPropertySpecificationLookup()
+		);
+
+		return $uniqueValueConstraint;
 	}
 
 	/**
@@ -87,7 +108,7 @@ class ConstraintFactory {
 	public function newConstraintSchemaCompiler( Store $store ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$schemaFactory = $applicationFactory->create( 'SchemaFactory');
+		$schemaFactory = $applicationFactory->create( 'SchemaFactory' );
 
 		$constraintSchemaCompiler = new ConstraintSchemaCompiler(
 			$schemaFactory->newSchemaFinder( $store ),

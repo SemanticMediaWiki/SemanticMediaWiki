@@ -98,6 +98,7 @@ class ConstraintCheckRunner {
 			$this->constraints = $this->constraintSchemas[$key];
 		}
 	}
+
 	/**
 	 * @since 3.1
 	 *

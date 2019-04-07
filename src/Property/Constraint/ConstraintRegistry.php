@@ -6,6 +6,7 @@ use RuntimwException;
 use SMW\Property\ConstraintFactory;
 use SMW\Property\Constraint\Constraints\NullConstraint;
 use SMW\Property\Constraint\Constraints\CommonConstraint;
+use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -82,7 +83,8 @@ class ConstraintRegistry {
 	private function initConstraints() {
 		return [
 			'null' => NullConstraint::class,
-			'allowed_namespaces' => CommonConstraint::class
+			'allowed_namespaces' => CommonConstraint::class,
+			'unique_value_constraint' => UniqueValueConstraint::class
 		];
 	}
 
