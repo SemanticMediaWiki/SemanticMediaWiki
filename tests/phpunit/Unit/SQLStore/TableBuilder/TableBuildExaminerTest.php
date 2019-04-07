@@ -20,12 +20,18 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 	private $hashField;
 	private $touchedField;
 	private $idBorder;
+	private $predefinedProperties;
 	private $store;
 	private $fixedProperties;
+	private $tableBuildExaminerFactory;
 
 	protected function setUp() {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->hashField = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\HashField' )
 			->disableOriginalConstructor()
@@ -43,202 +49,40 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->predefinedProperties = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->tableBuildExaminerFactory = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuildExaminerFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->tableBuildExaminerFactory->expects( $this->any() )
+			->method( 'newPredefinedProperties' )
+			->will( $this->returnValue( $this->predefinedProperties ) );
+
+		$this->tableBuildExaminerFactory->expects( $this->any() )
+			->method( 'newIdBorder' )
+			->will( $this->returnValue( $this->idBorder ) );
+
+		$this->tableBuildExaminerFactory->expects( $this->any() )
+			->method( 'newTouchedField' )
+			->will( $this->returnValue( $this->touchedField ) );
+
+		$this->tableBuildExaminerFactory->expects( $this->any() )
+			->method( 'newFixedProperties' )
+			->will( $this->returnValue( $this->fixedProperties ) );
+
+		$this->tableBuildExaminerFactory->expects( $this->any() )
+			->method( 'newHashField' )
+			->will( $this->returnValue( $this->hashField ) );
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			TableBuildExaminer::class,
-			new TableBuildExaminer( $this->store, $this->hashField, $this->fixedProperties, $this->touchedField, $this->idBorder )
-		);
-	}
-
-	public function testCheckOnPostCreationOnValidProperty() {
-
-		$row = [
-			'smw_id' => 42,
-			'smw_iw' => '',
-			'smw_proptable_hash' => '',
-			'smw_hash' => ''
-		];
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID', 'getPropertyTableHashes' ] )
-			->getMock();
-
-		$idTable->expects( $this->atLeastOnce() )
-			->method( 'getPropertyInterwiki' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
-
-		$connection->expects( $this->atLeastOnce() )
-			->method( 'replace' );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableBuilder->expects( $this->once() )
-			->method( 'checkOn' );
-
-		$instance = new TableBuildExaminer(
-			$store,
-			$this->hashField,
-			$this->fixedProperties,
-			$this->touchedField,
-			$this->idBorder
-		);
-
-		$instance->setPredefinedPropertyList( [
-			'Foo' => 42
-		] );
-
-		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->checkOnPostCreation( $tableBuilder );
-	}
-
-	public function testCheckOnPostCreationOnValidProperty_NotFixed() {
-
-		$row = [
-			'smw_id' => 42,
-			'smw_iw' => '',
-			'smw_proptable_hash' => '',
-			'smw_hash' => ''
-		];
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
-			->getMock();
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->at( 0 ) )
-			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( [
-					'smw_title' => 'Foo',
-					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_subobject' => '' ] ) )
-			->will( $this->returnValue( (object)$row ) );
-
-		$connection->expects( $this->at( 1 ) )
-			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableBuilder->expects( $this->once() )
-			->method( 'checkOn' );
-
-		$instance = new TableBuildExaminer(
-			$store,
-			$this->hashField,
-			$this->fixedProperties,
-			$this->touchedField,
-			$this->idBorder
-		);
-
-		$instance->setPredefinedPropertyList( [
-			'Foo' => null
-		] );
-
-		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->checkOnPostCreation( $tableBuilder );
-	}
-
-	public function testCheckOnPostCreationOnInvalidProperty() {
-
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'getPropertyInterwiki', 'moveSMWPageID' ] )
-			->getMock();
-
-		$idTable->expects( $this->never() )
-			->method( 'getPropertyInterwiki' );
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tableBuilder->expects( $this->once() )
-			->method( 'checkOn' );
-
-		$instance = new TableBuildExaminer(
-			$store,
-			$this->hashField,
-			$this->fixedProperties,
-			$this->touchedField,
-			$this->idBorder
-		);
-
-		$instance->setPredefinedPropertyList( [
-			'_FOO' => 42
-		] );
-
-		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->checkOnPostCreation( $tableBuilder );
-
-		$this->assertContains(
-			'invalid registration',
-			$this->spyMessageReporter->getMessagesAsString()
+			new TableBuildExaminer( $this->store, $this->tableBuildExaminerFactory )
 		);
 	}
 
@@ -286,10 +130,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableBuildExaminer(
 			$store,
-			$this->hashField,
-			$this->fixedProperties,
-			$this->touchedField,
-			$this->idBorder
+			$this->tableBuildExaminerFactory
 		);
 
 		$instance->setPredefinedPropertyList( [] );
@@ -335,10 +176,7 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TableBuildExaminer(
 			$store,
-			$this->hashField,
-			$this->fixedProperties,
-			$this->touchedField,
-			$this->idBorder
+			$this->tableBuildExaminerFactory
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );

@@ -40,10 +40,7 @@ use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CircularReferenceGuard;
@@ -404,10 +401,7 @@ class SQLStoreFactory {
 
 		$tableBuildExaminer = new TableBuildExaminer(
 			$this->store,
-			new HashField( $this->store ),
-			new FixedProperties( $this->store ),
-			new TouchedField( $this->store ),
-			new IdBorder( $this->store )
+			new TableBuildExaminerFactory()
 		);
 
 		$tableSchemaManager = new TableSchemaManager(
