@@ -501,6 +501,33 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param PluggableDataType $pluggableDataType
+	 */
+	public function registerPluggableDataType( PluggableDataType $pluggableDataType ) {
+
+		$typeId = $pluggableDataType->getTypeId();
+
+		$this->registerDataType(
+			$typeId,
+			$pluggableDataType->getClass(),
+			$pluggableDataType->getItemType(),
+			$pluggableDataType->getLabel(),
+			$pluggableDataType->isSubType(),
+			$pluggableDataType->isBrowsableType()
+		);
+
+		foreach ( $pluggableDataType->getAliases() as $alias ) {
+			$this->registerDataTypeAlias( $typeId, $alias );
+		}
+
+		foreach ( $pluggableDataType->getCallables() as $key => $callable ) {
+			$this->registerCallable( $typeId, $key, $callable );
+		}
+	}
+
+	/**
 	 * This function allows for registered types to add additional data or functions
 	 * required by an individual DataValue of that type.
 	 *
