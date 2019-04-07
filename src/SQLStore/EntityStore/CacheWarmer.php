@@ -8,6 +8,7 @@ use SMW\DIProperty;
 use SMW\SQLStore\SQLStore;
 use SMWQueryResult as QueryResult;
 use Iterator;
+use SMW\MediaWiki\LinkBatch;
 
 /**
  * @license GNU GPL v2+
@@ -55,6 +56,8 @@ class CacheWarmer {
 	public function fillFromList( $list = [] ) {
 
 		$hashList = [];
+		$linkBatch = LinkBatch::singleton();
+		$linkBatch->setCaller( __METHOD__ );
 
 		if ( $list instanceof QueryResult ) {
 			$list = $list->getResults();
@@ -69,6 +72,8 @@ class CacheWarmer {
 			$hash = null;
 
 			if ( $item instanceof DIWikiPage ) {
+				$linkBatch->add( $item );
+
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
 					$property = DIProperty::newFromUserLabel( $item->getDBKey() );
 					$hash = $item->getSha1();
@@ -76,6 +81,7 @@ class CacheWarmer {
 					$hash = $item->getSha1();
 				}
 			} elseif ( $item instanceof DIProperty ) {
+				$linkBatch->add( $item->getDIWikiPage() );
 
 				// Avoid _SKEY as it is not used during an entity lookup to
 				// match an ID
@@ -93,6 +99,7 @@ class CacheWarmer {
 			$hashList[$hash] = true;
 		}
 
+		$linkBatch->execute();
 		$this->fillFromTableByHash( array_keys( $hashList ) );
 	}
 
