@@ -98,7 +98,10 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$this->entityCache->expects( $this->once() )
-			->method( 'save' );
+			->method( 'save' )
+			->with(
+				$this->anything(),
+				$this->equalTo( 'foobar' ) );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'associate' );
@@ -110,6 +113,49 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			'foobar',
+			$instance->findDisplayTitle( $subject )
+		);
+	}
+
+	public function testNoDisplayTitle_Empty() {
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN, '', 'abc' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->withConsecutive(
+				[ $this->equalTo( $subject ) ],
+				[ $this->equalTo( $subject->asBase() ) ] )
+			->will( $this->onConsecutiveCalls( [], [] ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'makeKey' )
+			->with(
+				$this->equalTo( 'displaytitle' ),
+				$this->equalTo( $subject->getHash() ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		// Stored with a space
+		$this->entityCache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->anything(),
+				$this->equalTo( ' ' ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'associate' );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		// Trimmed on the output
+		$this->assertSame(
+			'',
 			$instance->findDisplayTitle( $subject )
 		);
 	}

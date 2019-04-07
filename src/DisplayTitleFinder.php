@@ -46,7 +46,7 @@ class DisplayTitleFinder {
 		$key = $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );
 
 		if ( ( $displayTitle = $this->entityCache->fetch( $key ) ) !== false && $displayTitle !== null ) {
-			return $displayTitle;
+			return trim( $displayTitle );
 		}
 
 		$displayTitle = $this->findDisplayTitleFor( $subject );
@@ -56,12 +56,14 @@ class DisplayTitleFinder {
 		// the time the subject gets altered
 		$this->entityCache->associate( $base, $key );
 
-		return $displayTitle;
+		return trim( $displayTitle );
 	}
 
 	private function findDisplayTitleFor( $subject ) {
 
-		$displayTitle = '';
+		// Avoid issues in case of `false` or empty to store
+		// a space
+		$displayTitle = ' ';
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
@@ -77,6 +79,5 @@ class DisplayTitleFinder {
 
 		return $displayTitle;
 	}
-
 
 }
