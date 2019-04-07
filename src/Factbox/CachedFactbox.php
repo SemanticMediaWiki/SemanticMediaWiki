@@ -174,10 +174,11 @@ class CachedFactbox {
 
 		$context = $outputPage->getContext();
 		$request = $context->getRequest();
+		$isPreview = $request->getCheck( 'wpPreview' );
 
 		$checkMagicWords = new CheckMagicWords(
 			[
-				'preview' => $request->getCheck( 'wpPreview' ),
+				'preview' => $isPreview,
 				'showFactboxEdit' => $this->showFactboxEdit,
 				'showFactbox' => $this->showFactbox
 			]
@@ -201,10 +202,10 @@ class CachedFactbox {
 			$content = $this->findContentFromCache( $data );
 		}
 
-		if ( $this->hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) ) {
+		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) ) {
 
 			$this->logger->info(
-				[ 'Factbox', 'Using cached factbox, rev_id: {rev_id}, {lang}', 'procTime: {procTime}' ],
+				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}','{lang}', 'procTime: {procTime}' ],
 				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 			);
 
@@ -217,6 +218,12 @@ class CachedFactbox {
 			$checkMagicWords
 		);
 
+		$outputPage->mSMWFactboxText = $text;
+
+		if ( $isPreview ) {
+			return;
+		}
+
 		$this->addContentToCache(
 			$key,
 			$text,
@@ -226,12 +233,11 @@ class CachedFactbox {
 		);
 
 		$this->logger->info(
-			[ 'Factbox', 'Rebuild factbox, rev_id: {rev_id}, {lang}', 'procTime: {procTime}' ],
+			[ 'Factbox', 'Rebuild factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
 			[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 		);
 
 		$this->entityCache->associate( $title, $key );
-		$outputPage->mSMWFactboxText = $text;
 	}
 
 	/**
