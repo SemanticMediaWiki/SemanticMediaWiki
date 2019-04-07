@@ -14,6 +14,8 @@ use User;
 use ParserOptions;
 use ParserOutput;
 use Html;
+use WikiPage;
+use Status;
 
 /**
  * The content model supports both JSON and YAML (as a superset of JSON), allowing
@@ -196,6 +198,52 @@ class SchemaContent extends JsonContent {
 	}
 
 	/**
+	 * @see Content::prepareSave
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
+	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
+
+		$this->initServices();
+		$title = $page->getTitle();
+
+		$errors = [];
+		$schema = null;
+
+		try {
+			$schema = $this->schemaFactory->newSchema(
+				$title->getDBKey(),
+				$this->toJson()
+			);
+		} catch ( SchemaTypeNotFoundException $e ) {
+			if ( $e->getType() === '' || $e->getType() === null ) {
+				$errors[] = [ 'smw-schema-error-type-missing' ];
+			} else {
+				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
+			}
+		}
+
+		if ( $schema !== null ) {
+			$errors = $this->schemaFactory->newSchemaValidator()->validate(
+				$schema
+			);
+		}
+
+		$status = Status::newGood();
+
+		foreach ( $errors as $error ) {
+			if ( isset( $error['message'] ) ) {
+				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
+			} else {
+				$status->fatal( ...$error );
+			}
+		}
+
+		return $status;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
@@ -222,9 +270,9 @@ class SchemaContent extends JsonContent {
 	 * @since 3.0
 	 *
 	 * @param SchemaFactory $schemaFactory
-	 * @param ContentFormatter $contentFormatter
+	 * @param ContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter ) {
+	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}

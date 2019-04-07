@@ -50,6 +50,71 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPrepareSave() {
+
+		$schema = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaValidator = $this->getMockBuilder( '\SMW\Schema\SchemaValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaValidator->expects( $this->once() )
+			->method( 'validate' )
+			->will( $this->returnValue( [] ) );
+
+		$schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFactory->expects( $this->any() )
+			->method( 'newSchema' )
+			->will( $this->returnValue( $schema ) );
+
+		$schemaFactory->expects( $this->any() )
+			->method( 'newSchemaValidator' )
+			->will( $this->returnValue( $schemaValidator ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$page = $this->getMockBuilder( '\wikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SchemaContent(
+			json_encode( [ 'Foo' => 42 ] )
+		);
+
+		$instance->setServices( $schemaFactory );
+
+		$flags = '';
+		$parentRevId = '';
+
+		$this->assertInstanceof(
+			'\Status',
+			$instance->prepareSave( $page, $flags, $parentRevId, $user )
+		);
+	}
+
 	public function testPreSaveTransform() {
 
 		$title = $this->getMockBuilder( '\Title' )
