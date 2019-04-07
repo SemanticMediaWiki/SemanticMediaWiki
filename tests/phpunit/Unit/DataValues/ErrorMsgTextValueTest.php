@@ -44,7 +44,7 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ErrorMsgTextValue();
 		$instance->setOption( ErrorMsgTextValue::OPT_USER_LANGUAGE, 'en' );
-		$instance->setUserValue( '[2,"smw-datavalue-uniqueness-constraint-error","Has Url","http:\/\/loremipsum.org\/2","Lorem ipsum\/2"]' );
+		$instance->setUserValue( '[2,"smw-datavalue-constraint-uniqueness-violation","Has Url","http:\/\/loremipsum.org\/2","Lorem ipsum\/2"]' );
 
 		$this->assertContains(
 			"''http://loremipsum.org/2''",

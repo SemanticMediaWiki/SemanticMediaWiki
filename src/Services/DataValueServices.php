@@ -153,6 +153,7 @@ return [
 
 		$propertySpecificationLookup = $containerBuilder->singleton( 'PropertySpecificationLookup' );
 		$store = $containerBuilder->singleton( 'Store' );
+		$constraintFactory = $containerBuilder->singleton( 'ConstraintFactory' );
 
 		$compoundConstraintValueValidator = new CompoundConstraintValueValidator();
 
@@ -160,7 +161,7 @@ return [
 		// of a preceding validator
 		$compoundConstraintValueValidator->registerConstraintValueValidator(
 			new UniquenessConstraintValueValidator(
-				$store,
+				$constraintFactory->newUniqueValueConstraint(),
 				$propertySpecificationLookup
 			)
 		);
@@ -187,7 +188,7 @@ return [
 		);
 
 		$constraintSchemaValueValidator = new ConstraintSchemaValueValidator(
-			$containerBuilder->singleton( 'ConstraintFactory' )->newConstraintCheckRunner(),
+			$constraintFactory->newConstraintCheckRunner(),
 			$containerBuilder->singleton( 'SchemaFactory' )->newSchemaFinder( $store )
 		);
 

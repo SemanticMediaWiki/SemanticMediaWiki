@@ -7,6 +7,7 @@ use SMW\DIWikiPage;
 use SMWDataValue as DataValue;
 use SMW\RequestOptions;
 use SMW\Store;
+use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
 
 /**
  * @private
@@ -26,9 +27,9 @@ use SMW\Store;
 class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var Store
+	 * @var UniqueValueConstraint
 	 */
-	private $store;
+	private $uniqueValueConstraint;
 
 	/**
 	 * @var PropertySpecificationLookup
@@ -41,21 +42,13 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	private $hasConstraintViolation = false;
 
 	/**
-	 * Tracks annotations for the current context to verify that a subject only
-	 * contains unique assignments.
-	 *
-	 * @var array
-	 */
-	private static $annotations = [];
-
-	/**
 	 * @since 2.4
 	 *
-	 * @param Store $store
+	 * @param UniqueValueConstraint $uniqueValueConstraint
 	 * @param PropertySpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
-		$this->store = $store;
+	public function __construct( UniqueValueConstraint $uniqueValueConstraint, PropertySpecificationLookup $propertySpecificationLookup ) {
+		$this->uniqueValueConstraint = $uniqueValueConstraint;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 
@@ -96,74 +89,8 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 			return $this->hasConstraintViolation;
 		}
 
-		$contextPage = $dataValue->getContextPage();
-
-		// Exclude the current page from the result match to check whether another
-		// page matches the condition and if so then the value can no longer be
-		// assigned and is not unique
-		$requestOptions = new RequestOptions();
-
-		$requestOptions->addExtraCondition( function( $store, $query, $alias ) use( $contextPage ) {
-				return $query->neq( "$alias.s_id", $store->getObjectIds()->getId( $contextPage ) );
-			}
-		);
-
-		$requestOptions->setLimit( 2 );
-		$count = 0;
-
-		if ( !$this->hasAnnotation( $dataValue ) ) {
-			$entityValueUniquenessConstraintChecker = $this->store->service( 'EntityValueUniquenessConstraintChecker' );
-
-			$res = $entityValueUniquenessConstraintChecker->checkConstraint(
-				$property,
-				$dataValue->getDataItem(),
-				$requestOptions
-			);
-
-			$count = count( $res );
-		}
-
-		// Check whether the current page has any other annotation for the
-		// same property
-		if ( $count < 1 && $this->isRegistered( $dataValue ) ) {
-			$dataValue->addErrorMsg(
-				[
-					'smw-datavalue-uniqueness-constraint-isknown',
-					$property->getLabel(),
-					$contextPage->getTitle()->getPrefixedText(),
-					$dataValue->getWikiValue()
-				]
-			);
-
-			$this->hasConstraintViolation = true;
-		}
-
-		// Has the page different values for the same property?
-		if ( $count < 1 ) {
-			return $this->hasConstraintViolation;
-		}
-
-		$this->hasConstraintViolation = true;
-
-		foreach ( $res as $dataItem ) {
-			$val = $dataValue->isValid() ? $dataValue->getWikiValue() : '...';
-			$text = '';
-
-			if ( $dataItem !== null && ( $title = $dataItem->getTitle() ) !== null ) {
-				$text = $title->getPrefixedText();
-			}
-
-			$dataValue->addErrorMsg(
-				[
-					'smw-datavalue-uniqueness-constraint-error',
-					$property->getLabel(),
-					$val,
-					$text
-				]
-			);
-		}
-
-		return $this->hasConstraintViolation;
+		$this->uniqueValueConstraint->checkConstraint( [ 'unique_value_constraint' => true ], $dataValue );
+		$this->hasConstraintViolation = $this->uniqueValueConstraint->hasViolation();
 	}
 
 	private function canValidate( $dataValue ) {
@@ -173,33 +100,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		}
 
 		return $dataValue->getContextPage() !== null && $dataValue->getProperty() !== null;
-	}
-
-	private function isRegistered( $dataValue ) {
-
-		$contextPage = $dataValue->getContextPage();
-		$dataItem = $dataValue->getDataItem();
-		$property = $dataValue->getProperty();
-
-		$valueHash = md5( $property->getKey() . $dataItem->getHash() );
-		$key = $property->getKey();
-		$hash = $contextPage->getHash();
-
-		if ( isset( self::$annotations[$hash][$key] ) && self::$annotations[$hash][$key] !== $valueHash ) {
-			return true;
-		} else {
-			self::$annotations[$hash][$key] = $valueHash;
-		}
-
-		return false;
-	}
-
-	private function hasAnnotation( $dataValue ) {
-
-		$key = $dataValue->getProperty()->getKey();
-		$hash = $dataValue->getContextPage()->getHash();
-
-		return isset( self::$annotations[$hash][$key] );
 	}
 
 }

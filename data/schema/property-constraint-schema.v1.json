@@ -41,6 +41,9 @@
       "properties": {
         "allowed_namespaces": {
           "$ref": "#/definitions/allowed_namespaces"
+        },
+        "unique_value_constraint": {
+          "$ref": "#/definitions/unique_value_constraint"
         }
       },
       "additionalProperties": false
@@ -58,6 +61,12 @@
         "default": "",
         "pattern": "^(NS_|SMW_NS_)(.*)$"
       }
+    },
+    "unique_value_constraint": {
+      "$id": "#/definitions/unique_value_constraint",
+      "type": "boolean",
+      "title": "Specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items",
+      "default": false
     }
   }
 }
