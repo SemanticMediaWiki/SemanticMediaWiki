@@ -41,9 +41,9 @@ class ValueListBuilder {
 	private $pagingLimit = 0;
 
 	/**
-	 * @var integer
+	 * @var integer|null
 	 */
-	private $filterCount = 0;
+	private $filterCount;
 
 	/**
 	 * @var integer
@@ -144,7 +144,7 @@ class ValueListBuilder {
 		$until = isset( $query['until'] ) ? $query['until'] : 0;
 		$filter = isset( $query['filter'] ) ? $query['filter'] : '';
 
-		$this->filterCount = 0;
+		$this->filterCount = null;
 
 		// limit==0: configuration setting to disable this completely
 		if ( $limit < 1 ) {
