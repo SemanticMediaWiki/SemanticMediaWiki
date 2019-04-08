@@ -17,7 +17,8 @@
 			"Robby",
 			"McDutchie",
 			"Avatar6",
-			"Vlad5250"
+			"Vlad5250",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -721,8 +722,8 @@
 	"smw-property-predefined-dtitle": "This informatory message describes the [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\n* $1 holds the name of the special property.",
 	"smw-property-predefined-pvuc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] shown in a tooltip.",
 	"smw-property-predefined-long-pvuc": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] on the property's page.",
-	"smw-datavalue-uniqueness-constraint-error": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the data value assigned to the propery\n* $3 holds the name of the page",
-	"smw-datavalue-uniqueness-constraint-isknown": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the name of the page\n* $3 holds the data value assigned to the propery",
+	"smw-datavalue-constraint-uniqueness-violation": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the data value assigned to the propery\n* $3 holds the name of the page",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the name of the page\n* $3 holds the data value assigned to the propery",
 	"smw-property-predefined-boo": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-property-predefined-num": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-property-predefined-dat": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",

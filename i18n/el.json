@@ -16,7 +16,8 @@
 			"Thodoris",
 			"KATRINE1992",
 			"Tgkarounos",
-			"Nikosgranturismogt"
+			"Nikosgranturismogt",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -495,8 +496,8 @@
 	"smw-datavalue-allows-pattern-mismatch": "Η τιμή «$1» χαρακτηρίστηκε ως μη έγκυρη από την κανονική έκφραση «$2».",
 	"smw-datavalue-allows-pattern-reference-unknown": "Για την αναφορά μοτίβου «$1» δεν βρέθηκε ταίριασμα με κάποια καταχώριση στο [[MediaWiki:Smw allows pattern]].",
 	"smw-datavalue-feature-not-supported": "Η λειτουργία «$1» δεν υποστηρίζεται ή έχει απενεργοποιηθεί σε αυτό το wiki.",
-	"smw-datavalue-uniqueness-constraint-error": "Η ιδιότητα «$1» επιτρέπει μόνο μοναδικές αναθέσεις τιμών και η τιμή ''$2'' έχει ήδη σημειογραφηθεί στο υποκείμενο «$3».",
-	"smw-datavalue-uniqueness-constraint-isknown": "Η ιδιότητα «$1» επιτρέπει μόνο μοναδικές σημειογραφήσεις τιμών, η τιμή ''$2'' έχει ήδη ανατεθεί στο «$3».",
+	"smw-datavalue-constraint-uniqueness-violation": "Η ιδιότητα «$1» επιτρέπει μόνο μοναδικές αναθέσεις τιμών και η τιμή ''$2'' έχει ήδη σημειογραφηθεί στο υποκείμενο «$3».",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "Η ιδιότητα «$1» επιτρέπει μόνο μοναδικές σημειογραφήσεις τιμών, η τιμή ''$2'' έχει ήδη ανατεθεί στο «$3».",
 	"smw-datavalue-time-invalid-values": "Η τιμή «$1» περιέχει μη ερμηνεύσιμη πληροφορία της μορφής «$2».",
 	"smw-datavalue-time-invalid-date-components-common": "Η τιμή «$1» περιέχει μη ερμηνεύσιμη πληροφορία.",
 	"smw-datavalue-time-invalid-date-components-dash": "Η τιμή «$1» περιέχει άλλου τύπου διαχωριστικό ή άλλους χαρακτήρες που δεν είναι έγκυροι για την αναγνώρισή της ως ημερομηνία.",

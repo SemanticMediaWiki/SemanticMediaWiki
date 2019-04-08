@@ -24,7 +24,8 @@
 			"Eduardo Addad de Oliveira",
 			"Athena in Wonderland",
 			"Mansil alfalb",
-			"CaiusSPQR"
+			"CaiusSPQR",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Tornar a sua wiki mais inteligível - para máquinas ''e'' seres humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
@@ -714,8 +715,8 @@
 	"smw-property-predefined-dtitle": "\"$1\" é uma propriedade predefinida que pode atribuir a uma entidade um título de apresentação distinto, e é fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico].",
 	"smw-property-predefined-pvuc": "\"$1\" é uma propriedade predefinida, fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico], para restringir a valores únicos (ou a um, no máximo) a atribuição de valores para cada instância.",
 	"smw-property-predefined-long-pvuc": "A unicidade é estabelecida quando as representações literais de dois valores não são iguais e qualquer violação desta restrição será categorizada como erro.",
-	"smw-datavalue-uniqueness-constraint-error": "A propriedade \"$1\" só permite a atribuição de valores únicos e ''$2'' já foi anotado no assunto \"$3\".",
-	"smw-datavalue-uniqueness-constraint-isknown": "A propriedade \"$1\" só permite anotações de valores únicos, ''$2'' já contém um valor atribuído. \"$3\" viola a restrição de unicidade.",
+	"smw-datavalue-constraint-uniqueness-violation": "A propriedade \"$1\" só permite a atribuição de valores únicos e ''$2'' já foi anotado no assunto \"$3\".",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "A propriedade \"$1\" só permite anotações de valores únicos, ''$2'' já contém um valor atribuído. \"$3\" viola a restrição de unicidade.",
 	"smw-property-predefined-boo": "\"$1\" é um [[Special:Types/Boolean|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico] para representar valores boolianos.",
 	"smw-property-predefined-num": "\"$1\" é um [[Special:Types/Number|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico] para representar valores numéricos.",
 	"smw-property-predefined-dat": "\"$1\" é um [[Special:Types/Date|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Semântico] para representar valores de datas.",

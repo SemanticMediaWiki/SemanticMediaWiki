@@ -30,7 +30,8 @@
 			"A Chinese Wikipedian",
 			"Phenolla",
 			"Angrydog001",
-			"Zazzzz"
+			"Zazzzz",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -654,8 +655,8 @@
 	"smw-property-predefined-dtitle": "“$1”是一个分配不同显示标题至实体的预定义属性，并由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供。",
 	"smw-property-predefined-pvuc": "“$1”是一个由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，为每个实例限制值分配以使其唯一（或者最多一个）的预定义属性。",
 	"smw-property-predefined-long-pvuc": "当两个值的文字表示不等时独特性就会被确定，并且任何这类约束的违例将被归类为错误。",
-	"smw-datavalue-uniqueness-constraint-error": "属性“$1”只允许单一值分配，且“$2”已注释于主题“$3”中。",
-	"smw-datavalue-uniqueness-constraint-isknown": "属性“$1”只允许唯一值释文，“$2”已被分配给“$3”。",
+	"smw-datavalue-constraint-uniqueness-violation": "属性“$1”只允许单一值分配，且“$2”已注释于主题“$3”中。",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "属性“$1”只允许唯一值释文，“$2”已被分配给“$3”。",
 	"smw-property-predefined-boo": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表布尔值的[[Special:Types/Boolean|类型]]和预定义属性。",
 	"smw-property-predefined-num": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表数值的[[Special:Types/Number|类型]]和预定义属性。",
 	"smw-property-predefined-dat": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表日期值的[[Special:Types/Date|类型]]和预定义属性。",

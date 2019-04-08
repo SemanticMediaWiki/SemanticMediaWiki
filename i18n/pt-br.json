@@ -29,7 +29,8 @@
 			"Walesson",
 			"Fitoschido",
 			"Athena in Wonderland",
-			"Tks4Fish"
+			"Tks4Fish",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",
@@ -575,6 +576,7 @@
 	"smw-admin-maintenance-script-description-setupstore": "Configura o modo de armazenamento selecionado em <code>LocalSettings.php</code>.",
 	"smw-admin-maintenance-script-description-updateentitycollation": "Atualiza o campo <code>smw_sort</code> do <code>SQLStore</code> (de acordo com a configuração [https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation $smwgEntityCollation]).",
 	"smw-admin-maintenance-script-description-populatehashfield": "Popula o campo <code>smw_hash</code> das linhas em que este não tem um valor.",
+	"smw-admin-maintenance-script-description-purgeentitycache": "Eliminar entradas de cache para entidades conhecidas e seus dados associados.",
 	"smw-livepreview-loading": "Carregando...",
 	"smw-sp-searchbyproperty-description": "Esta página fornece uma simples [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interface de navegação] para encontrar entidades descritas por uma propriedade e um determinado valor. Outras interfaces de busca disponíveis incluem a página de [[Special:PageProperty|busca por propriedade]] e o [[Special:Ask|construtor de consultas]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
@@ -727,8 +729,8 @@
 	"smw-property-predefined-dtitle": "\"$1\" é uma propriedade predefinida que pode atribuir a uma entidade um título de apresentação distinto, é fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pvuc": "\"$1\" é uma propriedade predefinida, fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], para restringir a atribuição de valores a valores únicos (ou a um, no máximo) para cada instância.",
 	"smw-property-predefined-long-pvuc": "A unicidade é estabelecida quando dois valores não são iguais em suas representações literais e qualquer violação desta restrição será categorizada como erro.",
-	"smw-datavalue-uniqueness-constraint-error": "A propriedade \"$1\" só permite a atribuição de valores únicos e \"$2\" já foi atribuído no sujeito \"$3\".",
-	"smw-datavalue-uniqueness-constraint-isknown": "A propriedade \"$1\" só permite anotações de valores únicos, ''$2'' já contém um valor atribuído. \"$3\" viola a restrição de unicidade.",
+	"smw-datavalue-constraint-uniqueness-violation": "A propriedade \"$1\" só permite a atribuição de valores únicos e \"$2\" já foi atribuído no sujeito \"$3\".",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "A propriedade \"$1\" só permite anotações de valores únicos, ''$2'' já contém um valor atribuído. \"$3\" viola a restrição de unicidade.",
 	"smw-property-predefined-boo": "\"$1\" é um [[Special:Types/Boolean|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] para representar valores booleanos.",
 	"smw-property-predefined-num": "\"$1\" é um [[Special:Types/Number|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], para representar valores numéricos.",
 	"smw-property-predefined-dat": "\"$1\" é um [[Special:Types/Date|tipo]] e uma propriedade predefinida, fornecidos pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki], para representar valores de datas.",
@@ -872,7 +874,7 @@
 	"smw-schema-namespace-edit-protection": "Esta página está protegida e só pode ser editada por utilizadores com a [https://www.semantic-mediawiki.org/wiki/Help:Permissions permissão] <code>smw-schemaedit</code> adequada.",
 	"smw-schema-error": "Erro de validação",
 	"smw-schema-error-schema": "O esquema de validação '''$1''' encontrou as seguintes inconsistências ou violações:",
-	"smw-schema-error-violation": "Violação (\"$1\", \"$2\")",
+	"smw-schema-error-violation": "Violação do esquema [\"$1\", \"$2\"]",
 	"smw-schema-error-type-missing": "Falta um tipo ao conteúdo para este ser reconhecido e utilizável no [https://www.semantic-mediawiki.org/wiki/Help:Schema espaço nominal/domínio do esquema].",
 	"smw-schema-error-type-unknown": "O tipo \"$1\" não está registado e, portanto, não pode ser usado para conteúdo no [https://www.semantic-mediawiki.org/wiki/Help:Schema espaço nominal/domínio do esquema].",
 	"smw-schema-title": "Esquema",

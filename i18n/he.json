@@ -16,7 +16,8 @@
 			"Drorsnir",
 			"שניאור זלמן",
 			"המקיסט",
-			"Strayblues"
+			"Strayblues",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -488,7 +489,7 @@
 	"smw-property-predefined-dtitle": "\"$1\" הוא מאפיין מוגדר מראש שיכול לשייך כותרת תצוגה ייחודית לישות והוא מסופק על־די [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pvuc": "\"$1\" הוא מאפיין מוגדר מראש שמראה ששיוך ערכים למאפיינים אמור להיות ייחודי והוא מסופק על־די [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-long-pvuc": "ייחודיות היא מצב שבו שני ערכים אינם שווים בייצוג המפורש שלה וכל הפרה של האילוץ הזה תסווג בתור שגיאה.",
-	"smw-datavalue-uniqueness-constraint-error": "המאפיין \"$1\" מאפשר רק שיוך ערכים ייחודיים ו־\"$2\" כבר הוער בנושא \"$3\".",
+	"smw-datavalue-constraint-uniqueness-violation": "המאפיין \"$1\" מאפשר רק שיוך ערכים ייחודיים ו־\"$2\" כבר הוער בנושא \"$3\".",
 	"smw-property-predefined-boo": "\"$1\" הוא [[Special:Types/Boolean|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכים בוליאניים.",
 	"smw-property-predefined-num": "\"$1\" הוא [[Special:Types/Number|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכים מספריים.",
 	"smw-property-predefined-dat": "\"$1\" הוא [[Special:Types/Date|סוג]] ומאפיין מוגדר מראש שמסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית] כדי לייצג ערכי תאריכים.",

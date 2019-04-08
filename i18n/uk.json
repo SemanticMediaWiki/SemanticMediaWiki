@@ -21,7 +21,8 @@
 			"Avatar6",
 			"Movses",
 			"Vlad5250",
-			"Andrew J.Kurbiko"
+			"Andrew J.Kurbiko",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
@@ -675,8 +676,8 @@
 	"smw-property-predefined-dtitle": "«$1» — це попередньо визначена властивість, якою для сутності можна призначити окрему назву для відображення, і яка забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki].",
 	"smw-property-predefined-pvuc": "«$1» — це попередньо визначена властивість, що забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантичною MediaWiki] для обмеження призначень значень для кожного примірника таким чином, щоб вони були унікальними (або щонайбільше єдиним)",
 	"smw-property-predefined-long-pvuc": "Унікальність встановлюється, коли два значення є неоднаковими у своїй символьній репрезентації, і будь-яке порушення цього обмеження буде кваліфіковано як помилку.",
-	"smw-datavalue-uniqueness-constraint-error": "Властивість «$1» дозволяє лише унікальні присвоєння значень, а ''$2'' вже було анотовано в темі «$3».",
-	"smw-datavalue-uniqueness-constraint-isknown": "Властивість «$1» дозволяє лише унікальні анотації значень, ''$2'' вже містить закріплене значення. «$3» порушує вимогу унікальності.",
+	"smw-datavalue-constraint-uniqueness-violation": "Властивість «$1» дозволяє лише унікальні присвоєння значень, а ''$2'' вже було анотовано в темі «$3».",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "Властивість «$1» дозволяє лише унікальні анотації значень, ''$2'' вже містить закріплене значення. «$3» порушує вимогу унікальності.",
 	"smw-property-predefined-boo": "«$1» — [[Special:Types/Boolean|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення логічних значень.",
 	"smw-property-predefined-num": "«$1» — [[Special:Types/Number|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення числових значень.",
 	"smw-property-predefined-dat": "«$1» — [[Special:Types/Date|тип]] і наперед визначена властивість, яку надає [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Семантична MediaWiki] для представлення значень дат.",

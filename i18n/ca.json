@@ -15,7 +15,8 @@
 			"Kghbln",
 			"Jaumeortola",
 			"Nemo bis",
-			"Abella"
+			"Abella",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Fem el vostre wiki més accessible, per a les màquines ''i també'' per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -627,8 +628,8 @@
 	"smw-datavalue-allows-value-list-missing-marker": "Al contingut de la llista «$1» hi manquen elements amb un marcador de llista *.",
 	"smw-datavalue-feature-not-supported": "La característica «$1» no és compatible amb el wiki o bé se n'ha inhabilitat.",
 	"smw-property-predefined-long-pvuc": "La unicitat s'estableix quan dos valors no són iguals en llur representació literal. Llavors qualsevol violació d'aquesta restricció es categoritzarà com error.",
-	"smw-datavalue-uniqueness-constraint-error": "La propietat «$1» només permet assignacions de valor únic i «$2» ja estava anotada en el subjecte «$3».",
-	"smw-datavalue-uniqueness-constraint-isknown": "La propietat «$1» només permet anotacions de valor úniques. «$2» ja conté un valor assignat. «$3» viola la restricció d'unicitat.",
+	"smw-datavalue-constraint-uniqueness-violation": "La propietat «$1» només permet assignacions de valor únic i «$2» ja estava anotada en el subjecte «$3».",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "La propietat «$1» només permet anotacions de valor úniques. «$2» ja conté un valor assignat. «$3» viola la restricció d'unicitat.",
 	"smw-datavalue-time-invalid-offset-zone-usage": "«$1» conté un decalatge i un fus horari no permesos.",
 	"smw-datavalue-time-invalid-values": "El valor «$1» conté informació no interpretable en la forma de «$2».",
 	"smw-datavalue-time-invalid-date-components-common": "«$1» conté informació que no és interpretable.",

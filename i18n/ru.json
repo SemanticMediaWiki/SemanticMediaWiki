@@ -54,10 +54,12 @@
 			"Alex Mashin",
 			"Nk88",
 			"Athena Atterdag",
-			"Diralik"
+			"Diralik",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
+	"smw-error": "Ошибка",
 	"smw-upgrade-error-title": "Ошибка",
 	"smw-semantics-not-enabled": "Функциональность Semantic MediaWiki не подключена на этой вики.",
 	"smw_viewasrdf": "RDF источник",
@@ -452,6 +454,8 @@
 	"smw-admin-supplementary-elastic-status-recovery-job-count": "Задержка восстановления работ: $1 (оценка)",
 	"smw-admin-supplementary-elastic-status-file-ingest-job-count": "Журнал невыполненных работ (файл): $1 (оценка)",
 	"smw-admin-supplementary-elastic-status-rebuild-lock": "Репликация заблокирована: $1 (перепостроение в процессе)",
+	"smw-admin-supplementary-elastic-replication-files": "Файлы",
+	"smw-admin-supplementary-elastic-replication-pages": "Страницы",
 	"smw-list-count": "Список содержит $1 {{PLURAL:$1|запись|записи|записей}}.",
 	"smw-property-label-uniqueness": "Метка \"$1\" была сопоставлена по крайней мере с одним другим представлением свойств. Пожалуйста, проконсультируйтесь со [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness страницей помощи] о том, как устранить эту проблему.",
 	"smw-property-label-similarity-title": "Сообщение о подобности названий свойств",
@@ -682,8 +686,8 @@
 	"smw-property-predefined-dtitle": "«$1» — это предварительно определенное свойство, которой для сущности можно назначить отдельное название для отображения, и которое обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-pvuc": "«$1» — это предварительно определенное свойство, которое обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] для ограничения присвоения значений для каждого экземпляра уникальным значением (или максимум одним).",
 	"smw-property-predefined-long-pvuc": "Уникальность устанавливается, когда два значения являются неодинаковыми в своей символьной репрезентации, и любое нарушение этого ограничения будет квалифицировано как ошибка.",
-	"smw-datavalue-uniqueness-constraint-error": "Свойство «$1» позволяет только уникальные присвоенные значения, а «$2» уже было аннотировано в теме «$3».",
-	"smw-datavalue-uniqueness-constraint-isknown": "Свойство «$1» предусматривает только уникальные присвоения. На странице «$2» уже есть присвоенное значение. «$3» нарушает требование уникальности.",
+	"smw-datavalue-constraint-uniqueness-violation": "Свойство «$1» позволяет только уникальные присвоенные значения, а «$2» уже было аннотировано в теме «$3».",
+	"smw-datavalue-constraint-uniqueness-violation-isknown": "Свойство «$1» предусматривает только уникальные присвоения. На странице «$2» уже есть присвоенное значение. «$3» нарушает требование уникальности.",
 	"smw-property-predefined-boo": "«$1» — [[Special:Types/Boolean|тип данных]] и предопределённое свойство, предоставляемое ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]'' для хранения булевых значений.",
 	"smw-property-predefined-num": "«$1» — [[Special:Types/Number|тип данных]] и предопределённое свойство, предоставляемое ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]'' для хранения численных данных.",
 	"smw-property-predefined-dat": "«$1» — [[Special:Types/Date|тип данных]] и предопределённое свойство, предоставляемое ''[https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki]'', для хранения дат.",
