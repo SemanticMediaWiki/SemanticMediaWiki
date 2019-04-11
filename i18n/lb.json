@@ -219,6 +219,7 @@
 	"smw-admin-supplementary-elastic-indices-title": "Hiweiser",
 	"smw-admin-supplementary-elastic-statistics-title": "Statistiken",
 	"smw-admin-supplementary-elastic-status-refresh-interval": "Aktualisatiounsintervall: $1",
+	"smw-admin-supplementary-elastic-replication-function-title": "Replikatioun",
 	"smw-admin-supplementary-elastic-replication-files": "Fichieren",
 	"smw-admin-supplementary-elastic-replication-pages": "Säiten",
 	"smw_adminlinks_datastructure": "Datestruktur",

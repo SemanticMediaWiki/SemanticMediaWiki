@@ -897,6 +897,7 @@
 	"smw-schema-error-violation": "Violation de schéma [« $1 »,  « $2 »]",
 	"smw-schema-error-type-missing": "Il manque un  type au contenu  pour qu’il soit reconnu et utilisable dans l’[https://www.semantic-mediawiki.org/wiki/Help:Schema espace de noms du schéma].",
 	"smw-schema-error-type-unknown": "Le type « $1 » n’est pas enregistré et ne peut donc pas être utilisé pour du contenu dans l’espace de noms de [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
+	"smw-schema-validation-error": "Le type « $1 » n'est pas enregistré et ne peut pas être utilisé pour le contenu dans l'espace de noms [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
 	"smw-schema-title": "Schéma",
 	"smw-schema-type": "Type",
 	"smw-schema-description-link-format-schema": "Ce type de schéma est censé définir des caractétistiques pour créer des liens dépendants du contexte, en rapport avec une propriété affectée du [[Property:Formatter schema|schéma de mise en forme]].",
