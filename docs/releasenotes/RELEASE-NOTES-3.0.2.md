@@ -5,7 +5,7 @@ Released on April 11, 2019.
 ## Enhancements
 
 * [#3682](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3682) as `f5d0cab`: Removed `IsFileCacheable` hook and improves file caching
-* [#3856](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3854) as `767c981`: Switched setting of configuration parameter "$smwgCompactLinkSupport" to "false"
+* [#3856](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3856) as `767c981`: Switched setting of configuration parameter "$smwgCompactLinkSupport" to "false"
 
 ## Bug fixes and internal code changes
 
