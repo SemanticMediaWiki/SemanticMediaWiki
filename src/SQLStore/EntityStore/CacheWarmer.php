@@ -9,6 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMWQueryResult as QueryResult;
 use Iterator;
 use SMW\MediaWiki\LinkBatch;
+use SMW\DisplayTitleFinder;
 
 /**
  * @license GNU GPL v2+
@@ -24,6 +25,16 @@ class CacheWarmer {
 	private $store;
 
 	/**
+	 * @var IdCacheManager
+	 */
+	private $idCacheManager;
+
+	/**
+	 * @var DisplayTitleFinder
+	 */
+	private $displayTitleFinder;
+
+	/**
 	 * @var integer
 	 */
 	private $thresholdLimit = 3;
@@ -37,6 +48,15 @@ class CacheWarmer {
 	public function __construct( SQLStore $store, IdCacheManager $idCacheManager ) {
 		$this->store = $store;
 		$this->idCacheManager = $idCacheManager;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DisplayTitleFinder $displayTitleFinder
+	 */
+	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ) {
+		$this->displayTitleFinder = $displayTitleFinder;
 	}
 
 	/**
@@ -101,6 +121,10 @@ class CacheWarmer {
 
 		$linkBatch->execute();
 		$this->fillFromTableByHash( array_keys( $hashList ) );
+
+		if ( $this->displayTitleFinder !== null ) {
+			$this->displayTitleFinder->prefetchFromList( $list );
+		}
 	}
 
 	/**

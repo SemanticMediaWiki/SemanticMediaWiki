@@ -39,7 +39,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'associate' ] )
+			->setMethods( [ 'save', 'associate', 'fetch' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );

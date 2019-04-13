@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use InvalidArgumentException;
-
 /**
  * @license GNU GPL v2+
  * @since 3.1
@@ -23,6 +21,11 @@ class DisplayTitleFinder {
 	private $entityCache;
 
 	/**
+	 * @var boolean
+	 */
+	private $canUse = true;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
@@ -36,11 +39,102 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
+	 * @param boolean $canUse
+	 */
+	public function getEntityCache() {
+		return $this->entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $canUse
+	 */
+	public function setCanUse( $canUse ) {
+		$this->canUse = (bool)$canUse;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $dataItems
+	 */
+	public function prefetchFromList ( $dataItems ) {
+
+		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
+			return;
+		}
+
+		$unCachedList = [];
+
+		foreach ( $dataItems as $dataItem ) {
+
+			if ( !$dataItem instanceof DIWikiPage ) {
+				continue;
+			}
+
+			$key = $this->entityCache->makeKey( 'displaytitle', $dataItem->getHash() );
+
+			if ( $this->entityCache->fetch( $key ) === false ) {
+				$unCachedList[] = $dataItem;
+			}
+		}
+
+		if ( $unCachedList === [] ) {
+			return;
+		}
+
+		$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
+
+		$prefetch = $displayTitleLookup->prefetchFromList(
+			$unCachedList
+		);
+
+		foreach ( $unCachedList as $dataItem ) {
+			$sha1 = $dataItem->getSha1();
+
+			if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
+				continue;
+			}
+
+			$prefetchTitle = $prefetch[$sha1];
+
+			// Nothing found, use the base!
+			if ( $prefetchTitle === null && $dataItem->getSubobjectName() !== '' ) {
+				$base = $dataItem->asBase();
+				$sha1 = $base->getSha1();
+
+				if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
+					continue;
+				}
+
+				$prefetchTitle = $prefetch[$sha1];
+			}
+
+			if ( $prefetchTitle === null ) {
+				$displayTitle = ' ';
+			} else {
+				$displayTitle = $prefetchTitle;
+			}
+
+			$key = $this->entityCache->makeKey( 'displaytitle', $dataItem->getHash() );
+			$this->entityCache->save( $key, $displayTitle, EntityCache::TTL_WEEK );
+			$this->entityCache->associate( $dataItem, $key );
+		}
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param DIWikiPage $subject
 	 *
 	 * @return string
 	 */
 	public function findDisplayTitle( DIWikiPage $subject ) {
+
+		if ( $this->canUse === false ) {
+			return '';
+		}
 
 		$base = $subject->asBase();
 		$key = $this->entityCache->makeKey( 'displaytitle', $subject->getHash() );

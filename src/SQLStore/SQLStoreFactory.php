@@ -37,6 +37,7 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
@@ -599,9 +600,15 @@ class SQLStoreFactory {
 	 */
 	public function newCacheWarmer( IdCacheManager $idCacheManager ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$cacheWarmer = new CacheWarmer(
 			$this->store,
 			$idCacheManager
+		);
+
+		$cacheWarmer->setDisplayTitleFinder(
+			$applicationFactory->singleton( 'DisplayTitleFinder', $this->store )
 		);
 
 		return $cacheWarmer;
@@ -811,6 +818,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @return DisplayTitleLookup
+	 */
+	public function newDisplayTitleLookup() {
+		return new DisplayTitleLookup( $this->store );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return PrefetchItemLookup
 	 */
 	public function newPrefetchItemLookup() {
@@ -865,6 +881,10 @@ class SQLStoreFactory {
 				'MonolingualTextLookup' => [
 					'_service' => [ $this, 'newMonolingualTextLookup' ],
 					'_type'    => MonolingualTextLookup::class
+				],
+				'DisplayTitleLookup' => [
+					'_service' => [ $this, 'newDisplayTitleLookup' ],
+					'_type'    => DisplayTitleLookup::class
 				],
 				'PropertyTypeFinder' => [
 					'_service' => [ $this, 'newPropertyTypeFinder' ],
