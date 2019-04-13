@@ -95,6 +95,26 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		$instance->fillFromList( $list );
 	}
 
+	public function testFillFromList_DisplayTitleFinder() {
+
+		$displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$displayTitleFinder->expects( $this->once() )
+			->method( 'prefetchFromList' );
+
+		$instance = new CacheWarmer(
+			$this->store,
+			$this->idCacheManager
+		);
+
+		$instance->setDisplayTitleFinder( $displayTitleFinder );
+		$instance->setThresholdLimit( 1 );
+
+		$instance->fillFromList( [] );
+	}
+
 	public function testFillFromList_Property() {
 
 		$list = [

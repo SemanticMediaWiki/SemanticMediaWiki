@@ -736,17 +736,22 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var DisplayTitleFinder
 		 */
-		$containerBuilder->registerCallback( 'DisplayTitleFinder', function( $containerBuilder ) {
+		$containerBuilder->registerCallback( 'DisplayTitleFinder', function( $containerBuilder, $store = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', '\SMW\DisplayTitleFinder' );
 
-			$lang = Localizer::getInstance()->getLang();
+			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
+			$settings = $containerBuilder->singleton( 'Settings' );
 
-			$propertyLabelFinder = new DisplayTitleFinder(
-				$containerBuilder->singleton( 'Store', null ),
+			$displayTitleFinder = new DisplayTitleFinder(
+				$store,
 				$containerBuilder->singleton( 'EntityCache' )
 			);
 
-			return $propertyLabelFinder;
+			$displayTitleFinder->setCanUse(
+				$settings->isFlagSet( 'smwgDVFeatures', SMW_DV_WPV_DTITLE )
+			);
+
+			return $displayTitleFinder;
 		} );
 	}
 

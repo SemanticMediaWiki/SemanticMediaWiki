@@ -488,6 +488,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructDisplayTitleLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\DisplayTitleLookup',
+			$instance->newDisplayTitleLookup()
+		);
+	}
+
 	public function testCanConstructPrefetchItemLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );

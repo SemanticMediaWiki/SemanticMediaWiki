@@ -24,7 +24,7 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getWikiPageSortKey' ] )
+			->setMethods( [ 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
@@ -158,6 +158,56 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			'',
 			$instance->findDisplayTitle( $subject )
 		);
+	}
+
+	public function testPrefetchFromList() {
+
+		$subjects = [
+			DIWikiPage::newFromText( 'Foo' ),
+			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
+			DIWikiPage::doUnserialize( 'Foo#0##123' )
+		];
+
+		$prefetch = [
+			$subjects[2]->getSha1() => 'Bar',
+			$subjects[0]->getSha1() => 'Foobar',
+			$subjects[1]->getSha1() => null,
+		];
+
+		$displayTitleLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\DisplayTitleLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$displayTitleLookup->expects( $this->any() )
+			->method( 'prefetchFromList' )
+			->will( $this->returnValue( $prefetch ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'DisplayTitleLookup' ) )
+			->will( $this->returnValue( $displayTitleLookup ) );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		// Stored with a space
+		$this->entityCache->expects( $this->any() )
+			->method( 'save' )
+			->withConsecutive(
+				[ $this->anything(), $this->equalTo( 'Foobar' ) ],
+				[ $this->anything(), $this->equalTo( 'Foobar' ) ],
+				[ $this->anything(), $this->equalTo( 'Bar' ) ] );
+
+		$this->entityCache->expects( $this->exactly( 3 ) )
+			->method( 'associate' );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->prefetchFromList( $subjects );
 	}
 
 }
