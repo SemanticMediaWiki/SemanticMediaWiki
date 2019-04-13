@@ -124,7 +124,11 @@ class IndicatorProvider implements IIndicatorProvider {
 			}
 		}
 
-		if ( $this->entityCache->fetch( CheckReplicationTask::makeCacheKey( $subject ) ) === 'success' ) {
+		$connection = $this->store->getConnection( 'elastic' );
+
+		if (
+			$connection->hasMaintenanceLock() === false &&
+			$this->entityCache->fetch( CheckReplicationTask::makeCacheKey( $subject ) ) === CheckReplicationTask::TYPE_SUCCESS ) {
 			return;
 		}
 

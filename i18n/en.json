@@ -922,7 +922,11 @@
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
 	"smw-es-replication-error-divergent-revision": "The replication monitoring has found that for the \"$1\" article (ID: $2) the <b>associated revision</b> shows a discrepancy.",
 	"smw-es-replication-error-divergent-revision-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-es-replication-error-maintenance-mode": "The replication and search engine are in [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Maintenance_mode <b>maintenance mode</b>] making changes to entities and pages not immediately visible or to appear in query results.",
+	"smw-es-replication-error-bad-request-exception": "The Elasticsearch connection handler has thrown a bad request exception (\"400 conflict http error\") indicating a continuing issue during replication and search requests.",
 	"smw-es-replication-error-suggestions": "It is suggested to edit or purge the page to remove the discrepancy. If the issue remains then check the Elasticsearch cluster itself (allocator, exceptions, disk space etc.).",
+	"smw-es-replication-error-suggestions-maintenance-mode": "It is suggested to contact the wiki administrator to check whether an [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Index_rebuild index rebuild] is currently in progress or the <code>refresh_interval</code> hasn't been set to the expected default value.",
+	"smw-es-replication-error-suggestions-exception": "Please check the logs for information about the status of Elasticsearch, their indices, and possible misconfiguration issues.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "The replication monitoring has found that \"$1\" is missing a [[Property:File attachment|File attachment]] annotation indicating that the file ingest processor hasn't started or isn't finished.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Please ensure that the [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion file ingest] job is scheduled and executed before the annotation and file index can be made available."
 }

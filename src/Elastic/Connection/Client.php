@@ -801,6 +801,22 @@ class Client {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function hasMaintenanceLock() {
+		return $this->lockManager->hasMaintenanceLock();
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function setMaintenanceLock() {
+		$this->lockManager->setMaintenanceLock();
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $type

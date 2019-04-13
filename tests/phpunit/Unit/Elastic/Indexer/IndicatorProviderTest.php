@@ -19,13 +19,23 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $store;
+	private $elasticClient;
 	private $entityCache;
 
 	protected function setUp() {
 
+		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -179,6 +189,53 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$instance->hasIndicator( $title, [] )
+		);
+
+		$this->assertEmpty(
+			$instance->getIndicators()
+		);
+	}
+
+	public function testNoCheckReplicationForSuccess() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->once() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$this->elasticClient->expects( $this->once() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( \SMW\Elastic\Indexer\Replication\CheckReplicationTask::TYPE_SUCCESS ) );
+
+		$instance = new IndicatorProvider(
+			$this->store,
+			$this->entityCache
+		);
+
+		$options = [
+			'action' => 'foo',
+			'diff' => null
+		];
+
+		$instance->canCheckReplication( true );
+
+		$this->assertFalse(
+			$instance->hasIndicator( $title, $options )
 		);
 
 		$this->assertEmpty(

@@ -36,11 +36,40 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasMaintenanceLock() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) )
+			->will( $this->returnValue( true ) );
+
+		$instance = new LockManager(
+			$this->cache
+		);
+
+		$instance->hasMaintenanceLock();
+	}
+
+	public function testSetMaintenanceLock() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
+
+		$instance = new LockManager(
+			$this->cache
+		);
+
+		$instance->setMaintenanceLock();
+	}
+
 	public function testSetLock() {
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
-			->will( $this->returnValue( '' ) );
+			->with(
+				$this->anything(),
+				$this->equalTo( 2 ) );
 
 		$instance = new LockManager(
 			$this->cache
@@ -82,9 +111,12 @@ class LockManagerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReleaseLock() {
 
-		$this->cache->expects( $this->once() )
+		$this->cache->expects( $this->at( 0 ) )
+			->method( 'delete' );
+
+		$this->cache->expects( $this->at( 1 ) )
 			->method( 'delete' )
-			->will( $this->returnValue( 2 ) );
+			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
 
 		$instance = new LockManager(
 			$this->cache

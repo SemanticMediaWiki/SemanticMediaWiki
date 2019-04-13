@@ -240,6 +240,18 @@ class DummyClient extends Client {
 	}
 
 	/**
+	 * @see Client::hasMaintenanceLock
+	 */
+	public function hasMaintenanceLock() {
+		return false;
+	}
+
+	/**
+	 * @see Client::setMaintenanceLock
+	 */
+	public function setMaintenanceLock() {}
+
+	/**
 	 * @see Client::setLock
 	 */
 	public function setLock( $type, $version ) {}

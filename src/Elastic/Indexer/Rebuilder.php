@@ -156,6 +156,8 @@ class Rebuilder {
 	 * @since 3.0
 	 */
 	public function prepare() {
+		$this->client->setMaintenanceLock();
+
 		$this->prepare_index( ElasticClient::TYPE_DATA );
 		$this->prepare_index( ElasticClient::TYPE_LOOKUP );
 	}

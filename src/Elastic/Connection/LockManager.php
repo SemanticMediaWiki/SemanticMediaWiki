@@ -16,6 +16,8 @@ class LockManager {
 	 * Identifies the cache namespace
 	 */
 	const CACHE_NAMESPACE = 'smw:elastic';
+	const TYPE_LOCK = 'lock';
+	const TYPE_MAINTENANCE = 'maintenance';
 
 	/**
 	 * @var Cache
@@ -29,6 +31,32 @@ class LockManager {
 	 */
 	public function __construct( Cache $cache ) {
 		$this->cache = $cache;
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function hasMaintenanceLock() {
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			self::TYPE_MAINTENANCE
+		);
+
+		return $this->cache->fetch( $key ) !== false;
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function setMaintenanceLock() {
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			self::TYPE_MAINTENANCE
+		);
+
+		$this->cache->save( $key, true );
 	}
 
 	/**
@@ -91,6 +119,13 @@ class LockManager {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
+		);
+
+		$this->cache->delete( $key );
+
+		$key = smwfCacheKey(
+			self::CACHE_NAMESPACE,
+			self::TYPE_MAINTENANCE
 		);
 
 		$this->cache->delete( $key );
