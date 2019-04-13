@@ -126,15 +126,6 @@ class SMWSQLStore3 extends SMWStore {
 	public $smwIds;
 
 	/**
-	 * The reader object used by this store. Initialized by getReader()
-	 * Always access using getReader()
-	 *
-	 * @since 1.8
-	 * @var SMWSQLStore3Readers
-	 */
-	protected $reader = false;
-
-	/**
 	 * The writer object used by this store. Initialized by getWriter(),
 	 * which is the only way in which it should be accessed.
 	 *
@@ -170,14 +161,6 @@ class SMWSQLStore3 extends SMWStore {
 	}
 
 ///// Reading methods /////
-
-	public function getReader() {
-		if( $this->reader == false ) {
-			$this->reader = new SMWSQLStore3Readers( $this, $this->factory );//Initialize if not done already
-		}
-
-		return $this->reader;
-	}
 
 	/**
 	 * @see EntityLookup::getSemanticData
