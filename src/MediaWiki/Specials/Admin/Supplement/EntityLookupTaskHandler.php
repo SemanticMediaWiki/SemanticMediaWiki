@@ -237,14 +237,17 @@ class EntityLookupTaskHandler extends TaskHandler {
 		}
 
 		$rows = $connection->select(
-				\SMWSql3SmwIds::TABLE_NAME,
+				SQLStore::ID_TABLE,
 				[
 					'smw_id',
 					'smw_title',
 					'smw_namespace',
 					'smw_iw',
 					'smw_subobject',
-					'smw_sortkey'
+					'smw_sortkey',
+					'smw_proptable_hash',
+					'smw_rev',
+					'smw_touched'
 				],
 				$condition,
 				__METHOD__
@@ -269,6 +272,8 @@ class EntityLookupTaskHandler extends TaskHandler {
 				$references[$id] = $this->store->getPropertyTableIdReferenceFinder()->searchAllTablesToFindAtLeastOneReferenceById(
 					$id
 				);
+
+				$row->smw_proptable_hash = $row->smw_proptable_hash === null ? null : '...';
 
 				$formattedRows[$id] = (array)$row;
 				$this->addFulltextInfo( $id, $references );
