@@ -20,7 +20,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
-use SMW\SQLStore\EntityStore\UniquenessLookup;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
@@ -624,16 +624,16 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return UniquenessLookup
+	 * @return DuplicateFinder
 	 */
-	public function newUniquenessLookup() {
+	public function newDuplicateFinder() {
 
-		$uniquenessLookup = new UniquenessLookup(
+		$duplicateFinder = new DuplicateFinder(
 			$this->store,
 			$this->getIteratorFactory()
 		);
 
-		return $uniquenessLookup;
+		return $duplicateFinder;
 	}
 
 	/**

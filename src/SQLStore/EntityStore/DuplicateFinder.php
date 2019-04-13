@@ -19,7 +19,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class UniquenessLookup {
+class DuplicateFinder {
 
 	/**
 	 * @var Store
@@ -49,7 +49,7 @@ class UniquenessLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isUnique( DataItem $dataItem ) {
+	public function hasDuplicate( DataItem $dataItem ) {
 
 		$type = $dataItem->getDIType();
 
@@ -87,7 +87,7 @@ class UniquenessLookup {
 			__METHOD__
 		);
 
-		return $res->numRows() < 2;
+		return $res->numRows() > 1;
 	}
 
 	/**
