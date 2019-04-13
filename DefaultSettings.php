@@ -47,6 +47,10 @@ return [
 	# $smwgConfigFileDir = $wgUploadDirectory;) or select an entire different
 	# location. The default location is the Semantic MediaWiki extension root.
 	#
+	# During its operation it may contain:
+	#  - `.smw.json`
+	#  - `.smw.maintenance.json`
+	#
 	# @since 3.0
 	##
 	'smwgConfigFileDir' => __DIR__,

@@ -103,4 +103,14 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructAutoRecovery() {
+
+		$instance = new MaintenanceFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Maintenance\AutoRecovery',
+			$instance->newAutoRecovery( 'Foo' )
+		);
+	}
+
 }
