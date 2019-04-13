@@ -156,12 +156,23 @@ class RebuildData extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgDebugLogGroups', [] );
 		}
 
+		$autoRecovery = $maintenanceFactory->newAutoRecovery( 'rebuildData.php' );
+		$autoRecovery->safeMargin( 2 );
+
+		$autoRecovery->enable(
+			$this->hasOption( 'auto-recovery' )
+		);
+
 		$store = StoreFactory::getStore( $this->hasOption( 'b' ) ? $this->getOption( 'b' ) : null );
 		$store->setOption( Store::OPT_CREATE_UPDATE_JOB, false );
 
 		$dataRebuilder = $maintenanceFactory->newDataRebuilder(
 			$store,
 			[ $this, 'reportMessage' ]
+		);
+
+		$dataRebuilder->setAutoRecovery(
+			$autoRecovery
 		);
 
 		$dataRebuilder->setOptions(

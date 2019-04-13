@@ -48,6 +48,11 @@ class DataRebuilder {
 	private $reporter;
 
 	/**
+	 * @var AutoRecovery
+	 */
+	private $autoRecovery;
+
+	/**
 	 * @var DistinctEntityDataRebuilder
 	 */
 	private $distinctEntityDataRebuilder;
@@ -100,6 +105,15 @@ class DataRebuilder {
 	 */
 	public function setMessageReporter( MessageReporter $reporter ) {
 		$this->reporter = $reporter;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param AutoRecovery $autoRecovery
+	 */
+	public function setAutoRecovery( AutoRecovery $autoRecovery ) {
+		$this->autoRecovery = $autoRecovery;
 	}
 
 	/**
@@ -277,6 +291,19 @@ class DataRebuilder {
 			$this->reportMessage( "\n" );
 		}
 
+		if ( $this->options->has( 'auto-recovery' ) && $this->autoRecovery !== null ) {
+			if ( $this->autoRecovery->has( 'ar_id' ) ) {
+				$this->start = $this->autoRecovery->get( 'ar_id' );
+
+				$this->reportMessage(
+					"The auto recovery mode is enabled and has detected an unfinished\n" .
+					"rebuild run therefore the run is started with: " . $this->start . "\n"
+				);
+
+				$this->reportMessage( "\n" );
+			}
+		}
+
 		$this->store->clear();
 
 		if ( $this->start > 1 && $this->end === false ) {
@@ -301,6 +328,10 @@ class DataRebuilder {
 		$skipped_update = 0;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
+
+			if ( $this->autoRecovery !== null ) {
+				$this->autoRecovery->set( 'ar_id', (int)$id );
+			}
 
 			$current_id = $id;
 
@@ -339,6 +370,10 @@ class DataRebuilder {
 			$this->reportMessage(
 				"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $current_id, 100 ) )
 			);
+		}
+
+		if (  $this->autoRecovery !== null ) {
+			 $this->autoRecovery->set( 'ar_id', false );
 		}
 
 		$this->write_to_file( $id );

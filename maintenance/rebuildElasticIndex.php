@@ -35,6 +35,11 @@ class RebuildElasticIndex extends \Maintenance {
 	private $jobQueue;
 
 	/**
+	 * @var AutoRecovery
+	 */
+	private $autoRecovery;
+
+	/**
 	 * @see Maintenance::__construct
 	 *
 	 * @since 3.0
@@ -49,6 +54,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$this->addOption( 'delete-all', 'Delete listed indices without rebuilding the data', false, false );
 		$this->addOption( 'skip-fileindex', 'Skipping any file ingest actions', false, false );
 		$this->addOption( 'run-fileindex', 'Only run file ingest actions', false, false );
+		$this->addOption( 'auto-recovery', 'Allows to restart from a canceled (or aborted) index run', false, false );
 
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
@@ -102,6 +108,12 @@ class RebuildElasticIndex extends \Maintenance {
 			$maintenanceHelper->setGlobalToValue( 'wgDebugLogGroups', [] );
 		}
 
+		$this->autoRecovery = $maintenanceFactory->newAutoRecovery( 'rebuildElasticIndex.php' );
+
+		$this->autoRecovery->enable(
+			$this->hasOption( 'auto-recovery' )
+		);
+
 		$this->jobQueue = $applicationFactory->getJobQueue();
 		$this->store = $applicationFactory->getStore( 'SMW\SQLStore\SQLStore' );
 		$elasticFactory = $applicationFactory->create( 'ElasticFactory' );
@@ -147,6 +159,7 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 
 		$maintenanceHelper->reset();
+		$this->autoRecovery->set( 'ar_id', false );
 
 		return true;
 	}
@@ -213,6 +226,10 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$showAbort = !$this->hasOption( 'quick' ) && !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' );
 
+		if ( $this->hasOption( 'auto-recovery' ) && $this->autoRecovery->has( 'ar_id' ) ) {
+			$showAbort = false;
+		}
+
 		if ( !$showAbort ) {
 			return;
 		}
@@ -238,10 +255,20 @@ class RebuildElasticIndex extends \Maintenance {
 
 	private function rebuild() {
 
-		$this->reportMessage( "\nRebuilding indices ..." );
-		$isSelective = $this->hasOption( 's' ) || $this->hasOption( 'page' );
+		if ( $this->autoRecovery->has( 'ar_id' ) ) {
+			$this->reportMessage(
+				"\nThe auto recovery mode is enabled and has detected an unfinished index\n" .
+				"run therefore indexing starts with: " . $this->autoRecovery->get( 'ar_id' ) . "\n"
+			);
 
-		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) ) {
+			$isSelective = false;
+		} elseif ( $this->hasOption( 's' ) || $this->hasOption( 'page' ) ) {
+			$isSelective = true;
+		}
+
+		$this->reportMessage( "\nRebuilding indices ..." );
+
+		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) && !$this->hasOption( 'auto-recovery' ) ) {
 			$this->reportMessage( "\n" . '   ... creating required indices and aliases ...' );
 			$this->rebuilder->createIndices();
 		} else {
@@ -301,6 +328,8 @@ class RebuildElasticIndex extends \Maintenance {
 			return $this->rebuilder->delete( $row->smw_id );
 		}
 
+		$this->autoRecovery->set( 'ar_id', (int)$row->smw_id );
+
 		$dataItem = $this->store->getObjectIds()->getDataItemById(
 			$row->smw_id
 		);
@@ -325,7 +354,9 @@ class RebuildElasticIndex extends \Maintenance {
 		$conditions = [];
 		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
 
-		if ( $this->hasOption( 's' ) ) {
+		if ( $this->hasOption( 'auto-recovery' ) && $this->autoRecovery->has( 'ar_id' ) ) {
+			$conditions[] = 'smw_id >= ' . $connection->addQuotes( $this->autoRecovery->get( 'ar_id' ) );
+		} elseif ( $this->hasOption( 's' ) ) {
 			$conditions[] = 'smw_id >= ' . $connection->addQuotes( $this->getOption( 's' ) );
 
 			if ( $this->hasOption( 'e' ) ) {

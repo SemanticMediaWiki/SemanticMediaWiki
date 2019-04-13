@@ -153,4 +153,15 @@ class MaintenanceFactory {
 		return $messageReporter;
 	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $identifier
+	 *
+	 * @return AutoRecovery
+	 */
+	public function newAutoRecovery( $identifier ) {
+		return new AutoRecovery( $identifier );
+	}
+
 }
