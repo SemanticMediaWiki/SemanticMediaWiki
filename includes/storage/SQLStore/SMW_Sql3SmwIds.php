@@ -128,9 +128,9 @@ class SMWSql3SmwIds {
 	private $idEntityFinder;
 
 	/**
-	 * @var UniquenessLookup
+	 * @var DuplicateFinder
 	 */
-	private $uniquenessLookup;
+	private $duplicateFinder;
 
 	/**
 	 * @since 1.8
@@ -146,7 +146,7 @@ class SMWSql3SmwIds {
 		);
 
 		$this->redirectStore = $this->factory->newRedirectStore();
-		$this->uniquenessLookup = $this->factory->newUniquenessLookup();
+		$this->duplicateFinder = $this->factory->newDuplicateFinder();
 
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 
@@ -172,7 +172,7 @@ class SMWSql3SmwIds {
 	 * @return boolean
 	 */
 	public function isUnique( DataItem $dataItem ) {
-		return $this->uniquenessLookup->isUnique( $dataItem );
+		return $this->duplicateFinder->hasDuplicate( $dataItem ) === false;
 	}
 
 	/**
@@ -417,7 +417,7 @@ class SMWSql3SmwIds {
 	 */
 	public function findDuplicates() {
 
-		$ids = $this->uniquenessLookup->findDuplicates(
+		$ids = $this->duplicateFinder->findDuplicates(
 			SQLStore::ID_TABLE
 		);
 
@@ -425,7 +425,7 @@ class SMWSql3SmwIds {
 			$ids = iterator_to_array( $ids );
 		}
 
-		$redi = $this->uniquenessLookup->findDuplicates(
+		$redi = $this->duplicateFinder->findDuplicates(
 			RedirectStore::TABLE_NAME
 		);
 
@@ -437,7 +437,7 @@ class SMWSql3SmwIds {
 			DataItem::TYPE_WIKIPAGE
 		);
 
-		$page = $this->uniquenessLookup->findDuplicates(
+		$page = $this->duplicateFinder->findDuplicates(
 			$wikipage_table
 		);
 

@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\UniquenessLookup;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Query;
 use SMW\IteratorFactory;
 
 /**
- * @covers \SMW\SQLStore\EntityStore\UniquenessLookup
+ * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2
@@ -16,13 +16,13 @@ use SMW\IteratorFactory;
  *
  * @author mwjames
  */
-class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
+class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $connection;
 	private $iteratorFactory;
 
- 	protected function setUp() {
+	protected function setUp() {
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -40,17 +40,17 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
 			->getMock();
- 	}
+	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			UniquenessLookup::class,
-			new UniquenessLookup( $this->store, $this->iteratorFactory )
+			DuplicateFinder::class,
+			new DuplicateFinder( $this->store, $this->iteratorFactory )
 		);
 	}
 
-	public function testIsUnique() {
+	public function testHasDuplicate() {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -78,12 +78,12 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$instance = new UniquenessLookup(
+		$instance = new DuplicateFinder(
 			$this->store,
 			$this->iteratorFactory
 		);
 
-		$instance->isUnique( DIWikiPage::newFromText( 'Foo' ) );
+		$instance->hasDuplicate( DIWikiPage::newFromText( 'Foo' ) );
 
 		$this->assertJsonStringEqualsJsonString(
 			'{' .
@@ -123,7 +123,7 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
-		$instance = new UniquenessLookup(
+		$instance = new DuplicateFinder(
 			$this->store,
 			new IteratorFactory()
 		);
@@ -171,7 +171,7 @@ class UniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->will( $this->returnValue( [ $row ] ) );
 
-		$instance = new UniquenessLookup(
+		$instance = new DuplicateFinder(
 			$this->store,
 			new IteratorFactory()
 		);

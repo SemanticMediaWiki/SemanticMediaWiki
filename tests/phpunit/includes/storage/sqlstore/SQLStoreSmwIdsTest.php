@@ -23,7 +23,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $cache;
 	private $idMatchFinder;
-	private $uniquenessLookup;
+	private $duplicateFinder;
 	private $tableFieldUpdater;
 	private $factory;
 
@@ -54,7 +54,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->uniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\UniquenessLookup' )
+		$this->duplicateFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DuplicateFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,8 +81,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->factory->expects( $this->any() )
-			->method( 'newUniquenessLookup' )
-			->will( $this->returnValue( $this->uniquenessLookup ) );
+			->method( 'newDuplicateFinder' )
+			->will( $this->returnValue( $this->duplicateFinder ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newIdCacheManager' )
@@ -346,7 +346,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$row = $expected;
 
-		$this->uniquenessLookup->expects( $this->at( 0 ) )
+		$this->duplicateFinder->expects( $this->at( 0 ) )
 			->method( 'findDuplicates' )
 			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) )
 			->will( $this->returnValue( [ $row ] ) );
