@@ -30,6 +30,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3803) SQLite, use text type for `o_hash` field
 * [#3809](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3809) DataUpdater, use changed revision
 * [#3822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3822) Check `smw_hash` and update if necessary
+* [#3887](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3887)
 
 #### ElasticStore
 
@@ -54,6 +55,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3650](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3650) Added support for `noimage` as output option for entity (aka. page) links
 * [#3734](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3734) Moved remaining result printers to new namespace
 * [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
+* [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873)
 
 ### API
 
@@ -72,6 +74,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3733](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3733) Added support for enforced property [parent type inheritance](https://www.semantic-mediawiki.org/wiki/Help:Mandatory_parent_datatype_inheritance) (disabled by default, can be enabled using the [`$smwgMandatorySubpropertyParentTypeInheritance`](https://www.semantic-mediawiki.org/wiki/Help:$smwgMandatorySubpropertyParentTypeInheritance) setting)
 * [#3735](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3735) Added declaration check for when multiple `Has fields` declarations are used
 * [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746) Add [`PROPERTY_CONSTRAINT_SCHEMA`] as a new schema type and introduce an approach by assigning a [[Constraint schema::...]] to a property
+  * [#3908](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3908)
 * [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746)
 * [#3747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3747) Added an option to define `LAST_EDITOR`, `IS_IMPORTER`
 * [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added [`PROPERTY_GROUP_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_GROUP_SCHEMA) as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
@@ -90,12 +93,16 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3843](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3843)
 * [#3864](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3864) Added core hook to suppport `--skip-optimize` in `update.php` again with MW 1.33+
 * [#3866](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3866) [remnant entities](https://www.semantic-mediawiki.org/wiki/Help:Remnant_entities), `$smwgCheckForRemnantEntities `
+* [#3869](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3869)
+* [#3905](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3905)
+* [#3920](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3920)
 
 ## Bug fixes
 
 * [#3750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3750) Checks whether the sort argument can be accessed or not in the datatable
 * [#3839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3839)
 * [#3840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3840) Fixed `Special:Browse` and display of properties when more than 200 are available
+* [#3888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3888)
 
 ## Breaking changes and deprecations
 
@@ -121,6 +128,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3815) EntityValidator
 * [#3823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3823)
 * [#3830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3830)
+* [#3895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3895) Added the `SMW::SQLStore::Installer::BeforeCreateTablesComplete` hook
+* [#3897](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3897) Added `SMW::RevisionGuard::*` hooks
 
 ## Contributors
 
