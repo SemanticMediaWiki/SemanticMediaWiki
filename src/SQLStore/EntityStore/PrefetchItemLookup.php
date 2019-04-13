@@ -121,6 +121,12 @@ class PrefetchItemLookup {
 				// Subject hash is used as identifying hash to split
 				// the collected set of values
 				$hash = $subject->getHash();
+
+				// Avoid reference to something like `__foo_bar#102##` (predefined property)
+				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash{0} === '_' ) {
+					$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+					$hash = $property->getCanonicalDIWikiPage()->getHash();
+				}
 			} else {
 				// SID, the caller is responsible to reassign the
 				// results to a corresponding output
