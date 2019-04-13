@@ -45,6 +45,32 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasMaintenanceLock() {
+
+		$this->lockManager->expects( $this->once() )
+			->method( 'hasMaintenanceLock' );
+
+		$instance = new Client(
+			$this->elasticClient,
+			$this->lockManager
+		);
+
+		$instance->hasMaintenanceLock();
+	}
+
+	public function testSetMaintenanceLock() {
+
+		$this->lockManager->expects( $this->once() )
+			->method( 'setMaintenanceLock' );
+
+		$instance = new Client(
+			$this->elasticClient,
+			$this->lockManager
+		);
+
+		$instance->setMaintenanceLock();
+	}
+
 	public function testBulkOnIllegalArgumentErrorThrowsReplicationException() {
 
 		$options = new Options (

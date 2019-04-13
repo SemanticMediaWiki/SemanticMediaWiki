@@ -46,7 +46,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,6 +65,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_NotExists() {
 
+		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
 		$replicationStatus = [
 			'modification_date' => false
 		];
@@ -77,6 +81,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
 
 		$instance = new CheckReplicationTask(
 			$this->store,
@@ -104,6 +112,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
 
@@ -120,7 +132,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
 			->will( $this->returnValue( $replicationStatus ) );
 
-		$this->store->expects( $this->at( 2 ) )
+		$this->store->expects( $this->at( 3 ) )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time_store ] ) );
 
@@ -159,6 +171,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
 
@@ -179,7 +195,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 42 ) );
 
-		$this->store->expects( $this->at( 2 ) )
+		$this->store->expects( $this->at( 3 ) )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time ] ) );
 
@@ -218,6 +234,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( true ) );
 
 		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->elasticClient->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
 
@@ -238,11 +258,11 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findAssociatedRev' )
 			->will( $this->returnValue( 9999 ) );
 
-		$this->store->expects( $this->at( 2 ) )
+		$this->store->expects( $this->at( 3 ) )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ $time ] ) );
 
-		$this->store->expects( $this->at( 4 ) )
+		$this->store->expects( $this->at( 5 ) )
 			->method( 'getPropertyValues' )
 			->with(
 				$this->equalTo( $subject ),

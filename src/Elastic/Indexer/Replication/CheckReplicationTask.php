@@ -11,6 +11,7 @@ use SMW\Message;
 use SMW\EntityCache;
 use Html;
 use SMW\Utils\TemplateEngine;
+use SMW\Elastic\Connection\Client as ElasticClient;
 use Title;
 
 /**
@@ -20,6 +21,9 @@ use Title;
  * @author mwjames
  */
 class CheckReplicationTask extends Task {
+
+	const CKEY_CHECK_REPLICATION_TASK = 'CheckReplicationTask';
+	const TYPE_SUCCESS = 'success';
 
 	/**
 	 * @var Store
@@ -86,7 +90,7 @@ class CheckReplicationTask extends Task {
 	 * @return []
 	 */
 	public function getReplicationFailures() {
-		return $this->entityCache->fetch( $this->makeCacheKey( 'CheckReplicationTask' ) );
+		return $this->entityCache->fetch( $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ) );
 	}
 
 	/**
@@ -96,7 +100,7 @@ class CheckReplicationTask extends Task {
 	 */
 	public function deleteReplicationTrail( Title $title ) {
 		$this->entityCache->deleteSub(
-			$this->makeCacheKey( 'CheckReplicationTask' ),
+			$this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ),
 			$this->makeCacheKey( DIWikiPage::newFromTitle( $title ) )
 		);
 	}
@@ -145,8 +149,6 @@ class CheckReplicationTask extends Task {
 	 */
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
 
-		$html = '';
-
 		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskLine.ms', 'line_template' );
 
@@ -157,6 +159,11 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
+		if ( ( $html = $this->checkIsMaintenanceMode() ) ) {
+			return $this->wrapHTML( $html );
+		}
+
+		$title = $subject->getTitle();
 		$id = $this->store->getObjectIds()->getID( $subject );
 
 		$rev_store = $this->store->getObjectIds()->findAssociatedRev(
@@ -165,8 +172,14 @@ class CheckReplicationTask extends Task {
 			$subject->getInterwiki()
 		);
 
-		$title = $subject->getTitle();
-		$replicationStatus = $this->replicationStatus->get( 'modification_date_associated_revision', $id );
+		$exceptionError = null;
+		$html = '';
+
+		try {
+			$replicationStatus = $this->replicationStatus->get( 'modification_date_associated_revision', $id );
+		} catch ( \Elasticsearch\Common\Exceptions\BadRequest400Exception $e ) {
+			$exceptionError = 'BadRequest400Exception';
+		}
 
 		// What is stored in the DB
 		$pv = $this->store->getPropertyValues(
@@ -174,7 +187,9 @@ class CheckReplicationTask extends Task {
 			new DIProperty( '_MDAT' )
 		);
 
-		if ( $replicationStatus['modification_date'] === false || $pv === [] ) {
+		if ( $exceptionError !== null ) {
+			$html = $this->exceptionErrorMsg( $exceptionError );
+		} elseif ( $replicationStatus['modification_date'] === false || $pv === [] ) {
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id );
 		} elseif ( !end( $pv )->equals( $replicationStatus['modification_date'] ) ) {
 			$dates = [
@@ -193,18 +208,45 @@ class CheckReplicationTask extends Task {
 		}
 
 		$key = $this->makeCacheKey( $subject );
+		$taskKey = $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK );
 
 		// Only keep the cache around when ES has successful replicated the entity
 		if ( $html === '' ) {
-			$this->entityCache->save( $key, 'success', $this->cacheTTL );
+			$this->entityCache->save( $key, self::TYPE_SUCCESS, $this->cacheTTL );
 			$this->entityCache->associate( $subject, $key );
-			$this->entityCache->deleteSub( $this->makeCacheKey( 'CheckReplicationTask' ), $key );
+			$this->entityCache->deleteSub( $taskKey, $key );
 		} else {
 			$this->entityCache->delete( $key );
-			$this->entityCache->saveSub( $this->makeCacheKey( 'CheckReplicationTask' ), $key, $subject->getHash() );
+			$this->entityCache->saveSub( $taskKey, $key, $subject->getHash() );
 		}
 
 		return $this->wrapHTML( $html );
+	}
+
+	private function exceptionErrorMsg( $e ) {
+
+		$content = '';
+		$this->errorTitle = 'smw-es-replication-error';
+
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-exception' )
+			]
+		);
+
+		if ( $e === 'BadRequest400Exception' ) {
+			$content .= $this->msg( [ 'smw-es-replication-error-bad-request-exception', $e ] );
+		} else {
+			$content .= $this->msg( [ 'smw-es-replication-error-exception', $e->getMessage() ] );
+		}
+
+		$content .= $this->templateEngine->code( 'line_template' );
+		$content .= $this->templateEngine->code( 'comment_template' );
+
+		return $content;
 	}
 
 	private function replicationErrorMsg( $title_text, $id, $dates = [], $revs = [] ) {
@@ -238,6 +280,32 @@ class CheckReplicationTask extends Task {
 			$content .= $this->templateEngine->code( 'line_template' );
 			$content .= $this->templateEngine->code( 'comment_template' );
 		}
+
+		return $content;
+	}
+
+	private function checkIsMaintenanceMode() {
+
+		$connection = $this->store->getConnection( 'elastic' );
+		$content = '';
+
+		if ( $connection->hasMaintenanceLock() === false ) {
+			return false;
+		}
+
+		$this->errorTitle = 'smw-es-replication-error';
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-maintenance-mode', Message::PARSE )
+			]
+		);
+
+		$content .= $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE );
+		$content .= $this->templateEngine->code( 'line_template' );
+		$content .= $this->templateEngine->code( 'comment_template' );
 
 		return $content;
 	}
