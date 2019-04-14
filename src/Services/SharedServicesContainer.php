@@ -26,6 +26,8 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
+use SMW\Query\Cache\ResultCache;
+use SMW\Services\DataValueServiceFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
@@ -39,7 +41,6 @@ use SMW\PropertySpecificationLookup;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
-use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Schema\SchemaFactory;
 use SMW\Property\ConstraintFactory;
 use SMW\Query\Cache\CacheStats;
@@ -528,36 +529,37 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var CachedQueryResultPrefetcher
+		 * @var ResultCache
 		 */
-		$containerBuilder->registerCallback( 'CachedQueryResultPrefetcher', function( $containerBuilder, $cacheType = null ) {
-			$containerBuilder->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\Query\Result\CachedQueryResultPrefetcher' );
+		$containerBuilder->registerCallback( 'ResultCache', function( $containerBuilder, $cacheType = null ) {
+			$containerBuilder->registerExpectedReturnType( 'ResultCache', '\SMW\Query\Cache\ResultCache' );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
 
+
 			// Explicitly use the CACHE_DB to access a SqlBagOstuff instance
 			// for a bit more persistence
 			$cacheStats = new CacheStats(
 				$cacheFactory->newMediaWikiCache( CACHE_DB ),
-				CachedQueryResultPrefetcher::STATSD_ID
+				ResultCache::STATSD_ID
 			);
 
-			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
+			$resultCache = new ResultCache(
 				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'QueryFactory' ),
 				$containerBuilder->create(
 					'BlobStore',
-					CachedQueryResultPrefetcher::CACHE_NAMESPACE,
+					ResultCache::CACHE_NAMESPACE,
 					$cacheType,
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
 				$cacheStats
 			);
 
-			$cachedQueryResultPrefetcher->setCacheKeyExtension(
+			$resultCache->setCacheKeyExtension(
 				// If the mix of dataTypes changes then modify the hash
 				$settings->get( 'smwgFulltextSearchIndexableDataTypes' ) .
 
@@ -570,15 +572,15 @@ class SharedServicesContainer implements CallbackContainer {
 				$settings->get( 'smwgUseComparableContentHash' )
 			);
 
-			$cachedQueryResultPrefetcher->setLogger(
+			$resultCache->setLogger(
 				$containerBuilder->singleton( 'MediaWikiLogger' )
 			);
 
-			$cachedQueryResultPrefetcher->setNonEmbeddedCacheLifetime(
+			$resultCache->setNonEmbeddedCacheLifetime(
 				$settings->get( 'smwgQueryResultNonEmbeddedCacheLifetime' )
 			);
 
-			return $cachedQueryResultPrefetcher;
+			return $resultCache;
 		} );
 
 		/**

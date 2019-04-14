@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  */
 class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
 
-	private $cachedQueryResultPrefetcher;
+	private $resultCache;
 	private $spyLogger;
 
 	protected function setUp() {
@@ -26,7 +26,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->cachedQueryResultPrefetcher = $this->getMockBuilder( '\SMW\Query\Result\CachedQueryResultPrefetcher' )
+		$this->resultCache = $this->getMockBuilder( '\SMW\Query\Cache\ResultCache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -39,7 +39,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf(
 			InvalidateResultCacheEventListener::class,
-			new InvalidateResultCacheEventListener( $this->cachedQueryResultPrefetcher )
+			new InvalidateResultCacheEventListener( $this->resultCache )
 		);
 	}
 
@@ -53,11 +53,11 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			]
 		);
 
-		$this->cachedQueryResultPrefetcher->expects( $this->once() )
-			->method( 'invalidate' );
+		$this->resultCache->expects( $this->once() )
+			->method( 'invalidateCache' );
 
 		$instance = new InvalidateResultCacheEventListener(
-			$this->cachedQueryResultPrefetcher
+			$this->resultCache
 		);
 
 		$instance->setLogger(

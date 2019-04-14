@@ -4,7 +4,7 @@ namespace SMW\Events;
 
 use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
-use SMW\Query\Result\CachedQueryResultPrefetcher;
+use SMW\Query\Cache\ResultCache;
 use SMW\DIWikiPage;
 use Psr\Log\LoggerAwareTrait;
 
@@ -19,15 +19,15 @@ class InvalidateResultCacheEventListener implements EventListener {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var CachedQueryResultPrefetcher
+	 * @var ResultCache
 	 */
-	private $cachedQueryResultPrefetcher;
+	private $resultCache;
 
 	/**
 	 * @since 3.1
 	 */
-	public function __construct( CachedQueryResultPrefetcher $cachedQueryResultPrefetcher ) {
-		$this->cachedQueryResultPrefetcher = $cachedQueryResultPrefetcher;
+	public function __construct( ResultCache $resultCache ) {
+		$this->resultCache = $resultCache;
 	}
 
 	/**
@@ -59,7 +59,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 			$items = [ $subject ];
 		}
 
-		$this->cachedQueryResultPrefetcher->invalidate(
+		$this->resultCache->invalidateCache(
 			$items,
 			$context
 		);

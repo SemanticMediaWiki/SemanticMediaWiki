@@ -53,7 +53,7 @@ class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit_Framewor
 		$this->semanticDataFactory = new SemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' )->disableCache();
+		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->disableCache();
 	}
 
 	public function testQuerySubjects_afterUpdatingSemanticData() {

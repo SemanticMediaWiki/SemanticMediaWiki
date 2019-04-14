@@ -1162,17 +1162,17 @@ class Hooks {
 	 */
 	public function onBeforeQueryResultLookupComplete ( $store, $query, &$result, $queryEngine ) {
 
-		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
+		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
-		$cachedQueryResultPrefetcher->setQueryEngine(
+		$resultCache->setQueryEngine(
 			$queryEngine
 		);
 
-		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
+		if ( !$resultCache->isEnabled() ) {
 			return true;
 		}
 
-		$result = $cachedQueryResultPrefetcher->getQueryResult(
+		$result = $resultCache->getQueryResult(
 			$query
 		);
 
@@ -1192,7 +1192,7 @@ class Hooks {
 
 		$queryDependencyLinksStore->updateDependencies( $result );
 
-		ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' )->recordStats();
+		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->recordStats();
 
 		$store->getObjectIds()->warmUpCache( $result );
 

@@ -26,7 +26,7 @@ return [
 	'InvalidateResultCacheEventListener' => function( $containerBuilder ) {
 
 		$invalidateResultCacheEventListener = new InvalidateResultCacheEventListener(
-			$containerBuilder->singleton( 'CachedQueryResultPrefetcher' )
+			$containerBuilder->singleton( 'ResultCache' )
 		);
 
 		return $invalidateResultCacheEventListener;

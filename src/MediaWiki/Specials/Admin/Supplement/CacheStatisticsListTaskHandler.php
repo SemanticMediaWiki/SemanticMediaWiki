@@ -104,9 +104,9 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 
 	private function outputQueryCacheStatistics() {
 
-		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
+		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
-		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
+		if ( !$resultCache->isEnabled() ) {
 			$msg = $this->msg(
 				[ 'smw-admin-statistics-querycache-disabled' ],
 				Message::PARSE
@@ -151,7 +151,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 					[
 						'class' => 'smw-json-data'
 					],
-					$this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() )
+					$this->outputFormatter->encodeAsJson( $resultCache->getStats() )
 				)
 			)
 		);
