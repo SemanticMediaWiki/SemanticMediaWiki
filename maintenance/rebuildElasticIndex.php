@@ -255,13 +255,13 @@ class RebuildElasticIndex extends \Maintenance {
 
 	private function rebuild() {
 
+		$isSelective = false;
+
 		if ( $this->autoRecovery->has( 'ar_id' ) ) {
 			$this->reportMessage(
 				"\nThe auto recovery mode is enabled and has detected an unfinished index\n" .
 				"run therefore indexing starts with: " . $this->autoRecovery->get( 'ar_id' ) . "\n"
 			);
-
-			$isSelective = false;
 		} elseif ( $this->hasOption( 's' ) || $this->hasOption( 'page' ) ) {
 			$isSelective = true;
 		}
