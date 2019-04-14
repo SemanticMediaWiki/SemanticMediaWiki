@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
 use SMW\DIProperty;
@@ -17,7 +17,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ChangePropagationEntityFinder {
+class ChangePropagationEntityLookup {
 
 	/**
 	 * @var Store
