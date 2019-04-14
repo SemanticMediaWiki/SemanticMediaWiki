@@ -337,8 +337,7 @@ class SQLStoreFactory {
 	 * @return EntityLookup
 	 */
 	public function newEntityLookup() {
-		$entityLookup = new EntityLookup( $this->store );
-		return $entityLookup;
+		return new EntityLookup( $this->store, $this );
 	}
 
 	/**

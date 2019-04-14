@@ -17,15 +17,69 @@ use SMW\SQLStore\EntityStore\EntityLookup;
  */
 class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $store;
+	private $factory;
+	private $traversalPropertyLookup;
+	private $propertySubjectsLookup;
+	private $propertiesLookup;
+	private $semanticDataLookup;
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+	protected function setUp() {
+
+		$this->idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
+
+		$this->traversalPropertyLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\TraversalPropertyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertySubjectsLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PropertySubjectsLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertiesLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PropertiesLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $this->idTable ) );
+
+		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newTraversalPropertyLookup' )
+			->will( $this->returnValue( $this->traversalPropertyLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertySubjectsLookup' )
+			->will( $this->returnValue( $this->propertySubjectsLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertiesLookup' )
+			->will( $this->returnValue( $this->propertiesLookup ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSemanticDataLookup' )
+			->will( $this->returnValue( $this->semanticDataLookup ) );
+	}
+
+	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			EntityLookup::class,
-			new EntityLookup( $store )
+			new EntityLookup( $this->store, $this->factory )
 		);
 	}
 
@@ -33,27 +87,26 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
-			->method( 'getSemanticData' )
-			->with(
-				$this->equalTo( $subject ),
-				$this->anything() );
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
-			->getMock();
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPageIDandSort' )
+			->will( $this->returnValue( 42 ) );
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'getSemanticDataById' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( $semanticData ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getSemanticData( $subject );
@@ -63,27 +116,33 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
-			->method( 'getProperties' )
-			->with(
-				$this->equalTo( $subject ),
-				$this->anything() );
+		$propTable->expects( $this->once() )
+			->method( 'getName' )
+			->will( $this->returnValue( '_foo' ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
-			->getMock();
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 42 ) );
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->idTable->expects( $this->once() )
+			->method( 'getPropertyTableHashes' )
+			->will( $this->returnValue( [ '_foo' => '...' ] ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->propertiesLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->will( $this->returnValue( [] ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getProperties( $subject );
@@ -91,31 +150,106 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyValues() {
 
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$property = new DIProperty( 'Bar' );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
+		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( $property ),
-				$this->anything() );
+			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
 			->getMock();
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPageID' )
+			->will( $this->returnValue( 1001 ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( '_foo' ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'getSemanticData' )
+			->will( $this->returnValue( $semanticData ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
+		);
+
+		$instance->getPropertyValues( $subject, $property );
+	}
+
+	public function testGetPropertyValues_Property_Inverse() {
+
+		$property = new DIProperty( 'Bar', true );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( '_foo' ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->propertySubjectsLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new EntityLookup(
+			$this->store,
+			$this->factory
+		);
+
+		$instance->getPropertyValues( $subject, $property );
+	}
+
+	public function testGetPropertyValues_Subject_Null() {
+
+		$property = new DIProperty( 'Bar' );
+		$subject = null;
+
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( '_foo' ) );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->semanticDataLookup->expects( $this->once() )
+			->method( 'fetchSemanticDataFromTable' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new EntityLookup(
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getPropertyValues( $subject, $property );
@@ -126,28 +260,29 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
-			->method( 'getPropertySubjects' )
-			->with(
-				$this->equalTo( $property ),
-				$this->equalTo( $subject ),
-				$this->anything() );
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
-			->getMock();
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( '_foo' ) );
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->propertySubjectsLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->will( $this->returnValue( [] ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getPropertySubjects( $property, $subject );
@@ -157,25 +292,29 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'Bar' );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
-			->method( 'getAllPropertySubjects' )
-			->with( $this->equalTo( $property ) );
+		$this->idTable->expects( $this->once() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
-			->getMock();
+		$this->store->expects( $this->once() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( '_foo' ) );
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
+
+		$this->propertySubjectsLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->will( $this->returnValue( [] ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getAllPropertySubjects( $property );
@@ -185,25 +324,25 @@ class EntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$reader = $this->getMockBuilder( '\SMWSQLStore3Readers' )
+		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reader->expects( $this->once() )
-			->method( 'getInProperties' )
-			->with( $this->equalTo( $subject ) );
+		$propTable->expects( $this->once() )
+			->method( 'getDiType' )
+			->will( $this->returnValue( $subject->getDIType() ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getReader' ] )
-			->getMock();
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ '_foo' => $propTable ] ) );
 
-		$store->expects( $this->once() )
-			->method( 'getReader' )
-			->will( $this->returnValue( $reader ) );
+		$this->traversalPropertyLookup->expects( $this->once() )
+			->method( 'fetchFromTable' )
+			->will( $this->returnValue( [] ) );
 
 		$instance = new EntityLookup(
-			$store
+			$this->store,
+			$this->factory
 		);
 
 		$instance->getInProperties( $subject );
