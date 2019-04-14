@@ -355,7 +355,7 @@ class SearchProfileForm {
 
 		if ( $link !== '' ) {
 			$text .= $this->section( 'smw-search-profile-extended-section-query' );
-			$text .= $this->msg( [ 'smw-search-profile-extended-help-query', trim( $query ) ] ) . '&nbsp;';
+			$text .= Html::rawElement( 'pre', [], $query ) . '&nbsp;';
 			$text .= $this->msg( [ 'smw-search-profile-extended-help-query-link', $link ], Message::TEXT );
 		}
 
