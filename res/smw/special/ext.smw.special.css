@@ -69,6 +69,27 @@
 	color: #586069;
 }
 
+.smw-json-placeholder {
+    opacity:0.5;
+    position: relative;
+}
+
+.client-nojs .smw-json-placeholder {
+    opacity: 1;
+}
+
+.client-nojs .smw-json-placeholder-message {
+    display: none;
+}
+
+.smw-json-data {
+    display: none;
+}
+
+.client-nojs .smw-json-data {
+    display: block;
+}
+
 /**
  * Tabbed admin
  */
