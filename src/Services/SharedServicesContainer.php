@@ -42,15 +42,16 @@ use SMW\Query\QuerySourceFactory;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Schema\SchemaFactory;
 use SMW\Property\ConstraintFactory;
+use SMW\Query\Cache\CacheStats;
+use SMW\QueryFactory;
 use SMW\Settings;
 use SMW\Options;
 use SMW\StoreFactory;
-use SMW\Utils\BufferedStatsdCollector;
+use SMW\Utils\Stats;
 use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\TempFile;
 use SMW\Elastic\ElasticFactory;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\QueryFactory;
 use SMW\Query\Processor\QueryCreator;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\MediaWiki\IndicatorRegistry;
@@ -532,8 +533,17 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'CachedQueryResultPrefetcher', function( $containerBuilder, $cacheType = null ) {
 			$containerBuilder->registerExpectedReturnType( 'CachedQueryResultPrefetcher', '\SMW\Query\Result\CachedQueryResultPrefetcher' );
 
+			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
+
 			$settings = $containerBuilder->singleton( 'Settings' );
 			$cacheType = $cacheType === null ? $settings->get( 'smwgQueryResultCacheType' ) : $cacheType;
+
+			// Explicitly use the CACHE_DB to access a SqlBagOstuff instance
+			// for a bit more persistence
+			$cacheStats = new CacheStats(
+				$cacheFactory->newMediaWikiCache( CACHE_DB ),
+				CachedQueryResultPrefetcher::STATSD_ID
+			);
 
 			$cachedQueryResultPrefetcher = new CachedQueryResultPrefetcher(
 				$containerBuilder->singleton( 'Store', null ),
@@ -544,13 +554,10 @@ class SharedServicesContainer implements CallbackContainer {
 					$cacheType,
 					$settings->get( 'smwgQueryResultCacheLifetime' )
 				),
-				$containerBuilder->singleton(
-					'BufferedStatsdCollector',
-					CachedQueryResultPrefetcher::STATSD_ID
-				)
+				$cacheStats
 			);
 
-			$cachedQueryResultPrefetcher->setDependantHashIdExtension(
+			$cachedQueryResultPrefetcher->setCacheKeyExtension(
 				// If the mix of dataTypes changes then modify the hash
 				$settings->get( 'smwgFulltextSearchIndexableDataTypes' ) .
 
@@ -575,21 +582,20 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var BufferedStatsdCollector
+		 * @var Stats
 		 */
-		$containerBuilder->registerCallback( 'BufferedStatsdCollector', function( $containerBuilder, $id ) {
-			$containerBuilder->registerExpectedReturnType( 'BufferedStatsdCollector', '\SMW\Utils\BufferedStatsdCollector' );
+		$containerBuilder->registerCallback( 'Stats', function( $containerBuilder, $id ) {
+			$containerBuilder->registerExpectedReturnType( 'Stats', '\SMW\Utils\Stats' );
+
+			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
 			// Explicitly use the DB to access a SqlBagOstuff instance
-			$cacheType = CACHE_DB;
-			$ttl = 0;
-
-			$bufferedStatsdCollector = new BufferedStatsdCollector(
-				$containerBuilder->create( 'BlobStore', BufferedStatsdCollector::CACHE_NAMESPACE, $cacheType, $ttl ),
+			$stats = new Stats(
+				$cacheFactory->newMediaWikiCache( CACHE_DB ),
 				$id
 			);
 
-			return $bufferedStatsdCollector;
+			return $stats;
 		} );
 
 		/**

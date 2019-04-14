@@ -6,8 +6,8 @@ use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
 use SMW\DIWikiPage;
 use SMW\Query\Result\CachedQueryResultPrefetcher;
-use SMW\Utils\BufferedStatsdCollector;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Query\Cache\CacheStats;
 
 /**
  * @covers \SMW\Query\Result\CachedQueryResultPrefetcher
@@ -25,7 +25,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $queryFactory;
 	private $blobStore;
-	private $bufferedStatsdCollector;
+	private $cacheStats;
 
 	protected function setUp() {
 
@@ -45,7 +45,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->bufferedStatsdCollector = $this->getMockBuilder( BufferedStatsdCollector::class )
+		$this->cacheStats = $this->getMockBuilder( CacheStats::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -54,7 +54,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			CachedQueryResultPrefetcher::class,
-			new CachedQueryResultPrefetcher( $this->store, $this->queryFactory, $this->blobStore, $this->bufferedStatsdCollector )
+			new CachedQueryResultPrefetcher( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
 		);
 	}
 
@@ -76,7 +76,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->setQueryEngine( $queryEngine );
@@ -122,7 +122,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->setQueryEngine( $queryEngine );
@@ -150,7 +150,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->resetCacheBy( [ 'Foo' ] );
@@ -190,7 +190,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->setQueryEngine( $queryEngine );
@@ -207,7 +207,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$this->setExpectedException( 'RuntimeException' );
@@ -230,14 +230,14 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with( $this->equalTo( '1d1e1d94a78b9476c8213a16febe2c9b' ) );
 
-		$this->bufferedStatsdCollector->expects( $this->once() )
+		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->resetCacheBy( $subject );
@@ -259,17 +259,17 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with( $this->equalTo( '1e5509cfde15f1f569db295e845ce997' ) );
 
-		$this->bufferedStatsdCollector->expects( $this->once() )
+		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
-		$instance->setDependantHashIdExtension( 'foo' );
+		$instance->setCacheKeyExtension( 'foo' );
 		$instance->resetCacheBy( $subject );
 	}
 
@@ -298,14 +298,14 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->with( $this->equalTo( 'dc63f8b4cab1bb1214979932b637cdec' ) );
 
-		$this->bufferedStatsdCollector->expects( $this->once() )
+		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
 		$instance->resetCacheBy( $subject );
@@ -313,37 +313,17 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetStats() {
 
-		$stats = [
-			'misses' => 1,
-			'hits'   => [ 'Foo' => 2, [ 'Bar' => 2 ] ],
-			'meta'   => 'foo'
-		];
-
-		$this->bufferedStatsdCollector->expects( $this->once() )
-			->method( 'getStats' )
-			->will( $this->returnValue( $stats ) );
+		$this->cacheStats->expects( $this->once() )
+			->method( 'getStats' );
 
 		$instance = new CachedQueryResultPrefetcher(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
-			$this->bufferedStatsdCollector
+			$this->cacheStats
 		);
 
-		$stats = $instance->getStats();
-
-		$this->assertInternalType(
-			'array',
-			$stats
-		);
-
-		$this->assertEquals(
-			[
-				'hit'  => 0.8,
-				'miss' => 0.2
-			],
-			$stats['ratio']
-		);
+		$instance->getStats();
 	}
 
 }
