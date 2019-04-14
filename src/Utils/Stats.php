@@ -2,7 +2,7 @@
 
 namespace SMW\Utils;
 
-use Onoi\BlobStore\BlobStore;
+use Onoi\Cache\Cache;
 use SMW\ApplicationFactory;
 
 /**
@@ -14,7 +14,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class BufferedStatsdCollector {
+class Stats {
 
 	/**
 	 * Update this version number when the serialization format
@@ -31,19 +31,19 @@ class BufferedStatsdCollector {
 	const STATS_MEDIAN = 'median';
 
 	/**
-	 * Namespace occupied by the BlobStore
+	 * Namespace occupied by the Cache
 	 */
-	const CACHE_NAMESPACE = 'smw:stats:store';
+	const CACHE_NAMESPACE = 'smw:stats';
 
 	/**
-	 * @var BlobStore
+	 * @var Cache
 	 */
-	private $blobStore;
+	private $cache;
 
 	/**
 	 * @var string|integer
 	 */
-	private $statsdId;
+	private $id;
 
 	/**
 	 * @var boolean
@@ -72,13 +72,27 @@ class BufferedStatsdCollector {
 	/**
 	 * @since 2.5
 	 *
-	 * @param BlobStore $blobStore
-	 * @param string $statsdId
+	 * @param Cache $cache
+	 * @param string $id
 	 */
-	public function __construct( BlobStore $blobStore, $statsdId ) {
-		$this->blobStore = $blobStore;
-		$this->statsdId = $statsdId;
-		$this->fingerprint = $statsdId . uniqid();
+	public function __construct( Cache $cache, $id ) {
+		$this->cache = $cache;
+		$this->id = $id;
+		$this->initRecord();
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function makeCacheKey( $id ) {
+		return smwfCacheKey( self::CACHE_NAMESPACE, $id, self::VERSION );
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public function initRecord() {
+		$this->fingerprint = $this->id . uniqid();
 	}
 
 	/**
@@ -96,12 +110,7 @@ class BufferedStatsdCollector {
 	 * @return array
 	 */
 	public function getStats() {
-
-		$container = $this->blobStore->read(
-			md5( $this->statsdId . self::VERSION )
-		);
-
-		return StatsFormatter::getStatsFromFlatKey( $container->getData(), '.' );
+		return StatsFormatter::getStatsFromFlatKey( $this->cache->fetch( $this->makeCacheKey( $this->id ) ), '.' );
 	}
 
 	/**
@@ -167,13 +176,19 @@ class BufferedStatsdCollector {
 			return;
 		}
 
-		$container = $this->blobStore->read(
-			md5( $this->statsdId . self::VERSION )
-		);
+		$container = $this->cache->fetch( $this->makeCacheKey( $this->id ) );
+
+		if ( $container === false || $container === null ) {
+			$container = [];
+		}
 
 		foreach ( $this->stats as $key => $value ) {
 
-			$old = $container->has( $key ) ? $container->get( $key ) : 0;
+			if ( isset( $container[$key] ) ) {
+				$old = $container[$key];
+			} else {
+				$old = 0;
+			}
 
 			if ( $this->operations[$key] === self::STATS_INIT && $old != 0 ) {
 				$value = $old;
@@ -190,13 +205,10 @@ class BufferedStatsdCollector {
 				$value = $old > 0 ? ( $old + $value ) / 2 : $value;
 			}
 
-			$container->set( $key, $value );
+			$container[$key] = $value;
 		}
 
-		$this->blobStore->save(
-			$container
-		);
-
+		$this->cache->save( $this->makeCacheKey( $this->id ), $container );
 		$this->stats = [];
 	}
 
@@ -216,20 +228,22 @@ class BufferedStatsdCollector {
 		// environment therefore rely on the deferred update and any caller
 		// that invokes the recordStats method
 
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
-			function() { $this->saveStats();
-			}
+		$deferredUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
+			[ $this, 'saveStats' ]
 		);
 
-		$deferredTransactionalUpdate->setOrigin( __METHOD__ );
-		$deferredTransactionalUpdate->waitOnTransactionIdle();
+		// "static::class" to get the name of the called class
+		$fname = static::class . '::recordStats';
 
-		$deferredTransactionalUpdate->setFingerprint(
-			__METHOD__ . $this->fingerprint
+		$deferredUpdate->setOrigin( $fname );
+		$deferredUpdate->waitOnTransactionIdle();
+
+		$deferredUpdate->setFingerprint(
+			$fname . $this->fingerprint
 		);
 
-		$deferredTransactionalUpdate->markAsPending( $asPending );
-		$deferredTransactionalUpdate->pushUpdate();
+		$deferredUpdate->markAsPending( $asPending );
+		$deferredUpdate->pushUpdate();
 	}
 
 }
