@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\EntityValueUniquenessConstraintChecker;
+use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SMW\SQLStore\EntityValueUniquenessConstraintChecker
+ * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class EntityValueUniquenessConstraintCheckerTest extends \PHPUnit_Framework_TestCase {
+class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $connection;
@@ -43,8 +43,8 @@ class EntityValueUniquenessConstraintCheckerTest extends \PHPUnit_Framework_Test
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			EntityValueUniquenessConstraintChecker::class,
-			new EntityValueUniquenessConstraintChecker( $this->store, $this->iteratorFactory )
+			EntityUniquenessLookup::class,
+			new EntityUniquenessLookup( $this->store, $this->iteratorFactory )
 		);
 	}
 
@@ -136,7 +136,7 @@ class EntityValueUniquenessConstraintCheckerTest extends \PHPUnit_Framework_Test
 			->method( 'query' )
 			->will( $this->returnValue( $resultWrapper ) );
 
-		$instance = new EntityValueUniquenessConstraintChecker(
+		$instance = new EntityUniquenessLookup(
 			$store,
 			$this->iteratorFactory
 		);

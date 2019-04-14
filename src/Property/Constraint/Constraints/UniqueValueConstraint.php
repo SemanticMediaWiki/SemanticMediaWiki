@@ -117,9 +117,9 @@ class UniqueValueConstraint implements Constraint {
 		$count = 0;
 
 		if ( !$this->hasAnnotation( $dataValue ) ) {
-			$entityValueUniquenessConstraintChecker = $this->store->service( 'EntityValueUniquenessConstraintChecker' );
+			$entityUniquenessLookup = $this->store->service( 'EntityUniquenessLookup' );
 
-			$res = $entityValueUniquenessConstraintChecker->checkConstraint(
+			$res = $entityUniquenessLookup->checkConstraint(
 				$property,
 				$dataValue->getDataItem(),
 				$requestOptions

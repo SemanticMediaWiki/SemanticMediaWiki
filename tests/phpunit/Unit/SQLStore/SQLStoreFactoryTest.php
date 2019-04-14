@@ -420,13 +420,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructEntityValueUniquenessConstraintChecker() {
+	public function testCanConstructEntityUniquenessLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityValueUniquenessConstraintChecker',
-			$instance->newEntityValueUniquenessConstraintChecker()
+			'\SMW\SQLStore\Lookup\EntityUniquenessLookup',
+			$instance->newEntityUniquenessLookup()
 		);
 	}
 

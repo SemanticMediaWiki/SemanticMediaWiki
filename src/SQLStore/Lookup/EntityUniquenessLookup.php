@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -19,7 +19,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class EntityValueUniquenessConstraintChecker {
+class EntityUniquenessLookup {
 
 	/**
 	 * @var SQLStore
