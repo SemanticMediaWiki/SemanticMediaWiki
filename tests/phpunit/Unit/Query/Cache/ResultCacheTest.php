@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests\Query\Result;
+namespace SMW\Tests\Query\Cache;
 
-use Onoi\BlobStore\BlobStore;
-use Onoi\BlobStore\Container;
+use SMW\Query\Cache\ResultCache;
 use SMW\DIWikiPage;
-use SMW\Query\Result\CachedQueryResultPrefetcher;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Query\Cache\CacheStats;
+use Onoi\BlobStore\BlobStore;
+use Onoi\BlobStore\Container;
 
 /**
- * @covers \SMW\Query\Result\CachedQueryResultPrefetcher
+ * @covers \SMW\Query\Cache\ResultCache
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMW\Query\Cache\CacheStats;
  *
  * @author mwjames
  */
-class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
+class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -53,8 +53,8 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			CachedQueryResultPrefetcher::class,
-			new CachedQueryResultPrefetcher( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
+			ResultCache::class,
+			new ResultCache( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
 		);
 	}
 
@@ -72,7 +72,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryResult' )
 			->with($this->identicalTo( $query ) );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
@@ -118,7 +118,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryResult' )
 			->with($this->identicalTo( $query ) );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
@@ -146,14 +146,14 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
 			$this->cacheStats
 		);
 
-		$instance->resetCacheBy( [ 'Foo' ] );
+		$instance->invalidateCache( [ 'Foo' ] );
 	}
 
 	public function testNoCache() {
@@ -186,7 +186,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
@@ -203,7 +203,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
@@ -233,17 +233,17 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
 			$this->cacheStats
 		);
 
-		$instance->resetCacheBy( $subject );
+		$instance->invalidateCache( $subject );
 	}
 
-	public function testPurgeCacheBySubjectWithDependantHashIdExtension() {
+	public function testPurgeCacheBySubjectWithHasHMutation() {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -262,7 +262,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
@@ -270,7 +270,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCacheKeyExtension( 'foo' );
-		$instance->resetCacheBy( $subject );
+		$instance->invalidateCache( $subject );
 	}
 
 	public function testPurgeCacheBySubjectWith_QUERY() {
@@ -301,14 +301,14 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,
 			$this->cacheStats
 		);
 
-		$instance->resetCacheBy( $subject );
+		$instance->invalidateCache( $subject );
 	}
 
 	public function testGetStats() {
@@ -316,7 +316,7 @@ class CachedQueryResultPrefetcherTest extends \PHPUnit_Framework_TestCase {
 		$this->cacheStats->expects( $this->once() )
 			->method( 'getStats' );
 
-		$instance = new CachedQueryResultPrefetcher(
+		$instance = new ResultCache(
 			$this->store,
 			$this->queryFactory,
 			$this->blobStore,

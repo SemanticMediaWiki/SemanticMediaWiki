@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Query\Result;
+namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
 use Psr\Log\LoggerAwareInterface;
@@ -35,7 +35,7 @@ use SMW\Query\Cache\CacheStats;
  *
  * @author mwjames
  */
-class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
+class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 	/**
 	 * Update this version number when the serialization format
@@ -265,22 +265,12 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param array $ids
-	 * @param string $context
-	 */
-	public function invalidate( array $queryList, $context = '' ) {
-		$this->resetCacheBy( $queryList, $context );
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * @param DIWikiPage|array $items
 	 * @param string $context
 	 */
-	public function resetCacheBy( $items, $context = '' ) {
+	public function invalidateCache( $items, $context = '' ) {
 
 		if ( !$this->blobStore->canUse() ) {
 			return;
@@ -314,7 +304,12 @@ class CachedQueryResultPrefetcher implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function canUse( $query ) {
-		return $this->enabledCache && $this->blobStore->canUse() && ( $query->getContextPage() !== null || ( $query->getContextPage() === null && $this->nonEmbeddedCacheLifetime > 0 ) );
+
+		if ( !$this->enabledCache || !$this->blobStore->canUse() ) {
+			return false;
+		}
+
+		return $query->getContextPage() !== null || ( $query->getContextPage() === null && $this->nonEmbeddedCacheLifetime > 0 );
 	}
 
 	private function newQueryResultFromCache( $queryId, $query, $container ) {
