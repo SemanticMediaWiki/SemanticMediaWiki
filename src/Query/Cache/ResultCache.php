@@ -16,6 +16,7 @@ use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Query\Cache\CacheStats;
+use SMW\Query\Excerpts;
 
 /**
  * The prefetcher only caches the subject list from a computed a query
@@ -338,6 +339,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 			$hasFurtherResults = $queryResult->hasFurtherResults();
 			$countValue = $queryResult->getCountValue();
+			$excerpts = $queryResult->getExcerpts();
 			$resolverJournal = $queryResult->getResolverJournal();
 		} else {
 
@@ -349,6 +351,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 			$hasFurtherResults = $container->get( 'continue' );
 			$countValue = $container->get( 'count' );
+			$excerpts = $container->get( 'excerpts' );
 		}
 
 		$queryResult = $this->queryFactory->newQueryResult(
@@ -357,6 +360,10 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$results,
 			$hasFurtherResults
 		);
+
+		if ( $excerpts instanceof Excerpts ) {
+			$queryResult->setExcerpts( $excerpts );
+		}
 
 		$queryResult->setCountValue( $countValue );
 		$queryResult->setFromCache( true );
@@ -429,6 +436,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$container->set( 'results', $results );
 		$container->set( 'continue', $queryResult->hasFurtherResults() );
 		$container->set( 'count', $queryResult->getCountValue() );
+		$container->set( 'excerpts', $queryResult->getExcerpts() );
 
 		$queryResult->reset();
 		$contextPage = $query->getContextPage();
