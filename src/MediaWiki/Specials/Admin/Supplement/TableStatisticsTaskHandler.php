@@ -6,17 +6,17 @@ use Html;
 use SMW\ApplicationFactory;
 use SMW\Message;
 use WebRequest;
+use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
- * @since 3.0
+ * @since 3.1
  *
  * @author mwjames
  */
-class CacheStatisticsListTaskHandler extends TaskHandler {
+class TableStatisticsTaskHandler extends TaskHandler {
 
 	/**
 	 * @var OutputFormatter
@@ -24,7 +24,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	private $outputFormatter;
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * @param OutputFormatter $outputFormatter
 	 */
@@ -33,7 +33,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
@@ -42,7 +42,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
@@ -56,11 +56,11 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	 * {@inheritDoc}
 	 */
 	public function getTask() {
-		return 'stats/cache';
+		return 'stats/table';
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
@@ -69,14 +69,14 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ),
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
@@ -85,7 +85,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 			[],
 			$this->msg(
 				[
-					'smw-admin-supplementary-operational-statistics-cache-intro',
+					'smw-admin-supplementary-operational-table-statistics-intro',
 					$link
 				]
 			)
@@ -93,14 +93,14 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' )
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-title' )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -108,32 +108,19 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 			'smw-admin-supplementary-operational-statistics-title'
 		);
 
-		$this->outputQueryCacheStatistics();
+		$this->outputStatistics();
 	}
 
-	private function outputQueryCacheStatistics() {
-
-		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
-
-		if ( !$resultCache->isEnabled() ) {
-			$msg = $this->msg(
-				[ 'smw-admin-statistics-querycache-disabled' ],
-				Message::PARSE
-			);
-
-			return $this->outputFormatter->addHTML(
-				Html::rawElement( 'p', [], $msg )
-			);
-		}
+	private function outputStatistics() {
 
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', [], $this->msg( 'smw-admin-statistics-section-explain' ) )
+			Html::rawElement( 'p', [], $this->msg( 'smw-admin-supplementary-operational-table-statistics-explain' ) )
 		);
 
 		$placeholder = Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-json-placeholder-message',
+				'class' => 'smw-admin-supplementary-table-statistics-content',
 			],
 			Message::get( 'smw-data-lookup-with-wait' ) .
 			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
@@ -148,41 +135,55 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 		$html = Html::rawElement(
 				'div',
 				[
-					'id' => 'smw-admin-querycache-json',
-					'class' => 'smw-json-placeholder',
-				],  Html::rawElement(
-				'pre',
-				[
-					'id' => 'smw-json-container'
+					'id' => 'smw-admin-supplementary-table-statistics',
+					'style' => 'opacity:0.5;position: relative;',
+					'data-config' => json_encode(
+						[
+							'contentClass' => 'smw-admin-supplementary-table-statistics-content',
+							'errorClass'   => 'smw-admin-supplementary-table-statistics-error'
+						]
+					)
 				],
-				$placeholder . Html::rawElement(
+				Html::element(
 					'div',
 					[
-						'class' => 'smw-json-data'
-					],
-					$this->outputFormatter->encodeAsJson( $resultCache->getStats() )
+						'class' => 'smw-admin-supplementary-table-statistics-error'
+					]
+				) . Html::rawElement(
+				'pre',
+				[
+					'class' => 'smw-admin-supplementary-table-statistics-content'
+				],
+				$this->msg( 'smw-data-lookup-with-wait' ) .
+				"\n\n\n" . $this->msg( 'smw-processing' ) . "\n" .
+				Html::rawElement(
+					'span',
+					[
+						'class' => 'smw-overlay-spinner medium',
+						'style' => 'transform: translate(-50%, -50%);'
+					]
 				)
 			)
 		);
 
 		$htmlTabs = new HtmlTabs();
-		$htmlTabs->setGroup( 'cache-statistics' );
+		$htmlTabs->setGroup( 'table-statistics' );
 		$htmlTabs->setActiveTab( 'report' );
 
-		$htmlTabs->tab( 'report', $this->msg( 'smw-admin-statistics-querycache-title' ) );
+		$htmlTabs->tab( 'report', $this->msg( 'smw-admin-statistics' ) );
 		$htmlTabs->content( 'report', $html );
 
 		$htmlTabs->tab( 'legend', $this->msg( 'smw-legend' ) );
 		$htmlTabs->content( 'legend', Html::rawElement(
-					'p', [] , $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
+					'p', [] , $this->msg( 'smw-admin-supplementary-operational-table-statistics-legend', Message::PARSE ) ) );
 
-		$html = $htmlTabs->buildHTML( [ 'class' => 'cache-statistics' ] );
+		$html = $htmlTabs->buildHTML( [ 'class' => 'table-statistics' ] );
 
 		$this->outputFormatter->addHtml( $html );
 
 		$this->outputFormatter->addInlineStyle(
-			'.cache-statistics #tab-report:checked ~ #tab-content-report,' .
-			'.cache-statistics #tab-legend:checked ~ #tab-content-legend {' .
+			'.table-statistics #tab-report:checked ~ #tab-content-report,' .
+			'.table-statistics #tab-legend:checked ~ #tab-content-legend {' .
 			'display: block;}'
 		);
 	}

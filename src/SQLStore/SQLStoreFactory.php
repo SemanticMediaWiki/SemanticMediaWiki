@@ -845,6 +845,20 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return TableStatistics
+	 */
+	public function newTableStatistics() {
+
+		$tableStatistics = new TableStatistics(
+			$this->store
+		);
+
+		return $tableStatistics;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return ServicesContainer
@@ -896,7 +910,11 @@ class SQLStoreFactory {
 				'PrefetchItemLookup' => [
 					'_service' => [ $this, 'newPrefetchItemLookup' ],
 					'_type'    => PrefetchItemLookup::class
-				]
+				],
+				'TableStatistics' => [
+					'_service' => [ $this, 'newTableStatistics' ],
+					'_type'    => TableStatistics::class
+				],
 			]
 		);
 

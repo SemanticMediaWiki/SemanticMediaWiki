@@ -132,6 +132,7 @@
 					data.task.list,
 					{
 						'isFromCache': data.task.isFromCache,
+						'cacheLifetime': data.task.cacheTTL,
 						'timestamp': data.task.time
 					}
 				);
@@ -334,6 +335,21 @@
 				if ( json !== '' ) {
 					smw.jsonview.init( container, json );
 				};
+		} );
+
+		/**
+		 * Generate table statistics via the API
+		 */
+		$( '#smw-admin-supplementary-table-statistics' ).each( function() {
+
+			instance.setContext( $( this ) );
+
+			instance.api( {
+				formatversion: 2,
+				action: 'smwtask',
+				task: 'table-statistics',
+				params: JSON.stringify( [] )
+			} );
 		} );
 
 	} );

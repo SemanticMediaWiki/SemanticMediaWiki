@@ -9,6 +9,7 @@ use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
 use SMW\MediaWiki\Api\Tasks\DuplicateLookupTask;
 use SMW\MediaWiki\Api\Tasks\InsertJobTask;
 use SMW\MediaWiki\Api\Tasks\JobListTask;
+use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use RuntimeException;
 
 /**
@@ -45,6 +46,9 @@ class TaskFactory {
 			// Duplicate lookup support
 			'duplicate-lookup',
 
+			// Fetch some table statistics
+			'table-statistics',
+
 			// Insert/run a job
 			'insert-job',
 
@@ -80,6 +84,9 @@ class TaskFactory {
 				break;
 			case 'duplicate-lookup':
 				return $this->newDuplicateLookupTask();
+				break;
+			case 'table-statistics':
+				return $this->newTableStatisticsTask();
 				break;
 			case 'insert-job':
 				return new InsertJobTask( $applicationFactory->newJobFactory() );
@@ -119,6 +126,27 @@ class TaskFactory {
 		);
 
 		return $duplicateLookupTask;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return TableStatisticsTask
+	 */
+	public function newTableStatisticsTask() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$tableStatisticsTask = new TableStatisticsTask(
+			$applicationFactory->getStore(),
+			$applicationFactory->getCache()
+		);
+
+		$tableStatisticsTask->setCacheUsage(
+			$applicationFactory->getSettings()->get( 'smwgCacheUsage' )
+		);
+
+		return $tableStatisticsTask;
 	}
 
 }

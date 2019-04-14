@@ -526,6 +526,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructTableStatistics() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableStatistics',
+			$instance->newTableStatistics()
+		);
+	}
+
 	public function testCanConstructServicesContainer() {
 
 		$instance = new SQLStoreFactory( $this->store );

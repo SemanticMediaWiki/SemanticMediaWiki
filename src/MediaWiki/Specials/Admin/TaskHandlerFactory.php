@@ -13,6 +13,7 @@ use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
 use SMW\Store;
 use SMw\ApplicationFactory;
 use SMW\Utils\FileFetcher;
@@ -187,7 +188,8 @@ class TaskHandlerFactory {
 	public function newOperationalStatisticsListTaskHandler() {
 
 		$taskHandlers = [
-			new CacheStatisticsListTaskHandler( $this->outputFormatter )
+			new CacheStatisticsListTaskHandler( $this->outputFormatter ),
+			new TableStatisticsTaskHandler( $this->outputFormatter )
 		];
 
 		return new OperationalStatisticsListTaskHandler( $this->outputFormatter, $taskHandlers );

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 use Html;
 use SMW\Message;
 use WebRequest;
+use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
@@ -47,6 +48,15 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getTask() {
+		return 'stats';
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
@@ -63,9 +73,12 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	public function isTaskFor( $task ) {
 
 		$actions = [
-			'stats',
-			'stats/cache'
+			$this->getTask(),
 		];
+
+		foreach ( $this->taskHandlers as $taskHandler ) {
+			$actions[] = $taskHandler->getTask();
+		}
 
 		return in_array( $task, $actions );
 	}
@@ -79,7 +92,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 
 		$link = $this->outputFormatter->getSpecialPageLinkWith(
 			$this->msg( 'smw-admin-supplementary-operational-statistics-title' ),
-			[ 'action' => 'stats' ]
+			[ 'action' => $this->getTask() ]
 		);
 
 		return Html::rawElement(
@@ -114,9 +127,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 			}
 		}
 
-		$this->outputSemanticStatistics();
-		$this->outputJobStatistics();
-		$this->outputInfo();
+		$this->outputBody();
 	}
 
 	private function outputHead() {
@@ -130,6 +141,33 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		);
 	}
 
+	private function outputBody() {
+
+		$html = Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) ) ;
+
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'operational-statistics' );
+		$htmlTabs->setActiveTab( 'overview' );
+
+		$htmlTabs->tab( 'overview', $this->msg( 'smw-admin-statistics-semanticdata-overview' ) );
+		$htmlTabs->content( 'overview', $this->outputSemanticStatistics() );
+
+		$htmlTabs->tab( 'job', $this->msg( 'smw-admin-statistics-job-title' ) );
+		$htmlTabs->content( 'job', $this->outputJobStatistics() );
+
+		$html .= $htmlTabs->buildHTML( [ 'class' => 'operational-statistics' ] );
+
+		$this->outputFormatter->addHtml( $html );
+
+		$this->outputFormatter->addInlineStyle(
+			'.operational-statistics #tab-overview:checked ~ #tab-content-overview,' .
+			'.operational-statistics #tab-job:checked ~ #tab-content-job {' .
+			'display: block;}'
+		);
+
+		$this->outputInfo();
+	}
+
 	private function outputInfo() {
 
 		$list = '';
@@ -139,7 +177,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h2', [], $this->msg( 'smw-admin-other-functions' ) )
+			Html::element( 'h3', [], $this->msg( 'smw-admin-statistics-extra' ) )
 		);
 
 		$this->outputFormatter->addHTML(
@@ -151,15 +189,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 
 		$semanticStatistics = $this->getStore()->getStatistics();
 
-		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) )
-		);
-
-		$this->outputFormatter->addHTML(
-			Html::element( 'h2', [], $this->msg( 'smw-statistics' ) )
-		);
-
-		$this->outputFormatter->addAsPreformattedText(
+		return Html::rawElement( 'pre', [],
 			$this->outputFormatter->encodeAsJson(
 				[
 					'propertyValues' => $semanticStatistics['PROPUSES'],
@@ -179,27 +209,17 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 
 	private function outputJobStatistics() {
 
-		$this->outputFormatter->addHTML(
-			Html::element( 'h2', [], $this->msg( 'smw-admin-statistics-job-title' ) )
-		);
-
-		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', [], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) )
-		);
-
-		$this->outputFormatter->addHTML(
-			Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-admin-statistics-job',
-					'data-config' => json_encode( [
-						'contentClass' => 'smw-admin-statistics-job-content',
-						'errorClass'   => 'smw-admin-statistics-job-error'
-					] ),
-				],
-				Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-error' ], '' ) .
-				Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-content' ], $this->msg( 'smw-data-lookup' ) )
-			)
+		return Html::rawElement( 'p', [ 'class' => 'plainlinks' ], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) ) . Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-admin-statistics-job',
+				'data-config' => json_encode( [
+					'contentClass' => 'smw-admin-statistics-job-content',
+					'errorClass'   => 'smw-admin-statistics-job-error'
+				] ),
+			],
+			Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-error' ], '' ) .
+			Html::element( 'div', [ 'class' => 'smw-admin-statistics-job-content' ], $this->msg( 'smw-data-lookup' ) )
 		);
 	}
 
