@@ -110,6 +110,15 @@ abstract class TaskHandler {
 	/**
 	 * @since 3.0
 	 *
+	 * @return string
+	 */
+	public function getTask() {
+		return '';
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return boolean
 	 */
 	public function isApiTask() {

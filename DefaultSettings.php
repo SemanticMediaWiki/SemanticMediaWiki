@@ -1122,10 +1122,12 @@ return [
 		'special.unusedproperties' => 3600,
 		'special.properties' => 3600,
 		'special.statistics' => 3600,
+		'table.statistics' => 3600,
 		'api.browse' => 3600,
 		'api.browse.pvalue' => 3600,
 		'api.browse.psubject' => 3600,
-		'api.task'  => 3600
+		'api.task'  => 3600,
+		'api.table.statistics'  => 3600
 	],
 	##
 
