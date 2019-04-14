@@ -321,6 +321,21 @@
 			} );
 		} );
 
+		/**
+		 * Prettify the JSON display
+		 */
+		$( '#smw-admin-querycache-json' ).each( function() {
+
+				$( this ).removeClass( 'smw-json-placeholder' );
+
+				var container = $( "#smw-json-container" ),
+					json = container.find( '.smw-json-data' ).text();
+
+				if ( json !== '' ) {
+					smw.jsonview.init( container, json );
+				};
+		} );
+
 	} );
 
 }( jQuery, mediaWiki ) );

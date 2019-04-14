@@ -534,7 +534,8 @@ return [
 	'ext.smw.admin' => $moduleTemplate + [
 		'scripts' => 'smw/special/ext.smw.special.admin.js',
 		'dependencies' => [
-			'mediawiki.api'
+			'mediawiki.api',
+			'smw.jsonview'
 		],
 		'messages' => [
 			'smw-no-data-available',

@@ -8,6 +8,7 @@ use SMW\Message;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -103,10 +104,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 
 	private function outputQueryCacheStatistics() {
 
-		$this->outputFormatter->addHTML(
-			Html::element( 'h2', [], $this->msg( 'smw-admin-statistics-querycache-title' ) )
-		);
-
 		$cachedQueryResultPrefetcher = ApplicationFactory::getInstance()->singleton( 'CachedQueryResultPrefetcher' );
 
 		if ( !$cachedQueryResultPrefetcher->isEnabled() ) {
@@ -120,17 +117,64 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 			);
 		}
 
-		$msg = $this->msg(
-			[ 'smw-admin-statistics-querycache-explain' ],
-			Message::PARSE
-		);
-
 		$this->outputFormatter->addHTML(
-			Html::rawElement( 'p', [], $msg )
+			Html::rawElement( 'p', [], $this->msg( 'smw-admin-statistics-section-explain' ) )
 		);
 
-		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() )
+		$placeholder = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-json-placeholder-message',
+			],
+			Message::get( 'smw-data-lookup-with-wait' ) .
+			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
+		) .	Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-overlay-spinner medium',
+				'style' => 'transform: translate(-50%, -50%);'
+			]
+		);
+
+		$html = Html::rawElement(
+				'div',
+				[
+					'id' => 'smw-admin-querycache-json',
+					'class' => 'smw-json-placeholder',
+				],  Html::rawElement(
+				'pre',
+				[
+					'id' => 'smw-json-container'
+				],
+				$placeholder . Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-json-data'
+					],
+					$this->outputFormatter->encodeAsJson( $cachedQueryResultPrefetcher->getStats() )
+				)
+			)
+		);
+
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'cache-statistics' );
+		$htmlTabs->setActiveTab( 'report' );
+
+		$htmlTabs->tab( 'report', $this->msg( 'smw-admin-statistics-querycache-title' ) );
+		$htmlTabs->content( 'report', $html );
+
+		$htmlTabs->tab( 'legend', $this->msg( 'smw-legend' ) );
+		$htmlTabs->content( 'legend', Html::rawElement(
+					'p', [] , $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
+
+		$html = $htmlTabs->buildHTML( [ 'class' => 'cache-statistics' ] );
+
+		$this->outputFormatter->addHtml( $html );
+
+		$this->outputFormatter->addInlineStyle(
+			'.cache-statistics #tab-report:checked ~ #tab-content-report,' .
+			'.cache-statistics #tab-legend:checked ~ #tab-content-legend {' .
+			'display: block;}'
 		);
 	}
 
