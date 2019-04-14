@@ -25,13 +25,13 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 	private $store;
-	private $entityValueUniquenessConstraintChecker;
+	private $entityUniquenessLookup;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->entityValueUniquenessConstraintChecker = $this->getMockBuilder( '\SMW\SQLStore\EntityValueUniquenessConstraintChecker' )
+		$this->entityUniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\EntityUniquenessLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,8 +42,8 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'EntityValueUniquenessConstraintChecker' ) )
-			->will( $this->returnValue( $this->entityValueUniquenessConstraintChecker ) );
+			->with( $this->equalTo( 'EntityUniquenessLookup' ) )
+			->will( $this->returnValue( $this->entityUniquenessLookup ) );
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
-		$this->entityValueUniquenessConstraintChecker->expects( $this->atLeastOnce() )
+		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
 			->will( $this->returnValue( [] ) );
 
@@ -139,7 +139,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 			[ 'smw-datavalue-constraint-uniqueness-violation', $property->getLabel(), '...', 'Foo' ]
 		);
 
-		$this->entityValueUniquenessConstraintChecker->expects( $this->atLeastOnce() )
+		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
 			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ] ) );
 

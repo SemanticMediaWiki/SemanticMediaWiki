@@ -38,6 +38,7 @@ use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
@@ -757,10 +758,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return EntityValueUniquenessConstraintChecker
+	 * @return EntityUniquenessLookup
 	 */
-	public function newEntityValueUniquenessConstraintChecker() {
-		return new EntityValueUniquenessConstraintChecker(
+	public function newEntityUniquenessLookup() {
+		return new EntityUniquenessLookup(
 			$this->store,
 			$this->getIteratorFactory()
 		);
@@ -871,9 +872,9 @@ class SQLStoreFactory {
 					'_service' => [ $this, 'newProximityPropertyValueLookup' ],
 					'_type'    => ProximityPropertyValueLookup::class
 				],
-				'EntityValueUniquenessConstraintChecker' => [
-					'_service' => [ $this, 'newEntityValueUniquenessConstraintChecker' ],
-					'_type'    => EntityValueUniquenessConstraintChecker::class
+				'EntityUniquenessLookup' => [
+					'_service' => [ $this, 'newEntityUniquenessLookup' ],
+					'_type'    => EntityUniquenessLookup::class
 				],
 				'PropertyTableIdReferenceDisposer' => [
 					'_service' => [ $this, 'newPropertyTableIdReferenceDisposer' ],
