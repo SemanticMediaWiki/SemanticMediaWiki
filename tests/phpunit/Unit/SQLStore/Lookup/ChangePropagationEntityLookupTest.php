@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SQLStore\ChangePropagationEntityFinder;
+use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\SQLStore\ChangePropagationEntityFinder
+ * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -42,8 +42,8 @@ class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ChangePropagationEntityFinder::class,
-			new ChangePropagationEntityFinder( $this->store, $this->iteratorFactory )
+			ChangePropagationEntityLookup::class,
+			new ChangePropagationEntityLookup( $this->store, $this->iteratorFactory )
 		);
 	}
 
@@ -55,7 +55,7 @@ class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newAppendIterator' )
 			->will( $this->returnValue( $this->appendIterator ) );
 
-		$instance = new ChangePropagationEntityFinder(
+		$instance = new ChangePropagationEntityLookup(
 			$this->store,
 			$this->iteratorFactory
 		);
@@ -107,7 +107,7 @@ class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$instance = new ChangePropagationEntityFinder(
+		$instance = new ChangePropagationEntityLookup(
 			$store,
 			$this->iteratorFactory
 		);
@@ -153,7 +153,7 @@ class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( new DIProperty( '_SUBC' ) ) )
 			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Bar' ) ] ) );
 
-		$instance = new ChangePropagationEntityFinder(
+		$instance = new ChangePropagationEntityLookup(
 			$store,
 			$this->iteratorFactory
 		);
@@ -173,7 +173,7 @@ class ChangePropagationEntityFinderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindAllOnUnknownTypeThrowsException() {
 
-		$instance = new ChangePropagationEntityFinder(
+		$instance = new ChangePropagationEntityLookup(
 			$this->store,
 			$this->iteratorFactory
 		);

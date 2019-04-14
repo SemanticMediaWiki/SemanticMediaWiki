@@ -6,7 +6,7 @@ use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\SQLStore\ChangePropagationEntityFinder;
+use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMWExporter as Exporter;
 use Title;
 
@@ -225,12 +225,12 @@ class ChangePropagationDispatchJob extends Job {
 			'ChangePropagationDispatchJob on ' . $subject->getHash()
 		);
 
-		$changePropagationEntityFinder = new ChangePropagationEntityFinder(
+		$changePropagationEntityLookup = new ChangePropagationEntityLookup(
 			$applicationFactory->getStore(),
 			$iteratorFactory
 		);
 
-		$changePropagationEntityFinder->isTypePropagation(
+		$changePropagationEntityLookup->isTypePropagation(
 			$this->getParameter( 'isTypePropagation' )
 		);
 
@@ -240,7 +240,7 @@ class ChangePropagationDispatchJob extends Job {
 			$entity = $subject;
 		}
 
-		$appendIterator = $changePropagationEntityFinder->findAll(
+		$appendIterator = $changePropagationEntityLookup->findAll(
 			$entity
 		);
 
