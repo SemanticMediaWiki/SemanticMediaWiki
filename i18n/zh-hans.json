@@ -329,7 +329,6 @@
 	"smw-admin-statistics-job-docu": "工作统计显示有关已安排但尚未执行的语义MediaWiki工作的信息。工作数量可能有点不准确，或包含失败尝试，请查阅[https://www.mediawiki.org/wiki/Manual:Job_queue 手册]以获取进一步信息。",
 	"smw-admin-statistics-querycache-title": "查询缓存统计",
 	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache 查询缓存]未在此wiki启用，并因此没有可用统计信息。",
-	"smw-admin-statistics-querycache-explain": "缓存统计是包含临时累计的数据及其衍生数据，其中：\n* “misses”表示因无法从缓存中获取数据而导致的直接存储库（如数据库、元组存储等）访问的次数\n* “deletes”表示总的缓存清除操作（刷新页面或某一请求的依赖项操作）数量\n* “hits”包含了从嵌入式查询（包含于维基页面内部的查询请求）和非嵌入式查询（如果启用，则表示使用诸如Special:Ask页面和API进行的查询请求）源中获取到的缓存数量\n* “medianRetrievalResponseTime”是响应时间（秒）的中位数。此响应时间表示在结果收集的过程中，缓存的和未缓存的结果在请求时所花费的时间\n* “noCache”表示未尝试从缓存中获取结果的请求数量（limit=0，或启用了“no-cache”选项等）",
 	"smw-admin-permission-missing": "由于缺少权限，对此页面的访问已被阻止，请查阅[https://www.semantic-mediawiki.org/wiki/Help:Permissions 权限]帮助页面以获取有关所需设置的详情。",
 	"smw-admin-setupsuccess": "存储引擎已建立。",
 	"smw_smwadmin_return": "返回$1",
