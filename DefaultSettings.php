@@ -876,7 +876,7 @@ return [
 
 	###
 	# SMW defers some tasks until after a page was edited by using the MediaWiki
-	# job queueing system (see http://www.mediawiki.org/wiki/Manual:Job_queue).
+	# job queueing system (see https://www.mediawiki.org/wiki/Manual:Job_queue).
 	# For example, when the type of a property is changed, all affected pages will
 	# be scheduled for (later) update. If a wiki generates too many jobs in this
 	# way (Special:Statistics and "showJobs.php" can be used to check that), the
@@ -1077,7 +1077,7 @@ return [
 	# `$wgParserCacheType` if they are set.
 	#
 	# @see https://www.semantic-mediawiki.org/wiki/Help:Caching
-	# @see http://www.mediawiki.org/wiki/$wgMainCacheType
+	# @see https://www.mediawiki.org/wiki/$wgMainCacheType
 	#
 	# @since 3.0
 	# @default CACHE_ANYTHING
