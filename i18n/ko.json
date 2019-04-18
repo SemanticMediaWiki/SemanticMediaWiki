@@ -299,7 +299,8 @@
 	"smw_result_noresults": "결과가 없습니다.",
 	"smwadmin": "대시보드 (시맨틱 미디어위키)",
 	"smw-admin-statistics-job-title": "작업 통계",
-	"smw-admin-statistics-querycache-title": "쿼리 캐시 통계",
+	"smw-admin-statistics-querycache-title": "쿼리 캐시",
+	"smw-admin-statistics-semanticdata-overview": "개요",
 	"smw-admin-setupsuccess": "저장소 엔진을 설정했습니다.",
 	"smw_smwadmin_return": "$1 문서로 돌아갑니다",
 	"smw_smwadmin_updatestarted": "시맨틱 데이터의 최신화를 위한 새 업데이트 과정이 시작되었습니다.\n저장된 모든 데이터는 필요에 따라 다시 구성되거나 복구됩니다.\n이 특수 문서에 대한 업데이트의 진행을 따를 수 있습니다.",
@@ -347,8 +348,10 @@
 	"smw-admin-bugsreport": "버그는 <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>에 보고할 수 있습니다.",
 	"smw-admin-questions": "만약 추가적인 질문이나 제안이 있으면, <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">시맨틱 미디어위키 사용자 포럼</a>에서 토론에 참여하세요.",
 	"smw-admin-other-functions": "다른 기능",
+	"smw-admin-statistics-extra": "추가 통계",
+	"smw-admin-statistics": "통계",
 	"smw-admin-supplementary-section-title": "추가 기능",
-	"smw-admin-supplementary-section-subtitle": "핵심 기능",
+	"smw-admin-supplementary-section-subtitle": "지원되는 핵심 기능",
 	"smw-admin-supplementary-settings-title": "구성 설정",
 	"smw-admin-supplementary-settings-intro": "<u>$1</u>은 시맨틱 미디어위키에 쓰이는 사용 가능한 설정의 공통 목록을 출력합니다",
 	"smw-admin-supplementary-operational-statistics-title": "조작 통계",
@@ -470,7 +473,7 @@
 	"smw-search-profile-extended-help-sort-best": "* \"최적의 일치\"는 백엔드가 제공하는 점수에 기반한 [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Relevancy 관련성]에 따른 엔티티를 정렬합니다",
 	"smw-search-profile-extended-help-namespace": "폼을 선택하자마자 이름공간 선택 상자는 숨겨지지만 \"표시/숨김\" 버튼을 이용하여 보이게 할 수 있습니다.",
 	"smw-search-profile-extended-help-query": "다음으로 연결: $1",
-	"smw-search-profile-extended-help-query-link": "(더 자세한 사항의 경우 $1).",
+	"smw-search-profile-extended-help-query-link": "더 자세한 사항의 경우, $1를 사용하십시오.",
 	"smw-search-profile-extended-help-find-forms": "사용 가능한 폼",
 	"smw-search-profile-extended-section-sort": "정렬 기준",
 	"smw-search-profile-extended-section-form": "폼",
@@ -622,5 +625,6 @@
 	"smw-ask-tab-result": "결과",
 	"smw-ask-tab-extra": "기타",
 	"smw-ask-tab-debug": "디버그",
-	"smw-ask-tab-code": "코드"
+	"smw-ask-tab-code": "코드",
+	"smw-report": "보고서"
 }

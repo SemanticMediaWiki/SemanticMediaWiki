@@ -281,9 +281,10 @@
 	"smw-admin-bugsreport": "Gli errori possono essere segnalati sul <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">tracker di anomalie</a>, la pagina <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">riportare errori</a> fornisce alcune guide su come scrivere una segnalazione effettiva.",
 	"smw-admin-questions": "Se hai altre domande o suggerimenti, unisciti alle discussioni sulla <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">mailing list</a> degli utenti di Semantic MediaWiki o la <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">chatroom</a>.",
 	"smw-admin-other-functions": "Altre funzioni",
+	"smw-admin-statistics": "Statistiche",
 	"smw-admin-supplementary-section-title": "Funzioni supplementari",
 	"smw-admin-supplementary-settings-title": "Impostazioni di configurazione",
-	"smw-admin-supplementary-settings-intro": "<u>$1</u> restituisce un elenco collettivo delle impostazioni disponibili utilizzate in Semantic MediaWiki",
+	"smw-admin-supplementary-settings-intro": "<u>$1</u> elenca le impostazioni utilizzate in Semantic MediaWiki",
 	"smw-admin-supplementary-elastic-functions": "Funzioni supportate",
 	"smw-admin-supplementary-elastic-settings-title": "Impostazioni",
 	"smw-admin-supplementary-elastic-nodes-title": "Nodi",
@@ -461,5 +462,6 @@
 	"smw-property-tab-subproperties": "Sottoproprietà",
 	"smw-concept-tab-list": "Elenco",
 	"smw-concept-tab-errors": "Errori",
-	"smw-ask-tab-code": "Codice"
+	"smw-ask-tab-code": "Codice",
+	"smw-legend": "Legenda"
 }

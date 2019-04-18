@@ -356,7 +356,7 @@
 	"smwadmin": "Funciones administrativas y de mantenimiento",
 	"smw-admin-statistics-job-title": "Estadísticas de trabajo",
 	"smw-admin-statistics-job-docu": "Las estadísticas de trabajo muestran información acerca de los trabajos para Semantic MediaWiki programados que aún no se han ejecutado. El número de trabajos puede ser ligeramente inexacto o contener intentos fallidos, consulte este [https://www.mediawiki.org/wiki/Manual:Job_queue manual] para información detallada.",
-	"smw-admin-statistics-querycache-title": "Estadísticas de antememoria de consultas",
+	"smw-admin-statistics-querycache-title": "Antememoria de consultas",
 	"smw-admin-statistics-querycache-disabled": "El [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] no ha sido habilitado en este wiki y por lo tanto no hay estadísticas disponibles.",
 	"smw-admin-permission-missing": "Debido a la falta de los permisos necesarios, se ha bloqueado el acceso a esta página. Consulta la página de ayuda sobre los [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] para obtener más información sobre las configuraciones necesarias.",
 	"smw-admin-setupsuccess": "El motor de almacenamiento se ha configurado.",
@@ -417,6 +417,8 @@
 	"smw-admin-bugsreport": "Se pueden enviar informes de error a <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Si tienes preguntas o sugerencias adicionales, únete a la discusión en la <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">lista de correo de usuarios de Semantic MediaWiki\n</a>.",
 	"smw-admin-other-functions": "Otras funciones",
+	"smw-admin-statistics-extra": "Estadísticas adicionales",
+	"smw-admin-statistics": "Estadísticas",
 	"smw-admin-supplementary-section-title": "Funciones suplementarias",
 	"smw-admin-supplementary-section-subtitle": "Funciones de núcleo",
 	"smw-admin-supplementary-section-intro": "Esta sección proporciona funciones adicionales más allá del alcance del mantenimiento y es posible que algunas funciones que están listadas en la [https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Supplementary_functions documentación] estén restringidas o no disponibles y por lo tanto inaccesibles en este wiki.",
@@ -830,5 +832,6 @@
 	"smw-ask-tab-result": "Resultado",
 	"smw-ask-tab-extra": "Extras",
 	"smw-ask-tab-debug": "Depuración",
-	"smw-ask-tab-code": "Código"
+	"smw-ask-tab-code": "Código",
+	"smw-legend": "Leyenda"
 }
