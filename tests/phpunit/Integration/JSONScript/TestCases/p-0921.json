@@ -10,7 +10,8 @@
 			"page": "P0918/Q.1",
 			"namespace": "NS_MAIN",
 			"contents": "{{#ask: [[Category:cat]]}}"
-		},
+		}
+	],
 	"tests": [
 		{
 			"type": "parser",
@@ -29,9 +30,9 @@
 		"smwgPageSpecialProperties": [
 			"_MDAT"
 		],
-		"smwgDVFeatures": {
+		"smwgDVFeatures": [
 			"SMW_DV_WPV_PIPETRICK"
-		}
+		]
 	},
 	"meta": {
 		"version": "2",
