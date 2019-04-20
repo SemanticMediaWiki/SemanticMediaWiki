@@ -6,8 +6,8 @@
 
 ```php
 use Hooks;
-use SMW\Store
-use SMW\SemanticData
+use SMW\Store;
+use SMW\SemanticData;
 
 \Hooks::register( 'SMW::Browse::AfterDataLookupComplete', function( Store $store, SemanticData $semanticData, &$html, &$extraModules ) {
 

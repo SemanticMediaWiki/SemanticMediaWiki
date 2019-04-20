@@ -6,8 +6,8 @@
 
 ```php
 use Hooks;
-use SMW\DIProperty
-use SMW\DIWikiPage
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 
 \Hooks::register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( DIProperty $property, DIWikiPage $subject, &$propertyValue ) {
 
