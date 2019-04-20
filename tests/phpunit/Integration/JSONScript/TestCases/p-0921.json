@@ -1,0 +1,41 @@
+{
+	"description": "Test #ask with pipe trick output.",
+	"setup": [
+		{
+			"page": "Page0 (parens)",
+			"namespace": "NS_MAIN",
+			"contents": "[[Category:cat]]"
+		},
+		{
+			"page": "P0918/Q.1",
+			"namespace": "NS_MAIN",
+			"contents": "{{#ask: [[Category:cat]]}}"
+		},
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (parenthetical page titles stripped as per pipe trick)",
+			"subject": "P0918/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"Page0"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgDVFeatures": {
+			"SMW_DV_WPV_PIPETRICK"
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
