@@ -118,6 +118,10 @@ class ParserFunctionFactory {
 			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, $parser->getOptions()->smwAskNoDependencyTracking );
 		}
 
+		if ( $parserData->hasAnnotationBlock() ) {
+			$parserData->setOption( $parserData::NO_QUERY_DEPENDENCY_TRACE, true );
+		}
+
 		// Avoid possible actions during for example stashedit etc.
 		$parserData->setOption( 'request.action', $GLOBALS['wgRequest']->getVal( 'action' ) );
 

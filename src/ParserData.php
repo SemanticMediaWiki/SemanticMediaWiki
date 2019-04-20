@@ -214,6 +214,15 @@ class ParserData {
 	 * @return boolean
 	 */
 	public function isBlocked() {
+		return $this->hasAnnotationBlock();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function hasAnnotationBlock() {
 
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
@@ -230,7 +239,7 @@ class ParserData {
 	 * @return boolean
 	 */
 	public function canUse() {
-		return !$this->isBlocked();
+		return !$this->hasAnnotationBlock();
 	}
 
 	/**
