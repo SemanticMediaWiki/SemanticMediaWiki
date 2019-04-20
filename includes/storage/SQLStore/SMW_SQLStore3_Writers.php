@@ -174,7 +174,14 @@ class SMWSQLStore3Writers {
 	 * @param SMWSemanticData $data
 	 */
 	public function doDataUpdate( SMWSemanticData $semanticData ) {
+
+		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		\Hooks::run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
+
+		\Hooks::run( 'SMW::SQLStore::BeforeDataUpdateComplete', [
+			$this->store,
+			$semanticData
+		] );
 
 		$subject = $semanticData->getSubject();
 

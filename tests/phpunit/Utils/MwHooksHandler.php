@@ -23,6 +23,9 @@ class MwHooksHandler {
 
 	private $listOfSmwHooks = [
 		'SMWStore::updateDataBefore',
+		'SMW::Store::BeforeDataUpdateComplete',
+		'SMWStore::updateDataAfter',
+		'SMW::Store::AfterDataUpdateComplete',
 
 		// Those shoudl not be disabled so that extension used
 		// by a test will run the registration in case an instance
@@ -44,7 +47,10 @@ class MwHooksHandler {
 		'SMW::SQLStore::AddCustomFixedPropertyTables',
 		'SMW::SQLStore::AfterDataUpdateComplete',
 		'SMW::Browse::AfterIncomingPropertiesLookupComplete',
-		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate'
+		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
+
+		'SMWSQLStore3::updateDataBefore',
+		'SMW::SQLStore::BeforeDataUpdateComplete'
 	];
 
 	/**

@@ -185,7 +185,11 @@ class Settings extends Options {
 
 		self::initLegacyMapping( $configuration );
 
+		// Deprecated since 3.1
 		\Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
+
+		// Since 3.1
+		\Hooks::run( 'SMW::Settings::BeforeInitializationComplete', [ &$configuration ] );
 
 		if ( self::$instance === null ) {
 			self::$instance = self::newFromArray( $configuration );
