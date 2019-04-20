@@ -70,6 +70,8 @@ class Search extends SearchEngine {
 	}
 
 	/**
+	 * @since 2.1
+	 *
 	 * @param null|SearchEngine $fallbackSearch
 	 */
 	public function setFallbackSearchEngine( SearchEngine $fallbackSearch = null ) {
@@ -77,41 +79,14 @@ class Search extends SearchEngine {
 	}
 
 	/**
-	 * @param $type
-	 */
-	private function assertValidFallbackSearchEngineType( $type ) {
-
-		if ( !class_exists( $type ) ) {
-			throw new RuntimeException( "$type does not exist." );
-		}
-
-		if ( $type === 'SMWSearch' ) {
-			throw new RuntimeException( 'SMWSearch is not a valid fallback search engine type.' );
-		}
-
-		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchEngine' ) ) {
-			throw new RuntimeException( "$type is not a valid fallback search engine type." );
-		}
-	}
-
-	/**
+	 * @since 2.1
+	 *
 	 * @return SearchEngine
 	 */
 	public function getFallbackSearchEngine() {
 
 		if ( $this->fallbackSearch === null ) {
-
-			$type = ApplicationFactory::getInstance()->getSettings()->get( 'smwgFallbackSearchType' );
-
-			$dbr = $this->getDB();
-
-			if ( $type === null ) {
-				$type = ApplicationFactory::getInstance()->create( 'DefaultSearchEngineTypeForDB', $dbr );
-			}
-
-			$this->assertValidFallbackSearchEngineType( $type );
-
-			$this->fallbackSearch = new $type( $dbr );
+			$this->fallbackSearch = $this->newFallbackSearchEngine();
 		}
 
 		return $this->fallbackSearch;
@@ -471,4 +446,52 @@ class Search extends SearchEngine {
 		parent::setShowSuggestion( $showSuggestion );
 		$this->getFallbackSearchEngine()->setShowSuggestion( $showSuggestion );
 	}
+
+	/**
+	 * @return SearchEngine
+	 */
+	private function newFallbackSearchEngine() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$type = $applicationFactory->getSettings()->get( 'smwgFallbackSearchType' );
+
+		$connection = $this->getDB();
+
+		if ( is_callable( $type ) ) {
+			// #3939
+			$fallbackSearch = $type( $connection );
+		} elseif ( $type !== null && $this->isValidFallbackSearchEngineType( $type ) ) {
+			$fallbackSearch = new $type( $connection );
+		} else {
+			$type = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
+			$fallbackSearch = new $type( $connection );
+		}
+
+		if ( !$fallbackSearch instanceof SearchEngine ) {
+			throw new RuntimeException( "The fallback is not a valid search engine type." );
+		}
+
+		return $fallbackSearch;
+	}
+
+	/**
+	 * @param $type
+	 */
+	private function isValidFallbackSearchEngineType( $type ) {
+
+		if ( !class_exists( $type ) ) {
+			throw new RuntimeException( "$type does not exist." );
+		}
+
+		if ( $type === 'SMWSearch' ) {
+			throw new RuntimeException( 'SMWSearch is not a valid fallback search engine type.' );
+		}
+
+		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchEngine' ) ) {
+			throw new RuntimeException( "$type is not a valid fallback search engine type." );
+		}
+
+		return true;
+	}
+
 }

@@ -119,6 +119,40 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetFallbackSearchEngine_ConstructFromCallable() {
+
+		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callback = function() use( $searchEngine ) {
+			return $searchEngine;
+		};
+
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
+
+		$search = new Search();
+
+		$this->assertEquals(
+			$searchEngine,
+			$search->getFallbackSearchEngine()
+		);
+	}
+
+	public function testGetFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
+
+		$callback = function() {
+			return new \stdClass;
+		};
+
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
+
+		$search = new Search();
+
+		$this->setExpectedException( 'RuntimeException' );
+		$search->getFallbackSearchEngine();
+	}
+
 	public function testSearchTitle_withNonsemanticQuery() {
 
 		$term = 'Some string that can not be interpreted as a semantic query';
