@@ -81,6 +81,25 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterPluggableDataType() {
+
+		$pluggableDataType = $this->getMockBuilder( '\SMW\PluggableDataType' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pluggableDataType->expects( $this->once() )
+			->method( 'getAliases' )
+			->will( $this->returnValue( [] ) );
+
+		$pluggableDataType->expects( $this->once() )
+			->method( 'getCallables' )
+			->will( $this->returnValue( [] ) );
+
+		$this->dataTypeRegistry->registerPluggableDataType(
+			$pluggableDataType
+		);
+	}
+
 	public function testRegisterDatatype() {
 
 		$this->assertNull(
