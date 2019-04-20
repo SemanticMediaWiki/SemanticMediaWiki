@@ -75,9 +75,19 @@ class DisplayTitleFinder {
 
 			$key = $this->entityCache->makeKey( 'displaytitle', $dataItem->getHash() );
 
-			if ( $this->entityCache->fetch( $key ) === false ) {
-				$unCachedList[] = $dataItem;
+			if ( $this->entityCache->fetch( $key ) !== false ) {
+				continue;
 			}
+
+			$unCachedList[$dataItem->getSha1()] = $dataItem;
+
+			if ( $dataItem->getSubobjectName() === '' ) {
+				continue;
+			}
+
+			// Fetch the base in case the subobject has no assignment
+			$dataItem = $dataItem->asBase();
+			$unCachedList[$dataItem->getSha1()] = $dataItem;
 		}
 
 		if ( $unCachedList === [] ) {
@@ -90,9 +100,9 @@ class DisplayTitleFinder {
 			$unCachedList
 		);
 
-		foreach ( $unCachedList as $dataItem ) {
-			$sha1 = $dataItem->getSha1();
+		foreach ( $unCachedList as $sha1 => $dataItem ) {
 
+			// Can be NULL therefore use `array_key_exists` as well
 			if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
 				continue;
 			}
@@ -101,8 +111,7 @@ class DisplayTitleFinder {
 
 			// Nothing found, use the base!
 			if ( $prefetchTitle === null && $dataItem->getSubobjectName() !== '' ) {
-				$base = $dataItem->asBase();
-				$sha1 = $base->getSha1();
+				$sha1 = $dataItem->asBase()->getSha1();
 
 				if ( !isset( $prefetch[$sha1] ) && !array_key_exists( $sha1, $prefetch ) ) {
 					continue;

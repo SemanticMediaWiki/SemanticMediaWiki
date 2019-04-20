@@ -210,4 +210,49 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 		$instance->prefetchFromList( $subjects );
 	}
 
+	public function testPrefetchFromList_Subobject_Base() {
+
+		$subjects = [
+			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
+		];
+
+		$prefetch = [
+			$subjects[0]->getSha1() => null,
+			$subjects[0]->asBase()->getSha1() => 'Bar',
+		];
+
+		$displayTitleLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\DisplayTitleLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$displayTitleLookup->expects( $this->any() )
+			->method( 'prefetchFromList' )
+			->will( $this->returnValue( $prefetch ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->with( $this->equalTo( 'DisplayTitleLookup' ) )
+			->will( $this->returnValue( $displayTitleLookup ) );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		// Stored with a space
+		$this->entityCache->expects( $this->any() )
+			->method( 'save' )
+			->withConsecutive(
+				[ $this->anything(), $this->equalTo( 'Bar' ) ] );
+
+		$this->entityCache->expects( $this->exactly( 2 ) )
+			->method( 'associate' );
+
+		$instance = new DisplayTitleFinder(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->prefetchFromList( $subjects );
+	}
+
 }
