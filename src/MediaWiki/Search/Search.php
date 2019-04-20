@@ -438,6 +438,7 @@ class Search extends SearchEngine {
 		$store = ApplicationFactory::getInstance()->getStore();
 		$query->clearErrors();
 		$query->setOption( 'highlight.fragment', $highlight );
+		$query->setOption( SMWQuery::PROC_CONTEXT, 'SpecialSearch' );
 
 		$result = $store->getQueryResult( $query );
 		$this->errors = $query->getErrors();
