@@ -240,6 +240,6 @@ $GLOBALS['srfgFormats'][] = 'my-format';
 
 ## See also
 
-- [`boilerplate.resultprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.resultprinter.md) starting point for writing a result printer
-- [`boilerplate.fileexportprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.fileexportprinter.md) starting point for writing a file result printer
-- [`boilerplate.resultprinter.example`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.resultprinter.example.md) a complete example
+- [`boilerplate.resultprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.resultprinter.md) starting point for writing a result printer
+- [`boilerplate.fileexportprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.fileexportprinter.md) starting point for writing a file result printer
+- [`boilerplate.resultprinter.example`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.resultprinter.example.md) a complete example

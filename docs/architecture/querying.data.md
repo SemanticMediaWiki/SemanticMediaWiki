@@ -36,8 +36,8 @@ A `ResultPrinter` is the user facing output formatter that takes a `QueryResult`
 
 ## Examples
 
-- [`boilerplate.resultprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.resultprinter.md) starting point for writing a result printer
-- [`boilerplate.fileexportprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.fileexportprinter.md) starting point for writing a file result printer
-- [`boilerplate.resultprinter.example`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/boilerplate.resultprinter.example.md) a complete example
-- [`query.description.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/query.description.md) how to build a `Descripion` objects
-- [`query.someproperty.of.type.number.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/query.someproperty.of.type.number.md) example on how to query a number
+- [`boilerplate.resultprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.resultprinter.md) starting point for writing a result printer
+- [`boilerplate.fileexportprinter`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.fileexportprinter.md) starting point for writing a file result printer
+- [`boilerplate.resultprinter.example`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/boilerplate.resultprinter.example.md) a complete example
+- [`query.description.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/query.description.md) how to build a `Descripion` objects
+- [`query.someproperty.of.type.number.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/query.someproperty.of.type.number.md) example on how to query a number

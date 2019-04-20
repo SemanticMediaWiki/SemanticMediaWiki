@@ -22,4 +22,4 @@ Currently three different RDBMS provider are supported including MySQL/MariaDB, 
 
 ## See also
 
-- [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/hook.sqlstore.installer.beforecreatetablescomplete.md) contains an example on how to modify table definitions (e.g. adding additional indices)
+- [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md) contains an example on how to modify table definitions (e.g. adding additional indices)

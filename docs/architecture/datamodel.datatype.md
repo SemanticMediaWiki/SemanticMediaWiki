@@ -10,7 +10,7 @@ Users refer to types by using natural language labels such as datatype `[[Has ty
 
 For example, `_dat` is the type ID for the `Date` type. Developers should always use the internal type IDs. The correspondence of user labels and internal IDs is defined in language files found in [`i18n/extra`][i18n-extra] folder.
 
-See the [`register.core.datatype.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/register.core.datatype.md) for "How to register a core data type".
+See the [`register.core.datatype.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.core.datatype.md) for "How to register a core data type".
 
 #### Implementing type-specific behavior
 
@@ -34,7 +34,7 @@ The purpose of these types is usually to achieve a special handling when storing
 
 A datatype that is added by an extension becomes internal if it is not given any user label. In this case, users cannot create properties with this type, but everything else works normally (in particular, SMW will not know anything special about internal extension types and will just treat them like any other extension type).
 
-See the [`register.custom.datatype.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/register.custom.datatype.md) for "How to register a custom data type".
+See the [`register.custom.datatype.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.custom.datatype.md) for "How to register a custom data type".
 
 ## Examples
 
