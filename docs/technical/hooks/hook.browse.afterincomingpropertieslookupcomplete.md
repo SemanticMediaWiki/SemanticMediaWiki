@@ -6,7 +6,7 @@
 
 ```php
 use Hooks;
-use SMW\Store
+use SMW\Store;
 use SMW\SemanticData;
 use SMW\RequestOptions
 
