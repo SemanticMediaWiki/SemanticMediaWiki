@@ -149,7 +149,39 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$search = new Search();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
+		$search->getFallbackSearchEngine();
+	}
+
+	public function testGetFallbackSearchEngine_ConstructFromString() {
+
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\ASearchDatabase' );
+
+		$search = new Search();
+
+		$this->assertInstanceOf(
+			'\SearchDatabase',
+			$search->getFallbackSearchEngine()
+		);
+	}
+
+	public function testGetFallbackSearchEngine_ConstructFromStringNonSearchDatabaseThrowsException() {
+
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\ASearchEngine' );
+
+		$search = new Search();
+
+		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
+		$search->getFallbackSearchEngine();
+	}
+
+	public function testGetFallbackSearchEngine_ConstructFromStringInvalidClassThrowsException() {
+
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'ClassDoesntExist' );
+
+		$search = new Search();
+
+		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
 		$search->getFallbackSearchEngine();
 	}
 
