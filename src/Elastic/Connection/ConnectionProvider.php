@@ -8,7 +8,6 @@ use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Options;
 use Psr\Log\LoggerAwareTrait;
-use Onoi\Cache\Cache;
 
 /**
  * @private
@@ -23,7 +22,7 @@ class ConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Cache
+	 * @var LockManager
 	 */
 	private $lockManager;
 
@@ -80,25 +79,20 @@ class ConnectionProvider implements IConnectionProvider {
 		];
 
 		if ( $this->hasAvailableClientBuilder() ) {
-			$this->connection = $this->newClient( ClientBuilder::fromConfig( $params, true ) );
+			$clientBuilder = ClientBuilder::fromConfig( $params, true );
 		} else {
-			$this->connection = new DummyClient();
+			$clientBuilder = null;
 		}
+
+		$this->connection = $this->newClient( $clientBuilder );
 
 		$this->connection->setLogger(
 			$this->logger
 		);
 
 		$this->logger->info(
-			[
-				'Connection',
-				'{provider} : {hosts}'
-			],
-			[
-				'role' => 'developer',
-				'provider' => 'elastic',
-				'hosts' => $params['hosts']
-			]
+			[ 'Connection', '{provider} : {hosts}' ],
+			[ 'role' => 'developer', 'provider' => 'elastic', 'hosts' => $params['hosts'] ]
 		);
 
 		return $this->connection;
@@ -113,7 +107,19 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function newClient( $clientBuilder ) {
+	private function newClient( $clientBuilder = null ) {
+
+		if ( $clientBuilder === null ) {
+			return new DummyClient();
+		}
+
+		// For unit/integration tests use a special `TestClient` to force a refresh
+		// hereby make results immediately available on some actions before
+		// the actual request is transmitted to the `Client`
+		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
+			return new TestClient( $clientBuilder, $this->lockManager, $this->options );
+		}
+
 		return new Client( $clientBuilder, $this->lockManager, $this->options );
 	}
 

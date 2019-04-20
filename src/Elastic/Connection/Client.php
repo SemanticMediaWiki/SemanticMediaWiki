@@ -69,11 +69,6 @@ class Client {
 	/**
 	 * @var boolean
 	 */
-	private $inTest = false;
-
-	/**
-	 * @var boolean
-	 */
 	private static $hasIndex = [];
 
 	/**
@@ -87,7 +82,6 @@ class Client {
 		$this->client = $client;
 		$this->lockManager = $lockManager;
 		$this->options = $options;
-		$this->inTest = defined( 'MW_PHPUNIT_TEST' );
 
 		if ( $this->options === null ) {
 			$this->options = new Options();
@@ -638,10 +632,6 @@ class Client {
 			'response' => ''
 		];
 
-		if ( $this->inTest ) {
-			$params = $params + [ 'refresh' => true ];
-		}
-
 		try {
 			$response = $this->client->bulk( $params );
 
@@ -696,12 +686,6 @@ class Client {
 		$results = [];
 		$time = -microtime( true );
 
-		// https://discuss.elastic.co/t/es-5-2-refresh-interval-doesnt-work-if-set-to-0/79248/2
-		// Make sure the replication/index lag doesn't hinder the search
-		if ( $this->inTest ) {
-			$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
-		}
-
 		// ... "_source", "from", "profile", "query", "size", "sort" are not valid parameters.
 		unset( $params['body']['sort'] );
 		unset( $params['body']['_source'] );
@@ -748,12 +732,6 @@ class Client {
 
 		$time = -microtime( true );
 
-		// https://discuss.elastic.co/t/es-5-2-refresh-interval-doesnt-work-if-set-to-0/79248/2
-		// Make sure the replication/index lag doesn't hinder the search
-		if ( $this->inTest ) {
-			$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
-		}
-
 		try {
 			$results = $this->client->search( $params );
 		} catch ( NoNodesAvailableException $e ) {
@@ -792,12 +770,6 @@ class Client {
 
 		if ( $params === [] ) {
 			return [];
-		}
-
-		// https://discuss.elastic.co/t/es-5-2-refresh-interval-doesnt-work-if-set-to-0/79248/2
-		// Make sure the replication/index lag doesn't hinder the search
-		if ( $this->inTest ) {
-			$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 		}
 
 		return $this->client->explain( $params );
