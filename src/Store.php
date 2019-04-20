@@ -229,17 +229,17 @@ abstract class Store implements QueryEngine {
 		$subject = $semanticData->getSubject();
 		$hash = $subject->getHash();
 
-		/**
-		 * @since 1.6
-		 */
+		// Deprecated since 3.1, use SMW::Store::BeforeDataUpdateComplete
 		\Hooks::run( 'SMWStore::updateDataBefore', [ $this, $semanticData ] );
+
+		\Hooks::run( 'SMW::Store::BeforeDataUpdateComplete', [ $this, $semanticData ] );
 
 		$this->doDataUpdate( $semanticData );
 
-		/**
-		 * @since 1.6
-		 */
+		// Deprecated since 3.1, use SMW::Store::AfterDataUpdateComplete
 		\Hooks::run( 'SMWStore::updateDataAfter', [ $this, $semanticData ] );
+
+		\Hooks::run( 'SMW::Store::AfterDataUpdateComplete', [ $this, $semanticData ] );
 
 		$rev = $semanticData->getExtensionData( 'revision_id' );
 		$procTime = Timer::getElapsedTime( __METHOD__, 5 );
