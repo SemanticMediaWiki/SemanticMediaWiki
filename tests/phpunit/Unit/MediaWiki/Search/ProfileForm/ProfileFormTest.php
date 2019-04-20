@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search;
+namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
-use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Search\SearchProfileForm
+ * @covers \SMW\MediaWiki\Search\ProfileForm\ProfileForm
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
+class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $specialSearch;
@@ -68,16 +68,26 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			SearchProfileForm::class,
-			new SearchProfileForm( $this->store, $this->specialSearch )
+			ProfileForm::class,
+			new ProfileForm( $this->store, $this->specialSearch )
+		);
+	}
+
+	public function testIsValidProfile() {
+
+		$this->assertFalse(
+			ProfileForm::isValidProfile( 'foo' )
 		);
 	}
 
 	public function testAddProfile() {
 
 		$profile = [];
+		$options = [
+			'default_namespaces' => []
+		];
 
-		SearchProfileForm::addProfile( 'SMWSearch', $profile );
+		ProfileForm::addProfile( SMW_SPECIAL_SEARCHTYPE, $profile, $options );
 
 		$this->assertArrayHasKey(
 			'smw',
@@ -85,7 +95,7 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetForm() {
+	public function testBuildForm() {
 
 		$form = '';
 		$opts = [];
@@ -118,12 +128,12 @@ class SearchProfileFormTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( $this->requestContext ) );
 
-		$instance = new SearchProfileForm(
+		$instance = new ProfileForm(
 			$this->store,
 			$this->specialSearch
 		);
 
-		$instance->getForm( $form, $opts );
+		$instance->buildForm( $form, $opts );
 
 		$expected = [
 			'<fieldset id="smw-searchoptions">',

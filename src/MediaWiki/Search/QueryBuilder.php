@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Search;
 
-use SMW\MediaWiki\Search\Form\FormsBuilder;
+use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
+use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
@@ -154,7 +155,7 @@ class QueryBuilder {
 		$prefix_map = [];
 
 		if ( $this->data === [] ) {
-			$data = SearchProfileForm::getFormDefinitions( $store );
+			$data = ProfileForm::getFormDefinitions( $store );
 		} else {
 			$data = $this->data;
 		}
@@ -284,7 +285,5 @@ class QueryBuilder {
 
 		return $fieldValues;
 	}
-
-
 
 }

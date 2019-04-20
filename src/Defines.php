@@ -10,6 +10,12 @@
  */
 
 /**@{
+  * Constants for the search type
+  */
+define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
+/**@}*/
+
+/**@{
  * SMW\ResultPrinter related constants that define
  * how/if headers should be displayed
  */

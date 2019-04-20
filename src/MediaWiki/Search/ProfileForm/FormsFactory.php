@@ -1,7 +1,11 @@
 <?php
 
-namespace SMW\MediaWiki\Search\Form;
+namespace SMW\MediaWiki\Search\ProfileForm;
 
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use WebRequest;
 
 /**

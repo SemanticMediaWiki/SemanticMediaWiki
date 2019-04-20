@@ -81,6 +81,21 @@ return [
 	},
 
 	/**
+	 * SearchEngineConfig
+	 *
+	 * @return callable
+	 */
+	'SearchEngineConfig' => function( $containerBuilder ) {
+
+		// > MW 1.27
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getSearchEngineConfig' ) ) {
+			return MediaWikiServices::getInstance()->getSearchEngineConfig();
+		}
+
+		return null;
+	},
+
+	/**
 	 * LBFactory
 	 *
 	 * @return callable

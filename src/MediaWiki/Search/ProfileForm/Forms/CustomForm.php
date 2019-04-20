@@ -1,11 +1,12 @@
 <?php
 
-namespace SMW\MediaWiki\Search\Form;
+namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
 use SMW\DIProperty;
 use Title;
 use WebRequest;
+use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 
 /**
  * @private

@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\Form;
+namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
-use SMW\MediaWiki\Search\Form\Field;
+use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
 
 /**
- * @covers \SMW\MediaWiki\Search\Form\Field
+ * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\Field
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
