@@ -12,6 +12,7 @@ use Psr\Log\NullLogger;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
 use SMW\Options;
+use SMW\Site;
 
 /**
  * Reduced interface to the Elasticsearch client class.
@@ -61,6 +62,11 @@ class Client {
 	private $options;
 
 	/**
+	 * @var string
+	 */
+	private $wikiid;
+
+	/**
 	 * @var boolean
 	 */
 	private $inTest = false;
@@ -88,6 +94,9 @@ class Client {
 		}
 
 		$this->logger = new NullLogger();
+
+		// #3938
+		$this->wikiid = strtolower( Site::id() );
 	}
 
 	/**
@@ -125,13 +134,7 @@ class Client {
 	 * @return string
 	 */
 	public function getIndexName( $type ) {
-		static $indices = [];
-
-		if ( !isset( $indices[$type] ) ) {
-			$indices[$type] = "smw-$type-" . wfWikiID();
-		}
-
-		return $indices[$type];
+		return "smw-$type-" . $this->wikiid;
 	}
 
 	/**
