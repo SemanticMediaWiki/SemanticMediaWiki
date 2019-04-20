@@ -672,6 +672,13 @@ class SMWWikiPageValue extends SMWDataValue {
 			$displayTitle = $this->getText();
 		}
 
+		# Remove (context) as per pipe trick.
+		if ( $this->getOption( 'smwgDVFeatures' ) & SMW_DV_WPV_PIPETRICK != 0) {
+			$tc = '[' . Title::legalChars() . ']';
+			$pt = "/($tc+?)( ?\\($tc+\\))/";
+			$displayTitle = preg_replace($pt, '\\1', $displayTitle);
+		}
+
 		return $displayTitle . $fragmentText;
 	}
 

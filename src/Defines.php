@@ -165,6 +165,7 @@ define( 'SMW_DV_PVUC', 128 );  // Declares a uniqueness constraint
 define( 'SMW_DV_TIMEV_CM', 256 );  // TimeValue to indicate calendar model
 define( 'SMW_DV_PPLB', 512 );  // Preferred property label
 define( 'SMW_DV_PROV_LHNT', 1024 );  // PropertyValue to output a hint in case of a preferred label usage
+define( 'SMW_DV_WPV_PIPETRICK', 2048 );  // Have WikiPageValue use a full pipe trick when rendering its caption.
 /**@}*/
 
 /**@{
