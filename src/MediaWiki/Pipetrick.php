@@ -41,7 +41,7 @@ class Pipetrick {
 		$link = preg_replace( $p3, '[[\\1\\2\\3\\4|\\2]]', $link );
 
 		# Now take the caption text.
-		$caption = "^.*/\\|([^\]]*)]]$/";
+		$caption = "/^.*?\|(.*)]]$/";
 		$link = preg_replace( $caption, '\\1', $link );
 
 		return $link;
