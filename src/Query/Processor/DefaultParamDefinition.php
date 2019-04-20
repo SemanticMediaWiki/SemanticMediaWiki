@@ -61,6 +61,7 @@ class DefaultParamDefinition {
 		$allowedFormats[] = 'auto';
 
 		$params['format'] = [
+			// @see $wgParamDefinitions['smwformat']
 			'type' => 'smwformat',
 			'default' => 'auto',
 		];

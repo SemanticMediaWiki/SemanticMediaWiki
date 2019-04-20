@@ -13,6 +13,7 @@ use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\QueryContext;
 use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\ResultFormat;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -435,7 +436,7 @@ class SMWQueryProcessor implements QueryContext {
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
-		SMWParamFormat::resolveFormatAliases( $format );
+		ResultFormat::resolveFormatAliases( $format );
 
 		if ( !array_key_exists( $format, $smwgResultFormats ) ) {
 			throw new ResultFormatNotFoundException( "There is no result format for '$format'." );
@@ -481,7 +482,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return ParamDefinition[]
 	 */
 	public static function getFormatParameters( $format ) {
-		SMWParamFormat::resolveFormatAliases( $format );
+		ResultFormat::resolveFormatAliases( $format );
 
 		if ( !array_key_exists( $format, $GLOBALS['smwgResultFormats'] ) ) {
 			return [];

@@ -372,7 +372,7 @@ final class Setup {
 
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition'=> 'SMWParamFormat',
+			'definition'=> '\SMW\Query\ResultFormat',
 		];
 	}
 

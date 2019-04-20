@@ -1,22 +1,21 @@
 <?php
 
+namespace SMW\Query;
+
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
 use SMW\Query\PrintRequest;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Definition for the format parameter.
  *
+ * @license GNU GPL v2+
  * @since 1.6.2
- * @deprecated since 1.9
  *
- * @ingroup SMW
- * @ingroup ParamDefinition
- *
- * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWParamFormat extends StringParam {
+class ResultFormat extends StringParam {
 
 	/**
 	 * List of the queries print requests, used to determine the format
@@ -100,13 +99,16 @@ class SMWParamFormat extends StringParam {
 
 		$format = false;
 
+		// Deprecated since 3.1, use `SMW::ResultFormat::OverrideDefaultFormat`
+		\Hooks::run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
+
 		/**
 		 * This hook allows extensions to override SMWs implementation of default result
 		 * format handling.
 		 *
-		 * @since 1.5.2
+		 * @since 3.1
 		 */
-		\Hooks::run( 'SMWResultFormat', [ &$format, $this->printRequests, [] ] );
+		\Hooks::run( 'SMW::ResultFormat::OverrideDefaultFormat', [ &$format, $this->printRequests, [] ] );
 
 		if ( $format !== false ) {
 			return $format;
@@ -161,9 +163,9 @@ class SMWParamFormat extends StringParam {
 		$value = self::getValidFormatName( $value );
 
 		// Add the formats parameters to the parameter list.
-		$queryPrinter = SMWQueryProcessor::getResultPrinter( $value );
-
-		$definitions = $queryPrinter->getParamDefinitions( $definitions );
+		$definitions = QueryProcessor::getResultPrinter( $value )->getParamDefinitions(
+			$definitions
+		);
 
 		return $value;
 	}
