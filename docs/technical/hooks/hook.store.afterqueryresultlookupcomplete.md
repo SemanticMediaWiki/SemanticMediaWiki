@@ -12,3 +12,7 @@ Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store,
 	return true;
 } );
 ```
+
+## See also
+
+- [`hook.store.afterqueryresultlookupcomplete.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.store.afterqueryresultlookupcomplete.md)
