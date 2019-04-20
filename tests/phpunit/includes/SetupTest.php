@@ -49,7 +49,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
-			//'wgVersion'         => '1.21',
 			'wgLanguageCode'    => 'en',
 			'wgLang'            => $language,
 			'IP'                => 'Foo',

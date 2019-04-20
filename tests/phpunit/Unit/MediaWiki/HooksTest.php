@@ -174,7 +174,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [
 			'IP' => 'bar',
-		//	'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
 		];
@@ -201,7 +200,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [
 			'IP' => 'bar',
-		//	'wgVersion' => '1.24',
 			'wgLang' => $language,
 			'smwgEnabledDeferredUpdate' => false
 		];

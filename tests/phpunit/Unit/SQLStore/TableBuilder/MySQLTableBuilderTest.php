@@ -65,7 +65,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateNewTable() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -98,7 +98,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateNewTable_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -122,7 +122,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateExistingTableWithNewField() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -158,7 +158,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateExistingTableWithNewField_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -185,7 +185,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateExistingTableWithNewFieldAndDefault() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -222,7 +222,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testUpdateExistingTableWithNewFieldAndDefault_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -250,7 +250,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateIndex() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -287,7 +287,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateIndex_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -315,7 +315,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDropTable() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -344,7 +344,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDropTable_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -364,7 +364,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testOptimizeTable() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '>=' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
@@ -393,7 +393,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testOptimizeTable_132() {
 
-		if ( version_compare( $GLOBALS['wgVersion'], '1.32', '<' ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
