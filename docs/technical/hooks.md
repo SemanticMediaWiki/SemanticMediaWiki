@@ -1,451 +1,112 @@
 This document contains details about event handlers (also known as [Hooks][hooks]) provided by Semantic MediaWiki to enable users to extent and integrate custom specific solutions.
 
+## Available hooks
+
 Implementing a hook should be made in consideration of the expected performance impact for the front-end (additional DB read/write transactions etc.) and/or the back-end (prolonged job backlog etc.) process.
 
-# List of available hooks
-
-## 1.9
-
-- `SMW::Factbox::BeforeContentGeneration` to replace or amend text elements shown in a Factbox. See also `$smwgFactboxUseCache` settings.<sup>Use of `smwShowFactbox` was deprecated with 1.9</sup>
-- `SMW::Job::updatePropertyJobs` to add additional update jobs for a property and related subjects.<sup>Use of `smwUpdatePropertySubjects` was deprecated with 1.9</sup>
-- `SMW::DataType::initTypes` to add additional DataType support.<sup>Use of `smwInitDatatypes` was deprecated with 1.9</sup>
-- `SMW::SQLStore::updatePropertyTableDefinitions` to add additional table definitions during initialization.
-
-## 2.1
-
-### SMW::Store::BeforeQueryResultLookupComplete
-
-* Version: 2.1
-* Description: Hook to return a `QueryResult` object before the standard selection process is started and allows to suppress the standard selection process completely by returning `false`.
-* Reference class: `SMW_SQLStore3.php`
-
-<pre>
-\Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, $query, &$queryResult, $queryEngine ) {
-
-	// Allow default processing
-	return true;
-
-	// Stop further processing
-	return false;
-} );
-</pre>
-
-### SMW::Store::AfterQueryResultLookupComplete
-
-* Version: 2.1
-* Description: Hook to manipulate a `QueryResult` after the selection process.
-* Reference class: `SMW_SQLStore3.php`
-
-<pre>
-\Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( $store, &$queryResult ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::Property::initProperties
-
-* Version: 2.1
-* Description: Hook to add additional predefined properties (`smwInitProperties` was deprecated with 2.1)
-* Reference class: `SMW\PropertyRegistry`
-
-<pre>
-\Hooks::register( 'SMW::Property::initProperties', function( $propertyRegistry ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::BeforeDeleteSubjectComplete
-
-* Version: 2.1
-* Description: Hook is called before the deletion of a subject is completed
-* Reference class: `SMW_SQLStore3_Writers.php`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function( $store, $title ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::AfterDeleteSubjectComplete
-
-* Version: 2.1
-* Description: Hook is called after the deletion of a subject is completed
-* Reference class: `SMW_SQLStore3_Writers.php`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function( $store, $title ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::BeforeChangeTitleComplete
-
-* Version: 2.1
-* Description: Hook is called before change to a subject is completed
-* Reference class: `SMW_SQLStore3_Writers.php`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
-
-	return true;
-} );
-</pre>
-
-## 2.2
-
-### SMW::Parser::BeforeMagicWordsFinder
-
-* Version: 2.2
-* Description: Hook allowing to extend the magic words list that the `InTextAnnotationParser` should search for the wikitext.
-* Reference class: `\SMW\InTextAnnotationParser`
-
-<pre>
-\Hooks::register( 'SMW::Parser::BeforeMagicWordsFinder', function( array &$magicWords ) {
-
-	return true;
-} );
-</pre>
-
-## 2.3
-
-### SMW::SQLStore::BeforeDataRebuildJobInserts
-
-* Version: 2.3
-* Description: Hook to add update jobs while running the rebuild process.<sup>Use of `smwRefreshDataJobs` was deprecated with 2.3</sup>
-* Reference class: `\SMW\SQLStore\EntityRebuildDispatcher`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::BeforeDataRebuildJobInsert', function( $store, array &$jobs ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::AddCustomFixedPropertyTables
-
-* Version: 2.3
-* Description: Hook to add fixed property table definitions
-* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function( array &$customFixedProperties, &$propertyTablePrefix ) {
-	$customFixedProperties['Foo'] = '_Bar';
-
-	return true;
-} );
-</pre>
-
-### SMW::Browse::AfterIncomingPropertiesLookupComplete
-
-* Version: 2.3
-* Description: Hook to extend the incoming properties display for `Special:Browse`
-* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
-
-<pre>
-\Hooks::register( 'SMW::Browse::AfterIncomingPropertiesLookupComplete', function( $store, $semanticData, $requestOptions ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
-
-* Version: 2.3
-* Description: Hook to replace the standard `SearchByProperty` with a custom link to an extended list of results (return `false` to replace the link)
-* Reference class: `\SMW\MediaWiki\Specials\Browse\ContentsBuilder`
-
-<pre>
-\Hooks::register( 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate', function( $property, $subject, &$propertyValue ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::AfterDataUpdateComplete
-
-* Version: 2.3
-* Description: Hook to add processing after the update has been completed and provides `ChangeOp` to identify entities that have been added/removed during the update. (`SMWSQLStore3::updateDataAfter` was deprecated with 2.3)
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::AfterDataUpdateComplete', function( $store, $semanticData, $changeOp ) {
-
-	return true;
-} );
-</pre>
-
-## 2.4
-
-### SMW::FileUpload::BeforeUpdate
-
-* Version: 2.4
-* Description: Hook to add extra annotations before the `Store` update is triggered
-
-<pre>
-\Hooks::register( 'SMW::FileUpload::BeforeUpdate', function( $filePage, $semanticData  ) {
-
-	return true;
-} );
-</pre>
-
-## 2.5
-
-### SMW::Job::AfterUpdateDispatcherJobComplete
-
-* Version: 2.5
-* Description: Hook allows to add extra jobs after `UpdateDispatcherJob` has been processed.
-* Reference class: `\SMW\MediaWiki\Jobs\UpdateDispatcherJob`
-
-<pre>
-\Hooks::register( 'SMW::Job::AfterUpdateDispatcherJobComplete', function( $job ) {
-
-	// Find related dependencies
-	$title = $job->getTitle();
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::Installer::AfterCreateTablesComplete
-
-* Version: 2.5
-* Description: Hook allows to add extra tables after the creation process as been finalized.
-* Reference class: `\SMW\SQLStore\Installer`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function( $tableBuilder, $messageReporter ) {
-
-	// Output details on the activity
-	$messageReporter->reportMessage( '...' );
-
-	// See documentation in the available TableBuilder interface
-	$tableBuilder->create( ... );
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::Installer::AfterDropTablesComplete
-
-* Version: 2.5
-* Description: Hook allows to remove extra tables after the drop process as been finalized.
-* Reference class: `\SMW\SQLStore\Installer`
-
-<pre>
-\Hooks::register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( $tableBuilder, $messageReporter ) {
-
-	// Output details on the activity
-	$messageReporter->reportMessage( '...' );
-
-	// See documentation in the available TableBuilder interface
-	$tableBuilder->drop( ... );
-
-	return true;
-} );
-</pre>
-
-## 3.0
-
-### SMW::GetPreferences
-
-* Version: 3.0
-* Description: Hook allows to add extra preferences that are ordered on the Semantic MediaWiki user preference tab
-* Reference class: `\SMW\MediaWiki\Hooks\GetPreferences`
-
-<pre>
-\Hooks::register( 'SMW::GetPreferences', function( $user, &$preferences ) {
-
-
-	return true;
-} );
-</pre>
-
-### SMW::Setup::AfterInitializationComplete
-
-* Version: 3.0
-* Description: Hook allows to modify global configuration after initialization of Semantic MediaWiki is completed
-* Reference class: `\SMW\Setup`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
-
-	// #2565
-	unset( $GLOBALS['wgGroupPermissions']['smwcurator'] );
-
-	return true;
-} );
-</pre>
-
-### SMW::Exporter::Controller::AddExpData
-
-* Version: 3.0
-* Description: Hook allows to add additional RDF data for a selected page (was `smwAddToRDFExport`)
-* Reference class: `SMWExportController`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::Exporter::Controller::AddExpData', function( DIWikiPage $subject, &$expDataList, $hasRecursionDepth, $withBacklinks ) {
-
-	// $expData = new ExpData( ... );
-	// $expDataList[] = $expData;
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::EntityReferenceCleanUpComplete
-
-* Version: 3.0
-* Description: Hook allows to get information about which entities have been removed
-* Reference class: `PropertyTableIdReferenceDisposer`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::SQLStore::EntityReferenceCleanUpComplete', function( $store, $id, $subject, $isRedirect ) {
-
-	return true;
-} );
-</pre>
-
-### SMW::Admin::TaskHandlerFactory
-
-* Version: 3.0
-* Description: Hook allows to extend available `TaskHandler` in `Special:SemanticMediaWiki`
-* Reference class: `SMW\MediaWiki\Specials\Admin\TaskHandlerFactory`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::Admin::TaskHandlerFactory', function( &$taskHandlers, $store, $outputFormatter, $user ) {
-
-	// Instance of TaskHandler
-	// $taskHandlers[] = new FooTaskHandler();
-
-	return true;
-} );
-</pre>
-
-### SMW::SQLStore::Installer::BeforeCreateTablesComplete
-
-* Version: 3.1
-* Description: Hook allows to add additional indices
-* Reference class: `SMW\SQLStore\Installer`
-
-When using this hook, please make sure you understand the implications of modifying the standard table definition (e.g add auxiliary indices) which are not part of the core declaration and may alter performance expectations.
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, $messageReporter ) {
-
-	// Modify the table definitions
-} );
-</pre>
-
-[`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/hook.sqlstore.installer.beforecreatetablescomplete.md)
-
-### SMW::RevisionGuard::ChangeRevision
-
-* Version: 3.1
-* Description: Hook allows to forcibly change a revision used during content parsing as in case of the `UpdateJob` execution or when running `rebuildData.php`.
-* Reference class: `SMW\MediaWiki\RevisionGuard`
-
-If you do alter a revision, please log the event and make it visible to a user (or administrator) that it was changed.
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) {
-
-	// Set a revision
-	// $revision = \Revision::newFromId( $id );
-
-	return true;
-} );
-</pre>
-
-### SMW::RevisionGuard::ChangeRevisionID
-
-* Version: 3.1
-* Description: Hook allows to forcibly change the revision ID used in the `Factbox` to build the content.
-* Reference class: `SMW\MediaWiki\RevisionGuard`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::RevisionGuard::ChangeRevisionID', function( $title, &$latestRevID ) {
-
-	// Set a revision ID
-	// $latestRevID = 42;
-} );
-</pre>
-
-## SMW::RevisionGuard::IsApprovedRevision
-
-* Version: 3.1
-* Description: Hook allows to suppress an update, for example the `latestRevID` is not the revision that is approved an should not be used for the `SemanticData` representation.
-* Reference class: `SMW\MediaWiki\RevisionGuard`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::RevisionGuard::IsApprovedRevision', function( $title, $latestRevID ) {
-
-	// If you need to decline an update
-	// return false;
-
-	return true;
-} );
-</pre>
-
-## SMW::RevisionGuard::ChangeFile
-
-* Version: 3.1
-* Description: Hook allows to forcibly change the file version used, this for example is required as part of the ingest process in the ElasticStore.
-* Reference class: `SMW\MediaWiki\RevisionGuard`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) {
-
-	// $file = ...;
-
-	return true;
-} );
-</pre>
-
-## SMW::Event::RegisterEventListeners
-
-* Version: 3.1
-* Description: Hook to register additional event listeners
-* Reference class: `SMW\EventListenerRegistry`
-
-<pre>
-use Hooks;
-
-Hooks::register( 'SMW::Event::RegisterEventListeners', function( $eventListener ) {
-
-	// $eventListener->registerCallback( 'FooEvent' , [ $this, 'onFooEvent' ] );
-
-	return true;
-} );
-</pre>
-
-## Other available hooks
-
-Subsequent hooks should be renamed to follow a common naming practice that help distinguish them from other hook providers. In any case this list needs details and examples.
-
-* `SMWParamFormat`, SMWResultFormat
-* `\SMW\Store`, SMWStore::updateDataBefore (SMW::Store::BeforeDataUpdateComplete)
-* `\SMW\Store`, SMWStore::updateDataAfter (SMW::Store::AfterDataUpdateComplete)
-* `SMWSQLStore3Writers`, SMWSQLStore3::updateDataBefore (SMW::SQLStore::BeforeDataUpdateComplete)
+### Setup and registry
+
+- [`SMW::DataType::initTypes`][hook.datatype.inittypes] to add additional [DataType][datamodel.datatype] support
+- [`SMW::Property::initProperties`][hook.property.initproperties] to add additional predefined properties
+- [`SMW::GetPreferences`][hook.getpreferences] to add extra preferences that are ordered on the Semantic MediaWiki user preference tab
+- [`SMW::Setup::AfterInitializationComplete`][hook.setup.afterinitializationcomplete] to modify global configuration after initialization of Semantic MediaWiki is completed
+- `SMW::Settings::BeforeInitializationComplete` to modify the Semantic MediaWiki configuration before the initialization is completed
+- [`SMW::Event::RegisterEventListeners`][hook.event.registereventlisteners] to register additional event listeners
+
+### Store
+
+- [`SMW::SQLStore::BeforeDeleteSubjectComplete`][hook.sqlstore.beforedeletesubjectcomplete] is called before the deletion of a subject is completed
+- [`SMW::SQLStore::AfterDeleteSubjectComplete`][hook.sqlstore.afterdeletesubjectcomplete] is called after the deletion of a subject is completed
+- [`SMW::SQLStore::BeforeChangeTitleComplete`][hook.sqlstore.beforechangetitlecomplete] is called before change to a subject is completed
+- [`SMW::SQLStore::BeforeDataRebuildJobInserts`][hook.sqlstore.beforedatarebuildjobinserts] to add update jobs while running the rebuild process
+- [`SMW::SQLStore::BeforeDataUpdateComplete`][hook.sqlstore.beforedataupdatecomplete] to extend the `SemanticData` object before the update is completed
+- [`SMW::SQLStore::AfterDataUpdateComplete`][hook.sqlstore.afterdataupdatecomplete] to process information after an update has been completed
+- [`SMW::Store::BeforeDataUpdateComplete`][hook.store.beforedataupdatecomplete] to extend the `SemanticData` object before the update is completed
+- [`SMW::Store::AfterDataUpdateComplete`][hook.store.afterdataupdatecomplete] to process information after an update has been completed
+
+#### Property tables
+
+- [`SMW::SQLStore::AddCustomFixedPropertyTables`][hook.sqlstore.addcustomfixedpropertytables] to add fixed property table definitions
+- `SMW::SQLStore::updatePropertyTableDefinitions` to add additional table definitions during initialization
+- [`SMW::SQLStore::EntityReferenceCleanUpComplete`][hook.sqlstore.entityreferencecleanupcomplete]  to process information about an entity where the clean-up has been finalized
+
+#### Installer
+
+- [`SMW::SQLStore::Installer::BeforeCreateTablesComplete`][hook.sqlstore.installer.beforecreatetablescomplete] to add additional table indices
+- [`SMW::SQLStore::Installer::AfterCreateTablesComplete`][hook.sqlstore.installer.aftercreatetablescomplete] to add extra tables after the creation process as been finalized
+- [`SMW::SQLStore::Installer::AfterDropTablesComplete`][hook.sqlstore.installer.afterdroptablescomplete] to remove extra tables after the drop process as been finalized
+
+#### Query
+
+- [`SMW::Store::BeforeQueryResultLookupComplete`][hook.store.beforequeryresultlookupcomplete] to return a `QueryResult` object before the standard selection process is started and allows to suppress the standard selection process completely by returning `false`
+- [`SMW::Store::AfterQueryResultLookupComplete`][hook.store.afterqueryresultlookupcomplete] to manipulate a `QueryResult` after the selection process
+
+### Parser, annotations, and revision
+
+- [`SMW::Parser::BeforeMagicWordsFinder`][hook.parser.beforemagicwordsfinder] to extend the magic words list that the `InTextAnnotationParser` should inspect on a given text section
+- [`SMW::FileUpload::BeforeUpdate`][hook.fileupload.beforeupdate] to add extra annotations on a `FileUpload` event before the `Store` update is triggered
+- [`SMW::RevisionGuard::ChangeRevision`][hook.revisionguard.changerevision] to forcibly change a revision used during content parsing
+- [`SMW::RevisionGuard::ChangeRevisionID`][hook.revisionguard.changerevisionid] to forcibly change the revision ID as in case of the `Factbox` when building the content.
+- [`SMW::RevisionGuard::IsApprovedRevision`][hook.revisionguard.isapprovedrevision] to define whether a revision is approved or needs to be suppressed.
+- [`SMW::RevisionGuard::ChangeFile`][hook.revisionguard.changefile] to forcibly change the file version used
+
+### Miscellaneous
+
+- `SMW::Factbox::BeforeContentGeneration` to replace or amend text elements shown in a Factbox
+- [`SMW::Browse::AfterIncomingPropertiesLookupComplete`][hook.browse.afterincomingpropertieslookupcomplete] to extend the incoming properties display for `Special:Browse`
+- [`SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate`][hook.browse.beforeincomingpropertyvaluesfurtherlinkcreate] to replace the standard `SearchByProperty` with a custom link in `Special:Browse` to an extended list of results (return `false` to replace the link)
+- [`SMW::Browse::AfterDataLookupComplete`][hook.browse.afterdatalookupcomplete] to extend the HTML with data displayed on `Special:Browse`
+- [`SMW::Admin::TaskHandlerFactory`][hook.admin.taskhandlerfactory] to extend available `TaskHandler` used in the `Special:SemanticMediaWiki` dashboard
+- [`SMW::ResultFormat::OverrideDefaultFormat`][hook.resultformat.overridedefaultformat] to override the default result format handling
+- [`SMW::Job::AfterUpdateDispatcherJobComplete`][hook.job.afterupdatedispatcherjobcomplete] to add additional update jobs for a property and related subjects
+- [`SMW::Exporter::Controller::AddExpData`][hook.exporter.controller.addexpdata] to add additional RDF data for a selected subject
+
+## Deprecated hooks
+
+- `smwInitDatatypes` (since 1.9)
+- `smwInitProperties` (since 2.1)
+- `smwShowFactbox` (since 2.1)
+- `smwRefreshDataJobs` (since 2.3)
+- `smwUpdatePropertySubjects` (since 1.9)
+- `smwAddToRDFExport` (since 3.0)
+- `SMWSQLStore3::updateDataBefore` (since 3.1)
+- `SMWSQLStore3::updateDataAfter` (since 2.3)
+- `SMWStore::updateDataBefore` (since 3.1)
+- `SMWStore::updateDataAfter` (since 3.1)
+- `SMWResultFormat` (since 3.1)
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"
+[hook.store.beforequeryresultlookupcomplete]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.store.beforequeryresultlookupcomplete.md
+[hook.store.afterqueryresultlookupcomplete]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.store.afterqueryresultlookupcomplete.md
+[datamodel.datatype]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.datatype.md
+[hook.property.initproperties]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.property.initproperties.md
+[hook.datatype.inittypes]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.datatype.inittypes.md
+[hook.sqlstore.beforedeletesubjectcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforedeletesubjectcomplete.md
+[hook.sqlstore.afterdeletesubjectcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.afterdeletesubjectcomplete.md
+[hook.sqlstore.beforechangetitlecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforechangetitlecomplete.md
+[hook.parser.beforemagicwordsfinder]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.parser.beforemagicwordsfinder.md
+[hook.sqlstore.beforedatarebuildjobinserts]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforedatarebuildjobinserts.md
+[hook.sqlstore.addcustomfixedpropertytables]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.addcustomfixedpropertytables.md
+[hook.browse.afterincomingpropertieslookupcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.browse.afterincomingpropertieslookupcomplete.md
+[hook.browse.beforeincomingpropertyvaluesfurtherlinkcreate]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.browse.beforeincomingpropertyvaluesfurtherlinkcreate.md
+[hook.browse.afterdatalookupcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.browse.afterdatalookupcomplete.md
+[hook.sqlstore.afterdataupdatecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.afterdataupdatecomplete.md
+[hook.sqlstore.beforedataupdatecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforedataupdatecomplete.md
+[hook.store.beforedataupdatecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.store.beforedataupdatecomplete.md
+[hook.store.afterdataupdatecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.store.afterdataupdatecomplete.md
+[hook.fileupload.beforeupdate]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.fileupload.beforeupdate.md
+[hook.job.afterupdatedispatcherjobcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.job.afterupdatedispatcherjobcomplete.md
+[hook.sqlstore.installer.aftercreatetablescomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.aftercreatetablescomplete.md
+[hook.sqlstore.installer.afterdroptablescomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.afterdroptablescomplete.md
+[hook.sqlstore.installer.beforecreatetablescomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.beforecreatetablescomplete.md
+[hook.getpreferences]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
+[hook.setup.afterinitializationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.setup.afterinitializationcomplete.md
+[hook.exporter.controller.addexpdata]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.exporter.controller.addexpdata.md
+[hook.sqlstore.entityreferencecleanupcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.entityreferencecleanupcomplete.md
+[hook.admin.taskhandlerfactory]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.admin.taskhandlerfactory.md
+[hook.revisionguard.changerevision]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevision.md
+[hook.revisionguard.changerevisionid]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevisionid.md
+[hook.revisionguard.isapprovedrevision]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.isapprovedrevision.md
+[hook.revisionguard.changefile]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changefile.md
+[hook.event.registereventlisteners]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.event.registereventlisteners.md
+[hook.resultformat.overridedefaultformat]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.resultformat.overridedefaultformat.md
