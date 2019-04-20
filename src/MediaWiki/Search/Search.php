@@ -10,6 +10,9 @@ use SMW\ApplicationFactory;
 use SMWQuery;
 use SMWQueryResult as QueryResult;
 use Title;
+use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
+use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
+use SMW\Exception\ClassNotFoundException;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search
@@ -460,7 +463,7 @@ class Search extends SearchEngine {
 		if ( is_callable( $type ) ) {
 			// #3939
 			$fallbackSearch = $type( $connection );
-		} elseif ( $type !== null && $this->isValidFallbackSearchEngineType( $type ) ) {
+		} elseif ( $type !== null && $this->isValidFallbackSearchEngineDatabaseType( $type ) ) {
 			$fallbackSearch = new $type( $connection );
 		} else {
 			$type = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
@@ -468,7 +471,7 @@ class Search extends SearchEngine {
 		}
 
 		if ( !$fallbackSearch instanceof SearchEngine ) {
-			throw new RuntimeException( "The fallback is not a valid search engine type." );
+			throw new SearchEngineInvalidTypeException( "The fallback is not a valid search engine type." );
 		}
 
 		return $fallbackSearch;
@@ -477,18 +480,18 @@ class Search extends SearchEngine {
 	/**
 	 * @param $type
 	 */
-	private function isValidFallbackSearchEngineType( $type ) {
+	private function isValidFallbackSearchEngineDatabaseType( $type ) {
 
 		if ( !class_exists( $type ) ) {
-			throw new RuntimeException( "$type does not exist." );
+			throw new ClassNotFoundException( "$type does not exist." );
 		}
 
 		if ( $type === 'SMWSearch' ) {
-			throw new RuntimeException( 'SMWSearch is not a valid fallback search engine type.' );
+			throw new SearchEngineInvalidTypeException( 'SMWSearch is not a valid fallback search engine type.' );
 		}
 
-		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchEngine' ) ) {
-			throw new RuntimeException( "$type is not a valid fallback search engine type." );
+		if ( $type !== 'SearchEngine' && !is_subclass_of( $type, 'SearchDatabase' ) ) {
+			throw new SearchDatabaseInvalidTypeException( $type );
 		}
 
 		return true;

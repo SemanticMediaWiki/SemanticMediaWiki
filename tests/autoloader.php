@@ -56,6 +56,7 @@ unset( $phpUnitEnvironment );
 $autoloader = require $path;
 
 $autoloader->addPsr4( 'SMW\\Tests\\Utils\\', __DIR__ . '/phpunit/Utils' );
+$autoloader->addPsr4( 'SMW\\Tests\\Fixtures\\', __DIR__ . '/phpunit/Fixtures' );
 
 $autoloader->addClassMap( [
 	'SMW\Tests\TestEnvironment'             => __DIR__ . '/phpunit/TestEnvironment.php',
