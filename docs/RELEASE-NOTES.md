@@ -96,6 +96,9 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3869](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3869)
 * [#3905](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3905)
 * [#3920](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3920)
+* [#3922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3922)
+* [#3928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3928)
+* [#3940](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3940)
 
 ## Bug fixes
 
@@ -130,6 +133,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3830)
 * [#3895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3895) Added the `SMW::SQLStore::Installer::BeforeCreateTablesComplete` hook
 * [#3897](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3897) Added `SMW::RevisionGuard::*` hooks
+* [#3924](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3924)
 
 ## Contributors
 
