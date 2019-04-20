@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\MediaWiki\Search\Form;
+namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
 use RuntimeException;

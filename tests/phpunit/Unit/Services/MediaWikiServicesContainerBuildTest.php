@@ -82,6 +82,12 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			'\JobQueueGroup'
 		];
 
+		$provider[] = [
+			'SearchEngineConfig',
+			[],
+			'\SearchEngineConfig'
+		];
+
 		return $provider;
 	}
 }

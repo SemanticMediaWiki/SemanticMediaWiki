@@ -1,12 +1,10 @@
 <?php
 
-namespace SMW\MediaWiki\Search;
+namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
 use MWNamespace;
 use SMW;
-use SMW\MediaWiki\Search\Form\FormsBuilder;
-use SMW\MediaWiki\Search\Form\FormsFactory;
 use SMW\Schema\SchemaFactory;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Utils\HtmlModal;
@@ -23,7 +21,7 @@ use Xml;
  *
  * @author mwjames
  */
-class SearchProfileForm {
+class ProfileForm {
 
 	const PROFILE_NAME = 'smw';
 
@@ -65,21 +63,32 @@ class SearchProfileForm {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string $profile
+	 *
+	 * @return boolean
+	 */
+	public static function isValidProfile( $profile ) {
+		return $profile === ProfileForm::PROFILE_NAME;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $type
 	 * @param array &$profiles
 	 */
-	public static function addProfile( $type, array &$profiles ) {
+	public static function addProfile( $type, array &$profiles, array $options ) {
 
-		if ( $type !== 'SMWSearch' ) {
+		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
 
 		$profiles[self::PROFILE_NAME] = [
 			'message' => 'smw-search-profile',
 			'tooltip' => 'smw-search-profile-tooltip',
-			'namespaces' => \SearchEngine::defaultNamespaces()
+			'namespaces' => $options['default_namespaces']
 		];
 	}
 
@@ -126,7 +135,7 @@ class SearchProfileForm {
 	 * @param string &$form
 	 * @param array $opts
 	 */
-	public function getForm( &$form, array $opts = [] ) {
+	public function buildForm( &$form, array $opts = [] ) {
 
 		$hidden = '';
 		$html = '';

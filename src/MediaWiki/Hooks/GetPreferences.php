@@ -72,7 +72,7 @@ class GetPreferences extends HookHandler {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-search-info',
 			'section' => 'smw/general-options',
-			'disabled' => $this->getOption( 'wgSearchType' ) !== 'SMWSearch'
+			'disabled' => $this->getOption( 'wgSearchType' ) !== SMW_SPECIAL_SEARCHTYPE
 		];
 
 		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = [

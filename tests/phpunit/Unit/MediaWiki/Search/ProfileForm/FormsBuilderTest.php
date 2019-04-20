@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\Form;
+namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
-use SMW\MediaWiki\Search\Form\FormsBuilder;
+use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Search\Form\FormsBuilder
+ * @covers \SMW\MediaWiki\Search\ProfileForm\FormsBuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,16 +16,19 @@ use SMW\Tests\TestEnvironment;
  */
 class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 
+	private $stringValidator;
 	private $webRequest;
 	private $formsFactory;
 
 	protected function setUp() {
 
+		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->formsFactory = $this->getMockBuilder( '\SMW\MediaWiki\Search\Form\FormsFactory' )
+		$this->formsFactory = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\FormsFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -44,11 +47,11 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$openForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\Form\OpenForm' )
+		$openForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$customForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\Form\CustomForm' )
+		$customForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,15 +95,13 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 			$instance->buildForm( $data )
 		);
 
-		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
-
 		$expected = [
 			'<button type="button" id="smw-search-forms" class="smw-selectmenu-button is-disabled".*',
 			'name="smw-form" value="".*',
 			'data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form"/>'
 		];
 
-		$stringValidator->assertThatStringContains(
+		$this->stringValidator->assertThatStringContains(
 			$expected,
 			$instance->buildFormList( $title )
 		);

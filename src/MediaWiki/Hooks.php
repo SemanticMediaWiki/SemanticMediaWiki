@@ -5,7 +5,7 @@ namespace SMW\MediaWiki;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\Search\SearchProfileForm;
+use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\NamespaceManager;
 use SMW\SemanticData;
 use SMW\Setup;
@@ -438,9 +438,17 @@ class Hooks {
 	 */
 	public function onSpecialSearchProfiles( array &$profiles ) {
 
-		SearchProfileForm::addProfile(
-			$GLOBALS['wgSearchType'],
-			$profiles
+		$applicationFactory = ApplicationFactory::getInstance();
+		$searchEngineConfig = $applicationFactory->singleton( 'SearchEngineConfig' );
+
+		$options = [
+			'default_namespaces' => $searchEngineConfig->defaultNamespaces()
+		];
+
+		ProfileForm::addProfile(
+			Site::searchType(),
+			$profiles,
+			$options
 		);
 
 		return true;
@@ -451,22 +459,23 @@ class Hooks {
 	 */
 	public function onSpecialSearchProfileForm( $specialSearch, &$form, $profile, $term, $opts ) {
 
-		if ( $profile !== SearchProfileForm::PROFILE_NAME ) {
+		if ( !ProfileForm::isValidProfile( $profile ) ) {
 			return true;
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$searchEngineConfig = $applicationFactory->singleton( 'SearchEngineConfig' );
 
-		$searchProfileForm = new SearchProfileForm(
+		$profileForm = new ProfileForm(
 			$applicationFactory->getStore(),
 			$specialSearch
 		);
 
-		$searchProfileForm->setSearchableNamespaces(
-			\MediaWiki\MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces()
+		$profileForm->setSearchableNamespaces(
+			$searchEngineConfig->searchableNamespaces()
 		);
 
-		$searchProfileForm->getForm( $form, $opts );
+		$profileForm->buildForm( $form, $opts );
 
 		return false;
 	}
