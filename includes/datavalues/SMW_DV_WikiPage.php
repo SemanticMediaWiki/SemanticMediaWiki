@@ -4,6 +4,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
+use SMW\MediaWiki\Pipetrick;
 use SMW\Utils\Image;
 
 /**
@@ -670,6 +671,11 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $displayTitle === '' ) {
 			$displayTitle = $this->getText();
+		}
+
+		# Remove (context) as per pipe trick.
+		if ( ($this->getOption( 'smwgDVFeatures' ) & SMW_DV_WPV_PIPETRICK) != 0 ) {
+			$displayTitle = Pipetrick::apply($displayTitle);
 		}
 
 		return $displayTitle . $fragmentText;
