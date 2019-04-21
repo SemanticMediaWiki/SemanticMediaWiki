@@ -201,12 +201,6 @@ class SMWSQLStore3Writers {
 		);
 
 		$changePropListener = $this->factory->newChangePropListener();
-		$hierarchyLookup = $this->factory->newHierarchyLookup();
-
-		// #2698
-		$hierarchyLookup->addListenersTo(
-			$changePropListener
-		);
 
 		$changePropListener->loadListeners(
 			$this->store

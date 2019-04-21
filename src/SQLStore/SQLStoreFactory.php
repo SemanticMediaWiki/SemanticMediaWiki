@@ -724,7 +724,16 @@ class SQLStoreFactory {
 	 * @return ChangePropListener
 	 */
 	public function newChangePropListener() {
-		return new ChangePropListener();
+		$changePropListener = new ChangePropListener();
+
+		$hierarchyLookup = $this->newHierarchyLookup();
+
+		// #2698
+		$hierarchyLookup->addListenersTo(
+			$changePropListener
+		);
+
+		return $changePropListener;
 	}
 
 	/**

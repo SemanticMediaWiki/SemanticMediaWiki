@@ -62,6 +62,11 @@ class ChangePropListener {
 
 		foreach ( self::$listenerCallbacks as $key => $value ) {
 
+			if ( !is_string( $key ) ) {
+				unset( self::$listenerCallbacks[$key] );
+				continue;
+			}
+
 			try {
 				$property = DIProperty::newFromUserLabel( $key );
 			} catch ( PropertyLabelNotResolvedException $e ) {
