@@ -138,6 +138,10 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testAddRedirectInfoRecordToFetchFromCache() {
 
 		$this->connection->expects( $this->once() )
+			->method( 'selectRow' )
+			->will( $this->returnValue( false ) );
+
+		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
@@ -229,13 +233,15 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->jobQueue->expects( $this->once() )
-			->method( 'push' );
+			->method( 'lazyPush' );
 
 		$instance = new RedirectStore(
 			$store
 		);
 
+		$instance->setCommandLineMode( false );
 		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
+
 		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
 

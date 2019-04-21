@@ -277,12 +277,17 @@ class SMWSQLStore3 extends SMWStore {
 		);
 	}
 
-	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 
-		$this->getWriter()->changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
+		\Hooks::run(
+			'SMW::SQLStore::BeforeChangeTitleComplete',
+			[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
+		);
+
+		$this->getWriter()->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
 		$this->doDeferredCachedListLookupUpdate(
-			DIWikiPage::newFromTitle( $oldtitle )
+			DIWikiPage::newFromTitle( $oldTitle )
 		);
 	}
 

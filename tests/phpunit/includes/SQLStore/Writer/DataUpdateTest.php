@@ -67,6 +67,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,6 +126,10 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newRedirectUpdater' )
+			->will( $this->returnValue( $redirectUpdater ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsStore' )
@@ -181,14 +189,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( [] ) );
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 0 ) );
-
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 0 ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -205,7 +205,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -242,14 +242,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findAllEntitiesThatMatch' )
 			->will( $this->returnValue( [] ) );
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 0 ) );
-
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 0 ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -266,7 +258,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -303,14 +295,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 0 ) );
-
-		$objectIdGenerator->expects( $this->once() )
-			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 0 ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -327,7 +311,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -360,14 +344,6 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$objectIdGenerator->expects( $this->atLeastOnce() )
-			->method( 'getSMWPageIDandSort' )
-			->will( $this->returnValue( 0 ) );
-
-		$objectIdGenerator->expects( $this->atLeastOnce() )
-			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 0 ) );
-
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -390,7 +366,7 @@ class DataUpdateTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
 
-		$parentStore->expects( $this->atLeastOnce() )
+		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 

@@ -629,6 +629,29 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return RedirectUpdater
+	 */
+	public function newRedirectUpdater() {
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$redirectUpdater = new RedirectUpdater(
+			$this->store,
+			$this->newIdChanger(),
+			$this->newTableFieldUpdater(),
+			$this->newPropertyStatisticsStore()
+		);
+
+		$redirectUpdater->setEqualitySupportFlag(
+			$settings->get( 'smwgQEqualitySupport' )
+		);
+
+		return $redirectUpdater;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return DuplicateFinder
@@ -713,6 +736,10 @@ class SQLStoreFactory {
 
 		$redirectStore = new RedirectStore(
 			$this->store
+		);
+
+		$redirectStore->setCommandLineMode(
+			Site::isCommandLineMode()
 		);
 
 		return $redirectStore;

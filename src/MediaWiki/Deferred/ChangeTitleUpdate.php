@@ -73,11 +73,6 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 
 		$parameters = [
 			UpdateJob::FORCED_UPDATE => true,
-
-			// Run purge job after the change has happened since no post-edit event
-			// will be triggered on a changed/redirect title
-			Enum::PURGE_ASSOC_PARSERCACHE => true,
-
 			'origin' => 'ChangeTitleUpdate'
 		];
 
