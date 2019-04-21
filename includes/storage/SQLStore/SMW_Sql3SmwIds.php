@@ -1034,27 +1034,6 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Move all cached information about subobjects.
-	 *
-	 * @todo This method is neither efficient nor very convincing
-	 * architecturally; it should be redesigned.
-	 *
-	 * @since 1.8
-	 * @param string $oldtitle
-	 * @param integer $oldnamespace
-	 * @param string $newtitle
-	 * @param integer $newnamespace
-	 */
-	public function moveSubobjects( $oldtitle, $oldnamespace, $newtitle, $newnamespace ) {
-		// Currently we have no way to change title and namespace across all entries.
-		// Best we can do is clear the cache to avoid wrong hits:
-		if ( $oldnamespace != SMW_NS_PROPERTY || $newnamespace != SMW_NS_PROPERTY ) {
-			$this->idCacheManager->deleteCache( $oldtitle, $oldnamespace, '', '' );
-			$this->idCacheManager->deleteCache( $newtitle, $newnamespace, '', '' );
-		}
-	}
-
-	/**
 	 * @since 3.0
 	 */
 	public function initCache() {

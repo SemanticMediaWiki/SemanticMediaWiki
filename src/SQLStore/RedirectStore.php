@@ -3,7 +3,6 @@
 namespace SMW\SQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\HashBuilder;
 use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
@@ -36,6 +35,11 @@ class RedirectStore {
 	private $hasEqualitySupport = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isCommandLineMode = false;
+
+	/**
 	 * @since 2.1
 	 *
 	 * @param Store $store
@@ -50,6 +54,15 @@ class RedirectStore {
 		}
 
 		$this->setEqualitySupportFlag( $GLOBALS['smwgQEqualitySupport'] );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $isCommandLineMode
+	 */
+	public function setCommandLineMode( $isCommandLineMode ) {
+		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
 	/**
@@ -181,7 +194,11 @@ class RedirectStore {
 		}
 
 		foreach ( $jobs as $job ) {
-			$job->insert();
+			if ( $this->isCommandLineMode ) {
+				$job->run();
+			} else {
+				$job->lazyPush();
+			}
 		}
 	}
 
@@ -224,12 +241,34 @@ class RedirectStore {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
+		$row = $connection->selectRow(
+			self::TABLE_NAME,
+			[
+				'o_id'
+			],
+			[
+				's_title' => $title,
+				's_namespace' => $namespace,
+				'o_id' => $id
+			],
+			__METHOD__
+		);
+
+		// Found a match, avoid duplicates!
+		if ( $row !== false ) {
+			return;
+		}
+
+		// Only allow one active redirection from source to target
+		$this->delete( $title, $namespace );
+
 		$connection->insert(
 			self::TABLE_NAME,
 			[
 				's_title' => $title,
 				's_namespace' => $namespace,
-				'o_id' => $id ],
+				'o_id' => $id
+			],
 			__METHOD__
 		);
 	}
@@ -264,7 +303,7 @@ class RedirectStore {
 			$title = Title::makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
-				$jobs[] = new UpdateJob( $title );
+				$jobs[] = new UpdateJob( $title, [ 'origin' => 'RedirectStore' ] );
 			}
 		}
 

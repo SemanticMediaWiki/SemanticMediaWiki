@@ -41,6 +41,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'find' )
 			->will( $this->returnValue( [] ) );
 
+		$redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -143,6 +147,10 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 
 		$this->factory->expects( $this->any() )
+			->method( 'newRedirectUpdater' )
+			->will( $this->returnValue( $redirectUpdater ) );
+
+		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )
 			->will( $this->returnValue( $propertyTableRowDiffer ) );
 
@@ -183,7 +191,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store->expects( $this->exactly( 7 ) )
+		$this->store->expects( $this->exactly( 5 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
@@ -236,7 +244,7 @@ class DeleteSubjectTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $database ) );
 
-		$this->store->expects( $this->exactly( 7 ) )
+		$this->store->expects( $this->exactly( 5 ) )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $objectIdGenerator ) );
 
