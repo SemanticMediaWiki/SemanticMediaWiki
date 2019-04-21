@@ -2,7 +2,14 @@
 
 namespace SMW\MediaWiki;
 
+/**
+ * @license GNU GPL v2+
+ * @since   3.1
+ *
+ * @author Morgon Kanter
+ */
 class Pipetrick {
+
 	/**
  	 * Apply the pipe trick to a page name (not a complete link).
 	 *
@@ -46,4 +53,5 @@ class Pipetrick {
 
 		return $link;
 	}
+
 }

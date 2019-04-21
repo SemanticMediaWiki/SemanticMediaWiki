@@ -673,9 +673,9 @@ class SMWWikiPageValue extends SMWDataValue {
 			$displayTitle = $this->getText();
 		}
 
-		# Remove (context) as per pipe trick.
-		if ( ($this->getOption( 'smwgDVFeatures' ) & SMW_DV_WPV_PIPETRICK) != 0 ) {
-			$displayTitle = Pipetrick::apply($displayTitle);
+		// #3945 (Remove context as per pipe trick)
+		if ( $this->hasFeature( SMW_DV_WPV_PIPETRICK ) ) {
+			$displayTitle = Pipetrick::apply( $displayTitle );
 		}
 
 		return $displayTitle . $fragmentText;
