@@ -5,10 +5,16 @@ namespace SMW\Tests\MediaWiki;
 use SMW\MediaWiki\Pipetrick;
 
 /**
-* @covers \SMW\MediaWiki\Pipetrick
-* @group semantic-mediawiki
-*/
+ * @covers \SMW\MediaWiki\Pipetrick
+ * @group semantic-mediawiki
+ *
+ * @license GNU GPL v2+
+ * @since   3.1
+ *
+ * @author Morgon Kanter
+ */
 class PipetrickTest extends \PHPUnit_Framework_TestCase {
+
 	/**
 	 * @dataProvider textProvider
 	 */
@@ -42,4 +48,5 @@ class PipetrickTest extends \PHPUnit_Framework_TestCase {
 			'Manual of Style'
 		];
 	}
+
 }

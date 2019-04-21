@@ -1503,6 +1503,9 @@ return [
 	# - SMW_DV_PROV_LHNT (PropertyValue) to output a <sup>p</sup> hint marker on
 	# properties that use a preferred label
 	#
+	# - SMW_DV_WPV_PIPETRICK WikiPageValue use a full pipe trick when rendering
+	# its caption
+	#
 	# @since 2.4
 	##
 	'smwgDVFeatures' => SMW_DV_PROV_REDI | SMW_DV_MLTV_LCODE | SMW_DV_PVAP | SMW_DV_WPV_DTITLE | SMW_DV_TIMEV_CM | SMW_DV_PPLB | SMW_DV_PROV_LHNT,
