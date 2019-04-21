@@ -7,6 +7,7 @@ use SMW\StoreFactory;
 use SMW\Store;
 use SMW\Setup;
 use SMW\Options;
+use InvalidArgumentException;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -86,6 +87,7 @@ class RebuildData extends \Maintenance {
 		$this->addOption( 'v', 'Be verbose about the progress', false );
 		$this->addOption( 'p', 'Only refresh property pages (and other explicitly named namespaces)', false );
 		$this->addOption( 'categories', 'Only refresh category pages (and other explicitly named namespaces)', false, false, 'c' );
+		$this->addOption( 'namespace', 'Only refresh pages in the selected namespace', false, false );
 		$this->addOption( 'redirects', 'Only refresh redirect pages', false );
 		$this->addOption( 'dispose-outdated', 'Only Remove outdated marked entities (including pending references).', false );
 		$this->addOption( 'check-remnantentities', 'Check and remove remnant entities (ghosts) from tables without a corresponding hash field entry', false );
@@ -137,13 +139,18 @@ class RebuildData extends \Maintenance {
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();
 
+		if ( $this->hasOption( 'namespace' ) && !defined( $this->getOption( 'namespace' ) ) ) {
+			throw new InvalidArgumentException(
+				"Expected a namespace constant, `". $this->getOption( 'namespace' ) . "` is unkown!"
+			);
+		}
+
 		if ( $this->hasOption( 'check-remnantentities' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'smwgCheckForRemnantEntities', true );
 		}
 
 		if ( $this->hasOption( 'no-cache' ) ) {
 			$maintenanceHelper->setGlobalToValue( 'wgMainCacheType', CACHE_NONE );
-			$maintenanceHelper->setGlobalToValue( 'smwgEntityLookupCacheType', CACHE_NONE );
 			$maintenanceHelper->setGlobalToValue( 'smwgQueryResultCacheType', CACHE_NONE );
 		}
 
