@@ -529,6 +529,10 @@ class DataRebuilder {
 			$this->filters[] = NS_CATEGORY;
 		}
 
+		if ( $options->has( 'namespace' ) ) {
+			$this->filters[] = constant( $options->get( 'namespace' ) );
+		}
+
 		if ( $options->has( 'p' ) ) {
 			$this->filters[] = SMW_NS_PROPERTY;
 		}

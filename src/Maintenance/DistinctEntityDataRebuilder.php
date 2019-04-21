@@ -115,6 +115,7 @@ class DistinctEntityDataRebuilder {
 
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
+		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
 		( $this->options->has( 'query' ) ? 'query (' . $this->options->get( 'query' ) .')' : '' ) .
 		( $this->options->has( 'p' ) ? 'property' : '' );
 
@@ -151,7 +152,7 @@ class DistinctEntityDataRebuilder {
 				);
 			} else {
 				$this->reportMessage(
-					sprintf( "%-16s%s\n", "   ... ($this->rebuildCount/$total $progress)", "Page " . $key ),
+					sprintf( "%-25s%s\n", "   ... ($this->rebuildCount/$total $progress%)", $key ),
 					$this->options->has( 'v' )
 				);
 			}
@@ -190,6 +191,10 @@ class DistinctEntityDataRebuilder {
 
 		if ( $this->options->has( 'categories' ) ) {
 			$this->filters[] = NS_CATEGORY;
+		}
+
+		if ( $this->options->has( 'namespace' ) ) {
+			$this->filters[] = constant( $this->options->get( 'namespace' ) );
 		}
 
 		if ( $this->options->has( 'p' ) ) {
