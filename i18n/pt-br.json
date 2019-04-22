@@ -30,7 +30,8 @@
 			"Fitoschido",
 			"Athena in Wonderland",
 			"Tks4Fish",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Leonardo.guimaraes"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",
@@ -428,11 +429,11 @@
 	"smw-admin-supplementary-section-subtitle": "Funções centrais suportadas",
 	"smw-admin-supplementary-section-intro": "Esta seção fornece funções adicionais além do escopo de manutenção e é possível que algumas funções listadas na [https://www.semantic-mediawiki.org/wiki/Help:Special:SemanticMediaWiki/Supplementary_functions documentação] estejam restritas ou indisponíveis e, portanto, inacessível neste wiki.",
 	"smw-admin-supplementary-settings-title": "Configurações",
-	"smw-admin-supplementary-settings-intro": "<u>$1</u> contém uma lista das consigurações disponíveis utilizadas no Semantic MediaWiki",
+	"smw-admin-supplementary-settings-intro": "<u>$1</u> contém uma lista das configurações disponíveis utilizadas no Semantic MediaWiki",
 	"smw-admin-supplementary-operational-statistics-title": "Estatísticas operacionais",
 	"smw-admin-supplementary-operational-statistics-intro": "Exibe um conjunto estendido de \"<u>$1</u>\"",
 	"smw-admin-supplementary-idlookup-title": "Pesquisa e eliminação de entidades",
-	"smw-admin-supplementary-idlookup-intro": "<u>$1</u> contém funções para pesquisar e eliminar entidades individuais",
+	"smw-admin-supplementary-idlookup-intro": "Suporta uma simples \"<u>$1</u>\" função",
 	"smw-admin-supplementary-duplookup-title": "Consulta de entidades duplicadas",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</u> para encontrar entidades categorizadas como duplicatas para a matriz de tabelas selecionada",
 	"smw-admin-supplementary-duplookup-docu": "Esta página lista entradas de tabelas selecionadas que foram categorizadas como duplicadas. Entradas duplicadas devem (se de todo) ocorrer apenas em raras ocasiões potencialmente causadas por uma atualização finalizada ou por uma transação de reversão malsucedida.",

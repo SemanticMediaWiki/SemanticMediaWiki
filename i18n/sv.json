@@ -307,6 +307,7 @@
 	"smwadmin": "Administrativa och underhållsorienterande funktioner",
 	"smw-admin-statistics-job-title": "Jobbstatistik",
 	"smw-admin-statistics-job-docu": "Jobbstatistiken visar information om schemalagda Semantic MediaWiki-jobb som inte ännu har utförts. Antalet jobb kan vara något felaktiga eller innehålla misslyckade försök, läs [https://www.mediawiki.org/wiki/Manual:Job_queue manualen] för mer information.",
+	"smw-admin-statistics-semanticdata-overview": "Översikt",
 	"smw-admin-setupsuccess": "Lagringsmotorn har satts upp.",
 	"smw_smwadmin_return": "Gå tillbaka till $1",
 	"smw_smwadmin_updatestarted": "Nu har en ny process för att uppdatera semantiska data påbörjats.\nAlla semantiska data kommer att återuppbyggas och repareras där så behövs.\nDu kan följa processen på den här specialsidan.",
@@ -344,8 +345,10 @@
 	"smw-admin-bugsreport": "Fel kan rapporteras på <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">ärendehanteraren</a>, sidan för att <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">rapportera buggar</a> tillhandahåller lite hjälp om hur man skriver en effektiv ärenderapport.",
 	"smw-admin-questions": "Om du har ytterligare frågor eller förslag, diskutera dem på <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">Semantic MediaWiki användarsändlista</a>!",
 	"smw-admin-other-functions": "Andra funktioner",
+	"smw-admin-statistics-extra": "Ytterligare statistik",
+	"smw-admin-statistics": "Statistik",
 	"smw-admin-supplementary-section-title": "Extra funktioner",
-	"smw-admin-supplementary-section-subtitle": "Kärnfunktioner",
+	"smw-admin-supplementary-section-subtitle": "Kärnfunktioner som stöds",
 	"smw-admin-supplementary-section-intro": "Vissa av de listades funktionerna i detta avsnitt kan vara begränsade och är därför otillgängliga på denna wiki.",
 	"smw-admin-supplementary-settings-title": "Konfigurationsinställningar",
 	"smw-admin-supplementary-operational-statistics-title": "Driftstatistik",
@@ -353,6 +356,7 @@
 	"smw-admin-supplementary-duplookup-title": "Duplicera entiteter",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Cachestatistik",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> visar cacherelaterad statistik",
+	"smw-admin-supplementary-operational-table-statistics-title": "Tabellstatistik",
 	"smw-admin-supplementary-elastic-functions": "Tillgängliga funktioner",
 	"smw-admin-supplementary-elastic-settings-title": "Inställningar",
 	"smw-admin-supplementary-elastic-mappings-summary": "Sammanfattning",
@@ -556,5 +560,7 @@
 	"smw-ask-tab-result": "Resultat",
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Felsökning",
-	"smw-ask-tab-code": "Kod"
+	"smw-ask-tab-code": "Kod",
+	"smw-report": "Rapportera",
+	"smw-legend": "Teckenförklaring"
 }

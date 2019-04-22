@@ -364,6 +364,7 @@
 	"smw-admin-supplementary-operational-statistics-cache-title": "캐시 통계",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u>은(는) 캐시 관련 통계를 표시합니다",
 	"smw-admin-supplementary-elastic-title": "일래스틱서치",
+	"smw-admin-supplementary-elastic-section-subtitle": "일래스틱서치",
 	"smw-admin-supplementary-elastic-docu": "이 문서는 시맨틱 미디어위키와 [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore <code>일래스틱스토어</code>]에 연결된 일래스틱서치 클러스터 관련 설정, 매핑, 상태, 색인 통계에 관한 정보를 포함합니다.",
 	"smw-admin-supplementary-elastic-functions": "지원되는 기능",
 	"smw-admin-supplementary-elastic-settings-title": "설정",
@@ -480,7 +481,7 @@
 	"smw-search-profile-extended-section-search-syntax": "검색 입력",
 	"smw-search-profile-extended-section-namespace": "이름공간",
 	"smw-search-profile-extended-section-query": "쿼리",
-	"smw-search-profile-link-caption-query": "보기",
+	"smw-search-profile-link-caption-query": "쿼리 빌더",
 	"smw-search-show": "보기",
 	"smw-search-hide": "숨기기",
 	"log-name-smw": "시맨틱 미디어위키 로그",
@@ -626,5 +627,6 @@
 	"smw-ask-tab-extra": "기타",
 	"smw-ask-tab-debug": "디버그",
 	"smw-ask-tab-code": "코드",
-	"smw-report": "보고서"
+	"smw-report": "보고서",
+	"smw-legend": "범례"
 }
