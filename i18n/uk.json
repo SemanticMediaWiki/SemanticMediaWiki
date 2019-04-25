@@ -332,6 +332,7 @@
 	"smw-admin-statistics-job-docu": "Статистика завдань показує інформацію про заплановані завдання Семантичної MediaWiki, які ще не було виконано. Кількість завдань може бути дещо неточною або містити невдалі спроби. Будь ласка, перегляньте [https://www.mediawiki.org/wiki/Manual:Job_queue посібник], щоб дізнатися подробиці.",
 	"smw-admin-statistics-querycache-title": "Запит на статистику кешу",
 	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] не було увімкнено в цій вікі, а тому немає доступної статистики.",
+	"smw-admin-statistics-semanticdata-overview": "Огляд",
 	"smw-admin-permission-missing": "Доступ до цієї сторінки було заблоковано через відсутність відповідних прав. Будь ласка, ознайомтеся зі сторінкою довідки щодо [https://www.semantic-mediawiki.org/wiki/Help:Permissions прав], щоб отримати інформацію про необхідні налаштування.",
 	"smw-admin-setupsuccess": "Базу даних налаштовано.",
 	"smw_smwadmin_return": "Повернутись до $1",

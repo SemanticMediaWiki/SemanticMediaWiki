@@ -359,6 +359,7 @@
 	"smw-admin-statistics-querycache-title": "查詢快取",
 	"smw-admin-statistics-querycache-disabled": "[https://www.semantic-mediawiki.org/wiki/QueryCache 查詢快取]在此 wiki 未啟用，藉此沒有可用的統計內容。",
 	"smw-admin-statistics-querycache-legend": "快取統計為含有臨時累計內容和衍生資料，包括： \n* \"misses\" 是嘗試從快取索取資料但帶有無效回應，而必須直接做儲存（資料庫、三重儲存或其它）檢索的總數\n* \"deletes\" 代表回收快取操作（透過清除或是依靠查詢）的總數量\n* \"hits\" 含有來自內嵌（來自以 wiki 頁面的查詢呼叫）或非內嵌（如有啟用，由像是 Special:Ask 頁面或是 API 的請求） 來源索取的快取數量\n* \"medianRetrievalResponseTime\" 是用於超過收集過程時間段落的快取、非快取檢索請求回應時間（以秒為單位）中位數的取向值\n* \"noCache\" 表示沒有嘗試從快取來索取結果的次數（limit=0 的查詢，或是 'no-cache' 等其它選項）",
+	"smw-admin-statistics-section-explain": "提供給管理員額外統計的段落。",
 	"smw-admin-statistics-semanticdata-overview": "概要",
 	"smw-admin-permission-missing": "出於缺少權限緣故，被阻止存取此頁面，請參閱[https://www.semantic-mediawiki.org/wiki/Help:Permissions 權限]說明頁面來獲得更多有關所需設定的詳情。",
 	"smw-admin-setupsuccess": "儲存引擎已設定。",
