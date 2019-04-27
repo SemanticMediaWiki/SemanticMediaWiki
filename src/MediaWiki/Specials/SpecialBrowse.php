@@ -100,9 +100,10 @@ class SpecialBrowse extends SpecialPage {
 		}
 
 		if ( !$dataValue->isValid() ) {
+			$error = '';
 
 			foreach ( $dataValue->getErrors() as $error ) {
-				$error = Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
+				$error .= Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
 			}
 
 			$html = Html::rawElement(
