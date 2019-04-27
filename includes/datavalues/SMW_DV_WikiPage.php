@@ -114,7 +114,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
-		global $wgContLang;
+		$localizer = Localizer::getInstance();
 
 		// support inputs like " [[Test]] ";
 		// note that this only works when SMW_PARSER_LINV is set
@@ -154,7 +154,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
 				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
-			} elseif ( !Localizer::getInstance()->getNamespaceIndexByName( substr( $value, 0, -1 ) ) ) {
+			} elseif ( !$localizer->getNamespaceIndexByName( substr( $value, 0, -1 ) ) ) {
 				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
 			}
 		}
@@ -172,14 +172,16 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
 		}
 
+		$property = $this->getProperty();
+
 		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
-		if ( $this->m_title === null && $this->getProperty() !== null ) {
-			$this->addErrorMsg( [ 'smw-datavalue-wikipage-property-invalid-title', $this->getProperty()->getLabel(), $value ] );
+		if ( $this->m_title === null && $property !== null ) {
+			$this->addErrorMsg( [ 'smw-datavalue-wikipage-property-invalid-title', $property->getLabel(), $value ] );
 		} elseif ( $this->m_title === null ) {
 			$this->addErrorMsg( [ 'smw-datavalue-wikipage-invalid-title', $value ] );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-			$this->addErrorMsg( [ 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ] );
+			$this->addErrorMsg( [ 'smw_wrong_namespace', $localizer->getNamespaceTextById( $this->m_fixNamespace ) ] );
 		} else {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
