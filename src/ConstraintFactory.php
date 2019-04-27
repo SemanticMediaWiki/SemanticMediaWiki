@@ -1,17 +1,14 @@
 <?php
 
-namespace SMW\Property;
+namespace SMW;
 
-use SMW\Property\Constraint\ConstraintCheckRunner;
-use SMW\Property\Constraint\ConstraintRegistry;
-use SMW\Property\Constraint\ConstraintErrorFinder;
-use SMW\Property\Constraint\Constraints\NullConstraint;
-use SMW\Property\Constraint\ConstraintSchemaCompiler;
-use SMW\Property\Constraint\Constraints\CommonConstraint;
-use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
-use SMW\Site;
-use SMW\Store;
-use SMW\ApplicationFactory;
+use SMW\Constraint\ConstraintCheckRunner;
+use SMW\Constraint\ConstraintRegistry;
+use SMW\Constraint\ConstraintErrorFinder;
+use SMW\Constraint\Constraints\NullConstraint;
+use SMW\Constraint\ConstraintSchemaCompiler;
+use SMW\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
 
 /**
  * @license GNU GPL v2+

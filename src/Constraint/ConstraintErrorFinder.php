@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Property\Constraint;
+namespace SMW\Constraint;
 
 use SMW\Store;
 use SMW\DIWikiPage;

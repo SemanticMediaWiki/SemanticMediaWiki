@@ -31,11 +31,11 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$this->constraintCheckRunner = $this->getMockBuilder( '\SMW\Property\Constraint\ConstraintCheckRunner' )
+		$this->constraintCheckRunner = $this->getMockBuilder( '\SMW\Constraint\ConstraintCheckRunner' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->schemafinder = $this->getMockBuilder( '\SMW\Schema\Schemafinder' )
+		$this->schemafinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 

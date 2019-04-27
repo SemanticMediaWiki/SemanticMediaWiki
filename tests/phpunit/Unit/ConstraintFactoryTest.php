@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Property;
+namespace SMW\Tests;
 
-use SMW\Property\ConstraintFactory;
+use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\ConstraintFactory
+ * @covers \SMW\ConstraintFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -30,7 +30,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\ConstraintRegistry',
+			'\SMW\Constraint\ConstraintRegistry',
 			$instance->newConstraintRegistry()
 		);
 	}
@@ -40,7 +40,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\ConstraintCheckRunner',
+			'\SMW\Constraint\ConstraintCheckRunner',
 			$instance->newConstraintCheckRunner()
 		);
 	}
@@ -50,7 +50,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\Constraints\NullConstraint',
+			'\SMW\Constraint\Constraints\NullConstraint',
 			$instance->newNullConstraint()
 		);
 	}
@@ -64,7 +64,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\ConstraintSchemaCompiler',
+			'\SMW\Constraint\ConstraintSchemaCompiler',
 			$instance->newConstraintSchemaCompiler( $store )
 		);
 	}
@@ -78,7 +78,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\ConstraintErrorFinder',
+			'\SMW\Constraint\ConstraintErrorFinder',
 			$instance->newConstraintErrorFinder( $store )
 		);
 	}
@@ -91,7 +91,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\Constraint',
+			'\SMW\Constraint\Constraint',
 			$instance->newConstraintByClass( $class )
 		);
 
@@ -105,12 +105,12 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		yield[
 			'null',
-			'\SMW\Property\Constraint\Constraints\NullConstraint'
+			'\SMW\Constraint\Constraints\NullConstraint'
 		];
 
 		yield[
-			'SMW\Property\Constraint\Constraints\CommonConstraint',
-			'\SMW\Property\Constraint\Constraints\CommonConstraint'
+			'SMW\Constraint\Constraints\CommonConstraint',
+			'\SMW\Constraint\Constraints\CommonConstraint'
 		];
 	}
 

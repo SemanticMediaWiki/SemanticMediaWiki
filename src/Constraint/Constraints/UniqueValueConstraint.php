@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Property\Constraint\Constraints;
+namespace SMW\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraint;
-use SMW\Property\Constraint\ConstraintError;
+use SMW\Constraint\Constraint;
+use SMW\Constraint\ConstraintError;
 use SMW\PropertySpecificationLookup;
 use SMW\Store;
 use SMw\RequestOptions;
@@ -70,8 +70,8 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isType( $type ) {
-		return $type === Constraint::TYPE_INSTANT;
+	public function getType() {
+		return Constraint::TYPE_INSTANT;
 	}
 
 	/**

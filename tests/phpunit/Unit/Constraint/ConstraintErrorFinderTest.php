@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint;
+namespace SMW\Tests\Constraint;
 
-use SMW\Property\Constraint\ConstraintErrorFinder;
+use SMW\Constraint\ConstraintErrorFinder;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\Constraint\ConstraintErrorFinder
+ * @covers \SMW\Constraint\ConstraintErrorFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

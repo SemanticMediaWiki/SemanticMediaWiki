@@ -24,7 +24,8 @@ To easily identify pages that contain a constraint schema it is suggested to use
         ]
     },
     "tags": [
-        "property constraint"
+        "constraint",
+        "user namespace"
     ]
 }
 </pre>
@@ -40,4 +41,4 @@ For details, please see the [extending.constraint.md](https://github.com/Semanti
 
 ## Validation
 
-`/data/schema/property-constraint-schema.v1.json`
+`/data/schema/constraint-schema.v1.json`

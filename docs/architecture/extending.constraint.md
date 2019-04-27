@@ -1,4 +1,6 @@
-### `src/Property/Constraint`
+### `src/Constraint`
+
+#### Property constraint
 
 To add a new constraint (let's say represented by `foo_contraint`) it is expected that:
 
@@ -16,6 +18,6 @@ When adding new constraints, please ensure that:
 
 When a constraint is expected to be expensive (in terms of performance, runtime) it should be postponed and be derived from the `DeferrableConstraint` class to ensure that those checks are run using the `DeferredConstraintCheckUpdateJob` hereby avoiding unnecessary resource hogging during a page view/GET process.
 
-[constraint]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Property/Constraint/Constraint.php
-[constraint-registry]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Property/Constraint/ConstraintRegistry.php
-[constraint-factory]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Property/ConstraintFactory.php
+[constraint]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Constraint/Constraint.php
+[constraint-registry]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Constraint/ConstraintRegistry.php
+[constraint-factory]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/ConstraintFactory.php

@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint\Constraints;
+namespace SMW\Tests\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\CommonConstraint;
 use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\Property\Constraint\Constraints\CommonConstraint
+ * @covers \SMW\Constraint\Constraints\CommonConstraint
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -37,12 +37,13 @@ class CommonConstraintTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsType() {
+	public function testGetType() {
 
 		$instance = new CommonConstraint();
 
-		$this->assertTrue(
-			$instance->isType( CommonConstraint::TYPE_INSTANT )
+		$this->assertEquals(
+			CommonConstraint::TYPE_INSTANT,
+			$instance->getType()
 		);
 	}
 

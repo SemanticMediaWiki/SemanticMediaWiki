@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint\Constraints;
+namespace SMW\Tests\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraints\NullConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\Constraint\Constraints\NullConstraint
+ * @covers \SMW\Constraint\Constraints\NullConstraint
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -24,12 +24,13 @@ class NullConstraintTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsType() {
+	public function testGetType() {
 
 		$instance = new NullConstraint();
 
-		$this->assertTrue(
-			$instance->isType( NullConstraint::TYPE_INSTANT )
+		$this->assertEquals(
+			NullConstraint::TYPE_INSTANT,
+			$instance->getType()
 		);
 	}
 

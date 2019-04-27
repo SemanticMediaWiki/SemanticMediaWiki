@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Property\Constraint;
+namespace SMW\Constraint;
 
 /**
  * @license GNU GPL v2+
@@ -35,11 +35,9 @@ interface Constraint {
 	/**
 	 * @since 3.1
 	 *
-	 * @param string|integer $type
-	 *
-	 * @return boolean
+	 * @return string
 	 */
-	public function isType( $type );
+	public function getType();
 
 	/**
 	 * Checks a constraint against a single value. Any error that occurred during

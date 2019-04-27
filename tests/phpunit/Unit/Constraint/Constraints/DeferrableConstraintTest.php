@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint\Constraints;
+namespace SMW\Tests\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraints\DeferrableConstraint;
+use SMW\Constraint\Constraints\DeferrableConstraint;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\Constraint\Constraints\DeferrableConstraint
+ * @covers \SMW\Constraint\Constraints\DeferrableConstraint
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -34,16 +34,22 @@ class DeferrableConstraintTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->assertTrue(
-			$deferrableConstraint->isType( DeferrableConstraint::TYPE_DEFERRED )
+		$deferrableConstraint->isCommandLineMode(
+			false
+		);
+
+		$this->assertEquals(
+			DeferrableConstraint::TYPE_DEFERRED,
+			$deferrableConstraint->getType()
 		);
 
 		$deferrableConstraint->isCommandLineMode(
 			true
 		);
 
-		$this->assertTrue(
-			$deferrableConstraint->isType( DeferrableConstraint::TYPE_INSTANT )
+		$this->assertEquals(
+			DeferrableConstraint::TYPE_INSTANT,
+			$deferrableConstraint->getType()
 		);
 	}
 

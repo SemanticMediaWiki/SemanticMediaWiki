@@ -888,7 +888,7 @@
 	"smw-schema-description-link-format-schema": "This schema type is expected to define characteristics for creating context sensitive links in connection with a [[Property:Formatter schema|formatter schema]] assigned property.",
 	"smw-schema-description-search-form-schema": "This schema type is expected to be used to define input forms and characteristics for the [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] profile where it contains instructions on how to generate input fields, define default namespaces, or declare prefix expressions for a search request.",
 	"smw-schema-description-property-group-schema": "This schema type defines [https://www.semantic-mediawiki.org/wiki/Help:Property_group property groups] to help structure the [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse browsing] interface.",
-	"smw-schema-description-property-constraint-schema": "This schema type is expected to be used to define constraint rules for a property instance as well as those values assigned to it.",
+	"smw-schema-description-constraint-schema": "This schema type is expected to be used to define constraint rules for a property instance as well as those values assigned to it.",
 	"smw-schema-tag": "{{PLURAL:$1|Tag|Tags}}",
 	"smw-property-predefined-constraint-schema": "\"$1\" is a predefined property that defines a constraint schema and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-desc": "\"$1\" is a predefined property that stores a schema description and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -939,5 +939,6 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "The replication monitoring has found that \"$1\" is missing a [[Property:File attachment|File attachment]] annotation indicating that the file ingest processor hasn't started or isn't finished.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Please ensure that the [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion file ingest] job is scheduled and executed before the annotation and file index can be made available.",
 	"smw-report": "Report",
-	"smw-legend": "Legend"
+	"smw-legend": "Legend",
+	"smw-datavalue-constraint-schema-category-wrong-type": "The annotated \"$1\" schema requires to be a \"$2\" type for a category."
 }
