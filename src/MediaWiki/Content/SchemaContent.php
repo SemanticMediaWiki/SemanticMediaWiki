@@ -6,6 +6,7 @@ use SMW\Schema\SchemaFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
 use SMW\ParserData;
+use SMW\ApplicationFactory;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use JsonContent;
@@ -143,6 +144,10 @@ class SchemaContent extends JsonContent {
 		$parserData = new ParserData( $title, $output );
 		$schema = null;
 
+		$this->contentFormatter->isYaml(
+			$this->isYaml
+		);
+
 		try {
 			$schema = $this->schemaFactory->newSchema(
 				$title->getDBKey(),
@@ -155,7 +160,7 @@ class SchemaContent extends JsonContent {
 			);
 
 			$output->setText(
-				$this->contentFormatter->getText( $this->mText, $this->isYaml )
+				$this->contentFormatter->getText( $this->mText )
 			);
 
 			$parserData->addError(
@@ -183,7 +188,7 @@ class SchemaContent extends JsonContent {
 		);
 
 		$output->setText(
-			$this->contentFormatter->getText( $this->mText, $this->isYaml, $schema, $errors )
+			$this->contentFormatter->getText( $this->mText, $schema, $errors )
 		);
 
 		foreach ( $errors as $error ) {
@@ -294,7 +299,9 @@ class SchemaContent extends JsonContent {
 		}
 
 		if ( $this->contentFormatter === null ) {
-			$this->contentFormatter = new SchemaContentFormatter();
+			$this->contentFormatter = new SchemaContentFormatter(
+				ApplicationFactory::getInstance()->getStore()
+			);
 		}
 	}
 

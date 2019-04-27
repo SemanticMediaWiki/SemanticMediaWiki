@@ -2086,7 +2086,8 @@ return [
 			'validation_schema' => __DIR__ . '/data/schema/property-constraint-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_PROPERTY,
 			'type_description' => 'smw-schema-description-property-constraint-schema',
-			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ]
+			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
+			'usage_lookup' => '_CONSTRAINT_SCHEMA'
 		]
 	],
 	##

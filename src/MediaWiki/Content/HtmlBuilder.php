@@ -63,6 +63,14 @@ class HtmlBuilder {
 			);
 		}
 
+		$usage_count = Html::rawElement(
+			'span',
+			[
+				'class' => 'item-count'
+			],
+			$params['usage_count']
+		);
+
 		$htmlTabs = new HtmlTabs();
 
 		$htmlTabs->setActiveTab(
@@ -78,8 +86,17 @@ class HtmlBuilder {
 			]
 		);
 
-		$htmlTabs->content( 'schema-summary', $text );
+		$htmlTabs->tab(
+			'schema-usage',
+			$params['usage-title'] . $usage_count,
+			[
+				'hide' => $params['usage'] === '', 'class' => 'usage-label'
+			]
+		);
+
+		$htmlTabs->content( 'schema-summary', $params['schema_body'] );
 		$htmlTabs->content( 'schema-error', $params['error'] );
+		$htmlTabs->content( 'schema-usage', $params['usage'] );
 
 		$html = $htmlTabs->buildHTML(
 			[ 'class' => 'smw-schema' ]

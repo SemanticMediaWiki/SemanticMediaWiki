@@ -16,11 +16,21 @@ use SMW\Schema\Schema;
  */
 class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
+	private $store;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceof(
 			SchemaContentFormatter::class,
-			new SchemaContentFormatter()
+			new SchemaContentFormatter( $this->store )
 		);
 	}
 
@@ -30,7 +40,9 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new SchemaContentFormatter();
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
 
 		$this->assertInternalType(
 			'string',
@@ -52,11 +64,13 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 		$isYaml = false;
 		$errors = [];
 
-		$instance = new SchemaContentFormatter();
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getText( $text, $isYaml, $schema, $errors )
+			$instance->getText( $text, $schema, $errors )
 		);
 	}
 
@@ -77,11 +91,13 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			[ 'property' => 'foo', 'message' => '---' ]
 		];
 
-		$instance = new SchemaContentFormatter();
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
 
 		$this->assertInternalType(
 			'string',
-			$instance->getText( $text, $isYaml, $schema, $errors )
+			$instance->getText( $text, $schema, $errors )
 		);
 	}
 

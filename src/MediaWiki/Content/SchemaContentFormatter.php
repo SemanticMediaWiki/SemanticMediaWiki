@@ -5,9 +5,13 @@ namespace SMW\MediaWiki\Content;
 use SMW\Schema\Schema;
 use SMW\Schema\SchemaFactory;
 use SMW\Message;
+use SMW\Store;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWInfolink as Infolink;
 use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
 use Onoi\CodeHighlighter\Geshi;
+use SMW\MediaWiki\Page\ListBuilder;
 use Html;
 use Title;
 
@@ -20,9 +24,19 @@ use Title;
 class SchemaContentFormatter {
 
 	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
 	 * @var HtmlBuilder
 	 */
 	private $htmlBuilder;
+
+	/**
+	 * @var boolean
+	 */
+	private $isYaml = false;
 
 	/**
 	 * @var []
@@ -37,10 +51,20 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @param Store $store
 	 */
-	public function __construct() {
+	public function __construct( Store $store ) {
+		$this->store = $store;
 		$this->htmlBuilder = new HtmlBuilder();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param boolean $isYaml
+	 */
+	public function isYaml( $isYaml ) {
+		$this->isYaml = $isYaml;
 	}
 
 	/**
@@ -107,11 +131,10 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, $isYaml = false, Schema $schema = null,  array $errors = [] ) {
+	public function getText( $text, Schema $schema = null, array $errors = [] ) {
 
 		$methods = [
-			'head'   => [ $schema, $errors ],
-			'body'   => [ $text, $isYaml ],
+			'body'   => [ $schema, $errors, $text ],
 			'footer' => [ $schema ]
 		];
 
@@ -128,18 +151,50 @@ class SchemaContentFormatter {
 		return $html;
 	}
 
-	private function head( $schema, array $errors ) {
+	/**
+	 * @since 3.1
+	 *
+	 * @param Schema|null $schema
+	 *
+	 * @return array
+	 */
+	public function getUsage( Schema $schema = null ) {
+
+		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
+			return [ '', 0 ];
+		}
+
+		$usage = '';
+
+		$subjects = $this->store->getPropertySubjects(
+			new DIProperty( $this->type['usage_lookup'] ),
+			new DIWikiPage( str_replace(' ', '_', $schema->getName() ), SMW_NS_SCHEMA )
+		);
+
+		$subjects = iterator_to_array( $subjects );
+
+		if ( $subjects !== [] ) {
+			$usageCount = count( $subjects );
+			$listBuilder = new ListBuilder( $this->store );
+			$usage = $listBuilder->getColumnList( $subjects );
+		} else {
+			$usageCount = 0;
+		}
+
+		return [ $usage, $usageCount ];
+	}
+
+	private function body( $schema, array $errors, $text ) {
 
 		if ( $schema === null ) {
 			return '';
 		}
 
-		$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
 
+		list( $usage, $usage_count ) = $this->getUsage( $schema );
 		$errorCount = count( $errors );
-		$error = $this->error_text( $schema_link, $errors );
 
-		$type = $schema->get( 'type', '' );
+		$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
 		$description = '';
 
 		if ( isset( $this->type['type_description'] ) ) {
@@ -150,15 +205,19 @@ class SchemaContentFormatter {
 			'link' => '',
 			'description' => $schema->get( Schema::SCHEMA_DESCRIPTION, '' ),
 			'type_description' => $description,
+			'usage' => $usage,
+			'usage_count' => $usage_count,
+			'schema_body' => $this->schema_body( $text ),
+			'error' => $this->error_text( $schema_link, $errors ),
 			'schema-title' => $this->msg( 'smw-schema-title' ),
-			'error' => $error,
+			'usage-title' => $this->msg( 'smw-schema-usage' ),
 			'error-title' => $this->msg( [ 'smw-schema-error', $errorCount ] )
 		];
 
 		return $this->htmlBuilder->build( 'schema_head', $params );
 	}
 
-	private function body( $text, $isYaml ) {
+	private function schema_body( $text ) {
 
 		$codeHighlighter = null;
 
@@ -170,20 +229,20 @@ class SchemaContentFormatter {
 			$codeHighlighter->addOption( Geshi::SET_OVERALL_CLASS, 'content-highlight' );
 		}
 
-		if ( $codeHighlighter !== null && $isYaml ) {
+		if ( $codeHighlighter !== null && $this->isYaml ) {
 			$text = $codeHighlighter->highlight( $text );
 		} elseif ( $codeHighlighter !== null ) {
 			$codeHighlighter->addOption( Geshi::SET_STRINGS_STYLE, 'color: #000' );
 			$text = $codeHighlighter->highlight( $text );
 		} else {
-			if ( !$isYaml ) {
+			if ( !$this->isYaml ) {
 				$text = json_encode( json_decode( $text ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 			}
 		}
 
 		$params = [
 			'text' => $text,
-			'isYaml' => $isYaml,
+			'isYaml' => $this->isYaml,
 			'unknown_type' => $this->unknownType
 		];
 
