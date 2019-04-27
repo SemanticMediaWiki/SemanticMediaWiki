@@ -1,0 +1,64 @@
+{
+	"description": "Test `smw/schema` on `PROPERTY_CONSTRAINT_SCHEMA` with `allowed_namespaces` and `Constraint schema`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:User namespace",
+			"contents": {
+				"import-from": "/../Fixtures/p-1100-constraint-user.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Username",
+			"contents": "[[Has type::Page]] [[Constraint schema::Constraint:User namespace]]"
+		},
+		{
+			"page": "Test:P1100/1",
+			"contents": "[[Username::P1100]]"
+		},
+		{
+			"page": "Test:P1100/2",
+			"contents": "[[Username::User:P1100]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (invalid assignment on `allowed_namespaces`)",
+			"subject": "Test:P1100/1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwttcontent\">\"P1100\" as value violates the namespace constraint (\"NS_USER\") defined by a schema assigned to the \"Username\" property.</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (valid assignment on `allowed_namespaces`)",
+			"subject": "Test:P1100/2",
+			"assert-output": {
+				"to-contain": [
+					">User:P1100</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
