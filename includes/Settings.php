@@ -590,6 +590,7 @@ class Settings extends Options {
 				'smwgHistoricTypeNamespace' => '3.0.0',
 				'smwgEnabledHttpDeferredJobRequest' => '3.0.0',
 				'smwgQueryDependencyAffiliatePropertyDetectionList' => '3.1.0',
+				'smwgValueLookupCacheType' => '3.1.0',
 				'smwgEntityLookupCacheType' => '3.1.0',
 				'smwgEntityLookupCacheLifetime' => '3.1.0',
 				'smwgEntityLookupFeatures' => '3.1.0',
