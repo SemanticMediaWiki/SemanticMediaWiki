@@ -1,0 +1,12 @@
+{
+    "type": "PROPERTY_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "allowed_namespaces": [
+            "NS_USER"
+        ]
+    },
+    "tags": [
+        "constraint",
+        "user namespace"
+    ]
+}
