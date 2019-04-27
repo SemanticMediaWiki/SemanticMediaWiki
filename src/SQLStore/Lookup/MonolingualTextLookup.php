@@ -54,10 +54,10 @@ class MonolingualTextLookup {
 				$row
 			);
 
-			$text = $row->text_long === null ? $row->text_short : $row->text_long;
+			$text = $row->text_short;
 
-			if ( $row->text_long !== null && $connection->isType( 'postgres' ) ) {
-				$text = pg_unescape_bytea( $text );
+			if ( $row->text_long !== null ) {
+				$text = $connection->unescape_bytea( $row->text_long );
 			}
 
 			$containerSemanticData->addPropertyObjectValue(

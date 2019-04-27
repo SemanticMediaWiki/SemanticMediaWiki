@@ -49,7 +49,8 @@ class DisplayTitleLookup {
 			$list[$id] = $dataItem;
 		}
 
-		list( $rows, $unescape_bytea ) = $this->fetchFromTable( $list );
+		$rows = $this->fetchFromTable( $list );
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		foreach ( $rows as $row ) {
 
@@ -60,7 +61,7 @@ class DisplayTitleLookup {
 			$dataItem = $list[$row->s_id];
 
 			if ( $row->o_blob !== null ) {
-				$displayTitle = $unescape_bytea ? pg_unescape_bytea( $row->o_blob ) : $row->o_blob;
+				$displayTitle = $connection->unescape_bytea( $row->o_blob );
 			} else {
 				$displayTitle = $row->o_hash;
 			}
@@ -107,9 +108,7 @@ class DisplayTitleLookup {
 			__METHOD__
 		);
 
-		$unescape_bytea = $connection->isType( 'postgres' );
-
-		return [ $rows, $unescape_bytea ];
+		return $rows;
 	}
 
 }

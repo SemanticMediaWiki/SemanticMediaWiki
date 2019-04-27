@@ -67,6 +67,10 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tablename' )
 			->will( $this->returnArgument( 0 ) );
 
+		$connection->expects( $this->any() )
+			->method( 'unescape_bytea' )
+			->will( $this->returnArgument( 0 ) );
+
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(

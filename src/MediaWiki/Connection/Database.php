@@ -87,6 +87,11 @@ class Database {
 	private $insertId = null;
 
 	/**
+	 * @var string
+	 */
+	private $type = '';
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param ConnRef $connRef
@@ -148,7 +153,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->connections['read']->getType() === $type;
+		return $this->type === $type;
 	}
 
 	/**
@@ -180,7 +185,7 @@ class Database {
 			$this->initConnection();
 		}
 
-		return $this->connections['read']->getType();
+		return $this->type;
 	}
 
 	/**
@@ -963,6 +968,46 @@ class Database {
 		$this->connections['write']->onTransactionIdle( $callback );
 	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function escape_bytea( $text ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		if ( $this->type === 'postgres' ) {
+			$text = pg_escape_bytea( $text );
+		}
+
+		return $text;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function unescape_bytea( $text ) {
+
+		if ( $this->initConnection === false ) {
+			$this->initConnection();
+		}
+
+		if ( $this->type === 'postgres' ) {
+			$text = pg_unescape_bytea( $text );
+		}
+
+		return $text;
+	}
+
 	private function initConnection() {
 
 		if ( $this->connections['read'] === null ) {
@@ -972,6 +1017,8 @@ class Database {
 		if ( $this->connections['write'] === null && $this->connRef->hasConnection( 'write' ) ) {
 			$this->connections['write'] = $this->connRef->getConnection( 'write' );
 		}
+
+		$this->type = $this->connections['read']->getType();
 
 		$this->initConnection = true;
 	}

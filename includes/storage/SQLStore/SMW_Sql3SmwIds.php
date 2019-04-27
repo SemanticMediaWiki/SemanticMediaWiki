@@ -1094,8 +1094,8 @@ class SMWSql3SmwIds {
 			$hash = $row->smw_proptable_hash;
 		}
 
-		if ( $hash !== null && $hash !== false && $connection->isType( 'postgres' ) ) {
-			$hash = pg_unescape_bytea( $hash );
+		if ( $hash !== null && $hash !== false ) {
+			$hash = $connection->unescape_bytea( $hash );
 		}
 
 		$hash = $hash === null || $hash === false ? [] : unserialize( $hash );
