@@ -23,21 +23,21 @@ class SchemaDefinition implements Schema, JsonSerializable {
 	protected $definition = [];
 
 	/**
-	 * @var string|null
+	 * @var array
 	 */
-	private $validation_schema;
+	private $info = [];
 
 	/**
 	 * @since 3.0
 	 *
 	 * @param string $name
 	 * @param array $definition
-	 * @param string|null $validation_schema
+	 * @param array $info
 	 */
-	public function __construct( $name, array $definition, $validation_schema = null ) {
+	public function __construct( $name, array $definition, array $info = [] ) {
 		$this->name = $name;
 		$this->definition = $definition;
-		$this->validation_schema = $validation_schema;
+		$this->info = $info;
 	}
 
 	/**
@@ -51,6 +51,21 @@ class SchemaDefinition implements Schema, JsonSerializable {
 	}
 
 	/**
+	 * @see Schema::info
+	 * @since 3.0
+	 *
+	 * @return string|null
+	 */
+	public function info( $key, $default = null ) {
+
+		if ( isset( $this->info[$key] ) ) {
+			return $this->info[$key];
+		}
+
+		return $default;
+	}
+
+	/**
 	 * @see Schema::getName
 	 * @since 3.0
 	 *
@@ -58,16 +73,6 @@ class SchemaDefinition implements Schema, JsonSerializable {
 	 */
 	public function getName() {
 		return str_replace( '_', ' ', $this->name );
-	}
-
-	/**
-	 * @see Schema::getValidationSchema
-	 * @since 3.0
-	 *
-	 * @return string|null
-	 */
-	public function getValidationSchema() {
-		return $this->validation_schema;
 	}
 
 	/**

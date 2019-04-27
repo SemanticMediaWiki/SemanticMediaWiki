@@ -13,7 +13,7 @@ use SMW\MediaWiki\Content\SchemaContentHandler;
  *
  * @author mwjames
  */
-class ContentHandlerTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 

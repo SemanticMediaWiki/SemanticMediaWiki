@@ -35,13 +35,13 @@ class SchemaValidator {
 	 */
 	public function validate( Schema $schema = null ) {
 
-		if ( $schema === null || !is_string( $schema->getValidationSchema() ) ) {
+		if ( $schema === null || !is_string( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {
 			return [];
 		}
 
 		$this->validator->validate(
 			$schema,
-			$schema->getValidationSchema()
+			$schema->info( Schema::SCHEMA_VALIDATION_FILE )
 		);
 
 		if ( $this->validator->isValid() ) {

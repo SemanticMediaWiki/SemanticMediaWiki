@@ -14,7 +14,7 @@ use SMW\Schema\Schema;
  *
  * @author mwjames
  */
-class ContentFormatterTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
