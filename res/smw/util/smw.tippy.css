@@ -109,7 +109,7 @@
     opacity: 0.4;
 }
 
-.tippy-hint-warning {
+.tippy-warning-circle {
     float: right;
     height: 10px;
     width: 10px;
@@ -120,7 +120,7 @@
     border-radius: 50%;
 }
 
-.tippy-hint-error {
+.tippy-error-circle {
     float: right;
     height: 10px;
     width: 10px;
