@@ -38,7 +38,7 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 	public function testRoundTrip_Sort_Asc() {
 
 		$fileFetcher = new FileFetcher(
-			FileFetcher::normalize( __DIR__ . '/Fixtures/' )
+			FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/' )
 		);
 
 		$fileFetcher->sort( 'asc' );
@@ -47,8 +47,8 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[
-				[ FileFetcher::normalize( __DIR__ . '/Fixtures/aaa.json' ) ],
-				[ FileFetcher::normalize( __DIR__ . '/Fixtures/zzz.json' ) ]
+				[ FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/aaa.json' ) ],
+				[ FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/zzz.json' ) ]
 			],
 			$files
 		);
@@ -57,7 +57,7 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 	public function testRoundTrip_Sort_Desc() {
 
 		$fileFetcher = new FileFetcher(
-			FileFetcher::normalize( __DIR__ . '/Fixtures/' )
+			FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/' )
 		);
 
 		$fileFetcher->sort( 'desc' );
@@ -66,8 +66,8 @@ class FileFetcherRoundTripTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[
-				[ FileFetcher::normalize( __DIR__ . '/Fixtures/zzz.json' ) ],
-				[ FileFetcher::normalize( __DIR__ . '/Fixtures/aaa.json' ) ]
+				[ FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/zzz.json' ) ],
+				[ FileFetcher::normalize( __DIR__ . '/../../Fixtures/Utils/aaa.json' ) ]
 			],
 			$files
 		);

@@ -38,7 +38,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
-			__DIR__ . '/Fixtures'
+			__DIR__ . '/../../Fixtures/Lang/'
 		);
 
 		$languageContents = new LanguageContents(

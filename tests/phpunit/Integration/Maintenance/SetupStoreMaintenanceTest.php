@@ -30,7 +30,7 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 		$this->spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/Fixtures/test-import-19.7.xml'
+			__DIR__ . '/../../Fixtures/Maintenance/test-import-19.7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {

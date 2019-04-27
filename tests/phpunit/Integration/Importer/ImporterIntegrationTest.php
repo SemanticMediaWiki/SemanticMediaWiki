@@ -25,7 +25,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
-		$this->fixtures = __DIR__ . '/Fixtures';
+		$this->fixtures = __DIR__ . '/../../Fixtures/Importer';
 
 		$this->importerServiceFactory = ApplicationFactory::getInstance()->create( 'ImporterServiceFactory' );
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
