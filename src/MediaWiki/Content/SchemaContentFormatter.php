@@ -166,17 +166,19 @@ class SchemaContentFormatter {
 
 		$usage = '';
 
-		$subjects = $this->store->getPropertySubjects(
+		$dataItems = $this->store->getPropertySubjects(
 			new DIProperty( $this->type['usage_lookup'] ),
 			new DIWikiPage( str_replace(' ', '_', $schema->getName() ), SMW_NS_SCHEMA )
 		);
 
-		$subjects = iterator_to_array( $subjects );
+		if ( $dataItems instanceof \Traversable ) {
+			$dataItems = iterator_to_array( $dataItems );
+		}
 
-		if ( $subjects !== [] ) {
-			$usageCount = count( $subjects );
+		if ( $dataItems !== [] ) {
+			$usageCount = count( $dataItems );
 			$listBuilder = new ListBuilder( $this->store );
-			$usage = $listBuilder->getColumnList( $subjects );
+			$usage = $listBuilder->getColumnList( $dataItems );
 		} else {
 			$usageCount = 0;
 		}
