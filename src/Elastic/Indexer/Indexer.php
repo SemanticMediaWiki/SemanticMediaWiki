@@ -563,9 +563,6 @@ class Indexer {
 
 	private function map_data( $bulk, $changeDiff ) {
 
-		$dbType = $this->store->getInfo( 'db' );
-		$unescape_bytea = isset( $dbType['postgres'] );
-
 		$inserts = [];
 		$inverted = [];
 		$rev = $changeDiff->getAssociatedRev();
@@ -594,7 +591,7 @@ class Indexer {
 					continue;
 				}
 
-				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $unescape_bytea, $rev );
+				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $rev );
 			}
 		}
 
@@ -607,7 +604,7 @@ class Indexer {
 		}
 	}
 
-	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $unescape_bytea, $rev ) {
+	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $rev ) {
 
 		// The structure to be expected in ES:
 		//
@@ -639,6 +636,7 @@ class Indexer {
 		// (proleptic Julian calendar)
 
 		$sid = $fieldChangeOp->get( 's_id' );
+		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( !isset( $insertRows[$sid] ) ) {
 			$insertRows[$sid] = [];
@@ -690,13 +688,13 @@ class Indexer {
 
 		if ( $fieldChangeOp->has( 'o_blob' ) && $fieldChangeOp->has( 'o_hash' ) ) {
 			$type = 'txtField';
-			$val = $ins['o_blob'] === null ? $ins['o_hash'] : $ins['o_blob'];
+			$val = $ins['o_hash'];
 
 			// Postgres requires special handling of blobs otherwise escaped
 			// text elements are used as index input
 			// Tests: P9010, Q0704, Q1206, and Q0103
-			if ( $unescape_bytea && $ins['o_blob'] !== null ) {
-				$val = pg_unescape_bytea( $val );
+			if ( $ins['o_blob'] !== null ) {
+				$val = $connection->unescape_bytea( $ins['o_blob'] );
 			}
 
 			// #3020, 3035
@@ -710,10 +708,10 @@ class Indexer {
 			$val = $this->removeLinks( mb_convert_encoding( $val, 'UTF-8', 'UTF-8' ) );
 		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_blob' ) ) {
 			$type = 'uriField';
-			$val = $ins['o_blob'] === null ? $ins['o_serialized'] : $ins['o_blob'];
+			$val = $ins['o_serialized'];
 
-			if ( $unescape_bytea && $ins['o_blob'] !== null ) {
-				$val = pg_unescape_bytea( $val );
+			if ( $ins['o_blob'] !== null ) {
+				$val = $connection->unescape_bytea( $ins['o_blob'] );
 			}
 
 		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_sortkey' ) ) {

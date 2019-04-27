@@ -478,6 +478,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$read = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$readConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $read ) );
+
 		$write = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -518,6 +526,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$read = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$readConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $read ) );
+
 		$write = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -553,6 +569,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$read = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$readConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $read ) );
 
 		$write = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
@@ -618,6 +642,14 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$read = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$readConnectionProvider->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $read ) );
 
 		$write = $this->getMockBuilder( '\IDatabase' )
 			->disableOriginalConstructor()
