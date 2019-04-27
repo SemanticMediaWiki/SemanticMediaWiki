@@ -107,7 +107,7 @@
 
 .smw-schema-validation-error {
     padding-left:0px;
-    padding-top:5px;
+    padding-top:10px;
 }
 
 .smw-schema-placeholder {
@@ -135,8 +135,14 @@
  * Tabs
  */
 .smw-schema #tab-schema-error:checked ~ #tab-content-schema-error,
+.smw-schema #tab-schema-usage:checked ~ #tab-content-schema-usage,
 .smw-schema #tab-schema-summary:checked ~ #tab-content-schema-summary {
 	display: block;
+}
+
+.smw-schema #tab-schema-usage:checked + label.nav-label .item-count {
+    background-color: rgba(27,31,35,0.08);
+    color: #444d56;
 }
 
 .smw-schema section {
@@ -146,10 +152,14 @@
 }
 
 .smw-schema label.nav-label {
-	padding: 8px 20px;
+	padding: 5px 20px;
 }
 
 .schema-body pre {
+    margin-top: 10px
+}
+
+.smw-columnlist-container {
     margin-top: 10px
 }
 
