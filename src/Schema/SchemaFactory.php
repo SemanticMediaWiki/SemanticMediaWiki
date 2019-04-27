@@ -141,7 +141,7 @@ class SchemaFactory {
 		}
 
 		$type = null;
-		$validation_schema = null;
+		$info = [];
 
 		if ( isset( $data['type'] ) ) {
 			$type = $data['type'];
@@ -152,13 +152,13 @@ class SchemaFactory {
 		}
 
 		if ( isset( $this->schemaTypes[$type]['validation_schema'] ) ) {
-			$validation_schema = $this->schemaTypes[$type]['validation_schema'];
+			$info[Schema::SCHEMA_VALIDATION_FILE] = $this->schemaTypes[$type]['validation_schema'];
 		}
 
 		if ( isset( $this->schemaTypes[$type]['__factory'] ) && is_callable( $this->schemaTypes[$type]['__factory'] ) ) {
-			$schema = $this->schemaTypes[$type]['__factory']( $name, $data );
+			$schema = $this->schemaTypes[$type]['__factory']( $name, $data, $info );
 		} else {
-			$schema = new SchemaDefinition( $name, $data, $validation_schema );
+			$schema = new SchemaDefinition( $name, $data, $info );
 		}
 
 		if ( !$schema instanceof Schema ) {

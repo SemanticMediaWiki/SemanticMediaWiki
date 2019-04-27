@@ -46,8 +46,12 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
+		$info = [
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => '...'
+		];
+
 		$this->assertEmpty(
-			$instance->validate( new SchemaDefinition( 'foo', [], '...' ) )
+			$instance->validate( new SchemaDefinition( 'foo', [], $info ) )
 		);
 	}
 
@@ -71,8 +75,12 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
+		$info = [
+			SchemaDefinition::SCHEMA_VALIDATION_FILE => '...'
+		];
+
 		$this->assertNotEmpty(
-			$instance->validate( new SchemaDefinition( 'foo', [], '...' ) )
+			$instance->validate( new SchemaDefinition( 'foo', [], $info ) )
 		);
 	}
 

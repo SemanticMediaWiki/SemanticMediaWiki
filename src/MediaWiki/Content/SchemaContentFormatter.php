@@ -134,10 +134,7 @@ class SchemaContentFormatter {
 			return '';
 		}
 
-		$schema_link = str_replace( '.json', '', substr(
-			$schema->getValidationSchema(),
-			strrpos( $schema->getValidationSchema(), '/' ) + 1
-		) );
+		$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
 
 		$errorCount = count( $errors );
 		$error = $this->error_text( $schema_link, $errors );

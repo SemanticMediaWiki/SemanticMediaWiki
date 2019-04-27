@@ -53,12 +53,12 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SchemaDefinition(
 			'foo',
 			[],
-			'BAR'
+			[ SchemaDefinition::SCHEMA_VALIDATION_FILE => 'BAR' ]
 		);
 
 		$this->assertEquals(
 			'BAR',
-			$instance->getValidationSchema()
+			$instance->info( SchemaDefinition::SCHEMA_VALIDATION_FILE )
 		);
 	}
 
