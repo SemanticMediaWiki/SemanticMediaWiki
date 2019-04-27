@@ -9,7 +9,6 @@
  */
 
 use SMW\DataValues\InfoLinksProvider;
-use SMW\Deserializers\DVDescriptionDeserializerRegistry;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
@@ -246,7 +245,7 @@ abstract class SMWDataValue {
 		}
 
 		if ( $this->isValid() && !$this->getOption( self::OPT_QUERY_CONTEXT ) ) {
-			$this->checkAllowedValues();
+			$this->checkConstraints();
 		}
 	}
 
@@ -964,10 +963,16 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Check if property is range restricted and, if so, whether the current value is allowed.
-	 * Creates an error if the value is illegal.
+	 * @deprecated since 3.1, use DataValue::checkConstraints
 	 */
 	protected function checkAllowedValues() {
+		$this->checkConstraints();
+	}
+
+	/**
+	 * @since 3.1
+	 */
+	public function checkConstraints() {
 
 		if ( $this->dataValueServiceFactory === null ) {
 			return;
