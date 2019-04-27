@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Property\Constraint\Constraints;
+namespace SMW\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraint;
-use SMW\Property\Constraint\ConstraintError;
+use SMW\Constraint\Constraint;
+use SMW\Constraint\ConstraintError;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use RuntimeException;
@@ -40,8 +40,8 @@ class CommonConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isType( $type ) {
-		return $type === Constraint::TYPE_INSTANT;
+	public function getType() {
+		return Constraint::TYPE_INSTANT;
 	}
 
 	/**

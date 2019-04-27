@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Property\Constraint;
+namespace SMW\Constraint;
 
 use SMW\Message;
 use SMW\ProcessingError;

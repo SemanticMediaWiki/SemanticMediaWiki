@@ -26,7 +26,7 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->uniqueValueConstraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraints\UniqueValueConstraint' )
+		$this->uniqueValueConstraint = $this->getMockBuilder( '\SMW\Constraint\Constraints\UniqueValueConstraint' )
 			->disableOriginalConstructor()
 			->getMock();
 

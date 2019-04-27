@@ -281,9 +281,10 @@ define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
 /**@{
   * Constants for Schema groups
   */
-define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema.group.format' );
-define( 'SMW_SCHEMA_GROUP_SEARCH_FORM', 'schema.group.search.form' );
-define( 'SMW_SCHEMA_GROUP_PROPERTY', 'schema.group.property' );
+define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema/group/format' );
+define( 'SMW_SCHEMA_GROUP_SEARCH_FORM', 'schema/group/searchform' );
+define( 'SMW_SCHEMA_GROUP_PROPERTY', 'schema/group/property' );
+define( 'SMW_SCHEMA_GROUP_CONSTRAINT', 'schema/group/constraint' );
 
 /**@{
   * Constants for Special:Ask submit method

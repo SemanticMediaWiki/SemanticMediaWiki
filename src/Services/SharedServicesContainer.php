@@ -42,7 +42,7 @@ use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
 use SMW\Query\QuerySourceFactory;
 use SMW\Schema\SchemaFactory;
-use SMW\Property\ConstraintFactory;
+use SMW\ConstraintFactory;
 use SMW\Query\Cache\CacheStats;
 use SMW\QueryFactory;
 use SMW\Settings;

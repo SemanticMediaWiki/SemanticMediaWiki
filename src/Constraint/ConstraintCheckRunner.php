@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Property\Constraint;
+namespace SMW\Constraint;
 
 use RuntimeException;
 use SMW\Schema\Schema;
@@ -125,17 +125,26 @@ class ConstraintCheckRunner {
 				break;
 			}
 
-			$constraint = $this->constraintRegistry->getConstraintByKey(
-				$key
-			);
-
-			if ( $constraint->isType( Constraint::TYPE_DEFERRED ) ) {
-				$this->hasDeferrableConstraint = true;
-			} else {
-				$constraint->checkConstraint( [ $key => $value ], $dataValue );
-				$this->hasViolation = $constraint->hasViolation();
-			}
+			$this->checkConstraint( $key, $value, $dataValue );
 		}
+	}
+
+	private function checkConstraint( $key, $value, $dataValue ) {
+
+		$constraint = $this->constraintRegistry->getConstraintByKey(
+			$key
+		);
+
+		if ( !$constraint instanceof Constraint ) {
+			throw new RuntimeException( "The `$key` key has a non Constraint instance assigned!" );
+		}
+
+		if ( $constraint->getType() === Constraint::TYPE_DEFERRED ) {
+			return $this->hasDeferrableConstraint = true;
+		}
+
+		$constraint->checkConstraint( [ $key => $value ], $dataValue );
+		$this->hasViolation = $constraint->hasViolation();
 	}
 
 }

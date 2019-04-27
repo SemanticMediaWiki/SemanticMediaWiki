@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint;
+namespace SMW\Tests\Constraint;
 
-use SMW\Property\Constraint\ConstraintSchemaCompiler;
+use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 use SMW\Message;
 
 /**
- * @covers \SMW\Property\Constraint\ConstraintSchemaCompiler
+ * @covers \SMW\Constraint\ConstraintSchemaCompiler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

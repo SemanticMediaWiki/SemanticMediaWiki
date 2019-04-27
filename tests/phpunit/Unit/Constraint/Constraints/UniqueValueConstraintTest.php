@@ -1,15 +1,15 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint\Constraints;
+namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\DataItemFactory;
-use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
-use SMW\Property\Constraint\ConstraintError;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Constraint\ConstraintError;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Property\Constraint\Constraints\UniqueValueConstraint
+ * @covers \SMW\Constraint\Constraints\UniqueValueConstraint
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

@@ -21,6 +21,8 @@ use SMW\DataValues\TelephoneUriValue;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\UniquenessConstraintValue;
+use SMW\DataValues\ConstraintSchemaValue;
+use SMW\DataValues\ValueFactory;
 use SMWDataItem as DataItem;
 use SMWNumberValue as NumberValue;
 use SMWQuantityValue as QuantityValue;
@@ -45,6 +47,7 @@ class TypesRegistry {
 	 * @return array
 	 */
 	public static function getDataTypeList() {
+
 		return [
 
 			// ID => [ Class, DI type, isSubDataType, isBrowsable ]
@@ -77,8 +80,16 @@ class TypesRegistry {
 			'_wpc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Form page type for Semantic Forms
 			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
-			 // Rule page
+			 // smw/schema page
 			'_wps'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+
+			ConstraintSchemaValue::TYPE_ID => [
+				[ ValueFactory::class, 'newConstraintSchemaValue' ],
+				DataItem::TYPE_WIKIPAGE,
+				false,
+				true
+			],
+
 			 // Number type
 			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false, false ],
 			 // Temperature type
@@ -215,7 +226,7 @@ class TypesRegistry {
 
 			//
 			'_FORMAT_SCHEMA' => [ '_wps', true, true, false ], // "Formatter schema"
-			'_CONSTRAINT_SCHEMA' => [ '_wps', true, true, true ], // "Constraint schema"
+			'_CONSTRAINT_SCHEMA' => [ ConstraintSchemaValue::TYPE_ID, true, true, true ], // "Constraint schema"
 
 			// File attachment
 			'_ATTCH_LINK'  => [ '_wpg', true, false, false ], // "Attachment link"
@@ -395,6 +406,7 @@ class TypesRegistry {
 			'_wpc' => Exporter::OWL_OBJECT_PROPERTY,
 			'_wpf' => Exporter::OWL_OBJECT_PROPERTY,
 			'_wps' => Exporter::OWL_OBJECT_PROPERTY,
+			ConstraintSchemaValue::TYPE_ID => Exporter::OWL_OBJECT_PROPERTY,
 			'_rec' => Exporter::OWL_OBJECT_PROPERTY,
 		//	'_mlt_rec' => Exporter::OWL_OBJECT_PROPERTY,
 		//	'_ref_rec' => Exporter::OWL_OBJECT_PROPERTY,

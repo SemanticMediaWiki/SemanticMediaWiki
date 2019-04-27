@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint;
+namespace SMW\Tests\Constraint;
 
-use SMW\Property\Constraint\ConstraintCheckRunner;
-use SMW\Property\Constraint\Constraint;
+use SMW\Constraint\ConstraintCheckRunner;
+use SMW\Constraint\Constraint;
 use SMW\Schema\SchemaDefinition;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\Constraint\ConstraintCheckRunner
+ * @covers \SMW\Constraint\ConstraintCheckRunner
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -22,7 +22,7 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->constraintRegistry = $this->getMockBuilder( '\SMW\Property\Constraint\ConstraintRegistry' )
+		$this->constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -37,20 +37,19 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheck_Instance() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$constraint->expects( $this->atLeastOnce() )
-			->method( 'isType' )
-			->with( $this->equalTo( Constraint::TYPE_DEFERRED ) )
-			->will( $this->returnValue( false ) );
+			->method( 'getType' )
+			->will( $this->returnValue( Constraint::TYPE_INSTANT ) );
 
 		$constraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' )
 			->with(
 				$this->equalTo( [ 'foo_bar' => [] ] ),
-			 	$this->equalTo( '__value__' ) )
+				$this->equalTo( '__value__' ) )
 			->will( $this->returnValue( false ) );
 
 		$constraint->expects( $this->atLeastOnce() )
@@ -86,14 +85,13 @@ class ConstraintCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheck_Deferred() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$constraint->expects( $this->atLeastOnce() )
-			->method( 'isType' )
-			->with( $this->equalTo( Constraint::TYPE_DEFERRED ) )
-			->will( $this->returnValue( true ) );
+			->method( 'getType' )
+			->will( $this->returnValue( Constraint::TYPE_DEFERRED ) );
 
 		$constraint->expects( $this->never() )
 			->method( 'checkConstraint' );

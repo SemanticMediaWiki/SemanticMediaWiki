@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Property\Constraint;
+namespace SMW\Constraint;
 
 use RuntimwException;
-use SMW\Property\ConstraintFactory;
-use SMW\Property\Constraint\Constraints\NullConstraint;
-use SMW\Property\Constraint\Constraints\CommonConstraint;
-use SMW\Property\Constraint\Constraints\UniqueValueConstraint;
+use SMW\ConstraintFactory;
+use SMW\Constraint\Constraints\NullConstraint;
+use SMW\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -54,7 +54,7 @@ class ConstraintRegistry {
 	public function registerConstraint( $key, $constraint ) {
 
 		if ( $this->constraints === [] ) {
-			$this->constraints = $this->initConstraints();
+			$this->initConstraints();
 		}
 
 		$this->constraints[$key] = $constraint;
@@ -70,7 +70,7 @@ class ConstraintRegistry {
 	public function getConstraintByKey( $key ) {
 
 		if ( $this->constraints === [] ) {
-			$this->constraints = $this->initConstraints();
+			$this->initConstraints();
 		}
 
 		if ( isset( $this->constraints[$key] ) ) {
@@ -81,7 +81,8 @@ class ConstraintRegistry {
 	}
 
 	private function initConstraints() {
-		return [
+
+		$this->constraints = [
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => CommonConstraint::class,
 			'unique_value_constraint' => UniqueValueConstraint::class

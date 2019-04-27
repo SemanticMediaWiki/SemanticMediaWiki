@@ -2067,24 +2067,24 @@ return [
 	##
 	'smwgSchemaTypes' => [
 		'LINK_FORMAT_SCHEMA' => [
-			'validation_schema' => __DIR__ . '/data/schema/link-format-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_FORMAT,
+			'validation_schema' => __DIR__ . '/data/schema/link-format-schema.v1.json',
 			'type_description' => 'smw-schema-description-link-format-schema',
-			// '__factory' => [ 'SMW\Schema\SchemaFactory', 'newTest' ]
+			// 'class' => [ 'SMW\Schema\SchemaFactory', 'newTest' ]
 		],
 		'SEARCH_FORM_SCHEMA' => [
-			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
+			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
 			'type_description' => 'smw-schema-description-search-form-schema'
 		],
 		'PROPERTY_GROUP_SCHEMA' => [
-			'validation_schema' => __DIR__ . '/data/schema/property-group-schema.v1.json',
 			'group' => SMW_SCHEMA_GROUP_PROPERTY,
+			'validation_schema' => __DIR__ . '/data/schema/property-group-schema.v1.json',
 			'type_description' => 'smw-schema-description-property-group-schema'
 		],
 		'PROPERTY_CONSTRAINT_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
 			'validation_schema' => __DIR__ . '/data/schema/property-constraint-schema.v1.json',
-			'group' => SMW_SCHEMA_GROUP_PROPERTY,
 			'type_description' => 'smw-schema-description-property-constraint-schema',
 			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
 			'usage_lookup' => '_CONSTRAINT_SCHEMA'

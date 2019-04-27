@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Property\Constraint;
+namespace SMW\Tests\Constraint;
 
-use SMW\Property\Constraint\ConstraintRegistry;
+use SMW\Constraint\ConstraintRegistry;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Property\Constraint\ConstraintRegistry
+ * @covers \SMW\Constraint\ConstraintRegistry
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -20,7 +20,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->constraintFactory = $this->getMockBuilder( '\SMW\Property\ConstraintFactory' )
+		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -35,13 +35,13 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetConstraintByUnkownKey() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( $this->equalTo( 'SMW\Property\Constraint\Constraints\NullConstraint' ) )
+			->with( $this->equalTo( 'SMW\Constraint\Constraints\NullConstraint' ) )
 			->will( $this->returnValue( $constraint ) );
 
 		$instance = new ConstraintRegistry(
@@ -53,7 +53,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegisterConstraintWithInstance() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,14 +64,14 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance->registerConstraint( 'foo', $constraint );
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\Constraint',
+			'\SMW\Constraint\Constraint',
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
 
 	public function testRegisterConstraintWithCallable() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,14 +84,14 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\Constraint',
+			'\SMW\Constraint\Constraint',
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
 
 	public function testRegisterConstraintWithClassReference() {
 
-		$constraint = $this->getMockBuilder( '\SMW\Property\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +107,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance->registerConstraint( 'foo', '__class__' );
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Constraint\Constraint',
+			'\SMW\Constraint\Constraint',
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
@@ -132,7 +132,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		yield[
 			'allowed_namespaces',
-			'SMW\Property\Constraint\Constraints\CommonConstraint'
+			'SMW\Constraint\Constraints\CommonConstraint'
 		];
 	}
 

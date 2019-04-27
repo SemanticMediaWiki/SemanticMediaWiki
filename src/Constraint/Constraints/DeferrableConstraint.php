@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Property\Constraint\Constraints;
+namespace SMW\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraint;
+use SMW\Constraint\Constraint;
 
 /**
  * @license GNU GPL v2+
@@ -31,13 +31,13 @@ abstract class DeferrableConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isType( $type ) {
+	public function getType() {
 
 		if ( $this->isCommandLineMode ) {
-			return $type === Constraint::TYPE_INSTANT;
+			return Constraint::TYPE_INSTANT;
 		}
 
-		return $type === Constraint::TYPE_DEFERRED;
+		return Constraint::TYPE_DEFERRED;
 	}
 
 }

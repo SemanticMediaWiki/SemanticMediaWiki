@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Property\Constraint\Constraints;
+namespace SMW\Constraint\Constraints;
 
-use SMW\Property\Constraint\Constraint;
+use SMW\Constraint\Constraint;
 
 /**
  * @license GNU GPL v2+
@@ -26,8 +26,8 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isType( $type ) {
-		return $type === Constraint::TYPE_INSTANT;
+	public function getType() {
+		return Constraint::TYPE_INSTANT;
 	}
 
 	/**

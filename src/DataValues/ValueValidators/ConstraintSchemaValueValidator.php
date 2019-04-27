@@ -7,7 +7,7 @@ use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Schema\SchemaFinder;
-use SMW\Property\Constraint\ConstraintCheckRunner;
+use SMW\Constraint\ConstraintCheckRunner;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 
 /**
