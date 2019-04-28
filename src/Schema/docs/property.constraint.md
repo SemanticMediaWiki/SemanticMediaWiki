@@ -34,10 +34,12 @@ To easily identify pages that contain a constraint schema it is suggested to use
 
 - `allowed_namespaces` (array) specifies allowed namespaces
 - `unique_value_constraint` (boolean) specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items
+- `custom_constraint` (object) to be used to specify non-schema specific constraints that requrie an implementation using the `SMW::Constraint::initConstraints` hook
 
-### Extending constraint properties
+### Extending constraints
 
-For details, please see the [extending.constraint.md](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md) document.
+- General introduction in how to extend a [constraint](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md)
+- How to register a [custom constraint](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.custom.constraint.md) using the `custom_constraint` property
 
 ## Validation
 

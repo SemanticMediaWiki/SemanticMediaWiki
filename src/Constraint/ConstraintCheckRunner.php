@@ -125,7 +125,13 @@ class ConstraintCheckRunner {
 				break;
 			}
 
-			$this->checkConstraint( $key, $value, $dataValue );
+			if ( $key === 'custom_constraint' ) {
+				foreach ( $value as $k => $v ) {
+					$this->checkConstraint( $k, $v, $dataValue );
+				}
+			} else {
+				$this->checkConstraint( $key, $value, $dataValue );
+			}
 		}
 	}
 
