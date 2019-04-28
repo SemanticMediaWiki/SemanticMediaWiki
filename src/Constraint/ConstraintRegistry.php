@@ -87,6 +87,8 @@ class ConstraintRegistry {
 			'allowed_namespaces' => CommonConstraint::class,
 			'unique_value_constraint' => UniqueValueConstraint::class
 		];
+
+		\Hooks::run( 'SMW::Constraint::initConstraints', [ $this ] );
 	}
 
 	private function loadInstance( $class ) {

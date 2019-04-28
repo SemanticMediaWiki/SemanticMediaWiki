@@ -44,6 +44,9 @@
 				},
 				"unique_value_constraint": {
 					"$ref": "#/definitions/unique_value_constraint"
+				},
+				"custom_constraint": {
+					"$ref": "#/definitions/custom_constraint"
 				}
 			},
 			"additionalProperties": false
@@ -67,6 +70,11 @@
 			"type": "boolean",
 			"title": "Specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items",
 			"default": false
+		},
+		"custom_constraint": {
+			"$id": "#/definitions/custom_constraint",
+			"type": "object",
+			"title": "Specifies custom constraints to be implemented by a user"
 		}
 	}
 }
