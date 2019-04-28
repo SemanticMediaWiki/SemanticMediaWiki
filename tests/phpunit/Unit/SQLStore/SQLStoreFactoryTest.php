@@ -536,6 +536,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructErrorLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\ErrorLookup',
+			$instance->newErrorLookup()
+		);
+	}
+
 	public function testCanConstructServicesContainer() {
 
 		$instance = new SQLStoreFactory( $this->store );

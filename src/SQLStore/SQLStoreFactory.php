@@ -38,6 +38,7 @@ use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
@@ -887,6 +888,20 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return ErrorLookup
+	 */
+	public function newErrorLookup() {
+
+		$errorLookup = new ErrorLookup(
+			$this->store
+		);
+
+		return $errorLookup;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return ServicesContainer
@@ -938,6 +953,10 @@ class SQLStoreFactory {
 				'PrefetchItemLookup' => [
 					'_service' => [ $this, 'newPrefetchItemLookup' ],
 					'_type'    => PrefetchItemLookup::class
+				],
+				'ErrorLookup' => [
+					'_service' => [ $this, 'newErrorLookup' ],
+					'_type'    => ErrorLookup::class
 				],
 				'TableStatistics' => [
 					'_service' => [ $this, 'newTableStatistics' ],

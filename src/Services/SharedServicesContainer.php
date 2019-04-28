@@ -58,6 +58,7 @@ use SMW\Query\Processor\ParamListProcessor;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\EntityCache;
 use SMW\DisplayTitleFinder;
+use SMW\Constraint\ConstraintErrorIndicatorProvider;
 
 /**
  * @license GNU GPL v2+
@@ -127,6 +128,10 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$indicatorRegistry = new IndicatorRegistry();
 		$store = $containerBuilder->singleton( 'Store', null );
+
+		$indicatorRegistry->addIndicatorProvider(
+			new ConstraintErrorIndicatorProvider( $store )
+		);
 
 		try{
 			$indicatorProvider = $store->service( 'IndicatorProvider' );
