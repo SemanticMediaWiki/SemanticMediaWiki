@@ -132,15 +132,16 @@
 }
 
 .tippy-header.wide-popup {
-    padding: .8em .8em .6em .8em;
+    padding: .5em .6em .5em .8em;
 }
 
 .tippy-content-container.wide-popup {
     padding: .5em .8em;
     margin-bottom: 0px;
     font-size: 14px;
-    max-height: unset;
-    overflow: unset;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 300px;
 }
 
 .tippy-content-container.wide-popup ul {
@@ -148,5 +149,5 @@
 }
 
 .tippy-bottom.wide-popup {
-     padding: .8em .8em .95em .8em;
+     padding: .5em .8em .95em .8em;
 }

@@ -55,6 +55,17 @@
     margin-top: 2px;
 }
 
+.smw-icon-indicator-constraint-error {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cg stroke='%23ffa500' stroke-width='2.23'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='8.5652'/%3E%3Cpath d='M10,4.188V12.657M10,13.438V15.813'/%3E%3C/g%3E%3C/svg%3E") center left no-repeat;
+    padding-left: 20px;
+    display: inline-block;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+    line-height: 24px;
+    margin-top: 2px;
+}
+
 .smw-icon-constraint-violation {
     background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='26' height='26' viewBox='0 0 24 24'%3E%3Cpath fill='%23ce4844' d='M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' /%3E%3C/svg%3E")
