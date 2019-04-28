@@ -62,6 +62,15 @@ class ErrorLookup {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
+		$idTable->warmUpCache(
+			[
+				$subject,
+				new DIProperty( '_ERR_TYPE' ),
+				new DIProperty( '_ERRT' ),
+				new DIProperty( '_ERRC' )
+			]
+		);
+
 		$pid = $idTable->getSMWPropertyID(
 			new DIProperty( '_ERRC' )
 		);

@@ -9,6 +9,7 @@ use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\Constraint\Constraints\CommonConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -52,6 +53,9 @@ class ConstraintFactory {
 			case UniqueValueConstraint::class:
 				$constraint = $this->newUniqueValueConstraint();
 				break;
+			case NonNegativeIntegerConstraint::class:
+				$constraint = $this->newNonNegativeIntegerConstraint();
+				break;
 			default:
 				$constraint = $this->newNullConstraint();
 				break;
@@ -84,6 +88,15 @@ class ConstraintFactory {
 		);
 
 		return $uniqueValueConstraint;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return NonNegativeIntegerConstraint
+	 */
+	public function newNonNegativeIntegerConstraint() {
+		return new NonNegativeIntegerConstraint();
 	}
 
 	/**
