@@ -1,0 +1,89 @@
+{
+	"description": "Test `smw/schema` on `PROPERTY_CONSTRAINT_SCHEMA` with `non_negative_integer` and `Constraint schema`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:NonNegative",
+			"contents": {
+				"import-from": "/../Fixtures/p-1101-constraint-non-negative.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has int",
+			"contents": "[[Has type::Number]] [[Constraint schema::Constraint:NonNegative]]"
+		},
+		{
+			"page": "Test:P1101/1",
+			"contents": "[[Has int::-1]]"
+		},
+		{
+			"page": "Test:P1101/2",
+			"contents": "[[Has int::1001]]"
+		},
+		{
+			"page": "Test:P1101/3",
+			"contents": "[[Has int::0]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (invalid assignment on `non_negative_integer`)",
+			"subject": "Test:P1101/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwttcontent\">Property \"Has int\" has a \"non negative integer\" constraint and value <i>-1</i> is violating that requirement.</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (valid assignment on `non_negative_integer`)",
+			"subject": "Test:P1101/2",
+			"assert-output": {
+				"to-contain": [
+					"1001"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (valid assignment on `non_negative_integer`)",
+			"subject": "Test:P1101/3",
+			"assert-output": {
+				"to-contain": [
+					"0"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

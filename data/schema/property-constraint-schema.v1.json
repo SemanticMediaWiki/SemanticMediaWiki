@@ -47,6 +47,9 @@
 				},
 				"custom_constraint": {
 					"$ref": "#/definitions/custom_constraint"
+				},
+				"non_negative_integer": {
+					"$ref": "#/definitions/non_negative_integer"
 				}
 			},
 			"additionalProperties": false
@@ -75,6 +78,12 @@
 			"$id": "#/definitions/custom_constraint",
 			"type": "object",
 			"title": "Specifies custom constraints to be implemented by a user"
+		},
+		"non_negative_integer": {
+			"$id": "#/definitions/non_negative_integer",
+			"type": "boolean",
+			"title": "Specifies that values are derived from integer with the minimum inclusive to be 0",
+			"default": false
 		}
 	}
 }

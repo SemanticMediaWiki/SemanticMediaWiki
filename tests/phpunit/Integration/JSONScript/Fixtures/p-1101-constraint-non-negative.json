@@ -1,0 +1,11 @@
+{
+    "type": "PROPERTY_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "non_negative_integer": true
+    },
+    "tags": [
+        "property constraint",
+        "integer",
+        "number"
+    ]
+}

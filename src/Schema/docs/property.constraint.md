@@ -19,13 +19,11 @@ To easily identify pages that contain a constraint schema it is suggested to use
 {
     "type": "PROPERTY_CONSTRAINT_SCHEMA",
     "constraints": {
-        "allowed_namespaces": [
-            "NS_USER"
-        ]
+        ...
     },
     "tags": [
-        "constraint",
-        "user namespace"
+        "property constraint",
+        "..."
     ]
 }
 </pre>
@@ -34,13 +32,18 @@ To easily identify pages that contain a constraint schema it is suggested to use
 
 - `allowed_namespaces` (array) specifies allowed namespaces
 - `unique_value_constraint` (boolean) specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items
-- `custom_constraint` (object) to be used to specify non-schema specific constraints that requrie an implementation using the `SMW::Constraint::initConstraints` hook
+- [`custom_constraint`][custom.constraint] (object) to be used to specify non-schema specific constraints that requrie an implementation using the `SMW::Constraint::initConstraints` hook
+- [`non_negative_integer`][non_negative_integer] (boolean) specifies that values are derived from integer with the minimum inclusive to be 0
 
 ### Extending constraints
 
-- General introduction in how to extend a [constraint](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md)
-- How to register a [custom constraint](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.custom.constraint.md) using the `custom_constraint` property
+- General introduction on how to extend a [constraint][extending.constraint]
+- How to register a [custom constraint][custom.constraint] using the `custom_constraint` property
 
 ## Validation
 
-`/data/schema/constraint-schema.v1.json`
+`/data/schema/property-constraint-schema.v1.json`
+
+[non_negative_integer]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/constraint.schema.nonnegativeinteger.md
+[custom.constraint]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.custom.constraint.md
+[extending.constraint]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md
