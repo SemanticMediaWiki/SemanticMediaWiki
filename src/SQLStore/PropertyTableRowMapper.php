@@ -149,6 +149,10 @@ class PropertyTableRowMapper {
 		$fixedPropertyList = [];
 		$textItems = [];
 
+		$this->store->getObjectIds()->warmUpCache(
+			$semanticData->getProperties()
+		);
+
 		foreach ( $semanticData->getProperties() as $property ) {
 
 			$tableId = $this->store->findPropertyTableID( $property );

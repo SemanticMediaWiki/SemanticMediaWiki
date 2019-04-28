@@ -117,11 +117,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'usesIdSubject' )
 			->will( $this->returnValue( true ) );
 
-		$propertyTable->expects( $this->once() )
+		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
 			->will( $this->returnValue( true ) );
 
-		$propertyTable->expects( $this->once() )
+		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getFixedProperty' )
 			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
 
@@ -190,11 +190,11 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 			->method( 'usesIdSubject' )
 			->will( $this->returnValue( true ) );
 
-		$propertyTable->expects( $this->once() )
+		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
 			->will( $this->returnValue( true ) );
 
-		$propertyTable->expects( $this->once() )
+		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getFixedProperty' )
 			->will( $this->returnValue( '_UNKNOWN_FIXED_PROPERTY' ) );
 
