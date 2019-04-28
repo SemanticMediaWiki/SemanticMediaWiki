@@ -5,6 +5,7 @@ namespace SMW\SQLStore;
 use InvalidArgumentException;
 use SMW\DIProperty;
 use SMW\Exception\DataItemException;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
@@ -129,6 +130,25 @@ class PropertyTableRowDiffer {
 
 		$propertyTables = $this->store->getPropertyTables();
 		$connection = $this->store->getConnection( 'mw.db' );
+
+		$fixedProperties = [];
+
+		foreach ( $propertyTables as $propertyTable ) {
+
+			if ( !$propertyTable->isFixedPropertyTable() ) {
+				continue;
+			}
+
+			try {
+				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
+			} catch( PredefinedPropertyLabelMismatchException $e ) {
+				// Do nothing!
+			}
+		}
+
+		$this->store->getObjectIds()->warmUpCache(
+			$fixedProperties
+		);
 
 		foreach ( $propertyTables as $propertyTable ) {
 
