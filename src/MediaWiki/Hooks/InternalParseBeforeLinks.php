@@ -17,7 +17,7 @@ use StripState;
  *
  * @note MW 1.20+ see InternalParseBeforeSanitize
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
  *
  * @ingroup FunctionHook
  *
