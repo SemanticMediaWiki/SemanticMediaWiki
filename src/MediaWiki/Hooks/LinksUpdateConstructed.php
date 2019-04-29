@@ -13,7 +13,7 @@ use SMW\MediaWiki\RevisionGuard;
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
  *
  * @license GNU GPL v2+
  * @since 1.9

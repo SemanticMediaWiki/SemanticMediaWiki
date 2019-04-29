@@ -14,7 +14,7 @@ use SMW\NamespaceExaminer;
  * Hook: ParserAfterTidy to add some final processing to the
  * fully-rendered page output
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
  *
  * @license GNU GPL v2+
  * @since 1.9

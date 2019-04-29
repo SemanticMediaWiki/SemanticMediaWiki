@@ -1,4 +1,4 @@
-Semantic MedaiWiki and many of its extensions stick to a strict naming conventions and code styles based on the [MediaWiki coding conventions](http://www.mediawiki.org/wiki/Manual:Coding_conventions). The guidelines can often be adopted to other extensions by just changing the prefix <tt>SMW</tt>.
+Semantic MedaiWiki and many of its extensions stick to a strict naming conventions and code styles based on the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions). The guidelines can often be adopted to other extensions by just changing the prefix <tt>SMW</tt>.
 
 ## Files and folders
 
@@ -28,7 +28,7 @@ In general, all names are written using the [CamelCase](https://en.wikipedia.org
 
 ### Code layout and indenting
 
-In general, code layout is guided by the [MediaWiki coding conventions](http://www.mediawiki.org/wiki/Manual:Coding_conventions).  Please be sure to read this document.
+In general, code layout is guided by the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions).  Please be sure to read this document.
 
 - Do not use a closing "?>" tag in your source files. It is a source for errors that is not needed in files.
 - Document all your code (see source documentation for details)

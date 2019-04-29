@@ -13,7 +13,7 @@ use SMW\NamespaceExaminer;
  * This method will be called whenever an article is moved so that
  * semantic properties are moved accordingly.
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
  *
  * @license GNU GPL v2+
  * @since 1.9
