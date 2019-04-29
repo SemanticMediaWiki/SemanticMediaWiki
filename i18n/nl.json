@@ -319,6 +319,7 @@
 	"smw-admin-statistics-job-docu": "De taakstatistieken tonen informatie over geplande Semantic MediaWiki-taken die nog niet zijn uitgevoerd. Het aantal taken kan enigszins afwijken of mislukte pogingen bevatten. Raadpleeg de [https://www.mediawiki.org/wiki/Manual:Job_queue handleiding] voor meer informatie.",
 	"smw-admin-statistics-querycache-title": "Querycachestatistieken",
 	"smw-admin-statistics-querycache-disabled": "De [https://www.semantic-mediawiki.org/wiki/QueryCache QueryCache] is niet ingeschakeld op deze wiki en derhalve zijn geen statistieken beschikbaar.",
+	"smw-admin-statistics-semanticdata-overview": "Overzicht",
 	"smw-admin-permission-missing": "De toegang tot deze pagina is geblokkeerd wegens het ontbreken van de juiste rechten. Raadpleeg de [https://www.semantic-mediawiki.org/wiki/Help:Permissions rechten] help-pagina voor meer informatie over de vereiste instellingen.",
 	"smw-admin-setupsuccess": "De opslagmodule is ingesteld.",
 	"smw_smwadmin_return": "Terug naar $1",
@@ -361,6 +362,7 @@
 	"smw-admin-bugsreport": "Problemen en suggesties kunt u melden op de <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">issuetracker</a>, de <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">reporting bugs</a>-pagina geeft wat richlijnen om een efficiënte issuebeschrijving op te stellen.",
 	"smw-admin-questions": "Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">Semantic MediaWiki gebruikersforum</a>.",
 	"smw-admin-other-functions": "Andere functies",
+	"smw-admin-statistics": "Statistieken",
 	"smw-admin-supplementary-section-title": "Aanvullende functies",
 	"smw-admin-supplementary-section-subtitle": "Beschikbare functies",
 	"smw-admin-supplementary-settings-title": "Configuratie-instellingen",
@@ -512,6 +514,7 @@
 	"smw-copy": "Kopiëren",
 	"smw-copy-clipboard-title": "Inhoud naar het klembord kopiëren",
 	"smw-types-title": "Type: $1",
+	"smw-schema-usage": "Gebruik",
 	"smw-parameter-missing": "Parameter \"$1\" ontbreekt.",
 	"smw-property-tab-usage": "Gebruik",
 	"smw-property-tab-redirects": "Synoniemen",
@@ -522,5 +525,6 @@
 	"smw-concept-tab-errors": "Fouten",
 	"smw-ask-tab-result": "Resultaat",
 	"smw-ask-tab-extra": "Extra",
-	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)"
+	"smw-es-replication-error-divergent-date-detail": "*$1 (Elasticsearch)\n*$2 (SQLStore)",
+	"smw-report": "Verslag"
 }

@@ -455,6 +455,7 @@
 	"smw-jsonview-collapse-title": "Comprimi la vista JSON",
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-error": "Errore di convalida.",
+	"smw-schema-usage": "Utilizzo",
 	"smw-schema-type": "Tipo",
 	"smw-property-predefined-constraint-schema": "\"$1\" è una proprietà predefinita che definisce uno schema di vincoli ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-tab-usage": "Utilizzo",

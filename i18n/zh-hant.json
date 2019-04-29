@@ -31,7 +31,8 @@
 			"Hello903hello",
 			"Taiwania Justo",
 			"A Chinese Wikipedian",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Willy1018"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更容易使用 - 不論是對於機器''或''人類（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件]）",
@@ -736,6 +737,7 @@
 	"smw-property-predefined-long-pvuc": "唯一性會在兩個值在字面涵義上不相等時建立，且違反任何限制會被歸類為錯誤。",
 	"smw-datavalue-constraint-uniqueness-violation": "屬性「$1」僅允許唯一值分配，而「$2」已註解在主題「$3」裡。",
 	"smw-datavalue-constraint-uniqueness-violation-isknown": "屬性「$1」僅允許唯一值註解，「$2」已包含所分配值。「$3」違反了唯一性限制。",
+	"smw-datavalue-constraint-violation-non-negative-integer": "“$1”属性具有“非负整数”约束，“$2”值违反了该要求。",
 	"smw-property-predefined-boo": "「$1」是由 [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] 所提供，用來代表布林值的[[Special:Types/Boolean|類型]]及預先定義屬性。",
 	"smw-property-predefined-num": "「$1」是由 [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] 所提供，用來代表數字值的[[Special:Types/Number|類型]]及預先定義屬性。",
 	"smw-property-predefined-dat": "「$1」是由 [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] 所提供，用來代表日期值的[[Special:Types/Date|類型]]及預先定義屬性。",
@@ -885,6 +887,7 @@
 	"smw-schema-error-type-unknown": "類型「$1」未註冊，不能用於 [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema] 命名空間內容裡。",
 	"smw-schema-validation-error": "類型「$1」未註冊，不能用於 [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema] 命名空間內容裡。",
 	"smw-schema-title": "架構",
+	"smw-schema-usage": "使用狀況",
 	"smw-schema-type": "類型",
 	"smw-schema-description-link-format-schema": "此架構類型預期來定義出與分配給屬性的[[Property:Formatter schema|格式化架構]]相關，用於創建上下文有關連結的字元。",
 	"smw-schema-description-search-form-schema": "此架構類型預期用來定義用於[https://www.semantic-mediawiki.org/wiki/Help:SMWSearch 擴充搜尋]偏好設定的輸入表單與字元，其中包含如何產生輸入欄位、定義預設命名空間、或是宣告用於搜尋請求之字首表達的說明。",
