@@ -16,7 +16,7 @@ use Title;
  * skinned or hidden with all standard mechanisms (also by individual users
  * with custom CSS).
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
  *
  * @license GNU GPL v2+
  * @since 1.9
