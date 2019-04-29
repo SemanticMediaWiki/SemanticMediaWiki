@@ -15,7 +15,7 @@ use WikiPage;
  * A temporary cache entry is created to mark and identify the
  * Article that has been purged.
  *
- * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
  *
  * @license GNU GPL v2+
  * @since 1.9
