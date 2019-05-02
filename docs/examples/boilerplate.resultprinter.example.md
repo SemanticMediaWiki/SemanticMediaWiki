@@ -332,7 +332,7 @@ class BoilerplateResultPrinter extends ResultPrinter {
 				var id = container.attr( 'id' );
 
 				// Fetch the stored data with help of mw.config.get() method and the current instance ID
-				// @see http://www.mediawiki.org/wiki/ResourceLoader/Default_modules#mediaWiki.config
+				// @see https://www.mediawiki.org/wiki/ResourceLoader/Default_modules#mediaWiki.config
 				var json = mw.config.get( id );
 
 				// Parse the fetched json string and convert it back into objects/arrays
