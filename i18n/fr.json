@@ -760,7 +760,7 @@
 	"smw-property-predefined-long-pvuc": "L’unicité est établie quand deux valeurs n’ont pas la même représentation littérale, et toute violation de cette contrainte sera catégorisée comme une erreur.",
 	"smw-datavalue-constraint-uniqueness-violation": "La propriété « $1 » ne permet que des affectations de valeurs uniques, et « $2 » a déjà été annoté dans le sujet « $3 ».",
 	"smw-datavalue-constraint-uniqueness-violation-isknown": "La propriété « $1 » ne permet que des annotations à valeur unique, « $2 » contient déjà une valeur affectée. « $3 » viole la contrainte d’unicité.",
-	"smw-datavalue-constraint-violation-non-negative-integer": "La propriété « $1 » a une contrainte « entier non négatif » et une valeur « $2 » viole cette exigence.",
+	"smw-datavalue-constraint-violation-non-negative-integer": "La propriété « $1 » a une contrainte « entier non négatif » et la valeur « $2 » viole cette exigence.",
 	"smw-property-predefined-boo": "« $1 » est un [[Special:Types/Boolean|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter les valeurs booléennes.",
 	"smw-property-predefined-num": "« $1 » est un [[Special:Types/Number|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs numériques.",
 	"smw-property-predefined-dat": "« $1 » est un [[Special:Types/Date|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de date.",
@@ -965,5 +965,5 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Veuillez vous assurer que la tâche d’[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion ingestion de fichier] est programmée et exécutée avant que l’annotation et l’index du fichier puissent être rendus disponibles.",
 	"smw-report": "Rapport",
 	"smw-legend": "Légende",
-	"smw-datavalue-constraint-schema-category-wrong-type": "Le schéma annoté « $1 » doit être un type « $2 » pour une catégorie."
+	"smw-datavalue-constraint-schema-category-wrong-type": "Le schéma annoté « $1 » doit être de type « $2 » pour une catégorie."
 }

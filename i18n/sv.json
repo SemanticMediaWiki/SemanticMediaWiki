@@ -546,6 +546,7 @@
 	"smw-types-title": "Typ: $1",
 	"smw-schema-error": "Valideringsfel",
 	"smw-schema-title": "Schema",
+	"smw-schema-usage": "Användning",
 	"smw-schema-type": "Typ",
 	"smw-schema-tag": "{{PLURAL:$1|Märke|Märken}}",
 	"smw-ask-title-keyword-type": "Nyckelordssökning",

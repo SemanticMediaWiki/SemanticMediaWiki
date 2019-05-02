@@ -140,6 +140,7 @@
 	"smw_manytypes": "此属性定义了一种以上类型。",
 	"smw_emptystring": "不接受空字符串。",
 	"smw_notinenum": "“$1”不在用于“$3”属性[[Property:Allows value|允许值]]的列表（$2）中。",
+	"smw-constraint-error-suggestions": "请检查属性及其带注释的值,以确保满足所有约束要求。",
 	"smw_noboolean": "\"$1\"不是布尔（是非）值",
 	"smw_true_words": "true,t,yes,y,是,真,对",
 	"smw_false_words": "false,f,no,n,否,假,错",
