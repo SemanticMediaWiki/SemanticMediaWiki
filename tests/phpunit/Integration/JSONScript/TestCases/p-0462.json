@@ -1,0 +1,122 @@
+{
+	"description": "Test `#subobject` and error handling",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "Example/P0462/1",
+			"contents": "{{#subobject: Has number=abc}}{{#subobject: Has number=abcd|Has number=abc}} {{#subobject:Test |Has number=abcd|Has number=abc}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRP",
+						"_ERRT"
+					],
+					"propertyValues": [
+						"[2,\"smw_nofloat\",\"abc\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRP",
+						"_ERRT"
+					],
+					"propertyValues": [
+						"[2,\"smw_nofloat\",\"abcd\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/P0462/1#_c71be766a73df58730d12de08322a103",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "Example/P0462/1#_8e3bf5d37464a8fe3a6b0fd220e47d2c",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"subject": "Example/P0462/1#Test",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 2,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "ru",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

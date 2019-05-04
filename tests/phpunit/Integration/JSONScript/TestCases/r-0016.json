@@ -33,7 +33,7 @@
 					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\">",
 					"<rdfs:label>Example/R0016/1/特殊字符</rdfs:label>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23-5E-5B0-2D9-5D-2A-24\"/>",
-					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/1/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERR1fd3f66738f13f376474b81b9af53d31\">",
 					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>",
 					"<swivt:wikiPageSortKey rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">Example/R0016/1/特殊字符</swivt:wikiPageSortKey>"
 				]
@@ -57,7 +57,7 @@
 					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\">",
 					"<rdfs:label>Example/R0016/2/特殊字符</rdfs:label>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23-7B-28-7B-5B-5B-26-2C-2C-3B-2D.-5D-5D-7D-29-7D\"/>",
-					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/2/-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6-23_ERR112b24958a8154ac2a0147433b74f2b1\">",
 					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>"
 				]
 			}
@@ -80,7 +80,7 @@
 					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6\">",
 					"<rdfs:label>Example/R0016/3/特殊 字符</rdfs:label>",
 					"<property:Has_subobject rdf:resource=\"&wiki;Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6-23-3C-3E\"/>",
-					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6-23_ERRb4cc1ce66e816f93b716adeeddb0fa46\">",
+					"<swivt:Subject rdf:about=\"http://example.org/id/Example/R0016/3/-E7-89-B9-E6-AE-8A_-E5-AD-97-E7-AC-A6-23_ERRa38d176f3646438a004d712cca6a78fd\">",
 					"<property:Has_improper_value_for rdf:resource=\"&wiki;Property-3A-E7-89-B9-E6-AE-8A-E5-AD-97-E7-AC-A6\"/>"
 				]
 			}

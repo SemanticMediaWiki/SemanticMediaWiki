@@ -196,11 +196,12 @@ class ProcessingErrorMsgHandler {
 		}
 
 		$property = $dataValue->getProperty();
+		$contextPage = $dataValue->getContextPage();
 
-		if ( $property !== null ) {
-			$hash = $property->getKey();
-		} else {
+		if ( $property === null || ( $contextPage !== null && $contextPage->getSubobjectName() !== '' ) ) {
 			$hash = $dataValue->getDataItem()->getHash();
+		} else {
+			$hash = $property->getKey();
 		}
 
 		$errorsByType = $this->flip( $dataValue->getErrorsByType() );
