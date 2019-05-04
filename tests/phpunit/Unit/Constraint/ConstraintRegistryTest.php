@@ -132,7 +132,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		yield[
 			'allowed_namespaces',
-			'SMW\Constraint\Constraints\CommonConstraint'
+			'SMW\Constraint\Constraints\NamespaceConstraint'
 		];
 	}
 
