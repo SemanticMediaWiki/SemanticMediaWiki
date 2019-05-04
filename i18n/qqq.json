@@ -346,6 +346,8 @@
 	"smw_pp_from": "This is the text describing a textbox on [[Special:PageProperty]] where the name of a page is expected to be typed in.\n{{Identical|From page}}",
 	"smw_pp_type": "This is the text describing a textbox on [[Special:PageProperty]] where the name of a property is expected to be typed in.\n\n{{Identical|Property}}",
 	"smw_pp_submit": "This is the name of the submit button on [[Special:PageProperty]] to trigger the search.\n\n{{Identical|Find results}}",
+	"smw-prev": "This is the text of the link on property and concept pages that allows to return to the previous page with listings. Similar to {{Msg-mw|Prevn}} however never preceeded with 'show'.",
+	"smw-next": "This is the text of the link on property and concept pages that allows to proceed to the next page with listings. Similar to {{Msg-mw|Nextn}} however never preceeded with 'show'.",
 	"smw_result_prev": "This is the text of the link on [[Special:Ask]] or [[Special:SearchByProperty]] that allows to return to the previous page containing results for the query.\n\n{{Identical|Previous}}",
 	"smw_result_next": "This is the text of the link on [[Special:Ask]] or [[Special:SearchByProperty]] that allows to proceed to the next page containing results for the query.\n\n{{Identical|Next}}",
 	"smw_result_results": "This is the text on [[Special:Ask]] or [[Special:SearchByProperty]] preceding the shown range of results which were returned by the query, e.g. '''Results 1 - 50'''.\n\n{{Identical|Result}}",
