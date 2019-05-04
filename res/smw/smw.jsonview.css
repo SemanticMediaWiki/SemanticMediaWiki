@@ -34,6 +34,7 @@
     margin-top: 0px;
     margin-right: 0px;
     clear: right;
+    display: inline-flex;
 }
 
 .smw-jsonview-button {
