@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMWQuery as Query;
+use SMWDataItem as DataItem;
 use Onoi\Cache\Cache;
 
 /**
@@ -102,14 +103,35 @@ class TableStatistics {
 		// == unassigned, lost
 		$unassigned_query_links_count = $this->unassigned_query_links_count( $connection );
 
+		// Count specific aspects of the blob table
+		$blobTable = $this->store->findDiTypeTableId(
+			DataItem::TYPE_BLOB
+		);
+
+		$rows_blob_table_total_count = $this->rows_blob_table_total_count( $connection, $blobTable );
+		$blob_field_null_row_count = $this->blob_field_null_row_count( $connection, $blobTable );
+		$unique_hash_field_terms_in_percent = 0;
+
+		list( $hash_field_multi_occurrence_total_count, $hash_field_single_occurrence_total_count ) = $this->hash_field_count(
+			$connection,
+			$blobTable
+		);
+
+		if ( $rows_blob_table_total_count > 0 ) {
+			$unique_hash_field_terms_in_percent = round(
+				( 1 - ( ( ( $rows_blob_table_total_count - $hash_field_single_occurrence_total_count ) / $rows_blob_table_total_count ) ) ) * 100,
+				2
+			);
+		}
+
 		$snapshot_date = new \DateTime( 'now' );
 
 		$stats = [
 			SQLStore::ID_TABLE => [
+				'total_row_count' => $rows_total_count,
 				'last_id' => $last_id,
 				'duplicate_count' => $duplicate_count,
 				'rows' => [
-					'total_count' => $rows_total_count,
 					'rev_count' => $rows_rev_count,
 					'smw_iw' => [
 						'delete_count' => $rows_delete_count,
@@ -122,17 +144,28 @@ class TableStatistics {
 				]
 			],
 			SQLStore::QUERY_LINKS_TABLE => [
-				'total_count' => $rows_query_links_total_count,
+				'total_row_count' => $rows_query_links_total_count,
 				'rows' => [
 					'active_links_count' => $active_query_links_count,
 					'invalid_links_count' => $invalid_query_links_count,
 					'unassigned_count' => $unassigned_query_links_count,
 				],
 			],
+			$blobTable => [
+				'total_row_count' => $rows_blob_table_total_count,
+				'rows' => [
+					'blob_field_null_row_count' => $blob_field_null_row_count,
+					'unique_terms_occurrence_in_percent' => $unique_hash_field_terms_in_percent,
+					'terms_occurrence' => [
+						'single_occurrence_total_count' => $hash_field_single_occurrence_total_count,
+						'multi_occurrence_total_count' => $hash_field_multi_occurrence_total_count
+					]
+				]
+			],
 			'meta' => [
 				'query_time' => round( microtime( true ) + $start_time, 5 ),
 				'snapshot_date' => $snapshot_date->format( 'Y-m-d H:i:s' )
-			]
+			],
 		];
 
 		return $stats;
@@ -280,6 +313,97 @@ class TableStatistics {
 		);
 
 		return (int)$row->count;
+	}
+
+	private function rows_blob_table_total_count( $connection, $blobTable ) {
+		return (int)$connection->selectField(
+			$blobTable,
+			'Count(o_hash)',
+			[],
+			__METHOD__
+		);
+	}
+
+	private function blob_field_null_row_count( $connection, $blobTable ) {
+		return (int)$connection->selectField(
+			$blobTable,
+			'Count(o_hash)',
+			[
+				'o_blob' => null
+			],
+			__METHOD__
+		);
+	}
+
+	private function hash_field_count( $connection, $blobTable ) {
+
+		$hash_field_multi_occurrence_total_count = 0;
+		$hash_field_single_occurrence_total_count = 0;
+
+		/**
+		 * Count the rows of those that have been grouped with a multiple
+		 * occurrence.
+		 *
+		 * https://dev.mysql.com/doc/refman/8.0/en/derived-tables.html
+		 *
+		 * SELECT COUNT(count) as count
+		 *  FROM (
+		 *    SELECT COUNT(o_hash) AS count FROM `smw_di_blob` GROUP BY o_hash HAVING COUNT(*) > 1
+		 *  ) AS t1
+		 */
+		$sub_query = $connection->newQuery();
+		$sub_query->type( 'SELECT' );
+		$sub_query->table( $blobTable );
+		$sub_query->field( 'COUNT(o_hash)', 'count' );
+		$sub_query->options(
+			[
+				'GROUP BY' => 'o_hash',
+				'HAVING' => 'COUNT(*) > 1'
+			]
+		);
+
+		$query = $connection->newQuery();
+		$query->type( 'SELECT' );
+		$query->table( $sub_query->getSQL(), 't1' );
+		$query->field( 'COUNT(count) as count' );
+
+		foreach ( $query->execute( __METHOD__ ) as $row ) {
+			$hash_field_multi_occurrence_total_count = (int)$row->count;
+		}
+
+		/**
+		 * Count the rows of those that have been grouped with a single
+		 * occurrence.
+		 *
+		 * SELECT COUNT(count) as count
+		 *  FROM (
+		 *    SELECT COUNT(o_hash) AS count FROM `smw_di_blob` GROUP BY o_hash HAVING COUNT(*) = 1
+		 *  ) AS t1
+		 */
+		$sub_query = $connection->newQuery();
+		$sub_query->type( 'SELECT' );
+		$sub_query->table( $blobTable );
+		$sub_query->field( 'COUNT(o_hash)', 'count' );
+		$sub_query->options(
+			[
+				'GROUP BY' => 'o_hash',
+				'HAVING' => 'COUNT(*) = 1'
+			]
+		);
+
+		$query = $connection->newQuery();
+		$query->type( 'SELECT' );
+		$query->table( $sub_query->getSQL(), 't1' );
+		$query->field( 'COUNT(count) as count' );
+
+		foreach ( $query->execute( __METHOD__ ) as $row ) {
+			$hash_field_single_occurrence_total_count = (int)$row->count;
+		}
+
+		return [
+			$hash_field_multi_occurrence_total_count,
+			$hash_field_single_occurrence_total_count
+		];
 	}
 
 }
