@@ -2,7 +2,7 @@
 
 The objective of the `SMW_NS_SCHEMA` (aka Schema) namespace is to allow for a structured definition of different schemata where types define the interpreter, syntax elements, and constraints.
 
-The namespace expects a JSON format (or if available, YAML as superset of JSON) as input format to ensure that content elements are structured and a `validator_schema` (see [JSON schema][json:schema]) may be assigned to a type to help enforce requirements and constraints for a specific type.
+The namespace expects a JSON format (or if available, YAML as superset of JSON) as input format to ensure that content elements are structured and a `validation_schema` (see [JSON schema][json:schema]) may be assigned to a type to help enforce requirements and constraints for a specific type.
 
 The following properties are provided to make elements of a schema definition discoverable.
 
@@ -18,9 +18,9 @@ Extensibility for new schema types and interpreters is provided by adding a new 
 
 <pre>
 $GLOBALS['smwgSchemaTypes'] = [
-	'LINK_FORMAT_SCHEMA' => [
-		'validator_schema => __DIR__ . '/data/schema/...',
-		'group' => SMW_SCHEMA_GROUP_FORMAT,
+	'FOO_SCHEMA' => [
+		'group' => SMW_SCHEMA_FOO_GROUP,
+		'validation_schema => __DIR__ . '/data/schema/foo-schema.v1.json',
 	]
 ];
 </pre>
