@@ -9,6 +9,7 @@ use SMW\NamespaceManager;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -93,7 +94,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->msg( 'smw-admin-supplementary-settings-title' )
+			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-settings-title' ) ] )
 		);
 
 		$this->outputFormatter->addParentLink(
@@ -112,16 +113,65 @@ class ConfigurationListTaskHandler extends TaskHandler {
 
 		$options = ApplicationFactory::getInstance()->getSettings()->toArray();
 
-		$this->outputFormatter->addAsPreformattedText(
-			str_replace( '\\\\', '\\', $this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) ) )
+		$placeholder = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-json-placeholder-message',
+			],
+			Message::get( 'smw-data-lookup-with-wait' ) .
+			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
+		) .	Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-overlay-spinner medium',
+				'style' => 'transform: translate(-50%, -50%);'
+			]
 		);
 
-		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson(
+		$html = Html::rawElement(
+				'div',
 				[
-					'canonicalNames' => NamespaceManager::getCanonicalNames()
-				]
+					'id' => 'smw-admin-configutation-json',
+					'class' => 'smw-json-placeholder',
+				],  Html::rawElement(
+				'pre',
+				[
+					'id' => 'smw-json-container'
+				],
+				$placeholder . Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-json-data'
+					],
+					$this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) )
+				)
 			)
+		);
+
+		$namespaces = $this->outputFormatter->encodeAsJson(
+			[
+				'canonicalNames' => NamespaceManager::getCanonicalNames()
+			]
+		);
+
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'configuration' );
+		$htmlTabs->setActiveTab( 'settings' );
+
+		$htmlTabs->tab( 'settings', $this->msg( 'smw-admin-configutation-tab-settings' ) );
+		$htmlTabs->content( 'settings', $html );
+
+		$htmlTabs->tab( 'namespaces', $this->msg( 'smw-admin-configutation-tab-namespaces' ) );
+		$htmlTabs->content( 'namespaces', Html::rawElement( 'pre', [], $namespaces ) );
+
+		$html = $htmlTabs->buildHTML( [ 'class' => 'configuration' ] );
+
+		$this->outputFormatter->addHtml( $html );
+
+		$this->outputFormatter->addInlineStyle(
+			'.configuration #tab-settings:checked ~ #tab-content-settings,' .
+			'.configuration #tab-namespaces:checked ~ #tab-content-namespaces {' .
+			'display: block;}'
 		);
 	}
 
@@ -133,7 +183,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 			}
 
 			if ( is_string( $value ) && strpos( $value , 'SemanticMediaWiki/') !== false ) {
-				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '.../SemanticMediaWiki', $value );
+				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '../SemanticMediaWiki', $value );
 			}
 		}
 
