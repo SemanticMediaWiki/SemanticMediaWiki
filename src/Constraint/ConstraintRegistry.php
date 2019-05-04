@@ -8,6 +8,7 @@ use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
 
 
 /**
@@ -65,6 +66,20 @@ class ConstraintRegistry {
 	/**
 	 * @since 3.1
 	 *
+	 * @return []
+	 */
+	public function getConstraintKeys() {
+
+		if ( $this->constraints === [] ) {
+			$this->initConstraints();
+		}
+
+		return array_keys( $this->constraints );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param string $key
 	 *
 	 * @return Constraint
@@ -88,7 +103,8 @@ class ConstraintRegistry {
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,
 			'unique_value_constraint' => UniqueValueConstraint::class,
-			'non_negative_integer' => NonNegativeIntegerConstraint::class
+			'non_negative_integer' => NonNegativeIntegerConstraint::class,
+			'must_exists' => MustExistsConstraint::class
 		];
 
 		\Hooks::run( 'SMW::Constraint::initConstraints', [ $this ] );

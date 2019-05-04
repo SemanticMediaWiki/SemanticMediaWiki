@@ -1,0 +1,11 @@
+{
+    "type": "PROPERTY_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "must_exists": true
+    },
+    "tags": [
+        "property constraint",
+        "integer",
+        "number"
+    ]
+}

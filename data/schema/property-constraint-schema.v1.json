@@ -50,6 +50,9 @@
 				},
 				"non_negative_integer": {
 					"$ref": "#/definitions/non_negative_integer"
+				},
+				"must_exists": {
+					"$ref": "#/definitions/must_exists"
 				}
 			},
 			"additionalProperties": false
@@ -83,6 +86,12 @@
 			"$id": "#/definitions/non_negative_integer",
 			"type": "boolean",
 			"title": "Specifies that values are derived from integer with the minimum inclusive to be 0",
+			"default": false
+		},
+		"must_exists": {
+			"$id": "#/definitions/must_exists",
+			"type": "boolean",
+			"title": "Specifies that the annotated value must exists to be valid",
 			"default": false
 		}
 	}
