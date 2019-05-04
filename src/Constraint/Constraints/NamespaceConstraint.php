@@ -14,17 +14,12 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class CommonConstraint implements Constraint {
+class NamespaceConstraint implements Constraint {
 
 	/**
 	 * @var boolean
 	 */
 	private $hasViolation = false;
-
-	/**
-	 * @var []
-	 */
-	private $single_value_constraint = [];
 
 	/**
 	 * @since 3.1

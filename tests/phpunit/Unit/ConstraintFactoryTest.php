@@ -109,8 +109,18 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield[
-			'SMW\Constraint\Constraints\CommonConstraint',
-			'\SMW\Constraint\Constraints\CommonConstraint'
+			'SMW\Constraint\Constraints\NamespaceConstraint',
+			'\SMW\Constraint\Constraints\NamespaceConstraint'
+		];
+
+		yield[
+			'SMW\Constraint\Constraints\UniqueValueConstraint',
+			'\SMW\Constraint\Constraints\UniqueValueConstraint'
+		];
+
+		yield[
+			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint',
+			'\SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
 		];
 	}
 

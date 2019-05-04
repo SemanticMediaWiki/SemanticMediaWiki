@@ -5,7 +5,7 @@ namespace SMW\Constraint;
 use RuntimwException;
 use SMW\ConstraintFactory;
 use SMW\Constraint\Constraints\NullConstraint;
-use SMW\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 
@@ -86,7 +86,7 @@ class ConstraintRegistry {
 
 		$this->constraints = [
 			'null' => NullConstraint::class,
-			'allowed_namespaces' => CommonConstraint::class,
+			'allowed_namespaces' => NamespaceConstraint::class,
 			'unique_value_constraint' => UniqueValueConstraint::class,
 			'non_negative_integer' => NonNegativeIntegerConstraint::class
 		];

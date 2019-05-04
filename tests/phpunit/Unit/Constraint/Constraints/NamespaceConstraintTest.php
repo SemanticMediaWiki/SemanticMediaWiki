@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
-use SMW\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
 
 /**
- * @covers \SMW\Constraint\Constraints\CommonConstraint
+ * @covers \SMW\Constraint\Constraints\NamespaceConstraint
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class CommonConstraintTest extends \PHPUnit_Framework_TestCase {
+class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -32,24 +32,24 @@ class CommonConstraintTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			CommonConstraint::class,
-			new CommonConstraint()
+			NamespaceConstraint::class,
+			new NamespaceConstraint()
 		);
 	}
 
 	public function testGetType() {
 
-		$instance = new CommonConstraint();
+		$instance = new NamespaceConstraint();
 
 		$this->assertEquals(
-			CommonConstraint::TYPE_INSTANT,
+			NamespaceConstraint::TYPE_INSTANT,
 			$instance->getType()
 		);
 	}
 
 	public function testHasViolation() {
 
-		$instance = new CommonConstraint();
+		$instance = new NamespaceConstraint();
 
 		$this->assertFalse(
 			$instance->hasViolation()
@@ -83,7 +83,7 @@ class CommonConstraintTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDataItem' )
 			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) );
 
-		$instance = new CommonConstraint();
+		$instance = new NamespaceConstraint();
 
 		$instance->checkConstraint( $constraint, $dataValue );
 

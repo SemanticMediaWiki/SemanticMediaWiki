@@ -7,7 +7,7 @@ use SMW\Constraint\ConstraintRegistry;
 use SMW\Constraint\ConstraintErrorFinder;
 use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\Constraint\Constraints\CommonConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 
@@ -47,8 +47,8 @@ class ConstraintFactory {
 	public function newConstraintByClass( $class ) {
 
 		switch ( $class ) {
-			case CommonConstraint::class:
-				$constraint = $this->newCommonConstraint();
+			case NamespaceConstraint::class:
+				$constraint = $this->newNamespaceConstraint();
 				break;
 			case UniqueValueConstraint::class:
 				$constraint = $this->newUniqueValueConstraint();
@@ -67,10 +67,10 @@ class ConstraintFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @return CommonConstraint
+	 * @return NamespaceConstraint
 	 */
-	public function newCommonConstraint() {
-		return new CommonConstraint();
+	public function newNamespaceConstraint() {
+		return new NamespaceConstraint();
 	}
 
 	/**
