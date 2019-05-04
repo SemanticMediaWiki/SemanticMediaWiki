@@ -123,7 +123,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			$removedConfigList = $deprecationNoticeList['removal'];
 		}
 
-		$sectionList = $this->build_list(
+		$sectionList = $this->buildList(
 			$section,
 			$noticeConfigList,
 			$replacementConfigList,
@@ -134,18 +134,16 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			return '';
 		}
 
-		if ( $section !== 'smw' ) {
-			$html .= Html::rawElement(
-			'h2',
-				[
-					'class' => "$section-admin-deprecation-notice-section"
-				],
-				$this->msg( "$section-admin-deprecation-notice-section" )
-			);
-		}
+		$html .= Html::rawElement(
+			'legend',
+			[
+				'class' => "$section-admin-deprecation-notice-section"
+			],
+			$this->msg( "$section-admin-deprecation-notice-section" )
+		);
 
 		return Html::rawElement(
-			'div',
+			'fieldset',
 			[
 				'class' => "$section-admin-deprecation-section"
 			],
@@ -153,7 +151,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function build_list( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
 
 		$noticeList = [];
 		$list = [];
@@ -161,9 +159,9 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		// Replacements
 		foreach ( $replacementConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
-				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-replacement", $value );
+				$list[] = $this->createItems( "$section-admin-deprecation-notice-config-replacement", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ] );
+				$list[] = $this->createItem( [ "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ] );
 			}
 		}
 
@@ -174,9 +172,9 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		// Changes
 		foreach ( $noticeConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
-				$list[] = $this->createListItems( "$section-admin-deprecation-notice-config-notice", $value );
+				$list[] = $this->createItems( "$section-admin-deprecation-notice-config-notice", $value );
 			} elseif ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-notice", '$' . $setting, $value ] );
+				$list[] = $this->createItem( [ "$section-admin-deprecation-notice-config-notice", '$' . $setting, $value ] );
 			}
 		}
 
@@ -187,7 +185,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		// Removals
 		foreach ( $removedConfigList as $setting => $msg ) {
 			if ( isset( $GLOBALS[$setting] ) ) {
-				$list[] = $this->createListItem( [ "$section-admin-deprecation-notice-config-removal", '$' . $setting, $msg ] );
+				$list[] = $this->createItem( [ "$section-admin-deprecation-notice-config-removal", '$' . $setting, $msg ] );
 			}
 		}
 
@@ -205,7 +203,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		}
 
 		$html = Html::rawElement(
-			'h3',
+			'h4',
 			[],
 			$this->msg( $title )
 		) . Html::rawElement(
@@ -228,11 +226,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function createListItem( $message ) {
-		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
-	}
-
-	private function createListItems( $message, $values ) {
+	private function createItems( $message, $values ) {
 
 		$list = [];
 
@@ -250,7 +244,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 			foreach ( $options as $option => $v ) {
 				if ( $this->hasOption( $setting, $option ) ) {
-					$opt[] = $this->createListItem(
+					$opt[] = $this->createItem(
 						[
 							$message . '-option-list',
 							$option,
@@ -261,7 +255,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			}
 
 			if ( $opt !== [] ) {
-				$list[] = $this->createListItem(
+				$list[] = $this->createItem(
 					[
 						$message . '-option',
 						'$' . $setting,
@@ -276,6 +270,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	private function hasOption( $setting, $option ) {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
+	}
+
+	private function createItem( $message ) {
+		return Html::rawElement( 'li', [], $this->msg( $message, Message::PARSE ) );
 	}
 
 }
