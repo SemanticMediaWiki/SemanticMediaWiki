@@ -200,7 +200,7 @@ class SchemaContentFormatter {
 		$description = '';
 
 		if ( isset( $this->type['type_description'] ) ) {
-			$description = $this->msg( $this->type['type_description'], Message::PARSE );
+			$description = $this->msg( [ $this->type['type_description'], $schema->get( Schema::SCHEMA_TYPE ) ], Message::PARSE );
 		}
 
 		$params = [

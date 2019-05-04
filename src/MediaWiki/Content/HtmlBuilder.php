@@ -72,6 +72,7 @@ class HtmlBuilder {
 		);
 
 		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'schema' );
 
 		$htmlTabs->setActiveTab(
 			$params['error'] !== '' ? 'schema-error' : 'schema-summary'
@@ -126,8 +127,8 @@ class HtmlBuilder {
 				[
 					'class' => 'smw-schema-placeholder-message',
 				],
-				Message::get( 'smw-data-lookup-with-wait' ) .
-				"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
+				Message::get( 'smw-data-lookup-with-wait', Message::TEXT, Message::USER_LANGUAGE ) .
+				"\n\n\n" . Message::get( 'smw-preparing', Message::TEXT, Message::USER_LANGUAGE ) . "\n"
 			) .	Html::rawElement(
 				'span',
 				[
@@ -150,7 +151,8 @@ class HtmlBuilder {
 				],  Html::rawElement(
 				'pre',
 				[
-					'id' => 'smw-schema-container'
+					'id' => 'smw-schema-container',
+					'data-level' => 2
 				],
 				$placeholder . Html::rawElement(
 					'div',
