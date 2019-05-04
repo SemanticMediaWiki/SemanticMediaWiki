@@ -2048,6 +2048,27 @@ return [
 	##
 
 	##
+	# Lookup and display of constraint errors
+	#
+	# A convenience function to provided users with a help to quickly identify
+	# which constraints violation are currently exists for a viewed subject.
+	#
+	# - `SMW_CONSTRAINT_ERR_CHECK_NONE` disables the check and display via the
+	#    page indicator
+	# - `SMW_CONSTRAINT_ERR_CHECK_MAIN` will only check the main subject
+	# - `SMW_CONSTRAINT_ERR_CHECK_ALL` will check the main subject and all
+	#    subobjects attached to the main subject
+	#
+	# The constraint error lookup is cached therefore no negative performance
+	# impact is expected when viewing a page repeatedly.
+	#
+	# @since 3.1
+	# @default SMW_CONSTRAINT_ERR_CHECK_ALL
+	##
+	'smwgCheckForConstraintErrors' => SMW_CONSTRAINT_ERR_CHECK_ALL,
+	##
+
+	##
 	# THE FOLLOWING SETTINGS AND SUPPORT FUNCTIONS ARE EXPERIMENTAL!
 	#
 	# Please make you read the Readme.md (see the Elastic folder) file first

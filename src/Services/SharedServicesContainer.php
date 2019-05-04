@@ -126,11 +126,22 @@ class SharedServicesContainer implements CallbackContainer {
 	 */
 	public function newIndicatorRegistry( $containerBuilder ) {
 
-		$indicatorRegistry = new IndicatorRegistry();
 		$store = $containerBuilder->singleton( 'Store', null );
+		$settings = $containerBuilder->singleton( 'Settings' );
+
+		$indicatorRegistry = new IndicatorRegistry();
+
+		$constraintErrorIndicatorProvider = new ConstraintErrorIndicatorProvider(
+			$store,
+			$containerBuilder->singleton( 'EntityCache' )
+		);
+
+		$constraintErrorIndicatorProvider->canConstraintErrors(
+			$settings->get( 'smwgCheckForConstraintErrors' )
+		);
 
 		$indicatorRegistry->addIndicatorProvider(
-			new ConstraintErrorIndicatorProvider( $store )
+			$constraintErrorIndicatorProvider
 		);
 
 		try{

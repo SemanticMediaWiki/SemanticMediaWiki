@@ -19,9 +19,14 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $store;
+	private $entityCache;
 	private $errorLookup;
 
 	protected function setUp() {
+
+		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -49,14 +54,15 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ConstraintErrorIndicatorProvider::class,
-			new ConstraintErrorIndicatorProvider( $this->store )
+			new ConstraintErrorIndicatorProvider( $this->store, $this->entityCache )
 		);
 	}
 
 	public function testGetModules() {
 
 		$instance = new ConstraintErrorIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$this->assertEmpty(
@@ -67,7 +73,8 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	public function testGetInlineStyle() {
 
 		$instance = new ConstraintErrorIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$this->assertInternalType(
@@ -103,8 +110,17 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'findErrorsByType' )
 			->will( $this->returnValue( $res ) );
 
+		$this->errorLookup->expects( $this->once() )
+			->method( 'buildArray' )
+			->will( $this->returnValue( [ 'foo' ] ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
 		$instance = new ConstraintErrorIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$options = [
@@ -116,11 +132,54 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasIndicator( $title, $options )
 		);
 
-		$res = $instance->getIndicators();
+		$this->assertArrayHasKey(
+			'smw-w-constraint',
+			$instance->getIndicators()
+		);
+	}
+
+	public function testCheckConstraintErrorIndicatorFromCache() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->once() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$this->errorLookup->expects( $this->never() )
+			->method( 'findErrorsByType' );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( [ 'Foo' ] ) );
+
+		$instance = new ConstraintErrorIndicatorProvider(
+			$this->store,
+			$this->entityCache
+		);
+
+		$options = [
+			'action' => 'foo',
+			'diff' => null
+		];
+
+		$this->assertTrue(
+			$instance->hasIndicator( $title, $options )
+		);
 
 		$this->assertArrayHasKey(
 			'smw-w-constraint',
-			$res
+			$instance->getIndicators()
 		);
 	}
 
@@ -135,7 +194,8 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new ConstraintErrorIndicatorProvider(
-			$this->store
+			$this->store,
+			$this->entityCache
 		);
 
 		$this->assertFalse(

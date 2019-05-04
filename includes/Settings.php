@@ -181,6 +181,7 @@ class Settings extends Options {
 			'smwgSupportSectionTag' => $GLOBALS['smwgSupportSectionTag'],
 			'smwgMandatorySubpropertyParentTypeInheritance' => $GLOBALS['smwgMandatorySubpropertyParentTypeInheritance'],
 			'smwgCheckForRemnantEntities' => $GLOBALS['smwgCheckForRemnantEntities'],
+			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 		];
 
 		self::initLegacyMapping( $configuration );

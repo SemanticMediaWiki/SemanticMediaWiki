@@ -295,6 +295,14 @@ define( 'SMW_SASK_SUBMIT_POST', 'post' );
 /**@}*/
 
 /**@{
+  * Constants for constraint error check
+  */
+define( 'SMW_CONSTRAINT_ERR_CHECK_NONE', false );
+define( 'SMW_CONSTRAINT_ERR_CHECK_MAIN', 'check/main' );
+define( 'SMW_CONSTRAINT_ERR_CHECK_ALL', 'check/all' );
+/**@}*/
+
+/**@{
   * Constants for content types
   */
 define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );

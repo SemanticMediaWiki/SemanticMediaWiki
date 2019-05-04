@@ -139,6 +139,11 @@
     padding: .5em .6em .5em .8em;
 }
 
+.tippy-top.wide-popup {
+    padding: .5em .8em .0em .8em;
+    font-size: 12px;
+}
+
 .tippy-content-container.wide-popup {
     padding: .5em .8em;
     margin-bottom: 0px;
@@ -146,6 +151,10 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 300px;
+}
+
+.tippy-content-container.wide-popup ul {
+    margin: 0em 0.3em 0.3em 0.5em;
 }
 
 .tippy-content-container.wide-popup ul {
