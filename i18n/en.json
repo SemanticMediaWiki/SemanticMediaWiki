@@ -336,6 +336,8 @@
 	"smw_pp_from": "From page:",
 	"smw_pp_type": "Property:",
 	"smw_pp_submit": "Find results",
+	"smw-prev": "previous {{PLURAL:$1|$1}}",
+	"smw-next": "next {{PLURAL:$1|$1}}",
 	"smw_result_prev": "Previous",
 	"smw_result_next": "Next",
 	"smw_result_results": "Results",
