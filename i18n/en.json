@@ -730,6 +730,7 @@
 	"smw-datavalue-constraint-uniqueness-violation": "Property \"$1\" only permits unique value assignments and ''$2'' was already annotated in subject \"$3\".",
 	"smw-datavalue-constraint-uniqueness-violation-isknown": "Property \"$1\" only permits unique value annotations, ''$2'' already contains an assigned value. \"$3\" violates the uniqueness constraint.",
 	"smw-datavalue-constraint-violation-non-negative-integer": "Property \"$1\" has a \"non negative integer\" constraint and value ''$2'' is violating that requirement.",
+	"smw-datavalue-constraint-violation-must-exists": "Property \"$1\" has a <code>must_exists</code> constraint and value ''$2'' is violating that requirement.",
 	"smw-property-predefined-boo": "\"$1\" is a [[Special:Types/Boolean|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent boolean values.",
 	"smw-property-predefined-num": "\"$1\" is a [[Special:Types/Number|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent numeric values.",
 	"smw-property-predefined-dat": "\"$1\" is a [[Special:Types/Date|type]] and predefined property provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] to represent date values.",

@@ -1,0 +1,75 @@
+{
+	"description": "Test `smw/schema` on `PROPERTY_CONSTRAINT_SCHEMA` with `must_exists` and `Constraint schema`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:MustExists",
+			"contents": {
+				"import-from": "/../Fixtures/p-1102-constraint-must-exists.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]] [[Constraint schema::Constraint:MustExists]]"
+		},
+		{
+			"page": "Test:P1102/1",
+			"contents": "[[Has page::DoesNotExist]]"
+		},
+		{
+			"page": "Test:P1102/2",
+			"contents": "[[Has page::Test:P1102/1]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (invalid assignment on `must_exists`)",
+			"subject": "Test:P1102/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwttcontent\">Property \"Has page\" has a &lt;code&gt;must_exists&lt;/code&gt; constraint and value <i>DoesNotExist</i> is violating that requirement.</span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (valid assignment on `must_exists`)",
+			"subject": "Test:P1102/2",
+			"assert-output": {
+				"to-contain": [
+					"P1102/1"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

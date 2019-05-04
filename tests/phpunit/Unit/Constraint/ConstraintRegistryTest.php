@@ -33,6 +33,18 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetConstraintKeys() {
+
+		$instance = new ConstraintRegistry(
+			$this->constraintFactory
+		);
+
+		$this->assertInternaltype(
+			'array',
+			$instance->getConstraintKeys()
+		);
+	}
+
 	public function testGetConstraintByUnkownKey() {
 
 		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
@@ -133,6 +145,21 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 		yield[
 			'allowed_namespaces',
 			'SMW\Constraint\Constraints\NamespaceConstraint'
+		];
+
+		yield[
+			'unique_value_constraint',
+			'SMW\Constraint\Constraints\UniqueValueConstraint'
+		];
+
+		yield[
+			'non_negative_integer',
+			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
+		];
+
+		yield[
+			'must_exists',
+			'SMW\Constraint\Constraints\MustExistsConstraint'
 		];
 	}
 

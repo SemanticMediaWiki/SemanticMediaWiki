@@ -10,6 +10,7 @@ use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -56,6 +57,9 @@ class ConstraintFactory {
 			case NonNegativeIntegerConstraint::class:
 				$constraint = $this->newNonNegativeIntegerConstraint();
 				break;
+			case MustExistsConstraint::class:
+				$constraint = $this->newMustExistsConstraint();
+				break;
 			default:
 				$constraint = $this->newNullConstraint();
 				break;
@@ -97,6 +101,15 @@ class ConstraintFactory {
 	 */
 	public function newNonNegativeIntegerConstraint() {
 		return new NonNegativeIntegerConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return MustExistsConstraint
+	 */
+	public function newMustExistsConstraint() {
+		return new MustExistsConstraint();
 	}
 
 	/**
