@@ -17,12 +17,21 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $connection;
+	private $query;
 
 	protected function setUp() {
+
+		$this->query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $this->query ) );
 
 		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
@@ -50,6 +59,10 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
+
+		$this->query->expects( $this->any() )
+			->method( 'execute' )
+			->will( $this->returnValue( [] ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )

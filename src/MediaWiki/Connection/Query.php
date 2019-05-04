@@ -145,7 +145,14 @@ class Query {
 	 * @param string $table
 	 */
 	public function table( ...$table ) {
-		$this->table = $this->connection->tableName( $table[0] ) . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
+
+		if ( strpos( $table[0], 'SELECT') !== false ) {
+			$tableName = '(' . $table[0] . ')';
+		} else {
+			$tableName = $this->connection->tableName( $table[0] );
+		}
+
+		$this->table = $tableName . ( isset( $table[1] ) ? " AS " . $table[1] : '' );
 	}
 
 	/**
