@@ -23,10 +23,14 @@ var jsonview = ( function( mw ) {
 		container.JSONView( json, { collapsed: true } )
 		container.JSONView( 'toggle', 1 );
 
+		if ( container.data( 'level' ) !== undefined ) {
+			container.JSONView( 'expand', container.data( 'level' ) );
+		};
+
 		container.find( '.jsonview' ).before(
 			'<div class="smw-jsonview-button-group">' +
-			'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + mw.msg( 'smw-copy' ) + '</button>' +
-			'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button">' + mw.msg( 'smw-expand' ) + '</button>' +
+			'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + '<span class="smw-jsonview-clipboard"></span>' + '</button>' +
+			'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button">' + '➕' + '</button>' +
 			'</div>'
 		);
 
@@ -53,13 +57,19 @@ var jsonview = ( function( mw ) {
 
 	s.toggle = function( context, container ) {
 		if ( context.data( 'type' ) === 'collapse' ) {
-			container.JSONView( 'toggle', 2 );
 			context.data( 'type', 'expand' );
-			context.text( mw.msg( 'smw-expand' ) );
+
+			if ( container.data( 'level' ) !== undefined ) {
+				container.JSONView( 'toggle', container.data( 'level' ) + 1 );
+			} else {
+				container.JSONView( 'toggle', 2 );
+			}
+
+			context.text( '➕' );
 			context.prop('title', mw.msg( 'smw-jsonview-expand-title' ) );
 		} else {
 			context.data( 'type', 'collapse' );
-			context.text( mw.msg( 'smw-collapse' ) );
+			context.text( '➖' );
 			context.prop('title', mw.msg( 'smw-jsonview-collapse-title' ) );
 			container.JSONView('expand' );
 		}

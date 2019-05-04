@@ -68,6 +68,10 @@
     margin: 0.3em 0.3em 0.3em 0.5em;
 }
 
+.tippy-content-container code {
+    word-break: break-all;
+}
+
 .tippy-content-overlay {
     height: 40px;
     width: 260px;
