@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDIBlob as DIBlob;
+use SMWDataItem as DataItem;
 use Title;
 use SMW\DIWikiPage;
 use SMW\PropertySpecificationLookup;
@@ -44,14 +45,14 @@ class SchemaFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param DataItem $dataItem
 	 *
 	 * @return SchemaList|[]
 	 */
-	public function getConstraintSchema( DIProperty $property ) {
+	public function getConstraintSchema( DataItem $dataItem ) {
 
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
-			$property,
+			$dataItem,
 			new DIProperty( '_CONSTRAINT_SCHEMA' )
 		);
 
@@ -67,7 +68,6 @@ class SchemaFinder {
 
 		return new SchemaList( $schemaList );
 	}
-
 
 	/**
 	 * @since 3.1
