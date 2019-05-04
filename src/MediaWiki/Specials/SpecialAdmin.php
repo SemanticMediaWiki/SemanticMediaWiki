@@ -60,7 +60,9 @@ class SpecialAdmin extends SpecialPage {
 
 		$this->setHeaders();
 		$output = $this->getOutput();
+
 		$output->setPageTitle( $this->msg_text( 'smw-title' ) );
+		$output->addHelpLink(  $this->msg_text( 'smw-admin-helplink' ), true );
 
 		$output->addModuleStyles( 'ext.smw.special.style' );
 		$output->addModules( 'ext.smw.admin' );

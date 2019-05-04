@@ -76,7 +76,7 @@ class TableStatisticsTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->msg( 'smw-admin-supplementary-operational-table-statistics-title' ),
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-short-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
@@ -100,7 +100,7 @@ class TableStatisticsTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->msg( 'smw-admin-supplementary-operational-table-statistics-title' )
+			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-table-statistics-title' ) ] )
 		);
 
 		$this->outputFormatter->addParentLink(

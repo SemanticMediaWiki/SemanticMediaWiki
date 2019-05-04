@@ -91,7 +91,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	public function handleRequest( WebRequest $webRequest ) {
 
 		$this->outputFormatter->setPageTitle(
-			$this->msg( 'smw-admin-supplementary-duplookup-title' )
+			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-duplookup-title' ) ] )
 		);
 
 		$this->outputFormatter->addParentLink(

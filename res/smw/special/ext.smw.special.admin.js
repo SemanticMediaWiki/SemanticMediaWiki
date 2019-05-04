@@ -325,7 +325,7 @@
 		/**
 		 * Prettify the JSON display
 		 */
-		$( '#smw-admin-querycache-json' ).each( function() {
+		$( '#smw-admin-querycache-json,#smw-admin-configutation-json' ).each( function() {
 
 				$( this ).removeClass( 'smw-json-placeholder' );
 

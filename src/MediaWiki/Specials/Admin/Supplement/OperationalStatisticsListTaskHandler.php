@@ -91,7 +91,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->getSpecialPageLinkWith(
-			$this->msg( 'smw-admin-supplementary-operational-statistics-title' ),
+			$this->msg( 'smw-admin-supplementary-operational-statistics-short-title' ),
 			[ 'action' => $this->getTask() ]
 		);
 
@@ -133,7 +133,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	private function outputHead() {
 
 		$this->outputFormatter->setPageTitle(
-			$this->msg( 'smw-admin-supplementary-operational-statistics-title' )
+			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-title' ) ] )
 		);
 
 		$this->outputFormatter->addParentLink(

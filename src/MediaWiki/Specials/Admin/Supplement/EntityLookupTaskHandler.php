@@ -97,7 +97,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 	public function getHtml() {
 
 		$link = $this->outputFormatter->createSpecialPageLink(
-			$this->msg( 'smw-admin-supplementary-idlookup-title' ),
+			$this->msg( 'smw-admin-supplementary-idlookup-short-title' ),
 			[
 				'action' => 'lookup'
 			]
@@ -122,7 +122,10 @@ class EntityLookupTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		$this->outputFormatter->setPageTitle( $this->msg( 'smw-admin-supplementary-idlookup-title' ) );
+		$this->outputFormatter->setPageTitle(
+			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-idlookup-title' ) ] )
+		);
+
 		$this->outputFormatter->addParentLink( [ 'tab' => 'supplement' ] );
 
 		// https://phabricator.wikimedia.org/T109652#1562641
