@@ -6,6 +6,7 @@ use Html;
 use SMW\Message;
 use WebRequest;
 use SMW\Utils\FileFetcher;
+use SMW\Utils\HtmlTabs;
 
 /**
  * @license GNU GPL v2+
@@ -84,18 +85,35 @@ class MaintenanceTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
+		$tasks = '';
 		$html = '';
 
 		foreach ( $this->taskHandlers as $key => $taskHandler ) {
-
-			$html .= $taskHandler->getHtml();
-
 			if ( $key == 0 ) {
-				$html .= $this->jobNote();
+				$html = $taskHandler->getHtml();
+				$tasks .= $this->jobNote();
+			}else {
+				$tasks .= $taskHandler->getHtml();
 			}
 		}
 
-		$html .= $this->buildHTML();
+		$htmlTabs = new HtmlTabs();
+		$htmlTabs->setGroup( 'maintenance' );
+		$htmlTabs->setActiveTab( 'tasks' );
+
+		$htmlTabs->tab( 'tasks', $this->msg( 'smw-admin-maintenance-tab-tasks' ) );
+		$htmlTabs->content( 'tasks', $tasks );
+
+		$htmlTabs->tab( 'scripts', $this->msg( 'smw-admin-maintenance-tab-scripts' ) );
+		$htmlTabs->content( 'scripts', $this->buildHTML() );
+
+		$html .= $htmlTabs->buildHTML( [ 'class' => 'maintenance', 'style' => 'margin-top:20px;' ] );
+
+		$this->outputFormatter->addInlineStyle(
+			'.maintenance #tab-tasks:checked ~ #tab-content-tasks,' .
+			'.maintenance #tab-scripts:checked ~ #tab-content-scripts {' .
+			'display: block;}'
+		);
 
 		return $html;
 	}
@@ -124,13 +142,7 @@ class MaintenanceTaskHandler extends TaskHandler {
 	}
 
 	private function jobNote() {
-		return  Html::rawElement(
-			'hr',
-			[
-				'class' => 'smw-admin-hr'
-			],
-			''
-		)  . Html::rawElement(
+		return Html::rawElement(
 			'p',
 			[
 				'class' => 'plainlinks',
@@ -143,24 +155,14 @@ class MaintenanceTaskHandler extends TaskHandler {
 	private function buildHTML() {
 
 		$html = Html::rawElement(
-			'hr',
-			[
-				'class' => 'smw-admin-hr'
-			],
-			''
-		) . Html::rawElement(
-			'h3',
-			[
-				'class' => ''
-			],
-			$this->msg( 'smw-admin-maintenance-script-section-title' )
-		) . Html::rawElement(
 			'p',
 			[
 				'class' => ''
 			],
 			$this->msg( 'smw-admin-maintenance-script-section-intro' )
 		);
+
+		$this->fileFetcher->sort( 'asc' );
 
 		$files = $this->fileFetcher->findByExtension( 'php' );
 		$scripts = [];
@@ -205,7 +207,7 @@ class MaintenanceTaskHandler extends TaskHandler {
 		$html .= Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-column-twofold-responsive'
+				'class' => ''
 			],
 			$list
 		);
