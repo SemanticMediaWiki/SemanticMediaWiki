@@ -150,7 +150,7 @@ class CommonExaminer extends DeclarationExaminer {
 	private function checkCommonMessage( $propertyName ) {
 
 		if ( Message::exists( 'smw-property-introductory-message' ) ) {
-			$this->messages[] = [ 'info', 'smw-property-introductory-message', $property->getLabel() ];
+			$this->messages[] = [ 'info', 'smw-property-introductory-message', $propertyName ];
 		}
 
 		$label = mb_strtolower( str_replace( ' ', '-', $propertyName ) );
