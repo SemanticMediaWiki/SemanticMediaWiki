@@ -62,6 +62,11 @@ class SchemaContent extends JsonContent {
 	private $isValid;
 
 	/**
+	 * @var string
+	 */
+	private $errorMsg = '';
+
+	/**
 	 * @since 3.0
 	 *
 	 * {@inheritDoc}
@@ -222,7 +227,9 @@ class SchemaContent extends JsonContent {
 				$this->toJson()
 			);
 		} catch ( SchemaTypeNotFoundException $e ) {
-			if ( $e->getType() === '' || $e->getType() === null ) {
+			if ( $this->errorMsg !== '' ) {
+				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
+			} elseif ( $e->getType() === '' || $e->getType() === null ) {
 				$errors[] = [ 'smw-schema-error-type-missing' ];
 			} else {
 				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
@@ -233,9 +240,17 @@ class SchemaContent extends JsonContent {
 			$errors = $this->schemaFactory->newSchemaValidator()->validate(
 				$schema
 			);
+
+			$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
 		}
 
 		$status = Status::newGood();
+
+		if ( $errors !== [] && $schema === null ) {
+			array_unshift( $errors, [ 'smw-schema-error-input' ] );
+		} elseif ( $errors !== [] ) {
+			array_unshift( $errors, [ 'smw-schema-error-input-schema', $schema_link ] );
+		}
 
 		foreach ( $errors as $error ) {
 			if ( isset( $error['message'] ) ) {
@@ -326,6 +341,7 @@ class SchemaContent extends JsonContent {
 			// Objects and arrays are kept as distinguishable types in the PHP values.
 			$this->parse = json_decode( $this->mText );
 			$this->isValid = json_last_error() === JSON_ERROR_NONE;
+			$this->errorMsg = json_last_error_msg();
 
 			return $this->isValid;
 		}
