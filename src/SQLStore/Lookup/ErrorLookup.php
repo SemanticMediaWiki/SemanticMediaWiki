@@ -7,6 +7,8 @@ use SMW\DIProperty;
 use SMW\Store;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMW\RequestOptions;
+use Traversable;
 
 /**
  * @license GNU GPL v2+
@@ -33,16 +35,49 @@ class ErrorLookup {
 	/**
 	 * @since 3.1
 	 *
+	 * @param Traversable $res
+	 *
+	 * @return array
+	 */
+	public function buildArray( /* iterable */ $res ) {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$messages = [];
+
+		foreach ( $res as $row ) {
+
+			if ( $row->o_blob !== null ) {
+				$msg = $connection->unescape_bytea( $row->o_blob );
+			} else {
+				$msg = $row->o_hash;
+			}
+
+			$messages[] = $msg;
+		}
+
+		return $messages;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param string $errorType
 	 * @param DIWikiPage $subject = null
 	 *
 	 * @return Iterator/array
 	 */
-	public function findErrorsByType( $errorType, DIWikiPage $subject = null ) {
-		return $this->fetchFromTable( $errorType, $subject );
+	public function findErrorsByType( $errorType, DIWikiPage $subject = null, RequestOptions $requestOptions = null ) {
+
+		if ( $requestOptions === null ) {
+			$requestOptions = new RequestOptions();
+		}
+
+		return $this->fetchFromTable( $errorType, $subject, $requestOptions );
 	}
 
-	private function fetchFromTable( $errorType, $subject ) {
+	private function fetchFromTable( $errorType, $subject, $requestOptions ) {
+
+		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 
 		/**
 		 * SELECT t2.s_id AS s_id, t3.o_hash AS o_hash, t3.o_blob AS o_blob
@@ -67,7 +102,8 @@ class ErrorLookup {
 				$subject,
 				new DIProperty( '_ERR_TYPE' ),
 				new DIProperty( '_ERRT' ),
-				new DIProperty( '_ERRC' )
+				new DIProperty( '_ERRC' ),
+				new DIProperty( '_SOBJ' )
 			]
 		);
 
@@ -82,6 +118,10 @@ class ErrorLookup {
 			DataItem::TYPE_WIKIPAGE
 		);
 
+		$sobj_type_table = $this->store->findPropertyTableID(
+			new DIProperty( '_SOBJ' )
+		);
+
 		$query->type( 'SELECT' );
 
 		$query->table( SQLStore::ID_TABLE, 't0' );
@@ -94,11 +134,21 @@ class ErrorLookup {
 		);
 
 		if ( $subject !== null ) {
+
 			$sid = $idTable->getId(
 				$subject
 			);
 
-			$query->condition( $query->eq( "t1.s_id", $sid ) );
+			if ( $checkConstraintErrors === SMW_CONSTRAINT_ERR_CHECK_ALL ) {
+				$query->join(
+					'LEFT JOIN',
+					[ $sobj_type_table => 's1 ON s1.o_id=t1.s_id' ]
+				);
+
+				$query->condition( '(' . $query->eq( "s1.s_id", $sid ) . ' OR ' . $query->eq( "t1.s_id", $sid ) . ')' );
+			} else {
+				$query->condition( $query->eq( "t1.s_id", $sid ) );
+			}
 		}
 
 		$query->condition( $query->eq( "t1.p_id", $pid ) );
@@ -144,6 +194,10 @@ class ErrorLookup {
 		$query->field( 't2.s_id', 's_id' );
 		$query->field( 't3.o_hash', 'o_hash' );
 		$query->field( 't3.o_blob', 'o_blob' );
+
+		if ( $requestOptions->getLimit() > 0 ) {
+			$query->option( 'LIMIT', $requestOptions->getLimit() );
+		}
 
 		return $query->execute( __METHOD__ );
 	}

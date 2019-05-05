@@ -4,7 +4,9 @@ namespace SMW\Constraint;
 
 use SMW\Message;
 use SMW\Store;
+use SMW\EntityCache;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 use SMW\MediaWiki\IndicatorProvider;
 use SMW\Utils\TemplateEngine;
 use Title;
@@ -18,10 +20,17 @@ use Html;
  */
 class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 
+	const LOOKUP_LIMIT = 20;
+
 	/**
 	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var EntityCache
+	 */
+	private $entityCache;
 
 	/**
 	 * @var boolean
@@ -37,9 +46,20 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 	 * @since 3.1
 	 *
 	 * @param Store $store
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store ) {
+	public function __construct( Store $store, EntityCache $entityCache ) {
 		$this->store = $store;
+		$this->entityCache = $entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $checkConstraintErrors
+	 */
+	public function canConstraintErrors( $checkConstraintErrors ) {
+		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 
 	/**
@@ -94,25 +114,11 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 			return;
 		}
 
-		$errorLookup = $this->store->service( 'ErrorLookup' );
-		$connection = $this->store->getConnection( 'mw.db' );
+		$errors = $this->findErrors(
+			DIWikiPage::newfromTitle( $title )
+		);
 
-		$res = $errorLookup->findErrorsByType( 'constraint',  DIWikiPage::newfromTitle( $title ) );
-
-		$messages = [];
-
-		foreach ( $res as $row ) {
-
-			if ( $row->o_blob !== null ) {
-				$msg = $connection->unescape_bytea( $row->o_blob );
-			} else {
-				$msg = $row->o_hash;
-			}
-
-			$messages[] = Message::decode( $msg );
-		}
-
-		if ( $messages === [] ) {
+		if ( $errors === [] ) {
 			return;
 		}
 
@@ -120,6 +126,14 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 
 		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->load( '/constraint/ConstraintErrorLine.ms', 'line_template' );
+		$this->templateEngine->load( '/constraint/ConstraintErrorTopLine.ms', 'top_line_template' );
+
+		$this->templateEngine->compile(
+			'top_line_template',
+			[
+				'margin' => isset( $options['dir'] ) && $options['dir'] === 'rtl' ? 'right' : 'left'
+			]
+		);
 
 		$this->templateEngine->compile(
 			'line_template',
@@ -137,7 +151,10 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 			]
 		);
 
-		$content = '<ul><li>' . implode('</li><li>', $messages ) . '</li></ul>';
+		$top = Message::get( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ] );
+		$top .= $this->templateEngine->code( 'top_line_template' );
+
+		$content = '<ul><li>' . implode('</li><li>', $errors ) . '</li></ul>';
 
 		$bottom = $this->templateEngine->code( 'comment_template' );
 		$bottom .= $this->templateEngine->code( 'line_template' );
@@ -149,6 +166,7 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 			[
 				'title' => Message::get( $this->errorTitle ),
 				'content' => htmlspecialchars( $content, ENT_QUOTES ),
+				'top'  => htmlspecialchars( $top, ENT_QUOTES ),
 				'bottom'  => htmlspecialchars( $bottom, ENT_QUOTES ),
 			]
 		);
@@ -156,6 +174,58 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 		$html = $this->templateEngine->code( 'highlighter_template' );
 
 		$this->indicators['smw-w-constraint'] = $html;
+	}
+
+	private function findErrors( $subject ) {
+
+		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
+
+		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
+			return $this->decodeErrors( $errors );
+		}
+
+		$errorLookup = $this->store->service( 'ErrorLookup' );
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setOption( 'checkConstraintErrors', $this->checkConstraintErrors );
+		$requestOptions->setLimit( self::LOOKUP_LIMIT );
+
+		$res = $errorLookup->findErrorsByType(
+			ConstraintError::ERROR_TYPE,
+			$subject,
+			$requestOptions
+		);
+
+		$errors = $errorLookup->buildArray( $res );
+
+		// Store `null` as string to have the cache return something and not
+		// interpret an empty [] as `false`
+		if ( $errors === [] ) {
+			$errors = 'null';
+		}
+
+		$this->entityCache->save( $key, $errors, EntityCache::TTL_WEEK );
+
+		// Being an associate member means once the subject is invalidated (during
+		// save, delete etc.), the current cache entry is evicted as well.
+		$this->entityCache->associate( $subject, $key );
+
+		return $this->decodeErrors( $errors );
+	}
+
+	private function decodeErrors( $errors ) {
+
+		if ( $errors === 'null' ) {
+			return [];
+		}
+
+		$messages = [];
+
+		foreach ( $errors as $error ) {
+			$messages[] = Message::decode( $error );
+		}
+
+		return $messages;
 	}
 
 }

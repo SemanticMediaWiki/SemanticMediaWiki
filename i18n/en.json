@@ -139,6 +139,7 @@
 	"smw-constraint-schema-violation-requires-page-type": "The constraint requires a page type.",
 	"smw-constraint-error": "Constraint issue",
 	"smw-constraint-error-suggestions": "Please check listed violations and properties together with their annotated values to ensure that all constraint requirements are met.",
+	"smw-constraint-error-limit":"The list will contain a maximum of $1 violations.",
 	"smw_noboolean": "\"$1\" is not recognized as a Boolean (true/false) value.",
 	"smw_true_words": "true,t,yes,y",
 	"smw_false_words": "false,f,no,n",

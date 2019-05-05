@@ -18,7 +18,7 @@
 
 	var container = function( title, content, tip ) {
 
-		var cancel = '', head = '', bottom = '', theme = '', hint = '';
+		var cancel = '', head = '', top = '', bottom = '', theme = '', hint = '';
 		var theme = tip.smw.theme;
 
 		if ( tip.smw.isPersistent ) {
@@ -35,11 +35,15 @@
 
 		head = '<div class="tippy-header ' + theme + '">' + cancel + title + hint + '</div>';
 
+		if ( tip.reference.getAttribute( "data-top" ) ) {
+			top = '<div class="tippy-top ' + theme + '">' + tip.reference.getAttribute( "data-top" ) + '</div>';
+		};
+
 		if ( tip.reference.getAttribute( "data-bottom" ) ) {
 			bottom = '<div class="tippy-bottom ' + theme + '">' + tip.reference.getAttribute( "data-bottom" ) + '</div>';
 		};
 
-		return head + '<div class="tippy-content-container ' + theme + '">' + content + '</div>' + bottom;
+		return head + top + '<div class="tippy-content-container ' + theme + '">' + content + '</div>' + bottom;
 	}
 
 	var options = {
