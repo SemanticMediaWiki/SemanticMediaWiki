@@ -75,7 +75,7 @@
 			"SMW\\Maintenance\\": "maintenance/"
 		},
 		"files" : [
-			"SemanticMediaWiki.php"
+			"ComposerLoad.php"
 		],
 		"classmap" : [
 			"includes/"
