@@ -147,11 +147,11 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => Message::get( 'smw-constraint-error-suggestions' )
+				'comment' => Message::get( 'smw-constraint-error-suggestions', Message::TEXT, Message::USER_LANGUAGE )
 			]
 		);
 
-		$top = Message::get( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ] );
+		$top = Message::get( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, Message::USER_LANGUAGE );
 		$top .= $this->templateEngine->code( 'top_line_template' );
 
 		$content = '<ul><li>' . implode('</li><li>', $errors ) . '</li></ul>';
@@ -164,7 +164,7 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 		$this->templateEngine->compile(
 			'highlighter_template',
 			[
-				'title' => Message::get( $this->errorTitle ),
+				'title' => Message::get( $this->errorTitle, Message::TEXT, Message::USER_LANGUAGE ),
 				'content' => htmlspecialchars( $content, ENT_QUOTES ),
 				'top'  => htmlspecialchars( $top, ENT_QUOTES ),
 				'bottom'  => htmlspecialchars( $bottom, ENT_QUOTES ),
@@ -222,7 +222,7 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 		$messages = [];
 
 		foreach ( $errors as $error ) {
-			$messages[] = Message::decode( $error );
+			$messages[] = Message::decode( $error, null, Message::USER_LANGUAGE );
 		}
 
 		return $messages;
