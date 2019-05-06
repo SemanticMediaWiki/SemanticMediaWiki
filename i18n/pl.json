@@ -536,6 +536,7 @@
 	"smw-processing": "Przetwarzanie...",
 	"smw-redirect-target-unresolvable": "Cel jest nierozwiązalny z powodu „$1”",
 	"smw-types-title": "Typ: $1",
+	"smw-schema-error-json": "Błąd JSON: „$1”",
 	"smw-schema-usage": "Wykorzystanie",
 	"smw-schema-type": "Typ",
 	"smw-schema-tag": "{{PLURAL:$1|Znacznik|Znaczniki}}",
