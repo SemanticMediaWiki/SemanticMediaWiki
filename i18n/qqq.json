@@ -18,7 +18,8 @@
 			"McDutchie",
 			"Avatar6",
 			"Vlad5250",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Omotecho"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -222,9 +223,9 @@
 	"smw-unusedproperties-docu": "This is the introductory message at the top of [[Special:UnusedProperties]].",
 	"smw-unusedproperty-template": "This message is used on [[Special:UnusedProperties]] to display each property listed. It holds the following parameters:\n* $1 link to the property's page\n* $2 link to the property's data type page",
 	"wantedproperties": "{{doc-special|WantedProperties}}",
-	"smw-wantedproperties-docu": "This is the introductory message at the top of [[Special:WantedProperties]].",
+	"smw-wantedproperties-docu": "This is the introductory message at the top of [[Special:WantedProperties]]. Contrast with wanted but [https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=smw-unusedproperties-docu&group=mwgithub-semanticmediawiki&language=en unused properties]. Compare with [[mediawiki:Smw-wantedproperties-docu/en|same context]].",
 	"smw-wantedproperty-template": "This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki.\n\nParameters:\n* $1 holds the name of the wanted property.\n* $2 holds the number of values annotated with the wanted property.",
-	"smw-special-wantedproperties-docu": "This is the introductory message at the top of special page \"WantedProperties\".",
+	"smw-special-wantedproperties-docu": "This is the introductory message at the top of special page \"WantedProperties\". Compare with those used in wikis but [[mediawiki:Smw-wantedproperties-docu/jen|without description page]]. Contrast with wanted but [https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=smw-unusedproperties-docu&group=mwgithub-semanticmediawiki&language=en unused properties].",
 	"smw-special-wantedproperties-template": "This is the message on [[Special:WantedProperties]] showing the name of the property without an assigned data type and how often it is used in the wiki.\n\nParameters:\n* $1 holds the name of the wanted property.\n* $2 holds the number of values annotated with the wanted property.",
 	"smw_purge": "{{doc-actionlink}}\nThis is the label of a tab of an action item for the content area.\n{{Identical|Refresh}}",
 	"smw-purge-failed": "This is an error/warning message. Please translate consistent to {{msg-mw|smw_purge}}.",

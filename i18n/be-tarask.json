@@ -291,7 +291,7 @@
 	"smw-admin-supplementary-operational-statistics-title": "Апэрацыйная статыстыка",
 	"smw-admin-supplementary-operational-statistics-intro": "Паказвае пашыраны набор <u>$1</u>",
 	"smw-admin-supplementary-idlookup-title": "Пошук і вылучэньне сутнасьці",
-	"smw-admin-supplementary-idlookup-intro": "Падтрымлівае простую функцыю «<u>$1</u>»",
+	"smw-admin-supplementary-idlookup-intro": "Падтрымлівае простую функцыю <u>$1</u>",
 	"smw-admin-supplementary-duplookup-title": "Дубляваны прагляд элемэнтаў",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</span>, каб знайсьці элемэнты, якія класыфікуюцца як дублікаты ў абранай матрыцы табліцаў",
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities",
