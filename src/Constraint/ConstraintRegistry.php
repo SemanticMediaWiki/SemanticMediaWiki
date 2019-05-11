@@ -8,6 +8,7 @@ use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\SingleValueConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -101,8 +102,9 @@ class ConstraintRegistry {
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,
 			'unique_value_constraint' => UniqueValueConstraint::class,
+			'single_value_constraint' => SingleValueConstraint::class,
 			'non_negative_integer' => NonNegativeIntegerConstraint::class,
-			'must_exists' => MustExistsConstraint::class
+			'must_exists' => MustExistsConstraint::class,
 		];
 
 		\Hooks::run( 'SMW::Constraint::initConstraints', [ $this ] );

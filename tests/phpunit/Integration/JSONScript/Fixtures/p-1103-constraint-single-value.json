@@ -1,0 +1,11 @@
+{
+    "type": "PROPERTY_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "single_value_constraint": true
+    },
+    "tags": [
+        "property constraint",
+        "integer",
+        "number"
+    ]
+}
