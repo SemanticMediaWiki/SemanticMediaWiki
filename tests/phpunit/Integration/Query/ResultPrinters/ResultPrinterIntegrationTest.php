@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\Query\ResultPrinter;
+namespace SMW\Tests\Integration\Query\ResultPrinters;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class QueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
+class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $subjects = [];
 	private $pageCreator;
