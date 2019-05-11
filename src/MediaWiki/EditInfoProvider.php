@@ -18,32 +18,32 @@ class EditInfoProvider {
 	/**
 	 * @var WikiPage
 	 */
-	private $wikiPage = null;
+	private $page;
 
 	/**
 	 * @var Revision
 	 */
-	private $revision = null;
+	private $revision;
 
 	/**
 	 * @var User
 	 */
-	private $user = null;
+	private $user;
 
 	/**
 	 * @var ParserOutput
 	 */
-	private $parserOutput = null;
+	private $parserOutput;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param WikiPage $wikiPage
+	 * @param WikiPage $page
 	 * @param Revision $revision
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, Revision $revision, User $user = null ) {
-		$this->wikiPage = $wikiPage;
+	public function __construct( WikiPage $page, Revision $revision = null, User $user = null ) {
+		$this->page = $page;
 		$this->revision = $revision;
 		$this->user = $user;
 	}
@@ -80,51 +80,26 @@ class EditInfoProvider {
 	 */
 	public function fetchEditInfo() {
 
-		$editInfo = $this->hasContentForEditMethod() ? $this->prepareContentForEdit() : $this->prepareTextForEdit();
-
-		$this->parserOutput = isset( $editInfo->output ) ? $editInfo->output : null;
-
-		return $this;
-	}
-
-	/**
-	 * FIXME MW 1.21-
-	 */
-	protected function hasContentForEditMethod() {
-		return method_exists( 'WikiPage', 'prepareContentForEdit' );
-	}
-
-	private function prepareContentForEdit() {
+		if ( $this->page !== null && $this->revision === null ) {
+			$this->revision = $this->page->getRevision();
+		}
 
 		if ( !$this->revision instanceof Revision ) {
-			return null;
+			return $this;
 		}
 
 		$content = $this->revision->getContent();
 
-		return $this->wikiPage->prepareContentForEdit(
+		$prepareEdit = $this->page->prepareContentForEdit(
 			$content,
 			null,
 			$this->user,
 			$content->getContentHandler()->getDefaultFormat()
 		);
-	}
 
-	private function prepareTextForEdit() {
-		// keep backwards compatibility with MediaWiki 1.19 by deciding, if the
-		// newer Revision::getContent() method (MW 1.20 and above) or the bc
-		// method Revision::getRawText() is used.
-		if ( method_exists( $this->revision, 'getContent' ) ) {
-			$text = $this->revision->getContent( Revision::RAW );
-		} else {
-			// FIXME: Isn't needed after drop of support for MW 1.19
-			$text = $this->revision->getRawText();
-		}
-		return $this->wikiPage->prepareTextForEdit(
-			$text,
-			null,
-			$this->user
-		);
+		$this->parserOutput = isset( $prepareEdit->output ) ? $prepareEdit->output : null;
+
+		return $this;
 	}
 
 }
