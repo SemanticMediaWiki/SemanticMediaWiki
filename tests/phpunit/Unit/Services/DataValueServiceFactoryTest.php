@@ -41,7 +41,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewDataValueByType() {
+	public function testNewDataValueByTypeOrClass() {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -49,14 +49,14 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
-			->with( $this->stringContains( DataValueServiceFactory::TYPE_INSTANCE . 'foo' ) )
+			->with( $this->stringContains( 'bar' ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
 		);
 
-		$instance->newDataValueByType( 'foo', 'bar' );
+		$instance->newDataValueByTypeOrClass( 'foo', 'bar' );
 	}
 
 	public function testGetDataValueFactory() {

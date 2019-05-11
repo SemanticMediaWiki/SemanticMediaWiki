@@ -82,14 +82,8 @@ class TypesRegistry {
 			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // smw/schema page
 			'_wps'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
-
-			ConstraintSchemaValue::TYPE_ID => [
-				[ ValueFactory::class, 'newConstraintSchemaValue' ],
-				DataItem::TYPE_WIKIPAGE,
-				false,
-				true
-			],
-
+			// __cschema
+			ConstraintSchemaValue::TYPE_ID => [ ConstraintSchemaValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Number type
 			NumberValue::TYPE_ID => [ NumberValue::class, DataItem::TYPE_NUMBER, false, false ],
 			 // Temperature type
