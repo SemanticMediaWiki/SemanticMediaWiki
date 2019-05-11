@@ -15,11 +15,20 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
  */
 class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
+	private $namespaceInfo;
+
+	protected function setUp() {
+
+		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			ResourceLoaderGetConfigVars::class,
-			new ResourceLoaderGetConfigVars()
+			new ResourceLoaderGetConfigVars( $this->namespaceInfo )
 		);
 	}
 
@@ -27,7 +36,18 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [];
 
-		$instance = new ResourceLoaderGetConfigVars();
+		$instance = new ResourceLoaderGetConfigVars(
+			$this->namespaceInfo
+		);
+
+		$optionKeys = ResourceLoaderGetConfigVars::OPTION_KEYS;
+
+		foreach ( $optionKeys as $key ) {
+			$instance->setOption( $key, [] );
+		}
+
+		$instance->setOption( 'smwgNamespacesWithSemanticLinks', [ NS_MAIN ] );
+
 		$instance->process( $vars );
 
 		$this->assertArrayHasKey(

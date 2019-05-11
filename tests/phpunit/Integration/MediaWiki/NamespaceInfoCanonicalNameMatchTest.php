@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use MWNamespace;
 use SMW\NamespaceManager;
+use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\Tests\Utils\MwHooksHandler;
 
@@ -15,7 +15,7 @@ use SMW\Tests\Utils\MwHooksHandler;
  *
  * @author mwjames
  */
-class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 
@@ -59,6 +59,7 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 	public function testCanonicalNames() {
 
 		$this->mwHooksHandler->deregisterListedHooks();
+		$namespaceInfo = ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' );
 
 		$count = 0;
 		$index = NamespaceManager::buildNamespaceIndex( Settings::newFromGlobals()->get( 'smwgNamespaceIndex' ) );
@@ -69,7 +70,7 @@ class MWNamespaceCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $index as $ns => $idx ) {
 
-			$mwNamespace = MWNamespace::getCanonicalName( $idx );
+			$mwNamespace = $namespaceInfo->getCanonicalName( $idx );
 
 			if ( $mwNamespace && isset( $names[$idx] ) ) {
 				$this->assertEquals( $mwNamespace, $names[$idx] );

@@ -15,17 +15,28 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
  */
 class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
+	private $namespaceInfo;
+
+	protected function setUp() {
+
+		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			NamespaceForm::class,
-			new NamespaceForm()
+			new NamespaceForm( $this->namespaceInfo )
 		);
 	}
 
 	public function testMakeFields() {
 
-		$instance = new NamespaceForm();
+		$instance = new NamespaceForm(
+			$this->namespaceInfo
+		);
 
 		$instance->setSearchableNamespaces( [ 0 => 'Foo '] );
 
@@ -56,7 +67,9 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
 
-		$instance = new NamespaceForm();
+		$instance = new NamespaceForm(
+			$this->namespaceInfo
+		);
 
 		$instance->checkNamespaceEditToken( $specialSearch );
 	}

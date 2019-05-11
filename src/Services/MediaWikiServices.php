@@ -10,6 +10,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
+use SMW\MediaWiki\NamespaceInfo;
 use WikiImporter;
 
 /**
@@ -163,6 +164,25 @@ return [
 		}
 
 		return new Logger( $logger, $role );
+	},
+
+	/**
+	 * NamespaceInfo
+	 *
+	 * @return callable
+	 */
+	'NamespaceInfo' => function( $containerBuilder ) {
+
+		$containerBuilder->registerExpectedReturnType( 'NamespaceInfo', '\SMW\MediaWiki\NamespaceInfo' );
+		$namespaceInfo = null;
+
+		// MW > 1.33
+		// https://github.com/wikimedia/mediawiki/commit/76661cf129e0dea40edefbd7d35a3f09130572a1
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getNamespaceInfo' ) ) {
+			$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
+		}
+
+		return new NamespaceInfo( $namespaceInfo );
 	},
 
 	/**

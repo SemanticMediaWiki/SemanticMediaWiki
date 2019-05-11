@@ -38,6 +38,21 @@ class HookHandler {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setOption( $key, $value ) {
+
+		if ( $this->options === null ) {
+			$this->setOptions( [] );
+		}
+
+		$this->options->set( $key, $value );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $key
