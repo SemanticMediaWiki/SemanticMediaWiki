@@ -20,24 +20,63 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\NamespaceExaminer',
+			NamespaceExaminer::class,
 			new NamespaceExaminer( [] )
 		);
+	}
 
-		$this->assertInstanceOf(
-			'\SMW\NamespaceExaminer',
-			NamespaceExaminer::newFromArray( [] )
+	public function testInNamespace_Title() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
+
+		$this->assertTrue(
+			$instance->inNamespace( $title )
 		);
 
-		$this->assertInstanceOf(
-			'\SMW\NamespaceExaminer',
-			NamespaceExaminer::getInstance()
+		$instance->setValidNamespaces( [] );
+
+		$this->assertFalse(
+			$instance->inNamespace( $title )
+		);
+	}
+
+	public function testInNamespace_DIWikiPage() {
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
+
+		$this->assertTrue(
+			$instance->inNamespace( $subject )
+		);
+
+		$instance->setValidNamespaces( [] );
+
+		$this->assertFalse(
+			$instance->inNamespace( $subject )
 		);
 	}
 
 	public function testIsSemanticEnabled() {
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
 
 		$this->assertTrue(
 			$instance->isSemanticEnabled( NS_MAIN )
@@ -67,32 +106,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse(
 			$instance->isSemanticEnabled( 99991001 )
-		);
-	}
-
-	public function testGetInstance() {
-
-		$instance = NamespaceExaminer::getInstance();
-
-		$this->assertSame(
-			$instance,
-			NamespaceExaminer::getInstance()
-		);
-
-		NamespaceExaminer::clear();
-
-		$this->assertNotSame(
-			$instance,
-			NamespaceExaminer::getInstance()
-		);
-	}
-
-	public function testNewFromArray() {
-
-		$instance = NamespaceExaminer::newFromArray( [ NS_MAIN => true ] );
-
-		$this->assertTrue(
-			$instance->isSemanticEnabled( NS_MAIN )
 		);
 	}
 

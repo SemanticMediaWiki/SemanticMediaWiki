@@ -70,7 +70,12 @@ class SMWExportController {
 	/**
 	 * @var DeepRedirectTargetResolver
 	 */
-	private $deepRedirectTargetResolver = null;
+	private $deepRedirectTargetResolver;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * Constructor.
@@ -546,7 +551,7 @@ class SMWExportController {
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
 			$title = Title::newFromID( $id );
-			if ( is_null( $title ) || !\SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( $title->getNamespace() ) ) {
+			if ( is_null( $title ) || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
 				continue;
 			}
 			if ( !self::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
@@ -562,7 +567,7 @@ class SMWExportController {
 				$this->serializePage( $diPage, $diPage->recdepth );
 				// resolve dependencies that will otherwise not be printed
 				foreach ( $this->element_queue as $key => $diaux ) {
-					if ( !\SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( $diaux->getNamespace() ) ||
+					if ( !$this->isSemanticEnabled( $diaux->getNamespace() ) ||
 					     !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
 						// Note: we do not need to check the cache to guess if an element was already
 						// printed. If so, it would not be included in the queue in the first place.
@@ -763,6 +768,15 @@ class SMWExportController {
 		}
 
 		return $this->deepRedirectTargetResolver;
+	}
+
+	private function isSemanticEnabled( $namespace ) {
+
+		if ( $this->namespaceExaminer === null ) {
+			$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
+		}
+
+		return $this->namespaceExaminer->isSemanticEnabled( $namespace );
 	}
 
 }
