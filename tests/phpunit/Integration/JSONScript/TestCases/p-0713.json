@@ -1,0 +1,85 @@
+{
+	"description": "Test #ask with `format=table` on inverse property, category subquery",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "P0713/1",
+			"contents": "{{#subobject: |Has number=123}} [[Category:P0713/A]]"
+		},
+		{
+			"page": "P0713/2",
+			"contents": "{{#subobject: |Has number=123}} [[Category:P0713/B]]"
+		},
+		{
+			"page": "P0713/3",
+			"contents": "[[Has page::P0713/1]] [[Category:P0713/C]]"
+		},
+		{
+			"page": "P0713/Q.1",
+			"contents": "{{#ask: [[-Has subobject::<q>[[Category:P0713/A]]</q>]] |?Has number |format=table}}"
+		},
+		{
+			"page": "P0713/Q.2",
+			"contents": "{{#ask: [[Has subobject.-Has subobject::<q>[[Category:P0713/B]]</q>]] |format=table}}"
+		},
+		{
+			"page": "P0713/Q.3",
+			"contents": "{{#ask: [[-Has subobject::<q>[[-Has page::<q>[[Category:P0713/C]]</q>]][[Category:P0713/A]]</q>]] |?Has number |format=table}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (-Has subobject::<q>[[Category:P0713/A]]</q>)",
+			"subject": "P0713/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*P0713/1#_c869667efa584ce62a07d13723321630\" title=\"P0713/1\">P0713/1</a>",
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (Has subobject.-Has subobject::<q>[[Category:P0713/B]]</q>)",
+			"subject": "P0713/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*P0713/2\" title=\"P0713/2\">P0713/2</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (-Has subobject::<q>[[-Has page::<q>[[Category:P0713/C]]</q>]][[Category:P0713/A]]</q>)",
+			"subject": "P0713/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*P0713/1#_c869667efa584ce62a07d13723321630\" title=\"P0713/1\">P0713/1</a>",
+					"<td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -256,6 +256,22 @@ class SomePropertyInterpreter {
 		$params = $this->termsLookup->lookup( 'predef', $parameters );
 		$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 
+		// Inverse matches are always resource (aka wpgID) related
+		// [[-Has subobject::<q>[[Category:Foo]]</q>]]
+		if ( $property->isInverse() ) {
+			$parameters = $this->termsLookup->newParameters(
+				[
+					'query.string' => $queryString,
+					'property.key' => $property->getKey(),
+					'field' => "$pid.wpgID",
+					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $params )
+				]
+			);
+
+			$params = $this->termsLookup->lookup( 'inverse', $parameters );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
+		}
+
 		if ( $params === [] ) {
 			return [];
 		}
