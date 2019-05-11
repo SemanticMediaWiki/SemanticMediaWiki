@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\MediaWiki\Search\Search;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
@@ -41,7 +41,7 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$results = $search->searchText( '[[Has some page value::Foo]]' );
 
 		$this->assertInstanceOf(
@@ -80,7 +80,7 @@ class SearchInPageDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$results = $search->searchText( "[[Has coordinates::52°31'N, 13°24'E]]" );
 
 		$this->assertInstanceOf(

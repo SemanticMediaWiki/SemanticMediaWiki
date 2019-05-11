@@ -28,7 +28,7 @@ use SMW\Exception\ClassNotFoundException;
  *
  * @author  Stephan Gambke
  */
-class Search extends SearchEngine {
+class ExtendedSearchEngine extends SearchEngine {
 
 	/**
 	 * @var SearchEngine

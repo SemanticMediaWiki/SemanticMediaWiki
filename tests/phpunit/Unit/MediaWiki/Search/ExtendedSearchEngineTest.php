@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
-use SMW\MediaWiki\Search\Search;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 use SMWQuery;
 
 /**
- * @covers \SMW\MediaWiki\Search\Search
+ * @covers \SMW\MediaWiki\Search\ExtendedSearchEngine
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMWQuery;
  *
  * @author Stephan Gambke
  */
-class SearchTest extends \PHPUnit_Framework_TestCase {
+class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -34,14 +34,14 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\Search',
-			new Search()
+			'\SMW\MediaWiki\Search\ExtendedSearchEngine',
+			new ExtendedSearchEngine()
 		);
 	}
 
 	public function testGetDefaultDBConnection() {
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertInstanceOf(
 			'DatabaseBase',
@@ -55,7 +55,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setDB( $dbMock );
 
 		$this->assertEquals( $dbMock, $search->getDB() );
@@ -85,7 +85,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setDB( $databaseBase );
 
 		$this->assertInstanceOf(
@@ -98,7 +98,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->setExpectedException( 'RuntimeException' );
 		$search->getFallbackSearchEngine();
@@ -110,7 +110,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -131,7 +131,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertEquals(
 			$searchEngine,
@@ -147,7 +147,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
 		$search->getFallbackSearchEngine();
@@ -155,9 +155,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetFallbackSearchEngine_ConstructFromString() {
 
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\ASearchDatabase' );
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertInstanceOf(
 			'\SearchDatabase',
@@ -167,9 +167,9 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetFallbackSearchEngine_ConstructFromStringNonSearchDatabaseThrowsException() {
 
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\ASearchEngine' );
+		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchEngine' );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
 		$search->getFallbackSearchEngine();
@@ -179,7 +179,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'ClassDoesntExist' );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
 		$search->getFallbackSearchEngine();
@@ -209,7 +209,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'searchTitle')
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -242,7 +242,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'searchTitle')
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -291,7 +291,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$result = $search->searchText( $term );
 
 		$this->assertInstanceOf(
@@ -329,7 +329,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'searchText')
 			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -342,7 +342,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertNull( $search->searchTitle( $term ) );
 	}
@@ -358,7 +358,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Some feature' ) )
 			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertTrue( $search->supports( 'Some feature' ) );
@@ -375,7 +375,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'Some text' ) )
 			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -409,7 +409,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $content ) )
 			->will( $this->returnValueMap( [ [ $title, $content, 'text from content for title' ] ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertEquals(
@@ -434,7 +434,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->with()
 			->will( $this->returnValue( true ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertTrue( $search->textAlreadyUpdatedForIndex( 'Some text' ) );
@@ -453,7 +453,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'Some title' ),
 				$this->equalTo( 'Some text' ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$search->update( 42, 'Some title', 'Some text' );
@@ -471,7 +471,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$search->updateTitle( 42, 'Some title' );
@@ -493,7 +493,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$search->delete( 42, 'Some title' );
@@ -515,7 +515,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'Some feature name' ),
 				$this->equalTo( 'Some feature expression' ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 		$search->setFeatureData( 'Some feature name', 'Some feature expression' );
 
@@ -529,7 +529,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testReplacePrefixes() {
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertEquals(
 			'Some query',
@@ -539,7 +539,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTransformSearchTerm() {
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 
 		$this->assertEquals(
 			'Some query',
@@ -559,7 +559,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 9001 ),
 				$this->equalTo( 42 ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$search->setLimitOffset( 9001, 42 );
@@ -578,7 +578,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setNamespaces')
 			->with( $this->equalTo( [ 1, 2, 3, 5, 8 ] ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 		$search->setNamespaces( [ 1, 2, 3, 5, 8 ] );
 
@@ -602,7 +602,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'setShowSuggestion')
 			->with( $this->equalTo( true ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 		$search->setShowSuggestion( true );
 
@@ -653,7 +653,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 
 		$this->assertInstanceof(
@@ -688,7 +688,7 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'completionSearch' )
 			->will( $this->returnValue( $searchSuggestionSet ) );
 
-		$search = new Search();
+		$search = new ExtendedSearchEngine();
 		$search->setFallbackSearchEngine( $searchEngine );
 		$search->setShowSuggestion( true );
 

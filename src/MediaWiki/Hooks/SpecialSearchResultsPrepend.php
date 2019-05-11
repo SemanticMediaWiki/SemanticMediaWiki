@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Html;
 use OutputPage;
-use SMW\MediaWiki\Search\Search as SMWSearch;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
 use SpecialSearch;
@@ -51,7 +51,7 @@ class SpecialSearchResultsPrepend extends HookHandler {
 
 		$html = '';
 
-		if ( $this->specialSearch->getSearchEngine() instanceof SMWSearch ) {
+		if ( $this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			$this->outputPage->addModuleStyles( [  'smw.ui.styles', 'smw.special.search.styles' ] );
 			$this->outputPage->addModules( [ 'smw.special.search', 'smw.ui' ] );
 

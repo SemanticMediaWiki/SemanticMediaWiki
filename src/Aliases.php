@@ -71,7 +71,7 @@ class_alias( \SMW\Query\Language\Conjunction::class, 'SMWConjunction' );
 class_alias( \SMW\Query\Language\Disjunction::class, 'SMWDisjunction' );
 class_alias( \SMW\Query\Language\SomeProperty::class, 'SMWSomeProperty' );
 class_alias( \SMW\Query\PrintRequest::class, 'SMWPrintRequest' );
-class_alias( \SMW\MediaWiki\Search\Search::class, 'SMWSearch' );
+class_alias( \SMW\MediaWiki\Search\ExtendedSearchEngine::class, 'SMWSearch' );
 
 // 2.2
 // Some weird SF dependency needs to be removed as quick as possible
