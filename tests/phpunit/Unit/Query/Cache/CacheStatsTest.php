@@ -62,4 +62,20 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetStatsEmpty() {
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new CacheStats(
+			$this->cache,
+			42
+		);
+
+		$this->assertEmpty(
+			$instance->getStats()
+		);
+	}
+
 }

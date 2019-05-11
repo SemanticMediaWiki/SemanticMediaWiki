@@ -110,7 +110,12 @@ class Stats {
 	 * @return array
 	 */
 	public function getStats() {
-		return StatsFormatter::getStatsFromFlatKey( $this->cache->fetch( $this->makeCacheKey( $this->id ) ), '.' );
+
+		if ( ( $stats = $this->cache->fetch( $this->makeCacheKey( $this->id ) ) ) === false ) {
+			return [];
+		}
+
+		return StatsFormatter::getStatsFromFlatKey( $stats, '.' );
 	}
 
 	/**
