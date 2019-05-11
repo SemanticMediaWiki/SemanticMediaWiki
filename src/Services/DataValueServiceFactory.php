@@ -100,14 +100,13 @@ class DataValueServiceFactory {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByType( $typeId, $class ) {
-
-		if ( $this->containerBuilder->isRegistered( self::TYPE_INSTANCE . $typeId ) ) {
-			return $this->containerBuilder->create( self::TYPE_INSTANCE . $typeId );
-		}
+	public function newDataValueByTypeOrClass( $typeId, $class ) {
 
 		if ( is_callable( $class ) ) {
 			return $class( $typeId );
+		}
+		if ( $this->containerBuilder->isRegistered( $class ) ) {
+			return $this->containerBuilder->create( $class );
 		}
 
 		// Legacy invocation, for those that have not been defined yet!s

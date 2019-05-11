@@ -8,6 +8,7 @@ use SMW\DataValues\ImportValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
@@ -67,6 +68,18 @@ return [
 		);
 
 		return $unitConverter;
+	},
+
+	/**
+	 * ConstraintSchemaValue
+	 *
+	 * @return callable
+	 */
+	ConstraintSchemaValue::class => function( $containerBuilder ) {
+		return new ConstraintSchemaValue(
+			ConstraintSchemaValue::TYPE_ID,
+			$containerBuilder->singleton( 'PropertySpecificationLookup' )
+		);
 	},
 
 	/**

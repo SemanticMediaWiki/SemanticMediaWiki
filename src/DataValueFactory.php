@@ -190,7 +190,7 @@ class DataValueFactory {
 			);
 		}
 
-		$dataValue = $this->dataValueServiceFactory->newDataValueByType(
+		$dataValue = $this->dataValueServiceFactory->newDataValueByTypeOrClass(
 			$typeId,
 			$this->dataTypeRegistry->getDataTypeClassById( $typeId )
 		);
