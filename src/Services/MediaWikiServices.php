@@ -97,6 +97,21 @@ return [
 	},
 
 	/**
+	 * MagicWordFactory
+	 *
+	 * @return callable
+	 */
+	'MagicWordFactory' => function( $containerBuilder ) {
+
+		// > MW 1.32
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getMagicWordFactory' ) ) {
+			return MediaWikiServices::getInstance()->getMagicWordFactory();
+		}
+
+		return null;
+	},
+
+	/**
 	 * LBFactory
 	 *
 	 * @return callable
