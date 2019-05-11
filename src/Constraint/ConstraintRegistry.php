@@ -9,7 +9,6 @@ use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 
-
 /**
  * @license GNU GPL v2+
  * @since 3.1

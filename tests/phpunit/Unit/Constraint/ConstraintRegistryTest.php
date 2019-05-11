@@ -129,9 +129,14 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetConstraintByKey( $key, $expected ) {
 
+		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( $this->equalTo( $expected ) );
+			->with( $this->equalTo( $expected ) )
+			->will( $this->returnValue( $constraint ) );
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory

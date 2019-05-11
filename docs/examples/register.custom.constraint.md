@@ -10,35 +10,57 @@ use Foo\FooConstraint;
 
 Hooks::register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
 
-	$constraintRegistry->registerConstraint(
-		'foo_constraint',
-		FooConstraint::class
-	);
+	// Defined the constraint name and assign a class that interprets the
+	// content of it
+	$constraintRegistry->registerConstraint( 'foo_constraint', FooConstraint::class );
 
 	return true;
-};
+} );
 ```
+
+Assigning a non `Constraint` class or a callable that doesn't return a `Constraint` instance will throw an exception.
 
 ### Constraint representation
 
 ```php
+use SMW\Constraint\Constraint;
+
 class FooConstraint implements Constraint {
 
 	private $hasViolation = false;
 
+	/**
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
 	public function hasViolation() {
 		return $this->hasViolation;
 	}
 
-	public function getType( $type ) {
+	/**
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
+	public function getType() {
 		return Constraint::TYPE_INSTANT;
 	}
 
+	/**
+	 * @since 3.1
+	 *
+	 * {@inheritDoc}
+	 */
 	public function checkConstraint( array $constraint, $dataValue ) {
 
 		$this->hasViolation = false;
 
 		// Do the necessary checks
+
+		// `$constraint` contains the details of what the schema has defined
+		// and should be used to interpret the data available and identify any
+		// violations
 
 		...
 
@@ -57,20 +79,22 @@ class FooConstraint implements Constraint {
 
 ### Usage
 
-The `custom_constraint` property in the schema is reserved for custom defined constraints.
+The `custom_constraint` property is an `object` in the schema and is reserved for custom defined constraints using above outlined invocation and hook. The interpretation of what `custom_constraint` should contain and how those values of the schema are interpret are in the solely hand of the implementor.
 
-```
+The validation schema only checks whether `custom_constraint` is an object or not, any further validation of what how the object is structured or should contain needs to be implemented using the assigned `Constraint` class.
+
+```json
 {
-    "type": "PROPERTY_CONSTRAINT_SCHEMA",
-    "constraints": {
-        "custom_constraint": {
-            "foo_constraint": true
-        }
-    },
-    "tags": [
-        "property constraint",
-        "custom constraint"
-    ]
+	"type": "PROPERTY_CONSTRAINT_SCHEMA",
+	"constraints": {
+		"custom_constraint": {
+			"foo_constraint": true
+		}
+	},
+	"tags": [
+		"property constraint",
+		"custom constraint"
+	]
 }
 ```
 
