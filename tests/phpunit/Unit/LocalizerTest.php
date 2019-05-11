@@ -16,37 +16,47 @@ use SMW\Localizer;
  */
 class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
+	private $language;
+	private $namespaceInfo;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	protected function tearDown() {
 		Localizer::clear();
 	}
 
 	public function testCanConstruct() {
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
-			'\SMW\Localizer',
-			new Localizer( $language )
+			Localizer::class,
+			new Localizer( $this->language, $this->namespaceInfo )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Localizer',
+			Localizer::class,
 			Localizer::getInstance()
 		);
 	}
 
 	public function testGetContentLanguage() {
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Localizer( $language );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertSame(
-			$language,
+			$this->language,
 			$instance->getContentLanguage()
 		);
 
@@ -58,7 +68,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespaceTextById() {
 
-		$instance = new Localizer( Language::factory( 'en') );
+		$instance = new Localizer(
+			Language::factory( 'en' ),
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			'Property',
@@ -68,7 +81,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNamespaceIndexByName() {
 
-		$instance = new Localizer( Language::factory( 'en') );
+		$instance = new Localizer(
+			Language::factory( 'en'),
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			SMW_NS_PROPERTY,
@@ -181,11 +197,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetLanguageCodeByRule_OnTitleExpectedToPageLanguage() {
 
-		$contentLanguage = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Localizer( $contentLanguage );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$pageLanguage = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -207,11 +222,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetLanguageCodeByRule_OnNotProvidedTitlePageLanguageExpectedToReturnUserLanguage() {
 
-		$contentLanguage = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Localizer( $contentLanguage );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			$instance->getContentLanguage(),
@@ -262,7 +276,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateTextWithNamespacePrefix() {
 
-		$instance = new Localizer( Language::factory( 'en') );
+		$instance = new Localizer(
+			Language::factory( 'en'),
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			'Property:foo bar',
@@ -272,15 +289,18 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalizedUrlByNamespace() {
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$language->expects( $this->exactly( 3 ) )
+		$this->language->expects( $this->exactly( 3 ) )
 			->method( 'getNsText' )
 			->will( $this->returnValue( 'Spécial' ) );
 
-		$instance = new Localizer( $language );
+		$this->namespaceInfo->expects( $this->exactly( 3 ) )
+			->method( 'getCanonicalName' )
+			->will( $this->returnValue( 'Special' ) );
+
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			'http://example.org/wiki/Special:URIResolver/Property-3AHas_query',
@@ -300,11 +320,14 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetCanonicalName() {
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->namespaceInfo->expects( $this->once() )
+			->method( 'getCanonicalName' )
+			->will( $this->returnValue( 'Help' ) );
 
-		$instance = new Localizer( $language );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertEquals(
 			'Property',
@@ -328,11 +351,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'smw-prefs-general-options-time-correction' ) )
 			->will( $this->returnValue( true ) );
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Localizer( $language );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertTrue(
 			$instance->hasLocalTimeOffsetPreference( $user )
@@ -349,11 +371,10 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language = $this->getMockBuilder( '\Language' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new Localizer( $language );
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
 
 		$this->assertInstanceOf(
 			'DateTime',

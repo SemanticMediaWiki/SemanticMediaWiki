@@ -819,7 +819,16 @@ class Hooks {
 	 */
 	public function onResourceLoaderGetConfigVars( &$vars ) {
 
-		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
+			$applicationFactory->singleton( 'NamespaceInfo' )
+		);
+
+		$resourceLoaderGetConfigVars->setOptions(
+			$settings->filter( ResourceLoaderGetConfigVars::OPTION_KEYS )
+		);
 
 		return $resourceLoaderGetConfigVars->process( $vars );
 	}

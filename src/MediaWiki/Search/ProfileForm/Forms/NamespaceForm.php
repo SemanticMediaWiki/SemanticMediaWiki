@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
-use MWNamespace;
+use SMW\MediaWiki\NamespaceInfo;
 use SMW\Message;
 use SpecialSearch;
 use Xml;
@@ -18,6 +18,11 @@ use Xml;
  * @author mwjames
  */
 class NamespaceForm {
+
+	/**
+	 * @var NamespaceInfo
+	 */
+	private $namespaceInfo;
 
 	/**
 	 * @var []
@@ -43,6 +48,15 @@ class NamespaceForm {
 	 * @var null|string
 	 */
 	private $hideList = false;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param NamespaceInfo $namespaceInfo
+	 */
+	public function __construct( NamespaceInfo $namespaceInfo ) {
+		$this->namespaceInfo = $namespaceInfo;
+	}
 
 	/**
 	 * @since 3.0
@@ -113,11 +127,7 @@ class NamespaceForm {
 		$hiddenNamespaces = array_flip( $this->hiddenNamespaces );
 
 		foreach ( $this->searchableNamespaces as $namespace => $name ) {
-			$subject = MWNamespace::getSubject( $namespace );
-
-			if ( MWNamespace::isTalk( $namespace ) ) {
-			//	continue;
-			}
+			$subject = $this->namespaceInfo->getSubject( $namespace );
 
 			if ( isset( $hiddenNamespaces[$namespace] ) ) {
 				continue;

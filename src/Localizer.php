@@ -6,6 +6,7 @@ use DateTime;
 use Language;
 use SMW\Lang\Lang;
 use SMW\MediaWiki\LocalTime;
+use SMW\MediaWiki\NamespaceInfo;
 use Title;
 use User;
 
@@ -31,9 +32,11 @@ class Localizer {
 	 * @since 2.1
 	 *
 	 * @param Language $contentLanguage
+	 * @param NamespaceInfo $namespaceInfo
 	 */
-	public function __construct( Language $contentLanguage ) {
+	public function __construct( Language $contentLanguage, NamespaceInfo $namespaceInfo ) {
 		$this->contentLanguage = $contentLanguage;
+		$this->namespaceInfo = $namespaceInfo;
 	}
 
 	/**
@@ -43,9 +46,14 @@ class Localizer {
 	 */
 	public static function getInstance() {
 
-		if ( self::$instance === null ) {
-			self::$instance = new self( $GLOBALS['wgContLang'] );
+		if ( self::$instance !== null ) {
+			return self::$instance;
 		}
+
+		self::$instance = new self(
+			$GLOBALS['wgContLang'],
+			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' )
+		);
 
 		return self::$instance;
 	}
@@ -226,7 +234,7 @@ class Localizer {
 			return $canonicalNames[$index];
 		}
 
-		return \MWNamespace::getCanonicalName( $index );
+		return $this->namespaceInfo->getCanonicalName( $index );
 	}
 
 	/**

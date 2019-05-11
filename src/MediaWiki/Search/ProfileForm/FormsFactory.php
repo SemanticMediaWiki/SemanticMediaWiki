@@ -7,6 +7,7 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use WebRequest;
+use SMW\ApplicationFactory;
 
 /**
  * @private
@@ -57,7 +58,9 @@ class FormsFactory {
 	 * @return NamespaceForm
 	 */
 	public function newNamespaceForm() {
-		return new NamespaceForm();
+		return new NamespaceForm(
+			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' )
+		);
 	}
 
 }
