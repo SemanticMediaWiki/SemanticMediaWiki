@@ -49,6 +49,7 @@ use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
 use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\Hooks\AdminLinks;
 
@@ -614,6 +615,7 @@ class Hooks {
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$rejectParserCacheValue = new RejectParserCacheValue(
+			$applicationFactory->getNamespaceExaminer(),
 			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
 			$applicationFactory->getEntityCache()
 		);
@@ -1002,16 +1004,14 @@ class Hooks {
 	 */
 	public function onTitleQuickPermissions( $title, $user, $action, &$errors, $rigor, $short ) {
 
-		$permissionManager = ApplicationFactory::getInstance()->singleton( 'PermissionManager' );
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$ret = $permissionManager->checkQuickPermission(
-			$title,
-			$user,
-			$action,
-			$errors
+		$titleQuickPermissions = new TitleQuickPermissions(
+			$applicationFactory->getNamespaceExaminer(),
+			$applicationFactory->singleton( 'PermissionManager' )
 		);
 
-		return $ret;
+		return $titleQuickPermissions->process( $title, $user, $action, $errors );
 	}
 
 	/**

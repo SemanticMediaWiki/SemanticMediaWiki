@@ -19,6 +19,7 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $dependencyLinksValidator;
+	private $namespaceExaminer;
 	private $entityCache;
 	private $logger;
 
@@ -28,6 +29,10 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->dependencyLinksValidator = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,11 +54,15 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			RejectParserCacheValue::class,
-			new RejectParserCacheValue( $this->dependencyLinksValidator, $this->entityCache )
+			new RejectParserCacheValue( $this->namespaceExaminer, $this->dependencyLinksValidator, $this->entityCache )
 		);
 	}
 
 	public function testProcessOnArchaicDependencies_RejectParserCacheValue() {
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'overrideSub' )
@@ -81,6 +90,7 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 
 		$instance = new RejectParserCacheValue(
+			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache
 		);
@@ -99,6 +109,10 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnArchaicDependencies_RejectParserCacheValueOnDifferentEtag() {
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
@@ -123,6 +137,7 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new RejectParserCacheValue(
+			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache
 		);
@@ -137,6 +152,10 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnArchaicDependencies_KeepParserCacheValueOnUnknownDependency() {
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'contains' )
@@ -153,6 +172,7 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$instance = new RejectParserCacheValue(
+			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache
 		);
@@ -170,11 +190,45 @@ class RejectParserCacheValueTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
+
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
 			->will( $this->returnValue( false ) );
 
+		$this->dependencyLinksValidator->expects( $this->never() )
+			->method( 'hasArchaicDependencies' );
+
 		$instance = new RejectParserCacheValue(
+			$this->namespaceExaminer,
+			$this->dependencyLinksValidator,
+			$this->entityCache
+		);
+
+		$instance->setLogger(
+			$this->logger
+		);
+
+		$this->assertTrue(
+			$instance->process( $subject->getTitle(), 'foo-etag-2' )
+		);
+	}
+
+	public function testProcessOnDisabledNamespace() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->namespaceExaminer->expects( $this->once() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( false ) );
+
+		$this->dependencyLinksValidator->expects( $this->never() )
+			->method( 'canCheckDependencies' );
+
+		$instance = new RejectParserCacheValue(
+			$this->namespaceExaminer,
 			$this->dependencyLinksValidator,
 			$this->entityCache
 		);
