@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki;
 
 use ParserOutput;
-use SMW\MediaWiki\EditInfoProvider;
+use SMW\MediaWiki\EditInfo;
 
 /**
- * @covers \SMW\MediaWiki\EditInfoProvider
+ * @covers \SMW\MediaWiki\EditInfo
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\MediaWiki\EditInfoProvider;
  *
  * @author mwjames
  */
-class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
@@ -31,8 +31,8 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\EditInfoProvider',
-			 new EditInfoProvider( $wikiPage, $revision, $user )
+			'\SMW\MediaWiki\EditInfo',
+			 new EditInfo( $wikiPage, $revision, $user )
 		);
 	}
 
@@ -41,7 +41,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFetchContentInfo( $parameters, $expected ) {
 
-		$instance = new EditInfoProvider(
+		$instance = new EditInfo(
 			$parameters['wikiPage'],
 			$parameters['revision']
 		);
@@ -70,7 +70,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
-		$instance = new EditInfoProvider(
+		$instance = new EditInfo(
 			$wikiPage,
 			$this->newRevisionStub()
 		);
@@ -86,7 +86,7 @@ class EditInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
+		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
 			->setConstructorArgs( [
 				$parameters['wikiPage'],
 				$parameters['revision'],

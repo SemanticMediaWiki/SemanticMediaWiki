@@ -21,13 +21,15 @@ Hooks::register( 'PageContentSaveComplete', function( $wikiPage, $user, $content
         /**
          * Initialize the ParserOuput object
          */
-        $editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
+        $editInfo = $mwCollaboratorFactory->newEditInfo(
                 $wikiPage,
                 $revision,
                 $user
         );
 
-        $parserOutput = $editInfoProvider->fetchEditInfo()->getOutput();
+        $editInfo->fetchEditInfo();
+
+        $parserOutput = $editInfo->getOutput();
 
         if ( !$parserOutput instanceof ParserOutput ) {
                 return true;

@@ -294,12 +294,12 @@ class PropertyPage extends Page {
 			return null;
 		}
 
-		$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
+		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage(),
 			$this->getPage()->getRevision()
 		);
 
-		return $editInfoProvider->fetchSemanticData();
+		return $editInfo->fetchSemanticData();
 	}
 
 	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {

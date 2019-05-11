@@ -7,7 +7,7 @@ use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use UnexpectedValueException;
-use SMW\MediaWiki\EditInfoProvider as EditInfo;
+use SMW\MediaWiki\EditInfo;
 
 /**
  * @license GNU GPL v2+

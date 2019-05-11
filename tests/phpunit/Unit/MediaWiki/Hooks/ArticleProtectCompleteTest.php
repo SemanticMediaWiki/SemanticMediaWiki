@@ -22,6 +22,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $semanticDataFactory;
 	private $dataItemFactory;
+	private $editInfo;
 
 	protected function setUp() {
 		parent::setUp();
@@ -50,6 +51,10 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $idTable ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() {
@@ -63,13 +68,9 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			ArticleProtectComplete::class,
-			new ArticleProtectComplete( $title, $editInfoProvider )
+			new ArticleProtectComplete( $title, $this->editInfo )
 		);
 	}
 
@@ -79,13 +80,9 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new ArticleProtectComplete(
 			$title,
-			$editInfoProvider
+			$this->editInfo
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -119,17 +116,13 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$editInfoProvider->expects( $this->once() )
+		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
 		$instance = new ArticleProtectComplete(
 			$title,
-			$editInfoProvider
+			$this->editInfo
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -185,17 +178,13 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
-		$editInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\EditInfoProvider' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$editInfoProvider->expects( $this->once() )
+		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
 		$instance = new ArticleProtectComplete(
 			$title,
-			$editInfoProvider
+			$this->editInfo
 		);
 
 		$instance->setLogger( $this->spyLogger );

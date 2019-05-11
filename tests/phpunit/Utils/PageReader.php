@@ -6,7 +6,7 @@ use Revision;
 use TextContent;
 use Title;
 use UnexpectedValueException;
-use SMW\MediaWiki\EditInfoProvider as EditInfo;
+use SMW\MediaWiki\EditInfo;
 
 /**
  * @license GNU GPL v2+

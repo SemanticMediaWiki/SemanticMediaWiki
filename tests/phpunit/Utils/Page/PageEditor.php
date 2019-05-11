@@ -6,7 +6,7 @@ use Revision;
 use RuntimeException;
 use Title;
 use WikiPage;
-use SMW\MediaWiki\EditInfoProvider as EditInfo;
+use SMW\MediaWiki\EditInfo;
 
 /**
  * @group SMW
