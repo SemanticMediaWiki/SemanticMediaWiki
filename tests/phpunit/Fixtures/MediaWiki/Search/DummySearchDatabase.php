@@ -10,7 +10,7 @@ namespace SMW\Tests\Fixtures\MediaWiki\Search;
  *
  * @author mwjames
  */
-class ASearchDatabase extends \SearchDatabase {
+class DummySearchDatabase extends \SearchDatabase {
 
 	/**
 	 * @see SearchDatabase::doSearchTextInDB

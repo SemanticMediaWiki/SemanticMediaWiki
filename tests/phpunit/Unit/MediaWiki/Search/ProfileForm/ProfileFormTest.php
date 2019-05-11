@@ -104,7 +104,7 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertySubjects' )
 			->will( $this->returnValue( [] ) );
 
-		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\Search' )
+		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 

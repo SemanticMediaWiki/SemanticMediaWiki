@@ -10,6 +10,6 @@ namespace SMW\Tests\Fixtures\MediaWiki\Search;
  *
  * @author mwjames
  */
-class ASearchEngine extends \SearchEngine {
+class DummySearchEngine extends \SearchEngine {
 
 }

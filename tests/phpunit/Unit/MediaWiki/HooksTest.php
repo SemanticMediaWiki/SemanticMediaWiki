@@ -467,7 +467,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\Search' )
+		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
