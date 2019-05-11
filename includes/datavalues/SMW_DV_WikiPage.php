@@ -486,6 +486,8 @@ class SMWWikiPageValue extends SMWDataValue {
 ///// special interface for wiki page values
 
 	/**
+	 * @deprecated since 3.1
+	 *
 	 * Return according Title object or null if no valid value was set.
 	 * null can be returned even if this object returns true for isValid(),
 	 * since the latter function does not check whether MediaWiki can really
@@ -495,7 +497,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	private function getTitle() {
 
 		if ( $this->m_title !== null ) {
 			return $this->m_title;
@@ -538,11 +540,13 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
+	 * @deprecated since 3.1
+	 *
 	 * Get MediaWiki's ID for this value or 0 if not available.
 	 *
 	 * @return integer
 	 */
-	public function getArticleID() {
+	private function getArticleID() {
 		if ( $this->m_id === false ) {
 			$this->m_id = !is_null( $this->getTitle() ) ? $this->m_title->getArticleID() : 0;
 		}
@@ -551,15 +555,19 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
+	 * @deprecated since 3.1
+	 *
 	 * Get namespace constant for this value.
 	 *
 	 * @return integer
 	 */
-	public function getNamespace() {
+	private function getNamespace() {
 		return $this->m_dataitem->getNamespace();
 	}
 
 	/**
+	 * @deprecated since 3.1
+	 *
 	 * Get DBKey for this value. Subclasses that allow for values that do not
 	 * correspond to wiki pages may choose a DB key that is not a legal title
 	 * DB key but rather another suitable internal ID. Thus it is not suitable
@@ -567,7 +575,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * @return string
 	 */
-	public function getDBkey() {
+	private function getDBkey() {
 		return $this->m_dataitem->getDBkey();
 	}
 
@@ -616,11 +624,13 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
+	 * @deprecated since 3.1
+	 *
 	 * Get interwiki prefix or empty string.
 	 *
 	 * @return string
 	 */
-	public function getInterwiki() {
+	private function getInterwiki() {
 		return $this->m_dataitem->getInterwiki();
 	}
 
@@ -733,7 +743,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * @return string sortkey
 	 */
-	public function getSortKey() {
+	private function getSortKey() {
 		return ApplicationFactory::getInstance()->getStore()->getWikiPageSortKey( $this->m_dataitem );
 	}
 
@@ -744,7 +754,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getDisplayTitle() {
 
-		if ( $this->m_dataitem === null || !$this->isEnabledFeature( SMW_DV_WPV_DTITLE ) ) {
+		if ( $this->m_dataitem === null || !$this->hasFeature( SMW_DV_WPV_DTITLE ) ) {
 			return '';
 		}
 

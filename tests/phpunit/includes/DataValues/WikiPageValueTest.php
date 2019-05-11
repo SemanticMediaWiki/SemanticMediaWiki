@@ -57,12 +57,6 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDataItem(
 			$this->dataItemFactory->newDIWikiPage( '>Foo', NS_USER )
 		);
-
-		$instance->getTitle();
-
-		$this->assertTrue(
-			$instance->getOption( WikiPageValue::OPT_DISABLE_INFOLINKS )
-		);
 	}
 
 }
