@@ -162,16 +162,30 @@ class MwCollaboratorFactory {
 	}
 
 	/**
+	 * @deprecated since 3.1
 	 * @since 2.5
 	 *
 	 * @param WikiPage $wkiPage
 	 * @param Revision $revision
 	 * @param User|null $user
 	 *
-	 * @return EditInfoProvider
+	 * @return EditInfo
 	 */
 	public function newEditInfoProvider( WikiPage $wkiPage, Revision $revision, User $user = null ) {
-		return new EditInfoProvider( $wkiPage, $revision, $user );
+		return $this->newEditInfo( $wkiPage, $revision, $user );
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @param WikiPage $wkiPage
+	 * @param Revision $revision
+	 * @param User|null $user
+	 *
+	 * @return EditInfo
+	 */
+	public function newEditInfo( WikiPage $wkiPage, Revision $revision, User $user = null ) {
+		return new EditInfo( $wkiPage, $revision, $user );
 	}
 
 	/**

@@ -13,7 +13,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class EditInfoProvider {
+class EditInfo {
 
 	/**
 	 * @var WikiPage

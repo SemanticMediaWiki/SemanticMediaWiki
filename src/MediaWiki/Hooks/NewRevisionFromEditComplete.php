@@ -6,7 +6,7 @@ use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\EventHandler;
-use SMW\MediaWiki\EditInfoProvider;
+use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\PageInfoProvider;
 use Title;
 
@@ -37,9 +37,9 @@ class NewRevisionFromEditComplete extends HookHandler {
 	private $title;
 
 	/**
-	 * @var EditInfoProvider
+	 * @var EditInfo
 	 */
-	private $editInfoProvider;
+	private $editInfo;
 
 	/**
 	 * @var PageInfoProvider
@@ -50,13 +50,13 @@ class NewRevisionFromEditComplete extends HookHandler {
 	 * @since 1.9
 	 *
 	 * @param Title $title
-	 * @param EditInfoProvider $editInfoProvider
+	 * @param EditInfo $editInfo
 	 * @param PageInfoProvider $pageInfoProvider
 	 */
-	public function __construct( Title $title, EditInfoProvider $editInfoProvider, PageInfoProvider $pageInfoProvider ) {
+	public function __construct( Title $title, EditInfo $editInfo, PageInfoProvider $pageInfoProvider ) {
 		parent::__construct();
 		$this->title = $title;
-		$this->editInfoProvider = $editInfoProvider;
+		$this->editInfo = $editInfo;
 		$this->pageInfoProvider = $pageInfoProvider;
 	}
 
@@ -67,7 +67,9 @@ class NewRevisionFromEditComplete extends HookHandler {
 	 */
 	public function process() {
 
-		$parserOutput = $this->editInfoProvider->fetchEditInfo()->getOutput();
+		$this->editInfo->fetchEditInfo();
+
+		$parserOutput = $this->editInfo->getOutput();
 		$schema = null;
 
 		if ( !$parserOutput instanceof ParserOutput ) {

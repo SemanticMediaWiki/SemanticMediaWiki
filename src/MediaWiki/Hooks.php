@@ -515,7 +515,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
-		$editInfoProvider = $mwCollaboratorFactory->newEditInfoProvider(
+		$editInfo = $mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
 			$revision,
 			$user
@@ -529,7 +529,7 @@ class Hooks {
 
 		$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
 			$wikiPage->getTitle(),
-			$editInfoProvider,
+			$editInfo,
 			$pageInfoProvider
 		);
 
@@ -549,7 +549,7 @@ class Hooks {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$editInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newEditInfoProvider(
+		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
 			$wikiPage,
 			$wikiPage->getRevision(),
 			$user
@@ -557,7 +557,7 @@ class Hooks {
 
 		$articleProtectComplete = new ArticleProtectComplete(
 			$wikiPage->getTitle(),
-			$editInfoProvider
+			$editInfo
 		);
 
 		$articleProtectComplete->setOptions(
