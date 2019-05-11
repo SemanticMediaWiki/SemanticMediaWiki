@@ -6,6 +6,7 @@ use Revision;
 use TextContent;
 use Title;
 use UnexpectedValueException;
+use SMW\MediaWiki\EditInfoProvider as EditInfo;
 
 /**
  * @license GNU GPL v2+
@@ -45,18 +46,9 @@ class PageReader {
 	public function getContentAsText( Title $title ) {
 
 		$this->page = new \WikiPage( $title );
+		$content = $this->page->getContent();
 
-		if ( method_exists( $this->page, 'getContent' ) ) {
-			$content = $this->page->getContent();
-
-			if ( $content instanceof TextContent ) {
-				return $content->getNativeData();
-			} else {
-				return '';
-			}
-		}
-
-		return $this->page->getText();
+		return $content->getNativeData();
 	}
 
 	/**
@@ -66,29 +58,11 @@ class PageReader {
 
 		$this->page = new \WikiPage( $title );
 
-		if ( class_exists( 'WikitextContent' ) ) {
-
-			$content = $this->page->getRevision()->getContent();
-			$format  = $content->getContentHandler()->getDefaultFormat();
-
-			return $this->page->prepareContentForEdit(
-				$content,
-				null,
-				null,
-				$format
-			);
-		}
-
-		if ( method_exists( $this->getPage()->getRevision(), 'getContent' ) ) {
-			$text = $this->getPage()->getRevision()->getContent( Revision::RAW );
-		} else {
-			$text = $this->getPage()->getRevision()->getRawText();
-		}
-		return $this->page->prepareTextForEdit(
-			$text,
-			null,
-			null
+		$editInfo = new EditInfo(
+			$this->getPage()
 		);
+
+		return $editInfo->fetchEditInfo();
 	}
 
 	/**
@@ -99,7 +73,7 @@ class PageReader {
 	 * @return ParserOutput|null
 	 */
 	public function getParserOutputFromEdit( Title $title ) {
-		return $this->getEditInfo( $title )->output;
+		return $this->getEditInfo( $title )->getOutput();
 	}
 
 }

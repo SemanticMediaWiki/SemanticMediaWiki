@@ -66,7 +66,7 @@ class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->subjects[] = $this->pageCreator->getPage();
 
-		$parserOutput = $this->pageCreator->getEditInfo()->output;
+		$parserOutput = $this->pageCreator->getEditInfo()->getOutput();
 
 		$this->assertNotContains(
 			'[[Special:Ask/-5B-5BModification-20date::+-5D-5D-5B-5BCategory:LimitNullForEmptySearchlabel-5D-5D/searchlabel=/offset=0|]]',
@@ -102,7 +102,7 @@ class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->subjects[] = $this->pageCreator->getPage();
 
-		$parserOutput = $this->pageCreator->getEditInfo()->output;
+		$parserOutput = $this->pageCreator->getEditInfo()->getOutput();
 
 		$this->assertContains(
 			'do something',

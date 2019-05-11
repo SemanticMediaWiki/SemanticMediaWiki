@@ -264,7 +264,7 @@ class QueryTestCaseInterpreter {
 		}
 
 		$title = \Title::newFromText( $this->contents['subject'] );
-		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->output;
+		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->getOutput();
 
 		return $parserOutput->getText();
 	}
