@@ -84,6 +84,12 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
 
 		$this->testEnvironment->clearPendingDeferredUpdates();
+
+		// #3916
+		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
+		// @todo Should we start setting $wgUser to something nondeterministic
+		//  to encourage tests to be updated to not depend on it?
+		$GLOBALS['wgUser']->clearInstanceCache( $GLOBALS['wgUser']->mFrom );
 	}
 
 	protected function tearDown() {
