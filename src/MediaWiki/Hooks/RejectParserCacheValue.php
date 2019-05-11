@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\NamespaceExaminer;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
 use Title;
@@ -19,6 +20,11 @@ use Title;
 class RejectParserCacheValue extends HookHandler {
 
 	use EventDispatcherAwareTrait;
+
+	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
 
 	/**
 	 * @var DependencyLinksValidator
@@ -38,10 +44,12 @@ class RejectParserCacheValue extends HookHandler {
 	/**
 	 * @since 3.0
 	 *
+	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param DependencyLinksValidator $dependencyLinksValidator
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( DependencyLinksValidator $dependencyLinksValidator, EntityCache $entityCache ) {
+	public function __construct( NamespaceExaminer $namespaceExaminer, DependencyLinksValidator $dependencyLinksValidator, EntityCache $entityCache ) {
+		$this->namespaceExaminer = $namespaceExaminer;
 		$this->dependencyLinksValidator = $dependencyLinksValidator;
 		$this->entityCache = $entityCache;
 	}
@@ -73,6 +81,10 @@ class RejectParserCacheValue extends HookHandler {
 	 * @return boolean
 	 */
 	public function process( Title $title, $eTag ) {
+
+		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
+			return true;
+		}
 
 		if ( $this->dependencyLinksValidator->canCheckDependencies() === false ) {
 			return true;
