@@ -151,8 +151,12 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 			]
 		);
 
-		$top = Message::get( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, Message::USER_LANGUAGE );
-		$top .= $this->templateEngine->code( 'top_line_template' );
+		if ( count( $errors ) >= self::LOOKUP_LIMIT ) {
+			$top = Message::get( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, Message::USER_LANGUAGE );
+			$top .= $this->templateEngine->code( 'top_line_template' );
+		} else {
+			$top = '';
+		}
 
 		$content = '<ul><li>' . implode('</li><li>', $errors ) . '</li></ul>';
 
