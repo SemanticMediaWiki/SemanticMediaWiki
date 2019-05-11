@@ -57,7 +57,7 @@ class MwCollaboratorFactory {
 	 * @return MagicWordsFinder
 	 */
 	public function newMagicWordsFinder() {
-		return new MagicWordsFinder();
+		return ApplicationFactory::getInstance()->create( 'MagicWordsFinder' );
 	}
 
 	/**

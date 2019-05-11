@@ -777,6 +777,20 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $displayTitleFinder;
 		} );
+
+		/**
+		 * @var MagicWordsFinder
+		 */
+		$containerBuilder->registerCallback( 'MagicWordsFinder', function( $containerBuilder, $parserOutput = null ) {
+			$containerBuilder->registerExpectedReturnType( 'MagicWordsFinder', '\SMW\MediaWiki\MagicWordsFinder' );
+
+			$magicWordsFinder = new \SMW\MediaWiki\MagicWordsFinder(
+				$parserOutput,
+				$containerBuilder->singleton( 'MagicWordFactory' )
+			);
+
+			return $magicWordsFinder;
+		} );
 	}
 
 }
