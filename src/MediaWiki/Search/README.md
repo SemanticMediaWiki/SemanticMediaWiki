@@ -1,5 +1,3 @@
-# SMWSearch
-
 [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) is the `SearchEngine` interface to provide classes and functions to integrate Semantic MediaWiki with `Special:Search`.
 
 It adds support for using `#ask` queries in the `Special:Search` context and provides an extended search profile where user defined forms can empower users to find and match entities using property and value input fields.
@@ -7,8 +5,6 @@ It adds support for using `#ask` queries in the `Special:Search` context and pro
 ## Extended search profile
 
 In cases where the systems detects forms maintained using the `SEARCH_FORM_SCHEMA`, an extended profile will be visible on the `Special:Search` page allowing users to match and search subjects with help of Semantic MediaWiki.
-
-Details on how to create and maintain forms can be found in the [search.form.md](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/search.form.md) document.
 
 ### Example
 
@@ -22,9 +18,11 @@ Classes that provide an interface to support MW's `SearchEngine` by transforming
 SMW\MediaWiki\Search
    │
    ├─ QueryBuilder
-   ├─ Search           # Implements the `SearchEngine`
-   ├─ SearchResult     # Individual result representation
-   └─ SearchResultSet  # Contains a set of results return from the `QueryEngine`
+   ├─ SearchEngineFactory
+   ├─ ExtendedSearchEngine     # Implements the `SearchEngine`
+   │     └─ ExtendedSearch
+   ├─ SearchResult             # Individual result representation
+   └─ SearchResultSet          # Contains a set of results return from the `QueryEngine`
 </pre>
 
 Classes that provide an additional search form to support structured searches in `Special:Search` with the help of the [`SpecialSearchProfileForm`](https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchProfileForm) hook.
@@ -35,3 +33,7 @@ SMW\MediaWiki\Search\ProfileForm
    └─ ProfileForm      # Interface to the `SpecialSearchProfileForm` hook
          └─ Forms      # Classes to generate a HTML from a JSON definition
 </pre>
+
+## See also
+
+- [`search.form.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/search.form.md) describes the `SEARCH_FORM_SCHEMA` schema to define forms to be used in the extended `Special:Search` profile

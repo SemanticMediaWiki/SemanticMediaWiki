@@ -21,9 +21,14 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $testEnvironment;
+	private $connection;
 
 	protected function setUp() {
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
 	}
 
 	protected function tearDown() {
@@ -34,31 +39,9 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\ExtendedSearchEngine',
+			ExtendedSearchEngine::class,
 			new ExtendedSearchEngine()
 		);
-	}
-
-	public function testGetDefaultDBConnection() {
-
-		$search = new ExtendedSearchEngine();
-
-		$this->assertInstanceOf(
-			'DatabaseBase',
-			$search->getDB()
-		);
-	}
-
-	public function testSetGetDBConnection() {
-
-		$dbMock = $this->getMockBuilder( 'DatabaseBase' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$search = new ExtendedSearchEngine();
-		$search->setDB( $dbMock );
-
-		$this->assertEquals( $dbMock, $search->getDB() );
 	}
 
 	public function testGetDefaultFallbackSearchEngineForNullFallbackSearchType() {
@@ -74,313 +57,87 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			}
 		}
 
-		$databaseBase = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
 
-		$databaseBase->expects( $this->any() )
+		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
 			->will( $this->returnValue( $searchEngine ) );
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', null );
 
-		$search = new ExtendedSearchEngine();
-		$search->setDB( $databaseBase );
+		$searchEngine = new ExtendedSearchEngine(
+			$connection
+		);
 
 		$this->assertInstanceOf(
 			'SearchEngine',
-			$search->getFallbackSearchEngine()
+			$searchEngine->getFallbackSearchEngine()
 		);
-	}
-
-	public function testInvalidFallbackSearchEngineThrowsException() {
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'InvalidFallbackSearchEngine' );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->setExpectedException( 'RuntimeException' );
-		$search->getFallbackSearchEngine();
 	}
 
 	public function testSetGetFallbackSearchEngine() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 
 		$this->assertEquals(
-			$searchEngine,
-			$search->getFallbackSearchEngine()
+			$fallbackSearchEngine,
+			$searchEngine->getFallbackSearchEngine()
 		);
-	}
-
-	public function testGetFallbackSearchEngine_ConstructFromCallable() {
-
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$callback = function() use( $searchEngine ) {
-			return $searchEngine;
-		};
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->assertEquals(
-			$searchEngine,
-			$search->getFallbackSearchEngine()
-		);
-	}
-
-	public function testGetFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
-
-		$callback = function() {
-			return new \stdClass;
-		};
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
-		$search->getFallbackSearchEngine();
-	}
-
-	public function testGetFallbackSearchEngine_ConstructFromString() {
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->assertInstanceOf(
-			'\SearchDatabase',
-			$search->getFallbackSearchEngine()
-		);
-	}
-
-	public function testGetFallbackSearchEngine_ConstructFromStringNonSearchDatabaseThrowsException() {
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchEngine' );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
-		$search->getFallbackSearchEngine();
-	}
-
-	public function testGetFallbackSearchEngine_ConstructFromStringInvalidClassThrowsException() {
-
-		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', 'ClassDoesntExist' );
-
-		$search = new ExtendedSearchEngine();
-
-		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
-		$search->getFallbackSearchEngine();
-	}
-
-	public function testSearchTitle_withNonsemanticQuery() {
-
-		$term = 'Some string that can not be interpreted as a semantic query';
-
-		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'searchTitle')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
-
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-
-		$this->assertEquals(
-			$searchResultSet,
-			$search->searchTitle( $term )
-		);
-	}
-
-	public function testSearchTitle_withEmptyQuery() {
-
-		$term = '   ';
-
-		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'searchTitle')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
-
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-
-		$this->assertEquals(
-			$searchResultSet,
-			$search->searchTitle( $term )
-		);
-	}
-
-	public function testSearchText_withSemanticQuery() {
-
-		$term = '[[Some string that can be interpreted as a semantic query]]';
-
-		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query = $this->getMockBuilder( '\SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->any() )
-			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getQueryLink' )
-			->will( $this->returnValue( $infoLink ) );
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
-
-		$store->expects( $this->exactly( 2 ) )
-			->method( 'getQueryResult' )
-			->will( $this->returnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
-				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
-			} ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$search = new ExtendedSearchEngine();
-		$result = $search->searchText( $term );
-
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Search\SearchResultSet',
-			$result
-		);
-
-		$this->assertEquals(
-			9001,
-			$result->getTotalHits()
-		);
-	}
-
-	public function testSearchText_withNonsemanticQuery() {
-
-		$term = 'Some string that can not be interpreted as a semantic query';
-
-		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$searchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
-
-		$searchEngine->expects( $this->once() )
-			->method( 'searchText')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
-
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-
-		$this->assertEquals(
-			$searchResultSet,
-			$search->searchText( $term )
-		);
-	}
-
-	public function testSearchTitle_withSemanticQuery() {
-
-		$term = '[[Some string that can be interpreted as a semantic query]]';
-
-		$search = new ExtendedSearchEngine();
-
-		$this->assertNull( $search->searchTitle( $term ) );
 	}
 
 	public function testSupports() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'supports')
 			->with( $this->equalTo( 'Some feature' ) )
 			->will( $this->returnValueMap( [ [ 'Some feature', true ] ] ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$this->assertTrue( $search->supports( 'Some feature' ) );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+
+		$this->assertTrue(
+			$searchEngine->supports( 'Some feature' )
+		);
 	}
 
 	public function testNormalizeText() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'normalizeText')
 			->with( $this->equalTo( 'Some text' ) )
 			->will( $this->returnValueMap( [ [ 'Some text', 'Some normalized text' ] ] ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 
 		$this->assertEquals(
 			'Some normalized text',
-			$search->normalizeText( 'Some text' )
+			$searchEngine->normalizeText( 'Some text' )
 		);
 	}
 
@@ -398,26 +155,28 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'getTextFromContent')
 			->with(
 				$this->equalTo( $title ),
 				$this->equalTo( $content ) )
 			->will( $this->returnValueMap( [ [ $title, $content, 'text from content for title' ] ] ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 
 		$this->assertEquals(
 			'text from content for title',
-			$search->getTextFromContent( $title, $content )
+			$searchEngine->getTextFromContent( $title, $content )
 		);
 	}
-
 
 	public function testTextAlreadyUpdatedForIndex() {
 
@@ -425,56 +184,65 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'textAlreadyUpdatedForIndex')
 			->with()
 			->will( $this->returnValue( true ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$this->assertTrue( $search->textAlreadyUpdatedForIndex( 'Some text' ) );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+
+		$this->assertTrue(
+			$searchEngine->textAlreadyUpdatedForIndex( 'Some text' )
+		);
 	}
 
 	public function testUpdate() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'update')
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ),
 				$this->equalTo( 'Some text' ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$search->update( 42, 'Some title', 'Some text' );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->update( 42, 'Some title', 'Some text' );
 	}
 
 	public function testUpdateTitle() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'updateTitle')
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$search->updateTitle( 42, 'Some title' );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->updateTitle( 42, 'Some title' );
 	}
 
 	public function testDelete() {
@@ -483,20 +251,22 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'delete')
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( 'Some title' ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$search->delete( 42, 'Some title' );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->delete( 42, 'Some title' );
 	}
 
 	public function testSetFeatureData() {
@@ -505,86 +275,108 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'SearchEngine::delete() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setFeatureData')
 			->with(
 				$this->equalTo( 'Some feature name' ),
 				$this->equalTo( 'Some feature expression' ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setFeatureData( 'Some feature name', 'Some feature expression' );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->setFeatureData( 'Some feature name', 'Some feature expression' );
 
 		$this->assertEquals(
 			'Some feature expression',
-			$search->getFeatureData( 'Some feature name' )
+			$searchEngine->getFeatureData( 'Some feature name' )
 		);
 
-		$this->assertNull( $search->getFeatureData( 'Some non-existent feature name' ) );
+		$this->assertNull(
+			$searchEngine->getFeatureData( 'Some non-existent feature name' )
+		);
 	}
 
 	public function testReplacePrefixes() {
 
-		$search = new ExtendedSearchEngine();
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
 		$this->assertEquals(
 			'Some query',
-			$search->replacePrefixes( 'Some query' )
+			$searchEngine->replacePrefixes( 'Some query' )
 		);
 	}
 
 	public function testTransformSearchTerm() {
 
-		$search = new ExtendedSearchEngine();
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
 		$this->assertEquals(
 			'Some query',
-			$search->transformSearchTerm( 'Some query' )
+			$searchEngine->transformSearchTerm( 'Some query' )
 		);
 	}
 
 	public function testSetLimitOffset() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setLimitOffset')
 			->with(
 				$this->equalTo( 9001 ),
 				$this->equalTo( 42 ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$search->setLimitOffset( 9001, 42 );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 
-		$this->assertEquals( 9001, $search->getLimit() );
-		$this->assertEquals( 42, $search->getOffset() );
+		$searchEngine->setLimitOffset( 9001, 42 );
+
+		$this->assertEquals(
+			9001,
+			$searchEngine->getLimit()
+		);
+
+		$this->assertEquals(
+			42,
+			$searchEngine->getOffset()
+		);
 	}
 
 	public function testSetNamespaces() {
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setNamespaces')
 			->with( $this->equalTo( [ 1, 2, 3, 5, 8 ] ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setNamespaces( [ 1, 2, 3, 5, 8 ] );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->setNamespaces( [ 1, 2, 3, 5, 8 ] );
 
 		$this->assertEquals(
 			[ 1, 2, 3, 5, 8 ],
-			$search->namespaces
+			$searchEngine->namespaces
 		);
 	}
 
@@ -594,75 +386,63 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'SearchEngine::setShowSuggestion() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setShowSuggestion')
 			->with( $this->equalTo( true ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setShowSuggestion( true );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
 
-		$this->assertTrue( $search->getShowSuggestion() );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->setShowSuggestion( true );
+
+		$this->assertTrue(
+			$searchEngine->getShowSuggestion()
+		);
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
 
-		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
+		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$queryResult->expects( $this->any() )
-			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getQueryLink' )
-			->will( $this->returnValue( $infoLink ) );
-
-		$queryResult->expects( $this->any() )
-			->method( 'getResults' )
+		$searchSuggestionSet->expects( $this->any() )
+			->method( 'map')
 			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$store->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$title = $this->getMockBuilder( '\Title' )
+		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$extendedSearch->expects( $this->once() )
+			->method( 'completionSearch' )
+			->with( $this->equalTo( 'in:Foo' ) )
+			->will( $this->returnValue( $searchSuggestionSet ) );
+
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setExtendedSearch( $extendedSearch );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 
 		$this->assertInstanceof(
 			'\SearchSuggestionSet',
-			$search->completionSearch( 'in:Foo' )
+			$searchEngine->completionSearch( 'in:Foo' )
 		);
 	}
 
-	public function testCompletionSearch_NoRelevantPrefix() {
+	public function tesCompletionSearch_NoRelevantPrefix() {
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -676,25 +456,35 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'map')
 			->will( $this->returnValue( [] ) );
 
-		$searchEngine = $this->getMockBuilder( 'SearchEngine' )
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'setShowSuggestion')
 			->with( $this->equalTo( true ) );
 
-		$searchEngine->expects( $this->once() )
+		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'completionSearch' )
 			->will( $this->returnValue( $searchSuggestionSet ) );
 
-		$search = new ExtendedSearchEngine();
-		$search->setFallbackSearchEngine( $searchEngine );
-		$search->setShowSuggestion( true );
+		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extendedSearch->setFallbackSearchEngine( $fallbackSearchEngine );
+
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setExtendedSearch( $extendedSearch );
+		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
+		$searchEngine->setShowSuggestion( true );
 
 		$this->assertInstanceof(
 			'\SearchSuggestionSet',
-			$search->completionSearch( 'Foo' )
+			$searchEngine->completionSearch( 'Foo' )
 		);
 	}
 
