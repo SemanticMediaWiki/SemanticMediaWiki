@@ -180,7 +180,19 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'NamespaceExaminer', function() use ( $containerBuilder ) {
-			return NamespaceExaminer::newFromArray( $containerBuilder->singleton( 'Settings' )->get( 'smwgNamespacesWithSemanticLinks' ) );
+
+			$settings = $containerBuilder->singleton( 'Settings' );
+			$namespaceInfo = $containerBuilder->singleton( 'NamespaceInfo' );
+
+			$namespaceExaminer = new NamespaceExaminer(
+				$settings->get( 'smwgNamespacesWithSemanticLinks' )
+			);
+
+			$namespaceExaminer->setValidNamespaces(
+				$namespaceInfo->getValidNamespaces()
+			);
+
+			return $namespaceExaminer;
 		} );
 
 		$containerBuilder->registerCallback( 'ParserData', function( $containerBuilder, \Title $title, \ParserOutput $parserOutput ) {

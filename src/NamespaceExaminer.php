@@ -3,7 +3,6 @@
 namespace SMW;
 
 use InvalidArgumentException;
-use MWNamespace;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the
@@ -16,11 +15,15 @@ use MWNamespace;
  */
 class NamespaceExaminer {
 
-	/** @var array */
-	private static $instance = null;
-
-	/** @var array */
+	/**
+	 * @var array
+	 */
 	private $registeredNamespaces = [];
+
+	/**
+	 * @var array
+	 */
+	private $validNamespaces = [];
 
 	/**
 	 * @since 1.9
@@ -32,51 +35,34 @@ class NamespaceExaminer {
 	}
 
 	/**
-	 * Returns a static instance with an invoked global settings array
+	 * @since 3.1
 	 *
-	 * @par Example:
-	 * @code
-	 *  \SMW\NamespaceExaminer::getInstance()->isSemanticEnabled( NS_MAIN )
-	 * @endcode
-	 *
-	 * @note Used in smwfIsSemanticsProcessed
-	 *
-	 * @since 1.9
-	 *
-	 * @return NamespaceExaminer
+	 * @param array $validNamespaces
 	 */
-	public static function getInstance() {
+	public function setValidNamespaces( array $validNamespaces ) {
+		$this->validNamespaces = $validNamespaces;
+	}
 
-		if ( self::$instance === null ) {
-			self::$instance = self::newFromArray( Settings::newFromGlobals()->get( 'smwgNamespacesWithSemanticLinks' ) );
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title|DIWikiPage $object
+	 *
+	 * @return boolean
+	 */
+	public function inNamespace( $object ) {
+
+		$namespace = null;
+
+		if ( $object instanceof \Title ) {
+			$namespace = $object->getNamespace();
 		}
 
-		return self::$instance;
-	}
+		if ( $object instanceof \SMW\DIWikiPage ) {
+			$namespace = $object->getNamespace();
+		}
 
-	/**
-	 * Registers an array of available namespaces
-	 *
-	 * @par Example:
-	 * @code
-	 *  \SMW\NamespaceExaminer::newFromArray( array( ... ) )->isSemanticEnabled( NS_MAIN )
-	 * @endcode
-	 *
-	 * @since 1.9
-	 *
-	 * @return NamespaceExaminer
-	 */
-	public static function newFromArray( $registeredNamespaces ) {
-		return new self( $registeredNamespaces );
-	}
-
-	/**
-	 * Resets static instance
-	 *
-	 * @since 1.9
-	 */
-	public static function clear() {
-		self::$instance = null;
+		return $this->isSemanticEnabled( $namespace );
 	}
 
 	/**
@@ -95,7 +81,7 @@ class NamespaceExaminer {
 			throw new InvalidArgumentException( "{$namespace} is not a number" );
 		}
 
-		if ( !in_array( $namespace, MWNamespace::getValidNamespaces() ) ) {
+		if ( !in_array( $namespace, $this->validNamespaces ) ) {
 			// Bug 51435
 			return false;
 		}
@@ -103,16 +89,7 @@ class NamespaceExaminer {
 		return $this->isEnabled( $namespace );
 	}
 
-	/**
-	 * Asserts if a namespace is enabled
-	 *
-	 * @since 1.9
-	 *
-	 * @param integer $namespace
-	 *
-	 * @return boolean
-	 */
-	protected function isEnabled( $namespace ) {
+	private function isEnabled( $namespace ) {
 		return !empty( $this->registeredNamespaces[$namespace] );
 	}
 

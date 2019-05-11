@@ -94,7 +94,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		}
 
 		ApplicationFactory::clear();
-		NamespaceExaminer::clear();
 		PropertyRegistry::clear();
 		Settings::clear();
 		Exporter::getInstance()->clear();
