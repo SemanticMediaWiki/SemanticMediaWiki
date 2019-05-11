@@ -2,7 +2,6 @@
 
 namespace SMW\Constraint;
 
-use RuntimwException;
 use SMW\ConstraintFactory;
 use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\Constraints\NamespaceConstraint;
