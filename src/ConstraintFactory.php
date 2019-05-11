@@ -2,9 +2,12 @@
 
 namespace SMW;
 
+use RuntimeException;
+use SMW\Exception\ClassNotFoundException;
 use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Constraint\ConstraintErrorFinder;
+use SMW\Constraint\Constraint;
 use SMW\Constraint\Constraints\NullConstraint;
 use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\Constraint\Constraints\NamespaceConstraint;
@@ -44,8 +47,13 @@ class ConstraintFactory {
 	 * @param string $class
 	 *
 	 * @return Constraint
+	 * @throws RuntimeException
 	 */
 	public function newConstraintByClass( $class ) {
+
+		if ( !class_exists( $class ) ) {
+			throw new ClassNotFoundException( $class );
+		}
 
 		switch ( $class ) {
 			case NamespaceConstraint::class:
@@ -60,9 +68,16 @@ class ConstraintFactory {
 			case MustExistsConstraint::class:
 				$constraint = $this->newMustExistsConstraint();
 				break;
-			default:
+			case NullConstraint::class:
 				$constraint = $this->newNullConstraint();
 				break;
+			default:
+				$constraint = new $class();
+				break;
+		}
+
+		if ( !$constraint instanceof Constraint ) {
+			throw new RuntimeException( "Expected a `Constraint` instance!" );
 		}
 
 		return $constraint;

@@ -5,6 +5,8 @@ namespace SMW\Tests;
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Fixtures\PlainClass;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ConstraintFactory
@@ -16,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -83,6 +87,22 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewConstraintByClassInvalidClassThrowsException() {
+
+		$instance = new ConstraintFactory();
+
+		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
+		$instance->newConstraintByClass( 'Foo' );
+	}
+
+	public function testNewConstraintByClassNonConstraintClassThrowsException() {
+
+		$instance = new ConstraintFactory();
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->newConstraintByClass( PlainClass::class );
+	}
+
 	/**
 	 * @dataProvider constraintByClass
 	 */
@@ -104,7 +124,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function constraintByClass() {
 
 		yield[
-			'null',
+			'\SMW\Constraint\Constraints\NullConstraint',
 			'\SMW\Constraint\Constraints\NullConstraint'
 		];
 
