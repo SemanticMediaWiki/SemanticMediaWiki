@@ -62,6 +62,7 @@ class UpdateJob extends Job {
 	 */
 	function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.update', $title, $params );
+		$this->title = $title;
 		$this->removeDuplicates = true;
 
 		$this->isEnabledJobQueue(
