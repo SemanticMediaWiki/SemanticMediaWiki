@@ -127,6 +127,8 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		// 'mw-changed-redirect-target'  into 'change_tag_def',
 		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
 
+		$this->testEnvironment->resetMediaWikiService( 'NamespaceInfo' );
+
 		$this->testEnvironment->resetPoolCacheById( TurtleTriplesBuilder::POOLCACHE_ID );
 
 		// Make sure LocalSettings don't interfere with the default settings
@@ -238,6 +240,16 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 		};
 
 		$this->registerConfigValueCallback( 'smwgElasticsearchConfig', $elasticsearchConfig );
+
+		// Config isolation causes NamespaceInfo to not access the `MainConfig`
+		// therefore reset the services so that it copies the changed setting.
+		// https://github.com/wikimedia/mediawiki/commit/7ada64684e6477be44405dedbfdb0d96242f2e73
+		$capitalLinks = function( $val ) {
+			$this->testEnvironment->resetMediaWikiService( 'NamespaceInfo' );
+			return $val;
+		};
+
+		$this->registerConfigValueCallback( 'wgCapitalLinks', $capitalLinks );
 
 		return [
 			'smwgNamespacesWithSemanticLinks',
