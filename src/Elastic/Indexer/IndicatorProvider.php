@@ -124,11 +124,7 @@ class IndicatorProvider implements IIndicatorProvider {
 			}
 		}
 
-		$connection = $this->store->getConnection( 'elastic' );
-
-		if (
-			$connection->hasMaintenanceLock() === false &&
-			$this->entityCache->fetch( CheckReplicationTask::makeCacheKey( $subject ) ) === CheckReplicationTask::TYPE_SUCCESS ) {
+		if ( $this->wasChecked( $subject ) ) {
 			return;
 		}
 
@@ -147,6 +143,19 @@ class IndicatorProvider implements IIndicatorProvider {
 				'data-dir' => $dir,
 			]
 		);
+	}
+
+	private function wasChecked( $subject ) {
+
+		$connection = $this->store->getConnection( 'elastic' );
+
+		$checkReplicationTask = $this->entityCache->fetch(
+			CheckReplicationTask::makeCacheKey( $subject )
+		);
+
+		return $connection->ping() === true &&
+			$connection->hasMaintenanceLock() === false &&
+			$checkReplicationTask === CheckReplicationTask::TYPE_SUCCESS;
 	}
 
 }

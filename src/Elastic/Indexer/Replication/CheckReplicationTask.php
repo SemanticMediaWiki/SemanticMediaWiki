@@ -159,9 +159,18 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		if ( ( $html = $this->checkIsMaintenanceMode() ) ) {
+		if ( ( $html = $this->canConnect() ) ) {
 			return $this->wrapHTML( $html );
 		}
+
+		if ( ( $html = $this->inMaintenanceMode() ) ) {
+			return $this->wrapHTML( $html );
+		}
+
+		return $this->check( $subject, $options );
+	}
+
+	private function check( $subject, $options ) {
 
 		$title = $subject->getTitle();
 		$id = $this->store->getObjectIds()->getID( $subject );
@@ -284,7 +293,33 @@ class CheckReplicationTask extends Task {
 		return $content;
 	}
 
-	private function checkIsMaintenanceMode() {
+	private function canConnect() {
+
+		$connection = $this->store->getConnection( 'elastic' );
+		$content = '';
+
+		if ( $connection->ping() ) {
+			return false;
+		}
+
+		$this->errorTitle = 'smw-es-replication-error';
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-no-connection', Message::PARSE )
+			]
+		);
+
+		$content .= $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE );
+		$content .= $this->templateEngine->code( 'line_template' );
+		$content .= $this->templateEngine->code( 'comment_template' );
+
+		return $content;
+	}
+
+	private function inMaintenanceMode() {
 
 		$connection = $this->store->getConnection( 'elastic' );
 		$content = '';

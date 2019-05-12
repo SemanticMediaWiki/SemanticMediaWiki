@@ -215,6 +215,10 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( NS_MAIN ) );
 
 		$this->elasticClient->expects( $this->once() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
+
+		$this->elasticClient->expects( $this->once() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
 
