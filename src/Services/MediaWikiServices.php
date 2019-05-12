@@ -67,6 +67,22 @@ return [
 	},
 
 	/**
+	 * ResourceLoader
+	 *
+	 * @return callable
+	 */
+	'ResourceLoader' => function( $containerBuilder ) {
+
+		// #3916
+		// > MW 1.33
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getResourceLoader' ) ) {
+			return MediaWikiServices::getInstance()->getResourceLoader();
+		}
+
+		return new \ResourceLoader();
+	},
+
+	/**
 	 * Config
 	 *
 	 * @return callable

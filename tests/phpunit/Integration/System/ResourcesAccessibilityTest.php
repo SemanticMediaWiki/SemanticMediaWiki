@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\System;
 
+use SMW\ApplicationFactory;
 use ResourceLoader;
 use ResourceLoaderContext;
 use ResourceLoaderModule;
@@ -48,7 +49,7 @@ class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
 
 	public function moduleDataProvider() {
 
-		$resourceLoader = new ResourceLoader();
+		$resourceLoader = ApplicationFactory::getInstance()->create( 'ResourceLoader' );
 		$context = ResourceLoaderContext::newDummyContext();
 
 		foreach ( $GLOBALS['smwgResourceLoaderDefFiles'] as $key => $file ) {
