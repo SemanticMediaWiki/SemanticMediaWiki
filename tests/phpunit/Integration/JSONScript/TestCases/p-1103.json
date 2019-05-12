@@ -1,0 +1,124 @@
+{
+	"description": "Test `smw/schema` on `PROPERTY_CONSTRAINT_SCHEMA` with `single_value_constraint` and `Constraint schema`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:SingleValue",
+			"contents": {
+				"import-from": "/../Fixtures/p-1103-constraint-single-value.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]] [[Constraint schema::Constraint:SingleValue]]"
+		},
+		{
+			"page": "Test:P1103/1",
+			"contents": "[[Has page::Value 1]] [[Has page::Value 2]]"
+		},
+		{
+			"page": "Test:P1103/2",
+			"contents": "{{#subobject: Has page=Value 3,Value 4|+sep=,}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (violation of `single_value_constraint`)",
+			"subject": "Test:P1103/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"Value 1"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (violation of `single_value_constraint`)",
+			"subject": "Test:P1103/1#_ERR12fe6675e23ae3a41adcc01e21b7f638",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRP",
+						"_ERRT",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (subobject with violation of `single_value_constraint`)",
+			"subject": "Test:P1103/2#_780b7e0815f93a3c1c00fcf46e893521",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has_page",
+						"_SKEY",
+						"_ERRC"
+					],
+					"propertyValues": [
+						"Value 3",
+						"Test:P1103/2#_ERRc45cee5c6ff92924215e31b8674870a7"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (subobject with violation of `single_value_constraint`)",
+			"subject": "Test:P1103/2#_ERRc45cee5c6ff92924215e31b8674870a7",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRP",
+						"_ERRT",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						"[8,\"smw-datavalue-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

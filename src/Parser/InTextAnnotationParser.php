@@ -6,6 +6,7 @@ use Hooks;
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
+use SMW\SemanticData;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
@@ -163,7 +164,7 @@ class InTextAnnotationParser {
 		);
 
 		// Set context
-		$this->dataValueFactory->addCallable( 'semantic.data', [ $this, 'getSemanticData' ] );
+		$this->dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
 
 		// Obscure [/] to find a set of [[ :: ... ]] while those in-between are left for
 		// decoding in a post-processing so that the regex can split the text
@@ -192,7 +193,7 @@ class InTextAnnotationParser {
 		$this->parserData->copyToParserOutput();
 
 		// Remove context
-		$this->dataValueFactory->clearCallable( 'semantic.data' );
+		$this->dataValueFactory->clearCallable( SemanticData::class );
 
 		$this->parserData->addLimitReport(
 			'intext-parsertime',

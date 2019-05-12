@@ -14,6 +14,7 @@ use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\SingleValueConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -67,6 +68,9 @@ class ConstraintFactory {
 				break;
 			case MustExistsConstraint::class:
 				$constraint = $this->newMustExistsConstraint();
+				break;
+			case SingleValueConstraint::class:
+				$constraint = $this->newSingleValueConstraint();
 				break;
 			case NullConstraint::class:
 				$constraint = $this->newNullConstraint();
@@ -125,6 +129,15 @@ class ConstraintFactory {
 	 */
 	public function newMustExistsConstraint() {
 		return new MustExistsConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return SingleValueConstraint
+	 */
+	public function newSingleValueConstraint() {
+		return new SingleValueConstraint();
 	}
 
 	/**

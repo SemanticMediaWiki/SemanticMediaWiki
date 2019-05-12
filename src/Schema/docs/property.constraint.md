@@ -9,7 +9,6 @@ To easily identify pages that contain a constraint schema it is suggested to use
 ## Properties
 
 - `type` defines the type and is fixed to `PROPERTY_CONSTRAINT_SCHEMA`
-- `manifest_version`
 - `constraints` the section that contains constraints definitions
 - `tags` simple tags to categorize a schema
 
@@ -32,8 +31,10 @@ To easily identify pages that contain a constraint schema it is suggested to use
 
 - `allowed_namespaces` (array) specifies allowed namespaces
 - `unique_value_constraint` (boolean) specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items
+- [`single_value_constraint`][example.schema] (boolean) specifies that the property expects only a single value per assigned entity
 - [`custom_constraint`][custom.constraint] (object) to be used to specify non-schema specific constraints that requrie an implementation using the `SMW::Constraint::initConstraints` hook
-- [`non_negative_integer`][non_negative_integer] (boolean) specifies that values are derived from integer with the minimum inclusive to be 0
+- [`non_negative_integer`][example.schema] (boolean) specifies that values are derived from integer with the minimum inclusive to be 0
+- [`must_exists`][example.schema] (boolean) specifies that the annotated value must exists to be valid
 
 ### Extending constraints
 
@@ -44,6 +45,6 @@ To easily identify pages that contain a constraint schema it is suggested to use
 
 `/data/schema/property-constraint-schema.v1.json`
 
-[non_negative_integer]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/constraint.schema.nonnegativeinteger.md
+[example.schema]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/constraint.schema.md
 [custom.constraint]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/register.custom.constraint.md
 [extending.constraint]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/extending.constraint.md

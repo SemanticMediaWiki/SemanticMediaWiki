@@ -147,7 +147,7 @@ class SubobjectParserFunction {
 	 * @return SemanticData
 	 */
 	public function getSemanticData() {
-		return $this->parserData->getSemanticData();
+		return $this->subobject->getSemanticData();
 	}
 
 	/**
@@ -205,7 +205,7 @@ class SubobjectParserFunction {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		// Set context
-		$dataValueFactory->addCallable( 'semantic.data', [ $this, 'getSemanticData' ] );
+		$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
 
 		foreach ( $parameters as $property => $values ) {
 
@@ -234,7 +234,7 @@ class SubobjectParserFunction {
 		$this->augment( $this->subobject->getSemanticData() );
 
 		// Remove context
-		$dataValueFactory->clearCallable( 'semantic.data' );
+		$dataValueFactory->clearCallable( SemanticData::class );
 
 		return true;
 	}

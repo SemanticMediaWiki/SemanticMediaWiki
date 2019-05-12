@@ -45,6 +45,9 @@
 				"unique_value_constraint": {
 					"$ref": "#/definitions/unique_value_constraint"
 				},
+				"single_value_constraint": {
+					"$ref": "#/definitions/single_value_constraint"
+				},
 				"custom_constraint": {
 					"$ref": "#/definitions/custom_constraint"
 				},
@@ -75,6 +78,12 @@
 			"$id": "#/definitions/unique_value_constraint",
 			"type": "boolean",
 			"title": "Specifies that values should be unique across the wiki, that the value is likely to be different (distinct) from all other items",
+			"default": false
+		},
+		"single_value_constraint": {
+			"$id": "#/definitions/single_value_constraint",
+			"type": "boolean",
+			"title": "Specifies that the property expects only a single value per entity",
 			"default": false
 		},
 		"custom_constraint": {

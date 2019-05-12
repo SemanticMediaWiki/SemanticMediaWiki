@@ -8,6 +8,7 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\MessageFormatter;
 use SMW\ParserData;
+use SMW\SemanticData;
 use SMW\ParserParameterProcessor;
 
 /**
@@ -99,7 +100,7 @@ class SetParserFunction {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		// Set context
-		$dataValueFactory->addCallable( 'semantic.data', [ $this, 'getSemanticData' ] );
+		$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
 
 		foreach ( $parametersToArray as $property => $values ) {
 
@@ -138,7 +139,7 @@ class SetParserFunction {
 		$this->parserData->copyToParserOutput();
 
 		// Remove context
-		$dataValueFactory->clearCallable( 'semantic.data' );
+		$dataValueFactory->clearCallable( SemanticData::class );
 
 		$html = $this->templateRenderer->render() . $this->messageFormatter
 			->addFromArray( $parameters->getErrors() )
