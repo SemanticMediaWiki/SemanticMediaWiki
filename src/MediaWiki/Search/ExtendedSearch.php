@@ -132,8 +132,26 @@ class ExtendedSearch {
 	 * @param integer $offset
 	 */
 	public function setLimitOffset( $limit, $offset = 0 ) {
-		$this->limit = $limit;
-		$this->offset = $offset;
+		$this->limit = intval( $limit );
+		$this->offset = intval( $offset );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return integer
+	 */
+	public function getLimit() {
+		return $this->limit;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return integer
+	 */
+	public function getOffset() {
+		return $this->offset;
 	}
 
 	/**

@@ -46,6 +46,26 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSetLimitOffset() {
+
+		$instance = new ExtendedSearch(
+			$this->store,
+			$this->fallbackSearchEngine
+		);
+
+		$instance->setLimitOffset( 10, false );
+
+		$this->assertEquals(
+			10,
+			$instance->getLimit()
+		);
+
+		$this->assertEquals(
+			0,
+			$instance->getOffset()
+		);
+	}
+
 	public function testSearchTitle_withNonsemanticQuery() {
 
 		$term = 'Some string that can not be interpreted as a semantic query';
