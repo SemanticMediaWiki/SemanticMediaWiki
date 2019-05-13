@@ -46,7 +46,8 @@
 			"Hmevidia",
 			"Tartare",
 			"Dinoxel",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Epok"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -773,6 +774,7 @@
 	"smw-datavalue-constraint-uniqueness-violation-isknown": "La propriété « $1 » ne permet que des annotations à valeur unique, « $2 » contient déjà une valeur affectée. « $3 » viole la contrainte d’unicité.",
 	"smw-datavalue-constraint-violation-non-negative-integer": "La propriété « $1 » a une contrainte « entier non négatif » et la valeur « $2 » viole cette exigence.",
 	"smw-datavalue-constraint-violation-must-exists": "La propriété « $1 » a une contrainte <code>must_exists</code> et une valeur ''$2'' viole celle-ci.",
+	"smw-datavalue-constraint-violation-single-value": "La propriété \"[[Property:$1|$1]]\" a une contrainte <code>single_value</code> et la valeur \"$2\" viole celle-ci.",
 	"smw-property-predefined-boo": "« $1 » est un [[Special:Types/Boolean|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter les valeurs booléennes.",
 	"smw-property-predefined-num": "« $1 » est un [[Special:Types/Number|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs numériques.",
 	"smw-property-predefined-dat": "« $1 » est un [[Special:Types/Date|type]] et une propriété prédéfinie fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique] pour représenter des valeurs de date.",
@@ -878,7 +880,7 @@
 	"apihelp-browsebyproperty-summary": "Module d'API pour récupérer les informations concernant une propriété ou une liste de propriétés.",
 	"apihelp-browsebysubject-summary": "Module d'API pour récupérer les informations concernant un sujet.",
 	"apihelp-smwtask-summary": "Module d'API pour exécuter les tâches relatives à Semantic MediaWiki.",
-	"apihelp-smwbrowse-summary": "Module API pour supporter l'analyse des activités pour différents types d'entités de MédiaWiki Sémantique.",
+	"apihelp-smwbrowse-summary": "Module API pour supporter l'analyse des activités pour différents types d'entités de Semantic MediaWiki.",
 	"apihelp-ask-parameter-api-version": "Format de sortie :\n;2:Format rétro-compatible utilisant {} pour la liste des résultats.\n;3:Format expérimental utilisant [] pour la liste des résultats.",
 	"smw-api-invalid-parameters": "Paramètres invalides « $1 »",
 	"smw-parser-recursion-level-exceeded": "Le niveau de $1 récursions a été dépassé lors du processus d’analyse. Il est suggéré de valider la structure du modèle, ou si nécessaire d’ajuster le paramètre de configuration <code>$maxRecursionDepth</code>.",
@@ -972,9 +974,11 @@
 	"smw-es-replication-error-divergent-revision": "Le suivi de la réplication a trouvé que pour l’article « $1 » (ID : $2) la <b>révision associée</b> montre une différence.",
 	"smw-es-replication-error-divergent-revision-detail": "Révisions associées référencées :  \n*Elasticsearch : $1\n*SQLStore : $2",
 	"smw-es-replication-error-maintenance-mode": "Les moteurs de réplication et de recherche sont en [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Maintenance_mode <b>mode maintenance</b>]; ils apportent des modifications aux entités et aux pages non visibles immédiatement, ou qui n'apparaissent pas encore dans les résultats de recherche.",
+	"smw-es-replication-error-no-connection": "La surveillance de la réplication n’a pas pu effectuer de vérification car elle ne peut établir de connexion à la grappe Elasticsearch.",
 	"smw-es-replication-error-bad-request-exception": "Le gestionnaire de connexion Elasticsearch a levé une exception de mauvaise requête (« erreur HTTP de conflit 400 ») indiquant un problème persistant lors des requêtes de réplication et de recherche.",
 	"smw-es-replication-error-suggestions": "Il est suggéré de modifier ou de purger la page pour supprimer la divergence. Si le problème persiste, vérifiez la grappe Elasticsearch elle-même (allocateur, exceptions, espace disque, etc.).",
 	"smw-es-replication-error-suggestions-maintenance-mode": "Il est suggéré de contacter l’administrateur du wiki pour vérifier si une [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Index_rebuild reconstruction d’index] est actuellement en cours, ou si le <code>refresh_interval</code> n’a pas été mis à la valeur par défaut attendue.",
+	"smw-es-replication-error-suggestions-no-connection": "Il est suggéré de contacter l’administrateur du wiki et de signaler le problème « pas de connexion ».",
 	"smw-es-replication-error-suggestions-exception": "Veuillez vérifier les journaux pour les informations concernant l’état de Elasticsearch, leurs index, et les problèmes éventuels de mauvaise configuration.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "La surveillance de la réplication a trouvé que « $1 » n’a pas d’annotation [[Property:File attachment|File attachement]] indiquant que le moteur d’ingestion de fichiers n’a pas commencé ou n’est pas encore terminé.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Veuillez vous assurer que la tâche d’[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion ingestion de fichier] est programmée et exécutée avant que l’annotation et l’index du fichier puissent être rendus disponibles.",

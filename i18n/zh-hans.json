@@ -31,7 +31,8 @@
 			"Phenolla",
 			"Angrydog001",
 			"Zazzzz",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"科劳"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -657,6 +658,7 @@
 	"smw-property-predefined-long-pvuc": "当两个值的文字表示不等时独特性就会被确定，并且任何这类约束的违例将被归类为错误。",
 	"smw-datavalue-constraint-uniqueness-violation": "属性“$1”只允许单一值分配，且“$2”已注释于主题“$3”中。",
 	"smw-datavalue-constraint-uniqueness-violation-isknown": "属性“$1”只允许唯一值释文，“$2”已被分配给“$3”。",
+	"smw-datavalue-constraint-violation-single-value": "\"[[Property:$1|$1]]\"属性被限制为<code>single_value</code>，您输入的值\"$2\"超出了此限制。",
 	"smw-property-predefined-boo": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表布尔值的[[Special:Types/Boolean|类型]]和预定义属性。",
 	"smw-property-predefined-num": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表数值的[[Special:Types/Number|类型]]和预定义属性。",
 	"smw-property-predefined-dat": "“$1”是一种由[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 语义MediaWiki]提供，代表日期值的[[Special:Types/Date|类型]]和预定义属性。",
@@ -782,6 +784,7 @@
 	"smw-redirect-target-unresolvable": "目标无法解决，原因是“$1”",
 	"smw-types-title": "类型：$1",
 	"smw-schema-error": "验证错误",
+	"smw-schema-error-input-schema": "不能保存：在有效性检验过程 '''$1''' 中发现下列错误；您可查看[https://www.semantic-mediawiki.org/wiki/Help:Schema/Error_handling help page]以获得更多帮助。",
 	"smw-schema-type": "类型",
 	"smw-schema-tag": "{{PLURAL:$1|标签|标签}}",
 	"smw-ask-title-keyword-type": "关键词搜索",
@@ -802,5 +805,6 @@
 	"smw-ask-tab-result": "结果",
 	"smw-ask-tab-extra": "附加功能",
 	"smw-ask-tab-debug": "调试",
-	"smw-ask-tab-code": "代码"
+	"smw-ask-tab-code": "代码",
+	"smw-es-replication-error-suggestions-no-connection": "建议您联系维基管理员以提交此次“无法连接”问题报告。"
 }
