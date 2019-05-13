@@ -82,12 +82,12 @@ class SMWPageLister {
 			return '';
 		}
 
-		$prevLink = wfMessage( 'prevn', $limitText )->escaped();
+		$prevLink = wfMessage( 'smw-prev', $limitText )->escaped();
 		if ( $first !== '' ) {
 			$prevLink = $this->makeSelfLink( $title, $prevLink, $query + [ 'until' => $first ] );
 		}
 
-		$nextLink = wfMessage( 'nextn', $limitText )->escaped();
+		$nextLink = wfMessage( 'smw-next', $limitText )->escaped();
 		if ( $last !== '' ) {
 			$nextLink = $this->makeSelfLink( $title, $nextLink, $query + [ 'from' => $last ] );
 		}
