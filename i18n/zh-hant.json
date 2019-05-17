@@ -352,6 +352,8 @@
 	"smw_pp_from": "從頁面：",
 	"smw_pp_type": "屬性：",
 	"smw_pp_submit": "搜尋結果",
+	"smw-prev": "前{{PLURAL:$1|$1}}",
+	"smw-next": "後{{PLURAL:$1|$1}}",
 	"smw_result_prev": "上一個",
 	"smw_result_next": "下一個",
 	"smw_result_results": "結果",

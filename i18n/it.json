@@ -247,6 +247,8 @@
 	"smw_pp_from": "Da pagina:",
 	"smw_pp_type": "Proprietà:",
 	"smw_pp_submit": "Trova risultati",
+	"smw-prev": "{{PLURAL:$1|precedente|precedenti $1}}",
+	"smw-next": "{{PLURAL:$1|successivo|successivi $1}}",
 	"smw_result_prev": "Precedente",
 	"smw_result_next": "Successivo",
 	"smw_result_results": "Risultati",

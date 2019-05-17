@@ -239,6 +239,8 @@
 	"smw_pp_from": "Del pagina:",
 	"smw_pp_type": "Proprietate:",
 	"smw_pp_submit": "Cercar resultatos",
+	"smw-prev": "$1 {{PLURAL:$1|precedente|precedentes}}",
+	"smw-next": "$1 {{PLURAL:$1|sequente|sequentes}}",
 	"smw_result_prev": "Precedente",
 	"smw_result_next": "Sequente",
 	"smw_result_results": "Resultatos",
@@ -294,5 +296,7 @@
 	"smw-property-predefined-errc": "\"$1\" es un proprietate predefinite fornite per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] que representa errores connexe a mal annotationes de valores o mal tractamento de entrata.",
 	"smw-property-predefined-long-errc": "Le errores se collige in un [https://www.semantic-mediawiki.org/wiki/Help:Container receptaculo] que pote includer un referentia al proprietate que ha causate le discrepantia.",
 	"smw-section-expand": "Displicar le section",
-	"smw-section-collapse": "Plicar le section"
+	"smw-section-collapse": "Plicar le section",
+	"smw-es-replication-error-no-connection": "Le surveliantia de replication non pote exequer verificationes perque illo non pote establir un connexion al racemo Elasticsearch.",
+	"smw-es-replication-error-suggestions-no-connection": "Es suggerite contactar le administrator del wiki pro signalar le problema \"nulle connexion\"."
 }
