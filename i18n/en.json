@@ -895,6 +895,7 @@
 	"smw-schema-namespace-edit-protection": "This page is protected and can only be edited by users with the appropriate <code>smw-schemaedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
 	"smw-schema-error": "Validation error",
 	"smw-schema-error-schema": "The validation schema '''$1''' found the following inconsistencies:",
+	"smw-schema-error-validation-file-inaccessible": "The validation file \"$1\" is inaccessible.",
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-type-missing": "The content is missing a type in order for it to be recognized and usable in the [https://www.semantic-mediawiki.org/wiki/Help:Schema schema namespace].",
 	"smw-schema-error-type-unknown": "The \"$1\" type is not registered and cannot be used for content in the [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema] namespace.",

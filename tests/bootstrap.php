@@ -29,6 +29,8 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php'
 ] );
 
+define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
+
 /**
  * Register a shutdown function the invoke a final clean-up
  */
