@@ -470,6 +470,8 @@
 	"smw-admin-supplementary-elastic-replication-files-docu": "It should be noted that for the list of files, the [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion file ingest] job is required to be executed first and has to finish its processing.",
 	"smw-admin-supplementary-elastic-replication-files":"Files",
 	"smw-admin-supplementary-elastic-replication-pages":"Pages",
+	"smw-admin-supplementary-elastic-endpoints": "Endpoints",
+	"smw-admin-supplementary-elastic-no-connection":"The wiki is currently '''unable''' to establish a connection to the Elasticsearch cluster, please contact the wiki administrator to investigate the issue as it incapacitates the index and query ability of the system.",
 	"smw-list-count": "The list contains $1 {{PLURAL:$1|entry|entries}}.",
 	"smw-property-label-uniqueness" : "The \"$1\" label was matched to at least one other property representation. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness help page] on how to resolve this issue.",
 	"smw-property-label-similarity-title": "Property label similarity report",

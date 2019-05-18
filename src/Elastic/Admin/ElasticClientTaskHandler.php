@@ -84,12 +84,6 @@ class ElasticClientTaskHandler extends TaskHandler {
 	 */
 	public function getHtml() {
 
-		$connection = $this->getStore()->getConnection( 'elastic' );
-
-		if ( !$connection->ping() ) {
-			return '';
-		}
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => 'elastic' ]
@@ -130,7 +124,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		$action = $webRequest->getText( 'action' );
 
 		if ( !$connection->ping() ) {
-			return $this->outputNoNodesAvailable();
+			return $this->outputNoNodesAvailable( $connection );
 		} elseif ( $action === 'elastic' ) {
 			$this->outputHead();
 		} else {
@@ -149,14 +143,26 @@ class ElasticClientTaskHandler extends TaskHandler {
 		$this->outputInfo();
 	}
 
-	private function outputNoNodesAvailable() {
+	private function outputNoNodesAvailable( $connection ) {
 
 		$this->outputHead();
 
-		$html = Html::element(
-			'div',
-			[ 'class' => 'smw-callout smw-callout-error' ],
-			'Elasticsearch has no active nodes available.'
+		$html = Html::rawElement(
+			'h3',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-replication-header-title' ] )
+		) . Html::rawElement(
+			'p',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
+		). Html::rawElement(
+			'h4',
+			[],
+			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )
+		) . Html::rawElement(
+			'pre',
+			[],
+			json_encode( $connection->getConfig()->safeGet( 'endpoints', [] ), JSON_PRETTY_PRINT )
 		);
 
 		$this->outputFormatter->addHTML( $html );
