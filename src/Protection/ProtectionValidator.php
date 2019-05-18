@@ -160,11 +160,15 @@ class ProtectionValidator {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param Title $title
 	 *
 	 * @return boolean
 	 */
-	public function hasCreateProtection( Title $title ) {
+	public function hasCreateProtection( Title $title = null ) {
+
+		if ( $title === null ) {
+			return false;
+		}
+
 		return $this->createProtectionRight && !$title->userCan( 'edit' );
 	}
 
@@ -180,7 +184,11 @@ class ProtectionValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasEditProtection( Title $title ) {
+	public function hasEditProtection( Title $title = null ) {
+
+		if ( $title === null ) {
+			return false;
+		}
 
 		$subject = DIWikiPage::newFromTitle(
 			$title

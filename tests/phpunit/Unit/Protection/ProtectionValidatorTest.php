@@ -265,4 +265,28 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasCreateProtection_NullTitle() {
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache
+		);
+
+		$this->assertFalse(
+			$instance->hasCreateProtection( null )
+		);
+	}
+
+	public function testHasEditProtection_NullTitle() {
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache
+		);
+
+		$this->assertFalse(
+			$instance->hasEditProtection( null )
+		);
+	}
+
 }
