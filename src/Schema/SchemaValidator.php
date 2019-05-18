@@ -39,6 +39,10 @@ class SchemaValidator {
 			return [];
 		}
 
+		if ( !is_readable( $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ) ) {
+			return [ [ 'smw-schema-error-validation-file-inaccessible', $schema->info( Schema::SCHEMA_VALIDATION_FILE ) ] ];
+		}
+
 		$this->validator->validate(
 			$schema,
 			$schema->info( Schema::SCHEMA_VALIDATION_FILE )
