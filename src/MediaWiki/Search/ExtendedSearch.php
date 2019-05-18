@@ -357,9 +357,11 @@ class ExtendedSearch {
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
 
-		$term = $this->fallbackSearchEngine->transformSearchTerm(
-			$term
-		);
+		// #4022
+		// https://github.com/wikimedia/mediawiki/commit/a1731db5abba7323eada8c11db2340cf0ecc3670
+		if ( method_exists( $this->fallbackSearchEngine, 'transformSearchTerm' ) ) {
+			$term = $this->fallbackSearchEngine->transformSearchTerm( $term );
+		}
 
 		$term = $this->fallbackSearchEngine->replacePrefixes(
 			$term
