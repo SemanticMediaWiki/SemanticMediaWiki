@@ -248,6 +248,49 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			'_num',
 			$this->dataTypeRegistry->findTypeByLabelAndLanguage( '数值型', 'zh-Hans' )
 		);
+
+		$this->assertSame(
+			'_num',
+			$this->dataTypeRegistry->findTypeByLabelAndLanguage( 'Number', 'Foo' )
+		);
+	}
+
+	public function testFindTypeByLabelAndLanguageFromRegisteredTypeWithoutLanguageMatch() {
+
+		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$lang->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( $lang ) );
+
+		$lang->expects( $this->once() )
+			->method( 'getDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$lang->expects( $this->once() )
+			->method( 'getDatatypeAliases' )
+			->will( $this->returnValue( [] ) );
+
+		$lang->expects( $this->once() )
+			->method( 'getCanonicalDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$lang->expects( $this->once() )
+			->method( 'findDatatypeByLabel' )
+			->will( $this->returnValue( '' ) );
+
+		$instance = new DataTypeRegistry(
+			$lang
+		);
+
+		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_NOTYPE, 'Foo' );
+
+		$this->assertSame(
+			'_foo',
+			$instance->findTypeByLabelAndLanguage( 'Foo', 'en' )
+		);
 	}
 
 	public function testSubDataType() {

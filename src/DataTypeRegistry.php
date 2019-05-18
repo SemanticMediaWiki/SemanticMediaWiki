@@ -321,7 +321,13 @@ class DataTypeRegistry {
 			$languageCode
 		);
 
-		return $lang->findDatatypeByLabel( $label );
+		$type = $lang->findDatatypeByLabel( $label );
+
+		if ( $type === '' ) {
+			$type = $this->findTypeByLabel( $label );
+		}
+
+		return $type;
 	}
 
 	/**
