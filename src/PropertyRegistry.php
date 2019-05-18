@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use RuntimeException;
+
 /**
  * @license GNU GPL v2+
  * @since 2.1
@@ -167,10 +169,18 @@ class PropertyRegistry {
 	 * @param string|bool $label user label or false (internal property)
 	 * @param boolean $isVisible only used if label is given, see isShown()
 	 * @param boolean $isAnnotable
+	 * @param boolean $isDeclarative
 	 */
-	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true ) {
+	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
 
-		$this->propertyList[$id] = [ $valueType, $isVisible, $isAnnotable ];
+		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
+
+		// Don't override an existing property registration with a different signature
+		if ( isset( $this->propertyList[$id] ) && $signature !== $this->propertyList[$id] ) {
+			throw new RuntimeException( "Overriding the `$id` property with a different signature is not permitted!" );
+		}
+
+		$this->propertyList[$id] = $signature;
 
 		if ( $label !== false ) {
 			$this->registerPropertyLabel( $id, $label );
