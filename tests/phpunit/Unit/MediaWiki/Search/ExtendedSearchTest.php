@@ -30,6 +30,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'replacePrefixes', 'searchTitle', 'searchText' ] )
 			->getMock();
 	}
 
@@ -43,6 +44,24 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			ExtendedSearch::class,
 			new ExtendedSearch( $this->store, $this->fallbackSearchEngine )
+		);
+	}
+
+	public function testFallbackSearchEngineAccessToPublicProperties() {
+
+		$reflect = new \ReflectionObject( $this->fallbackSearchEngine );
+		$properties = [ 'prefix', 'namespaces' ];
+
+		foreach ( $reflect->getProperties( \ReflectionProperty::IS_PUBLIC ) as $prop ) {
+			foreach ( $properties as $k => $p ) {
+				if ( $prop->getName() === $p ) {
+					unset( $properties[$k] );
+				}
+			}
+		}
+
+		$this->assertEmpty(
+			$properties
 		);
 	}
 
@@ -75,10 +94,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
-
-		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
 			->will( $this->returnArgument( 0 ) );
 
@@ -108,10 +123,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
@@ -195,10 +206,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'transformSearchTerm' )
-			->will( $this->returnArgument( 0 ) );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
