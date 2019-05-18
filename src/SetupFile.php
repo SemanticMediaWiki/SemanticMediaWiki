@@ -20,6 +20,11 @@ class SetupFile {
 	use MessageReporterAwareTrait;
 
 	/**
+	 * Describes the maintenance mode
+	 */
+	const MAINTENANCE_MODE = 'maintenance_mode';
+
+	/**
 	 * @var File
 	 */
 	private $file;
@@ -82,8 +87,8 @@ class SetupFile {
 		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
 
 		if (
-			isset( $GLOBALS['smw.json'][$id]['in.maintenance_mode'] ) &&
-			$GLOBALS['smw.json'][$id]['in.maintenance_mode'] === true ) {
+			isset( $GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] ) &&
+			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] === true ) {
 			$isGoodSchema = false;
 		}
 
@@ -105,11 +110,29 @@ class SetupFile {
 
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'][$id]['in.maintenance_mode'] ) ) {
+		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
 			return false;
 		}
 
-		return $vars['smw.json'][$id]['in.maintenance_mode'] === true;
+		return $vars['smw.json'][$id][self::MAINTENANCE_MODE] !== false;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $vars
+	 *
+	 * @return []
+	 */
+	public static function getMaintenanceMode( $vars ) {
+
+		$id = Site::id();
+
+		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
+			return [];
+		}
+
+		return $vars['smw.json'][$id][self::MAINTENANCE_MODE];
 	}
 
 	/**
@@ -161,19 +184,25 @@ class SetupFile {
 	 *
 	 * @return boolean
 	 */
-	public function setMaintenanceMode( $vars ) {
+	public function setMaintenanceMode( $vars, array $maintenanceMode = [] ) {
 
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$key = self::makeUpgradeKey( $vars );
 		$id = Site::id();
 
-		if ( $this->messageReporter !== null ) {
+		if ( $this->messageReporter !== null && $maintenanceMode === [] ) {
 			$this->messageReporter->reportMessage( "Switching into the maintenance mode for $id ..." );
 		}
 
-		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => true ] );
+		if ( $maintenanceMode !== [] ) {
+			$maintenance = [ self::MAINTENANCE_MODE => $maintenanceMode ];
+		} else {
+			$maintenance = [ self::MAINTENANCE_MODE => true ];
+		}
 
-		if ( $this->messageReporter !== null ) {
+		$this->write( $vars, [ 'upgrade_key' => $key ] + $maintenance );
+
+		if ( $this->messageReporter !== null && $maintenanceMode === [] ) {
 			$this->messageReporter->reportMessage( "\n   ... done.\n\n" );
 		}
 	}
@@ -192,7 +221,7 @@ class SetupFile {
 		if (
 			isset( $vars['smw.json'][$id]['upgrade_key'] ) &&
 			$key === $vars['smw.json'][$id]['upgrade_key'] &&
-			$vars['smw.json'][$id]['in.maintenance_mode'] === false ) {
+			$vars['smw.json'][$id][self::MAINTENANCE_MODE] === false ) {
 			return false;
 		}
 
@@ -200,7 +229,7 @@ class SetupFile {
 			$this->messageReporter->reportMessage( "\nReleasing the maintenance mode for $id ..." );
 		}
 
-		$this->write( $vars, [ 'upgrade_key' => $key, 'in.maintenance_mode' => false ] );
+		$this->write( $vars, [ 'upgrade_key' => $key, self::MAINTENANCE_MODE => false ] );
 
 		if ( $this->messageReporter !== null ) {
 			$this->messageReporter->reportMessage( "\n   ... done.\n" );
@@ -234,6 +263,9 @@ class SetupFile {
 		// Remove legacy
 		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
 			unset( $vars['smw.json']['upgradeKey'] );
+		}
+		if ( isset( $vars['smw.json'][$id]['in.maintenance_mode'] ) ) {
+			unset( $vars['smw.json'][$id]['in.maintenance_mode'] );
 		}
 
 		try {

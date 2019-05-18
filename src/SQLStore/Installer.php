@@ -151,6 +151,7 @@ class Installer implements MessageReporter {
 
 		// #3559
 		$tables = $this->tableSchemaManager->getTables();
+		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'create-tables' => '20%' ] );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
@@ -164,16 +165,16 @@ class Installer implements MessageReporter {
 			$this->tableBuilder->create( $table );
 		}
 
+		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'post-creation' => '40%' ] );
 		$this->tableBuildExaminer->checkOnPostCreation( $this->tableBuilder );
 
 		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
 
+		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'table-optimization' => '60%' ] );
 		$this->table_optimization( $messageReporter );
-		$this->supplement_jobs( $messageReporter );
 
-		if ( $this->setupFile === null ) {
-			$this->setupFile = new SetupFile();
-		}
+		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'supplement-jobs' => '80%' ] );
+		$this->supplement_jobs( $messageReporter );
 
 		$this->setupFile->setUpgradeKey( $GLOBALS );
 
