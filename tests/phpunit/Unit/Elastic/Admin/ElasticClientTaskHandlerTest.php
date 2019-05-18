@@ -71,22 +71,6 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetHtml_OnNoAvailableNodes() {
-
-		$this->outputFormatter->expects( $this->never() )
-			->method( 'createSpecialPageLink' );
-
-		$instance = new ElasticClientTaskHandler(
-			$this->outputFormatter
-		);
-
-		$instance->setStore( $this->store );
-
-		$this->assertEmpty(
-			$instance->getHtml()
-		);
-	}
-
 	public function testGetHtml_OnAvailableNodes() {
 
 		$this->outputFormatter->expects( $this->once() )
