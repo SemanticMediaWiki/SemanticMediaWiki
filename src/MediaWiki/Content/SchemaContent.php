@@ -227,7 +227,7 @@ class SchemaContent extends JsonContent {
 				$this->toJson()
 			);
 		} catch ( SchemaTypeNotFoundException $e ) {
-			if ( $this->errorMsg !== '' ) {
+			if ( !$this->isValid && $this->errorMsg !== '' ) {
 				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
 			} elseif ( $e->getType() === '' || $e->getType() === null ) {
 				$errors[] = [ 'smw-schema-error-type-missing' ];
@@ -255,6 +255,8 @@ class SchemaContent extends JsonContent {
 		foreach ( $errors as $error ) {
 			if ( isset( $error['message'] ) ) {
 				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
+			} elseif ( is_string( $error ) ) {
+				$status->fatal( $error );
 			} else {
 				$status->fatal( ...$error );
 			}
