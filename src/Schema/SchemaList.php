@@ -38,12 +38,31 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
+	 * @param Schema|SchemaList $schema
+	 */
+	public function add( $schema ) {
+
+		if ( $schema instanceof SchemaDefinition ) {
+			$this->list[] = $schema;
+		}
+
+		if ( $schema instanceof SchemaList ) {
+			foreach ( $schema->getList() as $schemaDefinition ) {
+				$this->add( $schemaDefinition );
+			}
+		}
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return []
 	 */
 	public function merge( SchemaList $schemaList ) {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
+			$data = [];
 
 			if ( $schemaDefinition instanceof SchemaDefinition ) {
 				$data = $schemaDefinition->toArray();
