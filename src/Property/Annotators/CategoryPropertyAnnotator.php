@@ -7,6 +7,8 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\PropertyAnnotator;
+use SMW\DataValueFactory;
+use SMW\SemanticData;
 
 /**
  * Handling category annotation
@@ -102,11 +104,12 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	protected function addPropertyValues() {
 
-		$namespace = $this->getSemanticData()->getSubject()->getNamespace();
+		$subject = $this->getSemanticData()->getSubject();
+		$namespace = $subject->getNamespace();
 		$property = null;
 
 		$this->processingErrorMsgHandler = new ProcessingErrorMsgHandler(
-			$this->getSemanticData()->getSubject()
+			$subject
 		);
 
 		if ( $this->useCategoryInstance && ( $namespace !== NS_CATEGORY ) ) {
@@ -123,19 +126,32 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 				continue;
 			}
 
-			$this->modifySemanticData( $property, $catname );
+			$this->modifySemanticData( $subject, $property, $catname );
 		}
 	}
 
-	private function modifySemanticData( $property, $catname ) {
+	private function modifySemanticData( $subject, $property, $catname ) {
 
 		$cat = new DIWikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
-			return $this->getSemanticData()->addPropertyObjectValue(
+
+			$dataValueFactory = DataValueFactory::getInstance();
+			$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
+
+			$dataValue = $dataValueFactory->newDataValueByItem(
+				$cat,
 				$property,
-				$cat
+				false,
+				$subject
 			);
+
+			$dataValue->checkConstraints();
+
+			// Remove context
+			$dataValueFactory->clearCallable( SemanticData::class );
+
+			return $this->getSemanticData()->addDataValue( $dataValue );
 		}
 
 		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(

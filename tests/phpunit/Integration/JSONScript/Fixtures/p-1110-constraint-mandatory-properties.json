@@ -1,0 +1,10 @@
+{
+    "type": "CLASS_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "mandatory_properties": [ "Mandatory 1", "Mandatory 2" ]
+    },
+    "tags": [
+        "class constraint",
+        "mandatory properties"
+    ]
+}

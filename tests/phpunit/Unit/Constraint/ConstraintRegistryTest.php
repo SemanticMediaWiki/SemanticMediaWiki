@@ -166,6 +166,11 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			'must_exists',
 			'SMW\Constraint\Constraints\MustExistsConstraint'
 		];
+
+		yield[
+			'mandatory_properties',
+			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+		];
 	}
 
 }

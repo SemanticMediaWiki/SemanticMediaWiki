@@ -142,6 +142,21 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint',
 			'\SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
 		];
+
+		yield[
+			'SMW\Constraint\Constraints\SingleValueConstraint',
+			'\SMW\Constraint\Constraints\SingleValueConstraint'
+		];
+
+		yield[
+			'SMW\Constraint\Constraints\MustExistsConstraint',
+			'\SMW\Constraint\Constraints\MustExistsConstraint'
+		];
+
+		yield[
+			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint',
+			'\SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+		];
 	}
 
 }

@@ -406,6 +406,14 @@ class SemanticDataValidator extends \PHPUnit_Framework_Assert {
 		// Be more lenient towards value comparison by just eliminating a matched pair
 		foreach ( $expected['propertyValues'] as $key => $propertyValue ) {
 
+			if ( is_array( $propertyValue ) && isset( $propertyValue['serialization'] ) ) {
+				if ( $propertyValue['serialization'] === $valueSerialization ) {
+					unset( $expected['propertyValues'][$key] );
+				}
+
+				continue;
+			}
+
 			if ( is_bool( $value ) && $value === $propertyValue ) {
 				unset( $expected['propertyValues'][$key] );
 				continue;

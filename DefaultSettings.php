@@ -2109,6 +2109,13 @@ return [
 			'type_description' => 'smw-schema-description-property-constraint-schema',
 			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
 			'usage_lookup' => '_CONSTRAINT_SCHEMA'
+		],
+		'CLASS_CONSTRAINT_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
+			'validation_schema' => __DIR__ . '/data/schema/class-constraint-schema.v1.json',
+			'type_description' => 'smw-schema-description-class-constraint-schema',
+			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
+			'usage_lookup' => '_CONSTRAINT_SCHEMA'
 		]
 	],
 	##
