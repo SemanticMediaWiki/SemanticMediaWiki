@@ -35,6 +35,34 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAdd() {
+
+		$schemaDefinition = new SchemaDefinition(
+			'Bar',
+			[ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ]
+		);
+
+		$schemaList = new SchemaList( [] );
+		$schemaList->add( $schemaDefinition );
+
+		$this->assertEquals(
+			[
+				$schemaDefinition
+			],
+			$schemaList->getList()
+		);
+
+		$instance = new SchemaList( [] );
+		$instance->add(	$schemaList );
+
+		$this->assertEquals(
+			[
+				$schemaDefinition
+			],
+			$instance->getList()
+		);
+	}
+
 	public function testGetMergedList() {
 
 		$data[] = new SchemaDefinition(
