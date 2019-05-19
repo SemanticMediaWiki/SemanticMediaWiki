@@ -181,7 +181,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->stringContains( ':smw:hierarchy:25840d7839e2fe0369c3fe16014d21d1' ),
+				$this->stringContains( ':smw:hierarchy:2d440b72499319439ab5f466701f13fa' ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
@@ -270,7 +270,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
-				$this->stringContains( ':smw:hierarchy:d27ae8a4539ee4c7ab76aedcbf1c08c0' ),
+				$this->stringContains( ':smw:hierarchy:78c9d3ed63c959981731afeef22cc8e9' ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
@@ -287,6 +287,62 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->getConsecutiveHierarchyList( $category )
+		);
+	}
+
+	public function testGetConsecutiveSuperCategoryList() {
+
+		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+
+		$expected = [
+			new DIWikiPage( 'Bar', NS_CATEGORY ),
+			new DIWikiPage( 'Foobar', NS_CATEGORY )
+		];
+
+		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
+
+		$this->store->expects( $this->at( 0 ) )
+			->method( 'getPropertySubjects' )
+			->with(
+				$this->equalTo( new DIProperty( '_SUBC', true ) ),
+				$this->equalTo( $category ),
+				$this->anything() )
+			->will( $this->returnValue( [ $a ] ) );
+
+		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
+
+		$this->store->expects( $this->at( 1 ) )
+			->method( 'getPropertySubjects' )
+			->with(
+				$this->equalTo( new DIProperty( '_SUBC', true ) ),
+				$this->equalTo( $a ),
+				$this->anything() )
+			->will( $this->returnValue( [ $b ] ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->stringContains( ':smw:hierarchy:c61e6ee84187efaafbb31878af471432' ),
+				$this->anything() );
+
+		$instance = new HierarchyLookup(
+			$this->store,
+			$this->cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->setSubcategoryDepth( 2 );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getConsecutiveHierarchyList( $category, HierarchyLookup::TYPE_SUPER )
 		);
 	}
 
@@ -371,6 +427,45 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->findSubcategoryList( $category )
+		);
+	}
+
+	public function testFindNearbySuperCategories() {
+
+		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
+
+		$expected = [
+			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
+		];
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$store->expects( $this->once() )
+			->method( 'getPropertySubjects' )
+			->with(
+				$this->equalTo( new DIProperty( '_SUBC', true ) ),
+				$this->equalTo( $category ),
+				$this->anything() )
+			->will( $this->returnValue( $expected ) );
+
+		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new HierarchyLookup(
+			$store,
+			$cache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->findNearbySuperCategories( $category )
 		);
 	}
 

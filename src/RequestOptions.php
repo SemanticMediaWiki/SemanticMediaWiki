@@ -105,6 +105,29 @@ class RequestOptions {
 	private $options = [];
 
 	/**
+	 * @var String|null
+	 */
+	private $caller;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $caller
+	 */
+	public function setCaller( $caller ) {
+		$this->caller = $caller;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return string
+	 */
+	public function getCaller() {
+		return $this->caller;
+	}
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param string $string to match
