@@ -207,6 +207,43 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetErrorContainerFromDataValue_CategoryProperty() {
+
+		$instance = new ProcessingErrorMsgHandler(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getErrors', 'getProperty' ] )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [ 'Foo' ] ) );
+
+		$dataValue->expects( $this->atLeastOnce() )
+			->method( 'getProperty' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( '_INST' ) ) );
+
+		$container = $instance->newErrorContainerFromDataValue( $dataValue );
+
+		$this->assertInstanceOf(
+			'\SMWDIContainer',
+			$container
+		);
+
+		$expected = [
+			'propertyCount' => 1,
+			'propertyKeys'  => [ '_ERRT' ],
+		];
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$container->getSemanticData()
+		);
+	}
+
 	public function testGetErrorContainerFromDataValue_TypedError() {
 
 		$instance = new ProcessingErrorMsgHandler(

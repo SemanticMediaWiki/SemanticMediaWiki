@@ -45,6 +45,8 @@ class ConstraintSchemaValue extends WikiPageValue {
 
 		$dataItem = $this->getDataItem();
 		$contextPage = $this->getContextPage();
+		$schema = null;
+		$error = [];
 
 		if ( !$dataItem instanceof DIWikiPage || $contextPage === null ) {
 			return;
@@ -59,8 +61,20 @@ class ConstraintSchemaValue extends WikiPageValue {
 			$schema = json_decode( $definition->getString(), true );
 		}
 
-		if ( $contextPage->getNamespace() === NS_CATEGORY && $schema['type'] !== 'CLASS_CONSTRAINT_SCHEMA' ) {
-			$this->addErrorMsg( [ 'smw-datavalue-constraint-schema-category-wrong-type', $value, 'CLASS_CONSTRAINT_SCHEMA' ] );
+		if ( $schema === null ) {
+			return;
+		}
+
+		$ns = $contextPage->getNamespace();
+
+		if ( $ns === NS_CATEGORY && $schema['type'] !== 'CLASS_CONSTRAINT_SCHEMA' ) {
+			$error = [ 'smw-datavalue-constraint-schema-category-invalid-type', $value, 'CLASS_CONSTRAINT_SCHEMA' ];
+		} elseif ( $ns === SMW_NS_PROPERTY && $schema['type'] !== 'PROPERTY_CONSTRAINT_SCHEMA' ) {
+			$error = [ 'smw-datavalue-constraint-schema-property-invalid-type', $value, 'PROPERTY_CONSTRAINT_SCHEMA' ];
+		}
+
+		if ( $error !== [] ) {
+			$this->addErrorMsg( $error );
 		}
 	}
 

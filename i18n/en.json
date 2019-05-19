@@ -147,6 +147,7 @@
 	"smw-constraint-error": "Constraint issue",
 	"smw-constraint-error-suggestions": "Please check listed violations and properties together with their annotated values to ensure that all constraint requirements are met.",
 	"smw-constraint-error-limit":"The list will contain a maximum of $1 violations.",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "Category \"[[:Category:$1|$1]]\" has a <code>mandatory_properties</code> constraint assigned and requires the following mandatory properties: $2",
 	"smw_noboolean": "\"$1\" is not recognized as a Boolean (true/false) value.",
 	"smw_true_words": "true,t,yes,y",
 	"smw_false_words": "false,f,no,n",
@@ -920,6 +921,7 @@
 	"smw-schema-description-search-form-schema": "The <code>$1</code> schema type is expected to be used to define input forms and characteristics for the [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] profile where it contains instructions on how to generate input fields, define default namespaces, or declare prefix expressions for a search request.",
 	"smw-schema-description-property-group-schema": "The <code>$1</code> schema type defines [https://www.semantic-mediawiki.org/wiki/Help:Property_group property groups] to help structure the [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse browsing] interface.",
 	"smw-schema-description-property-constraint-schema": "The <code>$1</code> schema type is expected to be used to define constraint rules for a property instance as well as those values assigned to it.",
+	"smw-schema-description-class-constraint-schema": "The <code>$1</code> schema type is expected to be used to define constraint rules for a class instance (a.k.a. category).",
 	"smw-schema-tag": "{{PLURAL:$1|Tag|Tags}}",
 	"smw-property-predefined-constraint-schema": "\"$1\" is a predefined property that defines a constraint schema and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-desc": "\"$1\" is a predefined property that stores a schema description and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -973,5 +975,6 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Please ensure that the [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion file ingest] job is scheduled and executed before the annotation and file index can be made available.",
 	"smw-report": "Report",
 	"smw-legend": "Legend",
-	"smw-datavalue-constraint-schema-category-wrong-type": "The annotated \"$1\" schema requires to be a \"$2\" type for a category."
+	"smw-datavalue-constraint-schema-category-invalid-type": "The annotated \"$1\" schema is invalid for a category, it requires a \"$2\" type.",
+	"smw-datavalue-constraint-schema-property-invalid-type": "The annotated \"$1\" schema is invalid for a property, it requires a \"$2\" type."
 }

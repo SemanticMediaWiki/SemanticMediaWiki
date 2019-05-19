@@ -98,12 +98,30 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 		}
 
 		$schemaList = null;
+		$dataItems = [];
 
 		$property = $dataValue->getProperty();
-		$key = $property->getSerialization();
+
+		if ( $property->getKey() === '_INST' ) {
+			$dataItem = $dataValue->getDataItem();
+		} else {
+			$dataItem = $property;
+		}
+
+		$key = $dataItem->getSerialization();
 
 		if ( !isset( $this->schemaLists[$key] ) ) {
-			$this->schemaLists[$key] = $this->schemaFinder->getConstraintSchema( $property );
+			$schemaList = $this->schemaFinder->getConstraintSchema( $dataItem );
+
+			if ( !$schemaList instanceof SchemaList && $dataItems !== [] ) {
+				$schemaList = new SchemaList();
+			}
+
+			foreach ( $dataItems as $di ) {
+				$schemaList->add( $this->schemaFinder->getConstraintSchema( $di ) );
+			}
+
+			$this->schemaLists[$key] = $schemaList;
 		}
 
 		$schemaList = $this->schemaLists[$key];
