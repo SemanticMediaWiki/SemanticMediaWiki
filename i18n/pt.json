@@ -962,6 +962,5 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "A monitorização da replicação identificou que \"$1\" tem em falta uma anotação de [[Property:File attachment|Ficheiro anexo]] o que indica que o processador de ingestão de ficheiros não começou ou ainda não acabou.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Assegure-se de que a tarefa de [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion ingestão de ficheiros] é programada e executada antes de poderem ser disponibilizados a anotação e o índice do ficheiro, por favor.",
 	"smw-report": "Relatório",
-	"smw-legend": "Legenda",
-	"smw-datavalue-constraint-schema-category-wrong-type": "O esquema \"$1\" anotado tem de ser um tipo \"$2\" para uma categoria."
+	"smw-legend": "Legenda"
 }

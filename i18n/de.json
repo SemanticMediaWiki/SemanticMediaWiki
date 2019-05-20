@@ -450,7 +450,7 @@
 	"smw-admin-supplementary-operational-table-statistics-legend": "Die Statistiken zu Datentabellen enthalten veränderliche wie auch abgeleitete Daten, darunter:\n* Letzte Kennung („<tt>last_id</tt>“) – Die letzte Kennung, die derzeit in Verwendung ist. \n* Anzahl Duplikate („<tt>duplicate_count</tt>“) – Die Anzahl der Duplikate, die in der Datentabelle „<tt>id_table</tt>“ vorhanden sind (siehe auch [[Special:SemanticMediaWiki/duplicate-lookup|„Suche nach doppelten Datenobjekten“]]). \n* Anzahl Tabellenzeilen („<tt>rows.total_count</tt>“) – Anzahl der Zeilen, die in der Datentabelle „<tt>id_table</tt>“ vorhanden sind.",
 	"smw-admin-supplementary-elastic-title": "Elasticsearch",
 	"smw-admin-supplementary-elastic-section-subtitle": "Elasticsearch",
-	"smw-admin-supplementary-elastic-intro": "$1 – informiert detailliert über Einstellungen und Indexstatistiken",
+	"smw-admin-supplementary-elastic-intro": "$1 – Informiert detailliert über Einstellungen und Indexstatistiken",
 	"smw-admin-supplementary-elastic-docu": "Diese Seite bietet Informationen zu Einstellungen, Mappings, Betriebsstatus sowie Indexstatistiken des Elasticsearch-Clusters, der von Semantic MediaWiki über dessen [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore „ElasticStore“] genutzt wird.",
 	"smw-admin-supplementary-elastic-functions": "Unterstützte Funktionen",
 	"smw-admin-supplementary-elastic-settings-title": "Einstellungen",
@@ -482,6 +482,8 @@
 	"smw-admin-supplementary-elastic-replication-files-docu": "Es sollte angemerkt sein, dass für die Dateiliste der [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion Dateiindexierungs]-Auftrag erforderlich ist, um zuerst ausgeführt zu werden und ihre Verarbeitung abgeschlossen sein muss.",
 	"smw-admin-supplementary-elastic-replication-files": "Dateien",
 	"smw-admin-supplementary-elastic-replication-pages": "Seiten",
+	"smw-admin-supplementary-elastic-endpoints": "Endpunkte",
+	"smw-admin-supplementary-elastic-no-connection": "Das Wiki kann derzeit '''keine''' Verbindung mit dem Elasticsearch-Cluster herstellen. Kontaktiere bitte den Administrator des Wikis, um zu untersuchen, ob das Problem den Index und die Abfragemöglichkeit des Systems verhindert.",
 	"smw-list-count": "Die Liste enthält {{PLURAL:$1|einen Eintrag|$1 Einträge}}.",
 	"smw-property-label-uniqueness": "Die Bezeichnung „$1“ entspricht mindestens der eines weiteren Attributs. Siehe hierzu die [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness Hilfeseite] mit Informationen zur Lösung dieses Problems.",
 	"smw-property-label-similarity-title": "Bericht zur Ähnlichkeit von Attributbezeichungen",
@@ -898,6 +900,7 @@
 	"smw-schema-namespace-edit-protection": "Diese Seite ist bearbeitungsgeschützt, um unbeabsichtigte Veränderungen an Inhalten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen Berechtigung „smw-schemaedit“ bearbeitet werden.",
 	"smw-schema-error": "Validierungsfehler",
 	"smw-schema-error-schema": "Die Angabe der Spezifikation '''$1''' und dessen Validierung für das aktuelle Schema hat die folgenden Inkompatibilitäten ergeben:",
+	"smw-schema-error-validation-file-inaccessible": "Auf die Validierungsdatei „$1“ kann nicht zugegriffen werden.",
 	"smw-schema-error-violation": "[„$1“, „$2“]",
 	"smw-schema-error-type-missing": "Dem Inhalt fehlt die Angabe eines Typs, um im [https://www.semantic-mediawiki.org/wiki/Help:Schema Namensraum für Schemata] erkannt und verwendet werden zu können.",
 	"smw-schema-error-type-unknown": "Der Typ „$1“ ist unbekannt und kann daher nicht im [https://www.semantic-mediawiki.org/wiki/Help:Schema Namensraum für Schemata] verwendet werden.",
@@ -962,6 +965,5 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "Mit Hilfe der Replikationsüberwachung wurde festgestellt, dass der Seite „$1“ die Annotation des [[Property:File attachment|Dateianhangs]] fehlt. Mit dieser Annotation wird angezeigt, dass die Dateiindexierung noch nicht gestartet wurde oder noch nicht beendet ist.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Es muss sichergestellt sein, dass der Auftrag zur [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion Dateiindexierung] erzeugt und ausgeführt wurde, bevor Annotation und Dateiindex verfügbar gemacht werden.",
 	"smw-report": "Bericht",
-	"smw-legend": "Legende",
-	"smw-datavalue-constraint-schema-category-wrong-type": "Das zugewiesene Schema „$1“ erfordert, ein „$2“-Typ für eine Kategorie zu sein."
+	"smw-legend": "Legende"
 }

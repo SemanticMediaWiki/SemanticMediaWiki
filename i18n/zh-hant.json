@@ -959,6 +959,5 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "複製監控找出「$1」缺少[[Property:File attachment|檔案附件]]註解指示，無法開始或結束檔案接納處理。",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "請確認[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion 檔案接納]任務有被安排，並請在註解與檔案索引可用之前執行。",
 	"smw-report": "報告",
-	"smw-legend": "圖例",
-	"smw-datavalue-constraint-schema-category-wrong-type": "註釋架構「$1」需要是分類的「$2」類型。"
+	"smw-legend": "圖例"
 }

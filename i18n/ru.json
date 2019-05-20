@@ -55,7 +55,8 @@
 			"Nk88",
 			"Athena Atterdag",
 			"Diralik",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"1233qwer1234qwer4"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -551,6 +552,7 @@
 	"smw-admin-tab-maintenance": "Техническое обслуживание",
 	"smw-admin-tab-supplement": "Дополнительные функции",
 	"smw-admin-tab-registry": "Реестр",
+	"smw-admin-configutation-tab-settings": "Настройки",
 	"smw-admin-maintenance-no-description": "Нет описания.",
 	"smw-livepreview-loading": "Загрузка…",
 	"smw-sp-searchbyproperty-description": "На этой странице предоставлен простой [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces интерфейс просмотра] для нахождения сущностей по описанным свойствам и именованным значениям. Другие доступные интерфейсы поиска включают в себя [[Special:PageProperty|страницу поиск свойств]] и [[Special:Ask|построитель поисковых запросов]].",

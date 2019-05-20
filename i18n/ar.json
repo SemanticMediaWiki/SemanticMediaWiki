@@ -17,12 +17,20 @@
 			"Mido",
 			"20عبد العزيز",
 			"Yasser Yousssef",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Kassem7899"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
 	"smw-error": "خطأ",
-	"smw-upgrade-error": "تم تثبيت وتمكين ميدياويكي الدلالي لكنه يفتقد إلى  [https://www.semantic-mediawiki.org/wiki/Help:Upgrade مفتاح ترقية] مناسب يتطابق مع: <code>$1</code>.",
+	"smw-upgrade-error": "تم تثبيت وتمكين ميدياويكي الدلالي لكنه يفتقد إلى  [https://www.semantic-mediawiki.org/wiki/Help:Upgrade مفتاح ترقية] مناسب.",
+	"smw-upgrade-release": "أصدر",
+	"smw-upgrade-progress": "التقدم",
+	"smw-upgrade-progress-explain": "يصعب التنبؤ بتقدير وقت الانتهاء من الترقية حيث أنه يعتمد على حجم مستودع البيانات والأجهزة المتاحة ويمكن أن يستغرق لحظة حتى يكتمل الويكي الأكبر. \n\nيُرجَى الاتصال بإداريك المحلي للحصول على مزيد من المعلومات حول التقدم.",
+	"smw-upgrade-progress-create-tables": "صياغة وتحديث الجداول والمؤشرات",
+	"smw-upgrade-progress-post-creation": "إجراء الوظائف التي تتبع الإنشاء",
+	"smw-upgrade-progress-table-optimization": "إجراء عمليات أمثلة للجداول",
+	"smw-upgrade-progress-supplement-jobs": "إضافة وظائف داعمة",
 	"smw-upgrade-error-title": "خطأ",
 	"smw-upgrade-error-why-title": "لماذا أرى هذه الصفحة؟",
 	"smw-upgrade-error-why-explain": "لقد تغير هيكل قاعدة البيانات الداخلية في ميدياويكي ويتطلب بعض التعديلات لكي تعمل بكامل طاقتها، يمكن أن يكون هناك العديد من الأسباب بما فيها: \n* تمت إضافة خصائص مرممة إضافية (يتطلب إعداد جدول إضافي)  \n* تحتوي الترقية على بعض التغييرات على الجداول أو الفهارس التي تقوم بإجراء اعتراض إلزامي قبل الوصول إلى البيانات",
@@ -32,7 +40,7 @@
 	"smw-upgrade-maintenance-title": "ترقية وصيانة",
 	"smw-upgrade-maintenance-why-title": "لماذا أرى هذه الصفحة؟",
 	"smw-upgrade-maintenance-note": "يخضع النظام حاليا [https://www.semantic-mediawiki.org/wiki/Help:Upgrade لترقية] امتداد [https://www.semantic-mediawiki.org/ ميدياويكي الدلالي] مع مستودع بياناته ونود أن نطلب منك صبرك وأن تسمح باستمرار الصيانة قبل أن يصبح من الممكن الوصول إلى الويكي مرة أخرى.",
-	"smw-upgrade-maintenance-explain": "تحاول الإضافة تقليل التأثير ووقت التوقف عن طريق تأجيل معظم مهام الصيانة الخاصة بها، ولكن يجب إجراء التغييرات ذات الصلة بقاعدة البيانات أولا لتجنب عدم تناسق البيانات وقد تتضمن ما يلي:  \n* تغيير هياكل الجداول مثل إضافة أو تعديل حقول جديدة\n* تغيير الجدول أو إضافته المؤشرات\n* عند توفرها، تشغيل تحسينات الجدول\n\nمن الصعب التنبؤ بتقديرات وقت الانتهاء من الترقية حيث يعتمد ذلك على حجم مستودع البيانات والأجهزة المتاحة ويمكن أن يستغرق لحظات حتى يكتمل الويكي الأكبر. \n\nُيرجَى الاتصال بالإداري المحلي للحصول على مزيد من المعلومات حول التقدم.",
+	"smw-upgrade-maintenance-explain": "تحاول الإضافة تقليل التأثير ووقت التوقف عن العمل من خلال إرجاء معظم مهام الصيانة الخاصة بها إلى ما بعد <code>update.php</code> ولكن يلزم إجراء بعض التغييرات المتعلقة بقاعدة البيانات أولا لتفادي عدم تناسق البيانات، يمكن أن تشمل:  \n* تغيير هياكل الجدول مثل إضافة حقول جديدة أو تعديلها   \n* تغيير أو إضافة مؤشرات الجدول  \n* تشغيل تحسينات الجدول (إن وُجِدت أو لم يتم تخطيها)",
 	"smw-semantics-not-enabled": "لم يتم تمكين وظائف ميدياويكي الدلالي لهذا الويكي.",
 	"smw_viewasrdf": "تلقيمة RDF",
 	"smw_finallistconjunct": " و",
@@ -478,6 +486,8 @@
 	"smw-admin-supplementary-elastic-replication-files-docu": "تجدر الإشارة إلى أنه بالنسبة لقائمة الملفات، يلزم تنفيذ المهمة [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion استيعاب الملف] أولا ويجب أن تنتهي من معالجتها.",
 	"smw-admin-supplementary-elastic-replication-files": "ملفات",
 	"smw-admin-supplementary-elastic-replication-pages": "صفحات",
+	"smw-admin-supplementary-elastic-endpoints": "نقاط النهاية",
+	"smw-admin-supplementary-elastic-no-connection": "'''يتعذر''' على الويكي حاليا إنشاء اتصال بمجموعة إلاستيك سيرش؛ يُرجَى الاتصال بإداري الويكي للتحقيق في المشكلة لأنه يعطل قدرة النظام على البحث والاستعلام.",
 	"smw-list-count": "تحتوي القائمة على $1 {{PLURAL:$1|إدخال واحد|إدخالات}}.",
 	"smw-property-label-uniqueness": "تمت مطابقة التصنيف \"$1\" مع تمثيل خاصية أخرى واحدة على الأقل، يُرجَى الرجوع إلى [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness صفحة المساعدة] حول كيفية حل هذه المشكلة.",
 	"smw-property-label-similarity-title": "تقرير تشابه تسمية الخواص",
@@ -894,6 +904,7 @@
 	"smw-schema-namespace-edit-protection": "هذه الصفحة محمية ولا يمكن تحريرها إلا بواسطة المستخدمين الذين لديهم  [https://www.semantic-mediawiki.org/wiki/Help:Permissions صلاحية] <code>smw-schemaedit</code> المناسبة.",
 	"smw-schema-error": "خطأ في التحقق",
 	"smw-schema-error-schema": "عثر مخطط التحقق '''$1''' على التناقضات التالية:",
+	"smw-schema-error-validation-file-inaccessible": "يتعذر الوصول إلى ملف التحقق من الصحة \"$1\".",
 	"smw-schema-error-violation": "[\"$1\"، \"$2\"]",
 	"smw-schema-error-type-missing": "يفتقد المحتوى إلى نوع لكي يتم التعرف عليه واستخدامه في [https://www.semantic-mediawiki.org/wiki/Help:Schema نطاق المخطط].",
 	"smw-schema-error-type-unknown": "النوع \"$1\" غير مسجل وبالتالي لا تستطيع استخدامه للمحتوى في [https://www.semantic-mediawiki.org/wiki/Help:Schema نطاق المخطط/مد].",
@@ -958,6 +969,5 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "وجد رصد النسخ المتماثل أن \"$1\" ينقصه تعليق [[Property:File attachment|ملف مرفق]]  يشير إلى أن معالج استيعاب المحتوى لم يبدأ أو لم ينته.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "يُرجَى التأكد من جدولة وتنفيذ مهمة [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion استيعاب الملف] قبل إتاحة شرح وفهرس الملف.",
 	"smw-report": "أبلغ",
-	"smw-legend": "عنوان تفسيري",
-	"smw-datavalue-constraint-schema-category-wrong-type": "يتطلب المخطط \"$1\" المشروح أن يكون نوع \"$2\" لتصنيف."
+	"smw-legend": "عنوان تفسيري"
 }
