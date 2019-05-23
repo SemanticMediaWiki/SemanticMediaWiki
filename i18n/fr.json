@@ -53,9 +53,9 @@
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
 	"smw-error": "Erreur",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MédiaWiki] a été installé et activé, mais il manque une [https://www.semantic-mediawiki.org/wiki/Help:Upgrade clé de mise à jour] appropriée.",
-	"smw-upgrade-release": "Relâcher",
+	"smw-upgrade-release": "Publier",
 	"smw-upgrade-progress": "Avancement",
-	"smw-upgrade-progress-explain": "Une estimation du moment où la misse à jour sera terminée est difficile à prédire, car cela dépend de la taille du dépôt de données et du matériel disponible, et cela peut prendre un moment pour se terminer, sur les plus gros wikis.\n\nVeuillez contacter votre administrateur local pour obtenir plus d’informations sur cet avancement.",
+	"smw-upgrade-progress-explain": "Une estimation du moment où la mise à jour sera terminée est difficile à prédire, car cela dépend de la taille du dépôt de données et du matériel disponible, et cela peut prendre un moment pour se terminer, sur les plus gros wikis.\n\nVeuillez contacter votre administrateur local pour obtenir plus d’informations sur cet avancement.",
 	"smw-upgrade-progress-create-tables": "Créer et mettre à jour les tables et les indices…",
 	"smw-upgrade-progress-post-creation": "Exécution des tâches post-création…",
 	"smw-upgrade-progress-table-optimization": "Exécution des optimisations de table…",
@@ -185,6 +185,7 @@
 	"smw-constraint-error": "Problème de contrainte",
 	"smw-constraint-error-suggestions": "Veuillez vérifier les violations et les propriétés listées avec leurs valeurs annotées, pour vous assurer que toutes les exigences de contrainte sont vérifiées.",
 	"smw-constraint-error-limit": "La liste contiendra au maximum $1 violations.",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "La catégorie « [[:Category:$1|$1]] » a une contrainte <code>mandatory_properties</code> qui lui est affectée et qui nécessite les propriétés obligatoires suivantes : $2",
 	"smw_noboolean": "« $1 » n’est pas reconnu comme valeur booléenne (vrai/faux).",
 	"smw_true_words": "vrai,v,oui,true",
 	"smw_false_words": "faux,f,non,false",
@@ -945,6 +946,7 @@
 	"smw-schema-description-search-form-schema": "Le type de schéma <code>$1</code> est censé être utilisé pour définir des formulaires de saisie et des caractéristiques pour le profil de [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch recherche étendue], où il contient des instructions sur la manière de générer les champs de saisie, définir les espaces de noms par défaut, ou déclarer les expressions de préfixe pour une requête de recherche.",
 	"smw-schema-description-property-group-schema": "Le type de schéma <code>$1</code> définit [https://www.semantic-mediawiki.org/wiki/Help:Property_group des groupes de propriété] pour aider à structurer l’interface de [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse navigation].",
 	"smw-schema-description-property-constraint-schema": "Le type de schéma <code>$1</code> est censé être utilisé pour définir des règles de contraintes pour une instance de propriété comme les valeurs qui lui sont assignées.",
+	"smw-schema-description-class-constraint-schema": "Le type de schéma <code>$1</code> est censé être utilisé pour définir les règles de contrainte pour une instance de classe (autrement dit une catégorie).",
 	"smw-schema-tag": "{{PLURAL:$1|balise|balises}}",
 	"smw-property-predefined-constraint-schema": "« $1 » est une propriété prédéfinie qui définit un schéma de contraintes et qui est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-schema-desc": "« $1 » est une propriété prédéfinie qui stocke une description de schéma et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MédiaWiki Sémantique].",
@@ -995,5 +997,7 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "La surveillance de la réplication a trouvé que « $1 » n’a pas d’annotation [[Property:File attachment|File attachement]] indiquant que le moteur d’ingestion de fichiers n’a pas commencé ou n’est pas encore terminé.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "Veuillez vous assurer que la tâche d’[https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion ingestion de fichier] est programmée et exécutée avant que l’annotation et l’index du fichier puissent être rendus disponibles.",
 	"smw-report": "Rapport",
-	"smw-legend": "Légende"
+	"smw-legend": "Légende",
+	"smw-datavalue-constraint-schema-category-invalid-type": "Le schéma annoté « $1 » n’est pas valide pour une catégorie, il nécessite un type « $2 ».",
+	"smw-datavalue-constraint-schema-property-invalid-type": "Le schéma annoté « $1 » n’est pas valide pour une propriété, il nécessite un type « $2 »."
 }

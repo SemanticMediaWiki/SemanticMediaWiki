@@ -159,6 +159,7 @@
 	"smw-constraint-error": "مشكلة قيد",
 	"smw-constraint-error-suggestions": "يُرجَى التحقق من الانتهاكات والخواص المدرجة مع قيمها المشروحة لضمان تلبية جميع متطلبات القيد.",
 	"smw-constraint-error-limit": "ستتضمن القائمة $1 انتهاكات بحد أقصى.",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "التصنيف \"[[:Category:$1|$1]]\" له قيد <code>mandatory_properties</code> تم تعيينه معين ويتطلب الخصائص الإلزامية التالية: $2",
 	"smw_noboolean": "\"$1\" لم يُتعرّف عليها كقيمة منطقية (صواب/بطلان).",
 	"smw_true_words": "صواب،ص،نعم،ن",
 	"smw_false_words": "بطلان،ب،لا،ل",
@@ -919,6 +920,7 @@
 	"smw-schema-description-search-form-schema": "من المتوقع استخدام نوع المخطط <code>$1</code> لتحديد نماذج المدخلات والخصائص لملف تعريف [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] حيث يحتوي على إرشادات حول كيفية إنشاء حقول الإدخال وتحديد النطاقات الافتراضية، أو بيان تعبيرات بادئة لطلب بحث.",
 	"smw-schema-description-property-group-schema": "يعرِّف نوع المخطط <code>$1</code> [https://www.semantic-mediawiki.org/wiki/Help:Property_group مجموعات الخواص] للمساعدة في بناء واجهة [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse التصفح].",
 	"smw-schema-description-property-constraint-schema": "من المتوقع استخدام نوع المخطط <code>$1</code> لتحديد قواعد القيد لمثيل خاصية وكذلك تلك القيم المعينة لها.",
+	"smw-schema-description-class-constraint-schema": "من المتوقع استخدام نوع المخطط <code>$1</code> لتحديد قواعد القيد لمثيل فئة (تُعرَف أيضًا باسم التصنيف).",
 	"smw-schema-tag": "{{PLURAL:$1|وسم|وسوم}}",
 	"smw-property-predefined-constraint-schema": "\"$1\" هي خاصية محددة مسبقا تحدد مخطط القيد ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
 	"smw-property-predefined-schema-desc": "\"$1\" خاصية محددة مسبقا تقوم بتخزين وصف المخطط ويتم توفيرها بواسطة [https://www.semantic-mediawiki.org/wiki/Help:Special_properties ميدياويكي الدلالي].",
@@ -969,5 +971,7 @@
 	"smw-es-replication-error-file-ingest-missing-file-attachment": "وجد رصد النسخ المتماثل أن \"$1\" ينقصه تعليق [[Property:File attachment|ملف مرفق]]  يشير إلى أن معالج استيعاب المحتوى لم يبدأ أو لم ينته.",
 	"smw-es-replication-error-file-ingest-missing-file-attachment-suggestions": "يُرجَى التأكد من جدولة وتنفيذ مهمة [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/File_ingestion استيعاب الملف] قبل إتاحة شرح وفهرس الملف.",
 	"smw-report": "أبلغ",
-	"smw-legend": "عنوان تفسيري"
+	"smw-legend": "عنوان تفسيري",
+	"smw-datavalue-constraint-schema-category-invalid-type": "المخطط \"$1\" المشروح غير صالح لتصنيف؛ فهو يتطلب نوع \"$2\".",
+	"smw-datavalue-constraint-schema-property-invalid-type": "المخطط \"$1\" المشروح غير صالح لخاصية؛ فهو يتطلب نوع \"$2\"."
 }

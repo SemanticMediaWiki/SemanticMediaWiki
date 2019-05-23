@@ -27,7 +27,7 @@
 	},
 	"smw-desc": "Робить вашу вікі доступнішою — для машин ''та'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
 	"smw-error": "Помилка",
-	"smw-upgrade-error": "Семантичну MediaWiki встановлено й увімкнено, але вона не має належного [https://www.semantic-mediawiki.org/wiki/Help:Upgrade ключа оновлення], який відповідав би: <code>$1</code>.",
+	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Семантичну MediaWiki] встановлено й увімкнено, але вона не має належного [https://www.semantic-mediawiki.org/wiki/Help:Upgrade ключа оновлення].",
 	"smw-upgrade-error-title": "Помилка",
 	"smw-upgrade-error-why-title": "Чому я бачу цю сторінку?",
 	"smw-upgrade-error-why-explain": "Внутрішня структура бази даних Семантичної MediaWiki змінилася і потребує деякого коригування, щоб повноцінно функціювати. Цьому може бути декілька причин, серед яких:\n* Додано додаткові фіксовані властивості (необхідні додаткові налаштування таблиць)\n* Оновлення містить якісь зміни до таблиць або індекси, що роблять перехоплення обов'язковим перед отриманням доступу до даних",
