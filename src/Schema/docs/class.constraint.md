@@ -21,7 +21,7 @@ To easily identify pages that contain a constraint schema it is suggested to use
         ...
     },
     "tags": [
-        "property constraint",
+        "class constraint",
         "..."
     ]
 }

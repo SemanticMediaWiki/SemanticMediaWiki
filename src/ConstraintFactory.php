@@ -182,15 +182,4 @@ class ConstraintFactory {
 		return $constraintSchemaCompiler;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param Store $store
-	 *
-	 * @return ConstraintErrorFinder
-	 */
-	public function newConstraintErrorFinder( Store $store ) {
-		return new ConstraintErrorFinder( $store );
-	}
-
 }

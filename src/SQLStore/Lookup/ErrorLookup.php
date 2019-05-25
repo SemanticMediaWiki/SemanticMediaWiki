@@ -199,7 +199,13 @@ class ErrorLookup {
 			$query->option( 'LIMIT', $requestOptions->getLimit() );
 		}
 
-		return $query->execute( __METHOD__ );
+		$caller = __METHOD__;
+
+		if ( strval( $requestOptions->getCaller() ) !== '' ) {
+			$caller .= " (for " . $requestOptions->getCaller() . ")";
+		}
+
+		return $query->execute( $caller );
 	}
 
 }

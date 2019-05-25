@@ -82,15 +82,21 @@ class FooConstraint implements Constraint {
 
 		...
 
-		// Found a violation
-		$this->hasViolation = true
+		// Found a violation and report the error
+		$this->reportError( $dataValue );
+	}
+
+	private function reportError( $dataValue ) {
+
+		$this->hasViolation = true;
+
+		$error = [
+			'foo-violation-message-key'
+		];
 
 		$dataValue->addErrorMsg(
-			new ConstraintError( [
-				'foo-violation-message-key'
-			] )
+			new ConstraintError( $error )
 		);
-
 	}
 }
 ```
@@ -104,6 +110,10 @@ For example, when implementing a `start_end_constraint` with an identifier `grea
 {
 	"type": "CLASS_CONSTRAINT_SCHEMA",
 	"constraints": {
+        "mandatory_properties": [
+            "Event start",
+            "Event end"
+        ],
 		"custom_constraint": {
 			"start_end_constraint": {
 				"greater_than": ["Event end", "Event start"]
@@ -115,6 +125,16 @@ For example, when implementing a `start_end_constraint` with an identifier `grea
 		"custom constraint"
 	]
 }
+```
+
+```php
+use Hooks;
+use Custom\StartEndConstraint;
+
+Hooks::register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
+	$constraintRegistry->registerConstraint( 'start_end_constraint', StartEndConstraint::class );
+	return true;
+} );
 ```
 
 ```php
@@ -182,6 +202,10 @@ class StartEndConstraint implements Constraint {
 		$e = $semanticData->getPropertyValues(
 			\SMW\DIProperty::newFromUserLabel( $end )
 		);
+
+		// Compare $s and $e and issue an error on case of
+		// a violation
+		...
 	}
 ```
 

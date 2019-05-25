@@ -11,6 +11,12 @@ namespace SMW\Constraint;
 interface Constraint {
 
 	/**
+	 * Schema types
+	 */
+	const CLASS_CONSTRAINT_SCHEMA = 'CLASS_CONSTRAINT_SCHEMA';
+	const PROPERTY_CONSTRAINT_SCHEMA = 'PROPERTY_CONSTRAINT_SCHEMA';
+
+	/**
 	 * The constraint check happens instantaneous on a GET request (aka. online)
 	 * and should be used for "light" checks that doesn't involve the `QueryEngine`
 	 * or a rule resolver given the potential computational requirements that
