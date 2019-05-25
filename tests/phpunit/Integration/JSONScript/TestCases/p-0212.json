@@ -26,6 +26,10 @@
 		{
 			"page": "Example/P0212/4",
 			"contents": "[[P106::@@@ko|WithCaption]]"
+		},
+		{
+			"page": "Example/P0212/5",
+			"contents": "[[P106::@@@ko|#]]"
 		}
 	],
 	"tests": [
@@ -62,7 +66,7 @@
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+					"<span class=\"smw-property\">.*title=\"Property:P106\">職業</a></span></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
 				]
 			}
 		},
@@ -75,7 +79,7 @@
 			"subject": "Example/P0212/3",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">職業</a></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
+					"<span class=\"smw-property\">.*title=\"Property:P106\">職業</a></span></span><span class=\"smwttcontent\">人物の職業。「専門分野」</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup>"
 				]
 			}
 		},
@@ -85,7 +89,17 @@
 			"subject": "Example/P0212/4",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:P106\">WithCaption</a></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>"
+					"<span class=\"smw-property\">.*title=\"Property:P106\">WithCaption</a></span></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (no link)",
+			"subject": "Example/P0212/5",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" .* title=\"대상 인물의 직업\"><span class=\"smwtext\"><span class=\"smw-property nolink\">직업</span></span><span class=\"smwttcontent\">대상 인물의 직업</span></span>&#160;<span title=\"P106\"><sup>ᵖ</sup></span>"
 				]
 			}
 		}
