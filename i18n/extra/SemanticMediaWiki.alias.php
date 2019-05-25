@@ -21,6 +21,7 @@ $specialPageAliases['en'] = [
 	'SMWAdmin' => [ 'SemanticMediaWiki', 'SMWAdmin' ],
 	'SearchByProperty' => [ 'SearchByProperty' ],
 	'ProcessingErrorList' => [ 'ProcessingErrorList' ],
+	'ConstraintErrorList' => [ 'ConstraintErrorList' ],
 	'PropertyLabelSimilarity' => [ 'PropertyLabelSimilarity' ],
 	'MissingRedirectAnnotations' => [ 'MissingRedirectAnnotations' ],
 	'Types' => [ 'Types' ],
