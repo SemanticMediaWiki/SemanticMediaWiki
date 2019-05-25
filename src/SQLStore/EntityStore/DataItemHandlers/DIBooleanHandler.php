@@ -56,8 +56,16 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
+
+		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
+		if ( $this->isDbType( 'postgres' ) ) {
+			$value = $dataItem->getBoolean() ? 't' : 'f';
+		} else {
+			$value = $dataItem->getBoolean() ? 1 : 0;
+		}
+
 		return [
-			'o_value' => $dataItem->getBoolean() ? 1 : 0,
+			'o_value' => $value,
 		];
 	}
 
@@ -85,10 +93,9 @@ class DIBooleanHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-		global $wgDBtype;
 
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
-		if ( $wgDBtype == 'postgres' ) {
+		if ( $this->isDbType( 'postgres' ) ) {
 			$value = ( $dbkeys == 't' );
 		} else {
 			$value = ( $dbkeys == '1' );
