@@ -150,10 +150,16 @@ final class Setup {
 
 		$this->initMessageCallbackHandler();
 
-		if ( SetupFile::isMaintenanceMode( $vars ) ) {
-			$this->abortWithMessage( 'maintenance', $vars );
-		} elseif ( SetupFile::isGoodSchema() === false ) {
-			$this->abortWithMessage( 'error', $vars );
+		$setupCheck = new SetupCheck(
+			[
+				'version' => SMW_VERSION,
+				'smwgUpgradeKey' => $vars['smwgUpgradeKey'],
+				'wgScriptPath' => $vars['wgScriptPath']
+			]
+		);
+
+		if ( $setupCheck->hasError( $vars ) === false ) {
+			$setupCheck->triggerErrorAndAbort( $setupCheck->isCli(), $vars );
 		}
 
 		$this->addDefaultConfigurations( $vars );
@@ -414,48 +420,6 @@ final class Setup {
 	private function registerHooks( &$vars, $localDirectory ) {
 		$hooks = new Hooks( $localDirectory );
 		$hooks->register( $vars );
-	}
-
-	private function abortWithMessage( $key, $vars ) {
-
-		if ( $key === 'maintenance' ) {
-
-			$maintenance = SetupFile::getMaintenanceMode( $vars );
-			$progress = '';
-
-			if ( is_array( $maintenance ) && $maintenance !== []  ) {
-				foreach ( $maintenance as $key => $value ) {
-					$progress = AbortMessage::progress( Message::get( "smw-upgrade-progress-$key" ), $value );
-				}
-			}
-
-			$text =	AbortMessage::abortMsg(
-				Message::get( 'smw-upgrade-maintenance-title' ),
-				Message::get( 'smw-upgrade-maintenance-note', Message::PARSE ) .
-				'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>'. SMW_VERSION . '&nbsp;(' . $vars['smwgUpgradeKey'] . ')' .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-maintenance-why-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-maintenance-explain', Message::PARSE ) .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-progress' ) . '</h3>' . $progress .
-				Message::get( 'smw-upgrade-progress-explain', Message::PARSE ),
-				'maintenance'
-			);
-		} elseif ( $key === 'error' ) {
-			$text = AbortMessage::abortMsg(
-				Message::get( 'smw-upgrade-error-title' ),
-				Message::get( [ 'smw-upgrade-error', '' ], Message::PARSE ) .
-				'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>'. SMW_VERSION . '&nbsp;(' . $vars['smwgUpgradeKey'] . ')' .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-error-why-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-error-how-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
-				Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE ),
-				'error'
-			);
-		} else {
-			$text = 'Abort!';
-		}
-
-		smwfAbort( $text );
 	}
 
 }

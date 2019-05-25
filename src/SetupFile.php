@@ -25,6 +25,11 @@ class SetupFile {
 	const MAINTENANCE_MODE = 'maintenance_mode';
 
 	/**
+	 * Describes the upgrade key
+	 */
+	const UPGRADE_KEY = 'upgrade_key';
+
+	/**
 	 * @var File
 	 */
 	private $file;
@@ -88,7 +93,7 @@ class SetupFile {
 
 		if (
 			isset( $GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] ) &&
-			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] === true ) {
+			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] !== false ) {
 			$isGoodSchema = false;
 		}
 

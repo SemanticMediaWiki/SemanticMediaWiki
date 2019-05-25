@@ -53,7 +53,8 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'wgLang'            => $language,
 			'IP'                => 'Foo',
 			'smwgSemanticsEnabled' => true,
-			'smwgConfigFileDir' => ''
+			'smwgConfigFileDir' => '',
+			'smwgUpgradeKey' => ''
 		];
 
 		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
