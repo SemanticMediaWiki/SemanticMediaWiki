@@ -60,12 +60,21 @@ class SemanticMediaWiki {
 	 */
 	public static function initExtension( $credits = [] ) {
 
-		define( 'SMW_VERSION', isset( $credits['version'] ) ? $credits['version'] : 'N/A' );
+		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
+			define( 'SMW_VERSION', $credits['version'] );
+		}
 
 		// https://phabricator.wikimedia.org/T212738
 		if ( !defined( 'MW_VERSION' ) ) {
 			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
 		}
+
+		/**
+		 * @see https://www.mediawiki.org/wiki/Localisation#Localising_namespaces_and_special_page_aliases
+		 */
+		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = __DIR__ . '/i18n';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.alias.php';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.magic.php';
 
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
