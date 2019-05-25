@@ -22,7 +22,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'tableExists', 'query', 'dbSchema', 'tablePrefix', 'onTransactionIdle' ] )
+			->setMethods( [ 'tableExists', 'query', 'dbSchema', 'tablePrefix', 'onTransactionIdle', 'selectField' ] )
 			->getMockForAbstractClass();
 
 		$this->connection->expects( $this->any() )
@@ -314,9 +314,13 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'onTransactionIdle' )
 			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
 
-		$this->connection->expects( $this->at( 4 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'selectField' )
+			->will( $this->returnValue( 42 ) );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
@@ -333,9 +337,13 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'onTransactionIdle' )
 			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
 
-		$this->connection->expects( $this->at( 6 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
+
+		$this->connection->expects( $this->any() )
+			->method( 'selectField' )
+			->will( $this->returnValue( 42 ) );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
