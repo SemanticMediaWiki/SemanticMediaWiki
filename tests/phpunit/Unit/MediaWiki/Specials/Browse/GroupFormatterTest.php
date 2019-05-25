@@ -91,7 +91,7 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	public function testFindGroupMembershipFromSchema() {
 
 		$data = [
-			'Foo_schema' => [ 'property_list' => [ 'Foo' ] ]
+			[ 'properties' => [ 'Foo' ], 'group_name' => 'Foo schema' ]
 		];
 
 		$schemaDefinition = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )

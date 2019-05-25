@@ -38,19 +38,42 @@
 		},
 		"groups": {
 			"$id": "#/properties/groups",
-			"type": "object",
+			"type": "array",
 			"title": "group list",
-			"minProperties": 1,
-			"propertyNames": {
-				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
-			},
-			"additionalProperties": {
+			"minItems": 1,
+			"items": {
 				"$ref": "#/definitions/group"
 			}
 		}
 	},
 	"definitions": {
-		"msg_key": {
+		"group": {
+			"$id": "#/definitions/group",
+			"type": "object",
+			"title": "Group rules",
+			"minProperties": 1,
+			"propertyNames": {
+				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+			},
+			"required": [ "properties", "group_name" ],
+			"properties": {
+				"message_key": {
+					"$ref": "#/definitions/message_key"
+				},
+				"group_name": {
+					"$ref": "#/definitions/group_name"
+				},
+				"properties": {
+					"$ref": "#/definitions/properties"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"properties"
+			]
+		},
+		"message_key": {
+			"$id": "#/definitions/message_key",
 			"type": "string",
 			"title": "message key/label",
 			"default": "",
@@ -60,12 +83,14 @@
 			"pattern": "^(smw|sar|sesp|sbl|scite|sg)-property-group-label-(.*)$"
 		},
 		"group_name": {
+			"$id": "#/definitions/group_name",
 			"type": "string",
 			"title": "Simple group label",
 			"default": "",
 			"pattern": "^(.*)$"
 		},
-		"property_list": {
+		"properties": {
+			"$id": "#/definitions/properties",
 			"type": "array",
 			"title": "property list",
 			"minItems": 1,
@@ -75,25 +100,6 @@
 				"default": "",
 				"pattern": "^(.*)$"
 			}
-		},
-		"group": {
-			"type": "object",
-			"title": "group",
-			"properties": {
-				"msg_key": {
-					"$ref": "#/definitions/msg_key"
-				},
-				"group_name": {
-					"$ref": "#/definitions/group_name"
-				},
-				"property_list": {
-					"$ref": "#/definitions/property_list"
-				}
-			},
-			"additionalProperties": false,
-			"required": [
-				"property_list"
-			]
 		}
 	}
 }
