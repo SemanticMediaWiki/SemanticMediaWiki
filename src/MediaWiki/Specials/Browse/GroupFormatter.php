@@ -255,22 +255,22 @@ class GroupFormatter {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
-			foreach ( $schemaDefinition->get( 'groups' ) as $group => $data ) {
+			foreach ( $schemaDefinition->get( 'groups' ) as $data ) {
 
-				if (! isset( $data['property_list'] ) ) {
+				if (! isset( $data['properties'] ) ) {
 					continue;
 				}
 
-				$group = str_replace( '_', ' ', $group );
-				$msg_key = isset( $data['msg_key'] ) ? $data['msg_key'] : '';
+				$group = str_replace( '_', ' ', $data['group_name'] );
+				$message_key = isset( $data['message_key'] ) ? $data['message_key'] : '';
 
-				if ( $msg_key !== '' && !Message::exists( $msg_key ) && isset( $data['group_name'] ) ) {
+				if ( $message_key !== '' && !Message::exists( $message_key ) && isset( $data['group_name'] ) ) {
 					$group = $data['group_name'];
 				}
 
 				$list[$group] = [
-					'properties' => array_flip( $data['property_list'] ),
-					'msg_key' => $msg_key,
+					'properties' => array_flip( $data['properties'] ),
+					'msg_key' => $message_key,
 					'item' => DIWikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
 				];
 			}
