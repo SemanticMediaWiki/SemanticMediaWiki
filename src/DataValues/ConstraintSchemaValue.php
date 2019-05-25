@@ -7,6 +7,7 @@ use SMWWikiPageValue as WikiPageValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
+use SMW\Constraint\Constraint;
 
 /**
  * @license GNU GPL v2+
@@ -67,10 +68,10 @@ class ConstraintSchemaValue extends WikiPageValue {
 
 		$ns = $contextPage->getNamespace();
 
-		if ( $ns === NS_CATEGORY && $schema['type'] !== 'CLASS_CONSTRAINT_SCHEMA' ) {
-			$error = [ 'smw-datavalue-constraint-schema-category-invalid-type', $value, 'CLASS_CONSTRAINT_SCHEMA' ];
-		} elseif ( $ns === SMW_NS_PROPERTY && $schema['type'] !== 'PROPERTY_CONSTRAINT_SCHEMA' ) {
-			$error = [ 'smw-datavalue-constraint-schema-property-invalid-type', $value, 'PROPERTY_CONSTRAINT_SCHEMA' ];
+		if ( $ns === NS_CATEGORY && $schema['type'] !== Constraint::CLASS_CONSTRAINT_SCHEMA ) {
+			$error = [ 'smw-datavalue-constraint-schema-category-invalid-type', $value, Constraint::CLASS_CONSTRAINT_SCHEMA ];
+		} elseif ( $ns === SMW_NS_PROPERTY && $schema['type'] !== Constraint::PROPERTY_CONSTRAINT_SCHEMA ) {
+			$error = [ 'smw-datavalue-constraint-schema-property-invalid-type', $value, Constraint::PROPERTY_CONSTRAINT_SCHEMA ];
 		}
 
 		if ( $error !== [] ) {

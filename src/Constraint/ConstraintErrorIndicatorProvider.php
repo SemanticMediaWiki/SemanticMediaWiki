@@ -191,6 +191,7 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 		$errorLookup = $this->store->service( 'ErrorLookup' );
 
 		$requestOptions = new RequestOptions();
+		$requestOptions->setCaller( __METHOD__ );
 		$requestOptions->setOption( 'checkConstraintErrors', $this->checkConstraintErrors );
 		$requestOptions->setLimit( self::LOOKUP_LIMIT );
 

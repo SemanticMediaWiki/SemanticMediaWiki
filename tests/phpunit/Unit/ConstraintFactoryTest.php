@@ -73,20 +73,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructConstraintErrorFinder() {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$instance = new ConstraintFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\Constraint\ConstraintErrorFinder',
-			$instance->newConstraintErrorFinder( $store )
-		);
-	}
-
 	public function testNewConstraintByClassInvalidClassThrowsException() {
 
 		$instance = new ConstraintFactory();
