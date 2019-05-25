@@ -267,7 +267,8 @@ class PropertyTableIdReferenceDisposer {
 
 		$context = [
 			'context' => 'PropertyTableIdReferenceDisposal',
-			'title' => $subject->getTitle()
+			'title' => $subject->getTitle(),
+			'subject' => $subject
 		];
 
 		$eventDispatcher->dispatch( 'InvalidateResultCache', $context );
