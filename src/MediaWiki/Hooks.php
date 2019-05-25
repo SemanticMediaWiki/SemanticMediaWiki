@@ -52,6 +52,8 @@ use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\Hooks\AdminLinks;
+use SMW\MediaWiki\Hooks\SpecialPageList;
+use SMW\MediaWiki\Hooks\ApiModuleManager;
 
 /**
  * @license GNU GPL v2+
@@ -171,9 +173,17 @@ class Hooks {
 		 */
 		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
 
-			Setup::initSpecialPageList(
-				$specialPages
+			$applicationFactory = ApplicationFactory::getInstance();
+			$settings = $applicationFactory->getSettings();
+
+			$specialPageList = new SpecialPageList();
+			$specialPageList->setOptions(
+				[
+					'smwgSemanticsEnabled' => $settings->get( 'smwgSemanticsEnabled' )
+				]
 			);
+
+			$specialPageList->process( $specialPages );
 
 			return true;
 		};
@@ -184,12 +194,19 @@ class Hooks {
 		 *
 		 * #2813
 		 */
-		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $apiModuleManager ) {
+		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $moduleManager ) {
 
-			$apiModuleManager->addModules(
-				Setup::getAPIModules(),
-				'action'
+			$applicationFactory = ApplicationFactory::getInstance();
+			$settings = $applicationFactory->getSettings();
+
+			$apiModuleManager = new ApiModuleManager();
+			$apiModuleManager->setOptions(
+				[
+					'smwgSemanticsEnabled' => $settings->get( 'smwgSemanticsEnabled' )
+				]
 			);
+
+			$apiModuleManager->process( $moduleManager );
 
 			return true;
 		};

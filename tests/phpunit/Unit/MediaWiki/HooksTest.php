@@ -128,7 +128,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitExtension() {
 
-		$vars = [];
+		$vars = [
+			'smwgSemanticsEnabled' => true
+		];
 
 		Hooks::registerEarly( $vars );
 

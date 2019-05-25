@@ -87,38 +87,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider apiModulesDataProvider
-	 */
-	public function testGetAPIModules( $name ) {
-
-		$vars = Setup::getAPIModules();
-
-		$this->assertArrayHasKey(
-			$name,
-			$vars
-		);
-	}
-
-	/**
 	 * @dataProvider jobClassesDataProvider
 	 */
 	public function testRegisterJobClasses( $jobEntry, $setup ) {
 		$this->assertArrayEntryExists( 'wgJobClasses', $jobEntry, $setup );
-	}
-
-	/**
-	 * @dataProvider specialPageDataProvider
-	 */
-	public function testInitSpecialPageList( $name ) {
-
-		$vars = [];
-
-		Setup::initSpecialPageList( $vars );
-
-		$this->assertArrayHasKey(
-			$name,
-			$vars
-		);
 	}
 
 	public function testRegisterDefaultRightsUserGroupPermissions() {
@@ -208,31 +180,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return array
 	 */
-	public function specialPageDataProvider() {
-
-		$specials = [
-			'Ask',
-			'Browse',
-			'PageProperty',
-			'SearchByProperty',
-			'SMWAdmin',
-			'Concepts',
-			'ExportRDF',
-			'Types',
-			'URIResolver',
-			'Properties',
-			'UnusedProperties',
-			'WantedProperties',
-			'ProcessingErrorList',
-			'PropertyLabelSimilarity'
-		];
-
-		return $this->buildDataProvider( 'wgSpecialPages', $specials, '' );
-	}
-
-	/**
-	 * @return array
-	 */
 	public function jobClassesDataProvider() {
 
 		$jobs = [
@@ -266,22 +213,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function apiModulesDataProvider() {
-
-		$modules = [
-			'ask',
-			'smwinfo',
-			'askargs',
-			'browsebysubject',
-			'browsebyproperty'
-		];
-
-		return $this->buildDataProvider( 'wgAPIModules', $modules, '' );
 	}
 
 	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
