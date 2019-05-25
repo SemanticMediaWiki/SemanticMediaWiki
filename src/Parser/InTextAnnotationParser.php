@@ -215,6 +215,17 @@ class InTextAnnotationParser {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param string $text
+	 *
+	 * @return boolean
+	 */
+	public static function hasPropertyLink( $text ) {
+		return strpos( $text, '::@@@' ) !== false;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $text
@@ -360,8 +371,9 @@ class InTextAnnotationParser {
 
 		$subject = $this->parserData->getSubject();
 
-		if ( ( $propertyLink = $this->getPropertyLink( $subject, $properties, $value, $valueCaption ) ) !== '' ) {
-			return $propertyLink;
+		// #1855
+		if ( substr( $value, 0, 3 ) === '@@@' ) {
+			return $this->makePropertyLink( $subject, $properties, $value, $valueCaption );
 		}
 
 		return $this->addPropertyValue( $subject, $properties, $value, $valueCaption );
@@ -448,31 +460,38 @@ class InTextAnnotationParser {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function getPropertyLink( $subject, $properties, $value, $valueCaption ) {
-
-		// #1855
-		if ( substr( $value, 0, 3 ) !== '@@@' ) {
-			return '';
-		}
+	private function makePropertyLink( $subject, $properties, $value, $caption ) {
 
 		$property = end( $properties );
+		$linker = smwfGetLinker();
+		$class = 'smw-property';
+
+		// #4037
+		// [[Foo::@@@|#] where `|#` indicates a noLink request
+		if ( $caption === '#' ) {
+			$linker = false;
+			$caption = false;
+			$class = 'smw-property nolink';
+		}
 
 		$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
 			$property,
-			$valueCaption,
+			$caption,
 			$subject
 		);
+
+		$dataValue->setLinkAttributes( [ 'class' => $class ] );
 
 		if ( ( $lang = Localizer::getAnnotatedLanguageCodeFrom( $value ) ) !== false ) {
 			$dataValue->setOption( $dataValue::OPT_USER_LANGUAGE, $lang );
 			$dataValue->setCaption(
-				$valueCaption === false ? $dataValue->getWikiValue() : $valueCaption
+				$caption === false ? $dataValue->getWikiValue() : $caption
 			);
 		}
 
 		$dataValue->setOption( $dataValue::OPT_HIGHLIGHT_LINKER, true );
 
-		return $dataValue->getShortWikitext( smwfGetLinker() );
+		return $dataValue->getShortWikitext( $linker );
 	}
 
 }

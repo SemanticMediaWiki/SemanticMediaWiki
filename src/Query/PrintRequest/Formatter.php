@@ -42,6 +42,12 @@ class Formatter {
 
 	private static function getHTMLText( $printRequest, $linker = null ) {
 
+		$label = $printRequest->getLabel();
+
+		if ( \SMW\Parser\InTextAnnotationParser::hasPropertyLink( $label ) ) {
+			return \SMW\Message::get( [ 'smw-parse', $label ], \SMW\Message::PARSE );
+		}
+
 		$label = htmlspecialchars( $printRequest->getLabel() );
 
 		if ( $linker === null || $linker === false || $label === '' ) {

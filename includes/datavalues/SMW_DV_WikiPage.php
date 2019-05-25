@@ -274,7 +274,18 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( is_null( $linked ) || $linked === false ||
 			$this->m_outformat == '-' || !$this->isValid() ||
 			$this->m_caption === '' ) {
-			return $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
+			$text = $this->m_caption !== false ? $this->m_caption : $this->getWikiValue();
+
+			// #4037
+			if ( $this->linkAttributes !== [] ) {
+				$text = \Html::rawElement(
+					'span',
+					$this->linkAttributes,
+					$text
+				);
+			}
+
+			return $text;
 		}
 
 		$noImage = $this->getOption( self::NO_IMAGE, false );

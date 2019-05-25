@@ -631,12 +631,26 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			],
 			'[[Foo::@@@]] [[Bar::@@@en|Foobar]]',
 			[
-				'resultText'     => $testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Foo|Foo]] [[:Property:Bar|Foobar]]' ),
+				'resultText'     => $testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '<span class="smw-property">[[:Property:Foo|Foo]]</span> <span class="smw-property">[[:Property:Bar|Foobar]]</span>' ),
 				'propertyCount'  => 0
 			]
 		];
 
-		#14 [ ... ] in-text link
+		#14 @@@|# syntax (#4037)
+		$provider[] = [
+			NS_MAIN,
+			[
+				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
+				'smwgParserFeatures' => SMW_PARSER_INL_ERROR | SMW_PARSER_STRICT
+			],
+			'[[Foo::@@@|#]] [[Bar::@@@en|#]]',
+			[
+				'resultText'     => '<span class="smw-property nolink">Foo</span> <span class="smw-property nolink">Bar</span>',
+				'propertyCount'  => 0
+			]
+		];
+
+		#15 [ ... ] in-text link
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -652,7 +666,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#15 (#2671) external [] decode use
+		#16 (#2671) external [] decode use
 		$provider[] = [
 			NS_MAIN,
 			[
