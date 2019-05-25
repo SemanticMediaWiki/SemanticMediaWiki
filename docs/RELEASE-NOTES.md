@@ -43,7 +43,9 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
 * [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810) Check for associated revision
 * [#3835](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3835)
-
+* [#3999](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3999)
+* [#4018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4018)
+* [#4019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4019)
 
 ### Query
 
@@ -99,6 +101,17 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3922)
 * [#3928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3928)
 * [#3940](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3940)
+* [#3945](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3945)
+* [#3960](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3960)
+* [#3965](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3965)
+* [#3968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3968)
+* [#3969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3969)
+* [#3970](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3970)
+* [#3981](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3981)
+* [#3989](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3989)
+* [#4010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4010)
+* [#4026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4026)
+* [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033)
 
 ## Bug fixes
 
@@ -106,10 +119,14 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3839)
 * [#3840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3840) Fixed `Special:Browse` and display of properties when more than 200 are available
 * [#3888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3888)
+* [#3938](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3938)
+* [#3914](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3914)
+* [#4022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4022)
 
 ## Breaking changes and deprecations
 
 * [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Rem CachingEntityLookup
+* [#3995](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3995)
 
 ## Other changes
 
