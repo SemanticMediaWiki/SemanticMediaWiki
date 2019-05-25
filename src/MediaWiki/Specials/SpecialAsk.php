@@ -170,7 +170,14 @@ class SpecialAsk extends SpecialPage {
 		}
 
 		$out->addHTML( HelpWidget::html() );
-		$this->addHelpLink( wfMessage( 'smw_ask_doculink' )->escaped(), true );
+
+		if ( $request->getCheck( 'bHelp' ) ) {
+			$helpLink = wfMessage( $request->getVal( 'bHelp' ) )->escaped();
+		} else {
+			$helpLink = wfMessage( 'smw_ask_doculink' )->escaped();
+		}
+
+		$this->addHelpLink( $helpLink, true );
 
 		// make sure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $out );

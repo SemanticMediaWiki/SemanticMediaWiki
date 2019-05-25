@@ -62,9 +62,10 @@ class SpecialProcessingErrorListTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'%5B%5BHas+processing+error+text%3A%3A%2B%5D%5D',
 			'&po=%3FHas+improper+value+for%7C%3FHas+processing+error+text',
-			'&p=class%3Dsortable-20wikitable-20smwtable-2Dstriped',
+			'&p=class%3Dsortable-20smwtable-2Dstriped-20smwtable-2Dclean%2Fsep%3Dul',
 			'&eq=no&limit=5',
 			'&bTitle=processingerrorlist',
+			'&bHelp=smw-processingerrorlist-helplink',
 			'&bMsg=smw-processingerrorlist-intro'
 		];
 
