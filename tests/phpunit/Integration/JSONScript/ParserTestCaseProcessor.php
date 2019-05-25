@@ -244,6 +244,10 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$title = $subject->getTitle();
 
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$checkExists = false;
+		}
+
 		if ( $title === null ) {
 			throw new RuntimeException( 'Could not create Title object for subject page "' . $case['subject'] . '".' );
 		}

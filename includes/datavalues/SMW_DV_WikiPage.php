@@ -47,7 +47,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Whether to use the short form or not.
 	 */
-	const SHORT_FORM = 'short.form';
+	const SHORT_FORM = 'form/short';
+
+	/**
+	 * Whether to use the prefixed form or not.
+	 */
+	const PREFIXED_FORM = 'form/prefixed';
 
 	/**
 	 * Fragment text for user-specified title. Not stored, but kept for
@@ -466,6 +471,8 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( $this->getOption( self::SHORT_FORM, false ) ) {
 			$text = $this->getText();
+		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
+			$text = $this->getPrefixedText();
 		} elseif ( in_array( $this->getTypeID(), [ '_wpp', '_wps' ] ) || $this->m_fixNamespace == NS_MAIN ) {
 			$text = $this->getPrefixedText();
 		} else {
