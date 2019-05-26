@@ -254,17 +254,6 @@ class HtmlForm {
 			LinksWidget::embeddedCodeBlock(	$code, true ) . '</div>'
 		);
 
-		$clipboardLink = LinksWidget::clipboardLink( $queryLink );
-
-		$htmlTabs->tab(
-			'smw-askt-clipboard',
-			$clipboardLink,
-			[
-				'hide' => $clipboardLink === '',
-				'class' => 'clipboard-bookmark smw-tab-right'
-			]
-		);
-
 		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
 			$debugLink = LinksWidget::debugLink( $this->title, $urlArgs, $isEmpty, true );
 

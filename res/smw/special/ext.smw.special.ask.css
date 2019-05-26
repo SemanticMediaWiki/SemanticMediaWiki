@@ -586,7 +586,8 @@ display: inline-block;
 }
 
 .clipboard.smw-icon-bookmark {
-	padding: 0 0 0 60px;
+	padding: 0 0 0 40px;
+	vertical-align: top;
 }
 
 .smw-tabs input.nav-tab:checked + label.nav-label.compact-action {
