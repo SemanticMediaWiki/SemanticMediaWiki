@@ -372,9 +372,6 @@ class SpecialAsk extends SpecialPage {
 
 		$htmlForm->setCallbacks(
 			[
-				'borrowed_msg_handler' => function( &$html, &$searchInfoText ) {
-					return $this->print_borrowed_msg( $html, $searchInfoText );
-				},
 				'code_handler' => function() {
 					return $this->print_code();
 				}
@@ -388,11 +385,18 @@ class SpecialAsk extends SpecialPage {
 		$htmlForm->isEditMode( $this->isEditMode );
 		$htmlForm->isBorrowedMode( $this->isBorrowedMode );
 
+		$preFrom = '';
+
 		$form = $htmlForm->getForm(
 			$urlArgs,
 			$res,
 			$infoText
 		);
+
+		if ( $this->isBorrowedMode ) {
+			$info = '';
+			$this->print_borrowed_msg( $preFrom, $info );
+		}
 
 		// The overall form is "soft-disabled" so that when JS is fully
 		// loaded, the ask module will remove this class and releases the form
@@ -403,7 +407,7 @@ class SpecialAsk extends SpecialPage {
 				'id' => 'ask',
 				"class" => ( $this->isBorrowedMode ? '' : 'is-disabled' )
 			],
-			$form . $error . $result
+			$preFrom . $form . $error . $result
 		);
 
 		$this->getOutput()->addHTML(
@@ -559,7 +563,13 @@ class SpecialAsk extends SpecialPage {
 		$searchInfoText = '';
 
 		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
-			$html = wfMessage( $borrowedMessage, $this->queryString )->parse();
+			$html = html::rawElement(
+				'p',
+				[
+					'class' => 'plainlinks'
+				],
+				wfMessage( $borrowedMessage, $this->queryString )->parse()
+			);
 		}
 
 		$borrowedTitle = $this->getRequest()->getVal( 'bTitle' );

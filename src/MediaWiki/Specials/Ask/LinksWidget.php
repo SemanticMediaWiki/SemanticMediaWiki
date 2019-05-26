@@ -366,7 +366,8 @@ class LinksWidget {
 			'span',
 			[
 				'id' => 'ask-clipboard ',
-			//	'class' => 'smw-ask-button smw-ask-button-right smw-ask-button-lgrey'
+				'class' => 'page-link',
+				'style' => 'vertical-align: top;'
 			],
 			Html::element(
 				'a',

@@ -28,6 +28,8 @@ class DownloadLinksWidget {
 		}
 
 		// Avoid modifying the original object
+		$clipboardLink = LinksWidget::clipboardLink( $infolink );
+
 		$infolink = clone $infolink;
 		$downloadLinks = [];
 
@@ -84,6 +86,7 @@ class DownloadLinksWidget {
 		);
 
 		$downloadLinks[] = $infolink->getHtml();
+		$downloadLinks[] = $clipboardLink;
 
 		return Html::rawElement(
 			'div',
