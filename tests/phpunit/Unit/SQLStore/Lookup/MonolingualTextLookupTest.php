@@ -100,4 +100,74 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewDIContainer() {
+
+		$row = [
+			'v0' => __METHOD__,
+			'v1' => NS_MAIN,
+			'v2' => '',
+			'v3' => '_bar',
+			'text_short' => 'Foobar',
+			'text_long' => null,
+			'lcode' => 'en'
+		];
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->will( $this->returnArgument( 0 ) );
+
+		$connection->expects( $this->any() )
+			->method( 'query' )
+			->will( $this->returnValue( [ (object)$row ] ) );
+
+		$query = new Query( $connection );
+
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_bar' );
+		$property = DIProperty::newFromUserLabel( 'Foo' );
+
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'newQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+
+		$instance = new MonolingualTextLookup(
+			$this->store
+		);
+
+		$this->assertInstanceof(
+			'\SMWDIContainer',
+			$instance->newDIContainer( $subject, $property )
+		);
+	}
 }
