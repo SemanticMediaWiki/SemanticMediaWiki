@@ -59,6 +59,9 @@ class SpecialPageList extends HookHandler {
 			'MissingRedirectAnnotations' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations'
 			],
+			'ConstraintErrorList' => [
+				'page' => \SMW\MediaWiki\Specials\SpecialConstraintErrorList::class
+			],
 			'Types' => [
 				'page' => 'SMWSpecialTypes'
 			],
