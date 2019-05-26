@@ -11,6 +11,7 @@ use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
+use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GNU GPL v2+
@@ -152,6 +153,12 @@ class InfoLinksProvider {
 		// Avoid any localization when generating the value
 		$this->dataValue->setOutputFormat( '' );
 		$dataItem = $this->dataValue->getDataItem();
+
+		// For a subcategory we need the full prefixed form when
+		// generating a browse link
+		if ( $this->dataValue->getTypeID() === '__suc' ) {
+			$this->dataValue->setOption( WikiPageValue::PREFIXED_FORM, true );
+		}
 
 		$value = $this->dataValue->getWikiValue();
 		$property = $this->dataValue->getProperty();
