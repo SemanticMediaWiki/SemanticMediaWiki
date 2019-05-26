@@ -205,7 +205,7 @@ class SchemaContentFormatter {
 
 		$params = [
 			'link' => '',
-			'description' => $schema->get( Schema::SCHEMA_DESCRIPTION, '' ),
+			'description' => '',
 			'type_description' => $description,
 			'usage' => $usage,
 			'usage_count' => $usage_count,
