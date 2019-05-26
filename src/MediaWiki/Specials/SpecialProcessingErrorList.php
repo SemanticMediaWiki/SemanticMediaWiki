@@ -49,10 +49,11 @@ class SpecialProcessingErrorList extends SpecialPage {
 			[
 				'q'      => '[[Has processing error text::+]]',
 				'po'     => '?Has improper value for|?Has processing error text',
-				'p'      => 'class=sortable-20wikitable-20smwtable-2Dstriped',
+				'p'      => 'class=sortable-20smwtable-2Dstriped-20smwtable-2Dclean/sep=ul',
 				'eq'     => 'no',
 				'limit'  =>  $limit,
 				'bTitle' => 'processingerrorlist',
+				'bHelp'  => 'smw-processingerrorlist-helplink',
 				'bMsg'   => 'smw-processingerrorlist-intro'
 			]
 		);

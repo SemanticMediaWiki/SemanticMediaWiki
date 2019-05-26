@@ -50,10 +50,11 @@ class SpecialConstraintErrorList extends SpecialPage {
 			[
 				'q'      => '[[Has processing error text::+]] [[Processing error type::constraint]]',
 				'po'     => '?Has improper value for|?Has processing error text',
-				'p'      => 'class=sortable-20wikitable-20smwtable-2Dstriped/sep=ul',
+				'p'      => 'class=sortable-20smwtable-2Dstriped-20smwtable-2Dclean/sep=ul',
 				'eq'     => 'no',
 				'limit'  =>  $limit,
 				'bTitle' => 'constrainterrorlist',
+				'bHelp'  => 'smw-constrainterrorlist-helplink',
 				'bMsg'   => 'smw-constrainterrorlist-intro'
 			]
 		);
