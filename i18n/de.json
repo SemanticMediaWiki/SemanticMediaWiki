@@ -24,13 +24,14 @@
 			"FriedhelmW",
 			"Nemo bis",
 			"Krabina",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Mirzali"
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
 	"smw-error": "Fehler",
 	"smw-upgrade-error": "Semantic MediaWiki wurde installiert und aktiviert, es fehlt jedoch der zugehörige [https://www.semantic-mediawiki.org/wiki/Help:Upgrade Aktualisierungsschlüssel]: <code>$1</code>.",
-	"smw-upgrade-error-title": "Fehler",
+	"smw-upgrade-error-title": "Fehler (Semantisches MediaWiki)",
 	"smw-upgrade-error-why-title": "Warum wird diese Fehlermeldung angezeigt?",
 	"smw-upgrade-error-why-explain": "Die interne Struktur der von Semantic MediaWiki genutzten Datenbank hat sich verändert und erfordert Anpassungen, um störungsfrei funktionieren zu können. Für die Änderung kann es unter anderem mehrere Gründe geben:\n* ein feststehendes Attribut wurde hinzugefügt, das die Erstellung einer neuen Datenbanktabelle erfordert, bevor wieder auf die Datenbank zugegriffen werden kann\n* eine Softwareanpassung bedingt Änderungen an Tabellen oder Indizes der Datenbank, die eine Schemaaktualisierung bedingen, bevor wieder auf die Datenbank zugegriffen werden kann",
 	"smw-upgrade-error-how-title": "Wie kann dieser Fehler behoben werden?",
@@ -315,6 +316,7 @@
 	"propertylabelsimilarity": "Bericht zur Ähnlichkeit von Attributbezeichungen",
 	"missingredirectannotations": "Fehlende Weiterleitungsannotationen",
 	"smw-processingerrorlist-intro": "Die folgende Liste bietet eine Übersicht über die Verarbeitungsfehler, die beim Nutzen von [https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite Semantic MediaWiki] aufgetreten sind. Es wird empfohlen, diese Liste regelmäßig einzusehen und ungültige Attribut-Datenwert-Zuweisungen (Annotationen) zu korrigieren.",
+	"smw-constrainterrorlist-intro": "Die folgende Liste enthält eine Übersicht über [https://www.semantic-mediawiki.org/wiki/Constraint_errors Einschränkungsfehler], die im Zusammenhang mit [https://www.semantic-mediawiki.org/ Semantic MediaWiki] aufgetreten sind. Es wird empfohlen, diese Liste regelmäßig zu überwachen und ungültige Wertanmerkungen zu korrigieren.",
 	"smw-missingredirects-intro": "Diese Seite listet Seiten, bei denen die Annotationen der [https://www.semantic-mediawiki.org/wiki/Redirects Weiterleitungen] fehlen. Die Annotationen können können erstellt werden, indem die betreffenden Seiten einzeln [https://www.semantic-mediawiki.org/wiki/Help:Purge neu geladen] werden, oder indem das Wartungsskript „rebuildData.php“ mit der Option <code>--redirects</code> ausgeführt wird.",
 	"smw-missingredirects-list": "Seiten mit fehlenden Annotationen",
 	"smw-missingredirects-list-intro": "Es ist {{PLURAL:$1|eine Seite|sind $1 Seiten}} mit fehlenden Weiterleitungsannotationen vorhanden:",
