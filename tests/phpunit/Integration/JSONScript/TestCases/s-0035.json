@@ -3,21 +3,21 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has page",
+			"page": "Has page exra",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has text",
+			"page": "Has text extra",
 			"contents": "[[Has type::Text]]"
 		},
 		{
 			"page": "Test:S0035/1",
-			"contents": "Has page: [[Has page::Test:S0035/2]] [[Category:S0035]]"
+			"contents": "Has page: [[Has page extra::Test:S0035/2]] [[Category:S0035]]"
 		},
 		{
 			"page": "Test:S0035/2",
-			"contents": "Has text: [[Has text::S0035]] [[Category:S0035]]"
+			"contents": "Has text: [[Has text extra::S0035]] [[Category:S0035]]"
 		}
 	],
 	"tests": [
@@ -35,12 +35,12 @@
 						"format": "dsv"
 					},
 					"q": "[[Category:S0035]]",
-					"po": "?Has page|?Has text"
+					"po": "?Has page extra|?Has text extra"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					":Has page:Has text",
+					":Has page extra:Has text extra",
 					"Test\\:S0035/1:Test\\:S0035/2:",
 					"Test\\:S0035/2::S0035"
 				]

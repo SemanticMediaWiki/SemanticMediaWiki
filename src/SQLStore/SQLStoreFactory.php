@@ -860,7 +860,8 @@ class SQLStoreFactory {
 	public function newPrefetchItemLookup() {
 		return new PrefetchItemLookup(
 			$this->store,
-			$this->newSemanticDataLookup()
+			$this->newSemanticDataLookup(),
+			$this->newPropertySubjectsLookup()
 		);
 	}
 

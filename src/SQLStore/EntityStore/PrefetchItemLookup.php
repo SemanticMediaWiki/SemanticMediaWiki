@@ -7,13 +7,14 @@ use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
 use SMW\MediaWiki\LinkBatch;
 use RuntimeException;
 
 /**
- * Prefetch from a list of known subjects for a selected property to avoid
- * using `Store::getPropertyValues` for each single subject.
+ * Prefetch values for a list of known subjects to a specific property to avoid
+ * using `Store::getPropertyValues` for each single subject request.
  *
  * @license GNU GPL v2+
  * @since 3.1
@@ -21,6 +22,11 @@ use RuntimeException;
  * @author mwjames
  */
 class PrefetchItemLookup {
+
+	/**
+	 * Uses the item hash as index instead of the default ID based index.
+	 */
+	const HASH_INDEX = 'hash.index';
 
 	/**
 	 * @var Store
@@ -33,39 +39,33 @@ class PrefetchItemLookup {
 	private $semanticDataLookup;
 
 	/**
+	 * @var PropertySubjectsLookup
+	 */
+	private $propertySubjectsLookup;
+
+	/**
 	 * @var LinkBatch
 	 */
 	private $linkBatch;
-
-	/**
-	 * @var boolean
-	 */
-	private $itemIndex = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
 	 * @param CachingSemanticDataLookup $semanticDataLookup
+	 * @param PropertySubjectsLookup $propertySubjectsLookup
+	 * @param LinkBatch|null $LinkBatch
 	 */
-	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, LinkBatch $linkBatch = null ) {
+	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, LinkBatch $linkBatch = null ) {
 		$this->store = $store;
 		$this->semanticDataLookup = $semanticDataLookup;
+		$this->propertySubjectsLookup = $propertySubjectsLookup;
 
 		// Help reduce the amount of queries by allowing to prefetch those
 		// links we know will be used for the display
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = LinkBatch::singleton();
 		}
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param boolean $itemIndex
-	 */
-	public function asItemIndex( $itemIndex = true ) {
-		$this->itemIndex = (bool)$itemIndex;
 	}
 
 	/**
@@ -79,12 +79,26 @@ class PrefetchItemLookup {
 	 */
 	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 
-		// Not supported!
 		if ( $property->isInverse() ) {
-			throw new RuntimeException( "Operation is not supported for inverse properties!" );
+			return $this->prefetchPropertySubjects(
+				$subjects,
+				$property,
+				$requestOptions
+			);
 		}
 
+		return $this->prefetchSemanticData(
+			$subjects,
+			$property,
+			$requestOptions
+		);
+	}
+
+	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+
 		$tableid = $this->store->findPropertyTableID( $property );
+		$idTable = $this->store->getObjectIds();
+
 		$proptables = $this->store->getPropertyTables();
 
 		if ( $tableid === '' || !isset( $proptables[$tableid] ) ) {
@@ -97,6 +111,7 @@ class PrefetchItemLookup {
 
 		// In prefetch mode avoid restricting the result due to use of WHERE IN
 		$requestOptions->exclude_limit = true;
+		$requestOptions->setCaller( __METHOD__ );
 
 		$data = $this->semanticDataLookup->prefetchDataFromTable(
 			$subjects,
@@ -113,8 +128,8 @@ class PrefetchItemLookup {
 
 			$i = 0;
 
-			if ( $this->itemIndex ) {
-				$subject = $this->store->getObjectIds()->getDataItemById(
+			if ( $requestOptions->getOption( self::HASH_INDEX ) ) {
+				$subject = $idTable->getDataItemById(
 					$sid
 				);
 
@@ -124,7 +139,9 @@ class PrefetchItemLookup {
 
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
 				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash{0} === '_' ) {
-					$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+					$property = DIProperty::newFromUserLabel(
+						$subject->getDBKey()
+					);
 					$hash = $property->getCanonicalDIWikiPage()->getHash();
 				}
 			} else {
@@ -139,12 +156,12 @@ class PrefetchItemLookup {
 
 			foreach ( $dbkeys as $k => $v ) {
 
-				if ( $i > $requestOptions->limit ) {
+				if ( $requestOptions->limit > 0 && $i > $requestOptions->limit ) {
 					break;
 				}
 
 				try {
-					$dataItem = $diHandler->dataItemFromDBKeys( $v );
+					$dataItem = $diHandler->newFromDBKeys( $v );
 					$list[] = $dataItem;
 					$result[$hash][$dataItem->getHash()] = $dataItem;
 				} catch ( \SMWDataItemException $e ) {
@@ -157,10 +174,68 @@ class PrefetchItemLookup {
 		}
 
 		if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-			$this->store->getObjectIds()->warmUpCache( $list );
+			$idTable->warmUpCache( $list );
 			$this->linkBatch->addFromList( $list );
 		}
 
+		$this->linkBatch->setCaller( __METHOD__ );
+		$this->linkBatch->addFromList( $subjects );
+		$this->linkBatch->execute();
+
+		return $result;
+	}
+
+	private function prefetchPropertySubjects( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+
+		$noninverse = new DIProperty(
+			$property->getKey(),
+			false
+		);
+
+		$type = DataTypeRegistry::getInstance()->getDataItemByType(
+			$noninverse->findPropertyTypeID()
+		);
+
+		$tableid = $this->store->findPropertyTableID( $noninverse );
+		$idTable = $this->store->getObjectIds();
+
+		if ( $tableid === '' ) {
+			return [];
+		}
+
+		$proptables = $this->store->getPropertyTables();
+		$ids = [];
+
+		foreach ( $subjects as $s ) {
+			$sid = $idTable->getSMWPageID(
+				$s->getDBkey(),
+				$s->getNamespace(),
+				$s->getInterwiki(),
+				$s->getSubobjectName(),
+				true
+			);
+
+			if ( $type !== $s->getDIType() || $sid == 0 ) {
+				continue;
+			}
+
+			$s->setId( $sid );
+			$ids[] = $sid;
+		}
+
+		$requestOptions->setCaller( __METHOD__ );
+		$propTable = $proptables[$tableid];
+
+		$result = $this->propertySubjectsLookup->prefetchFromTable(
+			$ids,
+			$property,
+			$propTable,
+			$requestOptions
+		);
+
+		$idTable->warmUpCache( $result );
+
+		$this->linkBatch->setCaller( __METHOD__ );
 		$this->linkBatch->addFromList( $subjects );
 		$this->linkBatch->execute();
 

@@ -213,4 +213,16 @@ abstract class DataItemHandler {
 	 */
 	abstract public function dataItemFromDBKeys( $dbkeys );
 
+	/**
+	 * @since 3.1
+	 *
+	 * @param array|string $dbkeys
+	 *
+	 * @return DataItem
+	 * @throws DataItemException
+	 */
+	public function newFromDBKeys( $dbkeys ) {
+		return $this->dataItemFromDBKeys( $dbkeys );
+	}
+
 }
