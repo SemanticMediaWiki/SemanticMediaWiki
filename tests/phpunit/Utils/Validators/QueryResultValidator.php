@@ -91,9 +91,13 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 	 * @param QueryResult $queryResult
 	 * @param string $message
 	 */
-	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '' ) {
+	public function assertThatDataItemIsSet( $expected, QueryResult $queryResult, $message = '', $checkSorting = false ) {
 
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
+
+		// Keep the key to allow comparing the position
+		$clonedExpected = $expected;
+		$sorting = [];
 
 		if ( $expected === [] ) {
 			return;
@@ -107,8 +111,9 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 		);
 
 		while ( $resultArray = $queryResult->getNext() ) {
-			foreach ( $resultArray as $result ) {
+			foreach ( $resultArray as $k => $result ) {
 				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
+					$sorting[] = $dataItem;
 					foreach ( $expected as $key => $exp ) {
 						if ( $exp->equals( $dataItem ) ) {
 							unset( $expected[$key] );
@@ -116,6 +121,14 @@ class QueryResultValidator extends \PHPUnit_Framework_Assert {
 					}
 				}
 			}
+		}
+
+		if ( $checkSorting && $expected === [] ) {
+			$sorting = array_diff_assoc( $sorting, $clonedExpected );
+			$this->assertEmpty(
+				$sorting,
+				"Failed on {$message} to match sorting for [ " . implode( ', ', $sorting ) . ' ] against the expected results.'
+			);
 		}
 
 		$this->assertEmpty(

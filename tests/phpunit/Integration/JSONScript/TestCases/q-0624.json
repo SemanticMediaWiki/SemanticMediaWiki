@@ -1,0 +1,296 @@
+{
+	"description": "Test printout property chain, inverted chain (incl. subobject) queries",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Q0624",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Q0624",
+			"contents": "[[Q0624::Q0624/1]] [[Q0624::Q0624/2]] [[Q0624::Q0624/A]]"
+		},
+		{
+			"page": "Q0624/1",
+			"contents": "[[Q0624::Q0624/1/1]] [[Has number::123]] [[Has number::789]] {{#subobject: |Has number=456 |Has text=abc }}"
+		},
+		{
+			"page": "Q0624/1/1",
+			"contents": "[[Q0624::Q0624/1/1/1]] [[Q0624::Q0624/1/1/2]] [[Q0624::Q0624/1/1/3]]"
+		},
+		{
+			"page": "Q0624/1/1",
+			"contents": "[[Q0624::Q0624/1/1/1]] [[Q0624::Q0624/1/1/2]] [[Q0624::Q0624/1/1/3]]"
+		},
+		{
+			"page": "Q0624/Q.2",
+			"contents": "{{#ask: [[Q0624::+]] |?Q0624.Q0624.Q0624 | link=none }}"
+		},
+		{
+			"page": "Q0624/Q.6",
+			"contents": "{{#ask: [[Q0624::+]] |?Q0624 |?Q0624.Q0624=Q0624|+order=desc |?Q0624.Q0624.Q0624=Q0624 |?Q0624.-Q0624=-Q0624  |?Q0624.-Q0624.Has number=Has number |?Q0624.-Q0624.Has subobject.Has number=Has number |link=none |order=asc}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "query",
+			"about": "#0",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				[ "Q0624.Q0624=Q0624", { "order": "desc" } ]
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/3#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/2#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/1#0##"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#1",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				"Q0624.Q0624.Q0624"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/2#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1/3#0##"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#2",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				"Q0624.-Q0624"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_wpg",
+						"value": "Q0624#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3 (Q0624.-Q0624.Has number)",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				"Q0624.-Q0624.Has number"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_num",
+						"value": "123"
+					},
+					{
+						"type": "_num",
+						"value": "789"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#4 (Q0624.-Q0624.Has number/desc)",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				[ "Q0624.-Q0624.Has number", { "order":"desc"} ]
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_num",
+						"value": "789"
+					},
+					{
+						"type": "_num",
+						"value": "123"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#5 (Q0624.-Q0624.Has subobject.Has number)",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				"Q0624.-Q0624.Has subobject.Has number"
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_num",
+						"value": "456"
+					}
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6",
+			"subject": "Q0624/Q.6",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-output": {
+				"to-contain": [
+					"<th class=\"Q0624\"><a href=\".*Property:Q0624\" title=\"Property:Q0624\">Q0624</a></th>",
+					"<th class=\"Q0624\"><a href=\".*Property:Q0624\" title=\"Property:Q0624\">Q0624</a>&#160;<span title=\"Q0624.Q0624\">⠉</span></th>",
+					"<th class=\"Q0624\"><a href=\".*Property:Q0624\" title=\"Property:Q0624\">Q0624</a>&#160;<span title=\"Q0624.Q0624.Q0624\">⠉</span></th><th class=\"-Q0624\"><a href=\".*Property:Q0624\" title=\"Property:Q0624\">-Q0624</a>&#160;<span title=\"Q0624.-Q0624\">⠉</span></th>",
+					"<th class=\"Has-number\"><a href=\".*Property:Has_number\" title=\"Property:Has number\">Has number</a>&#160;<span title=\"Q0624.-Q0624.Has number\">⠉</span></th>",
+					"<th class=\"Has-number\"><a href=\".*Property:Has_number\" title=\"Property:Has number\">Has number</a>&#160;<span title=\"Q0624.-Q0624.Has subobject.Has number\">⠉</span></th>",
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Q0624</td><td class=\"Q0624 smwtype_wpg\">Q0624/1<br />Q0624/2<br />Q0624/A</td><td class=\"Q0624 smwtype_wpg\">Q0624/1/1</td><td class=\"Q0624 smwtype_wpg\">Q0624/1/1/1<br />Q0624/1/1/2<br />Q0624/1/1/3</td><td class=\"-Q0624 smwtype_wpg\">Q0624<br />Q0624<br />Q0624</td><td class=\"Has-number smwtype_num\"></td><td class=\"Has-number smwtype_num\"></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Q0624/1</td><td class=\"Q0624 smwtype_wpg\">Q0624/1/1</td><td class=\"Q0624 smwtype_wpg\">Q0624/1/1/3<br />Q0624/1/1/2<br />Q0624/1/1/1</td><td class=\"Q0624 smwtype_wpg\"></td><td class=\"-Q0624 smwtype_wpg\">Q0624/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123<br />789</td><td class=\"Has-number smwtype_num\" data-sort-value=\"456\">456</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Q0624/1/1</td><td class=\"Q0624 smwtype_wpg\">Q0624/1/1/1<br />Q0624/1/1/2<br />Q0624/1/1/3</td><td class=\"Q0624 smwtype_wpg\"></td><td class=\"Q0624 smwtype_wpg\"></td><td class=\"-Q0624 smwtype_wpg\">Q0624/1/1<br />Q0624/1/1<br />Q0624/1/1</td><td class=\"Has-number smwtype_num\"></td><td class=\"Has-number smwtype_num\"></td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

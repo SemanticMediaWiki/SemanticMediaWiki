@@ -105,6 +105,15 @@ class QueryTestCaseInterpreter {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function checkSorting() {
+		return isset( $this->contents['assert-queryresult']['check-sorting'] ) ? (bool)$this->contents['assert-queryresult']['check-sorting'] : false;
+	}
+
+	/**
 	 * @since 2.2
 	 *
 	 * @return array
@@ -119,17 +128,31 @@ class QueryTestCaseInterpreter {
 
 		foreach ( $this->contents['printouts'] as $printout ) {
 
-			$label = null;
+			$parameters = [];
+			$label = $printout;
 
-			if ( strpos( $printout, '#') !== false ) {
-				list( $printout, $label ) = explode( '#', $printout );
+			if ( is_array( $printout ) ) {
+				$label = array_shift( $printout );
+				$parameters = $printout;
 			}
 
-			$extraPrintouts[] = new PrintRequest(
-				PrintRequest::PRINT_PROP,
-				$label,
-				DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
-			);
+			if ( $label{0} === '_' ) {
+				$printRequest = new PrintRequest(
+					PrintRequest::PRINT_PROP,
+					null,
+					DataValueFactory::getInstance()->newPropertyValueByLabel( $label )
+				);
+			} else {
+				$printRequest = PrintRequest::newFromText( $label );
+			}
+
+			foreach ( $parameters as $value ) {
+				foreach ( $value as $k => $v) {
+					$printRequest->setParameter( $k, $v );
+				}
+			}
+
+			$extraPrintouts[] = $printRequest;
 		}
 
 		return $extraPrintouts;
