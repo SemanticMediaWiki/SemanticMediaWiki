@@ -244,7 +244,7 @@
 
 @-moz-document url-prefix() {
 	.smw-datatable-toolbar .smw-dropdown button {
-		padding: 3px 25px 4px 15px;
+		padding: 4px 25px 4px 15px;
 	}
 }
 

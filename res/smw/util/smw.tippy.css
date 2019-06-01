@@ -55,6 +55,7 @@
 .tippy-content-container {
     padding: .3em .8em;
     margin-bottom: 0.2em;
+    margin-top: 0.2em;
     text-align: initial;
     word-break: break-word;
    /* max-width: 260px; */
