@@ -257,7 +257,7 @@ class GroupFormatter {
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
 			foreach ( $schemaDefinition->get( 'groups' ) as $data ) {
 
-				if (! isset( $data['properties'] ) ) {
+				if ( !isset( $data['properties'] ) || !isset( $data['group_name'] ) ) {
 					continue;
 				}
 
