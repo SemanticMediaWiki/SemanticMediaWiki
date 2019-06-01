@@ -61,7 +61,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://acme.test/api?query=%21_:%3B@%2A_#Foo&=_-3DBar"
+						"value": "http://acme.test/api?query=!_:;@*_#Foo&=_-3DBar"
 					}
 				]
 			}
@@ -154,7 +154,7 @@
 				"datavalues": [
 					{
 						"property": "Has url",
-						"value": "http://example.org/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D#-%7B%7D"
+						"value": "http://example.org/ようこそ#-{}"
 					}
 				]
 			}
