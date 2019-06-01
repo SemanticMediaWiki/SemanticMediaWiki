@@ -29,7 +29,7 @@ class ItemFetcher {
 	private $store;
 
 	/**
-	 * @var prefetchCache
+	 * @var PrefetchCache
 	 */
 	private $prefetchCache;
 
@@ -51,7 +51,7 @@ class ItemFetcher {
 	/**
 	 * @var boolean
 	 */
-	private $prefetch = false;
+	private $prefetch = true;
 
 	/**
 	 * @since 3.1
@@ -61,6 +61,15 @@ class ItemFetcher {
 	public function __construct( Store $store, array $dataItems = [] ) {
 		$this->store = $store;
 		$this->dataItems = $dataItems;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param int $features
+	 */
+	public function setPrefetchFlag( $features ) {
+		$this->prefetch = ( (int)$features & SMW_QUERYRESULT_PREFETCH ) != 0;
 	}
 
 	/**
@@ -133,7 +142,62 @@ class ItemFetcher {
 	 * @return array
 	 */
 	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
-		return $this->legacyFetch( $dataItems, $property, $requestOptions );
+
+		if ( $this->prefetch === false ) {
+			return $this->legacyFetch( $dataItems, $property, $requestOptions );
+		}
+
+		if ( $this->prefetchCache === null ) {
+			$this->prefetchCache = $this->store->service( 'PrefetchCache' );
+		}
+
+		$propertyValues = [];
+		$prop = $property->getKey();
+
+		// In prefetch mode avoid restriting the result due to use of WHERE IN
+		$requestOptions->exclude_limit = true;
+
+		// If its a chain we need to reload since the DataItem's use are traversed
+		// from each chain element
+		if ( !$this->prefetchCache->isCached( $property ) || $requestOptions->isChain ) {
+			$list = $this->dataItems;
+
+			if ( $requestOptions->isChain ) {
+				$list = $dataItems;
+			}
+
+			$this->prefetchCache->prefetch( $list, $property, $requestOptions );
+		}
+
+		foreach ( $dataItems as $subject ) {
+
+			if ( !$subject instanceof DIWikiPage ) {
+				continue;
+			}
+
+			$pv = $this->prefetchCache->getPropertyValues(
+				$subject,
+				$property,
+				$requestOptions
+			);
+
+			if ( $pv instanceof \Traversable ) {
+				$pv = iterator_to_array( $pv );
+			}
+
+			if ( $pv === [] ) {
+				continue;
+			}
+
+			$propertyValues = array_merge( $propertyValues, $pv );
+			unset( $pv );
+		}
+
+		array_walk( $propertyValues, function( &$dataItem ) {
+			$dataItem = $this->highlightTokens( $dataItem );
+		} );
+
+		return $propertyValues;
 	}
 
 	private function legacyFetch( $dataItems, $property, $requestOptions ) {

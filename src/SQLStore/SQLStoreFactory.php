@@ -27,6 +27,7 @@ use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
+use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
@@ -868,6 +869,18 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @return PrefetchCache
+	 */
+	public function newPrefetchCache() {
+		return new PrefetchCache(
+			$this->store,
+			$this->newPrefetchItemLookup()
+		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return PropertyTypeFinder
 	 */
 	public function newPropertyTypeFinder() {
@@ -951,6 +964,10 @@ class SQLStoreFactory {
 					static $singleton;
 					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
 				},
+				'PrefetchCache' => [
+					'_service' => [ $this, 'newPrefetchCache' ],
+					'_type'    => PrefetchCache::class
+				],
 				'PrefetchItemLookup' => [
 					'_service' => [ $this, 'newPrefetchItemLookup' ],
 					'_type'    => PrefetchItemLookup::class

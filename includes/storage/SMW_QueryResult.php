@@ -122,6 +122,9 @@ class SMWQueryResult {
 
 		$itemFetcher = new ItemFetcher( $store, $this->mResults );
 
+		// Used temporarily to allow switching back while testing
+		$itemFetcher->setPrefetchFlag( $GLOBALS['smwgExperimentalFeatures'] );
+
 		// Init the instance here so the value cache is shared and hereby avoids
 		// a static declaration
 		$this->resultFieldMatchFinder = new ResultFieldMatchFinder(

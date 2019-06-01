@@ -1873,9 +1873,12 @@ return [
 	# to the desired target state and hereby automatically retires the related
 	# setting.
 	#
+	# - SMW_QUERYRESULT_PREFETCH to use the prefetch method to retrieve row
+	# related items for a `QueryResult`.
+	#
 	# @since 3.0
 	##
-	'smwgExperimentalFeatures' => false,
+	'smwgExperimentalFeatures' => SMW_QUERYRESULT_PREFETCH,
 	##
 
 	##
