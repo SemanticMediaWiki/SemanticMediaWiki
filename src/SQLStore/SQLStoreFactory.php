@@ -41,6 +41,7 @@ use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
+use SMW\SQLStore\Lookup\TableStatisticsLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
@@ -890,15 +891,15 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @return TableStatistics
+	 * @return TableStatisticsLookup
 	 */
-	public function newTableStatistics() {
+	public function newTableStatisticsLookup() {
 
-		$tableStatistics = new TableStatistics(
+		$tableStatisticsLookup = new TableStatisticsLookup(
 			$this->store
 		);
 
-		return $tableStatistics;
+		return $tableStatisticsLookup;
 	}
 
 	/**
@@ -976,9 +977,9 @@ class SQLStoreFactory {
 					'_service' => [ $this, 'newErrorLookup' ],
 					'_type'    => ErrorLookup::class
 				],
-				'TableStatistics' => [
-					'_service' => [ $this, 'newTableStatistics' ],
-					'_type'    => TableStatistics::class
+				'TableStatisticsLookup' => [
+					'_service' => [ $this, 'newTableStatisticsLookup' ],
+					'_type'    => TableStatisticsLookup::class
 				],
 			]
 		);

@@ -73,6 +73,10 @@
 	border-bottom: 1px solid #fff;
 }
 
+.smw-tabs input.nav-tab:checked + label.nav-label.cached {
+    border-top: 2px solid orange;
+}
+
 /**
  * Requires to be adjusted by each set that uses the rules
  * to assign a tab to a content section.

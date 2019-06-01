@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW\SQLStore;
+namespace SMW\SQLStore\Lookup;
 
+use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 use SMWDataItem as DataItem;
 use Onoi\Cache\Cache;
@@ -12,7 +13,7 @@ use Onoi\Cache\Cache;
  *
  * @author mwjames
  */
-class TableStatistics {
+class TableStatisticsLookup {
 
 	/**
 	 * @var SQLStore
@@ -153,9 +154,9 @@ class TableStatistics {
 			],
 			$blobTable => [
 				'total_row_count' => $rows_blob_table_total_count,
+				'unique_terms_occurrence_in_percent' => $unique_hash_field_terms_in_percent,
 				'rows' => [
 					'blob_field_null_row_count' => $blob_field_null_row_count,
-					'unique_terms_occurrence_in_percent' => $unique_hash_field_terms_in_percent,
 					'terms_occurrence' => [
 						'single_occurrence_total_count' => $hash_field_single_occurrence_total_count,
 						'multi_occurrence_total_count' => $hash_field_multi_occurrence_total_count

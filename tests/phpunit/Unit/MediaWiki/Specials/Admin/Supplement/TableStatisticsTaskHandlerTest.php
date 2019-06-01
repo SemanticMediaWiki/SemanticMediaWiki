@@ -18,6 +18,7 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $outputFormatter;
+	private $entityCache;
 
 	protected function setUp() {
 		parent::setUp();
@@ -25,6 +26,10 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,14 +43,15 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			TableStatisticsTaskHandler::class,
-			new TableStatisticsTaskHandler( $this->outputFormatter )
+			new TableStatisticsTaskHandler( $this->outputFormatter, $this->entityCache )
 		);
 	}
 
 	public function testGetHtml() {
 
 		$instance = new TableStatisticsTaskHandler(
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->entityCache
 		);
 
 		$this->assertInternalType(
@@ -60,7 +66,8 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addHtml' );
 
 		$instance = new TableStatisticsTaskHandler(
-			$this->outputFormatter
+			$this->outputFormatter,
+			$this->entityCache
 		);
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )

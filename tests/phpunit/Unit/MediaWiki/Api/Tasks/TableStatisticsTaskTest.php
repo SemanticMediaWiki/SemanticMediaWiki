@@ -52,14 +52,14 @@ class TableStatisticsTaskTest extends \PHPUnit_Framework_TestCase {
 
 	public function testProcess() {
 
-		$tableStatistics = $this->getMockBuilder( '\SMW\SQLStore\TableStatistics' )
+		$tableStatisticsLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\TableStatisticsLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'service' )
-			->with( $this->equalTo( 'TableStatistics' ) )
-			->will( $this->returnValue( $tableStatistics ) );
+			->with( $this->equalTo( 'TableStatisticsLookup' ) )
+			->will( $this->returnValue( $tableStatisticsLookup ) );
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
