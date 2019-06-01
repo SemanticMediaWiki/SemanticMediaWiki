@@ -115,6 +115,13 @@ class PropertySubjectsLookup {
 			$property
 		);
 
+		// Avoid any grouping when using the prefetch with a WHERE IN
+		// Test: Q0624
+		if ( $property->isInverse() ) {
+			$requestOptions->setOption( 'NO_GROUPBY', true );
+			$requestOptions->setOption( 'NO_DISTINCT', true );
+		}
+
 		$res = $this->doFetch( $pid, $proptable, $ids, $requestOptions );
 		$result = [];
 
@@ -255,6 +262,10 @@ class PropertySubjectsLookup {
 			}
 		}
 
+		if ( $requestOptions->getOption( 'NO_GROUPBY' ) ) {
+			$group = false;
+		}
+
 		if ( $group && $connection->isType( 'postgres') ) {
 			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
 			// the GROUP BY clause or be used in an aggregate function ..."
@@ -269,6 +280,8 @@ class PropertySubjectsLookup {
 			// http://www.mysqltutorial.org/mysql-distinct.aspx
 			$requestOptions->setOption( 'GROUP BY', $sortField . ', smw_id' );
 			$requestOptions->setOption( 'ORDER BY', false );
+		} elseif ( $requestOptions->getOption( 'NO_DISTINCT' ) ) {
+			$requestOptions->setOption( 'DISTINCT', false );
 		} else {
 			$requestOptions->setOption( 'DISTINCT', true );
 		}

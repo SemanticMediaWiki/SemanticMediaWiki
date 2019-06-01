@@ -169,6 +169,49 @@
 		},
 		{
 			"type": "query",
+			"about": "#2.1 (Q0624.-Q0624, limit)",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				[ "Q0624.-Q0624", { "limit": 2 } ]
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
+					{
+						"type": "_wpg",
+						"value": "Q0624#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					},
+					{
+						"type": "_wpg",
+						"value": "Q0624/1/1#0##"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
 			"about": "#3 (Q0624.-Q0624.Has number)",
 			"condition": "[[Q0624::+]]",
 			"printouts": [
@@ -191,6 +234,33 @@
 						"type": "_num",
 						"value": "123"
 					},
+					{
+						"type": "_num",
+						"value": "789"
+					}
+				]
+			}
+		},
+		{
+			"type": "query",
+			"about": "#3.1 (Q0624.-Q0624.Has number, offset/limit)",
+			"condition": "[[Q0624::+]]",
+			"printouts": [
+				[ "Q0624.-Q0624.Has number", { "offset": 1, "limit": 1 } ]
+			],
+			"parameters": {
+				"limit": "10",
+				"sort": { "": "asc" }
+			},
+			"assert-queryresult": {
+				"count": "3",
+				"results": [
+					"Q0624#0##",
+					"Q0624/1#0##",
+					"Q0624/1/1#0##"
+				],
+				"check-sorting": true,
+				"dataitems": [
 					{
 						"type": "_num",
 						"value": "789"
