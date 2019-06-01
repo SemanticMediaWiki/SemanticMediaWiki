@@ -14,6 +14,8 @@ use Iterator;
  */
 class TableStatisticsTask extends Task {
 
+	const CACHE_KEY = 'table-statistics';
+
 	/**
 	 * @var Store
 	 */
@@ -59,17 +61,17 @@ class TableStatisticsTask extends Task {
 			$cacheTTL = $this->cacheUsage['api.table.statistics'];
 		}
 
-		$key = self::makeCacheKey( 'table-statistics' );
+		$key = self::makeCacheKey( self::CACHE_KEY );
 
 		// Guard against repeated API calls (or fuzzing)
 		if ( $cacheTTL !== false && ( $result = $this->cache->fetch( $key ) ) !== false ) {
-			return $result + [ 'isFromCache' => true ];
+			return $result + [ 'isFromCache' => true, 'cacheTTL' => $cacheTTL ];
 		}
 
-		$stats = $this->store->service( 'TableStatistics' )->getStats();
+		$tableStatisticsLookup = $this->store->service( 'TableStatisticsLookup' );
 
 		$result = [
-			'list' => $stats,
+			'list' => $tableStatisticsLookup->getStats(),
 			'time' => date( 'Y-m-d H:i:s' )
 		];
 

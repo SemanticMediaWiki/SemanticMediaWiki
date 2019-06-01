@@ -526,13 +526,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructTableStatistics() {
+	public function testCanConstructTableStatisticsLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableStatistics',
-			$instance->newTableStatistics()
+			'\SMW\SQLStore\Lookup\TableStatisticsLookup',
+			$instance->newTableStatisticsLookup()
 		);
 	}
 

@@ -5,10 +5,13 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 use Html;
 use SMW\ApplicationFactory;
 use SMW\Message;
+use SMW\EntityCache;
 use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Api\Tasks\Task;
+use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 
 /**
  * @license GNU GPL v2+
@@ -24,12 +27,19 @@ class TableStatisticsTaskHandler extends TaskHandler {
 	private $outputFormatter;
 
 	/**
+	 * @var EntityCache
+	 */
+	private $entityCache;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param OutputFormatter $outputFormatter
+	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
+	public function __construct( OutputFormatter $outputFormatter, EntityCache $entityCache ) {
 		$this->outputFormatter = $outputFormatter;
+		$this->entityCache = $entityCache;
 	}
 
 	/**
@@ -166,16 +176,46 @@ class TableStatisticsTaskHandler extends TaskHandler {
 			)
 		);
 
+		$legend = Html::rawElement(
+			'p',
+			[] ,
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend', Message::PARSE )
+		) . Html::rawElement(
+			'p',
+			[] ,
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-general', Message::PARSE )
+		) . Html::rawElement(
+			'h4',
+			[] ,
+			'smw_object_ids'
+		) . Html::rawElement(
+			'p',
+			[] ,
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-id-table', Message::PARSE )
+		) . Html::rawElement(
+			'h4',
+			[] ,
+			'smw_di_blob'
+		) . Html::rawElement(
+			'p',
+			[] ,
+			$this->msg( 'smw-admin-supplementary-operational-table-statistics-legend-blob-table', Message::PARSE )
+		);
+
+		// Is the result fetchable from cache? If yes, change the tab class.
+		$isFromCache = $this->entityCache->contains(
+			Task::makeCacheKey( TableStatisticsTask::CACHE_KEY )
+		);
+
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'table-statistics' );
 		$htmlTabs->setActiveTab( 'report' );
 
-		$htmlTabs->tab( 'report', $this->msg( 'smw-admin-statistics' ) );
+		$htmlTabs->tab( 'report', $this->msg( 'smw-admin-statistics' ), [ 'class' => $isFromCache ? ' cached' : '' ] );
 		$htmlTabs->content( 'report', $html );
 
 		$htmlTabs->tab( 'legend', $this->msg( 'smw-legend' ) );
-		$htmlTabs->content( 'legend', Html::rawElement(
-					'p', [] , $this->msg( 'smw-admin-supplementary-operational-table-statistics-legend', Message::PARSE ) ) );
+		$htmlTabs->content( 'legend', $legend );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'table-statistics' ] );
 

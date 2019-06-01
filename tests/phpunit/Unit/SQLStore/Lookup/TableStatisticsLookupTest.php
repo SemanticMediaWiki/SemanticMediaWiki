@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\TableStatistics;
+use SMW\SQLStore\Lookup\TableStatisticsLookup;
 
 /**
- * @covers \SMW\SQLStore\TableStatistics
+ * @covers \SMW\SQLStore\Lookup\TableStatisticsLookup
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,7 +13,7 @@ use SMW\SQLStore\TableStatistics;
  *
  * @author mwjames
  */
-class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $connection;
@@ -53,8 +53,8 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			TableStatistics::class,
-			new TableStatistics( $this->store )
+			TableStatisticsLookup::class,
+			new TableStatisticsLookup( $this->store )
 		);
 	}
 
@@ -68,7 +68,7 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->will( $this->returnValue( (object)[ 'count' => 0 ] ) );
 
-		$instance = new TableStatistics(
+		$instance = new TableStatisticsLookup(
 			$this->store
 		);
 
@@ -87,7 +87,7 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'MAX(smw_id)' ) )
 			->will( $this->returnValue( "42" ) );
 
-		$instance = new TableStatistics(
+		$instance = new TableStatisticsLookup(
 			$this->store
 		);
 
@@ -106,7 +106,7 @@ class TableStatisticsTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'Count(*)' ) )
 			->will( $this->returnValue( "42" ) );
 
-		$instance = new TableStatistics(
+		$instance = new TableStatisticsLookup(
 			$this->store
 		);
 
