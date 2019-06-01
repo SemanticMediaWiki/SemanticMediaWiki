@@ -448,9 +448,9 @@ label.smw-form-checkbox {
 .smw-callout {
 	padding: 10px;
 	margin: 0.5em 0;
-	border: 1px solid #eee;
+	/*border: 1px solid #eee;*/
 	border-left-width: 5px;
-	border-radius: 3px;
+	border-radius: 1px;
 }
 
 .smw-callout p {
@@ -458,10 +458,15 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-info {
-	border: 1px solid #d9edf7;
+	/*border: 1px solid #d9edf7;
 	background-color: #d9edf7;
 	border-left-width: 5px;
-	border-left-color: #1b809e;
+	border-left-color: #1b809e;*/
+
+	padding: .8em 1em;
+	background: #d9edf7;
+	margin: 0.5rem 0;
+	border-left: 5px solid #1b809e;
 }
 
 .smw-callout-info .title {
@@ -469,10 +474,15 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-info-light {
-	border: 1px solid #f9f9f9;
+	/*border: 1px solid #f9f9f9;
 	background-color: #f9f9f9;
 	border-left-width: 5px;
-	border-left-color: #ddd;
+	border-left-color: #ddd;*/
+
+	padding: .8em 1em;
+	background: #f9f9f9;
+	margin: 0.5rem 0;
+	border-left: 5px solid #ddd;
 }
 
 .smw-callout-info-light .title {
@@ -480,10 +490,15 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-warning {
-	border: 1px solid #fcf8e3;
+	/*border: 1px solid #fcf8e3;
 	background-color: #fcf8e3;
 	border-left-width: 5px;
-	border-left-color: #aa6708;
+	border-left-color: #aa6708;*/
+
+	padding: .8em 1em;
+	background: #fcf8e3;
+	margin: 0.5rem 0;
+	border-left: 5px solid #aa6708;
 }
 
 .smw-callout-warning .title {
@@ -491,10 +506,15 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-success {
-	border: 1px solid #dff0d8;
+	/*border: 1px solid #dff0d8;
 	background-color: #dff0d8;
 	border-left-width: 5px;
-	border-left-color: #3c763d;
+	border-left-color: #3c763d;*/
+
+	padding: .8em 1em;
+	background: #dff0d8;
+	margin: 0.5rem 0;
+	border-left: 5px solid #3c763d;
 }
 
 .smw-callout-success .title {
@@ -502,10 +522,15 @@ label.smw-form-checkbox {
 }
 
 .smw-callout-error {
-	border: 1px solid #f2dede;
+	/*border: 1px solid #f2dede;
 	background-color: #f2dede;
 	border-left-width: 5px;
-	border-left-color: #ce4844;
+	border-left-color: #ce4844;*/
+
+	padding: .8em 1em;
+	background: #f2dede;
+	margin: 0.5rem 0;
+	border-left: 5px solid #ce4844;
 }
 
 .smw-callout .title {
@@ -1108,15 +1133,14 @@ a.smw-ask-action-btn-dblue:focus {
 .ns-112.action-submit .error {
 	color:#721c24;
 	padding: 10px;
-    margin: 0.5em 0;
-    border: 1px solid #eee;
-    border-left-width: 5px;
-    border-radius: 3px;
-	border: 1px solid #f2dede;
-    background-color: #f2dede;
-    border-left-width: 5px;
-    border-left-color: #ce4844;
-    margin-bottom: 10px;
+	margin: 0.5em 0;
+	border-radius: 1px;
+	background-color: #f2dede;
+	padding: .8em 1em;
+	background: #f2dede;
+	margin: 0.5rem 0;
+	border-left: 5px solid #ce4844;
+	margin-bottom: 15px;
 }
 
 .ns-112.action-submit .error a.external {
