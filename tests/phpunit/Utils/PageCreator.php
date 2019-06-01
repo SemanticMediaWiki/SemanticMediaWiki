@@ -23,6 +23,15 @@ class PageCreator {
 	protected $page = null;
 
 	/**
+	 * @since 3.1
+	 *
+	 * @return WikiPage
+	 */
+	public function setPage( \WikiPage $page ) {
+		$this->page = $page;
+	}
+
+	/**
 	 * @since 1.9.1
 	 *
 	 * @return WikiPage
@@ -120,7 +129,11 @@ class PageCreator {
 
 		TestEnvironment::executePendingDeferredUpdates();
 
-		return $this;
+		if ( $status->isOK() ) {
+			return true;
+		} else {
+			return $status->getErrorsArray();
+		}
 	}
 
 	/**

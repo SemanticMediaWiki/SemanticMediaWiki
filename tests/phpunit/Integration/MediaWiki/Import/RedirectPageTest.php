@@ -201,15 +201,8 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 	}
 
 	protected function movePageToTargetRedirect( $page, $target ) {
-
-		$moveToTargetTitle = Title::newFromText( $target );
-
-		return $page->getTitle()->moveTo(
-			$moveToTargetTitle,
-			false,
-			'create redirect',
-			true
-		);
+		$this->pageCreator->setPage( $page );
+		$this->pageCreator->doMoveTo( Title::newFromText( $target ), true );
 	}
 
 }
