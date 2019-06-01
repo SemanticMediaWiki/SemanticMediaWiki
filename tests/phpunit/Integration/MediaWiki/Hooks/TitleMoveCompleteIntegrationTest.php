@@ -74,13 +74,9 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			WikiPage::factory( $expectedNewTitle )->getRevision()
 		);
 
-		$this->pageCreator
-			->createPage( $oldTitle );
+		$this->pageCreator->createPage( $oldTitle );
+		$result = $this->pageCreator->doMoveTo( $expectedNewTitle, true );
 
-		$result = $this->pageCreator
-			->getPage()
-			->getTitle()
-			->moveTo( $expectedNewTitle, false, 'test', true );
 		$this->assertTrue( $result );
 
 		$this->assertNotNull(
@@ -121,10 +117,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			->createPage( $title )
 			->doEdit( '[[Has function hook test::PageCompleteMove]]' );
 
-		$this->pageCreator
-			->getPage()
-			->getTitle()
-			->moveTo( $expectedNewTitle, false, 'test', false );
+		$this->pageCreator->doMoveTo( $expectedNewTitle, false );
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
@@ -181,21 +174,19 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );
 		$expectedNewTitle = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
-		$this->pageCreator
-			->createPage( $title );
-
-		$this->pageCreator
-			->getPage()
-			->getTitle()
-			->moveTo( $expectedNewTitle, false, 'test', true );
+		$this->pageCreator->createPage( $title );
+		$this->pageCreator->doMoveTo( $expectedNewTitle, true );
 
 		$this->assertNotNull(
 			WikiPage::factory( $title )->getRevision()
 		);
 
-		$this->assertNull(
-			WikiPage::factory( $expectedNewTitle )->getRevision()
-		);
+		// Required due to how MoveTo/Title uses the `TitleIsMovable` hook
+		if ( version_compare(MW_VERSION, '1.34', '>=' ) ) {
+			$this->assertNull(
+				WikiPage::factory( $expectedNewTitle )->getRevision()
+			);
+		}
 
 		$this->toBeDeleted = [
 			$title,
