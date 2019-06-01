@@ -364,7 +364,7 @@ class SpecialAsk extends SpecialPage {
 			$error = $res;
 		}
 
-		$infoText = $this->getInfoText(
+		$queryLog = $this->getQueryLog(
 			$duration,
 			$isFromCache
 		);
@@ -397,7 +397,7 @@ class SpecialAsk extends SpecialPage {
 		$form = $htmlForm->getForm(
 			$urlArgs,
 			$res,
-			$infoText
+			$queryLog
 		);
 
 		if ( $this->isBorrowedMode ) {
@@ -502,7 +502,7 @@ class SpecialAsk extends SpecialPage {
 		return [ $result, $res, $duration ];
 	}
 
-	private function getInfoText( $duration, $isFromCache = false ) {
+	private function getQueryLog( $duration, $isFromCache = false ) {
 
 		$infoText = '';
 		$source = null;
@@ -519,15 +519,12 @@ class SpecialAsk extends SpecialPage {
 			$source
 		);
 
-		if ( $duration > 0 ) {
-			$infoText = Message::get(
-				[ 'smw-ask-query-search-info', $this->queryString, $querySource, $isFromCache, $duration],
-				Message::PARSE,
-				$this->getLanguage()
-			);
-		}
-
-		return $infoText;
+		return [
+			'query_string' => $this->queryString,
+			'query_source' => str_replace( '"', '', $querySource ),
+			'query_time' => $duration,
+			'from_cache' => $isFromCache
+		];
 	}
 
 	private function print_code() {
