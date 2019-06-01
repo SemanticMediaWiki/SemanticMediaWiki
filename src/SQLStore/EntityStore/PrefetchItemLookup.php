@@ -154,9 +154,11 @@ class PrefetchItemLookup {
 				$result[$hash] = [];
 			}
 
+			$limit = $requestOptions->limit + $requestOptions->offset;
+
 			foreach ( $dbkeys as $k => $v ) {
 
-				if ( $requestOptions->limit > 0 && $i > $requestOptions->limit ) {
+				if ( $requestOptions->limit > 0 && $i > $limit ) {
 					break;
 				}
 
@@ -223,7 +225,10 @@ class PrefetchItemLookup {
 			$ids[] = $sid;
 		}
 
+		// In prefetch mode avoid restricting the result due to use of WHERE IN
+		$requestOptions->exclude_limit = true;
 		$requestOptions->setCaller( __METHOD__ );
+
 		$propTable = $proptables[$tableid];
 
 		$result = $this->propertySubjectsLookup->prefetchFromTable(
