@@ -138,9 +138,9 @@ class HtmlForm {
 	 *
 	 * @return string
 	 */
-	public function getForm( UrlArgs $urlArgs, $queryResult = null, $text = '' ) {
+	public function getForm( UrlArgs $urlArgs, $queryResult = null, array $queryLog = [] ) {
 
-		$html = $this->buildHTML( $urlArgs, $queryResult, $text );
+		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
 			$params = [
@@ -159,11 +159,17 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( $urlArgs, $queryResult, $infoText ) {
+	private function buildHTML( $urlArgs, $queryResult, $queryLog ) {
 
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
+		$infoText = '';
+
+		if ( $queryLog !== [] ) {
+			$infoText = '<h3>' . wfMessage( 'smw-ask-extra-query-log' )->text() . '</h3>';
+			$infoText .= '<pre>' . json_encode( $queryLog, JSON_PRETTY_PRINT ) . '</pre>';
+		}
 
 		if ( $queryResult instanceof QueryResult ) {
 			$navigation = NavigationLinksWidget::navigationLinks(
@@ -288,7 +294,6 @@ class HtmlForm {
 			);
 
 			if ( is_array( $links ) ) {
-				$links[] = $infoText;
 
 				// External source cannot disable the cache
 				if ( isset( $this->parameters['source'] ) && $this->parameters['source'] !== '' ) {
@@ -299,9 +304,12 @@ class HtmlForm {
 					$links[] = $noCacheLink;
 				}
 
-				$infoText = '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
+				if ( $links !== [] ) {
+					$infoText .= '<h3>' . wfMessage( 'smw-ask-extra-other' )->text() . '</h3>';
+					$infoText .= '<ul><li>' . implode( '</li><li>', $links ) . '</li></ul>';
+				}
 			} else {
-				$infoText = $links;
+				$infoText .= $links;
 			}
 
 			$htmlTabs->content(

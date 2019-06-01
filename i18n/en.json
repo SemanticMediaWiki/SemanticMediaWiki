@@ -305,6 +305,8 @@
 	"smw-ask-format-change-info": "The format was modified and it is required to execute the query again to match new parameters and visualization options.",
 	"smw-ask-format-export-info": "The selected format is an export format which has no visual representation therefore results are only provided as download.",
 	"smw-ask-query-search-info": "The query <code><nowiki>$1</nowiki></code> was answered by the {{PLURAL:$3|1=<code>$2</code> (from cache)|<code>$2</code> (from cache)|<code>$2</code>}} in $4 {{PLURAL:$4|second|seconds}}.",
+	"smw-ask-extra-query-log": "Query log",
+	"smw-ask-extra-other": "Other",
 	"searchbyproperty": "Search by property",
 	"processingerrorlist": "Processing error list",
 	"constrainterrorlist": "Constraint error list",

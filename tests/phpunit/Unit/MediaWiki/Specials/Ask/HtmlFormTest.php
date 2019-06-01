@@ -61,11 +61,11 @@ class HtmlFormTest extends \PHPUnit_Framework_TestCase {
 		$instance = new HtmlForm( $title );
 		$instance->isEditMode( true );
 
- 		$text = '';
+		$log = [];
 
 		$this->assertInternalType(
 			'string',
-			$instance->getForm( $urlArgs, $queryResult, $text )
+			$instance->getForm( $urlArgs, $queryResult, $log )
 		);
 	}
 
