@@ -75,7 +75,8 @@ class SMWResultArray {
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,
-			$queryResult->getStore()
+			$queryResult->getStore(),
+			$queryResult->getResultFieldMatchFinder()
 		);
 
 		$query = $queryResult->getQuery();
@@ -92,15 +93,20 @@ class SMWResultArray {
 	 * @param SMWDIWikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param SMWStore $store
+	 * @param ResultFieldMatchFinder|null $resultFieldMatchFinde
 	 */
-	public function __construct( SMWDIWikiPage $resultPage, PrintRequest $printRequest, SMWStore $store ) {
+	public function __construct( SMWDIWikiPage $resultPage, PrintRequest $printRequest, SMWStore $store, ResultFieldMatchFinder $resultFieldMatchFinder = null ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;
 		$this->mContent = false;
 
 		// FIXME 3.0; Inject the object
-		$this->resultFieldMatchFinder = new ResultFieldMatchFinder( $store, $printRequest );
+		$this->resultFieldMatchFinder = $resultFieldMatchFinder;
+
+		if ( $this->resultFieldMatchFinder === null ) {
+			$this->resultFieldMatchFinder = new ResultFieldMatchFinder( $store );
+		}
 	}
 
 	/**
@@ -303,6 +309,10 @@ class SMWResultArray {
 		if ( $this->mContent !== false ) {
 			return;
 		}
+
+		$this->resultFieldMatchFinder->setPrintRequest(
+			$this->mPrintRequest
+		);
 
 		$this->resultFieldMatchFinder->setQueryToken(
 			$this->queryToken

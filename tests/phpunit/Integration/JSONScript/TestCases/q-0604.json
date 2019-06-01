@@ -75,7 +75,7 @@
 					},
 					{
 						"property": "PropertyToBeRedirected",
-						"value": "PageValueToBeRedirected"
+						"value": "PageRedirectTarget"
 					}
 				]
 			}
@@ -99,11 +99,11 @@
 				"datavalues": [
 					{
 						"property": "Has secondPage",
-						"value": "PageValueToBeRedirected"
+						"value": "PageRedirectTarget"
 					},
 					{
 						"property": "Has secondPage",
-						"value": "PageValueToBeRedirected"
+						"value": "PageRedirectTarget"
 					}
 				]
 			}
