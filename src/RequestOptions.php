@@ -42,10 +42,10 @@ class RequestOptions {
 	public $limit = -1;
 
 	/**
-	 * For certain queries (e.g. prefetch using WHERE IN) using the limit will
-	 * cause the whole retrievable set to be restricted instead of just be
-	 * applied to a subset therefore allow to exclude the limit and apply an
-	 * restriction during the post-processing.
+	 * For certain queries (prefetch using WHERE IN) using the limit will cause
+	 * the whole set to be restricted on a bulk instead of only applied to a subset
+	 * therefore allow the exclude the limit and apply an restriction during the
+	 * post-processing.
 	 */
 	public $exclude_limit = false;
 
@@ -183,6 +183,16 @@ class RequestOptions {
 	 */
 	public function setOption( $key, $value ) {
 		$this->options[$key] = $value;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 * @param string $value
+	 */
+	public function deleteOption( $key ) {
+		unset( $this->options[$key] );
 	}
 
 	/**

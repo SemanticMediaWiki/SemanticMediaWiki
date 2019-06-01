@@ -40,31 +40,31 @@
 		},
 		{
 			"page": "Example/F0104/Q.1",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=list |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=list |link=none |headers=plain }}"
 		},
 		{
 			"page": "Example/F0104/Q.2",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=list |link=none |headers=plain |sep=;}}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=list |link=none |headers=plain |sep=;}}"
 		},
 		{
 			"page": "Example/F0104/Q.3",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=list |link=none |headers=plain |sep=;_}}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=list |link=none |headers=plain |sep=;_}}"
 		},
 		{
 			"page": "Example/F0104/Q.4",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=ul |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=ul |link=none |headers=plain }}"
 		},
 		{
 			"page": "Example/F0104/Q.5",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=ul |link=none |headers=plain |propsep=; }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=ul |link=none |headers=plain |propsep=; }}"
 		},
 		{
 			"page": "Example/F0104/Q.6",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
 		},
 		{
 			"page": "Example/F0104/Q.7",
-			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text |sep=, |valuesep=; |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
+			"contents": "{{#ask: [[Category:F0104]] |?Has page |?Has text|+order=asc |sep=, |valuesep=; |format=template |named args=yes |introtemplate=TemplateOutputUsingNamedArguments-intro |template=TemplateOutputUsingNamedArguments |outrotemplate=TemplateOutputUsingNamedArguments-outro |link=none |headers=plain }}"
 		}
 	],
 	"tests": [

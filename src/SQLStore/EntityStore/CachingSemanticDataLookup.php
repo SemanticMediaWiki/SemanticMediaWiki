@@ -59,7 +59,7 @@ class CachingSemanticDataLookup {
 	/**
 	 * @var array
 	 */
-	private $prefetch = [];
+	private static $prefetch = [];
 
 	/**
 	 * @since 3.0
@@ -106,6 +106,7 @@ class CachingSemanticDataLookup {
 	public static function clear() {
 		self::$data = [];
 		self::$state = [];
+		self::$prefetch = [];
 		self::$lookupCount = 0;
 	}
 
@@ -230,8 +231,8 @@ class CachingSemanticDataLookup {
 
 		$hash = md5( $hash );
 
-		if ( isset( $this->prefetch[$hash] ) ) {
-			return $this->prefetch[$hash];
+		if ( isset( self::$prefetch[$hash] ) && self::$prefetch[$hash] !== [] ) {
+			return self::$prefetch[$hash];
 		}
 
 		$data = $this->semanticDataLookup->prefetchDataFromTable(
@@ -241,7 +242,7 @@ class CachingSemanticDataLookup {
 			$requestOptions
 		);
 
-		return $this->prefetch[$hash] = $data;
+		return self::$prefetch[$hash] = $data;
 	}
 
 	/**

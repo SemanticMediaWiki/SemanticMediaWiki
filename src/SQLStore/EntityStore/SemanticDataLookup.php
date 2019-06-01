@@ -31,7 +31,7 @@ class SemanticDataLookup {
 	/**
 	 * @var string
 	 */
-	private $fname = '';
+	private $caller = '';
 
 	/**
 	 * @since 3.0
@@ -146,10 +146,9 @@ class SemanticDataLookup {
 		}
 
 		// A request has set a limit on how many values should be retrieved, yet
-		// without specifying which property the limit is for it is assumed
-		// that for the referenced table (`$propTable`) to apply the limit to all
-		// available properties assigned to (`id`) and merge them into the
-		// `StubSemanticData`
+		// without specifying which property the limit is for the entire referenced
+		// table (`$propTable`). Make sure to apply the limit to all available
+		// properties to an assigned `id` and merge them into the `StubSemanticData`
 		if ( $matchLimit && !$propTable->isFixedPropertyTable() && $propTable->usesIdSubject() ) {
 			$res = $this->fetchPropertiesFromTable( $id, $propTable );
 			$opts = clone $requestOptions;
@@ -224,7 +223,7 @@ class SemanticDataLookup {
 		}
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
-		$this->fname = __METHOD__;
+		$this->caller = __METHOD__;
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
@@ -273,14 +272,7 @@ class SemanticDataLookup {
 			$result[$sid]["$i#$h"] = $data[1];
 		}
 
-	// Avoiding any sorting to avoid distrupting the output for the integration
-	// tests as part of introducing the prefetch mode
-	//	foreach ( $result as $id => &$value ) {
-	//	 	ksort( $value );
-	//	}
-
 		return $result;
-
 	}
 
 	/**
@@ -333,7 +325,7 @@ class SemanticDataLookup {
 
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
-		$this->fname = __METHOD__;
+		$this->caller = __METHOD__;
 
 		// Build something like:
 		//
@@ -496,9 +488,15 @@ class SemanticDataLookup {
 			$query->option( 'LIMIT', null );
 		}
 
+		$caller = $this->caller;
+
+		if ( strval( $requestOptions->getCaller() ) !== '' ) {
+			$caller .= " (for " . $requestOptions->getCaller() . ")";
+		}
+
 		$res = $connection->query(
 			$query,
-			$this->fname
+			$caller
 		);
 
 		foreach ( $res as $row ) {
@@ -524,8 +522,8 @@ class SemanticDataLookup {
 		$connection->freeResult( $res );
 
 		// Sorting via PHP for an explicit disabled `ORDER BY` to ensure that
-		// the result set at least a lexical order is applied for range of
-		// retrieved values
+		// the result set has at least a lexical order for range of
+		// retrieved values and is hereby deterministic
 		if ( $requestOptions->getOption( 'ORDER BY' ) === false ) {
 			sort( $result );
 		}
@@ -656,7 +654,8 @@ class SemanticDataLookup {
 		}
 
 		if ( $sortField !== '' ) {
-			//Avoid issues with `$row->$sortField` containing other `#` as for example in case of a subobject name
+			// Avoid issues with `$row->$sortField` containing other `#` as for
+			// example in case of a subobject name
 			$hash = mb_substr( str_replace( '#', '|', $row->$sortField ), 0, 32 ) . '#' . $hash;
 		}
 

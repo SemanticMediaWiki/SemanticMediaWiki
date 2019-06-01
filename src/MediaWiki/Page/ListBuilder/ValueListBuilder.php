@@ -289,9 +289,10 @@ class ValueListBuilder {
 		$requestOptions->limit = $this->maxPropertyValues;
 
 		$prefetchItemLookup = $this->store->service( 'PrefetchItemLookup' );
-		$prefetchItemLookup->asItemIndex( true );
 
-		$propertyValuesArray = $prefetchItemLookup->getPropertyValues(
+		$requestOptions->setOption( $prefetchItemLookup::HASH_INDEX, true );
+
+		$propertyValues = $prefetchItemLookup->getPropertyValues(
 			$diWikiPages,
 			$property,
 			$requestOptions
@@ -328,8 +329,8 @@ class ValueListBuilder {
 				$prev_start_char = $start_char;
 			}
 
-			if ( isset( $propertyValuesArray[$hash] ) ) {
-				$values = $propertyValuesArray[$hash];
+			if ( isset( $propertyValues[$hash] ) ) {
+				$values = $propertyValues[$hash];
 			}
 
 			// May return an iterator

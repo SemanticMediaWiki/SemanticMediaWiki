@@ -257,7 +257,12 @@
 		"smwgFulltextSearchIndexableDataTypes": [
 			"SMW_FT_BLOB",
 			"SMW_FT_URI"
-		]
+		],
+		"smwgElasticsearchConfig": {
+			"indexer": {
+				"raw.text": false
+			}
+		}
 	},
 	"meta": {
 		"skip-on": {

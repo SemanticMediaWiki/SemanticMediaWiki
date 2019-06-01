@@ -41,35 +41,35 @@
 		},
 		{
 			"page": "Example/F0803/Q.1",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.3",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Legacy |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Legacy |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.4",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Named |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Named |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.5",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/NamedWithMainlabel |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/NamedWithMainlabel |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.6",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=main |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Numbered |mainlabel=main |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.7",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Numbered |mainlabel=- |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Numbered |mainlabel=- |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.8",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
 		},
 		{
 			"page": "Example/F0803/Q.9",
-			"contents": "{{#ask: [[Category:F0803]] |?Has text |format=template |template=Example/F0803/Sep |named args=yes |sort=Has text |order=asc }}"
+			"contents": "{{#ask: [[Category:F0803]] |?Has text|+order=asc |format=template |template=Example/F0803/Sep |named args=yes |sort=Has text |order=asc }}"
 		}
 	],
 	"tests": [

@@ -120,7 +120,7 @@ class CacheWarmer {
 		}
 
 		$linkBatch->execute();
-		$this->fillFromTableByHash( array_keys( $hashList ) );
+		$this->loadByHash( array_keys( $hashList ) );
 
 		if ( $this->displayTitleFinder !== null ) {
 			$this->displayTitleFinder->prefetchFromList( $list );
@@ -132,7 +132,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function fillFromTableByHash( $hashList = [] ) {
+	public function loadByHash( $hashList = [] ) {
 
 		if ( $hashList === [] ) {
 			return;
@@ -185,7 +185,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function fillFromTableIds( $idList = [] ) {
+	public function loadByIds( $idList = [] ) {
 
 		if ( $idList === [] ) {
 			return;
