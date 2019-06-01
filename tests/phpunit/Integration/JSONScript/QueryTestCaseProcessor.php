@@ -155,7 +155,8 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$this->queryResultValidator->assertThatDataItemIsSet(
 			$queryTestCaseInterpreter->getExpectedDataItems(),
 			$queryResult,
-			$queryTestCaseInterpreter->isAbout()
+			$queryTestCaseInterpreter->isAbout(),
+			$queryTestCaseInterpreter->checkSorting()
 		);
 
 		$this->queryResultValidator->assertThatDataValueIsSet(

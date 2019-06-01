@@ -37,6 +37,11 @@
 		}
 	],
 	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		},
 		"wgContLang": "en"
 	},
 	"meta": {
