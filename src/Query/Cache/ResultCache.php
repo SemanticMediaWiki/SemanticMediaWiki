@@ -317,7 +317,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 		$results = [];
 		$incrStats = 'hits.Undefined';
-		$resolverJournal = null;
+		$itemJournal = null;
 
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$context = 'Undefined';
@@ -340,7 +340,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$hasFurtherResults = $queryResult->hasFurtherResults();
 			$countValue = $queryResult->getCountValue();
 			$excerpts = $queryResult->getExcerpts();
-			$resolverJournal = $queryResult->getResolverJournal();
+			$itemJournal = $queryResult->getItemJournal();
 		} else {
 
 			$incrStats = ( $query->getContextPage() !== null ? 'hits.embedded.' : 'hits.nonEmbedded.' ) . $context;
@@ -368,8 +368,8 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$queryResult->setCountValue( $countValue );
 		$queryResult->setFromCache( true );
 
-		if ( $resolverJournal !== null ) {
-			$queryResult->setResolverJournal( $resolverJournal );
+		if ( $itemJournal !== null ) {
+			$queryResult->setItemJournal( $itemJournal );
 		}
 
 		$time = Timer::getElapsedTime( __CLASS__, 5 );

@@ -4,10 +4,10 @@ namespace SMW\Tests\Query\Result;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\Result\ResolverJournal;
+use SMW\Query\Result\ItemJournal;
 
 /**
- * @covers \SMW\Query\Result\ResolverJournal
+ * @covers \SMW\Query\Result\ItemJournal
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,20 +15,20 @@ use SMW\Query\Result\ResolverJournal;
  *
  * @author mwjames
  */
-class ResolverJournalTest extends \PHPUnit_Framework_TestCase {
+class ItemJournalTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ResolverJournal::class,
-			new ResolverJournal()
+			ItemJournal::class,
+			new ItemJournal()
 		);
 	}
 
 	public function testRecordItem() {
 
 		$dataItem = DIWikiPage::newFromText( 'Foo' );
-		$instance = new ResolverJournal();
+		$instance = new ItemJournal();
 
 		$instance->prune();
 		$instance->recordItem( $dataItem );
@@ -48,7 +48,7 @@ class ResolverJournalTest extends \PHPUnit_Framework_TestCase {
 	public function testRecordProperty() {
 
 		$property = new DIProperty( 'Bar' );
-		$instance = new ResolverJournal();
+		$instance = new ItemJournal();
 
 		$instance->recordProperty( $property );
 

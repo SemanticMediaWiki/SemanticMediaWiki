@@ -1,12 +1,13 @@
 <?php
 
+namespace SMW\Query\Result;
+
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
-use SMW\Query\Result\ResolverJournal;
-use SMW\Query\Result\ResultFieldMatchFinder;
 use SMWDataItem as DataItem;
 use SMW\DIWikiPage;
+use SMW\Store;
 use SMWQueryResult as QueryResult;
 
 /**
@@ -14,42 +15,43 @@ use SMWQueryResult as QueryResult;
  * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  *
- * @ingroup SMWQuery
+ * @license GNU GPL v2+
+ * @since 3.1
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWResultArray {
+class ResultArray {
 
 	/**
 	 * @var PrintRequest
 	 */
-	private $mPrintRequest;
+	private $printRequest;
 
 	/**
-	 * @var SMWDIWikiPage
+	 * @var DIWikiPage
 	 */
-	private $mResult;
+	private $result;
 
 	/**
 	 * @var SMWStore
 	 */
-	private $mStore;
+	private $store;
 
 	/**
 	 * @var SMWDataItem[]|false
 	 */
-	private $mContent;
+	private $content;
 
 	/**
-	 * @var ResolverJournal
+	 * @var ItemJournal
 	 */
-	private $resolverJournal;
+	private $itemJournal;
 
 	/**
-	 * @var ResultFieldMatchFinder
+	 * @var FieldItemFinder
 	 */
-	private $resultFieldMatchFinder;
+	private $fieldItemFinder;
 
 	/**
 	 * @var QueryToken
@@ -64,19 +66,19 @@ class SMWResultArray {
 	/**
 	 * @since 3.1
 	 *
-	 * @param SMWDIWikiPage $resultPage
+	 * @param DIWikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param QueryResult $queryResult
 	 *
 	 * @return ResultArray
 	 */
-	public static function factory( SMWDIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
+	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
 
-		$resultArray = new self(
+		$resultArray = new ResultArray(
 			$resultPage,
 			$printRequest,
 			$queryResult->getStore(),
-			$queryResult->getResultFieldMatchFinder()
+			$queryResult->getFieldItemFinder()
 		);
 
 		$query = $queryResult->getQuery();
@@ -88,24 +90,22 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Constructor.
-	 *
-	 * @param SMWDIWikiPage $resultPage
+	 * @param DIWikiPage $resultPage
 	 * @param PrintRequest $printRequest
-	 * @param SMWStore $store
-	 * @param ResultFieldMatchFinder|null $resultFieldMatchFinde
+	 * @param Store $store
+	 * @param fieldItemFinder|null $fieldItemFinder
 	 */
-	public function __construct( SMWDIWikiPage $resultPage, PrintRequest $printRequest, SMWStore $store, ResultFieldMatchFinder $resultFieldMatchFinder = null ) {
-		$this->mResult = $resultPage;
-		$this->mPrintRequest = $printRequest;
-		$this->mStore = $store;
-		$this->mContent = false;
+	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, FieldItemFinder $fieldItemFinder = null ) {
+		$this->result = $resultPage;
+		$this->printRequest = $printRequest;
+		$this->store = $store;
+		$this->content = false;
 
 		// FIXME 3.0; Inject the object
-		$this->resultFieldMatchFinder = $resultFieldMatchFinder;
+		$this->fieldItemFinder = $fieldItemFinder;
 
-		if ( $this->resultFieldMatchFinder === null ) {
-			$this->resultFieldMatchFinder = new ResultFieldMatchFinder( $store );
+		if ( $this->fieldItemFinder === null ) {
+			$this->fieldItemFinder = new FieldItemFinder( $store );
 		}
 	}
 
@@ -115,18 +115,18 @@ class SMWResultArray {
 	 * @return SMWStore
 	 */
 	public function getStore() {
-		return $this->mStore;
+		return $this->store;
 	}
 
 	/**
-	 * Returns the SMWDIWikiPage object to which this SMWResultArray refers.
+	 * Returns the DIWikiPage object to which this SMWResultArray refers.
 	 * If you only care for those objects, consider using SMWQueryResult::getResults()
 	 * directly.
 	 *
-	 * @return SMWDIWikiPage
+	 * @return DIWikiPage
 	 */
 	public function getResultSubject() {
-		return $this->mResult;
+		return $this->result;
 	}
 
 	/**
@@ -136,10 +136,10 @@ class SMWResultArray {
 	 *
 	 * @since  2.4
 	 *
-	 * @param ResolverJournal $resolverJournal
+	 * @param ItemJournal $itemJournal
 	 */
-	public function setResolverJournal( ResolverJournal $resolverJournal ) {
-		$this->resolverJournal = $resolverJournal;
+	public function setItemJournal( ItemJournal $itemJournal ) {
+		$this->itemJournal = $itemJournal;
 	}
 
 	/**
@@ -168,7 +168,7 @@ class SMWResultArray {
 	 */
 	public function getContent() {
 		$this->loadContent();
-		return $this->mContent;
+		return $this->content;
 	}
 
 	/**
@@ -178,7 +178,7 @@ class SMWResultArray {
 	 * @return PrintRequest
 	 */
 	public function getPrintRequest() {
-		return $this->mPrintRequest;
+		return $this->printRequest;
 	}
 
 	/**
@@ -190,13 +190,14 @@ class SMWResultArray {
 	 */
 	public function getNextDataItem() {
 		$this->loadContent();
-		$result = current( $this->mContent );
+		$result = current( $this->content );
 
-		if ( $this->resolverJournal !== null && $result instanceof DataItem ) {
-			$this->resolverJournal->recordItem( $result );
+		if ( $this->itemJournal !== null && $result instanceof DataItem ) {
+			$this->itemJournal->recordItem( $result );
 		}
 
-		next( $this->mContent );
+		next( $this->content );
+
 		return $result;
 	}
 
@@ -211,7 +212,7 @@ class SMWResultArray {
 	 */
 	public function reset() {
 		$this->loadContent();
-		return reset( $this->mContent );
+		return reset( $this->content );
 	}
 
 	/**
@@ -235,27 +236,27 @@ class SMWResultArray {
 		// use this particular context (content language etc.) to guide
 		// formatting characteristics
 		if ( $contextPage === null ) {
-			$contextPage = $this->mResult;
+			$contextPage = $this->result;
 		}
 
-		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
-		    strpos( $this->mPrintRequest->getTypeID(), '_rec' ) !== false &&
-		    $this->mPrintRequest->getParameter( 'index' ) !== false ) {
+		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
+		    strpos( $this->printRequest->getTypeID(), '_rec' ) !== false &&
+		    $this->printRequest->getParameter( 'index' ) !== false ) {
 
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
-				$this->mPrintRequest->getData()->getDataItem(),
+				$this->printRequest->getData()->getDataItem(),
 				false,
 				$contextPage
 			);
 
 			$diProperty = $recordValue->getPropertyDataItemByIndex(
-				$this->mPrintRequest->getParameter( 'index' )
+				$this->printRequest->getParameter( 'index' )
 			);
-		} elseif ( $this->mPrintRequest->isMode( PrintRequest::PRINT_PROP ) ) {
-			$diProperty = $this->mPrintRequest->getData()->getDataItem();
-		} elseif ( $this->mPrintRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
-			$diProperty = $this->mPrintRequest->getData()->getLastPropertyChainValue()->getDataItem();
+		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_PROP ) ) {
+			$diProperty = $this->printRequest->getData()->getDataItem();
+		} elseif ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
+			$diProperty = $this->printRequest->getData()->getLastPropertyChainValue()->getDataItem();
 		} else {
 			$diProperty = null;
 		}
@@ -267,13 +268,13 @@ class SMWResultArray {
 			$contextPage
 		);
 
-		if ( $this->mPrintRequest->getOutputFormat() ) {
-			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
+		if ( $this->printRequest->getOutputFormat() ) {
+			$dataValue->setOutputFormat( $this->printRequest->getOutputFormat() );
 		}
 
-		if ( $this->resolverJournal !== null && $dataItem instanceof DataItem ) {
-			$this->resolverJournal->recordItem( $dataItem );
-			$this->resolverJournal->recordProperty( $diProperty );
+		if ( $this->itemJournal !== null && $dataItem instanceof DataItem ) {
+			$this->itemJournal->recordItem( $dataItem );
+			$this->itemJournal->recordProperty( $diProperty );
 		}
 
 		return $dataValue;
@@ -293,11 +294,12 @@ class SMWResultArray {
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
 		$dataValue = $this->getNextDataValue();
+
 		if ( $dataValue !== false ) { // Print data values.
 			return $dataValue->getShortText( $outputMode, $linker );
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -306,23 +308,23 @@ class SMWResultArray {
 	 */
 	protected function loadContent() {
 
-		if ( $this->mContent !== false ) {
+		if ( $this->content !== false ) {
 			return;
 		}
 
-		$this->resultFieldMatchFinder->setPrintRequest(
-			$this->mPrintRequest
+		$this->fieldItemFinder->setPrintRequest(
+			$this->printRequest
 		);
 
-		$this->resultFieldMatchFinder->setQueryToken(
+		$this->fieldItemFinder->setQueryToken(
 			$this->queryToken
 		);
 
-		$this->mContent = $this->resultFieldMatchFinder->findAndMatch(
-			$this->mResult
+		$this->content = $this->fieldItemFinder->findFor(
+			$this->result
 		);
 
-		return reset( $this->mContent );
+		return reset( $this->content );
 	}
 
 	/**
@@ -336,7 +338,7 @@ class SMWResultArray {
 	 * @return SMWRequestOptions|null
 	 */
 	protected function getRequestOptions( $useLimit = true ) {
-		return $this->resultFieldMatchFinder->getRequestOptions( $useLimit );
+		return $this->fieldItemFinder->getRequestOptions( $useLimit );
 	}
 
 }

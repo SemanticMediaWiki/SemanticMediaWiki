@@ -224,11 +224,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
 
-		$resolverJournal = $this->getMockBuilder( '\SMW\Query\Result\ResolverJournal' )
+		$itemJournal = $this->getMockBuilder( '\SMW\Query\Result\ItemJournal' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resolverJournal->expects( $this->once() )
+		$itemJournal->expects( $this->once() )
 			->method( 'getEntityList' )
 			->will( $this->returnValue( [ $subject ] ) );
 
@@ -237,8 +237,8 @@ class QueryResultDependencyListResolverTest extends \PHPUnit_Framework_TestCase 
 			->getMock();
 
 		$queryResult->expects( $this->once() )
-			->method( 'getResolverJournal' )
-			->will( $this->returnValue( $resolverJournal ) );
+			->method( 'getItemJournal' )
+			->will( $this->returnValue( $itemJournal ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )

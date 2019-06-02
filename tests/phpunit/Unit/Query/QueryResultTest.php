@@ -1,15 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Query;
 
 use SMW\DIWikiPage;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
- * @covers \SMWQueryResult
- *
- * @group SMW
- * @group SMWExtension
+ * @covers \SMW\Query\QueryResult
  *
  * @license GNU GPL v2+
  * @since 2.1
@@ -32,7 +29,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		$results = [];
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			QueryResult::class,
 			new QueryResult( $printRequests, $query, $results, $store )
 		);
 	}

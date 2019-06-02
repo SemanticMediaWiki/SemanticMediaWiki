@@ -1,13 +1,18 @@
 <?php
 
+namespace SMW\Query;
+
 use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
-use SMW\Query\Result\ResolverJournal;
-use SMW\Query\Result\ResultFieldMatchFinder;
+use SMW\Query\Result\ItemJournal;
+use SMW\Query\Result\FieldItemFinder;
 use SMW\Query\Result\ItemFetcher;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
+use SMW\Store;
+use SMWQuery as Query;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -15,19 +20,24 @@ use SMW\SerializerFactory;
  * relevant query parameters that were used.
  *
  * Standard access is provided through the iterator function getNext(),
- * which returns an array ("table row") of SMWResultArray objects ("table cells").
+ * which returns an array ("table row") of ResultArray objects ("table cells").
  * It is also possible to access the set of result pages directly using
  * getResults(). This is useful for printers that disregard printouts and
  * only are interested in the actual list of pages.
  *
+ * @license GNU GPL v2+
+ * @since 2.5
  *
- * @ingroup SMWQuery
- *
- * @licence GNU GPL v2 or later
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWQueryResult {
+class QueryResult {
+
+	/**
+	 * When generating a hash just iterates over available subjects, not
+	 * the entire object structure.
+	 */
+	const QUICK_HASH = 'quick';
 
 	/**
 	 * Array of SMWDIWikiPage objects that are the basis for this result
@@ -51,13 +61,13 @@ class SMWQueryResult {
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
-	 * @var SMWQuery
+	 * @var Query
 	 */
 	protected $mQuery;
 
 	/**
-	 * The SMWStore object used to retrieve further data on demand.
-	 * @var SMWStore
+	 * The Store object used to retrieve further data on demand.
+	 * @var Store
 	 */
 	protected $mStore;
 
@@ -75,14 +85,14 @@ class SMWQueryResult {
 	private $isFromCache = false;
 
 	/**
-	 * @var ResolverJournal
+	 * @var ItemJournal
 	 */
-	private $resolverJournal;
+	private $itemJournal;
 
 	/**
-	 * @var ResultFieldMatchFinder
+	 * @var FieldItemFinder
 	 */
-	private $resultFieldMatchFinder;
+	private $fieldItemFinder;
 
 	/**
 	 * @var integer
@@ -100,25 +110,20 @@ class SMWQueryResult {
 	private $excerpts;
 
 	/**
-	 * Initialise the object with an array of SMWPrintRequest objects, which
-	 * define the structure of the result "table" (one for each column).
-	 *
-	 * TODO: Update documentation
-	 *
 	 * @param PrintRequest[] $printRequests
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 * @param SMWDIWikiPage[] $results
-	 * @param SMWStore $store
+	 * @param Store $store
 	 * @param boolean $furtherRes
 	 */
-	public function __construct( array $printRequests, SMWQuery $query, array $results, SMWStore $store, $furtherRes = false ) {
+	public function __construct( array $printRequests, Query $query, array $results, Store $store, $furtherRes = false ) {
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;
 		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
-		$this->resolverJournal = new ResolverJournal();
+		$this->itemJournal = new ItemJournal();
 
 		$itemFetcher = new ItemFetcher( $store, $this->mResults );
 
@@ -127,7 +132,7 @@ class SMWQueryResult {
 
 		// Init the instance here so the value cache is shared and hereby avoids
 		// a static declaration
-		$this->resultFieldMatchFinder = new ResultFieldMatchFinder(
+		$this->fieldItemFinder = new FieldItemFinder(
 			$store,
 			$itemFetcher
 		);
@@ -136,28 +141,28 @@ class SMWQueryResult {
 	/**
 	 * @since 3.1
 	 *
-	 * @return ResultFieldMatchFinder
+	 * @return FieldItemFinder
 	 */
-	public function getResultFieldMatchFinder() {
-		return $this->resultFieldMatchFinder;
+	public function getFieldItemFinder() {
+		return $this->fieldItemFinder;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param ResolverJournal $resolverJournal
+	 * @param ItemJournal $itemJournal
 	 */
-	public function setResolverJournal( ResolverJournal $ResolverJournal ) {
-		$this->resolverJournal = $ResolverJournal;
+	public function setItemJournal( ItemJournal $itemJournal ) {
+		$this->itemJournal = $itemJournal;
 	}
 
 	/**
 	 * @since  2.4
 	 *
-	 * @return ResolverJournal
+	 * @return ItemJournal
 	 */
-	public function getResolverJournal() {
-		return $this->resolverJournal;
+	public function getItemJournal() {
+		return $this->itemJournal;
 	}
 
 	/**
@@ -219,19 +224,19 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Get the SMWStore object that this result is based on.
+	 * Get the Store object that this result is based on.
 	 *
-	 * @return SMWStore
+	 * @return Store
 	 */
 	public function getStore() {
 		return $this->mStore;
 	}
 
 	/**
-	 * Return the next result row as an array of SMWResultArray objects, and
+	 * Return the next result row as an array of ResultArray objects, and
 	 * advance the internal pointer.
 	 *
-	 * @return SMWResultArray[]|false
+	 * @return ResultArray[]|false
 	 */
 	public function getNext() {
 		$page = current( $this->mResults );
@@ -244,8 +249,8 @@ class SMWQueryResult {
 		$row = [];
 
 		foreach ( $this->mPrintRequests as $p ) {
-			$resultArray = SMWResultArray::factory( $page, $p, $this );
-			$resultArray->setResolverJournal( $this->resolverJournal );
+			$resultArray = ResultArray::factory( $page, $p, $this );
+			$resultArray->setItemJournal( $this->itemJournal );
 			$row[] = $resultArray;
 		}
 
@@ -283,7 +288,7 @@ class SMWQueryResult {
 	 *
 	 * @since 1.8
 	 *
-	 * @return SMWQuery
+	 * @return Query
 	 */
 	public function getQuery() {
 		return $this->mQuery;
@@ -426,12 +431,12 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Returns a serialized SMWQueryResult object with additional meta data
+	 * Returns a serialized QueryResult object with additional meta data
 	 *
 	 * This methods extends the serializeToArray() for additional meta
 	 * that are useful when handling data via the api
 	 *
-	 * @note should be used instead of SMWQueryResult::serializeToArray()
+	 * @note should be used instead of QueryResult::serializeToArray()
 	 * as this method contains additional informaion
 	 *
 	 * @since 1.9
@@ -472,7 +477,7 @@ class SMWQueryResult {
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts
-		if ( $type === 'quick' ) {
+		if ( $type === self::QUICK_HASH ) {
 			$hash = [];
 
 			foreach ( $this->mResults as $dataItem ) {
