@@ -31,7 +31,6 @@
 	clear: both;
 	background-color: #f9f9f9;
 	padding: 5px;
-	margin-top: 1em;
 	border: 1px solid #aaa;
 	font-size: 95%;
 	min-height: 23px; /* required by SMW_FACTBOX_SHOWN */
@@ -164,6 +163,7 @@
 	border: 1px solid #aaa;
 	border-top: 2px solid orange;
 	border-bottom: 1px solid #fff;
+	background: #fff;
 }
 
 .smw-factbox input.nav-tab:checked + label#tab-label-facts-attachment.nav-label {
@@ -176,7 +176,7 @@
 	border:none;
 	background-color: #fff;
 	padding: 0 0 0 0;
-	margin-top: 10px;
+	padding-top: 10px;
 }
 
 .smw-factbox .smwrdflink {
