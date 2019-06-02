@@ -190,6 +190,7 @@ class ResultFieldMatchFinder {
 	 */
 	public function getRequestOptions( $useLimit = true ) {
 		$limit = $useLimit ? $this->printRequest->getParameter( 'limit' ) : false;
+		$offset = $useLimit ? $this->printRequest->getParameter( 'offset' ) : false;
 		$order = trim( $this->printRequest->getParameter( 'order' ) );
 		$options = null;
 
@@ -200,6 +201,10 @@ class ResultFieldMatchFinder {
 
 			if ( $limit !== false ) {
 				$options->limit = trim( $limit );
+			}
+
+			if ( $offset !== false ) {
+				$options->offset = trim( $offset );
 			}
 
 			// Expecting a natural sort behaviour (n-asc, n-desc)?

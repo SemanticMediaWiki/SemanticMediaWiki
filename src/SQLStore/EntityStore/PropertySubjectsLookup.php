@@ -302,6 +302,11 @@ class PropertySubjectsLookup {
 
 		$query->options( $opts );
 
+		if ( $requestOptions->exclude_limit ) {
+			$query->option( 'LIMIT', null );
+			$query->option( 'OFFSET', null );
+		}
+
 		$caller = $this->caller;
 
 		if ( strval( $requestOptions->getCaller() ) !== '' ) {
