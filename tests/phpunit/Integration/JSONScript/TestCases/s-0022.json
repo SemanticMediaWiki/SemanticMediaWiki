@@ -47,7 +47,7 @@
 						"format": "csv"
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has text|?Has number"
+					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -71,7 +71,7 @@
 						"format": "csv"
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has text|?Has number"
+					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -94,7 +94,7 @@
 						"format": "csv"
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has number|?Has text"
+					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -118,7 +118,7 @@
 						"merge": true
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has number|?Has text"
+					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -143,7 +143,7 @@
 						"format": "csv"
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has text|?Has number"
+					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -167,7 +167,7 @@
 						"valuesep": "+"
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has number|?Has text"
+					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -192,7 +192,7 @@
 						"merge": true
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has number|?Has text"
+					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
@@ -218,7 +218,7 @@
 						"merge": true
 					},
 					"q": "[[Category:S0022]]",
-					"po": "?Has number|?Has text"
+					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {

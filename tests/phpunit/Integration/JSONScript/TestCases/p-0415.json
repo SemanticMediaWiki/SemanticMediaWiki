@@ -12,7 +12,7 @@
 		},
 		{
 			"page": "Example/P0415/1a",
-			"contents": "{{#ask: [[Example/P0415/1]] |?Has temperature |?Has temperature#-=- |?Has temperature#-u=-u |?Has temperature#-n=-n |?Has temperature#°R=°R |format=table }}"
+			"contents": "{{#ask: [[Example/P0415/1]] |?Has temperature|+order=asc |?Has temperature#-=-|+order=asc |?Has temperature#-u=-u|+order=asc |?Has temperature#-n=-n|+order=asc |?Has temperature#°R=°R|+order=asc |format=table }}"
 		}
 	],
 	"tests": [
