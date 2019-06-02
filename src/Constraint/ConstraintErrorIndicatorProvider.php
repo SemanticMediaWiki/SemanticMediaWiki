@@ -58,7 +58,7 @@ class ConstraintErrorIndicatorProvider implements IndicatorProvider {
 	 *
 	 * @param boolean $checkConstraintErrors
 	 */
-	public function canConstraintErrors( $checkConstraintErrors ) {
+	public function setConstraintErrorCheck( $checkConstraintErrors ) {
 		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 

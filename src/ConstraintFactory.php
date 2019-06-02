@@ -16,6 +16,7 @@ use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Options;
 
 /**
  * @license GNU GPL v2+
@@ -32,6 +33,24 @@ class ConstraintFactory {
 	 */
 	public function newConstraintRegistry() {
 		return new ConstraintRegistry( $this );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return Options
+	 */
+	public function newConstraintOptions() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$schemaTypes = $applicationFactory->getSettings()->get( 'smwgSchemaTypes' );
+
+		$options = [
+			Constraint::CLASS_CONSTRAINT_SCHEMA => $schemaTypes[Constraint::CLASS_CONSTRAINT_SCHEMA],
+			Constraint::PROPERTY_CONSTRAINT_SCHEMA => $schemaTypes[Constraint::PROPERTY_CONSTRAINT_SCHEMA]
+		];
+
+		return new Options( $options );
 	}
 
 	/**
@@ -61,6 +80,9 @@ class ConstraintFactory {
 			case NamespaceConstraint::class:
 				$constraint = $this->newNamespaceConstraint();
 				break;
+			case MandatoryPropertiesConstraint::class:
+				$constraint = $this->newMandatoryPropertiesConstraint();
+				break;
 			case UniqueValueConstraint::class:
 				$constraint = $this->newUniqueValueConstraint();
 				break;
@@ -72,9 +94,6 @@ class ConstraintFactory {
 				break;
 			case SingleValueConstraint::class:
 				$constraint = $this->newSingleValueConstraint();
-				break;
-			case MandatoryPropertiesConstraint::class:
-				$constraint = $this->newMandatoryPropertiesConstraint();
 				break;
 			case NullConstraint::class:
 				$constraint = $this->newNullConstraint();
@@ -98,6 +117,15 @@ class ConstraintFactory {
 	 */
 	public function newNamespaceConstraint() {
 		return new NamespaceConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return MandatoryPropertiesConstraint
+	 */
+	public function newMandatoryPropertiesConstraint() {
+		return new MandatoryPropertiesConstraint();
 	}
 
 	/**
@@ -142,15 +170,6 @@ class ConstraintFactory {
 	 */
 	public function newSingleValueConstraint() {
 		return new SingleValueConstraint();
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @return MandatoryPropertiesConstraint
-	 */
-	public function newMandatoryPropertiesConstraint() {
-		return new MandatoryPropertiesConstraint();
 	}
 
 	/**

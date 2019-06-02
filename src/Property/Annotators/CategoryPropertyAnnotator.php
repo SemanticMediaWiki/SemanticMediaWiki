@@ -133,6 +133,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private function modifySemanticData( $subject, $property, $catname ) {
 
 		$cat = new DIWikiPage( $catname, NS_CATEGORY );
+		$semanticData = $this->getSemanticData();
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
 
@@ -151,7 +152,12 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 			// Remove context
 			$dataValueFactory->clearCallable( SemanticData::class );
 
-			return $this->getSemanticData()->addDataValue( $dataValue );
+			$semanticData->addPropertyObjectValue(
+				$dataValue->getProperty(),
+				$cat
+			);
+
+			return $semanticData->addDataValue( $dataValue );
 		}
 
 		$container = $this->processingErrorMsgHandler->newErrorContainerFromMsg(
@@ -162,7 +168,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		$this->processingErrorMsgHandler->addToSemanticData(
-			$this->getSemanticData(),
+			$semanticData,
 			$container
 		);
 	}
