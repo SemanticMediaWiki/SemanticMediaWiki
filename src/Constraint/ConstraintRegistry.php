@@ -10,6 +10,7 @@ use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\ShapeConstraint;
 
 /**
  * @license GNU GPL v2+
@@ -106,7 +107,8 @@ class ConstraintRegistry {
 			'single_value_constraint' => SingleValueConstraint::class,
 			'non_negative_integer' => NonNegativeIntegerConstraint::class,
 			'must_exists' => MustExistsConstraint::class,
-			'mandatory_properties' => MandatoryPropertiesConstraint::class
+			'mandatory_properties' => MandatoryPropertiesConstraint::class,
+			'shape_constraint' => ShapeConstraint::class
 		];
 
 		\Hooks::run( 'SMW::Constraint::initConstraints', [ $this ] );

@@ -1,0 +1,218 @@
+{
+	"description": "Test `smw/schema` on `CLASS_CONSTRAINT_SCHEMA` with `shape_constraint` and `Constraint schema`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:ShapeConstraint/MaxCardinality",
+			"contents": {
+				"import-from": "/../Fixtures/p-1110-constraint-shape-constraint-max-cardinality.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Constraint:ShapeConstraint/PropertyType",
+			"contents": {
+				"import-from": "/../Fixtures/p-1110-constraint-shape-constraint-property-type.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Gender",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "P1111/1",
+			"contents": "[[Constraint schema::Constraint:ShapeConstraint/MaxCardinality]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "P1111/2",
+			"contents": "[[Constraint schema::Constraint:ShapeConstraint/PropertyType]]"
+		},
+		{
+			"page": "P1111/1",
+			"contents": "[[Category:P1111/1]] [[Gender::male]] [[Gender::female]]"
+		},
+		{
+			"page": "P1111/2",
+			"contents": "[[Category:P1111/2]] [[Gender::male]]"
+		},
+		{
+			"page": "P1111/12",
+			"contents": "[[Category:P1111/1]] [[Category:P1111/2]] [[Gender::male]] [[Gender::female]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0.1",
+			"namespace": "NS_CATEGORY",
+			"subject": "P1111/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_CONSTRAINT_SCHEMA",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.2",
+			"namespace": "NS_CATEGORY",
+			"subject": "P1111/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_CONSTRAINT_SCHEMA",
+						"_SKEY",
+						"_MDAT"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1.1 (violation of `shape_constraint`)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC",
+						"_INST",
+						"Gender"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1.2 (violation of `shape_constraint`, `max_cardinality` violation)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/1#_ERR080b0f4484ac85bb6dc711fe6befad5a",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"P1111\\/1\",\"Gender\",\"1\"]" }
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2.1 (violation of `shape_constraint`)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC",
+						"_INST",
+						"Gender"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2.2 (violation of `shape_constraint`, `property_type` violation)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/2#_ERR080b0f4484ac85bb6dc711fe6befad5a",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"P1111\\/2\",\"Gender\",\"Number\"]" }
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12.1 (violation of `shape_constraint`)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/12",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC",
+						"_INST",
+						"Gender"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#12.2 (violation of `shape_constraint`, `max_cardinality` + `property_type` violation)",
+			"namespace": "NS_MAIN",
+			"subject": "P1111/12#_ERR080b0f4484ac85bb6dc711fe6befad5a",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"P1111\\/2\",\"Gender\",\"Number\"]" },
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"P1111\\/1\",\"Gender\",\"1\"]" }
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

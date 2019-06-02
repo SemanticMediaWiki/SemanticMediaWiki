@@ -42,6 +42,9 @@
 				"mandatory_properties": {
 					"$ref": "#/definitions/mandatory_properties"
 				},
+				"shape_constraint": {
+					"$ref": "#/definitions/shape_constraint"
+				},
 				"custom_constraint": {
 					"$ref": "#/definitions/custom_constraint"
 				}
@@ -68,10 +71,56 @@
 				"$ref": "#/definitions/shape_item"
 			}
 		},
+		"shape_item": {
+			"$id": "#/definitions/shape_item",
+			"type": "object",
+			"title": "shape item rules",
+			"minProperties": 1,
+			"propertyNames": {
+				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+			},
+			"required": [ "property" ],
+			"properties": {
+				"property": {
+					"$ref": "#/definitions/property"
+				},
+				"property_type": {
+					"$ref": "#/definitions/property_type"
+				},
+				"max_cardinality": {
+					"$ref": "#/definitions/max_cardinality"
+				},
+				"min_textlength": {
+					"$ref": "#/definitions/min_textlength"
+				}
+			},
+			"additionalProperties": false
+		},
 		"custom_constraint": {
 			"$id": "#/definitions/custom_constraint",
 			"type": "object",
 			"title": "Specifies custom constraints to be implemented by a user"
+		},
+		"property": {
+			"$id": "#/definitions/property",
+			"type": "string",
+			"title": "Specifies the related property"
+		},
+		"property_type": {
+			"$id": "#/definitions/property_type",
+			"type": "string",
+			"title": "Specifies ...",
+			"enum": [ "Date", "Boolean", "Text", "Geo", "Page", "Number", "URI" ]
+		},
+		"max_cardinality": {
+			"$id": "#/definitions/max_cardinality",
+			"type": "number",
+			"title": "Specifies ..."
+		},
+		"min_textlength": {
+			"$id": "#/definitions/min_textlength",
+			"type": "number",
+			"title": "Specifies ..."
 		}
 	}
 }

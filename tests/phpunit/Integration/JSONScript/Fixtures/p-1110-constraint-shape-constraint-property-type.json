@@ -1,0 +1,16 @@
+{
+    "type": "CLASS_CONSTRAINT_SCHEMA",
+    "description": "Constraint that describes a person or human being",
+    "constraints": {
+        "shape_constraint": [
+            {
+                "property": "Gender",
+                "property_type": "Number"
+            }
+        ]
+    },
+    "tags": [
+        "class constraint",
+        "shape"
+    ]
+}

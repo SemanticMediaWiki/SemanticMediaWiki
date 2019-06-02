@@ -147,29 +147,34 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function constraintKeyProvider() {
 
-		yield[
+		yield [
 			'allowed_namespaces',
 			'SMW\Constraint\Constraints\NamespaceConstraint'
 		];
 
-		yield[
+		yield [
 			'unique_value_constraint',
 			'SMW\Constraint\Constraints\UniqueValueConstraint'
 		];
 
-		yield[
+		yield [
 			'non_negative_integer',
 			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
 		];
 
-		yield[
+		yield [
 			'must_exists',
 			'SMW\Constraint\Constraints\MustExistsConstraint'
 		];
 
-		yield[
+		yield [
 			'mandatory_properties',
 			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+		];
+
+		yield [
+			'shape_constraint',
+			'SMW\Constraint\Constraints\ShapeConstraint'
 		];
 	}
 

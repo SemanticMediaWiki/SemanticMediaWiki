@@ -29,6 +29,16 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructConstraintOptions() {
+
+		$instance = new ConstraintFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Options',
+			$instance->newConstraintOptions()
+		);
+	}
+
 	public function testCanConstructConstraintRegistry() {
 
 		$instance = new ConstraintFactory();
@@ -109,39 +119,44 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function constraintByClass() {
 
-		yield[
+		yield [
 			'\SMW\Constraint\Constraints\NullConstraint',
 			'\SMW\Constraint\Constraints\NullConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\NamespaceConstraint',
 			'\SMW\Constraint\Constraints\NamespaceConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\UniqueValueConstraint',
 			'\SMW\Constraint\Constraints\UniqueValueConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint',
 			'\SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\SingleValueConstraint',
 			'\SMW\Constraint\Constraints\SingleValueConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\MustExistsConstraint',
 			'\SMW\Constraint\Constraints\MustExistsConstraint'
 		];
 
-		yield[
+		yield [
 			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint',
 			'\SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+		];
+
+		yield [
+			'SMW\Constraint\Constraints\ShapeConstraint',
+			'\SMW\Constraint\Constraints\ShapeConstraint'
 		];
 	}
 
