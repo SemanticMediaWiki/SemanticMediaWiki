@@ -12,6 +12,8 @@ class_alias( \SMW\Query\ResultPrinters\AggregatablePrinter::class, 'SMWAggregata
 class_alias( \SMW\Property\Annotator::class, 'SMW\PropertyAnnotator' );
 class_alias( \SMW\Property\SpecificationLookup::class, 'SMW\PropertySpecificationLookup' );
 class_alias( \SMW\Property\RestrictionExaminer::class, 'SMW\PropertyRestrictionExaminer' );
+class_alias( \SMW\Query\Result\ResultArray::class, 'SMWResultArray' );
+class_alias( \SMW\Query\QueryResult::class, 'SMWQueryResult' );
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );

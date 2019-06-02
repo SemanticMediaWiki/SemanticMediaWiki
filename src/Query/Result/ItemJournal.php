@@ -18,7 +18,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class ResolverJournal {
+class ItemJournal {
 
 	/**
 	 * @var array

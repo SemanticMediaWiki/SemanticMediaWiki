@@ -26,7 +26,7 @@ use SMWDIBoolean as DIBoolean;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author mwjames
  */
-class ResultFieldMatchFinder {
+class FieldItemFinder {
 
 	/**
 	 * @var Store
@@ -116,7 +116,7 @@ class ResultFieldMatchFinder {
 	 *
 	 * @param DataItem[]|[]
 	 */
-	public function findAndMatch( DataItem $dataItem ) {
+	public function findFor( DataItem $dataItem ) {
 
 		$content = [];
 

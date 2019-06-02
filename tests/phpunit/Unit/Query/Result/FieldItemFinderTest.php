@@ -5,10 +5,10 @@ namespace SMW\Tests\Query\Result;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
-use SMW\Query\Result\ResultFieldMatchFinder;
+use SMW\Query\Result\FieldItemFinder;
 
 /**
- * @covers SMW\Query\Result\ResultFieldMatchFinder
+ * @covers SMW\Query\Result\FieldItemFinder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Query\Result\ResultFieldMatchFinder;
  *
  * @author mwjames
  */
-class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
@@ -45,8 +45,8 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			ResultFieldMatchFinder::class,
-			new ResultFieldMatchFinder( $this->store, $this->itemFetcher, $this->printRequest )
+			FieldItemFinder::class,
+			new FieldItemFinder( $this->store, $this->itemFetcher, $this->printRequest )
 		);
 	}
 
@@ -56,7 +56,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParameter' )
 			->will( $this->returnValue( 42 ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -68,7 +68,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFindAndMatch_THIS() {
+	public function testFindFor_THIS() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
@@ -77,7 +77,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with($this->equalTo( PrintRequest::PRINT_THIS ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -85,11 +85,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $dataItem ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatch_CATS() {
+	public function testFindFor_CATS() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -106,7 +106,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->with($this->equalTo( PrintRequest::PRINT_CATS ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -114,11 +114,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatch_CCAT() {
+	public function testFindFor_CCAT() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -139,7 +139,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getData' )
 			->will( $this->returnValue( $expected ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -147,11 +147,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $this->dataItemFactory->newDIBoolean( true ) ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatch_PROP() {
+	public function testFindFor_PROP() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -177,7 +177,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getData' )
 			->will( $this->returnValue( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -185,11 +185,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatchWithIteratorAsValueResultOnPRINT_PROP() {
+	public function testFindForWithIteratorAsValueResultOnPRINT_PROP() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
@@ -216,7 +216,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue(
 				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -224,11 +224,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatchWithBlobValueResultAndRemovedLink() {
+	public function testFindForWithBlobValueResultAndRemovedLink() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIBlob( 'bar' );
@@ -260,7 +260,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getData' )
 			->will( $this->returnValue( $propertyValue ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -268,11 +268,11 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
-	public function testFindAndMatchWithBlobValueResultAndRetainedLink() {
+	public function testFindForWithBlobValueResultAndRetainedLink() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$text = $this->dataItemFactory->newDIBlob( '[[Foo::bar]]' );
@@ -309,7 +309,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getData' )
 			->will( $this->returnValue( $propertyValue ) );
 
-		$instance = new ResultFieldMatchFinder(
+		$instance = new FieldItemFinder(
 			$this->store,
 			$this->itemFetcher,
 			$this->printRequest
@@ -317,7 +317,7 @@ class ResultFieldMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ $expected ],
-			$instance->findAndMatch( $dataItem )
+			$instance->findFor( $dataItem )
 		);
 	}
 
