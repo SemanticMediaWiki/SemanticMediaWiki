@@ -16,7 +16,7 @@
 		},
 		{
 			"page": "Example/P0441/2",
-			"contents": "{{#ask: [[Example/P0441/1]] |?Has text }}",
+			"contents": "{{#ask: [[Example/P0441/1]] |?Has text|+order=desc }}",
 			"message-cache": "clear"
 		}
 	],
