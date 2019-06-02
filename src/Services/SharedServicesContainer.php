@@ -136,7 +136,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->singleton( 'EntityCache' )
 		);
 
-		$constraintErrorIndicatorProvider->canConstraintErrors(
+		$constraintErrorIndicatorProvider->setConstraintErrorCheck(
 			$settings->get( 'smwgCheckForConstraintErrors' )
 		);
 

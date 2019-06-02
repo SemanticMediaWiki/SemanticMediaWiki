@@ -1,6 +1,9 @@
+
+## PROPERTY_CONSTRAINT_SCHEMA
+
 Examples of schema definitions that can be mixed or created as separate schemata and assigned to property.
 
-## Must exists
+### Must exists
 
 ```json
 {
@@ -15,7 +18,7 @@ Examples of schema definitions that can be mixed or created as separate schemata
 }
 ```
 
-## Single value
+### Single value
 
 Properties such as `place of birth` or `maternity hospital` are prime examples where only a `single` value is expected to exists for a person entity.
 
@@ -32,7 +35,7 @@ Properties such as `place of birth` or `maternity hospital` are prime examples w
 }
 ```
 
-## Non negative
+### Non negative
 
 ```json
 {
@@ -48,6 +51,53 @@ Properties such as `place of birth` or `maternity hospital` are prime examples w
 }
 ```
 
+## CLASS_CONSTRAINT_SCHEMA
+
+### Mandatory properties
+
+```
+{
+    "type": "CLASS_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "mandatory_properties": [
+            "Gender",
+            "Name",
+            "Birthdate",
+            "Birthplace"
+        ]
+    },
+    "tags": [
+        "class constraint"
+    ]
+}
+```
+
+### Shape constraint
+
+```
+{
+    "type": "CLASS_CONSTRAINT_SCHEMA",
+    "constraints": {
+        "mandatory_properties": [
+            "Gender",
+            "Name",
+            "Birthdate",
+            "Birthplace"
+        ],
+        "shape_constraint": [
+            {
+                "property": "Gender",
+                "max_cardinality": 1
+            }
+        ]
+    },
+    "tags": [
+        "class constraint"
+    ]
+}
+```
+
 ## See also
 
 - [`property.constraint.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.constraint.md)
+- [`class.constraint.md`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/class.constraint.md)

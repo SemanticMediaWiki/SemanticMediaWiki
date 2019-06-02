@@ -51,11 +51,12 @@
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
-					"propertyCount": 3,
+					"propertyCount": 4,
 					"propertyKeys": [
 						"_SKEY",
 						"_MDAT",
-						"_ERRC"
+						"_ERRC",
+						"_INST"
 					]
 				}
 			}

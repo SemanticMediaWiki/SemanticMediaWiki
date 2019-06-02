@@ -103,17 +103,17 @@ class FooConstraint implements Constraint {
 
 ## Other examples
 
-For example, when implementing a `start_end_constraint` with an identifier `greater_than`, the `greater_than` property may expect an array with the registered class being responsible for interpreting what `greater_than` means in the context of the given array such as "the first element (e.g. property `Event end`) needs to be greater than the second element (e.g. property `Event start`)".
+For example, when implementing a `start_end_constraint` with a `greater_than` identifier, the `greater_than` property may expect an array where assigned and registered class is responsible for interpreting what `greater_than` means in the context of the given array. It could be defined as "the first element (e.g. property `Event end`) needs to be greater than the second element (e.g. property `Event start`)" but that is up to the implementing class to decide and has nothing to do with Semantic MediaWiki.
 
 
 ```json
 {
 	"type": "CLASS_CONSTRAINT_SCHEMA",
 	"constraints": {
-        "mandatory_properties": [
-            "Event start",
-            "Event end"
-        ],
+		"mandatory_properties": [
+			"Event start",
+			"Event end"
+		],
 		"custom_constraint": {
 			"start_end_constraint": {
 				"greater_than": ["Event end", "Event start"]
@@ -140,6 +140,7 @@ Hooks::register( 'SMW::Constraint::initConstraints', function ( $constraintRegis
 ```php
 use SMW\Constraint\Constraint;
 use SMW\SemanticData;
+use SMW\DIProperty;
 
 class StartEndConstraint implements Constraint {
 
@@ -196,11 +197,11 @@ class StartEndConstraint implements Constraint {
 		$semanticData = $dataValue->getCallable( SemanticData::class )();
 
 		$s = $semanticData->getPropertyValues(
-			\SMW\DIProperty::newFromUserLabel( $start )
+			DIProperty::newFromUserLabel( $start )
 		);
 
 		$e = $semanticData->getPropertyValues(
-			\SMW\DIProperty::newFromUserLabel( $end )
+			DIProperty::newFromUserLabel( $end )
 		);
 
 		// Compare $s and $e and issue an error on case of
