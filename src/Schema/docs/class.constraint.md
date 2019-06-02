@@ -29,7 +29,8 @@ To easily identify pages that contain a constraint schema it is suggested to use
 
 ### Constraint properties
 
-- `mandatory_properties` (array) specifies mandatory properties
+- [`mandatory_properties`][example.schema] (array) specifies mandatory properties
+- [`shape_constraint`][example.schema] (array) specifies shapes of properties and dependent characteristics
 - [`custom_constraint`][custom.constraint] (object) specifies non-schema specific custom constraints implementations
 
 ### Extending constraints

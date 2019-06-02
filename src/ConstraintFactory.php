@@ -16,6 +16,7 @@ use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\Options;
 
 /**
@@ -83,6 +84,9 @@ class ConstraintFactory {
 			case MandatoryPropertiesConstraint::class:
 				$constraint = $this->newMandatoryPropertiesConstraint();
 				break;
+			case ShapeConstraint::class:
+				$constraint = $this->newShapeConstraint();
+				break;
 			case UniqueValueConstraint::class:
 				$constraint = $this->newUniqueValueConstraint();
 				break;
@@ -126,6 +130,15 @@ class ConstraintFactory {
 	 */
 	public function newMandatoryPropertiesConstraint() {
 		return new MandatoryPropertiesConstraint();
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return ShapeConstraint
+	 */
+	public function newShapeConstraint() {
+		return new ShapeConstraint();
 	}
 
 	/**
