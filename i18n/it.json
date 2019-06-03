@@ -221,6 +221,7 @@
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> per recuperare i suggerimenti di categoria",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> per recuperare i suggerimenti di categoria",
 	"smw-ask-query-search-info": "La query <code><nowiki>$1</nowiki></code> è stata eseguita da {{PLURAL:$3|1=<code>$2</code> (dalla cache)|<code>$2</code> (dalla cache)|<code>$2</code>}} in $4 {{PLURAL:$4|secondo|secondi}}.",
+	"smw-ask-extra-other": "Altro",
 	"searchbyproperty": "Cerca per proprietà",
 	"smw-missingredirects-list": "Pagine con annotazioni mancanti",
 	"smw_sbv_docu": "Cerca tutte le pagine che hanno proprietà e valore specificati.",

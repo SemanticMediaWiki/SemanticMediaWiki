@@ -267,6 +267,7 @@
 	"smw-ask-condition-input-assistance-concept": "개념 제안을 가져오려면 <code>con:</code>",
 	"smw-ask-format-change-info": "포맷이 수정되었으므로 새로운 변수와 시각화 옵션을 일치시키려면 쿼리를 다시 실행해야 합니다.",
 	"smw-ask-format-export-info": "선택된 형식은 시각 표현이 없는 내보내기 형식이므로 결과는 다운로드로만 제공됩니다.",
+	"smw-ask-extra-other": "기타",
 	"searchbyproperty": "속성으로 검색",
 	"processingerrorlist": "오류 목록을 처리합니다",
 	"propertylabelsimilarity": "속성 레이블 유사성 보고서",

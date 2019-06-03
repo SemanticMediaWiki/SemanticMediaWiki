@@ -13,11 +13,14 @@
 			"01miki10",
 			"Pahkiqaz",
 			"Surjection",
-			"Valtlait"
+			"Valtlait",
+			"Antsa"
 		]
 	},
 	"smw-desc": "Lisää wikisi saavutettavuutta – niin koneille kuin ihmisille ([https://www.semantic-mediawiki.org/wiki/Help:User_manual verkko-opas])",
 	"smw-error": "Virhe",
+	"smw-upgrade-release": "Julkaisu",
+	"smw-upgrade-progress": "Edistyminen",
 	"smw-upgrade-error-title": "Virhe",
 	"smw-upgrade-error-why-title": "Miksi näen tämän sivun?",
 	"smw-upgrade-error-how-title": "Miten korjaan tämän virheen?",

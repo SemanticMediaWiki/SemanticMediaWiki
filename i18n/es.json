@@ -53,7 +53,7 @@
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	"smw-error": "Error",
-	"smw-upgrade-error-title": "Error (Semántico MediaWiki)",
+	"smw-upgrade-error-title": "Error (Semantic MediaWiki)",
 	"smw-upgrade-error-why-title": "¿Por qué veo esta página?",
 	"smw-upgrade-maintenance-why-title": "¿Por qué veo esta página?",
 	"smw-semantics-not-enabled": "No se ha habilitado la funcionalidad de Semantic MediaWiki para esta wiki.",
