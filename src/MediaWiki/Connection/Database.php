@@ -880,6 +880,16 @@ class Database {
 	/**
 	 * @since 3.1
 	 *
+	 * @param  string $fname
+	 * @return boolean
+	 */
+	public function inSectionTransaction( $fname = __METHOD__ ) {
+		return $this->sectionTransaction === $fname;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param string $fname
 	 */
 	public function endSectionTransaction( $fname = __METHOD__ ) {

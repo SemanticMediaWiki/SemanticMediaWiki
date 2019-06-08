@@ -606,6 +606,11 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->beginSectionTransaction( __METHOD__ );
+
+		$this->assertTrue(
+			$instance->inSectionTransaction( __METHOD__ )
+		);
+
 		$instance->endSectionTransaction( __METHOD__ );
 	}
 

@@ -193,8 +193,11 @@ class RedirectStore {
 			}
 		}
 
+
+		$canRun = $this->isCommandLineMode && !$connection->inSectionTransaction( 'SMWSQLStore3Writers::doDataUpdate' );
+
 		foreach ( $jobs as $job ) {
-			if ( $this->isCommandLineMode ) {
+			if ( $canRun ) {
 				$job->run();
 			} else {
 				$job->lazyPush();
