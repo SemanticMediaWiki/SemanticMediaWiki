@@ -42,7 +42,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance->setOption( IntlNumberFormatter::USER_LANGUAGE, $userLanguage );
 		$instance->setOption( IntlNumberFormatter::CONTENT_LANGUAGE, $contentLanguage );
 
-		$this->assertEquals(
+		$this->assertSame(
 			$expected,
 			$instance->format( $number )
 		);
@@ -143,6 +143,33 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 			'en',
 			'en',
 			'1,000'
+		];
+
+		// #4071
+		$provider[] = [
+			10000,
+			-0.5005,
+			'en',
+			'en',
+			'-0.501'
+		];
+
+		// #4071
+		$provider[] = [
+			10000,
+			0,
+			'en',
+			'en',
+			'0'
+		];
+
+		// #4071
+		$provider[] = [
+			10000,
+			'-0.000',
+			'en',
+			'en',
+			'-0'
 		];
 
 		$provider[] = [
