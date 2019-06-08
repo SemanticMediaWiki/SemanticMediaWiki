@@ -62,11 +62,15 @@ class PersonalUrls extends HookHandler {
 			$size = $this->jobQueue->getQueueSize( $job );
 
 			if ( $size > 0 ) {
-				$queue[$job] = $this->humanReadable( $size );
+				$queue[$job] = $size;
 			}
 		}
 
 		arsort( $queue );
+
+		foreach ( $queue as $job => $size ) {
+			$queue[$job] = $this->humanReadable( $size );
+		}
 
 		$out = $this->skin->getOutput();
 		$personalUrl = [];
