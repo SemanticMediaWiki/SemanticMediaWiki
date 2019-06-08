@@ -35,6 +35,11 @@ interface QueryContext {
 	const CONCEPT_DESC = 1003;
 
 	/**
+	 * #show query using the curtailment
+	 */
+	const CURTAILMENT_MODE = 1004;
+
+	/**
 	 * normal instance retrieval
 	 */
 	const MODE_INSTANCES = 1;

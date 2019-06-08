@@ -376,11 +376,20 @@ class SMWQueryProcessor implements QueryContext {
 			$query->setLimit( 0 );
 		}
 
-		$res = self::getStoreFromParams( $params )->getQueryResult( $query );
+		$querySourceFactory = ApplicationFactory::getInstance()->getQuerySourceFactory();
+		$source = $params['source']->getValue();
+
+		if ( $source === '' && $context === self::CURTAILMENT_MODE ) {
+			$querySource = $querySourceFactory->newSingleEntityQueryLookup();
+		} else {
+			$querySource = $querySourceFactory->get( $source );
+		}
+
+		$res = $querySource->getQueryResult( $query );
 		$start = microtime( true );
 
 		if ( $res instanceof SMWQueryResult && $query->getOption( 'calc.result_hash' ) ) {
-			$query->setOption( 'result_hash', $res->getHash( 'quick' ) );
+			$query->setOption( 'result_hash', $res->getHash( SMWQueryResult::QUICK_HASH ) );
 		}
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
@@ -414,10 +423,6 @@ class SMWQueryProcessor implements QueryContext {
 
 			return $result;
 		}
-	}
-
-	private static function getStoreFromParams( array $params ) {
-		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $params['source']->getValue() );
 	}
 
 	/**

@@ -20,6 +20,8 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	private $mwHooksHandler;
 	private $parserFactory;
 	private $testEnvironment;
+	private $store;
+	private $queryResult;
 
 	protected function setUp() {
 		parent::setUp();
@@ -33,23 +35,32 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult->expects( $this->any() )
+		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
 			->will( $this->returnValue( [] ) );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( ['getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
-		$store->expects( $this->any() )
-			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->store->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $this->queryResult ) );
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 
 		$this->mwHooksHandler->register(
 			'ParserFirstCallInit',
@@ -68,6 +79,31 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
+
+		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$singleEntityQueryLookup->expects( $this->any() )
+			->method( 'getQueryResult' )
+			->will( $this->returnValue( $this->queryResult ) );
+
+		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnCallback( function( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+
+				if ( $service === 'SingleEntityQueryLookup' ) {
+					return $singleEntityQueryLookup;
+				}
+
+				if ( $service === 'MonolingualTextLookup' ) {
+					return $monolingualTextLookup;
+				}
+			 } ) );
 
 		$expectedNullOutputFor = [
 			'concept',

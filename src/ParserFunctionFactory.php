@@ -172,8 +172,18 @@ class ParserFunctionFactory {
 	 */
 	public function newShowParserFunction( Parser $parser ) {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$askParserFunction = $this->newAskParserFunction(
+			$parser
+		);
+
+		$askParserFunction->setCurtailmentMode(
+			$settings->isFlagSet( 'smwgExperimentalFeatures', SMW_SHOWPARSER_USE_CURTAILMENT )
+		);
+
 		$showParserFunction = new ShowParserFunction(
-			$this->newAskParserFunction( $parser )
+			$askParserFunction
 		);
 
 		return $showParserFunction;

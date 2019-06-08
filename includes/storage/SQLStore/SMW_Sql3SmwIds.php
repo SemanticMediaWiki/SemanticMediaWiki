@@ -780,22 +780,30 @@ class SMWSql3SmwIds {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $title
+	 * @param DIWikiPage|string $title
 	 * @param integer $namespace
 	 * @param string $iw
 	 */
-	public function findAssociatedRev( $title, $namespace, $iw = '' ) {
+	public function findAssociatedRev( $title, $namespace = '', $iw = '' ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			'smw_rev',
-			[
+		if ( $title instanceof DIWikiPage ) {
+			$cond = [
+				"smw_hash" => $title->getSha1()
+			];
+		} else {
+			$cond = [
 				"smw_title =" . $connection->addQuotes( $title ),
 				"smw_namespace =" . $connection->addQuotes( $namespace ),
 				"smw_iw =" . $connection->addQuotes( $iw ),
 				"smw_subobject =''"
-			],
+			];
+		}
+
+		$row = $connection->selectRow(
+			self::TABLE_NAME,
+			'smw_rev',
+			$cond,
 			__METHOD__
 		);
 

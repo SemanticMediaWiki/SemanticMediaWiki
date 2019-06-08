@@ -71,6 +71,11 @@ class AskParserFunction {
 	private $showMode = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $curtailmentMode = false;
+
+	/**
 	 * @var integer
 	 */
 	private $context = QueryProcessor::INLINE_QUERY;
@@ -128,6 +133,15 @@ class AskParserFunction {
 	public function setShowMode( $mode ) {
 		$this->showMode = $mode;
 		return $this;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $curtailmentMode
+	 */
+	public function setCurtailmentMode( $curtailmentMode ) {
+		$this->curtailmentMode = (bool)$curtailmentMode;
 	}
 
 	/**
@@ -337,11 +351,17 @@ class AskParserFunction {
 			$query->setOption( 'calc.result_hash', $this->postProcHandler->getOption( 'check-query' ) );
 		}
 
+		$context = $this->context;
+
+		if ( $this->showMode && $this->curtailmentMode ) {
+			$context = QueryProcessor::CURTAILMENT_MODE;
+		}
+
 		$result = QueryProcessor::getResultFromQuery(
 			$query,
 			$this->params,
 			SMW_OUTPUT_WIKI,
-			$this->context
+			$context
 		);
 
 		if ( $this->postProcHandler !== null && $this->context !== QueryProcessor::DEFERRED_QUERY ) {

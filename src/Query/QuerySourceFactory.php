@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
+use SMW\ApplicationFactory;
 
 /**
  * @private
@@ -39,6 +40,15 @@ class QuerySourceFactory {
 
 		// Standard store
 		$this->querySources['sql_store'] = 'SMW\SQLStore\SQLStore';
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return SingleEntityQueryLookup
+	 */
+	public function newSingleEntityQueryLookup() {
+		return $this->store->service( 'SingleEntityQueryLookup' );
 	}
 
 	/**
