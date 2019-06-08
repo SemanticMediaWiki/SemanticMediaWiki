@@ -65,6 +65,10 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( [] ) );
 
 		$this->connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( [] ) );
+
+		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( (object)[ 'count' => 0 ] ) );
 

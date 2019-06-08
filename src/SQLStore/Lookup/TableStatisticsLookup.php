@@ -74,6 +74,9 @@ class TableStatisticsLookup {
 		// a direct wikipage link
 		$rows_rev_count = $this->rows_rev_count( $connection );
 
+		// Aggregate the row count for each namespace
+		$rows_group_by_namespace = $this->rows_group_by_namespace( $connection );
+
 		// Counts the total rows in the query_links table
 		$rows_query_links_total_count = $this->rows_query_links_total_count( $connection );
 
@@ -134,6 +137,7 @@ class TableStatisticsLookup {
 				'duplicate_count' => $duplicate_count,
 				'rows' => [
 					'rev_count' => $rows_rev_count,
+					'smw_namespace_group_by_count' => $rows_group_by_namespace,
 					'smw_iw' => [
 						'delete_count' => $rows_delete_count,
 						'redirect_count' => $rows_redirect_count,
@@ -221,6 +225,30 @@ class TableStatisticsLookup {
 			],
 			__METHOD__
 		);
+	}
+
+	private function rows_group_by_namespace( $connection ) {
+		$res = $connection->select(
+			SQLStore::ID_TABLE,
+			[
+				'smw_namespace',
+				'Count(*) as count'
+			],
+			[],
+			__METHOD__,
+			[
+				'GROUP BY' => 'smw_namespace'
+			]
+		);
+
+		$rows_group_by_namespace = [];
+
+
+		foreach ( $res as $row ) {
+			$rows_group_by_namespace[$row->smw_namespace] = (int)$row->count;
+		}
+
+		return $rows_group_by_namespace;
 	}
 
 	private function rows_query_links_total_count( $connection ) {
