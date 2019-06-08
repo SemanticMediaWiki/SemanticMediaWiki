@@ -197,7 +197,7 @@ div#query legend {
 display: inline-block;
     padding: .30em .55em;
     margin-left: -1px;
-    margin-right: 10px;
+    margin-right: 0px;
     line-height: 1.25;
     color: #007bff;
     background-color: #fff;
@@ -652,6 +652,10 @@ display: inline-block;
 	.smw-ask-format-selector {
 		display: inline-block;
 		margin-bottom: 0;
+	}
+
+	.smw-tabs label.nav-label.smw-tab-right {
+		display: none;
 	}
 }
 

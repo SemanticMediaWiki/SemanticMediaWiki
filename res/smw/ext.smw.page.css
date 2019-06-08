@@ -242,17 +242,23 @@
 	font-weight: normal;
 }
 
+/**
+ * Use !important to avoid that any other default CSS
+ * for input fields disrupt the design
+ */
 .smw-ui-input-filter input {
-	border :0px solid #ddd;
-    padding: .42em .55em .35em .55em;
-    border-top-left-radius: .0em;
-    border-bottom-left-radius: .0em;
-    outline: none;
-    border-left: 0.1em solid #ddd;
-    /* border-left: 0; */
-    margin-left: 0.45em;
-    font-weight: normal;
-    color: #333333;
+	all: initial !important;
+	border :0px solid #ddd !important;
+	padding: .42em .55em .35em .55em !important;
+	border-top-left-radius: .0em !important;
+	border-bottom-left-radius: .0em !important;
+	outline: none !important;
+	border-left: 1px solid #ddd !important;
+	/* border-left: 0; */
+	margin-left: 0.45em !important;
+	font-weight: normal !important;
+	color: #333333 !important;
+	width: 150px !important;
 }
 
 .smw-property-page-results .value-row:nth-child(odd) {
@@ -387,6 +393,11 @@
  * Responsive settings (@see ext.smw.table)
  */
 @media screen and (max-width: 800px) {
+
+	.smw-page-nav-container {
+	    display: flex;
+	    flex-direction: column;
+	 }
 
 	.smw-page-nav-right {
 		float: left;
