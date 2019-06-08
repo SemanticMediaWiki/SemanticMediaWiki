@@ -31,6 +31,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3809](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3809) DataUpdater, use changed revision
 * [#3822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3822) Check `smw_hash` and update if necessary
 * [#3887](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3887)
+* [#4063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4063)
 
 #### ElasticStore
 
@@ -51,6 +52,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 * [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Added [`DependencyLinksValidator`](https://www.semantic-mediawiki.org/wiki/Help:Embedded_query_update), refactored the update logic, and improved the detection of outdated dependencies
 * [#3665](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3665) Added support for the `ctrl+q` shortkey to start the query process in `Special:Ask`
+* [#4064](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4064)
 
 #### Result formats
 
@@ -111,7 +113,11 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3989](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3989)
 * [#4010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4010)
 * [#4026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4026)
-* [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033)
+* [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033) Added support for [`CLASS_CONSTRAINT_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/CLASS_CONSTRAINT_SCHEMA)
+* [#4042](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4042)
+* [#4048](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4048)
+* [#4047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4047)
+* [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4069)
 
 ## Bug fixes
 
@@ -122,6 +128,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3938](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3938)
 * [#3914](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3914)
 * [#4022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4022)
+* [#4036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4036)
 
 ## Breaking changes and deprecations
 
@@ -151,6 +158,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3895) Added the `SMW::SQLStore::Installer::BeforeCreateTablesComplete` hook
 * [#3897](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3897) Added `SMW::RevisionGuard::*` hooks
 * [#3924](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3924)
+* [#4066](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4066)
 
 ## Contributors
 
