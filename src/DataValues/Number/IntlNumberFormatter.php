@@ -317,7 +317,7 @@ class IntlNumberFormatter {
 		}
 
 		$value = (float)$value;
-		$isNegative = $value < 0;
+		$isNegative = $value < 0 || $value == 0 && strval( $value ) === '-0';
 
 		// Format to some level of precision; number_format does rounding and
 		// locale formatting, x and y are used temporarily since number_format
@@ -325,8 +325,9 @@ class IntlNumberFormatter {
 		$value = number_format( $value, $precision, 'x', 'y' );
 
 		// Due to https://bugs.php.net/bug.php?id=76824
-		if ( $isNegative && $value >= 0 ) {
-			$value = "-$value";
+		// #4071
+		if ( $isNegative ) {
+			$value = str_replace( "--", "-", "-$value" );
 		}
 
 		$value = str_replace(

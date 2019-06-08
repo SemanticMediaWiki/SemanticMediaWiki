@@ -1,5 +1,5 @@
 {
-	"description": "Test in-text annotation for `_num` on big/small numbers/scientific notation (`wgContLang=fr`, `wgLang=en`)",
+	"description": "Test in-text annotation for `_num` on big/small/negative numbers/scientific notation (`wgContLang=fr`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -22,6 +22,16 @@
 			"contents": "[[Has number::0.00000000000012]] [[Has number::1.000000000000123]] [[Has number::72.769482308]] [[Has number::5000.769482308]] [[Has number::-0.000000000004566]] [[Has number::0.2123456e+3]] [[Has number::1.334e-13]]"
 		},
 		{
+			"contentlanguage": "en",
+			"page": "P0426/3",
+			"contents": "[[Has number::0.000]] [[Has number::-0.42]]"
+		},
+		{
+			"contentlanguage": "en",
+			"page": "P0426/4",
+			"contents": "[[Has number::-0.000]]"
+		},
+		{
 			"contentlanguage": "fr",
 			"page": "Example/P0426/Q1.1",
 			"contents": "{{#ask: [[Example/P0426/1]] |?Has number }}"
@@ -35,6 +45,14 @@
 			"contentlanguage": "fr",
 			"page": "Example/P0426/Q2.1",
 			"contents": "{{#ask: [[Example/P0426/2]] |?Has number }}"
+		},
+		{
+			"page": "P0426/Q3.1",
+			"contents": "{{#ask: [[P0426/3]] |?Has number#-p5 }}"
+		},
+		{
+			"page": "P0426/Q4.1",
+			"contents": "{{#ask: [[P0426/4]] |?Has number#-p5 }}"
 		}
 	],
 	"tests": [
@@ -83,6 +101,33 @@
 					"-0.00000",
 					"212.34560",
 					"0.00000"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "P0426/Q3.1",
+			"assert-output": {
+				"to-contain": [
+					"-0.42000",
+					"0.00000"
+				],
+				"not-contain": [
+					"--0.42000"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4",
+			"skip-on": {
+				"sqlite": "Does not store the minus for a 0.000 values"
+			},
+			"subject": "P0426/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"-0.00000"
 				]
 			}
 		}
