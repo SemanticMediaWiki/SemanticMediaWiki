@@ -63,8 +63,12 @@
 	line-height: 1.8;
 }
 
+.skin-chameleon .smw-tabs section pre {
+	margin-top: 10px;
+}
+
 .smw-ui-input-filter input {
-	padding: .33em .55em .33em .55em;
+	padding: .25em .55em .25em .55em !important;
 }
 
 /**

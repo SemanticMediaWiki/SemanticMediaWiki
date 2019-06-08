@@ -123,10 +123,6 @@
 	padding: 5px 0 0 0 !important;
 }
 
-.smw-tabs.smw-admin label.nav-label {
-	padding: 8px 20px;
-}
-
 .smw-admin input.nav-tab:checked + label.nav-label {
 	border: 1px solid #aaa;
 	border-top: 2px solid orange;
@@ -158,5 +154,20 @@
 		display: flex;
 		flex-direction: column;
 		flex-wrap: wrap;
+	}
+
+	.smw-tabs.smw-admin {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.smw-tabs.smw-admin label.nav-label {
+		text-align: unset;
+		border-top: 1px solid;
+	}
+
+	.smw-tabs.smw-admin input.nav-tab:checked + label.nav-label {
+		border-left: 0px;
+		border-right: 0px;
 	}
 }

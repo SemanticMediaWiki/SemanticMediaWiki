@@ -156,7 +156,7 @@
 }
 
 .smw-factbox label.nav-label {
-	padding: 5px 25px 3px 25px;
+	padding: 3px 25px 3px 25px;
 }
 
 .smw-factbox input.nav-tab:checked + label.nav-label {
@@ -210,6 +210,10 @@
 	.smwfact .smwpropname, .smwfact .smwspecname {
 		width: auto;
 		font-weight: bold;
+	}
+
+	.smw-factbox label.nav-label {
+		padding: 5px 25px 5px 5px;
 	}
 }
 

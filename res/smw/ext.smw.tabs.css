@@ -78,6 +78,28 @@
 }
 
 /**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-tabs {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.smw-tabs label.nav-label {
+		text-align: unset;
+		padding: 5px 25px;
+		border-top: 1px solid;
+	}
+
+	.smw-tabs input.nav-tab:checked + label.nav-label {
+		border-left: 0px !important;
+		border-right: 0px !important;
+		background-color: #f9f9f9a8;
+	}
+}
+
+/**
  * Requires to be adjusted by each set that uses the rules
  * to assign a tab to a content section.
  */
