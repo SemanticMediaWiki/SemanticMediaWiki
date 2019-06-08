@@ -71,9 +71,14 @@ class MustExistsConstraint implements Constraint {
 			return;
 		}
 
+		$this->reportError( $dataValue );
+	}
+
+	private function reportError( $dataValue ) {
+
 		$this->hasViolation = true;
 
-		$dataValue->addErrorMsg(
+		$dataValue->addError(
 			new ConstraintError( [
 				'smw-datavalue-constraint-violation-must-exists',
 				$dataValue->getProperty()->getLabel(),

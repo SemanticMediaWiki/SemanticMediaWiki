@@ -109,18 +109,18 @@
 		"property_type": {
 			"$id": "#/definitions/property_type",
 			"type": "string",
-			"title": "Specifies ...",
+			"title": "Specifies expected type of the property",
 			"enum": [ "Date", "Boolean", "Text", "Geo", "Page", "Number", "URI" ]
 		},
 		"max_cardinality": {
 			"$id": "#/definitions/max_cardinality",
 			"type": "number",
-			"title": "Specifies ..."
+			"title": "Specifies the maximum number of values a property can contain for the given context"
 		},
 		"min_textlength": {
 			"$id": "#/definitions/min_textlength",
 			"type": "number",
-			"title": "Specifies ..."
+			"title": "Specifies the minimum length of the characters expected for values assigned to the property"
 		}
 	}
 }

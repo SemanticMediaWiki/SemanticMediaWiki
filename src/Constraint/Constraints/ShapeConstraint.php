@@ -126,24 +126,7 @@ class ShapeConstraint implements Constraint {
 			];
 		}
 
-		$this->reportError( $errors, $dataValue );
-	}
-
-	private function reportError( array $errors, $dataValue ) {
-
-		if ( $errors === [] ) {
-			return;
-		}
-
-		$this->hasViolation = true;
-
-		foreach ( $errors as $error ) {
-			$dataValue->addErrorMsg( $this->newConstraintError( $error ) );
-		}
-	}
-
-	private function newConstraintError( array $error ) {
-		return new ConstraintError( $error );
+		$this->reportError( $dataValue, $errors );
 	}
 
 	private function isType( $type, $property ) {
@@ -217,6 +200,19 @@ class ShapeConstraint implements Constraint {
 		}
 
 		return true;
+	}
+
+	private function reportError( $dataValue, array $errors ) {
+
+		if ( $errors === [] ) {
+			return;
+		}
+
+		$this->hasViolation = true;
+
+		foreach ( $errors as $error ) {
+			$dataValue->addError( new ConstraintError( $error ) );
+		}
 	}
 
 }

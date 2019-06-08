@@ -124,7 +124,11 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$instance->checkConstraint( [ 'unique_value_constraint' => true ], $dataValue );
+		$constraint = [
+			'unique_value_constraint' => true
+		];
+
+		$instance->checkConstraint( $constraint, $dataValue );
 
 		$this->assertFalse(
 			$instance->hasViolation()
@@ -145,7 +149,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addErrorMsg' ] )
+			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage', 'addError' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -157,7 +161,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $property ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
-			->method( 'addErrorMsg' )
+			->method( 'addError' )
 			->with( $this->equalTo( $error ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
@@ -169,7 +173,11 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$instance->checkConstraint( [ 'unique_value_constraint' => true ], $dataValue );
+		$constraint = [
+			'unique_value_constraint' => true
+		];
+
+		$instance->checkConstraint( $constraint, $dataValue );
 
 		$this->assertTrue(
 			$instance->hasViolation()

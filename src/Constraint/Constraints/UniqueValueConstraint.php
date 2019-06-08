@@ -90,11 +90,11 @@ class UniqueValueConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( isset( $constraint['unique_value_constraint'] ) && $constraint['unique_value_constraint'] ) {
-			$this->doCheck( $dataValue );
+			$this->check( $dataValue );
 		}
 	}
 
-	private function doCheck( $dataValue ) {
+	private function check( $dataValue ) {
 
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
@@ -104,6 +104,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 
 		$requestOptions = new RequestOptions();
+		$requestOptions->setCaller( __METHOD__ );
 
 		// Exclude the current page from the result match to check whether another
 		// page matches the condition and if so then the value can no longer be
@@ -131,24 +132,20 @@ class UniqueValueConstraint implements Constraint {
 		// Check whether the current page has any other annotation for the
 		// same property
 		if ( $count < 1 && $this->isKnown( $dataValue ) ) {
-			$dataValue->addErrorMsg(
-				new ConstraintError( [
-					'smw-datavalue-constraint-uniqueness-violation-isknown',
-					$property->getLabel(),
-					$contextPage->getTitle()->getPrefixedText(),
-					$dataValue->getWikiValue()
-				] )
-			);
+			$error = [
+				'smw-datavalue-constraint-uniqueness-violation-isknown',
+				$property->getLabel(),
+				$contextPage->getTitle()->getPrefixedText(),
+				$dataValue->getWikiValue()
+			];
 
-			$this->hasViolation = true;
+			$this->reportError( $dataValue, $error );
 		}
 
 		// Has the page different values for the same property?
 		if ( $count < 1 ) {
 			return;
 		}
-
-		$this->hasViolation = true;
 
 		foreach ( $res as $dataItem ) {
 			$val = $dataValue->isValid() ? $dataValue->getWikiValue() : '...';
@@ -158,14 +155,14 @@ class UniqueValueConstraint implements Constraint {
 				$text = $title->getPrefixedText();
 			}
 
-			$dataValue->addErrorMsg(
-				new ConstraintError( [
-					'smw-datavalue-constraint-uniqueness-violation',
-					$property->getLabel(),
-					$val,
-					$text
-				] )
-			);
+			$error = [
+				'smw-datavalue-constraint-uniqueness-violation',
+				$property->getLabel(),
+				$val,
+				$text
+			];
+
+			$this->reportError( $dataValue, $error );
 		}
 	}
 
@@ -194,6 +191,14 @@ class UniqueValueConstraint implements Constraint {
 		$hash = $dataValue->getContextPage()->getHash();
 
 		return isset( $this->annotations[$hash][$key] );
+	}
+
+	private function reportError( $dataValue, $error ) {
+		$this->hasViolation = true;
+
+		$dataValue->addError(
+			new ConstraintError( $error )
+		);
 	}
 
 }

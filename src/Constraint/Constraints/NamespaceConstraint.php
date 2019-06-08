@@ -55,22 +55,21 @@ class NamespaceConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( $key === 'allowed_namespaces' ) {
-			return $this->allowed_namespaces( $constraint[$key], $dataValue );
+			return $this->check( $constraint[$key], $dataValue );
 		}
 	}
 
-	private function allowed_namespaces( $namespaces, $dataValue ) {
+	private function check( $namespaces, $dataValue ) {
 
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
-			$this->hasViolation = true;
 
-			return $dataValue->addErrorMsg(
-				new ConstraintError( [
-					'smw-constraint-schema-violation-requires-page-type'
-				] )
-			);
+			$error = [
+				'smw-constraint-schema-violation-requires-page-type'
+			];
+
+			return $this->reportError( $dataValue, $error );
 		}
 
 		foreach ( $namespaces as $ns ) {
@@ -79,16 +78,22 @@ class NamespaceConstraint implements Constraint {
 			}
 		}
 
-		$this->hasViolation = true;
+		$error = [
+			'smw-constraint-schema-violation-allowed-namespace-no-match',
+			$dataValue->getWikiValue(),
+			implode(', ', $namespaces ),
+			$dataValue->getProperty()->getLabel()
+		];
 
-		$dataValue->addErrorMsg(
-			new ConstraintError( [
-				'smw-constraint-schema-violation-allowed-namespace-no-match',
-				$dataValue->getWikiValue(),
-				implode(', ', $namespaces ),
-				$dataValue->getProperty()->getLabel()
-			] )
-		);
+		$this->reportError( $dataValue, $error );
 	}
 
+	private function reportError( $dataValue, $error ) {
+
+		$this->hasViolation = true;
+
+		$dataValue->addError(
+			new ConstraintError( $error )
+		);
+	}
 }
