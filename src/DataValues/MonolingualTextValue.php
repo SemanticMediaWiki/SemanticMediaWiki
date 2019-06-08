@@ -174,9 +174,8 @@ class MonolingualTextValue extends AbstractMultiValue {
 			$this->m_dataitem = $dataItem;
 			return true;
 		} elseif ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
-			$semanticData = new ContainerSemanticData( $dataItem );
-			$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
-			$this->m_dataitem = new DIContainer( $semanticData );
+			$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
+			$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
 			return true;
 		}
 
