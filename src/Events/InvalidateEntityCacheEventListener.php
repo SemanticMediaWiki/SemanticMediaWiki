@@ -36,15 +36,20 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 */
 	public function execute( DispatchContext $dispatchContext = null ) {
 
-		$title = $dispatchContext->get( 'title' );
-		$context = $dispatchContext->get( 'context' );
+		if ( $dispatchContext->has( 'subject' ) ) {
+			$subject = $dispatchContext->get( 'subject' );
+			$id = $subject->getHash();
+		} else {
+			$subject = $dispatchContext->get( 'title' );
+			$id = $subject->getPrefixedDBKey();
+		}
 
-		$this->entityCache->invalidate( $title );
-		$subject = $title->getPrefixedDBKey();
+		$context = $dispatchContext->get( 'context' );
+		$this->entityCache->invalidate( $subject );
 
 		$this->logger->info(
-			[ 'Event', 'InvalidateEntityCache', "{caused_by}", "{subject}" ],
-			[ 'role' => 'user', 'caused_by' => $context, 'subject' => $subject ]
+			[ 'Event', 'InvalidateEntityCache', "{caused_by}", "{id}" ],
+			[ 'role' => 'user', 'caused_by' => $context, 'id' => $id ]
 		);
 	}
 
