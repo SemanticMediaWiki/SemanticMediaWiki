@@ -30,6 +30,11 @@ class SetupFile {
 	const UPGRADE_KEY = 'upgrade_key';
 
 	/**
+	 * Describes the file name
+	 */
+	const FILE_NAME = '.smw.json';
+
+	/**
 	 * @var File
 	 */
 	private $file;
@@ -55,7 +60,7 @@ class SetupFile {
 	public static function loadSchema( &$vars ) {
 
 		// @see #3506
-		$file = File::dir( $vars['smwgConfigFileDir'] . '/.smw.json' );
+		$file = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 
 		// Doesn't exist? The `Setup::init` will take care of it by trying to create
 		// a new file and if it fails or unable to do so wail raise an exception
@@ -249,7 +254,7 @@ class SetupFile {
 	 */
 	public function write( $vars, $args = [] ) {
 
-		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/.smw.json' );
+		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
 
 		if ( !isset( $vars['smw.json'] ) ) {
