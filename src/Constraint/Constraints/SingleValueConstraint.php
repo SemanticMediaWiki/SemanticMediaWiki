@@ -81,14 +81,13 @@ class SingleValueConstraint implements Constraint {
 		$dataItems = $semanticData->getPropertyValues( $property );
 
 		if ( count( $dataItems ) >= 1 ) {
-			$this->reportError( $dataValue );
+			$this->reportError( $dataValue, $property );
 		}
 	}
 
-	private function reportError( $dataValue ) {
+	private function reportError( $dataValue, $property ) {
 
 		$this->hasViolation = true;
-		$property = $dataValue->getProperty();
 
 		$error = [
 			'smw-datavalue-constraint-violation-single-value',
@@ -96,7 +95,7 @@ class SingleValueConstraint implements Constraint {
 			$dataValue->getWikiValue()
 		];
 
-		$dataValue->addErrorMsg(
+		$dataValue->addError(
 			new ConstraintError( $error, Message::PARSE )
 		);
 	}

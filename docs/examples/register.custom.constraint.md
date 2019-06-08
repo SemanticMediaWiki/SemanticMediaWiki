@@ -94,7 +94,7 @@ class FooConstraint implements Constraint {
 			'foo-violation-message-key'
 		];
 
-		$dataValue->addErrorMsg(
+		$dataValue->addError(
 			new ConstraintError( $error )
 		);
 	}
@@ -103,7 +103,7 @@ class FooConstraint implements Constraint {
 
 ## Other examples
 
-For example, when implementing a `start_end_constraint` with a `greater_than` identifier, the `greater_than` property may expect an array where assigned and registered class is responsible for interpreting what `greater_than` means in the context of the given array. It could be defined as "the first element (e.g. property `Event end`) needs to be greater than the second element (e.g. property `Event start`)" but that is up to the implementing class to decide and has nothing to do with Semantic MediaWiki.
+For example, when implementing `custom_constraint` with a `start_end_constraint` that contains `greater_than` condition, the `greater_than` property may expect an array and the registered class for `start_end_constraint` has to interpret what `greater_than` means in the context of the given array. It could be defined as "the first element (e.g. property `Event end`) needs to be greater than the second element (e.g. property `Event start`)" but that is up to the implementing class to decide and has nothing to do with Semantic MediaWiki.
 
 
 ```json

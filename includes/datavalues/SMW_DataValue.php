@@ -399,7 +399,7 @@ abstract class SMWDataValue {
 	 * @note Errors should not be escaped here in any way, in contradiction to what
 	 * the docs used to say here in 1.5 and before. Escaping should happen at the output.
 	 *
-	 * @param mixed $error A single string, or array of strings.
+	 * @param array|string|ProcessingError $error
 	 */
 	public function addError( $error ) {
 

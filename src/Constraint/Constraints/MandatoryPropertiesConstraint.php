@@ -96,7 +96,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 			implode(', ', array_keys( $properties ) )
 		];
 
-		$dataValue->addErrorMsg(
+		$dataValue->addError(
 			new ConstraintError( $error, Message::PARSE )
 		);
 	}

@@ -55,11 +55,11 @@ class NonNegativeIntegerConstraint implements Constraint {
 		$key = key( $constraint );
 
 		if ( isset( $constraint['non_negative_integer'] ) && $constraint['non_negative_integer'] ) {
-			$this->non_negative_integer( $dataValue );
+			$this->check( $dataValue );
 		}
 	}
 
-	private function non_negative_integer( $dataValue ) {
+	private function check( $dataValue ) {
 
 		$dataItem = $dataValue->getDataItem();
 
@@ -72,14 +72,19 @@ class NonNegativeIntegerConstraint implements Constraint {
 			return;
 		}
 
-		$dataValue->addErrorMsg( new ConstraintError( [
+		$this->reportError( $dataValue, $number );
+	}
+
+	private function reportError( $dataValue, $number ) {
+
+		$this->hasViolation = true;
+
+		$dataValue->addError( new ConstraintError( [
 				'smw-datavalue-constraint-violation-non-negative-integer',
 				$dataValue->getProperty()->getLabel(),
 				$number
 			] )
 		);
-
-		$this->hasViolation = true;
 	}
 
 }

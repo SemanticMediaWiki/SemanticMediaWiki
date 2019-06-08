@@ -70,7 +70,7 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'addErrorMsg', 'getCallable' ] )
+			->setMethods( [ 'addError', 'getCallable' ] )
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
@@ -78,7 +78,7 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
-			->method( 'addErrorMsg' )
+			->method( 'addError' )
 			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
