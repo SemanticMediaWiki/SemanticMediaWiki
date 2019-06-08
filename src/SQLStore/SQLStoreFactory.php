@@ -42,6 +42,7 @@ use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
+use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
 use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
@@ -905,6 +906,20 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @return SingleEntityQueryLookup
+	 */
+	public function newSingleEntityQueryLookup() {
+
+		$singleEntityQueryLookup = new SingleEntityQueryLookup(
+			$this->store
+		);
+
+		return $singleEntityQueryLookup;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return ErrorLookup
 	 */
 	public function newErrorLookup() {
@@ -980,6 +995,10 @@ class SQLStoreFactory {
 				'TableStatisticsLookup' => [
 					'_service' => [ $this, 'newTableStatisticsLookup' ],
 					'_type'    => TableStatisticsLookup::class
+				],
+				'SingleEntityQueryLookup' => [
+					'_service' => [ $this, 'newSingleEntityQueryLookup' ],
+					'_type'    => SingleEntityQueryLookup::class
 				],
 			]
 		);

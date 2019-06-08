@@ -1876,9 +1876,13 @@ return [
 	# - SMW_QUERYRESULT_PREFETCH to use the prefetch method to retrieve row
 	# related items for a `QueryResult`.
 	#
+	# - SMW_SHOWPARSER_USE_CURTAILMENT to use a short cut and circumventing the
+	# `QueryEngine` and directly access the DB since `#show` will always only
+	# request an output for one particular entity.
+	#
 	# @since 3.0
 	##
-	'smwgExperimentalFeatures' => SMW_QUERYRESULT_PREFETCH,
+	'smwgExperimentalFeatures' => SMW_QUERYRESULT_PREFETCH | SMW_SHOWPARSER_USE_CURTAILMENT,
 	##
 
 	##

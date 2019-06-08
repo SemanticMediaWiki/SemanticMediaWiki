@@ -205,6 +205,7 @@ define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for templat
   * Constants for $smwgExperimentalFeatures
   */
 define( 'SMW_QUERYRESULT_PREFETCH', 2 );
+define( 'SMW_SHOWPARSER_USE_CURTAILMENT', 4 );
 /**@}*/
 
 /**@{
