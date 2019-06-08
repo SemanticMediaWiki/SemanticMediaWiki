@@ -12,4 +12,3 @@ composer.lock
 !.*
 .idea/
 .smw.json
-.smw.maintenance.json

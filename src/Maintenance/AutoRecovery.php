@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use SMW\Utils\File;
 use RuntimeException;
 use SMW\Site;
+use SMW\SetupFile;
 
 /**
  * @license GNU GPL v2+
@@ -14,7 +15,7 @@ use SMW\Site;
  */
 class AutoRecovery {
 
-	const FILE_NAME = '.smw.maintenance.json';
+	const TOPIC_IDENTIFIER = 'auto_recovery_mode';
 
 	/**
 	 * @var string
@@ -70,7 +71,7 @@ class AutoRecovery {
 	 * @param boolean $enabled
 	 */
 	public function enable( $enabled ) {
-		$this->enabled = $enabled;
+		$this->enabled = (bool)$enabled;
 	}
 
 	/**
@@ -96,8 +97,8 @@ class AutoRecovery {
 	 *
 	 * @return string
 	 */
-	public function getLocation() {
-		return $this->dir . "/" . self::FILE_NAME;
+	public function getFile() {
+		return $this->dir . "/" . SetupFile::FILE_NAME;
 	}
 
 	/**
@@ -108,15 +109,19 @@ class AutoRecovery {
 	 */
 	public function set( $key, $value ) {
 
+		if ( !$this->enabled ) {
+			return false;
+		}
+
 		if ( $this->contents === null ) {
 			$this->initContents( $key );
 		}
 
-		$this->contents[$this->site][$this->identifier][$key] = $value;
+		$this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] = $value;
 
 		$this->file->write(
-			$this->getLocation(),
-			json_encode( $this->contents )
+			$this->getFile(),
+			json_encode( $this->contents, JSON_PRETTY_PRINT )
 		);
 	}
 
@@ -137,7 +142,7 @@ class AutoRecovery {
 			$this->initContents( $key );
 		}
 
-		$value = $this->contents[$this->site][$this->identifier][$key];
+		$value = $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key];
 
 		if ( is_int( $value ) ) {
 			return max( 0, $value - $this->safeMargin );
@@ -163,29 +168,29 @@ class AutoRecovery {
 			$this->initContents( $key );
 		}
 
-		if ( !isset( $this->contents[$this->site][$this->identifier][$key] ) ) {
+		if ( !isset( $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] ) ) {
 			return false;
 		}
 
-		return $this->contents[$this->site][$this->identifier][$key] !== false;
+		return $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] !== false;
 	}
 
 	private function initContents( $key ) {
 
-		$file = $this->getLocation();
+		$file = $this->getFile();
 
 		$this->contents = [
-			$this->site => [ $this->identifier => [ $key => false ] ]
+			$this->site => [ self::TOPIC_IDENTIFIER => [ $this->identifier => [ $key => false ] ] ]
 		];
 
 		if ( !$this->file->exists( $file ) ) {
-			$this->file->write( $file, json_encode( $this->contents ) );
+			$this->file->write( $file, json_encode( $this->contents, JSON_PRETTY_PRINT ) );
 		} else {
 			$this->contents = json_decode( $this->file->read( $file ), true );
 		}
 
-		if ( !isset( $this->contents[$this->site][$this->identifier][$key] ) ) {
-			$this->contents[$this->site][$this->identifier][$key] = false;
+		if ( !isset( $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] ) ) {
+			$this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] = false;
 		}
 	}
 

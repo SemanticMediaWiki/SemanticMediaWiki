@@ -291,17 +291,16 @@ class DataRebuilder {
 			$this->reportMessage( "\n" );
 		}
 
-		if ( $this->options->has( 'auto-recovery' ) && $this->autoRecovery !== null ) {
-			if ( $this->autoRecovery->has( 'ar_id' ) ) {
-				$this->start = $this->autoRecovery->get( 'ar_id' );
+		if ( $this->autoRecovery !== null && $this->autoRecovery->has( 'ar_id' ) ) {
+			$this->start = $this->autoRecovery->get( 'ar_id' );
 
-				$this->reportMessage(
-					"The auto recovery mode is enabled and has detected an unfinished\n" .
-					"rebuild run therefore the run is started with: " . $this->start . "\n"
-				);
+			$this->reportMessage( "Incomplete rebuild run detected (auto recovery) ...\n"  );
 
-				$this->reportMessage( "\n" );
-			}
+			$this->reportMessage(
+				sprintf( "%-50s%s\n", "   ... starting with", sprintf( "%s", $this->start ) )
+			);
+
+			$this->reportMessage( "\n" );
 		}
 
 		$this->store->clear();
@@ -326,6 +325,7 @@ class DataRebuilder {
 		$progress = 0;
 		$estimatedProgress = 0;
 		$skipped_update = 0;
+		$current_id = 0;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
@@ -361,14 +361,14 @@ class DataRebuilder {
 
 			if ( !$this->options->has( 'v' ) && $id > 0 ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $current_id, min( 100, $progress ) ) )
+					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%s (%1.0f%%)", $current_id, min( 100, $progress ) ) )
 				);
 			}
 		}
 
 		if ( !$this->options->has( 'v' ) ) {
 			$this->reportMessage(
-				"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $current_id, 100 ) )
+				"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%s (%1.0f%%)", $current_id, 100 ) )
 			);
 		}
 
@@ -378,8 +378,14 @@ class DataRebuilder {
 
 		$this->write_to_file( $id );
 
-		$this->reportMessage( "\n   ... $this->rebuildCount IDs checked or refreshed ..." );
-		$this->reportMessage( "\n   ... $skipped_update IDs skipped ..." );
+		$this->reportMessage(
+			"\n". sprintf( "%-50s%s", "   ... IDs checked or refreshed", sprintf( "%s", $this->rebuildCount ) )
+		);
+
+		$this->reportMessage(
+			"\n". sprintf( "%-50s%s", "   ... IDs skipped", sprintf( "%s", $skipped_update ) )
+		);
+
 		$this->reportMessage( "\n   ... done.\n" );
 
 		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {

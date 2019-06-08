@@ -52,9 +52,11 @@ class OutdatedDisposer {
 
 		if ( ( $count = $resultIterator->count() ) > 0 ) {
 			$this->disposeOutdatedEntities( $resultIterator, $count );
+			$this->messageReporter->reportMessage( "\n   ... done." );
+		} else {
+			$this->messageReporter->reportMessage( " done." );
 		}
 
-		$this->messageReporter->reportMessage( "\n   ... done." );
 		$this->messageReporter->reportMessage( "\n   ... checking query links ..." );
 
 		$resultIterator = $this->entityIdDisposerJob->newOutdatedQueryLinksResultIterator();
@@ -67,9 +69,10 @@ class OutdatedDisposer {
 
 		if ( ( $count = $resultIterator->count() ) > 0 ) {
 			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (unassigned)' );
+			$this->messageReporter->reportMessage( "\n   ... done.\n" );
+		} else {
+			$this->messageReporter->reportMessage( " done.\n" );
 		}
-
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 	}
 
 	private function disposeOutdatedEntities( $resultIterator, $count ) {

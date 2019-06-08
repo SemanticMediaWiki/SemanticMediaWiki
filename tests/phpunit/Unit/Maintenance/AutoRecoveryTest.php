@@ -48,14 +48,14 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testCheckForID() {
 
 		$contents = [
-			$this->site => [ 'foo' => [ 'ar_id' => false ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents ) ) );
+				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
@@ -72,7 +72,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSet() {
 
 		$init = [
-			$this->site => [ 'foo' => [ 'ar_id' => false ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -80,14 +80,14 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( json_encode( $init ) ) );
 
 		$contents = [
-			$this->site => [ 'foo' => [ 'ar_id' => 1001 ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 1001 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents ) ) );
+				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
@@ -113,7 +113,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testSetClosed() {
 
 		$init = [
-			$this->site => [ 'foo' => [ 'ar_id' => 42 ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -121,14 +121,14 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( json_encode( $init ) ) );
 
 		$contents = [
-			$this->site => [ 'foo' => [ 'ar_id' => false ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( json_encode( $contents ) ) );
+				$this->equalTo( json_encode( $contents, JSON_PRETTY_PRINT ) ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
@@ -153,12 +153,12 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSafeMargin() {
 
 		$init = [
-			$this->site => [ 'foo' => [ 'ar_id' => 42 ] ]
+			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'read' )
-			->will( $this->returnValue( json_encode( $init ) ) );
+			->will( $this->returnValue( json_encode( $init, JSON_PRETTY_PRINT ) ) );
 
 		$this->file->expects( $this->atLeastOnce() )
 			->method( 'exists' )
