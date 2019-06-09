@@ -89,7 +89,17 @@ class MonolingualTextLookup {
 				$row
 			);
 
-			$h = $containerSemanticData->getSubject()->getHash();
+			$subject = $containerSemanticData->getSubject();
+			$subobjectName = $subject->getSubobjectName();
+
+			// Handle predefined properties
+			if ( $subject->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $subject->getDBKey() ) && $dbKey{0} === '_' ) {
+				$subject = DIProperty::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
+					$subobjectName
+				);
+			}
+
+			$h = $subject->getHash();
 			$text = $row->text_short;
 
 			if ( $row->text_long !== null ) {
