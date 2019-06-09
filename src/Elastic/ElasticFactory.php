@@ -525,14 +525,18 @@ class ElasticFactory {
 			return true;
 		}
 
-		$title = $dispatchContext->get( 'title' );
+		if ( $dispatchContext->has( 'subject' ) ) {
+			$subject = $dispatchContext->get( 'subject' );
+		} else {
+			$subject = $dispatchContext->get( 'title' );
+		}
 
 		$checkReplicationTask = $this->newCheckReplicationTask(
 			$store
 		);
 
 		$checkReplicationTask->deleteReplicationTrail(
-			$title
+			$subject
 		);
 	}
 

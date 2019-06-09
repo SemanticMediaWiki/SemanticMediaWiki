@@ -350,7 +350,27 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testOnInvalidateEntityCache() {
+	public function testOnInvalidateEntityCache_OnSubject() {
+
+		$instance = new ElasticFactory();
+
+		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dispatchContext = $this->getMockBuilder( '\Onoi\EventDispatcher\DispatchContext' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dispatchContext->expects( $this->once() )
+			->method( 'has' )
+			->with( $this->equalTo( 'subject' ) )
+			->will( $this->returnValue( $subject ) );
+
+		$instance->onInvalidateEntityCache( $dispatchContext );
+	}
+
+	public function testOnInvalidateEntityCache_OnTitle() {
 
 		$instance = new ElasticFactory();
 
