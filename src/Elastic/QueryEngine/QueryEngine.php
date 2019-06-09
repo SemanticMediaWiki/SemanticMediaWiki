@@ -10,6 +10,7 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
 use SMW\Store;
+use SMW\DIProperty;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 
@@ -318,6 +319,15 @@ class QueryEngine implements IQueryEngine {
 			}
 
 			$id = $dataItem->getId();
+			$subobjectName = $dataItem->getSubobjectName();
+
+			// Handle predefined properties
+			if ( $dataItem->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $dataItem->getDBKEY() ) && $dbKey{0} === '_' ) {
+				$dataItem = DIProperty::newFromUserLabel( $dbKey )->getDIWikiPage(
+					$subobjectName
+				);
+			}
+
 			$results[$listPos[$id]] = $dataItem;
 
 			if ( isset( $scores[$id] ) ) {

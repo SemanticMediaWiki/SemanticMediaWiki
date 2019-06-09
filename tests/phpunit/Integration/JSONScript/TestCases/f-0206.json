@@ -7,12 +7,21 @@
 			"contents": "[[Has type::Number]] [[Has property description::A number to display ....@en]]"
 		},
 		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Modification date",
+			"contents": "[[Property description::Some description@en]]"
+		},
+		{
 			"page": "Example/F0206/1/1",
 			"contents": "[[Has number::1001]]"
 		},
 		{
 			"page": "Example/F0206/1a",
 			"contents": "{{#ask: [[~Example/F0206/1/*]] |?Has number |format=table }}"
+		},
+		{
+			"page": "F0206/Q2",
+			"contents": "{{#ask: [[Property:Modification date]] |?Property description |format=table }}"
 		}
 	],
 	"tests": [
@@ -24,6 +33,17 @@
 				"to-contain": [
 					"<span class=\"smwttcontent\">A number to display ....</span>",
 					"<td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001</td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1",
+			"subject": "F0206/Q2",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*Property:Modification_date\" title=\"Property:Modification date\">Modification date</a>",
+					"<td class=\"Property-description smwtype_mlt_rec\">Some description (en)</td>"
 				]
 			}
 		}
