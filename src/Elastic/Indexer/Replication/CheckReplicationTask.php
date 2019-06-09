@@ -96,12 +96,21 @@ class CheckReplicationTask extends Task {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title $title
+	 * @param DIWikiPage|Title $title
 	 */
-	public function deleteReplicationTrail( Title $title ) {
+	public function deleteReplicationTrail( $subject ) {
+
+		if ( $subject instanceof \Title ) {
+			$subject = DIWikiPage::newFromTitle( $subject );
+		}
+
+		if ( !$subject instanceof DIWikiPage ) {
+			return;
+		}
+
 		$this->entityCache->deleteSub(
 			$this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ),
-			$this->makeCacheKey( DIWikiPage::newFromTitle( $title ) )
+			$this->makeCacheKey( $subject )
 		);
 	}
 

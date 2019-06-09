@@ -350,7 +350,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$instance->getReplicationFailures();
 	}
 
-	public function testDeleteReplicationTrail() {
+	public function testDeleteReplicationTrail_OnTitle() {
 
 		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
 
@@ -367,6 +367,25 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->deleteReplicationTrail( $subject->getTitle() );
+	}
+
+	public function testDeleteReplicationTrail_OnSubject() {
+
+		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'deleteSub' )
+			->with(
+				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
+				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
+
+		$instance = new CheckReplicationTask(
+			$this->store,
+			$this->replicationStatus,
+			$this->entityCache
+		);
+
+		$instance->deleteReplicationTrail( $subject );
 	}
 
 }
