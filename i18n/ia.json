@@ -9,7 +9,7 @@
 	"smw-desc": "Pro render tu wiki plus accessibile – a machinas '''e''' a humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation in linea])",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] ha essite installate e activate ma il manca un [https://www.semantic-mediawiki.org/wiki/Help:Upgrade clave de actualisation] appropriate.",
 	"smw-upgrade-progress-explain": "Es difficile anticipar quando le actualisation essera concludite perque isto depende del dimension del repositorio de datos e del material disponibile, e pote prender un momento pro terminar se pro le wikis plus grande.\n\nPer favor contacta tu administrator local pro obtener plus information sur le progresso.",
-	"smw-upgrade-progress-create-tables": "Creation e actualisation de tabellas e indices…",
+	"smw-upgrade-progress-create-tables": "Creation (o actualisation) de tabellas e indices…",
 	"smw-upgrade-progress-table-optimization": "Optimisation de tabellas in curso…",
 	"smw-semantics-not-enabled": "Le functionalitate de MediaWiki semantic non ha essite activate pro iste wiki.",
 	"smw_viewasrdf": "Syndication RDF",
