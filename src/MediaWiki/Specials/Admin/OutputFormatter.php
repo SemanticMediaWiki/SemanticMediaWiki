@@ -99,7 +99,11 @@ class OutputFormatter {
 	 * @param string $text
 	 */
 	public function addWikiText( $text ) {
-		$this->outputPage->addWikiText( $text );
+		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
+			$this->outputPage->addWikiTextAsInterface( $text );
+		} else {
+			$this->outputPage->addWikiText( $text );
+		}
 	}
 
 	/**
