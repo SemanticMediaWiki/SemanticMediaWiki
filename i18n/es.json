@@ -315,6 +315,7 @@
 	"smw-ask-format-change-info": "Se modificó el formato y, por tanto, es necesario ejecutar de nuevo la consulta para que corresponda con los parámetros y las opciones de visualización nuevos.",
 	"smw-ask-format-export-info": "El formato de exportación seleccionado no tiene representación visual, por lo que los resultados se proporcionan solamente para descargar.",
 	"smw-ask-query-search-info": "{{PLURAL:$3|1=<code>$2</code> (de la caché)|<code>$2</code> (de la caché)|<code>$2</code>}} respondió la consulta <code><nowiki>$1</nowiki></code> en $4 {{PLURAL:$4|segundo|segundos}}.",
+	"smw-ask-extra-query-log": "Registro de consultas",
 	"searchbyproperty": "Buscar por propiedad",
 	"processingerrorlist": "Lista de errores de procesamiento",
 	"propertylabelsimilarity": "Informe de similitud de etiquetas de propiedades",
