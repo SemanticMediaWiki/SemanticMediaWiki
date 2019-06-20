@@ -17,7 +17,8 @@
 			"שניאור זלמן",
 			"המקיסט",
 			"Strayblues",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Steeve815"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -509,7 +510,7 @@
 	"smw-format-datatable-toolbar-export": "ייצוא",
 	"apihelp-smwbrowse-summary": "מודול API לתמיכה בעיון ובחיפוש פעילויות עבור ישויות מתוחזקות של ההרחבה \"מדיה־ויקי סמנטית\".",
 	"smw-help": "עזרה",
-	"smw-processing": "מעבד...",
+	"smw-processing": "מעבד ...",
 	"smw-loading": "בטעינה …",
 	"smw-fetching": "מתקבל …",
 	"smw-preparing": "בהכנה …",

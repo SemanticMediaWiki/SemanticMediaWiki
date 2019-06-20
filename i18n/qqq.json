@@ -19,14 +19,15 @@
 			"Avatar6",
 			"Vlad5250",
 			"Abijeet Patro",
-			"Omotecho"
+			"Omotecho",
+			"Zoranzoki21"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
 	"smw-title": "{{notranslate}}\n\nName of the extension as it should be displayed.\n\n{{Identical|Semantic MediaWiki}}",
 	"smw-error": "{{Identical|Error}}",
 	"smw-upgrade-error": "This is an error message.\n\nParameter:\n* $1 - holds the upgrade key",
-	"smw-upgrade-error-title": "This is the title of a a section header.\n{{Identical|Error}}",
+	"smw-upgrade-error-title": "This is the title of a section header.\n{{Identical|Error}}",
 	"smw-upgrade-error-why-title": "This is a section header.",
 	"smw-upgrade-error-why-explain": "This is an error message.",
 	"smw-upgrade-error-how-title": "This is a section header.",
@@ -887,7 +888,7 @@
 	"smw-schema-namespace-edit-protection": "This is an informatory message.",
 	"smw-schema-error": "This is the label of a tab on a page in namespace \"smw/schema\".",
 	"smw-schema-error-schema": "This is an error message.\n\nParameter:\n* $1 - holds the erroneous specification",
-	"smw-schema-error-violation": "This is an error message.\n\nParameters:\n* $1 - holds the schema name\n* $2 - holds the error",
+	"smw-schema-error-violation": "{{optional}}\nThis is an error message.\n\nParameters:\n* $1 - holds the schema name\n* $2 - holds the error",
 	"smw-schema-error-type-missing": "This is an error message.",
 	"smw-schema-error-type-unknown": "This is an error message.\n\nParameter:\n* $1 - holds the name of the invalid type",
 	"smw-schema-title": "This is the label of a tab on a page in namespace \"smw/schema\".",
