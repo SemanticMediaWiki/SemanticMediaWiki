@@ -32,12 +32,14 @@
 			"Taiwania Justo",
 			"A Chinese Wikipedian",
 			"Abijeet Patro",
-			"Willy1018"
+			"Willy1018",
+			"神樂坂秀吉"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更容易使用 - 不論是對於機器''或''人類（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件]）",
 	"smw-error": "錯誤",
 	"smw-upgrade-error": "Semantic MediaWiki 已安裝完並且已啟用，但缺少符合：<code>$1</code> 的相稱[https://www.semantic-mediawiki.org/wiki/Help:Upgrade 更新鍵]。",
+	"smw-upgrade-progress": "進度",
 	"smw-upgrade-error-title": "錯誤",
 	"smw-upgrade-error-why-title": "為什麼我會看到此頁面？",
 	"smw-upgrade-error-why-explain": "Semantic MediaWiki 的內部資料庫架構已更改，並且需要做出一些調整來讓功能齊全，這可能有包含以下數種原因：\n* 已添加額外固定屬性（需要額外表格設定）\n* 更新包含一些對於表格的變動，或是在存取資料之前索引有必要產生中斷",
