@@ -153,18 +153,18 @@ return [
 	#
 	# Available DB index as provided by MediaWiki:
 	#
-	# - DB_SLAVE or DB_REPLICA (1.28+)
+	# - DB_REPLICA (1.27.4+)
 	# - DB_MASTER
 	#
 	# @since 2.5.3
 	##
 	'smwgLocalConnectionConf' => [
 		'mw.db' => [
-			'read'  => DB_SLAVE,
+			'read'  => DB_REPLICA,
 			'write' => DB_MASTER
 		],
 		'mw.db.queryengine' => [
-			'read'  => DB_SLAVE,
+			'read'  => DB_REPLICA,
 			'write' => DB_MASTER
 		]
 	],

@@ -121,8 +121,8 @@ final class Setup {
 		);
 
 		$connectionManager->registerConnectionProvider(
-			DB_SLAVE,
-			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_SLAVE )
+			DB_REPLICA,
+			$mwCollaboratorFactory->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 
 		$connectionManager->registerConnectionProvider(

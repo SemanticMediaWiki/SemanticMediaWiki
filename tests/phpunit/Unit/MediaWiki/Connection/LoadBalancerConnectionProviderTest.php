@@ -24,14 +24,14 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			LoadBalancerConnectionProvider::class,
-			new LoadBalancerConnectionProvider( DB_SLAVE )
+			new LoadBalancerConnectionProvider( DB_REPLICA )
 		);
 	}
 
 	public function testGetAndReleaseConnection() {
 
 		$instance = new LoadBalancerConnectionProvider(
-			DB_SLAVE
+			DB_REPLICA
 		);
 
 		$connection = $instance->getConnection();
@@ -53,7 +53,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException( 'RuntimeException' );
 
 		$instance = new LoadBalancerConnectionProvider(
-			DB_SLAVE
+			DB_REPLICA
 		);
 
 		$reflector = new ReflectionClass(

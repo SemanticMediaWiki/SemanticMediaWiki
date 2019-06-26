@@ -537,7 +537,7 @@ class SMWExportController {
 	 */
 	protected function printAll( $ns_restriction = false, $delay, $delayeach ) {
 		$linkCache = LinkCache::singleton();
-		$db = wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_REPLICA );
 
 		$this->delay_flush = 10;
 
@@ -602,7 +602,7 @@ class SMWExportController {
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
 
-		$db = wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_REPLICA );
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = LinkCache::singleton();

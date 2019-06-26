@@ -68,7 +68,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 		// Default configuration
 		$conf = [
-			'read'  => DB_SLAVE,
+			'read'  => DB_REPLICA,
 			'write' => DB_MASTER
 		];
 
@@ -144,8 +144,8 @@ class ConnectionProvider implements IConnectionProvider {
 				'role' => 'developer',
 				'provider' => $this->provider,
 				'conf' => [
-					'read'  => $conf['read'] === DB_SLAVE ? 'DB_SLAVE' : 'DB_MASTER',
-					'write' => $conf['write'] === DB_SLAVE ? 'DB_SLAVE' : 'DB_MASTER',
+					'read'  => $conf['read'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_MASTER',
+					'write' => $conf['write'] === DB_REPLICA ? 'DB_REPLICA' : 'DB_MASTER',
 				]
 			]
 		);
