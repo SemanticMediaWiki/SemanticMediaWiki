@@ -4,11 +4,11 @@ This document provides a short introduction into the database schema and table s
 
 The database schema is defined using the `TableSchemaManager` class and together with the `TableBuilder` is forming the interface to define, create, and remove database and schema related information used by Semantic MediaWiki.
 
-The SPO (subject, predicate, and object) pattern paradigm is reflected in how semantic relations are orginized in Semantic MediaWiki. Three table types are used to store information with table fields normally being identify by it related intent such as `s_` (subject), `p_` (predicate, property), and `o_` (object).
+The SPO (subject, predicate, and object) pattern paradigm is reflected in how semantic relations are orginized in Semantic MediaWiki. Three table types are used to store information with table fields normally being identified by its related intent such as `s_` (subject), `p_` (predicate, property), and `o_` (object).
 
 The three table types are:
 
-- `Data table` a table that to stores information not necessarily following the SPO (statistics, ids, dependencies etc.)
+- `Data table` a table that to stores information not necessarily following the SPO pattern (statistics, ids, dependencies etc.)
 - `Property table` (Common) a table (identified by `smw_di_...`) that follows the SPO pattern
 - `Property table` (Fixed) a table (identified by `smw_fpt_...`) that follows the SPO pattern but omits the `p_id` as it is a designated table to one particular property
 
