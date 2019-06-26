@@ -295,7 +295,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$where = $description->getSQLCondition(
 				$query->alias,
 				array_keys( $fields ),
-				$this->store->getConnection( DB_SLAVE )
+				$this->store->getConnection( DB_REPLICA )
 			);
 		}
 
