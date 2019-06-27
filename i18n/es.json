@@ -55,6 +55,7 @@
 	"smw-error": "Error",
 	"smw-upgrade-error-title": "Error (Semantic MediaWiki)",
 	"smw-upgrade-error-why-title": "¿Por qué veo esta página?",
+	"smw-upgrade-maintenance-title": "Actualización y mantenimiento (Semantic MediaWiki)",
 	"smw-upgrade-maintenance-why-title": "¿Por qué veo esta página?",
 	"smw-semantics-not-enabled": "No se ha habilitado la funcionalidad de Semantic MediaWiki para esta wiki.",
 	"smw_viewasrdf": "Feed RDF",
