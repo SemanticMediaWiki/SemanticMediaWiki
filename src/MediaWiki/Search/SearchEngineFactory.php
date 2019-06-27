@@ -32,7 +32,7 @@ class SearchEngineFactory {
 		$settings = $applicationFactory->getSettings();
 
 		if ( $connection === null ) {
-			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_SLAVE );
+			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
 		}
 
 		$type = $settings->get( 'smwgFallbackSearchType' );

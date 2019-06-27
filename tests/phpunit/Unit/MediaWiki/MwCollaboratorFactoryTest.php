@@ -148,7 +148,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Connection\LoadBalancerConnectionProvider',
-			$instance->newLoadBalancerConnectionProvider( DB_SLAVE )
+			$instance->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 	}
 
