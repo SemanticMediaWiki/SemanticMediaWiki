@@ -43,6 +43,11 @@ class Settings extends Options {
 	 */
 	public static function newFromGlobals() {
 
+		if ( !isset( $GLOBALS['smwgNamespace'] ) ) {
+			throw new RuntimeException(
+				"Please add enableSemantics to your LocalSettings.php!"
+			);
+		}
 		$configuration = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
@@ -474,7 +479,7 @@ class Settings extends Options {
 
 		if ( isset( $GLOBALS['smwgSparqlDataEndpoint'] ) ) {
 			$configuration['smwgSparqlEndpoint']['data'] = $GLOBALS['smwgSparqlDataEndpoint'];
-    }
+		}
 
 		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
 			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
