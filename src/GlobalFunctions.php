@@ -247,6 +247,9 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// #1732 + #2813
 	wfLoadExtension( 'SemanticMediaWiki', dirname( __DIR__ ) . '/extension.json' );
 
+	// #4107
+	define( 'SMW_EXTENSION_LOADED', true );
+
 	// Apparently this is required (1.28+) as the earliest possible execution
 	// point in order for settings that refer to the SMW_NS_PROPERTY namespace
 	// to be available in LocalSettings

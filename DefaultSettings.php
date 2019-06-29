@@ -1378,10 +1378,13 @@ return [
 	# @see https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics
 	# @see https://www.semantic-mediawiki.org/wiki/Help:Pretty_URIs
 	#
+	# Example:
+	# 'smwgNamespace' => "http://example.org/id/"
+	#
 	# @since 1.0
-	# @default = ''
+	# @default null
 	##
-	// 	'smwgNamespace' => "http://example.org/id/",
+	'smwgNamespace' => null,
 	##
 
 	###
