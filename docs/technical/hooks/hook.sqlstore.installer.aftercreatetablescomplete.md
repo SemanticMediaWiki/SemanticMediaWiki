@@ -1,3 +1,5 @@
+## SMW::SQLStore::Installer::AfterCreateTablesComplete
+
 * Since: 2.5
 * Description: Hook allows to add extra tables after the creation process as been finalized.
 * Reference class: [`Installer.php`][Installer.php]

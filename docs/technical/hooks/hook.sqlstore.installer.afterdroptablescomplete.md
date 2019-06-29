@@ -1,3 +1,5 @@
+## SMW::SQLStore::Installer::AfterDropTablesComplete
+
 * Since: 2.5
 * Description: Hook allows to remove extra tables after the drop process as been finalized.
 * Reference class: [`Installer.php`][Installer.php]

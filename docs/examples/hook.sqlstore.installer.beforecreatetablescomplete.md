@@ -2,7 +2,7 @@
 
 ### Adding primary keys
 
-[#3559][issue-3559], Demonstrate how to add primary keys to existing table definitions in Semantic MediaWiki.
+Demonstrates how to add primary keys ([#3559][issue-3559]) to Semantic MediaWiki table definitions.
 
 ```php
 use Hooks;
@@ -43,5 +43,9 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 
 } );
 ```
+
+## See also
+
+- [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.beforecreatetablescomplete.md)
 
 [issue-3559]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3559
