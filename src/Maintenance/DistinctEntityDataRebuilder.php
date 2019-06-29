@@ -148,7 +148,7 @@ class DistinctEntityDataRebuilder {
 
 			if ( !$this->options->has( 'v' ) ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating document no.", sprintf( "%s (%1.0f%%)", $this->rebuildCount, $progress ) )
+					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", $progress, $this->rebuildCount, $total ) )
 				);
 			} else {
 				$this->reportMessage(

@@ -43,6 +43,11 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 	private $messageReporter;
 
 	/**
+	 * @var int
+	 */
+	private $lastId = 0;
+
+	/**
 	 * @since 3.1
 	 */
 	public function __construct() {
@@ -126,9 +131,23 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 		return true;
 	}
 
+	/**
+	 * @see Maintenance::addDefaultParams
+	 */
+	protected function addDefaultParams() {
+		parent::addDefaultParams();
+	}
+
 	private function fetchRows() {
 
 		$connection = $this->store->getConnection( 'mw.db' );
+
+		$this->lastId = (int)$connection->selectField(
+			SQLStore::ID_TABLE,
+			'MAX(smw_id)',
+			'',
+			__METHOD__
+		);
 
 		return $connection->select(
 			SQLStore::ID_TABLE,
@@ -226,15 +245,9 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 		$job->run();
 	}
 
-	/**
-	 * @see Maintenance::addDefaultParams
-	 */
-	protected function addDefaultParams() {
-		parent::addDefaultParams();
-	}
-
 	private function progress( $id, $i, $count ) {
-		return "\r". sprintf( "%-50s%s", "   ... checking entity", sprintf( "%s (%1.0f%%)", $id, round( ( $i / $count ) * 100 ) ) );
+		return
+			"\r". sprintf( "%-49s%s", "   ... checking entity", sprintf( "%4.0f%% (%s/%s)", min( 100, round( ( $i / $count ) * 100 ) ), $id, $this->lastId ) );
 	}
 
 }
