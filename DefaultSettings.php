@@ -596,6 +596,12 @@ return [
 	# - SMW_QSORT_RANDOM: Random sorting support for query results (was
 	#   $smwgQRandSortingSupport)
 	#
+	# - SMW_QSORT_UNCONDITIONAL: Allows an unconditional sort of results even if
+	#   the property doesn't exists as part of the result set (#2823). The option
+	#   isn't implemented for the SPARQLStore and the ElasticStore requires
+	#   the `sort.property.must.exists` to be diabled to reflect the same sorting
+	#   characteristics as with this setting enabled.
+	#
 	# @since 3.0
 	##
 	'smwgQSortFeatures' => SMW_QSORT | SMW_QSORT_RANDOM,
