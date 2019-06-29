@@ -80,11 +80,35 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language->expects( $this->once() )
-			->method( 'viewPrevNext' );
+		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
+			$instance = new MessageBuilder( $language );
+			$html = $instance->prevNextToText( $title, 20, 0, [], false );
 
-		$instance = new MessageBuilder( $language );
-		$instance->prevNextToText( $title, 20, 0, [], false );
+			$this->assertStringStartsWith( 'View (previous 20', $html );
+
+			preg_match_all( '!<a.*?</a>!', $html, $m, PREG_PATTERN_ORDER );
+			$links = $m[0];
+
+			$nums= [20, 50, 100, 250, 500];
+			$i = 0;
+			foreach ( $links as $index => $a ) {
+				if ( $index < 1 ) {
+					$this->assertContains( 'class="mw-nextlink"', $a );
+					$this->assertContains( '>next 20<', $a );
+					continue;
+				}
+				$this->assertContains( 'class="mw-numlink"', $a );
+				$this->assertContains( 'title="Show ' . $nums[$i] . ' results per page"', $a );
+				$this->assertContains( ">$nums[$i]<", $a );
+				$i+=1;
+			}
+		} else {
+			$language->expects( $this->once() )
+				->method( 'viewPrevNext' );
+			$instance = new MessageBuilder( $language );
+			$instance->prevNextToText( $title, 20, 0, [], false );
+		}
+
 	}
 
 	public function testGetForm() {

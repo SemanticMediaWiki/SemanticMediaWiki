@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use IContextSource;
 use Language;
+use MediaWiki\Navigation\PrevNextNavigationRenderer;
 use Message;
 use RuntimeException;
 use Title;
@@ -93,7 +94,12 @@ class MessageBuilder {
 	 * @return string
 	 */
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
-		return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );
+		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
+			$prevNext =  new PrevNextNavigationRenderer( \RequestContext::getMain() );
+			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
+		} else {
+			return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );
+		}
 	}
 
 	/**
