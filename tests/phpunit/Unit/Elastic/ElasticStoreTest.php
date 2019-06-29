@@ -3,6 +3,7 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\ElasticStore;
+use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
@@ -105,7 +106,13 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setElasticFactory( $this->elasticFactory );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 
-		$instance->setup( true );
+		$options = new Options(
+			[
+				'verbose' => true
+			]
+		);
+
+		$instance->setup( $options );
 
 		$this->assertContains(
 			'Setting up indices',

@@ -198,10 +198,6 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store->expects( $this->once() )
-			->method( 'getOptions' )
-			->will( $this->returnValue( new Options() ) );
-
-		$store->expects( $this->once() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 

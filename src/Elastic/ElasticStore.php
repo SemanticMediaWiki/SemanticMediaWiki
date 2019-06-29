@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
+use SMW\Options;
 use Title;
 
 /**
@@ -292,9 +293,9 @@ class ElasticStore extends SQLStore {
 
 		$indices = $this->indexer->setup();
 
-		if ( $verbose ) {
+		if ( $verbose instanceof Options && $verbose->get( 'verbose' ) ) {
 			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( 'Selected query engine: "SMWElasticStore"' );
+			$this->messageReporter->reportMessage( 'Query engine: "SMWElasticStore"' );
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( "\nSetting up indices ...\n" );
 
@@ -324,7 +325,7 @@ class ElasticStore extends SQLStore {
 
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( 'Selected query engine: "SMWElasticStore"' );
+			$this->messageReporter->reportMessage( 'Query engine: "SMWElasticStore"' );
 			$this->messageReporter->reportMessage( "\n" );
 			$this->messageReporter->reportMessage( "\nDropping indices ...\n" );
 

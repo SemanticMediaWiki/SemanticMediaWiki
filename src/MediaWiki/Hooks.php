@@ -1293,6 +1293,8 @@ class Hooks {
 		$importer->setMessageReporter( $messageReporter );
 		$importer->doImport();
 
+		$options->set( 'hook-execution', [ 'import' ] );
+
 		return true;
 	}
 

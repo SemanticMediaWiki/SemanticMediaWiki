@@ -7,6 +7,8 @@ use Maintenance;
 use ReflectionProperty;
 use SMW\Options;
 use SMW\SQLStore\Installer;
+use SMW\StoreFactory;
+use Onoi\MessageReporter\MessageReporterFactory;
 
 /**
  * Schema update to set up the needed database tables
@@ -58,16 +60,29 @@ class ExtensionSchemaUpdates {
 
 		$options = new Options(
 			[
-				Installer::OPT_SCHEMA_UPDATE => true,
 				Installer::OPT_TABLE_OPTIMIZE => true,
 				Installer::OPT_IMPORT => true,
-				Installer::OPT_SUPPLEMENT_JOBS => true
+				Installer::OPT_SUPPLEMENT_JOBS => true,
+				'verbose' => $verbose
 			]
 		);
 
 		if ( $this->hasMaintenanceArg( 'skip-optimize' ) ) {
 			$options->set( Installer::OPT_TABLE_OPTIMIZE, false );
 		}
+
+		$messageReporterFactory = new MessageReporterFactory();
+
+		$messageReporter = $messageReporterFactory->newObservableMessageReporter();
+		$messageReporter->registerReporterCallback( [ $this->updater, 'output' ] );
+
+		// Inject the instance here to avoid "Database serialization may cause
+		// problems, since the connection is not restored on wakeup." given that the
+		// DatabaseUpdater prior MW 1.31 as issues with serialization the options
+		// array.
+		// $options->set( 'messageReporter', $messageReporter );
+		$store = StoreFactory::getStore();
+		$store->setMessageReporter( $messageReporter );
 
 		// Needs a static caller otherwise the DatabaseUpdater returns with:
 		// "Warning: call_user_func_array() expects parameter 1 to be a

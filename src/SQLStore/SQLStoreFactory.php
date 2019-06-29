@@ -434,17 +434,6 @@ class SQLStoreFactory {
 			$this->messageReporter
 		);
 
-		$installer->setOptions(
-			$this->store->getOptions()->filter(
-				[
-					Installer::OPT_TABLE_OPTIMIZE,
-					Installer::OPT_IMPORT,
-					Installer::OPT_SCHEMA_UPDATE,
-					Installer::OPT_SUPPLEMENT_JOBS
-				]
-			)
-		);
-
 		return $installer;
 	}
 

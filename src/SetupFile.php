@@ -254,6 +254,30 @@ class SetupFile {
 	/**
 	 * @since 3.1
 	 *
+	 * @param array $vars
+	 */
+	public function reset( $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
+
+		$id = Site::id();
+
+		if ( !isset( $vars['smw.json'][$id] ) ) {
+			return;
+		}
+
+		foreach ( $vars['smw.json'][$id] as $k => $v ) {
+			$args[$k] = null;
+		}
+
+		$this->write( $args, $vars );
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param array $args
 	 */
 	public function set( array $args, $vars = [] ) {
