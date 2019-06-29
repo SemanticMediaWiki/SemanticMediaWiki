@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Exception\FileNotWritableException;
 use SMW\Utils\File;
 use SMW\SQLStore\Installer;
@@ -16,8 +15,6 @@ use SMW\SQLStore\Installer;
  * @author mwjames
  */
 class SetupFile {
-
-	use MessageReporterAwareTrait;
 
 	/**
 	 * Describes the maintenance mode
@@ -57,7 +54,15 @@ class SetupFile {
 	 *
 	 * @param array $vars
 	 */
-	public static function loadSchema( &$vars ) {
+	public function loadSchema( &$vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
+
+		if ( isset( $vars['smw.json'] ) ) {
+			return;
+		}
 
 		// @see #3506
 		$file = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
@@ -110,12 +115,27 @@ class SetupFile {
 	 *
 	 * @param array $vars
 	 *
+	 * @return string
+	 */
+	public static function makeUpgradeKey( $vars ) {
+		return sha1( self::makeKey( $vars ) );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $vars
+	 *
 	 * @return boolean
 	 */
-	public static function isMaintenanceMode( $vars ) {
+	public function inMaintenanceMode( $vars = [] ) {
 
 		if ( !defined( 'MW_PHPUNIT_TEST' ) && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return false;
+		}
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
 		}
 
 		$id = Site::id();
@@ -134,7 +154,11 @@ class SetupFile {
 	 *
 	 * @return []
 	 */
-	public static function getMaintenanceMode( $vars ) {
+	public function getMaintenanceMode( $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
 
 		$id = Site::id();
 
@@ -159,7 +183,7 @@ class SetupFile {
 
 		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
 		$checks = [
-			Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ]
+			\SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
 		];
 
 		foreach ( $checks as $key => $value ) {
@@ -179,42 +203,21 @@ class SetupFile {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $vars
-	 *
-	 * @return string
+	 * @param mixed $maintenanceMode
 	 */
-	public static function makeUpgradeKey( $vars ) {
-		return sha1( self::makeKey( $vars ) );
-	}
+	public function setMaintenanceMode( $maintenanceMode, $vars = [] ) {
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param boolean $isCli
-	 *
-	 * @return boolean
-	 */
-	public function setMaintenanceMode( $vars, array $maintenanceMode = [] ) {
-
-		// #3563, Use the specific wiki-id as identifier for the instance in use
-		$key = self::makeUpgradeKey( $vars );
-		$id = Site::id();
-
-		if ( $this->messageReporter !== null && $maintenanceMode === [] ) {
-			$this->messageReporter->reportMessage( "Switching into the maintenance mode for $id ..." );
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
 		}
 
-		if ( $maintenanceMode !== [] ) {
-			$maintenance = [ self::MAINTENANCE_MODE => $maintenanceMode ];
-		} else {
-			$maintenance = [ self::MAINTENANCE_MODE => true ];
-		}
-
-		$this->write( $vars, [ 'upgrade_key' => $key ] + $maintenance );
-
-		if ( $this->messageReporter !== null && $maintenanceMode === [] ) {
-			$this->messageReporter->reportMessage( "\n   ... done.\n\n" );
-		}
+		$this->write(
+			[
+				self::UPGRADE_KEY => self::makeUpgradeKey( $vars ),
+				self::MAINTENANCE_MODE => $maintenanceMode
+			],
+			$vars
+		);
 	}
 
 	/**
@@ -222,28 +225,58 @@ class SetupFile {
 	 *
 	 * @param array $vars
 	 */
-	public function setUpgradeKey( $vars ) {
+	public function finalize( $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
 
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$key = self::makeUpgradeKey( $vars );
 		$id = Site::id();
 
 		if (
-			isset( $vars['smw.json'][$id]['upgrade_key'] ) &&
-			$key === $vars['smw.json'][$id]['upgrade_key'] &&
+			isset( $vars['smw.json'][$id][self::UPGRADE_KEY] ) &&
+			$key === $vars['smw.json'][$id][self::UPGRADE_KEY] &&
 			$vars['smw.json'][$id][self::MAINTENANCE_MODE] === false ) {
 			return false;
 		}
 
-		if ( $this->messageReporter !== null ) {
-			$this->messageReporter->reportMessage( "\nReleasing the maintenance mode for $id ..." );
+		$this->write(
+			[
+				self::UPGRADE_KEY => $key,
+				self::MAINTENANCE_MODE => false
+			],
+			$vars
+		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $args
+	 */
+	public function set( array $args, $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
 		}
 
-		$this->write( $vars, [ 'upgrade_key' => $key, self::MAINTENANCE_MODE => false ] );
+		$this->write( $args, $vars );
+	}
 
-		if ( $this->messageReporter !== null ) {
-			$this->messageReporter->reportMessage( "\n   ... done.\n" );
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 */
+	public function remove( $key, $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
 		}
+
+		$this->write( [ $key => null ], $vars );
 	}
 
 	/**
@@ -252,7 +285,7 @@ class SetupFile {
 	 * @param array $vars
 	 * @param array $args
 	 */
-	public function write( $vars, $args = [] ) {
+	public function write( $args = [], $vars ) {
 
 		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
@@ -262,7 +295,12 @@ class SetupFile {
 		}
 
 		foreach ( $args as $key => $value ) {
-			$vars['smw.json'][$id][$key] = $value;
+			// NULL means that the key key is removed
+			if ( $value === null ) {
+				unset( $vars['smw.json'][$id][$key] );
+			} else {
+				$vars['smw.json'][$id][$key] = $value;
+			}
 		}
 
 		// Log the base elements used for computing the key

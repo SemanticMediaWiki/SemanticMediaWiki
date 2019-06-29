@@ -54,7 +54,7 @@ class PopulateHashField extends \Maintenance {
 	 *
 	 * @param Store $store
 	 */
-	public function setComplete( $incomplete ) {
+	public function setComplete( $complete ) {
 
 		$this->reportMessage(
 			"   ... writing the status to the setup information file ... \n"
@@ -62,10 +62,9 @@ class PopulateHashField extends \Maintenance {
 
 		$setupFile = new SetupFile();
 
-		$setupFile->write(
-			$GLOBALS,
+		$setupFile->set(
 			[
-				Installer::POPULATE_HASH_FIELD_COMPLETE => $incomplete
+				Installer::POPULATE_HASH_FIELD_COMPLETE => $complete
 			]
 		);
 	}

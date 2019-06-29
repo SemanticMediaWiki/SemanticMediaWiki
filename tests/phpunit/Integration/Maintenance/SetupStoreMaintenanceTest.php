@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\MediaWiki\Maintenance;
+namespace SMW\Tests\Integration\Maintenance;
 
 use SMW\Tests\MwDBaseUnitTestCase;
 
@@ -75,7 +75,7 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 		$maintenanceRunner->run();
 
 		$this->assertContains(
-			'Database initialized completed',
+			'Database and table setup completed',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

@@ -18,6 +18,11 @@ class SetupCheck {
 	private $options = [];
 
 	/**
+	 * @var SetupFile
+	 */
+	private $setupFile;
+
+	/**
 	 * @var string
 	 */
 	private $errorType = '';
@@ -26,11 +31,17 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param array $vars
+	 * @param SetupFile|null $setupFile
 	 *
 	 * @return boolean
 	 */
-	public function __construct( array $options ) {
+	public function __construct( array $options, SetupFile $setupFile = null ) {
 		$this->options = $options;
+		$this->setupFile = $setupFile;
+
+		if ( $this->setupFile === null ) {
+			$this->setupFile =  new SetupFile();
+		}
 	}
 
 	/**
@@ -45,32 +56,29 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $vars
-	 *
 	 * @return boolean
 	 */
-	public function hasError( $vars ) {
+	public function hasError() {
 
 		 $this->errorType = '';
 
-		if ( SetupFile::isMaintenanceMode( $vars ) ) {
+		if ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = 'maintenance';
-		} elseif ( SetupFile::isGoodSchema() === false ) {
+		} elseif ( $this->setupFile->isGoodSchema() === false ) {
 			$this->errorType = 'schema';
 		}
 
-		return $this->errorType === '';
+		return $this->errorType !== '';
 	}
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param boolean $isCli
-	 * @param
 	 *
 	 * @return boolean
 	 */
-	public function getError( $isCli = false, $vars ) {
+	public function getError( $isCli = false ) {
 
 		$error = [
 			'title' => '',
@@ -78,7 +86,7 @@ class SetupCheck {
 		];
 
 		if ( $this->errorType === 'maintenance' ) {
-			$error = $this->maintenanceError( SetupFile::getMaintenanceMode( $vars ) );
+			$error = $this->maintenanceError( $this->setupFile->getMaintenanceMode() );
 		} elseif ( $this->errorType === 'schema' ) {
 			$error = $this->schemaError();
 		}
@@ -101,12 +109,9 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param boolean $isCli
-	 * @param array $vars
-	 *
-	 * @return boolean
 	 */
-	public function triggerErrorAndAbort( $isCli = false, $vars ) {
-		echo $this->getError( $isCli, $vars );
+	public function showErrorAndAbort( $isCli = false ) {
+		echo $this->getError( $isCli );
 		die();
 	}
 
@@ -120,13 +125,13 @@ class SetupCheck {
 			}
 		}
 
-		$content = Message::get( 'smw-upgrade-maintenance-note', Message::PARSE ) .
+		$content = '<p>' . Message::get( 'smw-upgrade-maintenance-note', Message::PARSE ) . '</p>' .
 			'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-			$this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')' .
-			'<h3 class="section">' . Message::get( 'smw-upgrade-maintenance-why-title' ) . '</h3>' .
-			Message::get( 'smw-upgrade-maintenance-explain', Message::PARSE ) .
-			'<h3 class="section">' . Message::get( 'smw-upgrade-progress' ) . '</h3>' .
-			Message::get( 'smw-upgrade-progress-explain', Message::PARSE )  . $progress;
+			'<p>' . $this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')' . '</p>' .
+			'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-maintenance-why-title' ) . '</span></h3>' .
+			'<p>' . Message::get( 'smw-upgrade-maintenance-explain', Message::PARSE ) . '</p>' .
+			'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-progress' ) . '</span></h3>' .
+			'<p>' . $progress . Message::get( 'smw-upgrade-progress-explain', Message::PARSE ) . '</p>';
 
 		$error = [
 			'title' => Message::get( 'smw-upgrade-maintenance-title' ),
@@ -139,14 +144,14 @@ class SetupCheck {
 
 	private function schemaError() {
 
-		$content = Message::get( [ 'smw-upgrade-error', '' ], Message::PARSE ) .
+		$content = '<p>' . Message::get( [ 'smw-upgrade-error', '' ], Message::PARSE ) . '</p>' .
 				'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-				$this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')' .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-error-why-title' ) . '</h3>' .
+				'<p>' . $this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')'. '</p>' .
+				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
 				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
-				'<h3 class="section">' . Message::get( 'smw-upgrade-error-how-title' ) . '</h3>' .
-				Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
-				Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE );
+				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-how-title' ) . '</span></h3>' .
+				 '<p>' . Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
+				Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE ) . '</p>';
 
 		$error = [
 			'title' => Message::get( 'smw-upgrade-error-title' ),
@@ -179,10 +184,15 @@ class SetupCheck {
 			img, h1, h2, ul  {
 				text-align: left;
 				margin: 0.1em 0 0.3em;
+				margin-left:10px;
 			}
 			p, h2 {
 				text-align: left;
 				margin: 0.5em 0 1em;
+				margin-left:10px;
+			}
+			.title {
+				margin-left:10px;
 			}
 			h1 {
 				font-size: 140%;
@@ -192,6 +202,7 @@ class SetupCheck {
 			}
 			h3 {
 				font-size: 100%;
+				margin-left:10px;
 			}
 			.progress-bar-animated {
 				animation: progress-bar-stripes 2s linear infinite;
@@ -200,7 +211,7 @@ class SetupCheck {
 				background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-size: 1rem 1rem;
 			}
 			.progress-bar-section {
-				margin-left: -8px; margin-right: -8px;margin-bottom:10px;margin-top:10px;white-space: nowrap;border-top: 1px solid #eee;border-bottom: 1px solid #eee;padding: 8px 0 8px 0;background: #eee;
+				margin-right: 20px;margin-bottom:10px;margin-top:10px;white-space: nowrap;padding: 8px 0 8px 0;;
 			}
 			.progress-bar {
 				background-color: #eee;transition: width .6s ease;justify-content: center;display: flex;white-space: nowrap;
@@ -215,8 +226,8 @@ class SetupCheck {
 	</head>
 	<body>
 		<div style="background-color:#eee;padding-bottom:2px; margin-top: -8px;margin-left: -8px;margin-right: -8px; border-bottom: 4px solid {$borderColor};">
-		<img style="width:50px;margin-left:8px;" src="{$logo}" alt='The MediaWiki logo' />
-		<h1 style="color:#222;margin-left:8px;">{$title}</h1></div>
+		<img style="width:50px;margin-left:18px;" src="{$logo}" alt='The MediaWiki logo' />
+		<h1 style="color:#222;margin-left:18px;">{$title}</h1></div>
 		<div style="margin-top:10px;">{$content}
 		</div>
 	</body>
@@ -230,7 +241,7 @@ HTML;
 		return <<<EOT
          <div class='progress-bar-section'>
          <div style='width:100%;margin-left: 8px;margin-bottom: 5px;'>$msg</div>
-         <div class='progress-bar progress-bar-striped progress-bar-animated' style='background-color:#FFC107;height:16px;padding:2px;width:$value;margin-left: 8px;'></div>
+         <div class='progress-bar progress-bar-striped progress-bar-animated' style='background-color:#FFC107;height:16px;padding:2px;width:$value%;margin-left: 8px;'></div>
          </div>
 EOT;
 	}
