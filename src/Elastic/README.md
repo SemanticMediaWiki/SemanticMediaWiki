@@ -30,15 +30,9 @@ It is recommended to use:
 - Property chains and paths queries are supported (e.g. `[[Foo.Bar::Foobar]]`)
 - Category and property hierarchies are supported
 
-### Notes
-
-ES is not expected to be used as data store replacement and therefore it is not assumed that ES will all `_source` fields during a request.
-
-The `ElasticStore` provides a customized serialization format to transform and transfer its data, an DSL interpreter (see  [domain language][es:dsl]) allows for existing `#ask` queries to be answered by an ES instance without chaging its syntax when switching from a `SQLStore` (or `SPARQLStore`).
-
 ## Setup
 
-To use the ElasticStore (hereby Elasticsearch) as drop-in replacement for the existing `SQLStore` and its query answering the following settings and operations are necessary:
+Before the ElasticStore (hereby Elasticsearch) can be used as drop-in replacement for the existing `SQLStore` based `QueryEngine` the following settings and operations are necessary:
 
 - Set `$GLOBALS['smwgDefaultStore'] = 'SMWElasticStore';`
 - Set `$GLOBALS['smwgElasticsearchEndpoints'] = [ ... ];`
@@ -50,6 +44,12 @@ For a more detailed introduction, see the [usage][section:usage] and [settings][
 - [`$smwgDefaultStore`][help:smwgDefaultStore]
 - [`$smwgElasticsearchEndpoints`][help:smwgElasticsearchEndpoints]
 - [`rebuildElasticIndex.php`][help:rebuildElasticIndex.php]
+
+## General notes
+
+Elasticsearch is not expected to be used as data store replacement and therefore it is not assumed that ES will return all `_source` fields during a request.
+
+The `ElasticStore` provides a customized serialization format to transform and transfer its data, an DSL interpreter (see  [domain language][es:dsl]) allows for existing `#ask` queries to be answered by an ES instance without changing its syntax when switching from a `SQLStore` (or `SPARQLStore`).
 
 ## more ...
 
