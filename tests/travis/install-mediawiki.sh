@@ -25,6 +25,10 @@ cd mw
 ## MW 1.25 requires Psr\Logger
 if [ -f composer.json ]
 then
+  # Hack to fix "... jetbrains/phpstorm-stubs/PhpStormStubsMap.php): failed to open stream: No such file or directory ..."
+  # https://phabricator.wikimedia.org/T226766
+  composer remove jetbrains/phpstorm-stubs --no-interaction
+
   composer install
 fi
 
