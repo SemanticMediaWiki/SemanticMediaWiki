@@ -97,7 +97,6 @@ class SemanticMediaWiki {
 		$namespace->init( $GLOBALS );
 
 		$setup = new Setup();
-		$setup->loadSchema( $GLOBALS );
 		$setup->init( $GLOBALS, __DIR__ );
 	}
 

@@ -90,6 +90,7 @@ class Installer implements MessageReporter {
 		$this->tableBuilder = $tableBuilder;
 		$this->tableBuildExaminer = $tableBuildExaminer;
 		$this->options = new Options();
+		$this->setupFile = new SetupFile();
 	}
 
 	/**
@@ -122,10 +123,6 @@ class Installer implements MessageReporter {
 	 */
 	public function install( $verbose = true ) {
 
-		if ( $this->setupFile === null ) {
-			$this->setupFile = new SetupFile();
-		}
-
 		// If for some reason the enableSemantics was not yet enabled
 		// still allow to run the tables create in order for the
 		// setup to be completed
@@ -133,13 +130,17 @@ class Installer implements MessageReporter {
 			CompatibilityMode::enableTemporaryCliUpdateMode();
 		}
 
-		$messageReporter = $this->newMessageReporter( $verbose );
+		$executionTimes = [];
+		$startTime = microtime( true );
 
-		$messageReporter->reportMessage( "\nSelected storage engine: \"SMWSQLStore3\" (or an extension thereof)\n" );
-		$messageReporter->reportMessage( "\nSetting up standard database configuration for SMW ...\n\n" );
+		$this->setupFile->setMaintenanceMode( true );
 
-		$this->setupFile->setMessageReporter( $messageReporter );
-		$this->setupFile->setMaintenanceMode( $GLOBALS );
+		$messageReporter = $this->newMessageReporter(
+			$verbose
+		);
+
+		$messageReporter->reportMessage( "\nStorage engine: \"SMWSQLStore3\" (or an extension thereof)\n" );
+		$messageReporter->reportMessage( "\nSetting up the database tables ...\n\n" );
 
 		$this->tableBuilder->setMessageReporter(
 			$messageReporter
@@ -151,7 +152,7 @@ class Installer implements MessageReporter {
 
 		// #3559
 		$tables = $this->tableSchemaManager->getTables();
-		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'create-tables' => '20%' ] );
+		$this->setupFile->setMaintenanceMode( [ 'create-tables' => 20 ] );
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
@@ -165,18 +166,22 @@ class Installer implements MessageReporter {
 			$this->tableBuilder->create( $table );
 		}
 
-		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'post-creation' => '40%' ] );
+		$executionTimes['create-tables'] = microtime( true );
+		$messageReporter->reportMessage( "\nPost-creation examination tasks ...\n\n" );
+
+		$this->setupFile->setMaintenanceMode( [ 'post-creation' => 40 ] );
 		$this->tableBuildExaminer->checkOnPostCreation( $this->tableBuilder );
+		$executionTimes['post-creation-check'] = microtime( true );
 
-		$messageReporter->reportMessage( "\nDatabase initialized completed.\n" );
+		$this->setupFile->setMaintenanceMode( [ 'table-optimization' => 60 ] );
+		$this->runTableOptimization( $messageReporter );
+		$executionTimes['table-optimization'] = microtime( true );
 
-		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'table-optimization' => '60%' ] );
-		$this->table_optimization( $messageReporter );
+		$this->setupFile->setMaintenanceMode( [ 'supplement-jobs' => 80 ] );
+		$this->addSupplementJobs( $messageReporter );
+		$executionTimes['supplement-jobs'] = microtime( true );
 
-		$this->setupFile->setMaintenanceMode( $GLOBALS, [ 'supplement-jobs' => '80%' ] );
-		$this->supplement_jobs( $messageReporter );
-
-		$this->setupFile->setUpgradeKey( $GLOBALS );
+		$this->setupFile->finalize();
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -186,6 +191,31 @@ class Installer implements MessageReporter {
 				$this->options
 			]
 		);
+
+		$executionTimes['hook-execution'] = microtime( true );
+		$messageReporter->reportMessage( "\nDone in (tasks) ...\n" );
+
+		foreach ( $executionTimes as $key => $time ) {
+			$t = $time - $startTime;
+
+			if ( $t > 60 ) {
+				$t = sprintf( "%.2f", $t / 60 );
+				$unit = 'min';
+			} else {
+				$t = sprintf( "%.2f", $t );
+				$unit = 'sec';
+			}
+
+			$len = 55 - strlen( $t );
+
+			$messageReporter->reportMessage(
+				sprintf( "%-{$len}s%s\n", "   ... $key", $t . " ($unit.)" )
+			);
+
+			$startTime = $time;
+		}
+
+		$messageReporter->reportMessage( "\nDatabase and table setup completed.\n" );
 
 		if ( $this->options->has( self::OPT_SCHEMA_UPDATE ) ) {
 			$messageReporter->reportMessage( "\n" );
@@ -262,13 +292,15 @@ class Installer implements MessageReporter {
 		return $messageReporter;
 	}
 
-	private function table_optimization( $messageReporter ) {
+	private function runTableOptimization( $messageReporter ) {
+
+		$messageReporter->reportMessage( "\nTable optimization task ...\n" );
 
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
-			return $messageReporter->reportMessage( "\nSkipping the table optimization.\n" );
+			return $messageReporter->reportMessage( "   ... skipping the table optimization\n" );
 		}
 
-		$messageReporter->reportMessage( "\nRunning table optimization (this may take a moment) ...\n\n" );
+		$messageReporter->reportMessage( "\n" );
 
 		foreach ( $this->tableSchemaManager->getTables() as $table ) {
 			$this->tableBuilder->optimize( $table );
@@ -277,13 +309,14 @@ class Installer implements MessageReporter {
 		$messageReporter->reportMessage( "\nOptimization completed.\n" );
 	}
 
-	private function supplement_jobs( $messageReporter ) {
+	private function addSupplementJobs( $messageReporter ) {
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
 		}
 
-		$messageReporter->reportMessage( "\nAdding property statistics rebuild job ...\n" );
+		$messageReporter->reportMessage( "\nAdding supplement jobs ...\n" );
+		$messageReporter->reportMessage( "   ... property statistics rebuild job ...\n" );
 
 		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
 
@@ -294,8 +327,7 @@ class Installer implements MessageReporter {
 
 		$job->insert();
 
-		$messageReporter->reportMessage( "   ... done.\n" );
-		$messageReporter->reportMessage( "\nAdding entity disposer job ...\n" );
+		$messageReporter->reportMessage( "   ... entity disposer job ...\n" );
 
 		$job = new EntityIdDisposerJob(
 			$title,

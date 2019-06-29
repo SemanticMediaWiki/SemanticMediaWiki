@@ -41,21 +41,15 @@ final class Setup {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param array &$vars
-	 */
-	public function loadSchema( &$vars ) {
-		SetupFile::loadSchema( $vars );
-	}
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param array &$vars
 	 * @param string $localDirectory
 	 */
 	public function init( &$vars, $localDirectory ) {
+
+		$setupFile = new SetupFile();
+		$setupFile->loadSchema( $vars );
 
 		$this->initMessageCallbackHandler();
 
@@ -64,11 +58,12 @@ final class Setup {
 				'version' => SMW_VERSION,
 				'smwgUpgradeKey' => $vars['smwgUpgradeKey'],
 				'wgScriptPath' => $vars['wgScriptPath']
-			]
+			],
+			$setupFile
 		);
 
-		if ( $setupCheck->hasError( $vars ) === false ) {
-			$setupCheck->triggerErrorAndAbort( $setupCheck->isCli(), $vars );
+		if ( $setupCheck->hasError() ) {
+			$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
 		}
 
 		$this->addDefaultConfigurations( $vars );

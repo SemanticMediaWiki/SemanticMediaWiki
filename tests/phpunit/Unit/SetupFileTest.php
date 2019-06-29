@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use SMW\SetupFile;
 use SMW\Utils\File;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SetupFile
@@ -16,13 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SetupFileTest extends \PHPUnit_Framework_TestCase {
-
-	private $spyMessageReporter;
-
-	protected function setUp() {
-		parent::setUp();
-		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
-	}
 
 	public function testIsGoodSchema() {
 
@@ -76,7 +68,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSetUpgradeKey() {
+	public function testFinalize() {
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
@@ -98,8 +90,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgPageSpecialProperties' => []
 		];
 
-		$instance->setMessageReporter( $this->spyMessageReporter );
-		$instance->setUpgradeKey( $vars );
+		$instance->finalize( $vars );
 	}
 
 	public function testSetMaintenanceMode() {
@@ -135,7 +126,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgPageSpecialProperties' => []
 		];
 
-		$instance->setMaintenanceMode( $vars );
+		$instance->setMaintenanceMode( true, $vars );
 	}
 
 	public function testSetUpgradeFile() {
@@ -172,7 +163,38 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgPageSpecialProperties' => []
 		];
 
-		$instance->write( $vars, [ 'Foo' => 42 ] );
+		$instance->write( [ 'Foo' => 42 ], $vars );
+	}
+
+	public function testRemove() {
+
+		$configFile = File::dir( 'Foo_dir/.smw.json' );
+		$expected = '[]';
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->once() )
+			->method( 'write' )
+			->with(
+				$this->equalTo( $configFile ),
+				$this->equalTo( $expected ) );
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$vars = [
+			'smwgConfigFileDir' => 'Foo_dir',
+			'smwgIP' => '',
+			'smwgUpgradeKey' => 'bar',
+			'smwgEnabledFulltextSearch' => '',
+			'smwgFixedProperties' => [],
+			'smwgPageSpecialProperties' => []
+		];
+
+		$instance->remove( 'Foo', $vars );
 	}
 
 	public function testIncompleteTasks() {
