@@ -276,7 +276,7 @@ class DataRebuilder {
 
 		// By default we expect the disposal action to take place whenever the
 		// script is run
-		$this->dispose_outdated();
+		$this->runOutdatedDisposer();
 
 		// Only expected the disposal action?
 		if ( $this->options->has( 'dispose-outdated' ) ) {
@@ -496,7 +496,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function dispose_outdated() {
+	private function runOutdatedDisposer() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$title = Title::newFromText( __METHOD__ );
