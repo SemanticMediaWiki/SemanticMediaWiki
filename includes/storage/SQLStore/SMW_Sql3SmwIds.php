@@ -791,6 +791,10 @@ class SMWSql3SmwIds {
 			$cond = [
 				"smw_hash" => $title->getSha1()
 			];
+		} elseif( is_int( $title ) ) {
+			$cond = [
+				"smw_id" => $title
+			];
 		} else {
 			$cond = [
 				"smw_title =" . $connection->addQuotes( $title ),

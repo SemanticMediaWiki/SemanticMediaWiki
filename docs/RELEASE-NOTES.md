@@ -38,7 +38,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3637](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3637) Uses `keyword` as type for the `P:*.geoField` mapping
 * [#3638](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3638) Added minimal index document for an empty bulk request
 * [#3693](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3693) Relaxed link removal in raw text
-* [#3697](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3697) Added replication monitoring (`indexer.monitor.entity.replication`) on per entity base and [#3713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3713) (`indexer.monitor.entity.replication.cache.lifetime`)
+* [#3697](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3697) Added replication monitoring (`indexer.monitor.entity.replication`) on per entity base and [#3713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3713) (`indexer.monitor.entity.replication.cache_lifetime`)
 * [#3699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3699) Added length restriction to value inputs for a query construct  (`query.maximum.value.length`)
 * [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)

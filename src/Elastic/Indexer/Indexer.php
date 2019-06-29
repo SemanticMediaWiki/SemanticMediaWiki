@@ -780,8 +780,15 @@ class Indexer {
 	}
 
 	private function makeSubject( DIWikiPage $subject ) {
+
+		$title = $subject->getDBKey();
+
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title{0} !== '_' ) {
+			$title = str_replace( '_', ' ', $title );
+		}
+
 		return [
-			'title'     => str_replace( '_', ' ', $subject->getDBKey() ),
+			'title'     => $title,
 			'subobject' => $subject->getSubobjectName(),
 			'namespace' => $subject->getNamespace(),
 			'interwiki' => $subject->getInterwiki(),

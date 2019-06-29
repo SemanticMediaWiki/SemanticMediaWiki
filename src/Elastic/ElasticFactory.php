@@ -23,6 +23,7 @@ use SMW\Elastic\Indexer\IndicatorProvider;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
 use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
@@ -217,6 +218,30 @@ class ElasticFactory {
 	 *
 	 * @param Store $store
 	 *
+	 * @return DocumentReplicationExaminer
+	 */
+	public function newDocumentReplicationExaminer( Store $store = null ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $store === null  ) {
+			$store = $applicationFactory->getStore();
+		}
+
+		$documentReplicationExaminer = new DocumentReplicationExaminer(
+			$store,
+			$this->newReplicationStatus( $store->getConnection( 'elastic' ) )
+		);
+
+		return $documentReplicationExaminer;
+	}
+
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 *
 	 * @return CheckReplicationTask
 	 */
 	public function newCheckReplicationTask( Store $store = null ) {
@@ -232,12 +257,12 @@ class ElasticFactory {
 
 		$checkReplicationTask = new CheckReplicationTask(
 			$store,
-			$this->newReplicationStatus( $connection ),
+			$this->newDocumentReplicationExaminer( $store ),
 			$applicationFactory->getEntityCache()
 		);
 
 		$checkReplicationTask->setCacheTTL(
-			$options->dotGet( 'indexer.monitor.entity.replication.cache.lifetime' )
+			$options->dotGet( 'indexer.monitor.entity.replication.cache_lifetime' )
 		);
 
 		return $checkReplicationTask;

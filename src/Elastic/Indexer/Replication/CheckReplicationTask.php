@@ -31,9 +31,9 @@ class CheckReplicationTask extends Task {
 	private $store;
 
 	/**
-	 * @var ReplicationStatus
+	 * @var DocumentReplicationExaminer
 	 */
-	private $replicationStatus;
+	private $documentReplicationExaminer;
 
 	/**
 	 * @var EntityCache
@@ -59,12 +59,12 @@ class CheckReplicationTask extends Task {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param ReplicationStatus $replicationStatus
+	 * @param DocumentReplicationExaminer $documentReplicationExaminer
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, ReplicationStatus $replicationStatus, EntityCache $entityCache ) {
+	public function __construct( Store $store, DocumentReplicationExaminer $documentReplicationExaminer, EntityCache $entityCache ) {
 		$this->store = $store;
-		$this->replicationStatus = $replicationStatus;
+		$this->documentReplicationExaminer = $documentReplicationExaminer;
 		$this->entityCache = $entityCache;
 	}
 
@@ -91,6 +91,15 @@ class CheckReplicationTask extends Task {
 	 */
 	public function getReplicationFailures() {
 		return $this->entityCache->fetch( $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ) );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title $title
+	 */
+	public function deleteEntireReplicationTrail() {
+		$this->entityCache->delete( $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ) );
 	}
 
 	/**
@@ -181,46 +190,22 @@ class CheckReplicationTask extends Task {
 
 	private function check( $subject, $options ) {
 
-		$title = $subject->getTitle();
-		$id = $this->store->getObjectIds()->getID( $subject );
-
-		$rev_store = $this->store->getObjectIds()->findAssociatedRev(
-			$subject->getDBKey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki()
+		$result = $this->documentReplicationExaminer->check(
+			$subject
 		);
 
-		$exceptionError = null;
+		$id = $subject->getId();
+		$title = $subject->getTitle();
 		$html = '';
 
-		try {
-			$replicationStatus = $this->replicationStatus->get( 'modification_date_associated_revision', $id );
-		} catch ( \Elasticsearch\Common\Exceptions\BadRequest400Exception $e ) {
-			$exceptionError = 'BadRequest400Exception';
-		}
-
-		// What is stored in the DB
-		$pv = $this->store->getPropertyValues(
-			$subject,
-			new DIProperty( '_MDAT' )
-		);
-
-		if ( $exceptionError !== null ) {
-			$html = $this->exceptionErrorMsg( $exceptionError );
-		} elseif ( $replicationStatus['modification_date'] === false || $pv === [] ) {
+		if ( $result !== [] && isset( $result['exception'] ) ) {
+			$html = $this->exceptionErrorMsg( $result['exception'] );
+		} elseif ( $result !== [] && isset( $result['modification_date_missing'] ) ) {
 			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id );
-		} elseif ( !end( $pv )->equals( $replicationStatus['modification_date'] ) ) {
-			$dates = [
-				'time_es' => $replicationStatus['modification_date']->asDateTime()->format( 'Y-m-d H:i:s' ),
-				'time_store' => end( $pv )->asDateTime()->format( 'Y-m-d H:i:s' )
-			];
-			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $dates );
-		} elseif ( $replicationStatus['associated_revision'] != $rev_store ) {
-			$revs = [
-				'rev_es' => $replicationStatus['associated_revision'],
-				'rev_store' => $rev_store
-			];
-			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, [], $revs );
+		} elseif ( $result !== [] && isset( $result['modification_date_diff'] ) ) {
+			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $result['modification_date_diff'] );
+		} elseif ( $result !== [] && isset( $result['associated_revision_diff'] ) ) {
+			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, [], $result['associated_revision_diff'] );
 		} elseif ( $subject->getNamespace() === NS_FILE ) {
 			$html = $this->checkFileIngest( $subject );
 		}
