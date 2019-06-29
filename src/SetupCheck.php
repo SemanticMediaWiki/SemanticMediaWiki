@@ -60,9 +60,13 @@ class SetupCheck {
 	 */
 	public function hasError() {
 
-		 $this->errorType = '';
+		$this->errorType = '';
 
-		if ( $this->setupFile->inMaintenanceMode() ) {
+		// When it is not a test run or run from the command line we expect that
+		// the extension is registered using `enableSemantics`
+		if ( !$this->isCli() && !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			$this->errorType = 'extensionload';
+		} elseif ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = 'maintenance';
 		} elseif ( $this->setupFile->isGoodSchema() === false ) {
 			$this->errorType = 'schema';
@@ -85,7 +89,9 @@ class SetupCheck {
 			'content' => ''
 		];
 
-		if ( $this->errorType === 'maintenance' ) {
+		if ( $this->errorType === 'extensionload' ) {
+			$error = $this->extensionLoadError();
+		} elseif ( $this->errorType === 'maintenance' ) {
 			$error = $this->maintenanceError( $this->setupFile->getMaintenanceMode() );
 		} elseif ( $this->errorType === 'schema' ) {
 			$error = $this->schemaError();
@@ -111,8 +117,34 @@ class SetupCheck {
 	 * @param boolean $isCli
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
+
 		echo $this->getError( $isCli );
+
+		if ( ob_get_level() ) {
+			ob_flush();
+			flush();
+			ob_end_clean();
+		}
+
 		die();
+	}
+
+	private function extensionLoadError() {
+
+		$content = '<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
+				'<p>' . $this->options['version'] . '</p>' .
+				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
+				'<p>' . Message::get( 'smw-extensionload-error-why-explain', Message::PARSE ) . '</p>' .
+				'<h3 class="section"><span class="title">' . Message::get( 'smw-extensionload-error-how-title' ) . '</span></h3>' .
+				'<p>' . Message::get( 'smw-extensionload-error-how-explain', Message::PARSE ) . '</p>';
+
+		$error = [
+			'title' => Message::get( 'smw-upgrade-error-title' ),
+			'content' => $content,
+			'borderColor' => '#F44336'
+		];
+
+		return $error;
 	}
 
 	private function maintenanceError( $maintenance ) {
@@ -150,7 +182,7 @@ class SetupCheck {
 				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
 				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
 				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-how-title' ) . '</span></h3>' .
-				 '<p>' . Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
+				'<p>' . Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
 				Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE ) . '</p>';
 
 		$error = [
@@ -228,7 +260,7 @@ class SetupCheck {
 		<div style="background-color:#eee;padding-bottom:2px; margin-top: -8px;margin-left: -8px;margin-right: -8px; border-bottom: 4px solid {$borderColor};">
 		<img style="width:50px;margin-left:18px;" src="{$logo}" alt='The MediaWiki logo' />
 		<h1 style="color:#222;margin-left:18px;">{$title}</h1></div>
-		<div style="margin-top:10px;">{$content}
+		<div style="margin-top:10px;line-height:1.4em;">{$content}
 		</div>
 	</body>
 </html>
