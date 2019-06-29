@@ -48,7 +48,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testCheckForID() {
 
 		$contents = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -72,7 +72,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSet() {
 
 		$init = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -80,7 +80,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( json_encode( $init ) ) );
 
 		$contents = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 1001 ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 1001 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -113,7 +113,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testSetClosed() {
 
 		$init = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -121,7 +121,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( json_encode( $init ) ) );
 
 		$contents = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => false ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => false ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )
@@ -153,7 +153,7 @@ class AutoRecoveryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetSafeMargin() {
 
 		$init = [
-			$this->site => [ 'auto_recovery_mode' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
+			$this->site => [ 'maintenance_script.auto_recovery' => [ 'foo' => [ 'ar_id' => 42 ] ] ]
 		];
 
 		$this->file->expects( $this->atLeastOnce() )

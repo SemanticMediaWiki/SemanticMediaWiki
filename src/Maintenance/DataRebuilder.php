@@ -27,6 +27,9 @@ use Title;
  */
 class DataRebuilder {
 
+	const AUTO_RECOVERY_ID = 'ar_id';
+	const AUTO_RECOVERY_LAST_START = 'ar_last_start';
+
 	/**
 	 * @var Store
 	 */
@@ -291,13 +294,19 @@ class DataRebuilder {
 			$this->reportMessage( "\n" );
 		}
 
-		if ( $this->autoRecovery !== null && $this->autoRecovery->has( 'ar_id' ) ) {
-			$this->start = $this->autoRecovery->get( 'ar_id' );
+		if ( $this->autoRecovery !== null && $this->autoRecovery->has( self::AUTO_RECOVERY_ID ) ) {
+			$this->start = $this->autoRecovery->get( self::AUTO_RECOVERY_ID );
 
-			$this->reportMessage( "Incomplete rebuild run detected (auto recovery) ...\n"  );
+			$this->reportMessage( "Detecting an incomplete rebuild run ...\n"  );
+
+			if ( ( $last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START ) ) ) {
+				$this->reportMessage(
+					sprintf( "%-51s%s\n", "   ... last start recorded", $last_start )
+				);
+			}
 
 			$this->reportMessage(
-				sprintf( "%-50s%s\n", "   ... starting with", sprintf( "%s", $this->start ) )
+				sprintf( "%-51s%s\n", "   ... starting with", sprintf( "%s", $this->start ) )
 			);
 
 			$this->reportMessage( "\n" );
@@ -321,16 +330,17 @@ class DataRebuilder {
 			( $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId() ) . " IDs ...\n"
 		);
 
-		$this->rebuildCount = 0;
+		$this->rebuildCount = $this->start;
 		$progress = 0;
 		$estimatedProgress = 0;
 		$skipped_update = 0;
 		$current_id = 0;
+		$max = ( $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId() ) ;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
 			if ( $this->autoRecovery !== null ) {
-				$this->autoRecovery->set( 'ar_id', (int)$id );
+				$this->autoRecovery->set( self::AUTO_RECOVERY_ID, (int)$id );
 			}
 
 			$current_id = $id;
@@ -340,9 +350,10 @@ class DataRebuilder {
 
 			if ( $this->rebuildCount % 60 === 0 ) {
 				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
+				$max = $this->entityRebuildDispatcher->getMaxId();
 			}
 
-			$progress = round( ( $this->end - $this->start > 0 ? $this->rebuildCount / $total : $estimatedProgress ) * 100 );
+			$progress = round( ( $this->end - $this->start > 0 ? $current_id / $max : $estimatedProgress ) * 100 );
 
 			foreach ( $this->entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
@@ -361,29 +372,30 @@ class DataRebuilder {
 
 			if ( !$this->options->has( 'v' ) && $id > 0 ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%s (%1.0f%%)", $current_id, min( 100, $progress ) ) )
+					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", min( 100, $progress ), $current_id, $max ) )
 				);
 			}
 		}
 
 		if ( !$this->options->has( 'v' ) ) {
 			$this->reportMessage(
-				"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%s (%1.0f%%)", $current_id, 100 ) )
+				"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", 100, $current_id, $max ) )
 			);
 		}
 
 		if (  $this->autoRecovery !== null ) {
-			 $this->autoRecovery->set( 'ar_id', false );
+			$this->autoRecovery->set( self::AUTO_RECOVERY_ID, false );
+			$this->autoRecovery->set( self::AUTO_RECOVERY_LAST_START, false );
 		}
 
 		$this->write_to_file( $id );
 
 		$this->reportMessage(
-			"\n". sprintf( "%-50s%s", "   ... IDs checked or refreshed", sprintf( "%s", $this->rebuildCount ) )
+			"\n". sprintf( "%-51s%s", "   ... IDs checked or refreshed", sprintf( "%s", $this->rebuildCount ) )
 		);
 
 		$this->reportMessage(
-			"\n". sprintf( "%-50s%s", "   ... IDs skipped", sprintf( "%s", $skipped_update ) )
+			"\n". sprintf( "%-51s%s", "   ... IDs skipped", sprintf( "%s", $skipped_update ) )
 		);
 
 		$this->reportMessage( "\n   ... done.\n" );

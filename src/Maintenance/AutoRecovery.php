@@ -15,7 +15,7 @@ use SMW\SetupFile;
  */
 class AutoRecovery {
 
-	const TOPIC_IDENTIFIER = 'auto_recovery_mode';
+	const TOPIC_IDENTIFIER = 'maintenance_script.auto_recovery';
 
 	/**
 	 * @var string
