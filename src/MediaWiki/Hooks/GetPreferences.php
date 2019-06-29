@@ -51,7 +51,7 @@ class GetPreferences extends HookHandler {
 						wfMessage(  'smw-prefs-intro-text' )->parseAsBlock() ) ),
 				'section' => 'smw',
 				'raw' => 1,
-				'rawrow' => 1,
+				// 'rawrow' => 1, #4091
 			];
 
 		// Preference to allow time correction
