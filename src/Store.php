@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\Utils\Timer;
+use SMW\Options;
 use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
@@ -474,6 +475,9 @@ abstract class Store implements QueryEngine {
 	 */
 	public static function setupStore( $verbose = true, $options = null ) {
 
+		$store = StoreFactory::getStore();
+		$messageReporter = null;
+
 		// See notes in ExtensionSchemaUpdates
 		if ( is_bool( $verbose ) ) {
 			$verbose = $verbose;
@@ -487,15 +491,19 @@ abstract class Store implements QueryEngine {
 			$options = $options['options'];
 		}
 
-		$store = StoreFactory::getStore();
-
-		if ( $options instanceof Options ) {
-			foreach ( $options->getOptions() as $key => $value ) {
-				$store->getOptions()->set( $key, $value );
-			}
+		if ( $options instanceof Options && $options->has( 'messageReporter' ) ) {
+			$messageReporter = $options->get( 'messageReporter' );
 		}
 
-		return $store->setup( $verbose );
+		if ( $messageReporter !== null ) {
+			$store->setMessageReporter( $messageReporter );
+
+			$messageReporter->reportMessage(
+				"\nSemantic MediaWiki " . SMW_VERSION . " updater\n"
+			);
+		}
+
+		return $store->setup( $options );
 	}
 
 	/**

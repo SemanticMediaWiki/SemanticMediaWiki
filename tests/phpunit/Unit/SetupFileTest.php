@@ -166,6 +166,44 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$instance->write( [ 'Foo' => 42 ], $vars );
 	}
 
+	public function testReset() {
+
+		$configFile = File::dir( 'Foo_dir/.smw.json' );
+		$id = \SMW\Site::id();
+
+		$fields = [
+			'Foo' => 42
+		];
+
+		$expected = json_encode( [ $id => [] ], JSON_PRETTY_PRINT );
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file->expects( $this->once() )
+			->method( 'write' )
+			->with(
+				$this->equalTo( $configFile ),
+				$this->equalTo( $expected ) );
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$vars = [
+			'smwgConfigFileDir' => 'Foo_dir',
+			'smwgIP' => '',
+			'smwgUpgradeKey' => '',
+			'smwgEnabledFulltextSearch' => '',
+			'smwgFixedProperties' => [],
+			'smwgPageSpecialProperties' => [],
+			'smw.json' => [ $id => $fields ]
+		];
+
+		$instance->reset( $vars );
+	}
+
 	public function testRemove() {
 
 		$configFile = File::dir( 'Foo_dir/.smw.json' );

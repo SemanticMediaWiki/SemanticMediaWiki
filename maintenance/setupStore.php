@@ -9,6 +9,7 @@ use Onoi\MessageReporter\MessageReporter;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\Installer;
 use SMW\Setup;
+use SMW\Options;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -151,14 +152,19 @@ class SetupStore extends \Maintenance {
 			$this->getMessageReporter()
 		);
 
-		$store->setOption( Installer::OPT_TABLE_OPTIMIZE, !$this->hasOption( 'skip-optimize' ) );
-		$store->setOption( Installer::OPT_IMPORT, !$this->hasOption( 'skip-import' ) );
-		$store->setOption( Installer::OPT_SUPPLEMENT_JOBS, true );
+		$options = new Options(
+			[
+				Installer::OPT_TABLE_OPTIMIZE => !$this->hasOption( 'skip-optimize' ),
+				Installer::OPT_IMPORT => !$this->hasOption( 'skip-import' ),
+				Installer::OPT_SUPPLEMENT_JOBS => true,
+				'verbose' => $this->getOption( 'quiet' )
+			]
+		);
 
 		if ( $this->hasOption( 'delete' ) ) {
 			$this->dropStore( $store );
 		} else {
-			$store->setup();
+			$store->setup( $options );
 		}
 
 		// Avoid holding a reference

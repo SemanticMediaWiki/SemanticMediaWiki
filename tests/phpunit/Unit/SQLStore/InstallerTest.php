@@ -90,12 +90,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$instance->setOptions(
-			[
-				Installer::OPT_SCHEMA_UPDATE => false
-			]
-		);
-
 		$this->assertTrue(
 			$instance->install()
 		);

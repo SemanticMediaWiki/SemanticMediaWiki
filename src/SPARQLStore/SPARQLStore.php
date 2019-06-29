@@ -364,21 +364,6 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 */
 	public function setup( $verbose = true ) {
-
-		// Only copy required options to the base store
-		$options = $this->getOptions()->filter(
-			[
-				\SMW\SQLStore\Installer::OPT_TABLE_OPTIMIZE,
-				\SMW\SQLStore\Installer::OPT_IMPORT,
-				\SMW\SQLStore\Installer::OPT_SCHEMA_UPDATE,
-				\SMW\SQLStore\Installer::OPT_SUPPLEMENT_JOBS
-			]
-		);
-
-		foreach ( $options as $key => $value ) {
-			$this->baseStore->setOption( $key, $value );
-		}
-
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->setup( $verbose );
 	}
