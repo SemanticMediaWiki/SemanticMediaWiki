@@ -22,7 +22,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $store;
-	private $replicationStatus;
+	private $documentReplicationExaminer;
 	private $entityCache;
 	private $elasticClient;
 	private $idTable;
@@ -42,7 +42,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $this->idTable ) );
 
-		$this->replicationStatus = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationStatus' )
+		$this->documentReplicationExaminer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +63,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			CheckReplicationTask::class,
-			new CheckReplicationTask( $this->store, $this->replicationStatus, $this->entityCache )
+			new CheckReplicationTask( $this->store, $this->documentReplicationExaminer, $this->entityCache )
 		);
 	}
 
@@ -74,17 +74,12 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( false ) );
 
 		$replicationStatus = [
-			'modification_date' => false
+			'modification_date_missing' => true
 		];
 
-		$this->replicationStatus->expects( $this->once() )
-			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
 			->will( $this->returnValue( $replicationStatus ) );
-
-		$this->store->expects( $this->once() )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -92,7 +87,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -117,8 +112,8 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$elasticClient->expects( $this->never() )
 			->method( 'hasMaintenanceLock' );
 
-		$this->replicationStatus->expects( $this->never() )
-			->method( 'get' );
+		$this->documentReplicationExaminer->expects( $this->never() )
+			->method( 'check' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -126,7 +121,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -158,21 +153,16 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $config ) );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
-		$time_es = DITime::newFromTimestamp( 1272508900 );
-		$time_store = DITime::newFromTimestamp( 1272508903 );
+		$time_es = DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' );
+		$time_store = DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' );
 
 		$replicationStatus = [
-			'modification_date' => $time_es
+			'modification_date_diff' => [ 'time_es' => $time_es, 'time_store' => $time_store ]
 		];
 
-		$this->replicationStatus->expects( $this->once() )
-			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
 			->will( $this->returnValue( $replicationStatus ) );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time_store ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -180,7 +170,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -217,25 +207,15 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $config ) );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
-		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$replicationStatus = [
-			'modification_date' => $time,
-			'associated_revision' => 99999
-		];
+		$replicationStatus = [ 'associated_revision_diff' => [
+			'rev_es' => 42,
+			'rev_store' => 99999
+		] ];
 
-		$this->replicationStatus->expects( $this->once() )
-			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
 			->will( $this->returnValue( $replicationStatus ) );
-
-		$this->idTable->expects( $this->at( 1 ) )
-			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -243,7 +223,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -280,27 +260,12 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $config ) );
 
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$replicationStatus = [
-			'modification_date' => $time,
-			'associated_revision' => 9999
-		];
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
+			->will( $this->returnValue( [] ) );
 
-		$this->replicationStatus->expects( $this->once() )
-			->method( 'get' )
-			->with(	$this->equalTo( 'modification_date_associated_revision' ) )
-			->will( $this->returnValue( $replicationStatus ) );
-
-		$this->idTable->expects( $this->any() )
-			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 9999 ) );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $time ] ) );
-
-		$this->store->expects( $this->at( 6 ) )
+		$this->store->expects( $this->at( 3 ) )
 			->method( 'getPropertyValues' )
 			->with(
 				$this->equalTo( $subject ),
@@ -313,7 +278,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -343,7 +308,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -362,7 +327,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
@@ -381,7 +346,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CheckReplicationTask(
 			$this->store,
-			$this->replicationStatus,
+			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 

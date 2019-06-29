@@ -61,6 +61,24 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
+	 * @param integer $id
+	 *
+	 * @return boolean
+	 */
+	private function documentExistsById( $id ) {
+
+		$params = [
+			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
+			'type'  => ElasticClient::TYPE_DATA,
+			'id'    => $id,
+		];
+
+		return $this->connection->exists( $params );
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @param string $id
 	 *
 	 * @return []
