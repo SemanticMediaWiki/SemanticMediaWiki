@@ -1,3 +1,5 @@
+## SMW::SQLStore::Installer::BeforeCreateTablesComplete
+
 * Since: 3.1
 * Description: Hook to add additional table indices.
 * Reference class: [`Installer.php`][Installer.php]
@@ -18,6 +20,6 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 
 ## See also
 
-- [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md)
+- [`hook.sqlstore.installer.beforecreatetablescomplete`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md) contains an example on how to modify table definitions (e.g. adding additional indices)
 
 [Installer.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/Installer.php
