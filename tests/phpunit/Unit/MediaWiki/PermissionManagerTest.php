@@ -42,18 +42,16 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEmpty(
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -82,12 +80,12 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, $action, $result )
+			$instance->hasUserPermission( $title, $user, $action )
 		);
 
 		$this->assertEquals(
 			$expected,
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -132,19 +130,17 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[ [ 'smw-edit-protection', $editProtectionRight ] ],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -176,14 +172,12 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = '';
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 	}
 
@@ -215,19 +209,17 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[ [ 'smw-create-protection', null, 'Foo' ] ],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -259,19 +251,17 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[ [ 'smw-create-protection-exists', null, 'Foo' ] ],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -301,21 +291,19 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[
 				[ 'smw-change-propagation-protection' ]
 			],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -345,19 +333,17 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -390,21 +376,19 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( false ) );
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit', $result )
+			$instance->hasUserPermission( $title, $user, 'edit' )
 		);
 
 		$this->assertEquals(
 			[
 				[ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ]
 			],
-			$result
+			$instance->getErrors()
 		);
 	}
 
@@ -437,21 +421,19 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( true ) );
 
-		$result = [];
-
 		$instance = new PermissionManager(
 			$this->protectionValidator
 		);
 
 		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'editcontentmodel', $result )
+			$instance->hasUserPermission( $title, $user, 'editcontentmodel' )
 		);
 
 		$this->assertEquals(
 			[
 				[ 'smw-schema-namespace-editcontentmodel-disallowed' ]
 			],
-			$result
+			$instance->getErrors()
 		);
 	}
 
