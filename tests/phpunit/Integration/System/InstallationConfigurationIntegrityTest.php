@@ -68,6 +68,10 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 
 		$foundNamespaceEntry = false;
 
+		if ( defined( 'NS_SMWTEST' ) ) {
+			unset( $container[NS_SMWTEST] );
+		}
+
 		foreach ( $container as $key => $value ) {
 			if ( $key === $namespace ) {
 				$foundNamespaceEntry = true;

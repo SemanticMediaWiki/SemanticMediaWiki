@@ -31,6 +31,12 @@ $autoloader->addClassMap( [
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
 
+// Custom namespace only used during testing
+define("NS_SMWTEST", 99999);
+define("NS_SMWTEST_TALK", 99991);
+$wgExtraNamespaces[NS_SMWTEST] = "SMWTEST";
+$wgExtraNamespaces[NS_SMWTEST_TALK] = "SMWTEST_talk";
+
 /**
  * Register a shutdown function the invoke a final clean-up
  */

@@ -149,6 +149,13 @@ class SMWWikiPageValue extends SMWDataValue {
 
 			$title = Title::newFromText( $value, $this->m_fixNamespace );
 
+			// Make sure something like [[Subcategory of::Foo:Bar]] retains the
+			// NS as well as the Foo prefix especially when `Foo` is defined in
+			// wgExtraNamespaces
+			if ( $title !== null && $this->m_fixNamespace === NS_CATEGORY && $title->getNamespace() !== NS_CATEGORY ) {
+				$title = Title::makeTitleSafe( $this->m_fixNamespace, $value );
+			}
+
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`
 			if ( $title !== null && $title->getNamespace() === NS_MAIN && $this->getOption( 'isCapitalLinks' ) === false ) {
