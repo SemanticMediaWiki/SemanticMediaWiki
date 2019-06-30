@@ -441,7 +441,7 @@ class Rebuilder {
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . sprintf( "      ... switching index version from %s to %s (rollover) ...", $old, $version )
+			"\n" . sprintf( "      ... switching (rollover) from %s to %s ...", $old, $version )
 		);
 	}
 
