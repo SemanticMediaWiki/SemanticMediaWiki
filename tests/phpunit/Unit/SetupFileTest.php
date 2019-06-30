@@ -28,6 +28,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
@@ -35,6 +36,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$var2 = [
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ]
@@ -50,6 +52,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$var1 = [
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
@@ -57,6 +60,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$var2 = [
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ]
@@ -85,6 +89,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgConfigFileDir' => 'Foo/',
 			'smwgIP' => '',
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => []
@@ -96,7 +101,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	public function testSetMaintenanceMode() {
 
 		$fields = [
-			'upgrade_key' => 'abede9f6b2c43db901f6255e26b8d951f84f5d7c',
+			'upgrade_key' => '7540cc7b594b305fa2525c33d8963acb0c2d7b29',
 			SetupFile::MAINTENANCE_MODE => true,
 			// "upgrade_key_base" => '["",[],"",[]]'
 		];
@@ -121,6 +126,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgConfigFileDir' => 'Foo/',
 			'smwgIP' => '',
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => []
@@ -158,6 +164,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgConfigFileDir' => 'Foo_dir',
 			'smwgIP' => '',
 			'smwgUpgradeKey' => '',
+			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => []

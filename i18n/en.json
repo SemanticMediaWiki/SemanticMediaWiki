@@ -20,7 +20,7 @@
 	"smw-upgrade-progress-supplement-jobs": "Adding supplement jobs ...",
 	"smw-upgrade-error-title": "Error (Semantic MediaWiki)",
 	"smw-upgrade-error-why-title": "Why Do I see this page?",
-	"smw-upgrade-error-why-explain": "Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:\n* Additional fixed properties (requires additional table setup) were added \n* An upgrade contains some changes to tables or indices making an interception obligatory before accessing the data",
+	"smw-upgrade-error-why-explain": "Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:\n* Additional fixed properties (requires additional table setup) were added \n* An upgrade contains some changes to tables or indices making an interception obligatory before accessing the data \n* Changes to the storage or query engine",
 	"smw-upgrade-error-how-title": "How Do I fix this error?",
 	"smw-upgrade-error-how-explain-admin": "An administrator (or any person with administrator rights) has to run either MediaWiki's [https://www.mediawiki.org/wiki/Manual:Update.php update.php] or Semantic MediaWiki's [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php] maintenance script.",
 	"smw-upgrade-error-how-explain-links": "You may also consult the following pages for further assistance:\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation Installation] instructions\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting Troubleshooting] help page",
