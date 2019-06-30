@@ -242,6 +242,28 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$instance->remove( 'Foo', $vars );
 	}
 
+	public function testGet() {
+
+		$id = \SMW\Site::id();
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$vars = [
+			'smw.json' => [ $id => [ 'Foo' => 42 ] ]
+		];
+
+		$this->assertEquals(
+			42,
+			$instance->get( 'Foo', $vars )
+		);
+	}
+
 	public function testIncompleteTasks() {
 
 		$vars = [
