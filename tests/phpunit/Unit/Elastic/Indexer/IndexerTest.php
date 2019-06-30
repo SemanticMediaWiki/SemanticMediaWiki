@@ -23,9 +23,25 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$options = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $options ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
 
 		$this->servicesContainer = new ServicesContainer();
 

@@ -4,6 +4,7 @@ namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
+use SMW\Elastic\Exception\MissingEndpointConfigException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Options;
@@ -60,8 +61,14 @@ class ConnectionProvider implements IConnectionProvider {
 			return $this->connection;
 		}
 
+		$endpoints = $this->options->safeGet( 'endpoints', [] );
+
+		if ( !$this->hasEndpoints( $endpoints ) ) {
+			throw new MissingEndpointConfigException();
+		}
+
 		$params = [
-			'hosts' => $this->options->get( 'endpoints' ),
+			'hosts' => $endpoints,
 			'retries' => $this->options->dotGet( 'connection.retries', 1 ),
 
 			'client' => [
@@ -121,6 +128,15 @@ class ConnectionProvider implements IConnectionProvider {
 		}
 
 		return new Client( $clientBuilder, $this->lockManager, $this->options );
+	}
+
+	private function hasEndpoints( $endpoints ) {
+
+		if ( $this->options->dotGet( 'is.elasticstore', false ) === false ) {
+			return true;
+		}
+
+		return $endpoints !== [];
 	}
 
 	private function hasAvailableClientBuilder() {
