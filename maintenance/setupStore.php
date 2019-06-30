@@ -157,7 +157,7 @@ class SetupStore extends \Maintenance {
 				Installer::OPT_TABLE_OPTIMIZE => !$this->hasOption( 'skip-optimize' ),
 				Installer::OPT_IMPORT => !$this->hasOption( 'skip-import' ),
 				Installer::OPT_SUPPLEMENT_JOBS => true,
-				'verbose' => $this->getOption( 'quiet' )
+				'verbose' => $this->getOption( 'quiet', true )
 			]
 		);
 
