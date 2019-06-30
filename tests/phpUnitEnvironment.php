@@ -72,11 +72,17 @@ class PHPUnitEnvironment {
 
 		$info = [];
 
+		try {
+			$store_info = json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+			$store_info = 'No connection';
+		}
+
 		if ( $id === 'smw' ) {
 			$store = str_replace(
 				[ '{', '}', '"', '(SMW', ':(', '))', ',' ],
 				[ '(', ')', '', 'SMW', ' (', ')', ', ' ],
-				json_encode( smwfGetStore()->getInfo(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+				$store_info
 			);
 
 			$info = [
