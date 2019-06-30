@@ -377,6 +377,7 @@ class SetupFile {
 		// changes to them
 		$components = [
 			$vars['smwgUpgradeKey'],
+			$vars['smwgDefaultStore'],
 			$vars['smwgFixedProperties'],
 			$vars['smwgEnabledFulltextSearch'],
 			$pageSpecialProperties
