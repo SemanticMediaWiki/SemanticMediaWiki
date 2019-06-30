@@ -91,7 +91,21 @@ class BeforePageDisplay extends HookHandler {
 			[
 				'class' => 'smw-callout smw-callout-error plainlinks'
 			],
-			Message::get( 'smw-install-incomplete-intro' ) . "<ul>$html</ul>"
+			Html::rawElement(
+				'div',
+				[
+					'class' => 'title',
+					'style' => 'margin-bottom:10px'
+				],
+				Message::get( 'smw-install-incomplete-tasks-title' )
+			) . Html::rawElement(
+				'div',
+				[
+					'style' => 'margin-bottom:10px'
+				],
+				Message::get( 'smw-install-incomplete-intro' )
+			) .
+			"<ul>$html</ul>"
 		);
 	}
 

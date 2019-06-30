@@ -5,7 +5,9 @@ namespace SMW\Maintenance;
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\ElasticStore;
 use SMW\Setup;
+use SMW\SetupFile;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv('MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -160,6 +162,14 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$maintenanceHelper->reset();
 		$this->autoRecovery->set( 'ar_id', false );
+
+		$setupFile = new SetupFile();
+
+		$setupFile->set(
+			[
+				ElasticStore::REBUILD_INDEX_RUN_COMPLETE => true
+			]
+		);
 
 		return true;
 	}

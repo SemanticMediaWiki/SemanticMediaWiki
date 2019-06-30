@@ -184,6 +184,7 @@ class SetupFile {
 		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
 		$checks = [
 			\SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
+			\SMW\Elastic\ElasticStore::REBUILD_INDEX_RUN_COMPLETE => [ false, 'smw-install-incomplete-elasticstore-indexrebuild' ]
 		];
 
 		foreach ( $checks as $key => $value ) {
@@ -292,6 +293,26 @@ class SetupFile {
 	/**
 	 * @since 3.1
 	 *
+	 * @param array $args
+	 */
+	public function get( $key, $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
+
+		$id = Site::id();
+
+		if ( isset( $vars['smw.json'][$id][$key] ) ) {
+			return $vars['smw.json'][$id][$key];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @param string $key
 	 */
 	public function remove( $key, $vars = [] ) {
@@ -309,7 +330,7 @@ class SetupFile {
 	 * @param array $vars
 	 * @param array $args
 	 */
-	public function write( $args = [], $vars ) {
+	public function write( $args = [], array $vars ) {
 
 		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
