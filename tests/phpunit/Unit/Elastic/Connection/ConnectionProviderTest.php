@@ -45,12 +45,29 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetConnection_MissingEndpointsThrowsException() {
+
+		$options = new Options (
+			[
+				'is.elasticstore' => true
+			]
+		);
+
+		$instance = new ConnectionProvider(
+			$this->lockManager,
+			$options
+		);
+
+		$this->setExpectedException( '\SMW\Elastic\Exception\MissingEndpointConfigException' );
+		$instance->getConnection();
+	}
+
 	public function testGetConnection_DummyClient() {
 
 		$options = new Options (
 			[
 				'is.elasticstore' => false,
-				'endpoints' => []
+				'endpoints' => [ 'foo' ]
 			]
 		);
 
@@ -76,7 +93,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$options = new Options (
 			[
 				'is.elasticstore' => true,
-				'endpoints' => []
+				'endpoints' => [ 'foo' ]
 			]
 		);
 
@@ -102,7 +119,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$options = new Options (
 			[
 				'is.elasticstore' => true,
-				'endpoints' => []
+				'endpoints' => [ 'foo' ]
 			]
 		);
 

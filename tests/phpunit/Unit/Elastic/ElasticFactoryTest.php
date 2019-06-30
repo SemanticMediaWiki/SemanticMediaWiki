@@ -150,11 +150,19 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructRebuilder() {
 
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\Rebuilder',
-			$instance->newRebuilder( $this->store )
+			$instance->newRebuilder( $store )
 		);
 	}
 
