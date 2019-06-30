@@ -47,8 +47,12 @@ register_shutdown_function( function() {
 		$connectionManager->getConnection( 'mw.db' )
 	);
 
-	$sequence->tablePrefix( '' );
-	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+	try {
+		$sequence->tablePrefix( '' );
+		$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+	} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+		return;
+	}
 
 	$cleanUpTables =  new CleanUpTables(
 		$connectionManager->getConnection( DB_MASTER )
