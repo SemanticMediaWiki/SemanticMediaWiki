@@ -66,6 +66,8 @@
 	"smw-upgrade-error-how-title": "Comment dois-je corriger cette erreur ?",
 	"smw-upgrade-error-how-explain-admin": "Un administrateur (ou toute personne ayant les droits administrateur) doit exécuter le script de maintenance soit [https://www.mediawiki.org/wiki/Manual:Update.php update.php] de MediaWiki soit [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php] de Semantic MediaWiki.",
 	"smw-upgrade-error-how-explain-links": "Vous pouvez aussi consulter les pages suivantes pour une aide supplémentaire:\n* les instructions d'[https://www.semantic-mediawiki.org/wiki/Help:Installation installation]\n* page d'aide pour la [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting recherche de fautes]",
+	"smw-extensionload-error-why-title": "Pourquoi je vois cette page ?",
+	"smw-extensionload-error-how-title": "Comment puis-je corriger cette erreur ?",
 	"smw-upgrade-maintenance-title": "Mise à jour et maintenance (Semantic MediaWiki)",
 	"smw-upgrade-maintenance-why-title": "Pourquoi je vois cette page ?",
 	"smw-upgrade-maintenance-note": "Le système est actuellement en cours de [https://www.semantic-mediawiki.org/wiki/Help:Upgrade mise à jour] pour l'extension [https://www.semantic-mediawiki.org/ Semantic MediaWiki] ainsi que son dépôt de données et nous vous demandons de bien vouloir patienter et permettre à la maintenance de continuer avant que le wiki soit de nouveau accessible.",

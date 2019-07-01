@@ -27,6 +27,8 @@
 	"smw-upgrade-error-why-title": "Per què veig aquest error?",
 	"smw-upgrade-error-why-explain": "La base de dades interna de Semantic MediaWiki ha canviat i calen alguns ajustament perquè sigui plenament funcional. Pot haver-hi diferents motius, entre ells:\n* S'han afegit diferents propietats fixes adicionals (que requereixen una configuració de taules addicional)\n* Una actualització conté alguns canvis a les taules o als índexs que fan que una intercepció sigui obligatòria abans d'accedir a les dades",
 	"smw-upgrade-error-how-title": "Com arreglo aquest error?",
+	"smw-extensionload-error-why-title": "Per què veig aquesta pàgina?",
+	"smw-extensionload-error-how-title": "Com corregeixo aquest error?",
 	"smw-upgrade-maintenance-title": "Actualització i manteniment (Semantic MediaWiki)",
 	"smw-semantics-not-enabled": "No s'ha habilitat la funcionalitat de Semantic MediaWiki en aquest wiki.",
 	"smw_viewasrdf": "Canal RDF",
