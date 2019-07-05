@@ -42,6 +42,8 @@
 	"smw-upgrade-error-title": "Errore (Semantic MediaWiki)",
 	"smw-upgrade-error-why-title": "Perché visualizzo questa pagina?",
 	"smw-upgrade-error-how-title": "Come risolvo questo errore?",
+	"smw-extensionload-error-why-title": "Perché visualizzo questa pagina?",
+	"smw-extensionload-error-how-title": "Come risolvo questo errore?",
 	"smw-upgrade-maintenance-title": "Aggiornamento e manutenzione (Semantic MediaWiki)",
 	"smw-upgrade-maintenance-why-title": "Perché visualizzo questa pagina?",
 	"smw-semantics-not-enabled": "Le funzionalità di Semantic MediaWiki non sono abilitate per questo wiki.",

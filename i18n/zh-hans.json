@@ -32,10 +32,14 @@
 			"Angrydog001",
 			"Zazzzz",
 			"Abijeet Patro",
-			"科劳"
+			"科劳",
+			"神樂坂秀吉"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
+	"smw-error": "错误",
+	"smw-upgrade-release": "发布",
+	"smw-upgrade-progress": "进度",
 	"smw-semantics-not-enabled": "语义MediaWiki功能没有为此wiki启用。",
 	"smw_viewasrdf": "RDF源",
 	"smw_finallistconjunct": "，和",
