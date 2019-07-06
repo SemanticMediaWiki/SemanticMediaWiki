@@ -117,19 +117,19 @@ class ConnectionProvider implements IConnectionProvider {
 			);
 		}
 
-		$transactionProfiler = new TransactionProfiler(
+		$silenceableTransactionProfiler = new SilenceableTransactionProfiler(
 			\Profiler::instance()->getTransactionProfiler()
 		);
 
-		$transactionProfiler->silenceTransactionProfiler();
+		$silenceableTransactionProfiler->silenceTransactionProfiler();
 
 		$connection = new Database(
 			new ConnRef( $connectionProviders ),
 			ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);
 
-		$connection->setTransactionProfiler(
-			$transactionProfiler
+		$connection->setSilenceableTransactionProfiler(
+			$silenceableTransactionProfiler
 		);
 
 		// Only required because of SQlite

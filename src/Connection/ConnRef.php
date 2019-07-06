@@ -18,6 +18,11 @@ class ConnRef {
 	private $connectionProviders = [];
 
 	/**
+	 * @var array
+	 */
+	private $connections = [];
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array $connectionProviders
@@ -47,8 +52,12 @@ class ConnRef {
 	 */
 	public function getConnection( $key ) {
 
+		if ( isset( $this->connections[$key] ) ) {
+			return $this->connections[$key];
+		}
+
 		if ( isset( $this->connectionProviders[$key] ) && $this->connectionProviders[$key] instanceof ConnectionProvider ) {
-			return $this->connectionProviders[$key]->getConnection();
+			return $this->connections[$key] = $this->connectionProviders[$key]->getConnection();
 		}
 
 		throw new RuntimeException( "$key is unknown" );
@@ -58,6 +67,8 @@ class ConnRef {
 	 * @since 3.0
 	 */
 	public function releaseConnections() {
+		$this->connections = [];
+
 		foreach ( $this->connectionProviders as $connectionProvider ) {
 			$connectionProvider->releaseConnection();
 		}
