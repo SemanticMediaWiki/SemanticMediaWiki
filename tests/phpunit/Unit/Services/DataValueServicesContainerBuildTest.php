@@ -102,7 +102,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
 		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
-		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'DataValueServices.php' );
+		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'datavalues.php' );
 
 		$this->assertInstanceOf(
 			$expected,

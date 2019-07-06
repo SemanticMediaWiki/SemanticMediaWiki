@@ -14,6 +14,7 @@ class_alias( \SMW\Property\SpecificationLookup::class, 'SMW\PropertySpecificatio
 class_alias( \SMW\Property\RestrictionExaminer::class, 'SMW\PropertyRestrictionExaminer' );
 class_alias( \SMW\Query\Result\ResultArray::class, 'SMWResultArray' );
 class_alias( \SMW\Query\QueryResult::class, 'SMWQueryResult' );
+class_alias( \SMW\Services\ServicesFactory::class, '\SMW\ApplicationFactory' );
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );

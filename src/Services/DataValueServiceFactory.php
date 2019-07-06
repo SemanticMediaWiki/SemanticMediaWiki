@@ -33,7 +33,7 @@ class DataValueServiceFactory {
 	/**
 	 * Indicates a DataValue service
 	 */
-	const SERVICE_FILE = 'DataValueServices.php';
+	const SERVICE_FILE = 'datavalues.php';
 
 	/**
 	 * Indicates a DataValue service

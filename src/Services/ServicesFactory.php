@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Services;
 
 use Closure;
 use Onoi\CallbackContainer\CallbackContainerFactory;
@@ -15,6 +15,15 @@ use SMW\MediaWiki\TitleFactory;
 use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
 use SMW\Services\SharedServicesContainer;
 use SMWQueryParser as QueryParser;
+use SMW\ParserFunctionFactory;
+use SMW\SerializerFactory;
+use SMW\EventHandler;
+use SMW\ParserData;
+use SMW\InTextAnnotationParser;
+use SMW\DataValueFactory;
+use SMW\SemanticData;
+use SMW\DataUpdater;
+use SMW\Site;
 use Title;
 
 /**
@@ -25,10 +34,10 @@ use Title;
  *
  * @author mwjames
  */
-class ApplicationFactory {
+class ServicesFactory {
 
 	/**
-	 * @var ApplicationFactory
+	 * @var ServicesFactory
 	 */
 	private static $instance = null;
 
@@ -602,8 +611,8 @@ class ApplicationFactory {
 		$containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$containerBuilder->registerCallbackContainer( new SharedServicesContainer() );
-		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'MediaWikiServices.php' );
-		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'ImporterServices.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'mediawiki.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'importer.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'events.php' );
 
 		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
