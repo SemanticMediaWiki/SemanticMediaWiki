@@ -34,10 +34,12 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			DB_REPLICA
 		);
 
+		$instance->asConnectionRef( false );
+
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'DatabaseBase',
+			'\DatabaseBase',
 			$instance->getConnection()
 		);
 
@@ -48,26 +50,25 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance->releaseConnection();
 	}
 
-	public function testGetConnectionThrowsException() {
+	public function testGetInvalidConnectionFromLoadBalancerThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$loadBalancer->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( 'Bar' ) );
 
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA
 		);
 
-		$reflector = new ReflectionClass(
-			LoadBalancerConnectionProvider::class
-		);
+		$instance->setLoadBalancer( $loadBalancer );
+		$instance->asConnectionRef( false );
 
-		$connection = $reflector->getProperty( 'connection' );
-		$connection->setAccessible( true );
-		$connection->setValue( $instance, 'invalid' );
-
-		$this->assertInstanceOf(
-			'DatabaseBase',
-			$instance->getConnection()
-		);
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->getConnection();
 	}
 
 }

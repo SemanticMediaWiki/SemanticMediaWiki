@@ -22,7 +22,7 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

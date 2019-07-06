@@ -41,7 +41,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param DatabaseBase $connection
 	 */
-	protected function __construct( DatabaseBase $connection ) {
+	protected function __construct( $connection ) {
 		$this->connection = $connection;
 	}
 
@@ -53,7 +53,14 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @return TableBuilder
 	 * @throws RuntimeException
 	 */
-	public static function factory( DatabaseBase $connection ) {
+	public static function factory( $connection ) {
+
+		if (
+			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
+			!$connection instanceof \IDatabase &&
+			!$connection instanceof \DatabaseBase ) {
+			throw new RuntimeException( "Invalid connection instance!" );
+		}
 
 		$instance = null;
 

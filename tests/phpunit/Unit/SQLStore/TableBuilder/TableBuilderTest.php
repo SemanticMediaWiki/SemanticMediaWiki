@@ -80,4 +80,9 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 		TableBuilder::factory( $connection );
 	}
 
+	public function testConstructWithInvalidInstanceThrowsException() {
+		$this->setExpectedException( 'RuntimeException' );
+		TableBuilder::factory( 'foo' );
+	}
+
 }
