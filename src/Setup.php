@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
-use SMW\Utils\AbortMessage;
 
 /**
  * Extension setup and registration
