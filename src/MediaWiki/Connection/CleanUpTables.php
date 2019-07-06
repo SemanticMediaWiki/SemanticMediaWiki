@@ -24,7 +24,7 @@ class CleanUpTables {
 	 */
 	public function __construct( $connection ) {
 
-		if ( !$connection instanceof Database && !$connection instanceof \DatabaseBase ) {
+		if ( !$connection instanceof \Wikimedia\Rdbms\IDatabase && !$connection instanceof \IDatabase && !$connection instanceof \DatabaseBase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 

@@ -120,8 +120,17 @@ class MwCollaboratorFactory {
 	 *
 	 * @return LoadBalancerConnectionProvider
 	 */
-	public function newLoadBalancerConnectionProvider( $connectionType ) {
-		return new LoadBalancerConnectionProvider( $connectionType );
+	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ) {
+
+		$loadBalancerConnectionProvider = new LoadBalancerConnectionProvider(
+			$connectionType
+		);
+
+		$loadBalancerConnectionProvider->asConnectionRef(
+			$asConnectionRef
+		);
+
+		return $loadBalancerConnectionProvider;
 	}
 
 	/**

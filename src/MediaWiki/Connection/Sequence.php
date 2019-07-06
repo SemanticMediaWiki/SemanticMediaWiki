@@ -28,7 +28,11 @@ class Sequence {
 	 */
 	public function __construct( $connection ) {
 
-		if ( !$connection instanceof Database && !$connection instanceof \DatabaseBase ) {
+		if (
+			!$connection instanceof Database &&
+			!$connection instanceof DatabaseBase &&
+			!$connection instanceof \IDatabase &&
+			!$connection instanceof \Wikimedia\Rdbms\IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
