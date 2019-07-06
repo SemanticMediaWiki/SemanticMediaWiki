@@ -110,6 +110,7 @@ class TemperatureValue extends NumberValue {
 		// -n is the format for displaying the number only
 		if ( $this->m_outformat == '-n' ) {
 			$printUnit = '';
+			$this->m_caption = trim( $this->m_caption );
 		}
 
 		$this->m_caption .= $printUnit;

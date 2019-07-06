@@ -1,0 +1,117 @@
+{
+	"description": "Test `format=csv` output via `Special:Ask` for display units (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has quantity",
+			"contents": "[[Has type::Quantity]] [[Display units::UNIT]] [[Corresponds to::1 UNIT]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has temperature",
+			"contents": "[[Has type::Temperature]] [[Display units::Celsius]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0036/1",
+			"contents": "[[Has quantity::10]] [[Category:S0036]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/S0036/2",
+			"contents": "[[Has temperature::10 °C]] [[Category:S0036]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 type quantity with units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:S0036]]",
+					"po": "?Has quantity"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0036.0.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 type quantity without units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:S0036]]",
+					"po": "?Has quantity#-n"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0036.1.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 type temperature with units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:S0036]]",
+					"po": "?Has temperature"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0036.2.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 type temperature without units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:S0036]]",
+					"po": "?Has temperature#-n"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0036.3.csv"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
