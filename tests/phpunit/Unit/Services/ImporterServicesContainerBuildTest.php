@@ -60,7 +60,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			'smwgImportFileDirs' => [ 'foo' ]
 		] ) );
 
-		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'ImporterServices.php' );
+		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'importer.php' );
 
 		$this->assertInstanceOf(
 			$expected,

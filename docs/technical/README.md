@@ -21,6 +21,7 @@ This document collects technical resources to help improve the understanding of 
   - [Lang](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Lang/README.md)
   - [Serializers](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.serializers.md) contains information about the Semantic MediaWiki serializers
   - [Schema](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/README.md) contains information about schemata provided by Semantic MediaWiki
+  - [Services](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Services/README.md) contains information about the `ServicesFactory` and related classes
   - MediaWiki
     - [API](api.md) provides an overview for available API modules
     - [Hooks](hooks.md) provided by Semantic MediaWiki

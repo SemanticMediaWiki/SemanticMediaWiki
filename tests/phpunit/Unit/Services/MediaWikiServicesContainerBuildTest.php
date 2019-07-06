@@ -32,7 +32,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
-		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'MediaWikiServices.php' );
+		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'mediawiki.php' );
 
 		$this->assertInstanceOf(
 			$expected,

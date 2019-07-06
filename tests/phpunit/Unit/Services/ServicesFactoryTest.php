@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Services;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory;
 
 /**
- * @covers \SMW\ApplicationFactory
+ * @covers \SMW\Services\ServicesFactory
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -13,18 +13,17 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
+class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 
-	private $applicationFactory;
+	private $ServicesFactory;
 
 	protected function setUp() {
 		parent::setUp();
-
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->servicesFactory = ServicesFactory::getInstance();
 	}
 
 	protected function tearDown() {
-		$this->applicationFactory->clear();
+		$this->servicesFactory->clear();
 
 		parent::tearDown();
 	}
@@ -32,8 +31,8 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\ApplicationFactory',
-			ApplicationFactory::getInstance()
+			ServicesFactory::class,
+			ServicesFactory::getInstance()
 		);
 	}
 
@@ -41,7 +40,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SerializerFactory',
-			$this->applicationFactory->newSerializerFactory()
+			$this->servicesFactory->newSerializerFactory()
 		);
 	}
 
@@ -49,7 +48,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\JobFactory',
-			$this->applicationFactory->newJobFactory()
+			$this->servicesFactory->newJobFactory()
 		);
 	}
 
@@ -61,7 +60,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\ParserFunctionFactory',
-			$this->applicationFactory->newParserFunctionFactory( $parser )
+			$this->servicesFactory->newParserFunctionFactory( $parser )
 		);
 	}
 
@@ -69,7 +68,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Query\QuerySourceFactory',
-			$this->applicationFactory->getQuerySourceFactory()
+			$this->servicesFactory->getQuerySourceFactory()
 		);
 	}
 
@@ -77,7 +76,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Store',
-			$this->applicationFactory->getStore()
+			$this->servicesFactory->getStore()
 		);
 	}
 
@@ -85,7 +84,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Settings',
-			$this->applicationFactory->getSettings()
+			$this->servicesFactory->getSettings()
 		);
 	}
 
@@ -93,7 +92,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Connection\ConnectionManager',
-			$this->applicationFactory->getConnectionManager()
+			$this->servicesFactory->getConnectionManager()
 		);
 	}
 
@@ -101,7 +100,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\TitleFactory',
-			$this->applicationFactory->newTitleFactory()
+			$this->servicesFactory->newTitleFactory()
 		);
 	}
 
@@ -109,7 +108,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageCreator',
-			$this->applicationFactory->newPageCreator()
+			$this->servicesFactory->newPageCreator()
 		);
 	}
 
@@ -117,7 +116,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageUpdater',
-			$this->applicationFactory->newPageUpdater()
+			$this->servicesFactory->newPageUpdater()
 		);
 	}
 
@@ -129,7 +128,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Parser\InTextAnnotationParser',
-			$this->applicationFactory->newInTextAnnotationParser( $parserData )
+			$this->servicesFactory->newInTextAnnotationParser( $parserData )
 		);
 	}
 
@@ -141,7 +140,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\ContentParser',
-			$this->applicationFactory->newContentParser( $title )
+			$this->servicesFactory->newContentParser( $title )
 		);
 	}
 
@@ -149,7 +148,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MwCollaboratorFactory',
-			$this->applicationFactory->newMwCollaboratorFactory()
+			$this->servicesFactory->newMwCollaboratorFactory()
 		);
 	}
 
@@ -157,7 +156,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\NamespaceExaminer',
-			$this->applicationFactory->getNamespaceExaminer()
+			$this->servicesFactory->getNamespaceExaminer()
 		);
 	}
 
@@ -169,7 +168,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DataUpdater',
-			$this->applicationFactory->newDataUpdater( $semanticData )
+			$this->servicesFactory->newDataUpdater( $semanticData )
 		);
 	}
 
@@ -177,7 +176,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DataItemFactory',
-			$this->applicationFactory->getDataItemFactory()
+			$this->servicesFactory->getDataItemFactory()
 		);
 	}
 
@@ -185,7 +184,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\MaintenanceFactory',
-			$this->applicationFactory->newMaintenanceFactory()
+			$this->servicesFactory->newMaintenanceFactory()
 		);
 	}
 
@@ -193,7 +192,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\CacheFactory',
-			$this->applicationFactory->newCacheFactory()
+			$this->servicesFactory->newCacheFactory()
 		);
 	}
 
@@ -201,7 +200,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\IteratorFactory',
-			$this->applicationFactory->getIteratorFactory()
+			$this->servicesFactory->getIteratorFactory()
 		);
 	}
 
@@ -209,7 +208,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\DataValueFactory',
-			$this->applicationFactory->getDataValueFactory()
+			$this->servicesFactory->getDataValueFactory()
 		);
 	}
 
@@ -217,7 +216,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertySpecificationLookup',
-			$this->applicationFactory->getPropertySpecificationLookup()
+			$this->servicesFactory->getPropertySpecificationLookup()
 		);
 	}
 
@@ -225,7 +224,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\HierarchyLookup',
-			$this->applicationFactory->newHierarchyLookup()
+			$this->servicesFactory->newHierarchyLookup()
 		);
 	}
 
@@ -233,7 +232,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\QueryFactory',
-			$this->applicationFactory->getQueryFactory()
+			$this->servicesFactory->getQueryFactory()
 		);
 	}
 
@@ -241,7 +240,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\PropertyLabelFinder',
-			$this->applicationFactory->getPropertyLabelFinder()
+			$this->servicesFactory->getPropertyLabelFinder()
 		);
 	}
 
@@ -253,7 +252,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Deferred\CallableUpdate',
-			$this->applicationFactory->newDeferredCallableUpdate( $callback )
+			$this->servicesFactory->newDeferredCallableUpdate( $callback )
 		);
 	}
 
@@ -261,7 +260,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Deferred\TransactionalCallableUpdate',
-			$this->applicationFactory->newDeferredTransactionalCallableUpdate( null )
+			$this->servicesFactory->newDeferredTransactionalCallableUpdate( null )
 		);
 	}
 
@@ -269,7 +268,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\Psr\Log\LoggerInterface',
-			$this->applicationFactory->getMediaWikiLogger()
+			$this->servicesFactory->getMediaWikiLogger()
 		);
 	}
 
@@ -277,7 +276,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\Onoi\EventDispatcher\EventDispatcher',
-			$this->applicationFactory->getEventDispatcher()
+			$this->servicesFactory->getEventDispatcher()
 		);
 	}
 
@@ -285,7 +284,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\JobQueue',
-			$this->applicationFactory->getJobQueue()
+			$this->servicesFactory->getJobQueue()
 		);
 	}
 
@@ -298,7 +297,7 @@ class ApplicationFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			$expected,
-			call_user_func_array( [ $this->applicationFactory, 'create' ], $arguments )
+			call_user_func_array( [ $this->servicesFactory, 'create' ], $arguments )
 		);
 	}
 
