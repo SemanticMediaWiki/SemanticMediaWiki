@@ -21,6 +21,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 * [#3605](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3605) Conditionally create the full-text ([`smw_ft_search`](https://www.semantic-mediawiki.org/wiki/Table:smw_ft_search)) table
 * [#3738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3738) Show an "in maintenance" message while the [upgrade](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) is progressing
+* [#4119](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4119)
+* [#4123](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4123)
 
 ### Store
 
@@ -47,6 +49,9 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3999](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3999)
 * [#4018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4018)
 * [#4019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4019)
+* [#4088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4088)
+* [#4114](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4114)
+* [#4126](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4126)
 
 ### Query
 
@@ -56,6 +61,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 #### Result formats
 
+* [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620)
 * [#3650](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3650) Added support for `noimage` as output option for entity (aka. page) links
 * [#3734](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3734) Moved remaining result printers to new namespace
 * [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
@@ -129,6 +135,10 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3914](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3914)
 * [#4022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4022)
 * [#4036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4036)
+* [#4071](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4071)
+* [#4077](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4077)
+* [#4091](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4091)
+* [#4111](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4111)
 
 ## Breaking changes and deprecations
 
