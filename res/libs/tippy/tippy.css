@@ -1,9 +1,6 @@
 .tippy-iOS {
-	cursor: pointer!important
-}
-
-.tippy-notransition {
-	transition: none
+	cursor: pointer!important;
+	-webkit-tap-highlight-color: transparent
 }
 
 .tippy-popper {
@@ -477,7 +474,7 @@
 }
 
 .tippy-tooltip[data-interactive],
-.tippy-tooltip[data-interactive] path {
+.tippy-tooltip[data-interactive] .tippy-roundarrow path {
 	pointer-events: auto
 }
 
