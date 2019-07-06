@@ -19,7 +19,7 @@
 		{
 			"namespace": "NS_MAIN",
 			"page": "Example/S0036/2",
-			"contents": "[[Has temperature::10]] [[Category:S0036]]"
+			"contents": "[[Has temperature::10 °C]] [[Category:S0036]]"
 		}
 	],
 	"tests": [
