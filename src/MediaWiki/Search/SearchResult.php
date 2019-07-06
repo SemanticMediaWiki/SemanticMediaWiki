@@ -23,7 +23,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::getTextSnippet
 	 */
-	function getTextSnippet( $terms ) {
+	function getTextSnippet( $terms = [] ) {
 
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );

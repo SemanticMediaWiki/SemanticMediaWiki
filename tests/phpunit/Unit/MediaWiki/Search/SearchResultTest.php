@@ -121,8 +121,8 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setExcerpt( 'Foobar' );
 
-		$this->assertEquals(
-			"<span class='searchmatch'>Foo</span>bar\n",
+		$this->assertInternalType(
+			'string',
 			$instance->getTextSnippet( [ 'Foo' ] )
 		);
 	}
