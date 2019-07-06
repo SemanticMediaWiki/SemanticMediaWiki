@@ -20,11 +20,16 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $connRef;
+	private $silenceableTransactionProfiler;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->connRef = $this->getMockBuilder( '\SMW\Connection\ConnRef' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->silenceableTransactionProfiler = $this->getMockBuilder( '\SMW\MediaWiki\Connection\SilenceableTransactionProfiler' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -752,6 +757,10 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			new ConnRef( [] )
 		);
 
+		$instance->setSilenceableTransactionProfiler(
+			$this->silenceableTransactionProfiler
+		);
+
 		$this->setExpectedException( 'RuntimeException' );
 		call_user_func_array( [ $instance, $func ], $args );
 	}
@@ -819,7 +828,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield [
-			'onTransactionIdle', [ 'Foo' ]
+			'onTransactionIdle', [ function() {} ]
 		];
 	}
 

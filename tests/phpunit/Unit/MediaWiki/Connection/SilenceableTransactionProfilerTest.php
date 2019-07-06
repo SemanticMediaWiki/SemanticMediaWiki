@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
-use SMW\MediaWiki\Connection\TransactionProfiler;
+use SMW\MediaWiki\Connection\SilenceableTransactionProfiler;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\MediaWiki\Connection\TransactionProfiler
+ * @covers \SMW\MediaWiki\Connection\SilenceableTransactionProfiler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class TransactionProfilerTest extends \PHPUnit_Framework_TestCase {
+class SilenceableTransactionProfilerTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,14 +30,14 @@ class TransactionProfilerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			TransactionProfiler::class,
-			new TransactionProfiler( $this->transactionProfiler )
+			SilenceableTransactionProfiler::class,
+			new SilenceableTransactionProfiler( $this->transactionProfiler )
 		);
 	}
 
 	public function testSetSilenced_Enabled() {
 
-		$instance = new TransactionProfiler(
+		$instance = new SilenceableTransactionProfiler(
 			$this->transactionProfiler
 		);
 
@@ -51,7 +51,7 @@ class TransactionProfilerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetSilenced_NotEnabled() {
 
-		$instance = new TransactionProfiler(
+		$instance = new SilenceableTransactionProfiler(
 			$this->transactionProfiler
 		);
 

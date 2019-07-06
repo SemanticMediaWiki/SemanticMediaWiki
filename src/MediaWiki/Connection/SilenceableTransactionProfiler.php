@@ -8,7 +8,7 @@ namespace SMW\MediaWiki\Connection;
  *
  * @author mwjames
  */
-class TransactionProfiler {
+class SilenceableTransactionProfiler {
 
 	/**
 	 * @var TransactionProfiler
