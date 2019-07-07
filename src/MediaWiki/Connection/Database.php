@@ -222,7 +222,17 @@ class Database {
 	 * @return string
 	 */
 	public function tablePrefix( $prefix = null  ) {
-		return $this->connRef->getConnection( 'read' )->tablePrefix( $prefix );
+
+		$connection = $this->connRef->getConnection( 'read' );
+
+		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
+		// Avoid "DBUnexpectedError ... DBConnRef.php: Database selection is
+		// disallowed to enable reuse ..."
+		if ( $connection instanceof \Wikimedia\Rdbms\DBConnRef ) {
+			return $connection->__call( __FUNCTION__, [ $prefix ] );
+		}
+
+		return $connection->tablePrefix( $prefix );
 	}
 
 	/**
@@ -299,7 +309,7 @@ class Database {
 			// MW's SQLite implementation adds an auto prefix to the tableName but
 			// not to the conditions and since ::tableName will handle prefixing
 			// consistently ensure that the select doesn't add an extra prefix
-			$tablePrefix = $connection->tablePrefix( '' );
+			$tablePrefix = $this->tablePrefix( '' );
 
 			if ( isset( $options['ORDER BY'] ) ) {
 				$options['ORDER BY'] = str_replace( 'RAND', 'RANDOM', $options['ORDER BY'] );
@@ -320,7 +330,7 @@ class Database {
 		}
 
 		if ( $tablePrefix !== null ) {
-			$connection->tablePrefix( $tablePrefix );
+			$this->tablePrefix( $tablePrefix );
 		}
 
 		if ( $results instanceof ResultWrapper ) {
