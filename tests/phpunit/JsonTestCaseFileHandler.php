@@ -108,6 +108,14 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
+		// Transform for convenience `skip-except` meaning skip all
+		// except for ...
+		if ( isset( $case['skip-except'] ) ) {
+			foreach ( $case['skip-except'] as $id => $value ) {
+				$skipOn[$id] = [ "not", $value ];
+			}
+		}
+
 		$version = MW_VERSION;
 
 		foreach ( $skipOn as $id => $value ) {
@@ -123,19 +131,19 @@ class JsonTestCaseFileHandler {
 				$reason = $value;
 			}
 
-			// Suppor for { "skip-on": { "foo": [ "not", "Exclude all except foo ..." ] }
+			// Support for { "skip-on": { "foo": [ "not", "Exclude all except foo ..." ] }
 			if ( $versionToSkip === 'not' && $identifier === $id ) {
 				continue;
 			} elseif ( $versionToSkip === 'not' && $identifier !== $id ) {
 				return true;
 			}
 
-			// Suppor for { "skip-on": { "virtuoso": "Virtuoso 6.1 ..." }
+			// Support for { "skip-on": { "virtuoso": "Virtuoso 6.1 ..." }
 			if ( $identifier === $id ) {
 				return true;
 			}
 
-			// Suppor for { "skip-on": { "smw->2.5.x": "Reason is ..." }
+			// Support for { "skip-on": { "smw->2.5.x": "Reason is ..." }
 			// or { "skip-on": { "mw->1.30.x": "Reason is ..." }
 			if ( strpos( $id, 'mw-' ) !== false ) {
 				list( $noop, $versionToSkip ) = explode( "mw-", $id, 2 );
@@ -145,7 +153,7 @@ class JsonTestCaseFileHandler {
 				list( $noop, $versionToSkip ) = explode( "hhvm-", $id, 2 );
 			}
 
-			// Suppor for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
+			// Support for { "skip-on": { "mediawiki": [ ">1.29.x", "Reason is ..." ] }
 			if ( strpos( $id, 'smw' ) !== false ) {
 				$version = SMW_VERSION;
 			} elseif ( strpos( $id, 'mediawiki' ) !== false || strpos( $id, 'mw' ) !== false ) {
