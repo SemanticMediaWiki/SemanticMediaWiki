@@ -48,7 +48,8 @@
 			"Carlosmg.dg",
 			"Ciencia Al Poder",
 			"Abijeet Patro",
-			"Harvest"
+			"Harvest",
+			"Johny Weissmuller Jr"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -56,7 +57,7 @@
 	"smw-upgrade-error-title": "Error (Semantic MediaWiki)",
 	"smw-upgrade-error-why-title": "¿Por qué veo esta página?",
 	"smw-extensionload-error-why-title": "¿Por qué veo esta página?",
-	"smw-extensionload-error-how-title": "¿Cómo corrijo el problema?",
+	"smw-extensionload-error-how-title": "¿Cómo soluciono este problema?",
 	"smw-upgrade-maintenance-title": "Actualización y mantenimiento (Semantic MediaWiki)",
 	"smw-upgrade-maintenance-why-title": "¿Por qué veo esta página?",
 	"smw-semantics-not-enabled": "No se ha habilitado la funcionalidad de Semantic MediaWiki para esta wiki.",
