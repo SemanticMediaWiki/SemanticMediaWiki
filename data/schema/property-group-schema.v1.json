@@ -17,6 +17,14 @@
 			"title": "Schema type",
 			"default": "PROPERTY_GROUP_SCHEMA"
 		},
+		"title_prefix": {
+			"$id": "#/properties/title_prefix",
+			"type": "string",
+			"enum": [
+				"Group"
+			],
+			"title": "Title prefix"
+		},
 		"manifest_version": {
 			"$id": "#/properties/manifest_version",
 			"type": "number",

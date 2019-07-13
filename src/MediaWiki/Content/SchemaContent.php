@@ -6,6 +6,7 @@ use SMW\Schema\SchemaFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
 use SMW\ParserData;
+use SMW\Message;
 use SMW\ApplicationFactory;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -153,9 +154,20 @@ class SchemaContent extends JsonContent {
 			$this->isYaml
 		);
 
+		$schemaName = $title->getDBKey();
+		$title_prefix = '';
+
+		if ( strpos( $schemaName, ':' ) !== false ) {
+			list( $title_prefix, ) = explode( ':',  $schemaName );
+		}
+
+		// Allow to use the schema validation against a possible
+		// required naming convention (aka title prefix)
+		$this->parse->title_prefix = $title_prefix;
+
 		try {
 			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
+				$schemaName,
 				$this->toJson()
 			);
 		} catch ( SchemaTypeNotFoundException $e ) {
@@ -188,6 +200,27 @@ class SchemaContent extends JsonContent {
 			$schema
 		);
 
+		foreach ( $errors as $error ) {
+			if ( isset( $error['property'] ) && isset( $error['message'] ) ) {
+
+				if ( $error['property'] === 'title_prefix' ) {
+					if ( isset( $error['enum'] ) ) {
+						$group = end( $error['enum'] );
+					} elseif ( isset( $error['const'] ) ) {
+						$group = $error['const'];
+					} else {
+						continue;
+					}
+
+					$error['message'] = Message::get( [ 'smw-schema-error-title-prefix', $group ] );
+				}
+
+				$parserData->addError(
+					[ ['smw-schema-error-violation', $error['property'], $error['message'] ] ]
+				);
+			}
+		}
+
 		$this->contentFormatter->setType(
 			$this->schemaFactory->getType( $schema->get( 'type' ) )
 		);
@@ -195,14 +228,6 @@ class SchemaContent extends JsonContent {
 		$output->setText(
 			$this->contentFormatter->getText( $this->mText, $schema, $errors )
 		);
-
-		foreach ( $errors as $error ) {
-			if ( isset( $error['property'] ) && isset( $error['message'] ) ) {
-				$parserData->addError(
-					[ ['smw-schema-error-violation', $error['property'], $error['message'] ] ]
-				);
-			}
-		}
 
 		$parserData->copyToParserOutput();
 	}
@@ -241,7 +266,10 @@ class SchemaContent extends JsonContent {
 				$schema
 			);
 
-			$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
+			$schema_link = pathinfo(
+				$schema->info( Schema::SCHEMA_VALIDATION_FILE ),
+				PATHINFO_FILENAME
+			);
 		}
 
 		$status = Status::newGood();
@@ -253,6 +281,20 @@ class SchemaContent extends JsonContent {
 		}
 
 		foreach ( $errors as $error ) {
+
+			if ( isset( $error['property'] ) && $error['property'] === 'title_prefix' ) {
+
+				if ( isset( $error['enum'] ) ) {
+					$group = end( $error['enum'] );
+				} elseif ( isset( $error['const'] ) ) {
+					$group = $error['const'];
+				} else {
+					continue;
+				}
+
+				$error = [ 'smw-schema-error-title-prefix', "$group:" ];
+			}
+
 			if ( isset( $error['message'] ) ) {
 				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
 			} elseif ( is_string( $error ) ) {
