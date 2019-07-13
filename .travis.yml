@@ -8,43 +8,43 @@ dist: trusty
 matrix:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_29; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=master; PHPUNIT=6.5.*
-      php: 7.3
-    - env: DB=mysql; MW=REL1_28; FUSEKI=2.4.0; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; VIRTUOSO=6.1; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; SESAME=2.8.7; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=sqlite; MW=REL1_27; SITELANG=ja; PHPUNIT=4.8.*
-      php: 5.6
     - env: DB=postgres; MW=REL1_31; PHPUNIT=6.5.*
       php: 7.2
-    - env: DB=mysql; MW=REL1_27; BLAZEGRAPH=1.5.2; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
+    - env: DB=sqlite; MW=REL1_33; PHPUNIT=6.5.*
+      php: 7.3
+    - env: DB=sqlite; MW=REL1_31; SITELANG=ja; PHPUNIT=5.7.*
+      php: 7.0
+    - env: DB=mysql; MW=REL1_31; BLAZEGRAPH=1.5.2; PHPUNIT=5.7.*
+      php: 7.0
+    - env: DB=mysql; MW=REL1_32; FUSEKI=2.4.0; PHPUNIT=5.7.*
+      php: 7.1
+    - env: DB=mysql; MW=REL1_31; VIRTUOSO=6.1; PHPUNIT=5.7.*
+      php: 7.0
+    - env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=5.7.*
+      php: 7.0
+    - env: DB=mysql; MW=master; PHPUNIT=6.5.*
+      php: 7.3
+    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=5.7.*
       php: 7.1
     - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
       php: 7.2
-    - env: DB=sqlite; MW=REL1_32; PHPUNIT=6.5.*
-      php: 7.3
-    - env: DB=sqlite; MW=REL1_27; TYPE=composer; PHPUNIT=4.8.*
-      php: 5.6
-    - env: DB=mysql; MW=REL1_27; TYPE=relbuild; PHPUNIT=4.8.*
-      php: 5.6
+    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=5.7.*
+      php: 7.1
+    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=5.7.*
+      php: 7.1
   allow_failures:
     # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=mysql; MW=REL1_27; TYPE=relbuild; PHPUNIT=4.8.*
+    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=5.7.*
     # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=sqlite; MW=REL1_27; TYPE=composer; PHPUNIT=4.8.*
+    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=5.7.*
     # This is MW master, you never know what WMF developers have put in for easter eggs, same for PHP conversely
     - env: DB=mysql; MW=master; PHPUNIT=6.5.*
     # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
-    - env: DB=mysql; MW=REL1_27; SESAME=2.8.7
-    - env: DB=mysql; MW=REL1_30; ES=5.6.6; PHPUNIT=5.7.*
+    #- env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=5.7.*
 
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):

@@ -50,7 +50,8 @@
 			"type": "format",
 			"about": "#0 asc (different to f-0305, f-0304)",
 			"skip-on":{
-				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
+				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
 			"subject": "Example/F0306/Q.1.1",
 			"assert-output": {
@@ -77,7 +78,8 @@
 			"about": "#1 desc (different to f-0305, f-0304)",
 			"skip-on":{
 				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
-				"postgres": "PostgreSQL `numeric` collation generates a different order when compared with MySQL, SQLite."
+				"postgres": "PostgreSQL `numeric` collation generates a different order when compared with MySQL, SQLite.",
+				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
 			"subject": "Example/F0306/Q.1.2",
 			"assert-output": {
@@ -89,8 +91,8 @@
 		{
 			"type": "format",
 			"about": "#1.elastic desc (different to f-0305, f-0304)",
-			"skip-on":{
-				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			"skip-except":{
+				"elastic": "Only relevant when used in connection with ES"
 			},
 			"subject": "Example/F0306/Q.1.2",
 			"assert-output": {
@@ -117,8 +119,8 @@
 			"type": "format",
 			"about": "#2.elastic Has page, asc (different to f-0305, f-0304)",
 			"subject": "Example/F0306/Q.1.3",
-			"skip-on":{
-				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			"skip-except":{
+				"elastic": "Only relevant when used in connection with ES"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -144,8 +146,8 @@
 			"type": "format",
 			"about": "#3.elastic Has page, desc (different to f-0305, f-0304)",
 			"subject": "Example/F0306/Q.1.4",
-			"skip-on": {
-				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			"skip-except": {
+				"elastic": "Only relevant when used in connection with ES"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -159,7 +161,8 @@
 			"subject": "Example/F0306/Q.2.1",
 			"skip-on": {
 				"elastic": "Different sorting behaviour, natural",
-				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output.",
+				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -171,8 +174,8 @@
 			"type": "format",
 			"about": "#4.elastic Has page, asc, imported content",
 			"subject": "Example/F0306/Q.2.1",
-			"skip-on": {
-				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			"skip-except": {
+				"elastic": "Only relevant when used in connection with ES"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -186,7 +189,8 @@
 			"subject": "Example/F0306/Q.2.2",
 			"skip-on": {
 				"elastic": "Different sorting behaviour, natural",
-				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output."
+				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output.",
+				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -198,8 +202,8 @@
 			"type": "format",
 			"about": "#5.elastic Has page, desc, imported content",
 			"subject": "Example/F0306/Q.2.2",
-			"skip-on": {
-				"elastic": [ "not", "Only relevant when used in connection with ES" ]
+			"skip-except": {
+				"elastic": "Only relevant when used in connection with ES"
 			},
 			"assert-output": {
 				"to-contain": [
