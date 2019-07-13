@@ -44,11 +44,11 @@
     background-color: #337ab7;
     border: none;
     color: white;
-    padding: 6px 14px;
+    padding: 0 14px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 12px;
+    font-size: 20px;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }

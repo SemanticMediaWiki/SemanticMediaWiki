@@ -30,7 +30,7 @@ var jsonview = ( function( mw ) {
 		container.find( '.jsonview' ).before(
 			'<div class="smw-jsonview-button-group">' +
 			'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + '<span class="smw-jsonview-clipboard"></span>' + '</button>' +
-			'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button">' + '➕' + '</button>' +
+			'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button"><span class="smw-jsonview-expand">' + '+' + '</span></button>' +
 			'</div>'
 		);
 
@@ -65,11 +65,11 @@ var jsonview = ( function( mw ) {
 				container.JSONView( 'toggle', 2 );
 			}
 
-			context.text( '➕' );
+			context.text( '+' );
 			context.prop('title', mw.msg( 'smw-jsonview-expand-title' ) );
 		} else {
 			context.data( 'type', 'collapse' );
-			context.text( '➖' );
+			context.text( '−' );
 			context.prop('title', mw.msg( 'smw-jsonview-collapse-title' ) );
 			container.JSONView('expand' );
 		}
