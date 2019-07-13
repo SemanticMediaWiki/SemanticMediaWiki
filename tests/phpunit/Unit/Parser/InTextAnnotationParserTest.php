@@ -25,6 +25,7 @@ use Title;
 class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
+	private $stringValidator;
 	private $testEnvironment;
 	private $linksProcessor;
 	private $magicWordsFinder;
@@ -34,6 +35,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -158,7 +160,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->parse( $text );
 
-		$this->assertContains(
+		$this->stringValidator->assertThatStringContains(
 			$expected['resultText'],
 			$text
 		);
@@ -527,8 +529,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		#7 673
 
 		// Special:Types/Number
-		$specialTypeName = \SpecialPage::getTitleFor( 'Types', 'Number' )->getPrefixedText();
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			[
@@ -537,7 +537,8 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			],
 			'[[has type::number]], [[has Type::page]] ',
 			[
-				'resultText'     => "[[$specialTypeName|number]], [[:Page|page]]",
+				//                     Special:Types/Number -> .*/Number
+				'resultText'     => "[[.*/Number|number]], [[:Page|page]]",
 				'propertyCount'  => 2,
 				'propertyLabels' => [ 'Has type', 'Has Type' ],
 				'propertyValues' => [ 'Number', 'Page' ]

@@ -60,6 +60,10 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewPropertySearchLink_GetText() {
 
+		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
+			return $this->markTestSkipped( 'NS_SPECIAL produces different representation!' );
+		}
+
 		$instance = Infolink::newPropertySearchLink( 'Foo', 'Bar', 'Foobar' );
 
 		$instance->setCompactLink( false );
