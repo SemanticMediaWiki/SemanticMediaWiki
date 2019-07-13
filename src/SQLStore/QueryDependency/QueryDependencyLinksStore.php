@@ -469,13 +469,17 @@ class QueryDependencyLinksStore {
 			return false;
 		}
 
-		if ( $query === null || $query->getContextPage() === null ) {
+		if ( $query === null || ( $subject = $query->getContextPage() ) === null ) {
 			return false;
 		}
 
 		// Make sure that when a query is embedded in a not supported NS to bail
 		// out
-		if ( !$this->namespaceExaminer->isSemanticEnabled( $query->getContextPage()->getNamespace() ) ) {
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $subject->getNamespace() ) ) {
+			return false;
+		}
+
+		if ( $subject->getTitle() === null || !$subject->getTitle()->exists() ) {
 			return false;
 		}
 

@@ -21,6 +21,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $spyLogger;
 	private $jobFactory;
+	private $subject;
 	private $testEnvironment;
 
 	protected function setUp() {
@@ -48,6 +49,26 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$this->subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->subject->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$this->subject->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
@@ -101,7 +122,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Foo' ) ) );
+			->will( $this->returnValue( $this->subject ) );
 
 		$changeOp->expects( $this->once() )
 			->method( 'getTableChangeOps' )
@@ -150,6 +171,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$changeOp->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $this->subject ) );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
 			->disableOriginalConstructor()
@@ -515,7 +540,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $this->subject ) );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
@@ -581,7 +606,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $this->subject ) );
 
 		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
 			->disableOriginalConstructor()
@@ -599,6 +624,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
 
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
@@ -762,7 +791,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->will( $this->returnValue( $this->subject ) );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
@@ -794,7 +823,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getHash' )
 			->will( $this->returnValue( 'Foo###' ) );
 
-		$subject->expects( $this->once() )
+		$subject->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
@@ -874,6 +903,10 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
 		$title->expects( $this->once() )
 			->method( 'getTouched' )
 			->will( $this->returnValue( wfTimestamp( TS_MW ) + 60 ) );
@@ -886,18 +919,18 @@ class QueryDependencyLinksStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
 		// This should be a `once` but it failed on PHP: hhvm-3.18 DB=sqlite; MW=master; PHPUNIT=5.7.*
-		// with "Method was expected to be called 1 times, actually called 0 times." 
+		// with "Method was expected to be called 1 times, actually called 0 times."
 		$title->expects( $this->any() )
 			->method( 'getTouched' )
 			->will( $this->returnValue( '2017-06-15 08:36:55+00' ) );
 
 		$provider[] = [
 			$title
-		];
-
-		$provider[] = [
-			null
 		];
 
 		return $provider;
