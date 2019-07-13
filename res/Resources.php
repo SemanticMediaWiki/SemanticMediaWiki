@@ -237,7 +237,8 @@ return [
 		'dependencies' => [
 			'ext.smw.tooltip.styles',
 			'smw.tippy'
-		]
+		],
+		'targets' => [ 'mobile', 'desktop' ]
 	],
 
 	'ext.smw.tooltips' => $moduleTemplate + [
