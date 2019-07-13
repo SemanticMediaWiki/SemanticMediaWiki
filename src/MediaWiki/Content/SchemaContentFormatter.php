@@ -82,7 +82,14 @@ class SchemaContentFormatter {
 	 * @return []
 	 */
 	public function getModuleStyles() {
-		return [ 'mediawiki.helplink', 'smw.content.schema', 'mediawiki.content.json' ];
+		return [
+			'mediawiki.helplink',
+			'smw.content.schema',
+			'mediawiki.content.json',
+			'ext.smw.style',
+			'ext.smw.table.styles',
+			'smw.factbox'
+		];
 	}
 
 	/**
@@ -135,7 +142,7 @@ class SchemaContentFormatter {
 
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
-			'footer' => [ $schema ]
+		//	'footer' => [ $schema ]
 		];
 
 		$html = '';
@@ -192,31 +199,58 @@ class SchemaContentFormatter {
 			return '';
 		}
 
-
 		list( $usage, $usage_count ) = $this->getUsage( $schema );
-		$errorCount = count( $errors );
-
-		$schema_link = pathinfo( $schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME );
-		$description = '';
-
-		if ( isset( $this->type['type_description'] ) ) {
-			$description = $this->msg( [ $this->type['type_description'], $schema->get( Schema::SCHEMA_TYPE ) ], Message::PARSE );
-		}
 
 		$params = [
 			'link' => '',
 			'description' => '',
-			'type_description' => $description,
+			'type_description' => '',
 			'usage' => $usage,
 			'usage_count' => $usage_count,
+			'schema_summary' => $this->schema_summary( $schema, $errors ),
 			'schema_body' => $this->schema_body( $text ),
-			'error' => $this->error_text( $schema_link, $errors ),
+			'summary-title' => $this->msg( 'smw-schema-summary-title' ),
 			'schema-title' => $this->msg( 'smw-schema-title' ),
-			'usage-title' => $this->msg( 'smw-schema-usage' ),
-			'error-title' => $this->msg( [ 'smw-schema-error', $errorCount ] )
+			'usage-title' => $this->msg( 'smw-schema-usage' )
 		];
 
 		return $this->htmlBuilder->build( 'schema_head', $params );
+	}
+
+	private function schema_summary( $schema, $errors ) {
+
+		$errorCount = count( $errors );
+		$type = $schema->get( Schema::SCHEMA_TYPE );
+
+		$schema_link = pathinfo(
+			$schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME
+		);
+
+		if ( isset( $this->type['type_description'] ) ) {
+			$type_description = $this->msg( [ $this->type['type_description'], $type ], Message::PARSE );
+		} else {
+			$type_description = '';
+		}
+
+		$attributes = [
+			'type' => $type,
+			'type_description' => $type_description,
+			'schema_description' => $schema->get( Schema::SCHEMA_DESCRIPTION, '' ),
+			'tag' => $schema->get( Schema::SCHEMA_TAG )
+		];
+
+		$params = [
+			'attributes' => $attributes,
+			'attributes_extra' => $this->attributes_extra( $schema ) +
+				[
+					'type_description' => $this->msg( 'smw-schema-type-description' )
+				],
+			'validator_schema' => $schema_link,
+			'error_params' => $this->error_params( $schema_link, $errors ),
+			'error-title' => $this->msg( [ 'smw-schema-error', $errorCount ] ),
+		];
+
+		return $this->htmlBuilder->build( 'schema_summary', $params );
 	}
 
 	private function schema_body( $text ) {
@@ -251,10 +285,10 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_body', $params );
 	}
 
-	private function footer( $schema ) {
+	private function attributes_extra( $schema ) {
 
 		if ( $schema === null ) {
-			return '';
+			return [];
 		}
 
 		$tags = [];
@@ -274,16 +308,18 @@ class SchemaContentFormatter {
 			'link_type' => $link->getHtml(),
 			'href_tag'  => Title::newFromText( 'Schema tag', SMW_NS_PROPERTY )->getLocalUrl(),
 			'msg_tag'   => $this->msg( [ 'smw-schema-tag', count( $tags ) ] ),
-			'tags'      => $tags
+			'tags'      => $tags,
+			'href_description' => Title::newFromText( 'Schema description', SMW_NS_PROPERTY )->getLocalUrl(),
+			'msg_description'  => $this->msg( [ 'smw-schema-description' ] ),
 		];
 
-		return $this->htmlBuilder->build( 'schema_footer', $params );
+		return $params;
 	}
 
-	private function error_text( $validator_schema, array $errors = [] ) {
+	private function error_params( $validator_schema, array $errors = [] ) {
 
 		if ( $errors === [] ) {
-			return '';
+			return [];
 		}
 
 		$list = [];
@@ -299,19 +335,14 @@ class SchemaContentFormatter {
 				'text' => $error['property']
 			];
 
-			$list[] = $this->htmlBuilder->build( 'schema_error', $params );
+			$list[$error['property']] = $error['message'];
 		}
 
 		if ( $list === [] ) {
-			return '';
+			return [];
 		}
 
-		$params = [
-			'list' => $list,
-			'schema' => $this->msg( [ 'smw-schema-error-schema', $validator_schema ], Message::PARSE )
-		];
-
-		return $this->htmlBuilder->build( 'schema_error_text', $params );
+		return $list;
 	}
 
 	private function unknown_type( $type ) {

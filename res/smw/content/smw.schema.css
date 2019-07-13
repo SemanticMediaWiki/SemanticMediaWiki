@@ -136,7 +136,8 @@
  */
 .smw-schema #tab-schema-error:checked ~ #tab-content-schema-error,
 .smw-schema #tab-schema-usage:checked ~ #tab-content-schema-usage,
-.smw-schema #tab-schema-summary:checked ~ #tab-content-schema-summary {
+.smw-schema #tab-schema-summary:checked ~ #tab-content-schema-summary,
+.smw-schema #tab-schema-content:checked ~ #tab-content-schema-content {
 	display: block;
 }
 
@@ -176,4 +177,24 @@
 .skin-chameleon .content-no-highlight {
     border-radius: 0px;
     margin: 1em 0px;
+}
+
+.smw-table {
+    margin-top:10px;
+}
+
+.schema-summary .smw-table-cell, .smw-table-head {
+    border: 1px solid #999;
+    border: 0px;
+    display: table-cell;
+    /* padding: 3px 10px; */
+    border-bottom: 1px solid #ddd;
+}
+
+.schema-summary .smw-table-row:last-child .smw-table-cell {
+ border-bottom: 0px;
+}
+
+.schema-summary .smw-table-row .smwpropname, .smw-table-row .smwpropname, .smw-table-row .smwspecname {
+    width: 20%;
 }
