@@ -17,6 +17,14 @@
 			"title": "Schema type",
 			"default": "CLASS_CONSTRAINT_SCHEMA"
 		},
+		"title_prefix": {
+			"$id": "#/properties/title_prefix",
+			"type": "string",
+			"enum": [
+				"Constraint"
+			],
+			"title": "Title prefix"
+		},
 		"tags": {
 			"$id": "#/properties/tags",
 			"type": "array",
