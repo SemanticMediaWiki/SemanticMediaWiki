@@ -29,6 +29,16 @@ class StringResult extends QueryResult {
 	private $preOutputCallback;
 
 	/**
+	 * @var integer
+	 */
+	private $count = 0;
+
+	/**
+	 * @var boolean
+	 */
+	private $hasFurtherResults = false;
+
+	/**
 	 * @var array
 	 */
 	private $options = [
@@ -41,9 +51,10 @@ class StringResult extends QueryResult {
 	 *
 	 * @param string $result
 	 */
-	public function __construct( $result = '', Query $query ) {
+	public function __construct( $result = '', Query $query, $hasFurtherResults = false ) {
 		$this->result = $result;
 		$this->query = $query;
+		$this->hasFurtherResults = $hasFurtherResults;
 	}
 
 	/**
@@ -54,6 +65,33 @@ class StringResult extends QueryResult {
 	 */
 	public function setOption( $key, $value ) {
 		$this->options[$key] = $value;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $count
+	 */
+	public function setCount( $count ) {
+		$this->count = $count;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return integer
+	 */
+	public function getCount() {
+		return $this->count;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function hasFurtherResults() {
+		return $this->hasFurtherResults;
 	}
 
 	/**
