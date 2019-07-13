@@ -130,7 +130,7 @@ class RemoteRequest implements QueryEngine {
 			$result = $this->error( 'smw-remote-source-unmatched-id', $source );
 			$isDisabled = true;
 		} else {
-			$result = str_replace( self::REQUEST_ID, '', $result );
+			$result = substr( $result, 0, strpos( $result, self::REQUEST_ID ) );
 		}
 
 		// Add an information note depending on the context before the actual output
