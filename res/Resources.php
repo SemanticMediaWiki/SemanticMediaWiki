@@ -727,6 +727,10 @@ return [
 			'ext.smw'
 		],
 		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
 	],
 
 	'ext.libs.tippy'  => $moduleTemplate + [
