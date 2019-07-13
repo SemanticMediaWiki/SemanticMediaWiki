@@ -49,6 +49,7 @@
     text-decoration: none;
     display: inline-block;
     font-size: 20px;
+    font-family: monospace;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
 }
