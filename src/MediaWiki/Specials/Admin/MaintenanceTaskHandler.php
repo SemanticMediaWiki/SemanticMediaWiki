@@ -181,13 +181,20 @@ class MaintenanceTaskHandler extends TaskHandler {
 			}
 
 			$name = basename( $script[0] );
+			$section = '';
 
 			$description = $this->msg(
 				'smw-admin-maintenance-script-description-' . strtolower( str_replace('.php', '', $name ) ),
 				Message::PARSE
 			);
 
-			$scripts[] = Html::rawElement(
+			if ( strpos( $name, 'update' ) !== false ) {
+				$section = 'update';
+			} elseif ( strpos( $name, 'rebuild' ) !== false ) {
+				$section = 'rebuild';
+			}
+
+			$scripts[$section][] = Html::rawElement(
 				'a',
 				[
 					'href' => $this->msg( [ 'smw-helplink', $name ] )
@@ -196,13 +203,22 @@ class MaintenanceTaskHandler extends TaskHandler {
 			) . ":&nbsp;". $description;
 		}
 
-		$list = Html::rawElement(
-			'ul',
-			[
-				'class' => 'plainlinks'
-			],
-			'<li>' . implode( '</li><li>', $scripts ) . '</li>'
-		);
+		$list = '';
+
+		foreach ( $scripts as $section => $scr ) {
+
+			if ( $section !== '' ) {
+				$list .= "<h3>" . $this->msg( "smw-admin-maintenance-script-section-$section" ) . "</h3>";
+			}
+
+			$list .= Html::rawElement(
+				'ul',
+				[
+					'class' => 'plainlinks'
+				],
+				'<li>' . implode( '</li><li>', $scr ) . '</li>'
+			);
+		}
 
 		$html .= Html::rawElement(
 			'div',
