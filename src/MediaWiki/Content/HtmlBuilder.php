@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Content;
 
 use Html;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\HtmlDivTable;
 use SMW\Message;
 
 /**
@@ -75,17 +76,11 @@ class HtmlBuilder {
 		$htmlTabs->setGroup( 'schema' );
 
 		$htmlTabs->setActiveTab(
-			$params['error'] !== '' ? 'schema-error' : 'schema-summary'
+			'schema-summary'
 		);
 
-		$htmlTabs->tab( 'schema-summary', $params['schema-title'] );
-		$htmlTabs->tab(
-			'schema-error',
-			$params['error-title'],
-			[
-				'hide' => $params['error'] === '', 'class' => 'error-label'
-			]
-		);
+		$htmlTabs->tab( 'schema-summary', $params['summary-title'] );
+		$htmlTabs->tab( 'schema-content', $params['schema-title'] );
 
 		$htmlTabs->tab(
 			'schema-usage',
@@ -95,8 +90,8 @@ class HtmlBuilder {
 			]
 		);
 
-		$htmlTabs->content( 'schema-summary', $params['schema_body'] );
-		$htmlTabs->content( 'schema-error', $params['error'] );
+		$htmlTabs->content( 'schema-summary', $params['schema_summary'] );
+		$htmlTabs->content( 'schema-content', $params['schema_body'] );
 		$htmlTabs->content( 'schema-usage', $params['usage'] );
 
 		$html = $htmlTabs->buildHTML(
@@ -108,7 +103,119 @@ class HtmlBuilder {
 			[
 				'class' => 'schema-head'
 			],
-			$type_description . $html
+			$type_description
+		) . Html::rawElement(
+			'div',
+			[
+				'class' => 'schema-body'
+			],
+			$html
+		);
+	}
+
+	private function schema_summary( $params ) {
+
+		$html = '';
+		$rows = '';
+
+		foreach ( $params['attributes'] as $key => $value ) {
+
+			if ( $value === '' || $value === null ) {
+				continue;
+			}
+
+			if ( $key === 'type' ) {
+				$key = Html::rawElement(
+					'a',
+					[
+						'href' => $params['attributes_extra']['href_type']
+					],
+					$params['attributes_extra']['msg_type']
+				);
+
+				$value = $params['attributes_extra']['link_type'];
+			}
+
+			if ( $key === 'schema_description' ) {
+				$key = Html::rawElement(
+					'a',
+					[
+						'href' => $params['attributes_extra']['href_description']
+					],
+					$params['attributes_extra']['msg_description']
+				);
+			}
+
+			if ( $key === 'type_description' ) {
+				$key = $params['attributes_extra']['type_description'];
+			}
+
+			if ( $key === 'tag' ) {
+				$key = Html::rawElement(
+					'a',
+					[
+						'href' => $params['attributes_extra']['href_tag']
+					],
+					$params['attributes_extra']['msg_tag']
+				);
+
+				$value = implode( ', ', $params['attributes_extra']['tags'] );
+			}
+
+			$row = HtmlDivTable::cell( $key, [ 'class' => 'smwpropname' ] );
+			$row .= HtmlDivTable::cell( $value, [ 'class' => 'smwprops' ] );
+			$rows .= HtmlDivTable::row( $row );
+		}
+
+		$html .= HtmlDivTable::table(
+			$rows,
+			[
+				'class' => 'smwfacttable'
+			]
+		);
+
+		if ( isset( $params['error_params'] ) && $params['error_params'] !== [] ) {
+			$rows = '';
+			$error_section = '';
+
+			$row = HtmlDivTable::cell( 'validation schema', [ 'class' => 'smwpropname' ] );
+			$row .= HtmlDivTable::cell( $params['validator_schema'], [ 'class' => 'smwprops' ] );
+			$rows .= HtmlDivTable::row( $row );
+
+			foreach ( $params['error_params'] as $prop => $message ) {
+				$row = HtmlDivTable::cell( $prop, [ 'class' => 'smwpropname' ] );
+				$row .= HtmlDivTable::cell( $message, [ 'class' => 'smwprops' ] );
+				$rows .= HtmlDivTable::row( $row );
+			}
+
+			$error_section .= Html::rawElement(
+				'h3',
+				[],
+				$params['error-title']
+			);
+
+			$error_section .= HtmlDivTable::table(
+				$rows,
+				[
+					'class' => 'smwfacttable'
+				]
+			);
+
+			$html .= Html::rawElement(
+				'div',
+				[
+					'class' => 'schema-error-section'
+				],
+				$error_section
+			);
+		}
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => 'schema-summary'
+			],
+			$html
 		);
 	}
 
@@ -167,24 +274,13 @@ class HtmlBuilder {
 	}
 
 	private function schema_error_text( $params ) {
-
-		$html = Html::rawElement(
+		return Html::rawElement(
 				'ul',
 				[
 					'class' => 'smw-schema-validation-error-list'
 				],
 				'<li>' . implode( '</li><li>', $params['list'] ) . '</li>'
 		);
-
-		$html = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-schema-validation-error'
-			],
-			$params['schema']
-		) . $html;
-
-		return $html;
 	}
 
 	private function schema_error( $params ) {
