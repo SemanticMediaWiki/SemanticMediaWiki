@@ -26,7 +26,7 @@ class I18nExtraneousLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCas
 		$missedLabelPair = [];
 
 		if ( !isset( $contents['property']['labels'] ) ) {
-			return $this->markTestIncomplete( 'No property label for ' . basename( $file ) . ' available.' );
+			return $this->markTestSkipped( 'No property label for ' . basename( $file ) . ' available.' );
 		}
 
 		foreach ( $contents['property']['labels'] as $key => $label ) {
@@ -53,7 +53,7 @@ class I18nExtraneousLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCas
 		$missedAliasPair = [];
 
 		if ( !isset( $contents['property']['aliases'] ) ) {
-			return $this->markTestIncomplete( 'No property aliases for ' . basename( $file ) . ' available.' );
+			return $this->markTestSkipped( 'No property aliases for ' . basename( $file ) . ' available.' );
 		}
 
 		foreach ( $contents['property']['aliases'] as $label => $key ) {

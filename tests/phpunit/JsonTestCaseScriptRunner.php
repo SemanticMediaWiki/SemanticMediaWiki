@@ -277,6 +277,10 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
+		if ( $jsonTestCaseFileHandler->requiredToSkipOnSiteLanguage( $GLOBALS['wgLanguageCode'] ) ) {
+			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
+		}
+
 		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}

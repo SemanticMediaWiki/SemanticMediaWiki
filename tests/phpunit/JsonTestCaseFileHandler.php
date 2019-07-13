@@ -233,6 +233,31 @@ class JsonTestCaseFileHandler {
 	 *
 	 * @return boolean
 	 */
+	public function requiredToSkipOnSiteLanguage( $siteLanguage ) {
+
+		$meta = $this->getFileContentsFor( 'meta' );
+		$skipOn = isset( $meta['skip-on'] ) ? $meta['skip-on'] : [];
+
+		foreach ( $skipOn as $id => $reason ) {
+
+			if ( $id !== 'sitelanguage') {
+				continue;
+			}
+
+			if ( $reason[0] === $siteLanguage ) {
+				$this->reasonToSkip = $reason[1];
+				break;
+			}
+		}
+
+		return $this->reasonToSkip !== '';
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @return boolean
+	 */
 	public function requiredToSkipForMwVersion( $mwVersion ) {
 
 		$meta = $this->getFileContentsFor( 'meta' );

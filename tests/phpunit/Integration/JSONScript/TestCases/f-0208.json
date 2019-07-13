@@ -173,6 +173,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

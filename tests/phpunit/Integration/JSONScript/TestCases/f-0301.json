@@ -203,7 +203,9 @@
 	},
 	"meta": {
 		"skip-on": {
-			"postgres": "Unicode needs special treatment in postgres"
+			"postgres": "Unicode needs special treatment in postgres",
+			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
+
 		},
 		"version": "2",
 		"is-incomplete": false,

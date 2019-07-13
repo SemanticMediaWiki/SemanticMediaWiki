@@ -106,7 +106,7 @@
 	},
 	"meta": {
 		"skip-on": {
-			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
+			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
 		},
 		"version": "2",
 		"is-incomplete": false,

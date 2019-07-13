@@ -24,6 +24,10 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 	protected function setUp() {
 		parent::setUp();
 
+		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
+			return $this->markTestSkipped( 'Category title produces different fingerprint!' );
+		}
+
 		$testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}

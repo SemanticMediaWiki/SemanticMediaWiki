@@ -37,6 +37,10 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
+			return $this->markTestSkipped( 'Category title produces different fingerprint!' );
+		}
+
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();

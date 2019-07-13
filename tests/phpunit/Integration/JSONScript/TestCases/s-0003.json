@@ -124,6 +124,9 @@
 		}
 	},
 	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with <swivt:type rdf:resource=\"http://example.org/id/Category-3AS0003\"/> when 'ja' is used as sitelanguage." ]
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

@@ -97,6 +97,9 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with canonical NS_SPECIAL output when 'ja' is used as sitelanguage." ]
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
