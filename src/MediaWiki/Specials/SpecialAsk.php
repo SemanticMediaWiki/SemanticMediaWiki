@@ -444,28 +444,33 @@ class SpecialAsk extends SpecialPage {
 		if ( !$printer->isExportFormat() ) {
 			if ( $request_type !== '' ) {
 				$this->getOutput()->disable();
-				$query_result = '';
+				$output = '';
 
-				if ( $res->getCount() > 0 ) {
+				if ( ( $count = $res->getCount() ) > 0 ) {
+					$further = $res->hasFurtherResults();
 
 					if ( $request_type === 'raw' ) {
-						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_RAW );
+						$output = $printer->getResult( $res, $this->params, SMW_OUTPUT_RAW );
 					} else {
-						$query_result = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
+						$output = $printer->getResult( $res, $this->params, SMW_OUTPUT_HTML );
 					}
 
+					// The `RemoteRequest` class will use the following information
+					// when creating a `StringResult` instance
+					$output .= "<!--COUNT:$count-->";
+					$output .= "<!--FURTHERRESULTS:$further-->";
 				} elseif ( $res->getCountValue() > 0 ) {
-					$query_result = $res->getCountValue();
+					$output = $res->getCountValue();
 				}
 
 				// Don't send an ID for a raw type but for all others add one
 				// so that the `RemoteRequest` can respond appropriately and
 				// filter those back-ends that don't send a clean output.
 				if ( $request_type !== 'raw' ) {
-					$query_result .= RemoteRequest::REQUEST_ID;
+					$output .= RemoteRequest::REQUEST_ID;
 				}
 
-				return print $query_result;
+				return print $output;
 			} elseif ( ( $res instanceof QueryResult && $res->getCount() > 0 ) || $res instanceof StringResult ) {
 				if ( $this->isEditMode ) {
 					$urlArgs->set( 'eq', 'yes' );

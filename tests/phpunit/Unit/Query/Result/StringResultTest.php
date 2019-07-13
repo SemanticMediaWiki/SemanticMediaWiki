@@ -42,6 +42,26 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCount() {
+
+		$instance = new StringResult( 'Foobar', $this->query );
+		$instance->setCount( 42 );
+
+		$this->assertEquals(
+			42,
+			$instance->getCount()
+		);
+	}
+
+	public function testHasFurtherResults() {
+
+		$instance = new StringResult( 'Foobar', $this->query, true );
+
+		$this->assertTrue(
+			$instance->hasFurtherResults()
+		);
+	}
+
 	public function testGetResult_PreOutputCallback() {
 
 		$instance = new StringResult( 'Foobar', $this->query );
