@@ -39,6 +39,8 @@
 	"smw-factbox-facts": "Facts",
 	"smw-factbox-facts-help": "Shows statements and facts that have been created by a user",
 	"smw-factbox-attachments": "Attachments",
+	"smw-factbox-attachments-value-unknown": "N/A",
+	"smw-factbox-attachments-is-local": "Is local",
 	"smw-factbox-attachments-help": "Shows available attachments",
 	"smw-factbox-facts-derived": "Derived facts",
 	"smw-factbox-facts-derived-help": "Shows facts that have been derived from rules or with the help of other reasoning techniques",

@@ -89,6 +89,7 @@ class Factbox {
 		$this->parserData = $parserData;
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+		$this->attachmentFormatter = new AttachmentFormatter( $store );
 	}
 
 	/**
@@ -172,101 +173,12 @@ class Factbox {
 			return '';
 		}
 
-		$html = '';
-		$rows = '';
-		$header = $this->createHeader(
-			DIWikiPage::newFromTitle( $this->getTitle() )
+		$this->attachmentFormatter->setHeader(
+			$this->createHeader( DIWikiPage::newFromTitle( $this->getTitle() ) )
 		);
 
-		$property = new DIProperty( '_ATTCH_LINK' );
-
-		foreach ( $this->attachments as $dataItem ) {
-
-			$dataValue = $this->dataValueFactory->newDataValueByItem(
-				$dataItem,
-				$property
-			);
-
-			$dataValue->setOption( $dataValue::NO_IMAGE, true );
-			$attachment = $dataValue->getShortWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
-
-			$row = HtmlDivTable::cell( $attachment );
-
-			$pv = $this->store->getPropertyValues( $dataItem, new DIProperty( '_MIME' ) );
-			$pv = end( $pv );
-
-			$row .= HtmlDivTable::cell(
-				$pv instanceof DIBlob ? $pv->getString() : '',
-				[ 'style' => 'word-break: break-word;' ]
-			);
-
-			$prop = new DIProperty( '_MDAT' );
-			$text = '';
-
-			$pv = $this->store->getPropertyValues( $dataItem, $prop );
-			$pv = end( $pv );
-
-			if ( $pv instanceof DataItem ) {
-				$dv = $this->dataValueFactory->newDataValueByItem( $pv, $prop );
-				$dv->setOutputFormat( 'LOCL' );
-				$text = $dv->getShortWikiText();
-			}
-
-			$row .= HtmlDivTable::cell( $text );
-
-			$rows .= HtmlDivTable::row(
-				$row
-			);
-		}
-
-		$propertyRegistry = PropertyRegistry::getInstance();
-
-		$mime = $this->dataValueFactory->newDataValueByItem(
-			 ( new DIProperty( '_MIME' ) )->getDiWikiPage()
-		);
-
-		$mime->setOption( $mime::SHORT_FORM, true );
-		$mime->setOutputFormat( 'LOCL' );
-
-		$mime->setCaption(
-			$propertyRegistry->findPropertyLabelFromIdByLanguageCode(
-				'_MIME',
-				$mime->getOption( $mime::OPT_USER_LANGUAGE )
-			)
-		);
-
-		$mdat = $this->dataValueFactory->newDataValueByItem(
-			 ( new DIProperty( '_MDAT' )  )->getDiWikiPage()
-		);
-
-		$mdat->setOption( $mime::SHORT_FORM, true );
-		$mdat->setOutputFormat( 'LOCL' );
-
-		$mdat->setCaption(
-			$propertyRegistry->findPropertyLabelFromIdByLanguageCode(
-				'_MDAT',
-				$mdat->getOption( $mdat::OPT_USER_LANGUAGE )
-			)
-		);
-
-		$html .= Html::rawElement(
-			'div',
-			[
-				'class' => 'smwfact',
-				'style' => 'display:block;'
-			],
-			$header . HtmlDivTable::table(
-				HtmlDivTable::header(
-					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:60%;'] ) .
-					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
-					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;'] )
-				) . HtmlDivTable::body( $rows ),
-				[
-					// ID is used for the sorting JS!
-					'id'    => 'smw-factbox-attachments',
-					'class' => 'smwfacttable'
-				]
-			)
+		$html = $this->attachmentFormatter->buildHTML(
+			$this->attachments
 		);
 
 		return $html;
