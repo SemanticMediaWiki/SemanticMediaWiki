@@ -53,6 +53,8 @@
 	"smw-factbox-facts": "Dati",
 	"smw-factbox-facts-help": "Mostra dichiarazioni e dati che sono stati creati da un utente",
 	"smw-factbox-attachments": "Allegati",
+	"smw-factbox-attachments-value-unknown": "N/D",
+	"smw-factbox-attachments-is-local": "È locale",
 	"smw-factbox-attachments-help": "Mostra allegati disponibili",
 	"smw-factbox-facts-derived": "Dati derivati",
 	"smw-factbox-facts-derived-help": "Mostra dati che sono stati derivati da principi o con l'aiuto di altre tecniche di ragionamento",
