@@ -57,6 +57,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$this->addOption( 'skip-fileindex', 'Skipping any file ingest actions', false, false );
 		$this->addOption( 'run-fileindex', 'Only run file ingest actions', false, false );
 		$this->addOption( 'auto-recovery', 'Allows to restart from a canceled (or aborted) index run', false, false );
+		$this->addOption( 'only-update', 'Run an update without switching indices and a rollover (short cut for -s 1)', false, false );
 
 		$this->addOption( 'debug', 'Sets global variables to support debug ouput while running the script', false );
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
@@ -132,6 +133,10 @@ class RebuildElasticIndex extends \Maintenance {
 			return $this->reportMessage(
 				"\n" . 'Elasticsearch endpoint(s) are not available!' . "\n"
 			);
+		}
+
+		if ( $this->hasOption( 'only-update' ) ) {
+			$this->mOptions['s'] = 1;
 		}
 
 		$this->reportMessage(
@@ -278,7 +283,11 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$this->reportMessage( "\nRebuilding indices ..." );
 
-		if ( !$this->hasOption( 's' ) && !$this->hasOption( 'page' ) && !$this->hasOption( 'run-fileindex' ) && !$this->hasOption( 'auto-recovery' ) ) {
+		if (
+			!$this->hasOption( 's' ) &&
+			!$this->hasOption( 'page' ) &&
+			!$this->hasOption( 'run-fileindex' ) &&
+			!$this->hasOption( 'auto-recovery' ) ) {
 			$this->reportMessage( "\n" . '   ... creating required indices and aliases ...' );
 			$this->rebuilder->createIndices();
 		} else {
@@ -331,7 +340,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$key = $isSelective ? '(count)' : 'no.';
 
 		$this->reportMessage(
-			"\r". sprintf( "%-50s%s", "   ... updating document $key", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
+			"\r". sprintf( "%-50s%s", "   ... updating document", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
 		);
 
 		if ( $row->smw_iw === SMW_SQL3_SMWDELETEIW || $row->smw_iw === SMW_SQL3_SMWREDIIW ) {
