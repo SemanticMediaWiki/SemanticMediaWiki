@@ -52,12 +52,12 @@ class PopulateHashField extends \Maintenance {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param boolean $complete
 	 */
 	public function setComplete( $complete ) {
 
 		$this->reportMessage(
-			"   ... add " . Installer::POPULATE_HASH_FIELD_COMPLETE . " ... \n"
+			"   ... updating `" . Installer::POPULATE_HASH_FIELD_COMPLETE . "` status ... \n"
 		);
 
 		$setupFile = new SetupFile();
@@ -171,7 +171,7 @@ class PopulateHashField extends \Maintenance {
 		}
 
 		if ( $count == 0 ) {
-			$this->reportMessage( "   ... all rows populated ...\n"  );
+			$this->reportMessage( "   ... all rows populated ..."  );
 		} else {
 			$this->reportMessage( "   ... missing $count rows ...\n"  );
 
