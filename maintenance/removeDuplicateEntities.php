@@ -24,6 +24,8 @@ class RemoveDuplicateEntities extends \Maintenance {
 	public function __construct() {
 		$this->mDescription = 'Remove duplicate entities without active references.';
 		$this->addOption( 's', 'ID starting point', false, true );
+		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );		
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 
 		parent::__construct();
 	}
@@ -69,6 +71,16 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicates();
 		$duplicateEntitiesDisposer->verifyAndDispose( $duplicateEntityRecords );
+		
+		if ( $result && $this->hasOption( 'report-runtime' ) ) {
+			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
+			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
+		}
+		
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RemoveDuplicateEntitiesLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+		}
 
 		return true;
 	}
