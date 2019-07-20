@@ -233,9 +233,9 @@ class SchemaContentFormatter {
 		}
 
 		$attributes = [
-			'type' => $type,
 			'type_description' => $type_description,
 			'schema_description' => $schema->get( Schema::SCHEMA_DESCRIPTION, '' ),
+			'type' => $type,
 			'tag' => $schema->get( Schema::SCHEMA_TAG )
 		];
 
