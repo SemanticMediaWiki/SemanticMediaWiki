@@ -30,6 +30,7 @@ $autoloader->addClassMap( [
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
+define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
 
 /**
  * Register a shutdown function the invoke a final clean-up
@@ -41,10 +42,11 @@ register_shutdown_function( function() {
 	}
 
 	$connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
+	$connection = $connectionManager->getConnection( 'mw.db' );
 
 	// Reset any sequence modified during the test
 	$sequence = new Sequence(
-		$connectionManager->getConnection( 'mw.db' )
+		$connection
 	);
 
 	try {
@@ -54,9 +56,9 @@ register_shutdown_function( function() {
 		return;
 	}
 
-	$cleanUpTables =  new CleanUpTables(
-		$connectionManager->getConnection( DB_MASTER )
+	$cleanUpTables = new CleanUpTables(
+		$connection
 	);
 
-	$cleanUpTables->dropTables( 'sunittest_' );
+	$cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
 } );
