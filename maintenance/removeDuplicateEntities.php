@@ -72,7 +72,7 @@ class RemoveDuplicateEntities extends \Maintenance {
 		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicates();
 		$duplicateEntitiesDisposer->verifyAndDispose( $duplicateEntityRecords );
 		
-		if ( $result && $this->hasOption( 'report-runtime' ) ) {
+		if ( $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
 			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
 		}
