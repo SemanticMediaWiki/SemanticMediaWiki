@@ -124,6 +124,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#4048](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4048)
 * [#4047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4047)
 * [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4069)
+* [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4152) Added `--with-maintenance-log` option to the "rebuildElasticIndex.php" maintenance script
 
 ## Bug fixes
 
