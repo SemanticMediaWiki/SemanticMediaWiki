@@ -40,17 +40,39 @@ class DisplayTitleLookup {
 
 		$list = [];
 		$prefetch = [];
+		$connection = $this->store->getConnection( 'mw.db' );
+		$idTable = $this->store->getObjectIds();
+		$hashes = [];
 
-		foreach ( $dataItems as $dataItem ) {
-			$id = $subject = $this->store->getObjectIds()->getId(
-				$dataItem
-			);
+		// - Doing a select without calling the `CacheWarmer` since this would
+		//   cause as circular dependency given that it calls `DisplayTitleFinder`
+		//   which itself calls this class
+		// - $dataItems[] expects to be of the format [ sha1 => DataItem ]
+		// - Adding smw_title, smw_namespace to ensure a `Using index condition`
+		//   during the select
+		$rows = $connection->select(
+			SQLStore::ID_TABLE,
+			[
+				'smw_id',
+				'smw_title',
+				'smw_namespace',
+				'smw_hash'
+			],
+			[
+				'smw_hash' => array_keys( $dataItems )
+			],
+			__METHOD__
+		);
 
-			$list[$id] = $dataItem;
+		foreach ( $rows as $row ) {
+			$hashes[$row->smw_hash] = $row->smw_id;
+		}
+
+		foreach ( $dataItems as $sha1 => $dataItem ) {
+			$list[ $hashes[$sha1] ?? $idTable->getId( $dataItem ) ] = $dataItem;
 		}
 
 		$rows = $this->fetchFromTable( $list );
-		$connection = $this->store->getConnection( 'mw.db' );
 
 		foreach ( $rows as $row ) {
 
