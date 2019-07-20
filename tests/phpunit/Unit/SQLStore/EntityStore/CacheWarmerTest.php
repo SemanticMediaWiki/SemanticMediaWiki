@@ -169,4 +169,34 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		$instance->fillFromList( $list );
 	}
 
+	public function testFillFromList_UnknownPredefinedProperty() {
+
+		$list = [
+			new DIWikiPage( '_Foo', SMW_NS_PROPERTY )
+		];
+
+		$this->idCacheManager->expects( $this->never() )
+			->method( 'setCache' );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new CacheWarmer(
+			$this->store,
+			$this->idCacheManager
+		);
+
+		$instance->setThresholdLimit( 1 );
+		$instance->fillFromList( $list );
+	}
+
 }

@@ -10,6 +10,7 @@ use SMWQueryResult as QueryResult;
 use Iterator;
 use SMW\MediaWiki\LinkBatch;
 use SMW\DisplayTitleFinder;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
 /**
  * @license GNU GPL v2+
@@ -95,7 +96,11 @@ class CacheWarmer {
 				$linkBatch->add( $item );
 
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
-					$property = DIProperty::newFromUserLabel( $item->getDBKey() );
+					try {
+						$property = DIProperty::newFromUserLabel( $item->getDBKey() );
+					} catch ( PredefinedPropertyLabelMismatchException $e ) {
+						continue;
+					}
 					$hash = $item->getSha1();
 				} else {
 					$hash = $item->getSha1();
