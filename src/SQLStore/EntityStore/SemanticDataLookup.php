@@ -453,11 +453,21 @@ class SemanticDataLookup {
 
  		// Apply sorting/string matching; only with given property
 		if ( !$isSubject ) {
+
+			// Use the `smw_sortkey` when applying a string condition match
+			// otherwise the `o_id` is used as match field which doesn't make
+			// sense for something like `%foo%`
+			if (
+				$propTable->getDiType() === DataItem::TYPE_WIKIPAGE &&
+				$requestOptions->getStringConditions() !== [] ) {
+				$labelField = "smw_sortkey";
+			}
+
 			$conds = $this->store->getSQLConditions(
 				$requestOptions,
 				$valueField,
 				$labelField,
-				$query->hasCondition()
+				false
 			);
 
 			$query->condition( $conds );
