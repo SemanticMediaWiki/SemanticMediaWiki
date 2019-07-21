@@ -20,14 +20,15 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
+	private $store;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$store = ApplicationFactory::getInstance()->getStore();
+		$this->store = ApplicationFactory::getInstance()->getStore();
 
-		if ( !$store instanceof \SMW\Elastic\ElasticStore ) {
-			$this->markTestSkipped( "Skipping test because a ElasticStore instance is required." );
+		if ( !$this->store instanceof \SMW\Elastic\ElasticStore ) {
+			$this->markTestSkipped( "Skipping test because it requires a `ElasticStore` instance." );
 		}
 
 		$utilityFactory = TestEnvironment::getUtilityFactory();
@@ -49,21 +50,20 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );
 		$maintenanceRunner->setQuiet();
 
+		$version = $this->store->getInfo( 'es' );
+
 		// Testing against ES 5.6 may cause a "Can't update
 		// [index.number_of_replicas] on closed indices" see
 		// https://github.com/elastic/elasticsearch/issues/22993
 		//
 		// Should be fixed with ES 6.4
 		// https://github.com/elastic/elasticsearch/pull/30423
-
-		try {
-			$res = $maintenanceRunner->run();
-		} catch( \Elasticsearch\Common\Exceptions\BadRequest400Exception $e ) {
-			$res = true;
+		if ( version_compare( $version, '6.4.0', '<' ) ) {
+			$this->markTestSkipped( "Skipping test because it requires at least ES 6.4.0." );
 		}
 
 		$this->assertTrue(
-			$res
+			$maintenanceRunner->run()
 		);
 	}
 
