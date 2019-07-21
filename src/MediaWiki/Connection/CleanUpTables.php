@@ -24,7 +24,11 @@ class CleanUpTables {
 	 */
 	public function __construct( $connection ) {
 
-		if ( !$connection instanceof \Wikimedia\Rdbms\IDatabase && !$connection instanceof \IDatabase && !$connection instanceof \DatabaseBase ) {
+		if (
+			!$connection instanceof \SMW\MediaWiki\Database &&
+			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
+			!$connection instanceof \IDatabase &&
+			!$connection instanceof \DatabaseBase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -39,6 +43,12 @@ class CleanUpTables {
 	public function dropTables( $tablePrefix ) {
 
 		$tables = $this->connection->listTables();
+
+		// MW SQLite does some prefix meddling hence we require to remove any
+		// prefix reference
+		if ( $tablePrefix !== '' && $this->connection->getType() === 'sqlite' ) {
+			$this->connection->tablePrefix( '' );
+		}
 
 		foreach ( $tables as $table ) {
 
