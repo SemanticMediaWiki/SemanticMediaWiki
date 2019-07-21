@@ -4,6 +4,7 @@ namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
 use SMW\ApplicationFactory;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
@@ -320,12 +321,24 @@ class QueryEngine implements IQueryEngine {
 
 			$id = $dataItem->getId();
 			$subobjectName = $dataItem->getSubobjectName();
+			$property = null;
 
 			// Handle predefined properties
-			if ( $dataItem->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $dataItem->getDBKEY() ) && $dbKey{0} === '_' ) {
-				$dataItem = DIProperty::newFromUserLabel( $dbKey )->getDIWikiPage(
-					$subobjectName
-				);
+			if (
+				$dataItem->getNamespace() === SMW_NS_PROPERTY &&
+				( $dbKey = $dataItem->getDBKey() ) &&
+				$dbKey{0} === '_' ) {
+
+				try {
+					$property = DIProperty::newFromUserLabel( $dbKey );
+				} catch ( PredefinedPropertyLabelMismatchException $e ) {
+					// Keep the dataItem as-is, this may hint to an outdated
+					// predefined property
+				}
+			}
+
+			if ( $property !== null ) {
+				$dataItem = $property->getDIWikiPage( $subobjectName );
 			}
 
 			$results[$listPos[$id]] = $dataItem;

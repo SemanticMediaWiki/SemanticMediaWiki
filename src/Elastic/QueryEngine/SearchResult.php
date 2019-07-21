@@ -89,7 +89,7 @@ class SearchResult {
 	public function getResults( $cutoff = null ) {
 
 		if ( $this->results === null ) {
-			$this->filter_results( $this->raw, $cutoff );
+			$this->doFilterResults( $this->raw, $cutoff );
 		}
 
 		return $this->results;
@@ -116,7 +116,7 @@ class SearchResult {
 	 *
 	 * @return []
 	 */
-	public function filter_results( array $results, $cutoff = null ) {
+	public function doFilterResults( array $results, $cutoff = null ) {
 
 		$this->results = [];
 
@@ -133,7 +133,7 @@ class SearchResult {
 		}
 
 		$info = $results;
-		$res = $this->filter_field( $results, $cutoff );
+		$res = $this->filterByField( $results, $cutoff, $this->filterField );
 
 		unset( $info['hits'] );
 		unset( $info['_shards'] );
@@ -151,16 +151,15 @@ class SearchResult {
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
 	 */
-	private function filter_field( $results, $cutoff ) {
+	private function filterByField( $results, $cutoff, $field ) {
 
 		$res = [];
 		$continue = false;
 
 		$scores = [];
 		$excerpts = [];
-		$i = 0;
 
-		$field = $this->filterField;
+		$i = 0;
 		$pid = null;
 
 		if ( strpos( $field, '.' ) !== false ) {
