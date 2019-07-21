@@ -454,12 +454,19 @@ class SemanticDataLookup {
  		// Apply sorting/string matching; only with given property
 		if ( !$isSubject ) {
 
+			if (
+				$requestOptions->getStringConditions() !== [] &&
+				$requestOptions->sort ) {
+				$sort = $requestOptions->ascending ? 'ASC' : 'DESC';
+				$requestOptions->setOption( 'ORDER BY', $map[$sortField] . " $sort" );
+			}
+
 			// Use the `smw_sortkey` when applying a string condition match
 			// otherwise the `o_id` is used as match field which doesn't make
 			// sense for something like `%foo%`
 			if (
-				$propTable->getDiType() === DataItem::TYPE_WIKIPAGE &&
-				$requestOptions->getStringConditions() !== [] ) {
+				$requestOptions->getStringConditions() !== [] &&
+				$propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
 				$labelField = "smw_sortkey";
 			}
 
@@ -600,7 +607,14 @@ class SemanticDataLookup {
 				$query->field( "o$valueCount.smw_sortkey AS v" . ( $valueCount + 3 ) );
 				$map[$fieldname] = "v" . ( $valueCount + 3 );
 
+				// In case of switching the position of v3/v4 (subobject, sortkey/sort)
+				// see below the position reassignment of sort
+				// Row position is important when building an instance using
+				// `DIWikiPageHandler::newDiWikiPage`
 				$query->field( "o$valueCount.smw_subobject AS v" . ( $valueCount + 4 ) );
+
+				$query->field( "o$valueCount.smw_sort AS v" . ( $valueCount + 5 ) );
+				$map[$fieldname] = "v" . ( $valueCount + 5 );
 
 				if ( $valueField == $fieldname ) {
 					$valueField = "o$valueCount.smw_sortkey";
@@ -609,7 +623,7 @@ class SemanticDataLookup {
 					$labelField = "o$valueCount.smw_sortkey";
 				}
 
-				$valueCount += 4;
+				$valueCount += 5;
 			} else {
 				$map[$fieldname] = "v$valueCount";
 				$query->field( $fieldname, "v$valueCount" );
@@ -643,10 +657,21 @@ class SemanticDataLookup {
 		// Use enclosing array only for results with many values:
 		if ( $valueCount > 1 ) {
 			$valueKeys = [];
-			for ( $i = 0; $i < $valueCount; $i += 1 ) { // read the value fields from the current row
+
+			// read the value fields from the current row
+			for ( $i = 0; $i < $valueCount; $i += 1 ) {
 				$fieldname = "v$i";
 				$valueKeys[] = $row->$fieldname;
 			}
+
+			// Switch the `smw_sortkey` with `smw_sort` field to ensure that
+			// DIWikiPage::setSortKey uses the `smw_sort` value
+			if ( $valueCount == 6 ) {
+				$valueKeys[3] = $valueKeys[5];
+				unset( $valueKeys[5] );
+				$valueCount = 5;
+			}
+
 		} else {
 			$valueKeys = $row->v0;
 		}

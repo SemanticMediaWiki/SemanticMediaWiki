@@ -48,6 +48,10 @@ class RequestOptionsProc {
 			$sqlConds['ORDER BY'] = $requestOptions->ascending ? $valueCol : $valueCol . ' DESC';
 		}
 
+		if ( $requestOptions->getOption( 'ORDER BY', false ) !== false ) {
+			$sqlConds['ORDER BY'] = $requestOptions->getOption( 'ORDER BY' );
+		}
+
 		if ( $requestOptions->getOption( 'GROUP BY' ) ) {
 			$sqlConds['GROUP BY'] = $requestOptions->getOption( 'GROUP BY' );
 		}

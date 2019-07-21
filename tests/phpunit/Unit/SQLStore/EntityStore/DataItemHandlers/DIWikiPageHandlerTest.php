@@ -118,6 +118,23 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testDataItemFromDBKeys_Sort() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new DIWikiPageHandler( $store );
+
+		$dbKeys = [ 'Foo', NS_MAIN, 'iw', 'sort', 'subobject' ];
+		$dataItem = $instance->dataItemFromDBKeys( $dbKeys );
+
+		$this->assertSame(
+			'sort',
+			$dataItem->getSortKey()
+		);
+	}
+
 	/**
 	 * @dataProvider dbKeysExceptionProvider
 	 */
@@ -150,6 +167,10 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 			[ '_Foo', SMW_NS_PROPERTY, '', '', '' ]
 		];
 
+		$provider[] = [
+			[ 'Foo', NS_MAIN, 'iw', 'sort', 'subobject' ]
+		];
+
 		return $provider;
 	}
 
@@ -157,6 +178,10 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			[ 'Foo' ]
+		];
+
+		$provider[] = [
+			[ 'Foo', '', '', '', '', '', '' ]
 		];
 
 		return $provider;
