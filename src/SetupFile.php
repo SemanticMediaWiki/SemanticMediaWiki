@@ -404,6 +404,10 @@ class SetupFile {
 			$pageSpecialProperties
 		];
 
+		if ( $vars['smwgFieldTypeFeatures'] !== false ) {
+			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];
+		}
+
 		return json_encode( $components );
 	}
 
