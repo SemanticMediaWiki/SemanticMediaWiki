@@ -43,13 +43,6 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 
 	public function testRun() {
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticIndex'
-		);
-
-		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );
-		$maintenanceRunner->setQuiet();
-
 		$version = $this->store->getInfo( 'es' );
 
 		// Testing against ES 5.6 may cause a "Can't update
@@ -61,6 +54,13 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 		if ( version_compare( $version, '6.4.0', '<' ) ) {
 			$this->markTestSkipped( "Skipping test because it requires at least ES 6.4.0." );
 		}
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
+			'SMW\Maintenance\RebuildElasticIndex'
+		);
+
+		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );
+		$maintenanceRunner->setQuiet();
 
 		$this->assertTrue(
 			$maintenanceRunner->run()
