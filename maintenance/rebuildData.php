@@ -217,13 +217,14 @@ class RebuildData extends \Maintenance {
 			$runtimeValues = $maintenanceHelper->getRuntimeValues();
 
 			$log = [
-				'Memory used: ' . $runtimeValues['memory-used'],
-				'Time used: ' . $runtimeValues['humanreadable-time'],
-				'Rebuild count: ' . $dataRebuilder->getRebuildCount(),
-				'Exception count: ' . $dataRebuilder->getExceptionCount()
+				'Memory used' => $runtimeValues['memory-used'],
+				'Time used' => $runtimeValues['humanreadable-time'],
+				'Rebuild count' => $dataRebuilder->getRebuildCount(),
+				'Exception count' => $dataRebuilder->getExceptionCount(),
+				'Options' => $this->mOptions
 			];
 
-			$maintenanceLogger->log( implode( ', ', $log ) );
+			$maintenanceLogger->logFromArray( $log );
 		}
 
 		$maintenanceHelper->reset();
