@@ -31,7 +31,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
-			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
+			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$var2 = [
@@ -39,7 +40,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
-			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ]
+			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$this->assertEquals(
@@ -55,7 +57,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
-			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ]
+			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$var2 = [
@@ -63,7 +66,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
-			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ]
+			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$this->assertNotEquals(
@@ -92,7 +96,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
-			'smwgPageSpecialProperties' => []
+			'smwgPageSpecialProperties' => [],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$instance->finalize( $vars );
@@ -129,7 +134,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
-			'smwgPageSpecialProperties' => []
+			'smwgPageSpecialProperties' => [],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$instance->setMaintenanceMode( true, $vars );
@@ -167,7 +173,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgDefaultStore' => '',
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
-			'smwgPageSpecialProperties' => []
+			'smwgPageSpecialProperties' => [],
+			'smwgFieldTypeFeatures' => false
 		];
 
 		$instance->write( [ 'Foo' => 42 ], $vars );
