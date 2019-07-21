@@ -24,7 +24,7 @@ class RemoveDuplicateEntities extends \Maintenance {
 	public function __construct() {
 		$this->mDescription = 'Remove duplicate entities without active references.';
 		$this->addOption( 's', 'ID starting point', false, true );
-		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );		
+		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 
 		parent::__construct();
@@ -64,6 +64,9 @@ class RemoveDuplicateEntities extends \Maintenance {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
+		$maintenanceHelper->initRuntimeValues();
+
 		$duplicateEntitiesDisposer = $maintenanceFactory->newDuplicateEntitiesDisposer(
 			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
 			[ $this, 'reportMessage' ]
@@ -71,15 +74,22 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 		$duplicateEntityRecords = $duplicateEntitiesDisposer->findDuplicates();
 		$duplicateEntitiesDisposer->verifyAndDispose( $duplicateEntityRecords );
-		
+
 		if ( $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
 			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
 		}
-		
+
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RemoveDuplicateEntitiesLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+			$runtimeValues = $maintenanceHelper->getRuntimeValues();
+
+			$log = [
+				'Memory used' => $runtimeValues['memory-used'],
+				'Time used' => $runtimeValues['humanreadable-time']
+			];
+
+			$maintenanceLogger->logFromArray( $log );
 		}
 
 		return true;

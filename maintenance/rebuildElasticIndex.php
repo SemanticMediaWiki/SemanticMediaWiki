@@ -165,10 +165,17 @@ class RebuildElasticIndex extends \Maintenance {
 		if ( $this->hasOption( 'report-runtime' ) ) {
 			$this->reportMessage( "\n" . $maintenanceHelper->getFormattedRuntimeValues() . "\n" );
 		}
-		
+
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'RebuildElasticIndexLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+			$runtimeValues = $maintenanceHelper->getRuntimeValues();
+
+			$log = [
+				'Memory used' => $runtimeValues['memory-used'],
+				'Time used' => $runtimeValues['humanreadable-time']
+			];
+
+			$maintenanceLogger->logFromArray( $log );
 		}
 
 		$maintenanceHelper->reset();
