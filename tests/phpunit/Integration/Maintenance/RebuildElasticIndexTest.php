@@ -15,7 +15,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
+class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
@@ -43,7 +43,7 @@ class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
 	public function testRun() {
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticMissingDocuments'
+			'SMW\Maintenance\RebuildElasticIndex'
 		);
 
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );
@@ -51,11 +51,6 @@ class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
 
 		$this->assertTrue(
 			$maintenanceRunner->run()
-		);
-
-		$this->assertContains(
-			'removing replication trail',
-			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
