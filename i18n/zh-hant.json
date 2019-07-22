@@ -33,7 +33,8 @@
 			"A Chinese Wikipedian",
 			"Abijeet Patro",
 			"Willy1018",
-			"神樂坂秀吉"
+			"神樂坂秀吉",
+			"Winston Sung"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更容易使用 - 不論是對於機器''或''人類（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件]）",
@@ -912,7 +913,7 @@
 	"smw-schema-usage": "使用狀況",
 	"smw-schema-type": "類型",
 	"smw-schema-description-link-format-schema": "此架構類型預期來定義出與分配給屬性的[[Property:Formatter schema|格式化架構]]相關，用於創建上下文有關連結的字元。",
-	"smw-schema-description-search-form-schema": "<code>$1</code>架構類型預期用來定義用於[https://www.semantic-mediawiki.org/wiki/Help:SMWSearch 擴充搜尋]偏好設定的輸入表單與字元，其中包含如何產生輸入欄位、定義預設命名空間、或是宣告用於搜尋請求之字首表達的說明。",
+	"smw-schema-description-search-form-schema": "這個架構類型支援用於定義[https://www.semantic-mediawiki.org/wiki/Help:SMWSearch 擴充搜尋]偏好設定的輸入表單與字元，其中包含如何產生輸入欄位、定義預設命名空間、或是宣告用於搜尋請求之字首表達的說明。",
 	"smw-schema-description-property-group-schema": "<code>$1</code>架構類型定義了[https://www.semantic-mediawiki.org/wiki/Help:Property_group 屬性群組]，來協助架構出[https://www.semantic-mediawiki.org/wiki/Help:Special:Browse 瀏覽]介面。",
 	"smw-schema-description-property-constraint-schema": "<code>$1</code>架構類型應用於定義屬性實體的限制條件和所分配的值。",
 	"smw-schema-tag": "{{PLURAL:$1|標籤|標籤}}",
