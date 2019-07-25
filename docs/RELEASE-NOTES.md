@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.1
 
-Not a release yet. A release is tentatively planned for Q2 2019.
+Not a release yet. A release is tentatively planned for Q3 2019.
 
 ## Compatibility
 
