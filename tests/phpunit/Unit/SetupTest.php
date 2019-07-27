@@ -74,6 +74,31 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckExtensionRegistration() {
+
+		$vars = [
+			'smwgIgnoreExtensionRegistrationCheck' => true
+		];
+
+		Setup::checkExtensionRegistration( $vars );
+
+		$this->assertCount(
+			1,
+			$vars
+		);
+
+		$vars = [
+			'smwgIgnoreExtensionRegistrationCheck' => false
+		];
+
+		Setup::checkExtensionRegistration( $vars );
+
+		$this->assertCount(
+			2,
+			$vars
+		);
+	}
+
 	public function testResourceModules() {
 
 		$config = $this->defaultConfig;

@@ -16,6 +16,23 @@ use SMW\MediaWiki\Hooks;
 final class Setup {
 
 	/**
+	 * Registers a hook even before the "early" registration to allow checking
+	 * whether the extension is loaded and enabled.
+	 *
+	 * @since 3.1
+	 *
+	 * @param array $vars
+	 */
+	public static function checkExtensionRegistration( &$vars ) {
+
+		if ( $vars['smwgIgnoreExtensionRegistrationCheck'] ) {
+			return;
+		}
+
+		Hooks::registerExtensionCheck( $vars );
+	}
+
+	/**
 	 * Runs at the earliest possible event to initialize functions or hooks that
 	 * are otherwise too late for the hook system to be recognized.
 	 *

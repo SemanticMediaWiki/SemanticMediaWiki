@@ -135,11 +135,44 @@ class Hooks {
 	}
 
 	/**
+	 * Allow to show a message on `Special:Version` when it is clear that the
+	 * extension was loaded but not enabled.
+	 *
+	 * @since 3.1
+	 *
+	 * @param array &$vars
+	 */
+	public static function registerExtensionCheck( array &$vars ) {
+
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function( $outputPage ) {
+
+			$beforePageDisplay = new BeforePageDisplay();
+
+			$beforePageDisplay->setOptions(
+				[
+					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
+				]
+			);
+
+			$beforePageDisplay->informAboutExtensionAvailability( $outputPage );
+
+			return true;
+		};
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
 	 */
 	public static function registerEarly( array &$vars ) {
+
+		// Remove the hook registered via `Hook::registerExtensionCheck` given
+		// that at this point we know the extension was loaded and hereby is
+		// available.
+		if ( defined( 'SMW_EXTENSION_LOADED' ) ) {
+			unset( $vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] );
+		}
 
 		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\MediaWiki\Content\SchemaContentHandler';
 
