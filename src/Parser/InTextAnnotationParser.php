@@ -183,6 +183,17 @@ class InTextAnnotationParser {
 			$text
 		);
 
+		$this->annotationProcessor->setCanAnnotate(
+			$this->parserData->canUse()
+		);
+
+		Hooks::run( 'SMW::Parser::AfterLinksProcessingComplete',
+			[
+				&$text,
+				$this->annotationProcessor
+			]
+		);
+
 		// Ensure remaining encoded entities are decoded again
 		$text = LinksEncoder::removeLinkObfuscation( $text );
 

@@ -51,6 +51,24 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanAnnotate() {
+
+		$instance = new AnnotationProcessor(
+			$this->semanticData,
+			$this->dataValueFactory
+		);
+
+		$this->assertTrue(
+			$instance->canAnnotate()
+		);
+
+		$instance->setCanAnnotate( false );
+
+		$this->assertFalse(
+			$instance->canAnnotate()
+		);
+	}
+
 	public function testNewDataValueByText() {
 
 		$this->dataValueFactory->expects( $this->once() )

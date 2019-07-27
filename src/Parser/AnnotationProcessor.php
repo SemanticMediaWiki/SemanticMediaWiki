@@ -34,6 +34,11 @@ class AnnotationProcessor {
 	private $dataValueFactory;
 
 	/**
+	 * @var boolean
+	 */
+	private $canAnnotate = true;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param SemanticData $semanticData
@@ -48,6 +53,24 @@ class AnnotationProcessor {
 		}
 
 		$this->dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $canAnnotate
+	 */
+	public function setCanAnnotate( $canAnnotate ) {
+		$this->canAnnotate = $canAnnotate;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return boolean
+	 */
+	public function canAnnotate() {
+		return $this->canAnnotate;
 	}
 
 	/**
