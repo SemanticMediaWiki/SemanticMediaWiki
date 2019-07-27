@@ -59,9 +59,9 @@ class InTextAnnotationParser {
 	private $redirectTargetFinder;
 
 	/**
-	 * @var DataValueFactory
+	 * @var AnnotationProcessor
 	 */
-	private $dataValueFactory = null;
+	private $annotationProcessor;
 
 	/**
 	 * @var ApplicationFactory
@@ -108,7 +108,6 @@ class InTextAnnotationParser {
 		$this->linksProcessor = $linksProcessor;
 		$this->magicWordsFinder = $magicWordsFinder;
 		$this->redirectTargetFinder = $redirectTargetFinder;
-		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
@@ -163,8 +162,10 @@ class InTextAnnotationParser {
 			$text
 		);
 
-		// Set context
-		$this->dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
+		$this->annotationProcessor = new AnnotationProcessor(
+			$this->parserData->getSemanticData(),
+			DataValueFactory::getInstance()
+		);
 
 		// Obscure [/] to find a set of [[ :: ... ]] while those in-between are left for
 		// decoding in a post-processing so that the regex can split the text
@@ -193,7 +194,7 @@ class InTextAnnotationParser {
 		$this->parserData->copyToParserOutput();
 
 		// Remove context
-		$this->dataValueFactory->clearCallable( SemanticData::class );
+		$this->annotationProcessor->release();
 
 		$this->parserData->addLimitReport(
 			'intext-parsertime',
@@ -398,7 +399,7 @@ class InTextAnnotationParser {
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
-			$dataValue = $this->dataValueFactory->newDataValueByText(
+			$dataValue = $this->annotationProcessor->newDataValueByText(
 				$property,
 				$value,
 				$valueCaption,
@@ -474,7 +475,7 @@ class InTextAnnotationParser {
 			$class = 'smw-property nolink';
 		}
 
-		$dataValue = $this->dataValueFactory->newPropertyValueByLabel(
+		$dataValue = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			$property,
 			$caption,
 			$subject

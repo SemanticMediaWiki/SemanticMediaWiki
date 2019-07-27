@@ -9,6 +9,7 @@ use SMW\ProcessingErrorMsgHandler;
 use SMW\PropertyAnnotator;
 use SMW\DataValueFactory;
 use SMW\SemanticData;
+use SMW\Parser\AnnotationProcessor;
 
 /**
  * Handling category annotation
@@ -120,37 +121,42 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 			$property = new DIProperty( DIProperty::TYPE_SUBCATEGORY );
 		}
 
+		$semanticData = $this->getSemanticData();
+
+		$annotationProcessor = new AnnotationProcessor(
+			$semanticData,
+			DataValueFactory::getInstance()
+		);
+
 		foreach ( $this->categories as $catname ) {
 
 			if ( ( !$this->showHiddenCategories && $this->isHiddenCategory( $catname ) ) || $property === null ) {
 				continue;
 			}
 
-			$this->modifySemanticData( $subject, $property, $catname );
+			$this->modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname );
 		}
+
+		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( $subject, $property, $catname ) {
+	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
 
 		$cat = new DIWikiPage( $catname, NS_CATEGORY );
-		$semanticData = $this->getSemanticData();
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
 
-			$dataValueFactory = DataValueFactory::getInstance();
-			$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
-
-			$dataValue = $dataValueFactory->newDataValueByItem(
+			$dataValue = $annotationProcessor->newDataValueByItem(
 				$cat,
 				$property,
 				false,
 				$subject
 			);
 
+			// Explicitly run a check here since the annotation process is run after
+			// any visible output to the user hereby ensure that violations are caught
+			// by the constraint error lookup
 			$dataValue->checkConstraints();
-
-			// Remove context
-			$dataValueFactory->clearCallable( SemanticData::class );
 
 			$semanticData->addPropertyObjectValue(
 				$dataValue->getProperty(),
