@@ -17,25 +17,36 @@ use SMW\Tests\TestEnvironment;
  */
 class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
+	private $setupFile;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			SetupCheck::class,
 			new SetupCheck( [] )
 		);
+
+		$this->assertInstanceOf(
+			SetupCheck::class,
+			SetupCheck::newFromDefaults()
+		);
 	}
 
 	public function testHasError() {
 
-		$setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$setupFile->expects( $this->any() )
+		$this->setupFile->expects( $this->any() )
 			->method( 'inMaintenanceMode' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new SetupCheck( [], $setupFile );
+		$instance = new SetupCheck( [], $this->setupFile );
 
 		$this->assertInternalType(
 			'boolean',
@@ -45,15 +56,11 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetError() {
 
-		$setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new SetupCheck(
 			[
 				'wgScriptPath' => 'foo'
 			],
-			$setupFile
+			$this->setupFile
 		);
 
 		$this->assertInternalType(

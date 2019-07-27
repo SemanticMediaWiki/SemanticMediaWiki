@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\MessageFactory;
+
 /**
  * @private
  *
@@ -28,6 +30,11 @@ class SetupCheck {
 	private $errorType = '';
 
 	/**
+	 * @var string
+	 */
+	private $traceString = '';
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $vars
@@ -47,10 +54,40 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
+	 * @param SetupFile|null $setupFile
+	 *
+	 * @return SetupCheck
+	 */
+	public static function newFromDefaults( SetupFile $setupFile = null ) {
+
+		$setupCheck = new SetupCheck(
+			[
+				'version' => defined( 'SMW_VERSION' ) ? SMW_VERSION : 'n/a',
+				'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey'],
+				'wgScriptPath' => $GLOBALS['wgScriptPath']
+			],
+			$setupFile
+		);
+
+		return $setupCheck;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return boolean
 	 */
 	public function isCli() {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $traceString
+	 */
+	public function setTraceString( $traceString ) {
+		$this->traceString = $traceString;
 	}
 
 	/**
@@ -99,7 +136,7 @@ class SetupCheck {
 
 		if ( $isCli === false ) {
 			$content = $this->buildHTML( $error );
-			header( 'Content-type: text/html; charset=UTF-8' );
+			header( 'Content-Type: text/html; charset=UTF-8' );
 			header( 'Content-Length: ' . strlen( $content ) );
 			header( 'Cache-control: none' );
 			header( 'Pragma: no-cache' );
@@ -131,15 +168,41 @@ class SetupCheck {
 
 	private function extensionLoadError() {
 
-		$content = '<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-				'<p>' . $this->options['version'] . '</p>' .
-				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
-				'<p>' . Message::get( 'smw-extensionload-error-why-explain', Message::PARSE ) . '</p>' .
-				'<h3 class="section"><span class="title">' . Message::get( 'smw-extensionload-error-how-title' ) . '</span></h3>' .
-				'<p>' . Message::get( 'smw-extensionload-error-how-explain', Message::PARSE ) . '</p>';
+		// `SMW_VERSION` is not defined which means
+		//  - i18n is not defined therefore use a canonical message
+		//  - Some program tried to access a SMW specific function without
+		//    enabling SMW first
+		if ( !defined( 'SMW_VERSION' ) ) {
+			$content = '<p style="margin-top:1em;">' . 'Some program (or extension) tried to access function(s) of ' .
+					'Semantic MediaWiki without being correctly enabled.' . '</p>' .
+					'<h3 class="section"><span class="title">' . 'How do I fix this error?' . '</span></h3>' .
+					'<p>' . "To use Semantic MediaWiki or functions of it, it is necessary to add " .
+					"<code>enableSemantics</code> to your <code>LocalSetting.php</code> which will ensure " .
+					"required variables and parameters are setup before programs can continue to work and make use of it." .
+					"<br><br>Please have a look at the <a href='https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics'>enableSemantics</a> " .
+					"help page for further assistance." . '</p>';
+
+			if ( $this->traceString !== '' ) {
+				$content .= '<h3 class="section"><span class="title">' . 'Stack trace' . '</span></h3>' .
+					'<p>' . "The follwing stack trace may indicate which program (or extension) tried to access " .
+					'Semantic MediaWiki or some of its functions.' . '</p>'.
+					'<div class="errorbox"><pre>' . $this->traceString . '</pre></div>';
+			}
+
+			$title = 'Error (Semantic MediaWiki)';
+		} else {
+			$content = '<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
+					'<p>' . $this->options['version'] . '</p>' .
+					'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
+					'<p>' . Message::get( 'smw-extensionload-error-why-explain', Message::PARSE ) . '</p>' .
+					'<h3 class="section"><span class="title">' . Message::get( 'smw-extensionload-error-how-title' ) . '</span></h3>' .
+					'<p>' . Message::get( 'smw-extensionload-error-how-explain', Message::PARSE ) . '</p>';
+
+			$title = Message::get( 'smw-upgrade-error-title' );
+		}
 
 		$error = [
-			'title' => Message::get( 'smw-upgrade-error-title' ),
+			'title' => $title,
 			'content' => $content,
 			'borderColor' => '#F44336'
 		];
@@ -235,6 +298,26 @@ class SetupCheck {
 			h3 {
 				font-size: 100%;
 				margin-left:10px;
+			}
+			.errorbox {
+				color: #d33;
+				border-color: #fac5c5;
+				background-color: #fae3e3;
+				border: 0px solid;
+				word-break: normal;
+				padding: 0.5em 0.5em;
+				display: inline-block;
+				zoom: 1;
+				margin-left:10px;
+				margin-right:10px;
+			}
+			pre {
+				margin: 0px;
+				white-space: pre-wrap;       /* css-3 */
+				white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+				white-space: -pre-wrap;      /* Opera 4-6 */
+				white-space: -o-pre-wrap;    /* Opera 7 */
+				word-wrap: break-word;       /* Internet Explorer 5.5+ */
 			}
 			.progress-bar-animated {
 				animation: progress-bar-stripes 2s linear infinite;
