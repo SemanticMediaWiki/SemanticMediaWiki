@@ -18,10 +18,11 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	private $outputPage;
 	private $request;
 	private $skin;
+	private $title;
 
 	protected function setUp() {
 
-		$title = $this->getMockBuilder( '\Title' )
+		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +44,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->will( $this->returnValue( $this->title ) );
 
 		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -60,6 +61,27 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			BeforePageDisplay::class,
 			new BeforePageDisplay()
 		);
+	}
+
+	public function testInformAboutExtensionAvailability() {
+
+		$this->title->expects( $this->once() )
+			->method( 'isSpecial' )
+			->with( $this->equalTo( 'Version' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->outputPage->expects( $this->once() )
+			->method( 'prependHTML' );
+
+		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => false
+			]
+		);
+
+		$instance->informAboutExtensionAvailability( $this->outputPage );
 	}
 
 	public function testModules() {

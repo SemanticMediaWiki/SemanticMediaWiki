@@ -126,6 +126,25 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterExtensionCheck() {
+
+		$vars = [];
+
+		Hooks::registerExtensionCheck( $vars );
+
+		// BeforePageDisplay
+		$callback = end( $vars['wgHooks']['BeforePageDisplay'] );
+
+		$outputPage = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$callback,
+			[ $outputPage ]
+		);
+	}
+
 	public function testInitExtension() {
 
 		$vars = [

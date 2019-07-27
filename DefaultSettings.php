@@ -104,6 +104,18 @@ return [
 	##
 
 	###
+	# Allows to ignore the check for whether the extension was correctly enabled
+	# or not. It will display a error message on `Special:Version` in case it was
+	# not.
+	#
+	# To ignore the check and suppress the error, set the value to `true`.
+	#
+	# @since 3.1
+	##
+	'smwgIgnoreExtensionRegistrationCheck' => false,
+	##
+
+	###
 	# CompatibilityMode is to force SMW to work with other extensions that may impact
 	# performance in an unanticipated way or may contain potential incompatibilities.
 	#

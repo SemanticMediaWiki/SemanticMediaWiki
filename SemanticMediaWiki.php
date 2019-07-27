@@ -53,6 +53,10 @@ class SemanticMediaWiki {
 				$GLOBALS[$key] = $value;
 			}
 		}
+
+		// Registration point before any `extension.json` invocation
+		// takes place
+		Setup::checkExtensionRegistration( $GLOBALS );
 	}
 
 	/**
