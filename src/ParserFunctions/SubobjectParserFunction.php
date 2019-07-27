@@ -13,6 +13,7 @@ use SMW\ParserData;
 use SMW\ParserParameterProcessor;
 use SMW\SemanticData;
 use SMW\Subobject;
+use SMW\Parser\AnnotationProcessor;
 
 /**
  * @private This class should not be instantiated directly, please use
@@ -202,10 +203,11 @@ class SubobjectParserFunction {
 		);
 
 		$subject = $this->subobject->getSubject();
-		$dataValueFactory = DataValueFactory::getInstance();
 
-		// Set context
-		$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
+		$annotationProcessor = new AnnotationProcessor(
+			$this->subobject->getSemanticData(),
+			DataValueFactory::getInstance()
+		);
 
 		foreach ( $parameters as $property => $values ) {
 
@@ -219,7 +221,7 @@ class SubobjectParserFunction {
 
 			foreach ( $values as $value ) {
 
-				$dataValue = $dataValueFactory->newDataValueByText(
+				$dataValue = $annotationProcessor->newDataValueByText(
 						$property,
 						$value,
 						false,
@@ -233,8 +235,7 @@ class SubobjectParserFunction {
 
 		$this->augment( $this->subobject->getSemanticData() );
 
-		// Remove context
-		$dataValueFactory->clearCallable( SemanticData::class );
+		$annotationProcessor->release( SemanticData::class );
 
 		return true;
 	}

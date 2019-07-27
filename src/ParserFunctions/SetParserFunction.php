@@ -10,6 +10,7 @@ use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\ParserParameterProcessor;
+use SMW\Parser\AnnotationProcessor;
 
 /**
  * Class that provides the {{#set}} parser function
@@ -97,10 +98,10 @@ class SetParserFunction {
 			unset( $parametersToArray['template'] );
 		}
 
-		$dataValueFactory = DataValueFactory::getInstance();
-
-		// Set context
-		$dataValueFactory->addCallable( SemanticData::class, [ $this, 'getSemanticData' ] );
+		$annotationProcessor = new AnnotationProcessor(
+			$this->parserData->getSemanticData(),
+			DataValueFactory::getInstance()
+		);
 
 		foreach ( $parametersToArray as $property => $values ) {
 
@@ -112,7 +113,7 @@ class SetParserFunction {
 					$value = $this->stripMarkerDecoder->decode( $value );
 				}
 
-				$dataValue = $dataValueFactory->newDataValueByText(
+				$dataValue = $annotationProcessor->newDataValueByText(
 						$property,
 						$value,
 						false,
@@ -138,8 +139,7 @@ class SetParserFunction {
 
 		$this->parserData->copyToParserOutput();
 
-		// Remove context
-		$dataValueFactory->clearCallable( SemanticData::class );
+		$annotationProcessor->release();
 
 		$html = $this->templateRenderer->render() . $this->messageFormatter
 			->addFromArray( $parameters->getErrors() )
