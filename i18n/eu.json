@@ -10,7 +10,8 @@
 			"Theklan",
 			"Fitoschido",
 			"Amaia",
-			"EukeneFL"
+			"EukeneFL",
+			"Xabier Armendaritz"
 		]
 	},
 	"smw-semantics-not-enabled": "MediaWiki Semantikoaren funtzionalitatea ez da wiki honetarako gaitu.",
@@ -135,7 +136,7 @@
 	"smw-statistics": "Estatistika semantikoak",
 	"smw-statistics-property-instance": "Propietate {{PLURAL:$1|balioa|balioak}} (guztira)",
 	"smw-statistics-property-total": "[[Special:Properties|{{PLURAL:$1|Propietatea|Propietateak}}]] (guztira)",
-	"smw-statistics-query-size": "Kontsultaren tamainia",
+	"smw-statistics-query-size": "Kontsultaren tamaina",
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Kontzeptua|Kontzeptuak}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Kontzeptua|Kontzeptuak}}]]",
 	"smw-statistics-datatype-count": "[[Special:Motak|{{PLURAL:$1|Datu mota|Datu motak}}]]",
