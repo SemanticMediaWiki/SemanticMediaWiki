@@ -70,11 +70,11 @@ class ResultArray {
 	 * @param PrintRequest $printRequest
 	 * @param QueryResult $queryResult
 	 *
-	 * @return ResultArray
+	 * @return self
 	 */
 	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
 
-		$resultArray = new ResultArray(
+		$resultArray = new self(
 			$resultPage,
 			$printRequest,
 			$queryResult->getStore(),
@@ -119,7 +119,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Returns the DIWikiPage object to which this SMWResultArray refers.
+	 * Returns the DIWikiPage object to which this ResultArray refers.
 	 * If you only care for those objects, consider using SMWQueryResult::getResults()
 	 * directly.
 	 *
