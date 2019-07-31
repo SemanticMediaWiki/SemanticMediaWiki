@@ -13,6 +13,7 @@ use SMW\Query\Result\ResultArray;
 use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
 use SMW\Store;
+use SMWInfolink;
 use SMWQuery as Query;
 
 /**
