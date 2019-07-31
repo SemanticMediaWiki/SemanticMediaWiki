@@ -2,6 +2,7 @@
 
 namespace SMW\Query;
 
+use SMW\DIWikiPage;
 use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -40,8 +41,8 @@ class QueryResult {
 	const QUICK_HASH = 'quick';
 
 	/**
-	 * Array of SMWDIWikiPage objects that are the basis for this result
-	 * @var SMWDIWikiPage[]
+	 * Array of DIWikiPage objects that are the basis for this result
+	 * @var DIWikiPage[]
 	 */
 	protected $mResults;
 
@@ -112,7 +113,7 @@ class QueryResult {
 	/**
 	 * @param PrintRequest[] $printRequests
 	 * @param Query $query
-	 * @param SMWDIWikiPage[] $results
+	 * @param DIWikiPage[] $results
 	 * @param Store $store
 	 * @param boolean $furtherRes
 	 */
@@ -270,7 +271,7 @@ class QueryResult {
 	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return SMWDIWikiPage[]
+	 * @return DIWikiPage[]
 	 */
 	public function getResults() {
 		return $this->mResults;
