@@ -4,7 +4,7 @@ namespace SMW\Query;
 
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
-use SMW\Query\PrintRequest;
+use ParamProcessor\IParamDefinition;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
