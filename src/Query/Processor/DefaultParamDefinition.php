@@ -133,7 +133,7 @@ class DefaultParamDefinition {
 			];
 		}
 
-		if ( method_exists( $resultPrinter, 'supportsRecursiveAnnotation' ) && $resultPrinter->supportsRecursiveAnnotation() ) {
+		if ( !( $resultPrinter instanceof ResultPrinter ) || ( method_exists( $resultPrinter, 'supportsRecursiveAnnotation' ) && $resultPrinter->supportsRecursiveAnnotation() ) ) {
 			$params['import-annotation'] = [
 				'message' => 'smw-paramdesc-import-annotation',
 				'type' => 'boolean',
