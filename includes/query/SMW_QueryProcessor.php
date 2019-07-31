@@ -14,6 +14,7 @@ use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\QueryContext;
 use SMW\Query\Exception\ResultFormatNotFoundException;
 use SMW\Query\ResultFormat;
+use SMW\Query\ResultPrinter;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -435,7 +436,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param string $format
 	 * @param $context
 	 *
-	 * @return SMWResultPrinter
+	 * @return ResultPrinter
 	 * @throws MissingResultFormatException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
@@ -449,15 +450,20 @@ class SMWQueryProcessor implements QueryContext {
 
 		$formatClass = $smwgResultFormats[$format];
 
+		/**
+		 * @var ResultPrinter $printer
+		 */
 		$printer = new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
 
 		if ( self::$recursiveTextProcessor === null ) {
 			self::$recursiveTextProcessor = new RecursiveTextProcessor();
 		}
 
-		$printer->setRecursiveTextProcessor(
-			self::$recursiveTextProcessor
-		);
+		if ( method_exists( $printer, 'setRecursiveTextProcessor' ) ) {
+			$printer->setRecursiveTextProcessor(
+				self::$recursiveTextProcessor
+			);
+		}
 
 		return $printer;
 	}
