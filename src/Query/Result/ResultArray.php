@@ -332,18 +332,4 @@ class ResultArray {
 		return reset( $this->content );
 	}
 
-	/**
-	 * Make a request option object based on the given parameters, and
-	 * return NULL if no such object is required. The parameter defines
-	 * if the limit should be taken into account, which is not always desired
-	 * (especially if results are to be cached for future use).
-	 *
-	 * @param boolean $useLimit
-	 *
-	 * @return RequestOptions|null
-	 */
-	protected function getRequestOptions( $useLimit = true ) {
-		return $this->fieldItemFinder->getRequestOptions( $useLimit );
-	}
-
 }
