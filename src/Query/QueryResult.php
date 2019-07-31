@@ -250,13 +250,17 @@ class QueryResult {
 
 		$row = [];
 
-		foreach ( $this->mPrintRequests as $p ) {
-			$resultArray = ResultArray::factory( $page, $p, $this );
-			$resultArray->setItemJournal( $this->itemJournal );
-			$row[] = $resultArray;
+		foreach ( $this->mPrintRequests as $pr ) {
+			$row[] = $this->newResultArray( $page, $pr );
 		}
 
 		return $row;
+	}
+
+	private function newResultArray( DIWikiPage $page, PrintRequest $pr ) {
+		$resultArray = ResultArray::factory( $page, $pr, $this );
+		$resultArray->setItemJournal( $this->itemJournal );
+		return $resultArray;
 	}
 
 	/**
