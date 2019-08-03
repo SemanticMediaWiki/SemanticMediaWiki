@@ -55,8 +55,6 @@ use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
 use SMWSql3SmwIds as EntityIdManager;
 use SMW\Services\ServicesContainer;
-use SMW\RequestData;
-use SMWSQLStore3;
 
 /**
  * @license GNU GPL v2+
@@ -68,7 +66,7 @@ use SMWSQLStore3;
 class SQLStoreFactory {
 
 	/**
-	 * @var SMWSQLStore3
+	 * @var SQLStore
 	 */
 	private $store;
 
@@ -85,10 +83,10 @@ class SQLStoreFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SMWSQLStore3 $store
+	 * @param SQLStore $store
 	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SMWSQLStore3 $store, MessageReporter $messageReporter = null ) {
+	public function __construct( SQLStore $store, MessageReporter $messageReporter = null ) {
 		$this->store = $store;
 		$this->messageReporter = $messageReporter;
 
@@ -97,6 +95,15 @@ class SQLStoreFactory {
 		}
 
 		$this->queryEngineFactory = new QueryEngineFactory( $store );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return SQLStoreUpdater
+	 */
+	public function newUpdater() {
+		return new SQLStoreUpdater( $this->store, $this );
 	}
 
 	/**
