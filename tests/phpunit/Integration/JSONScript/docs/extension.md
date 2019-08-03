@@ -39,8 +39,11 @@ use SMW\Tests\LightweightJsonTestCaseScriptRunner;
 /**
  * @since ...
  */
-class CustomJsonTestScriptTest extends LightweightJsonTestCaseScriptRunner {
+class CustomJsonScriptTest extends LightweightJsonTestCaseScriptRunner {
 
+	/**
+	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 */
 	protected function getTestCaseLocation() {
 		return __DIR__ . '/TestCases';
 	}
@@ -51,6 +54,81 @@ class CustomJsonTestScriptTest extends LightweightJsonTestCaseScriptRunner {
 ### Creating test cases
 
 The [bootstrap.json][bootstrap.json] contains an example that can be used as starting point for a test case and [design][design.md] document describes in detail options and assertions methods.
+
+### Extending JSON and the script runner
+
+In some cases the selected `JSON` style may vary or contains information that require additional validation therefore the script runner can easily be extended with something like:
+
+```json
+{
+	"description": " ... ",
+	"setup": [
+		{
+			"page": "Example/Bootstrap",
+			"contents": "[[Has example::Example123]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "myType",
+			"about": "...",
+			"subject": "Example/Bootstrap",
+			"assert-myType": {}
+		}
+	],
+	"settings": {}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
+```
+
+```php
+namespace Foo\Tests\Integration;
+
+use SMW\Tests\LightweightJsonTestCaseScriptRunner;
+
+/**
+ * @since ...
+ */
+class CustomJsonScriptTest extends LightweightJsonTestCaseScriptRunner {
+
+	/**
+	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 */
+	protected function getTestCaseLocation() {
+		return __DIR__ . '/TestCases';
+	}
+
+	/**
+	 * @see JsonTestCaseScriptRunner::runTestCaseFile
+	 */
+	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		// Checks environment, runs default assertions
+		parent::runTestCaseFile( $jsonTestCaseFileHandler );
+
+		$this->doRunMyTests( $jsonTestCaseFileHandler );
+	}
+
+	private function doRunMyTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'myType' );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		foreach ( $testCases as $case ) {
+
+			// Assert
+		}
+	}
+}
+```
 
 ## Requirements
 
