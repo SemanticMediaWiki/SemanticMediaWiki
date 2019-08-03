@@ -39,6 +39,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructUpdater() {
+
+		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\SQLStoreUpdater',
+			$instance->newUpdater()
+		);
+	}
+
 	public function testNewSlaveQueryEngineReturnType() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );

@@ -290,6 +290,11 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$title = \Title::newFromText( __METHOD__ );
 
+		$store = $this->getMockBuilder( $storeClass )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds', 'getPropertyTables', 'getConnection' ] )
+			->getMock();
+
 		$redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -310,6 +315,10 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'newSemanticDataLookup' )
 			->will( $this->returnValue( $semanticDataLookup ) );
 
+		$factory->expects( $this->any() )
+			->method( 'newUpdater' )
+			->will( $this->returnValue( new \SMW\SQLStore\SQLStoreUpdater( $store, $factory ) ) );
+
 		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -317,11 +326,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$idGenerator->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
 			->will( $this->returnValue( 42 ) );
-
-		$store = $this->getMockBuilder( $storeClass )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getPropertyTables', 'getConnection' ] )
-			->getMock();
 
 		$store->setFactory( $factory );
 

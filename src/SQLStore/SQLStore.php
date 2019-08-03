@@ -9,7 +9,6 @@ use SMW\SemanticData;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use SMWSQLStore3Writers as Writer;
 use SMWQuery as Query;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStoreFactory;
@@ -147,13 +146,9 @@ class SQLStore extends Store {
 	public $smwIds;
 
 	/**
-	 * The writer object used by this store. Initialized by getWriter(),
-	 * which is the only way in which it should be accessed.
-	 *
-	 * @since 1.8
-	 * @var SMWSQLStore3Writers
+	 * @var SQLStoreUpdater
 	 */
-	protected $writer = false;
+	private $updater;
 
 	/**
 	 * @since 1.8
@@ -279,19 +274,15 @@ class SQLStore extends Store {
 ///// Writing methods /////
 
 
-	public function getWriter() {
-		if( $this->writer == false ) {
-			$this->writer = new Writer( $this, $this->factory );
-		}
-
-		return $this->writer;
-	}
-
 	public function deleteSubject( Title $title ) {
+
+		if ( $this->updater === null ) {
+			$this->updater = $this->factory->newUpdater();
+		}
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->getWriter()->deleteSubject( $title );
+		$this->updater->deleteSubject( $title );
 
 		$this->doDeferredCachedListLookupUpdate(
 			$subject
@@ -300,7 +291,11 @@ class SQLStore extends Store {
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
 
-		$this->getWriter()->doDataUpdate( $semanticData );
+		if ( $this->updater === null ) {
+			$this->updater = $this->factory->newUpdater();
+		}
+
+		$this->updater->doDataUpdate( $semanticData );
 
 		$this->doDeferredCachedListLookupUpdate(
 			$semanticData->getSubject()
@@ -309,12 +304,16 @@ class SQLStore extends Store {
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 
+		if ( $this->updater === null ) {
+			$this->updater = $this->factory->newUpdater();
+		}
+
 		\Hooks::run(
 			'SMW::SQLStore::BeforeChangeTitleComplete',
 			[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
 		);
 
-		$this->getWriter()->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
+		$this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
 		$this->doDeferredCachedListLookupUpdate(
 			DIWikiPage::newFromTitle( $oldTitle )

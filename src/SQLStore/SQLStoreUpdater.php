@@ -1,31 +1,29 @@
 <?php
 
+namespace SMW\SQLStore;
+
 use SMW\ApplicationFactory;
-use SMW\ChangePropListener;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\UpdateJob;
-use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SemanticData;
+use SMWDIBlob as DIBlob;
 use SMW\Parameters;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use Title;
 
 /**
  * Class Handling all the write and update methods for SMWSQLStore3.
  *
- * @note Writing may also require some reading operations. Operations that are
- * only needed in helper methods of this class should be implemented here, not
- * in SMWSQLStore3Readers.
+ * @license GNU GPL v2+
+ * @since 1.8
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  * @author Nischay Nahata
- *
- * @since 1.8
- * @ingroup SMWStore
+ * @author mwjames
  */
-class SMWSQLStore3Writers {
+class SQLStoreUpdater {
 
 	/**
 	 * The store used by this store writer.
@@ -33,7 +31,7 @@ class SMWSQLStore3Writers {
 	 * @since 1.8
 	 * @var SMWSQLStore3
 	 */
-	protected $store;
+	private $store;
 
 	/**
 	 * @var SQLStoreFactory
@@ -68,11 +66,11 @@ class SMWSQLStore3Writers {
 	/**
 	 * @since 1.8
 	 *
-	 * @param SMWSQLStore3 $parentStore
+	 * @param SQLStore $store
 	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SMWSQLStore3 $parentStore, $factory ) {
-		$this->store = $parentStore;
+	public function __construct( SQLStore $store, $factory ) {
+		$this->store = $store;
 		$this->factory = $factory;
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
@@ -107,12 +105,13 @@ class SMWSQLStore3Writers {
 		$emptySemanticData->setOption( SemanticData::PROC_DELETE, true );
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
+		$propertyTableIdReferenceFinder = $this->store->service( 'PropertyTableIdReferenceFinder' );
 
 		foreach ( $idList as $id ) {
 			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
 			$this->doDataUpdate( $emptySemanticData );
 
-			if ( $this->store->service( 'PropertyTableIdReferenceFinder' )->hasResidualPropertyTableReference( $id ) === false ) {
+			if ( $propertyTableIdReferenceFinder->hasResidualPropertyTableReference( $id ) === false ) {
 				// Mark subject/subobjects with a special IW, the final removal is being
 				// triggered by the `EntityRebuildDispatcher`
 				$this->store->getObjectIds()->updateInterwikiField(
@@ -147,13 +146,13 @@ class SMWSQLStore3Writers {
 			$db = $this->store->getConnection();
 
 			$db->delete(
-				SMWSQLStore3::CONCEPT_TABLE,
+				SQLStore::CONCEPT_TABLE,
 				[ 's_id' => $id ],
 				'SMW::deleteSubject::Conc'
 			);
 
 			$db->delete(
-				SMWSQLStore3::CONCEPT_CACHE_TABLE,
+				SQLStore::CONCEPT_CACHE_TABLE,
 				[ 'o_id' => $id ],
 				'SMW::deleteSubject::Conccache'
 			);
@@ -176,9 +175,9 @@ class SMWSQLStore3Writers {
 	 * @see SMWStore::doDataUpdate
 	 *
 	 * @since 1.8
-	 * @param SMWSemanticData $data
+	 * @param SemanticData $data
 	 */
-	public function doDataUpdate( SMWSemanticData $semanticData ) {
+	public function doDataUpdate( SemanticData $semanticData ) {
 
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		\Hooks::run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
@@ -281,13 +280,13 @@ class SMWSQLStore3Writers {
 	 * subobject data into account.
 	 *
 	 * @since 1.8
-	 * @param SMWSemanticData $data
+	 * @param SemanticData $data
 	 */
-	protected function doFlatDataUpdate( SMWSemanticData $data ) {
+	protected function doFlatDataUpdate( SemanticData $data ) {
 		$subject = $data->getSubject();
 
 		// Take care of redirects
-		$redirects = $data->getPropertyValues( new SMW\DIProperty( '_REDI' ) );
+		$redirects = $data->getPropertyValues( new DIProperty( '_REDI' ) );
 
 		if ( count( $redirects ) > 0 ) {
 			$redirect = end( $redirects ); // at most one redirect per page
@@ -384,7 +383,7 @@ class SMWSQLStore3Writers {
 		$pv = $data->getPropertyValues( $property );
 		$dataItem = end( $pv );
 
-		if ( $dataItem instanceof SMWDIBlob ) {
+		if ( $dataItem instanceof DIBlob ) {
 			$sortkey = $dataItem->getString();
 		} elseif ( $data->getExtensionData( 'sort.extension' ) !== null ) {
 			$sortkey = $data->getExtensionData( 'sort.extension' );
@@ -394,7 +393,7 @@ class SMWSQLStore3Writers {
 
 		// Extend the subobject sortkey in case no @sortkey was given for an
 		// entity
-		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof SMWDIBlob ) {
+		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof DIBlob ) {
 
 			// Add sort data from some dedicated containers (of a record or
 			// reference type etc.) otherwise use the sobj name as extension
