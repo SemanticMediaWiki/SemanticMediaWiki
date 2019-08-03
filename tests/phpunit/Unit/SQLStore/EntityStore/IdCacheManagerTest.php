@@ -65,11 +65,16 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->get( 'foo' );
 	}
 
-	public function testSetCache() {
+	public function testGetId() {
 
 		$instance = new IdCacheManager( $this->caches );
 
 		$instance->setCache( 'foo', 0, '', '', 42, 'bar' );
+
+		$this->assertEquals(
+			42,
+			$instance->getId( new \SMW\DIWikiPage( 'foo', NS_MAIN ) )
+		);
 
 		$this->assertEquals(
 			42,
@@ -79,6 +84,23 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			false,
 			$instance->getId( [ 'foo', '0', '', '' ] )
+		);
+
+		$this->assertEquals(
+			42,
+			$instance->getId( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
+		);
+	}
+
+	public function testGetSort() {
+
+		$instance = new IdCacheManager( $this->caches );
+
+		$instance->setCache( 'foo', 0, '', '', 42, 'bar' );
+
+		$this->assertEquals(
+			'bar',
+			$instance->getSort( $instance->computeSha1( [ 'foo', 0, '', '' ] ) )
 		);
 
 		$this->assertEquals(

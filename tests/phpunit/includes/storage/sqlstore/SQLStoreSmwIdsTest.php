@@ -66,7 +66,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +76,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$redirectStore = new RedirectStore( $this->store );
 
@@ -115,6 +115,15 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableHashes' )
 			->will( $this->returnValue( $this->propertyTableHashes ) );
+
+		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
+			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
+			->setMethods( null )
+			->getMock();
+
+		$this->factory->expects( $this->any() )
+			->method( 'newEntityIdFinder' )
+			->will( $this->returnValue( $this->entityIdFinder ) );
 	}
 
 	public function testCanConstruct() {
@@ -169,11 +178,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_sortkey = 'Foo';
 		$selectRow->smw_hash = '___hash___';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
 
@@ -181,9 +186,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->atLeastOnce() )
+		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$instance = new SMWSql3SmwIds(
 			$store,
@@ -207,11 +212,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 		$selectRow->smw_hash = '___hash___';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
 
@@ -219,9 +220,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->atLeastOnce() )
+		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$instance = new SMWSql3SmwIds(
 			$store,
@@ -256,15 +257,11 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$selectRow->smw_proptable_hash = serialize( 'Foo' );
 		$selectRow->smw_hash = '___hash___';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$connection->expects( $this->any() )
+		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $selectRow ) );
 
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'insertId' )
 			->will( $this->returnValue( 9999 ) );
 
@@ -272,9 +269,9 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store->expects( $this->atLeastOnce() )
+		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$instance = new SMWSql3SmwIds(
 			$store,
@@ -387,13 +384,13 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->will( $this->returnValue( $row ) );
 
-		$store->expects( $this->atLeastOnce() )
+		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->will( $this->returnValue( $this->connection ) );
 
 		$instance = new SMWSql3SmwIds(
 			$store,

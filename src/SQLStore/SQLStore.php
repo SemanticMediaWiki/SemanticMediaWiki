@@ -164,6 +164,15 @@ class SQLStore extends Store {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param SQLStoreFactory $factory
+	 */
+	public function setFactory( SQLStoreFactory $factory ) {
+		$this->factory = $factory;
+	}
+
+	/**
 	 * Get an object of the dataitem handler from the dataitem provided.
 	 *
 	 * @since 1.8

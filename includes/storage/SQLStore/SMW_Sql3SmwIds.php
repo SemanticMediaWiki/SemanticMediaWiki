@@ -128,6 +128,11 @@ class SMWSql3SmwIds {
 	private $idEntityFinder;
 
 	/**
+	 * @var EntityIdFinder
+	 */
+	private $entityIdFinder;
+
+	/**
 	 * @var DuplicateFinder
 	 */
 	private $duplicateFinder;
@@ -287,121 +292,62 @@ class SMWSql3SmwIds {
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
 		global $smwgQEqualitySupport;
 
-		$db = $this->store->getConnection( 'mw.db' );
-		$sha1 = $this->computeSha1( [ $title, (int)$namespace, $iw, $subobjectName ] );
+		$sha1 = $this->idCacheManager->computeSha1(
+			[
+				$title,
+				(int)$namespace,
+				$iw,
+				$subobjectName
+			]
+		);
+
+		$this->entityIdFinder->setFetchPropertyTableHashes(
+			$fetchHashes
+		);
 
 		// Integration test "query-04-02-subproperty-dc-import-marc21.json"
 		// showed a deterministic failure (due to a wrong cache id during querying
 		// for redirects) hence we force to read directly from the RedirectStore
 		// for objects marked as redirect
-		if ( $iw === SMW_SQL3_SMWREDIIW && $canonical &&
-			$smwgQEqualitySupport !== SMW_EQ_NONE && $subobjectName === '' ) {
+		if (
+			$iw === SMW_SQL3_SMWREDIIW &&
+			$smwgQEqualitySupport !== SMW_EQ_NONE &&
+			$subobjectName === '' &&
+			$canonical ) {
 			$id = $this->findRedirect( $title, $namespace );
 		} else {
-			$id = $this->idCacheManager->getId( [ $title, (int)$namespace, $iw, $subobjectName ] );
+			$id = $this->idCacheManager->getId( $sha1 );
 		}
 
-		if ( $id !== false && $id != 0 ) { // cache hit
-			$sortkey = $this->idCacheManager->getSort( [ $title, (int)$namespace, $iw, $subobjectName ] );
-		} elseif ( $iw == SMW_SQL3_SMWREDIIW && $canonical &&
-			$smwgQEqualitySupport != SMW_EQ_NONE && $subobjectName === '' ) {
-			$id = $this->findRedirect( $title, $namespace );
-			if ( $id != 0 ) {
-
-				if ( $fetchHashes ) {
-					$select = [ 'smw_sortkey', 'smw_sort', 'smw_proptable_hash', 'smw_hash' ];
-				} else {
-					$select = [ 'smw_sortkey', 'smw_sort', 'smw_hash' ];
-				}
-
-				$row = $db->selectRow(
-					self::TABLE_NAME,
-					$select,
-					[ 'smw_id' => $id ],
-					__METHOD__
-				);
-
-				if ( $row !== false ) {
-					// Make sure that smw_sort is being re-computed in case it is null
-					$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
-					if ( $fetchHashes ) {
-						$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash );
-					}
-
-					// Prevent any irregularities caused by a delayed, or redirect update
-					if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-						HashFieldUpdate::addUpdate( $db, $id, $sha1 );
-					}
-				} else { // inconsistent DB; just recover somehow
-					$sortkey = str_replace( '_', ' ', $title );
-				}
-			} else {
-				$sortkey = '';
-			}
-			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
-		} else {
-
-			if ( $fetchHashes ) {
-				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_proptable_hash', 'smw_hash' ];
-			} else {
-				$select = [ 'smw_id', 'smw_sortkey', 'smw_sort', 'smw_hash' ];
-			}
-
-			// #2001
-			// In cases where title components are excessively long (beyond the
-			// field limit) it has been observed that at least on MySQL/MariaDB no
-			// appropriate matches are found even though a row with a truncated
-			// representation exists in the table.
-			//
-			// `postgres` has no field limit and a divergent behaviour has not
-			// been observed
-			if ( $subobjectName !== '' && !$db->isType( 'postgres' ) ) {
-				$subobjectName = mb_substr( $subobjectName, 0, 255 );
-			}
-
-			$row = $db->selectRow(
-				self::TABLE_NAME,
-				$select,
-				[
-					'smw_title' => $title,
-					'smw_namespace' => $namespace,
-					'smw_iw' => $iw,
-					'smw_subobject' => $subobjectName
-				],
-				__METHOD__
-			);
-
-			//$this->selectrow_sort_debug++;
-
-			if ( $row !== false ) {
-				$id = $row->smw_id;
-				// Make sure that smw_sort is being re-computed in case it is null
-				$sortkey = $row->smw_sort === null ? '' : $row->smw_sortkey;
-				if ( $fetchHashes ) {
-					$this->setPropertyTableHashesCache( $id, $row->smw_proptable_hash);
-				}
-
-				// Prevent any irregularities caused by a delayed, or redirect update
-				if ( $row->smw_hash !== $sha1 && $iw !== SMW_SQL3_SMWREDIIW ) {
-					HashFieldUpdate::addUpdate( $db, $id, $sha1 );
-				}
-			} else {
-				$id = 0;
-				$sortkey = '';
-			}
-
-			$this->setCache(
+		// Cache hit; reload the sort
+		if ( $id !== false && $id != 0 ) {
+			$sortkey = $this->idCacheManager->getSort( $sha1 );
+		} elseif (
+			$iw === SMW_SQL3_SMWREDIIW &&
+			$smwgQEqualitySupport !== SMW_EQ_NONE &&
+			$subobjectName === '' &&
+			$canonical ) {
+			list( $id, $sortkey ) = $this->entityIdFinder->fetchFieldsFromTableById(
+				$this->findRedirect( $title, $namespace ),
 				$title,
 				$namespace,
 				$iw,
 				$subobjectName,
-				$id,
+				$sortkey
+			);
+		} else {
+			list( $id, $sortkey ) = $this->entityIdFinder->fetchFromTableByTitle(
+				$title,
+				$namespace,
+				$iw,
+				$subobjectName,
 				$sortkey
 			);
 		}
 
-		if ( $id == 0 && $subobjectName === '' && $iw === '' ) { // could be a redirect; check
-			$id = $this->getSMWPageIDandSort(
+		// Could be a redirect; recheck
+		if ( $id == 0 && $subobjectName === '' && $iw === '' ) {
+			$id = $this->getDatabaseIdAndSort(
 				$title,
 				$namespace,
 				SMW_SQL3_SMWREDIIW,
@@ -468,42 +414,7 @@ class SMWSql3SmwIds {
 	 * @param array
 	 */
 	public function findAllEntitiesThatMatch( $title, $namespace, $iw = null, $subobjectName = '' ) {
-
-		$matches = [];
-		$query = [];
-
-		$query['fields'] = ['smw_id'];
-
-		$query['conditions'] = [
-			'smw_title' => $title,
-			'smw_namespace' => $namespace,
-			'smw_iw' => $iw,
-			'smw_subobject' => $subobjectName
-		];
-
-		// Null means select all (incl. those marked delete, redi etc.)
-		if ( $iw === null ) {
-			unset( $query['conditions']['smw_iw'] );
-		}
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$rows = $connection->select(
-			$connection->tableName( self::TABLE_NAME ),
-			$query['fields'],
-			$query['conditions'],
-			__METHOD__
-		);
-
-		if ( $rows === false ) {
-			return $matches;
-		}
-
-		foreach ( $rows as $row ) {
-			$matches[] = (int)$row->smw_id;
-		}
-
-		return $matches;
+		return $this->entityIdFinder->findIdsByTitle( $title, $namespace, $iw, $subobjectName );
 	}
 
 	/**
@@ -553,39 +464,7 @@ class SMWSql3SmwIds {
 			}
 		}
 
-		if ( ( $id = $this->idCacheManager->getId( $subject ) ) !== false ) {
-			return $id;
-		}
-
-		$id = 0;
-
-		$row = $this->store->getConnection( 'mw.db' )->selectRow(
-			self::TABLE_NAME,
-			[ 'smw_id' ],
-			[
-				'smw_title' => $subject->getDBKey(),
-				'smw_namespace' => $subject->getNamespace(),
-				'smw_iw' => $subject->getInterWiki(),
-				'smw_subobject' => $subject->getSubobjectName()
-			],
-			__METHOD__
-		);
-
-		if ( $row !== false ) {
-			$id = $row->smw_id;
-
-			// Legacy
-			$this->setCache(
-				$subject->getDBKey(),
-				$subject->getNamespace(),
-				$subject->getInterWiki(),
-				$subject->getSubobjectName(),
-				$id,
-				$subject->getSortKey()
-			);
-		}
-
-		return $id;
+		return $this->entityIdFinder->findIdByItem( $subject );
 	}
 
 	/**
@@ -1071,6 +950,15 @@ class SMWSql3SmwIds {
 
 		$this->cacheWarmer = $this->factory->newCacheWarmer(
 			$this->idCacheManager
+		);
+
+		$this->propertyTableHashes = $this->factory->newPropertyTableHashes(
+			$this->idCacheManager
+		);
+
+		$this->entityIdFinder = $this->factory->newEntityIdFinder(
+			$this->idCacheManager,
+			$this->propertyTableHashes
 		);
 	}
 

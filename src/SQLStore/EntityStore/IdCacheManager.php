@@ -191,7 +191,11 @@ class IdCacheManager {
 			];
 		}
 
-		$hash = $this->computeSha1( $args );
+		if ( is_array( $args ) ) {
+			$hash = $this->computeSha1( $args );
+		} else {
+			$hash = $args;
+		}
 
 		if ( ( $id = $this->caches['entity.id']->fetch( $hash ) ) !== false ) {
 			return (int)$id;
@@ -214,7 +218,11 @@ class IdCacheManager {
 	 */
 	public function getSort( $args ) {
 
-		$hash = $this->computeSha1( $args );
+		if ( is_array( $args ) ) {
+			$hash = $this->computeSha1( $args );
+		} else {
+			$hash = $args;
+		}
 
 		if ( ( $sort = $this->caches['entity.sort']->fetch( $hash ) ) !== false ) {
 			return $sort;
