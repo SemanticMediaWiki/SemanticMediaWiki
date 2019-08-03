@@ -34,7 +34,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				'entity.id' => new FixedInMemoryLruCache(),
 				'entity.sort' => new FixedInMemoryLruCache(),
 				'entity.lookup' => new FixedInMemoryLruCache(),
-				'table.hash' => new FixedInMemoryLruCache()
+				'propertytable.hash' => new FixedInMemoryLruCache()
 			]
 		);
 
@@ -59,6 +59,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->tableFieldUpdater = $this->getMockBuilder( '\SMW\SQLStore\TableFieldUpdater' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyTableHashes = $this->getMockBuilder( '\SMW\SQLStore\PropertyTable\PropertyTableHashes' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,6 +111,10 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newCacheWarmer' )
 			->will( $this->returnValue( $this->cacheWarmer ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newPropertyTableHashes' )
+			->will( $this->returnValue( $this->propertyTableHashes ) );
 	}
 
 	public function testCanConstruct() {

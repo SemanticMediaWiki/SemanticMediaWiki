@@ -28,6 +28,7 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
 use SMW\SQLStore\EntityStore\PrefetchCache;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
@@ -385,6 +386,23 @@ class SQLStoreFactory {
 		);
 
 		return $propertyTableIdReferenceFinder;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param IdCacheManager $idCacheManager
+	 *
+	 * @return PropertyTableHashes
+	 */
+	public function newPropertyTableHashes( IdCacheManager $idCacheManager ) {
+
+		$propertyTableHashes = new PropertyTableHashes(
+			$this->store->getConnection( 'mw.db' ),
+			$idCacheManager
+		);
+
+		return $propertyTableHashes;
 	}
 
 	/**
