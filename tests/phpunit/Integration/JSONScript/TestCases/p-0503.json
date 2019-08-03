@@ -86,7 +86,7 @@
 						"_ERRP"
 					],
 					"propertyValues": [
-						"\"http:///\" has been idendified to contain an invalid \"/\" authority or path component."
+						"\"http:///\" has been identified to contain an invalid \"/\" authority or path component."
 					]
 				}
 			}
