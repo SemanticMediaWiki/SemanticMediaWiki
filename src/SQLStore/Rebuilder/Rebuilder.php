@@ -167,7 +167,7 @@ class Rebuilder {
 		);
 
 		$maxBySmwId = (int)$db->selectField(
-			\SMWSql3SmwIds::TABLE_NAME,
+			SQLStore::ID_TABLE,
 			'MAX(smw_id)',
 			'',
 			__METHOD__
@@ -280,7 +280,7 @@ class Rebuilder {
 		$this->propertyTableIdReferenceDisposer->waitOnTransactionIdle();
 
 		$res = $connection->select(
-			\SMWSql3SmwIds::TABLE_NAME,
+			SQLStore::ID_TABLE,
 			[
 				'smw_id',
 				'smw_title',
@@ -442,7 +442,7 @@ class Rebuilder {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// nothing found, check if there will be more pages later on
-		if ( $emptyRange && $nextPosition > \SMWSql3SmwIds::FXD_PROP_BORDER_ID ) {
+		if ( $emptyRange && $nextPosition > SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 
 			$nextByPageId = (int)$db->selectField(
 				'page',
@@ -455,7 +455,7 @@ class Rebuilder {
 			);
 
 			$nextBySmwId = (int)$db->selectField(
-				\SMWSql3SmwIds::TABLE_NAME,
+				SQLStore::ID_TABLE,
 				'smw_id',
 				"smw_id >= $nextPosition",
 				__METHOD__,
