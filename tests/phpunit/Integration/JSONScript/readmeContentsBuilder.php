@@ -23,7 +23,7 @@ class ReadmeContentsBuilder {
 	 * @var array
 	 */
 	private $urlLocationMap = [
-		'TestCases' => 'https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases'
+		'List of tests' => 'https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases'
 	];
 
 	/**
@@ -35,7 +35,7 @@ class ReadmeContentsBuilder {
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 
 		$replacement = self::REPLACE_START_MARKER . "\n\n";
-		$replacement .= $this->doGenerateContentFor( 'TestCases', __DIR__ . '/TestCases' );
+		$replacement .= $this->doGenerateContentFor( 'List of tests', __DIR__ . '/TestCases' );
 
 		$replacement .= "\n-- Last updated on " .  $dateTimeUtc->format( 'Y-m-d' )  . " by `readmeContentsBuilder.php`". "\n";
 		$replacement .= "\n" . self::REPLACE_END_MARKER;

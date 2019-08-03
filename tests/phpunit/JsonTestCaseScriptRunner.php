@@ -2,11 +2,13 @@
 
 namespace SMW\Tests;
 
+use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
+use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * The JsonTestCaseScriptRunner is a convenience provider for `Json` formatted
+ * The `JsonTestCaseScriptRunner` is a convenience provider for `Json` formatted
  * integration tests to allow writing tests quicker without the need to setup
  * or tear down specific data structures.
  *
@@ -22,7 +24,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
+abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 
 	/**
 	 * @var FileReader
@@ -119,6 +121,15 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 * @return array
 	 */
 	protected function getAllowedTestCaseFiles() {
+		return [];
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @return []
+	 */
+	protected function getDependencyDefinitions() {
 		return [];
 	}
 
@@ -243,15 +254,6 @@ abstract class JsonTestCaseScriptRunner extends MwDBaseUnitTestCase {
 	 */
 	protected function changeGlobalSettingTo( $key, $value ) {
 		$this->testEnvironment->addConfiguration( $key, $value );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return []
-	 */
-	protected function getDependencyDefinitions() {
-		return [];
 	}
 
 	/**

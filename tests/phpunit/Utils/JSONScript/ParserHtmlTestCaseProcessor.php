@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration\JSONScript;
+namespace SMW\Tests\Utils\JSONScript;
 
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;

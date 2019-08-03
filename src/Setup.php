@@ -67,9 +67,9 @@ final class Setup {
 	 * @since 1.9
 	 *
 	 * @param array &$vars
-	 * @param string $localDirectory
+	 * @param string $rootDir
 	 */
-	public function init( &$vars, $localDirectory ) {
+	public function init( &$vars, $rootDir ) {
 
 		$setupFile = new SetupFile();
 		$setupFile->loadSchema( $vars );
@@ -89,7 +89,7 @@ final class Setup {
 			$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
 		}
 
-		$this->addDefaultConfigurations( $vars );
+		$this->addDefaultConfigurations( $vars, $rootDir );
 
 		if ( CompatibilityMode::extensionNotEnabled() ) {
 			CompatibilityMode::disableSemantics();
@@ -99,13 +99,19 @@ final class Setup {
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
-		$this->registerFooterIcon( $vars, $localDirectory );
-		$this->registerHooks( $vars, $localDirectory );
+		$this->registerFooterIcon( $vars, $rootDir );
+		$this->registerHooks( $vars, $rootDir );
 
 		\Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
 	}
 
-	private function addDefaultConfigurations( &$vars ) {
+	private function addDefaultConfigurations( &$vars, $rootDir ) {
+
+		// Convenience function for extensions depending on a SMW specific
+		// test infrastructure
+		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
+			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$rootDir/tests/autoloader.php" );
+		}
 
 		$vars['wgLogTypes'][] = 'smw';
 		$vars['wgFilterLogTypes']['smw'] = true;

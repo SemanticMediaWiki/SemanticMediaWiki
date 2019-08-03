@@ -12,7 +12,7 @@ if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 error_reporting( -1 );
 ini_set( 'display_errors', '1' );
 
-$autoloader = require __DIR__ . '/autoloader.php';
+$autoloader = require SMW_PHPUNIT_AUTOLOADER_FILE;
 
 $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
 $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
