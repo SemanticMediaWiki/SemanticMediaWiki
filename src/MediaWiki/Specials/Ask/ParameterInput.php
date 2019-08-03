@@ -127,7 +127,11 @@ class ParameterInput {
 			}
 		}
 
-		return $this->param->isList() ? $this->getCheckboxListInput( $allowedValues ) : $this->getSelectInput( $allowedValues );
+		if ( $this->param->isList() ) {
+			return $this->getCheckboxListInput( $allowedValues );
+		}
+
+		return $this->getSelectInput( $allowedValues );
 	}
 
 	/**
