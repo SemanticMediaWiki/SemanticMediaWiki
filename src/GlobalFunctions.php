@@ -244,8 +244,13 @@ function swfCountDown( $seconds ) {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	// #1732 + #2813
-	wfLoadExtension( 'SemanticMediaWiki', dirname( __DIR__ ) . '/extension.json' );
+	// Avoid "Uncaught Exception: It was attempted to load SemanticMediaWiki
+	// twice" in case users added `wfLoadExtension` manually to the
+	// `LocalSettings.php`
+	if ( !ExtensionRegistry::getInstance()->isLoaded( 'SemanticMediaWiki' ) ) {
+		// #1732 + #2813
+		wfLoadExtension( 'SemanticMediaWiki', dirname( __DIR__ ) . '/extension.json' );
+	}
 
 	// #4107
 	define( 'SMW_EXTENSION_LOADED', true );
