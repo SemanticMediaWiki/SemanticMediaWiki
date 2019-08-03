@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\RequestOptionsProc;
+use SMW\SQLStore\RequestOptionsProcessor;
 use SMWRequestOptions as RequestOptions;
 use SMWStringCondition as StringCondition;
 
 /**
- * @covers \SMW\SQLStore\RequestOptionsProc
+ * @covers \SMW\SQLStore\RequestOptionsProcessor
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -15,7 +15,7 @@ use SMWStringCondition as StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
@@ -40,13 +40,13 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			RequestOptionsProc::getSQLOptions( $requestOptions, 'Foo' )
+			RequestOptionsProcessor::getSQLOptions( $requestOptions, 'Foo' )
 		);
 	}
 
 	public function testGetSQLOptionsWithOrderBy() {
 
-		$instance = new RequestOptionsProc( $this->store );
+		$instance = new RequestOptionsProcessor( $this->store );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 2;
@@ -61,7 +61,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			RequestOptionsProc::getSQLOptions( $requestOptions, 'Foo' )
+			RequestOptionsProcessor::getSQLOptions( $requestOptions, 'Foo' )
 		);
 	}
 
@@ -84,7 +84,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			RequestOptionsProc::getSQLConditions( $this->store, $requestOptions, $valueCol, $labelCol )
+			RequestOptionsProcessor::getSQLConditions( $this->store, $requestOptions, $valueCol, $labelCol )
 		);
 	}
 
@@ -95,7 +95,7 @@ class RequestOptionsProcTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			RequestOptionsProc::applyRequestOptions( $this->store, $data, $requestOptions )
+			RequestOptionsProcessor::applyRequestOptions( $this->store, $data, $requestOptions )
 		);
 	}
 

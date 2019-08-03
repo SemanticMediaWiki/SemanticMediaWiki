@@ -15,7 +15,7 @@ use SMWStringCondition as StringCondition;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RequestOptionsProc {
+class RequestOptionsProcessor {
 
 	/**
 	 * Transform input parameters into a suitable array of SQL options.

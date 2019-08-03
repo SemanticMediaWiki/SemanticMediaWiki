@@ -63,7 +63,7 @@ class_alias( \SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector::
 class_alias( \SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector::class, 'SMWSparqlDatabase' );
 
 // 2.1
-class_alias( \SMWSQLStore3::class, 'SMW\SQLStore\SQLStore' );
+class_alias( \SMW\SQLStore\SQLStore::class, 'SMWSQLStore3' );
 class_alias( \SMW\Query\Language\Description::class, 'SMWDescription' );
 class_alias( \SMW\Query\Language\ThingDescription::class, 'SMWThingDescription' );
 class_alias( \SMW\Query\Language\ClassDescription::class, 'SMWClassDescription' );
