@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
+use SMW\SQLStore\SQLStore;
 
 /**
  * Simple class for rebuilding property usage statistics.
@@ -59,7 +60,7 @@ class PropertyStatisticsRebuilder {
 	 */
 	public function rebuild() {
 		$this->reportMessage( "\nRebulding property statistics (this may take a while) ..." );
-		$table = $this->propertyStatisticsStore->getStatisticsTable();
+		$table = SQLStore::PROPERTY_STATISTICS_TABLE;
 
 		$this->reportMessage( "\n   ... deleting `$table` content ..." );
 		$this->propertyStatisticsStore->deleteAll();
@@ -67,7 +68,7 @@ class PropertyStatisticsRebuilder {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$res = $connection->select(
-			\SMWSql3SmwIds::TABLE_NAME,
+			SQLStore::ID_TABLE,
 			[ 'smw_id', 'smw_title' ],
 			[
 				'smw_namespace' => SMW_NS_PROPERTY,

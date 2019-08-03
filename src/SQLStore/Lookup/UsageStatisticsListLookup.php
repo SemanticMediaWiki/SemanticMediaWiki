@@ -233,7 +233,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		$count = 0;
 
 		$row = $this->store->getConnection()->selectRow(
-			[ $this->store->getStatisticsTable() ],
+			[ SQLStore::PROPERTY_STATISTICS_TABLE ],
 			'SUM( usage_count ) AS count',
 			[],
 			__METHOD__

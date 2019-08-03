@@ -598,17 +598,6 @@ class SQLStore extends Store {
 	}
 
 	/**
-	 * Returns the statics table
-	 *
-	 * @since 1.9
-	 *
-	 * @return string
-	 */
-	public function getStatisticsTable() {
-		return self::PROPERTY_STATISTICS_TABLE;
-	}
-
-	/**
 	 * Resets internal objects
 	 *
 	 * @since 1.9.1.1
