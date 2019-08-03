@@ -33,6 +33,12 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 		if ( $this->isEnabledToListen && ( $length > $this->executionTimeThresholdInSeconds ) ) {
 			$this->testCollector[$test->getName()] = round( $length, 3 );
 		}
+		
+		// Remove any excessive logging added via the `MediaWikiLoggerPHPUnitTestListener`
+		// https://github.com/wikimedia/mediawiki/commit/96657099fc69242ecb5e3c09a79e86ea6bbe2c0b
+		if ( isset( $test->_formattedMediaWikiLogs ) ) {
+			unset( $test->_formattedMediaWikiLogs );
+		}
 	}
 
 	/**
@@ -86,12 +92,6 @@ class ExecutionTimeTestListener implements PHPUnit_Framework_TestListener {
 		foreach ( $this->testCollector as $name => $length ) {
 			print ( "\n" . $suite->getName() . " {$name} ran for {$length} seconds" . "\n" );
 			unset( $this->testCollector[$name] );
-		}
-
-		// Remove any excessive logging added via the `MediaWikiLoggerPHPUnitTestListener`
-		// https://github.com/wikimedia/mediawiki/commit/96657099fc69242ecb5e3c09a79e86ea6bbe2c0b
-		if ( isset( $test->_formattedMediaWikiLogs ) ) {
-			unset( $test->_formattedMediaWikiLogs );
 		}
 	}
 
