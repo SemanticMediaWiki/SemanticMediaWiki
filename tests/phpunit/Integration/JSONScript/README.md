@@ -633,7 +633,7 @@ OK (1 test, 16 assertions)
 
 The following [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction on how
 to run and debug a JSONScript test case. For a general introduction to the test environment,
-have a look at the following [readme](https://github.com/SemanticMediaWiki/SemanticMediaWiki/edit/master/tests/README.md).
+have a look at the following [readme](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md).
 
 ## Technical notes
 
