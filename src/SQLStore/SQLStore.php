@@ -1,35 +1,51 @@
 <?php
 
+namespace SMW\SQLStore;
+
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWSQLStore3Writers as Writer;
+use SMWQuery as Query;
 use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\SQLStore\RequestOptionsProc;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableDefinition;
+use Title;
+
+/*
+ * Virtual "interwiki prefix" for old-style special SMW objects (no longer used)
+ */
+define( 'SMW_SQL3_SMWIW_OUTDATED', ':smw' );
+
+/*
+ * Virtual "interwiki prefix" for SMW objects that are redirected
+ */
+define( 'SMW_SQL3_SMWREDIIW', ':smw-redi' );
+
+/*
+ * Virtual "interwiki prefix" separating very important pre-defined properties
+ * from the rest
+ */
+define( 'SMW_SQL3_SMWBORDERIW', ':smw-border' );
+
+/*
+ * Virtual "interwiki prefix" marking internal (invisible) predefined properties
+ */
+define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' );
+
+/*
+ * Virtual "interwiki prefix" marking a deleted subject, see #1100
+ */
+define( 'SMW_SQL3_SMWDELETEIW', ':smw-delete' );
 
 /**
  * SQL-based implementation of SMW's storage abstraction layer.
  *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * @author Nischay Nahata
- *
- * @since 1.8
- *
- * @ingroup SMWStore
- */
-
-// The use of the following constants is explained in SMWSQLStore3::setup():
-define( 'SMW_SQL3_SMWIW_OUTDATED', ':smw' ); // virtual "interwiki prefix" for old-style special SMW objects (no longer used)
-define( 'SMW_SQL3_SMWREDIIW', ':smw-redi' ); // virtual "interwiki prefix" for SMW objects that are redirected
-define( 'SMW_SQL3_SMWBORDERIW', ':smw-border' ); // virtual "interwiki prefix" separating very important pre-defined properties from the rest
-define( 'SMW_SQL3_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" marking internal (invisible) predefined properties
-define( 'SMW_SQL3_SMWDELETEIW', ':smw-delete' ); // virtual "interwiki prefix" marking a deleted subject, see #1100
-
-/**
  * Storage access class for using the standard MediaWiki SQL database for
  * keeping semantic data.
  *
@@ -41,10 +57,15 @@ define( 'SMW_SQL3_SMWDELETEIW', ':smw-delete' ); // virtual "interwiki prefix" m
  * interwiki object is given but a local object of the same name exists. It is
  * currently not planned to support things like interwiki reuse of properties.
  *
+ * @license GNU GPL v2+
  * @since 1.8
- * @ingroup SMWStore
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ * @author Nischay Nahata
+ * @author mwjames
  */
-class SMWSQLStore3 extends SMWStore {
+class SQLStore extends Store {
 
 	/**
 	 * Specifies the border limit (upper bound) for pre-defined properties used
@@ -237,7 +258,7 @@ class SMWSQLStore3 extends SMWStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInProperties( SMWDataItem $value, $requestoptions = null ) {
+	public function getInProperties( DataItem $value, $requestoptions = null ) {
 
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
@@ -251,7 +272,7 @@ class SMWSQLStore3 extends SMWStore {
 
 	public function getWriter() {
 		if( $this->writer == false ) {
-			$this->writer = new SMWSQLStore3Writers( $this, $this->factory );
+			$this->writer = new Writer( $this, $this->factory );
 		}
 
 		return $this->writer;
@@ -311,10 +332,10 @@ class SMWSQLStore3 extends SMWStore {
 	 * @see SMWStore::fetchQueryResult
 	 *
 	 * @since 1.8
-	 * @param SMWQuery $query
-	 * @return SMWQueryResult|string|integer depends on $query->querymode
+	 * @param Query $query
+	 * @return QueryResult|string|integer depends on $query->querymode
 	 */
-	public function getQueryResult( SMWQuery $query ) {
+	public function getQueryResult( Query $query ) {
 
 		$result = null;
 		$start = microtime( true );
@@ -326,12 +347,12 @@ class SMWSQLStore3 extends SMWStore {
 		\Hooks::run( 'SMW::SQLStore::AfterQueryResultLookupComplete', [ $this, &$result ] );
 		\Hooks::run( 'SMW::Store::AfterQueryResultLookupComplete', [ $this, &$result ] );
 
-		$query->setOption( SMWQuery::PROC_QUERY_TIME, microtime( true ) - $start );
+		$query->setOption( Query::PROC_QUERY_TIME, microtime( true ) - $start );
 
 		return $result;
 	}
 
-	protected function fetchQueryResult( SMWQuery $query ) {
+	protected function fetchQueryResult( Query $query ) {
 		return $this->factory->newSlaveQueryEngine()->getQueryResult( $query );
 	}
 
@@ -472,47 +493,47 @@ class SMWSQLStore3 extends SMWStore {
 ///// Helper methods, mostly protected /////
 
 	/**
-	 * @see RequestOptionsProc::getSQLOptions
+	 * @see RequestOptionsProcessor::getSQLOptions
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWRequestOptions|null $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 * @param string $valuecol
 	 *
 	 * @return array
 	 */
-	public function getSQLOptions( SMWRequestOptions $requestOptions = null, $valueCol = '' ) {
-		return RequestOptionsProc::getSQLOptions( $requestOptions, $valueCol );
+	public function getSQLOptions( RequestOptions $requestOptions = null, $valueCol = '' ) {
+		return RequestOptionsProcessor::getSQLOptions( $requestOptions, $valueCol );
 	}
 
 	/**
-	 * @see RequestOptionsProc::getSQLConditions
+	 * @see RequestOptionsProcessor::getSQLConditions
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWRequestOptions|null $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 * @param string $valueCol name of SQL column to which conditions apply
 	 * @param string $labelCol name of SQL column to which string conditions apply, if any
 	 * @param boolean $addAnd indicate whether the string should begin with " AND " if non-empty
 	 *
 	 * @return string
 	 */
-	public function getSQLConditions( SMWRequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
-		return RequestOptionsProc::getSQLConditions( $this, $requestOptions, $valueCol, $labelCol, $addAnd );
+	public function getSQLConditions( RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+		return RequestOptionsProcessor::getSQLConditions( $this, $requestOptions, $valueCol, $labelCol, $addAnd );
 	}
 
 	/**
-	 * @see RequestOptionsProc::applyRequestOptions
+	 * @see RequestOptionsProcessor::applyRequestOptions
 	 *
 	 * @since 1.8
 	 *
-	 * @param array $data array of SMWDataItem objects
-	 * @param SMWRequestOptions|null $requestOptions
+	 * @param array $data array of DataItem objects
+	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
-	public function applyRequestOptions( array $data, SMWRequestOptions $requestOptions = null ) {
-		return RequestOptionsProc::applyRequestOptions( $this, $data, $requestOptions );
+	public function applyRequestOptions( array $data, RequestOptions $requestOptions = null ) {
+		return RequestOptionsProcessor::applyRequestOptions( $this, $data, $requestOptions );
 	}
 
 	/**
