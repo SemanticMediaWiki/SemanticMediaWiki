@@ -133,6 +133,11 @@ class SMWSql3SmwIds {
 	private $duplicateFinder;
 
 	/**
+	 * @var PropertyTableHashes
+	 */
+	private $propertyTableHashes;
+
+	/**
 	 * @since 1.8
 	 * @param SMWSQLStore3 $store
 	 */
@@ -1059,7 +1064,7 @@ class SMWSql3SmwIds {
 				'entity.id' => self::MAX_CACHE_SIZE,
 				'entity.sort' => self::MAX_CACHE_SIZE,
 				'entity.lookup' => 2000,
-				'table.hash' => self::MAX_CACHE_SIZE,
+				'propertytable.hash' => self::MAX_CACHE_SIZE,
 				'warmup.byid' => self::MAX_CACHE_SIZE,
 			]
 		);
@@ -1082,38 +1087,11 @@ class SMWSql3SmwIds {
 	 */
 	public function getPropertyTableHashes( $sid ) {
 
-		if ( $sid == 0 ) {
-			return [];
+		if ( $this->propertyTableHashes === null ) {
+			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
 		}
 
-		$hash = null;
-		$cache = $this->idCacheManager->get( 'table.hash' );
-
-		if ( ( $hash = $cache->fetch( $sid ) ) !== false ) {
-			return $hash;
-		}
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$row = $connection->selectRow(
-			self::TABLE_NAME,
-			[ 'smw_proptable_hash' ],
-			'smw_id=' . $sid,
-			__METHOD__
-		);
-
-		if ( $row !== false ) {
-			$hash = $row->smw_proptable_hash;
-		}
-
-		if ( $hash !== null && $hash !== false ) {
-			$hash = $connection->unescape_bytea( $hash );
-		}
-
-		$hash = $hash === null || $hash === false ? [] : unserialize( $hash );
-		$cache->save( $sid, $hash );
-
-		return $hash;
+		return $this->propertyTableHashes->getPropertyTableHashesById( $sid );
 	}
 
 	/**
@@ -1125,62 +1103,20 @@ class SMWSql3SmwIds {
 	 */
 	public function setPropertyTableHashes( $sid, $hash = null ) {
 
-		$connection = $this->store->getConnection( 'mw.db' );
-		$update = [];
-
-		if ( $hash === null ) {
-			$update = [ 'smw_proptable_hash' => $hash, 'smw_rev' => null ];
-		} elseif ( is_array( $hash ) ) {
-			$update = [ 'smw_proptable_hash' => serialize( $hash ) ];
-		} else {
-			throw new RuntimeException( "Expected a null or an array as value!");
+		if ( $this->propertyTableHashes === null ) {
+			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
 		}
 
-		$connection->update(
-			self::TABLE_NAME,
-			$update,
-			[ 'smw_id' => $sid ],
-			__METHOD__
-		);
-
-		$this->setPropertyTableHashesCache( $sid, $hash );
-
-		if ( $hash === null ) {
-			$this->idCacheManager->deleteCacheById( $sid );
-		}
+		$this->propertyTableHashes->setPropertyTableHashes( $sid, $hash );
 	}
 
-	/**
-	 * Temporarily cache a property tablehash that has been retrieved for
-	 * the given SMW ID.
-	 *
-	 * @since 1.8
-	 * @param $id integer
-	 * @param $propertyTableHash string
-	 */
-	/**
-	 * Temporarily cache a property tablehash that has been retrieved for
-	 * the given SMW ID.
-	 *
-	 * @since 1.8
-	 * @param $id integer
-	 * @param $propertyTableHash string
-	 */
-	protected function setPropertyTableHashesCache( $sid, $hash ) {
+	private function setPropertyTableHashesCache( $sid, $hash = null ) {
 
-		// never cache 0
-		if ( $sid == 0 ) {
-			return;
+		if ( $this->propertyTableHashes === null ) {
+			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
 		}
 
-		if ( $hash === null ) {
-			$hash = [];
-		} elseif ( is_string( $hash ) ) {
-			$hash = unserialize( $hash );
-		}
-
-		$cache = $this->idCacheManager->get( 'table.hash' );
-		$cache->save( $sid, $hash );
+		$this->propertyTableHashes->setPropertyTableHashesCache( $sid, $hash );
 	}
 
 	/**

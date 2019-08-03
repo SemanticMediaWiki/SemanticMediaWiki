@@ -39,8 +39,8 @@ class IdCacheManager {
 			throw new RuntimeException( "Missing 'entity.lookup' instance.");
 		}
 
-		if ( !isset( $this->caches['table.hash'] ) ) {
-			throw new RuntimeException( "Missing 'table.hash' instance.");
+		if ( !isset( $this->caches['propertytable.hash'] ) ) {
+			throw new RuntimeException( "Missing 'propertytable.hash' instance.");
 		}
 	}
 
