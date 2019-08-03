@@ -203,8 +203,17 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTables = [ $propertyTable ];
 
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getPropertyTableHashes' )
+			->will( $this->returnValue( [ 'foo' => 'abcdef10001' ] ) );
+
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getPropertyTables', 'getConnection' ] )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyTables', 'getConnection', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -218,6 +227,10 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$instance = new PropertyTableRowDiffer(
 			$store,

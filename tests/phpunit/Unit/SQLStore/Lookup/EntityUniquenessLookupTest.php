@@ -50,6 +50,14 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckConstraint() {
 
+		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$dataItemHandler->expects( $this->any() )
+			->method( 'getWhereConds' )
+			->will( $this->returnValue( [ 'o_hash' => '' ] ) );
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,12 +67,17 @@ class EntityUniquenessLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( '_foo' ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
+
+		$store->expects( $this->any() )
+			->method( 'getDataItemHandlerForDIType' )
+			->will( $this->returnValue( $dataItemHandler ) );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )

@@ -58,6 +58,10 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$diHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -81,6 +85,10 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTableID' )
 			->will( $this->returnValue( 'smw_foo' ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$this->semanticDataLookup->expects( $this->atLeastOnce() )
 			->method( 'prefetchDataFromTable' )

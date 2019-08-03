@@ -433,6 +433,14 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSemanticData() {
 
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -515,6 +523,14 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData_OnLimit() {
+
+		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
 
 		$query_1 = new \SMW\MediaWiki\Connection\Query( $this->connection );
 		$query_2 = new \SMW\MediaWiki\Connection\Query( $this->connection );
