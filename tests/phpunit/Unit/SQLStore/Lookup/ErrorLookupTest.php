@@ -80,7 +80,8 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds' ] )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -94,6 +95,10 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
 			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+
+		$store->expects( $this->any() )
+			->method( 'findPropertyTableID' )
+			->will( $this->onConsecutiveCalls( 'smw_di_blob', 'smw_di_blob', 'smw_di_blob' ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
@@ -149,7 +154,8 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds' ] )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -163,6 +169,10 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
 			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+
+		$store->expects( $this->any() )
+			->method( 'findPropertyTableID' )
+			->will( $this->onConsecutiveCalls( 'smw_fpt_sobj', 'smw_di_blob', 'smw_di_blob' ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
