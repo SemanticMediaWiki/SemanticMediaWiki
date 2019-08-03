@@ -1,11 +1,10 @@
 <?php
 
 use ParamProcessor\Options;
-use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
+use ParamProcessor\ProcessedParam;
 use ParamProcessor\Processor;
 use SMW\ApplicationFactory;
-use SMW\Message;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;
@@ -15,6 +14,7 @@ use SMW\Query\QueryContext;
 use SMW\Query\Exception\ResultFormatNotFoundException;
 use SMW\Query\ResultFormat;
 use SMW\Query\ResultPrinter;
+use SMW\Query\ResultPrinters\NullResultPrinter;
 
 /**
  * This file contains a static class for accessing functions to generate and execute
@@ -53,26 +53,35 @@ class SMWQueryProcessor implements QueryContext {
 	 * param name (string) => param value (mixed)
 	 *
 	 * @since 1.6.2
-	 * The return value changed in SMW 1.8 from an array with result values
-	 * to an array with Param objects.
+	 * The return value changed in SMW 3.1 from Param[] to ProcessedParam[]
 	 *
 	 * @param array $params
-	 * @param array $printRequests
+	 * @param PrintRequest[] $printRequests
 	 * @param boolean $unknownInvalid
 	 *
-	 * @return Param[]
+	 * @return ProcessedParam[]
 	 */
 	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
-		$validator = self::getValidatorForParams( $params, $printRequests, $unknownInvalid, $context, $showMode );
-		$validator->processParameters();
-		$parameters =  $validator->getParameters();
+		$validator = self::getProcessorForParams( $params, $printRequests, $unknownInvalid, $context, $showMode );
+		$processingResult = $validator->processParameters();
 
-		// Negates some weird behaviour of ParamDefinition::setDefault used in
-		// an individual printer.
-		// Applying $smwgQMaxLimit, $smwgQMaxInlineLimit will happen at a later
-		// stage.
+		$parameters = [];
+
+		foreach ( $processingResult->getParameters() as $parameter ) {
+			$parameters[$parameter->getName()] = $parameter;
+		}
+
+		// Set limit parameter to its original value.
+		// This is to allow for special handling of invalid values rather than just setting the parameter to its default.
+		// $smwgQMaxLimit and $smwgQMaxInlineLimit will be applied at a later point.
 		if ( isset( $params['limit'] ) && isset( $parameters['limit'] ) ) {
-			$parameters['limit']->setValue( (int)$params['limit'] );
+			$parameters['limit'] = new ProcessedParam(
+				'limit',
+				(int)$params['limit'],
+				false,
+				'limit',
+				(int)$params['limit']
+			);
 		}
 
 		return $parameters;
@@ -229,7 +238,9 @@ class SMWQueryProcessor implements QueryContext {
 	 * @return array( string, array( string => string ), array( SMWPrintRequest ) )
 	 */
 	static public function getComponentsFromFunctionParams( array $rawParams, $showMode ) {
-
+		/**
+		 * @var ParamListProcessor $paramListProcessor
+		 */
 		$paramListProcessor = ApplicationFactory::getInstance()->singleton( 'ParamListProcessor' );
 
 		return $paramListProcessor->format(
@@ -253,7 +264,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param integer $outputMode SMW_OUTPUT_WIKI, SMW_OUTPUT_HTML, ...
 	 * @param integer $context INLINE_QUERY, SPECIAL_PAGE, CONCEPT_DESC
 	 * @param boolean $showMode process like #show parser function?
-	 * @return array( SMWQuery, array of IParam )
+	 * @return array( SMWQuery, ProcessedParam[] )
 	 */
 	static public function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
 		list( $queryString, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
@@ -438,6 +449,8 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return ResultPrinter
 	 * @throws MissingResultFormatException
+	 * @return ResultPrinter
+	 * @throws ResultFormatNotFoundException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
@@ -477,7 +490,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param integer|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
-	 * @return IParamDefinition[]
+	 * @return ParamDefinition[]
 	 */
 	public static function getParameters( $context = null, $resultPrinter = null ) {
 		return DefaultParamDefinition::getParamDefinitions( $context, $resultPrinter );
@@ -501,7 +514,7 @@ class SMWQueryProcessor implements QueryContext {
 
 		$resultPrinter = self::getResultPrinter( $format );
 
-		if ( $resultPrinter instanceof \SMW\Query\ResultPrinters\NullResultPrinter ) {
+		if ( $resultPrinter instanceof NullResultPrinter ) {
 			return [];
 		}
 
@@ -515,28 +528,31 @@ class SMWQueryProcessor implements QueryContext {
 	 * and sets them on a new Validator object,
 	 * which is returned and ready to process the parameters.
 	 *
-	 * @since 1.8
-	 *
 	 * @param array $params
-	 * @param array $printRequests
+	 * @param PrintRequest[] $printRequests
 	 * @param boolean $unknownInvalid
 	 *
 	 * @return Processor
 	 */
-	private static function getValidatorForParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
+	private static function getProcessorForParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
 		$paramDefinitions = self::getParameters( $context );
 
-		$paramDefinitions['format']->setPrintRequests( $printRequests );
-		$paramDefinitions['format']->setShowMode( $showMode );
+		/**
+		 * @var ResultFormat $formatParameter
+		 */
+		$formatParameter = $paramDefinitions['format'];
+
+		$formatParameter->setPrintRequests( $printRequests );
+		$formatParameter->setShowMode( $showMode );
 
 		$processorOptions = new Options();
 		$processorOptions->setUnknownInvalid( $unknownInvalid );
 
-		$validator = Processor::newFromOptions( $processorOptions );
+		$processor = Processor::newFromOptions( $processorOptions );
 
-		$validator->setParameters( $params, $paramDefinitions, false );
+		$processor->setParameters( $params, $paramDefinitions );
 
-		return $validator;
+		return $processor;
 	}
 
 }

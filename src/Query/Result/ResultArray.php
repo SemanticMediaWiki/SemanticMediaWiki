@@ -5,9 +5,11 @@ namespace SMW\Query\Result;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
+use SMW\RequestOptions;
 use SMWDataItem as DataItem;
 use SMW\DIWikiPage;
 use SMW\Store;
+use SMWDataValue;
 use SMWQueryResult as QueryResult;
 
 /**
@@ -34,12 +36,12 @@ class ResultArray {
 	private $result;
 
 	/**
-	 * @var SMWStore
+	 * @var Store
 	 */
 	private $store;
 
 	/**
-	 * @var SMWDataItem[]|false
+	 * @var DataItem[]|false
 	 */
 	private $content;
 
@@ -112,7 +114,7 @@ class ResultArray {
 	/**
 	 * Get the SMWStore object that this result is based on.
 	 *
-	 * @return SMWStore
+	 * @return Store
 	 */
 	public function getStore() {
 		return $this->store;
@@ -164,7 +166,7 @@ class ResultArray {
 	 * Returns an array of SMWDataItem objects that contain the results of
 	 * the given print request for the given result object.
 	 *
-	 * @return SMWDataItem[]|false
+	 * @return DataItem[]|false
 	 */
 	public function getContent() {
 		$this->loadContent();
@@ -186,7 +188,7 @@ class ResultArray {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataItem|false
+	 * @return DataItem|false
 	 */
 	public function getNextDataItem() {
 		$this->loadContent();
@@ -208,7 +210,7 @@ class ResultArray {
 	 *
 	 * @since 1.7.1
 	 *
-	 * @return SMWDataItem|false
+	 * @return DataItem|false
 	 */
 	public function reset() {
 		$this->loadContent();
@@ -243,6 +245,9 @@ class ResultArray {
 		    strpos( $this->printRequest->getTypeID(), '_rec' ) !== false &&
 		    $this->printRequest->getParameter( 'index' ) !== false ) {
 
+			/**
+			 * @var \SMWRecordValue $recordValue
+			 */
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
 				$this->printRequest->getData()->getDataItem(),
@@ -325,20 +330,6 @@ class ResultArray {
 		);
 
 		return reset( $this->content );
-	}
-
-	/**
-	 * Make a request option object based on the given parameters, and
-	 * return NULL if no such object is required. The parameter defines
-	 * if the limit should be taken into account, which is not always desired
-	 * (especially if results are to be cached for future use).
-	 *
-	 * @param boolean $useLimit
-	 *
-	 * @return SMWRequestOptions|null
-	 */
-	protected function getRequestOptions( $useLimit = true ) {
-		return $this->fieldItemFinder->getRequestOptions( $useLimit );
 	}
 
 }

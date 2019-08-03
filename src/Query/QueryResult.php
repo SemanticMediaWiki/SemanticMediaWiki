@@ -2,6 +2,7 @@
 
 namespace SMW\Query;
 
+use SMW\DIWikiPage;
 use SMW\Query\Excerpts;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -12,6 +13,7 @@ use SMW\Query\Result\ResultArray;
 use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
 use SMW\Store;
+use SMWInfolink;
 use SMWQuery as Query;
 
 /**
@@ -40,8 +42,8 @@ class QueryResult {
 	const QUICK_HASH = 'quick';
 
 	/**
-	 * Array of SMWDIWikiPage objects that are the basis for this result
-	 * @var SMWDIWikiPage[]
+	 * Array of DIWikiPage objects that are the basis for this result
+	 * @var DIWikiPage[]
 	 */
 	protected $mResults;
 
@@ -112,7 +114,7 @@ class QueryResult {
 	/**
 	 * @param PrintRequest[] $printRequests
 	 * @param Query $query
-	 * @param SMWDIWikiPage[] $results
+	 * @param DIWikiPage[] $results
 	 * @param Store $store
 	 * @param boolean $furtherRes
 	 */
@@ -248,13 +250,17 @@ class QueryResult {
 
 		$row = [];
 
-		foreach ( $this->mPrintRequests as $p ) {
-			$resultArray = ResultArray::factory( $page, $p, $this );
-			$resultArray->setItemJournal( $this->itemJournal );
-			$row[] = $resultArray;
+		foreach ( $this->mPrintRequests as $pr ) {
+			$row[] = $this->newResultArray( $page, $pr );
 		}
 
 		return $row;
+	}
+
+	private function newResultArray( DIWikiPage $page, PrintRequest $pr ) {
+		$resultArray = ResultArray::factory( $page, $pr, $this );
+		$resultArray->setItemJournal( $this->itemJournal );
+		return $resultArray;
 	}
 
 	/**
@@ -270,7 +276,7 @@ class QueryResult {
 	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return SMWDIWikiPage[]
+	 * @return DIWikiPage[]
 	 */
 	public function getResults() {
 		return $this->mResults;

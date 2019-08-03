@@ -265,7 +265,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			'entity.id' => '',
 			'entity.sort' => '',
 			'entity.lookup' => '',
-			'table.hash' => ''
+			'propertytable.hash' => ''
 		];
 
 		$this->assertInstanceOf(
@@ -461,6 +461,28 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\PropertyTableIdReferenceDisposer',
 			$instance->newPropertyTableIdReferenceDisposer()
+		);
+	}
+
+	public function testCanConstructPropertyTableHashes() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTable\PropertyTableHashes',
+			$instance->newPropertyTableHashes( $idCacheManager )
 		);
 	}
 

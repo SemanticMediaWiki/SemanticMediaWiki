@@ -27,7 +27,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 			'entity.id' => new FixedInMemoryLruCache(),
 			'entity.sort' => new FixedInMemoryLruCache(),
 			'entity.lookup' => new FixedInMemoryLruCache(),
-			'table.hash' => new FixedInMemoryLruCache()
+			'propertytable.hash' => new FixedInMemoryLruCache()
 		];
  	}
 

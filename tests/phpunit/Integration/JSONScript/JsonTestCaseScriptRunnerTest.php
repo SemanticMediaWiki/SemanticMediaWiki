@@ -288,6 +288,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgCompactLinkSupport',
 			'smwgCacheUsage',
 			'smwgQSortFeatures',
+			'smwgQMaxInlineLimit',
 			'smwgElasticsearchConfig',
 			'smwgDefaultNumRecurringEvents',
 			'smwgMandatorySubpropertyParentTypeInheritance',

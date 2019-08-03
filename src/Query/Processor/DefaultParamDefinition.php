@@ -25,7 +25,7 @@ class DefaultParamDefinition {
 	 * @param integer|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
-	 * @return IParamDefinition[]
+	 * @return ParamDefinition[]
 	 */
 	public static function getParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ) {
 		return self::buildParamDefinitions( $GLOBALS, $context, $resultPrinter );
@@ -47,7 +47,7 @@ class DefaultParamDefinition {
 	 * @param integer|null $context
 	 * @param ResultPrinter|null $resultPrinter
 	 *
-	 * @return IParamDefinition[]
+	 * @return ParamDefinition[]
 	 */
 	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ) {
 		$params = [];

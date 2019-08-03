@@ -68,7 +68,7 @@
 	"smw-upgrade-error-how-explain-links": "Vous pouvez aussi consulter les pages suivantes pour une aide supplémentaire:\n* les instructions d'[https://www.semantic-mediawiki.org/wiki/Help:Installation installation]\n* page d'aide pour la [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting recherche de fautes]",
 	"smw-extensionload-error-why-title": "Pourquoi je vois cette page&nbsp;?",
 	"smw-extensionload-error-why-explain": "L’extension n’a <b>pas</b> été chargée avec <code>enableSemantics</code> mais par un autre moyen tel que l’utilisation de <code>wfLoadExtension( 'SemanticMediaWiki' )</code> directement.",
-	"smw-extensionload-error-how-title": "Comment puis-je corriger cette erreur&nbsp;?",
+	"smw-extensionload-error-how-title": "Comment puis-je corriger cette erreur ?",
 	"smw-extensionload-error-how-explain": "Pour activer l’extension et éviter les problèmes de déclarations d'espaces de noms et de configurations en attente, il est nécessaire d'utiliser <code>enableSemantics</code>, qui assure l'assignation des variables requises avant le chargement de l'extension via <code>ExtensionRegistry</code>. \n\nVeuillez consulter la page d’aide d’[https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics] pour plus d’assistance.",
 	"smw-upgrade-maintenance-title": "Mise à jour et maintenance (Semantic MediaWiki)",
 	"smw-upgrade-maintenance-why-title": "Pourquoi je vois cette page ?",
