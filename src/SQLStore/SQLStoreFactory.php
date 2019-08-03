@@ -19,6 +19,7 @@ use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -600,6 +601,29 @@ class SQLStoreFactory {
 		);
 
 		return $idMatchFinder;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param IdCacheManager $idCacheManager
+	 * @param PropertyTableHashes|null $propertyTableHashes
+	 *
+	 * @return IdEntityFinder
+	 */
+	public function newEntityIdFinder( IdCacheManager $idCacheManager, PropertyTableHashes $propertyTableHashes = null ) {
+
+		if ( $propertyTableHashes === null ) {
+			$propertyTableHashes = $this->newPropertyTableHashes( $idCacheManager );
+		}
+
+		$entityIdFinder = new EntityIdFinder(
+			$this->store->getConnection( 'mw.db' ),
+			$propertyTableHashes,
+			$idCacheManager
+		);
+
+		return $entityIdFinder;
 	}
 
 	/**
