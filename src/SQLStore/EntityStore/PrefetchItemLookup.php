@@ -79,6 +79,10 @@ class PrefetchItemLookup {
 	 */
 	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 
+		$this->linkBatch->setCaller( __METHOD__ );
+		$this->linkBatch->addFromList( $subjects );
+		$this->linkBatch->execute();
+
 		if ( $property->isInverse() ) {
 			return $this->prefetchPropertySubjects(
 				$subjects,
@@ -107,7 +111,6 @@ class PrefetchItemLookup {
 
 		$propTable = $proptables[$tableid];
 		$result = [];
-		$list = [];
 
 		// In prefetch mode avoid restricting the result due to use of WHERE IN
 		$requestOptions->exclude_limit = true;
@@ -164,7 +167,6 @@ class PrefetchItemLookup {
 
 				try {
 					$dataItem = $diHandler->newFromDBKeys( $v );
-					$list[] = $dataItem;
 					$result[$hash][$dataItem->getHash()] = $dataItem;
 				} catch ( \SMWDataItemException $e ) {
 					// maybe type assignment changed since data was stored;
@@ -174,15 +176,6 @@ class PrefetchItemLookup {
 				$i++;
 			}
 		}
-
-		if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-			$idTable->warmUpCache( $list );
-			$this->linkBatch->addFromList( $list );
-		}
-
-		$this->linkBatch->setCaller( __METHOD__ );
-		$this->linkBatch->addFromList( $subjects );
-		$this->linkBatch->execute();
 
 		return $result;
 	}
@@ -237,12 +230,6 @@ class PrefetchItemLookup {
 			$propTable,
 			$requestOptions
 		);
-
-		$idTable->warmUpCache( $result );
-
-		$this->linkBatch->setCaller( __METHOD__ );
-		$this->linkBatch->addFromList( $subjects );
-		$this->linkBatch->execute();
 
 		return $result;
 	}

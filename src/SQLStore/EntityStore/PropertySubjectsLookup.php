@@ -124,6 +124,7 @@ class PropertySubjectsLookup {
 
 		$res = $this->doFetch( $pid, $proptable, $ids, $requestOptions );
 		$result = [];
+		$warmupCache = [];
 
 		// Reassign per ID
 		foreach ( $res as $row ) {
@@ -145,6 +146,11 @@ class PropertySubjectsLookup {
 			$dataItem->setId( $row->smw_id );
 
 			$result[$row->id][] = $dataItem;
+			$warmupCache[] = $dataItem;
+		}
+
+		if ( $warmupCache !== [] ) {
+			$this->store->getObjectIds()->warmupCache( $warmupCache );
 		}
 
 		return $this->prefetch[$hash] = $result;

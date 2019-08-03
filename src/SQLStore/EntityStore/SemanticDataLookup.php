@@ -517,6 +517,8 @@ class SemanticDataLookup {
 			$caller
 		);
 
+		$warmupCache = [];
+
 		foreach ( $res as $row ) {
 			$propertykey = '';
 
@@ -535,6 +537,11 @@ class SemanticDataLookup {
 				$isSubject,
 				$propertykey
 			);
+
+			// Using a short-cut to warmup the cache/linkbatch instance
+			if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
+				$warmupCache[] = DIWikiPage::newFromText( $row->v0, $row->v1 );
+			}
 		}
 
 		$connection->freeResult( $res );
@@ -544,6 +551,10 @@ class SemanticDataLookup {
 		// retrieved values and is hereby deterministic
 		if ( $requestOptions->getOption( 'ORDER BY' ) === false ) {
 			sort( $result );
+		}
+
+		if ( $warmupCache !== [] ) {
+			$this->store->getObjectIds()->warmupCache( $warmupCache );
 		}
 
 		return $result;
