@@ -185,7 +185,7 @@ class HtmlBuilder {
 			foreach ( $params['error_params'] as $prop => $message ) {
 				$row = HtmlDivTable::cell( $prop, [ 'class' => 'smwpropname' ] );
 				$row .= HtmlDivTable::cell( $message, [ 'class' => 'smwprops' ] );
-				$rows .= HtmlDivTable::row( $row );
+				$rows .= HtmlDivTable::row( $row, [ 'style' => 'background-color: #fee7e6;' ] );
 			}
 
 			$error_section .= Html::rawElement(
