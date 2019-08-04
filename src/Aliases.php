@@ -15,6 +15,7 @@ class_alias( \SMW\Property\RestrictionExaminer::class, 'SMW\PropertyRestrictionE
 class_alias( \SMW\Query\Result\ResultArray::class, 'SMWResultArray' );
 class_alias( \SMW\Query\QueryResult::class, 'SMWQueryResult' );
 class_alias( \SMW\Services\ServicesFactory::class, '\SMW\ApplicationFactory' );
+class_alias( \SMW\SQLStore\EntityStore\EntityIdManager::class, '\SMWSql3SmwIds' );
 
 // 3.0
 class_alias( \SMW\MediaWiki\Deferred\CallableUpdate::class, 'SMW\DeferredCallableUpdate' );

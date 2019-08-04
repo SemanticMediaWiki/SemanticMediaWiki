@@ -155,7 +155,7 @@ class SQLStore extends Store {
 	 */
 	public function __construct() {
 		$this->factory = new SQLStoreFactory( $this, $this->messageReporter );
-		$this->smwIds = $this->factory->newEntityTable();
+		$this->smwIds = $this->factory->newEntityIdManager();
 	}
 
 	/**
