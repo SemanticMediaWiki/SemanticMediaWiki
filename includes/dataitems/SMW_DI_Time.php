@@ -280,7 +280,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @param DateTime $dateTime
 	 *
-	 * @return SMWDITime|false
+	 * @return self
+	 * @throws DataItemException
 	 */
 	public static function newFromDateTime( DateTime $dateTime ) {
 
@@ -335,7 +336,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @param string $timestamp must be in format
 	 *
-	 * @return SMWDITime|false
+	 * @return self|false
 	 */
 	public static function newFromTimestamp( $timestamp ) {
 		$timestamp = wfTimestamp( TS_MW, (string)$timestamp );
@@ -386,14 +387,14 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * Callers might want to avoid this (calendar models make little sense
 	 * in such cases anyway).
 	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return SMWDITime
+	 * @return self
 	 */
 	public function getForCalendarModel( $calendarmodel ) {
 		if ( $calendarmodel == $this->m_model ) {
 			return $this;
-		} else {
-			return self::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision );
 		}
+
+		return self::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision );
 	}
 
 	/**
@@ -409,9 +410,9 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		$jd = ( $this->m_year >= -4713 ) ? $jd = $this->getJD() : -1;
 		if ( $jd > 0 ) {
 			return $jd;
-		} else {
-			return $this->m_year - 1 + ( $this->m_month - 1 ) / 12 + ( $this->m_day - 1 ) / 12 / 31;
 		}
+
+		return $this->m_year - 1 + ( $this->m_month - 1 ) / 12 + ( $this->m_day - 1 ) / 12 / 31;
 	}
 
 	/**
@@ -464,7 +465,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * Create a data item from the provided serialization string.
 	 *
-	 * @return SMWDITime
+	 * @return self
 	 */
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 8 );
@@ -511,7 +512,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @param integer|null $calendarmodel
 	 * @param integer|null $precision
 	 *
-	 * @return DITime object
+	 * @return self
 	 */
 	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
 
