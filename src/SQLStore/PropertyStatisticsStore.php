@@ -65,15 +65,6 @@ class PropertyStatisticsStore {
 	}
 
 	/**
-	 * @since 2.2
-	 *
-	 * @return string
-	 */
-	public function getStatisticsTable() {
-		return SQLStore::PROPERTY_STATISTICS_TABLE;
-	}
-
-	/**
 	 * Change the usage count for the property of the given ID by the given
 	 * value. The method does nothing if the count is 0.
 	 *

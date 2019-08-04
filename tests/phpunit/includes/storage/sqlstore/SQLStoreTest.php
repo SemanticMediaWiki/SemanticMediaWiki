@@ -146,14 +146,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetStatisticsTable() {
-
-		$this->assertInternalType(
-			'string',
-			$this->store->getStatisticsTable()
-		);
-	}
-
 	public function testGetObjectIds() {
 
 		$this->assertInternalType(
