@@ -73,6 +73,7 @@ The test result assertion provides simplified string comparison methods (mostly 
 		"about": "#1 test output of #ask query",
 		"subject": "Example/Test/Q.1",
 		"assert-output": {
+			"include-head-items": true,
 			"to-contain": [
 				"Some text to search"
 			],
@@ -83,6 +84,8 @@ The test result assertion provides simplified string comparison methods (mostly 
 	}
 ]
 </pre>
+
+- `include-head-items` is an option that fetches the information stored in `ParserOutput::getHeadItems` and appends it to the validation output
 
 #### Type `parser-html`
 

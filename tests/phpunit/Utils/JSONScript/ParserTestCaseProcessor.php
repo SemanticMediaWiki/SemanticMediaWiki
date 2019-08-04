@@ -186,6 +186,10 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$output = $parserOutput->getText();
 		}
 
+		if ( isset( $case['assert-output']['include-head-items'] ) && $case['assert-output']['include-head-items'] ) {
+			$output .= '<include-head-items>' . implode( '', $parserOutput->getHeadItems() ) . '</include-head-items>';
+		}
+
 		// Strip HTML comments
 		$output = preg_replace('/<!--(.*)-->/Uis', '', $output );
 
