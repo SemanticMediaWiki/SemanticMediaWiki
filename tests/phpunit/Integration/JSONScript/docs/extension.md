@@ -27,7 +27,7 @@ Semantic MediaWiki provides two script runners that can be used by extensions:
 - `ExtendedJsonTestCaseScriptRunner` provides additional assertion methods
 - `JsonTestCaseScriptRunner` is the base runner that provides all methods necessary to run test cases, it also includes version checks as well as to validate custom defined dependencies
 
-The `LightweightJsonTestCaseScriptRunner` was introduced to help users to quickly create a `CustomTestScriptRunnerTest` without much modification to the `CustomTestScriptRunnerTest` itself besides adding the location of the test case folder.
+The `LightweightJsonTestCaseScriptRunner` was introduced to help users to quickly create a custom script runner (e.g. `CustomJsonScriptTest`) that iterates over the selected test location without much modification to the test itself besides adding the location of the test case folder.
 
 #### Example
 
