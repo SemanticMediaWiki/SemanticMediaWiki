@@ -27,6 +27,11 @@ class MonolingualTextLookup {
 	private $store;
 
 	/**
+	 * @var string
+	 */
+	private $caller = '';
+
+	/**
 	 * @var []
 	 */
 	private static $lookupCache = [];
@@ -40,8 +45,20 @@ class MonolingualTextLookup {
 		$this->store = $store;
 	}
 
+	/**
+	 * @since 3.1
+	 */
 	public function clearLookupCache() {
 		self::$lookupCache = [];
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $caller
+	 */
+	public function setCaller( $caller ) {
+		$this->caller = $caller;
 	}
 
 	/**
@@ -295,7 +312,13 @@ class MonolingualTextLookup {
 		$query->field( 't2.o_blob', 'text_long' );
 		$query->field( 't3.o_hash', 'lcode' );
 
-		return $query->execute( __METHOD__ );
+		$caller = __METHOD__;
+
+		if ( strval( $this->caller ) !== '' ) {
+			$caller .= " (for " . $this->caller . ")";
+		}
+
+		return $query->execute( $caller );
 	}
 
 	private function getPropertyTable( DIProperty $property ) {
