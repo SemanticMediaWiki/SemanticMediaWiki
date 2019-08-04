@@ -26,7 +26,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

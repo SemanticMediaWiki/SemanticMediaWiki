@@ -179,7 +179,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			'smw_rev' => 0
 		];
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

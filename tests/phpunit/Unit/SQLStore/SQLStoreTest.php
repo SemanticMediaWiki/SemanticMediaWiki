@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Test\SQLStore;
+namespace SMW\Tests\SQLStore;
 
 use SMW\ApplicationFactory;
-use SMWSQLStore3;
+use SMW\SQLStore\SQLStore;
 
 /**
- * @covers \SMWSQLStore3
+ * @covers \SMW\SQLStore\SQLStore
  *
  * @group semantic-mediawiki
  *
@@ -22,7 +22,7 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->store = new SMWSQLStore3();
+		$this->store = new SQLStore();
 
 		$settings = [
 			'smwgFixedProperties' => [],
@@ -44,7 +44,7 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMWSQLStore3',
+			'\SMW\Store',
 			$this->store
 		);
 
@@ -151,11 +151,6 @@ class SQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType(
 			'object',
 			$this->store->getObjectIds()
-		);
-
-		$this->assertInternalType(
-			'string',
-			$this->store->getObjectIds()->getIdTable()
 		);
 	}
 

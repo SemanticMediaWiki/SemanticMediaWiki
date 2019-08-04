@@ -433,7 +433,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSemanticData() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -524,7 +524,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSemanticData_OnLimit() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

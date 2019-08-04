@@ -58,7 +58,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +109,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -95,7 +95,7 @@ class ReplicationStatus {
 			return [ 'modification_date' => false, 'associated_revision' => 0 ];
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMWSql3SmwIds::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_include' => [ "$pid.$field", "subject.rev_id" ] ] );
@@ -136,7 +136,7 @@ class ReplicationStatus {
 			return false;
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMWSql3SmwIds::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_include' => [ "$pid.$field" ] ] );
@@ -209,7 +209,7 @@ class ReplicationStatus {
 	 */
 	private function last_update() {
 
-		$pid = $this->fieldMapper->getPID( \SMWSql3SmwIds::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$params = $this->fieldMapper->exists( "$pid.$field" );

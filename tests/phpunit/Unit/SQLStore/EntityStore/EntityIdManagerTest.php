@@ -7,10 +7,10 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
-use SMWSql3SmwIds;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 
 /**
- * @covers \SMWSql3SmwIds
+ * @covers \SMW\SQLStore\EntityStore\EntityIdManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMWSql3SmwIds;
  *
  * @author mwjames
  */
-class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
+class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $cache;
@@ -129,8 +129,8 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMWSql3SmwIds',
-			new SMWSql3SmwIds( $this->store, $this->factory )
+			'\SMW\SQLStore\EntityStore\EntityIdManager',
+			new EntityIdManager( $this->store, $this->factory )
 		);
 	}
 
@@ -138,7 +138,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = new DIWikiPage( 'Foo', 9001 );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$this->store,
 			$this->factory
 		);
@@ -190,7 +190,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$this->factory
 		);
@@ -224,7 +224,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$this->factory
 		);
@@ -273,7 +273,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$this->factory
 		);
@@ -308,7 +308,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( 42 ) )
 			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$this->store,
 			$this->factory
 		);
@@ -328,7 +328,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'Bar' ),
 				$this->equalTo( '8ba1886210e332a1fbaf28c38e43d1e89dc761db' ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$this->store,
 			$this->factory
 		);
@@ -356,7 +356,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->with( $this->equalTo( \SMW\SQLStore\SQLStore::ID_TABLE ) )
 			->will( $this->returnValue( [ $row ] ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$this->store,
 			$this->factory
 		);
@@ -392,7 +392,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$this->factory
 		);
@@ -442,7 +442,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$factory
 		);
@@ -499,7 +499,7 @@ class SQLStoreSmwIdsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $connection ) );
 
-		$instance = new SMWSql3SmwIds(
+		$instance = new EntityIdManager(
 			$store,
 			$factory
 		);

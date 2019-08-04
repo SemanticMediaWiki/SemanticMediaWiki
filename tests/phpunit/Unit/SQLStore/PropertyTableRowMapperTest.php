@@ -62,7 +62,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testMapToRowsWithFixedProperty() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewChangeOp() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

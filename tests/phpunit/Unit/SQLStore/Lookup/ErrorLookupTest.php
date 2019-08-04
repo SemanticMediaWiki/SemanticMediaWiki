@@ -75,7 +75,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindErrorsByType() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( 'checkConstraintErrors', SMW_CONSTRAINT_ERR_CHECK_ALL );
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
