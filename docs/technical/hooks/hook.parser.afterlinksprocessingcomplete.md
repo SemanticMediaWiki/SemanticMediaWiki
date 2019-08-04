@@ -17,9 +17,8 @@ Hooks::register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, 
 ```
 ## See also
 
-## See also
 
-- [`hook.property.initproperties.md`][hook.property.initproperties.md]
+- [`hook.parser.afterlinksprocessingcomplete.md`][hook.parser.afterlinksprocessingcomplete.md] to provide an example how the hook can be used to register a # hash tag parser
 
 [PropertyRegistry.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/PropertyRegistry.php
 [hook.parser.afterlinksprocessingcomplete.md]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.parser.afterlinksprocessingcomplete.md
