@@ -1,6 +1,6 @@
 # JSONScript
 
-[List of tests](#List_of_tests) | [Test design and usage][section:design] | [Extension usage][section:extension] | [Technical notes](#Technical_notes)
+[List of tests](#list-of-tests) | [Test design and usage][section:design] | [Extension usage][section:extension] | [Technical notes](#technical-notes)
 
 JSONScript is an abstraction from the PHPUnit layer and a best practice approach in Semantic MediaWiki to write integration tests as pseudo `JSONScript` to allow non-developers to review and understand the setup and requirements of its test scenarios.
 
