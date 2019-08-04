@@ -47,7 +47,7 @@ class Settings extends Options {
 		// If someone tried to use SMW without proper initialization then something
 		// like "Notice: Undefined index: smwgNamespaceIndex ..." would appear and
 		// to produce a proper error message avoid those by adding a default.
-		if ( !defined( 'SMW_VERSION' ) && !isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
+		if ( !defined( 'SMW_VERSION' ) || !isset( $GLOBALS['smwgNamespaceIndex'] ) ) {
 			NamespaceManager::initCustomNamespace( $GLOBALS );
 		}
 
