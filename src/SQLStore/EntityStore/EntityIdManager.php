@@ -563,7 +563,7 @@ class EntityIdManager {
 			$sortkey = mb_substr( $sortkey, 0, 254 );
 
 			$db->insert(
-				self::TABLE_NAME,
+				SQLStore::ID_TABLE,
 				[
 					'smw_id' => $sequenceValue,
 					'smw_title' => $title,
@@ -691,7 +691,7 @@ class EntityIdManager {
 		}
 
 		$row = $connection->selectRow(
-			self::TABLE_NAME,
+			SQLStore::ID_TABLE,
 			'smw_rev',
 			$cond,
 			__METHOD__
@@ -1007,15 +1007,6 @@ class EntityIdManager {
 		}
 
 		$this->propertyTableHashes->setPropertyTableHashesCache( $sid, $hash );
-	}
-
-	/**
-	 * Returns store Id table name
-	 *
-	 * @return string
-	 */
-	public function getIdTable() {
-		return self::TABLE_NAME;
 	}
 
 }

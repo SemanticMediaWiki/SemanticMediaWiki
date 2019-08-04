@@ -62,7 +62,7 @@ class DuplicateLookupTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'save' );
 
-		$entityTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$entityTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

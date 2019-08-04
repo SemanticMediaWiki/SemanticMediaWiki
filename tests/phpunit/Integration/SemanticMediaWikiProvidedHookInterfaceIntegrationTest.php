@@ -319,7 +319,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'newUpdater' )
 			->will( $this->returnValue( new \SMW\SQLStore\SQLStoreUpdater( $store, $factory ) ) );
 
-		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -362,7 +362,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$title = \Title::newFromText( __METHOD__ );
 
-		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -400,7 +400,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 
 		$title = \Title::newFromText( __METHOD__ );
 
-		$idGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

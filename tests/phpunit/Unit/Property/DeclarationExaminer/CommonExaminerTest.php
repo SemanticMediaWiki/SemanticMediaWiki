@@ -25,7 +25,7 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->entityManager = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$this->entityManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

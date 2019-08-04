@@ -33,7 +33,7 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newQuery' )
 			->will( $this->returnValue( $this->query ) );
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -100,7 +100,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 				[ $this->equalTo( 1001 ) ]
              );
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +134,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testChangeTitleForMainNamespaceWithoutRedirectId() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -209,7 +209,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 

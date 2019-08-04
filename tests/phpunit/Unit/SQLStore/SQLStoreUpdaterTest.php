@@ -23,7 +23,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -173,7 +173,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( null )
 			->getMock();
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -226,7 +226,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( null )
 			->getMock();
 
-		$idTable = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -283,7 +283,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -332,7 +332,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMWSql3SmwIds' )
+		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
