@@ -1,12 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils\JSONScript;
 
 use SMW\Message;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
+use SMW\Tests\TestEnvironment;
 use Title;
 
 /**

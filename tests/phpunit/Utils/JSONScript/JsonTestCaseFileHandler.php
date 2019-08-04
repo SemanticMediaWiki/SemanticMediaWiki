@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils\JSONScript;
 
 use RuntimeException;
 use SMW\Tests\Utils\File\JsonFileReader;
