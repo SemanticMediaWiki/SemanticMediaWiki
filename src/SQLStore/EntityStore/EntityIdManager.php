@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\SQLStore\EntityStore;
+
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Collator;
@@ -60,13 +62,13 @@ use SMW\MediaWiki\Deferred\HashFieldUpdate;
  *
  * @ingroup SMWStore
  */
-class SMWSql3SmwIds {
+class EntityIdManager {
 
 	/**
 	 * Specifies the border limit for pre-defined properties declared
 	 * in SMWSql3SmwIds::special_ids
 	 */
-	const FXD_PROP_BORDER_ID = SMWSQLStore3::FIXED_PROPERTY_ID_UPPERBOUND;
+	const FXD_PROP_BORDER_ID = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
 
 	/**
 	 * Name of the table to store IDs in.
@@ -74,16 +76,16 @@ class SMWSql3SmwIds {
 	 * @note This should never change. Existing wikis will have to drop and
 	 * rebuild their SMW tables completely to recover from any change here.
 	 */
-	const TABLE_NAME = SMWSQLStore3::ID_TABLE;
+	const TABLE_NAME = SQLStore::ID_TABLE;
 
 	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
 
 	/**
-	 * Parent SMWSQLStore3.
+	 * Parent SQLStore.
 	 *
 	 * @since 1.8
-	 * @var SMWSQLStore3
+	 * @var SQLStore
 	 */
 	public $store;
 
@@ -144,9 +146,9 @@ class SMWSql3SmwIds {
 
 	/**
 	 * @since 1.8
-	 * @param SMWSQLStore3 $store
+	 * @param SQLStore $store
 	 */
-	public function __construct( SMWSQLStore3 $store, SQLStoreFactory $factory ) {
+	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
 		$this->store = $store;
 		$this->factory = $factory;
 		$this->initCache();
@@ -618,10 +620,10 @@ class SMWSql3SmwIds {
 	 * the code.
 	 *
 	 * @since 1.8
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @return string
 	 */
-	public function getPropertyInterwiki( SMWDIProperty $property ) {
+	public function getPropertyInterwiki( DIProperty $property ) {
 		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
 	}
 
@@ -709,18 +711,18 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Fetch the ID for an SMWDIProperty object. This method achieves the
+	 * Fetch the ID for an DIProperty object. This method achieves the
 	 * same as getSMWPageID(), but avoids additional normalization steps
-	 * that have already been performed when creating an SMWDIProperty
+	 * that have already been performed when creating an DIProperty
 	 * object.
 	 *
 	 * @note There is no distinction between properties and inverse
 	 * properties here. A property and its inverse have the same ID in SMW.
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @return integer
 	 */
-	public function getSMWPropertyID( SMWDIProperty $property ) {
+	public function getSMWPropertyID( DIProperty $property ) {
 		$key = $property->getKey();
 		$sortkey = '';
 
@@ -740,16 +742,16 @@ class SMWSql3SmwIds {
 	}
 
 	/**
-	 * Fetch and possibly create the ID for an SMWDIProperty object. The
+	 * Fetch and possibly create the ID for an DIProperty object. The
 	 * method achieves the same as getSMWPageID() but avoids additional
 	 * normalization steps that have already been performed when creating
-	 * an SMWDIProperty object.
+	 * an DIProperty object.
 	 *
 	 * @see getSMWPropertyID
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @return integer
 	 */
-	public function makeSMWPropertyID( SMWDIProperty $property ) {
+	public function makeSMWPropertyID( DIProperty $property ) {
 
 		$key = $property->getKey();
 

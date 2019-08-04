@@ -29,6 +29,7 @@ use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
 use SMW\SQLStore\EntityStore\PrefetchCache;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
@@ -53,7 +54,6 @@ use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CircularReferenceGuard;
 use SMWRequestOptions as RequestOptions;
-use SMWSql3SmwIds as EntityIdManager;
 use SMW\Services\ServicesContainer;
 
 /**
@@ -129,7 +129,7 @@ class SQLStoreFactory {
 	 *
 	 * @return EntityIdManager
 	 */
-	public function newEntityTable() {
+	public function newEntityIdManager() {
 		return new EntityIdManager( $this->store, $this );
 	}
 
