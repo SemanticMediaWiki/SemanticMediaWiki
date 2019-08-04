@@ -19,12 +19,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
-
-/**
- * @ingroup SMWStore
- * @since 1.8
- * @author Markus Krötzsch
- */
+use Iterator;
 
 /**
  * Class to access the SMW IDs table in SQLStore3.
@@ -58,33 +53,18 @@ use SMW\MediaWiki\Deferred\HashFieldUpdate;
  * properties are represented by language-independent keys rather than proper
  * titles. SMWDIHandlerWikiPage takes care of this.
  *
+ * @license GNU GPL v2+
  * @since 1.8
  *
- * @ingroup SMWStore
+ * @author Markus Krötzsch
+ * @author mwjames
  */
 class EntityIdManager {
-
-	/**
-	 * Specifies the border limit for pre-defined properties declared
-	 * in SMWSql3SmwIds::special_ids
-	 */
-	const FXD_PROP_BORDER_ID = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
-
-	/**
-	 * Name of the table to store IDs in.
-	 *
-	 * @note This should never change. Existing wikis will have to drop and
-	 * rebuild their SMW tables completely to recover from any change here.
-	 */
-	const TABLE_NAME = SQLStore::ID_TABLE;
 
 	const MAX_CACHE_SIZE = 1000;
 	const POOLCACHE_ID = 'smw.sqlstore';
 
 	/**
-	 * Parent SQLStore.
-	 *
-	 * @since 1.8
 	 * @var SQLStore
 	 */
 	public $store;
@@ -157,9 +137,6 @@ class EntityIdManager {
 			$this->idCacheManager
 		);
 
-		$this->redirectStore = $this->factory->newRedirectStore();
-		$this->duplicateFinder = $this->factory->newDuplicateFinder();
-
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 
 		self::$special_ids = TypesRegistry::getFixedProperties( 'id' );
@@ -173,18 +150,12 @@ class EntityIdManager {
 	 * @return boolean
 	 */
 	public function isRedirect( DIWikiPage $subject ) {
-		return $this->redirectStore->isRedirect( $subject->getDBKey(), $subject->getNamespace() );
-	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return boolean
-	 */
-	public function isUnique( DataItem $dataItem ) {
-		return $this->duplicateFinder->hasDuplicate( $dataItem ) === false;
+		if ( $this->redirectStore === null ) {
+			$this->redirectStore = $this->factory->newRedirectStore();
+		}
+
+		return $this->redirectStore->isRedirect( $subject->getDBKey(), $subject->getNamespace() );
 	}
 
 	/**
@@ -198,6 +169,11 @@ class EntityIdManager {
 	 * @return integer
 	 */
 	public function findRedirect( $title, $namespace ) {
+
+		if ( $this->redirectStore === null ) {
+			$this->redirectStore = $this->factory->newRedirectStore();
+		}
+
 		return $this->redirectStore->findRedirect( $title, $namespace );
 	}
 
@@ -211,6 +187,11 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function addRedirect( $id, $title, $namespace ) {
+
+		if ( $this->redirectStore === null ) {
+			$this->redirectStore = $this->factory->newRedirectStore();
+		}
+
 		$this->redirectStore->addRedirect( $id, $title, $namespace );
 	}
 
@@ -224,6 +205,11 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function updateRedirect( $id, $title, $namespace ) {
+
+		if ( $this->redirectStore === null ) {
+			$this->redirectStore = $this->factory->newRedirectStore();
+		}
+
 		$this->redirectStore->updateRedirect( $id, $title, $namespace );
 	}
 
@@ -236,6 +222,11 @@ class EntityIdManager {
 	 * @param integer $namespace
 	 */
 	public function deleteRedirect( $title, $namespace ) {
+
+		if ( $this->redirectStore === null ) {
+			$this->redirectStore = $this->factory->newRedirectStore();
+		}
+
 		$this->redirectStore->deleteRedirect( $title, $namespace );
 	}
 
@@ -366,9 +357,29 @@ class EntityIdManager {
 	/**
 	 * @since 3.0
 	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return boolean
+	 */
+	public function isUnique( DataItem $dataItem ) {
+
+		if ( $this->duplicateFinder === null ) {
+			$this->duplicateFinder = $this->factory->newDuplicateFinder();
+		}
+
+		return $this->duplicateFinder->hasDuplicate( $dataItem ) === false;
+	}
+
+	/**
+	 * @since 3.0
+	 *
 	 * @return []
 	 */
 	public function findDuplicates() {
+
+		if ( $this->duplicateFinder === null ) {
+			$this->duplicateFinder = $this->factory->newDuplicateFinder();
+		}
 
 		$ids = $this->duplicateFinder->findDuplicates(
 			SQLStore::ID_TABLE
@@ -415,7 +426,7 @@ class EntityIdManager {
 	 *
 	 * @param array
 	 */
-	public function findAllEntitiesThatMatch( $title, $namespace, $iw = null, $subobjectName = '' ) {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
 		return $this->entityIdFinder->findIdsByTitle( $title, $namespace, $iw, $subobjectName );
 	}
 
@@ -593,7 +604,7 @@ class EntityIdManager {
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 
 			if ( $fetchHashes ) {
-				$this->setPropertyTableHashesCache( $id, null );
+				$this->propertyTableHashes->clearPropertyTableHashCacheById( $id, null );
 			}
 
 		} elseif ( $sortkey !== '' && ( $sortkey != $oldsort || !$collator->isIdentical( $oldsort, $sortkey ) ) ) {
@@ -976,11 +987,6 @@ class EntityIdManager {
 	 * @return array
 	 */
 	public function getPropertyTableHashes( $sid ) {
-
-		if ( $this->propertyTableHashes === null ) {
-			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
-		}
-
 		return $this->propertyTableHashes->getPropertyTableHashesById( $sid );
 	}
 
@@ -992,21 +998,7 @@ class EntityIdManager {
 	 * @param string[] of hash values with table names as keys
 	 */
 	public function setPropertyTableHashes( $sid, $hash = null ) {
-
-		if ( $this->propertyTableHashes === null ) {
-			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
-		}
-
 		$this->propertyTableHashes->setPropertyTableHashes( $sid, $hash );
-	}
-
-	private function setPropertyTableHashesCache( $sid, $hash = null ) {
-
-		if ( $this->propertyTableHashes === null ) {
-			$this->propertyTableHashes = $this->factory->newPropertyTableHashes( $this->idCacheManager );
-		}
-
-		$this->propertyTableHashes->setPropertyTableHashesCache( $sid, $hash );
 	}
 
 }

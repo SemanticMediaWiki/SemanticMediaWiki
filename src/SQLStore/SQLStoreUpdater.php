@@ -93,7 +93,7 @@ class SQLStoreUpdater {
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
-		$idList = $this->store->getObjectIds()->findAllEntitiesThatMatch(
+		$idList = $this->store->getObjectIds()->findIdsByTitle(
 			$title->getDBkey(),
 			$title->getNamespace()
 		);
@@ -322,7 +322,7 @@ class SQLStoreUpdater {
 
 		// Find any potential duplicate entries for the current subject and
 		// if matched, mark them as to be deleted
-		$idList = $this->store->getObjectIds()->findAllEntitiesThatMatch(
+		$idList = $this->store->getObjectIds()->findIdsByTitle(
 			$subject->getDBkey(),
 			$subject->getNamespace(),
 			$subject->getInterwiki(),

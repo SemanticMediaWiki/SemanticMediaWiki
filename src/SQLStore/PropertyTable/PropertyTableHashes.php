@@ -128,6 +128,15 @@ class PropertyTableHashes {
 	 * @since 3.1
 	 *
 	 * @param $id integer
+	 */
+	public function clearPropertyTableHashCacheById( $id ) {
+		$this->setPropertyTableHashesCache( $id, null );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param $id integer
 	 * @param string|null $hash
 	 */
 	public function setPropertyTableHashesCache( $id, $hash = null ) {
