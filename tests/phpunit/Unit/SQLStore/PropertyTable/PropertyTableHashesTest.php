@@ -160,4 +160,24 @@ class PropertyTableHashesTest extends \PHPUnit_Framework_TestCase {
 		$instance->setPropertyTableHashesCache( 0 );
 	}
 
+	public function testClearPropertyTableHashCacheById() {
+
+		$this->idCacheManager->expects( $this->once() )
+			->method( 'get' )
+			->will( $this->returnValue( $this->cache ) );
+
+		$this->cache->expects( $this->once() )
+			->method( 'save' )
+			->with(
+				$this->equalTo( 42 ),
+				$this->equalTo( [] ) );
+
+		$instance = new PropertyTableHashes(
+			$this->connection,
+			$this->idCacheManager
+		);
+
+		$instance->clearPropertyTableHashCacheById( 42 );
+	}
+
 }

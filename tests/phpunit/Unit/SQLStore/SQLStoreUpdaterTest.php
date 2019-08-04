@@ -178,7 +178,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$objectIdGenerator->expects( $this->any() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->will( $this->returnValue( [] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -231,7 +231,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->will( $this->returnValue( [] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -379,7 +379,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$this->idTable->expects( $this->atLeastOnce() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->will( $this->returnValue( [ 0 ] ) );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
@@ -445,7 +445,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
 
 		$this->idTable->expects( $this->atLeastOnce() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->with(
 				$this->equalTo( $title->getDBkey() ),
 				$this->equalTo( $title->getNamespace() ),

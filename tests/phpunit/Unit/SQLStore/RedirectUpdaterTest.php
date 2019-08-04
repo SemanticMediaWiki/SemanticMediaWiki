@@ -139,7 +139,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->will( $this->returnValue( [] ) );
 
 		$idTable->expects( $this->at( 0 ) )
@@ -214,7 +214,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$idTable->expects( $this->any() )
-			->method( 'findAllEntitiesThatMatch' )
+			->method( 'findIdsByTitle' )
 			->will( $this->returnValue( [] ) );
 
 		$idTable->expects( $this->at( 0 ) )
