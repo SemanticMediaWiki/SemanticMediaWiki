@@ -77,6 +77,45 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
+	 * @param string $key
+	 *
+	 * @return []
+	 */
+	public function get( $key ) {
+
+		$list = $this->toArray();
+
+		if ( isset( $list[$key] ) ) {
+			return $list[$key];
+		}
+
+		return [];
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	public function toArray() {
+		$list = [];
+
+		foreach ( $this->getList() as $schemaDefinition ) {
+			$data = [];
+
+			if ( $schemaDefinition instanceof SchemaDefinition ) {
+				$data = $schemaDefinition->toArray();
+			}
+
+			$list = array_merge_recursive( $list, $data );
+		}
+
+		return $list;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return string
 	 */
 	 public function jsonSerialize() {
