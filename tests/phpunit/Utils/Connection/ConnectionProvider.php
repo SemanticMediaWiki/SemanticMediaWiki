@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils\Connection;
 
 use DatabaseBase;
-use MediaWiki\MediaWikiServices;
+use SMW\Services\ServicesFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 
 /**
@@ -37,15 +37,18 @@ class ConnectionProvider implements IConnectionProvider {
 	 */
 	public function getConnection() {
 
-		if ( $this->connection === null ) {
-			$this->connection = MediaWikiServices::getInstance()
-				->getDBLoadBalancer()->getConnection( $this->id );
+		if ( $this->connection !== null ) {
+			return $this->connection;
 		}
 
-		return $this->connection;
+		return $this->connection = $this->getLoadBalancer()->getConnection( $this->id );
 	}
 
 	public function releaseConnection() {
+	}
+
+	private function getLoadBalancer() {
+		return ServicesFactory::getInstance()->create( 'DBLoadBalancer' );
 	}
 
 }

@@ -6,6 +6,7 @@ use DatabaseBase;
 use ReflectionClass;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Connection\LoadBalancerConnectionProvider
@@ -20,6 +21,18 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $loadBalancer;
+
+	protected function setUp() {
+
+		$this->loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$testEnvironment = new TestEnvironment();
+		$testEnvironment->registerObject( 'DBLoadBalancer', $this->loadBalancer );
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -30,6 +43,14 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetAndReleaseConnection() {
 
+		$database = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->loadBalancer->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
 		$instance = new LoadBalancerConnectionProvider(
 			DB_REPLICA
 		);
@@ -39,7 +60,35 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\DatabaseBase',
+			'\IDatabase',
+			$instance->getConnection()
+		);
+
+		$this->assertTrue(
+			$instance->getConnection() === $connection
+		);
+
+		$instance->releaseConnection();
+	}
+
+	public function testGetAndReleaseConnectionRef() {
+
+		$database = $this->getMockBuilder( '\IDatabase' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->loadBalancer->expects( $this->once() )
+			->method( 'getConnectionRef' )
+			->will( $this->returnValue( $database ) );
+
+		$instance = new LoadBalancerConnectionProvider(
+			DB_REPLICA
+		);
+
+		$connection = $instance->getConnection();
+
+		$this->assertInstanceOf(
+			'\IDatabase',
 			$instance->getConnection()
 		);
 
