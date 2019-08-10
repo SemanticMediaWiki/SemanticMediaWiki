@@ -34,10 +34,14 @@ fieldset#mw-prefsection-smw-ask-options,
 fieldset#mw-prefsection-smw-srf {
 	border: 0px solid #2a4b8d;
 	border-top: 1px solid #ddd;
-	margin-top: -5px;
-	margin-bottom: 1px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	padding-bottom: 5px;
 	box-shadow: 0;
+}
+
+fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group {
+	columns: 2;
 }
 
 fieldset#mw-prefsection-smw-general-options .htmlform-tip,
@@ -58,12 +62,25 @@ fieldset#mw-prefsection-smw-srf .htmlform-tip{
 #mw-prefsection-smw .oo-ui-fieldsetLayout-header {
 	float: unset !important;
 	width: unset !important;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 
-#mw-prefsection-smw .oo-ui-labelElement-label {
+#mw-prefsection-smw-srf .oo-ui-fieldsetLayout-header {
+	margin-bottom: 0px;
+}
+
+#mw-prefsection-smw .oo-ui-fieldsetLayout-header .oo-ui-labelElement-label {
+	color: #72777d;
+}
+
+#mw-prefsection-smw fieldset .oo-ui-labelElement-label {
 	margin-bottom: unset !important;
 	margin-right: 10px;
+}
+
+#mw-prefsection-smw fieldset .oo-ui-labelElement-label:first-child,
+#mw-prefsection-srf fieldset .oo-ui-labelElement-label:first-child {
+	margin-right: 0px;
 }
 
 #mw-prefsection-smw .oo-ui-panelLayout-framed {
@@ -73,5 +90,19 @@ fieldset#mw-prefsection-smw-srf .htmlform-tip{
 #mw-prefsection-smw-general-options.oo-ui-layout,
 #mw-prefsection-smw-ask-options.oo-ui-layout,
 #mw-prefsection-smw-srf.oo-ui-layout {
-	margin-top: 5px;
+	/* margin-top: 5px; */
+}
+
+#mw-prefsection-smw .oo-ui-panelLayout-padded {
+	padding-top: 0em;
+	padding-bottom: 0em;
+}
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group {
+		columns: 1;
+	}
 }
