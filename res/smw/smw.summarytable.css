@@ -1,0 +1,116 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * Summary table related CSS rules
+ *
+ * @file
+ * @ingroup semantic-mediawiki
+ *
+ * @license GNU GPL v2+
+ * @since 3.1
+ *
+ * @author mwjames
+ */
+.smw-summarytable .smw-table-cell, .smw-table-head {
+	border: 1px solid #999;
+	border: 0px;
+	display: table-cell;
+	/* padding: 3px 10px; */
+	border-bottom: 1px solid #ddd;
+}
+
+.smw-summarytable .smw-table-row:last-child .smw-table-cell {
+	border-bottom: 0px;
+}
+
+.smw-summarytable .smw-table-row .smwpropname, .smw-table-row .smwpropname, .smw-table-row .smwspecname {
+	width: 20%;
+}
+
+.smw-summarytable-columns {
+	display: flex;
+}
+
+.smw-summarytable-columns .smw-summarytable-columns-2 {
+	flex: 50%;
+}
+
+.smw-summarytable-columns .smw-summarytable-columns-2:first-child {
+	margin-right: 10px;
+}
+
+.smw-summarytable-columns .smw-summarytable-columns-2:last-child {
+	margin-left: 10px;
+}
+
+.smw-summarytable-columns .smw-summarytable-columns-2:first-child .smw-table .smw-table-row .smwpropname {
+	width: 40%;
+}
+
+.smw-summarytable-columns .smw-summarytable-columns-2:last-child .smw-table .smw-table-row .smwpropname {
+	width: 30%;
+}
+
+/**
+ * Responsive settings (#see smw.table.css)
+ */
+@media screen and (max-width: 800px) {
+	.smw-summarytable .smwfactboxhead {
+		padding: 1px 5px 1px 5px;
+	}
+
+	.smw-summarytable .smwpropname, .smw-summarytable .smwfact .smwspecname {
+		width: auto;
+		font-weight: bold;
+	}
+
+	.smw-summarytable .smw-table-row, .smw-summarytable .smw-table-header {
+		flex: 1 1 150px;
+	}
+
+	.smw-summarytable .smw-table-cell {
+		display: flex;
+	}
+
+	.smw-summarytable .smw-table-row .smwpropname {
+		border-bottom: 0px solid #ddd;
+		width: unset;
+	}
+
+	.smw-summarytable-columns {
+		display: block;
+	}
+
+	.smw-summarytable-columns .smw-summarytable-columns-2:first-child,
+	.smw-summarytable-columns .smw-summarytable-columns-2:last-child {
+		margin-right: 0px;
+		margin-left: 0px;
+	}
+
+	.smw-summarytable-columns .smw-summarytable-columns-2:first-child {
+		border-bottom: 1px solid #ddd;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.smw-summarytable .smwfactboxhead {
+		padding: 1px 5px 1px 5px;
+		width: 50%;
+	}
+}

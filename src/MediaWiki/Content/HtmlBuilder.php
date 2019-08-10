@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Content;
 use Html;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\HtmlDivTable;
+use SMW\Utils\Html\SummaryTable;
 use SMW\Message;
 
 /**
@@ -117,6 +118,7 @@ class HtmlBuilder {
 
 		$html = '';
 		$rows = '';
+		$parameters = [];
 
 		foreach ( $params['attributes'] as $key => $value ) {
 
@@ -133,7 +135,7 @@ class HtmlBuilder {
 					$params['attributes_extra']['msg_type']
 				);
 
-				$value = $params['attributes_extra']['link_type'];
+				$parameters[$key] = $params['attributes_extra']['link_type'];
 			}
 
 			if ( $key === 'schema_description' ) {
@@ -144,10 +146,13 @@ class HtmlBuilder {
 					],
 					$params['attributes_extra']['msg_description']
 				);
+
+				$parameters[$key] = $value;
 			}
 
 			if ( $key === 'type_description' ) {
 				$key = $params['attributes_extra']['type_description'];
+				$parameters[$key] = $value;
 			}
 
 			if ( $key === 'tag' ) {
@@ -159,55 +164,43 @@ class HtmlBuilder {
 					$params['attributes_extra']['msg_tag']
 				);
 
-				$value = implode( ', ', $params['attributes_extra']['tags'] );
+				$parameters[$key] = implode( ', ', $params['attributes_extra']['tags'] );
 			}
-
-			$row = HtmlDivTable::cell( $key, [ 'class' => 'smwpropname' ] );
-			$row .= HtmlDivTable::cell( $value, [ 'class' => 'smwprops' ] );
-			$rows .= HtmlDivTable::row( $row );
 		}
 
-		$html .= HtmlDivTable::table(
-			$rows,
-			[
-				'class' => 'smwfacttable'
-			]
+		$summaryTable = new SummaryTable(
+			$parameters
 		);
 
-		if ( isset( $params['error_params'] ) && $params['error_params'] !== [] ) {
-			$rows = '';
-			$error_section = '';
+		$html = $summaryTable->buildHTML();
 
-			$row = HtmlDivTable::cell( 'validation schema', [ 'class' => 'smwpropname' ] );
-			$row .= HtmlDivTable::cell( $params['validator_schema'], [ 'class' => 'smwprops' ] );
-			$rows .= HtmlDivTable::row( $row );
+
+		if ( isset( $params['error_params'] ) && $params['error_params'] !== [] ) {
+			$parameters = [];
+			$attributes = [];
+
+			$parameters[$params['validator-schema-title']] = $params['validator_schema'];
 
 			foreach ( $params['error_params'] as $prop => $message ) {
-				$row = HtmlDivTable::cell( $prop, [ 'class' => 'smwpropname' ] );
-				$row .= HtmlDivTable::cell( $message, [ 'class' => 'smwprops' ] );
-				$rows .= HtmlDivTable::row( $row, [ 'style' => 'background-color: #fee7e6;' ] );
+				$parameters[$prop] = $message;
+				$attributes[$prop] = [ 'style' => 'background-color: #fee7e6;' ];
 			}
 
-			$error_section .= Html::rawElement(
-				'h3',
+			$summaryTable = new SummaryTable(
+				$parameters
+			);
+
+			$summaryTable->setAttributes(
+				$attributes
+			);
+
+			$html .= Html::rawElement(
+				'h2',
 				[],
 				$params['error-title']
 			);
 
-			$error_section .= HtmlDivTable::table(
-				$rows,
-				[
-					'class' => 'smwfacttable'
-				]
-			);
-
-			$html .= Html::rawElement(
-				'div',
-				[
-					'class' => 'schema-error-section'
-				],
-				$error_section
-			);
+			$html .= $summaryTable->buildHTML();
 		}
 
 		return Html::rawElement(
