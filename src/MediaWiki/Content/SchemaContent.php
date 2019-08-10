@@ -77,6 +77,18 @@ class SchemaContent extends JsonContent {
 	}
 
 	/**
+	 * This class doesn't own the properties but needs to guard against
+	 * a possible serialization attempt. (@see #4210)
+	 *
+	 * @since 3.1
+	 *
+	 * @return array
+	 */
+	public function __sleep() {
+		return [ 'model_id', 'mText' ];
+	}
+
+	/**
 	 * `Content::getNativeData` will return the "native" text representation which
 	 * in case of YAML is just the text and not a JSON string. Therefore
 	 * `getNativeData` preserves the original user input.

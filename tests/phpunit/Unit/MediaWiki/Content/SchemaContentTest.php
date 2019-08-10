@@ -115,6 +115,52 @@ class SchemaContentTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSerializationOfClassInstance() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$page = $this->getMockBuilder( '\wikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SchemaContent(
+			json_encode( [ 'Foo' => 42 ] )
+		);
+
+		// Use an actual factory instance to ensure a "real" DB instance is
+		// invoked and would force a "RuntimeException: Database serialization
+		// may cause problems, since the connection is not restored on wakeup."
+		$instance->setServices( new \SMW\Schema\SchemaFactory() );
+
+		$flags = '';
+		$parentRevId = '';
+
+		$instance->prepareSave( $page, $flags, $parentRevId, $user );
+
+		$this->assertInternalType(
+			'string',
+			serialize( $instance )
+		);
+	}
+
 	public function testPreSaveTransform() {
 
 		$title = $this->getMockBuilder( '\Title' )
