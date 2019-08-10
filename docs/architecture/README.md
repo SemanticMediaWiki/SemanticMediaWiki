@@ -1,3 +1,7 @@
+[Development policies and practices](#development-policies-and-practices) | [Architecture guide](#architecture-guide) | [Hacking by examples](#hacking-by-examples) | [Testing](#testing) | [Getting started](#getting-started)
+
+## Objective
+
 This document should help newcomers and developers to navigate around Semantic MediaWiki and its development environment.
 
 The main objective of the `Semantic MediaWiki` software is to provide "semantic" functions on top of MediaWiki to enable machine-reading of wiki-content and allow structured content to be queried and displayed by means of employing different backends including:
@@ -6,32 +10,9 @@ The main objective of the `Semantic MediaWiki` software is to provide "semantic"
 - [`ElasticStore`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md) recommended to large wiki farms which need to scale or for users with a requirement to combine structured and unstructured searches
 - [`SPARQLStore`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md) for advanced users that have an extended requirement to work with a triple store and linked data
 
-## Getting started ...
+## Development policies and practices
 
-- Read this document
-- Install [git](https://www.semantic-mediawiki.org/wiki/Help:Using_Git)
-- Install/clone `Semantic MediaWiki` with `@dev` (with development happening against the master branch)
-- Run `composer test` locally (see the test section) and verify that your installation and test environment are setup correctly so that you would find something like "_OK, but incomplete, skipped, or risky tests! Tests ..._" at the end as output (after the test run)
-
-### Creating a pull request
-
-#### First PR
-
-- Send a PR with subject [first pr] to the [`Semantic MediaWiki`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/) repository and verify that your git setup works and you are able to replicate changes against the master branch
-- Get yourself familiar with the [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki) environment and observe how a PR triggers CI jobs and review the output of those jobs (important when a job doesn't pass and you need to find the cause for a failure)
-
-#### Preparing a PR
-
-- Create a PR with your changes and send it to the `Semantic MediaWiki` repository
-- Observe whether tests are failing or not, and when there are failing identify what caused them to fail
-- In case your PR went green without violating any existing tests, go back to your original PR and add tests that covers the newly introduced behaviour (see the difference for unit and integration tests)
-- Rebase and repost your PR with the newly added tests and verify that they pass on all voting [CI](#testing) jobs
-
-In an event that you encountered a problem, ask or create a [ticket](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
-
-## Development
-
-### Policy
+### Polices
 
 The general policy of the `Semantic MediaWiki` software and the development thereof is:
 
@@ -67,6 +48,7 @@ Some conventions to help developers and the project to maintain a consistent pro
 
 - [`Datamodel`][datamodel] contains the most essential architectural choice of Semantic MediaWiki for the management of its data including [`DataItem`][dataitem], [`SemanticData`][semanticdata], [`DataValue`][datavalue], and [`DataTypes`][datatype]
 - [`Database schema`][db-schema] and table definitions in Semantic MediaWiki
+- [`Glossary`][glossary]
 
 ## Hacking by examples
 
@@ -82,11 +64,11 @@ Some conventions to help developers and the project to maintain a consistent pro
 
 ## Testing
 
-The `Semantic MediaWiki` software alone deploys ~7000 tests (as of March 2019) which are __required to pass__ before changes can be merged into the repository.
+The `Semantic MediaWiki` software alone deploys ~7400 tests (as of July 2019) which are __required to pass__ before changes can be merged into the repository.
 
-Tests are commonly divided into unit and integration tests where unit tests represent an isolated unit (or component) to be tested and normally doesn't require a database or repository connection. The integration test on the other hand is as test that requires other components and directly interacts with MediaWiki and its services which is why 80% of the CI time for a test run is spend on executing integration test as they will a run a full cycle (parsing, storing, reading, HTML generating etc.)
+Tests are commonly divided into [unit][glossary] and [integration tests][glossary] where unit tests represent an isolated unit (or component) to be tested and normally doesn't require a database or repository connection. The integration test on the other hand is as test that requires other components and directly interacts with MediaWiki and its services which is why nearly 80% of the CI time for a test run is spend on executing integration test as they will a run a full integration cycle (parsing, storing, reading, HTML generating etc.).
 
-For an introduction on "How to use `PHPUnit`" and "How to write integration tests using `JSONScript`" this [document](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md) contains relevant details.
+For an introduction on "How to use `PHPUnit`" and "How to write integration tests using [`JSONScript`][glossary]" this [document](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md) contains relevant details.
 
 ### Continues integration (CI)
 
@@ -94,6 +76,29 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 
 - [`.travis.yml`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/.travis.yml) testing matrix
 - Settings and [configurations](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/travis/README.md) to tune the Travis-CI setup
+
+## Getting started
+
+- Read this document
+- Install [git](https://www.semantic-mediawiki.org/wiki/Help:Using_Git)
+- Install/clone `Semantic MediaWiki` with `@dev` (with development happening against the master branch)
+- Run `composer test` locally (see the test section) and verify that your installation and test environment are setup correctly so that you would find something like "_OK, but incomplete, skipped, or risky tests! Tests ..._" at the end as output (after the test run)
+
+### Creating a pull request
+
+#### First PR
+
+- Send a PR with subject [first pr] to the [`Semantic MediaWiki`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/) repository and verify that your git setup works and you are able to replicate changes against the master branch
+- Get yourself familiar with the [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki) environment and observe how a PR triggers CI jobs and review the output of those jobs (important when a job doesn't pass and you need to find the cause for a failure)
+
+#### Preparing a PR
+
+- Create a PR with your changes and send it to the `Semantic MediaWiki` repository
+- Observe whether tests are failing or not, and when there are failing identify what caused them to fail
+- In case your PR went green without violating any existing tests, go back to your original PR and add tests that covers the newly introduced behaviour (see the difference for unit and integration tests)
+- Rebase and repost your PR with the newly added tests and verify that they pass on all voting [CI](#testing) jobs
+
+In an event that you encountered a problem, ask or create a [ticket](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
 
 ## See also
 
@@ -109,3 +114,4 @@ The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMed
 [datatype]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.datatype.md
 [db-schema]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/database.schema.md
 [hook.property.initproperties.md]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.property.initproperties.md
+[glossary]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/glossary.md

@@ -1,19 +1,19 @@
 ## Register a # hash tag parser
 
-The example will use the `SMW::Parser::AfterLinksProcessingComplete` to process hash tags (e.g. #foo #foo_bar etc.) and add value annotations for the identified tag.
+The example will use the `SMW::Parser::AfterLinksProcessingComplete` to process hash tags (e.g. #foo #foo_bar etc.) to add value annotations for the identified tag and the assigned property.
 
 ```php
-use SMW\Parser\Annotationprocessor;
+use SMW\Parser\AnnotationProcessor;
 
 class HashTagParser {
 
 	private $subject;
 	private $property;
-	private $annotationprocessor;
+	private $annotationProcessor;
 	private $showErrors = false;
 
-	public function __construct( Annotationprocessor $annotationprocessor ) {
-		$this->annotationprocessor = $annotationprocessor;
+	public function __construct( AnnotationProcessor $annotationProcessor ) {
+		$this->annotationProcessor = $annotationProcessor;
 	}
 
 	public function setShowErrors( $showErrors ) {
@@ -22,7 +22,7 @@ class HashTagParser {
 
 	public function parse( $text, $property ) {
 
-		$semanticData = $this->annotationprocessor->getSemanticData();
+		$semanticData = $this->annotationProcessor->getSemanticData();
 
 		$this->property = $property;
 		$this->subject = $semanticData->getSubject();
@@ -38,15 +38,15 @@ class HashTagParser {
 
 	public function process( array $matches ) {
 
-		$dataValue = $this->annotationprocessor->newDataValueByText(
+		$dataValue = $this->annotationProcessor->newDataValueByText(
 			$this->property,
 			$matches[1],
 			$matches[0],
 			$this->subject
 		);
 
-		if ( $this->annotationprocessor->canAnnotate() ) {
-			$this->annotationprocessor->getSemanticData()->addDataValue( $dataValue );
+		if ( $this->annotationProcessor->canAnnotate() ) {
+			$this->annotationProcessor->getSemanticData()->addDataValue( $dataValue );
 		}
 
 		// If necessary add an error text
@@ -65,13 +65,18 @@ class HashTagParser {
 ```
 
 ```php
-\Hooks::register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, $annotationprocessor ) {
+use SMW\Parser\AnnotationProcessor;
+
+\Hooks::register( 'SMW::Parser::AfterLinksProcessingComplete', function( &$text, AnnotationProcessor $annotationProcessor ) {
 
 	$hashTagParser = new HashTagParser(
-		$annotationprocessor
+		$annotationProcessor
 	);
 
-	$text = $hashTagParser->parse( $text, 'Has keyword' );
+	// Could be set on a context or via a configuration setting
+	$property = 'Has keyword';
+
+	$text = $hashTagParser->parse( $text, $property );
 
 	return true;
 } );
