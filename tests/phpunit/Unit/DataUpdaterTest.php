@@ -32,7 +32,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment( [
 			'smwgPageSpecialProperties'       => [],
 			'smwgEnableUpdateJobs'            => false,
-			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ]
+			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true, SMW_NS_SCHEMA => true ]
 		] );
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
@@ -64,6 +64,11 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->store->setLogger( $this->spyLogger );
 
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
@@ -277,6 +282,77 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertFalse(
+			$instance->doUpdate()
+		);
+	}
+
+	public function testDoUpdateForSchema() {
+
+		$wikiPage = new DIWikiPage(
+			'Foo',
+			SMW_NS_SCHEMA,
+			''
+		);
+
+		$semanticData = $this->semanticDataFactory->setSubject( $wikiPage )->newEmptySemanticData();
+
+		$idTable = $this->getMockBuilder( '\stdClass' )
+			->setMethods( [ 'exists' ] )
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'updateData' ] )
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'updateData' );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content = $this->getMockBuilder( '\Content' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getContent' )
+			->will( $this->returnValue( $content ) );
+
+		$wikiPage->expects( $this->atLeastOnce() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$pageCreator->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->will( $this->returnValue( $wikiPage ) );
+
+		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
+
+		$instance = new DataUpdater(
+			$store,
+			$semanticData,
+			$this->changePropagationNotifier
+		);
+
+		$instance->canCreateUpdateJob(
+			true
+		);
+
+		$this->assertTrue(
 			$instance->doUpdate()
 		);
 	}

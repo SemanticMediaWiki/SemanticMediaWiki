@@ -335,7 +335,7 @@ class DataUpdater {
 				$schema
 			);
 
-			$schemaFactory->pushPossibleChangePropagationDispatchJob( $schema );
+			$schemaFactory->pushChangePropagationDispatchJob( $schema );
 		}
 
 		$propertyAnnotator->addAnnotation();
