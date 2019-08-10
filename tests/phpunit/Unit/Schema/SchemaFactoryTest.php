@@ -150,7 +150,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance->newSchema( 'foo_bar', [] );
 	}
 
-	public function testPushPossibleChangePropagationDispatchJob() {
+	public function testPushChangePropagationDispatchJob() {
 
 		$checkJobParameterCallback = function( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
@@ -171,10 +171,18 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$schema = $instance->newSchema( 'foo_bar', [ 'type' => 'foo' ] );
 
-		$instance->pushPossibleChangePropagationDispatchJob( $schema );
+		$instance->pushChangePropagationDispatchJob( $schema );
 	}
 
-	public function testPushPossibleChangePropagationDispatchJobThrowsException() {
+	public function testPushChangePropagationDispatchJob_CastAsArray() {
+
+		$checkJobParameterCallback = function( $job ) {
+			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
+		};
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'lazyPush' )
+			->with( $this->callback( $checkJobParameterCallback ) );
 
 		$instance = new SchemaFactory(
 			[
@@ -187,8 +195,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$schema = $instance->newSchema( 'foo_bar', [ 'type' => 'foo' ] );
 
-		$this->setExpectedException( '\SMW\Schema\Exception\SchemaParameterTypeMismatchException' );
-		$instance->pushPossibleChangePropagationDispatchJob( $schema );
+		$instance->pushChangePropagationDispatchJob( $schema );
 	}
 
 }

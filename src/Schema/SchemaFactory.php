@@ -94,7 +94,7 @@ class SchemaFactory {
 	 *
 	 * @param Schema|null $schema
 	 */
-	public function pushPossibleChangePropagationDispatchJob( Schema $schema = null ) {
+	public function pushChangePropagationDispatchJob( Schema $schema = null ) {
 
 		if ( $schema === null ) {
 			return;
@@ -107,7 +107,7 @@ class SchemaFactory {
 		}
 
 		if ( !is_array( $type['change_propagation'] ) ) {
-			throw new SchemaParameterTypeMismatchException( 'change_propagation', 'array' );
+			$type['change_propagation'] = (array)$type['change_propagation'];
 		}
 
 		$subject = DIWikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
