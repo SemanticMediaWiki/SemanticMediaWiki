@@ -16,6 +16,14 @@ use RuntimeException;
  * Prefetch values for a list of known subjects to a specific property to avoid
  * using `Store::getPropertyValues` for each single subject request.
  *
+ * It makes use of a "bulk" request by taking advantage of the WHERE IN construct
+ * to reduce the amount FETCH (aka SELECT) queries by retrieving values for a
+ * specific property and a list of subjects.
+ *
+ * The raw result list is encoded by a hash and is required to be split by this
+ * class to match the correct DataItem representation for a specific subject in
+ * list of subjects.
+ *
  * @license GNU GPL v2+
  * @since 3.1
  *
@@ -84,24 +92,16 @@ class PrefetchItemLookup {
 		$this->linkBatch->execute();
 
 		if ( $property->isInverse() ) {
-			return $this->prefetchPropertySubjects(
-				$subjects,
-				$property,
-				$requestOptions
-			);
+			return $this->prefetchPropertySubjects( $subjects, $property, $requestOptions );
 		}
 
-		return $this->prefetchSemanticData(
-			$subjects,
-			$property,
-			$requestOptions
-		);
+		return $this->prefetchSemanticData( $subjects, $property, $requestOptions );
 	}
 
 	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 
 		$tableid = $this->store->findPropertyTableID( $property );
-		$idTable = $this->store->getObjectIds();
+		$entityIdManager = $this->store->getObjectIds();
 
 		$proptables = $this->store->getPropertyTables();
 
@@ -127,12 +127,14 @@ class PrefetchItemLookup {
 			$propTable->getDiType()
 		);
 
-		foreach ( $data as $sid => $dbkeys ) {
+		foreach ( $data as $sid => $itemList ) {
 
-			$i = 0;
+			// SID, the caller is responsible for reassigning the
+			// results to a corresponding output
+			$hash = $sid;
 
 			if ( $requestOptions->getOption( self::HASH_INDEX ) ) {
-				$subject = $idTable->getDataItemById(
+				$subject = $entityIdManager->getDataItemById(
 					$sid
 				);
 
@@ -147,34 +149,19 @@ class PrefetchItemLookup {
 					);
 					$hash = $property->getCanonicalDIWikiPage()->getHash();
 				}
-			} else {
-				// SID, the caller is responsible to reassign the
-				// results to a corresponding output
-				$hash = $sid;
 			}
 
 			if ( !isset( $result[$hash] ) ) {
 				$result[$hash] = [];
 			}
 
-			$limit = $requestOptions->limit + $requestOptions->offset;
-
-			foreach ( $dbkeys as $k => $v ) {
-
-				if ( $requestOptions->limit > 0 && $i > $limit ) {
-					break;
-				}
-
-				try {
-					$dataItem = $diHandler->newFromDBKeys( $v );
-					$result[$hash][$dataItem->getHash()] = $dataItem;
-				} catch ( \SMWDataItemException $e ) {
-					// maybe type assignment changed since data was stored;
-					// don't worry, but we can only drop the data here
-				}
-
-				$i++;
-			}
+			// List of subjects (index which is either the ID or hash) with its
+			// corresponding items
+			// [
+			//  42 => [ DIBlob, DIBlob, ... ],
+			//  1001 => [ ... ]
+			// ]
+			$result[$hash] = $this->buildLIST( $diHandler, $itemList, $requestOptions );
 		}
 
 		return $result;
@@ -201,20 +188,20 @@ class PrefetchItemLookup {
 		$proptables = $this->store->getPropertyTables();
 		$ids = [];
 
-		foreach ( $subjects as $s ) {
+		foreach ( $subjects as $subject ) {
 			$sid = $idTable->getSMWPageID(
-				$s->getDBkey(),
-				$s->getNamespace(),
-				$s->getInterwiki(),
-				$s->getSubobjectName(),
+				$subject->getDBkey(),
+				$subject->getNamespace(),
+				$subject->getInterwiki(),
+				$subject->getSubobjectName(),
 				true
 			);
 
-			if ( $type !== $s->getDIType() || $sid == 0 ) {
+			if ( $type !== $subject->getDIType() || $sid == 0 ) {
 				continue;
 			}
 
-			$s->setId( $sid );
+			$subject->setId( $sid );
 			$ids[] = $sid;
 		}
 
@@ -232,6 +219,41 @@ class PrefetchItemLookup {
 		);
 
 		return $result;
+	}
+
+	private function buildLIST( $diHandler, $itemList, $requestOptions ) {
+
+		$values = [];
+		$i = 0;
+
+		// Post-processing of the limit/offset, +1 as look ahead
+		$limit = ( $requestOptions->limit + $requestOptions->offset ) + 1;
+		$offset = $requestOptions->offset;
+
+		foreach ( $itemList as $k => $dbkeys ) {
+
+			// When working with an order map, first go through all matches
+			// without limiting the set to ensure it is ordered before
+			// in a second step the limit restriction is applied
+			if ( $limit > 0 && $i > $limit  ) {
+				break;
+			}
+
+			try {
+				$dataItem = $diHandler->newFromDBKeys( $dbkeys );
+			} catch ( \SMWDataItemException $e ) {
+				// maybe type assignment changed since data was stored;
+				// don't worry, but we can only drop the data here
+				continue;
+			}
+
+			$index_hash = md5( $dataItem->getHash() );
+			$values[$index_hash] = $dataItem;
+
+			$i++;
+		}
+
+		return $values;
 	}
 
 }
