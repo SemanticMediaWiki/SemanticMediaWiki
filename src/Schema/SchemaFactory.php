@@ -175,14 +175,21 @@ class SchemaFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 *
 	 * @return SchemaFinder
 	 */
-	public function newSchemaFinder( Store $store ) {
+	public function newSchemaFinder( Store $store = null ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $store === null ) {
+			$store = $applicationFactory->getStore();
+		}
+
 		return new SchemaFinder(
 			$store,
-			ApplicationFactory::getInstance()->getPropertySpecificationLookup()
+			$applicationFactory->getPropertySpecificationLookup()
 		);
 	}
 
