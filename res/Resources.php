@@ -65,6 +65,14 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
+	'smw.summarytable' => $moduleTemplate + [
+		'styles' => [
+			'smw/smw.summarytable.css'
+		],
+		'position' => 'top',
+		'targets' => [ 'mobile', 'desktop' ]
+	],
+
 	'ext.smw.special.style' => $moduleTemplate + [
 		'styles' => [
 			'smw/special/ext.smw.special.css'

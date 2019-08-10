@@ -12,6 +12,7 @@ use SMWInfolink as Infolink;
 use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
 use Onoi\CodeHighlighter\Geshi;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Utils\Html\SummaryTable;
 use Html;
 use Title;
 
@@ -82,14 +83,14 @@ class SchemaContentFormatter {
 	 * @return []
 	 */
 	public function getModuleStyles() {
-		return [
+		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',
 			'mediawiki.content.json',
 			'ext.smw.style',
 			'ext.smw.table.styles',
-			'smw.factbox'
-		];
+			'smw.factbox',
+		], SummaryTable::getModuleStyles() );
 	}
 
 	/**
@@ -245,9 +246,10 @@ class SchemaContentFormatter {
 				[
 					'type_description' => $this->msg( 'smw-schema-type-description' )
 				],
+			'validator-schema-title' => $this->msg( [ 'smw-schema-validation-schema-title' ] ),
 			'validator_schema' => $schema_link,
 			'error_params' => $this->error_params( $schema_link, $errors ),
-			'error-title' => $this->msg( [ 'smw-schema-error', $errorCount ] ),
+			'error-title' => $this->msg( [ 'smw-schema-error-title', $errorCount ] ),
 		];
 
 		return $this->htmlBuilder->build( 'schema_summary', $params );
