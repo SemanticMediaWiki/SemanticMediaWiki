@@ -10,6 +10,7 @@ use SMW\Utils\Pager;
 use SMWInfolink as Infolink;
 use Title;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\UrlArgs;
 
 /**
  * @license GNU GPL v2+

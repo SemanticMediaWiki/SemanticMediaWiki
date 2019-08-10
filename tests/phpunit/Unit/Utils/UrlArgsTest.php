@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Ask;
+namespace SMW\Tests\Utils;
 
-use SMW\MediaWiki\Specials\Ask\UrlArgs;
+use SMW\Utils\UrlArgs;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Ask\UrlArgs
+ * @covers \SMW\Utils\UrlArgs
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

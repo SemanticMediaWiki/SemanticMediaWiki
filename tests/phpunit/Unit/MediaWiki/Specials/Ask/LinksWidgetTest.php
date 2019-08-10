@@ -61,7 +61,7 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +77,7 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +93,7 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +109,7 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Ask\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
 			->disableOriginalConstructor()
 			->getMock();
 

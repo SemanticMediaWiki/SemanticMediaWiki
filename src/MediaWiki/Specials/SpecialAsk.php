@@ -14,7 +14,6 @@ use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\MediaWiki\Specials\Ask\UrlArgs;
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
@@ -27,6 +26,7 @@ use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
 use SMWQueryResult as QueryResult;
 use SpecialPage;
+use SMW\Utils\UrlArgs;
 use SMW\Utils\HtmlTabs;
 use SMW\Message;
 
