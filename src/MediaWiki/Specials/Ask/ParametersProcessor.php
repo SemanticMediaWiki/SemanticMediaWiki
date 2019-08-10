@@ -145,11 +145,11 @@ class ParametersProcessor {
 		}
 
 		if ( !array_key_exists( 'offset', $parameters ) ) {
-			$parameters['offset'] = $request->getVal( 'offset', 0 );
+			$parameters['offset'] = $request->getInt( 'offset', 0 );
 		}
 
 		if ( !array_key_exists( 'limit', $parameters ) ) {
-			$parameters['limit'] = $request->getVal( 'limit', self::$defaultLimit );
+			$parameters['limit'] = $request->getInt( 'limit', self::$defaultLimit );
 		}
 
 		$parameters['limit'] = min( $parameters['limit'], self::$maxInlineLimit );
