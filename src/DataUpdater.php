@@ -183,20 +183,27 @@ class DataUpdater {
 	 */
 	public function doUpdate() {
 
-		if ( !$this->canPerformUpdate() ) {
+		if ( !$this->canUpdate() ) {
 			return false;
 		}
 
 		DeferredUpdate::releasePendingUpdates();
 
 		if ( $this->isDeferrableUpdate === false || $this->isCommandLineMode ) {
-			return $this->performUpdate();
+			return $this->runUpdate();
 		}
 
 		$hash = $this->getSubject()->getHash();
-		$connection = $this->store->getConnection( 'mw.db' );
 
-		$deferredUpdate = DeferredUpdate::newUpdate( function(){ $this->performUpdate(); }, $connection );
+		$deferredUpdate = DeferredUpdate::newUpdate(
+			[
+				$this,
+				'runUpdate'
+			],
+			$this->store->getConnection( 'mw.db' )
+		);
+
+		$deferredUpdate->catchExceptionAndRethrow( true );
 
 		$deferredUpdate->setOrigin(
 			[
@@ -224,7 +231,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function canPerformUpdate() {
+	private function canUpdate() {
 
 		$title = $this->getSubject()->getTitle();
 
@@ -241,7 +248,7 @@ class DataUpdater {
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
 	 */
-	private function performUpdate() {
+	public function runUpdate() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
