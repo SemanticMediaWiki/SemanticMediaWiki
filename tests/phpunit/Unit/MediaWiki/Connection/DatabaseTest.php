@@ -129,17 +129,12 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$database = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'tableName', 'getType' ] )
+			->setMethods( [ 'tableName' ] )
 			->getMockForAbstractClass();
 
 		$database->expects( $this->any() )
 			->method( 'tableName' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$database->expects( $this->once() )
-			->method( 'getType' )
-			->will( $this->returnValue( $type ) );
+			->will( $this->returnArgument( 0 ) );
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()
@@ -157,12 +152,8 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$instance->setDBPrefix( 'bar_' );
-
-		$expected = $type === 'sqlite' ? 'bar_Foo' : 'Foo';
-
 		$this->assertEquals(
-			$expected,
+			'Foo',
 			$instance->tableName( 'Foo' )
 		);
 	}

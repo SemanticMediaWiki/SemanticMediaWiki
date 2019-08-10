@@ -49,11 +49,6 @@ class Database {
 	private $loadBalancerFactory;
 
 	/**
-	 * @var string
-	 */
-	private $dbPrefix = '';
-
-	/**
 	 * @var SilenceableTransactionProfiler
 	 */
 	private $silenceableTransactionProfiler;
@@ -173,15 +168,6 @@ class Database {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param string $dbPrefix
-	 */
-	public function setDBPrefix( $dbPrefix ) {
-		$this->dbPrefix = $dbPrefix;
-	}
-
-	/**
 	 * @see DatabaseBase::tableName
 	 *
 	 * @since 1.9
@@ -191,11 +177,6 @@ class Database {
 	 * @return string
 	 */
 	public function tableName( $tableName ) {
-
-		if ( $this->getType() === 'sqlite' ) {
-			return $this->dbPrefix . $tableName;
-		}
-
 		return $this->connRef->getConnection( 'read' )->tableName( $tableName );
 	}
 

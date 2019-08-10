@@ -132,9 +132,6 @@ class ConnectionProvider implements IConnectionProvider {
 			$silenceableTransactionProfiler
 		);
 
-		// Only required because of SQlite
-		$connection->setDBPrefix( $GLOBALS['wgDBprefix'] );
-
 		$this->logger->info(
 			[
 				'Connection',
