@@ -4,7 +4,6 @@ namespace SMW\Parser;
 
 use Parser;
 use ParserOptions;
-use ParserOutput;
 use RuntimeException;
 use SMW\Localizer;
 use SMW\ParserData;
@@ -208,7 +207,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param string $text
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public function expandTemplates( $text ) {
 
@@ -251,7 +250,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param string $text
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public function recursivePreprocess( $text ) {
 
@@ -288,7 +287,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param string $text
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public function recursiveTagParse( $text ) {
 
