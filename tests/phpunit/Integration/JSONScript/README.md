@@ -1,6 +1,6 @@
 # JSONScript
 
-[List of tests](#list-of-tests) | [Test design and usage][section:design] | [Extension usage][section:extension] | [Technical notes](#technical-notes)
+[List of tests](#list-of-tests) | [Test design and usage][section:design] | [Extension usage][section:extension] | [Technical notes][section:notes]
 
 JSONScript is an abstraction from the PHPUnit layer and a best practice approach in Semantic MediaWiki to write integration tests as pseudo `JSONScript` to allow non-developers to review and understand the setup and requirements of its test scenarios.
 
@@ -10,7 +10,8 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 
 ## List of tests
 
-Contains 315 files with a total of 1396 tests:
+- Files: 315 (includes 1396 tests)
+- Last update: 2019-08-06
 
 ### A
 * [a-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0001.json) Test API `action=smwbrowse`
@@ -339,22 +340,8 @@ Contains 315 files with a total of 1396 tests:
 * [s-0036.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0036.json) Test `format=csv` output via `Special:Ask` for display units (`wgContLang=en`, `wgLang=en`)
 * [s-0037.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0037.json) Test `format=json` output via `Special:Ask` to check limit, default limit, `smwgQMaxInlineLimit` type (#2474, #4172)
 
--- Last updated on 2019-08-04 by `readmeContentsBuilder.php`
-
 <!-- End of generated contents by readmeContentsBuilder.php -->
-
-## Technical notes
-
-* The `JSON` is internally transformed into a corresponding `PHPUnit` dataset with the help of the `JsonTestCaseContentHandler` and `JsonTestCaseScriptRunner`.
-*  A test file (e.g "myTest.json") will be loaded from the specified location in `JsonTestCaseScriptRunner::getTestCaseLocation` and is automatically run during
-the `PHPUnit` test execution.
-* The `readmeContentsBuilder.php` can be used to update the list of available test cases including its descriptions.
-
-### Script runners
-
-- `LightweightJsonTestCaseScriptRunner` allows to use the `parser`, `parser-html`, `special`, and `semantic-data` type assertions
-- `ExtendedJsonTestCaseScriptRunner` provides additional assertion methods
-- `JsonTestCaseScriptRunner` is the base runner that provides all methods necessary to run test cases, it also includes version checks as well as to validate custom defined dependencies
 
 [section:design]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/docs/design.md
 [section:extension]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/docs/extension.md
+[section:notes]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/docs/notes.md

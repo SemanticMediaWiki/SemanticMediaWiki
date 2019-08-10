@@ -32,12 +32,10 @@ class ReadmeContentsBuilder {
 	public function run() {
 
 		$file = __DIR__ . '/README.md';
-		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 
 		$replacement = self::REPLACE_START_MARKER . "\n\n";
 		$replacement .= $this->doGenerateContentFor( 'List of tests', __DIR__ . '/TestCases' );
 
-		$replacement .= "\n-- Last updated on " .  $dateTimeUtc->format( 'Y-m-d' )  . " by `readmeContentsBuilder.php`". "\n";
 		$replacement .= "\n" . self::REPLACE_END_MARKER;
 
 		$contents = file_get_contents( $file );
@@ -52,20 +50,21 @@ class ReadmeContentsBuilder {
 
 	private function doGenerateContentFor( $title, $path ) {
 
-		$output = '';
+		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 		$urlLocation = $this->urlLocationMap[$title];
 
 		$counter = 0;
 		$tests = 0;
 		$previousFirstKey = '';
+		$list = '';
 
 		foreach ( $this->findFilesFor( $path, 'json' ) as $key => $location ) {
 
 			if ( $previousFirstKey !== $key{0} ) {
-				$output .= "\n" . '### ' . ucfirst( $key{0} ). "\n";
+				$list .= "\n" . '### ' . ucfirst( $key{0} ). "\n";
 			}
 
-			$output .= '* [' . $key .'](' . $urlLocation . '/' . $key . ')';
+			$list .= '* [' . $key .'](' . $urlLocation . '/' . $key . ')';
 
 			$contents = json_decode( file_get_contents( $location ), true );
 
@@ -74,19 +73,23 @@ class ReadmeContentsBuilder {
 			}
 
 			if ( isset( $contents['description'] ) ) {
-				$output .= " " . $contents['description'];
+				$list .= " " . $contents['description'];
 			}
 
 			if ( isset( $contents['tests'] ) ) {
 				$tests += count( $contents['tests'] );
 			}
 
-			$output .= "\n";
+			$list .= "\n";
 			$counter++;
 			$previousFirstKey = $key{0};
 		}
 
-		return "## $title\n\n" . "Contains $counter files with a total of $tests tests:\n" . $output;
+		$head = "## $title\n\n";
+		$head .= "- Files: $counter (includes $tests tests)\n";
+		$head .= "- Last update: " .  $dateTimeUtc->format( 'Y-m-d' ) . "\n";
+
+		return $head . $list;
 	}
 
 	private function findFilesFor( $path, $extension ) {

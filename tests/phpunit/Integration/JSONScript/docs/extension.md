@@ -1,8 +1,13 @@
 ## Extension usage
 
-Extensions create to their own `JSONScript` integration tests and run them against MediaWiki and Semantic MediaWiki by taking advantage of the existing SMW test infrastructure for integration tests (JSON script interpreter, assertions validators etc.) can:
+Extensions that want to create their own `JSONScript` integration tests and have them run against MediaWiki and Semantic MediaWiki can take advantage of the existing SMW test infrastructure for integration tests (script interpreter, assertions validators etc.) by:
 
-Add the following lines to the PHPUnit `bootstrap.php`
+- Extending the PHPUnit `bootstrap.php`
+- Create a [test case][testcase] that extends from `LightweightJsonTestCaseScriptRunner`
+
+### Extending the bootstrap
+
+To ensure that relevant classes are registered and available during the test run add the following lines to the PHPUnit `bootstrap.php`.
 
 ```php
 if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) || !is_readable( SMW_PHPUNIT_AUTOLOADER_FILE ) ) {
@@ -19,7 +24,7 @@ $autoloader = require SMW_PHPUNIT_AUTOLOADER_FILE;
 $autoloader->addPsr4( ... );
 ```
 
-### Using a script runner
+### Create a test case
 
 Semantic MediaWiki provides two script runners that can be used by extensions:
 
@@ -51,13 +56,15 @@ class CustomJsonScriptTest extends LightweightJsonTestCaseScriptRunner {
 }
 ```
 
-### Creating test cases
+### Create integration scenarios
 
-The [bootstrap.json][bootstrap.json] contains an example that can be used as starting point for a test case and [design][design.md] document describes in detail options and assertions methods.
+The [bootstrap.json][bootstrap.json] contains an example that can be used as starting point for a test scenario. The [design][design.md] document holds  detail options and usage of assertions methods.
 
-### Extending JSON and the script runner
+## Augment the JSON script
 
 In some cases the selected `JSON` style may vary or contains information that require additional validation therefore the script runner can easily be extended with something like:
+
+### JSON
 
 ```json
 {
@@ -85,6 +92,8 @@ In some cases the selected `JSON` style may vary or contains information that re
 	}
 }
 ```
+
+### Script runner
 
 ```php
 namespace Foo\Tests\Integration;
@@ -136,3 +145,4 @@ Describe methods and classes require SMW 3.1+.
 
 [bootstrap.json]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/bootstrap.json
 [design.md]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/docs/design.md
+[testcase]: https://phpunit.de/manual/6.5/en/writing-tests-for-phpunit.html
