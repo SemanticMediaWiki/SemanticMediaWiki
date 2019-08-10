@@ -71,6 +71,11 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\Schema\SchemaFinder',
 			$instance->newSchemaFinder( $store )
 		);
+
+		$this->assertInstanceof(
+			'\SMW\Schema\SchemaFinder',
+			$instance->newSchemaFinder()
+		);
 	}
 
 	public function testIsRegisteredType() {
