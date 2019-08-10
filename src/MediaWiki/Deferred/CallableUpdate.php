@@ -74,6 +74,11 @@ class CallableUpdate implements DeferrableUpdate {
 	private $stage;
 
 	/**
+	 * @var boolean
+	 */
+	private $catchExceptionAndRethrow = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param callable $callback|null
@@ -143,6 +148,19 @@ class CallableUpdate implements DeferrableUpdate {
 	 */
 	public function isDeferrableUpdate( $isDeferrableUpdate ) {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
+	}
+
+	/**
+	 * @note MW 1.34+ showed a behaviour where exceptions during a deferred update
+	 * weren't logged and reported hereby allowing errors to go unnoticed forcing
+	 * a possible rollback without a chance to investigate missing data updates.
+	 *
+	 * @since 3.1
+	 *
+	 * @param boolean $catchExceptionAndRethrow
+	 */
+	public function catchExceptionAndRethrow( $catchExceptionAndRethrow ) {
+		$this->catchExceptionAndRethrow = (bool)$catchExceptionAndRethrow;
 	}
 
 	/**
@@ -222,8 +240,12 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @since 2.4
 	 */
 	public function doUpdate() {
-		call_user_func( $this->callback );
-		unset( self::$queueList[$this->fingerprint] );
+
+		if ( $this->catchExceptionAndRethrow ) {
+			$this->attemptUpdate();
+		} else {
+			$this->runUpdate();
+		}
 
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'Update completed: {origin} (fingerprint:{fingerprint})' ],
@@ -292,6 +314,40 @@ class CallableUpdate implements DeferrableUpdate {
 			[ 'DeferrableUpdate', 'Empty callback!' ],
 			[ 'role' => 'developer', 'method' => __METHOD__ ]
 		);
+	}
+
+	private function attemptUpdate() {
+
+		$e = null;
+
+		try {
+			$this->runUpdate();
+		} catch ( \Exception $e ) {
+		} catch ( \Throwable $e ) {
+		}
+
+		if ( $e === null ) {
+			return;
+		}
+
+		$error = [
+			'type' => $this->getOrigin(),
+			'message' => $e->getMessage(),
+			'trace' => $e->getTraceAsString()
+		];
+
+		// Log and re-throw
+		$this->logger->error(
+			[ "Deferred update {type} failed: {message}\n{trace}" ],
+			[ 'role' => 'production' ] + $error
+		);
+
+		throw $e;
+	}
+
+	private function runUpdate() {
+		( $this->callback )();
+		unset( self::$queueList[$this->fingerprint] );
 	}
 
 }
