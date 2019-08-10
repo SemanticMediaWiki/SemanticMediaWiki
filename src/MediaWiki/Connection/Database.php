@@ -44,24 +44,14 @@ class Database {
 	private $connRef;
 
 	/**
-	 * @var ILBFactory
+	 * @var TransactionHandler
 	 */
-	private $loadBalancerFactory;
-
-	/**
-	 * @var SilenceableTransactionProfiler
-	 */
-	private $silenceableTransactionProfiler;
+	private $transactionHandler;
 
 	/**
 	 * @var integer
 	 */
 	private $flags = 0;
-
-	/**
-	 * @var string
-	 */
-	private $sectionTransaction;
 
 	/**
 	 * @var integer
@@ -77,20 +67,11 @@ class Database {
 	 * @since 1.9
 	 *
 	 * @param ConnRef $connRef
-	 * @param ILBFactory|null $loadBalancerFactory
+	 * @param TransactionHandler $transactionHandler
 	 */
-	public function __construct( ConnRef $connRef, $loadBalancerFactory = null ) {
+	public function __construct( ConnRef $connRef, TransactionHandler $transactionHandler ) {
 		$this->connRef = $connRef;
-		$this->loadBalancerFactory = $loadBalancerFactory;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param silenceableTransactionProfiler $silenceableTransactionProfiler
-	 */
-	public function setSilenceableTransactionProfiler( SilenceableTransactionProfiler $silenceableTransactionProfiler ) {
-		$this->silenceableTransactionProfiler = $silenceableTransactionProfiler;
+		$this->transactionHandler = $transactionHandler;
 	}
 
 	/**
@@ -525,15 +506,11 @@ class Database {
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
 
-		$oldSilenced = $this->silenceableTransactionProfiler->setSilenced(
-			true
-		);
+		$this->transactionHandler->muteTransactionProfiler( true);
 
 		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
 
-		$this->silenceableTransactionProfiler->setSilenced(
-			$oldSilenced
-		);
+		$this->transactionHandler->muteTransactionProfiler( false);
 
 		return $res;
 	}
@@ -545,15 +522,27 @@ class Database {
 	 */
 	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
 
-		$oldSilenced = $this->silenceableTransactionProfiler->setSilenced(
-			true
-		);
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		$res = $this->connRef->getConnection( 'write' )->update( $table, $values, $conds, $fname, $options );
 
-		$this->silenceableTransactionProfiler->setSilenced(
-			$oldSilenced
-		);
+		$this->transactionHandler->muteTransactionProfiler( false );
+
+		return $res;
+	}
+
+	/**
+	 * @see DatabaseBase::upsert
+	 *
+	 * @since 3.1
+	 */
+	public function upsert( $table, array $rows, $uniqueIndexes, array $set, $fname = __METHOD__ ) {
+
+		$this->transactionHandler->muteTransactionProfiler( true );
+
+		$res = $this->connRef->getConnection( 'write' )->upsert( $table, $rows, $uniqueIndexes, $set, $fname );
+
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		return $res;
 	}
@@ -565,15 +554,11 @@ class Database {
 	 */
 	public function delete( $table, $conds, $fname = __METHOD__ ) {
 
-		$oldSilenced = $this->silenceableTransactionProfiler->setSilenced(
-			true
-		);
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		$res = $this->connRef->getConnection( 'write' )->delete( $table, $conds, $fname );
 
-		$this->silenceableTransactionProfiler->setSilenced(
-			$oldSilenced
-		);
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		return $res;
 	}
@@ -585,15 +570,11 @@ class Database {
 	 */
 	public function replace( $table, $uniqueIndexes, $rows, $fname = __METHOD__ ) {
 
-		$oldSilenced = $this->silenceableTransactionProfiler->setSilenced(
-			true
-		);
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		$res = $this->connRef->getConnection( 'write' )->replace( $table, $uniqueIndexes, $rows, $fname );
 
-		$this->silenceableTransactionProfiler->setSilenced(
-			$oldSilenced
-		);
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		return $res;
 	}
@@ -662,21 +643,7 @@ class Database {
 	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
 	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
-
-		$ticket = null;
-
-		if ( !method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
-			return $ticket;
-		}
-
-		// @see LBFactory::getEmptyTransactionTicket
-		// We don't try very hard at this point and will continue without a ticket
-		// if the check fails and hereby avoid a "... does not have outer scope" error
-		if ( !$this->loadBalancerFactory->hasMasterChanges() ) {
-			$ticket = $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
-		}
-
-		return $ticket;
+		return $this->transactionHandler->getEmptyTransactionTicket( $fname );
 	}
 
 	/**
@@ -693,25 +660,11 @@ class Database {
 	 * @param array $opts Options to waitForReplication
 	 */
 	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
-
-		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
-			return;
-		}
-
-		return $this->loadBalancerFactory->commitAndWaitForReplication( $fname, $ticket, $opts );
+		return $this->transactionHandler->commitAndWaitForReplication( $fname, $ticket, $opts );
 	}
 
 	/**
-	 * Register a `section` as transaction
-	 *
-	 * The intent is to make it possible to mark a section and disable any other
-	 * atomic transaction request while being part of a section hereby allowing
-	 * to bundle all requests and encapsulate them into one coherent atomic
-	 * transaction without changing pending callers that may require individual
-	 * atomic transactions when they are not part of a section request.
-	 *
-	 * Only one active a section transaction is allowed at a time otherwise an
-	 * `Exception` is thrown.
+	 * @TransactionHandler::beginSectionTransaction
 	 *
 	 * @since 3.1
 	 *
@@ -720,24 +673,11 @@ class Database {
 	 */
 	public function beginSectionTransaction( $fname = __METHOD__ ) {
 
-		if ( $this->sectionTransaction !== null ) {
-			throw new RuntimeException(
-				"Trying to begin a new section transaction while {$this->sectionTransaction} is still active!"
-			);
-		}
+		$this->transactionHandler->markSectionTransaction(
+			$fname
+		);
 
-		$this->sectionTransaction = $fname;
 		$this->connRef->getConnection( 'write' )->startAtomic( $fname );
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param  string $fname
-	 * @return boolean
-	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
-		return $this->sectionTransaction === $fname;
 	}
 
 	/**
@@ -747,14 +687,21 @@ class Database {
 	 */
 	public function endSectionTransaction( $fname = __METHOD__ ) {
 
-		if ( $this->sectionTransaction !== $fname ) {
-			throw new RuntimeException(
-				"Trying to end an invalid section transaction (registered: {$this->sectionTransaction}, requested: {$fname})"
-			);
-		}
+		$this->transactionHandler->detachSectionTransaction(
+			$fname
+		);
 
-		$this->sectionTransaction = null;
 		$this->connRef->getConnection( 'write' )->endAtomic( $fname );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param  string $fname
+	 * @return boolean
+	 */
+	public function inSectionTransaction( $fname = __METHOD__ ) {
+		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 
 	/**
@@ -766,7 +713,7 @@ class Database {
 
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
-		if ( $this->sectionTransaction !== null ) {
+		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
 			return;
 		}
 
@@ -782,7 +729,7 @@ class Database {
 
 		// Disable all individual atomic transactions as long as a section
 		// transaction is registered.
-		if ( $this->sectionTransaction !== null ) {
+		if ( $this->transactionHandler->hasActiveSectionTransaction() ) {
 			return;
 		}
 

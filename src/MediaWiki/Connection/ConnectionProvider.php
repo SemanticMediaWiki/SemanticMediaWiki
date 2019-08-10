@@ -6,7 +6,7 @@ use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Connection\ConnRef;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory;
 
 /**
  * @license GNU GPL v2+
@@ -103,33 +103,9 @@ class ConnectionProvider implements IConnectionProvider {
 			throw new RuntimeException( "The configuration is incomplete (requires a `read` and `write` identifier)." );
 		}
 
-		$connectionProviders = [];
-
-		$connectionProviders['read'] = new LoadBalancerConnectionProvider(
-			$conf['read']
-		);
-
-		if ( $conf['read'] === $conf['write'] ) {
-			$connectionProviders['write'] = $connectionProviders['read'];
-		} else {
-			$connectionProviders['write'] = new LoadBalancerConnectionProvider(
-				$conf['write']
-			);
-		}
-
-		$silenceableTransactionProfiler = new SilenceableTransactionProfiler(
-			\Profiler::instance()->getTransactionProfiler()
-		);
-
-		$silenceableTransactionProfiler->silenceTransactionProfiler();
-
 		$connection = new Database(
-			new ConnRef( $connectionProviders ),
-			ApplicationFactory::getInstance()->create( 'DBLoadBalancerFactory' )
-		);
-
-		$connection->setSilenceableTransactionProfiler(
-			$silenceableTransactionProfiler
+			$this->newConnRef( $conf ),
+			$this->newTransactionHandler()
 		);
 
 		$this->logger->info(
@@ -148,6 +124,41 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		return $connection;
+	}
+
+	private function newConnRef( $conf ) {
+
+		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
+
+		if ( $conf['read'] !== $conf['write'] ) {
+			$write = $this->newLoadBalancerConnectionProvider( $conf['write'] );
+		} else {
+			$write = $read;
+		}
+
+		return new ConnRef(
+			[
+				'read'  => $read,
+				'write' => $write
+			]
+		);
+	}
+
+	private function newLoadBalancerConnectionProvider( $id ) {
+		return new LoadBalancerConnectionProvider( $id );
+	}
+
+	private function newTransactionHandler() {
+
+		$transactionHandler = new TransactionHandler(
+			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
+		);
+
+		$transactionHandler->setTransactionProfiler(
+			\Profiler::instance()->getTransactionProfiler()
+		);
+
+		return $transactionHandler;
 	}
 
 }
