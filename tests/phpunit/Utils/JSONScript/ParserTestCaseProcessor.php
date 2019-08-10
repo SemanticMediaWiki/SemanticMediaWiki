@@ -5,7 +5,14 @@ namespace SMW\Tests\Utils\JSONScript;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\SerializerFactory;
+use SMW\Store;
+use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
+use SMW\Tests\Utils\Validators\SemanticDataValidator;
+use SMW\Tests\Utils\Validators\StringValidator;
+use User;
 
 /**
  * @group semantic-mediawiki
