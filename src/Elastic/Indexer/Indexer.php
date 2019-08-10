@@ -566,6 +566,7 @@ class Indexer {
 		$inserts = [];
 		$inverted = [];
 		$rev = $changeDiff->getAssociatedRev();
+		$propertyList = $changeDiff->getPropertyList( 'id' );
 
 		// In the event that a _SOBJ (or hereafter any inherited object)
 		// is deleted, remove the reference directly from the index since
@@ -578,11 +579,14 @@ class Indexer {
 					continue;
 				}
 
-				$bulk->delete( [ '_id' => $fieldChangeOp->get( 'o_id' ) ] );
+				if (
+					$fieldChangeOp->has( 'p_id' ) &&
+					isset( $propertyList[$fieldChangeOp->has( 'p_id' )] ) &&
+					$propertyList[$fieldChangeOp->has( 'p_id' )]['_type'] === '__sob' ) {
+					$bulk->delete( [ '_id' => $fieldChangeOp->get( 'o_id' ) ] );
+				}
 			}
 		}
-
-		$propertyList = $changeDiff->getPropertyList( 'id' );
 
 		foreach ( $changeDiff->getDataOps() as $tableChangeOp ) {
 			foreach ( $tableChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
