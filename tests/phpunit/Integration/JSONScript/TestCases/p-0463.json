@@ -1,0 +1,73 @@
+{
+	"description": "Test removal of entity references",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P:0463-000",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P:0463-001",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "P0463/1",
+			"contents": "[[P:0463-000::P0463/2]]"
+		},
+		{
+			"page": "P0463/2",
+			"contents": "[[P:0463-000::P0463/2/1]]"
+		},
+		{
+			"page": "P0463/1",
+			"contents": "{{#ask: [[P:0463-000::+]] }}"
+		},
+		{
+			"page": "P0463/3",
+			"contents": "{{#subobject: |P:0463-001=P0463/4 }}"
+		},
+		{
+			"page": "P0463/4",
+			"contents": "[[P:0463-001::P0463/4/1]]"
+		},
+		{
+			"page": "P0463/3",
+			"contents": "{{#ask: [[P:0463-001::+]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (Verifies that (especially in case of ES) the removed assignment to `P:0463-000` in `P0463/1` doesn't remove the entire entity from the back-end but only the reference",
+			"subject": "P0463/1",
+			"assert-output": {
+				"to-contain": [
+					"P0463/2"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "P0463/3",
+			"assert-output": {
+				"to-contain": [
+					"P0463/4"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
