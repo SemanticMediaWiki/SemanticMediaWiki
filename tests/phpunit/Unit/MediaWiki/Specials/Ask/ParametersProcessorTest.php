@@ -110,13 +110,13 @@ class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$request->expects( $this->at( 5 ) )
-			->method( 'getVal' )
+			->method( 'getInt' )
 			->with(
 				$this->equalTo( 'offset' ),
 				$this->equalTo( 0 ) );
 
 		$request->expects( $this->at( 6 ) )
-			->method( 'getVal' )
+			->method( 'getInt' )
 			->with(
 				$this->equalTo( 'limit' ),
 				$this->equalTo( 42 ) );
