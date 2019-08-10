@@ -177,7 +177,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h3', [], $this->msg( 'smw-admin-statistics-extra' ) )
+			Html::element( 'h3', [ 'class' => 'smw-title' ], $this->msg( 'smw-admin-statistics-extra' ) )
 		);
 
 		$this->outputFormatter->addHTML(

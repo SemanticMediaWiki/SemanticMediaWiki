@@ -208,7 +208,7 @@ class MaintenanceTaskHandler extends TaskHandler {
 		foreach ( $scripts as $section => $scr ) {
 
 			if ( $section !== '' ) {
-				$list .= "<h3>" . $this->msg( "smw-admin-maintenance-script-section-$section" ) . "</h3>";
+				$list .= "<h4>" . $this->msg( "smw-admin-maintenance-script-section-$section" ) . "</h4>";
 			}
 
 			$list .= Html::rawElement(

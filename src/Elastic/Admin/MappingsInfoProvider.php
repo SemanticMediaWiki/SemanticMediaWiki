@@ -105,7 +105,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			'summary',
 			'<p style="margin-top:0.8em;">' . $this->msg('smw-admin-supplementary-elastic-mappings-docu-extra' ) . '</p>' .
 			'<pre>' . $this->outputFormatter->encodeAsJson( $this->getSummary( $mappings ) ) . '</pre>' .
-			'<h3>' . $this->msg( 'smw-admin-supplementary-elastic-settings-title' ) . '</h3>' .
+			'<h3 class="smw-title">' . $this->msg( 'smw-admin-supplementary-elastic-settings-title' ) . '</h3>' .
 			'<pre>' . $this->outputFormatter->encodeAsJson( $limits ) . '</pre>'
 		);
 
