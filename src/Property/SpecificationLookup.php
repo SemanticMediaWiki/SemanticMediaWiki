@@ -440,6 +440,8 @@ class SpecificationLookup {
 		if ( $monolingualTextLookup === null ) {
 			return '';
 		}
+		
+		$monolingualTextLookup->setCaller( __METHOD__ );
 
 		$dataValue = $monolingualTextLookup->newDataValue(
 			$subject,
