@@ -87,4 +87,33 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testToArray() {
+
+		$data[] = new SchemaDefinition(
+			'Foo',
+			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
+		);
+
+		$data[] = new SchemaDefinition(
+			'Bar',
+			[ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ]
+		);
+
+		$instance = new SchemaList( $data );
+
+		$this->assertEquals(
+			[
+				'Foo' => [ 'Bar' => 42, 'Foobar' => 'test' ],
+				1001,
+				[ 'Foo' => 'Bar' ]
+			],
+			$instance->toArray()
+		);
+
+		$this->assertEquals(
+			[ 'Bar' => 42, 'Foobar' => 'test' ],
+			$instance->get( 'Foo' )
+		);
+	}
+
 }
