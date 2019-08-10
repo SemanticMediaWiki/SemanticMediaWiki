@@ -189,7 +189,7 @@ class SetupCheck {
 					'<div class="errorbox"><pre>' . $this->traceString . '</pre></div>';
 			}
 
-			$title = 'Error (Semantic MediaWiki)';
+			$title = 'Error » Semantic MediaWiki';
 		} else {
 			$content = '<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
 					'<p>' . $this->options['version'] . '</p>' .
@@ -204,7 +204,7 @@ class SetupCheck {
 		$error = [
 			'title' => $title,
 			'content' => $content,
-			'borderColor' => '#F44336'
+			'borderColor' => '#dd3d31'
 		];
 
 		return $error;
@@ -251,7 +251,7 @@ class SetupCheck {
 		$error = [
 			'title' => Message::get( 'smw-upgrade-error-title' ),
 			'content' => $content,
-			'borderColor' => '#F44336'
+			'borderColor' => '#dd3d31'
 		];
 
 		return $error;
@@ -332,7 +332,7 @@ class SetupCheck {
 				background-color: #eee;transition: width .6s ease;justify-content: center;display: flex;white-space: nowrap;
 			}
 			.section {
-				background-color: #eee; padding: 6px; margin-left: -8px; margin-right: -8px;
+				background-color: #F5F5F5; padding: 6px; margin-left: -8px; margin-right: -8px;
 			}
 			@keyframes progress-bar-stripes {
 				from { background-position: 28px 0; } to { background-position: 0 0; }
@@ -340,9 +340,9 @@ class SetupCheck {
 		</style>
 	</head>
 	<body>
-		<div style="background-color:#eee;padding-bottom:2px; margin-top: -8px;margin-left: -8px;margin-right: -8px; border-bottom: 4px solid {$borderColor};">
-		<img style="width:50px;margin-left:18px;" src="{$logo}" alt='The MediaWiki logo' />
-		<h1 style="color:#222;margin-left:18px;">{$title}</h1></div>
+		<div style="height: 60px;background-color:#f8f9fa;padding-bottom:2px; margin-top: -8px;margin-left: -8px;margin-right: -8px; border-bottom: 4px solid {$borderColor};">
+		<img style="width:50px;margin-left:18px;padding-top:6px;padding-right: 18px;float:right;" src="{$logo}" alt='The MediaWiki logo' />
+		<h1 style="color:#222;margin-left:18px;padding-top:20px;">{$title}</h1></div>
 		<div style="margin-top:10px;line-height:1.4em;">{$content}
 		</div>
 	</body>
