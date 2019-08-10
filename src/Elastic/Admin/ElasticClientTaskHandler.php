@@ -149,7 +149,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 
 		$html = Html::rawElement(
 			'h3',
-			[],
+			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-replication-header-title' ] )
 		) . Html::rawElement(
 			'p',
@@ -157,7 +157,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
 		). Html::rawElement(
 			'h4',
-			[],
+			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )
 		) . Html::rawElement(
 			'pre',
@@ -244,7 +244,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		);
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h3', [], $this->msg(
+			Html::element( 'h3', [ 'class' => 'smw-title'  ], $this->msg(
 				'smw-admin-supplementary-elastic-status-replication' )
 			) . Html::rawElement( 'ul', [], $html )
 		);
@@ -256,7 +256,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		}
 
 		$this->outputFormatter->addHTML(
-			Html::element( 'h3', [], $this->msg( 'smw-admin-supplementary-elastic-functions' ) )
+			Html::element( 'h3', [ 'class' => 'smw-title' ], $this->msg( 'smw-admin-supplementary-elastic-functions' ) )
 		);
 
 		$this->outputFormatter->addHTML(

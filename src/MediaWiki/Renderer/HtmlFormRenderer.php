@@ -222,12 +222,12 @@ class HtmlFormRenderer {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function addHeader( $level, $text ) {
+	public function addHeader( $level, $text, $attributes = [] ) {
 
 		$level = strtolower( $level );
 		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
-		$this->content[] = Html::element( $level, [], $text );
+		$this->content[] = Html::element( $level, $attributes, $text );
 		return $this;
 	}
 
