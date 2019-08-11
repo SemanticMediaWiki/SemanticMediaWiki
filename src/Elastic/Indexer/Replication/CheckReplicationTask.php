@@ -198,6 +198,13 @@ class CheckReplicationTask extends Task {
 		$title = $subject->getTitle();
 		$html = '';
 
+		// Show a user readable representation especially when referring
+		// to a predefined property
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$title = $property->getDiWikiPage()->getTitle();
+		}
+
 		if ( $result !== [] && isset( $result['exception'] ) ) {
 			$html = $this->exceptionErrorMsg( $result['exception'] );
 		} elseif ( $result !== [] && isset( $result['modification_date_missing'] ) ) {
