@@ -131,6 +131,16 @@
     display: block;
 }
 
+h3.smw-title {
+    background: #f5f5f5;
+    padding: 2px 5px;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    color: #444;
+    text-align: right;
+    padding-right: 10px;
+}
+
 /**
  * Tabs
  */
