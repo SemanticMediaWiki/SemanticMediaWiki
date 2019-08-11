@@ -7,6 +7,7 @@ use SMW\Message;
 use Title;
 use SMWQueryResult as QueryResult;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\UrlArgs;
 use SMW\Query\QueryLinker;
 use SMWQuery as Query;
 
@@ -143,8 +144,9 @@ class HtmlForm {
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
+			$urlArgs->setFragment( 'search' );
 			$params = [
-				'action' => $this->title->getLocalUrl( wfArrayToCGI( $urlArgs ) . '#search' ),
+				'action' => $this->title->getLocalUrl( $urlArgs ),
 				'name' => 'ask',
 				'method' => 'post'
 			];
