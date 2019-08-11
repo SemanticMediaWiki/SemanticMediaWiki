@@ -132,7 +132,7 @@ class SchemaContent extends JsonContent {
 	public function isValid() {
 
 		if ( $this->isValid === null ) {
-			$this->decode_content();
+			$this->decodeJSONContent();
 		}
 
 		return $this->isValid;
@@ -166,20 +166,11 @@ class SchemaContent extends JsonContent {
 			$this->isYaml
 		);
 
-		$schemaName = $title->getDBKey();
-		$title_prefix = '';
-
-		if ( strpos( $schemaName, ':' ) !== false ) {
-			list( $title_prefix, ) = explode( ':',  $schemaName );
-		}
-
-		// Allow to use the schema validation against a possible
-		// required naming convention (aka title prefix)
-		$this->parse->title_prefix = $title_prefix;
+		$this->setTitlePrefix( $title );
 
 		try {
 			$schema = $this->schemaFactory->newSchema(
-				$schemaName,
+				$title->getDBKey(),
 				$this->toJson()
 			);
 		} catch ( SchemaTypeNotFoundException $e ) {
@@ -254,6 +245,8 @@ class SchemaContent extends JsonContent {
 
 		$this->initServices();
 		$title = $page->getTitle();
+
+		$this->setTitlePrefix( $title );
 
 		$errors = [];
 		$schema = null;
@@ -376,11 +369,15 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	private function decode_content() {
+	private function decodeJSONContent() {
 
 		// Support either JSON or YAML, if the class is available! Do a quick
 		// check on `{ ... }` to decide whether it is a non-JSON string.
-		if ( $this->mText !== '' && $this->mText[0] !== '{' && substr( $this->mText, -1 ) !== '}' && class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
+		if (
+			$this->mText !== '' &&
+			$this->mText[0] !== '{' &&
+			substr( $this->mText, -1 ) !== '}' &&
+			class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
 
 			try {
 				$this->parse = Yaml::parse( $this->mText );
@@ -401,6 +398,24 @@ class SchemaContent extends JsonContent {
 
 			return $this->isValid;
 		}
+	}
+
+	private function setTitlePrefix( $title ) {
+
+		if ( $this->parse === null ) {
+			$this->decodeJSONContent();
+		}
+
+		$schemaName = $title->getDBKey();
+		$title_prefix = '';
+
+		if ( strpos( $schemaName, ':' ) !== false ) {
+			list( $title_prefix, ) = explode( ':',  $schemaName );
+		}
+
+		// Allow to use the schema validation against a possible
+		// required naming convention (aka title prefix)
+		$this->parse->title_prefix = $title_prefix;
 	}
 
 }
