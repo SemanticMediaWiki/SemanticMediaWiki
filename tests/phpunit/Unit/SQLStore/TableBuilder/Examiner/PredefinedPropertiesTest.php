@@ -42,7 +42,9 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 			'smw_id' => 42,
 			'smw_iw' => '',
 			'smw_proptable_hash' => '',
-			'smw_hash' => ''
+			'smw_hash' => '',
+			'smw_rev' => null,
+			'smw_touched' => ''
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -95,7 +97,9 @@ class PredefinedPropertiesTest extends \PHPUnit_Framework_TestCase {
 			'smw_id' => 42,
 			'smw_iw' => '',
 			'smw_proptable_hash' => '',
-			'smw_hash' => ''
+			'smw_hash' => '',
+			'smw_rev' => null,
+			'smw_touched' => ''
 		];
 
 		$idTable = $this->getMockBuilder( '\stdClass' )

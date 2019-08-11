@@ -120,7 +120,9 @@ class PredefinedProperties {
 			SQLStore::ID_TABLE,
 			[
 				'smw_proptable_hash',
-				'smw_hash'
+				'smw_hash',
+				'smw_rev',
+				'smw_touched'
 			],
 			[
 				'smw_id' => $id
@@ -129,7 +131,12 @@ class PredefinedProperties {
 		);
 
 		if ( $row === false ) {
-			$row = (object)[ 'smw_proptable_hash' => null, 'smw_hash' => null ];
+			$row = (object)[
+				'smw_proptable_hash' => null,
+				'smw_hash' => null,
+				'smw_rev' => null,
+				'smw_touched' => $connection->timestamp( '1970-01-01 00:00:00' )
+			];
 		}
 
 		$connection->replace(
@@ -144,7 +151,9 @@ class PredefinedProperties {
 				'smw_sortkey' => $label,
 				'smw_sort' => Collator::singleton()->getSortKey( $label ),
 				'smw_proptable_hash' => $row->smw_proptable_hash,
-				'smw_hash' => $row->smw_hash
+				'smw_hash' => $row->smw_hash,
+				'smw_rev' => $row->smw_rev,
+				'smw_touched' => $row->smw_touched
 			],
 			__METHOD__
 		);
