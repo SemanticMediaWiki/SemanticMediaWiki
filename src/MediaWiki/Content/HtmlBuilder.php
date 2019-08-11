@@ -195,8 +195,8 @@ class HtmlBuilder {
 			);
 
 			$html .= Html::rawElement(
-				'h2',
-				[],
+				'h3',
+				[ 'class' => 'smw-title' ],
 				$params['error-title']
 			);
 
