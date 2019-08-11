@@ -521,7 +521,7 @@
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "General options",
 	"prefs-ask-options": "Semantic search options",
-	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (and related extensions) provide individual customization for some selected functions. Please consult the [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help page] for a detailed description.",
+	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] and associated extensions provide individual preferences for a group of selected features and functions. A list of individual settings with their description and characteristics is available on the following [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help page].",
 	"smw-prefs-ask-options-tooltip-display": "Display parameter text as an info tooltip",
 	"smw-prefs-ask-options-compact-view-basic": "Enable basic compact view",
 	"smw-prefs-help-ask-options-compact-view-basic": "If enabled, displays a reduced set of links on the Special:Ask compact view.",

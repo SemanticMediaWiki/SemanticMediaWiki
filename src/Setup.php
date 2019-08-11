@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
+use SMW\Utils\Logo;
 
 /**
  * Extension setup and registration
@@ -329,14 +330,8 @@ final class Setup {
 			return;
 		}
 
-		$src = '';
-
-		if ( is_file( $path . '/res/DataURI.php' ) && ( $dataURI = include $path . '/res/DataURI.php' ) !== [] ) {
-			$src = $dataURI['footer'];
-		}
-
 		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
-			'src' => $src,
+			'src' => Logo::get( 'footer' ),
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
 			'class' => 'smw-footer'
