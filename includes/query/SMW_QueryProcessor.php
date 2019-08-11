@@ -17,14 +17,6 @@ use SMW\Query\ResultPrinter;
 use SMW\Query\ResultPrinters\NullResultPrinter;
 
 /**
- * This file contains a static class for accessing functions to generate and execute
- * semantic queries and to serialise their results.
- *
- * @ingroup SMWQuery
- * @author Markus Krötzsch
- */
-
-/**
  * Static class for accessing functions to generate and execute semantic queries
  * and to serialise their results.
  * @ingroup SMWQuery
@@ -204,26 +196,6 @@ class SMWQueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Preprocess a query as given by an array of parameters as is typically
-	 * produced by the #ask parser function. The parsing results in a querystring,
-	 * an array of additional parameters, and an array of additional SMWPrintRequest
-	 * objects, which are filled into call-by-ref parameters.
-	 * $showMode is true if the input should be treated as if given by #show
-	 *
-	 * @param array $rawParams
-	 * @param string $querystring
-	 * @param array $params
-	 * @param array $printouts array of SMWPrintRequest
-	 * @param boolean $showMode
-	 * @deprecated Will vanish after SMW 1.8 is released.
-	 * Use getComponentsFromFunctionParams which has a cleaner interface.
-	 */
-	static public function processFunctionParams( array $rawParams, &$querystring, &$params, &$printouts, $showMode = false ) {
-		list( $querystring, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
-	}
-
-
-	/**
 	 * Preprocess a query as given by an array of parameters as is
 	 * typically produced by the #ask parser function or by Special:Ask.
 	 * The parsing results in a querystring, an array of additional
@@ -286,62 +258,6 @@ class SMWQueryProcessor implements QueryContext {
 		}
 
 		return [ $query, $params ];
-	}
-
-	/**
-	 * Process and answer a query as given by an array of parameters as is
-	 * typically produced by the #ask parser function. The result is formatted
-	 * according to the specified $outputformat. The parameter $context defines
-	 * in what context the query is used, which affects ceretain general settings.
-	 *
-	 * The main task of this function is to preprocess the raw parameters to
-	 * obtain actual parameters, printout requests, and the query string for
-	 * further processing.
-	 *
-	 * @note Consider using getQueryAndParamsFromFunctionParams() and
-	 * getResultFromQuery() instead.
-	 * @deprecated Will vanish after release of SMW 1.8.
-	 * See SMW_Ask.php for example code on how to get query results from
-	 * #ask function parameters.
-	 */
-	static public function getResultFromFunctionParams( array $rawParams, $outputMode, $context = self::INLINE_QUERY, $showMode = false ) {
-		list( $queryString, $params, $printouts ) = self::getComponentsFromFunctionParams( $rawParams, $showMode );
-
-		if ( !$showMode ) {
-			self::addThisPrintout( $printouts, $params );
-		}
-
-		$params = self::getProcessedParams( $params, $printouts );
-
-		return self::getResultFromQueryString( $queryString, $params, $printouts, SMW_OUTPUT_WIKI, $context );
-	}
-
-	/**
-	 * Process a query string in SMW's query language and return a formatted
-	 * result set as specified by $outputmode. A parameter array of key-value-pairs
-	 * constrains the query and determines the serialisation mode for results. The
-	 * parameter $context defines in what context the query is used, which affects
-	 * certain general settings. Finally, $extraprintouts supplies additional
-	 * printout requests for the query results.
-	 *
-	 * @param string $queryString
-	 * @param array $params These need to be the result of a list fed to getProcessedParams
-	 * @param $extraPrintouts
-	 * @param $outputMode
-	 * @param $context
-	 *
-	 * @return string
-	 * @deprecated Will vanish after release of SMW 1.8.
-	 * See SMW_Ask.php for example code on how to get query results from
-	 * #ask function parameters.
-	 */
-	static public function getResultFromQueryString( $queryString, array $params, $extraPrintouts, $outputMode, $context = self::INLINE_QUERY ) {
-
-		$query  = self::createQuery( $queryString, $params, $context, '', $extraPrintouts );
-		$result = self::getResultFromQuery( $query, $params, $outputMode, $context );
-
-
-		return $result;
 	}
 
 	/**
