@@ -36,7 +36,7 @@
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=5.6.0",
+		"php": ">=7.0",
 		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
 		"psr/log": "~1.0",
