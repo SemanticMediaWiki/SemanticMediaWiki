@@ -4,7 +4,7 @@ namespace SMW\Tests\Utils\Connection;
 
 use DatabaseBase;
 use SMW\Services\ServicesFactory;
-use SMW\Connection\ConnectionProvider as IConnectionProvider;
+use SMW\Connection\ConnectionProvider;
 
 /**
  * @license GNU GPL v2+
@@ -12,7 +12,7 @@ use SMW\Connection\ConnectionProvider as IConnectionProvider;
  *
  * @author mwjames
  */
-class ConnectionProvider implements IConnectionProvider {
+class TestDatabaseConnectionProvider implements ConnectionProvider {
 
 	/**
 	 * @var DatabaseBase

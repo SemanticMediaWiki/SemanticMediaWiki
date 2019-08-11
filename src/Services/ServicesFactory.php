@@ -614,6 +614,7 @@ class ServicesFactory {
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'mediawiki.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'importer.php' );
 		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'events.php' );
+		$containerBuilder->registerFromFile( $servicesFileDir . '/' . 'cache.php' );
 
 		//	$containerBuilder = $callbackContainerFactory->newLoggableContainerBuilder(
 		//		$containerBuilder,

@@ -3,10 +3,8 @@
 namespace SMW\Tests\Utils\Connection;
 
 use CloneDatabase;
-use HashBagOStuff;
-use ObjectCache;
 use RuntimeException;
-use SMW\Connection\ConnectionProvider as IConnectionProvider;
+use SMW\Connection\ConnectionProvider;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Store;
 use Title;
@@ -58,7 +56,7 @@ class TestDatabaseTableBuilder {
 	 * @param Store $store
 	 * @param IConnectionProvider $connectionProvider
 	 */
-	public function __construct( Store $store, IConnectionProvider $connectionProvider ) {
+	public function __construct( Store $store, ConnectionProvider $connectionProvider ) {
 		$this->store = $store;
 		$this->connectionProvider = $connectionProvider;
 		$this->availableDatabaseTypes = $this->supportedDatabaseTypes;
@@ -84,7 +82,7 @@ class TestDatabaseTableBuilder {
 	public static function getInstance( Store $store ) {
 
 		if ( self::$instance === null ) {
-			self::$instance = new self( $store, new ConnectionProvider() );
+			self::$instance = new self( $store, new TestDatabaseConnectionProvider() );
 		}
 
 		return self::$instance;
@@ -112,19 +110,6 @@ class TestDatabaseTableBuilder {
 		if ( !$this->isAvailableDatabaseType() ) {
 			throw new RuntimeException( 'Requested DB type is not available through this installer' );
 		}
-
-		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();
-
-		// Avoid Error while sending QUERY packet / SqlBagOStuff seen on MW 1.24
-		// https://s3.amazonaws.com/archive.travis-ci.org/jobs/30408638/log.txt
-		ObjectCache::$instances[CACHE_ANYTHING] = new HashBagOStuff();
-
-		$GLOBALS['wgDevelopmentWarnings'] = true;
-		$GLOBALS['wgMainCacheType'] = CACHE_NONE;
-		$GLOBALS['wgMessageCacheType'] = CACHE_NONE;
-		$GLOBALS['wgParserCacheType'] = CACHE_NONE;
-		$GLOBALS['wgLanguageConverterCacheType'] = CACHE_NONE;
-		$GLOBALS['wgUseDatabaseMessages'] = false;
 
 		$this->setupDatabaseTables();
 		$this->rollbackOpenDatabaseTransactions();
