@@ -886,7 +886,7 @@
 	"smw-types-title": "This is the item label shown on a page in namespace \"Rule\". Do not confuse this with a datatype.\n\nParameter:\n* $1 - holds the string of the configuration defining the rule formatter, e.g. \"LINK_FORMAT_RULE\"\n\n{{Identical|Type}}",
 	"smw-schema-namespace-editcontentmodel-disallowed": "This is an error message.",
 	"smw-schema-namespace-edit-protection": "This is an informatory message.",
-	"smw-schema-error": "This is the label of a tab on a page in namespace \"smw/schema\".",
+	"smw-schema-error-title": "This is the label of a tab on a page in namespace \"smw/schema\".",
 	"smw-schema-error-schema": "This is an error message.\n\nParameter:\n* $1 - holds the erroneous specification",
 	"smw-schema-error-violation": "{{optional}}\nThis is an error message.\n\nParameters:\n* $1 - holds the schema name\n* $2 - holds the error",
 	"smw-schema-error-type-missing": "This is an error message.",

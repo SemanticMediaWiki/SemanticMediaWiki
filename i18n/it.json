@@ -465,7 +465,7 @@
 	"smw-jsonview-expand-title": "Espandi la vista JSON",
 	"smw-jsonview-collapse-title": "Comprimi la vista JSON",
 	"smw-types-title": "Tipo: $1",
-	"smw-schema-error": "Errore di convalida.",
+	"smw-schema-error-title": "Errore di convalida.",
 	"smw-schema-error-json": "Errore JSON: \"$1\"",
 	"smw-schema-usage": "Utilizzo",
 	"smw-schema-type": "Tipo",

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Joetaras"
+			"Joetaras",
+			"Abijeet Patro"
 		]
 	},
 	"smw-error": "Errore",
@@ -235,7 +236,7 @@
 	"smw-collapse": "Scunne",
 	"smw-copy": "Copie",
 	"smw-copy-clipboard-title": "Copie 'u condenute jndr'à le appunde",
-	"smw-schema-error": "Errore de validazione",
+	"smw-schema-error-title": "Errore de validazione",
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-json": "Errore JSON: \"$1\"",
 	"smw-schema-summary-title": "Riepiloghe",

@@ -906,7 +906,7 @@
 	"smw-types-title": "類型：$1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "不允許更改[https://www.semantic-mediawiki.org/wiki/Help:Schema 架構頁面]的內容模組。",
 	"smw-schema-namespace-edit-protection": "此頁面已被保護，並僅能由具有適當 <code>smw-schemaedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions 權限]的使用者編輯。",
-	"smw-schema-error": "驗證錯誤",
+	"smw-schema-error-title": "驗證錯誤",
 	"smw-schema-error-schema": "驗證架構'''$1'''發現以下不一致：",
 	"smw-schema-error-violation": "[\"$1\"，\"$2\"]",
 	"smw-schema-error-type-missing": "內容缺少可用於識別且用在[https://www.semantic-mediawiki.org/wiki/Help:Schema 架構命名空間]的類型",

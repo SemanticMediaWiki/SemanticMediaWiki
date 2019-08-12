@@ -900,7 +900,7 @@
 	"smw-types-title": "Typ: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Das Ändern des Inhaltsmodells der [https://www.semantic-mediawiki.org/wiki/Help:Schema Seite zu einem Schema] ist nicht möglich.",
 	"smw-schema-namespace-edit-protection": "Diese Seite ist bearbeitungsgeschützt, um unbeabsichtigte Veränderungen an Inhalten zu verhindern. Sie kann deshalb nur von Benutzern mit der hierfür notwendigen Berechtigung „smw-schemaedit“ bearbeitet werden.",
-	"smw-schema-error": "Validierungsfehler",
+	"smw-schema-error-title": "Validierungsfehler",
 	"smw-schema-error-schema": "Die Angabe der Spezifikation '''$1''' und dessen Validierung für das aktuelle Schema hat die folgenden Inkompatibilitäten ergeben:",
 	"smw-schema-error-validation-file-inaccessible": "Auf die Validierungsdatei „$1“ kann nicht zugegriffen werden.",
 	"smw-schema-error-violation": "[„$1“, „$2“]",

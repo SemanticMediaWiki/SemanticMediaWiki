@@ -758,7 +758,7 @@
 	"smw-jsonview-collapse-title": "Contrae a vista JSON",
 	"smw-redirect-target-unresolvable": "O destino é irresoluble polo motivo «$1»",
 	"smw-types-title": "Tipo: $1",
-	"smw-schema-error": "Erro de validación.",
+	"smw-schema-error-title": "Erro de validación.",
 	"smw-schema-error-violation": "Violación (\"$1\", \"$2\")",
 	"smw-schema-title": "Esquema",
 	"smw-schema-type": "Tipo",

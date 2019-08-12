@@ -3,7 +3,8 @@
 		"authors": [
 			"Les Meloures",
 			"Robby",
-			"Soued031"
+			"Soued031",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -340,7 +341,7 @@
 	"smw-collapse": "Zesummeklappen",
 	"smw-copy": "Kopéieren",
 	"smw-types-title": "Typ: $1",
-	"smw-schema-error": "Validéierungsfeeler",
+	"smw-schema-error-title": "Validéierungsfeeler",
 	"smw-schema-error-violation": "Schema Violatioun [\"$1\", \"$2\"]",
 	"smw-schema-error-json": "JSON-Feeler: \"$1\"",
 	"smw-schema-summary-title": "Resumé",

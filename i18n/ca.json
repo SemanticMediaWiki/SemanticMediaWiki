@@ -775,7 +775,7 @@
 	"smw-types-title": "Tipus: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "No es permet canviar el model de contingut d'una [https://www.semantic-mediawiki.org/wiki/Help:Schema pàgina d'esquema].",
 	"smw-schema-namespace-edit-protection": "Aquesta pàgina està protegida i només pot ser modificada per usuaris amb els [https://www.semantic-mediawiki.org/wiki/Help:Permissions permisos] <code>smw-schemaedit</code> adequats.",
-	"smw-schema-error": "Error de validació",
+	"smw-schema-error-title": "Error de validació",
 	"smw-schema-error-schema": "L'esquema de validació «$1» ha trobat les inconsistències següents:",
 	"smw-schema-error-violation": "[«$1», «$2»]",
 	"smw-schema-error-type-missing": "Al contingut li manca un tipus per tal que sigui reconegut i usable a l'[https://www.semantic-mediawiki.org/wiki/Help:Schema espai de noms de l'esquema].",

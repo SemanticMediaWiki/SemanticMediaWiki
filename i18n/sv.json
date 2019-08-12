@@ -27,7 +27,8 @@
 			"Skalman",
 			"Josve05a",
 			"Bengtsson96",
-			"Umeaboy"
+			"Umeaboy",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "Gör din wiki mer tillgänglig – för både maskiner och människor ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentation online])",
@@ -546,7 +547,7 @@
 	"smw-property-predefined-label-skey": "Sorteringsnyckel",
 	"smw-processing": "Bearbetar...",
 	"smw-types-title": "Typ: $1",
-	"smw-schema-error": "Valideringsfel",
+	"smw-schema-error-title": "Valideringsfel",
 	"smw-schema-summary-title": "Sammanfattning",
 	"smw-schema-title": "Schema",
 	"smw-schema-usage": "Användning",

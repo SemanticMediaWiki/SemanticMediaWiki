@@ -807,7 +807,7 @@
 	"smw-types-title": "Тип: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Изменение контентной модели [https://www.semantic-mediawiki.org/wiki/Help:Schema страницы схемы] не разрешено.",
 	"smw-schema-namespace-edit-protection": "Эта страница защищена, править её могут только участники с [https://www.semantic-mediawiki.org/wiki/Help:Permissions правом] <code>smw-schemaedit</code>.",
-	"smw-schema-error": "Ошибка проверки",
+	"smw-schema-error-title": "Ошибка проверки",
 	"smw-schema-error-violation": "Нарушение («$1», «$2»)",
 	"smw-schema-title": "Схема",
 	"smw-schema-type": "Тип",

@@ -30,7 +30,8 @@
 			"Zero 1 k",
 			"Suyama",
 			"Wat",
-			"Aefgh39622"
+			"Aefgh39622",
+			"Abijeet Patro"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -514,7 +515,7 @@
 	"smw-expand": "展開する",
 	"smw-collapse": "折り畳む",
 	"smw-copy": "コピー",
-	"smw-schema-error": "検証エラー",
+	"smw-schema-error-title": "検証エラー",
 	"smw-ask-title-keyword-type": "キーワード検索",
 	"smw-parameter-missing": "パラメータ \"$1\" がありません。",
 	"smw-property-tab-usage": "使用",

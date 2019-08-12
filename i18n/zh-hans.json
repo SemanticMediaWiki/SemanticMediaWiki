@@ -791,7 +791,7 @@
 	"smw-copy": "复制",
 	"smw-redirect-target-unresolvable": "目标无法解决，原因是“$1”",
 	"smw-types-title": "类型：$1",
-	"smw-schema-error": "验证错误",
+	"smw-schema-error-title": "验证错误",
 	"smw-schema-error-input-schema": "不能保存：在有效性检验过程 '''$1''' 中发现下列错误；您可查看[https://www.semantic-mediawiki.org/wiki/Help:Schema/Error_handling help page]以获得更多帮助。",
 	"smw-schema-type": "类型",
 	"smw-schema-tag": "{{PLURAL:$1|标签|标签}}",

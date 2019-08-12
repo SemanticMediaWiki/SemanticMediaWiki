@@ -621,7 +621,7 @@
 	"smw-jsonview-expand-title": "Επεκτείνει την προβολή JSON",
 	"smw-jsonview-collapse-title": "Συμπτύσσει την προβολή JSON",
 	"smw-types-title": "Τύπος: $1",
-	"smw-schema-error": "Σφάλμα επικύρωσης",
+	"smw-schema-error-title": "Σφάλμα επικύρωσης",
 	"smw-schema-type": "Τύπος",
 	"smw-schema-tag": "{{PLURAL:$1|Ετικέτα|Ετικέτες}}",
 	"smw-parameter-missing": "Η παράμετρος «$1» απουσιάζει.",

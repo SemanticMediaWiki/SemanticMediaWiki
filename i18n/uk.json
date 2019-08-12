@@ -828,7 +828,7 @@
 	"smw-types-title": "Тип: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Зміна моделі вмісту [https://www.semantic-mediawiki.org/wiki/Help:Schema сторінки схеми] не дозволена.",
 	"smw-schema-namespace-edit-protection": "Ця сторінка захищена, її можуть редагувати лише користувачі з відповідними <code>smw-schemaedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions правами].",
-	"smw-schema-error": "Помилка перевірки",
+	"smw-schema-error-title": "Помилка перевірки",
 	"smw-schema-error-violation": "[«$1», «$2»]",
 	"smw-schema-summary-title": "Опис",
 	"smw-schema-title": "Схема",
