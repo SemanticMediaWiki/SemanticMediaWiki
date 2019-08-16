@@ -221,15 +221,6 @@ class HtmlTableRenderer {
 		return Html::rawElement( 'th', $attributes, $content );
 	}
 
-	private function doConcatenatedHeader() {
-
-		if ( $this->htmlContext ) {
-			return Html::rawElement( 'thead', [], implode( '', $this->tableHeaders ) );
-		}
-
-		return implode( '', $this->tableHeaders );
-	}
-
 	private function doConcatenatedRows() {
 
 		if ( $this->htmlContext ) {
@@ -252,6 +243,30 @@ class HtmlTableRenderer {
 		}
 
 		return $this->doConcatenatedHeader() . $this->doConcatenatedRows();
+	}
+
+	private function doConcatenatedHeader() {
+		if ( $this->htmlContext ) {
+			return Html::rawElement(
+				'thead',
+				[],
+				$this->getHeaderRowHtml()
+			);
+		}
+
+		return $this->getHeaderRowHtml();
+	}
+
+	private function getHeaderRowHtml() {
+		if ( $this->tableHeaders === [] ) {
+			return '';
+		}
+
+		return Html::rawElement(
+			'tr',
+			[],
+			implode( '', $this->tableHeaders )
+		);
 	}
 
 	private function buildTransposedTable() {
