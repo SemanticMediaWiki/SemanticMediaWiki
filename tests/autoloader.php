@@ -42,7 +42,8 @@ $phpUnitEnvironment->writeLn( "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw
 $phpUnitEnvironment->writeLn( "Site language:", $phpUnitEnvironment->getSiteLanguageCode() );
 $phpUnitEnvironment->writeNewLn( "Execution time:", $phpUnitEnvironment->executionTime() );
 $phpUnitEnvironment->writeLn( "Debug logs:", ( $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled' ) );
-$phpUnitEnvironment->writeLn( "Xdebug:", ( ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeNewLn( "Xdebug:", ( ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeLn( "Intl/ICU:", ( ( $intl = $phpUnitEnvironment->getIntlInfo() ) ? $intl : 'Disabled (or not installed)' ) );
 $phpUnitEnvironment->writeNewLn();
 
 unset( $phpUnitEnvironment );
