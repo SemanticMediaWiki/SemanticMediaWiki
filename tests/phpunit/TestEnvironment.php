@@ -134,6 +134,27 @@ class TestEnvironment {
 	}
 
 	/**
+	 * @since 3.1
+	 */
+	public static function changePrefix( $prefix ) {
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+			throw new \RuntimeException( "Your are trying to change the `DomainPrefix` while not being in test!" );
+		}
+
+		$lbFactory = \MediaWiki\MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+
+		// MW 1.33+
+		if ( method_exists( $lbFactory, 'setLocalDomainPrefix' ) ) {
+			$lbFactory->setLocalDomainPrefix( $prefix );
+		} else {
+			$lbFactory->setDomainPrefix( $prefix );
+		}
+		
+		$GLOBALS['wgDBprefix'] = $prefix;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string|array $poolCache
