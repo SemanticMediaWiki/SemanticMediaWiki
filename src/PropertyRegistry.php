@@ -70,13 +70,18 @@ class PropertyRegistry {
 			return self::$instance;
 		}
 
+		$localizer = Localizer::getInstance();
 		$applicationFactory = ApplicationFactory::getInstance();
-		$lang = Localizer::getInstance()->getLang();
+		$lang = $localizer->getLang();
 
 		$propertyAliasFinder = new PropertyAliasFinder(
 			$applicationFactory->getCache(),
 			$lang->getPropertyAliases(),
 			$lang->getCanonicalPropertyAliases()
+		);
+
+		$propertyAliasFinder->setContentLanguageCode(
+			$localizer->getContentLanguage()->getCode()
 		);
 
 		$settings = $applicationFactory->getSettings();
