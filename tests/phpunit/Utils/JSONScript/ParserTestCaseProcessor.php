@@ -201,8 +201,17 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		$output = preg_replace('/<!--(.*)-->/Uis', '', $output );
 
 		if ( isset( $case['assert-output']['to-contain'] ) ) {
+			$contains = $case['assert-output']['to-contain'];
+
+			// Concatenate to a string to ensure we keep the sequence as entered
+			// while adding .* to signal that anything goes between them except
+			// for the string expected to be asserted
+			if ( isset( $case['assert-output']['in-sequence' ] ) && is_array( $contains ) ) {
+				$contains = implode( '.*', $contains );
+			}
+
 			$this->stringValidator->assertThatStringContains(
-				$case['assert-output']['to-contain'],
+				$contains,
 				$output,
 				$case['about']
 			);

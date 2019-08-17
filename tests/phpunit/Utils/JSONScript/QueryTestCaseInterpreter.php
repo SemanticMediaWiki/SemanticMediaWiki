@@ -305,7 +305,16 @@ class QueryTestCaseInterpreter {
 			return $output;
 		}
 
-		return $this->contents['assert-output'][$id];
+		$output = $this->contents['assert-output'][$id];
+
+		// Concatenate to a string to ensure we keep the sequence as entered while
+		// adding .* to signal that anything goes between them except for the string
+		// expected to be asserted
+		if ( isset( $this->contents['assert-output']['in-sequence' ] ) && is_array( $output ) ) {
+			$output = implode( '.*', $output );
+		}
+
+		return $output;
 	}
 
 	/**
