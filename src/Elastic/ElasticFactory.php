@@ -42,6 +42,7 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
+use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 
 /**
  * @license GNU GPL v2+
@@ -571,6 +572,40 @@ class ElasticFactory {
 	 */
 	public function onRegisterEventListeners( $eventListener ) {
 		$eventListener->registerCallback( 'InvalidateEntityCache', [ $this, 'onInvalidateEntityCache' ] );
+
+		return true;
+	}
+
+	/**
+	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Maintenance::AfterUpdateEntityCollationComplete
+	 * @since 3.1
+	 */
+	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ) {
+
+		if ( $store->getConnection( 'elastic' ) === null ) {
+			$messageReporter->reportMessage(
+				"\nAborting, missing an appropriate client instance!"
+			);
+
+			return true;
+		}
+
+		$rebuilder = $this->newRebuilder(
+			$store
+		);
+
+		$rebuilder->setMessageReporter(
+			$messageReporter
+		);
+
+		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
+			$store,
+			$messageReporter
+		);
+
+		$updateEntityCollationComplete->runUpdate(
+			$rebuilder
+		);
 
 		return true;
 	}

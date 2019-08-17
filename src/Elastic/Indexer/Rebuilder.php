@@ -357,13 +357,13 @@ class Rebuilder {
 			$type
 		);
 
-		$this->messageReporter->reportMessage( "\n   ... '$type' index ... " );
+		$this->messageReporter->reportMessage( "\n   ... *$type* index ... " );
 
 		if ( $this->client->hasLock( $type ) ) {
 			$this->rolloverByTypeAndVersion( $type, $this->client->getLock( $type ) );
 		}
 
-		$this->messageReporter->reportMessage( "\n      ... closing" );
+		$this->messageReporter->reportMessage( "\n       ... closing" );
 
 		// Certain changes ( ... to define new analyzers ...) requires to close
 		// and reopen an index

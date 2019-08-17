@@ -24,6 +24,10 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
+
 		$options = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,8 +51,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $options ) );
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -403,6 +405,29 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $title ) );
 
 		$instance->onInvalidateEntityCache( $dispatchContext );
+	}
+
+	public function testOnAfterUpdateEntityCollationComplete() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->connection ) );
+
+		$instance = new ElasticFactory();
+
+		$instance->onAfterUpdateEntityCollationComplete(
+			$store,
+			$this->messageReporter
+		);
+
+		$this->assertContains(
+			'Running an index rebuild',
+			$this->messageReporter->getMessagesAsString()
+		);
 	}
 
 }
