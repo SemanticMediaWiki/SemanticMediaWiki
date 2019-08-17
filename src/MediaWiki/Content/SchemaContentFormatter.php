@@ -173,14 +173,27 @@ class SchemaContentFormatter {
 		}
 
 		$usage = '';
+		$dataItems = [];
 
-		$dataItems = $this->store->getPropertySubjects(
-			new DIProperty( $this->type['usage_lookup'] ),
-			new DIWikiPage( str_replace(' ', '_', $schema->getName() ), SMW_NS_SCHEMA )
+		$usage_lookup = (array)$this->type['usage_lookup'];
+
+		$subject = new DIWikiPage(
+			str_replace(' ', '_', $schema->getName() ),
+			SMW_NS_SCHEMA
 		);
 
-		if ( $dataItems instanceof \Traversable ) {
-			$dataItems = iterator_to_array( $dataItems );
+		foreach ( $usage_lookup as $property ) {
+			$property = new DIProperty(
+				$property
+			);
+
+			$ps = $this->store->getPropertySubjects( $property, $subject );
+
+			if ( $ps instanceof \Traversable ) {
+				$ps = iterator_to_array( $ps );
+			}
+
+			$dataItems = array_merge( $dataItems, $ps );
 		}
 
 		if ( $dataItems !== [] ) {

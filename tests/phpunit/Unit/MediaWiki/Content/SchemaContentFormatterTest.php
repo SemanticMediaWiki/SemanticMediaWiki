@@ -23,6 +23,7 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 	}
 
@@ -100,6 +101,101 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$instance->getText( $text, $schema, $errors )
 		);
 	}
+
+	public function testGetUsage_Empty() {
+
+		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$instance->setType( [ 'usage_lookup' => 'Foo' ] );
+
+		$this->assertEquals(
+			[ '', 0 ],
+			$instance->getUsage( $schema )
+		);
+	}
+
+	public function testGetUsage() {
+
+		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [ $dataItem ] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnValue( $sortLetter ) );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$instance->setType( [ 'usage_lookup' => 'Foo' ] );
+
+		list( $usage, $count ) = $instance->getUsage( $schema );
+
+		$this->assertContains(
+			'smw-columnlist-container',
+			$usage
+		);
+	}
+
+	public function testGetUsage_MultipleProperties() {
+
+		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getPropertySubjects' )
+			->will( $this->returnValue( [ $dataItem ] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'service' )
+			->will( $this->returnValue( $sortLetter ) );
+
+		$instance = new SchemaContentFormatter(
+			$this->store
+		);
+
+		$instance->setType( [ 'usage_lookup' => [ 'Foo', 'Bar' ] ] );
+
+		list( $usage, $count ) = $instance->getUsage( $schema );
+
+		$this->assertContains(
+			'smw-columnlist-container',
+			$usage
+		);
+	}
+
 
 	public function schema_get( $key ) {
 		return $key === Schema::SCHEMA_TAG ? [] : '';
