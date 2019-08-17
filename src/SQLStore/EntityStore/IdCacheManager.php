@@ -99,6 +99,10 @@ class IdCacheManager {
 	 */
 	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
 
+		if ( is_array( $title ) ) {
+			throw new RuntimeException( "Expected a string instead an array was detected!" );
+		}
+
 		if ( strpos( $title, ' ' ) !== false ) {
 			throw new RuntimeException( "Somebody tried to use spaces in a cache title! ($title)");
 		}

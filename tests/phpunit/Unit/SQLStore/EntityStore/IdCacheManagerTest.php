@@ -169,4 +169,20 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 		$instance->deleteCacheById( 42 );
 	}
 
+	public function testSetCacheOnTitleWithSpace_ThrowsException() {
+
+		$instance = new IdCacheManager( $this->caches );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->setCache( 'foo bar', '', '' , '', '', '' );
+	}
+
+	public function testSetCacheOnTitleAsArray_ThrowsException() {
+
+		$instance = new IdCacheManager( $this->caches );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->setCache( [ 'foo bar' ], '', '' , '', '', '' );
+	}
+
 }
