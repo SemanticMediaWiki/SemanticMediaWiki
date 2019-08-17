@@ -1,5 +1,5 @@
 {
-	"description": "Test `Has fields` with `:` name reference",
+	"description": "Test `_ref_rec`, `Has fields` with `:` name reference",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

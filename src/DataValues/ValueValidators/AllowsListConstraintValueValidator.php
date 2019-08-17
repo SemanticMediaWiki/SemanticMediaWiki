@@ -159,6 +159,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$dataValue->getTypeID()
 		);
 
+		// Ensure that the validation instance uses the same field properties
+		// as defined by the original DataValue
+		if ( $dataValue instanceof \SMW\DataValues\AbstractMultiValue ) {
+			$testDataValue->setFieldProperties( $dataValue->getPropertyDataItems() );
+		}
+
 		$isAllowed = false;
 
 		// Track a range related constraint which can be used as single
