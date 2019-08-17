@@ -32,6 +32,27 @@ class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTab_Contents_Subtab() {
+
+		$instance = new HtmlTabs();
+		$instance->setActiveTab( 'foo' );
+		$instance->isSubTab();
+
+		$instance->tab( 'foo', 'FOO' );
+		$instance->content( 'foo', '< ... bar ... >' );
+
+		$this->assertContains(
+			'<div class="smw-tabs smw-subtab foo-bar" ' .
+			'data-subtab="&quot;&lt;input id=\&quot;tab-foo\&quot; ' .
+			'class=\&quot;nav-tab\&quot; type=\&quot;radio\&quot; ' .
+			'name=\&quot;tabs\&quot; checked=\&quot;\&quot;\/&gt;&lt;label ' .
+			'id=\&quot;tab-label-foo\&quot; for=\&quot;tab-foo\&quot; ' .
+			'class=\&quot;nav-label\&quot;&gt;FOO&lt;\/label&gt;&quot;">' .
+			'<div id="tab-content-foo" class="subtab-content">< ... bar ... ></div></div>',
+			$instance->buildHTML( [ 'class' => 'foo-bar' ] )
+		);
+	}
+
 	public function testTab_Contents_AutoChecked() {
 
 		$instance = new HtmlTabs();

@@ -31,7 +31,7 @@
 	clear: both;
 }
 
-.smw-tabs section {
+.smw-tabs section, .smw-tabs .subtab-content {
 	display: none;
 	padding: 0 0 0 0;
 	border-top: 1px solid #ddd;
