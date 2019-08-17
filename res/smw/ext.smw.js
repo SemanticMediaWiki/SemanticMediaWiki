@@ -31,6 +31,16 @@
 var smw = ( function ( $, undefined ) {
 	'use strict';
 
+	/**
+	 * Start as early as possible to attach any registered subtabs
+	 */
+	var x = document.getElementsByClassName( "smw-subtab" );
+	var i;
+
+	for ( i = 0; i < x.length; i++ ) {
+		x[i].innerHTML = JSON.parse( x[i].dataset.subtab ) + x[i].innerHTML;
+	}
+
 	/*global console:true message:true */
 
 	/**

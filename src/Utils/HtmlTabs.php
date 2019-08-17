@@ -43,6 +43,11 @@ class HtmlTabs {
 	private $isRTL = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $isSubTab = false;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param boolean $isRTL
@@ -58,6 +63,19 @@ class HtmlTabs {
 	 */
 	public function setActiveTab( $activeTab ) {
 		$this->activeTab = $activeTab;
+	}
+
+	/**
+	 * The MW Parser has issues with <section> that appear as part of a sub level
+	 * which requires to have the content loaded via JS to be able to access the
+	 * tab content.
+	 *
+	 * @since 3.1
+	 *
+	 * @param boolean $isSubTab
+	 */
+	public function isSubTab( $isSubTab = true ) {
+		$this->isSubTab = $isSubTab;
 	}
 
 	/**
@@ -83,8 +101,21 @@ class HtmlTabs {
 
 		$this->tabs = [];
 		$this->contents = [];
+		$class = 'smw-tabs';
 
-		$attributes = $this->mergeAttributes( 'smw-tabs', $attributes );
+		if ( $this->isSubTab ) {
+			$class .= ' smw-subtab';
+		}
+
+		$attributes = $this->mergeAttributes( $class, $attributes );
+		$tabs = implode( '', $tabs );
+
+		// Attach the tab definition as `data` element so it can be loaded using
+		// JS
+		if ( $this->isSubTab ) {
+			$attributes['data-subtab'] = json_encode( $tabs );
+			$tabs = '';
+		}
 
 		if ( $this->isRTL ) {
 			$attributes['dir'] = 'rtl';
@@ -93,7 +124,7 @@ class HtmlTabs {
 		return Html::rawElement(
 			'div',
 			$attributes,
-			implode( '', $tabs ) . implode( '', $contents )
+			$tabs . implode( '', $contents )
 		);
 	}
 
@@ -132,7 +163,7 @@ class HtmlTabs {
 
 		$isChecked = false;
 
-		// No acive tab means, select the first tab being added
+		// No active tab means, select the first tab being added
 		if ( $this->activeTab === null ) {
 			$this->activeTab = $id;
 		}
@@ -173,10 +204,12 @@ class HtmlTabs {
 		}
 
 		$this->contents[] = Html::rawElement(
-			'section',
+			$this->isSubTab ? 'div' : 'section',
 			[
-				'id' => "tab-content-$id"
-			],
+				'id' => "tab-content-$id",
+			] + (
+				$this->isSubTab ? [ 'class' => 'subtab-content' ] : []
+			),
 			$content
 		);
 	}
