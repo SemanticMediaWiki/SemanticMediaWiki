@@ -80,6 +80,33 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetSpecification_SkipCache() {
+
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$this->store->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->with(
+				$this->equalTo( $property->getDiWikiPage() ),
+				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Bar' ) ),
+				$this->anything() );
+
+		$this->entityCache->expects( $this->never() )
+			->method( 'fetchSub' );
+
+		$instance = new SpecificationLookup(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->skipCache();
+
+		$instance->getSpecification(
+			$property,
+			$this->dataItemFactory->newDIProperty( 'Bar' )
+		);
+	}
+
 	public function testGetFieldList() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'RecordProperty' );

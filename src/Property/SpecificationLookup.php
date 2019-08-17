@@ -42,6 +42,11 @@ class SpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
+	 * @var boolean
+	 */
+	private $skipCache = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param Store $store
@@ -50,6 +55,15 @@ class SpecificationLookup {
 	public function __construct( Store $store, EntityCache $entityCache ) {
 		$this->store = $store;
 		$this->entityCache = $entityCache;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param boolean $skipCache
+	 */
+	public function skipCache( $skipCache = true ) {
+		$this->skipCache = $skipCache;
 	}
 
 	/**
@@ -91,7 +105,9 @@ class SpecificationLookup {
 		$key = $this->entityCache->makeCacheKey( 'propertyspecification', $subject->getHash() );
 		$sub_key = $target->getKey();
 
-		if ( ( $specification = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
+		if (
+			!$this->skipCache &&
+			( $specification = $this->entityCache->fetchSub( $key, $sub_key ) ) !== false ) {
 			return $specification;
 		}
 
@@ -440,7 +456,7 @@ class SpecificationLookup {
 		if ( $monolingualTextLookup === null ) {
 			return '';
 		}
-		
+
 		$monolingualTextLookup->setCaller( __METHOD__ );
 
 		$dataValue = $monolingualTextLookup->newDataValue(
