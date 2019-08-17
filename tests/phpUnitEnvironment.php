@@ -49,6 +49,18 @@ class PHPUnitEnvironment {
 	}
 
 	/**
+	 * @return boolean|string
+	 */
+	public function getIntlInfo() {
+
+		if ( extension_loaded( 'intl' ) ) {
+			return phpversion( 'intl' ) . ' / ' . INTL_ICU_VERSION;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSiteLanguageCode() {
