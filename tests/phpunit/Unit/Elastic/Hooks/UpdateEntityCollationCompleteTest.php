@@ -121,6 +121,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			$this->messageReporter
 		);
 
+		$instance->setCountDown( 0 );
 		$instance->runUpdate( $this->rebuilder );
 
 		$this->assertContains(
