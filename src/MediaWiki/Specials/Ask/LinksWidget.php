@@ -281,6 +281,7 @@ class LinksWidget {
 			return '';
 		}
 
+		$urlArgs = clone $urlArgs;
 		$urlArgs->set( 'eq', 'yes' );
 		$urlArgs->set( 'debug', 'true' );
 		$urlArgs->setFragment( 'search' );
