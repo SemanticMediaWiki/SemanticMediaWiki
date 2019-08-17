@@ -48,6 +48,10 @@
     margin-left: 5px;
 }
 
+.smw-modal-link {
+    cursor:pointer;
+}
+
 /* smw-modal Content */
 .smw-modal-content {
  background-color: #fefefe;
