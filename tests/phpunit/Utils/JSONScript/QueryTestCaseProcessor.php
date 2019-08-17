@@ -237,6 +237,9 @@ class QueryTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		$textOutput = $queryTestCaseInterpreter->fetchTextFromOutputSubject();
 
+		// Strip HTML comments
+		$textOutput = preg_replace('/<!--(.*)-->/Uis', '', $textOutput );
+
 		$this->stringValidator->assertThatStringContains(
 			$queryTestCaseInterpreter->getExpectedFormatOuputFor( 'to-contain' ),
 			$textOutput,

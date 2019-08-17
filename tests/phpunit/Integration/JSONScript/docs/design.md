@@ -2,9 +2,9 @@
 
 The `JSONScript` follows the arrange, act, assert approach, with the `setup` section containing object definitions that are planned to be used during a test. The section expects that an entity page and its contents (generally the page content in wikitext, annotations etc.) to follow a predefined structure.
 
-It is also possible to [import](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0211.json) larger text passages or [upload files](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json) for a test scenario.
+This [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction of running and debugging a JSONScript test case.
 
-When creating test scenarios, it is suggested to use distinct names and subjects to ensure that tests will not interfere with each other and their results. It may also be of advantage to split the setup of data (e.g. `Example/Test/1`) from the actual test subject (e.g. `Example/Test/Q.1`) to avoid conflicting or flaky validations during the assertion process.
+### Setup
 
 <pre>
 "setup": [
@@ -30,9 +30,31 @@ When creating test scenarios, it is suggested to use distinct names and subjects
 ],
 </pre>
 
+It is also possible to [import](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0211.json) larger text passages or [upload files](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/TestCases/p-0705.json) for a test scenario.
+
+When creating test scenarios, it is suggested to use distinct names and subjects to ensure that tests will not interfere with each other and their results. It may also be of advantage to split the setup of data (e.g. `Example/Test/1`) from the actual test subject (e.g. `Example/Test/Q.1`) to avoid conflicting or flaky validations during the assertion process.
+
 The [bootstrap.json][bootstrap.json] contains an example and can be used as starting point for creating a new test case.
 
 ### Test assertions
+
+<pre>
+"tests": [
+	{
+		"type": "parser",
+		"about": "#0 test output of the [[ ... ]] annotation",
+		"subject": "Example/Test/1",
+		"assert-output": {
+			"to-contain": [
+				"Foo"
+			],
+			"not-contain": [
+				"Foobar"
+			]
+		}
+	}
+]
+</pre>
 
 * The `type` provides specialized assertion methods with some of them requiring an extra setup to yield a comparable output but in most cases the `parser` type
 should suffice to create test assertions for common test scenarios. Available types are:
@@ -44,15 +66,11 @@ should suffice to create test assertions for common test scenarios. Available ty
 * The `about` describes what the test is expected to test which may help during a failure to identify potential conflicts or hints on how to resolve an issue.
 * The `subject` refers to the page that was defined in the `setup` section.
 
-For example, as of version 2 the `parser` type (`ParserTestCaseProcessor`) knows two assertions methods:
-
-- `assert-store` is to validate data against `Store::getSemanticData`
-- `assert-output` is to validate string comparison against the `ParserOutput` generated text
-
 #### Type `parser`
 
 The test result assertion provides simplified string comparison methods (mostly for output related assertion but expressive enough for users to understand the test objective and its expected results). For example, verifying that the parser does output a certain string, one has to the define an expected output.
 
+Example:
 <pre>
 "tests": [
 	{
@@ -60,6 +78,7 @@ The test result assertion provides simplified string comparison methods (mostly 
 		"about": "#0 test output of the [[ ... ]] annotation",
 		"subject": "Example/Test/1",
 		"assert-output": {
+			"include-head-items": true,
 			"to-contain": [
 				"Some text to search"
 			],
@@ -73,9 +92,10 @@ The test result assertion provides simplified string comparison methods (mostly 
 		"about": "#1 test output of #ask query",
 		"subject": "Example/Test/Q.1",
 		"assert-output": {
-			"include-head-items": true,
+			"in-sequence": true,
 			"to-contain": [
-				"Some text to search"
+				"Item 1: Some text to search",
+				"Item 2: Another text to search"
 			],
 			"not-contain": [
 				"abc"
@@ -85,7 +105,12 @@ The test result assertion provides simplified string comparison methods (mostly 
 ]
 </pre>
 
-- `include-head-items` is an option that fetches the information stored in `ParserOutput::getHeadItems` and appends it to the validation output
+As of version 2 the `parser` type provides two assertions methods:
+
+- `assert-store` is to validate data against `Store::getSemanticData`
+- `assert-output` is to validate a string and compares it against the `ParserOutput` generated text, additional options are available to aid the output assertion including:
+  - `include-head-items` is an option that fetches the information stored in `ParserOutput::getHeadItems` and appends it to the validation output
+  - `in-sequence` is an option to tell the interpreter and string validator to keep the sequence of the `to-contain` list during the assertion (e.g. "Item 1..." is required to appear before "Item 2..." etc.)
 
 #### Type `parser-html`
 
@@ -108,8 +133,7 @@ Example:
 ]
 </pre>
 
-For further details and limitations on the CSS selectors see the description of the [Symfony `CssSelector` Component][css_selector] that is
-used for this test type.
+For further details and limitations on the CSS selectors see the description of the [Symfony `CssSelector` Component][css_selector] that is used for this test type.
 
 It is also possible to require an exact number of occurrences of HTML elements by providing an array instead of just a CSS selector string.
 
@@ -122,8 +146,7 @@ Example:
 		}
 </pre>
 
-Finally the general well-formedness of the HTML can be tested, although this will not fail for recoverable errors (see the documentation on PHP's
-[DOMDocument::loadHTML][domdocument]).
+Finally the general well-formedness of the HTML can be tested, although this will not fail for recoverable errors (see the documentation on PHP's [DOMDocument::loadHTML][domdocument]).
 
 Example:
 <pre>
@@ -134,8 +157,7 @@ Example:
 
 ### Preparing the test environment
 
-It can happen that an output is mixed with language dependent content (site vs. page content vs. user language) and therefore it is recommended to fix those
-settings for a test by adding something like:
+It can happen that an output is mixed with language dependent content (site vs. page content vs. user language) and therefore it is recommended to fix those settings for a test by adding something like:
 
 <pre>
 "settings": {
@@ -152,12 +174,9 @@ By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::
 
 Each `json` file expects a `meta` section with:
 
-- `version` to correspond to the
-   `JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` and controls the
-  JSON script definition that the runner is expected to support.
+- `version` to correspond to the    `JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` and controls the JSON script definition that the runner is expected to support.
 - `is-incomplete` removes the file from the test plan if set `true`
-- `debug` as flag for support of intermediary debugging that may output internal
-  object state information.
+- `debug` as flag for support of intermediary debugging that may output internal object state information.
 
 <pre>
 "meta": {
@@ -172,9 +191,33 @@ Each `json` file expects a `meta` section with:
 Some test scenarios may require an extension or another component and to check those dependencies before the actual test is run, use `requires` as in:
 
 <pre>
-"requires": {
-	"Maps": ">= 5.0"
-},
+{
+	"description": "...",
+	"requires": {
+		"ext-intl": "*"
+	}
+}
+</pre>
+
+#### Extend the dependency definition
+
+<pre>
+/**
+ * @see JsonTestCaseScriptRunner::getDependencyDefinitions
+ */
+protected function getDependencyDefinitions() {
+	return [
+	'ext-intl' => function( $version, &$reason ) {
+
+		if ( !extension_loaded( 'intl' ) ) {
+			$reason = "ext-intl is required but not not available!";
+			return false;
+		}
+
+			return true;
+		}
+	];
+}
 </pre>
 
 ### Skipping a test or mark as incomplete
@@ -226,12 +269,7 @@ The naming of a test file is arbitrary but it has been a best practice to indica
 
 ### Debugging and running a test
 
-Tests are run together using the `composer phpunit` or `composer test` command but it may not always be feasible especially when trying to debug or design a new test case.
-
-There are two methods that can help restrict the execution during the design or debug phase:
-
-* Modify the `JsonTestCaseScriptRunner::getAllowedTestCaseFiles`  to take an argument such as a file name ( e.g. `s-0014.json`) to restrict the execution of a test which is mostly done when running from an IDE editor
-* The command line allows to invoke a filter argument to specify a case such as `composer test -- --filter s-0014.json`
+Tests are easily run using the `composer phpunit` or `composer test` command and to restrict the execution of the test run (for example during the design or while debugging a test) use the command line `--filter` option to filter a specific test case. For example, it can take the name of the file as argument (e.g. `composer test -- --filter s-0014.json`).
 
 <pre>
 $  composer test -- --filter s-0014.json
@@ -256,8 +294,6 @@ Time: 13.02 seconds, Memory: 34.00Mb
 
 OK (1 test, 16 assertions)
 </pre>
-
-The following [video](https://youtu.be/7fDKjPFaTaY) contains a very brief introduction on how to run and debug a JSONScript test case. An introduction to the test environment can be found [here][README.md].
 
 [README.md]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md
 [bootstrap.json]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/bootstrap.json
