@@ -406,6 +406,12 @@ class SchemaContent extends JsonContent {
 			$this->decodeJSONContent();
 		}
 
+		// The decode could return with a JSON syntax error therefore
+		// double check the parse state before trying to continue
+		if ( !is_object( $this->parse ) ) {
+			return;
+		}
+
 		$schemaName = $title->getDBKey();
 		$title_prefix = '';
 
