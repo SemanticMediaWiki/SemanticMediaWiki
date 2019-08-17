@@ -1,0 +1,213 @@
+{
+	"description": "Test `_rec`/`_ref_rec` and `Allows value`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Record page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Record number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Restricted record",
+			"contents": "[[Has type::Record]][[Has fields::Record page;Record number]] [[Allows value::Foo;123]] [[Allows value::Bar;456]] [[Allows value::Foobar; 789]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Restricted reference",
+			"contents": "[[Has type::Reference]] [[Has fields::URL;Date]] [[Allows value::http://example.org;1 Jan 1970]] [[Allows value::http://example.org;2 Jan 1970]]"
+		},
+		{
+			"page": "P0922/1",
+			"contents": "[[Restricted record::Foo;123]]"
+		},
+		{
+			"page": "P0922/2",
+			"contents": "[[Restricted record::Foo; 123]]"
+		},
+		{
+			"page": "P0922/3",
+			"contents": "[[Restricted record::Bar;456]]"
+		},
+		{
+			"page": "P0922/4",
+			"contents": "[[Restricted record::Foobar;789]]"
+		},
+		{
+			"page": "P0922/5",
+			"contents": "[[Restricted record::Foo;456]]"
+		},
+		{
+			"page": "P0922/6",
+			"contents": "[[Restricted reference::http://example.org;1 Jan 1970]]"
+		},
+		{
+			"page": "P0922/7",
+			"contents": "[[Restricted reference::http://example.org;3 Jan 1970]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (record, passes validation)",
+			"subject": "P0922/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Restricted record"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Foo.*\">Foo</a> (123)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (record, passes validation, on leading spaces in annotation)",
+			"subject": "P0922/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Restricted record"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Foo.*\">Foo</a> (123)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (record, passes validation)",
+			"subject": "P0922/3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Restricted record"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Bar.*\">Bar</a> (456)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (record, passes validation, on leading spaces in `Allows value` declaration)",
+			"subject": "P0922/4",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Restricted record"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Foobar.*\">Foobar</a> (789)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (record, fails validation)",
+			"subject": "P0922/5",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (reference, passes validation)",
+			"subject": "P0922/6",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"Restricted reference"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a .* href=\"http://example.org\">http://example.org</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (reference, fails validation)",
+			"subject": "P0922/7",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ERRC"
+					]
+				}
+			},
+			"assert-output": {
+				"not-contain": [
+					"<a .* href=\"http://example.org\">http://example.org</a>foo"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
