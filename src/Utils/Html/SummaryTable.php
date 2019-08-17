@@ -24,6 +24,16 @@ class SummaryTable {
 	private $attributes = [];
 
 	/**
+	 * @var integer
+	 */
+	private $columnThreshold = 4;
+
+	/**
+	 * @var string
+	 */
+	private $thumbImage = '';
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $parameters
@@ -53,6 +63,44 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
+	 * @param integer $ColumnThreshold
+	 */
+	public function setColumnThreshold( $columnThreshold ) {
+		$this->columnThreshold = $columnThreshold;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $thumbImage
+	 */
+	public function noImage() {
+		$this->thumbImage = Html::rawElement(
+			'div',
+			[
+				'class' => "smw-summarytable-item-center"
+			],
+			Html::rawElement(
+				'div',
+				[
+					'class' => "smw-summarytable-noimage"
+				]
+			)
+		);
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $thumbImage
+	 */
+	public function setThumbImage( $thumbImage ) {
+		$this->thumbImage = $thumbImage;
+	}
+
+	/**
+	 * @since 3.1
+	 *
 	 * @return string
 	 */
 	public function buildHTML( array $opts = [] ) {
@@ -60,15 +108,24 @@ class SummaryTable {
 		$html = '';
 		$tables = [];
 
+		if ( $this->thumbImage !== '' ) {
+			return $this->tableAndImage( $this->parameters );
+		}
+
 		$count = count( $this->parameters );
 
-		if ( !isset( $opts['columns'] ) || $count < 4 ) {
+		if ( !isset( $opts['columns'] ) || $count < $this->columnThreshold ) {
 			return $this->table( $this->parameters );
 		}
 
 		$size = round( $count / $opts['columns'] );
 
-		$chunks = array_chunk( $this->parameters, $size, true );
+		if ( $this->thumbImage !== '' ) {
+			$chunks[] = $this->parameters;
+			$chunks[] = [ '' => $this->thumbImage ];
+		} else {
+			$chunks = array_chunk( $this->parameters, $size, true );
+		}
 
 		foreach ( $chunks as $params ) {
 			$tables[] = $this->table( $params );
@@ -90,6 +147,33 @@ class SummaryTable {
 			'div',
 			[
 				'class' => "smw-summarytable-columns"
+			],
+			$html
+		);
+	}
+
+	private function tableAndImage( $params ) {
+
+		$html = Html::rawElement(
+			'div',
+			[
+				'class' => "smw-summarytable-facts"
+			],
+			$this->table( $params )
+		);
+
+		$html .= Html::rawElement(
+			'div',
+			[
+				'class' => "smw-summarytable-image"
+			],
+			$this->thumbImage
+		);
+
+		return Html::rawElement(
+			'div',
+			[
+				'class' => "smw-summarytable-imagecolumn"
 			],
 			$html
 		);
