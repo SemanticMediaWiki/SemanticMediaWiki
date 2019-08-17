@@ -69,7 +69,7 @@
 			"subject": "Example/F0306/Q.1.1",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9.*"
+					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
 				]
 			}
 		},
@@ -97,7 +97,7 @@
 			"subject": "Example/F0306/Q.1.2",
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
+					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
 				]
 			}
 		},
