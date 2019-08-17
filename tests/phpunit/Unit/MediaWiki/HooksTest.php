@@ -297,9 +297,12 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSMWBrowseAfterIncomingPropertiesLookupComplete' ],
 			[ 'callSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate' ],
 			[ 'callSMWSQLStoreInstallerAfterCreateTablesComplete' ],
+			[ 'callSMWMaintenanceAfterUpdateEntityCollationComplete' ],
+
 		];
 	}
 
+//SMW::Maintenance::AfterUpdateEntityCollationComplete
 	public function callParserAfterTidy( $instance ) {
 
 		$handler = 'ParserAfterTidy';
@@ -1803,6 +1806,32 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $tableBuilder, $messageReporter, $options ]
+		);
+
+		return $handler;
+	}
+
+	public function callSMWMaintenanceAfterUpdateEntityCollationComplete( $instance ) {
+
+		$handler = 'SMW::Maintenance::AfterUpdateEntityCollationComplete';
+
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $store, $messageReporter ]
 		);
 
 		return $handler;

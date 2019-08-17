@@ -62,6 +62,7 @@ Implementing a hook should be made in consideration of the expected performance 
 - [`SMW::ResultFormat::OverrideDefaultFormat`][hook.resultformat.overridedefaultformat] to override the default result format handling
 - [`SMW::Job::AfterUpdateDispatcherJobComplete`][hook.job.afterupdatedispatcherjobcomplete] to add additional update jobs for a property and related subjects
 - [`SMW::Exporter::Controller::AddExpData`][hook.exporter.controller.addexpdata] to add additional RDF data for a selected subject
+- [`SMW::Maintenance::AfterUpdateEntityCollationComplete`][hook.maintenance.afterupdateentitycollationcomplete] runs after the `updateEntityCollection.php` script has finished processing the update of entity collation changes
 
 ## Deprecated hooks
 
@@ -114,3 +115,4 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.event.registereventlisteners]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.event.registereventlisteners.md
 [hook.resultformat.overridedefaultformat]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.resultformat.overridedefaultformat.md
 [hook.constraint.initconstraints]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.constraint.initconstraints.md
+[hook.maintenance.afterupdateentitycollationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.maintenance.afterupdateentitycollationcomplete.md
