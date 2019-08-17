@@ -25,6 +25,11 @@ class UpdateEntityCollationComplete {
 	private $messageReporter;
 
 	/**
+	 * @var integer
+	 */
+	private $countDown = 5;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
@@ -33,6 +38,15 @@ class UpdateEntityCollationComplete {
 	public function __construct( Store $store, MessageReporter $messageReporter ) {
 		$this->store = $store;
 		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $countDown
+	 */
+	public function setCountDown( $countDown ) {
+		$this->countDown = $countDown;
 	}
 
 	/**
@@ -48,11 +62,9 @@ class UpdateEntityCollationComplete {
 			"therefore a rebuild is planned to run shortly.\n"
 		);
 
-		$this->messageReporter->reportMessage(
-			"\nAbort the rebuild with control-c in the next five seconds ...  "
-		);
-
-		swfCountDown( 5 );
+		if ( $this->countDown > 0 ) {
+			$this->showCountDown();
+		}
 
 		$this->messageReporter->reportMessage(
 			"\nRunning an index rebuild ..."
@@ -135,6 +147,15 @@ class UpdateEntityCollationComplete {
 
 		$rebuilder->setDefaults();
 		$rebuilder->refresh();
+	}
+
+	private function showCountDown() {
+
+		$this->messageReporter->reportMessage(
+			"\nAbort the rebuild with control-c in the next five seconds ...  "
+		);
+
+		swfCountDown( $this->countDown );
 	}
 
 }

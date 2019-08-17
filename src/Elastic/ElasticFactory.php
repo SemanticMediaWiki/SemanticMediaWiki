@@ -371,6 +371,22 @@ class ElasticFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 * @param MessageReporter $messageReporter
+	 *
+	 * @return UpdateEntityCollationComplete
+	 */
+	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
+		return new UpdateEntityCollationComplete(
+			$store,
+			$messageReporter
+		);
+	}
+
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
@@ -582,11 +598,9 @@ class ElasticFactory {
 	 */
 	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ) {
 
-		if ( $store->getConnection( 'elastic' ) === null ) {
-			$messageReporter->reportMessage(
-				"\nAborting, missing an appropriate client instance!"
-			);
-
+		if (
+			( $connection = $store->getConnection( 'elastic' ) ) === null ||
+			$connection instanceof DummyClient ) {
 			return true;
 		}
 
@@ -598,7 +612,7 @@ class ElasticFactory {
 			$messageReporter
 		);
 
-		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
+		$updateEntityCollationComplete = $this->newUpdateEntityCollationComplete(
 			$store,
 			$messageReporter
 		);
