@@ -82,6 +82,8 @@ class TypesRegistry {
 			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			 // smw/schema page
 			'_wps'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			 // User page
+			'_wpu'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
 			// __cschema
 			ConstraintSchemaValue::TYPE_ID => [ ConstraintSchemaValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Number type
