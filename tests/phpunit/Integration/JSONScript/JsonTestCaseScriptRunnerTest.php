@@ -37,7 +37,7 @@ class JsonTestCaseScriptRunnerTest extends ExtendedJsonTestCaseScriptRunner {
 			'Maps' => function( $val, &$reason ) {
 
 				if ( !defined( 'SM_VERSION' ) ) {
-					$reason = "Dependency: Maps (or Semantic Maps) as requirement is not available!";
+					$reason = "Dependency: Maps (or Semantic Maps) as requirement for the test is not available!";
 					return false;
 				}
 
@@ -46,6 +46,32 @@ class JsonTestCaseScriptRunnerTest extends ExtendedJsonTestCaseScriptRunner {
 
 				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
 					$reason = "Dependency: Required version of Maps ($requiredVersion $compare $version) is not available!";
+					return false;
+				}
+
+				return true;
+			},
+			'ext-intl' => function( $val, &$reason ) {
+
+				if ( !extension_loaded( 'intl' ) ) {
+					$reason = "Dependency: ext-intl (PHP extension, ICU collation) as requirement for the test is not available!";
+					return false;
+				}
+
+				return true;
+			},
+			'ICU' => function( $val, &$reason ) {
+
+				if ( !extension_loaded( 'intl' ) ) {
+					$reason = "Dependency: ext-intl (PHP extension, ICU collation) as requirement for the test is not available!";
+					return false;
+				}
+
+				list( $compare, $requiredVersion ) = explode( ' ', $val );
+				$version = INTL_ICU_VERSION;
+
+				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
+					$reason = "Dependency: Requires at least ICU version {$requiredVersion} but only {$version} is available!";
 					return false;
 				}
 

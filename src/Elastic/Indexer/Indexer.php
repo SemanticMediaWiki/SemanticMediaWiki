@@ -13,6 +13,7 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
 use SMW\Utils\CharArmor;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\Collator;
 use SMWDIBlob as DIBlob;
 use Title;
 use Revision;
@@ -648,23 +649,8 @@ class Indexer {
 
 		if ( !isset( $insertRows[$sid]['subject'] ) ) {
 			$dataItem = $this->store->getObjectIds()->getDataItemById( $sid );
-			$sort = $dataItem->getSortKey();
-
-			// Use collated sort field if available
-			if ( $dataItem->getOption( 'sort', '' ) !== '' ) {
-				$sort = $dataItem->getOption( 'sort' );
-			}
-
-			// Avoid issue with the Ealstic serializer
-			$sort = CharArmor::removeSpecialChars(
-				CharArmor::removeControlChars( $sort )
-			);
 
 			$subject = $this->makeSubject( $dataItem );
-
-			if ( $sort !== '' ) {
-				$subject['sortkey'] = $sort;
-			}
 
 			if ( $rev != 0 && $subject['subobject'] === '' ) {
 				$subject['rev_id'] = $rev;
@@ -791,12 +777,28 @@ class Indexer {
 			$title = str_replace( '_', ' ', $title );
 		}
 
+		$sort = $subject->getSortKey();
+		$sort = Collator::singleton()->getSortKey( $sort );
+
+		// Use collated sort field if available
+		if ( $subject->getOption( 'sort', '' ) !== '' ) {
+			$sort = $subject->getOption( 'sort' );
+		}
+
+		// This may loose some non valif UTF-8 characters as it is required by ES
+		// to be strict UTF-8 otherwise the ES indexer will fail with a serialization
+		// error because ES only allows UTF-8 but when the collator applies something
+		// like `uca-default-u-kn` it can produce characters not valid for/by
+		// ES hence the sorting compared to the SQLStore will be different (given
+		// the DB stores the byte representation)
+		$sort = mb_convert_encoding( $sort, 'UTF-8', 'UTF-8' );
+
 		return [
 			'title'     => $title,
 			'subobject' => $subject->getSubobjectName(),
 			'namespace' => $subject->getNamespace(),
 			'interwiki' => $subject->getInterwiki(),
-			'sortkey'   => mb_convert_encoding( $subject->getSortKey(), 'UTF-8', 'UTF-8' )
+			'sortkey'   => $sort
 		];
 	}
 
