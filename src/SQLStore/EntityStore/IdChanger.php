@@ -105,6 +105,14 @@ class IdChanger {
 		$targetid = $targetid == 0 ? $connection->insertId() : $targetid;
 
 		$connection->delete(
+			SQLStore::ID_AUXILIARY_TABLE,
+			[
+				'smw_id' => $curid
+			],
+			__METHOD__
+		);
+
+		$connection->delete(
 			SQLStore::ID_TABLE,
 			[
 				'smw_id' => $curid

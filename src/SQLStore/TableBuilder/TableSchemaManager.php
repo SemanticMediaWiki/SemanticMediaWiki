@@ -148,6 +148,8 @@ class TableSchemaManager {
 		}
 
 		$this->addTable( $this->newEntityIdTable() );
+		$this->addTable( $this->newEntityAuxiliaryTable() );
+
 		$this->addTable( $this->newConceptCacheTable() );
 		$this->addTable( $this->newQueryLinksTable() );
 		$this->addTable( $this->newFulltextSearchTable() );
@@ -228,6 +230,21 @@ class TableSchemaManager {
 
 		$table->addIndex( 'smw_rev,smw_id' );
 		$table->addIndex( 'smw_touched,smw_id' );
+
+		return $table;
+	}
+
+	private function newEntityAuxiliaryTable() {
+
+		// ID_AUXILIARY_TABLE
+		$table = new Table( SQLStore::ID_AUXILIARY_TABLE );
+
+		$table->addColumn( 'smw_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
+		$table->addColumn( 'smw_seqmap', FieldType::TYPE_BLOB );
+
+		// $table->addColumn( 'smw_proptable', FieldType::TYPE_BLOB );
+
+		$table->addIndex( [ 'smw_id', 'UNIQUE INDEX' ] );
 
 		return $table;
 	}

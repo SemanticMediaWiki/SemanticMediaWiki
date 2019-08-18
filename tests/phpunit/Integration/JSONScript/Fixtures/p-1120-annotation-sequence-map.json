@@ -1,0 +1,9 @@
+{
+    "type": "PROPERTY_PROFILE_SCHEMA",
+    "profile": {
+        "sequence_map": true
+    },
+    "tags": [
+        "property profile"
+    ]
+}

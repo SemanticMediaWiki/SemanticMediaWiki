@@ -155,13 +155,18 @@ class PrefetchItemLookup {
 				$result[$hash] = [];
 			}
 
+			$sequenceMap = $entityIdManager->getSequenceMap(
+				$sid,
+				$property->getKey()
+			);
+
 			// List of subjects (index which is either the ID or hash) with its
 			// corresponding items
 			// [
 			//  42 => [ DIBlob, DIBlob, ... ],
 			//  1001 => [ ... ]
 			// ]
-			$result[$hash] = $this->buildLIST( $diHandler, $itemList, $requestOptions );
+			$result[$hash] = $this->buildLIST( $diHandler, $itemList, $requestOptions, $sequenceMap );
 		}
 
 		return $result;
@@ -221,7 +226,7 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function buildLIST( $diHandler, $itemList, $requestOptions ) {
+	private function buildLIST( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
 
 		$values = [];
 		$i = 0;
@@ -230,12 +235,19 @@ class PrefetchItemLookup {
 		$limit = ( $requestOptions->limit + $requestOptions->offset ) + 1;
 		$offset = $requestOptions->offset;
 
+		// Flip the array to get access to the hash keys as lookup index,
+		// the array value defines the position of the annotation value
+		// in the list
+		if ( $sequenceMap !== [] ) {
+			$sequenceMap = array_flip( $sequenceMap );
+		}
+
 		foreach ( $itemList as $k => $dbkeys ) {
 
-			// When working with an order map, first go through all matches
+			// When working with an sequence.map, first go through all matches
 			// without limiting the set to ensure it is ordered before
 			// in a second step the limit restriction is applied
-			if ( $limit > 0 && $i > $limit  ) {
+			if ( $limit > 0 && $i > $limit && $sequenceMap === [] ) {
 				break;
 			}
 
@@ -248,9 +260,25 @@ class PrefetchItemLookup {
 			}
 
 			$index_hash = md5( $dataItem->getHash() );
-			$values[$index_hash] = $dataItem;
+
+			if ( isset( $sequenceMap[$index_hash] ) ) {
+				$values[$sequenceMap[$index_hash]] = $dataItem;
+			} else {
+				$values[$index_hash] = $dataItem;
+			}
 
 			$i++;
+		}
+
+		// Sort by key to restore the sorting preference that is part of
+		// the `sequence_map`
+		if ( $sequenceMap !== [] ) {
+			ksort( $values );
+
+			// Apply the limit/offset
+			if ( $limit > 0 ) {
+				$values = array_slice( $values, $offset, $limit, true );
+			}
 		}
 
 		return $values;

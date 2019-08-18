@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\DataModel\SequenceMap;
 use SMW\Encoder;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
@@ -144,7 +145,7 @@ class SpecialPageProperty extends SpecialPage {
 			$requestOptions = new RequestOptions();
 			$requestOptions->setLimit( $options->get( 'limit' ) + 1 );
 			$requestOptions->setOffset( $options->get( 'offset' ) );
-			$requestOptions->sort = true;
+			$requestOptions->sort = !SequenceMap::canMap( $propertyValue->getDataItem() );
 
 			// Restrict the request otherwise the entire SemanticData record
 			// is fetched which can in case of a subject with a large

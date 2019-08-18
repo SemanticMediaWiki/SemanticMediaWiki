@@ -66,6 +66,10 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->sequenceMapFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SequenceMapFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,6 +119,10 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableHashes' )
 			->will( $this->returnValue( $this->propertyTableHashes ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newSequenceMapFinder' )
+			->will( $this->returnValue( $this->sequenceMapFinder ) );
 
 		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
 			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
@@ -508,6 +516,50 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			1001,
 			$instance->findAssociatedRev( 'Foo', NS_MAIN, '', '' )
 		);
+	}
+
+	public function testSetSequenceMap() {
+
+		$this->sequenceMapFinder->expects( $this->once() )
+			->method( 'setMap' )
+			->with(
+				$this->equalTo( 42 ),
+				$this->equalTo( [ 'Foo' ] ) );
+
+		$instance = new EntityIdManager(
+			$this->store,
+			$this->factory
+		);
+
+		$instance->setSequenceMap( 42, [ 'Foo' ] );
+	}
+
+	public function testGetSequenceMap() {
+
+		$this->sequenceMapFinder->expects( $this->once() )
+			->method( 'findMapById' )
+			->with( $this->equalTo( 1001 ) );
+
+		$instance = new EntityIdManager(
+			$this->store,
+			$this->factory
+		);
+
+		$instance->getSequenceMap( 1001 );
+	}
+
+	public function testLoadSequenceMap() {
+
+		$this->sequenceMapFinder->expects( $this->once() )
+			->method( 'prefetchSequenceMap' )
+			->with( $this->equalTo( [ 42, 1001 ] ) );
+
+		$instance = new EntityIdManager(
+			$this->store,
+			$this->factory
+		);
+
+		$instance->loadSequenceMap( [ 42, 1001 ] );
 	}
 
 	public function pageIdandSortProvider() {

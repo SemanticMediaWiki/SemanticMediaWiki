@@ -223,6 +223,7 @@ class TypesRegistry {
 			//
 			'_FORMAT_SCHEMA' => [ '_wps', true, true, false ], // "Formatter schema"
 			'_CONSTRAINT_SCHEMA' => [ ConstraintSchemaValue::TYPE_ID, true, true, true ], // "Constraint schema"
+			'_PROFILE_SCHEMA' => [ '_wps', true, true, true ], // "Profile schema"
 
 			// File attachment
 			'_ATTCH_LINK'  => [ '_wpg', true, false, false ], // "Attachment link"

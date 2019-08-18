@@ -286,6 +286,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'delete' )
 			->withConsecutive(
 				[ $this->equalTo( SQLStore::ID_TABLE ) ],
+				[ $this->equalTo( SQLStore::ID_AUXILIARY_TABLE ) ],
 				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
 				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
 				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
@@ -338,6 +339,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'delete' )
 			->withConsecutive(
+				[ $this->equalTo( SQLStore::ID_AUXILIARY_TABLE ) ],
 				[ $this->equalTo( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
 				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],
 				[ $this->equalTo( SQLStore::QUERY_LINKS_TABLE ) ],

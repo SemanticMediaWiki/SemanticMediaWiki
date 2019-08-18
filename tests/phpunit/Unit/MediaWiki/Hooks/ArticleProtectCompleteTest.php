@@ -33,6 +33,10 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -51,6 +55,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $idTable ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
 		$this->editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
 			->disableOriginalConstructor()

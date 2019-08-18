@@ -943,6 +943,7 @@
 	"smw-schema-description": "Schema description",
 	"smw-schema-description-link-format-schema": "This schema type supports the definition of characteristics for creating context sensitive links in connection with a [[Property:Formatter schema|formatter schema]] assigned property.",
 	"smw-schema-description-search-form-schema": "This schema type supports the definition of input forms and characteristics for the [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] profile where it contains instructions on how to generate input fields, define default namespaces, or declare prefix expressions for a search request.",
+	"smw-schema-description-property-profile-schema": "This schema type supports the definition of a profile to declare characteristics to the assigned property and its annotation values.",
 	"smw-schema-description-property-group-schema": "This schema type supports the definition of [https://www.semantic-mediawiki.org/wiki/Help:Property_group property groups] to help structure the [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse browsing] interface.",
 	"smw-schema-description-property-constraint-schema": "This supports the definition of constraint rules for a property instance as well as those values assigned to it.",
 	"smw-schema-description-class-constraint-schema": "This schema type supports the definition of constraint rules for a class instance (a.k.a. category).",

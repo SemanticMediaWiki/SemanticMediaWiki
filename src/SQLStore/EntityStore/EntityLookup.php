@@ -150,6 +150,13 @@ class EntityLookup implements IEntityLookup {
 			$this->semanticDataLookup->unlockCache();
 		}
 
+		if ( $semanticData->getSequenceMap() === [] ) {
+			$semanticData->setSequenceMap(
+				$sid,
+				$this->store->getObjectIds()->getSequenceMap( $sid )
+			);
+		}
+
 		// Avoid adding a sortkey for an already extended stub
 		if ( !$semanticData->hasProperty( new DIProperty( '_SKEY' ) ) ) {
 			$semanticData->addPropertyStubValue( '_SKEY', [ '', $sortKey ] );

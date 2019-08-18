@@ -222,6 +222,12 @@ class PropertyTableIdReferenceDisposer {
 		}
 
 		$this->connection->delete(
+			SQLStore::ID_AUXILIARY_TABLE,
+			[ 'smw_id' => $id ],
+			__METHOD__
+		);
+
+		$this->connection->delete(
 			SQLStore::PROPERTY_STATISTICS_TABLE,
 			[ 'p_id' => $id ],
 			__METHOD__

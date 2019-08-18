@@ -114,6 +114,11 @@ class EntityIdManager {
 	 */
 	private $entityIdFinder;
 
+	/*
+	 * @var SequenceMapFinder
+	 */
+	private $sequenceMapFinder;
+
 	/**
 	 * @var DuplicateFinder
 	 */
@@ -134,6 +139,10 @@ class EntityIdManager {
 		$this->initCache();
 
 		$this->idEntityFinder = $this->factory->newIdEntityFinder(
+			$this->idCacheManager
+		);
+
+		$this->sequenceMapFinder = $this->factory->newSequenceMapFinder(
 			$this->idCacheManager
 		);
 
@@ -958,6 +967,7 @@ class EntityIdManager {
 				'entity.lookup' => 2000,
 				'propertytable.hash' => self::MAX_CACHE_SIZE,
 				'warmup.byid' => self::MAX_CACHE_SIZE,
+				'sequence.map' => self::MAX_CACHE_SIZE,
 			]
 		);
 
@@ -1001,6 +1011,48 @@ class EntityIdManager {
 	 */
 	public function setPropertyTableHashes( $sid, $hash = null ) {
 		$this->propertyTableHashes->setPropertyTableHashes( $sid, $hash );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $sid
+	 * @param array $dataMap
+	 */
+	public function setSequenceMap( $sid, array $map = null ) {
+		$this->sequenceMapFinder->setMap( $sid, $map );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $sid
+	 * @param string|null $key
+	 *
+	 * @return array
+	 */
+	public function getSequenceMap( $sid, $key = null ) {
+
+		$sequenceMap = $this->sequenceMapFinder->findMapById( $sid );
+
+		if ( $key === null ) {
+			return $sequenceMap;
+		}
+
+		if ( isset( $sequenceMap[$key] ) ) {
+			return $sequenceMap[$key];
+		}
+
+		return [];
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $ids
+	 */
+	public function loadSequenceMap( array $ids ) {
+		$this->sequenceMapFinder->prefetchSequenceMap( $ids );
 	}
 
 }

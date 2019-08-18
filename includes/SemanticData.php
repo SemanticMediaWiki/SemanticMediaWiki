@@ -4,6 +4,7 @@ namespace SMW;
 
 use MWException;
 use SMW\DataModel\SubSemanticData;
+use SMW\DataModel\SequenceMap;
 use SMW\Exception\SemanticDataImportException;
 use SMWContainerSemanticData;
 use SMWDataItem;
@@ -167,6 +168,11 @@ class SemanticData {
 	protected $extensionData = [];
 
 	/**
+	 * @var array
+	 */
+	protected $sequenceMap = [];
+
+	/**
 	 * This is kept public to keep track of the depth during a recursive processing
 	 * when accessed through the SubSemanticData instance.
 	 *
@@ -201,7 +207,7 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData' ];
+		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData', 'sequenceMap' ];
 	}
 
 	/**
@@ -211,6 +217,17 @@ class SemanticData {
 	 */
 	public function getSubject() {
 		return $this->mSubject;
+	}
+
+	/**
+	 * Returns a hashed value map
+	 *
+	 * @since 3.1
+	 *
+	 * @return []
+	 */
+	public function getSequenceMap() {
+		return $this->sequenceMap;
 	}
 
 	/**
@@ -452,10 +469,24 @@ class SemanticData {
 		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
 			$this->mPropVals[$property->getKey()] = [];
 			$this->mProperties[$property->getKey()] = $property;
+
+			if ( SequenceMap::canMap( $property ) ) {
+				$this->sequenceMap[$property->getKey()] = [];
+			}
+		}
+
+		$hash = md5( $dataItem->getHash() );
+
+		// Only store a map for values that are allowed to
+		if (
+			$this->mNoDuplicates &&
+			isset( $this->sequenceMap[$property->getKey()] ) &&
+			!isset( $this->mPropVals[$property->getKey()][$hash] ) ) {
+			$this->sequenceMap[$property->getKey()][] = $hash;
 		}
 
 		if ( $this->mNoDuplicates ) {
-			$this->mPropVals[$property->getKey()][$dataItem->getHash()] = $dataItem;
+			$this->mPropVals[$property->getKey()][$hash] = $dataItem;
 		} else {
 			$this->mPropVals[$property->getKey()][] = $dataItem;
 		}
@@ -578,13 +609,15 @@ class SemanticData {
 			return;
 		}
 
-		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) || !array_key_exists( $property->getKey(), $this->mProperties ) ) {
+		if (
+			!array_key_exists( $property->getKey(), $this->mPropVals ) ||
+			!array_key_exists( $property->getKey(), $this->mProperties ) ) {
 			return;
 		}
 
 		if ( $this->mNoDuplicates ) {
 			//this didn't get checked for my tests, but should work
-			unset( $this->mPropVals[$property->getKey()][$dataItem->getHash()] );
+			unset( $this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] );
 		} else {
 			foreach( $this->mPropVals[$property->getKey()] as $index => $di ) {
 				if( $di->equals( $dataItem ) ) {
@@ -681,11 +714,26 @@ class SemanticData {
 		// more duplicate elimination:
 		if ( count( $this->mProperties ) == 0 &&
 		     ( $semanticData->mNoDuplicates >= $this->mNoDuplicates ) ) {
+
 			$this->mProperties = $semanticData->getProperties();
+			$this->sequenceMap = $semanticData->getSequenceMap();
 			$this->mPropVals = [];
 
 			foreach ( $this->mProperties as $property ) {
-				$this->mPropVals[$property->getKey()] = $semanticData->getPropertyValues( $property );
+				$key = $property->getKey();
+				$this->mPropVals[$key] = $semanticData->getPropertyValues( $property );
+
+				if ( SequenceMap::canMap( $property ) && isset( $this->sequenceMap[$key] ) ) {
+					$sequenceMap = array_flip( $this->sequenceMap[$key] );
+
+					usort ( $this->mPropVals[$key], function( $a, $b ) use( $sequenceMap ) {
+
+						$pos_a = $sequenceMap[md5( $a->getHash() )];
+						$pos_b = $sequenceMap[md5( $b->getHash() )];
+
+						return ( $pos_a < $pos_b ) ? -1 : 1;
+					} );
+				}
 			}
 
 			$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
