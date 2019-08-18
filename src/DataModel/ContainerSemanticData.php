@@ -71,7 +71,8 @@ class ContainerSemanticData extends SemanticData {
 			'skipAnonymousCheck',
 			'subSemanticData',
 			'options',
-			'extensionData'
+			'extensionData',
+			'sequenceMap'
 		];
 	}
 
@@ -138,8 +139,8 @@ class ContainerSemanticData extends SemanticData {
 
 		if ( $semanticData === null ) {
 			return;
-		}		
-		
+		}
+
 		$this->mSubject = $semanticData->getSubject();
 		$this->mProperties = $semanticData->getProperties();
 		$this->mPropVals = [];
@@ -150,6 +151,7 @@ class ContainerSemanticData extends SemanticData {
 
 		$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
 		$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
+		$this->sequenceMap = $semanticData->getSequenceMap();
 		$this->mNoDuplicates = $semanticData->mNoDuplicates;
 	}
 

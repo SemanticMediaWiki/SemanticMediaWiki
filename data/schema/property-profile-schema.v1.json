@@ -1,0 +1,68 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_PROFILE_SCHEMA",
+	"type": "object",
+	"title": "Property profile validation schema",
+	"required": [
+		"type",
+		"profile"
+	],
+	"properties": {
+		"type": {
+			"$id": "#/properties/type",
+			"type": "string",
+			"enum": [
+				"PROPERTY_PROFILE_SCHEMA"
+			],
+			"title": "Schema type",
+			"default": "PROPERTY_PROFILE_SCHEMA"
+		},
+		"title_prefix": {
+			"$id": "#/properties/title_prefix",
+			"type": "string",
+			"enum": [
+				"Profile"
+			],
+			"title": "Title prefix"
+		},
+		"manifest_version": {
+			"$id": "#/properties/manifest_version",
+			"type": "number",
+			"title": "Manifest version",
+			"default": 1
+		},
+		"tags": {
+			"$id": "#/properties/tags",
+			"type": "array",
+			"title": "tags",
+			"default": null,
+			"items": {
+				"$id": "#/properties/tags/items",
+				"type": "string",
+				"title": "tags, keywords etc.",
+				"default": "",
+				"pattern": "^(.*)$"
+			}
+		},
+		"profile": {
+			"$id": "#/properties/profile",
+			"type": "object",
+			"title": "Available profile options",
+			"minProperties": 1,
+			"properties": {
+				"sequence_map": {
+					"$ref": "#/definitions/sequence_map"
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"definitions": {
+		"sequence_map": {
+			"$id": "#/definitions/sequence_map",
+			"type": "boolean",
+			"default": false,
+			"title": "Whether to store annotation values in the order of the input or not"
+		}
+	}
+}

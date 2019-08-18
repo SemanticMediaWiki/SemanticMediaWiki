@@ -75,6 +75,10 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testMove_ZeroTarget() {
 
+		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		}
+
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -108,11 +112,11 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'insertId' )
 			->will( $this->returnValue( 9999 ) );
 
-		$this->connection->expects( $this->once() )
+		$this->connection->expects( $this->any() )
 			->method( 'delete' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) );
+			->withConsecutive(
+				[ $this->equalTo( 'smw_object_aux' ), $this->equalTo( [ 'smw_id' => 42 ] ) ],
+				[ $this->equalTo( 'smw_object_ids' ), $this->equalTo( [ 'smw_id' => 42 ] ) ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
@@ -136,6 +140,10 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMove_Target() {
+
+		if ( !method_exists( '\PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'withConsecutive' ) ) {
+			$this->markTestSkipped( 'PHPUnit_Framework_MockObject_Builder_InvocationMocker::withConsecutive requires PHPUnit 5.7+.' );
+		}
 
 		$row = [
 			'smw_id' => 42,
@@ -162,11 +170,11 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->equalTo( [ 'smw_id' => 1001 ] + $row ) );
 
-		$this->connection->expects( $this->once() )
+		$this->connection->expects( $this->any() )
 			->method( 'delete' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [ 'smw_id' => 42 ] ) );
+			->withConsecutive(
+				[ $this->equalTo( 'smw_object_aux' ), $this->equalTo( [ 'smw_id' => 42 ] ) ],
+				[ $this->equalTo( 'smw_object_ids' ), $this->equalTo( [ 'smw_id' => 42 ] ) ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )

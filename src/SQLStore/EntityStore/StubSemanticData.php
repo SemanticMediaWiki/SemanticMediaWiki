@@ -110,7 +110,18 @@ class StubSemanticData extends SemanticData {
 		$result->mHasVisibleProps = $semanticData->mHasVisibleProps;
 		$result->mHasVisibleSpecs = $semanticData->mHasVisibleSpecs;
 		$result->stubObject = $semanticData->stubObject;
+		$result->sequenceMap = $semanticData->sequenceMap;
 		return $result;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param integer $sid
+	 * @param [] $sequenceMap
+	 */
+	public function setSequenceMap( $sid, $sequenceMap ) {
+		$this->sequenceMap = is_array( $sequenceMap ) ? $sequenceMap : [];
 	}
 
 	/**
@@ -370,7 +381,7 @@ class StubSemanticData extends SemanticData {
 			}
 
 			if ( $this->mNoDuplicates ) {
-				$this->mPropVals[$property->getKey()][$dataItem->getHash()] = $dataItem;
+				$this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] = $dataItem;
 			} else {
 				$this->mPropVals[$property->getKey()][] = $dataItem;
 			}

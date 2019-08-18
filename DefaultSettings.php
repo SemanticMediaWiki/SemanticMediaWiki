@@ -71,7 +71,7 @@ return [
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'smw:2019-01-19',
+	'smwgUpgradeKey' => 'smw:2019-08-18',
 	##
 
 	###
@@ -2144,7 +2144,14 @@ return [
 			'type_description' => 'smw-schema-description-class-constraint-schema',
 			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
 			'usage_lookup' => '_CONSTRAINT_SCHEMA'
-		]
+		],
+		'PROPERTY_PROFILE_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_PROFILE,
+			'validation_schema' => __DIR__ . '/data/schema/property-profile-schema.v1.json',
+			'type_description' => 'smw-schema-description-property-profile-schema',
+			'change_propagation' => '_PROFILE_SCHEMA',
+			'usage_lookup' => '_PROFILE_SCHEMA'
+		],
 	],
 	##
 

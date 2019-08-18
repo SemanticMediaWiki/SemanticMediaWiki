@@ -68,6 +68,23 @@ class PropertyTableHashes {
 			__METHOD__
 		);
 
+/*
+		$smw_proptable = $hash === null ? null : serialize( $hash );
+
+		$this->connection->upsert(
+			SQLStore::ID_AUXILIARY_TABLE,
+			[
+				'smw_id' => $id,
+				'smw_proptable' => $smw_proptable
+			],
+			[ 'smw_id' ],
+			[
+				'smw_id' => $id,
+				'smw_proptable' => $smw_proptable
+			],
+			__METHOD__
+		);
+*/
 		$this->setPropertyTableHashesCache( $id, $hash );
 
 		if ( $hash === null ) {

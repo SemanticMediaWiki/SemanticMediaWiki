@@ -50,10 +50,22 @@ class SchemaFinder {
 	 * @return SchemaList|[]
 	 */
 	public function getConstraintSchema( DataItem $dataItem ) {
+		return $this->newSchemaList( $dataItem, new DIProperty( '_CONSTRAINT_SCHEMA' ) );
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 * @param DIProperty $property
+	 *
+	 * @return SchemaList|[]
+	 */
+	public function newSchemaList( DataItem $dataItem, DIProperty $property ) {
 
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_CONSTRAINT_SCHEMA' )
+			$property
 		);
 
 		if ( $dataItems === null || $dataItems === false ) {

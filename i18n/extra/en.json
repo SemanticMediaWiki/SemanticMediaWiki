@@ -125,6 +125,7 @@
             "_SCHEMA_LINK": "Schema link",
             "_FORMAT_SCHEMA": "Formatter schema",
             "_CONSTRAINT_SCHEMA": "Constraint schema",
+            "_PROFILE_SCHEMA": "Profile schema",
             "_ATTCH_LINK": "Attachment link",
             "_FILE_ATTCH": "File attachment",
             "_CONT_TYPE": "Content type",
@@ -201,6 +202,8 @@
             "Formatter schema": "_FORMAT_SCHEMA",
             "Constraint schema": "_CONSTRAINT_SCHEMA",
             "Property constraint schema": "_CONSTRAINT_SCHEMA",
+            "Profile schema": "_PROFILE_SCHEMA",
+            "Property profile schema": "_PROFILE_SCHEMA",
             "File attachment": "_FILE_ATTCH",
             "Has file attachment": "_FILE_ATTCH",
             "Has translation":"_TRANS"

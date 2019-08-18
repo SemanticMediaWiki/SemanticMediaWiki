@@ -313,6 +313,28 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSequenceMapFinder() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\SequenceMapFinder',
+			$instance->newSequenceMapFinder( $idCacheManager )
+		);
+	}
+
 	public function testCanConstructCacheWarmer() {
 
 		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )

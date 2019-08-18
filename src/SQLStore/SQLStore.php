@@ -108,6 +108,11 @@ class SQLStore extends Store {
 	const ID_TABLE = 'smw_object_ids';
 
 	/**
+	 * Name of the ID auxiliary table
+	 */
+	const ID_AUXILIARY_TABLE = 'smw_object_aux';
+
+	/**
 	 * @var SQLStoreFactory
 	 */
 	private $factory;

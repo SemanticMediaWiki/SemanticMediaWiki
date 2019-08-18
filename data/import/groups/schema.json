@@ -11,7 +11,8 @@
                 "_SCHEMA_TAG",
                 "_SCHEMA_LINK",
                 "_FORMAT_SCHEMA",
-                "_CONSTRAINT_SCHEMA"
+                "_CONSTRAINT_SCHEMA",
+                "_PROFILE_SCHEMA"
             ]
         }
     ],

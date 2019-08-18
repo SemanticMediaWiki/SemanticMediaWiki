@@ -182,6 +182,11 @@ class SemanticDataLookup {
 			}
 		}
 
+		$stubSemanticData->setSequenceMap(
+			$id,
+			$this->store->getObjectIds()->getSequenceMap( $id )
+		);
+
 		return $stubSemanticData;
 	}
 
@@ -199,6 +204,7 @@ class SemanticDataLookup {
 
 		$ids = [];
 		$isSubject = true;
+		$entityIdManager = $this->store->getObjectIds();
 
 		foreach ( $subjects as $k => $subject ) {
 
@@ -206,7 +212,7 @@ class SemanticDataLookup {
 				continue;
 			}
 
-			$id = $this->store->getObjectIds()->getSMWPageID(
+			$id = $entityIdManager->getSMWPageID(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -222,7 +228,7 @@ class SemanticDataLookup {
 			return [];
 		}
 
-		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
+		$pid = $entityIdManager->getSMWPropertyID( $property );
 		$this->caller = __METHOD__;
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -271,6 +277,8 @@ class SemanticDataLookup {
 
 			$result[$sid]["$i#$h"] = $data[1];
 		}
+
+		$entityIdManager->loadSequenceMap( array_keys( $ids ) );
 
 		return $result;
 	}

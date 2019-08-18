@@ -1,0 +1,91 @@
+{
+	"description": "Test `smw/schema` on `PROPERTY_PROFILE_SCHEMA` with `sequence_map`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_SCHEMA",
+			"page": "Profile:AnnotationSequenceMap",
+			"contents": {
+				"import-from": "/../Fixtures/p-1120-annotation-sequence-map.json"
+			}
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has authors",
+			"contents": "[[Has type::Text]] [[Profile schema::Profile:AnnotationSequenceMap]]"
+		},
+		{
+			"page": "P1120/1",
+			"contents": "[[Has authors::Zoe K.]] [[Has authors::Charlotte B.]] [[Has authors::Yui B.]] [[Category:P1120:1]] [[Has authors::Charlotte B.]]"
+		},
+		{
+			"page": "P1120/2",
+			"contents": "{{#subobject: |Has authors=Zoe K.,Charlotte B.,Yui B.,Charlotte B.|+sep=, |@category=P1120:2 }}"
+		},
+		{
+			"page": "P1120/3",
+			"contents": "{{#subobject: |Has authors=Charlotte B.,Zoe K.,Charlotte B.,Yui B.|+sep=, |@category=P1120:3 }}"
+		},
+		{
+			"page": "P1120/Q.1",
+			"contents": "{{#ask: [[Category:P1120:1]] [[Has authors::+]] |?Has authors |format=table |headers=plain }}"
+		},
+		{
+			"page": "P1120/Q.2",
+			"contents": "{{#ask: [[Category:P1120:2]] [[Has authors::+]] |?Has authors |format=table |headers=plain }}"
+		},
+		{
+			"page": "P1120/Q.3",
+			"contents": "{{#ask: [[Category:P1120:3]] [[Has authors::+]] |?Has authors |format=table |headers=plain }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "P1120/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-authors smwtype_txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "P1120/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-authors smwtype_txt\">Zoe K.<br />Charlotte B.<br />Yui B.</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "P1120/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-authors smwtype_txt\">Charlotte B.<br />Zoe K.<br />Yui B.</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_SCHEMA": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

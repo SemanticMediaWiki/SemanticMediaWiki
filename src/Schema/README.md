@@ -36,6 +36,7 @@ In the example above, `FOO_SCHEMA` refers to the type name and any attributes as
 - [`PROPERTY_GROUP_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.group.md)
 - [`PROPERTY_CONSTRAINT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.constraint.md)
 - [`CLASS_CONSTRAINT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/class.constraint.md)
+- [`PROPERTY_PROFILE_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.profile.md)
 
 [json:schema]: http://json-schema.org/
 
