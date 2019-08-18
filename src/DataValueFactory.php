@@ -403,6 +403,34 @@ class DataValueFactory {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param DIProperty $property
+	 * @param string|false $caption
+	 * @param DIWikiPage|null $contextPage
+	 *
+	 * @return DataValue
+	 */
+	public function newPropertyValueByItem( DIProperty $property, $caption = false, DIWikiPage $contextPage = null ) {
+
+		$dataValue = $this->newDataValueByType(
+			PropertyValue::TYPE_ID,
+			false,
+			$caption,
+			null,
+			$contextPage
+		);
+
+		$dataValue->setDataItem( $property );
+
+		if ( $caption !== false ) {
+			$dataValue->setCaption( $caption );
+		}
+
+		return $dataValue;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param string $typeid

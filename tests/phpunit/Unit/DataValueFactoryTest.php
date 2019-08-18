@@ -241,6 +241,25 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewPropertyValueByItem() {
+
+		$dataValue = DataValueFactory::getInstance()->newPropertyValueByItem(
+			DIProperty::newFromUserLabel( __METHOD__ ),
+			'Bar',
+			new DIWikiPage( 'Foobar', SMW_NS_PROPERTY )
+		);
+
+		$this->assertInstanceOf(
+			'\SMWPropertyValue',
+			$dataValue
+		);
+
+		$this->assertSame(
+			'Bar',
+			$dataValue->getCaption()
+		);
+	}
+
 	/**
 	 * @dataProvider newDataValueByItemDataProvider
 	 */
