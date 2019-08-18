@@ -36,6 +36,14 @@ class HtmlModalTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testElement() {
+
+		$this->assertContains(
+			'smw-modal-link',
+			HtmlModal::element( 'Foo' )
+		);
+	}
+
 	public function testModal() {
 
 		$this->assertContains(

@@ -60,6 +60,31 @@ class HtmlModal {
 	}
 
 	/**
+	 * Embbeded page links will have issues with href and #help therefore
+	 * just provide a simple wrapper for an in-page usage.
+	 *
+	 * @since 3.1
+	 *
+	 * @param string $html
+	 * @param array $attributes
+	 *
+	 * @return string
+	 */
+	public static function element( $name, array $attributes = [] ) {
+
+		$attributes = self::mergeAttributes(
+			'smw-modal-link is-disabled',
+			$attributes
+		);
+
+		return Html::rawElement(
+			'span',
+			$attributes,
+			$name
+		);
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $html
