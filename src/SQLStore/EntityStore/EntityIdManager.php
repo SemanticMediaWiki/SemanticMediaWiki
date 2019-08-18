@@ -973,6 +973,8 @@ class EntityIdManager {
 			$this->idCacheManager,
 			$this->propertyTableHashes
 		);
+
+		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 	}
 
 	/**
