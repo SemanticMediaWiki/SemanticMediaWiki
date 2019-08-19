@@ -942,6 +942,7 @@
 	"smw-schema-description": "وصف المخطط",
 	"smw-schema-description-link-format-schema": "نوع المخطط هذا يدعم تعريف الخصائص الخاصة بإنشاء وصلات حساسة للسياق فيما يتعلق بخاصية [[Property:Formatter schema|مخطط المنسق]].",
 	"smw-schema-description-search-form-schema": "يدعم نوع المخطط هذا تعريف نماذج المدخلات والخصائص لملف تعريف [https://www.semantic-mediawiki.org/wiki/Help:SMWSearch extended search] حيث يحتوي على إرشادات حول كيفية إنشاء حقول الإدخال وتحديد النطاقات الافتراضية، أو بيان تعبيرات بادئة لطلب بحث.",
+	"smw-schema-description-property-profile-schema": "يدعم نوع المخطط هذا تعريف ملف شخصي لإعلان خصائص الخاصية المعينة وقيمها التوضيحية.",
 	"smw-schema-description-property-group-schema": "يدعم نوع المخطط هذا تعريف [https://www.semantic-mediawiki.org/wiki/Help:Property_group مجموعات الخواص] للمساعدة في بناء واجهة [https://www.semantic-mediawiki.org/wiki/Help:Special:Browse التصفح].",
 	"smw-schema-description-property-constraint-schema": "يدعم نوع المخطط هذا تعريف قواعد القيد لمثيل خاصية وكذلك تلك القيم المعينة لها.",
 	"smw-schema-description-class-constraint-schema": "يدعم نوع المخطط هذا تعريف قواعد القيد لمثيل فئة (تُعرَف أيضًا باسم التصنيف).",
