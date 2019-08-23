@@ -244,6 +244,7 @@
 	"smw-schema-title": "Scheme",
 	"smw-schema-type": "Tipe",
 	"smw-schema-type-description": "Descrizione d'u tipe",
+	"smw-schema-description-property-profile-schema": "Stu tipe de scheme supporte 'a definizione de 'nu profile pe dichiarà le caratteristeche a 'a probbietà assegnate e le valore de l'annotaziune.",
 	"smw-property-tab-usage": "Ause",
 	"smw-property-tab-redirects": "Sinonime",
 	"smw-property-tab-subproperties": "Sotteprobbietà",

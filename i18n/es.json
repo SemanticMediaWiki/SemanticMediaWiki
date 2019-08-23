@@ -827,6 +827,7 @@
 	"smw-schema-summary-title": "Resumen",
 	"smw-schema-type-description": "Descripción del tipo",
 	"smw-schema-description": "Descripción del esquema",
+	"smw-schema-description-property-profile-schema": "Este tipo de esquema soporta la definición de un perfil para declarar características a la propiedad asignada y sus valores de anotación.",
 	"smw-ask-title-keyword-type": "Búsqueda de palabras clave",
 	"smw-ask-message-keyword-type": "Esta búsqueda coincide con la condición <code><nowiki>$1</nowiki></code>.",
 	"smw-remote-source-unavailable": "No se puede conectar con el destino remoto «$1».",
