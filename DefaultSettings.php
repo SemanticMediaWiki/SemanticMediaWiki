@@ -1295,6 +1295,12 @@ return [
 	# timely manner independent of a users job scheduler environment. The number
 	# indicates the expected number of jobs to be executed per request.
 	#
+	# `purge-page`
+	#   `on-outdated-query-dependency` actively does a page purge via the API
+	#   so that not only the parser cache is refreshed but also ensures that any
+	#   newly annotation values (such as annotations depending on some query input)
+	#   are stored and recomputed.
+	#
 	# @experimental
 	#
 	# `check-query` The display of query results and the storage of entities that
@@ -1320,6 +1326,9 @@ return [
 		'check-query' => false,
 		'run-jobs' => [
 			'smw.fulltextSearchTableUpdate' => 1
+		],
+		'purge-page' => [
+			'on-outdated-query-dependency' => true
 		]
 	],
 	##

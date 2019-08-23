@@ -110,6 +110,12 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 		$this->testEnvironment->registerObject( 'DeferredCallableUpdate', $deferredCallableUpdate );
+
+		$parserCache = $this->getMockBuilder( '\ParserCache' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'ParserCache', $parserCache );
 	}
 
 	protected function tearDown() {
@@ -734,6 +740,33 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$handler = 'ArticleViewHeader';
 
+		$this->title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [] ) );
+
+		$store->expects( $this->any() )
+			->method( 'getPropertyTableInfoFetcher' )
+			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -1347,6 +1380,14 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callRejectParserCacheValue( $instance ) {
 
 		$handler = 'RejectParserCacheValue';
+
+		$this->title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$this->title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
 
 		$parseOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()

@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use Title;
+use WikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -26,11 +27,14 @@ class ParserCachePurgeJob extends Job {
 	}
 
 	/**
-	 * @see Job::run
-	 *
 	 * @since 3.1
+	 *
+	 * @param WikiPage|null $page
 	 */
-	public function run() {
+	public function updateParserCache( WikiPage $page = null ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$logger = $applicationFactory->getMediaWikiLogger();
 
 		if ( $this->hasParameter( 'action' ) ) {
 			$causeAction = $this->getParameter( 'action' );
@@ -44,10 +48,14 @@ class ParserCachePurgeJob extends Job {
 			$causeAgent = $GLOBALS['wgUser']->getName();
 		}
 
-		$page = $this->newWikiPage( $this->getTitle() );
-		$page->doPurge();
+		if ( $page === null ) {
+			$page = $this->newWikiPage( $this->getTitle() );
+		}
+
+		$title = $page->getTitle();
 
 		// MW 1.32+
+		// @see ApiPurge
 		if ( method_exists( $page, 'updateParserCache' ) ) {
 			$page->updateParserCache(
 				[
@@ -55,13 +63,58 @@ class ParserCachePurgeJob extends Job {
 					'causeAgent' => $causeAgent
 				]
 			);
+		} else {
+			$this->runLegacyUpdateParserCache( $page );
 		}
+
+		$logger->info(
+			[ 'ParserCache', 'Forced update for: {title}', 'causeAction: {causeAction}' ],
+			[ 'causeAction' => $causeAction, 'title' => $title->getPrefixedText(), 'role' => 'production' ]
+		);
+	}
+
+	/**
+	 * @see Job::run
+	 *
+	 * @since 3.1
+	 */
+	public function run() {
+
+		$page = $this->newWikiPage( $this->getTitle() );
+		$page->doPurge();
+		$this->updateParserCache( $page );
 
 		return true;
 	}
 
 	protected function newWikiPage( $title ) {
-		return \WikiPage::factory( $title );
+		return WikiPage::factory( $title );
+	}
+
+	/**
+	 * Only for MW 1.31
+	 */
+	private function runLegacyUpdateParserCache( $page ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$enableParserCache = true;
+
+		$popts = $page->makeParserOptions( 'canonical' );
+		$content = $page->getContent( \Revision::RAW );
+
+		if ( $content ) {
+			$p_result = $content->getParserOutput(
+				$page->getTitle(),
+				$page->getLatest(),
+				$popts,
+				$enableParserCache
+			);
+
+			if ( $enableParserCache ) {
+				$parserCache = $applicationFactory->singleton( 'ParserCache' );
+				$parserCache->save( $p_result, $page, $popts );
+			}
+		}
 	}
 
 }

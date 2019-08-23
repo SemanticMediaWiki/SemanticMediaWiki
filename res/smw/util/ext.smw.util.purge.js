@@ -19,6 +19,33 @@
 
 	'use strict';
 
+	var purge = function( context ) {
+
+		var forcelinkupdate = false;
+
+		if ( context.data( 'title' ) ) {
+			var title = context.data( 'title' );
+		} else {
+			var title = mw.config.get( 'wgPageName' );
+		}
+
+		if ( context.data( 'msg' ) ) {
+			mw.notify( mw.msg( context.data( 'msg' ) ), { type: 'info', autoHide: false } );
+		};
+
+		if ( context.data( 'forcelinkupdate' ) ) {
+			forcelinkupdate = context.data( 'forcelinkupdate' );
+		};
+
+		var postArgs = { action: 'purge', titles: title, forcelinkupdate: forcelinkupdate };
+
+		new mw.Api().post( postArgs ).then( function () {
+			location.reload();
+		}, function () {
+			mw.notify( mw.msg( 'smw-purge-failed' ), { type: 'error' } );
+		} );
+	}
+
 	mw.loader.using( [ 'mediawiki.api', 'mediawiki.notify' ] ).then( function () {
 
 		// JS is loaded, now remove the "soft" disabled functionality
@@ -28,20 +55,12 @@
 		$( "#ca-purge a" ).removeClass( 'is-disabled' );
 
 		$( "#ca-purge a, .purge" ).on( 'click', function ( e ) {
-
-			if ( $( this ).data( 'title' ) ) {
-				var title = $( this ).data( 'title' );
-			} else {
-				var title = mw.config.get( 'wgPageName' );
-			}
-
-			var postArgs = { action: 'purge', titles: title };
-			new mw.Api().post( postArgs ).then( function () {
-				location.reload();
-			}, function () {
-				mw.notify( mw.msg( 'smw-purge-failed' ), { type: 'error' } );
-			} );
+			purge( $( this ) );
 			e.preventDefault();
+		} );
+
+		$( ".page-purge" ).each( function () {
+			purge( $( this ) );
 		} );
 
 	} );

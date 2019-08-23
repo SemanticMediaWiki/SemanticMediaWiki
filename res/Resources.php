@@ -268,7 +268,8 @@ return [
 	'ext.smw.purge' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.purge.js',
 		'messages' => [
-			'smw-purge-failed'
+			'smw-purge-failed',
+			'smw-purge-update-dependencies'
 		],
 		'position' => 'top',
 		'targets' => [

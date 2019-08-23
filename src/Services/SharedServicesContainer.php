@@ -59,6 +59,7 @@ use SMW\MediaWiki\IndicatorRegistry;
 use SMW\EntityCache;
 use SMW\DisplayTitleFinder;
 use SMW\Constraint\ConstraintErrorIndicatorProvider;
+use SMW\DependencyValidator;
 
 /**
  * @license GNU GPL v2+
@@ -803,6 +804,27 @@ class SharedServicesContainer implements CallbackContainer {
 
 			return $magicWordsFinder;
 		} );
+
+		/**
+		 * @var DependencyValidator
+		 */
+		$containerBuilder->registerCallback( 'DependencyValidator', function( $containerBuilder, $store = null ) {
+			$containerBuilder->registerExpectedReturnType( 'DependencyValidator', '\SMW\DependencyValidator' );
+
+			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
+			$settings = $containerBuilder->singleton( 'Settings' );
+
+			$queryDependencyLinksStoreFactory = $containerBuilder->singleton( 'QueryDependencyLinksStoreFactory' );
+
+			$dependencyValidator = new DependencyValidator(
+				$containerBuilder->create( 'NamespaceExaminer' ),
+				$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
+				$containerBuilder->singleton( 'EntityCache' )
+			);
+
+			return $dependencyValidator;
+		} );
+
 	}
 
 }

@@ -635,10 +635,30 @@ class Hooks {
 	public function onArticleViewHeader( &$page, &$outputDone, &$useParserCache ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+
+		// Get the key to distinguish between an anon and logged-in user stored
+		// parser cache
+		$parserCache = $applicationFactory->create( 'ParserCache' );
+
+		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
+
+		$dependencyValidator->setETag(
+			$parserCache->getETag( $page, $page->makeParserOptions( 'canonical' ) )
+		);
+
+		$dependencyValidator->setCacheTTL(
+			Site::getCacheExpireTime( 'parser' )
+		);
+
+		$dependencyValidator->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
+		);
+
 		$settings = $applicationFactory->getSettings();
 
 		$articleViewHeader = new ArticleViewHeader(
-			$applicationFactory->getStore()
+			$applicationFactory->getStore(),
+			$dependencyValidator
 		);
 
 		$articleViewHeader->setOptions(
@@ -660,37 +680,41 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
 	 */
-	public function onRejectParserCacheValue( $value, $wikiPage, $popts ) {
+	public function onRejectParserCacheValue( $value, $page, $popts ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
+
+		// Get the key to distinguish between an anon and logged-in user stored
+		// parser cache
+		$parserCache = $applicationFactory->create( 'ParserCache' );
+
+		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
+
+		$dependencyValidator->setETag(
+			$parserCache->getETag( $page, $popts )
+		);
+
+		$dependencyValidator->setCacheTTL(
+			Site::getCacheExpireTime( 'parser' )
+		);
+
+		$dependencyValidator->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
+		);
 
 		$rejectParserCacheValue = new RejectParserCacheValue(
 			$applicationFactory->getNamespaceExaminer(),
-			$queryDependencyLinksStoreFactory->newDependencyLinksValidator(),
-			$applicationFactory->getEntityCache()
-		);
-
-		$rejectParserCacheValue->setEventDispatcher(
-			$applicationFactory->getEventDispatcher()
+			$dependencyValidator
 		);
 
 		$rejectParserCacheValue->setLogger(
 			$applicationFactory->getMediaWikiLogger()
 		);
 
-		$rejectParserCacheValue->setCacheTTL(
-			Site::getCacheExpireTime( 'parser' )
-		);
-
-		// Get the key to distinguish between an anon and logged-in user stored
-		// parser cache
-		$eTag = \ParserCache::singleton()->getETag( $wikiPage, $popts );
-
 		// Return false to reject the parser cache
 		// The log will contain something like "[ParserCache] ParserOutput
 		// key valid, but rejected by RejectParserCacheValue hook handler."
-		return $rejectParserCacheValue->process( $wikiPage->getTitle(), $eTag );
+		return $rejectParserCacheValue->process( $page );
 	}
 
 	/**
