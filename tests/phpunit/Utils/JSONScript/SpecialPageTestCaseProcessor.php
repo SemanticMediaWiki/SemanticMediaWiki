@@ -118,6 +118,13 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 		ob_end_clean();
 
+		if ( $this->debug ) {
+			var_dump(
+				"\n\n== DEBUG (start) ==\n\n" . $text .
+				"\n\n== DEBUG (end) ==\n\n"
+			);
+		}
+
 		$code = $response->getStatusCode();
 
 		if ( $code > 0 ) {
