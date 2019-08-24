@@ -144,9 +144,8 @@ class HtmlForm {
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
-			$urlArgs->setFragment( 'search' );
 			$params = [
-				'action' => $this->title->getLocalUrl( $urlArgs ),
+				'action' => $this->title->getLocalUrl( '#search' ),
 				'name' => 'ask',
 				'method' => 'post'
 			];
