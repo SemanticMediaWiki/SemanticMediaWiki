@@ -12,6 +12,8 @@
          stopOnIncomplete="false"
          stopOnSkipped="false"
          beStrictAboutTestsThatDoNotTestAnything="true"
+         printerClass="SMW\Tests\PHPUnitResultPrinter"
+         printerFile="tests/phpunit/PHPUnitResultPrinter.php"
          verbose="true">
     <listeners>
         <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Tests\ExecutionTimeTestListener">
