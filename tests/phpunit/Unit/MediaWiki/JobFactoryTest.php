@@ -94,16 +94,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			'SMW\ParserCachePurgeJob',
-			'\SMW\MediaWiki\Jobs\NullJob'
-		];
-
-		$provider[] = [
-			'smw.parserCachePurge',
-			'\SMW\MediaWiki\Jobs\NullJob'
-		];
-
-		$provider[] = [
 			'SMW\FulltextSearchTableUpdateJob',
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
 		];
@@ -171,6 +161,11 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'smw.changePropagationClassUpdate',
 			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
+		];
+
+		$provider[] = [
+			'smw.parserCachePurge',
+			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
 		];
 
 		return $provider;

@@ -235,6 +235,7 @@ final class Setup {
 			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
 			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
 			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
+			'smw.parserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 
 			// Legacy 3.0-
 			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
