@@ -162,8 +162,8 @@ class NavigationLinksWidget {
 		}
 
 		$urlArgs = clone $urlArgs;
-		$limit = $urlArgs->get( 'limit' );
-		$offset = $urlArgs->get( 'offset' );
+		$limit = (int)$urlArgs->get( 'limit' );
+		$offset = (int)$urlArgs->get( 'offset' );
 
 		// Remove any contents that is cruft
 		if ( strpos( $urlArgs->get( 'p' ), 'cl=' ) !== false ) {
