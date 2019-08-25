@@ -19,6 +19,8 @@ use SMW\Tests\TestEnvironment;
 class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
+	private $store;
+	private $dependencyValidator;
 
 	protected function setUp() {
 		parent::setUp();
@@ -28,6 +30,10 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->dependencyValidator = $this->getMockBuilder( '\SMW\DependencyValidator' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
@@ -41,7 +47,7 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ArticleViewHeader::class,
-			new ArticleViewHeader( $this->store )
+			new ArticleViewHeader( $this->store, $this->dependencyValidator )
 		);
 	}
 
@@ -91,7 +97,8 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $context ) );
 
 		$instance = new ArticleViewHeader(
-			$this->store
+			$this->store,
+			$this->dependencyValidator
 		);
 
 		$instance->setOptions(
@@ -130,7 +137,8 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' );
 
 		$instance = new ArticleViewHeader(
-			$this->store
+			$this->store,
+			$this->dependencyValidator
 		);
 
 		$instance->setOptions(
@@ -143,6 +151,52 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 		$useParserCache = '';
 
 		$instance->process( $page, $outputDone, $useParserCache );
+	}
+
+	public function testHasArchaicDependency() {
+
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$this->dependencyValidator->expects( $this->any() )
+			->method( 'hasArchaicDependencies' )
+			->will( $this->returnValue( true ) );
+
+		$title = $subject->getTitle();
+
+		$output = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page = $this->getMockBuilder( '\Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$page->expects( $this->never() )
+			->method( 'getContext' );
+
+		$instance = new ArticleViewHeader(
+			$this->store,
+			$this->dependencyValidator
+		);
+
+		$instance->setOptions(
+			[
+				'smwgChangePropagationWatchlist' => [ '_SUBC' ]
+			]
+		);
+
+		$outputDone = '';
+		$useParserCache = '';
+
+		$instance->process( $page, $outputDone, $useParserCache );
+
+		$this->assertFalse(
+			$useParserCache
+		);
 	}
 
 }

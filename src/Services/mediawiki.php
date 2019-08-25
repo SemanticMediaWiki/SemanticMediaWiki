@@ -228,4 +228,13 @@ return [
 		return JobQueueGroup::singleton();
 	},
 
+	/**
+	 * ParserCache
+	 *
+	 * @return callable
+	 */
+	'ParserCache' => function( $containerBuilder ) {
+		return MediaWikiServices::getInstance()->getParserCache();
+	},
+
 ];

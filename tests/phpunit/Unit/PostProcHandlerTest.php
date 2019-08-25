@@ -182,6 +182,49 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testPurgePageOnQueryDependency() {
+
+		$this->parserOutput->expects( $this->any() )
+			->method( 'getExtensionData' )
+			->with( $this->equalTo( PostProcHandler::POST_EDIT_UPDATE ) )
+			->will( $this->returnValue( [ 'Bar' ] ) );
+
+		$instance = new PostProcHandler(
+			$this->parserOutput,
+			$this->cache
+		);
+
+		$instance->setOptions(
+			[
+				'run-jobs' => [ 'fooJob' => 2 ],
+				'purge-page' => [ 'on-outdated-query-dependency' => true ]
+			]
+		);
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->smwLikelyOutdatedDependencies = true;
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->atLeastOnce() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$webRequest = $this->getMockBuilder( '\WebRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertContains(
+			'<div class="smw-postproc page-purge" data-subject="#0##" data-title="Foo" data-msg="smw-purge-update-dependencies" data-forcelinkupdate="1"></div>',
+			$instance->getHtml( $title,  $webRequest )
+		);
+	}
+
 	/**
 	 * @dataProvider validPropertyKey
 	 */
