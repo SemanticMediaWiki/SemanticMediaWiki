@@ -94,7 +94,7 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	public function testArmorOnUCA() {
 
 		if ( !extension_loaded( 'intl' ) ) {
-			$this->markTestSkipped( 'Skipping because intl (ICU) is not availabe.' );
+			$this->markTestSkipped( 'Skipping because intl (ICU) is not available.' );
 		}
 
 		$instance = Collator::singleton( 'uca-default' );
