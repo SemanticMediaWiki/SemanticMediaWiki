@@ -222,7 +222,7 @@
 	"smw-special-wantedproperties-docu": "На цій сторінці перелічені [https://www.semantic-mediawiki.org/wiki/Wanted_properties бажані властивості], які використовуються у вікі, але не мають сторінки опису. Диференційований показ див. на спеціальних сторінках  [[Special:Properties|усіх]] або  [[Special:UnusedProperties|невикористовуваних властивостей]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|звернення|звернення|звернень}})",
 	"smw_purge": "Оновити",
-	"smw-purge-failed": "Не вдалось оновити",
+	"smw-purge-failed": "Від Semantic MediaWiki була невдала спроба очистити сторінку",
 	"types": "Типи",
 	"smw_types_docu": "Список [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes доступних типів даних], де кожен [https://www.semantic-mediawiki.org/wiki/Help:Datatype тип] репрезентує унікальний набір атрибутів, що описують значення з точки зору характеристик зберігання й відображення, похідних від присвоєної властивості.",
 	"smw-special-types-no-such-type": "\"$1\" невідомий або не був указаний як правильний тип даних.",

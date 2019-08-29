@@ -952,7 +952,7 @@
 	"smw-es-replication-check": "Datenreplikationsprüfung (Elasticsearch)",
 	"smw-es-replication-error": "Datenreplikationsproblem",
 	"smw-es-replication-file-ingest-error": "Dateiindexierungsproblem",
-	"smw-es-replication-error-missing-id": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: $2) in der Elasticsearch-Datenbank nicht enthalten ist.",
+	"smw-es-replication-error-missing-id": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: <code>$2</code>) nicht in der Elasticsearch-Datenbank enthalten ist.",
 	"smw-es-replication-error-divergent-date": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: $2) in der Elasticsearch-Datenbank ein abweichendes <b>Änderungsdatum</b> aufweist.",
 	"smw-es-replication-error-divergent-date-detail": "Referenziertes Veränderungsdatum:\n*Elasticsearch: $1 \n*Datenbank: $2",
 	"smw-es-replication-error-divergent-revision": "Mit Hilfe der Replikationsüberwachung wurde festgestellt, dass die <b>zugehörige Version</b> der Seite $1 (Kennung: $2) eine Abweichung aufweist.",

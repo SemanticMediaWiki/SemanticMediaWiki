@@ -548,6 +548,7 @@
 	"smw-processing": "Bearbetar...",
 	"smw-types-title": "Typ: $1",
 	"smw-schema-error-title": "Validerings{{PLURAL:$1|fel}}",
+	"smw-schema-validation-schema-title": "JSON-schema",
 	"smw-schema-summary-title": "Sammanfattning",
 	"smw-schema-title": "Schema",
 	"smw-schema-usage": "Användning",

@@ -205,7 +205,7 @@
 	"smw-wantedproperty-template": "$1 ($2개 {{PLURAL:$2|사용}})",
 	"smw-special-wantedproperties-template": "$1 ($2개 {{PLURAL:$2|사용}})",
 	"smw_purge": "새로 고침",
-	"smw-purge-failed": "새로 고침 실패",
+	"smw-purge-failed": "시맨틱 미디어위키가 페이지 새로 고침을 시도하였으나 실패했습니다",
 	"types": "유형 목록",
 	"smw_types_docu": "할당된 속성에 상속되는 저장 및 표시 기능에 따라 값을 기술하기 위해 각각의 [https://www.semantic-mediawiki.org/wiki/Help:Datatype 자료형]에 고유한 속성 집합을 표현한 [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 사용 가능한 자료형] 목록입니다.",
 	"smw-special-types-no-such-type": "\"$1\"은(는) 알 수 없거나 지정된 자료형으로 지정되어 있지 않습니다.",

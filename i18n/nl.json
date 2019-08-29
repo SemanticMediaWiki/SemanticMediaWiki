@@ -514,6 +514,7 @@
 	"smw-copy": "Kopiëren",
 	"smw-copy-clipboard-title": "Inhoud naar het klembord kopiëren",
 	"smw-types-title": "Type: $1",
+	"smw-schema-validation-schema-title": "JSON-schema",
 	"smw-schema-usage": "Gebruik",
 	"smw-parameter-missing": "Parameter \"$1\" ontbreekt.",
 	"smw-property-tab-usage": "Gebruik",
