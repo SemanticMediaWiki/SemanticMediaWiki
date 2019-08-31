@@ -135,7 +135,7 @@ final class Setup {
 		// Required due to support of LTS (1.31)
 		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
 		// starting with the next supported LTS (likely MW 1.35)
-		if ( !isset( $vars['wgResourceModules']['mediawiki.api.parse'] ) ) {
+		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
 			$vars['wgResourceModules']['mediawiki.api.parse'] = [
 				'dependencies' => 'mediawiki.api',
 				'targets' => [ 'desktop', 'mobile' ]
