@@ -71,14 +71,6 @@
 	padding: .20em .55em .20em .55em !important;
 }
 
-/**
- * .skin-foreground specific styles
- */
-.skin-foreground input#smw-property-input.autocomplete-suggestions {
-	height: 32px;
-	padding: 2px 0px 0px 8px;
-}
-
 .skin-chameleon .smw-ui-input-filter input {
 	padding: .35em .55em .35em .55em !important;
 }
@@ -95,6 +87,14 @@
 
 .skin-chameleon fieldset legend {
 	width:unset;
+}
+
+/**
+ * .skin-foreground specific styles
+ */
+.skin-foreground input#smw-property-input.autocomplete-suggestions {
+	height: 32px;
+	padding: 2px 0px 0px 8px;
 }
 
 .skin-foreground .autocomplete-suggestion {
