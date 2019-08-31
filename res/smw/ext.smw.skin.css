@@ -79,6 +79,24 @@
 	padding: 2px 0px 0px 8px;
 }
 
+.skin-chameleon .smw-ui-input-filter input {
+	padding: .35em .55em .35em .55em !important;
+}
+
+.skin-chameleon .smw-callout ul,
+.skin-chameleon .smw-callout ol {
+	margin-bottom: 0;
+}
+
+.ns-112.skin-chameleon.action-submit .error ul {
+    margin: 0 0 0 0;
+    font-size: 1rem;
+}
+
+.skin-chameleon fieldset legend {
+	width:unset;
+}
+
 .skin-foreground .autocomplete-suggestion {
 	padding: 2px 5px;
 	white-space: nowrap;

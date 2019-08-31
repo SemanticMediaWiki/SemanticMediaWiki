@@ -1140,6 +1140,7 @@ a.smw-ask-action-btn-dblue:focus {
 	margin: 0.5em 0;
 	border-radius: 1px;
 	background-color: #f2dede;
+	border: 0px solid;
 	padding: .8em 1em;
 	background: #f2dede;
 	margin: 0.5rem 0;
@@ -1161,6 +1162,11 @@ a.smw-ask-action-btn-dblue:focus {
 	margin-top: 30px;
 	display: block;
 	margin-left: -20px;
+	margin-bottom: 5px;
+}
+
+.ns-112.action-submit .error ul li:not(:first-child) {
+	margin-left: 10px;
 }
 
 .ns-112.action-submit .error:before {
@@ -1173,4 +1179,6 @@ a.smw-ask-action-btn-dblue:focus {
     font-weight: 600;
     float: left;
     border-radius: 3px;
+    margin-bottom: 10px;
+    width: 100%;
 }
