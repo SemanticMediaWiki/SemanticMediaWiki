@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Search;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use Title;
 
 /**
  * @ingroup SMW
@@ -19,6 +20,15 @@ class SearchResult extends \SearchResult {
 	 * @var boolean
 	 */
 	private $hasHighlight = false;
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param Title|null $title
+	 */
+	public function __construct( $title ) {
+		$this->initFromTitle( $title );
+	}
 
 	/**
 	 * @see SearchResult::getTextSnippet
