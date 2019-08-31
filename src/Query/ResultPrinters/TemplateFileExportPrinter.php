@@ -135,7 +135,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		}
 
 		$templateExpander = new TemplateExpander(
-			$this->getParser()
+			$this->copyParser()
 		);
 
 		$text = $templateExpander->expand(
