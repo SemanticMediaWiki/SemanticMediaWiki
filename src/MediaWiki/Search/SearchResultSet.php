@@ -4,6 +4,9 @@ namespace SMW\MediaWiki\Search;
 
 use SMW\DIWikiPage;
 use SMW\Utils\CharExaminer;
+use SearchSuggestion;
+use SearchSuggestionSet;
+use SMW\Query\QueryResult;
 
 /**
  * @ingroup SMW
@@ -32,7 +35,7 @@ class SearchResultSet extends \SearchResultSet {
 
 	private $count = null;
 
-	public function __construct( \SMWQueryResult $result, $count = null ) {
+	public function __construct( QueryResult $result, $count = null ) {
 		$this->pages = $result->getResults();
 		$this->queryToken = $result->getQuery()->getQueryToken();
 		$this->excerpts = $result->getExcerpts();
@@ -95,12 +98,12 @@ class SearchResultSet extends \SearchResultSet {
 		$score = count( $this->pages );
 
 		foreach ( $this->pages as $page ) {
-			if ( ( $title = $page->getTitle() ) && $title->exists() ) {
-				$suggestions[] = \SearchSuggestion::fromTitle( $score--, $title );
+			if ( ( $title = $page->getTitle() ) ) {
+				$suggestions[] = SearchSuggestion::fromTitle( $score--, $title );
 			}
 		}
 
-		return new \SearchSuggestionSet( $suggestions, $hasMoreResults );
+		return new SearchSuggestionSet( $suggestions, $hasMoreResults );
 	}
 
 	/**
