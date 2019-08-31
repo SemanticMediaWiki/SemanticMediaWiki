@@ -1,0 +1,78 @@
+{
+	"description": "Test output via `Special:Ask` to verify limit, offset",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0038/1",
+			"contents": "[[Has number::11]] [[Category:S0038]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0038/2",
+			"contents": "[[Has number::12]] [[Category:S0038]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0038/3",
+			"contents": "[[Has number::42]] [[Category:S0038]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "S0038/4",
+			"contents": "[[Has number::1001]] [[Category:S0038]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"description": "Verifies that the offset is set and only two results are returned",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"mainlabel": "",
+						"format": "table"
+					},
+					"q": "[[Category:S0038]]",
+					"po": "?Has number",
+					"offset": 2,
+					"limit": 20
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">S0038/3</td><td class=\"Has-number smwtype_num\" data-sort-value=\"42\">42</td>",
+					"<td class=\"smwtype_wpg\">S0038/4</td><td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1,001</td>"
+				],
+				"not-contain": [
+					"<td class=\"smwtype_wpg\">S0038/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"11\">11</td>",
+					"<td class=\"smwtype_wpg\">S0038/2</td><td class=\"Has-number smwtype_num\" data-sort-value=\"12\">12</td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
