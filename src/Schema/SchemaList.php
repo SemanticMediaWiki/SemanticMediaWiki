@@ -12,6 +12,8 @@ use JsonSerializable;
  */
 class SchemaList implements JsonSerializable {
 
+	// SchemaList -> SchemaSet
+
 	/**
 	 * @var array
 	 */
@@ -87,6 +89,24 @@ class SchemaList implements JsonSerializable {
 
 		if ( isset( $list[$key] ) ) {
 			return $list[$key];
+		}
+
+		return [];
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param string $key
+	 *
+	 * @return Iterator|[]
+	 */
+	public function newCompartmentIteratorByKey( $key ) {
+
+		$list = $this->toArray();
+
+		if ( isset( $list[$key] ) ) {
+			return new CompartmentIterator( $list[$key] );
 		}
 
 		return [];
