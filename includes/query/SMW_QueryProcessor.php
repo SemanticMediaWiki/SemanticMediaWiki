@@ -15,6 +15,7 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
 use SMW\Query\ResultFormat;
 use SMW\Query\ResultPrinter;
 use SMW\Query\ResultPrinters\NullResultPrinter;
+use SMW\Query\ResultPrinterDependency;
 
 /**
  * Static class for accessing functions to generate and execute semantic queries
@@ -280,6 +281,10 @@ class SMWQueryProcessor implements QueryContext {
 			$params['format']->getValue(),
 			$context
 		);
+
+		if ( $printer instanceof ResultPrinterDependency && $printer->hasMissingDependency() ) {
+			return $printer->getDependencyError();
+		}
 
 		if ( $printer->isDeferrable() && $context === self::DEFERRED_QUERY && $query->getLimit() > 0 ) {
 

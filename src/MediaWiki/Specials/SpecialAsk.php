@@ -19,6 +19,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\QueryLinker;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
+use SMW\Query\ResultPrinterDependency;
 use SMW\Utils\HtmlModal;
 use SMWInfolink as Infolink;
 use SMWOutputs;
@@ -424,11 +425,30 @@ class SpecialAsk extends SpecialPage {
 
 	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
 
-		list( $res, $debug, $duration, $queryobj, $native_result ) = $this->getQueryResult();
+		// Copy the printout to retain the original state while in case of no
+		// specific subject (THIS) request extend the query with a
+		// `PrintRequest::PRINT_THIS` column
+		QueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
+
+		$params = QueryProcessor::getProcessedParams(
+			$this->parameters,
+			$this->printouts
+		);
+
+		$this->parameters['format'] = $params['format']->getValue();
+		$this->params = $params;
 
 		$printer = QueryProcessor::getResultPrinter(
 			$this->parameters['format'],
 			QueryProcessor::SPECIAL_PAGE
+		);
+
+		if ( $printer instanceof ResultPrinterDependency && $printer->hasMissingDependency() ) {
+			return [ $printer->getDependencyError(), null, 0 ];
+		}
+
+		list( $res, $debug, $duration, $queryobj, $native_result ) = $this->fetchQueryResult(
+			$params
 		);
 
 		$printer->setShowErrors( false );
@@ -642,27 +662,13 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function getQueryResult() {
+	private function fetchQueryResult( $params ) {
 
 		$res = null;
 		$debug = '';
 		$duration = 0;
 		$queryobj = null;
 		$native_result = '';
-
-		// Copy the printout to retain the original state while in case of no
-		// specific subject (THIS) request extend the query with a
-		// `PrintRequest::PRINT_THIS` column
-
-		QueryProcessor::addThisPrintout( $this->printouts, $this->parameters );
-
-		$params = QueryProcessor::getProcessedParams(
-			$this->parameters,
-			$this->printouts
-		);
-
-		$this->parameters['format'] = $params['format']->getValue();
-		$this->params = $params;
 
 		$queryobj = QueryProcessor::createQuery(
 			$this->queryString,
