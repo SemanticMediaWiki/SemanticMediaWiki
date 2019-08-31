@@ -61,6 +61,11 @@ class ExtendedSearch {
 	/**
 	 * @var []
 	 */
+	private $extraPrefixMap = [];
+
+	/**
+	 * @var []
+	 */
 	private $namespaces = [];
 
 	/**
@@ -87,6 +92,21 @@ class ExtendedSearch {
 	public function __construct( Store $store, SearchEngine $fallbackSearchEngine ) {
 		$this->store = $store;
 		$this->fallbackSearchEngine = $fallbackSearchEngine;
+	}
+
+	/**
+	 * @since 3.1
+	 *
+	 * @param array $extraPrefixMap
+	 */
+	public function setExtraPrefixMap( array $extraPrefixMap ) {
+		foreach ( $extraPrefixMap as $key => $value ) {
+			if ( is_string( $key ) ) {
+				$this->extraPrefixMap[] = $key;
+			} else {
+				$this->extraPrefixMap[] = $value;
+			}
+		}
 	}
 
 	/**
@@ -245,42 +265,46 @@ class ExtendedSearch {
 	public function completionSearch( $search ) {
 
 		$searchResultSet = null;
+		$minLen = 3;
 
 		// Avoid MW's auto formatting of title entities
 		if ( $search !== '' ) {
 			$search{0} = strtolower( $search{0} );
 		}
 
-		if ( !$this->hasPrefixAndMinLenForCompletionSearch( $search, 3 ) ) {
-			return $this->fallbackSearchEngine->completionSearch( $search );
-		}
+		if ( $this->hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) ) {
+			if ( $this->getSearchQuery( $search ) !== null ) {
+				$searchResultSet = $this->newSearchResultSet( $search, false, false );
+			}
 
-		if ( $this->getSearchQuery( $search ) !== null ) {
-			$searchResultSet = $this->newSearchResultSet( $search, false, false );
-		}
-
-		if ( $searchResultSet instanceof SearchResultSet ) {
-			return $searchResultSet->newSearchSuggestionSet();
+			if ( $searchResultSet instanceof SearchResultSet ) {
+				return $searchResultSet->newSearchSuggestionSet();
+			}
 		}
 
 		return $this->fallbackSearchEngine->completionSearch( $search );
 	}
 
-	private function hasPrefixAndMinLenForCompletionSearch( $term, $minLen ) {
+	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) {
 
 		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
 		// is actively used as prefix
+		$defaultPrefixMap = [ 'in', 'has', 'phrase', 'not' ];
 
-		if ( strpos( $term, 'in:' ) !== false && mb_strlen( $term ) >= ( 3 + $minLen ) ) {
-			return true;
+		foreach ( $defaultPrefixMap as $key ) {
+			$prefix = "$key:";
+
+			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+				return true;
+			}
 		}
 
-		if ( strpos( $term, 'has:' ) !== false && mb_strlen( $term ) >= ( 4 + $minLen ) ) {
-			return true;
-		}
+		foreach ( $this->extraPrefixMap as $key ) {
+			$prefix = "$key:";
 
-		if ( strpos( $term, 'phrase:' ) !== false && mb_strlen( $term ) >= ( 7 + $minLen ) ) {
-			return true;
+			if ( ( $pos = stripos( $search, $prefix ) ) !== false && $pos == 0 ) {
+				return true;
+			}
 		}
 
 		return false;
