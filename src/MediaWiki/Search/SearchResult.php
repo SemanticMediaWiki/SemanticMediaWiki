@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Search;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use Title;
 
 /**
@@ -52,6 +53,36 @@ class SearchResult extends \SearchResult {
 		}
 
 		return $this->mTitle;
+	}
+
+	/**
+	 * @see SearchResult::isBrokenTitle
+	 */
+	function isBrokenTitle() {
+		return $this->mTitle === null;
+	}
+
+	/**
+	 * @see SearchResult::isMissingRevision
+	 */
+	function isMissingRevision() {
+
+		if ( $this->mTitle == null ) {
+			return true;
+		}
+
+		if ( $this->mTitle->getNamespace() === SMW_NS_PROPERTY ) {
+			$property = DIProperty::newFromUserLabel( $this->mTitle->getDBKey() );
+
+			// Predefined properties do not necessarily have a page and hereby a
+			// a revision in MediaWiki, anyway the page exists so allow it
+			// to be displayed
+			if ( !$property->isUserDefined() ) {
+				return false;
+			}
+		}
+
+		return !$this->mTitle->exists();
 	}
 
 	/**
