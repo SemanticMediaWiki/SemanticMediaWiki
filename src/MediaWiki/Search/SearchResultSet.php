@@ -68,7 +68,7 @@ class SearchResultSet extends \SearchResultSet {
 		$searchResult = false;
 
 		if ( $page instanceof DIWikiPage ) {
-			$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+			$searchResult = new SearchResult( $page->getTitle() );
 		}
 
 		// Attempt to use excerpts available from a different back-end
@@ -125,7 +125,7 @@ class SearchResultSet extends \SearchResultSet {
 		foreach ( $this->pages as $page ) {
 
 			if ( $page instanceof DIWikiPage ) {
-				$searchResult = SearchResult::newFromTitle( $page->getTitle() );
+				$searchResult = new SearchResult( $page->getTitle() );
 			}
 
 			// Attempt to use excerpts available from a different back-end
