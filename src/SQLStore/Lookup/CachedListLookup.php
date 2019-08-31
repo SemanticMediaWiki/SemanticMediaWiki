@@ -155,7 +155,7 @@ class CachedListLookup implements ListLookup {
 
 		$data = unserialize( $this->cache->fetch( $optionsKey ) );
 
-		if ( $data === [] ) {
+		if ( !is_array( $data ) || $data === [] ) {
 			return null;
 		}
 
