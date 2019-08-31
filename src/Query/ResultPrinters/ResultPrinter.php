@@ -223,14 +223,19 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
-	 * @param string $text
-	 *
-	 * @return string
+	 * @return Parser
 	 */
-	public function expandTemplates( $text ) {
-		return $this->recursiveTextProcessor->expandTemplates( $text );
+	public function getParser() {
+
+		// Should not happen, used as fallback which in case the parser state
+		// relies on the $GLOBALS['wgParser']
+		if ( $this->recursiveTextProcessor === null ) {
+			$this->recursiveTextProcessor = new RecursiveTextProcessor();
+		}
+
+		return $this->recursiveTextProcessor->getParser();
 	}
 
 	/**

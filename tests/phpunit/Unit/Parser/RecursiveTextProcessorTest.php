@@ -234,7 +234,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 		$instance->recursiveTagParse( 'Foo' );
 	}
 
-	public function testExpandTemplates() {
+	public function testExpandTemplate() {
 
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
@@ -244,7 +244,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 			$this->parser
 		);
 
-		$instance->expandTemplates( '{{Foo}}' );
+		$instance->expandTemplate( '{{Foo}}' );
 	}
 
 	public function testRecursivePreprocess_ExceededRecursion() {

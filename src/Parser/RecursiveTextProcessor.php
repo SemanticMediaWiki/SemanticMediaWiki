@@ -7,6 +7,7 @@ use ParserOptions;
 use RuntimeException;
 use SMW\Localizer;
 use SMW\ParserData;
+use SMW\MediaWiki\Template\TemplateExpander;
 use Title;
 
 /**
@@ -202,47 +203,19 @@ class RecursiveTextProcessor {
 	}
 
 	/**
-	 * @see Special:ExpandTemplates
 	 * @since 3.0
 	 *
-	 * @param string $text
+	 * @param string $template
 	 *
 	 * @return string
 	 */
-	public function expandTemplates( $text ) {
+	public function expandTemplate( $template ) {
 
-		if ( $this->parser === null ) {
-			throw new RuntimeException( 'Missing a parser instance!' );
-		}
-
-		$options = $this->parser->getOptions();
-
-		if ( !$options instanceof ParserOptions ) {
-			$options = new ParserOptions();
-			$options->setRemoveComments( true );
-			$options->setTidy( true );
-			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
-		}
-
-		$title = $this->parser->getTitle();
-
-		if ( !$title instanceof Title ) {
-			$title = $GLOBALS['wgTitle'];
-
-			if ( !$title instanceof Title ) {
-				$title = Title::newFromText( 'UNKNOWN_TITLE' );
-			}
-		}
-
-		$text = $this->parser->preprocess( $text, $title, $options );
-
-		$text = str_replace(
-			[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_', '<nowiki>', '</nowiki>' ],
-			'',
-			$text
+		$templateExpander = new TemplateExpander(
+			$this->parser
 		);
 
-		return $text;
+		return $templateExpander->expand( $template );
 	}
 
 	/**
