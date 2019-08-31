@@ -24,6 +24,11 @@ use Title;
 class ExtendedSearch {
 
 	/**
+	 * To provide a wider search radius for the completion search
+	 */
+	const COMPLETION_SEARCH_EXTRA_SEARCH_SIZE = 10;
+
+	/**
 	 * @var Store
 	 */
 	private $store;
@@ -274,6 +279,8 @@ class ExtendedSearch {
 
 		if ( $this->hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) ) {
 			if ( $this->getSearchQuery( $search ) !== null ) {
+				// Lets widen the search in case we fetch subobjects
+				$this->limit = $this->limit + self::COMPLETION_SEARCH_EXTRA_SEARCH_SIZE;
 				$searchResultSet = $this->newSearchResultSet( $search, false, false );
 			}
 
