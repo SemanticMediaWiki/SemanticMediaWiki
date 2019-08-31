@@ -227,7 +227,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @return Parser
 	 */
-	public function getParser() {
+	public function copyParser() {
 
 		// Should not happen, used as fallback which in case the parser state
 		// relies on the $GLOBALS['wgParser']
