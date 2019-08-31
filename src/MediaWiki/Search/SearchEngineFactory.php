@@ -8,6 +8,7 @@ use SearchEngine;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
+use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Exception\ClassNotFoundException;
 
 /**
@@ -71,9 +72,15 @@ class SearchEngineFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$searchEngineConfig = $applicationFactory->create( 'SearchEngineConfig' );
 
+		$store = $applicationFactory->getStore();
+
 		$extendedSearch = new ExtendedSearch(
-			$applicationFactory->getStore(),
+			$store,
 			$fallbackSearchEngine
+		);
+
+		$extendedSearch->setExtraPrefixMap(
+			ProfileForm::getPrefixMap( ProfileForm::getFormDefinitions( $store ) )
 		);
 
 		$extendedSearch->setSearchableNamespaces(

@@ -148,4 +148,22 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetPrefixMap() {
+
+		$data = [
+			'term_parser' => [
+				'prefix' => [
+					'Foo' => []
+				]
+			]
+		];
+
+		$map = ProfileForm::getPrefixMap( $data );
+
+		$this->assertArrayHasKey(
+			'Foo',
+			$map
+		);
+	}
+
 }

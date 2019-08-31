@@ -274,15 +274,27 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryLink' )
 			->will( $this->returnValue( $infoLink ) );
 
-		$this->store->expects( $this->any() )
+		$this->store->expects( $this->exactly( 3 ) )
 			->method( 'getQueryResult' )
 			->will( $this->returnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === \SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} ) );
 
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fallbackSearchEngine->expects( $this->once() )
+			->method( 'completionSearch' )
+			->with( $this->equalTo( 'fcat:Foo' ) );
+
 		$instance = new ExtendedSearch(
 			$this->store,
-			$this->fallbackSearchEngine
+			$fallbackSearchEngine
+		);
+
+		$instance->setExtraPrefixMap(
+			[ 'abc', 'cat'=> 'bar' ]
 		);
 
 		$instance->setQueryBuilder(
@@ -293,6 +305,12 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			'\SearchSuggestionSet',
 			$instance->completionSearch( 'in:Foo' )
 		);
+
+		$instance->completionSearch( 'abc:Foo' );
+		$instance->completionSearch( 'cat:Foo' );
+
+		// In-between doesn't count so it uses the fallbacksearch engine
+		$instance->completionSearch( 'fcat:Foo' );
 	}
 
 	public function tesCompletionSearch_NoRelevantPrefix() {

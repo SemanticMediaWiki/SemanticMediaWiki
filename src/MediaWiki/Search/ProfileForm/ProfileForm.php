@@ -121,6 +121,26 @@ class ProfileForm {
 	}
 
 	/**
+	 * @since 3.1
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	public static function getPrefixMap( array $data ) {
+
+		$map = [];
+
+		if (
+			isset( $data['term_parser']['prefix'] ) &&
+			$data['term_parser']['prefix'] ) {
+			$map = (array)$data['term_parser']['prefix'];
+		}
+
+		return $map;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array $searchableNamespaces
