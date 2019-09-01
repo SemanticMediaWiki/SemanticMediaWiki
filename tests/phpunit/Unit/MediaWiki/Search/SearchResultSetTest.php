@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResultSet;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResultSet
@@ -216,6 +217,66 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SearchSuggestionSet',
 			$resultSet->newSearchSuggestionSet()
+		);
+	}
+
+	public function testNewSearchSuggestionSet_FilterSameTitle() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getPrefixedDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$page_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page_1->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$page_2 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page_2->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$page_3 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->will( $this->returnValue( [ $page_1, $page_2, $page_3 ] ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getQuery' )
+			->will( $this->returnValue( $query ) );
+
+		$resultSet = new SearchResultSet( $queryResult, 42 );
+
+		$searchSuggestionSet = $resultSet->newSearchSuggestionSet();
+
+		$this->assertCount(
+			1,
+			$searchSuggestionSet->getSuggestions()
 		);
 	}
 

@@ -94,11 +94,25 @@ class SearchResultSet extends \SearchResultSet {
 	public function newSearchSuggestionSet() {
 
 		$suggestions = [];
+		$filter = [];
+
 		$hasMoreResults = false;
 		$score = count( $this->pages );
 
 		foreach ( $this->pages as $page ) {
-			if ( ( $title = $page->getTitle() ) ) {
+			if ( ( $title = $page->getTitle() ) !== null ) {
+				$key = $title->getPrefixedDBKey();
+
+				if ( $title->getNamespace() !== SMW_NS_PROPERTY && !$title->exists() ) {
+					continue;
+				}
+
+				if ( isset( $filter[$key] ) ) {
+					continue;
+				}
+
+				// Filter subobjects which are not distinguishable in MW
+				$filter[$key] = true;
 				$suggestions[] = SearchSuggestion::fromTitle( $score--, $title );
 			}
 		}
