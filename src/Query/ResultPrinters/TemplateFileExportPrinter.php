@@ -74,10 +74,9 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 
 		$params['searchlabel']->setDefault( 'templateFile' );
 
-		$params['template arguments'] = [
-			'message' => 'smw-paramdesc-template-arguments',
-			'default' => 'legacy',
-			'values' => [ 'numbered', 'named', 'legacy' ],
+		$params['valuesep'] = [
+			'message' => 'smw-paramdesc-sep',
+			'default' => ',',
 		];
 
 		$params['template'] = [
@@ -86,9 +85,10 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			'message' => 'smw-paramdesc-template',
 		];
 
-		$params['valuesep'] = [
-			'message' => 'smw-paramdesc-sep',
-			'default' => ',',
+		$params['named args'] =  [
+			'type' => 'boolean',
+			'message' => 'smw-paramdesc-named_args',
+			'default' => false,
 		];
 
 		$params['userparam'] = [
@@ -169,17 +169,13 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 
 		$link = $link->getText( SMW_OUTPUT_RAW, $this->mLinker );
 
-		// Extra fields include:
-		// - {{{userparam}}}
-		// - {{{querylink}}}
-
 		if ( $this->params['introtemplate'] !== '' ) {
 			$template = new Template(
 				$this->params['introtemplate']
 			);
 
-			$template->field( 'userparam', $this->params['userparam'] );
-			$template->field( 'querylink', $link );
+			$template->field( '#userparam', $this->params['userparam'] );
+			$template->field( '#querylink', $link );
 			$templateSet->addTemplate( $template );
 		}
 
@@ -188,21 +184,18 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 				$this->params['template']
 			);
 
+			$template->field( '#userparam', $this->params['userparam'] );
 			$this->addFields( $template, $row );
 			$templateSet->addTemplate( $template );
 		}
-
-		// Extra fields include:
-		// - {{{userparam}}}
-		// - {{{querylink}}}
 
 		if ( $this->params['outrotemplate'] !== '' ) {
 			$template = new Template(
 				$this->params['outrotemplate']
 			);
 
-			$template->field( 'userparam', $this->params['userparam'] );
-			$template->field( 'querylink', $link );
+			$template->field( '#userparam', $this->params['userparam'] );
+			$template->field( '#querylink', $link );
 			$templateSet->addTemplate( $template );
 		}
 
@@ -217,18 +210,13 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$value = '';
 			$fieldName = '';
 
-			// {{{?Foo}}}
-			if ( $this->params['template arguments'] === 'legacy'  ) {
-				$fieldName = '?' . $field->getPrintRequest()->getLabel();
-			}
-
 			// {{{Foo}}}
-			if ( $this->params['template arguments'] === 'named' ) {
+			if ( $this->params['named args'] === true ) {
 				$fieldName = $field->getPrintRequest()->getLabel();
 			}
 
 			// {{{1}}}
-			if ( $fieldName === '' || $fieldName === '?' || $this->params['template arguments'] === 'numbered' ) {
+			if ( $fieldName === '' || $fieldName === '?' ) {
 				$fieldName = intval( $i + 1 );
 			}
 

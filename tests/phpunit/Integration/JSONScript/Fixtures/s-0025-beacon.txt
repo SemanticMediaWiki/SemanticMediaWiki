@@ -1,2 +1,0 @@
-<includeonly>
-{{{?GND|}}}||{{{?Name|}}}</includeonly>
