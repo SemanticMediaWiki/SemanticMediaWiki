@@ -23,10 +23,10 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 * [#3605](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3605) Conditionally create the full-text ([`smw_ft_search`](https://www.semantic-mediawiki.org/wiki/Table:smw_ft_search)) table
 * [#3738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3738) Show an "in maintenance" message while the [upgrade](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) is progressing
-* [#4119](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4119)
-* [#4123](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4123)
-* [#4170](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4170)
-* [#4190](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4190)
+* [#4119](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4119) Added check for `SMW_EXTENSION_LOADED` to enforce `enableSemantics`
+* [#4123](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4123) Added `smwgDefaultStore` to upgrade key matrix hereby making it part of the upgrade key
+* [#4170](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4170) Added check whether the extension registration is complete or not
+* [#4190](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4190) Prevent "Uncaught Exception: It was attempted to load SemanticMediaWiki twice"
 
 ### Store
 
@@ -36,8 +36,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3803](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3803) SQLite, use text type for `o_hash` field
 * [#3809](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3809) DataUpdater, use changed revision
 * [#3822](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3822) Check `smw_hash` and update if necessary
-* [#3887](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3887)
-* [#4063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4063)
+* [#3887](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3887) Added check to detect and remove detached subobjects i in the rebuilder
+* [#4063](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4063) Added a prefetch cache and lookup capabilities to minimize required read queries when resolving result objects 
 
 #### ElasticStore
 
@@ -49,23 +49,24 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
 * [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810) Check for associated revision
-* [#3835](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3835)
-* [#3999](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3999)
-* [#4018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4018)
-* [#4019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4019)
-* [#4088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4088)
-* [#4114](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4114)
-* [#4126](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4126)
-* [#4155](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4155)
-* [#4158](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4158)
-* [#4208](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4208)
-* [#4230](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4230), [#4231](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4231)
+* [#3835](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3835) Added capabilities to record replication issues
+* [#3999](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3999) Added support for inverse property + category subquery
+* [#4018](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4018) Added replication check  to confirm connection status with the Elasticsearch
+* [#4019](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4019) Show the Elasticsearch status unconditionally on the dashboard
+* [#4088](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4088) Fixed handling of predefined properties keys
+* [#4114](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4114) Added `rebuildElasticMissingDocuments.php` to find missing entities (aka documents) from Elasticsearch and schedule `smw.update` jobs for those identified documents
+* [#4126](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4126) Added a monitoring on whether an adminstrator has run the rebuild index script after switching to the `ElasticStore` or not
+* [#4155](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4155) Fixed `PredefinedPropertyLabelMismatchException` on invalid predefined property matches
+* [#4158](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4158) Added `--only-update` option to `rebuildElasticIndex.php` to run an update without switching indices or initiating a rollover
+* [#4208](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4208) Fixed that only deleted subobjects on related entities are removed during an replication
+* [#4230](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4230), [#4231](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4231) Fixed overriding `smw_rev`, `smw_touched` on predefined properties during the setup and show user readable property labels
 * [#4240](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4240) Added support for running the rebuild index as part of the `updateEntityCollation.php` script execution
-* [#4250](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4250)
+* [#4250](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4250) Improve ICU related collation sorting
+
 
 ### Query
 
-* [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Added [`DependencyLinksValidator`](https://www.semantic-mediawiki.org/wiki/Help:Embedded_query_update), refactored the update logic, and improved the detection of outdated dependencies
+* [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Added [`DependencyLinksValidator`](https://www.semantic-mediawiki.org/wiki/Help:Embedded_query_update), refactored the update logic, and improved the detection of outdated dependencies (see also #4265)
 * [#3665](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3665) Added support for the `ctrl+q` shortkey to start the query process in `Special:Ask`
 * [#4064](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4064)
 * [#4137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4137)
@@ -75,6 +76,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620)
 * [#3650](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3650) Added support for `noimage` as output option for entity (aka. page) links
 * [#3734](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3734) Moved remaining result printers to new namespace
+* [#3760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3760) Removed `template arguments` and added `named args` to the `templatefile` result printer
 * [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
 * [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873)
 
@@ -142,6 +144,8 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#4150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4150)
 * [#4223](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4223)
 * [#4226](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4226)
+* [#4244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4244) Special:Browse, sort properties by label
+* [#4281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4281) Added wider search radius for `completionSearch`
 
 ## Bug fixes
 
@@ -203,6 +207,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#4210](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4210)
 * [#4222](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4222)
 * [#4240](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4240) Added the  `SMW::Maintenance::AfterUpdateEntityCollationComplete` hook
+* [#4273](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4273) Added `ResultPrinterDependency` interface
 
 ## Contributors
 
