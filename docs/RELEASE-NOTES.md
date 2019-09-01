@@ -23,6 +23,7 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 * [#3605](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3605) Conditionally create the full-text ([`smw_ft_search`](https://www.semantic-mediawiki.org/wiki/Table:smw_ft_search)) table
 * [#3738](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3738) Show an "in maintenance" message while the [upgrade](https://www.semantic-mediawiki.org/wiki/Help:Upgrade) is progressing
+* [#4026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4026) Show relative upgrade progress
 * [#4119](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4119) Added check for `SMW_EXTENSION_LOADED` to enforce `enableSemantics`
 * [#4123](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4123) Added `smwgDefaultStore` to upgrade key matrix hereby making it part of the upgrade key
 * [#4170](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4170) Added check whether the extension registration is complete or not
@@ -63,22 +64,21 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#4240](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4240) Added support for running the rebuild index as part of the `updateEntityCollation.php` script execution
 * [#4250](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4250) Improve ICU related collation sorting
 
-
 ### Query
 
 * [#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644) Added [`DependencyLinksValidator`](https://www.semantic-mediawiki.org/wiki/Help:Embedded_query_update), refactored the update logic, and improved the detection of outdated dependencies (see also #4265)
 * [#3665](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3665) Added support for the `ctrl+q` shortkey to start the query process in `Special:Ask`
-* [#4064](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4064)
-* [#4137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4137)
+* [#4064](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4064) Fixed use of `+offset=` as printout parameter
+* [#4137](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4137) Added [`updateQueryDependencies.php`](https://www.semantic-mediawiki.org/wiki/Help:UpdateQueryDependencies.php) to update the `smw_query_links` table on entities that contain embedded queries
 
 #### Result formats
 
-* [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620)
+* [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620) Fixed `format=csv` to not ignore omitting of units with #-n
 * [#3650](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3650) Added support for `noimage` as output option for entity (aka. page) links
 * [#3734](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3734) Moved remaining result printers to new namespace
 * [#3760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3760) Removed `template arguments` and added `named args` to the `templatefile` result printer
 * [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
-* [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873)
+* [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873) Use canonical property label in a template context
 
 ### API
 
@@ -96,9 +96,6 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3720](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3720) Added `Special:MissingRedirectAnnotations` to show [missing redirect annotations](https://www.semantic-mediawiki.org/wiki/Help:Missing_redirect_annotations)
 * [#3733](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3733) Added support for enforced property [parent type inheritance](https://www.semantic-mediawiki.org/wiki/Help:Mandatory_parent_datatype_inheritance) (disabled by default, can be enabled using the [`$smwgMandatorySubpropertyParentTypeInheritance`](https://www.semantic-mediawiki.org/wiki/Help:$smwgMandatorySubpropertyParentTypeInheritance) setting)
 * [#3735](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3735) Added declaration check for when multiple `Has fields` declarations are used
-* [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746) Add [`PROPERTY_CONSTRAINT_SCHEMA`] as a new schema type and introduce an approach by assigning a [[Constraint schema::...]] to a property
-  * [#3908](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3908)
-* [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746)
 * [#3747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3747) Added an option to define `LAST_EDITOR`, `IS_IMPORTER`
 * [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added [`PROPERTY_GROUP_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_GROUP_SCHEMA) as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
 * [#3751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3751) Added `?`, `*`, and `!` as invalid characters for a property name
@@ -112,40 +109,44 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3818](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3818) External identifier to support multi substitutes using {...}
 * [#3819](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3819) Support `Has fields` to allow property names with `:`
 * [#3821](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3821) Support schema change to push a change propagation dispatch job
-* [#3829](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3829)
-* [#3843](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3843)
 * [#3864](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3864) Added core hook to suppport `--skip-optimize` in `update.php` again with MW 1.33+
-* [#3866](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3866) [remnant entities](https://www.semantic-mediawiki.org/wiki/Help:Remnant_entities), `$smwgCheckForRemnantEntities `
-* [#3869](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3869)
-* [#3905](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3905)
-* [#3920](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3920)
-* [#3922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3922)
-* [#3928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3928)
-* [#3940](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3940)
-* [#3945](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3945)
-* [#3960](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3960)
-* [#3965](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3965)
-* [#3968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3968)
-* [#3969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3969)
-* [#3970](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3970)
-* [#3981](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3981)
-* [#3989](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3989)
-* [#4010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4010)
-* [#4026](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4026)
-* [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033) Added support for [`CLASS_CONSTRAINT_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/CLASS_CONSTRAINT_SCHEMA)
-* [#4042](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4042)
-* [#4048](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4048)
-* [#4047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4047)
-* [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4069)
+* [#3866](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3866) Added check for [remnant entities](https://www.semantic-mediawiki.org/wiki/Help:Remnant_entities), `$smwgCheckForRemnantEntities `
+* [#3869](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3869) Minimize redirect lookups on properties 
+* [#3905](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3905) Added `purgeEntityCache.php` to purge all cache entries (including associates) that use the `EntityCache` interface
+* [#3920](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3920) Added `DisplayTitleFinder` to support a prefetch lookup so that titles can be fetched and cached in bulk to minimize the required database queries
+* [#3922](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3922) Added the `auto-recovery` option to `rebuildElasticIndex.php` and `rebuildData.php`
+* [#3928](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3928) Added `TableStatistics` to dashboard to gather some inforamtion of the table usage
+* [#3940](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3940) Added support for `callable` in `$smwgFallbackSearchType` to allow using `SMWSearch` in tandem with for example `CirrusSearch`
+* [#3945](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3945) Added support for the full pipe trick to the WikiPage datavalue
+* [#3960](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3960) Added `--namespace` option filter to `rebuildData.php`
+* [#3965](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3965) Show usage (properties linked to a schema) for schemta that define a `usage_lookup`
+* [#4042](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4042) Added support for `#` as formatting directive to create a no link
+* [#4048](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4048) Added new `smwtable-clean` table CSS
 * [#4151](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4151) Added `--report-runtime` and `--with-maintenance-log` options to the "removeDuplicateEntities.php" maintenance script
 * [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4152) Added `--with-maintenance-log` option to the "rebuildElasticIndex.php" maintenance script
-* [#4143](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4143)
-* [#4144](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4144)
-* [#4150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4150)
-* [#4223](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4223)
-* [#4226](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4226)
-* [#4244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4244) Special:Browse, sort properties by label
+* [#4143](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4143) Added support for `count` and `further results` to the [remote request](https://www.semantic-mediawiki.org/wiki/Help:Remote_request)
+* [#4144](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4144) Added schema summary
+* [#4150](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4150) Fixed `enableSemantics` exception where external functions try to access Semantic MediaWiki that hasn't been enabled
+* [#4223](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4223) Improved the option display on the preference page
+* [#4226](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4226) Introduced the concept of `sequence map` for annotation values
+* [#4244](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4244) Adding sorting of properties by label (not by key) in `Special:Browse`
 * [#4281](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4281) Added wider search radius for `completionSearch`
+
+#### Constraints
+
+* [#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746) Added [`PROPERTY_CONSTRAINT_SCHEMA`] as a new schema type and introduce an approach by assigning a `[[Constraint schema::...]]` to a property
+* [#3829](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3829) Added `_CONSTRAINT_SCHEMA` property (see #3746)
+* [#3843](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3843) Show compiled constraint schema on property page
+* [#3908](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3908) Added `unique_value_constraint`
+* [#3968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3968) Added support for displaying [`constraint` errors](https://www.semantic-mediawiki.org/wiki/Help:Constraint_error) using an [page indicator](https://www.mediawiki.org/wiki/Help:Page_status_indicators)
+* [#3969](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3969) Added support for `custom_constraint` to enable users to define custom constraints via a `Constraint` interface and the provided hook
+* [#3970](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3970) Added `non_negative_integer` constraint
+* [#3981](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3981) Added `must_exists` constraint
+* [#3989](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3989) Extended the constraint `ErrorLookup` to scan subobjects and cache the lookup, also added `smwgCheckForConstraintErrors` setting
+* [#4010](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4010) Added `single_value_constraint`
+* [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033) Added support for [`CLASS_CONSTRAINT_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/CLASS_CONSTRAINT_SCHEMA)
+* [#4047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4047) Added `SpecialConstraintErrorList` to display errors classified as constraint
+* [#4069](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4069) Added `shape_constraint`
 
 ## Bug fixes
 
