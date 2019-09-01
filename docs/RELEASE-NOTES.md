@@ -80,10 +80,6 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
 * [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873) Use canonical property label in a template context
 
-### API
-
-...
-
 ### Misc
 
 * [#3621](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3621) Added support for hidden annotation
@@ -150,29 +146,32 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 
 ## Bug fixes
 
-* [#3568](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3568)
+* [#3568](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3568) Fixed "Warning: Cannot modify header information - headers already sent by" on a remote request
 * [#3750](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3750) Checks whether the sort argument can be accessed or not in the datatable
-* [#3839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3839)
-* [#3840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3840) Fixed `Special:Browse` and display of properties when more than 200 are available
-* [#3888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3888)
-* [#3938](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3938)
-* [#3914](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3914)
-* [#4022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4022)
-* [#4036](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4036)
-* [#4071](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4071)
-* [#4077](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4077)
-* [#4091](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4091)
-* [#4110](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4110)
-* [#4111](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4111)
-* [#4160](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4160)
-* [#4205](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4205)
-* [#4242](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4242)
+* [#3839](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3839) Fixed display of time offset display for non date items on the property page
+* [#3840](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3840) Fixed `Special:Browse` and display of properties when more than 200 items are available
+* [#3888](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3888) Fixed `MWUnknownContentModelException` while running `rebuildData.php`
+* [#3938](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3938) Fixed "Index name must always be lower case" in connection with Elasticsearch
+* [#3914](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3914) Fixed "Cannot override final method Job::getTitle"
+* [#4022](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4022) Fixed "Call to undefined method ... transformSearchTerm"
+* [#4035](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4035) Fixed "DispatchContext.php .. subject is unknown"
+* [#4071](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4071) Fixed "Minus prepended to queried negative values stored with datatype Number"
+* [#4077](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4077) Fixed "Maintenance logging no longer works due to missing user"
+* [#4091](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4091) Fixed "HTMLInfoField.php: 'default' must be a FieldLayout or subclass when using 'rawrow'"
+* [#4110](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4110) Fixed "trailing spaces" in JSON language files
+* [#4111](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4111) Fixed "TypeError SearchDatabase.php: Argument 1 passed to SearchDatabase ... must implement interface ... ILoadBalancer ..."
+* [#4113](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4113) Fixed "Declaration of SMW\MediaWiki\Search\SearchResult::getTextSnippet($terms) should be compatible with SearchResult::getTextSnippet($terms = Array)"
+* [#4160](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4160) Fixed "SQL error `... AND ( AND o_id LIKE '%input%') ...` when matching a string using `Store::getPropertyValues`"
+* [#4205](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4205) Fixed "NavigationLinksWidget.php ... PHP Warning: A non-numeric value encountered"
+* [#4210](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4210) Fixed "MediumSpecificBagOStuff reports  ... Serialization of 'Closure' is not allowed"
+* [#4255](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4255) Fixed `allows value` declaration for record types
+* [#4270](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4270) Fixed "Error: Call to undefined method RevisionSearchResult ..."
 
 ## Breaking changes and deprecations
 
-* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Rem CachingEntityLookup
-* [#3995](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3995)
-* [#3402](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3402)
+* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Removed `CachingEntityLookup`
+* [#3995](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3995) Disabled access to `Title` related methods in the `WikiPageValue`
+* [#3402](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3402) Removed long deprecated functions (see the PR for details) from `SMWQueryProcessor`
 
 ## Other changes
 
@@ -189,24 +188,22 @@ Changes to the DB are triggered by [#3644](https://github.com/SemanticMediaWiki/
 * [#3780](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3780) Added `Database::beginSectionTransaction` due to MW 1.33
 * [#3801](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3801) Class and namespace reorg
 * [#3792](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3792) Added the `ProcessingError` interface to describe  error types
-* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808)
+* [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Removed `CachingEntityLookup`
 * [#3807](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Added `SMW::Event::RegisterEventListeners` hook
 * [#3815](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3815) EntityValidator
-* [#3823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3823)
-* [#3830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3830)
+* [#3823](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3823) Added 'jquery.async' as local copy
+* [#3830](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3830) Added `Constraint` interface and `ConstraintCheckRunner`
 * [#3895](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3895) Added the `SMW::SQLStore::Installer::BeforeCreateTablesComplete` hook
 * [#3897](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3897) Added `SMW::RevisionGuard::*` hooks
-* [#3924](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3924)
-* [#4066](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4066)
-* [#4113](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4113)
-* [#4131](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4131)
+* [#3924](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3924) Removed `SMWSQLStore3Readers`
+* [#4066](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4066) Moved `QueryResult` and `ResultArray`
+* [#4131](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4131) `LoadBalancerConnectionProvider` to rely on `getConnectionRef`
 * [#4169](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4169) Added the `SMW::Parser::AfterLinksProcessingComplete` hook to address things like [#3651](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3651)
-* [#4189](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4189)
-* [#4192](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4192)
-* [#4194](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4194)
-* [#4200](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4200)
-* [#4210](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/4210)
-* [#4222](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4222)
+* [#4189](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4189) Isolated `smw_proptable_hash` handling
+* [#4192](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4192) Moved `SMWSQLStore3` to `SMW\SQLStore\SQLStore`
+* [#4194](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4194) Moved `SMWSQLStore3Writers` to `SMW\SQLStore\SQLStoreUpdater`
+* [#4200](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4200) Moved `SMWSql3SmwIds` to `SMW\SQLStore\EntityStore\EntityIdManager`
+* [#4222](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4222) Added exception handling to ensure that errors are logged during a deferred update 
 * [#4240](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4240) Added the  `SMW::Maintenance::AfterUpdateEntityCollationComplete` hook
 * [#4273](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4273) Added `ResultPrinterDependency` interface
 
