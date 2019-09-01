@@ -13,9 +13,16 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "BEACON",
+			"page": "BEACON (named)",
 			"contents": {
-				"import-from": "/../Fixtures/s-0025-beacon.txt"
+				"import-from": "/../Fixtures/s-0025-beacon-named-template-args.txt"
+			}
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "BEACON (numeric)",
+			"contents": {
+				"import-from": "/../Fixtures/s-0025-beacon-numeric-template-args.txt"
 			}
 		},
 		{
@@ -37,7 +44,7 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0",
+			"about": "#0 (named args)",
 			"special-page": {
 				"page": "Ask",
 				"request-parameters": {
@@ -46,8 +53,9 @@
 						"limit": "10",
 						"offset": "0",
 						"mainlabel": "",
+						"named args": true,
 						"format": "templatefile",
-						"template": "BEACON",
+						"template": "BEACON (named)",
 						"introtemplate": "BEACON-INTRO"
 					},
 					"q": "[[Has GND::123456789]]",
@@ -62,7 +70,7 @@
 		},
 		{
 			"type": "special",
-			"about": "#0",
+			"about": "#1 (named template args, multiple rows)",
 			"special-page": {
 				"page": "Ask",
 				"request-parameters": {
@@ -71,8 +79,9 @@
 						"limit": "10",
 						"offset": "0",
 						"mainlabel": "",
+						"named args": true,
 						"format": "templatefile",
-						"template": "BEACON",
+						"template": "BEACON (named)",
 						"introtemplate": "BEACON-INTRO"
 					},
 					"q": "[[Has GND::123456789]] OR [[Has GND::987654321]]",
@@ -82,6 +91,32 @@
 			"assert-output": {
 				"to-contain": {
 					"contents-file" : "/../Fixtures/res.s-0025.1.txt"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 (numeric template args, multiple rows)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"named args": false,
+						"format": "templatefile",
+						"template": "BEACON (numeric)",
+						"introtemplate": "BEACON-INTRO"
+					},
+					"q": "[[Has GND::123456789]] OR [[Has GND::987654321]]",
+					"po": "?Has GND=GND|?Has name=Name"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0025.2.txt"
 				}
 			}
 		}
