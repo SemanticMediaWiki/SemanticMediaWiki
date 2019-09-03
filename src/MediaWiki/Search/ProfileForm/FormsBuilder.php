@@ -246,7 +246,7 @@ class FormsBuilder {
 			$this->preselect_namespaces( $data['namespaces']['preselect'] );
 		}
 
-		if ( isset( $data['namespaces']['hidden'] ) && is_array(  ) ) {
+		if ( isset( $data['namespaces']['hidden'] ) && is_array( $data['namespaces']['hidden'] ) ) {
 			$this->hidden_namespaces( $data['namespaces']['hidden'] );
 		}
 
