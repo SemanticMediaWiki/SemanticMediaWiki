@@ -656,7 +656,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * DataValue::getPreferredCaption
+	 * @see SMWDataValue::getPreferredCaption
 	 *
 	 * @since 2.4
 	 *
