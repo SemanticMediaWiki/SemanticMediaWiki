@@ -184,7 +184,7 @@
 	"smw-special-wantedproperties-docu": "Ta strona wymienia [https://www.semantic-mediawiki.org/wiki/Wanted_properties pożądane właściwości], które są używane w wiki, ale nie mają strony opisującej je. Odmiennego spojrzenia dostarczają wykazy na stronach specjalnych [[Special:Properties|wszystkich]] oraz [[Special:UnusedProperties|niewykorzystywanych właściwości]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|użycie|użycia|użyć}})",
 	"smw_purge": "Odśwież",
-	"smw-purge-failed": "Odświeżanie nie powiodło się",
+	"smw-purge-failed": "Semantyczna MediaWiki próbowała odświeżyć tę stronę, jednak nie powiodło się",
 	"types": "Typy",
 	"smw_types_docu": "Wykaz [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes dostępnych typów danych]. Każdy [https://www.semantic-mediawiki.org/wiki/Help:Datatype typ] reprezentuje unikatowy zbiór atrybutów charakteryzujących wartości poprzez sposób ich składowania w pamięci i wyświetlania. Charakterystyki te są dziedziczone w przypisanych właściwościach.",
 	"smw-special-types-no-such-type": "\"$1\" jest nieznany lub nie został określony jako poprawny typ danych.",

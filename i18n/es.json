@@ -250,7 +250,7 @@
 	"smw-special-wantedproperties-docu": "Esta página enumera las [https://www.semantic-mediawiki.org/wiki/Wanted_properties propiedades solicitadas] que se emplean en el wiki pero que no cuentan con una página descriptora. Para obtener una visualización diferenciada, consulta las listas de [[Special:Properties|todas las propiedades]] y de las [[Special:UnusedProperties|propiedades no utilizadas]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Actualizar",
-	"smw-purge-failed": "Recarga fallida",
+	"smw-purge-failed": "Semantic MediaWiki intentó purgar la página pero falló",
 	"types": "Tipos",
 	"smw_types_docu": "Lista de [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes tipos de datos disponibles] donde cada [https://www.semantic-mediawiki.org/wiki/Help:Datatype tipo] representa un conjunto único de atributos para describir un valor en términos de almacenamiento y características de muestra que son hereditarios a una propiedad asignada.",
 	"smw-special-types-no-such-type": "El tipo de datos especificado no existe",
