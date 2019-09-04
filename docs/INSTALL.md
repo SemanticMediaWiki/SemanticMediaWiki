@@ -10,27 +10,20 @@ in the [compatibility matrix](COMPATIBILITY.md).
 
 ## Download and installation
 
-### Installation with Composer
+### Installation
 
-The strongly recommended way to install Semantic MediaWiki is with [Composer](http://getcomposer.org) using
+The recommended way to install Semantic MediaWiki is with [Composer](https://getcomposer.org) using
 [MediaWiki's built-in support for Composer](https://www.mediawiki.org/wiki/Composer).
 
 #### Step 1
 
-Change to the base directory of your MediaWiki installation. This is where the "LocalSettings.php"
-file is located. If you have not yet installed Composer do it now by running the following command
-in your shell:
-
-    wget https://getcomposer.org/composer.phar
-
-#### Step 2
-    
-If you do not have a "composer.local.json" file yet, create one and add the following content to it:
+Change to the base directory of your MediaWiki installation. If you do not have a "composer.local.json" file yet,
+create one and add the following content to it:
 
 ```
 {
 	"require": {
-                  "mediawiki/semantic-media-wiki": "~3.0"
+                  "mediawiki/semantic-media-wiki": "~3.1"
         }
 }
 ```
@@ -38,18 +31,25 @@ If you do not have a "composer.local.json" file yet, create one and add the foll
 If you already have a "composer.local.json" file add the following line to the end of the "require"
 section in your file:
 
-    "mediawiki/semantic-media-wiki": "~3.0"
+    "mediawiki/semantic-media-wiki": "~3.1"
 
 Remember to add a comma to the end of the preceding line in this section.
 
-#### Step 3
+#### Step 2
 
 Run the following command in your shell:
 
     php composer.phar update --no-dev
 
-Note if you have Git installed on your system add the `--prefer-source` flag to the above command. Also
-note that it may be necessary to run this command twice. If unsure do it twice right away.
+Note if you have Git installed on your system add the `--prefer-source` flag to the above command.
+
+#### Step 3
+
+Add the following line to the end of your "LocalSettings.php" file:
+
+    enableSemantics( 'example.org' );
+
+Note that "example.org" should be replaced by your wiki's domain.
 
 #### Step 4
 
@@ -60,24 +60,11 @@ this script is `maintenance/update.php`. It can be run as follows in your shell:
 
 #### Step 5
 
-Add the following line to the end of your "LocalSettings.php" file:
-
-    enableSemantics( 'example.org' );
-
-Note that "example.org" should be replaced by your wiki's domain.
-
-#### Step 6
-
-If you are installing SMW on a freshly installed wiki continue to the next step. If the wiki already has content
+If you are installing SMW on a freshly installed wiki then you are done. If the wiki already has content
 pages run the Semantic MediaWiki [data rebuild script](https://www.semantic-mediawiki.org/wiki/Help:Maintenance_script_"rebuildData.php"). The location of this script
 is `extensions/SemanticMediaWiki/maintenance/rebuildData.php`. It can be run as follows in your shell:
 
     php extensions/SemanticMediaWiki/maintenance/rebuildData.php -v
-
-#### Verify installation success
-
-As final step, you can verify SMW got installed by looking at the "Special:Version" page on your wiki and check that
-the Semantic MediaWiki section is listed.
 
 ### Installation without shell access
 
@@ -110,16 +97,11 @@ database.
 
 #### Step 5
 
-If you are installing SMW on a freshly installed wiki continue to the next step. If the wiki already has content
+If you are installing SMW on a freshly installed wiki then you are done. If the wiki already has content
 pages also do the following on page "Special:SemanticMediaWiki":
 
 Click on the "Start updating data" button in the "Data rebuild" subsection of "Maintenance" tab
 to activate the [automatic data update](https://www.semantic-mediawiki.org/wiki/Help:Repairing_SMW's_data).
-
-#### Verify installation success
-
-As final step, you can now verify SMW got installed by looking at the "Special:Version" page on your wiki and check that
-the Semantic MediaWiki section is listed.
 
 ### Installation of development versions and release candidates
 
@@ -127,8 +109,8 @@ If you would like to install a development version or release candidate then rep
 "Installation with Composer" section with the following line
 
 * master: `"mediawiki/semantic-media-wiki": "@dev"`
-* legacy branch: `"mediawiki/semantic-media-wiki": "2.5.x@dev"`
-* release candidate: `"mediawiki/semantic-media-wiki": "~3.0@rc"`
+* legacy branch: `"mediawiki/semantic-media-wiki": "3.0.x@dev"`
+* release candidate: `"mediawiki/semantic-media-wiki": "~3.1@rc"`
 
 ## More instructions
 
