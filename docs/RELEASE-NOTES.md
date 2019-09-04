@@ -2,12 +2,6 @@
 
 Not a release yet. A release is tentatively planned for Q3 2019.
 
-## Compatibility
-
-This release supports MediaWiki 1.31 up to 1.33 and PHP 7.0 up to PHP 7.4.
-
-For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
-
 ## Highlights
 
 - Attachment links and factbox display
@@ -15,6 +9,12 @@ For more detailed information, see the [compatibility matrix](https://github.com
 - Dependency links validation and invalidation
 - Add `[[Constraint schema::...]]` to a property
 - Support for annotation value `sequence maps`
+
+## Compatibility
+
+This release supports MediaWiki 1.31 up to 1.33 and PHP 7.0 up to PHP 7.4.
+
+For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
 
 ## New features and enhancements
 
