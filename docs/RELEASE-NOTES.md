@@ -4,8 +4,9 @@ Not a release yet. A release is tentatively planned for Q3 2019.
 
 ## Compatibility
 
-Please find relevant notes about the platform and database compatibility for this release in the [COMPATIBILITY](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md) document.
-- [#4228](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4228)
+This release supports MediaWiki 1.31 up to 1.33 and PHP 7.0 up to PHP 7.4.
+
+For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
 
 ## Highlights
 
