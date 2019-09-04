@@ -1,8 +1,8 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "3.1.0-alpha",
+	"version": "3.1.0-rc.1",
 	"author": [
-		"[http://korrekt.org Markus Krötzsch]",
+		"[https://korrekt.org Markus Krötzsch]",
 		"[https://www.entropywins.wtf/mediawiki Jeroen De Dauw]",
 		"James Hong Kong",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
@@ -13,7 +13,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.27"
+		"MediaWiki": ">= 1.31"
 	},
 	"MessagesDirs": {
 		"SemanticMediaWiki": [
@@ -25,5 +25,5 @@
 		"SemanticMediaWiki::onExtensionFunction"
 	],
 	"load_composer_autoloader": true,
-	"manifest_version": 1
+	"manifest_version": 2
 }
