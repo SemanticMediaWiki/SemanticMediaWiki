@@ -507,7 +507,7 @@ class SMWWikiPageValue extends SMWDataValue {
 ///// special interface for wiki page values
 
 	/**
-	 * @deprecated since 3.1
+	 * @deprecated since 3.1 use getDataItem()->getTitle() instead
 	 *
 	 * Return according Title object or null if no valid value was set.
 	 * null can be returned even if this object returns true for isValid(),
@@ -518,7 +518,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * @return Title
 	 */
-	private function getTitle() {
+	public function getTitle() {
 
 		if ( $this->m_title !== null ) {
 			return $this->m_title;
