@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ivanhercaz",
-			"Ciencia Al Poder"
+			"Ciencia Al Poder",
+			"Fitoschido"
 		]
 	},
 	"smw-desc": "Hacemos que tu wiki sea más accesible para las máquinas ''y'' las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea]).",
@@ -15,9 +16,9 @@
 	"smw-factbox-facts-derived": "Datos derivados",
 	"smw-factbox-facts-derived-help": "Mostrar datos que han sido derivados a partir de reglas o con la ayuda de otras técnicas de razonamiento",
 	"smw_isspecprop": "Esta propiedad es una propiedad especial en esta wiki.",
-	"smw-concept-cache-header": "Uso de la caché",
-	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count caché de conceptos] contiene {{PLURAL:$1|'''una''' entidad|'''$1''' entidades}} ($2).",
-	"smw-concept-no-cache": "No hay caché disponible.",
+	"smw-concept-cache-header": "Uso de la antememoria",
+	"smw-concept-cache-count": "La [https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count antememoria de conceptos] contiene {{PLURAL:$1|'''una''' entidad|'''$1''' entidades}} ($2).",
+	"smw-concept-no-cache": "No hay antememoria disponible.",
 	"smw_concept_description": "Descripción del concepto «$1»",
 	"smw_no_concept_namespace": "Los conceptos solo pueden definirse en páginas del espacio de nombres Concepto:",
 	"smw_multiple_concepts": "Cada página de concepto solamente puede tener una definición de concepto.",
