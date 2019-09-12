@@ -186,7 +186,7 @@
 	"smw-wantedproperty-template": "$1 ($2{{PLURAL:$2|件}})",
 	"smw-special-wantedproperties-docu": "このページの[https://www.semantic-mediawiki.org/wiki/Wanted_properties 要望で作成されたプロパティ]は存在しますが、説明ページがありません。特別ページで[[Special:Properties|全件]]もしくは[[Special:UnusedProperties|未使用のプロパティを抽出した一覧]]が確認できます。",
 	"smw_purge": "更新",
-	"smw-purge-failed": "リフレッシュ失敗",
+	"smw-purge-failed": "Semantic MediaWiki はページのリフレッシュを試みましたが失敗しました",
 	"types": "型",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 利用可能なデータ型]の一覧です。各々の[https://www.semantic-mediawiki.org/wiki/Help:Datatype 型]は、保管および、割り当てられたプロパティから遺伝する性質の表示の点で、値を特徴付ける属性の一意な集合に相当します。",
 	"smw-special-types-no-such-type": "\"$1\" は適切なデータ型ではありません。",
