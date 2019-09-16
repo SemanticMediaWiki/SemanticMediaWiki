@@ -338,7 +338,7 @@
 	"prefs-smw": "Сэмантычная MediaWiki",
 	"prefs-general-options": "Агульныя налады",
 	"prefs-ask-options": "Парамэтры сэмантычнага пошуку",
-	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (і зьвязаныя пашырэньні) дазваляе пэрсанальную наладку для некаторых функцыяў. Калі ласка, глядзіце [https://www.semantic-mediawiki.org/wiki/Help:User_preferences старонку дапамогі] для падрабязнага апісаньня.",
+	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] і зьвязаныя пашырэньні дазваляюць пэрсанальную наладку для групы абраных функцыяў. Сьпіс індывідуальных наладаў з апісаньнямі і характарыстыкамі даступны на гэтай [https://www.semantic-mediawiki.org/wiki/Help:User_preferences старонцы дапамогі].",
 	"smw-prefs-ask-options-tooltip-display": "Адлюстроўваць парамэтар у выглядзе інфармацыйнай падказкі",
 	"smw-prefs-ask-options-compact-view-basic": "Дазволіць асноўны кампактны выгляд",
 	"smw-prefs-help-ask-options-compact-view-basic": "Калі ўключана, адлюстроўвае скарочаны набор спасылак на Special:Ask у сьціснутым фармаце",
