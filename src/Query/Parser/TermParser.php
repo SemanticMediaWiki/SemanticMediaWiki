@@ -114,7 +114,7 @@ class TermParser {
 			$new = trim( $t_term );
 
 			$continue = true;
-			$space = $t_term{0} == ' ' ? ' ' : '';
+			$space = $t_term[0] == ' ' ? ' ' : '';
 
 			// Look ahead
 			$next = next( $terms );

@@ -173,7 +173,7 @@ class Query {
 			foreach ( $join[1] as $table => $value ) {
 
 				if ( is_string( $table ) ) {
-					$value = $value{0} . $value{1} === 'ON' ? "$value" : "AS $value";
+					$value = $value[0] . $value[1] === 'ON' ? "$value" : "AS $value";
 					$value = $this->connection->tableName( $table ) . " $value";
 				}
 

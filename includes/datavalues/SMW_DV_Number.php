@@ -181,7 +181,7 @@ class SMWNumberValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 
-		if ( $value !== '' && $value{0} === ':' ) {
+		if ( $value !== '' && $value[0] === ':' ) {
 			$this->addErrorMsg( [ 'smw-datavalue-invalid-number', $value ] );
 			return;
 		}

@@ -773,7 +773,7 @@ class Indexer {
 
 		$title = $subject->getDBKey();
 
-		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title{0} !== '_' ) {
+		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {
 			$title = str_replace( '_', ' ', $title );
 		}
 

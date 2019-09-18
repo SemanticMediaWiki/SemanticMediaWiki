@@ -250,7 +250,7 @@ class AskParserFunction {
 
 			// Skip the first (being the condition) and other marked
 			// printrequests
-			if ( $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+			if ( $key == 0 || ( $value !== '' && $value[0] === '?' ) ) {
 				continue;
 			}
 

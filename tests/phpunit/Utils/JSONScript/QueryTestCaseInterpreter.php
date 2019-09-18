@@ -136,7 +136,7 @@ class QueryTestCaseInterpreter {
 				$parameters = $printout;
 			}
 
-			if ( $label{0} === '_' ) {
+			if ( $label[0] === '_' ) {
 				$printRequest = new PrintRequest(
 					PrintRequest::PRINT_PROP,
 					null,

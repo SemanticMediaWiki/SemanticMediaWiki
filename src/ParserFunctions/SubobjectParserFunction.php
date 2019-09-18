@@ -298,7 +298,7 @@ class SubobjectParserFunction {
 
 			// Normalize property names to generate the same hash for when
 			// CapitalLinks is enabled (has foo === Has foo)
-			if ( $property !== '' && $property{0} !== '@' && $this->isCapitalLinks ) {
+			if ( $property !== '' && $property[0] !== '@' && $this->isCapitalLinks ) {
 				$property = mb_strtoupper( mb_substr( $property, 0, 1 ) ) . mb_substr( $property, 1 );
 			}
 

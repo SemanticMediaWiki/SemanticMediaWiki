@@ -107,7 +107,7 @@ class ContentModeller {
 	}
 
 	private function normalizeFile( $fileDir, $file ) {
-		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fileDir . ( $file{0} === '/' ? '' : '/' ) . $file );
+		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fileDir . ( $file[0] === '/' ? '' : '/' ) . $file );
 	}
 
 }

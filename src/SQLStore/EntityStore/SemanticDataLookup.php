@@ -722,7 +722,7 @@ class SemanticDataLookup {
 		if ( $valueCount < 3 ||
 			implode( '', $fields ) !== FieldType::FIELD_ID ||
 			$valueKeys[2] === '' ||
-			$valueKeys[2]{0} != ':' ) {
+			$valueKeys[2][0] != ':' ) {
 
 			if ( isset( $result[$hash] ) ) {
 				$this->reportDuplicate( $propertykey, $valueKeys );

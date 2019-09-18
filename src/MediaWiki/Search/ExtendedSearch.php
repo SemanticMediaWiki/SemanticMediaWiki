@@ -274,7 +274,7 @@ class ExtendedSearch {
 
 		// Avoid MW's auto formatting of title entities
 		if ( $search !== '' ) {
-			$search{0} = strtolower( $search{0} );
+			$search[0] = strtolower( $search[0] );
 		}
 
 		if ( $this->hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) ) {

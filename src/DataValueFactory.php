@@ -159,7 +159,7 @@ class DataValueFactory {
 
 			$type = str_replace( ' ' , '_', $type );
 
-			if ( $type{0} !== '_' && ( $dType = $this->dataTypeRegistry->findTypeByLabel( $type ) ) !== '' ) {
+			if ( $type[0] !== '_' && ( $dType = $this->dataTypeRegistry->findTypeByLabel( $type ) ) !== '' ) {
 				$type = $dType;
 			}
 

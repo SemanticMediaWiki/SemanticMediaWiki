@@ -133,7 +133,7 @@ class PrintRequest {
 			return;
 		}
 
-		$this->labelMarker = $text !== '' && $text{0} === '#';
+		$this->labelMarker = $text !== '' && $text[0] === '#';
 	}
 
 	/**

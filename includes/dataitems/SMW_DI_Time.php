@@ -141,7 +141,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 		$this->timezone = $timezone !== false ? $timezone : 0;
 		$year = strval( $year );
-		$this->era      = $year{0} === '+' ? 1 : ( $year{0} === '-' ? -1 : 0 );
+		$this->era      = $year[0] === '+' ? 1 : ( $year[0] === '-' ? -1 : 0 );
 
 		if ( $this->isOutOfBoundsBySome() ) {
 			throw new DataItemException( "Part of the date is out of bounds." );
@@ -496,7 +496,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 				// Find out whether the input contained an explicit AD/CE era marker
 				if ( $i == 1 ) {
-					$values[$i] = ( $parts[1]{0} === '+' ? '+' : '' ) . $values[$i];
+					$values[$i] = ( $parts[1][0] === '+' ? '+' : '' ) . $values[$i];
 				}
 			}
 		}

@@ -104,7 +104,7 @@ class SMWRecordValue extends AbstractMultiValue {
 				// then the wiki parser would interpret it as list element
 				// and format it accordingly eventhough it is not suppose to
 				// be an ul/ol list item.
-				if ( $val !== '' && $val{0} === '#' ) {
+				if ( $val !== '' && $val[0] === '#' ) {
 					$val = str_replace( "#", '&#x23;', $val );
 				}
 

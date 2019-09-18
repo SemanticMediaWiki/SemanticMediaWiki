@@ -143,7 +143,7 @@ class PrefetchItemLookup {
 				$hash = $subject->getHash();
 
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
-				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash{0} === '_' ) {
+				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash[0] === '_' ) {
 					$property = DIProperty::newFromUserLabel(
 						$subject->getDBKey()
 					);

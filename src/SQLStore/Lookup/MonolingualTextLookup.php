@@ -110,7 +110,7 @@ class MonolingualTextLookup {
 			$subobjectName = $subject->getSubobjectName();
 
 			// Handle predefined properties
-			if ( $subject->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $subject->getDBKey() ) && $dbKey{0} === '_' ) {
+			if ( $subject->getNamespace() === SMW_NS_PROPERTY && ( $dbKey = $subject->getDBKey() ) && $dbKey[0] === '_' ) {
 				$subject = DIProperty::newFromUserLabel( $dbKey )->getCanonicalDIWikiPage(
 					$subobjectName
 				);

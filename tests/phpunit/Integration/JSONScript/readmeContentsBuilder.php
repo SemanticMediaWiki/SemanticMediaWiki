@@ -60,8 +60,8 @@ class ReadmeContentsBuilder {
 
 		foreach ( $this->findFilesFor( $path, 'json' ) as $key => $location ) {
 
-			if ( $previousFirstKey !== $key{0} ) {
-				$list .= "\n" . '### ' . ucfirst( $key{0} ). "\n";
+			if ( $previousFirstKey !== $key[0] ) {
+				$list .= "\n" . '### ' . ucfirst( $key[0] ). "\n";
 			}
 
 			$list .= '* [' . $key .'](' . $urlLocation . '/' . $key . ')';
@@ -82,7 +82,7 @@ class ReadmeContentsBuilder {
 
 			$list .= "\n";
 			$counter++;
-			$previousFirstKey = $key{0};
+			$previousFirstKey = $key[0];
 		}
 
 		$head = "## $title\n\n";

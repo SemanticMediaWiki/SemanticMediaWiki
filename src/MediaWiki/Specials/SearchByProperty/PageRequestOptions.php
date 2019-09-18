@@ -93,7 +93,7 @@ class PageRequestOptions {
 		$value = isset( $this->requestOptions['value'] ) ? $this->requestOptions['value'] : next( $params );
 
 		// Auto-generated link is marked with a leading :
-		if ( $property !== '' && $property{0} === ':' ) {
+		if ( $property !== '' && $property[0] === ':' ) {
 			$escaped = true;
 			$property = $this->urlEncoder->unescape( ltrim( $property, ':' ) );
 		}

@@ -79,7 +79,7 @@ class StringValueFormatter extends DataValueFormatter {
 
 		// Appease the MW parser to correctly apply formatting on the
 		// first indent
-		if ( $text !== '' && ( $text{0} === '*' || $text{0} === '#' || $text{0} === ':' ) ) {
+		if ( $text !== '' && ( $text[0] === '*' || $text[0] === '#' || $text[0] === ':' ) ) {
 			$text = "\n" . $text . "\n";
 		}
 
