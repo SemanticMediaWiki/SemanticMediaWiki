@@ -83,7 +83,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			'name' => 'columns',
 			'type' => 'integer',
 			'message' => 'smw-paramdesc-columns',
-			'negatives' => false,
+			'lowerbound' => 0,
 			'default' => 3,
 		];
 

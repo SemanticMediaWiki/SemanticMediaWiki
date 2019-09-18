@@ -74,13 +74,13 @@ class DefaultParamDefinition {
 		$params['limit'] = [
 			'type' => 'integer',
 			'default' => $vars['smwgQDefaultLimit'],
-			'negatives' => false,
+			'lowerbound' => 0,
 		];
 
 		$params['offset'] = [
 			'type' => 'integer',
 			'default' => 0,
-			'negatives' => false,
+			'lowerbound' => 0,
 			'upperbound' => $vars['smwgQUpperbound'],
 		];
 
