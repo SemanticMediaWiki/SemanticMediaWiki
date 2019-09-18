@@ -464,6 +464,9 @@ class DIProperty extends SMWDataItem {
 	 * @return DIProperty object
 	 */
 	public static function newFromUserLabel( $label, $inverse = false, $languageCode = false ) {
+		// [#4294] Convert the passed-in label to a string value
+		// Avoids warning "Trying to access array offset on value of type X" on PHP 7.4+
+		$label = strval( $label );
 
 		if ( $label !== '' && $label{0} == '-' ) {
 			$label = substr( $label, 1 );
@@ -501,6 +504,9 @@ class DIProperty extends SMWDataItem {
 	}
 
 	private function newDIWikiPage( $dbkey, $subobjectName ) {
+		// [#4294] Convert the passed-in dbkey to a string value
+		// Avoids warning "Trying to access array offset on value of type X" on PHP 7.4+
+		$dbkey = strval( $dbkey );
 
 		// If an inverse marker is present just omit the marker so a normal
 		// property page link can be produced independent of its directionality
