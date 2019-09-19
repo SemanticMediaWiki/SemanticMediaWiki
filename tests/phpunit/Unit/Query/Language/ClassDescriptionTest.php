@@ -25,7 +25,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->cat_name = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );;
+		$this->cat_name = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
 	}
 
 	public function testCanConstruct() {

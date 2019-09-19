@@ -18,8 +18,8 @@
 		// There is no reason for the field to be enabled as long as their is no
 		// property
 		if ( context.data( 'property' ) === '' || context.data( 'property' ) === undefined ) {
-			return context.addClass( 'is-disabled' );;
-		};
+			return context.addClass( 'is-disabled' );
+		}
 
 		context.removeClass( 'is-disabled' );
 

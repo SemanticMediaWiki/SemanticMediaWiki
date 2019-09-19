@@ -111,7 +111,7 @@ class PropertyTableRowMapper {
 	 * @return string
 	 */
 	public function makeHash( array $array ) {
-		return md5( implode( '#', $array ) );;
+		return md5( implode( '#', $array ) );
 	}
 
 	/**
