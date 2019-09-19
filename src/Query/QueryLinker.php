@@ -99,7 +99,7 @@ class QueryLinker {
 			}
 
 			// Avoid predefined properties to appear as key as in _MDAT
-			if ( $key !== '' && $key{0} === '_' ) {
+			if ( $key !== '' && $key[0] === '_' ) {
 				$key = DIProperty::newFromUserLabel( $key )->getLabel();
 			} else {
 				$key = str_replace( '_', ' ', $key );

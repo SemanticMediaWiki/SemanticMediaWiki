@@ -76,7 +76,7 @@ class FieldMapper {
 	 * @return boolean
 	 */
 	public static function isPhrase( $value = '' ) {
-		return $value{0} === '"' && substr( $value, -1 ) === '"';
+		return $value[0] === '"' && substr( $value, -1 ) === '"';
 	}
 
 	/**
@@ -272,7 +272,7 @@ class FieldMapper {
 		}
 
 		// Is it a phrase match as in "Foo bar"?
-		if ( $value !=='' && $value{0} === '"' && substr( $value, -1 ) === '"' ) {
+		if ( $value !=='' && $value[0] === '"' && substr( $value, -1 ) === '"' ) {
 			return $this->match_phrase( $field, trim( $value, '"' ) );
 		}
 
@@ -426,7 +426,7 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo*]]`, `[[Has text::~foo]]`
 			// - add Boolean + which translates into "must be present"
-			if ( $value{0} !== '*' ) {
+			if ( $value[0] !== '*' ) {
 				$value = "+$value";
 			}
 

@@ -200,7 +200,7 @@ class PropertyListByApiRequest {
 			return $requestOptions;
 		}
 
-		if ( $property{0} !== '_' ) {
+		if ( $property[0] !== '_' ) {
 			$property = str_replace( "_", " ", $property );
 		}
 

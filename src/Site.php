@@ -124,7 +124,7 @@ class Site {
 	 */
 	public static function id( $affix = '' ) {
 
-		if ( $affix !== '' && $affix{0} !== ':' ) {
+		if ( $affix !== '' && $affix[0] !== ':' ) {
 			$affix = ':' . $affix;
 		}
 

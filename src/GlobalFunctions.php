@@ -170,7 +170,7 @@ function smwfCacheKey( $namespace, $key ) {
 
 	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
 
-	if ( $namespace{0} !== ':' ) {
+	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
 	}
 

@@ -364,7 +364,7 @@ class PostProcHandler {
 				// framework and without further computation) anticipate whether
 				// this influences a query or not, it is a good enough heuristic
 				// to allow to continue the postProc.
-				if ( $propertyList[$pid]{0} !== '_' ) {
+				if ( $propertyList[$pid][0] !== '_' ) {
 					return true;
 				}
 

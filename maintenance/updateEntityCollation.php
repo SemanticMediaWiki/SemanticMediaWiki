@@ -147,7 +147,7 @@ class UpdateEntityCollation extends \Maintenance {
 			return end( $pv )->getString();
 		}
 
-		if ( $row->smw_title{0} !== '_' ) {
+		if ( $row->smw_title[0] !== '_' ) {
 			return $row->smw_sortkey;
 		}
 

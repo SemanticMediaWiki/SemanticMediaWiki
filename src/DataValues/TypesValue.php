@@ -196,7 +196,7 @@ class TypesValue extends DataValue {
 		$valueParts = explode( ':', $value, 2 );
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
-		if ( $value !== '' && $value{0} === '_' ) {
+		if ( $value !== '' && $value[0] === '_' ) {
 			$this->m_typeId = $value;
 		} else {
 			$this->givenLabel = smwfNormalTitleText( $value );

@@ -327,7 +327,7 @@ class QueryEngine implements IQueryEngine {
 			if (
 				$dataItem->getNamespace() === SMW_NS_PROPERTY &&
 				( $dbKey = $dataItem->getDBKey() ) &&
-				$dbKey{0} === '_' ) {
+				$dbKey[0] === '_' ) {
 
 				try {
 					$property = DIProperty::newFromUserLabel( $dbKey );

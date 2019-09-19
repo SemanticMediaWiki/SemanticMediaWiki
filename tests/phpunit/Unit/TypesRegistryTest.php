@@ -73,7 +73,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeList
 	 */
 	public function testTypeList_FirstCharUnderscore( $key, $def ) {
-		$this->assertTrue( $key{0} === '_' );
+		$this->assertTrue( $key[0] === '_' );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyList
 	 */
 	public function testPropertyList_FirstCharUnderscore( $key, $def ) {
-		$this->assertTrue( $key{0} === '_' );
+		$this->assertTrue( $key[0] === '_' );
 	}
 
 	public function typeList() {

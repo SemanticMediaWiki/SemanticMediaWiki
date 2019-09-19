@@ -130,7 +130,7 @@ class ListLookup extends Lookup {
 		if ( isset( $parameters['search'] ) && isset( $parameters['strict'] ) ) {
 			$search = $parameters['search'];
 
-			if ( $search !== '' && $search{0} !== '_' ) {
+			if ( $search !== '' && $search[0] !== '_' ) {
 				$search = str_replace( "_", " ", $search );
 			}
 
@@ -142,7 +142,7 @@ class ListLookup extends Lookup {
 		} elseif ( isset( $parameters['search'] ) ) {
 			$search = $parameters['search'];
 
-			if ( $search !== '' && $search{0} !== '_' ) {
+			if ( $search !== '' && $search[0] !== '_' ) {
 				$search = str_replace( "_", " ", $search );
 			}
 

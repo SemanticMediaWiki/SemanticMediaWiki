@@ -62,7 +62,7 @@ class ExpResource extends ExpElement {
 	 * @return boolean
 	 */
 	public function isBlankNode() {
-		return $this->uri === '' || $this->uri{0} == '_';
+		return $this->uri === '' || $this->uri[0] == '_';
 	}
 
 	/**

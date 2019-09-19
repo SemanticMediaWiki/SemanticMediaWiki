@@ -106,7 +106,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// If it is enabled only check for the first character {0} that should
 		// contain '_' as the rest is going to be an unknown hash value
 		$id = $subobject->getSubobjectId();
-		$this->assertEquals( $expected['identifier'], $isEnabled ? $id{0} : $id );
+		$this->assertEquals( $expected['identifier'], $isEnabled ? $id[0] : $id );
 
 		$parserData = new ParserData( $title, $parserOutput );
 

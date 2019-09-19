@@ -193,7 +193,7 @@ class DIWikiPageHandler extends DataItemHandler {
 
 		// Correctly interpret internal property keys
 		if ( $namespace == SMW_NS_PROPERTY && $dbkeys[0] != '' &&
-			$dbkeys[0]{0} == '_' && $dbkeys[2] == '' ) {
+			$dbkeys[0][0] == '_' && $dbkeys[2] == '' ) {
 
 			try {
 				$property = new DIProperty( $dbkeys[0] );

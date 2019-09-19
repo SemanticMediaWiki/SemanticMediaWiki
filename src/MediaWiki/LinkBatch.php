@@ -97,12 +97,12 @@ class LinkBatch {
 			return;
 		}
 
-		// PHP 5.6! -> PHP 7 $dataItem->getDBKey(){0}
+		// PHP 5.6! -> PHP 7 $dataItem->getDBKey()[0]
 		$dbkey = $dataItem->getDBKey();
 
 		// Avoid "... ParameterAssertionException: Bad value for parameter
 		// $dbkey: invalid DB key '_ASK'"
-		if ( $dbkey !== '' && $dbkey{0} === '_' ) {
+		if ( $dbkey !== '' && $dbkey[0] === '_' ) {
 			return;
 		}
 

@@ -47,7 +47,7 @@ class Csv {
 		$handle = fopen( 'php://temp', 'r+' );
 
 		// fputcsv(): delimiter must be a single character
-		$sep = $sep !== '' ? $sep{0} : self::DEFAULT_SEP;
+		$sep = $sep !== '' ? $sep[0] : self::DEFAULT_SEP;
 
 		// https://en.wikipedia.org/wiki/Comma-separated_values#Standardization
 		// http://php.net/manual/en/function.fputcsv.php

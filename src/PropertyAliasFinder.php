@@ -140,7 +140,7 @@ class PropertyAliasFinder {
 		}
 
 		// Indicates an untranslated MW message key
-		if ( $label !== '' && $label{0} === '<' ) {
+		if ( $label !== '' && $label[0] === '<' ) {
 			return null;
 		}
 

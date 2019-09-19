@@ -324,7 +324,7 @@ class Rebuilder {
 	private function checkRow( $row ) {
 
 		// Find page to refresh, even for special properties:
-		if ( $row->smw_title != '' && $row->smw_title{0} != '_' ) {
+		if ( $row->smw_title != '' && $row->smw_title[0] != '_' ) {
 			$titleKey = $row->smw_title;
 		} elseif ( $this->entityValidator->isProperty( $row ) ) {
 			$titleKey = str_replace( ' ', '_', PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $row->smw_title ) );

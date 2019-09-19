@@ -433,7 +433,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		);
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $connection->fetchObject( $res ) ) ) {
-			if ( $row->iw === '' || $row->iw{0} != ':' )  {
+			if ( $row->iw === '' || $row->iw[0] != ':' )  {
 
 				// Catch exception for non-existing predefined properties that
 				// still registered within non-updated pages (@see bug 48711)
@@ -445,7 +445,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 						'',
 						$row->so
 					] );
-					
+
 					// Register the ID in an event the post-proceesing
 					// fails (namespace no longer valid etc.)
 					$dataItem->setId( $row->id );

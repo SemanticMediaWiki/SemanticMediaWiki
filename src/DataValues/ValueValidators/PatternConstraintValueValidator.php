@@ -90,7 +90,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		$pattern = str_replace( "/\\", "\\", $pattern );
 
 		// Add a mandatory backslash
-		if ( $pattern !== '' && $pattern{0} !== '/' ) {
+		if ( $pattern !== '' && $pattern[0] !== '/' ) {
 			$pattern = '/' . $pattern;
 		}
 

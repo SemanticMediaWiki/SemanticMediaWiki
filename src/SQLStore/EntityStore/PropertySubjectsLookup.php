@@ -341,7 +341,7 @@ class PropertySubjectsLookup {
 	public function newFromRow( $row ) {
 
 		try {
-			if ( $row->smw_iw === '' || $row->smw_iw{0} != ':' ) { // filter special objects
+			if ( $row->smw_iw === '' || $row->smw_iw[0] != ':' ) { // filter special objects
 
 				$keys = [
 					$row->smw_title,

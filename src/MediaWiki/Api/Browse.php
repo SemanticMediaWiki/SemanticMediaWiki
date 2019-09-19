@@ -83,7 +83,7 @@ class Browse extends ApiBase {
 				// https://www.mediawiki.org/wiki/API:JSON_version_2
 				// " ... can indicate that a property beginning with an underscore ..."
 				foreach ( $value as $k => $v ) {
-					if ( $k{0} === '_' ) {
+					if ( $k[0] === '_' ) {
 						$result->addPreserveKeysList( 'query', $k );
 					}
 				}

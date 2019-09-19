@@ -202,7 +202,7 @@ class EntityValidator {
 			$row->smw_iw != SMW_SQL3_SMWIW_OUTDATED &&
 			// Leave any pre-defined property (_...) untouched
 			$row->smw_title != '' &&
-			$row->smw_title{0} != '_' &&
+			$row->smw_title[0] != '_' &&
 			// smw_proptable_hash === null means it is not a subject but an object value
 			$row->smw_proptable_hash === null;
 	}
@@ -246,7 +246,7 @@ class EntityValidator {
 
 			// Check if both make a reference to a predefined representation
 			// and if not, skip
-			if ( $v{0} === '_' && $row->smw_title{0} !== '_' ) {
+			if ( $v[0] === '_' && $row->smw_title[0] !== '_' ) {
 				continue;
 			}
 

@@ -227,7 +227,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
-		if ( $v{0} === $exp && ( $range === null || $range ) ) {
+		if ( $v[0] === $exp && ( $range === null || $range ) ) {
 			$v = intval( trim( substr( $v, 1 ) ) );
 
 			if ( $exp === '>' && $value > $v ) {

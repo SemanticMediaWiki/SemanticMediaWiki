@@ -436,7 +436,7 @@ class LegacyParser implements Parser {
 		$sep = $this->readChunk( '', false );
 
 		if ( ( $sep == '::' ) || ( $sep == ':=' ) ) {
-			if ( $chunk{0} != ':' ) { // property statement
+			if ( $chunk[0] != ':' ) { // property statement
 				return $this->getPropertyDescription( $chunk, $setNS );
 			} else { // escaped article description, read part after :: to get full contents
 				$chunk .= $this->readChunk( '\[\[|\]\]|\|\||\|' );
@@ -471,7 +471,7 @@ class LegacyParser implements Parser {
 
 				// [[Category:!Foo]]
 				// Only the ElasticStore does actively support this construct
-				if ( $chunk{0} === '!' ) {
+				if ( $chunk[0] === '!' ) {
 					$chunk = substr( $chunk, 1 );
 					$isNegation = true;
 				}
@@ -532,7 +532,7 @@ class LegacyParser implements Parser {
 
 		// First process property chain syntax (e.g. "property1.property2::value"),
 		// escaped by initial " ":
-		$propertynames = ( $propertyName{0} == ' ' ) ? [ $propertyName ] : explode( '.', $propertyName );
+		$propertynames = ( $propertyName[0] == ' ' ) ? [ $propertyName ] : explode( '.', $propertyName );
 		$propertyValueList = [];
 
 		$typeid = '_wpg';

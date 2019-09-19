@@ -817,7 +817,7 @@ class EntityIdManager {
 			( $iw === '' || $iw == SMW_SQL3_SMWINTDEFIW ) && $title != '' ) {
 
 			// Check if this is a predefined property:
-			if ( $title{0} != '_' ) {
+			if ( $title[0] != '_' ) {
 				// This normalization also applies to
 				// subobjects of predefined properties.
 				$newTitle = PropertyRegistry::getInstance()->findPropertyIdByLabel( str_replace( '_', ' ', $title ) );
