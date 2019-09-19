@@ -345,7 +345,7 @@
 	"smw_adminlinks_datastructure": "Структура на податоците",
 	"smw_adminlinks_displayingdata": "Приказ на податоци",
 	"smw_adminlinks_inlinequerieshelp": "Помош со вметнати барања",
-	"smw-property-indicator-type-info": "{{PLURAL:$1|Корисник|Систем}}",
+	"smw-property-indicator-type-info": "{{PLURAL:$1|Кориснички|Системски}} дефинирано својство",
 	"smw-createproperty-isproperty": "Ова е својство од видот $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Дозволената вредност за ова својство е|Дозволените вредности за ова својство се}}:",
 	"smw-paramdesc-category-delim": "Разделувачот",
