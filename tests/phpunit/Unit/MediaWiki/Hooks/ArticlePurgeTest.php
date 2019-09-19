@@ -52,18 +52,6 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-	public function testCanConstruct() {
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Hooks\ArticlePurge',
-			new ArticlePurge( $wikiPage )
-		);
-	}
-
 	/**
 	 * @dataProvider titleDataProvider
 	 */
