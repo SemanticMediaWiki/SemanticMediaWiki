@@ -97,22 +97,23 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		);
 
 
-		if ( !$isAllowed ) {
-			foreach ( $allowedListValues as $dataItem ) {
-				$list = $this->allowsListValueParser->parse( $dataItem->getString() );
-
-				// Combine different lists into one
-				if ( is_array( $list ) ) {
-					$allowedValues = array_merge( $allowedValues, $list );
-				}
-			}
-
-			// On assignments like [Foo => Foo] (* Foo) or [Foo => Bar] (* Foo|Bar)
-			// use the key as comparison entity
-			$allowedValues = array_keys( $allowedValues );
-		} else {
+		if ( $isAllowed ) {
 			return;
+
 		}
+
+		foreach ( $allowedListValues as $dataItem ) {
+			$list = $this->allowsListValueParser->parse( $dataItem->getString() );
+
+			// Combine different lists into one
+			if ( is_array( $list ) ) {
+				$allowedValues = array_merge( $allowedValues, $list );
+			}
+		}
+
+		// On assignments like [Foo => Foo] (* Foo) or [Foo => Bar] (* Foo|Bar)
+		// use the key as comparison entity
+		$allowedValues = array_keys( $allowedValues );
 
 		$isAllowed = $this->checkConstraintViolation(
 			$dataValue,
