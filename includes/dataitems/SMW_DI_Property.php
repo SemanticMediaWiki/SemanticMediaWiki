@@ -3,6 +3,7 @@
 namespace SMW;
 
 use RuntimeException;
+use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
