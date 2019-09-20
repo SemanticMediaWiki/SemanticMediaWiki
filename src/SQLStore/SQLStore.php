@@ -2,18 +2,23 @@
 
 namespace SMW\SQLStore;
 
+use RuntimeException;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
 use SMW\SemanticData;
 use SMW\RequestOptions;
+use SMW\Services\ServicesContainer;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
+use SMW\SQLStore\EntityStore\EntityLookup;
+use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\SQLStore\SQLStoreFactory;
-use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\SQLStore\TableDefinition;
+use SMWSql3SmwIds;
+use SMWWikiPageValue;
 use Title;
 
 /*
@@ -128,7 +133,7 @@ class SQLStore extends Store {
 	private $propertyTableIdReferenceFinder;
 
 	/**
-	 * @var dataItemHandlerFactory
+	 * @var DataItemHandlerFactory
 	 */
 	private $dataItemHandlerFactory;
 
@@ -178,13 +183,13 @@ class SQLStore extends Store {
 	 * @since 1.8
 	 * @param integer $diType
 	 *
-	 * @return SMWDIHandler
+	 * @return DataItemHandler
 	 * @throws RuntimeException if no handler exists for the given type
 	 */
 	public function getDataItemHandlerForDIType( $diType ) {
 
 		if ( $this->dataItemHandlerFactory === null ) {
-			$this->dataItemHandlerFactory = $this->factory->newDataItemHandlerFactory( $this );
+			$this->dataItemHandlerFactory = $this->factory->newDataItemHandlerFactory();
 		}
 
 		return $this->dataItemHandlerFactory->getHandlerByType( $diType );
