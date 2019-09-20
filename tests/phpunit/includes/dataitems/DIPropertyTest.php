@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PropertyRegistry;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\DIProperty
@@ -19,7 +18,6 @@ use SMWDataItem as DataItem;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class DIPropertyTest extends \PHPUnit_Framework_TestCase {
-
 	use PHPUnitCompat;
 
 	protected function tearDown() {
@@ -27,27 +25,8 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-	/**
-	 * @dataProvider constructorProvider
-	 */
-	public function testCanConstruct( $arg ) {
-
-		$this->assertInstanceOf(
-			DataItem::class,
-			new DIProperty( $arg )
-		);
-
-		$this->assertInstanceOf(
-			DIProperty::class,
-			new DIProperty( $arg )
-		);
-	}
-
-	/**
-	 * @dataProvider constructorProvider
-	 */
-	public function testSerialization( $arg ) {
-		$instance = new DIProperty( $arg );
+	public function testSerialization() {
+		$instance = new DIProperty( 'ohi there' );
 
 		$this->assertEquals(
 			$instance,
@@ -55,36 +34,20 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider constructorProvider
-	 */
-	public function testInstanceEqualsItself( $arg ) {
-
-		$instance = new DIProperty( $arg );
+	public function testInstanceEqualsItself() {
+		$instance = new DIProperty( 'ohi there' );
 
 		$this->assertTrue(
 			$instance->equals( $instance )
 		);
 	}
 
-	/**
-	 * @dataProvider constructorProvider
-	 */
-	public function testInstanceDoesNotEqualNyanData( $arg ) {
-
-		$instance = new DIProperty( $arg );
+	public function testInstanceDoesNotEqualNyanData() {
+		$instance = new DIProperty( 'ohi there' );
 
 		$this->assertFalse(
 			$instance->equals( new \SMWDIBlob( '~=[,,_,,]:3' ) )
 		);
-	}
-
-	public function constructorProvider() {
-		return [
-			[ 0 ],
-			[ 243.35353 ],
-			[ 'ohi there' ],
-		];
 	}
 
 	public function testSetPropertyTypeIdOnUserDefinedProperty() {
