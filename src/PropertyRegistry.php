@@ -287,7 +287,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return string
+	 * @return string|bool
 	 */
 	public function findCanonicalPropertyLabelById( $id ) {
 		return $this->propertyLabelFinder->findCanonicalPropertyLabelById( $id );
