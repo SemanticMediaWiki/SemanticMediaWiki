@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use RuntimeException;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler;
@@ -60,7 +61,7 @@ class DataItemHandlerFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return DIHandler
+	 * @return DataItemHandler
 	 * @throws RuntimeException
 	 */
 	public function getHandlerByType( $type ) {
