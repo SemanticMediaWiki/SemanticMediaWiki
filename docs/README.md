@@ -1,6 +1,5 @@
 
-The documentation for Semantic MediaWiki (SMW) can primarily be found on the [SMW homepage](https://www.semantic-mediawiki.org).
-Some core documentation is included together with the source code, and can mostly be found in the
+The documentation for **Semantic MediaWiki** (SMW) can primarily be found on the [SMW homepage](https://www.semantic-mediawiki.org). Some core documentation is included together with the source code, and can mostly be found in the
 `docs/` directory. This documentation includes basic installation instructions, release notes and
 technical documentation.
 
