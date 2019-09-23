@@ -1,3 +1,7 @@
+# Compatibility
+
+This document holds the compatibility information for Semantic MediaWiki (SMW).
+
 For a full list of changes in each release, see the [release notes](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/docs/releasenotes).
 For instructions on how to install the latest version of Semantic MediaWiki (SMW), see the
 [installation instructions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md).
@@ -15,23 +19,23 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 	<tr>
 		<th>3.2.x</th>
 		<td><strong>7.1.0</strong> - latest</td>
-		<td>1.31.0 - 1.34.x</td>
-		<td>Q4.2019</td>
+		<td>1.31.0 - 1.35.x</td>
+		<td>Q2.2020</td>
 		<td>Future</td>
 	</tr>
 	<tr>
 		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/23">3.1.x</a></th>
 		<td><strong>7.0.0</strong> - latest</td>
 		<td><strong>1.31.0</strong> - 1.33.x</td>
-		<td>Q3.2019</td>
-		<td>Future</td>
+		<td>2019-09-23</td>
+		<td>Current</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>
 		<td><strong>5.6.0</strong> - 7.2.x</td>
 		<td><strong>1.27.0</strong> - 1.31.x</td>
 		<td>2018-10-11</td>
-		<td>Current</td>
+		<td>Obsolete</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
