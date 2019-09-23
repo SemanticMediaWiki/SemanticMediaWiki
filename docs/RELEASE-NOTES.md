@@ -6,17 +6,15 @@ Released on September 23, 2019.
 
 This release brings the following highlights:
 
-- Support for tracking [attachment links](https://www.semantic-mediawiki.org/wiki/Help:Attachment_links) which display on special page "Browse" and in the factbox using an extra tab
-- Elasticsearch replication monitoring
-- Dependency links validation and invalidation
-- Add `[[Constraint schema::...]]` to a property
-- Support for annotation value `sequence maps`
+- Support for tracking [attachment links](https://www.semantic-mediawiki.org/wiki/Help:Attachment_links) added. They display on special page "Browse" and in the factbox using an extra tab ([#3643](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3643), [#3652](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3652), [#3661](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3661), [#4147](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4147))
+- Elasticsearch [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring) introduced ([#3697](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3697), [#3700](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3700), [#3713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3713))
+- [Embedded query update](https://www.semantic-mediawiki.org/wiki/Help:Embedded_query_update) feature refactored and improved by a new dependency links validation and invalidation mechanism ([#3644](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3644), [#3831](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3831))
+- Support for [constraint schemas](https://www.semantic-mediawiki.org/wiki/Help:Constraint_schema) added ([#3746](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3746), [#3829](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3829), [#3968](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3968), [#4033](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4033), [#4047](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4047))
+- Support for annotation value [sequence maps](https://www.semantic-mediawiki.org/wiki/Help:Sequence_map) added ([#4226](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4226))
 
 ## Compatibility
 
-This release supports MediaWiki 1.31.x up to 1.33.x and PHP 7.0.x up to PHP 7.4.x.
-
-For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
+This release supports MediaWiki 1.31.x up to 1.33.x and PHP 7.0.x up to PHP 7.4.x. For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
 
 ## New features and enhancements
 
@@ -50,6 +48,7 @@ Changes to the data store are now triggered by introducing `DependencyLinksValid
 * [#3693](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3693) Relaxed link removal in raw text
 * [#3697](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3697) Added replication monitoring (`indexer.monitor.entity.replication`) on per entity base and [#3713](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3713) (`indexer.monitor.entity.replication.cache_lifetime`)
 * [#3699](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3699) Added length restriction to value inputs for a query construct  (`query.maximum.value.length`)
+* [#3700](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3700) Show indicator placeholder for replication monitoring
 * [#3763](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3763) Forced `FileIngestJob` to wait on the command line before executing the file indexing
 * [#3777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3777) Added `rev_id` as field for indexing to extend the [replication monitoring](https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring)
 * [#3810](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3810) Check for associated revision
@@ -76,11 +75,11 @@ Changes to the data store are now triggered by introducing `DependencyLinksValid
 
 #### Result formats
 
-* [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620) Fixed `format=csv` to not ignore omitting of units with #-n
+* [#3620](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3620) Fixed result printer "csv" to not ignore omitting of units with display formatter `#-n`
 * [#3650](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3650) Added support for `noimage` as output option for entity (aka. page) links
 * [#3734](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3734) Moved remaining result printers to new namespace
-* [#3760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3760) Removed `template arguments` and added `named args` to the `templatefile` result printer
-* [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in `format=table`
+* [#3760](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3760) Removed `template arguments` and added `named args` to the "templatefile" result printer
+* [#3793](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3793) Added support for (ul/ol) as value separator in result format "table"
 * [#3873](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3873) Use canonical property label in a template context
 
 ### Misc
@@ -92,13 +91,13 @@ Changes to the data store are now triggered by introducing `DependencyLinksValid
 * [#3696](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3696) Highlighter to decode `<` and `>` in content
 * [#3717](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3717) Highlighter to decode `\n` in content
 * [#3718](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3718) Extended tables to find and remove duplicates
-* [#3720](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3720) Added `Special:MissingRedirectAnnotations` to show [missing redirect annotations](https://www.semantic-mediawiki.org/wiki/Help:Missing_redirect_annotations)
+* [#3720](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3720) Added special page "MissingRedirectAnnotations" to show [missing redirect annotations](https://www.semantic-mediawiki.org/wiki/Help:Missing_redirect_annotations)
 * [#3733](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3733) Added support for enforced property [parent type inheritance](https://www.semantic-mediawiki.org/wiki/Help:Mandatory_parent_datatype_inheritance) (disabled by default, can be enabled using the [`$smwgMandatorySubpropertyParentTypeInheritance`](https://www.semantic-mediawiki.org/wiki/Help:$smwgMandatorySubpropertyParentTypeInheritance) setting)
 * [#3735](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3735) Added declaration check for when multiple `Has fields` declarations are used
 * [#3747](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3747) Added an option to define `LAST_EDITOR`, `IS_IMPORTER`
 * [#3749](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3749) Added [`PROPERTY_GROUP_SCHEMA`](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/PROPERTY_GROUP_SCHEMA) as schema type to to define [property groups](https://www.semantic-mediawiki.org/wiki/Help:Property_group) using a JSON schema
 * [#3751](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3751) Added `?`, `*`, and `!` as invalid characters for a property name
-* [#3756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3756) Added properties count in use for a specific type to `Special:Types`
+* [#3756](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3756) Added properties count in use for a specific type to special page "Types"
 * [#3779](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3779) Added normalization for `__` in propery names
 * [#3790](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3790) Highlighter, remove trailing line feeds
 * [#3792](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3792) Added the `_ERR_TYPE` predefine property
@@ -174,7 +173,7 @@ Changes to the data store are now triggered by introducing `DependencyLinksValid
 
 * [#3808](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3808) Removed `CachingEntityLookup`
 * [#3995](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3995) Disabled access to `Title` related methods in the `WikiPageValue`
-* [#3402](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3402) Removed long deprecated functions (see the PR for details) from `SMWQueryProcessor`
+* [#3402](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3402) Removed long deprecated functions from `SMWQueryProcessor`
 
 ## Other changes
 
