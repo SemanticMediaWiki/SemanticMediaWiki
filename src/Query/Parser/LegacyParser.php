@@ -214,7 +214,6 @@ class LegacyParser implements Parser {
 	 */
 	public function getErrorString() {
 		throw new \RuntimeException( "Shouldnot be used, remove getErrorString usage!" );
-		return smwfEncodeMessages( $this->getErrors() );
 	}
 
 	/**

@@ -49,8 +49,6 @@ class Serializer {
 				return self::doSerializeProp( $printRequest, $parameters );
 			case PrintRequest::PRINT_THIS:
 				return self::doSerializeThis( $printRequest, $parameters );
-			default:
-				return '';
 		}
 
 		return ''; // no current serialisation
