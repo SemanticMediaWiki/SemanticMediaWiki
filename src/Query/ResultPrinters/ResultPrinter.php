@@ -686,27 +686,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * Returns the parameter definitions as an associative array where
-	 * the keys hold the parameter names and point to their full definitions.
-	 * array( name => array|IParamDefinition )
-	 *
-	 * @since 1.8
-	 *
-	 * @param array $definitions List of definitions to prepend to the result printers list before further processing.
-	 *
-	 * @return array
-	 */
-	public final function getNamedParameters( array $definitions = [] ) {
-		$params = [];
-
-		foreach ( $this->getParamDefinitions( $definitions ) as $param ) {
-			$params[is_array( $param ) ? $param['name'] : $param->getName()] = $param;
-		}
-
-		return $params;
-	}
-
-	/**
 	 * @see IResultPrinter::isExportFormat
 	 *
 	 * @since 1.8
