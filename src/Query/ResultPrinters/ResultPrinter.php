@@ -8,6 +8,7 @@ use ParamProcessor\ParamDefinition;
 use Sanitizer;
 use SMW\Message;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\QueryContext;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
 use SMWInfolink;
@@ -196,7 +197,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 3.0
 	 *
-	 * @return Message
+	 * @return \Message
 	 */
 	public function msg() {
 		return wfMessage( func_get_args() );
