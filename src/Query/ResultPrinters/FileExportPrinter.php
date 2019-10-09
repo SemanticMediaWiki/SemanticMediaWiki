@@ -49,24 +49,21 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @param array $params
 	 */
 	public function outputAsFile( SMWQueryResult $queryResult, array $params ) {
-		$result = $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 
 		if ( $this->httpHeader ) {
 			header( 'Content-type: ' . $this->getMimeType( $queryResult ) . '; charset=UTF-8' );
-		}
 
-		$fileName = $this->getFileName( $queryResult );
+			$fileName = $this->getFileName( $queryResult );
 
-		if ( $fileName !== false ) {
-			$utf8Name = rawurlencode( $fileName );
-			$fileName = iconv( "UTF-8", "ASCII//TRANSLIT", $fileName );
+			if ( $fileName !== false ) {
+				$utf8Name = rawurlencode( $fileName );
+				$fileName = iconv( "UTF-8", "ASCII//TRANSLIT", $fileName );
 
-			if ( $this->httpHeader ) {
 				header( "content-disposition: attachment; filename=\"$fileName\"; filename*=UTF-8''$utf8Name;" );
 			}
 		}
 
-		echo $result;
+		echo $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
 	/**
