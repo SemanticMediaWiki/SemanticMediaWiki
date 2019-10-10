@@ -3,6 +3,8 @@
 namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
+use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\TransactionProfiler;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +15,7 @@ use RuntimeException;
 class TransactionHandler {
 
 	/**
-	 * @var LBFactory
+	 * @var ILBFactory
 	 */
 	private $loadBalancerFactory;
 
@@ -28,32 +30,16 @@ class TransactionHandler {
 	private $mutedTransactionProfiler;
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param ILBFactory|LBFactory $loadBalancerFactory
+	 * @var TransactionProfiler|null
 	 */
-	public function __construct( $loadBalancerFactory ) {
+	private $transactionProfiler;
 
-		if (
-			!$loadBalancerFactory instanceof \LBFactory &&
-			!$loadBalancerFactory instanceof \Wikimedia\Rdbms\ILBFactory ) {
-			throw new RuntimeException( "Expected a LBFactory instance!" );
-		}
-
+	public function __construct( ILBFactory $loadBalancerFactory ) {
 		$this->loadBalancerFactory = $loadBalancerFactory;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param TransactionProfiler $transactionProfiler
-	 */
-	public function setTransactionProfiler( $transactionProfiler ) {
-
-		// MW 1.28+
-		if ( method_exists( $transactionProfiler, 'setSilenced' ) ) {
-			$this->transactionProfiler = $transactionProfiler;
-		}
+	public function setTransactionProfiler( TransactionProfiler $transactionProfiler ) {
+		$this->transactionProfiler = $transactionProfiler;
 	}
 
 	/**
@@ -81,22 +67,11 @@ class TransactionHandler {
 		}
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param  string $fname
-	 * @return boolean
-	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( string $fname = __METHOD__ ): bool {
 		return $this->sectionTransaction === $fname;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @return boolean
-	 */
-	public function hasActiveSectionTransaction() {
+	public function hasActiveSectionTransaction(): bool {
 		return $this->sectionTransaction !== null;
 	}
 
@@ -117,7 +92,7 @@ class TransactionHandler {
 	 * @param string $fname
 	 * @throws RuntimeException
 	 */
-	public function markSectionTransaction( $fname = __METHOD__ ) {
+	public function markSectionTransaction( string $fname = __METHOD__ ) {
 
 		if ( $this->sectionTransaction !== null ) {
 			throw new RuntimeException(
@@ -128,12 +103,7 @@ class TransactionHandler {
 		$this->sectionTransaction = $fname;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $fname
-	 */
-	public function detachSectionTransaction( $fname = __METHOD__ ) {
+	public function detachSectionTransaction( string $fname = __METHOD__ ) {
 
 		if ( $this->sectionTransaction !== $fname ) {
 			throw new RuntimeException(
@@ -153,22 +123,15 @@ class TransactionHandler {
 	 *
 	 * @return mixed A value to pass to commitAndWaitForReplication
 	 */
-	public function getEmptyTransactionTicket( $fname = __METHOD__ ) {
-
-		$ticket = null;
-
-		if ( !method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
-			return $ticket;
-		}
-
+	public function getEmptyTransactionTicket( string $fname = __METHOD__ ) {
 		// @see LBFactory::getEmptyTransactionTicket
 		// We don't try very hard at this point and will continue without a ticket
 		// if the check fails and hereby avoid a "... does not have outer scope" error
 		if ( !$this->loadBalancerFactory->hasMasterChanges() ) {
-			$ticket = $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
+			return $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
 		}
 
-		return $ticket;
+		return null;
 	}
 
 	/**
@@ -184,9 +147,9 @@ class TransactionHandler {
 	 * @param mixed $ticket Result of Database::getEmptyTransactionTicket
 	 * @param array $opts Options to waitForReplication
 	 */
-	public function commitAndWaitForReplication( $fname, $ticket, array $opts = [] ) {
+	public function commitAndWaitForReplication( string $fname, $ticket, array $opts = [] ) {
 
-		if ( !is_int( $ticket ) || !method_exists( $this->loadBalancerFactory, 'commitAndWaitForReplication' ) ) {
+		if ( !is_int( $ticket ) ) {
 			return;
 		}
 
