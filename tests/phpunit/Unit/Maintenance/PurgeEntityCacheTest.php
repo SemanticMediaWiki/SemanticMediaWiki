@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
+use SMW\EntityCache;
 use SMW\Maintenance\PurgeEntityCache;
 use FakeResultWrapper;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 
@@ -16,7 +20,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class PurgeEntityCacheTest extends \PHPUnit_Framework_TestCase {
+class PurgeEntityCacheTest extends TestCase {
 
 	private $testEnvironment;
 	private $messageReporter;
@@ -28,21 +32,10 @@ class PurgeEntityCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment =  new TestEnvironment();
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->messageReporter = $this->createMock( MessageReporter::class );
+		$this->store = $this->createMock( SQLStore::class );
+		$this->connection = $this->createMock( \Database::class );
+		$this->entityCache = $this->createMock( EntityCache::class );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
