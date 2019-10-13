@@ -8,7 +8,6 @@ use ParamProcessor\ParamDefinition;
 use Sanitizer;
 use SMW\Message;
 use SMW\Parser\RecursiveTextProcessor;
-use SMW\Query\QueryContext;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
 use SMWInfolink;
@@ -183,15 +182,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param integer $queryContext
-	 */
-	public function setQueryContext( $queryContext ) {
-		$this->mInline = $queryContext != QueryContext::SPECIAL_PAGE;
-	}
-
-	/**
 	 * This method is added temporary measures to avoid breaking those that relied
 	 * on the removed ContextSource interface.
 	 *
@@ -226,7 +216,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * @since 3.1
 	 *
-	 * @return Parser
+	 * @return \Parser
 	 */
 	public function copyParser() {
 
@@ -513,6 +503,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param string $classAffix
 	 *
 	 * @return SMWInfolink
+	 * @throws \Exception
 	 */
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
@@ -543,6 +534,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param $outputMode
 	 *
 	 * @return SMWInfolink
+	 * @throws \Exception
 	 */
 	protected function getFurtherResultsLink( QueryResult $res, $outputMode ) {
 		$link = $this->getLink( $res, $outputMode, 'furtherresults' );
@@ -602,7 +594,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return array[]
 	 */
 	protected function getResources() {
 		return [ 'modules' => [], 'styles' => [] ];
