@@ -25,13 +25,14 @@
 			"Nemo bis",
 			"Krabina",
 			"Abijeet Patro",
-			"Mirzali"
+			"Mirzali",
+			"Tobi 406"
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
 	"smw-error": "Fehler",
 	"smw-upgrade-error": "Semantic MediaWiki wurde installiert und aktiviert, es fehlt jedoch der zugehörige [https://www.semantic-mediawiki.org/wiki/Help:Upgrade Aktualisierungsschlüssel]: <code>$1</code>.",
-	"smw-upgrade-error-title": "Fehler (Semantisches MediaWiki)",
+	"smw-upgrade-error-title": "Fehler » Semantisches MediaWiki",
 	"smw-upgrade-error-why-title": "Warum wird diese Fehlermeldung angezeigt?",
 	"smw-upgrade-error-why-explain": "Die interne Struktur der von Semantic MediaWiki genutzten Datenbank hat sich verändert und erfordert Anpassungen, um störungsfrei funktionieren zu können. Für die Änderung kann es unter anderem mehrere Gründe geben:\n* ein feststehendes Attribut wurde hinzugefügt, das die Erstellung einer neuen Datenbanktabelle erfordert, bevor wieder auf die Datenbank zugegriffen werden kann\n* eine Softwareanpassung bedingt Änderungen an Tabellen oder Indizes der Datenbank, die eine Schemaaktualisierung bedingen, bevor wieder auf die Datenbank zugegriffen werden kann",
 	"smw-upgrade-error-how-title": "Wie kann dieser Fehler behoben werden?",
