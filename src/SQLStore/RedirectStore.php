@@ -194,10 +194,21 @@ class RedirectStore {
 		}
 
 
-		$canRun = $this->isCommandLineMode && !$connection->inSectionTransaction( 'SMWSQLStore3Writers::doDataUpdate' );
+		// Generally, redirect updates can be lazily run during the online processing
+		$immediateMode = false;
+
+		// #4082, #4323
+		// If possible allow an immediate execution but ensure that no section
+		// transaction is open and causes the redirect update to run before the
+		// initial transaction which otherwise could cause data inconsistencies
+		if (
+			$this->isCommandLineMode &&
+			!$connection->inSectionTransaction( SQLStore::UPDATE_TRANSACTION ) ) {
+			$immediateMode = true;
+		}
 
 		foreach ( $jobs as $job ) {
-			if ( $canRun ) {
+			if ( $immediateMode ) {
 				$job->run();
 			} else {
 				$job->lazyPush();
