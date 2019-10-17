@@ -118,6 +118,11 @@ class SQLStore extends Store {
 	const ID_AUXILIARY_TABLE = 'smw_object_aux';
 
 	/**
+	 * Identifies the UPDATE transaction
+	 */
+	const UPDATE_TRANSACTION = 'sql/transaction/update';
+
+	/**
 	 * @var SQLStoreFactory
 	 */
 	private $factory;
