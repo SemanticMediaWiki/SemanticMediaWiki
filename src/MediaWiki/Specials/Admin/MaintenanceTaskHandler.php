@@ -168,7 +168,9 @@ class MaintenanceTaskHandler extends TaskHandler {
 		$scripts = [];
 
 		foreach ( $files as $script ) {
-			require_once $script[0];
+			// Supress error "Constant MW_ENTRY_POINT already defined" due to
+			// https://github.com/wikimedia/mediawiki/commit/b7ce7aacb0fb6803d9135f465e9cf6b48912883e
+			@require_once $script[0];
 
 			// Auto-discover the class name!
 			$classes = get_declared_classes();
