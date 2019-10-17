@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStoreUpdater;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 /**
@@ -185,6 +186,13 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$database->expects( $this->once() )
+			->method( 'beginSectionTransaction' )
+			->with( $this->equalTo( SQLStore::UPDATE_TRANSACTION ) );
+
+		$database->expects( $this->once() )
+			->method( 'endSectionTransaction' )
+			->with( $this->equalTo( SQLStore::UPDATE_TRANSACTION ) );
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
