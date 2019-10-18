@@ -430,7 +430,7 @@
 	"smw-admin-installfile": "If you experience problems with your installation, start by checking the guidelines in the <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">INSTALL file</a> and the <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">installation page</a>.",
 	"smw-admin-smwhomepage": "The complete user documentation to Semantic MediaWiki is at <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Bugs can be reported to the <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">issue tracker</a>, the <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">reporting bugs</a> page provides some guidance on how to write an effective issue report.",
-	"smw-admin-questions": "If you have further questions or suggestions, join the discussion on the Semantic MediaWiki <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">user mailing list</a> or the <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">chatroom</a>.",
+	"smw-admin-questions": "If you have further questions or suggestions, join the discussion on the Semantic MediaWiki <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">user mailing list</a>.",
 	"smw-admin-other-functions": "Other functions",
 	"smw-admin-statistics-extra": "Statistic functions",
 	"smw-admin-statistics": "Statistics",
