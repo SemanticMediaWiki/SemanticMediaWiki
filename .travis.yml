@@ -12,7 +12,7 @@ matrix:
       php: 7.1
     - env: DB=postgres; MW=REL1_31; PHPUNIT=6.5.*
       php: 7.2
-    - env: DB=sqlite; MW=REL1_33; PHPUNIT=8.*
+    - env: DB=sqlite; MW=REL1_33; PHPUNIT=7.*
       php: 7.4snapshot
     - env: DB=sqlite; MW=REL1_31; SITELANG=ja; PHPUNIT=5.7.*
       php: 7.1
