@@ -58,7 +58,7 @@ matrix:
 # Aug 12, 2016: (incident:2p40l49r3yxd) Travis support asks to add `sudo sysctl ...`
 # After investigation, removed the lines from Dec 16, 2015 as it emptied the hosts file
 before_install:
-  - phpenv config-rm xdebug.ini # https://github.com/travis-ci/travis-ci/issues/1697
+  - phpenv config-rm xdebug.ini || return 0 # https://github.com/travis-ci/travis-ci/issues/1697
   - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
   - sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
   - ip addr # for confirmation. can be skipped
