@@ -200,7 +200,7 @@
             "Schema definition": "_SCHEMA_DEF",
             "Schema link": "_SCHEMA_LINK",
             "Formatter schema": "_FORMAT_SCHEMA",
-            "Constraint schema": "_CONSTRAINT_SCHEMA",
+            "Has constraint schema": "_CONSTRAINT_SCHEMA",
             "Property constraint schema": "_CONSTRAINT_SCHEMA",
             "Profile schema": "_PROFILE_SCHEMA",
             "Property profile schema": "_PROFILE_SCHEMA",
