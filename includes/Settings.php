@@ -65,7 +65,6 @@ class Settings extends Options {
 			'smwgIgnoreExtensionRegistrationCheck' => $GLOBALS['smwgIgnoreExtensionRegistrationCheck'],
 			'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey'],
 			'smwgJobQueueWatchlist' => $GLOBALS['smwgJobQueueWatchlist'],
-			'smwgEnabledCompatibilityMode' => $GLOBALS['smwgEnabledCompatibilityMode'],
 			'smwgDefaultStore' => $GLOBALS['smwgDefaultStore'],
 			'smwgDefaultLoggerRole' => $GLOBALS['smwgDefaultLoggerRole'],
 			'smwgLocalConnectionConf' => $GLOBALS['smwgLocalConnectionConf'],
