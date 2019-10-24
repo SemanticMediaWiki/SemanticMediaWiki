@@ -17,7 +17,8 @@
 			"Alifakoor",
 			"Physicsch",
 			"Amirsara",
-			"FarsiNevis"
+			"FarsiNevis",
+			"Alireza Ivaz"
 		]
 	},
 	"smw-desc": "ویکی خود را بیشترقابل دسترس کنید- برای ماشین‌ها ''و'' انسان‌ها ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -304,7 +305,7 @@
 	"smw-admin-installfile": "اگر شما تجربه مشکلات نصب را داشتید، با بررسی دستورالعمل‌ها در <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md#smw-installation\">INSTALL file</a> شروع کنید.",
 	"smw-admin-smwhomepage": "مستندات کامل کاربر برای مدیاویکی معنایی در <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b> است.",
 	"smw-admin-bugsreport": "اشکالات می‌توانند به <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> گزارش شوند.",
-	"smw-admin-questions": "اگر شما سوالات یا پیشنهادات بیشتری دارید، به گفتگو در<a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semantic MediaWiki user forum</a> بپیوندید.",
+	"smw-admin-questions": "اگر شما سوالات یا پیشنهادات بیشتری دارید، به گفتگو در<a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">تالار گفتمان کاربران مدیاویکی معنایی</a> بپیوندید.",
 	"smw-admin-supplementary-section-title": "کارکردهای تکمیلی",
 	"smw-admin-supplementary-settings-title": "تنظیمات پیکربندی",
 	"smw-property-label-similarity-threshold": "آستانه:",

@@ -439,7 +439,7 @@
 	"smw-admin-installfile": "لو واجهتك مشاكل مع تنصيبتك فابدأ بمراجعة الإرشادات في https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">INSTALL file</a> and the <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">صفحة التثبيت</a>.",
 	"smw-admin-smwhomepage": "وثائق الاستخدام الكاملة لميدياويكي الدلالية موجودة في <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "الأخطاء يمكن الإبلاغ عنها في <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/\"متعقب المشاكل</a>، ، توفر صفحة <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">الإبلاغ عن الأخطاء</a> بعض الإرشادات حول كيفية كتابة تقرير مشكلة فعال.",
-	"smw-admin-questions": "إذا كانت لديك أسئلة أو اقتراحات أخرى، فيمكنك الانضمام إلى مناقشة <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">القائمة البريدية للمستخدم</a> أو <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">غرف الدردشة</a> في ميدياويكي الدلالي.",
+	"smw-admin-questions": "إذا كانت لديك أسئلة أو اقتراحات أخرى، فقم بالانضمام إلى المناقشة في <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">قائمة بريد مستخدم</a> ميدياويكي الدلالي.",
 	"smw-admin-other-functions": "وظائف أخرى",
 	"smw-admin-statistics-extra": "الدوال الإحصائية",
 	"smw-admin-statistics": "إحصاءات",
