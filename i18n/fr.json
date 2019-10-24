@@ -466,7 +466,7 @@
 	"smw-admin-installfile": "Si vous rencontrez des problèmes lors de votre installation, commencez par regarder le guide en ligne dans le <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">fichier INSTALL</a> et la <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">page d’installation</a>.",
 	"smw-admin-smwhomepage": "La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_-_Page_d%27accueil\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Les bogues peuvent être signalés sur le <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">suivi de problèmes</a>, la page de <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">signalement des bogues</a> fournit des indications sur la manière d’écrire un vrai rapport de problème.",
-	"smw-admin-questions": "Si vous avez d’autres questions ou des suggestions, joignez-vous à la discussion sur <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">la liste de discussion des utilisateurs</a> de MediaWiki Sémantique ou la <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">zone de discussion</a>.",
+	"smw-admin-questions": "Si vous avez d’autres questions ou des suggestions, joignez-vous à la discussion sur la <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">liste de discussion des utilisateurs</a> de MediaWiki Sémantique.",
 	"smw-admin-other-functions": "Autres fonctions",
 	"smw-admin-statistics-extra": "Fonctions statistiques",
 	"smw-admin-statistics": "Statistiques",

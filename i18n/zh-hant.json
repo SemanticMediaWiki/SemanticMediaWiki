@@ -37,7 +37,8 @@
 			"Winston Sung",
 			"予弦",
 			"Xiplus",
-			"Sunny00217"
+			"Sunny00217",
+			"A Retired User"
 		]
 	},
 	"smw-desc": "讓您的 Wiki 更容易使用 - 不論是對於機器''或''人類（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 線上說明文件]）",
@@ -452,7 +453,7 @@
 	"smw-admin-installfile": "如果您安裝時遇到問題，請先檢查<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">安裝文件</a>及<a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">安裝頁面</a>中的指引。",
 	"smw-admin-smwhomepage": "Semantic MediaWiki 的完整使用者文件請查閱 <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>。",
 	"smw-admin-bugsreport": "程式問題可在<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">問題追蹤</a>報告，<a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">報告錯誤</a>頁面提供一些如何書寫有效的問題報告方面指導。",
-	"smw-admin-questions": "如果有問題或建議，可加入 Semantic MediaWiki <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">使用者郵件清單</a>，或是<a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">聊天室</a>的討論。",
+	"smw-admin-questions": "如果有問題或建議，可加入 Semantic MediaWiki <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">使用者郵件清單</a>。",
 	"smw-admin-other-functions": "其它功能",
 	"smw-admin-statistics-extra": "統計功能",
 	"smw-admin-statistics": "統計",
