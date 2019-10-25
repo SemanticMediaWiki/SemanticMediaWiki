@@ -285,14 +285,3 @@ function enableSemantics( $namespace = null, $complete = false ) {
 function disableSemantics() {
 	CompatibilityMode::disableSemantics();
 }
-
-/**
- * @see https://www.php.net/manual/en/function.is-iterable.php
- *
- * PHP 7.1- polyfill
- */
-if ( !function_exists(  'is_iterable' ) ) {
-	function is_iterable( $obj ) {
-		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
-	}
-}
