@@ -191,8 +191,8 @@ class SQLStoreUpdater {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		// MW 1.33+
-		$connection->beginSectionTransaction( __METHOD__ );
+		// MW 1.33+, #3780
+		$connection->beginSectionTransaction( SQLStore::UPDATE_TRANSACTION );
 
 		$subobjectListFinder = $this->factory->newSubobjectListFinder();
 
@@ -272,7 +272,7 @@ class SQLStoreUpdater {
 			$changeOp
 		] );
 
-		$connection->endSectionTransaction( __METHOD__ );
+		$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
 	}
 
 	/**
