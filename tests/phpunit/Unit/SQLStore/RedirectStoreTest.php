@@ -245,6 +245,68 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
 
+	public function testUpdateRedirect_OnCommandLine_ActiveSectionTransaction() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'inSectionTransaction' )
+			->with( $this->equalTo( \SMW\SQLStore\SQLStore::UPDATE_TRANSACTION ) )
+			->will( $this->returnValue( true ) );
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'lazyPush' );
+
+		$row = new \stdClass;
+		$row->ns = NS_MAIN;
+		$row->t = 'Bar';
+
+		$this->connection->expects( $this->once() )
+			->method( 'select' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyTable->expects( $this->once() )
+			->method( 'getFields' )
+			->will( $this->returnValue( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyTables' ] )
+			->getMock();
+
+		$store->setConnectionManager( $this->connectionManager );
+
+		$store->expects( $this->once() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ $propertyTable ] ) );
+
+		$store->setOption(
+			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			true
+		);
+
+		$this->testEnvironment->addConfiguration(
+			'smwgEnableUpdateJobs',
+			true
+		);
+
+		$store->setOption(
+			'smwgEnableUpdateJobs',
+			true
+		);
+
+		$instance = new RedirectStore(
+			$store
+		);
+
+		$instance->setCommandLineMode( true );
+		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
+
+		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
+	}
+
 	public function testUpdateRedirectNotEnabled() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
