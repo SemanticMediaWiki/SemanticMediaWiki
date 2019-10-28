@@ -367,7 +367,7 @@
 	"smw-property-predefined-label-skey": "Pikanäppäin",
 	"smw-processing": "Käsitellään ...",
 	"smw-types-title": "Tyyppi: $1",
-	"smw-schema-error-title": "Vahvistusvirhe",
+	"smw-schema-error-title": "Vahvistus{{PLURAL:$1|virhe|virheet}}",
 	"smw-schema-summary-title": "Yhteenveto",
 	"smw-schema-type": "Tyyppi",
 	"smw-ask-title-keyword-type": "Avainsanahaku",
