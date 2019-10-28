@@ -269,7 +269,7 @@
 	"smw-wantedproperty-template": "$1 ($2 utilisation{{PLURAL:$2||s}})",
 	"smw-special-wantedproperties-docu": "Cette page liste [https://www.semantic-mediawiki.org/wiki/Wanted_properties les propriétés souhaitées] qui sont utilisées dans le wiki mais n’ont pas de page les décrivant. Pour une vue différenciée, voyez les pages spéciales de propriétés [[Special:Properties|complètes]] ou  [[Special:UnusedProperties|inutilisées]].",
 	"smw-special-wantedproperties-template": "$1 ($2 utilisation{{PLURAL:$2||s}})",
-	"smw_purge": "Actualiser",
+	"smw_purge": "Purger",
 	"smw-purge-update-dependencies": "MediaWiki Sémantique purge la page courante de certaines données obsolètes qu’il a détectées, ce qui nécessite une mise à jour en arrière-plan.",
 	"smw-purge-failed": "MediaWiki Sémantique a essayé de purger la page, mais a échoué",
 	"types": "Types de données",
