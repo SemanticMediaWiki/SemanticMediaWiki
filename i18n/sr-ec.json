@@ -343,7 +343,7 @@
 	"smw-jsonview-expand-title": "Шири JSON приказ",
 	"smw-jsonview-collapse-title": "Скупља JSON приказ",
 	"smw-types-title": "Тип: $1",
-	"smw-schema-error-title": "Грешка приликом провере ваљаности",
+	"smw-schema-error-title": "Провера {{PLURAL:$1|грешке|грешака}}",
 	"smw-schema-error-violation": "[„$1”, „$2”]",
 	"smw-schema-title": "Шема",
 	"smw-schema-type": "Тип",
