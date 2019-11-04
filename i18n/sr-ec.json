@@ -239,7 +239,7 @@
 	"smw-admin-installfile": "Ако наиђете на проблем при инсталацији, најпре прочитајте смернице у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">датотеци INSTALL</a> и <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">страници за инсталацију</a>.",
 	"smw-admin-smwhomepage": "Потпуна корисничка документација за Семантички медијавики је на <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Грешке могу да се пријављују на <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">пратиоцу грешака</a>. Страница „<a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">Пријављивање грешака</a>” пружа неке смернице о томе како да напишете ефективан извештај о грешци.",
-	"smw-admin-questions": "Ако имате даљих питања или предлога, укључите се у дискусију на <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">корисничком мејлинг списку Сематичког медијавикија</a> или <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">чет соби</a>.",
+	"smw-admin-questions": "Ако имате даљих питања или предлога, укључите се у дискусију на <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">корисничкој мејлинг листи</a>.",
 	"smw-admin-other-functions": "Друге функције",
 	"smw-admin-supplementary-section-subtitle": "Подржане основне функције",
 	"smw-admin-supplementary-settings-title": "Подешавања конфигурације",
