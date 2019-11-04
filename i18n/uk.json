@@ -401,7 +401,7 @@
 	"smw-admin-installfile": "Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файлі INSTALL</a> та на <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">сторінці інсталяції</a>.",
 	"smw-admin-smwhomepage": "Повна довідка із користування Семантичною MediaWiki знаходиться на сайті <b><a href=\"https://www.semantic-mediawiki.org/wiki/%D0%A1%D0%B5%D0%BC%D0%B0%D0%BD%D1%82%D0%B8%D1%87%D0%BD%D0%B0_%D0%9C%D0%B5%D0%B4%D1%96%D0%B0%D0%B2%D1%96%D0%BA%D1%96\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Повідомлення про помилки відсилайте через  <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">багтрекер</a>; сторінка про <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">надсилання звітів про помилки</a> має деякі підказки щодо того, як написати ефективний звіт про помилку.",
-	"smw-admin-questions": "Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень на <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">поштовій розсилці для користувачів Семантичної MediaWiki</a>, або в <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">чат-кімнаті</a>.",
+	"smw-admin-questions": "Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень у <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">поштовій розсилці для користувачів Семантичної MediaWiki</a>.",
 	"smw-admin-other-functions": "Інші функції",
 	"smw-admin-statistics-extra": "Статистичні функції",
 	"smw-admin-statistics": "Статистика",

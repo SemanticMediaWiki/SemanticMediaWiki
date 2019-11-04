@@ -238,7 +238,7 @@
 	"types": "Datentypen",
 	"smw_types_docu": "Dies ist eine [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes Liste aller Datentypen], die Attributen zugewiesen werden können. Jeder [https://www.semantic-mediawiki.org/wiki/Help:Datatype Datentyp] beschreibt eindeutige Merkmale zur Datenspeicherung und -anzeige eines Datenwerts für ein Attribut, dem der entsprechende Datentyp zugeordnet wurde.",
 	"smw-special-types-no-such-type": "Der Datentyp „$1“ ist unbekannt oder ungültig.",
-	"smw-statistics": "Statistik zu semantischen Daten",
+	"smw-statistics": "Datenstatistik",
 	"smw-statistics-cached": "Semantische Statistiken (gecacht)",
 	"smw-statistics-entities-total": "Datenobjekte (insgesamt)",
 	"smw-statistics-entities-total-info": "Die geschätzte Anzahl der Datenobjekte. Dies umfasst Attribute, Konzepte oder andere zulässige Datenobjekte, die eine Kennung erhalten haben.",
