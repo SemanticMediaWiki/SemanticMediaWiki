@@ -103,7 +103,7 @@ class StatsFormatter {
 		return $stats;
 	}
 
-	// http://stackoverflow.com/questions/10123604/multstatsdIdimensional-array-from-string
+	// https://stackoverflow.com/questions/10123604/multidimensional-array-from-string
 	private static function stringToArray( $separator, $path, $value ) {
 
 		$pos = strpos( $path, $separator );
