@@ -274,7 +274,7 @@
 	"smw-admin-installfile": "Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">file INSTALL</a> e le <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">pagina de installation</a>.",
 	"smw-admin-smwhomepage": "Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Defectos pote esser reportate in le <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">traciator de problemas</a>. Le pagina <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">signalar problemas</a> explica como reportar un problema de maniera effective.",
-	"smw-admin-questions": "Si tu ha altere questiones o suggestiones, participa al discussion sur Semantic MediaWiki in le <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">foro del usatores de Semantic MediaWiki</a> o in le <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">canal de chat</a>.",
+	"smw-admin-questions": "Si tu ha altere questiones o suggestiones, participa al <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">lista de discussion</a> pro le usatores de Semantic MediaWiki.",
 	"smw_adminlinks_datastructure": "Structura de datos",
 	"smw_adminlinks_displayingdata": "Monstrar datos",
 	"smw_adminlinks_inlinequerieshelp": "Adjuta super consultas incorporate",
