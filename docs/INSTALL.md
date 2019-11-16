@@ -109,7 +109,7 @@ If you would like to install a development version or release candidate then rep
 "Installation with Composer" section with the following line
 
 * master: `"mediawiki/semantic-media-wiki": "@dev"`
-* legacy branch: `"mediawiki/semantic-media-wiki": "3.0.x@dev"`
+* legacy branch: `"mediawiki/semantic-media-wiki": "3.1.x@dev"`
 * release candidate: `"mediawiki/semantic-media-wiki": "~3.1@rc"`
 
 ## More instructions
