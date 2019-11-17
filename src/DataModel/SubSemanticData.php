@@ -116,8 +116,6 @@ class SubSemanticData {
 	 * has an array object reference.
 	 *
 	 * @since 2.5
-	 *
-	 * @return ContainerSemanticData[]
 	 */
 	public function copyDataFrom( array $subSemanticData ) {
 		$this->subSemanticData = $subSemanticData;
@@ -128,8 +126,6 @@ class SubSemanticData {
 	 * subobjectName => ContainerSemanticData
 	 *
 	 * @since 2.5
-	 *
-	 * @return ContainerSemanticData[]
 	 */
 	public function getSubSemanticData() {
 		return $this->subSemanticData;
