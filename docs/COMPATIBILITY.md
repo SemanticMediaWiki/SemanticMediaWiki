@@ -17,14 +17,14 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 		<th>Status</th>
 	</tr>
 	<tr>
-		<th>3.2.x</th>
+		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/34">3.2.x</a></th>
 		<td><strong>7.1.0</strong> - latest</td>
 		<td>1.31.0 - 1.35.x</td>
 		<td>Q2.2020</td>
 		<td>Future</td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/23">3.1.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
 		<td><strong>7.0.0</strong> - latest</td>
 		<td><strong>1.31.0</strong> - 1.33.x</td>
 		<td>2019-09-23</td>

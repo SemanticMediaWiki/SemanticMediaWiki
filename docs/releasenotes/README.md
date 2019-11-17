@@ -1,5 +1,6 @@
 ## Release notes
 
+* [SMW 3.1.1 release notes](RELEASE-NOTES-3.1.1.md)
 * [SMW 3.1.0 release notes](RELEASE-NOTES-3.1.0.md)
 * [SMW 3.0.2 release notes](RELEASE-NOTES-3.0.2.md)
 * [SMW 3.0.1 release notes](RELEASE-NOTES-3.0.1.md)
