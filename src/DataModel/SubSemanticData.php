@@ -55,18 +55,6 @@ class SubSemanticData {
 	private $subSemanticData = [];
 
 	/**
-	 * Internal flag that indicates if this semantic data will accept
-	 * subdata. Semantic data objects that are subdata already do not allow
-	 * (second level) subdata to be added. This ensures that all data is
-	 * collected on the top level, and in particular that there is only one
-	 * way to represent the same data with subdata. This is also useful for
-	 * diff computation.
-	 *
-	 * @var boolean
-	 */
-	private $subDataAllowed = true;
-
-	/**
 	 * Maximum depth for an recursive sub data assignment
 	 *
 	 * @var integer
