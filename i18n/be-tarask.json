@@ -282,7 +282,7 @@
 	"smw-admin-installfile": "Калі ўзьнікнуць праблемы з вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файле INSTALL</a> і <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">на старонцы ўсталёўкі</a>.",
 	"smw-admin-smwhomepage": "Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Можна паведамляць пра памылкі ў <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">сыстэму сачэньня за праблемамі</a>, старонка <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">паведамленьняў пра памылкі</a> мае даведку пра тое, як напісаць эфэктыўную справаздачу пра праблему.",
-	"smw-admin-questions": "Калі вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі ў <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">паштовай рассылцы</a> Semantic MediaWiki ці ў <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">чаце</a>.",
+	"smw-admin-questions": "Калі вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі ў <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">паштовай рассылцы</a> Semantic MediaWiki.",
 	"smw-admin-other-functions": "Іншыя функцыі",
 	"smw-admin-supplementary-section-title": "Дапаможныя функцыі",
 	"smw-admin-supplementary-section-subtitle": "Падтрыманыя функцыі ядра",
