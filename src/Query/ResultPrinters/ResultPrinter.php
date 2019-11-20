@@ -651,21 +651,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	}
 
 	/**
-	 * A function to describe the allowed parameters of a query using
-	 * any specific format - most query printers should override this
-	 * function.
-	 *
-	 * @deprecated since 1.8, use getParamDefinitions instead.
-	 *
-	 * @since 1.5
-	 *
-	 * @return array
-	 */
-	public function getParameters() {
-		return [];
-	}
-
-	/**
 	 * @see IResultPrinter::getParamDefinitions
 	 *
 	 * @since 1.8
