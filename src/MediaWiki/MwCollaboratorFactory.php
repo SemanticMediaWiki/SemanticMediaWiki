@@ -185,7 +185,7 @@ class MwCollaboratorFactory {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.1
 	 *
 	 * @param WikiPage $wkiPage
 	 * @param Revision $revision
