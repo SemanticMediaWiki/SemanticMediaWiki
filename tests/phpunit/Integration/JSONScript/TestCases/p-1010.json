@@ -26,7 +26,7 @@
 			"subject": "243434343434",
 			"assert-output": {
 				"to-contain": [
-					"Test on pages with numeric titles."
+					"Query test on pages with numeric titles."
 				]
 			}
 		},
@@ -36,7 +36,7 @@
 			"subject": "343434343434",
 			"assert-output": {
 				"to-contain": [
-					"Test on pages with numeric titles."
+					"Query test on pages with numeric titles."
 				]
 			}
 		}
