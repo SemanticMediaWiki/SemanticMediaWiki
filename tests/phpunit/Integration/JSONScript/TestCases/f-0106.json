@@ -24,7 +24,7 @@
 	],
 	"tests": [
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#0 ask, no printout",
 			"subject": "ask-no-printout",
 			"assert-output": {
@@ -34,7 +34,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#1 ask, printout, mainlabel hidden",
 			"subject": "ask-printout-mainlabel-hidden-default",
 			"assert-output": {
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#2 ask, printout, mainlabel hidden, plainlist specified",
 			"subject": "ask-printout-mainlabel-hidden-plainlist-default",
 			"assert-output": {
@@ -54,7 +54,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#3 show, printout, mainlabel hidden",
 			"subject": "show-printout-mainlabel-hidden-default",
 			"assert-output": {
@@ -64,7 +64,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#4 show, printout, mainlabel hidden, plainlist specified",
 			"subject": "show-printout-mainlabel-hidden-plainlist-default",
 			"assert-output": {
