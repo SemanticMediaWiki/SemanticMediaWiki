@@ -1,0 +1,55 @@
+{
+	"description": "Query test on pages with numberic titles (T239877)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text property",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "143434343434",
+			"contents": "{{#set: Has text property=Query test on pages with numeric titles. }}"
+		},
+		{
+			"page": "243434343434",
+			"contents": "{{#ask: [[143434343434]] |?Has text property= |mainlabel=- }}"
+		},
+		{
+			"page": "343434343434",
+			"contents": "{{#show: 143434343434 |?Has text property }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 ask on numeric title",
+			"subject": "243434343434",
+			"assert-output": {
+				"to-contain": [
+					"Query test on pages with numeric titles."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 show on numeric title",
+			"subject": "343434343434",
+			"assert-output": {
+				"to-contain": [
+					"Query test on pages with numeric titles."
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
