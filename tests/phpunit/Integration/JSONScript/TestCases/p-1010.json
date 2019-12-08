@@ -23,7 +23,7 @@
 		{
 			"type": "parser",
 			"about": "#0 ask on numeric title",
-			"subject": "ask-numeric-title",
+			"subject": "243434343434",
 			"assert-output": {
 				"to-contain": [
 					"Test on pages with numeric titles."
@@ -33,7 +33,7 @@
 		{
 			"type": "parser",
 			"about": "#1 show on numeric title",
-			"subject": "show-numeric-title",
+			"subject": "343434343434",
 			"assert-output": {
 				"to-contain": [
 					"Test on pages with numeric titles."
