@@ -775,7 +775,7 @@ return [
 	'smwgResultFormats' => [
 		'table'      => 'SMW\Query\ResultPrinters\TableResultPrinter',
 		'broadtable' => 'SMW\Query\ResultPrinters\TableResultPrinter',
-		'list'       => 'SMW\Query\ResultPrinters\ListResultPrinter',
+		'richlist'   => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'plainlist'  => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ol'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
 		'ul'         => 'SMW\Query\ResultPrinters\ListResultPrinter',
@@ -806,7 +806,8 @@ return [
 	'smwgResultAliases' => [
 		'feed' => [ 'rss' ],
 		'templatefile' => [ 'template file' ],
-		'plainlist' => [ 'plain' ]
+		'plainlist' => [ 'plain' ],
+		'richlist' => [ 'list' ]
 	],
 	##
 

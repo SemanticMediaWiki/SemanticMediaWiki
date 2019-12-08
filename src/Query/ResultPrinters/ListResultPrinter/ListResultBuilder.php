@@ -28,7 +28,7 @@ class ListResultBuilder {
 			'other-fields-open' => ' (',
 			'other-fields-close' => ')',
 		],
-		'list' => [
+		'richlist' => [
 			'row-open-tag' => '<span class="smw-row">',
 			'row-close-tag' => '</span>',
 			'result-open-tag' => '<span class="smw-format list-format $CLASS$">',
@@ -127,7 +127,7 @@ class ListResultBuilder {
 
 		$format = $this->get( 'format' );
 
-		if ( in_array( $format, [ 'ol', 'ul', 'plainlist' ] ) ) {
+		if ( in_array( $format, [ 'ol', 'ul', 'plainlist', 'richlist' ] ) ) {
 			return $format;
 		}
 
@@ -135,7 +135,7 @@ class ListResultBuilder {
 			return 'plainlist';
 		}
 
-		return 'list';
+		return 'richlist';
 	}
 
 	/**

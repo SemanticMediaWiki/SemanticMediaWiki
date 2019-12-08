@@ -66,7 +66,7 @@
 	"smw_printername_debug": "Debug query (for experts)",
 	"smw_printername_embedded": "Embed page contents",
 	"smw_printername_json": "JSON export",
-	"smw_printername_list": "List",
+	"smw_printername_richlist": "List",
 	"smw_printername_plainlist": "Plain list",
 	"smw_printername_ol": "Enumeration",
 	"smw_printername_ul": "Itemization",
