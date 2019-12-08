@@ -15,14 +15,10 @@
 		},
 		{
 			"page": "Issue/4363/3",
-			"contents": "{{#show: {{PAGENAME}} |default=hello }}"
-		},
-		{
-			"page": "Issue/4363/4",
 			"contents": "{{#show: {{PAGENAME}} |?Has name= |mainlabel=- |default=hello }}"
 		},
 		{
-			"page": "Issue/4363/5",
+			"page": "Issue/4363/4",
 			"contents": "{{#show: {{PAGENAME}} |?Has name= |mainlabel=- |default=hello |format=plainlist }}"
 		}
 	],
@@ -59,17 +55,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#3 show, no printout",
-			"subject": "show-no-printout",
-			"assert-output": {
-				"to-contain": [
-					"Issue/4363/3"
-				]
-			}
-		},
-		{
-			"type": "format",
-			"about": "#4 show, printout, mainlabel hidden",
+			"about": "#3 show, printout, mainlabel hidden",
 			"subject": "show-printout-mainlabel-hidden-default",
 			"assert-output": {
 				"to-contain": [
@@ -79,7 +65,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#5 show, printout, mainlabel hidden, plainlist specified",
+			"about": "#4 show, printout, mainlabel hidden, plainlist specified",
 			"subject": "show-printout-mainlabel-hidden-plainlist-default",
 			"assert-output": {
 				"to-contain": [
