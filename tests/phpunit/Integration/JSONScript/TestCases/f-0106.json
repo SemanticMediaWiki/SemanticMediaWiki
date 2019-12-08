@@ -24,9 +24,9 @@
 	],
 	"tests": [
 		{
-			"type": "parser",
+			"type": "format",
 			"about": "#0 ask, no printout",
-			"subject": "ask-no-printout",
+			"subject": "Issue/4363/0",
 			"assert-output": {
 				"to-contain": [
 					"Issue/4363/0"
@@ -34,9 +34,9 @@
 			}
 		},
 		{
-			"type": "parser",
+			"type": "format",
 			"about": "#1 ask, printout, mainlabel hidden",
-			"subject": "ask-printout-mainlabel-hidden-default",
+			"subject": "Issue/4363/1",
 			"assert-output": {
 				"to-contain": [
 					"hello"
@@ -44,9 +44,9 @@
 			}
 		},
 		{
-			"type": "parser",
+			"type": "format",
 			"about": "#2 ask, printout, mainlabel hidden, plainlist specified",
-			"subject": "ask-printout-mainlabel-hidden-plainlist-default",
+			"subject": "Issue/4363/2",
 			"assert-output": {
 				"to-contain": [
 					"hello"
@@ -54,9 +54,9 @@
 			}
 		},
 		{
-			"type": "parser",
+			"type": "format",
 			"about": "#3 show, printout, mainlabel hidden",
-			"subject": "show-printout-mainlabel-hidden-default",
+			"subject": "Issue/4363/3",
 			"assert-output": {
 				"to-contain": [
 					"hello"
@@ -64,9 +64,9 @@
 			}
 		},
 		{
-			"type": "parser",
+			"type": "format",
 			"about": "#4 show, printout, mainlabel hidden, plainlist specified",
-			"subject": "show-printout-mainlabel-hidden-plainlist-default",
+			"subject": "Issue/4363/4",
 			"assert-output": {
 				"to-contain": [
 					"hello"
