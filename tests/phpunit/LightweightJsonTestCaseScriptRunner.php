@@ -191,7 +191,7 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 			'smwgElasticsearchConfig',
 			'smwgDefaultNumRecurringEvents',
 			'smwgMandatorySubpropertyParentTypeInheritance',
-			'smwgPlainList'
+			'smwgPlainList',
 
 			// MW related
 			'wgLanguageCode',
