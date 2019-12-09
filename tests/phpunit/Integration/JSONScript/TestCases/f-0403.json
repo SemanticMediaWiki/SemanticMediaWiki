@@ -1,5 +1,5 @@
 {
-	"description": "Test smwgPlainList setting",
+	"description": "Test `smwgPlainList` configuration parameter (#4367)",
 	"meta": {
 		"version": "2",
 		"is-incomplete": false,
@@ -17,14 +17,14 @@
 		},
 		{
 			"page": "f-0403/Test-1",
-			"contents": "{{#ask:[[f-0403/Data]]|?Version|format=list}}"
+			"contents": "{{#ask: [[f-0403/Data]] |?Version |format=list }}"
 		}
 
 	],
 	"tests": [
 		{
-			"type": "format",
-			"about": "#1 format=list outputs plain list",
+			"type": "parser",
+			"about": "#0 format=list outputs plain list",
 			"subject": "f-0403/Test-1",
 			"assert-output": {
 				"to-contain": [
