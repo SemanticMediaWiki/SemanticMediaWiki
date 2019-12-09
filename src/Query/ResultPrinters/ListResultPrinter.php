@@ -55,12 +55,17 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
-
 		$builder = $this->getBuilder( $queryResult );
 
 		$this->hasTemplates = $this->hasTemplates();
 
-		return $builder->getResultText() . $this->getFurtherResultsText( $queryResult, $outputMode );
+		$result = $builder->getResultText() . $this->getFurtherResultsText( $queryResult, $outputMode );
+
+		if ( $result == '' ) {
+			return $this->params['default'];
+		}
+
+		return $result;
 	}
 
 	/**
