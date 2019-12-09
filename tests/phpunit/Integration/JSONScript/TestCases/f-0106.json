@@ -24,27 +24,33 @@
 	],
 	"tests": [
 		{
-			"type": "format",
-			"about": "#0 ask, no printout",
+			"type": "parser",
+			"about": "#0 default should not be shown when there are values to display (including mainlabel)",
 			"subject": "Issue/4363/0",
 			"assert-output": {
 				"to-contain": [
 					"Issue/4363/0"
-				]
-			}
-		},
-		{
-			"type": "format",
-			"about": "#1 ask, printout, mainlabel hidden",
-			"subject": "Issue/4363/1",
-			"assert-output": {
-				"to-contain": [
+				],
+				"not-contain": [
 					"hello"
 				]
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
+			"about": "#1 only the default should be shown when there are no values to display",
+			"subject": "Issue/4363/1",
+			"assert-output": {
+				"to-contain": [
+					"hello"
+				],
+				"not-contain": [
+					"Issue/4363/1"
+				]
+			}
+		},
+		{
+			"type": "parser",
 			"about": "#2 ask, printout, mainlabel hidden, plainlist specified",
 			"subject": "Issue/4363/2",
 			"assert-output": {
@@ -54,7 +60,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#3 show, printout, mainlabel hidden",
 			"subject": "Issue/4363/3",
 			"assert-output": {
@@ -64,7 +70,7 @@
 			}
 		},
 		{
-			"type": "format",
+			"type": "parser",
 			"about": "#4 show, printout, mainlabel hidden, plainlist specified",
 			"subject": "Issue/4363/4",
 			"assert-output": {
