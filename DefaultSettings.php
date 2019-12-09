@@ -810,6 +810,19 @@ return [
 	],
 	##
 
+	/**
+	 * Affects format=list.
+	 *
+	 * When set to false (the default), format=list will result in lists with HTML markup.
+	 * In this case you can get a plain list via format=plainlist.
+	 *
+	 * To also get plain lists (without HTML markup) when using format=list, set this setting to true.
+	 * In SMW versions older than 3.0 format=list always resulted in a plain list, so this setting allows restoring old behavior.
+	 *
+	 * @since 3.1.2
+	 */
+	'smwgPlainList' => false,
+
 	##
 	# Result printer features
 	#

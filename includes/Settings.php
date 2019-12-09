@@ -190,6 +190,7 @@ class Settings extends Options {
 			'smwgMandatorySubpropertyParentTypeInheritance' => $GLOBALS['smwgMandatorySubpropertyParentTypeInheritance'],
 			'smwgCheckForRemnantEntities' => $GLOBALS['smwgCheckForRemnantEntities'],
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
+			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 		];
 
 		self::initLegacyMapping( $configuration );

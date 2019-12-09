@@ -68,19 +68,14 @@ class ListResultBuilder {
 
 	/** @var ParameterDictionary */
 	private $configuration;
-
 	private $templateRendererFactory;
+	private $listPlainByDefault;
 
-	/**
-	 * ListResultBuilder constructor.
-	 *
-	 * @param SMWQueryResult $queryResult
-	 * @param Linker $linker
-	 */
-	public function __construct( SMWQueryResult $queryResult, Linker $linker ) {
+	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();
+		$this->listPlainByDefault = $listPlainByDefault;
 	}
 
 	/**
@@ -135,7 +130,7 @@ class ListResultBuilder {
 			return 'plainlist';
 		}
 
-		return 'list';
+		return $this->listPlainByDefault ? 'plainlist' : 'list';
 	}
 
 	/**
