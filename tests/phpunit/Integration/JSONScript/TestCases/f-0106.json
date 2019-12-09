@@ -25,21 +25,27 @@
 	"tests": [
 		{
 			"type": "format",
-			"about": "#0 ask, no printout",
+			"about": "#0 default should not be shown when there are values to display (including mainlabel)",
 			"subject": "Issue/4363/0",
 			"assert-output": {
 				"to-contain": [
 					"Issue/4363/0"
+				],
+				"not-contain": [
+					"contain"
 				]
 			}
 		},
 		{
 			"type": "format",
-			"about": "#1 ask, printout, mainlabel hidden",
+			"about": "#1 only the default should be shown when there are no values to display",
 			"subject": "Issue/4363/1",
 			"assert-output": {
 				"to-contain": [
 					"hello"
+				],
+				"not-contain": [
+					"Issue/4363/0"
 				]
 			}
 		},
