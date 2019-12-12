@@ -48,7 +48,8 @@
 			"Dinoxel",
 			"Abijeet Patro",
 			"Epok",
-			"Thibaut120094"
+			"Thibaut120094",
+			"Pols12"
 		]
 	},
 	"smw-desc": "Rendre votre wiki plus accessible - pour les machines ''et'' les humains ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
@@ -576,7 +577,7 @@
 	"smw-ui-tooltip-title-warning": "Avertissement",
 	"smw-ui-tooltip-title-error": "Erreur",
 	"smw-ui-tooltip-title-parameter": "Paramètre",
-	"smw-ui-tooltip-title-event": "Évènement",
+	"smw-ui-tooltip-title-event": "Événement",
 	"smw-ui-tooltip-title-note": "Note",
 	"smw-ui-tooltip-title-legend": "Légende",
 	"smw-ui-tooltip-title-reference": "Référence",
