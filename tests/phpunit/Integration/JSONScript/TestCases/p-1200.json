@@ -1,0 +1,70 @@
+{
+	"description": "Test `#declare` for queries with `#show` `#ask`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has name",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has ID",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Server",
+			"contents": "<includeonly>{{{Name}}} {{{ID}}} {{#declare: Has name=Name |Has ID=ID }}</includeonly>"
+		},
+		{
+			"page": "Sulcorebutia data",
+			"contents": "{{Server |Name=Sulcorebutia |ID=9907 }}"
+		},
+		{
+			"page": "Sulcorebutia show query",
+			"contents": "{{#show: Sulcorebutia data |?Has name }}"
+		},
+		{
+			"page": "Sulcorebutia ask query",
+			"contents": "{{#ask: [[Sulcorebutia data]] |?Has ID= |mainlabel=- }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 query with `#show`",
+			"subject": "Sulcorebutia show query",
+			"assert-output": {
+				"to-contain": [
+					"Sulcorebutia"
+				],
+				"not-contain": [
+					"9907"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 query with `#ask`",
+			"subject": "Sulcorebutia ask query",
+			"assert-output": {
+				"to-contain": [
+					"9907"
+				],
+				"not-contain": [
+					"Sulcorebutia"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
