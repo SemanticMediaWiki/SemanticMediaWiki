@@ -7,31 +7,36 @@ use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\CacheFactory;
+use SMW\Connection\ConnectionManager;
+use SMW\Constraint\ConstraintErrorIndicatorProvider;
+use SMW\ConstraintFactory;
 use SMW\ContentParser;
 use SMW\DataItemFactory;
+use SMW\DependencyValidator;
+use SMW\DisplayTitleFinder;
+use SMW\Elastic\ElasticFactory;
+use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
 use SMW\Localizer;
-use SMW\MediaWiki\Database;
-use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Connection\ConnectionProvider;
+use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
+use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\TitleFactory;
-use SMW\Query\Cache\ResultCache;
-use SMW\Services\DataValueServiceFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
-use SMW\MediaWiki\PermissionManager;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\Property\AnnotatorFactory;
@@ -40,26 +45,20 @@ use SMW\PropertyRestrictionExaminer;
 use SMW\PropertySpecificationLookup;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Protection\ProtectionValidator;
-use SMW\Query\QuerySourceFactory;
-use SMW\Schema\SchemaFactory;
-use SMW\ConstraintFactory;
 use SMW\Query\Cache\CacheStats;
-use SMW\QueryFactory;
-use SMW\Settings;
-use SMW\Options;
-use SMW\StoreFactory;
-use SMW\Utils\Stats;
-use SMW\Utils\JsonSchemaValidator;
-use SMW\Utils\TempFile;
-use SMW\Elastic\ElasticFactory;
-use SMW\SQLStore\QueryDependencyLinksStoreFactory;
-use SMW\Query\Processor\QueryCreator;
+use SMW\Query\Cache\ResultCache;
 use SMW\Query\Processor\ParamListProcessor;
-use SMW\MediaWiki\IndicatorRegistry;
-use SMW\EntityCache;
-use SMW\DisplayTitleFinder;
-use SMW\Constraint\ConstraintErrorIndicatorProvider;
-use SMW\DependencyValidator;
+use SMW\Query\Processor\QueryCreator;
+use SMW\Query\QuerySourceFactory;
+use SMW\QueryFactory;
+use SMW\Schema\SchemaFactory;
+use SMW\Settings;
+use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\Store;
+use SMW\StoreFactory;
+use SMW\Utils\JsonSchemaValidator;
+use SMW\Utils\Stats;
+use SMW\Utils\TempFile;
 
 /**
  * @license GNU GPL v2+
@@ -293,7 +292,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PropertyAnnotatorFactory
+		 * @var AnnotatorFactory
 		 */
 		$containerBuilder->registerCallback( 'PropertyAnnotatorFactory', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'PropertyAnnotatorFactory', AnnotatorFactory::class );
@@ -400,7 +399,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var Creator
+		 * @var QueryCreator
 		 */
 		$containerBuilder->registerCallback( 'QueryCreator', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'QueryCreator', QueryCreator::class );
