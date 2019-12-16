@@ -10,7 +10,6 @@ use SMW\Query\Parser\LegacyParser;
 use SMW\Query\Parser\Tokenizer;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
-use SMW\Query\QueryCreator;
 use SMW\Query\QueryToken;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
