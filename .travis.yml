@@ -13,7 +13,7 @@ matrix:
     - env: DB=postgres; MW=REL1_31; PHPUNIT=6.5.*
       php: 7.2
     - env: DB=sqlite; MW=REL1_34; PHPUNIT=7.*
-      php: 7.4snapshot
+      php: 7.4
     - env: DB=sqlite; MW=REL1_31; SITELANG=ja; PHPUNIT=5.7.*
       php: 7.1
     - env: DB=mysql; MW=REL1_31; BLAZEGRAPH=1.5.2; PHPUNIT=5.7.*
