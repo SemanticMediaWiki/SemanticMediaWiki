@@ -147,7 +147,6 @@ class InTextAnnotationParser {
 	 * @param string &$text
 	 */
 	public function parse( &$text ) {
-
 		$title = $this->parserData->getTitle();
 		Timer::start( __CLASS__ );
 
