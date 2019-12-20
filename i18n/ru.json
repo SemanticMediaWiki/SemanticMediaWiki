@@ -56,7 +56,8 @@
 			"Athena Atterdag",
 			"Diralik",
 			"Abijeet Patro",
-			"1233qwer1234qwer4"
+			"1233qwer1234qwer4",
+			"Антон Курашев"
 		]
 	},
 	"smw-desc": "Делает вашу вики более доступной — для машин ''и'' людей ([https://www.semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
@@ -734,7 +735,7 @@
 	"smw-property-req-violation-import-type": "Обнаружено объявление типа, которое несовместимо с предопределенным типом импортированного словаря «$1». Как правило, нет необходимости объявлять тип, потому что информация извлекается из определения импорта.",
 	"smw-property-req-violation-change-propagation-locked-error": "Свойство «$1» изменено, и связанные с ним страницы должны быть обновлены путём [https://www.semantic-mediawiki.org/wiki/Change_propagation распространения изменений]. Страница свойства закрыта от изменений пока первичное обновление не будет завершено, чтобы избежать прерывания обновления или противоречивых настроек свойства. Это может занять некоторое время, зависящее от размера [https://www.mediawiki.org/wiki/Manual:Job_queue очереди задач] и частоты её обработки, по истечении которого страница будет открыта для изменений.",
 	"smw-property-req-violation-change-propagation-locked-warning": "Свойство «$1» изменено, и связанные страницы должны быть обновены путём [https://www.semantic-mediawiki.org/wiki/Change_propagation распространения изменений]. Обновление может занять некоторое время, зависящее от размера [https://www.mediawiki.org/wiki/Manual:Job_queue очереди заданий]. Рекомендуется отложить редактирование свойства, чтобы избежать прерывания обновления или противоречивых настроек.",
-	"smw-property-req-violation-change-propagation-pending": "Оюидается [https://www.semantic-mediawiki.org/wiki/Change_propagation Распространение изменений] (около $1 [https://www.mediawiki.org/wiki/Manual:Job_queue {{PLURAL:$1|задание|заданий|задания}}]). Рекомендуется отложить редактирование страницы свойства, пока процесс не будет завершён, чтобы избезать прерываний обновления или противоречивых настроек свойства.",
+	"smw-property-req-violation-change-propagation-pending": "Ожидается [https://www.semantic-mediawiki.org/wiki/Change_propagation Распространение изменений] (около $1 [https://www.mediawiki.org/wiki/Manual:Job_queue {{PLURAL:$1|задание|заданий|задания}}]). Рекомендуется отложить редактирование страницы свойства, пока процесс не будет завершён, чтобы избезать прерываний обновления или противоречивых настроек свойства.",
 	"smw-property-req-violation-missing-maps-extension": "Не удалось обнаружить расширение [https://www.semantic-mediawiki.org/wiki/Extension:Maps \"Maps\"], необходимое для этого типа данных. Как следствие, невозможно хранить или обрабатывать географические данные.",
 	"smw-property-req-violation-type": "Для этого свойства указаны противоречивые типы данных, что может привести к установке некорректных значений для него. Следует выбрать один подходящий тип.",
 	"smw-change-propagation-protection": "Эта страница закрыта для изменений, чтобы предотвратить случайное изменение, пока идёт [https://www.semantic-mediawiki.org/wiki/Change_propagation распространение изменений]. Это может занять некоторое время, зависящее от размера и частоты обработки [https://www.mediawiki.org/wiki/Manual:Job_queue очереди заданий], прежде чем страница будет открыта для изменений.",
