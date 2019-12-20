@@ -2,13 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Hooks;
 use LinksUpdate;
 use SMW\ApplicationFactory;
-use SMW\SemanticData;
-use SMW\NamespaceExaminer;
-use Title;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\NamespaceExaminer;
+use SMW\SemanticData;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
@@ -81,9 +79,6 @@ class LinksUpdateConstructed extends HookHandler {
 			return true;
 		}
 
-		/**
-		 * @var ParserData $parserData
-		 */
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,
 			$linksUpdate->getParserOutput()
