@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use IContextSource;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
@@ -837,7 +838,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
 	 */
-	public function onSpecialStatsAddExtra( &$extraStats, $context ) {
+	public function onSpecialStatsAddExtra( &$extraStats, IContextSource $context ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$context->getOutput()->addModules( 'smw.tippy' );
