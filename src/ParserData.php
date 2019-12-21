@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use Onoi\Cache\Cache;
 use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
@@ -145,7 +144,7 @@ class ParserData {
 			$this->options = new Options();
 		}
 
-		return $this->options->set( $key, $value );
+		$this->options->set( $key, $value );
 	}
 
 	/**
@@ -385,7 +384,7 @@ class ParserData {
 	 *
 	 * @since 1.9
 	 *
-	 * @param SMWDataValue $dataValue
+	 * @param DataValue $dataValue
 	 */
 	public function addDataValue( DataValue $dataValue ) {
 		$this->semanticData->addDataValue( $dataValue );
