@@ -3,6 +3,8 @@
 namespace SMW;
 
 use ObjectCache;
+use Onoi\BlobStore\BlobStore;
+use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 use Title;
@@ -72,7 +74,7 @@ class CacheFactory {
 	 *
 	 * @param array $cacheOptions
 	 *
-	 * @return stdClass
+	 * @return object
 	 * @throws RuntimeException
 	 */
 	public function newCacheOptions( array $cacheOptions ) {
