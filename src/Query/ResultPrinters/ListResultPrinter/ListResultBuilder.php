@@ -71,11 +71,11 @@ class ListResultBuilder {
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault ) {
+	public function __construct( SMWQueryResult $queryResult, Linker $linker, bool $listPlainByDefault = null ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();
-		$this->listPlainByDefault = $listPlainByDefault;
+		$this->listPlainByDefault = $listPlainByDefault ?? $GLOBALS['smwgPlainList'];
 	}
 
 	/**
