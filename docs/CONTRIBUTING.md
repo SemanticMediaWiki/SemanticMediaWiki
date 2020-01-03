@@ -5,12 +5,12 @@ There are different ways to make a contribution to [Semantic MediaWiki][smw] (SM
 
 A bug is the occurrence of an unintended or unanticipated behaviour that causes a vulnerability or fatal error.
 
-* You may help us by reporting bugs and feature requests via the [issue tracker][smw-issues]. See the help page on [reporting bugs (environment, reproducing)][smw-bugs1] as well as on [identifying bugs (stack-trace)][smw-bugs2] for information on how to do this best. Please remember to always provide information about your environment as well as a stack-trace.
+* You may help us by reporting bugs via the [issue tracker][smw-issues]. See the help page on [reporting bugs (environment, reproducing)][smw-bugs1] as well as on [identifying bugs (stack-trace)][smw-bugs2] for information on how to do this best. Please remember to always provide information about your environment as well as a stack-trace.
 * You may help us to do [pre-release testing][smw-testing] by joining the [team of testers][smw-testers] on GitHub.
 
-### Feature requests
+### Request features
 
-A feature request is a new, or altered behaviour of an existing functionality.
+A feature request is a new, or altered behaviour of an existing functionality. You may describe them via the [issue tracker][smw-issues].
 
 A request should contain a detailed description of the expected behaviour in order to avoid misconceptions in the process of an implementation. The following notes are provided to aid the process and help prioritize a request for project members.
 
@@ -25,8 +25,12 @@ A request should contain a detailed description of the expected behaviour in ord
  
 ### Improve documentation
 
+Documenting the software is an important part of the work to make the software usable. You may help us by creating, updating or amending the documentation of the software on [Semantic-MediaWiki.org][smw].
+
+### Provide translations
+
 * You may help us by providing software translations via [translatewiki.net][twn]. See their [progress-statistics][twn-smw] to find out if there is still work to do for your language.
-* You may help us by creating, updating or amending the documentation of the software on [Semantic-MediaWiki.org][smw].
+* You may also help up provide translations for important pages on the Semantic MediaWiki homepage. See the [info page][smw-trans] for furhter information
 
 ### Provide patches
 
@@ -45,7 +49,8 @@ Thank you for contributing to Semantic MediaWiki!
 [smw-testing]: https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs#Pre-release_testing
 [smw-testers]: https://github.com/orgs/SemanticMediaWiki/teams/testers
 [twn]: https://translatewiki.net/
-[twn-smw]: https://translatewiki.net/w/i.php?title=Special%3AMessageGroupStats&x=D&group=ext-semanticmediawiki&suppressempty=1
+[twn-smw]: https://translatewiki.net/wiki/Special:MessageGroupStats?group=mwgithub-semanticmediawiki&suppressempty=1&x=D
+[smw-trans]: https://www.semantic-mediawiki.org/wiki/semantic-mediawiki.org:Translating_content
 [smw-ddo]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/README.md
 [mw-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
 [smw-npath]: https://www.semantic-mediawiki.org/wiki/Code_coverage#NPath_complexity
