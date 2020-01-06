@@ -324,7 +324,7 @@
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> para obter as sugestões de categorias",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> para obter as sugestões de conceitos",
 	"smw-ask-format-change-info": "O formato foi modificado e a consulta tem de voltar a ser executada para produzir resultados que correspondam aos novos parâmetros e opções de visualização.",
-	"smw-ask-format-export-info": "O formato selecionado é um formato de exportação que não tem representação visual, portanto os resultados só são fornecidos como download.",
+	"smw-ask-format-export-info": "O formato selecionado é um formato de exportação que não tem representação visual, portanto os resultados só são fornecidos na forma de ficheiro.",
 	"smw-ask-query-search-info": "A consulta <code><nowiki>$1</nowiki></code> foi realizada pelo servidor {{PLURAL:$3|1=<code>$2</code> (da cache)|<code>$2</code> (da cache)|<code>$2</code>}} em $4 {{PLURAL:$4|segundo|segundos}}.",
 	"smw-ask-extra-query-log": "Registo de consultas",
 	"smw-ask-extra-other": "Outro",
