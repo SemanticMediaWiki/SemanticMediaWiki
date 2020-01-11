@@ -4,6 +4,7 @@ namespace SMW;
 
 use InvalidArgumentException;
 use RuntimeException;
+use SMW\Utils\DotArray;
 
 /**
  * @license GNU GPL v2+
@@ -105,26 +106,7 @@ class Options {
 	 * @return mixed
 	 */
 	public function dotGet( $key, $default = false ) {
-		return $this->digDeep( $this->options, $key, $default );
-	}
-
-	private function digDeep( $array, $key, $default ) {
-
-		if ( strpos( $key, '.' ) !== false ) {
-			$list = explode( '.', $key, 2 );
-
-			foreach ( $list as $k => $v ) {
-				if ( isset( $array[$v] ) ) {
-					return $this->digDeep( $array[$v], $list[$k+1], $default );
-				}
-			}
-		}
-
-		if ( isset( $array[$key] ) ) {
-			return $array[$key];
-		}
-
-		return $default;
+		return DotArray::get( $this->options, $key, $default );
 	}
 
 	/**

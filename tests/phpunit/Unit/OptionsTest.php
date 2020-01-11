@@ -192,39 +192,40 @@ class OptionsTest extends \PHPUnit_Framework_TestCase {
 
 	public function dotProvider() {
 
-		$o = [ 'Foo' => [
-			'Bar' => [ 'Foobar' => 42 ],
-			'Foobar' => 1001,
-			'some.other.options' => 9999
-			],
+		$options = [
+			'Foo' => [
+				'Bar' => [ 'Foobar' => 42 ],
+				'Foobar' => 1001,
+				'some.other.options' => 9999
+			]
 		];
 
 		yield [
-			$o,
+			$options,
 			'Foo.Bar',
 			[ 'Foobar' => 42 ]
 		];
 
 		yield [
-			$o,
+			$options,
 			'Foo.Foobar',
 			1001
 		];
 
 		yield [
-			$o,
+			$options,
 			'Foo.Bar.Foobar',
 			 42
 		];
 
 		yield [
-			$o,
+			$options,
 			'Foo.some.other.options',
 			9999
 		];
 
 		yield [
-			$o,
+			$options,
 			'Foo.Bar.Foobar.unkown',
 			false
 		];

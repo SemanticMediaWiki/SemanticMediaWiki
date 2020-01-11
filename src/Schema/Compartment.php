@@ -3,6 +3,7 @@
 namespace SMW\Schema;
 
 use JsonSerializable;
+use SMW\Utils\DotArray;
 
 /**
  * @license GNU GPL v2+
@@ -46,7 +47,7 @@ class Compartment implements JsonSerializable {
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		return $this->seek( $this->data, $key, $default );
+		return DotArray::get( $this->data, $key, $default );
 	}
 
 	/**
@@ -65,25 +66,6 @@ class Compartment implements JsonSerializable {
 	 */
 	 public function __toString() {
 		return $this->jsonSerialize();
-	}
-
-	private function seek( $array, $key, $default ) {
-
-		if ( strpos( $key, '.' ) !== false ) {
-			$list = explode( '.', $key, 2 );
-
-			foreach ( $list as $k => $v ) {
-				if ( isset( $array[$v] ) ) {
-					return $this->seek( $array[$v], $list[$k+1], $default );
-				}
-			}
-		}
-
-		if ( isset( $array[$key] ) ) {
-			return $array[$key];
-		}
-
-		return $default;
 	}
 
 }
