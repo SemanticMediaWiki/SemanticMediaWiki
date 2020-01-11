@@ -1,13 +1,16 @@
-# Semantic MediaWiki 3.1.1
+# Semantic MediaWiki 3.1.2
 
-Released on November 17, 2019.
+Released on January 12, 2020.
 
-## Bug fixes and internal code changes
+## Enhancement
 
-* [#4332](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4332): Fixed runtime errors when rebuilding links
-* [#4333](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4333): Switched from `DELETE FROM` instead of `TRUNCATE TABLE` for temporary database tables
-* [b75e468](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/b75e468910ca9be0a2dcd50f3fe3df6ed1fd847b): Fixed missing use declaration
+* [#4367](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4367) as `c2fa49d`: Added the [`$smwgPlainList` configuration parameter](https://www.semantic-mediawiki.org/wiki/Help:$smwgPlainList) for convenience allowing to set whether the list format should provide class attributes to HTML elements 
+
+## Bug fix and internal code changes
+
+* [#4364](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4364) as `1884b1d`: Fixed the `default` parameter of queries not being considered by the "list" format
 * Localisation updates from the translatewiki.net community of translators
 
 ## See also
+* [RELEASE NOTES](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/3.1.x/docs/releasenotes/RELEASE-NOTES-3.1.1.md) for Semantic MediaWiki 3.1.1
 * [RELEASE NOTES](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/3.1.x/docs/releasenotes/RELEASE-NOTES-3.1.0.md) for Semantic MediaWiki 3.1.0
