@@ -1,0 +1,151 @@
+{
+	"description": "Test output of the `ISO` formatter with `#show` for `_dat` datatype (#4373)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/4373/1/data",
+			"contents": "[[Has date::2020]]"
+		},
+		{
+			"page": "Example/4373/2/data",
+			"contents": "[[Has date::Feb 2020]]"
+		},
+		{
+			"page": "Example/4373/3/data",
+			"contents": "[[Has date::Feb 29 2020]]"
+		},
+		{
+			"page": "Example/4373/4/data",
+			"contents": "[[Has date::Feb 29 2020 16:00 CET]]"
+		},
+		{
+			"page": "Example/4373/5/data",
+			"contents": "[[Has date::Feb 29 2020 04:00:04 PM]]"
+		},
+		{
+			"page": "Example/4373/6/data",
+			"contents": "[[Has date::Feb 29 2020 Jl]]"
+		},
+		{
+			"page": "Example/4373/7/data",
+			"contents": "[[Has date::2020-02-29T16:16:16+02:00]]"
+		},
+		{
+			"page": "Example/4373/1/query",
+			"contents": "{{#show: Example/4373/1/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/2/query",
+			"contents": "{{#show: Example/4373/2/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/3/query",
+			"contents": "{{#show: Example/4373/3/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/4/query",
+			"contents": "{{#show: Example/4373/4/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/5/query",
+			"contents": "{{#show: Example/4373/5/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/6/query",
+			"contents": "{{#show: Example/4373/6/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/7/query",
+			"contents": "{{#show: Example/4373/7/data |?Has date#ISO }}"
+		},
+		{
+			"page": "Example/4373/8/query",
+			"contents": "{{#show: Example/4373/8/data |?Has date#ISO }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#1 query with `#show` for year in 'ISO' format",
+			"subject": "Example/4373/1/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-01-01"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 query with `#show` for year-month in 'ISO' format",
+			"subject": "Example/4373/2/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-02-01"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 query with `#show` for year-month-day in 'ISO' format",
+			"subject": "Example/4373/3/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-02-29"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 query with `#show` for year-month-day-zone in 'ISO' format",
+			"subject": "Example/4373/4/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-02-29T15:00:00"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 query with `#show` for year-month-day-system in 'ISO' format",
+			"subject": "Example/4373/5/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-02-29T16:00:04"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 query with `#show` for year-month-day-calendar in 'ISO' format",
+			"subject": "Example/4373/6/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-03-13"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 query with `#show` for year-month-day-hour-offset in 'ISO' format",
+			"subject": "Example/4373/7/query",
+			"assert-output": {
+				"to-contain": [
+					"2020-02-29T14:16:16"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "de",
+		"wgLocaltimezone": "Europe/Berlin"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
