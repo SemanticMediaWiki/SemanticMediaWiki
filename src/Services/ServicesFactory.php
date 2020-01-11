@@ -2,28 +2,47 @@
 
 namespace SMW\Services;
 
-use Closure;
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use Onoi\CallbackContainer\ContainerBuilder;
-use Parser;
+use Onoi\EventDispatcher\EventDispatcher;
 use ParserOutput;
+use Psr\Log\LoggerInterface;
+use SMW\CacheFactory;
+use SMW\Connection\ConnectionManager;
+use SMW\ContentParser;
+use SMW\DataItemFactory;
+use SMW\DataUpdater;
+use SMW\DataValueFactory;
+use SMW\DeferredCallableUpdate;
+use SMW\DeferredTransactionalCallableUpdate;
+use SMW\EntityCache;
+use SMW\EventHandler;
+use SMW\HierarchyLookup;
+use SMW\InMemoryPoolCache;
+use SMW\InTextAnnotationParser;
+use SMW\IteratorFactory;
 use SMW\Maintenance\MaintenanceFactory;
-use SMW\MediaWiki\Jobs\JobFactory;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
-use SMW\Query\ProfileAnnotator\QueryProfileAnnotatorFactory;
-use SMW\Services\SharedServicesContainer;
-use SMWQueryParser as QueryParser;
-use SMW\ParserFunctionFactory;
-use SMW\SerializerFactory;
-use SMW\EventHandler;
+use SMW\NamespaceExaminer;
 use SMW\ParserData;
-use SMW\InTextAnnotationParser;
-use SMW\DataValueFactory;
+use SMW\ParserFunctionFactory;
+use SMW\PostProcHandler;
+use SMW\PropertyLabelFinder;
+use SMW\PropertySpecificationLookup;
+use SMW\Query\QuerySourceFactory;
+use SMW\QueryFactory;
 use SMW\SemanticData;
-use SMW\DataUpdater;
+use SMW\SerializerFactory;
+use SMW\Settings;
 use SMW\Site;
+use SMW\Store;
+use SMWQueryParser as QueryParser;
 use Title;
 
 /**
@@ -156,55 +175,43 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return SerializerFactory
 	 */
-	public function newSerializerFactory() {
+	public function newSerializerFactory(): SerializerFactory {
 		return new SerializerFactory();
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return JobFactory
 	 */
-	public function newJobFactory() {
+	public function newJobFactory(): JobFactory {
 		return $this->containerBuilder->create( 'JobFactory' );
 	}
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return ParserFunctionFactory
 	 */
-	public function newParserFunctionFactory() {
+	public function newParserFunctionFactory(): ParserFunctionFactory {
 		return new ParserFunctionFactory();
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return MaintenanceFactory
 	 */
-	public function newMaintenanceFactory() {
+	public function newMaintenanceFactory(): MaintenanceFactory {
 		return new MaintenanceFactory();
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return CacheFactory
 	 */
-	public function newCacheFactory() {
+	public function newCacheFactory(): CacheFactory {
 		return $this->containerBuilder->create( 'CacheFactory', $this->getSettings()->get( 'smwgMainCacheType' ) );
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @return CacheFactory
 	 */
-	public function getCacheFactory() {
+	public function getCacheFactory(): CacheFactory {
 		return $this->containerBuilder->singleton( 'CacheFactory', $this->getSettings()->get( 'smwgMainCacheType' ) );
 	}
 
@@ -215,52 +222,42 @@ class ServicesFactory {
 	 *
 	 * @return QuerySourceFactory
 	 */
-	public function getQuerySourceFactory( $source = null ) {
+	public function getQuerySourceFactory( $source = null ): QuerySourceFactory {
 		return $this->containerBuilder->singleton( 'QuerySourceFactory' );
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return Store
 	 */
-	public function getStore( $store = null ) {
+	public function getStore( $store = null ): Store {
 		return $this->containerBuilder->singleton( 'Store', $store );
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return Settings
 	 */
-	public function getSettings() {
+	public function getSettings(): Settings {
 		return $this->containerBuilder->singleton( 'Settings' );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return ConnectionManager
 	 */
-	public function getConnectionManager() {
+	public function getConnectionManager(): ConnectionManager {
 		return $this->containerBuilder->singleton( 'ConnectionManager' );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return EventDispatcher
 	 */
-	public function getEventDispatcher() {
+	public function getEventDispatcher(): EventDispatcher {
 		return EventHandler::getInstance()->getEventDispatcher();
 	}
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return TitleFactory
 	 */
-	public function newTitleFactory() {
+	public function newTitleFactory(): TitleFactory {
 		return $this->containerBuilder->create( 'TitleFactory', $this->newPageCreator() );
 	}
 
@@ -275,10 +272,8 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return PageUpdater
 	 */
-	public function newPageUpdater() {
+	public function newPageUpdater(): PageUpdater {
 
 		$pageUpdater = $this->containerBuilder->create(
 			'PageUpdater',
@@ -304,10 +299,8 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return IteratorFactory
 	 */
-	public function getIteratorFactory() {
+	public function getIteratorFactory(): IteratorFactory {
 		return $this->containerBuilder->singleton( 'IteratorFactory' );
 	}
 
@@ -331,10 +324,8 @@ class ServicesFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @return EntityCache
 	 */
-	public function getEntityCache() {
+	public function getEntityCache(): EntityCache {
 		return $this->containerBuilder->singleton( 'EntityCache' );
 	}
 
@@ -383,10 +374,8 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return ContentParser
 	 */
-	public function newContentParser( Title $title ) {
+	public function newContentParser( Title $title ): ContentParser {
 		return $this->containerBuilder->create( 'ContentParser', $title );
 	}
 
@@ -440,55 +429,43 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @return NamespaceExaminer
 	 */
-	public function getNamespaceExaminer() {
+	public function getNamespaceExaminer(): NamespaceExaminer {
 		return $this->containerBuilder->create( 'NamespaceExaminer' );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return PropertySpecificationLookup
 	 */
-	public function getPropertySpecificationLookup() {
+	public function getPropertySpecificationLookup(): PropertySpecificationLookup {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return HierarchyLookup
 	 */
-	public function newHierarchyLookup() {
+	public function newHierarchyLookup(): HierarchyLookup {
 		return $this->containerBuilder->create( 'HierarchyLookup' );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return PropertyLabelFinder
 	 */
-	public function getPropertyLabelFinder() {
+	public function getPropertyLabelFinder(): PropertyLabelFinder {
 		return $this->containerBuilder->singleton( 'PropertyLabelFinder' );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return MediaWikiNsContentReader
 	 */
-	public function getMediaWikiNsContentReader() {
+	public function getMediaWikiNsContentReader(): MediaWikiNsContentReader {
 		return $this->containerBuilder->singleton( 'MediaWikiNsContentReader' );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return InMemoryPoolCache
 	 */
-	public function getInMemoryPoolCache() {
+	public function getInMemoryPoolCache(): InMemoryPoolCache {
 		return $this->containerBuilder->singleton( 'InMemoryPoolCache' );
 	}
 
@@ -505,10 +482,8 @@ class ServicesFactory {
 	 * @since 2.4
 	 *
 	 * @param callable $callback
-	 *
-	 * @return DeferredCallableUpdate
 	 */
-	public function newDeferredCallableUpdate( callable $callback = null ) {
+	public function newDeferredCallableUpdate( callable $callback = null ): DeferredCallableUpdate {
 
 		$deferredCallableUpdate = $this->containerBuilder->create(
 			'DeferredCallableUpdate',
@@ -534,10 +509,8 @@ class ServicesFactory {
 	 * @since 3.0
 	 *
 	 * @param callable $callback
-	 *
-	 * @return DeferredTransactionalUpdate
 	 */
-	public function newDeferredTransactionalCallableUpdate( callable $callback = null ) {
+	public function newDeferredTransactionalCallableUpdate( callable $callback = null ): DeferredTransactionalCallableUpdate {
 
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
@@ -572,37 +545,29 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return DataItemFactory
 	 */
-	public function getDataItemFactory() {
+	public function getDataItemFactory(): DataItemFactory {
 		return $this->containerBuilder->singleton( 'DataItemFactory' );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return QueryFactory
 	 */
-	public function getQueryFactory() {
+	public function getQueryFactory(): QueryFactory {
 		return $this->containerBuilder->singleton( 'QueryFactory' );
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @return LoggerInterface
 	 */
-	public function getMediaWikiLogger( $channel = 'smw' ) {
+	public function getMediaWikiLogger( $channel = 'smw' ): LoggerInterface {
 		return $this->containerBuilder->singleton( 'MediaWikiLogger', $channel, $GLOBALS['smwgDefaultLoggerRole'] );
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return JobQueue
 	 */
-	public function getJobQueue() {
+	public function getJobQueue(): JobQueue {
 		return $this->containerBuilder->singleton( 'JobQueue' );
 	}
 
@@ -624,6 +589,10 @@ class ServicesFactory {
 		//	$containerBuilder->setLogger( $containerBuilder->singleton( 'MediaWikiLogger' ) );
 
 		return $containerBuilder;
+	}
+
+	public function newPostProcHandler( ParserOutput $parserOutput ): PostProcHandler {
+		return $this->create( 'PostProcHandler', $parserOutput );
 	}
 
 }

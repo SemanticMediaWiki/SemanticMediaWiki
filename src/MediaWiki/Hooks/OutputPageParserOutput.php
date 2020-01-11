@@ -61,9 +61,6 @@ class OutputPageParserOutput extends HookHandler {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param OutputPage $outputPage
-	 * @param ParserOutput $parserOutput
 	 */
 	public function process( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
@@ -94,7 +91,7 @@ class OutputPageParserOutput extends HookHandler {
 		$this->addPostProc( $title, $outputPage, $parserOutput );
 	}
 
-	private function addPostProc( $title, $outputPage, $parserOutput ) {
+	private function addPostProc( Title $title, OutputPage $outputPage, ParserOutput $parserOutput ) {
 
 		$request = $outputPage->getContext()->getRequest();
 
@@ -104,7 +101,7 @@ class OutputPageParserOutput extends HookHandler {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$postProcHandler = $applicationFactory->create( 'PostProcHandler', $parserOutput );
+		$postProcHandler = $applicationFactory->newPostProcHandler( $parserOutput );
 
 		$html = $postProcHandler->getHtml(
 			$title,
@@ -117,7 +114,7 @@ class OutputPageParserOutput extends HookHandler {
 		}
 	}
 
-	protected function addFactbox( $outputPage, $parserOutput ) {
+	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ) {
 
 		$request = $outputPage->getContext()->getRequest();
 
@@ -137,7 +134,7 @@ class OutputPageParserOutput extends HookHandler {
 		return true;
 	}
 
-	protected function getParserOutput( $outputPage, $parserOutput ) {
+	protected function getParserOutput( OutputPage $outputPage, ParserOutput $parserOutput ) {
 
 		if ( $outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 

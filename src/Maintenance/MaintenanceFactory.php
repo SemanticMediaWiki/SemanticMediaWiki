@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
@@ -142,10 +143,8 @@ class MaintenanceFactory {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return MessageReporter
 	 */
-	public function newMessageReporter( $reporterCallback = null ) {
+	public function newMessageReporter( $reporterCallback = null ): MessageReporter {
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( $reporterCallback );
@@ -155,12 +154,8 @@ class MaintenanceFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $identifier
-	 *
-	 * @return AutoRecovery
 	 */
-	public function newAutoRecovery( $identifier ) {
+	public function newAutoRecovery( string $identifier ): AutoRecovery {
 		return new AutoRecovery( $identifier );
 	}
 
