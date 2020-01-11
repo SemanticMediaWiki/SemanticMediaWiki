@@ -26,7 +26,9 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\DumpRdf'                    => __DIR__ . '/../maintenance/dumpRDF.php',
 	'SMW\Maintenance\SetupStore'                 => __DIR__ . '/../maintenance/setupStore.php',
 	'SMW\Maintenance\UpdateEntityCollation'      => __DIR__ . '/../maintenance/updateEntityCollation.php',
-	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php'
+	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php',
+	'SMW\Maintenance\PurgeEntityCache'           => __DIR__ . '/../maintenance/purgeEntityCache.php',
+	'SMW\Maintenance\UpdateQueryDependencies'    => __DIR__ . '/../maintenance/updateQueryDependencies.php'
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );
