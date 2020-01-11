@@ -259,6 +259,33 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
+	 * @see SearchEngine::completionSearchWithVariants
+	 *
+	 * Called by `ApiQueryPrefixSearch.php`, `ApiOpenSearch.php`
+	 *
+	 * {@inheritDoc}
+	 */
+	public function completionSearchWithVariants( $search ) {
+
+		// #4342
+		//
+		// This method runs before `SearchEngine::completionSearchBackend`.
+		//
+		// Hold on to the original search term because `SearchEngine::completionSearch`
+		// and `SearchEngine::completionSearchWithVariants` do normalize the string
+		// and remove any namespace prefix they encounter.
+		//
+		// We may need the orginal search term when it is required to run the
+		// fallbacksearch to complete the search request and no SMW specific query
+		// component was detected.
+		$this->extendedSearch->setCompletionSearchTerm(
+			$search
+		);
+
+		return parent::completionSearchWithVariants( $search );
+	}
+
+	/**
 	 * @see SearchEngine::completionSearchBackend
 	 *
 	 * {@inheritDoc}
@@ -268,11 +295,6 @@ class ExtendedSearchEngine extends SearchEngine {
 		$this->extendedSearch->setNamespaces(
 			$this->namespaces
 		);
-
-		// Avoid MW's auto formatting of title entities
-		if ( $search !== '' ) {
-			$search[0] = strtolower( $search[0] );
-		}
 
 		return $this->extendedSearch->completionSearch( $search );
 	}

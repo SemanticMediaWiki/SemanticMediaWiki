@@ -442,11 +442,7 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function tesCompletionSearch_NoRelevantPrefix() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testCompletionSearch_NoRelevantPrefix() {
 
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
@@ -456,36 +452,56 @@ class ExtendedSearchEngineTest extends \PHPUnit_Framework_TestCase {
 			->method( 'map')
 			->will( $this->returnValue( [] ) );
 
-		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setShowSuggestion')
-			->with( $this->equalTo( true ) );
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'completionSearch' )
-			->will( $this->returnValue( $searchSuggestionSet ) );
-
 		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$extendedSearch->setFallbackSearchEngine( $fallbackSearchEngine );
+		$extendedSearch->expects( $this->once() )
+			->method( 'completionSearch' )
+			->will( $this->returnValue( $searchSuggestionSet ) );
 
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
 		);
 
 		$searchEngine->setExtendedSearch( $extendedSearch );
-		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
 		$searchEngine->setShowSuggestion( true );
 
 		$this->assertInstanceof(
 			'\SearchSuggestionSet',
 			$searchEngine->completionSearch( 'Foo' )
 		);
+	}
+
+	public function testCompletionSearchWithVariants() {
+
+		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$searchSuggestionSet->expects( $this->any() )
+			->method( 'map')
+			->will( $this->returnValue( [] ) );
+
+		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$extendedSearch->expects( $this->once() )
+			->method( 'completionSearch' )
+			->will( $this->returnValue( $searchSuggestionSet ) );
+
+		$extendedSearch->expects( $this->once() )
+			->method( 'setCompletionSearchTerm' )
+			->with( $this->equalTo( 'Foo_Variants' ) );
+
+		$searchEngine = new ExtendedSearchEngine(
+			$this->connection
+		);
+
+		$searchEngine->setExtendedSearch( $extendedSearch );
+
+		$searchEngine->completionSearchWithVariants( 'Foo_Variants' );
 	}
 
 }

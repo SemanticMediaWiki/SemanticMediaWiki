@@ -313,7 +313,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		$instance->completionSearch( 'fcat:Foo' );
 	}
 
-	public function tesCompletionSearch_NoRelevantPrefix() {
+	public function testCompletionSearch_NoRelevantPrefix() {
 
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
@@ -328,10 +328,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'setShowSuggestion')
-			->with( $this->equalTo( true ) );
-
-		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'completionSearch' )
 			->will( $this->returnValue( $searchSuggestionSet ) );
 
@@ -344,6 +340,25 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			'\SearchSuggestionSet',
 			$instance->completionSearch( 'Foo' )
 		);
+	}
+
+	public function testCompletionSearch_NoRelevantPrefix_ReplaceEmptySearchTermWithInfusedTerm() {
+
+		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fallbackSearchEngine->expects( $this->once() )
+			->method( 'completionSearch' )
+			->with( $this->equalTo( 'origTerm' ) );
+
+		$instance = new ExtendedSearch(
+			$this->store,
+			$fallbackSearchEngine
+		);
+
+		$instance->setCompletionSearchTerm( 'origTerm' );
+		$instance->completionSearch( '' );
 	}
 
 }
