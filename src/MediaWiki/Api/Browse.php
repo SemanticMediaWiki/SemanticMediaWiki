@@ -14,6 +14,7 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\PSubjectLookup;
+use SMW\Exception\JSONParseException;
 
 /**
  * Module to support selected browse activties including:
@@ -36,12 +37,13 @@ class Browse extends ApiBase {
 		$res = [];
 
 		if ( json_last_error() !== JSON_ERROR_NONE || !is_array( $parameters ) ) {
+			$error = new JSONParseException( $params['params'] );
 
 			// 1.29+
 			if ( method_exists($this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: '. json_last_error_msg() ] );
+				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: '. $error->getMessage() ] );
 			} else {
-				$this->dieUsage( 'JSON: '. json_last_error_msg(), 'smw-api-invalid-parameters' );
+				$this->dieUsage( 'JSON: '. $error->getMessage(), 'smw-api-invalid-parameters' );
 			}
 		}
 
@@ -357,6 +359,8 @@ class Browse extends ApiBase {
 	 */
 	protected function getExamples() {
 		return [
+			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
+			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date" }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "Date", "description": true, "prefLabel": true }',
