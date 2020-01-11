@@ -62,6 +62,25 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testMakeCacheKey_SubNamespace() {
+
+		$instance = new EntityCache(
+			$this->cache
+		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->assertContains(
+			'smw:entity:44ab375ee7ebac04b8e4471a70180dc5',
+			EntityCache::makeCacheKey( $subject )
+		);
+
+		$this->assertContains(
+			'smw:entity:foo:44ab375ee7ebac04b8e4471a70180dc5',
+			EntityCache::makeCacheKey( ':foo', $subject )
+		);
+	}
+
 	public function testContains() {
 
 		$this->cache->expects( $this->once() )

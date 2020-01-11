@@ -27,6 +27,14 @@ use SMW\PropertyRegistry;
 class SpecificationLookup {
 
 	/**
+	 * Identifies types used as part of the generate key to distinguish between
+	 * instances that would create the same entity key
+	 */
+	const CACHE_NS_KEY_SPECIFICATIONLOOKUP = ':propertyspecificationlookup';
+	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL = ':propertyspecificationlookup:preferredlabel';
+	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION = ':propertyspecificationlookup:description';
+
+	/**
 	 * @var Store
 	 */
 	private $store;
@@ -80,8 +88,21 @@ class SpecificationLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function resetCacheBy( DIWikiPage $subject ) {
+	public function invalidateCache( DIWikiPage $subject ) {
+
 		$this->entityCache->invalidate( $subject );
+
+		$this->entityCache->delete(
+			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject )
+		);
+
+		$this->entityCache->delete(
+			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject )
+		);
+
+		$this->entityCache->delete(
+			$this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject )
+		);
 	}
 
 	/**
@@ -102,7 +123,7 @@ class SpecificationLookup {
 			throw new RuntimeException( "Invalid request instance type" );
 		}
 
-		$key = $this->entityCache->makeCacheKey( 'propertyspecification', $subject->getHash() );
+		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP, $subject );
 		$sub_key = $target->getKey();
 
 		if (
@@ -120,7 +141,7 @@ class SpecificationLookup {
 			$dataItems = [];
 		}
 
-		$this->entityCache->saveSub( $key, $sub_key, $dataItems );
+		$this->entityCache->saveSub( $key, $sub_key, $dataItems, EntityCache::TTL_WEEK );
 		$this->entityCache->associate( $subject, $key );
 
 		return $dataItems;
@@ -156,7 +177,7 @@ class SpecificationLookup {
 	public function getPreferredPropertyLabelByLanguageCode( DIProperty $property, $languageCode = '' ) {
 
 		$subject = $property->getCanonicalDiWikiPage();
-		$key = $this->entityCache->makeCacheKey( 'preferredpropertylabel', $subject->getHash() );
+		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_PREFERREDLABEL, $subject );
 
 		if ( ( $text = $this->entityCache->fetchSub( $key, $languageCode ) ) !== false ) {
 			return $text;
@@ -389,7 +410,7 @@ class SpecificationLookup {
 	public function getPropertyDescriptionByLanguageCode( DIProperty $property, $languageCode = '', $linker = null ) {
 
 		$subject = $property->getCanonicalDiWikiPage();
-		$key = $this->entityCache->makeCacheKey( 'propertydescription', $subject->getHash() );
+		$key = $this->entityCache->makeCacheKey( self::CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION, $subject );
 
 		$sub_key = $languageCode . ':' . ( $linker === null ? '0' : '1' );
 

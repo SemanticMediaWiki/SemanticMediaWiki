@@ -4,6 +4,7 @@ namespace SMW\Services;
 
 use SMW\Events\InvalidateResultCacheEventListener;
 use SMW\Events\InvalidateEntityCacheEventListener;
+use SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener;
 
 /**
  * @codeCoverageIgnore
@@ -44,6 +45,20 @@ return [
 		);
 
 		return $invalidateEntityCacheEventListener;
+	},
+
+	/**
+	 * InvalidatePropertySpecificationLookupCacheEventListener
+	 *
+	 * @return callable
+	 */
+	'InvalidatePropertySpecificationLookupCacheEventListener' => function( $containerBuilder ) {
+
+		$invalidatePropertySpecificationLookupCacheEventListener = new InvalidatePropertySpecificationLookupCacheEventListener(
+			$containerBuilder->singleton( 'PropertySpecificationLookup' )
+		);
+
+		return $invalidatePropertySpecificationLookupCacheEventListener;
 	}
 
 ];

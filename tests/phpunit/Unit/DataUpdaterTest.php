@@ -25,6 +25,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	private $spyLogger;
 	private $store;
 	private $changePropagationNotifier;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -36,6 +37,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->changePropagationNotifier = $this->getMockBuilder( '\SMW\Property\ChangePropagationNotifier' )
 			->disableOriginalConstructor()
@@ -93,12 +98,20 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	public function testDoUpdateForDefaultSettings() {
 
+		$this->eventDispatcher->expects( $this->once() )
+			->method( 'dispatch' )
+			->with( $this->equalTo( \SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID ) );
+
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$instance = new DataUpdater(
 			$this->store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertTrue(
@@ -114,6 +127,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -177,6 +194,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->changePropagationNotifier
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$instance->canCreateUpdateJob(
 			$updateJobStatus
 		);
@@ -238,6 +259,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$updateJobStatus
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$this->assertTrue(
 			$instance->doUpdate()
 		);
@@ -257,6 +282,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertInternalType(
@@ -279,6 +308,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertFalse(
@@ -348,6 +381,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->changePropagationNotifier
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$instance->canCreateUpdateJob(
 			true
 		);
@@ -387,7 +424,12 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			->method( 'createPage' )
 			->will( $this->returnValue( $wikiPage ) );
 
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
 		$source = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -426,6 +468,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$instance->canCreateUpdateJob( true );

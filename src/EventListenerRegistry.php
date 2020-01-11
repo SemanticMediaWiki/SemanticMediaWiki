@@ -5,6 +5,7 @@ namespace SMW;
 use Onoi\EventDispatcher\EventListenerCollection;
 use SMW\Query\QueryComparator;
 use SMWExporter as Exporter;
+use SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener;
 
 /**
  * @license GNU GPL v2+
@@ -41,7 +42,9 @@ class EventListenerRegistry implements EventListenerCollection {
 	public function getCollection() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$invalidateResultCacheEventListener = $applicationFactory->create( 'InvalidateResultCacheEventListener' );
+		$invalidateResultCacheEventListener = $applicationFactory->create(
+			'InvalidateResultCacheEventListener'
+		);
 
 		$invalidateResultCacheEventListener->setLogger(
 			$applicationFactory->getMediaWikiLogger()
@@ -49,13 +52,28 @@ class EventListenerRegistry implements EventListenerCollection {
 
 		$this->eventListenerCollection->registerListener( 'InvalidateResultCache', $invalidateResultCacheEventListener );
 
-		$invalidateEntityCacheEventListener = $applicationFactory->create( 'InvalidateEntityCacheEventListener' );
+		$invalidateEntityCacheEventListener = $applicationFactory->create(
+			'InvalidateEntityCacheEventListener'
+		);
 
 		$invalidateEntityCacheEventListener->setLogger(
 			$applicationFactory->getMediaWikiLogger()
 		);
 
 		$this->eventListenerCollection->registerListener( 'InvalidateEntityCache', $invalidateEntityCacheEventListener );
+
+		$invalidatePropertySpecificationLookupCacheEventListener = $applicationFactory->create(
+			'InvalidatePropertySpecificationLookupCacheEventListener'
+		);
+
+		$invalidatePropertySpecificationLookupCacheEventListener->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
+		$this->eventListenerCollection->registerListener(
+			InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID,
+			$invalidatePropertySpecificationLookupCacheEventListener
+		);
 
 		$this->addListenersToCollection();
 

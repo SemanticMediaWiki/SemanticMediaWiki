@@ -426,6 +426,10 @@ class ServicesFactory {
 			$this->getMediaWikiLogger()
 		);
 
+		$dataUpdater->setEventDispatcher(
+			$this->getEventDispatcher()
+		);
+
 		return $dataUpdater;
 	}
 
