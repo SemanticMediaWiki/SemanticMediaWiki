@@ -76,6 +76,14 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructSearchTable() {
 
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(

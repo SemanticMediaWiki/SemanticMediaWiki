@@ -12,6 +12,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\SQLiteValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
@@ -92,8 +93,16 @@ class FulltextSearchTableFactory {
 			$store
 		);
 
+		$enabledFulltextSearch = $settings->get( 'smwgEnabledFulltextSearch' );
+
+		// #3605 Avoid any disruption during tests when the table was not created
+		// as part of a test scenario
+		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
+			$enabledFulltextSearch = $store->getConnection( 'mw.db' )->tableExists( SQLStore::FT_SEARCH_TABLE );
+		}
+
 		$searchTable->setEnabled(
-			$settings->get( 'smwgEnabledFulltextSearch' )
+			$enabledFulltextSearch
 		);
 
 		$searchTable->setPropertyExemptionList(
