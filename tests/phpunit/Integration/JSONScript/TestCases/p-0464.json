@@ -35,10 +35,6 @@
 			"contents": "[[Has date::2020-02-29T16:16:16+02:00]]"
 		},
 		{
-			"page": "Example/4373/8/data",
-			"contents": "[[Has date::Feb 29 2000 Gr]]"
-		},
-		{
 			"page": "Example/4373/1/query",
 			"contents": "{{#show: Example/4373/1/data |?Has date#ISO }}"
 		},
@@ -139,16 +135,6 @@
 			"assert-output": {
 				"to-contain": [
 					"2020-02-29T14:16:16"
-				]
-			}
-		},
-		{
-			"type": "parser",
-			"about": "#8 query with `#show` for year-month-day-calendar in 'ISO' format",
-			"subject": "Example/4373/8/query",
-			"assert-output": {
-				"not-contain": [
-					"2020-02-29"
 				]
 			}
 		}
