@@ -33,7 +33,7 @@ class LinksUpdateConstructed extends HookHandler {
 	/**
 	 * @var boolean
 	 */
-	private $isReadOnly = false;
+	private $isReady = true;
 
 	/**
 	 * @since 3.0
@@ -47,10 +47,10 @@ class LinksUpdateConstructed extends HookHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReadOnly
+	 * @param boolean $isReady
 	 */
-	public function isReadOnly( $isReadOnly ) {
-		$this->isReadOnly = (bool)$isReadOnly;
+	public function isReady( $isReady ) {
+		$this->isReady = (bool)$isReady;
 	}
 
 	/**
@@ -69,8 +69,8 @@ class LinksUpdateConstructed extends HookHandler {
 	 */
 	public function process( LinksUpdate $linksUpdate ) {
 
-		if ( $this->isReadOnly ) {
-			return false;
+		if ( $this->isReady === false ) {
+			return $this->doAbort();
 		}
 
 		$title = $linksUpdate->getTitle();
@@ -156,6 +156,15 @@ class LinksUpdateConstructed extends HookHandler {
 		}
 
 		return $parserOutput->mSMWData;
+	}
+
+	private function doAbort() {
+
+		$this->logger->info(
+			"LinksUpdateConstructed was invoked but the site isn't ready yet, aborting the processing."
+		);
+
+		return false;
 	}
 
 }

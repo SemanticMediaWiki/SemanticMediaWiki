@@ -340,11 +340,8 @@ class Hooks {
 			Site::isCommandLineMode()
 		);
 
-		// #3341
-		// When running as part of the install don't try to access the DB
-		// or update the Store
-		$parserAfterTidy->isReadOnly(
-			Site::isBlocked()
+		$parserAfterTidy->isReady(
+			Site::isReady()
 		);
 
 		$parserAfterTidy->setLogger(
@@ -806,11 +803,8 @@ class Hooks {
 			 $applicationFactory->getMediaWikiLogger()
 		);
 
-		// #3341
-		// When running as part of the install don't try to access the DB
-		// or update the Store
-		$linksUpdateConstructed->isReadOnly(
-			Site::isBlocked()
+		$linksUpdateConstructed->isReady(
+			Site::isReady()
 		);
 
 		$linksUpdateConstructed->process( $linksUpdate );

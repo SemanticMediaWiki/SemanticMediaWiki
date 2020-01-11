@@ -79,7 +79,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsReadOnly() {
+	public function testIsNotReady_DoNothing() {
 
 		$this->parser->expects( $this->never() )
 			->method( 'getTitle' );
@@ -90,7 +90,9 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$instance->isReadOnly( true );
+		$instance->setLogger( $this->spyLogger );
+
+		$instance->isReady( false );
 
 		$text = '';
 		$instance->process( $text );
