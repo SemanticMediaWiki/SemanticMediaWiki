@@ -397,6 +397,19 @@ class StubSemanticData extends SemanticData {
 				continue;
 			}
 
+			// Ensure to hold a DBKEY reference to avoid something like:
+			// "... SMW\Exception\SubSemanticDataException from line 206 of
+			// SubSemanticData.php: Data for a subobject of Display_precision_of
+			// cannot be added to _PREC ..."
+			if ( $value->getNamespace() === SMW_NS_PROPERTY ) {
+				$value = new DIWikiPage(
+					$this->mSubject->getDBKey(),
+					SMW_NS_PROPERTY,
+					$value->getInterwiki(),
+					$value->getSubobjectName()
+				);
+			}
+
 			if ( $this->hasSubSemanticData( $value->getSubobjectName() ) ) {
 				continue;
 			}

@@ -1,0 +1,62 @@
+{
+	"description": "Test RDF output for predefined property with alias (#4356)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Display precision of",
+			"contents": "[[Property description::Is described as ...@en]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "rdf",
+			"about": "#0 (canonical `Display precision of` representation)",
+			"dumpRDF": {
+				"parameters": {
+					"page": "Property:Display precision of"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<owl:Ontology rdf:about=\".*/Property-3ADisplay-2Bprecision-2Bof\">",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3ADisplay_precision_of\">",
+					"<rdfs:isDefinedBy rdf:resource=\".*/Property-3ADisplay_precision_of\"/>",
+					"<property:Property_description rdf:resource=\"http://example.org/id/Property-3ADisplay_precision_of-23_ML9d90cf2e5874b99bebfab30b76c15a67\"/>",
+					"<skos:scopeNote xml:lang=\"en\">Is described as ...</skos:scopeNote>"
+				]
+			}
+		},
+		{
+			"type": "rdf",
+			"about": "#1 (using the alias to produce a RDF output, should represent the canonical `Display precision of` content)",
+			"dumpRDF": {
+				"parameters": {
+					"page": "Property:Display precision"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<owl:Ontology rdf:about=\".*/Property-3ADisplay-2Bprecision\">",
+					"<owl:ObjectProperty rdf:about=\"http://example.org/id/Property-3ADisplay_precision_of\">",
+					"<rdfs:isDefinedBy rdf:resource=\".*/Property-3ADisplay_precision_of\"/>",
+					"<property:Property_description rdf:resource=\"http://example.org/id/Property-3ADisplay_precision_of-23_ML9d90cf2e5874b99bebfab30b76c15a67\"/>",
+					"<skos:scopeNote xml:lang=\"en\">Is described as ...</skos:scopeNote>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		},
+		"smwgNamespace": "http://example.org/id/"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

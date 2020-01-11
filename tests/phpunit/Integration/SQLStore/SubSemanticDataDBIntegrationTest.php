@@ -78,4 +78,97 @@ class SubSemanticDataDBIntegrationTest extends MwDBaseUnitTestCase {
 		}
 	}
 
+	public function testPredefinedProperty_Canonical_MonolingualText() {
+
+		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+
+		$pageCreator = new PageCreator();
+
+		$pageCreator
+			->createPage( $this->title )
+			->doEdit(
+				'[[Property description::Simple monolingual test@en]]'
+			);
+
+		$semanticData = $this->getStore()->getSemanticData(
+			DIWikiPage::newFromTitle( $this->title )
+		);
+
+		$expected = [
+			'propertyCount'  => 3,
+			'properties' => [
+				new DIProperty( '_TEXT' ),
+				new DIProperty( '_LCODE' ),
+				new DIProperty( '_SKEY' )
+			],
+			'propertyValues' => [
+				'en',
+				'Simple monolingual test',
+				'Display precision of',
+				'Display precision of#Simple monolingual test;en'
+			]
+		];
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
+			$semanticDataValidator->assertThatPropertiesAreSet(
+				$expected,
+				$subSemanticData
+			);
+		}
+	}
+
+	public function testPredefinedProperty_Key_MonolingualText() {
+
+		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+
+		$pageCreator = new PageCreator();
+
+		$pageCreator
+			->createPage( $this->title )
+			->doEdit(
+				'[[Property description::Simple monolingual test@en]]'
+			);
+
+		// 1) SMW\Tests\Integration\SQLStore\SubSemanticDataDBIntegrationTest::testPredefinedProperty_Key_MonolingualText
+		// SMW\Exception\SubSemanticDataException: Data for a subobject of Display_precision_of cannot be added to _PREC.
+		//
+		// ...\SemanticMediaWiki\src\DataModel\SubSemanticData.php:206
+		// ...\SemanticMediaWiki\includes\SemanticData.php:814
+		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:417
+		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:202
+		// ...\SemanticMediaWiki\tests\phpunit\Integration\SQLStore\SubSemanticDataDBIntegrationTest.php:153
+		// ...\SemanticMediaWiki\tests\phpunit\DatabaseTestCase.php:155
+		// ...\doMaintenance.php:94
+
+		$semanticData = $this->getStore()->getSemanticData(
+			DIWikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
+		);
+
+		$expected = [
+			'propertyCount'  => 3,
+			'properties' => [
+				new DIProperty( '_TEXT' ),
+				new DIProperty( '_LCODE' ),
+				new DIProperty( '_SKEY' )
+			],
+			'propertyValues' => [
+				'en',
+				'Simple monolingual test',
+				'Display precision of',
+				'Display precision of#Simple monolingual test;en'
+			]
+		];
+
+		$semanticDataValidator = new SemanticDataValidator();
+
+		foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
+			$semanticDataValidator->assertThatPropertiesAreSet(
+				$expected,
+				$subSemanticData
+			);
+		}
+	}
+
 }
