@@ -63,6 +63,8 @@ class SPARQLStore extends Store {
 		if ( $this->baseStore === null ) {
 			$this->baseStore = $this->factory->getBaseStore( self::$baseStoreClass );
 		}
+
+		$this->connectionManager = $this->factory->getConnectionManager();
 	}
 
 	/**
@@ -373,6 +375,7 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function drop( $verbose = true ) {
+		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->drop( $verbose );
 		$this->getConnection()->deleteAll();
 	}
@@ -456,11 +459,6 @@ class SPARQLStore extends Store {
 	 * @return mixed
 	 */
 	public function getConnection( $type = 'sparql' ) {
-
-		if ( $this->connectionManager === null ) {
-			$this->setConnectionManager( $this->factory->getConnectionManager() );
-		}
-
 		return parent::getConnection( $type );
 	}
 

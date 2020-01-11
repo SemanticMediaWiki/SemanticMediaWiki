@@ -142,10 +142,10 @@ class SetupStore extends \Maintenance {
 			$connectionManager
 		);
 
-		$messageReporter = $this->getMessageReporter();
+		$this->initMessageReporter();
 
 		$store->setMessageReporter(
-			$messageReporter
+			$this->messageReporter
 		);
 
 		$options = new Options(
@@ -159,7 +159,7 @@ class SetupStore extends \Maintenance {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$messageReporter->reportMessage(
+		$this->messageReporter->reportMessage(
 			"\n" . $cliMsgFormatter->head()
 		);
 
@@ -173,7 +173,7 @@ class SetupStore extends \Maintenance {
 		StoreFactory::clear();
 	}
 
-	protected function getMessageReporter() {
+	protected function initMessageReporter() {
 
 		$messageReporterFactory = MessageReporterFactory::getInstance();
 
@@ -222,17 +222,12 @@ class SetupStore extends \Maintenance {
 
 		$store->drop( !$this->isQuiet() );
 
-		// be sure to have some buffer, otherwise some PHPs complain
-		while ( ob_get_level() > 0 ) {
-			ob_end_flush();
-		}
-
 		$text = [
 			"You can recreate them with this script followed by the use",
 			"of the rebuildData.php script to rebuild their contents."
 		];
 
-		$this->output(
+		$this->messageReporter->reportMessage(
 			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 	}
@@ -246,7 +241,7 @@ class SetupStore extends \Maintenance {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$this->output(
+		$this->messageReporter->reportMessage(
 			$cliMsgFormatter->section( 'Notice' )
 		);
 
@@ -255,7 +250,7 @@ class SetupStore extends \Maintenance {
 			"this operation later on, a complete refresh of the data will be needed."
 		];
 
-		$this->output(
+		$this->messageReporter->reportMessage(
 			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n\n"
 		);
 
