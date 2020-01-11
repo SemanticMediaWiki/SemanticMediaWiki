@@ -89,6 +89,11 @@ class ExtendedSearch {
 	private $offset = 0;
 
 	/**
+	 * @var string
+	 */
+	private $completionSearchTerm = '';
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
@@ -159,6 +164,15 @@ class ExtendedSearch {
 	public function setLimitOffset( $limit, $offset = 0 ) {
 		$this->limit = intval( $limit );
 		$this->offset = intval( $offset );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $completionSearchTerm
+	 */
+	public function setCompletionSearchTerm( $completionSearchTerm ) {
+		$this->completionSearchTerm = $completionSearchTerm;
 	}
 
 	/**
@@ -287,6 +301,13 @@ class ExtendedSearch {
 			if ( $searchResultSet instanceof SearchResultSet ) {
 				return $searchResultSet->newSearchSuggestionSet();
 			}
+		}
+
+		// #4342
+		//
+		// Allow the fallback to work with the "raw" (not normalized) search term
+		if ( trim( $search ) === '' ) {
+			$search = $this->completionSearchTerm;
 		}
 
 		return $this->fallbackSearchEngine->completionSearch( $search );
