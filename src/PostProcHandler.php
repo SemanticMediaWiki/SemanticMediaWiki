@@ -12,17 +12,16 @@ use Title;
 use WebRequest;
 
 /**
- * Some updates require to be handled in a "post" process meaning after an update
- * has already taken place to iterate over those results as input for a value
- * dependency.
+ * Some updates need to be handled in via post processing,
+ * so they can use values computed in the normal update process as input.
  *
- * The post process can only happen after the Store and hereby related processes
+ * The post process can only happen after the Store and related processes
  * have been updated. A simple null edit is in most cases inappropriate and
- * therefore it is necessary to a complete a re-parse (triggered by the UpdateJob)
- * to ensure consistency among the stored and displayed data.
+ * therefore it is necessary to do a complete re-parse (triggered by the UpdateJob).
+ * This ensures consistency among the stored and displayed data.
  *
- * The PostProc relies on an API request to initiate related updates and once
- * finished will handle the reload of the page.
+ * The PostProc relies on JavaScript (ext.smw.util.postproc.js) that triggers a
+ * web API request and reloads the page on completion of this request.
  *
  * @license GNU GPL v2+
  * @since 3.0
