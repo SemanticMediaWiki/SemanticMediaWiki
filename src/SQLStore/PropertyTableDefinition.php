@@ -22,6 +22,16 @@ use OutOfBoundsException;
 class PropertyTableDefinition {
 
 	/**
+	 * A table that is part of Semantic MediaWiki core.
+	 */
+	const TYPE_CORE = 'type/core';
+
+	/**
+	 * A custom table added for example by an extension.
+	 */
+	const TYPE_CUSTOM = 'type/custom';
+
+	/**
 	 * Name of the table in the DB.
 	 *
 	 * @since 1.8
@@ -63,6 +73,11 @@ class PropertyTableDefinition {
 	 * @var boolean
 	 */
 	protected $idSubject = true;
+
+	/**
+	 * @var string
+	 */
+	private $tableType = '';
 
 	/**
 	* Factory method to create an instance for a given
@@ -114,6 +129,26 @@ class PropertyTableDefinition {
 	 */
 	public function setUsesIdSubject( $usesIdSubject ) {
 		$this->idSubject = $usesIdSubject;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $tableType
+	 *
+	 * @return boolean
+	 */
+	public function isTableType( string $tableType ) : bool {
+		return $this->tableType === $tableType;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $tableType
+	 */
+	public function setTableType( string $tableType ) {
+		$this->tableType = $tableType;
 	}
 
 	/**

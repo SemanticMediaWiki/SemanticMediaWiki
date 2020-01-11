@@ -24,6 +24,11 @@ class Table {
 	private $name;
 
 	/**
+	 * @var boolean
+	 */
+	private $isCoreTable = true;
+
+	/**
 	 * @var array
 	 */
 	private $attributes = [];
@@ -32,9 +37,11 @@ class Table {
 	 * @since 2.5
 	 *
 	 * @param string $name
+	 * @param boolean $isCoreTable
 	 */
-	public function __construct( $name ) {
+	public function __construct( $name, bool $isCoreTable = true ) {
 		$this->name = $name;
+		$this->isCoreTable = $isCoreTable;
 	}
 
 	/**
@@ -44,6 +51,15 @@ class Table {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isCoreTable() : bool {
+		return $this->isCoreTable;
 	}
 
 	/**

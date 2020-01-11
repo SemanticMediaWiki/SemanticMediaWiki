@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\SQLStore\TableDefinition;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMWDataItem as DataItem;
 
@@ -45,7 +46,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$fixed = [];
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableDefinitionBuilder',
+			PropertyTableDefinitionBuilder::class,
 			new PropertyTableDefinitionBuilder( $this->propertyTypeFinder )
 		);
 	}
@@ -69,6 +70,8 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$definition = $instance->newTableDefinition(
 			DataItem::TYPE_NUMBER, 'smw_di_number'
 		);
+
+		$definition->setTableType( TableDefinition::TYPE_CORE );
 
 		$expected = [
 			'smw_di_number' => $definition
@@ -106,6 +109,8 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->createHashedTableNameFrom( $expectedKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
+		$definition->setTableType( TableDefinition::TYPE_CORE );
+
 		$expected = [
 			'definition' => [ $tableName => $definition ],
 			'tableId' => [ $expectedKey => $tableName, '_SKEY' => null ]
@@ -141,7 +146,10 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
+
 		$definition = $instance->newTableDefinition( DataItem::TYPE_TIME, $tableName, $propertyKey );
+		$definition->setTableType( TableDefinition::TYPE_CORE );
+
 		$expected = [ $tableName => $definition ];
 
 		$this->assertEquals(
@@ -173,6 +181,10 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = [ $tableName => $definition ];
 		$tableDefinitions = $instance->getTableDefinitions();
+
+		$this->assertTrue(
+			$tableDefinitions[$tableName]->isTableType( TableDefinition::TYPE_CORE )
+		);
 
 		$this->assertFalse(
 			$tableDefinitions[$tableName]->usesIdSubject()

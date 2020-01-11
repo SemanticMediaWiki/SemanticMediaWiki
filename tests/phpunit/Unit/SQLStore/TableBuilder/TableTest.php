@@ -26,6 +26,21 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsCoreTable() {
+
+		$instance = new Table( 'Foo' );
+
+		$this->assertTrue(
+			$instance->isCoreTable()
+		);
+
+		$instance = new Table( 'Bar', false );
+
+		$this->assertFalse(
+			$instance->isCoreTable()
+		);
+	}
+
 	public function testAddColumn() {
 
 		$instance = new Table( 'Foo' );
