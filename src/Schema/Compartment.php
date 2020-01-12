@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use JsonSerializable;
 use SMW\Utils\DotArray;
+use IteratorAggregate;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +12,18 @@ use SMW\Utils\DotArray;
  *
  * @author mwjames
  */
-class Compartment implements JsonSerializable {
+class Compartment implements JsonSerializable, IteratorAggregate {
+
+	/**
+	 * An internal key to track the association to a schema the compartment is
+	 * part of.
+	 */
+	const ASSOCIATED_SCHEMA = '___assoc_schema';
+
+	/**
+	 * An internal key to identify a possible section the compartment is part of.
+	 */
+	const ASSOCIATED_SECTION = '___assoc_section';
 
 	/**
 	 * @var array
@@ -55,7 +67,7 @@ class Compartment implements JsonSerializable {
 	 *
 	 * @return string
 	 */
-	 public function jsonSerialize() {
+	public function jsonSerialize() {
 		return json_encode( $this->data );
 	}
 
@@ -66,6 +78,39 @@ class Compartment implements JsonSerializable {
 	 */
 	 public function __toString() {
 		return $this->jsonSerialize();
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() {
+		return sha1( $this->jsonSerialize() );
+	}
+
+	/**
+	 * @see IteratorAggregate::getIterator
+	 * @since 3.2
+	 *
+	 * @return Iterator
+	 */
+	public function getIterator() {
+
+		foreach ( $this->data as $key => $value ) {
+
+			if ( is_string( $value ) ) {
+				continue;
+			}
+
+			if ( isset( $this->data[self::ASSOCIATED_SCHEMA] ) ) {
+				$value[self::ASSOCIATED_SCHEMA] = $this->data[self::ASSOCIATED_SCHEMA];
+			}
+
+			$value[self::ASSOCIATED_SECTION] = $key;
+
+			yield new Compartment( $value );
+		}
 	}
 
 }

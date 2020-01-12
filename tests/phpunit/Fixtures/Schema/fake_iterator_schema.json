@@ -1,0 +1,91 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_1": [
+		{
+			"if": {
+				"namespace": "NS_HELP",
+				"category": [ "Foo", "Bar" ]
+			},
+			"then": {
+				"action": "3_1"
+			}
+		},
+		{
+			"if": {
+				"namespace": [ "NS_MAIN", "NS_HELP" ],
+				"category": [ "Foo", "Bar" ]
+			},
+			"then": {
+				"action": "3_2"
+			}
+		},
+		{
+			"if": {
+				"category": "Foo"
+			},
+			"then": {
+				"action": "3_3"
+			}
+		}
+	],
+	"filter_2": {
+		"foo_1" : [
+			{
+				"bar_1": [ "bar_1_1", "bar_1_2" ],
+				"bar_2": [ "bar_2_1", "bar_2_2" ],
+				"bar_3_a": {
+					"bar_3_1": [ "bar_3_1_1", "bar_3_1_2" ],
+					"bar_3_2": [ "bar_3_2_1", "bar_3_2_2" ]
+				}
+			},
+			{
+				"foobar_1": [ "foobar_1_1", "foobar_1_2" ],
+				"foobar_2": [ "foobar_2_1", "foobar_2_2" ]
+			}
+		],
+		"foo_2" : [
+			{
+				"bar_1": [ "bar_1_1", "bar_1_2" ],
+				"bar_2": [ "bar_2_1", "bar_2_2" ],
+				"bar_3_b": {
+					"bar_3_1": [ "bar_3_1_1", "bar_3_1_2", "bar_3_1_3" ],
+					"bar_3_2": [ "bar_3_2_1", "bar_3_2_2" ]
+				}
+			},
+			{
+				"foobar_1": [ "foobar_1_1", "foobar_1_2" ],
+				"foobar_2": [ "foobar_2_1", "foobar_2_2" ]
+			}
+		],
+		"filter_2_1": {
+			"foo_2_1" : [
+				{
+					"bar_1": [ "bar_1_1", "bar_1_2" ],
+					"bar_2": [ "bar_2_1", "bar_2_2" ],
+					"bar_3_a_a": {
+						"bar_3_1": [ "bar_3_1_1", "bar_3_1_2", "bar_3_1_2_1_a_a" ],
+						"bar_3_2": [ "bar_3_2_1", "bar_3_2_2" ]
+					}
+				},
+				{
+					"foobar_1": [ "foobar_1_1", "foobar_1_2", "bar_3_1_2_2_a_a" ],
+					"foobar_2": [ "foobar_2_1", "foobar_2_2" ]
+				}
+			],
+			"foo_2_2" : [
+				{
+					"bar_1": [ "bar_1_1", "bar_1_2" ],
+					"bar_2": [ "bar_2_1", "bar_2_2" ],
+					"bar_3_b_a": {
+						"bar_3_1": [ "bar_3_1_1", "bar_3_1_2", "bar_3_1_2_1_b_a" ],
+						"bar_3_2": [ "bar_3_2_1", "bar_3_2_2", "bar_3_1_2_2_b_a" ]
+					}
+				},
+				{
+					"foobar_1": [ "foobar_1_1", "foobar_1_2" ],
+					"foobar_2": [ "foobar_2_1", "foobar_2_2" ]
+				}
+			]
+		}
+	}
+}

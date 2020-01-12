@@ -129,10 +129,32 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new SchemaList( $data );
+		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
 
 		$this->assertInstanceOf(
 			'\SMW\Schema\CompartmentIterator',
-			$instance->newCompartmentIteratorByKey( 'Foo' )
+			$compartmentIterator
+		);
+
+		$this->assertCount(
+			2,
+			$compartmentIterator
+		);
+	}
+
+	public function testNewCompartmentIteratorByKey_Empty() {
+
+		$instance = new SchemaList( [] );
+		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
+
+		$this->assertInstanceOf(
+			'\SMW\Schema\CompartmentIterator',
+			$compartmentIterator
+		);
+
+		$this->assertCount(
+			0,
+			$compartmentIterator
 		);
 	}
 
