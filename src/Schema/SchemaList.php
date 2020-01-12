@@ -99,17 +99,23 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @param string $key
 	 *
-	 * @return Iterator|[]
+	 * @return CompartmentIterator
 	 */
 	public function newCompartmentIteratorByKey( $key ) {
 
-		$list = $this->toArray();
+		$list = [];
 
-		if ( isset( $list[$key] ) ) {
-			return new CompartmentIterator( $list[$key] );
+		foreach ( $this->getList() as $schema ) {
+			if ( $schema instanceof SchemaDefinition && $schema->has( $key ) ) {
+				$list[] = $schema->get( $key ) + [ Compartment::ASSOCIATED_SCHEMA => $schema->getName() ];
+			}
 		}
 
-		return [];
+		if ( $list === [] ) {
+			return new CompartmentIterator();
+		}
+
+		return new CompartmentIterator( $list );
 	}
 
 	/**
@@ -140,6 +146,15 @@ class SchemaList implements JsonSerializable {
 	 */
 	 public function jsonSerialize() {
 		return json_encode( $this->list );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	 public function getFingerprint() {
+		return sha1( $this->jsonSerialize() );
 	}
 
 }

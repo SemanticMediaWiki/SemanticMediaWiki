@@ -106,4 +106,48 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIteratorAggregate() {
+
+		$data = [
+			'section_1' => [
+				'if' => [
+					'doSomething',
+					'and' => [
+						'doSomethingElse'
+					]
+				],
+				'then' => [
+				]
+			],
+			'not_used',
+			'___assoc_schema' => 'foo_schema'
+		];
+
+		$instance = new Compartment(
+			$data
+		);
+
+		$this->assertEquals(
+			'foo_schema',
+			$instance->get( Compartment::ASSOCIATED_SCHEMA )
+		);
+
+		foreach ( $instance as $compartment ) {
+			$this->assertInstanceof(
+				Compartment::class,
+				$compartment
+			);
+
+			$this->assertEquals(
+				'foo_schema',
+				$compartment->get( Compartment::ASSOCIATED_SCHEMA )
+			);
+
+			$this->assertEquals(
+				'section_1',
+				$compartment->get( Compartment::ASSOCIATED_SECTION )
+			);
+		}
+	}
+
 }
