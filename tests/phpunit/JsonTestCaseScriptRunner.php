@@ -82,7 +82,13 @@ abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 		);
 
 		if ( $this->getStore() instanceof \SMWSparqlStore ) {
-			$this->connectorId = strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] );
+			if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
+				$connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
+			} else {
+				$connectorId = $GLOBALS['smwgSparqlRepositoryConnector'];
+			}
+
+			$this->connectorId = strtolower( $connectorId );
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
