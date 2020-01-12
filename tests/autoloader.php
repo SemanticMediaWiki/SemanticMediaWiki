@@ -30,6 +30,12 @@ if ( is_readable( $path = __DIR__ . '/../vendor/autoload.php' ) ) {
 	die( 'To run the test suite it is required that packages are installed using Composer.' );
 }
 
+// Extensions are able to define this in case the output requires an extended
+// width due to a long extension name.
+if ( !defined( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH' ) ) {
+	define( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH', 20 );
+}
+
 require __DIR__ . '/phpUnitEnvironment.php';
 $phpUnitEnvironment = new PHPUnitEnvironment();
 
@@ -38,7 +44,11 @@ if ( $phpUnitEnvironment->hasDebugRequest( $GLOBALS['argv'] ) === false ) {
 }
 
 $phpUnitEnvironment->writeNewLn( "Semantic MediaWiki:", $phpUnitEnvironment->getVersion( 'smw' ) );
-$phpUnitEnvironment->writeLn( "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw', [ 'type' => $autoloadType ] ) );
+$phpUnitEnvironment->writeLn( "", $phpUnitEnvironment->getVersion( 'store' ) );
+
+$phpUnitEnvironment->writeNewLn( "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw' ) );
+$phpUnitEnvironment->writeLn( "", $autoloadType );
+
 $phpUnitEnvironment->writeLn( "Site language:", $phpUnitEnvironment->getSiteLanguageCode() );
 $phpUnitEnvironment->writeNewLn( "Execution time:", $phpUnitEnvironment->executionTime() );
 $phpUnitEnvironment->writeLn( "Debug logs:", ( $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled' ) );
