@@ -153,7 +153,7 @@ class ParserFunctionFactory {
 		);
 
 		$askParserFunction->setPostProcHandler(
-			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
+			$applicationFactory->newPostProcHandler( $parser->getOutput() )
 		);
 
 		$askParserFunction->setRecursiveTextProcessor(
@@ -254,7 +254,7 @@ class ParserFunctionFactory {
 		);
 
 		$conceptParserFunction->setPostProcHandler(
-			$applicationFactory->create( 'PostProcHandler', $parser->getOutput() )
+			$applicationFactory->newPostProcHandler( $parser->getOutput() )
 		);
 
 		return $conceptParserFunction;

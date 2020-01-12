@@ -88,7 +88,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return Store
 	 */
-	public function newStore( $containerBuilder, $storeClass = null ) {
+	public function newStore( ContainerBuilder $containerBuilder, $storeClass = null ) {
 
 		$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
 		$settings = $containerBuilder->singleton( 'Settings' );
@@ -124,7 +124,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( $containerBuilder ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder ) {
 
 		$store = $containerBuilder->singleton( 'Store', null );
 		$settings = $containerBuilder->singleton( 'Settings' );
@@ -157,7 +157,7 @@ class SharedServicesContainer implements CallbackContainer {
 		return $indicatorRegistry;
 	}
 
-	private function registerCallbackHandlers( $containerBuilder ) {
+	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ) {
 
 		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
@@ -437,7 +437,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 	}
 
-	private function registerCallableFactories( $containerBuilder ) {
+	private function registerCallableFactories( ContainerBuilder $containerBuilder ) {
 
 		/**
 		 * @var CacheFactory
@@ -526,7 +526,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 	}
 
-	private function registerCallbackHandlersByConstructedInstance( $containerBuilder ) {
+	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
 
 		/**
 		 * @var BlobStore
