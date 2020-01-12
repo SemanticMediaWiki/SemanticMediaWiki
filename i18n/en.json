@@ -919,6 +919,7 @@
 	"smw-copy-clipboard-title": "Copies content to the clipboard",
 	"smw-jsonview-expand-title": "Expands the JSON view",
 	"smw-jsonview-collapse-title": "Collapses the JSON view",
+	"smw-jsonview-search-label": "Search:",
 	"smw-redirect-target-unresolvable": "The target is unresolvable on the reason of \"$1\"",
 	"smw-types-title": "Type: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Changing the content model of a [https://www.semantic-mediawiki.org/wiki/Help:Schema schema page] is not permitted.",

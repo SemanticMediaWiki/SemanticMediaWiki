@@ -28,13 +28,36 @@
  * @author mwjames
  */
 
-.smw-jsonview-button-group {
+.smw-jsonview-button-group-right {
     float: right;
     margin-left: 10px;
     margin-top: 0px;
     margin-right: 0px;
     clear: right;
     display: inline-flex;
+}
+
+.smw-jsonview-button-group-left {
+    float: left;
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-right: 0px;
+    clear: left;
+    display: inline-flex;
+    height: 28px;
+    text-align: center;
+}
+
+.smw-jsonview-button-group-left input {
+    margin: 4px;
+    padding: 1px;
+    padding-left: 3px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+}
+
+.smw-jsonview-search-label {
+    margin: auto;
 }
 
 .smw-jsonview-button {
@@ -109,6 +132,7 @@
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 .smw-jsonview-menu + pre {

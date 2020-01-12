@@ -64,7 +64,13 @@
 }
 
 .skin-chameleon .smw-tabs section pre {
-	margin-top: 10px;
+	margin-top: 0px;
+	width: 100%;
+}
+
+.skin-chameleon .smw-jsonview-menu {
+	height: 29px;
+	top: 50px;
 }
 
 .smw-ui-input-filter input {
