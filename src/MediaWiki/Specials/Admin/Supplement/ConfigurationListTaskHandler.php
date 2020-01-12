@@ -132,18 +132,26 @@ class ConfigurationListTaskHandler extends TaskHandler {
 				'div',
 				[
 					'id' => 'smw-admin-configutation-json',
-					'class' => 'smw-json-placeholder',
-				],  Html::rawElement(
-				'pre',
-				[
-					'id' => 'smw-json-container'
+					'class' => '',
 				],
-				$placeholder . Html::rawElement(
+				Html::rawElement(
 					'div',
 					[
-						'class' => 'smw-json-data'
+						'class' => 'smw-jsonview-menu',
+					]
+				) . Html::rawElement(
+					'pre',
+					[
+						'id' => 'smw-json-container',
+						'class' => 'smw-json-container smw-json-placeholder',
 					],
-					$this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) )
+					$placeholder . Html::rawElement(
+						'div',
+						[
+							'class' => 'smw-json-data'
+						],
+						$this->outputFormatter->encodeAsJson( $this->cleanPath( $options )
+					)
 				)
 			)
 		);

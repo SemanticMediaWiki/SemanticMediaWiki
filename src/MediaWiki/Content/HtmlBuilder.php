@@ -248,7 +248,13 @@ class HtmlBuilder {
 				[
 					'id' => 'smw-schema',
 					'class' => 'smw-schema-placeholder',
-				],  Html::rawElement(
+				],
+				Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-jsonview-menu',
+					]
+				) . Html::rawElement(
 				'pre',
 				[
 					'id' => 'smw-schema-container',
