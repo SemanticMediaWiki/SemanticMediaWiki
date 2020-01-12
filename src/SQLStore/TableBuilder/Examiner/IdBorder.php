@@ -6,6 +6,7 @@ use SMW\MediaWiki\Database;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
 use RuntimeException;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -68,6 +69,8 @@ class IdBorder {
 
 	private function findAndMove( $upperbound, $legacyBound ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$connection = $this->store->getConnection( DB_MASTER );
 		$row = false;
 		$hasUpperBound = false;
@@ -98,7 +101,9 @@ class IdBorder {
 		}
 
 		if ( $hasUpperBound ) {
-			return $this->messageReporter->reportMessage( "   ... space for internal properties allocated ...\n" );
+			return $this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols( "... space for internal properties allocated ...", CliMsgFormatter::OK, 3 )
+			);
 		}
 
 		if ( $row === false ) {
@@ -107,8 +112,15 @@ class IdBorder {
 			$currentUpperbound = $row->smw_id;
 		}
 
-		$this->messageReporter->reportMessage( "   ... allocating space for internal properties ...\n" );
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( "... allocating space for internal properties ...", 3 )
+		);
+
 		$this->store->getObjectIds()->moveSMWPageID( $upperbound );
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 
 		$connection->insert(
 			SQLStore::ID_TABLE,
@@ -130,21 +142,26 @@ class IdBorder {
 
 	private function move( $old, $new ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$this->messageReporter->reportMessage(
-			"   ... moving from $old to $new as upper bound (may take a moment) ..."
+			$cliMsgFormatter->twoCols( "... moving upper bound (may take a moment) ...", "$old to $new", 3 )
 		);
 
-		$this->messageReporter->reportMessage( "       " );
 		$entityTable = $this->store->getObjectIds();
+		$count = 0;
 
 		for ( $i = $old; $i < $new; $i++ ) {
 
-			if ( ( $i - $old ) % 60 === 0 ) {
+			if ( $count > 0 && ( $count % 63 === 0 ) ) {
 				$this->messageReporter->reportMessage( "\n       " );
+			} elseif ( $count == 0 ) {
+				$this->messageReporter->reportMessage( "       " );
 			}
 
 			$this->messageReporter->reportMessage( "." );
 			$entityTable->moveSMWPageID( $i );
+			$count++;
 		}
 
 		$this->messageReporter->reportMessage( "\n" );

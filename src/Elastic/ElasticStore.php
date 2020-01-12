@@ -11,6 +11,7 @@ use SMWQuery as Query;
 use SMW\Options;
 use Title;
 use SMW\SetupFile;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @private
@@ -291,7 +292,9 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $verbose = true ) {
+	public function setup( $options = true ) {
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->indexer === null ) {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
@@ -299,7 +302,18 @@ class ElasticStore extends SQLStore {
 
 		$indices = $this->indexer->setup();
 
-		if ( $verbose instanceof Options && $verbose->get( 'verbose' ) ) {
+		if ( $options instanceof Options && $options->get( 'verbose' ) ) {
+
+			if (
+				$options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
+				$options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+				$this->messageReporter->reportMessage( $cliMsgFormatter->section( 'Sematic MediaWiki', 3, '=' ) );
+				$this->messageReporter->reportMessage( "\n" . $cliMsgFormatter->head() );
+
+				// Only output the head once hence for any succeeding processing
+				// remove the marker.
+				$options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
+			}
 
 			$setupFile = new SetupFile();
 
@@ -311,19 +325,26 @@ class ElasticStore extends SQLStore {
 				);
 			}
 
-			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( 'Query engine: "SMWElasticStore"' );
-			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( "\nSetting up indices ...\n" );
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->section( 'Indices setup' )
+			);
+
+			$this->messageReporter->reportMessage(
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+			);
+
+			$this->messageReporter->reportMessage( "\nChecking indices ...\n" );
 
 			foreach ( $indices as $index ) {
-				$this->messageReporter->reportMessage( "   ... $index ...\n" );
+				$this->messageReporter->reportMessage(
+					$cliMsgFormatter->twoCols( "... $index ...", CliMsgFormatter::OK, 3 )
+				);
 			}
 
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::setup( $verbose );
+		parent::setup( $options );
 	}
 
 	/**
@@ -333,6 +354,8 @@ class ElasticStore extends SQLStore {
 	 * {@inheritDoc}
 	 */
 	public function drop( $verbose = true ) {
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->indexer === null ) {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
@@ -347,13 +370,21 @@ class ElasticStore extends SQLStore {
 		);
 
 		if ( $verbose ) {
-			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( 'Query engine: "SMWElasticStore"' );
-			$this->messageReporter->reportMessage( "\n" );
-			$this->messageReporter->reportMessage( "\nDropping indices ...\n" );
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->section( 'Indices removal' )
+			);
+
+			$this->messageReporter->reportMessage(
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+			);
+
+			$this->messageReporter->reportMessage( "\nDropped index ...\n" );
 
 			foreach ( $indices as $index ) {
-				$this->messageReporter->reportMessage( "   ... $index ...\n" );
+				$this->messageReporter->reportMessage(
+					$cliMsgFormatter->twoCols( "... $index ...", CliMsgFormatter::OK, 3 )
+				);
 			}
 
 			$this->messageReporter->reportMessage( "   ... done.\n" );

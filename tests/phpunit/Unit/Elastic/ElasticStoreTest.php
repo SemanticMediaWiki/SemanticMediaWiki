@@ -117,7 +117,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->setup( $options );
 
 		$this->assertContains(
-			'Setting up indices',
+			'Indices setup',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
@@ -177,7 +177,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->drop( true );
 
 		$this->assertContains(
-			'Dropping indices',
+			'Indices removal',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

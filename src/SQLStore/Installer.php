@@ -15,6 +15,8 @@ use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
 use SMW\SetupFile;
+use SMW\Utils\CliMsgFormatter;
+use SMW\Utils\Timer;
 
 /**
  * @private
@@ -129,8 +131,18 @@ class Installer implements MessageReporter {
 			CompatibilityMode::enableTemporaryCliUpdateMode();
 		}
 
-		$executionTimes = [];
-		$startTime = microtime( true );
+		$cliMsgFormatter = new CliMsgFormatter();
+		$timer = new Timer();
+
+		$timer->keys = [
+			'create-tables' => 'Create tables',
+			'post-creation' => 'Post-creation examination',
+			'table-optimization' => 'Table optimization',
+			'supplement-jobs' => 'Supplement jobs',
+			'hook-execution' => 'AfterCreateTablesComplete (Hook)'
+		];
+
+		$timer->new( 'create-tables' );
 
 		$this->setupFile->setMaintenanceMode( true );
 
@@ -138,8 +150,21 @@ class Installer implements MessageReporter {
 			$this->options->has( 'verbose' ) && $this->options->get( 'verbose' )
 		);
 
-		$messageReporter->reportMessage( "\nStorage engine: \"SMWSQLStore3\" (or an extension thereof)\n" );
-		$messageReporter->reportMessage( "\nSetting up the database tables ...\n\n" );
+		if (
+			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
+			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+			$messageReporter->reportMessage( $cliMsgFormatter->section( 'Sematic MediaWiki', 3, '=' ) );
+			$messageReporter->reportMessage( "\n" . $cliMsgFormatter->head() );
+			$this->options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
+		}
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Database setup' )
+		);
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+		);
 
 		$this->tableBuilder->setMessageReporter(
 			$messageReporter
@@ -161,26 +186,60 @@ class Installer implements MessageReporter {
 			]
 		);
 
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Core tables', 6, '-', true ) . "\n"
+		);
+
+		$custom = false;
+
 		foreach ( $tables as $table ) {
+
+			if ( !$custom && !$table->isCoreTable() ) {
+				$custom = $cliMsgFormatter->section( 'Custom tables', 6, '-', true ) . "\n";
+
+				$messageReporter->reportMessage(
+					$custom
+				);
+			}
+
 			$this->tableBuilder->create( $table );
 		}
 
-		$executionTimes['create-tables'] = microtime( true );
-		$messageReporter->reportMessage( "\nPost-creation examination tasks ...\n\n" );
+		$timer->stop( 'create-tables' )->new( 'post-creation' );
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Post-creation examination' ) . "\n"
+		);
 
 		$this->setupFile->setMaintenanceMode( [ 'post-creation' => 40 ] );
 		$this->tableBuildExaminer->checkOnPostCreation( $this->tableBuilder );
-		$executionTimes['post-creation-check'] = microtime( true );
+
+		$timer->stop( 'post-creation' )->new( 'table-optimization' );
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Table optimization' ) . "\n"
+		);
 
 		$this->setupFile->setMaintenanceMode( [ 'table-optimization' => 60 ] );
 		$this->runTableOptimization( $messageReporter );
-		$executionTimes['table-optimization'] = microtime( true );
+
+		$timer->stop( 'table-optimization' )->new( 'supplement-jobs' );
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Supplement jobs' ) . "\n"
+		);
 
 		$this->setupFile->setMaintenanceMode( [ 'supplement-jobs' => 80 ] );
 		$this->addSupplementJobs( $messageReporter );
-		$executionTimes['supplement-jobs'] = microtime( true );
 
 		$this->setupFile->finalize();
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'AfterCreateTablesComplete (Hook)' )
+		);
+
+		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
+
 		$this->options->set( 'hook-execution', [] );
 
 		Hooks::run(
@@ -192,19 +251,16 @@ class Installer implements MessageReporter {
 			]
 		);
 
-		if ( ( $hook = $this->options->get( 'hook-execution' ) ) !== [] ) {
-			$executionTimes['hook-execution (' . implode( ',', $hook ) . ')'] = microtime( true );
-		} else {
-			$executionTimes['hook-execution'] = microtime( true );
-		}
+		$timer->stop( 'hook-execution' );
 
-		$messageReporter->reportMessage( "\nDatabase and table setup completed ...\n" );
-		$this->outputReport( $messageReporter, $startTime, $executionTimes );
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Summary' ) . "\n"
+		);
 
-		$messageReporter->reportMessage( "   ... done.\n" );
+		$this->outputReport( $messageReporter, $timer );
 
-		// Add an extra space when executed as part of the `update.php`
-		if ( defined( 'MW_UPDATER' ) ) {
+		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+			$messageReporter->reportMessage( $cliMsgFormatter->section( '', 0, '=' ) );
 			$messageReporter->reportMessage( "\n" );
 		}
 
@@ -218,10 +274,19 @@ class Installer implements MessageReporter {
 	 */
 	public function uninstall( $verbose = true ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$messageReporter = $this->newMessageReporter( $verbose );
 
-		$messageReporter->reportMessage( "\nStorage engine: \"SMWSQLStore3\" (or an extension thereof)\n" );
-		$messageReporter->reportMessage( "\nDeleting database tables (generated by SMW) ...\n" );
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Database table cleanup' )
+		);
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+		);
+
+		$messageReporter->reportMessage( "\nSemantic MediaWiki related tables ...\n" );
 
 		$this->tableBuilder->setMessageReporter(
 			$messageReporter
@@ -243,8 +308,14 @@ class Installer implements MessageReporter {
 			]
 		);
 
-		$messageReporter->reportMessage( "\nStandard and auxiliary tables with all corresponding data\n" );
-		$messageReporter->reportMessage( "have been removed successfully.\n" );
+		$text = [
+			'Standard and auxiliary tables with all corresponding data',
+			'have been removed successfully.'
+		];
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 
 		$this->setupFile->reset();
 
@@ -284,69 +355,84 @@ class Installer implements MessageReporter {
 
 	private function runTableOptimization( $messageReporter ) {
 
-		$messageReporter->reportMessage( "\nTable optimization task ...\n" );
-
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
 			return $messageReporter->reportMessage( "   ... skipping the table optimization\n" );
 		}
 
-		$messageReporter->reportMessage( "\n" );
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$text = [
+			'The optimization task can take a moment to complete and depending',
+			'on the database backend, tables can be locked during the operation.'
+		];
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$messageReporter->reportMessage( "\nChecking table ...\n" );
 
 		foreach ( $this->tableSchemaManager->getTables() as $table ) {
 			$this->tableBuilder->optimize( $table );
 		}
 
-		$messageReporter->reportMessage( "\nOptimization completed.\n" );
+		$messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 	private function addSupplementJobs( $messageReporter ) {
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
 			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
 		}
 
-		$messageReporter->reportMessage( "\nAdding supplement jobs ...\n" );
-		$messageReporter->reportMessage( "   ... property statistics rebuild job ...\n" );
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->oneCol( "Adding jobs ..." )
+		);
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
+		);
 
 		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
 
-		$job = new PropertyStatisticsRebuildJob(
+		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
 			$title,
 			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
-		$job->insert();
+		$propertyStatisticsRebuildJob->insert();
 
-		$messageReporter->reportMessage( "   ... entity disposer job ...\n" );
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 
-		$job = new EntityIdDisposerJob(
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
+		);
+
+		$entityIdDisposerJob = new EntityIdDisposerJob(
 			$title,
 			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
 		);
 
-		$job->insert();
+		$entityIdDisposerJob->insert();
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 
 		$messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $messageReporter, $startTime, $executionTimes ) {
+	private function outputReport( $messageReporter, $timer ) {
 
-		$len = 67 - strlen( MW_VERSION );
+		$cliMsgFormatter = new CliMsgFormatter();
+		$keys = $timer->keys;
 
-		$messageReporter->reportMessage(
-			sprintf( "%-{$len}s%s\n", "   ... MediaWiki", MW_VERSION )
-		);
-
-		$len = 67 - strlen( SMW_VERSION );
-
-		$messageReporter->reportMessage(
-			sprintf( "%-{$len}s%s\n", "   ... Semantic MediaWiki", SMW_VERSION )
-		);
-
-		$messageReporter->reportMessage( "   ... Execution report ...\n" );
-
-		foreach ( $executionTimes as $key => $time ) {
-			$t = $time - $startTime;
+		foreach ( $timer->getTimes() as $key => $time ) {
+			$t = $time;
 
 			if ( $t > 60 ) {
 				$t = sprintf( "%.2f", $t / 60 );
@@ -356,14 +442,11 @@ class Installer implements MessageReporter {
 				$unit = 'sec';
 			}
 
-			$len = 48 - strlen( $t );
-			$placeholderLen = $len - strlen( $key );
+			$key = $keys[$key];
 
 			$messageReporter->reportMessage(
-				sprintf( "%-{$len}s%s\n", "       ... $key " . sprintf( "%'.{$placeholderLen}s", ' ' ), $t . " ($unit.)" )
+				$cliMsgFormatter->twoCols( "- $key", "$t $unit", 0, '.' )
 			);
-
-			$startTime = $time;
 		}
 	}
 

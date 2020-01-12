@@ -5,6 +5,7 @@ namespace SMW\SQLStore\TableBuilder\Examiner;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
 use SMW\Maintenance\PopulateHashField;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -53,6 +54,8 @@ class HashField {
 	 */
 	public function check( array $opts = [] ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$this->messageReporter->reportMessage( "Checking smw_hash field consistency ...\n" );
 		require_once $GLOBALS['smwgMaintenanceDir'] . "/populateHashField.php";
 
@@ -71,7 +74,10 @@ class HashField {
 		}
 
 		if ( $count > self::threshold() ) {
-			$this->messageReporter->reportMessage( "   ... missing $count rows ...\n"  );
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols( "... found missing rows ...", "(rows) $count", 3 )
+			);
+
 			$this->messageReporter->reportMessage( "   ... skipping the `smw_hash` field population ...\n"  );
 
 			$this->populateHashField->setComplete( false );

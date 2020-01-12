@@ -284,7 +284,8 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->tableBuilder->drop( $table );
 
 		$expected = [
-			'dropped table rdbms_test'
+			'rdbms_test',
+			'REMOVED'
 		];
 
 		$this->stringValidator->assertThatStringContains(
@@ -306,7 +307,8 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->tableBuilder->drop( $table );
 
 		$expected = [
-			'foo_test not found, skipping removal'
+			'foo_test (not found)',
+			'SKIPPED'
 		];
 
 		$this->stringValidator->assertThatStringContains(

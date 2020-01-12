@@ -401,7 +401,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'query' )
 			->with( $this->stringContains( 'ANALYZE TABLE "foo"' ) );
 
-		$this->connection->expects( $this->at( 6 ) )
+		$this->connection->expects( $this->at( 4 ) )
 			->method( 'query' )
 			->with( $this->stringContains( 'OPTIMIZE TABLE "foo"' ) );
 
