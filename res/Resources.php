@@ -717,6 +717,17 @@ return [
 		]
 	],
 
+	'jquery.mark.js'  => $moduleTemplate + [
+		'position' => 'top',
+		'scripts'  => [
+			'jquery/jquery.mark.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
 	'smw.jsonview.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/smw.jsonview.css'
@@ -741,10 +752,12 @@ return [
 			'smw-copy',
 			'smw-copy-clipboard-title',
 			'smw-jsonview-expand-title',
-			'smw-jsonview-collapse-title'
+			'smw-jsonview-collapse-title',
+			'smw-jsonview-search-label'
 		],
 		'dependencies'  => [
 			'jquery.jsonview',
+			'jquery.mark.js',
 			'ext.smw'
 		],
 		'position' => 'top',
