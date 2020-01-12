@@ -59,11 +59,6 @@ class PostProcHandler {
 	private $cache;
 
 	/**
-	 * @var boolean
-	 */
-	private $isEnabled = true;
-
-	/**
 	 * @var []
 	 */
 	private $options = [];
@@ -77,15 +72,6 @@ class PostProcHandler {
 	public function __construct( ParserOutput $parserOutput, Cache $cache ) {
 		$this->parserOutput = $parserOutput;
 		$this->cache = $cache;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean $isEnabled
-	 */
-	public function isEnabled( $isEnabled ) {
-		$this->isEnabled = (bool)$isEnabled;
 	}
 
 	/**
@@ -132,10 +118,6 @@ class PostProcHandler {
 	 * @return string
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
-
-		if ( $this->isEnabled === false ) {
-			return '';
-		}
 
 		$subject = DIWikiPage::newFromTitle(
 			$title
