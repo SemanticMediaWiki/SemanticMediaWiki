@@ -110,47 +110,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @dataProvider nestedSettingsProvider
-	 */
-	public function testNestedSettingsIteration( $test, $key, $expected ) {
-
-		$instance = Settings::newFromArray( $test );
-
-		$this->assertInternalType( $expected['type'], $instance->get( $key ) );
-		$this->assertEquals( $expected['value'], $instance->get( $key ) );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function nestedSettingsProvider() {
-
-		$testEnvironment = new TestEnvironment();
-		$utilityFactory = $testEnvironment->getUtilityFactory();
-
-		$Foo  = $utilityFactory->createRandomString();
-		$Lula = $utilityFactory->createRandomString();
-		$Lala = $utilityFactory->createRandomString();
-
-		$child  = [ 'Lisa', 'Lula', [ 'Lila' ] ];
-		$parent = [ 'child' => $child ];
-
-		$Lila = [ 'Lala' => $Lala, 'parent' => $parent ];
-		$Bar  = [ 'Lula' => $Lula, 'Lila'   => $Lila ];
-		$test = [ 'Foo'  => $Foo,  'Bar'    => $Bar ];
-
-		return [
-			[ $test, 'Foo',    [ 'type' => 'string', 'value' => $Foo ] ],
-			[ $test, 'Bar',    [ 'type' => 'array',  'value' => $Bar ] ],
-			[ $test, 'Lula',   [ 'type' => 'string', 'value' => $Lula ] ],
-			[ $test, 'Lila',   [ 'type' => 'array',  'value' => $Lila ] ],
-			[ $test, 'Lala',   [ 'type' => 'string', 'value' => $Lala ] ],
-			[ $test, 'parent', [ 'type' => 'array',  'value' => $parent ] ],
-			[ $test, 'child',  [ 'type' => 'array',  'value' => $child ] ]
-		];
-	}
-
-	/**
 	 * Provides sample data to be tested
 	 *
 	 * @return array
