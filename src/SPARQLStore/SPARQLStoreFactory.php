@@ -147,8 +147,6 @@ class SPARQLStoreFactory {
 			$settings->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
 		);
 
-		$repositoryConnectionProvider = new RepositoryConnectionProvider();
-
 		$connectionManager = $applicationFactory->getConnectionManager();
 		$connectionManager->registerConnectionProvider(
 			'sparql',
