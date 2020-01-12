@@ -37,7 +37,8 @@ return [
 			'smw/ext.smw.table.css',
 			'smw/ext.smw.tabs.css',
 			'smw/factbox/smw.factbox.css',
-			'smw/smw.indicators.css'
+			'smw/smw.indicators.css',
+			'smw/smw.jsonview.css'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
@@ -708,6 +709,17 @@ return [
 		],
 		'dependencies'  => [
 			'smw.jsonview'
+		],
+		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.jsonview.styles' => $moduleTemplate + [
+		'styles' => [
+			'smw/smw.jsonview.css'
 		],
 		'position' => 'top',
 		'targets' => [

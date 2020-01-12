@@ -132,12 +132,15 @@
 }
 
 h3.smw-title {
-    background: #f5f5f5;
     padding: 2px 5px;
     margin-top: 10px !important;
     margin-bottom: 10px !important;
     color: #000;
     padding-right: 10px;
+    font-weight: 400 !important;
+    font-size: 18px !important;
+    border-bottom: 1px solid #ddd;
+    line-height: 2.3 !important;
 }
 
 /**
@@ -166,7 +169,7 @@ h3.smw-title {
 }
 
 .schema-body pre {
-    margin-top: 10px
+    margin-top: 0px
 }
 
 .smw-columnlist-container {
