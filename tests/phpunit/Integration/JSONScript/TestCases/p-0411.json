@@ -41,6 +41,18 @@
 		{
 			"page": "Example/P0411/3/1",
 			"contents": "{{#ask: [[Has text with language::?@~zh*]] |?Has text with language=Text |+index=1 |?Has text with language=Code |+index=2 }}"
+		},
+		{
+			"page": "P0411/4",
+			"contents": "{{#subobject:Test1 |Has text with language=例の一@ja }}　{{#subobject:Test2 |Has text with language=pour l'exemple@fr }}"
+		},
+		{
+			"page": "P0411/Q4.1",
+			"contents": "{{#show: P0411/4#Test1 |?Has text with language }}"
+		},
+		{
+			"page": "P0411/Q4.2",
+			"contents": "{{#show: P0411/4#Test1 |?Has text with language|+lang=ja }}"
 		}
 	],
 	"tests": [
@@ -135,6 +147,29 @@
 					"Example/P0411/3#_4eac5791ab0478bb01dc9d181bc91ec8",
 					"class=\"Text smwtype_txt\">國",
 					"class=\"Code smwtype&#95;_lcode\">zh-Hant"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (#show, subobject)",
+			"subject": "P0411/Q4.1",
+			"assert-output": {
+				"to-contain": [
+					"例の一 (ja)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (#show, subobject, +lang)",
+			"subject": "P0411/Q4.2",
+			"assert-output": {
+				"to-contain": [
+					"例の一"
+				],
+				"not-contain": [
+					"例の一 (ja)"
 				]
 			}
 		}
