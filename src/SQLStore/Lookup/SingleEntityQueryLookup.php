@@ -62,6 +62,9 @@ class SingleEntityQueryLookup implements QueryEngine {
 			$results = [];
 			$furtherResults = true;
 		} else {
+			// #4370
+			$dataItem = $this->store->getRedirectTarget( $dataItem );
+
 			// Instead of relying on Title::exists, find an associated revision
 			// ID to see whether it is a known page in MW or not
 			$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
