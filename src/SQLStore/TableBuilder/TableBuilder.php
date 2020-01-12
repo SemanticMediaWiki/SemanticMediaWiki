@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -175,14 +176,35 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	public function drop( Table $table ) {
 
-		$tableName = $table->getName();
+		$cliMsgFormatter = new CliMsgFormatter();
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
-			return $this->reportMessage( "   ... $tableName not found, skipping removal ...\n" );
+		if ( !isset( $this->droppedTables ) ) {
+			$this->droppedTables = [];
 		}
 
+		$tableName = $table->getName();
+
+		if ( isset( $this->droppedTables[$tableName] ) ) {
+			return;
+		}
+
+		$this->droppedTables[$tableName] = true;
+
+		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+			return $this->reportMessage(
+				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
+			);
+		}
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... $tableName ...", 3 )
+		);
+
 		$this->doDropTable( $tableName );
-		$this->reportMessage( "   ... dropped table $tableName ...\n" );
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( 'REMOVED' )
+		);
 	}
 
 	/**

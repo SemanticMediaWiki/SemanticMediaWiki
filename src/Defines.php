@@ -16,6 +16,13 @@ define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
 /**@}*/
 
 /**@{
+  * Constants to indicate that the installer is called from the `ExtensionSchemaUpdates`
+  * hook.
+  */
+define( 'SMW_EXTENSION_SCHEMA_UPDATER', 'smw/extension/schema/updater' );
+/**@}*/
+
+/**@{
  * SMW\ResultPrinter related constants that define
  * how/if headers should be displayed
  */

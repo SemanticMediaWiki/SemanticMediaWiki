@@ -269,11 +269,9 @@ class SetupFile {
 			return;
 		}
 
-		foreach ( $vars['smw.json'][$id] as $k => $v ) {
-			$args[$k] = null;
-		}
+		$vars['smw.json'][$id] = [];
 
-		$this->write( $args, $vars );
+		$this->write( [], $vars );
 	}
 
 	/**

@@ -178,7 +178,12 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertContains(
-			'moving from 42 to 100 as upper bound',
+			'moving upper bound',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+
+		$this->assertContains(
+			'42 to 100',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

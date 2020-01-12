@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use SMW\Utils\CliMsgFormatter;
+
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -399,21 +401,35 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$this->reportMessage( "Checking table $tableName ...\n" );
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... $tableName ", 3 )
+		);
+
+		$tableName = $this->connection->tableName( $tableName );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html
 		// Performs a key distribution analysis and stores the distribution for
 		// the named table or tables
-		$this->reportMessage( "   ... analyze" );
-		$this->connection->query( 'ANALYZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->reportMessage(
+			$cliMsgFormatter->positionCol( "analyze", 55, '.' )
+		);
+
+		$this->connection->query( "ANALYZE TABLE $tableName", __METHOD__ );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
 		// Reorganizes the physical storage of table data and associated index data,
 		// to reduce storage space and improve I/O efficiency
-		$this->reportMessage( ", optimize " );
-		$this->connection->query( 'OPTIMIZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->reportMessage(
+			$cliMsgFormatter->positionCol( ", optimize" )
+		);
 
-		$this->reportMessage( "done.\n" );
+		$this->connection->query( "OPTIMIZE TABLE $tableName", __METHOD__ );
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 	}
 
 }

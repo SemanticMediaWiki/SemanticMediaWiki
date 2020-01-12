@@ -16,6 +16,11 @@ class Timer {
 	private static $start = [];
 
 	/**
+	 * @var float|integer
+	 */
+	private $times = [];
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param integer $outputType
@@ -32,6 +37,32 @@ class Timer {
 	 */
 	public static function start( $name ) {
 		self::$start[$name] = microtime( true );
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function new( $name ) {
+		$this->times[$name] = microtime( true );
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function stop( $name ) {
+
+		if ( isset( $this->times[$name] ) ) {
+			$this->times[$name] = microtime( true ) - $this->times[$name];
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function getTimes() {
+		return $this->times;
 	}
 
 	/**

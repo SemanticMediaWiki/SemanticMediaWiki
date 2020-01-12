@@ -84,6 +84,10 @@ class ExtensionSchemaUpdates {
 		$store = StoreFactory::getStore();
 		$store->setMessageReporter( $messageReporter );
 
+		if ( defined( 'MW_UPDATER' ) ) {
+			$options->set( SMW_EXTENSION_SCHEMA_UPDATER, true );
+		}
+
 		// Needs a static caller otherwise the DatabaseUpdater returns with:
 		// "Warning: call_user_func_array() expects parameter 1 to be a
 		// valid callback ..."
