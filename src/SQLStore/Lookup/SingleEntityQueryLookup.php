@@ -65,7 +65,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 			// Instead of relying on Title::exists, find an associated revision
 			// ID to see whether it is a known page in MW or not
 			$associatedRev = $this->store->getObjectIds()->findAssociatedRev(
-				$dataItem
+				$dataItem->asBase()
 			);
 
 			// #3588

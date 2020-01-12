@@ -93,7 +93,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->getQueryResult( $query );
 	}
 
-	public function testGetQueryResult() {
+	public function testGetQueryResult_PageEntity() {
 
 		$this->idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
@@ -102,6 +102,65 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$valueDescription->expects( $this->any() )
+			->method( 'getPrintrequests' )
+			->will( $this->returnValue( [] ) );
+
+		$valueDescription->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $dataItem ) );
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getLimit' )
+			->will( $this->returnValue( 42 ) );
+
+		$query->expects( $this->any() )
+			->method( 'getDescription' )
+			->will( $this->returnValue( $valueDescription ) );
+
+		$instance = new SingleEntityQueryLookup(
+			$this->store
+		);
+
+		$res = $instance->getQueryResult( $query );
+
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryResult',
+			$res
+		);
+
+		$this->assertNotEmpty(
+			$res->getResults()
+		);
+	}
+
+	public function testGetQueryResult_SubobjectEntity() {
+
+		$dataItem_base = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataItem->expects( $this->once() )
+			->method( 'asBase' )
+			->will( $this->returnValue( $dataItem_base ) );
+
+		$this->idTable->expects( $this->any() )
+			->method( 'findAssociatedRev' )
+			->with( $this->equalTo( $dataItem_base ) )
+			->will( $this->returnValue( 1001 ) );
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
