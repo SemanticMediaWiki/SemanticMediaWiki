@@ -91,7 +91,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider globalsSettingsProvider
 	 */
-	public function testNewFromGlobals( array $settings ) {
+	public function testNewFromGlobals( $setting ) {
 
 		$instance = Settings::newFromGlobals();
 
@@ -104,9 +104,11 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance->clear();
 		$this->assertTrue( $instance !== Settings::newFromGlobals() );
 
-		foreach ( $settings as $key => $value ) {
-			$this->assertTrue( $instance->has( $key ), "Failed asserting that {$key} exists" );
-		}
+		$this->assertTrue(
+			$instance->has( $setting ),
+			"Failed asserting that `{$setting}` exists. It could be that `{$setting}`\n" .
+			"is invoked by the `LocalSettings.php` or some parameter is using the `smwg` prefix.\n"
+		);
 	}
 
 	/**
@@ -137,7 +139,9 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 		unset( $settings['smwgDeprecationNotices'] );
 
-		return [ [ $settings ] ];
+		foreach ( $settings as $key => $value ) {
+			yield [ $key ];
+		}
 	}
 
 }
