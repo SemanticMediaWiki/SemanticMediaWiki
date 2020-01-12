@@ -44,6 +44,31 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 		parent::tearDown();
 	}
 
+	public function testSetupStore_Delete() {
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
+
+		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner->setOptions(
+			[
+				'delete' => true,
+				'nochecks' => true
+			]
+		);
+
+		$maintenanceRunner->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$maintenanceRunner->run();
+
+		$this->assertContains(
+			'Database table cleanup',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+	}
+
 	public function testSetupStore() {
 
 		$this->importedTitles = [
