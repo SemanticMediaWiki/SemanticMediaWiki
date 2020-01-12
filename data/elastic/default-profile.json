@@ -3,8 +3,7 @@
 		"retries": 2,
 		"timeout": 30,
 		"connect_timeout": 30,
-		"quick_ping": true,
-		"retries": 2
+		"quick_ping": true
 	},
 	"settings": {
 		"data": {
@@ -19,16 +18,17 @@
 		"job.recovery.retries": 5,
 		"job.file.ingest.retries": 3,
 		"monitor.entity.replication": true,
-		"monitor.entity.replication.cache.lifetime": 3600,
+		"monitor.entity.replication.cache_lifetime": 3600
 	},
 	"query": {
-		"fallback.no.connection": false,
+		"fallback.no_connection": false,
 		"profiling": false,
 		"debug.explain": true,
 		"debug.description.log": true,
+		"maximum.value.length": 500,
 		"must_not.property.exists": true,
 		"sort.property.must.exists": true,
-		"score.sortfield": "elastic.score",
+		"score.sortfield": "es.score",
 		"query_string.boolean.operators": true,
 		"compat.mode": true,
 		"subquery.size":10000,
@@ -44,12 +44,12 @@
 			"subject.title^8",
 			"text_copy^5",
 			"text_raw",
-			"attachment.title^3"
+			"attachment.title^3",
 			"attachment.content"
 		],
 		"uri.field.case.insensitive": false,
 		"text.field.case.insensitive.eq.match": false,
 		"page.field.case.insensitive.proximity.match": true,
-		"highlight.fragment.type": false
+		"highlight.fragment": { "number" : 1, "size" : 250, "type" : false }
 	}
 }

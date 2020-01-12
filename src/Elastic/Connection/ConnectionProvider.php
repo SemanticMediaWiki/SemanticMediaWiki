@@ -7,7 +7,7 @@ use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
-use SMW\Options;
+use SMW\Elastic\Config;
 use Psr\Log\LoggerAwareTrait;
 
 /**
@@ -28,9 +28,9 @@ class ConnectionProvider implements IConnectionProvider {
 	private $lockManager;
 
 	/**
-	 * @var Options
+	 * @var Config
 	 */
-	private $options;
+	private $config;
 
 	/**
 	 * @var ElasticClient
@@ -41,11 +41,11 @@ class ConnectionProvider implements IConnectionProvider {
 	 * @since 3.0
 	 *
 	 * @param LockManager $lockManager
-	 * @param Options $options
+	 * @param config $config
 	 */
-	public function __construct( LockManager $lockManager, Options $options ) {
+	public function __construct( LockManager $lockManager, Config $config ) {
 		$this->lockManager = $lockManager;
-		$this->options = $options;
+		$this->config = $config;
 	}
 
 	/**
@@ -61,7 +61,8 @@ class ConnectionProvider implements IConnectionProvider {
 			return $this->connection;
 		}
 
-		$endpoints = $this->options->safeGet( 'endpoints', [] );
+		$endpoints = $this->config->safeGet( Config::ELASTIC_ENDPOINTS, [] );
+		$clientBuilder = null;
 
 		if ( !$this->hasEndpoints( $endpoints ) ) {
 			throw new MissingEndpointConfigException();
@@ -69,15 +70,15 @@ class ConnectionProvider implements IConnectionProvider {
 
 		$params = [
 			'hosts' => $endpoints,
-			'retries' => $this->options->dotGet( 'connection.retries', 1 ),
+			'retries' => $this->config->dotGet( 'connection.retries', 1 ),
 
 			'client' => [
 
 				// controls the request timeout
-				'timeout' => $this->options->dotGet( 'connection.timeout', 30 ),
+				'timeout' => $this->config->dotGet( 'connection.timeout', 30 ),
 
 				// controls the original connection timeout duration
-				'connect_timeout' => $this->options->dotGet( 'connection.connect_timeout', 30 )
+				'connect_timeout' => $this->config->dotGet( 'connection.connect_timeout', 30 )
 			]
 
 			// Use `singleHandler` if you know you will never need async capabilities,
@@ -87,8 +88,6 @@ class ConnectionProvider implements IConnectionProvider {
 
 		if ( $this->hasAvailableClientBuilder() ) {
 			$clientBuilder = ClientBuilder::fromConfig( $params, true );
-		} else {
-			$clientBuilder = null;
 		}
 
 		$this->connection = $this->newClient( $clientBuilder );
@@ -124,15 +123,15 @@ class ConnectionProvider implements IConnectionProvider {
 		// hereby make results immediately available on some actions before
 		// the actual request is transmitted to the `Client`
 		if ( defined( 'MW_PHPUNIT_TEST' ) ) {
-			return new TestClient( $clientBuilder, $this->lockManager, $this->options );
+			return new TestClient( $clientBuilder, $this->lockManager, $this->config );
 		}
 
-		return new Client( $clientBuilder, $this->lockManager, $this->options );
+		return new Client( $clientBuilder, $this->lockManager, $this->config );
 	}
 
 	private function hasEndpoints( $endpoints ) {
 
-		if ( $this->options->dotGet( 'is.elasticstore', false ) === false ) {
+		if ( $this->config->isDefaultStore() === false ) {
 			return true;
 		}
 
@@ -141,7 +140,7 @@ class ConnectionProvider implements IConnectionProvider {
 
 	private function hasAvailableClientBuilder() {
 
-		if ( $this->options->dotGet( 'is.elasticstore', false ) === false ) {
+		if ( $this->config->isDefaultStore() === false ) {
 			return false;
 		}
 

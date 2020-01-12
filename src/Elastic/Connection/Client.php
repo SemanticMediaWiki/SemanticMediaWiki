@@ -11,6 +11,7 @@ use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use SMW\Elastic\Exception\InvalidJSONException;
 use SMW\Elastic\Exception\ReplicationException;
+use SMW\Elastic\Config;
 use SMW\Options;
 use SMW\Site;
 
@@ -78,7 +79,7 @@ class Client {
 	 * @param LockManager $lockManager
 	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, Options $options = null ) {
+	public function __construct( ElasticClient $client, LockManager $lockManager, Config $options = null ) {
 		$this->client = $client;
 		$this->lockManager = $lockManager;
 		$this->options = $options;
@@ -187,7 +188,9 @@ class Client {
 
 		$info = $this->info();
 
-		if ( $this->options->safeGet( 'elastic.enabled' ) && isset( $info['version']['number'] ) ) {
+		if (
+			$this->options->isDefaultStore() &&
+			isset( $info['version']['number'] ) ) {
 			return $info['version']['number'];
 		}
 
@@ -504,7 +507,7 @@ class Client {
 	 */
 	public function quick_ping( $timeout = 2 ) {
 
-		$hosts = $this->options->get( 'endpoints' );
+		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {
 

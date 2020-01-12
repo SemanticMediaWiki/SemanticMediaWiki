@@ -10,6 +10,7 @@ use SMW\ApplicationFactory;
 use WebRequest;
 use SMW\Elastic\Indexer\ReplicationStatus;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Config;
 
 /**
  * @license GNU GPL v2+
@@ -146,6 +147,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 	private function outputNoNodesAvailable( $connection ) {
 
 		$this->outputHead();
+		$config = $connection->getConfig();
 
 		$html = Html::rawElement(
 			'h3',
@@ -162,7 +164,7 @@ class ElasticClientTaskHandler extends TaskHandler {
 		) . Html::rawElement(
 			'pre',
 			[],
-			json_encode( $connection->getConfig()->safeGet( 'endpoints', [] ), JSON_PRETTY_PRINT )
+			json_encode( $config->safeGet( Config::ELASTIC_ENDPOINTS, [] ), JSON_PRETTY_PRINT )
 		);
 
 		$this->outputFormatter->addHTML( $html );

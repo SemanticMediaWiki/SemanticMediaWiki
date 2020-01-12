@@ -14,6 +14,74 @@ use RuntimeException;
 class Config extends Options {
 
 	/**
+	 * Whether `EalsticStore` was selected as default store or not
+	 */
+	const DEFAULT_STORE = 'elastic/defaultstore';
+
+	/**
+	 * Describes registered endpoints
+	 */
+	const ELASTIC_ENDPOINTS = 'elastic/endpoints';
+
+	/**
+	 * Contains deprecated or renamed settings.
+	 *
+	 * @var array
+	 */
+	private $deprecatedKeys = [
+		'query' => [
+			// 3.2
+			'fallback.no.connection' => 'fallback.no_connection'
+		]
+	];
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isDefaultStore() : bool {
+
+		$defaultStore = $this->get(
+			Config::DEFAULT_STORE
+		);
+
+		return $defaultStore === ElasticStore::class || $defaultStore === 'SMWElasticStore';
+	}
+
+	/**
+	 * @note Can only be used during testing
+	 *
+	 * @since 3.2
+	 *
+	 * @param array $deprecatedKeys
+	 */
+	public function setDeprectedKeys( array $deprecatedKeys ) {
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+			return;
+		}
+
+		$this->deprecatedKeys = $deprecatedKeys;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function reassignDeprectedKeys() {
+		foreach ( $this->deprecatedKeys as $k => $keys ) {
+			foreach ( $keys as $deprected => $new ) {
+
+				if ( isset( $this->options[$k][$deprected] ) ) {
+					$this->options[$k][$new] = $this->options[$k][$deprected];
+				}
+
+				unset( $this->options[$k][$deprected] );
+			}
+		}
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $data

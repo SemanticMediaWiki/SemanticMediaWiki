@@ -26,6 +26,59 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsDefaultStore_False() {
+
+		$instance = new Config(
+			[ Config::DEFAULT_STORE => 'Foo' ]
+		);
+
+		$this->assertFalse(
+			$instance->isDefaultStore()
+		);
+	}
+
+	public function testIsDefaultStore_True() {
+
+		$instance = new Config(
+			[ Config::DEFAULT_STORE => 'SMWElasticStore' ]
+		);
+
+		$this->assertTrue(
+			$instance->isDefaultStore()
+		);
+	}
+
+	public function testReassignDeprectedKeys() {
+
+		$instance = new Config(
+			[
+				'foo' => [
+					'foo.bar' => 42
+				]
+			]
+		);
+
+		$instance->setDeprectedKeys(
+			[
+				'foo' => [
+					'foo.bar' => 'foo_bar'
+				]
+			]
+		);
+
+		$instance->reassignDeprectedKeys();
+
+		$this->assertEquals(
+			42,
+			$instance->dotGet( 'foo.foo_bar' )
+		);
+
+		$this->assertEquals(
+			false,
+			$instance->dotGet( 'foo.foo.bar' )
+		);
+	}
+
 	public function testLoadFromJSON() {
 
 		$instance = new Config();

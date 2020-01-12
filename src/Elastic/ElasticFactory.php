@@ -70,26 +70,21 @@ class ElasticFactory {
 			$settings->get( 'smwgElasticsearchConfig' )
 		);
 
-		$isElasticstore = strpos( $settings->get( 'smwgDefaultStore' ), 'Elastic' ) !== false;
-
 		$config->set(
-			'elastic.enabled',
-			$isElasticstore
+			Config::DEFAULT_STORE,
+			$settings->get( 'smwgDefaultStore' )
 		);
 
 		$config->set(
-			'is.elasticstore',
-			$isElasticstore
-		);
-
-		$config->set(
-			'endpoints',
+			Config::ELASTIC_ENDPOINTS,
 			$settings->get( 'smwgElasticsearchEndpoints' )
 		);
 
 		$config->loadFromJSON(
 			$config->readFile( $settings->get( 'smwgElasticsearchProfile' ) )
 		);
+
+		$config->reassignDeprectedKeys();
 
 		return $config;
 	}
@@ -254,7 +249,7 @@ class ElasticFactory {
 		}
 
 		$connection = $store->getConnection( 'elastic' );
-		$options = $connection->getConfig();
+		$config = $connection->getConfig();
 
 		$checkReplicationTask = new CheckReplicationTask(
 			$store,
@@ -263,7 +258,7 @@ class ElasticFactory {
 		);
 
 		$checkReplicationTask->setCacheTTL(
-			$options->dotGet( 'indexer.monitor.entity.replication.cache_lifetime' )
+			$config->dotGet( 'indexer.monitor.entity.replication.cache_lifetime' )
 		);
 
 		return $checkReplicationTask;
@@ -279,7 +274,7 @@ class ElasticFactory {
 	public function newIndicatorProvider( ElasticStore $store ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$options = $store->getConnection( 'elastic' )->getConfig();
+		$config = $store->getConnection( 'elastic' )->getConfig();
 
 		$indicatorProvider = new IndicatorProvider(
 			$store,
@@ -287,7 +282,7 @@ class ElasticFactory {
 		);
 
 		$indicatorProvider->canCheckReplication(
-			$options->dotGet( 'indexer.monitor.entity.replication' )
+			$config->dotGet( 'indexer.monitor.entity.replication' )
 		);
 
 		return $indicatorProvider;
@@ -303,10 +298,10 @@ class ElasticFactory {
 	public function newQueryEngine( Store $store ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$options = $this->newConfig();
+		$config = $store->getConnection( 'elastic' )->getConfig();
 
 		$queryOptions = new Options(
-			$options->safeGet( 'query', [] )
+			$config->safeGet( 'query', [] )
 		);
 
 		$termsLookup = new CachingTermsLookup(
@@ -339,7 +334,7 @@ class ElasticFactory {
 		$queryEngine = new QueryEngine(
 			$store,
 			$conditionBuilder,
-			$options
+			$config
 		);
 
 		$queryEngine->setLogger(
