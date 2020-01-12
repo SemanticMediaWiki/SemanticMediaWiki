@@ -21,11 +21,13 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $namespaceExaminer;
+	private $spyLogger;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
@@ -119,7 +121,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			$this->namespaceExaminer
 		);
 
-		$instance->setLogger( $this->testEnvironment->newSpyLogger() );
+		$instance->setLogger( $this->spyLogger );
 		$instance->disableDeferredUpdate();
 
 		$this->assertTrue(
@@ -219,7 +221,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsReadOnly_DoNothing() {
+	public function testIsNotReady_DoNothing() {
 
 		$linksUpdate = $this->getMockBuilder( '\LinksUpdate' )
 			->disableOriginalConstructor()
@@ -232,7 +234,9 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			$this->namespaceExaminer
 		);
 
-		$instance->isReadOnly( true );
+		$instance->setLogger( $this->spyLogger );
+
+		$instance->isReady( false );
 
 		$this->assertFalse(
 			$instance->process( $linksUpdate )

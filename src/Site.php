@@ -33,12 +33,25 @@ class Site {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * @return boolean
 	 */
-	public static function isBlocked() {
-		return defined( 'MEDIAWIKI_INSTALL' ) && MEDIAWIKI_INSTALL;
+	public static function isReady() {
+
+		// #3341
+		// When running as part of the install don't try to access the DB
+		// or update the Store
+		if ( defined( 'MEDIAWIKI_INSTALL' ) && MEDIAWIKI_INSTALL ) {
+			return false;
+		}
+
+		// Don't run any parsing or registration when the system isn't full
+		// initialized also prevent issues like "... BadMethodCallException from
+		// ... SessionManager.php Sessions are disabled for this entry point ..."
+		//
+		// https://github.com/wikimedia/mediawiki/blob/cdb7d53dcbb5af884d0d475e255730e35760489b/includes/user/User.php#L293-L317
+		return !defined( 'MW_NO_SESSION' ) && $GLOBALS['wgFullyInitialised'];
 	}
 
 	/**

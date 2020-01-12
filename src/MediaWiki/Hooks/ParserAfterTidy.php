@@ -48,7 +48,7 @@ class ParserAfterTidy extends HookHandler {
 	/**
 	 * @var boolean
 	 */
-	private $isReadOnly = false;
+	private $isReady = true;
 
 	/**
 	 * @since  1.9
@@ -77,10 +77,10 @@ class ParserAfterTidy extends HookHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReadOnly
+	 * @param boolean $isReady
 	 */
-	public function isReadOnly( $isReadOnly ) {
-		$this->isReadOnly = (bool)$isReadOnly;
+	public function isReady( $isReady ) {
+		$this->isReady = (bool)$isReady;
 	}
 
 	/**
@@ -103,8 +103,8 @@ class ParserAfterTidy extends HookHandler {
 
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
-		if ( $this->isReadOnly ) {
-			return false;
+		if ( $this->isReady === false ) {
+			return $this->doAbort();
 		}
 
 		$title = $this->parser->getTitle();
@@ -288,6 +288,15 @@ class ParserAfterTidy extends HookHandler {
 				number_format( ( microtime( true ) - $start ), 3 )
 			);
 		}
+	}
+
+	private function doAbort() {
+
+		$this->logger->info(
+			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."
+		);
+
+		return false;
 	}
 
 }
