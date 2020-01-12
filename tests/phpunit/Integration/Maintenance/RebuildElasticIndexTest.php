@@ -43,18 +43,6 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 
 	public function testRun() {
 
-		$version = $this->store->getInfo( 'es' );
-
-		// Testing against ES 5.6 may cause a "Can't update
-		// [index.number_of_replicas] on closed indices" see
-		// https://github.com/elastic/elasticsearch/issues/22993
-		//
-		// Should be fixed with ES 6.4
-		// https://github.com/elastic/elasticsearch/pull/30423
-		if ( version_compare( $version, '6.4.0', '<' ) ) {
-			$this->markTestSkipped( "Skipping test because it requires at least ES 6.4.0." );
-		}
-
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
 			'SMW\Maintenance\RebuildElasticIndex'
 		);
