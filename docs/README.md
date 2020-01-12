@@ -3,7 +3,7 @@ The documentation for **Semantic MediaWiki** (SMW) can primarily be found on the
 `docs/` directory. This documentation includes basic installation instructions, release notes and
 technical documentation.
 
-* [Installation instructions](INSTALL.md) (see also the [upgrade guide](https://www.semantic-mediawiki.org/wiki/Help:Installation))
+* [Installation instructions](INSTALL.md) (see also the [upgrade guide](https://www.semantic-mediawiki.org/wiki/Help:Upgrade))
 * [Compatibility matrix](COMPATIBILITY.md)
 
 ## Release notes
