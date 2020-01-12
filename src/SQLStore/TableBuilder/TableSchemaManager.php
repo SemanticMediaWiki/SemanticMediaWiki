@@ -399,7 +399,10 @@ class TableSchemaManager {
 			$fieldarray[$fieldname] = $fieldType;
 		}
 
-		$table = new Table( $propertyTable->getName() );
+		$table = new Table(
+			$propertyTable->getName(),
+			$propertyTable->isTableType( $propertyTable::TYPE_CORE )
+		);
 
 		foreach ( $fieldarray as $fieldName => $fieldType ) {
 			$table->addColumn( $fieldName, $fieldType );

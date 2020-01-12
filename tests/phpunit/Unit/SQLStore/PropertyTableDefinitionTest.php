@@ -23,7 +23,7 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableDefinition',
+			PropertyTableDefinition::class,
 			new PropertyTableDefinition( 'foo', 'bar' )
 		);
 	}
@@ -67,6 +67,16 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setExpectedException( 'OutOfBoundsException' );
 		$instance->getFixedProperty();
+	}
+
+	public function testTableType() {
+
+		$instance = new PropertyTableDefinition( 'foo', 'bar' );
+		$instance->setTableType( PropertyTableDefinition::TYPE_CORE );
+
+		$this->assertFalse(
+			$instance->isTableType( PropertyTableDefinition::TYPE_CUSTOM )
+		);
 	}
 
 }
