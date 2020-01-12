@@ -26,6 +26,10 @@
 		{
 			"page": "Example/P0904/3",
 			"contents": "{{#ask: [[~Example/P0904*]] |?Has page |format=table |link=none }}"
+		},
+		{
+			"page": "Example/P0904/4",
+			"contents": "{{#show: Example/P0904/1 |?Has page |format=table |link=none }}"
 		}
 	],
 	"tests": [
@@ -77,6 +81,16 @@
 				],
 				"not-contain": [
 					"<td class=\"smwtype_wpg\">Example/P0904/1</td><td class=\"Has-page smwtype_wpg\">P0904</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#show with redirected subject, redirect target is: `Help:Example/P0904/1`)",
+			"subject": "Example/P0904/4",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">P0904</td>"
 				]
 			}
 		}

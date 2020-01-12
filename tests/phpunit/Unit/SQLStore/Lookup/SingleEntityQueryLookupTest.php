@@ -103,6 +103,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->with( $this->equalTo( $dataItem ) )
+			->will( $this->returnValue( $dataItem ) );
+
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -152,6 +157,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->with( $this->equalTo( $dataItem ) )
+			->will( $this->returnValue( $dataItem ) );
 
 		$dataItem->expects( $this->once() )
 			->method( 'asBase' )
