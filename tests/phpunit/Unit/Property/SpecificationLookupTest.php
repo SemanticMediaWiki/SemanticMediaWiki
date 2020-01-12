@@ -35,7 +35,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'fetch', 'associate', 'fetchSub', 'saveSub' ] )
+			->setMethods( [ 'save', 'fetch', 'associate', 'fetchSub', 'saveSub', 'delete', 'invalidate' ] )
 			->getMock();
 
 		$this->monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
@@ -403,7 +403,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
 			->with(
-				$this->stringContains( 'd98036d8042105fe312e09b61d7ef136' ),
+				$this->stringContains( 'smw:entity:propertyspecificationlookup:description:1313b81bb6a61a4661f7b91408659f86' ),
 				$this->equalTo( 'en:0' ) )
 			->will( $this->returnValue( 1001 ) );
 
@@ -499,6 +499,34 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			$dataItem,
 			$instance->getPropertyGroup( $property )
 		);
+	}
+
+	public function testInvalidateCache() {
+
+		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo' );
+
+		$this->entityCache->expects( $this->at( 0 ) )
+			->method( 'invalidate' )
+			->with( $this->equalTo( $subject ) );
+
+		$this->entityCache->expects( $this->at( 1 ) )
+			->method( 'delete' )
+			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:44ab375ee7ebac04b8e4471a70180dc5' ) );
+
+		$this->entityCache->expects( $this->at( 2 ) )
+			->method( 'delete' )
+			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:preferredlabel:44ab375ee7ebac04b8e4471a70180dc5' ) );
+
+		$this->entityCache->expects( $this->at( 3 ) )
+			->method( 'delete' )
+			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:description:44ab375ee7ebac04b8e4471a70180dc5' ) );
+
+		$instance = new SpecificationLookup(
+			$this->store,
+			$this->entityCache
+		);
+
+		$instance->invalidateCache( $subject );
 	}
 
 }

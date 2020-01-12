@@ -10,6 +10,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
 use Revision;
 use SMW\MediaWiki\RevisionGuard;
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 
 /**
  * This function takes care of storing the collected semantic data and
@@ -31,6 +32,7 @@ use SMW\MediaWiki\RevisionGuard;
 class DataUpdater {
 
 	use LoggerAwareTrait;
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var Store
@@ -287,6 +289,13 @@ class DataUpdater {
 
 		$this->checkChangePropagation();
 		$this->updateData();
+
+		$context = [
+			'context' => 'DataUpdater',
+			'subject' => $this->getSubject()
+		];
+
+		$this->eventDispatcher->dispatch( 'InvalidatePropertySpecificationLookupCache', $context );
 
 		return true;
 	}

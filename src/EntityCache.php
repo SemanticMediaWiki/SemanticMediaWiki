@@ -19,9 +19,15 @@ use Title;
  */
 class EntityCache {
 
+	/**
+	 * Repository specific namespace
+	 */
 	const CACHE_NAMESPACE = 'smw:entity';
 	const VERSION = 1;
 
+	/**
+	 * TTLs
+	 */
 	const TTL_SECOND = 1;
 	const TTL_MINUTE = 60;
 	const TTL_HOUR = 3600;
@@ -53,6 +59,12 @@ class EntityCache {
 	 */
 	public static function makeCacheKey( ...$params ) {
 
+		$namespace = self::CACHE_NAMESPACE;
+
+		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
+			$namespace .= array_shift( $params );
+		}
+
 		if ( $params[0] instanceof Title ) {
 			$params[0] = DIWikiPage::newFromTitle( $params[0] );
 		}
@@ -61,7 +73,7 @@ class EntityCache {
 			$params[0] = $params[0]->getHash();
 		}
 
-		return smwfCacheKey( self::CACHE_NAMESPACE, $params + [ 'version' => self::VERSION ] );
+		return smwfCacheKey( $namespace, $params + [ 'version' => self::VERSION ] );
 	}
 
 	/**

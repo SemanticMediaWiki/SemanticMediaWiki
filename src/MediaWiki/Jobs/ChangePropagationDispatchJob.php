@@ -74,7 +74,7 @@ class ChangePropagationDispatchJob extends Job {
 	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
 
 		Exporter::getInstance()->resetCacheBy( $subject );
-		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->resetCacheBy(
+		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
 			$subject
 		);
 
@@ -443,7 +443,7 @@ class ChangePropagationDispatchJob extends Job {
 			60 * 60 * 24
 		);
 
-		$applicationFactory->getPropertySpecificationLookup()->resetCacheBy( $subject );
+		$applicationFactory->getPropertySpecificationLookup()->invalidateCache( $subject );
 
 		// Make sure the cache is reset in case runJobs.php --wait is used to avoid
 		// reusing outdated type assignments
