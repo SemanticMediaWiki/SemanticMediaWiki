@@ -16,6 +16,11 @@ class PHPUnitEnvironment {
 	private $gitHead = [];
 
 	/**
+	 * @var int
+	 */
+	private $firstColumnWidth = SMW_PHPUNIT_FIRST_COLUMN_WIDTH;
+
+	/**
 	 * @param array $args
 	 *
 	 * @return boolean
@@ -91,6 +96,13 @@ class PHPUnitEnvironment {
 		}
 
 		if ( $id === 'smw' ) {
+			$info = [
+				SMW_VERSION,
+				'git: ' . $this->getGitInfo( 'smw' )
+			] + $extra;
+		}
+
+		if ( $id === 'store' ) {
 			$store = str_replace(
 				[ '{', '}', '"', '(SMW', ':(', '))', ',' ],
 				[ '(', ')', '', 'SMW', ' (', ')', ', ' ],
@@ -98,8 +110,6 @@ class PHPUnitEnvironment {
 			);
 
 			$info = [
-				SMW_VERSION,
-				'git: ' . $this->getGitInfo( 'smw' ),
 				$store
 			] + $extra;
 		}
@@ -168,7 +178,7 @@ class PHPUnitEnvironment {
 	 * @return string
 	 */
 	public function writeLn( $arg1, $arg2 ) {
-		return print sprintf( "%-20s%s\n", $arg1, $arg2 );
+		return print sprintf( "%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 );
 	}
 
 	/**
@@ -183,7 +193,7 @@ class PHPUnitEnvironment {
 			return print "\n";
 		}
 
-		return print sprintf( "\n%-20s%s\n", $arg1, $arg2 );
+		return print sprintf( "\n%-{$this->firstColumnWidth}s%s\n", $arg1, $arg2 );
 	}
 
 	private function command_exists( $command ) {
