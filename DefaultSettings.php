@@ -2188,6 +2188,7 @@ return [
 		],
 		'connection' =>[
 			'quick_ping' => true,
+
 			// Number of times the client tries to reconnect before throwing an
 			// exception
 			'retries' => 2,
@@ -2236,13 +2237,13 @@ return [
 			// possible discrepancy between the stored on-wiki data and the data
 			// replicated to Elasticsearch.
 			'monitor.entity.replication' => true,
-			'monitor.entity.replication.cache_lifetime' => 3660,
+			'monitor.entity.replication.cache_lifetime' => 3600,
 		],
 		'query' => [
 
 			// If for some reason no connection to the ES cluster could be
 			// established, use the SQLStore QueryEngine as fallback.
-			'fallback.no.connection' => false,
+			'fallback.no_connection' => false,
 
 			// @see https://www.elastic.co/guide/en/elasticsearch/reference/6.1/_profiling_queries.html
 			'profiling' => false,

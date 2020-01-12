@@ -196,7 +196,7 @@ class ElasticStore extends SQLStore {
 			$this->queryEngine = $this->elasticFactory->newQueryEngine( $this );
 		}
 
-		if ( $connection->getConfig()->dotGet( 'query.fallback.no.connection' ) && !$connection->ping() ) {
+		if ( $connection->getConfig()->dotGet( 'query.fallback.no_connection' ) && !$connection->ping() ) {
 			return parent::getQueryResult( $query );
 		}
 

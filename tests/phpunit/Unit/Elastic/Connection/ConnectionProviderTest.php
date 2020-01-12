@@ -5,7 +5,7 @@ namespace SMW\Tests\Elastic\Connection;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Connection\Client;
-use SMW\Options;
+use SMW\Elastic\Config;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -34,28 +34,28 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->options = new Options();
+		$this->config = new Config();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
-			new ConnectionProvider( $this->lockManager, $this->options )
+			new ConnectionProvider( $this->lockManager, $this->config )
 		);
 	}
 
 	public function testGetConnection_MissingEndpointsThrowsException() {
 
-		$options = new Options (
+		$config = new Config (
 			[
-				'is.elasticstore' => true
+				Config::DEFAULT_STORE => 'SMWElasticStore'
 			]
 		);
 
 		$instance = new ConnectionProvider(
 			$this->lockManager,
-			$options
+			$config
 		);
 
 		$this->setExpectedException( '\SMW\Elastic\Exception\MissingEndpointConfigException' );
@@ -64,16 +64,16 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetConnection_DummyClient() {
 
-		$options = new Options (
+		$config = new Config (
 			[
-				'is.elasticstore' => false,
-				'endpoints' => [ 'foo' ]
+				Config::DEFAULT_STORE => 'SMWSQLStore',
+				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
 
 		$instance = new ConnectionProvider(
 			$this->lockManager,
-			$options
+			$config
 		);
 
 		$instance->setLogger( $this->logger );
@@ -90,16 +90,16 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
 
-		$options = new Options (
+		$config = new Config (
 			[
-				'is.elasticstore' => true,
-				'endpoints' => [ 'foo' ]
+				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
 
 		$instance = new ConnectionProvider(
 			$this->lockManager,
-			$options
+			$config
 		);
 
 		$instance->setLogger( $this->logger );
@@ -116,16 +116,16 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}
 
-		$options = new Options (
+		$config = new Config (
 			[
-				'is.elasticstore' => true,
-				'endpoints' => [ 'foo' ]
+				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
 
 		$instance = new ConnectionProvider(
 			$this->lockManager,
-			$options
+			$config
 		);
 
 		$this->setExpectedException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
