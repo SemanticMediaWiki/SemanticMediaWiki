@@ -227,20 +227,6 @@ class Settings extends Options {
 	}
 
 	/**
-	 * Returns settings for a given key (nested settings are supported)
-	 *
-	 * @par Example:
-	 * @code
-	 *  $settings = Settings::newFromArray( array(
-	 *   'Foo' => 'Bar'
-	 *   'Parent' => array(
-	 *     'Child' => array( 'Lisa', 'Lula', array( 'Lila' ) )
-	 *   )
-	 *  );
-	 *
-	 *  $settings->get( 'Child' ) will return array( 'Lisa', 'Lula', array( 'Lila' ) )
-	 * @endcode
-	 *
 	 * @since 1.9
 	 *
 	 * @param string $key
@@ -254,9 +240,7 @@ class Settings extends Options {
 			return parent::get( $key );
 		}
 
-		// If the key wasn't matched it could be because of a nested array
-		// hence iterate and verify otherwise throw an exception
-		return $this->doIterate( $key, $this->toArray() );
+		throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
 	}
 
 	/**
@@ -283,29 +267,6 @@ class Settings extends Options {
 	 */
 	public static function clear() {
 		self::$instance = null;
-	}
-
-	/**
-	 * Iterates over a nested array to find an element
-	 */
-	private function doIterate( $key, $options ) {
-
-		if ( isset( $this->iterate[$key] ) ) {
-			return $this->iterate[$key];
-		}
-
-		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveArrayIterator( $options ),
-			\RecursiveIteratorIterator::CHILD_FIRST
-		);
-
-		foreach( $iterator as $it => $value ) {
-			if ( $key === $it ) {
-				return $this->iterate[$key] = $value;
-			}
-		}
-
-		throw new SettingNotFoundException( "'{$key}' is not a valid settings key" );
 	}
 
 	private static function initLegacyMapping( &$configuration ) {
