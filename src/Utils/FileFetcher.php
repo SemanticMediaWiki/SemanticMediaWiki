@@ -3,6 +3,10 @@
 namespace SMW\Utils;
 
 use RuntimeException;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use RegexIterator;
+use RecursiveRegexIterator;
 
 /**
  * @license GNU GPL v2+
@@ -16,6 +20,11 @@ class FileFetcher {
 	 * @var string
 	 */
 	private $dir = '';
+
+	/**
+	 * @var int
+	 */
+	private $maxDepth = -1;
 
 	/**
 	 * @var string
@@ -62,7 +71,16 @@ class FileFetcher {
 	 * @return string
 	 */
 	public static function normalize( $file ) {
-		return str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
+		return str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, $file );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param int $maxDepth
+	 */
+	public function setMaxDepth( int $maxDepth ) {
+		$this->maxDepth = $maxDepth;
 	}
 
 	/**
@@ -78,13 +96,15 @@ class FileFetcher {
 			throw new RuntimeException( "Unable to access {$this->dir}!" );
 		}
 
-		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator( $this->dir )
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $this->dir )
 		);
 
-		$matches = new \RegexIterator(
+		$iterator->setMaxDepth( $this->maxDepth );
+
+		$matches = new RegexIterator(
 			$iterator, '/^.+\.' . $extension . '$/i',
-			\RecursiveRegexIterator::GET_MATCH
+			RecursiveRegexIterator::GET_MATCH
 		);
 
 		if ( $this->sort !== null ) {
