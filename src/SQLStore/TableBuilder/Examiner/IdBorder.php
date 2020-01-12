@@ -153,7 +153,7 @@ class IdBorder {
 
 		for ( $i = $old; $i < $new; $i++ ) {
 
-			if ( $count > 0 && ( $count % 63 === 0 ) ) {
+			if ( $count > 0 && ( $count % ( CliMsgFormatter::MAX_LEN - 7 ) === 0 ) ) {
 				$this->messageReporter->reportMessage( "\n       " );
 			} elseif ( $count == 0 ) {
 				$this->messageReporter->reportMessage( "       " );
