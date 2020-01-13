@@ -18,7 +18,8 @@
 			"המקיסט",
 			"Strayblues",
 			"Abijeet Patro",
-			"Steeve815"
+			"Steeve815",
+			"Ghsuvr"
 		]
 	},
 	"smw-desc": "הופכת את הוויקי שלכם לנגיש יותר – עבור מכונות וגם עבור בני אדם ([https://www.semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])",
@@ -524,6 +525,7 @@
 	"smw-collapse": "צמצום",
 	"smw-copy": "העתקה",
 	"smw-copy-clipboard-title": "מעתיק את התוכן ללוח הגזירים",
+	"smw-jsonview-search-label": "חיפוש:",
 	"smw-remote-source-unavailable": "לא ניתן להתחבר ליעד החיצוני \"$1\".",
 	"smw-remote-source-disabled": "המקור '''$1''' ביטל את התמיכה בבקשות חיצוניות!",
 	"smw-remote-source-unmatched-id": "המקור '''$1''' אינו תואם לגרסה של ההרחבה \"מדיה־ויקי סמנטית\" שתומכת בבקשות חיצוניות.",

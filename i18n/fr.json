@@ -947,6 +947,7 @@
 	"smw-copy-clipboard-title": "Copie le contenu dans le presse-papier",
 	"smw-jsonview-expand-title": "Développe l’affichage JSON",
 	"smw-jsonview-collapse-title": "Replie l’affichage JSON",
+	"smw-jsonview-search-label": "Rechercher :",
 	"smw-redirect-target-unresolvable": "Cette cible ne peut pas être résolue pour la raison \"$1\"",
 	"smw-types-title": "Type : $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "La modification du modèle de contenu d'une [https://www.semantic-mediawiki.org/wiki/Help:Schema page de schéma] n'est pas autorisée.",

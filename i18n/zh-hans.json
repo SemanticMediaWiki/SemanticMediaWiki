@@ -37,7 +37,8 @@
 			"Looong",
 			"予弦",
 			"Xiplus",
-			"A Retired User"
+			"A Retired User",
+			"Josephine W."
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -797,6 +798,7 @@
 	"smw-property-predefined-label-skey": "Sortkey",
 	"smw-processing": "处理中...",
 	"smw-copy": "复制",
+	"smw-jsonview-search-label": "搜索",
 	"smw-redirect-target-unresolvable": "目标无法解决，原因是“$1”",
 	"smw-types-title": "类型：$1",
 	"smw-schema-error-title": "验证$1个错误",

@@ -464,6 +464,7 @@
 	"smw-copy-clipboard-title": "Copia il contenuto negli appunti",
 	"smw-jsonview-expand-title": "Espandi la vista JSON",
 	"smw-jsonview-collapse-title": "Comprimi la vista JSON",
+	"smw-jsonview-search-label": "Cerca:",
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-error-title": "{{PLURAL:$1|Errore|Errori}} di convalida",
 	"smw-schema-error-json": "Errore JSON: \"$1\"",
