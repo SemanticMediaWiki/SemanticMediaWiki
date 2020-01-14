@@ -14,39 +14,39 @@ matrix:
       php: 7.2
     - env: DB=sqlite; MW=REL1_33; PHPUNIT=6.5.*
       php: 7.3
-    - env: DB=sqlite; MW=REL1_31; SITELANG=ja; PHPUNIT=5.7.*
+    - env: DB=sqlite; MW=REL1_31; SITELANG=ja; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=REL1_31; BLAZEGRAPH=1.5.2; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; BLAZEGRAPH=1.5.2; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=REL1_32; FUSEKI=2.4.0; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_32; FUSEKI=2.4.0; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=REL1_31; VIRTUOSO=6.1; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; VIRTUOSO=6.1; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=6.5.*
       php: 7.1
     - env: DB=mysql; MW=master; PHPUNIT=6.5.*
       php: 7.3
-    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=6.5.*
       php: 7.1
     - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
       php: 7.2
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
       php: 7.2
-    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=5.7.*
+    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=6.5.*
       php: 7.1
   allow_failures:
     # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=5.7.*
+    - env: DB=mysql; MW=REL1_31; TYPE=relbuild; PHPUNIT=6.5.*
     # Can fail when pushed/used with newly Composer dependencies
-    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=5.7.*
+    - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=6.5.*
     # This is MW master, you never know what WMF developers have put in for easter eggs, same for PHP conversely
     - env: DB=mysql; MW=master; PHPUNIT=6.5.*
     # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=mysql; MW=REL1_31; TYPE=benchmark; PHPUNIT=6.5.*
-    #- env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=5.7.*
-    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=5.7.*
+    #- env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=6.5.*
+    - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
