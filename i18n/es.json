@@ -50,7 +50,8 @@
 			"Abijeet Patro",
 			"Harvest",
 			"Johny Weissmuller Jr",
-			"Hasley"
+			"Hasley",
+			"Ihojose"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -822,6 +823,7 @@
 	"smw-expand": "Expandir",
 	"smw-collapse": "Contraer",
 	"smw-copy": "Copiar",
+	"smw-jsonview-search-label": "Buscar:",
 	"smw-redirect-target-unresolvable": "El destino es irresoluble por el motivo «$1»",
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-error-title": "{{PLURAL:$1|Error|Errores}} de validación",
