@@ -547,6 +547,7 @@
 	"smw-personal-jobqueue-watchlist": "Bevakningslista (jobbkö)",
 	"smw-property-predefined-label-skey": "Sorteringsnyckel",
 	"smw-processing": "Bearbetar...",
+	"smw-jsonview-search-label": "Sök:",
 	"smw-types-title": "Typ: $1",
 	"smw-schema-error-title": "Validerings{{PLURAL:$1|fel}}",
 	"smw-schema-validation-schema-title": "JSON-schema",

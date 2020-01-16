@@ -930,6 +930,7 @@
 	"smw-copy-clipboard-title": "Copia o conteúdo para a área de transferência",
 	"smw-jsonview-expand-title": "Expande a exibição JSON",
 	"smw-jsonview-collapse-title": "Recolhe a exibição JSON",
+	"smw-jsonview-search-label": "Pesquisar:",
 	"smw-redirect-target-unresolvable": "O destino é irresolúvel pela razão \"$1\"",
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Não é permitido alterar o modelo de conteúdo de uma [https://www.semantic-mediawiki.org/wiki/Help:Schema página de esquema].",
