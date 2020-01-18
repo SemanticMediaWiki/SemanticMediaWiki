@@ -24,6 +24,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $propertyTable;
 	private $propertyStatisticsStore;
+	private $propertyChangeListener;
 
 	protected function setUp() {
 		parent::setUp();
@@ -53,6 +54,10 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -118,6 +123,10 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
+		$instance->setPropertyChangeListener(
+			$this->propertyChangeListener
+		);
+
 		$params = new Parameters(
 			[
 				'insert_rows' => [
@@ -161,6 +170,10 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyTableUpdater(
 			$this->store,
 			$this->propertyStatisticsStore
+		);
+
+		$instance->setPropertyChangeListener(
+			$this->propertyChangeListener
 		);
 
 		$params = new Parameters(

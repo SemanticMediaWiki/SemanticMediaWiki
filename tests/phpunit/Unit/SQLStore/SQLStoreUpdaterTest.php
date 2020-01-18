@@ -56,7 +56,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,10 +71,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$subobjectListFinder->expects( $this->any() )
 			->method( 'find' )
 			->will( $this->returnValue( [] ) );
-
-		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
 			->disableOriginalConstructor()
@@ -129,16 +125,12 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $propertyStatisticsStore ) );
 
 		$this->factory->expects( $this->any() )
-			->method( 'newHierarchyLookup' )
-			->will( $this->returnValue( $hierarchyLookup ) );
+			->method( 'newPropertyChangeListener' )
+			->will( $this->returnValue( $propertyChangeListener ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSubobjectListFinder' )
 			->will( $this->returnValue( $subobjectListFinder ) );
-
-		$this->factory->expects( $this->any() )
-			->method( 'newChangePropListener' )
-			->will( $this->returnValue( $changePropListener ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )

@@ -3,10 +3,10 @@
 namespace SMW\SQLStore;
 
 use SMW\Store;
-use SMW\ChangePropListener;
 use SMW\Parameters;
 use SMW\DIProperty;
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
  * @private
@@ -29,6 +29,11 @@ class PropertyTableUpdater {
 	private $propertyStatisticsStore;
 
 	/**
+	 * @var PropertyChangeListener
+	 */
+	private $propertyChangeListener;
+
+	/**
 	 * @var array
 	 */
 	private $stats = [];
@@ -42,6 +47,15 @@ class PropertyTableUpdater {
 	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
 		$this->store = $store;
 		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param PropertyChangeListener $propertyChangeListener
+	 */
+	public function setPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
+		$this->propertyChangeListener = $propertyChangeListener;
 	}
 
 	/**
@@ -163,12 +177,9 @@ class PropertyTableUpdater {
 				$pid = $row['p_id'];
 			}
 
-			ChangePropListener::record(
+			$this->propertyChangeListener->recordChange(
 				$pid,
-				[
-					'row' => $row,
-					'is_insert' => $insert
-				]
+				[ 'row' => $row, 'is_insert' => $insert ]
 			);
 
 			if ( !array_key_exists( $pid, $this->stats ) ) {
