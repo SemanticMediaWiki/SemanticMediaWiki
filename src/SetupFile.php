@@ -32,6 +32,17 @@ class SetupFile {
 	const FILE_NAME = '.smw.json';
 
 	/**
+	 * Describes incomplete tasks
+	 */
+	const INCOMPLETE_TASKS = 'incomplete_tasks';
+
+	/**
+	 * Versions
+	 */
+	const LATEST_VERSION = 'latest_version';
+	const PREVIOUS_VERSION = 'previous_version';
+
+	/**
 	 * @var File
 	 */
 	private $file;
@@ -170,13 +181,83 @@ class SetupFile {
 	}
 
 	/**
+	 * Tracking the latest and previous version, which allows us to decide whether
+	 * current activties relate to an install (new) or upgrade.
+	 *
+	 * @since 3.2
+	 *
+	 * @param int $version
+	 */
+	public function setLatestVersion( $version ) {
+
+		$latest = $this->get( SetupFile::LATEST_VERSION );
+		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
+
+		if ( $latest === null && $previous === null ) {
+			$this->set(
+				[
+					SetupFile::LATEST_VERSION => $version
+				]
+			);
+		} elseif ( $latest !== $version ) {
+			$this->set(
+				[
+					SetupFile::LATEST_VERSION => $version,
+					SetupFile::PREVIOUS_VERSION => $latest
+				]
+			);
+		}
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param array $args
+	 */
+	public function addIncompleteTask( string $key, array $args = [] ) {
+
+		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
+
+		if ( $incomplete_tasks === null ) {
+			$incomplete_tasks = [];
+		}
+
+		$incomplete_tasks[$key] = $args === [] ? true : $args;
+
+		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 */
+	public function removeIncompleteTask( string $key ) {
+
+		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
+
+		if ( $incomplete_tasks === null ) {
+			$incomplete_tasks = [];
+		}
+
+		unset( $incomplete_tasks[$key] );
+
+		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $vars
 	 *
 	 * @return []
 	 */
-	public static function findIncompleteTasks( $vars ) {
+	public static function findIncompleteTasks( $vars = [] ) {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
 
 		$id = Site::id();
 		$tasks = [];
@@ -195,6 +276,16 @@ class SetupFile {
 
 			if ( $vars['smw.json'][$id][$key] === $value[0] ) {
 				$tasks[] = $value[1];
+			}
+		}
+
+		if ( isset( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] ) ) {
+			foreach ( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
+				if ( $args === true ) {
+					$tasks[] = $key;
+				} else {
+					$tasks[] = [ $key, $args ];
+				}
 			}
 		}
 
@@ -264,6 +355,7 @@ class SetupFile {
 		}
 
 		$id = Site::id();
+		$args = [];
 
 		if ( !isset( $vars['smw.json'][$id] ) ) {
 			return;

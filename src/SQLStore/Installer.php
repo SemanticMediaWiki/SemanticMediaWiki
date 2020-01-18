@@ -145,6 +145,7 @@ class Installer implements MessageReporter {
 		$timer->new( 'create-tables' );
 
 		$this->setupFile->setMaintenanceMode( true );
+		$this->setupFile->setLatestVersion( SMW_VERSION );
 
 		$messageReporter = $this->newMessageReporter(
 			$this->options->has( 'verbose' ) && $this->options->get( 'verbose' )

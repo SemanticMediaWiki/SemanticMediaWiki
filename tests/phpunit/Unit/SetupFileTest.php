@@ -271,7 +271,40 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testAddRemoveIncompleteTask() {
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$instance->addIncompleteTask( 'foo-incomplete' );
+
+		$this->assertArrayHasKey(
+			'foo-incomplete',
+			$instance->get( 'incomplete_tasks' )
+		);
+
+		$instance->removeIncompleteTask( 'foo-incomplete' );
+
+		$this->assertArrayNotHasKey(
+			'foo-incomplete',
+			$instance->get( 'incomplete_tasks' )
+		);
+	}
+
 	public function testIncompleteTasks() {
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SetupFile(
+			$file
+		);
 
 		$vars = [
 			'smw.json' => [ \SMW\Site::id() => [ \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
@@ -279,12 +312,51 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[ 'smw-install-incomplete-populate-hash-field' ],
-			SetupFile::findIncompleteTasks( $vars )
+			$instance->findIncompleteTasks( $vars )
 		);
 
 		$this->assertEquals(
 			[],
-			SetupFile::findIncompleteTasks( [] )
+			$instance->findIncompleteTasks( [ 'foo' ] )
+		);
+	}
+
+	public function testSetLatestVersion() {
+
+		$id = \SMW\Site::id();
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		// No previous version is known
+		$instance->setLatestVersion( 123 );
+
+		$this->assertEquals(
+			123,
+			$instance->get( SetupFile::LATEST_VERSION )
+		);
+
+		$this->assertEquals(
+			null,
+			$instance->get( SetupFile::PREVIOUS_VERSION, [ 'smw.json' => [] ] )
+		);
+
+		// Previous version is known
+		$instance->setLatestVersion( 456 );
+
+		$this->assertEquals(
+			456,
+			$instance->get( SetupFile::LATEST_VERSION )
+		);
+
+		$this->assertEquals(
+			123,
+			$instance->get( SetupFile::PREVIOUS_VERSION )
 		);
 	}
 
