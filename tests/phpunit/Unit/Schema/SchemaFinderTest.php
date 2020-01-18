@@ -30,13 +30,17 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			SchemaFinder::class,
-			new SchemaFinder( $this->store, $this->propertySpecificationLookup )
+			new SchemaFinder( $this->store, $this->propertySpecificationLookup, $this->cache )
 		);
 	}
 
@@ -44,6 +48,10 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
+
+		$this->cache->expects( $this->any() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
@@ -60,7 +68,8 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaFinder(
 			$this->store,
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
@@ -92,7 +101,8 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaFinder(
 			$this->store,
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
@@ -123,7 +133,8 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaFinder(
 			$this->store,
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
@@ -153,13 +164,54 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaFinder(
 			$this->store,
-			$this->propertySpecificationLookup
+			$this->propertySpecificationLookup,
+			$this->cache
 		);
 
 		$this->assertInstanceOf(
 			'\SMW\Schema\SchemaList',
 			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
+	}
+
+	public function testRegisterPropertyChangeListener() {
+
+		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyChangeListener->expects( $this->once() )
+			->method( 'addListenerCallback' )
+			->with(	$this->equalTo( '_SCHEMA_TYPE' ) );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup,
+			$this->cache
+		);
+
+		$instance->registerPropertyChangeListener( $propertyChangeListener );
+	}
+
+	public function testInvalidateCacheFromChangeRecord() {
+
+		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+			[
+				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
+			]
+		);
+
+		$this->cache->expects( $this->once() )
+			->method( 'delete' )
+			->with( $this->stringContains( 'smw:schema:c3ddb092fa95e99be46cbbc922e04900' ) );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup,
+			$this->cache
+		);
+
+		$instance->invalidateCache( new DIProperty( '_SCHEMA_TYPE' ), $changeRecord );
 	}
 
 }

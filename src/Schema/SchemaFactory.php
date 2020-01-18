@@ -189,7 +189,8 @@ class SchemaFactory {
 
 		return new SchemaFinder(
 			$store,
-			$applicationFactory->getPropertySpecificationLookup()
+			$applicationFactory->getPropertySpecificationLookup(),
+			$applicationFactory->getCache()
 		);
 	}
 

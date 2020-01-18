@@ -820,6 +820,13 @@ class SQLStoreFactory {
 			$propertyChangeListener
 		);
 
+		$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
+		$schemaFinder = $schemaFactory->newSchemaFinder();
+
+		$schemaFinder->registerPropertyChangeListener(
+			$propertyChangeListener
+		);
+
 		return $propertyChangeListener;
 	}
 

@@ -377,6 +377,14 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstructPropertyChangeListener() {
 
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
+
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
