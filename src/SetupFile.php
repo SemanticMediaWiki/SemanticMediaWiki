@@ -27,6 +27,11 @@ class SetupFile {
 	const UPGRADE_KEY = 'upgrade_key';
 
 	/**
+	 * Describes the database requirements
+	 */
+	const DB_REQUIREMENTS = 'db_requirements';
+
+	/**
 	 * Describes the file name
 	 */
 	const FILE_NAME = '.smw.json';
@@ -244,6 +249,31 @@ class SetupFile {
 		unset( $incomplete_tasks[$key] );
 
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $vars
+	 *
+	 * @return boolean
+	 */
+	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
+
+		if ( $vars === [] ) {
+			$vars = $GLOBALS;
+		}
+
+		$id = Site::id();
+
+		// No record means, no issues!
+		if ( !isset( $vars['smw.json'][$id][self::DB_REQUIREMENTS] ) ) {
+			return true;
+		}
+
+		$requirements = $vars['smw.json'][$id][self::DB_REQUIREMENTS];
+
+		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
 	}
 
 	/**

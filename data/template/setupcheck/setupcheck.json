@@ -34,6 +34,36 @@
 				}
 			]
 		},
+		"ERROR_DB_REQUIREMENT_INCOMPATIBLE":{
+			"indicator_title":"smw-setupcheck-error",
+			"indicator_color":"#dd3d31",
+			"output_form":[
+				{
+					"type":"paragraph",
+					"text":"smw-setupcheck-requires-db-minimum-version"
+				},
+				{
+					"type":"db-requirement",
+					"text":"smw-setupcheck-db-requirement"
+				},
+				{
+					"type":"version",
+					"text":"smw-setupcheck-release"
+				},
+				{
+					"type":"section",
+					"text":"smw-setupcheck-how-to-fix-error"
+				},
+				{
+					"type":"paragraph",
+					"text":"smw-setupcheck-requires-software-update"
+				},
+				{
+					"type":"paragraph",
+					"text":"smw-setupcheck-temporarily-disable"
+				}
+			]
+		},
 		"ERROR_EXTENSION_INCOMPATIBLE":{
 			"indicator_title":"smw-setupcheck-dependency-error",
 			"indicator_color":"#dd3d31",

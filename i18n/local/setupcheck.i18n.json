@@ -21,6 +21,18 @@
 	"smw-setupcheck-progress":{
 		"en": "Progress"
 	},
+	"smw-setupcheck-db-requirement":{
+		"en": "Requirement"
+	},
+	"smw-setupcheck-db-title":{
+		"en": "Database type"
+	},
+	"smw-setupcheck-db-current-title":{
+		"en": "Current version"
+	},
+	"smw-setupcheck-db-minimum-title":{
+		"en": "Minimum version"
+	},
 	"smw-setupcheck-stack-trace":{
 		"en": "Stack trace"
 	},
@@ -29,6 +41,12 @@
 	},
 	"smw-setupcheck-why-this-page": {
 		"en": "Why do I see this page?"
+	},
+	"smw-setupcheck-temporarily-disable": {
+		"en": "To temporarily disable this error output and return to a working MediaWiki (without Semantic MediaWiki), remove the <code>enableSemantics</code> from your <code>LocalSettings.php</code>."
+	},
+	"smw-setupcheck-requires-db-minimum-version": {
+		"en": "During the installation, the setup check found that the minimum requirement for the database environment defined by Semantic MediaWiki didn't match with the version available and is the reason why the installation of Semantic MediaWiki was aborted."
 	},
 	"smw-setupcheck-dependency-requires-semanticmediawiki":{
 		"en": "The reported extension requires Semantic MediaWiki to be enabled which is currently <b>not</b> the case thus adding <code>enableSemantics</code> to <code>LocalSettings.php</code> should resolve the dependency error."
@@ -40,7 +58,7 @@
 		"en": "It was reported that multiple extensions have failed their dependencies including:"
 	},
 	"smw-setupcheck-enablesemantics-assistance": {
-		"en": "Information about <a href='https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics'>enableSemantics</a> is available on the correponding help page, you may also ask the <a href='https://www.semantic-mediawiki.org/wiki/Help:Getting_support'>project support</a> for assistance."
+		"en": "Information about <a href='https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics'>enableSemantics</a> is available on the corresponding help page, you may also ask the <a href='https://www.semantic-mediawiki.org/wiki/Help:Getting_support'>project support</a> for assistance."
 	},
 	"smw-setupcheck-remove-wfloadextension": {
 		"en": "Removing <code>wfLoadExtension( 'SemanticMediaWiki' )</code> from <code>LocalSettings.php</code> is sufficient to avoid any conflicts with <code>enableSemantics</code> and ensures that required variables and parameters are setup correctly."

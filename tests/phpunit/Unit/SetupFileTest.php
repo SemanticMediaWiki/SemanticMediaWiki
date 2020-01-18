@@ -360,4 +360,44 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasDatabaseMinRequirement() {
+
+		$id = \SMW\Site::id();
+
+		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SetupFile(
+			$file
+		);
+
+		$vars = [
+			'smw.json' => [ $id => [ 'Foo' => 42 ] ]
+		];
+
+		// No requirement entry
+		$this->assertTrue(
+			$instance->hasDatabaseMinRequirement( $vars )
+		);
+
+		// Doesn't match the the `minimum_version`
+		$vars = [
+			'smw.json' => [ $id => [ SetupFile::DB_REQUIREMENTS => [ 'latest_version' => '2', 'minimum_version' => '3' ] ] ]
+		];
+
+		$this->assertFalse(
+			$instance->hasDatabaseMinRequirement( $vars )
+		);
+
+		$vars = [
+			'smw.json' => [ $id => [ SetupFile::DB_REQUIREMENTS => [ 'latest_version' => '3.1', 'minimum_version' => '3' ] ] ]
+		];
+
+		// Does match the the `minimum_version`
+		$this->assertTrue(
+			$instance->hasDatabaseMinRequirement( $vars )
+		);
+	}
+
 }
