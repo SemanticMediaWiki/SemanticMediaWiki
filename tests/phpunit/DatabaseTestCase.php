@@ -61,6 +61,21 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	protected $isUsableUnitTestDatabase = true;
 
+	/**
+	 * Tests are written with a specific default behaviour in mind and should be
+	 * independent from any `LocalSettings.php` configuration that may alter functional
+	 * components therefore add configurations that needs to be initialized before
+	 * any service is created.
+	 */
+	public static function setUpBeforeClass() {
+
+		$defaultSettingKeys = [
+			'smwgQEqualitySupport'
+		];
+
+		TestEnvironment::loadDefaultSettings( $defaultSettingKeys );
+	}
+
 	protected function setUp() {
 		parent::setUp();
 
