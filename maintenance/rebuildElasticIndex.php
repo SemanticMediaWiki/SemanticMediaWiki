@@ -182,12 +182,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$this->autoRecovery->set( 'ar_id', false );
 
 		$setupFile = new SetupFile();
-
-		$setupFile->set(
-			[
-				ElasticStore::REBUILD_INDEX_RUN_COMPLETE => true
-			]
-		);
+		$setupFile->removeIncompleteTask( ElasticStore::REBUILD_INDEX_RUN_INCOMPLETE );
 
 		return true;
 	}

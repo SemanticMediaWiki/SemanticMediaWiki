@@ -38,6 +38,7 @@ class ElasticStore extends SQLStore {
 	 * Setup key to verify that the `rebuildElasticIndex.php` has been executed.
 	 */
 	const REBUILD_INDEX_RUN_COMPLETE = 'elastic.rebuild_index_run_complete';
+	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-rebuildelasticindex-run-incomplete';
 
 	/**
 	 * @var ElasticFactory
@@ -301,6 +302,8 @@ class ElasticStore extends SQLStore {
 		}
 
 		$indices = $this->indexer->setup();
+		$client = $this->getConnection( 'elastic' );
+		$version = $client->getVersion();
 
 		if ( $options instanceof Options && $options->get( 'verbose' ) ) {
 
@@ -317,12 +320,27 @@ class ElasticStore extends SQLStore {
 
 			$setupFile = new SetupFile();
 
-			if ( $setupFile->get( ElasticStore::REBUILD_INDEX_RUN_COMPLETE ) === null ) {
-				$setupFile->set(
-					[
-						ElasticStore::REBUILD_INDEX_RUN_COMPLETE => false
-					]
-				);
+			// Remove REBUILD_INDEX_RUN_COMPLETE with 3.3+
+
+			if ( $setupFile->get( ElasticStore::REBUILD_INDEX_RUN_COMPLETE ) !== null ) {
+				$setupFile->remove( ElasticStore::REBUILD_INDEX_RUN_COMPLETE );
+				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
+			} elseif ( $setupFile->get( 'elasticsearch' ) === null ) {
+				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
+				$setupFile->addIncompleteTask( self::REBUILD_INDEX_RUN_INCOMPLETE );
+			} else {
+				$data = $setupFile->get( 'elasticsearch' );
+
+				if ( $data['latest_version'] !== $version ) {
+					$setupFile->set(
+						[
+							'elasticsearch' => [
+								'latest_version'   => $version,
+								'previous_version' => $data['latest_version']
+							]
+						]
+					);
+				}
 			}
 
 			$this->messageReporter->reportMessage(
@@ -368,6 +386,12 @@ class ElasticStore extends SQLStore {
 		$setupFile->remove(
 			ElasticStore::REBUILD_INDEX_RUN_COMPLETE
 		);
+
+		$setupFile->removeIncompleteTask(
+			ElasticStore::REBUILD_INDEX_RUN_INCOMPLETE
+		);
+
+		$setupFile->remove( 'elasticsearch' );
 
 		if ( $verbose ) {
 

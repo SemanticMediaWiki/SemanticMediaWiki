@@ -50,6 +50,10 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_touched = null;
 		$row->count = 0;
 
+		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -78,7 +82,11 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database ) {
+		$callback = function( $type ) use( $connection, $database, $client ) {
+
+			if ( $type === 'elastic' ) {
+				return $client;
+			};
 
 			if ( $type === 'mw.db' ) {
 				return $connection;

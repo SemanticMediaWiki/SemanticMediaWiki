@@ -71,11 +71,11 @@ class PopulateHashField extends \Maintenance {
 
 		$setupFile = new SetupFile();
 
-		$setupFile->set(
-			[
-				Installer::POPULATE_HASH_FIELD_COMPLETE => $complete
-			]
-		);
+		if ( $complete ) {
+			$setupFile->removeIncompleteTask( 'smw-populatehashfield-incomplete' );
+		} else {
+			$setupFile->addIncompleteTask( 'smw-populatehashfield-incomplete' );
+		}
 
 		$this->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
