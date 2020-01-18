@@ -2,6 +2,7 @@
 
 use SMW\NamespaceManager;
 use SMW\Setup;
+use SMW\SetupCheck;
 
 /**
  * @codeCoverageIgnore
@@ -56,7 +57,7 @@ class SemanticMediaWiki {
 
 		// Registration point before any `extension.json` invocation
 		// takes place
-		Setup::checkExtensionRegistration( $GLOBALS );
+		Setup::registerExtensionCheck( $GLOBALS );
 	}
 
 	/**
@@ -79,6 +80,9 @@ class SemanticMediaWiki {
 		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = __DIR__ . '/i18n';
 		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.alias.php';
 		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.magic.php';
+
+		// Release the check after the extension was successfully loaded
+		Setup::releaseExtensionCheck( $GLOBALS );
 
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );

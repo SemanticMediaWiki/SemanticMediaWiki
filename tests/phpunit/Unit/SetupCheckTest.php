@@ -3,8 +3,8 @@
 namespace SMW\Tests;
 
 use SMW\SetupCheck;
-use SMW\Utils\File;
-use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
+use ReflectionClass;
 
 /**
  * @covers \SMW\SetupCheck
@@ -16,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SetupCheckTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $setupFile;
 
@@ -54,7 +56,67 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetError() {
+	public function testIsCli() {
+
+		$instance = new SetupCheck( [], $this->setupFile );
+
+		$this->assertInternalType(
+			'boolean',
+			$instance->isCli()
+		);
+	}
+
+	public function testReadFromFile_ThrowsException() {
+
+		$instance = new SetupCheck( [], $this->setupFile );
+
+		$this->setExpectedException( '\SMW\Exception\FileNotReadableException' );
+		$instance->readFromFile( 'File' );
+	}
+
+	public function testReadFromFile_InvalidJSON_ThrowsException() {
+
+		$instance = new SetupCheck( [], $this->setupFile );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->readFromFile( SMW_PHPUNIT_DIR . '/Fixtures/invalid.json' );
+	}
+
+	public function testIsError() {
+
+		$instance = SetupCheck::newFromDefaults(
+			$this->setupFile
+		);
+
+		$instance->setErrorType(
+			SetupCheck::ERROR_SCHEMA_INVALID_KEY
+		);
+
+		$this->assertTrue(
+			$instance->isError( SetupCheck::ERROR_SCHEMA_INVALID_KEY )
+		);
+	}
+
+	public function testUnknownErrorType_ThrowsException() {
+
+		$instance = SetupCheck::newFromDefaults(
+			$this->setupFile
+		);
+
+		$instance->setErrorType( 'foo' );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->getError();
+	}
+
+	/**
+	 * @dataProvider errorTypeProvider
+	 */
+	public function testGetError_CliOutput( $errorType ) {
+
+		$this->setupFile->expects( $this->any() )
+			->method( 'getMaintenanceMode' )
+			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
 
 		$instance = new SetupCheck(
 			[
@@ -63,10 +125,59 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 			$this->setupFile
 		);
 
+		$instance->setErrorMessage( 'foo_bar' );
+		$instance->setTraceString( 'trace_string' );
+
+		$instance->setErrorType(
+			$errorType
+		);
+
 		$this->assertInternalType(
 			'string',
 			$instance->getError( true )
 		);
+	}
+
+	/**
+	 * @dataProvider errorTypeProvider
+	 */
+	public function testGetError_NoCliHTMLOutput( $errorType ) {
+
+		$this->setupFile->expects( $this->any() )
+			->method( 'getMaintenanceMode' )
+			->will( $this->returnValue( [ 'Foo' => 'bar' ] ) );
+
+		$instance = new SetupCheck(
+			[
+				'wgScriptPath' => 'foo'
+			],
+			$this->setupFile
+		);
+
+		$instance->setErrorMessage( 'foo_bar' );
+		$instance->setTraceString( 'trace_string' );
+
+		$instance->disableHeader();
+
+		$instance->setErrorType(
+			$errorType
+		);
+
+		$this->assertContains(
+			'<!DOCTYPE html>',
+			$instance->getError( false )
+		);
+	}
+
+	public function errorTypeProvider() {
+
+		$reflectionClass = new ReflectionClass(
+			SetupCheck::class
+		);
+
+		foreach ( $reflectionClass->getConstants() as $constant ) {
+			yield [ $constant ];
+		}
 	}
 
 }

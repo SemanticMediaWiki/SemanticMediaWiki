@@ -244,16 +244,13 @@ function swfCountDown( $seconds ) {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	// Avoid "Uncaught Exception: It was attempted to load SemanticMediaWiki
-	// twice" in case users added `wfLoadExtension` manually to the
-	// `LocalSettings.php`
-	if ( !ExtensionRegistry::getInstance()->isLoaded( 'SemanticMediaWiki' ) ) {
-		// #1732 + #2813
-		wfLoadExtension( 'SemanticMediaWiki', dirname( __DIR__ ) . '/extension.json' );
-	}
+	// #1732 + #2813
+	wfLoadExtension( 'SemanticMediaWiki', dirname( __DIR__ ) . '/extension.json' );
 
 	// #4107
-	define( 'SMW_EXTENSION_LOADED', true );
+	if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+		define( 'SMW_EXTENSION_LOADED', true );
+	}
 
 	// Apparently this is required (1.28+) as the earliest possible execution
 	// point in order for settings that refer to the SMW_NS_PROPERTY namespace
