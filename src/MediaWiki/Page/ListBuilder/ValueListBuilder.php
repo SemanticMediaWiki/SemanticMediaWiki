@@ -286,7 +286,8 @@ class ValueListBuilder {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		$requestOptions = new RequestOptions();
-		$requestOptions->limit = $this->maxPropertyValues;
+		$requestOptions->setLimit( $this->maxPropertyValues );
+		$requestOptions->setLookahead( 1 );
 
 		$prefetchItemLookup = $this->store->service( 'PrefetchItemLookup' );
 

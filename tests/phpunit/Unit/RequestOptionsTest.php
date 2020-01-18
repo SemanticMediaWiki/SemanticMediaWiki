@@ -41,7 +41,7 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertEquals(
-			'[-1,0,false,true,null,true,false,"Foo#0##",[],[]]',
+			'[-1,0,0,false,true,null,true,false,"Foo#0##",[],[]]',
 			$instance->getHash()
 		);
 	}
@@ -61,7 +61,7 @@ class RequestOptionsTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			'[-1,0,false,true,null,true,false,"",["Foo",{"Bar":"Foobar"}],[]]',
+			'[-1,0,0,false,true,null,true,false,"",["Foo",{"Bar":"Foobar"}],[]]',
 			$instance->getHash()
 		);
 	}

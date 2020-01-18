@@ -34,6 +34,9 @@ class RequestOptions {
 	 */
 	const PREFETCH_FINGERPRINT = 'prefetch.fingerprint';
 
+	/**
+	 * Defines an individual search field
+	 */
 	const SEARCH_FIELD = 'search_field';
 
 	/**
@@ -55,6 +58,12 @@ class RequestOptions {
 	 * (see SMWRequestOptions->$sort below).
 	 */
 	public $offset = 0;
+
+	/**
+	 * A numerical size to indicate a "look ahead" beyond the defined
+	 * limit.
+	 */
+	public $lookahead = 0;
 
 	/**
 	 * Should the result be ordered? The employed order is defined
@@ -249,6 +258,24 @@ class RequestOptions {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param integer $lookahead
+	 */
+	public function setLookahead( int $lookahead ) {
+		$this->lookahead = $lookahead;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return integer
+	 */
+	public function getLookahead() : int {
+		return $this->lookahead;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @return string
@@ -264,6 +291,7 @@ class RequestOptions {
 		return json_encode( [
 			$this->limit,
 			$this->offset,
+			$this->lookahead,
 			$this->sort,
 			$this->ascending,
 			$this->boundary,

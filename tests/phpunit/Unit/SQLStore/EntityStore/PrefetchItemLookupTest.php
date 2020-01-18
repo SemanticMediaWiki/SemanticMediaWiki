@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Tests\PHPUnitCompat;
 
@@ -58,6 +59,12 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
+		$expected = [
+			DIWikiPage::newFromText( 'Bar_1' ),
+			DIWikiPage::newFromText( 'Bar_2' ),
+			DIWikiPage::newFromText( 'Bar_3' )
+		];
+
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,7 +79,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$diHandler->expects( $this->atLeastOnce() )
 			->method( 'newFromDBKeys' )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'Bar' ) ) );
+			->will( $this->onConsecutiveCalls( $expected[0], $expected[1], $expected[2] ) );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -96,7 +103,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataLookup->expects( $this->atLeastOnce() )
 			->method( 'prefetchDataFromTable' )
-			->will( $this->returnValue( [ 42 => [ 'Bar#0##' ] ] ) );
+			->will( $this->returnValue( [ 42 => [ 'Bar_1#0##', 'Bar_2#0##', 'Bar_3#0##' ] ] ) );
 
 		$instance = new PrefetchItemLookup(
 			$this->store,
@@ -104,7 +111,17 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySubjectsLookup
 		);
 
-		$instance->getPropertyValues( $subjects, new DIProperty( 'Foo' ), $this->requestOptions );
+		$requestOptions = new RequestOptions();
+
+		$requestOptions->setLimit( 1 );
+		$requestOptions->setLookahead( 1 );
+
+		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo' ), $requestOptions );
+
+		$this->assertCount(
+			2,
+			$res[42]
+		);
 	}
 
 	public function testGetPropertyValues_InvertedProperty() {
