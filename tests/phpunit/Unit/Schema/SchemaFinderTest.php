@@ -132,4 +132,34 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewSchemaList_EmptyDefinition() {
+
+		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$data[] = new DIBlob( '' );
+
+		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+			->method( 'getSpecification' )
+			->with(
+				$this->equalTo( new DIProperty( 'Foo' ) ),
+				$this->equalTo( new DIProperty( 'BAR' ) ) )
+			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+
+		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
+			->method( 'getSpecification' )
+			->with(
+				$this->equalTo( $subject ),
+				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
+			->will( $this->onConsecutiveCalls( [ $data[0] ] ) );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Schema\SchemaList',
+			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+		);
+	}
+
 }

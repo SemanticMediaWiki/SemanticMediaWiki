@@ -119,9 +119,15 @@ class SchemaFinder {
 		$name = str_replace( '_', ' ', $subject->getDBKey() );
 
 		foreach ( $definitions as $definition ) {
+			$content = [];
+
+			if ( $definition->getString() !== '' ) {
+				$content = json_decode( $definition->getString(), true );
+			}
+
 			$schemaList[] = new SchemaDefinition(
 				$name,
-				json_decode( $definition->getString(), true )
+				$content
 			);
 		}
 	}
