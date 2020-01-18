@@ -5,6 +5,7 @@ namespace SMW;
 use InvalidArgumentException;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
  * @license GNU GPL v2+
@@ -51,7 +52,7 @@ class HierarchyLookup {
 	/**
 	 * @var integer
 	 */
-	private $cacheTTL;
+	private $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
@@ -76,26 +77,32 @@ class HierarchyLookup {
 	public function __construct( Store $store, Cache $cache ) {
 		$this->store = $store;
 		$this->cache = $cache;
-
-		$this->cacheTTL = 60 * 60 * 24 * 7;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param ChangePropListener $changePropListener
+	 * @param PropertyChangeListener $changeListener
 	 */
-	public function addListenersTo( ChangePropListener $changePropListener ) {
+	public function registerPropertyChangeListener( PropertyChangeListener $changeListener ) {
+		$changeListener->addListenerCallback( new DIProperty( '_SUBP' ), [ $this, 'invalidateCache' ] );
+		$changeListener->addListenerCallback( new DIProperty( '_SUBC' ), [ $this, 'invalidateCache' ] );
+	}
 
-		// @see HierarchyLookup::getConsecutiveHierarchyList
-		//
-		// Remove the global hierarchy cache in the event that some entity was
-		// annotated (or removed) with the `Subproperty of`/ `Subcategory of`
-		// property, and while this purges the entire cache we ensure that the
-		// hierarchy lookup is always correct without loosing too much sleep
-		// over a more fine-grained caching strategy.
+	/**
+	 * Remove the global hierarchy cache in the event that some entity was annotated
+	 * (or removed) with the `Subproperty of`/ `Subcategory of` property, and
+	 * while this purges the entire cache we ensure that the hierarchy lookup is
+	 * always correct without loosing too much sleep over a more fine-grained
+	 * caching strategy.
+	 *
+	 * @since 3.2
+	 *
+	 * @param DIProperty $property
+	 */
+	public function invalidateCache( DIProperty $property ) {
 
-		$callback = function( $context ) {
+		if ( $property->getKey() === '_SUBP' ) {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, self::TYPE_SUB, $this->subpropertyDepth ] )
 			);
@@ -103,11 +110,9 @@ class HierarchyLookup {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, self::TYPE_SUPER, $this->subpropertyDepth ] )
 			);
-		};
+		}
 
-		$changePropListener->addListenerCallback( '_SUBP', $callback );
-
-		$callback = function( $context ) {
+		if ( $property->getKey() === '_SUBC' ) {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_CATEGORY, self::TYPE_SUB, $this->subcategoryDepth ] )
 			);
@@ -115,9 +120,7 @@ class HierarchyLookup {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_CATEGORY, self::TYPE_SUPER, $this->subpropertyDepth ] )
 			);
-		};
-
-		$changePropListener->addListenerCallback( '_SUBC', $callback );
+		}
 	}
 
 	/**
@@ -255,7 +258,7 @@ class HierarchyLookup {
 		// a "global" cache should be sufficient to avoid constant DB lookups.
 		//
 		// Invalidation of the cache will occur on each _SUBP/_SUBC change event (see
-		// ChangePropListener).
+		// PropertyChangeListener).
 		$depth = $objectType === self::TYPE_PROPERTY ? $this->subpropertyDepth : $this->subcategoryDepth;
 
 		$cacheKey = smwfCacheKey(

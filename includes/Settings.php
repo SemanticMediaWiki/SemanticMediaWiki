@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Exception\SettingNotFoundException;
+use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 
 /**
  * Encapsulate Semantic MediaWiki settings to access values through a
@@ -16,6 +17,7 @@ use SMW\Exception\SettingNotFoundException;
 class Settings extends Options {
 
 	use ConfigLegacyTrait;
+	use ChangeListenerAwareTrait;
 
 	/**
 	 * @var Settings
@@ -232,6 +234,26 @@ class Settings extends Options {
 	 */
 	public static function newFromArray( array $settings ) {
 		return new self( $settings );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * {@inheritDoc}
+	 */
+	public function set( $key, $value ) {
+
+		foreach ( $this->getChangeListeners() as $changeListener ) {
+
+			if ( !$changeListener->canTrigger( $key ) ) {
+				continue;
+			}
+
+			$changeListener->setAttrs( [ $key => $value ] );
+			$changeListener->trigger( $key );
+		}
+
+		parent::set( $key, $value );
 	}
 
 	/**

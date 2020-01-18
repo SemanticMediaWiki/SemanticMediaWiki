@@ -29,6 +29,12 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'HierarchyLookup', $hierarchyLookup );
 	}
 
 	public function testCanConstruct() {
@@ -369,13 +375,13 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructHierarchyLookup() {
+	public function testCanConstructPropertyChangeListener() {
 
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\HierarchyLookup',
-			$instance->newHierarchyLookup()
+			'\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener',
+			$instance->newPropertyChangeListener()
 		);
 	}
 
@@ -416,16 +422,6 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\RedirectStore',
 			$instance->newRedirectStore()
-		);
-	}
-
-	public function testCanConstructChangePropListener() {
-
-		$instance = new SQLStoreFactory( $this->store );
-
-		$this->assertInstanceOf(
-			'\SMW\ChangePropListener',
-			$instance->newChangePropListener()
 		);
 	}
 

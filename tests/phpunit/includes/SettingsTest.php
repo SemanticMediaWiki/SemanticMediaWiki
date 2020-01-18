@@ -73,6 +73,32 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testRegisterChangeListener() {
+
+		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeListener->expects( $this->once() )
+			->method( 'canTrigger' )
+			->with( $this->equalTo( 'Foo' ) )
+			->will( $this->returnValue( true ) );
+
+		$changeListener->expects( $this->once() )
+			->method( 'setAttrs' )
+			->with( $this->equalTo( [ 'Foo' => 'Bar' ] ) );
+
+		$changeListener->expects( $this->once() )
+			->method( 'trigger' )
+			->with( $this->equalTo( 'Foo' ) );
+
+		$instance = Settings::newFromArray( [] );
+		$instance->registerChangeListener( $changeListener );
+
+		$instance->set( 'Foo', 'Bar' );
+		$instance->clearChangeListeners();
+	}
+
 	/**
 	 * @dataProvider settingsProvider
 	 */

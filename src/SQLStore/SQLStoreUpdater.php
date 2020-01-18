@@ -204,16 +204,10 @@ class SQLStoreUpdater {
 			$changeOp
 		);
 
-		$changePropListener = $this->factory->newChangePropListener();
-		$hierarchyLookup = $this->factory->newHierarchyLookup();
+		$propertyChangeListener = $this->factory->newPropertyChangeListener();
 
-		// #2698
-		$hierarchyLookup->addListenersTo(
-			$changePropListener
-		);
-
-		$changePropListener->loadListeners(
-			$this->store
+		$this->propertyTableUpdater->setPropertyChangeListener(
+			$propertyChangeListener
 		);
 
 		if ( $semanticData->getOption( SemanticData::OPT_CHECK_REMNANT_ENTITIES ) ) {
@@ -258,7 +252,7 @@ class SQLStoreUpdater {
 		$changeDiff = $changeOp->newChangeDiff();
 		$changeDiff->save( ApplicationFactory::getInstance()->getCache() );
 
-		$changePropListener->callListeners();
+		$propertyChangeListener->matchAndTriggerChangeListeners();
 
 		$this->store->extensionData['delete.list'] = $deleteList;
 		$this->store->extensionData['change.diff'] = $changeDiff;

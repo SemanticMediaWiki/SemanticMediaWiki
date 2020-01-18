@@ -44,22 +44,22 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testAddChangePropListener() {
+	public function testRegisterPropertyChangeListener() {
 
-		$changePropListener = $this->getMockBuilder( '\SMW\ChangePropListener' )
+		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$changePropListener->expects( $this->at( 0 ) )
+		$propertyChangeListener->expects( $this->at( 0 ) )
 			->method( 'addListenerCallback' )
 			->with(
-				$this->equalTo( '_SUBP' ),
+				$this->equalTo( new DIProperty( '_SUBP' ) ),
 				$this->anything() );
 
-		$changePropListener->expects( $this->at( 1 ) )
+		$propertyChangeListener->expects( $this->at( 1 ) )
 			->method( 'addListenerCallback' )
 			->with(
-				$this->equalTo( '_SUBC' ),
+				$this->equalTo( new DIProperty( '_SUBC' ) ),
 				$this->anything() );
 
 		$instance = new HierarchyLookup(
@@ -71,7 +71,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->spyLogger
 		);
 
-		$instance->addListenersTo( $changePropListener );
+		$instance->registerPropertyChangeListener( $propertyChangeListener );
 	}
 
 	public function testVerifySubpropertyForOnNonCachedLookup() {

@@ -7,7 +7,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\MediaWiki\Collator;
 use SMW\ApplicationFactory;
-use SMW\ChangePropListener;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Site;
@@ -729,15 +729,6 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return HierarchyLookup
-	 */
-	public function newHierarchyLookup() {
-		return ApplicationFactory::getInstance()->newHierarchyLookup();
-	}
-
-	/**
-	 * @since 3.0
-	 *
 	 * @return SubobjectListFinder
 	 */
 	public function newSubobjectListFinder() {
@@ -808,10 +799,28 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return ChangePropListener
+	 * @return PropertyChangeListener
 	 */
-	public function newChangePropListener() {
-		return new ChangePropListener();
+	public function newPropertyChangeListener() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$propertyChangeListener = new PropertyChangeListener(
+			$this->store
+		);
+
+		$propertyChangeListener->setLogger(
+			$this->getLogger()
+		);
+
+		$hierarchyLookup = $applicationFactory->newHierarchyLookup();
+
+		// #2698
+		$hierarchyLookup->registerPropertyChangeListener(
+			$propertyChangeListener
+		);
+
+		return $propertyChangeListener;
 	}
 
 	/**
