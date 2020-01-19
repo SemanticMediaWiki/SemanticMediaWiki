@@ -191,6 +191,17 @@ class SemanticDataLookup {
 	}
 
 	/**
+	 * #3722
+	 *
+	 * The prefetch mode is provided as means to reduce the amount of SELECT queries
+	 * required for a known subject list. Internally, it makes use of the
+	 * `WHERE IN` construct to fetch an entire set of data for a specific property
+	 * and a list of subjects.
+	 *
+	 * The method is not expected to be used by any public accessors except for
+	 * `PrefetchItemLookup` (or via `PrefetchCache`) as a specialized return format
+	 * is used to represent the result set.
+	 *
 	 * @since 3.1
 	 *
 	 * @param array $subjects
@@ -228,57 +239,33 @@ class SemanticDataLookup {
 			return [];
 		}
 
+		$list = array_keys( $ids );
+
 		$pid = $entityIdManager->getSMWPropertyID( $property );
 		$this->caller = __METHOD__;
-
-		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'select' );
-		$query->table( $propTable->getName() );
-
-		// Restrict property only
-		if ( !$propTable->isFixedPropertyTable() ) {
-			$query->condition( $query->eq( 'p_id', $pid ) );
-		}
-
-		// Restrict subject, select property
-		if ( $propTable->usesIdSubject() ) {
-			$query->condition( $query->in( 's_id', array_keys( $ids ) ) );
-			$query->field( 's_id' );
-		} else {
-			throw new RuntimeException( "Need a table that has an ID subject column (property: " . $property->getKey() . ')!' );
-		}
-
-		// Select property name
-		// In case of a fixed property, no select needed
-		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
-			);
-
-			$query->field( 'p.smw_title', 'prop' );
-
-			// Avoid displaying any property that has been marked deleted or outdated
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
-		}
-
-		$res = $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 		$result = [];
 
+		$res = $this->fetchSemanticDataFromTableByList(
+			$list,
+			$pid,
+			$propTable,
+			$requestOptions
+		);
+
+		// Map to the prefetch format, identifying the `s_id` is part of
+		// the result set so that the `PrefetchCache/Lookup` can distinguish
+		// items by subject during the lazy load
 		foreach ( $res as $key => $data ) {
-			list( $sid, $i, $h ) = explode( '#', $key );
+			list( $sid, $i, $hash ) = explode( '#', $key );
 
 			if ( !isset( $result[$sid] ) ) {
 				$result[$sid] = [];
 			}
 
-			$result[$sid]["$i#$h"] = $data[1];
+			$result[$sid]["$i#$hash"] = $data[1];
 		}
 
-		$entityIdManager->loadSequenceMap( array_keys( $ids ) );
+		$entityIdManager->loadSequenceMap( $list );
 
 		return $result;
 	}
@@ -369,6 +356,45 @@ class SemanticDataLookup {
 			$query->condition( $query->eq( 's_namespace', $dataItem->getNamespace() ) );
 		}
 
+		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+	}
+
+	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ) {
+
+		if ( $list === [] ) {
+			return [];
+		}
+
+		$isSubject = true;
+		$result = [];
+
+		$connection = $this->store->getConnection( 'mw.db' );
+		$query = $connection->newQuery();
+
+		$query->type( 'select' );
+		$query->table( $propTable->getName() );
+
+		// Restrict property only
+		if ( !$propTable->isFixedPropertyTable() ) {
+			$query->condition( $query->eq( 'p_id', $pid ) );
+		}
+
+		// Restrict subject, select property
+		if ( $propTable->usesIdSubject() ) {
+			$query->condition( $query->in( 's_id', $list ) );
+			$query->field( 's_id' );
+		} else {
+			throw new RuntimeException( "Need a table that has an ID subject column (ID: " . $pid . ')!' );
+		}
+
+		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
+	}
+
+	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
+
+		$result = [];
+		$connection = $this->store->getConnection( 'mw.db' );
+
 		// Select property name
 		// In case of a fixed property, no select needed
 		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
@@ -383,14 +409,6 @@ class SemanticDataLookup {
 			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
 			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
 		}
-
-		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
-	}
-
-	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
-
-		$result = [];
-		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $requestOptions !== null ) {
 			foreach ( $requestOptions->getExtraConditions() as $extraCondition ) {
@@ -509,6 +527,8 @@ class SemanticDataLookup {
 			}
 		}
 
+		// `exclude_limit` indicates an unrestricted query due to use of `WHERE IN`
+		// that is required by the prefetch mode
 		if ( $requestOptions->exclude_limit ) {
 			$query->option( 'LIMIT', null );
 			$query->option( 'OFFSET', null );
@@ -527,24 +547,36 @@ class SemanticDataLookup {
 
 		$warmupCache = [];
 
+		$params = [
+			'fieldMap' => $map,
+			'fields' => $fields,
+			'fieldName' => $fieldname,
+			'valueCount' => $valueCount,
+			'isSubject' => $isSubject,
+			'propertyKey' => ''
+		];
+
 		foreach ( $res as $row ) {
-			$propertykey = '';
+			$params['propertyKey'] = '';
 
 			// use joined or predefined property name
-			if ( $isSubject ) {
-				$propertykey = $propTable->isFixedPropertyTable() ? $propTable->getFixedProperty() : $row->prop;
+			if ( $isSubject && $propTable->isFixedPropertyTable() ) {
+				$params['propertyKey'] = $propTable->getFixedProperty();
+			} elseif ( $isSubject ) {
+				$params['propertyKey'] = $row->prop;
 			}
 
-			$this->resultFromRow(
-				$result,
-				$map,
-				$row,
-				$fields,
-				$fieldname,
-				$valueCount,
-				$isSubject,
-				$propertykey
-			);
+			list( $hash, $r ) = $this->buildResultFromRow( $row, $params );
+
+			if ( $hash === '' ) {
+				continue;
+			}
+
+			if ( isset( $result[$hash] ) ) {
+				$this->reportDuplicate( $params );
+			}
+
+			$result[$hash] = $r;
 
 			// Using a short-cut to warmup the cache/linkbatch instance
 			if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
@@ -660,80 +692,88 @@ class SemanticDataLookup {
 		}
 	}
 
-	private function resultFromRow( &$result, $map, $row, $fields, $fieldname, $valueCount, $isSubject, $propertykey ) {
+	private function buildResultFromRow( $row, $params ) {
 
 		$hash = '';
 		$sortField = '';
 
-		if ( isset( $map[$fieldname] ) ) {
-			$sortField = $map[$fieldname];
+		if ( isset( $params['fieldMap'][$params['fieldName']] ) ) {
+			$sortField = $params['fieldMap'][$params['fieldName']];
 		}
 
-		if ( $isSubject ) { // use joined or predefined property name
-			$hash = $propertykey;
+		// use joined or predefined property name
+		if ( $params['isSubject'] ) {
+			$hash = $params['propertyKey'];
 		}
 
-		// Use enclosing array only for results with many values:
-		if ( $valueCount > 1 ) {
-			$valueKeys = [];
+		// Matches the serialization format in the DIHandler for the specific
+		// type, @see DataItemHandler::newFromDBKeys
+		if ( $params['valueCount'] > 1 ) {
+			$db_keys = [];
 
 			// read the value fields from the current row
-			for ( $i = 0; $i < $valueCount; $i += 1 ) {
+			for ( $i = 0; $i < $params['valueCount']; $i += 1 ) {
 				$fieldname = "v$i";
-				$valueKeys[] = $row->$fieldname;
+				$db_keys[] = $row->$fieldname;
 			}
 
 			// Switch the `smw_sortkey` with `smw_sort` field to ensure that
 			// DIWikiPage::setSortKey uses the `smw_sort` value
-			if ( $valueCount == 6 ) {
-				$valueKeys[3] = $valueKeys[5];
-				unset( $valueKeys[5] );
-				$valueCount = 5;
+			if ( $params['valueCount'] == 6 ) {
+				$db_keys[3] = $db_keys[5];
+				unset( $db_keys[5] );
+				$params['valueCount'] = 5;
 			}
 
 		} else {
-			$valueKeys = $row->v0;
+			$db_keys = $row->v0;
 		}
 
 		// #Issue 615
 		// If the iw field contains a redirect marker then remove it
-		if ( isset( $valueKeys[2] ) && ( $valueKeys[2] === SMW_SQL3_SMWREDIIW || $valueKeys[2] === SMW_SQL3_SMWDELETEIW ) ) {
-			$valueKeys[2] = '';
+		if (
+			isset( $db_keys[2] ) && (
+			$db_keys[2] === SMW_SQL3_SMWREDIIW ||
+			$db_keys[2] === SMW_SQL3_SMWDELETEIW ) ) {
+			$db_keys[2] = '';
 		}
 
 		// The hash prevents from inserting duplicate entries of the same content
-		if ( $valueCount > 1 ) {
-			$hash = md5( $hash . implode( '#', $valueKeys ) );
+		if ( $params['valueCount'] > 1 ) {
+			$hash = md5( $hash . implode( '#', $db_keys ) );
 		} else {
-			$hash = md5( $hash . $valueKeys );
+			$hash = md5( $hash . $db_keys );
 		}
 
+		// Avoid issues with `$row->$sortField` containing other `#` as for
+		// example in case of a subobject name
 		if ( $sortField !== '' ) {
-			// Avoid issues with `$row->$sortField` containing other `#` as for
-			// example in case of a subobject name
 			$hash = mb_substr( str_replace( '#', '|', $row->$sortField ), 0, 32 ) . '#' . $hash;
 		}
 
+		// Further distinguish the values by the assigned subject id as in case
+		// of the prefetch mode
 		if ( isset( $row->s_id ) ) {
 			$hash = $row->s_id . '#' . $hash;
 		}
 
-		// Filter out any accidentally retrieved internal things (interwiki starts with ":"):
-		if ( $valueCount < 3 ||
-			implode( '', $fields ) !== FieldType::FIELD_ID ||
-			$valueKeys[2] === '' ||
-			$valueKeys[2][0] != ':' ) {
+		$result = [ '', '' ];
 
-			if ( isset( $result[$hash] ) ) {
-				$this->reportDuplicate( $propertykey, $valueKeys );
-			}
+		// Filter out any accidentally retrieved internal things (interwiki
+		// starts with ":"):
+		if ( $params['valueCount'] < 3 ||
+			implode( '', $params['fields'] ) !== FieldType::FIELD_ID ||
+			$db_keys[2] === '' ||
+			$db_keys[2][0] != ':' ) {
 
-			if ( $isSubject ) {
-				$result[$hash] = [ $propertykey, $valueKeys ];
+			if ( $params['isSubject'] ) {
+				$result = [ $hash, [ $params['propertyKey'], $db_keys ] ];
 			} else{
-				$result[$hash] = $valueKeys;
+				$result = [ $hash, $db_keys ];
 			}
 		}
+
+		return $result;
 	}
 
 	private function fetchPropertiesFromTable( $id, $propTable ) {
@@ -762,14 +802,13 @@ class SemanticDataLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function reportDuplicate( $propertykey, $valueKeys ) {
+	private function reportDuplicate( $params ) {
 		$this->logger->info(
-			"Found duplicate entry for {propertykey} with {valueKeys}",
+			"Found duplicate entry for {params}",
 			[
 				'method' => __METHOD__,
 				'role' => 'user',
-				'propertykey' => $propertykey,
-				'valueKeys' => ( is_array( $valueKeys ) ? implode( ',', $valueKeys ) : $valueKeys )
+				'params' => json_encode( $params )
 			]
 		);
 	}
