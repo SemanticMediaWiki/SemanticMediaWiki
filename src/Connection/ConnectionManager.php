@@ -80,7 +80,7 @@ class ConnectionManager {
 
 	private function isConnectable() {
 
-		if ( defined( 'SMW_VERSION' ) ) {
+		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}
 
