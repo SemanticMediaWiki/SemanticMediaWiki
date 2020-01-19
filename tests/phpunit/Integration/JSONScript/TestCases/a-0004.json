@@ -52,7 +52,7 @@
 		},
 		{
 			"type": "api",
-			"about": "#0 `smwbrowse` property search (limit=3, offset=2, sort=desc)",
+			"about": "#1 `smwbrowse` property search (limit=3, offset=2, sort=desc)",
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",
@@ -69,13 +69,13 @@
 		},
 		{
 			"type": "api",
-			"about": "#0 `smwbrowse` property search (limit=1, offset=5)",
+			"about": "#2 `smwbrowse` property search (limit=1, offset=5, sort=asc)",
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",
 					"format": "json",
 					"browse": "property",
-					"params": "{ \"limit\": 1, \"offset\": 5, \"search\": \"A0004\" }"
+					"params": "{ \"limit\": 1, \"offset\": 5, \"search\": \"A0004\", \"sort\": \"asc\" }"
 				}
 			},
 			"assert-output": {
