@@ -116,6 +116,10 @@ class PrefetchItemLookup {
 		$requestOptions->exclude_limit = true;
 		$requestOptions->setCaller( __METHOD__ );
 
+		if ( $requestOptions->getLookahead() == 0 ) {
+			$requestOptions->setLookahead( 1 );
+		}
+
 		$data = $this->semanticDataLookup->prefetchDataFromTable(
 			$subjects,
 			$property,
@@ -166,7 +170,7 @@ class PrefetchItemLookup {
 			//  42 => [ DIBlob, DIBlob, ... ],
 			//  1001 => [ ... ]
 			// ]
-			$result[$hash] = $this->buildLIST( $diHandler, $itemList, $requestOptions, $sequenceMap );
+			$result[$hash] = $this->buildList( $diHandler, $itemList, $requestOptions, $sequenceMap );
 		}
 
 		return $result;
@@ -226,13 +230,14 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function buildLIST( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
+	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
 
 		$values = [];
 		$i = 0;
 
-		// Post-processing of the limit/offset, +1 as look ahead
-		$limit = ( $requestOptions->limit + $requestOptions->offset ) + 1;
+		$lookahead = $requestOptions->getLookahead();
+
+		$limit = ( $requestOptions->limit + $requestOptions->offset ) + $lookahead;
 		$offset = $requestOptions->offset;
 
 		// Flip the array to get access to the hash keys as lookup index,
@@ -244,10 +249,10 @@ class PrefetchItemLookup {
 
 		foreach ( $itemList as $k => $dbkeys ) {
 
-			// When working with an sequence.map, first go through all matches
+			// When working with a sequence.map, first go through all matches
 			// without limiting the set to ensure it is ordered before
 			// in a second step the limit restriction is applied
-			if ( $limit > 0 && $i > $limit && $sequenceMap === [] ) {
+			if ( $limit > 0 && $i >= $limit && $sequenceMap === [] ) {
 				break;
 			}
 
