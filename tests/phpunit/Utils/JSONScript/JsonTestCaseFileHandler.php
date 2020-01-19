@@ -138,8 +138,11 @@ class JsonTestCaseFileHandler {
 				return true;
 			}
 
+			// Support for { "skip-on": { "postgres": [ "<9.2", "Reason..." }
+			if ( $identifier === 'postgres' && $identifier === $id && $versionToSkip !== '' ) {
+				$version = SMW_PHPUNIT_DB_VERSION;
 			// Support for { "skip-on": { "virtuoso": "Virtuoso 6.1 ..." }
-			if ( $identifier === $id ) {
+			} elseif ( $identifier === $id ) {
 				return true;
 			}
 
