@@ -92,6 +92,10 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
 
+		if ( !defined( 'SMW_PHPUNIT_DB_VERSION' ) ) {
+			define( 'SMW_PHPUNIT_DB_VERSION',  $this->getDBConnection()->getServerInfo() );
+		}
+
 		/**
 		 * MediaWiki specific setup
 		 */
