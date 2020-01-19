@@ -3,7 +3,6 @@
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
-use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\DIProperty;
 use SMW\Tests\PHPUnitCompat;
 
@@ -97,7 +96,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			$this->logger
 		);
 
-		$instance->recordChange( 42, [ 'foo' => 'bar' ] );
+		$instance->recordChange( 42, [ 'row' => [ 's_id' => 1000, 'o_hash' => 'foobar' ] ] );
 		$instance->matchAndTriggerChangeListeners();
 
 		$this->assertEquals(
@@ -105,13 +104,9 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			$this->property
 		);
 
-		$records = [
-			new ChangeRecord( [ 'foo' => 'bar' ] )
-		];
-
 		$this->assertEquals(
-			new ChangeRecord( $records ),
-			$this->changeRecord
+			'foobar',
+			$this->changeRecord->get( 0 )->get( 'row.o_hash' )
 		);
 	}
 
