@@ -2,7 +2,10 @@
 
 namespace SMW;
 
-use SMW\MediaWiki\MessageFactory;
+use SMW\Utils\TemplateEngine;
+use SMW\Exception\FileNotReadableException;
+use SMW\Exception\JSONFileParseException;
+use RuntimeException;
 
 /**
  * @private
@@ -15,6 +18,48 @@ use SMW\MediaWiki\MessageFactory;
 class SetupCheck {
 
 	/**
+	 * Semantic MediaWiki was loaded or accessed but not correctly enabled.
+	 */
+	const ERROR_EXTENSION_LOAD = 'ERROR_EXTENSION_LOAD';
+
+	/**
+	 * Semantic MediaWiki was loaded or accessed but not correctly enabled.
+	 */
+	const ERROR_EXTENSION_INVALID_ACCESS = 'ERROR_EXTENSION_INVALID_ACCESS';
+
+	/**
+	 * A user tried to use `wfLoadExtension( 'SemanticMediaWiki' )` and
+	 * `enableSemantics` at the same causing the ExtensionRegistry to throw an
+	 * "Uncaught Exception: It was attempted to load SemanticMediaWiki twice ..."
+	 */
+	const ERROR_EXTENSION_REGISTRY = 'ERROR_EXTENSION_REGISTRY';
+
+	/**
+	 * A dependency (extension, MediaWiki) causes an error
+	 */
+	const ERROR_EXTENSION_DEPENDENCY = 'ERROR_EXTENSION_DEPENDENCY';
+
+	/**
+	 * Multiple dependencies (extension, MediaWiki) caused an error
+	 */
+	const ERROR_EXTENSION_DEPENDENCY_MULTIPLE = 'ERROR_EXTENSION_DEPENDENCY_MULTIPLE';
+
+	/**
+	 * Extension doesn't match MediaWiki or the PHP requirement.
+	 */
+	const ERROR_EXTENSION_INCOMPATIBLE = 'ERROR_EXTENSION_INCOMPATIBLE';
+
+	/**
+	 * The upgrade key has change causing the schema to be invalid
+	 */
+	const ERROR_SCHEMA_INVALID_KEY = 'ERROR_SCHEMA_INVALID_KEY';
+
+	/**
+	 * The system is currently in a maintenance window
+	 */
+	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
+
+	/**
 	 * @var []
 	 */
 	private $options = [];
@@ -25,9 +70,44 @@ class SetupCheck {
 	private $setupFile;
 
 	/**
+	 * @var TemplateEngine
+	 */
+	private $templateEngine;
+
+	/**
+	 * @var []
+	 */
+	private $messages = [];
+
+	/**
+	 * @var []
+	 */
+	private $definitions = [];
+
+	/**
+	 * @var string
+	 */
+	private $languageCode = 'en';
+
+	/**
+	 * @var string
+	 */
+	private $fallbackLanguageCode = 'en';
+
+	/**
+	 * @var boolean
+	 */
+	private $sentHeader = true;
+
+	/**
 	 * @var string
 	 */
 	private $errorType = '';
+
+	/**
+	 * @var string
+	 */
+	private $errorMessage = '';
 
 	/**
 	 * @var string
@@ -39,16 +119,41 @@ class SetupCheck {
 	 *
 	 * @param array $vars
 	 * @param SetupFile|null $setupFile
-	 *
-	 * @return boolean
 	 */
 	public function __construct( array $options, SetupFile $setupFile = null ) {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
+		$this->templateEngine = new TemplateEngine();
 
 		if ( $this->setupFile === null ) {
 			$this->setupFile =  new SetupFile();
 		}
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $file
+	 *
+	 * @return array
+	 * @throws RuntimeException
+	 */
+	public static function readFromFile( string $file ) : array {
+
+		if ( !is_readable( $file ) ) {
+			throw new FileNotReadableException( $file );
+		}
+
+		$contents = json_decode(
+			file_get_contents( $file ),
+			true
+		);
+
+		if ( json_last_error() === JSON_ERROR_NONE ) {
+			return $contents;
+		}
+
+		throw new JSONFileParseException( $file );
 	}
 
 	/**
@@ -60,16 +165,30 @@ class SetupCheck {
 	 */
 	public static function newFromDefaults( SetupFile $setupFile = null ) {
 
+		if ( !defined( 'SMW_VERSION' ) ) {
+			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
+		} else {
+			$version = SMW_VERSION;
+		}
+
 		$setupCheck = new SetupCheck(
 			[
-				'version' => defined( 'SMW_VERSION' ) ? SMW_VERSION : 'n/a',
-				'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey'],
-				'wgScriptPath' => $GLOBALS['wgScriptPath']
+				'SMW_VERSION'    => $version,
+				'MW_VERSION'     => $GLOBALS['wgVersion'], // MW_VERSION may not yet be defined!!
+				'wgLanguageCode' => $GLOBALS['wgLanguageCode'],
+				'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey']
 			],
 			$setupFile
 		);
 
 		return $setupCheck;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function disableHeader() {
+		$this->sentHeader = false;
 	}
 
 	/**
@@ -91,6 +210,33 @@ class SetupCheck {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $errorMessage
+	 */
+	public function setErrorMessage( string $errorMessage ) {
+		$this->errorMessage = $errorMessage;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $errorType
+	 */
+	public function setErrorType( string $errorType ) {
+		$this->errorType = $errorType;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isError( string $error ) : bool {
+		return $this->errorType === $error;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @return boolean
@@ -101,23 +247,34 @@ class SetupCheck {
 
 		// When it is not a test run or run from the command line we expect that
 		// the extension is registered using `enableSemantics`
-		if ( !$this->isCli() && !defined( 'SMW_EXTENSION_LOADED' ) ) {
-			$this->errorType = 'extensionload';
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			$this->errorType = self::ERROR_EXTENSION_LOAD;
 		} elseif ( $this->setupFile->inMaintenanceMode() ) {
-			$this->errorType = 'maintenance';
+			$this->errorType = self::MAINTENANCE_MODE;
 		} elseif ( $this->setupFile->isGoodSchema() === false ) {
-			$this->errorType = 'schema';
+			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;
 		}
 
 		return $this->errorType !== '';
 	}
 
 	/**
+	 * @note Adding a new error type requires to:
+	 *
+	 * - Define a constant to clearly identify the type of error
+	 * - Extend the `setupcheck.json` to add a definition for the new type and
+	 *   specify which information should be displayed
+	 * - In case the existing HTML elements aren't sufficient, create a new
+	 *   zxy.ms file and define the HTML code
+	 *
+	 * The `TemplateEngine` will replace arguments defined in the HTML hereby
+	 * absolving this class from any direct HTML manipulation.
+	 *
 	 * @since 3.1
 	 *
 	 * @param boolean $isCli
 	 *
-	 * @return boolean
+	 * @return string
 	 */
 	public function getError( $isCli = false ) {
 
@@ -126,23 +283,56 @@ class SetupCheck {
 			'content' => ''
 		];
 
-		if ( $this->errorType === 'extensionload' ) {
-			$error = $this->extensionLoadError();
-		} elseif ( $this->errorType === 'maintenance' ) {
-			$error = $this->maintenanceError( $this->setupFile->getMaintenanceMode() );
-		} elseif ( $this->errorType === 'schema' ) {
-			$error = $this->schemaError();
+		$this->languageCode = $this->options['wgLanguageCode'] ?? 'en';
+
+		// Output forms for different error types are registered with a JSON file.
+		$this->definitions = $this->readFromFile(
+			$GLOBALS['smwgTemplateDir'] . '/setupcheck/setupcheck.json'
+		);
+
+		// Error messages are specified in a special i18n JSON file to avoid relying
+		// on the MW message system especially when SMW isn't fully registered
+		// and we are unable to access any `smw-...` message keys from the standard
+		// i18n files.
+		$this->messages = $this->readFromFile(
+			$GLOBALS['smwgExtraneousLanguageFileDir'] . '/../local/setupcheck.i18n.json'
+		);
+
+		// HTML specific formatting is contained in the following files where
+		// a defined group of targets correspond to types used in the JSON
+		$this->templateEngine->bulkLoad(
+			[
+				'/setupcheck/setupcheck.ms' => 'setupcheck-html',
+				'/setupcheck/setupcheck.progress.ms' => 'setupcheck-progress',
+
+				// Target specific elements
+				'/setupcheck/setupcheck.section.ms'   => 'section',
+				'/setupcheck/setupcheck.version.ms'   => 'version',
+				'/setupcheck/setupcheck.paragraph.ms' => 'paragraph',
+				'/setupcheck/setupcheck.errorbox.ms'  => 'errorbox'
+			]
+		);
+
+		if ( !isset( $this->definitions['error_types'][$this->errorType] ) ) {
+			throw new RuntimeException( "The `{$this->errorType}` type is not defined in the `setupcheck.json`!" );
 		}
+
+		$error = $this->createErrorContent( $this->errorType );
 
 		if ( $isCli === false ) {
 			$content = $this->buildHTML( $error );
-			header( 'Content-Type: text/html; charset=UTF-8' );
-			header( 'Content-Length: ' . strlen( $content ) );
-			header( 'Cache-control: none' );
-			header( 'Pragma: no-cache' );
+			$this->header( 'Content-Type: text/html; charset=UTF-8' );
+			$this->header( 'Content-Length: ' . strlen( $content ) );
+			$this->header( 'Cache-control: none' );
+			$this->header( 'Pragma: no-cache' );
 		} else {
 			$content = $error['title'] . "\n\n" . $error['content'];
-			$content = strip_tags( trim( $content ) );
+			$content = str_replace(
+				[ '<!-- ROW -->', '</h3>', '</h4>', '</p>', '&nbsp;' ],
+				[ "\n", "\n\n", "\n\n", "\n\n", ' ' ],
+				$content
+			);
+			$content = "\n" . wordwrap( strip_tags( trim( $content ) ), 73 );
 		}
 
 		return $content;
@@ -166,199 +356,187 @@ class SetupCheck {
 		die();
 	}
 
-	private function extensionLoadError() {
+	private function header( $text ) {
+		if ( $this->sentHeader ) {
+			header( $text );
+		}
+	}
 
-		// `SMW_VERSION` is not defined which means
-		//  - i18n is not defined therefore use a canonical message
-		//  - Some program tried to access a SMW specific function without
-		//    enabling SMW first
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$content = '<p style="margin-top:1em;">' . 'Some program (or extension) tried to access function(s) of ' .
-					'Semantic MediaWiki without being correctly enabled.' . '</p>' .
-					'<h3 class="section"><span class="title">' . 'How do I fix this error?' . '</span></h3>' .
-					'<p>' . "To use Semantic MediaWiki or functions of it, it is necessary to add " .
-					"<code>enableSemantics</code> to your <code>LocalSetting.php</code> which will ensure " .
-					"required variables and parameters are setup before programs can continue to work and make use of it." .
-					"<br><br>Please have a look at the <a href='https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics'>enableSemantics</a> " .
-					"help page for further assistance." . '</p>';
+	private function createErrorContent( $type ) {
 
-			if ( $this->traceString !== '' ) {
-				$content .= '<h3 class="section"><span class="title">' . 'Stack trace' . '</span></h3>' .
-					'<p>' . "The follwing stack trace may indicate which program (or extension) tried to access " .
-					'Semantic MediaWiki or some of its functions.' . '</p>'.
-					'<div class="errorbox"><pre>' . $this->traceString . '</pre></div>';
+		$indicator_title = 'Error';
+		$template = $this->definitions['error_types'][$type];
+		$content = '';
+
+		/**
+		 * Actual output form
+		 */
+		foreach ( $template['output_form'] as $value ) {
+			$content .= $this->createContent( $value, $type );
+		}
+
+		/**
+		 * Special handling for the progress output
+		 */
+		if ( isset( $template['progress'] ) ) {
+			foreach ( $template['progress'] as $value ) {
+				$text = $this->createCopy( $value['text'] );
+
+				if ( isset( $value['progress_keys'] ) ) {
+					$content .= $this->createProgressIndicator( $value );
+				}
+
+				$args = [
+					'text' => $text,
+					'template' => $value['type']
+				];
+
+				$this->templateEngine->compile(
+					$value['type'],
+					$args
+				);
+
+				$content .= $this->templateEngine->publish( $value['type'] );
 			}
+		}
 
-			$title = 'Error » Semantic MediaWiki';
+		/**
+		 * Special handling for the stack trace output
+		 */
+		if ( isset( $template['stack_trace'] ) && $this->traceString !== '' ) {
+			foreach ( $template['stack_trace'] as $value ) {
+				$content .= $this->createContent( $value, $type );
+			}
+		}
+
+		if ( isset( $template['indicator_title'] ) ) {
+			$indicator_title = $this->createCopy( $template['indicator_title'] );
+		}
+
+		$error = [
+			'title' => 'Semantic MediaWiki',
+			'indicator_title' => $indicator_title,
+			'content' => $content,
+			'borderColor' => $template['indicator_color']
+		];
+
+		return $error;
+	}
+
+	private function createContent( $value, $type ) {
+
+		if ( $value['text'] === 'ERROR_TEXT' ) {
+			$text = $this->errorMessage;
+		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
+			$errors = explode( "\n", $this->errorMessage );
+			$text = '<ul><li>' . implode( '</li><li>', array_filter( $errors ) ) . '</li></ul>';
+		} elseif ( $value['text'] === 'TRACE_STRING' ) {
+			$text = $this->traceString;
 		} else {
-			$content = '<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-					'<p>' . $this->options['version'] . '</p>' .
-					'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
-					'<p>' . Message::get( 'smw-extensionload-error-why-explain', Message::PARSE ) . '</p>' .
-					'<h3 class="section"><span class="title">' . Message::get( 'smw-extensionload-error-how-title' ) . '</span></h3>' .
-					'<p>' . Message::get( 'smw-extensionload-error-how-explain', Message::PARSE ) . '</p>';
-
-			$title = Message::get( 'smw-upgrade-error-title' );
+			$text = $this->createCopy( $value['text'] );
 		}
 
-		$error = [
-			'title' => $title,
-			'content' => $content,
-			'borderColor' => '#dd3d31'
+		$args = [
+			'text' => $text,
+			'template' => $value['type']
 		];
 
-		return $error;
+		if ( $value['type'] === 'version' ) {
+			$args['version-title'] = $text;
+			$args['smw-title'] = 'Semantic MediaWiki';
+			$args['smw-version'] = $this->options['SMW_VERSION'] ?? 'n/a';
+			$args['smw-upgradekey'] = $this->options['smwgUpgradeKey'] ?? 'n/a';
+			$args['mw-title'] = 'MediaWiki';
+			$args['mw-version'] = $this->options['MW_VERSION'] ?? 'n/a';
+			$args['code-title'] = $this->createCopy( 'smw-setupcheck-code' );
+			$args['code-type'] = $type;
+		}
+
+		// The type is exepcted to match a defined target and in an event those
+		// don't match an exception will be raised.
+		$this->templateEngine->compile(
+			$value['type'],
+			$args
+		);
+
+		return $this->templateEngine->publish( $value['type'] );
 	}
 
-	private function maintenanceError( $maintenance ) {
+	private function createProgressIndicator( $value ) {
 
-		$progress = '';
+		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
+		$content = '';
 
-		if ( is_array( $maintenance ) && $maintenance !== []  ) {
-			foreach ( $maintenance as $key => $value ) {
-				$progress = $this->progress( Message::get( "smw-upgrade-progress-$key" ), $value );
+		foreach ( $maintenanceMode as $key => $v ) {
+
+			$args = [
+				'label' => $key,
+				'value' => $v
+			];
+
+			if( isset( $value['progress_keys'][$key] ) ) {
+				$args['label'] = $this->createCopy( $value['progress_keys'][$key] );
 			}
+
+			$this->templateEngine->compile(
+				'setupcheck-progress',
+				$args
+			);
+
+			$content .= $this->templateEngine->publish( 'setupcheck-progress' );
 		}
 
-		$content = '<p>' . Message::get( 'smw-upgrade-maintenance-note', Message::PARSE ) . '</p>' .
-			'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-			'<p>' . $this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')' . '</p>' .
-			'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-maintenance-why-title' ) . '</span></h3>' .
-			'<p>' . Message::get( 'smw-upgrade-maintenance-explain', Message::PARSE ) . '</p>' .
-			'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-progress' ) . '</span></h3>' .
-			'<p>' . $progress . Message::get( 'smw-upgrade-progress-explain', Message::PARSE ) . '</p>';
-
-		$error = [
-			'title' => Message::get( 'smw-upgrade-maintenance-title' ),
-			'content' => $content,
-			'borderColor' => '#ffc107'
-		];
-
-		return $error;
+		return $content;
 	}
 
-	private function schemaError() {
+	private function createCopy( $value, $default = 'n/a' ) {
 
-		$content = '<p>' . Message::get( [ 'smw-upgrade-error', '' ], Message::PARSE ) . '</p>' .
-				'<h3>' . Message::get( 'smw-upgrade-release' ) . '</h3>' .
-				'<p>' . $this->options['version'] . '&nbsp;(' . $this->options['smwgUpgradeKey'] . ')'. '</p>' .
-				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-why-title' ) . '</span></h3>' .
-				Message::get( 'smw-upgrade-error-why-explain', Message::PARSE ) .
-				'<h3 class="section"><span class="title">' . Message::get( 'smw-upgrade-error-how-title' ) . '</span></h3>' .
-				'<p>' . Message::get( 'smw-upgrade-error-how-explain-admin', Message::PARSE ) . '&nbsp;'.
-				Message::get( 'smw-upgrade-error-how-explain-links', Message::PARSE ) . '</p>';
+		if ( is_string( $value ) && isset( $this->messages[$value] ) ) {
+			$value = $this->messages[$value];
+		}
 
-		$error = [
-			'title' => Message::get( 'smw-upgrade-error-title' ),
-			'content' => $content,
-			'borderColor' => '#dd3d31'
-		];
+		if( isset( $value[$this->languageCode] ) ) {
+			$text = $value[$this->languageCode];
+		} elseif( isset( $value[$this->fallbackLanguageCode] ) ) {
+			$text = $value[$this->fallbackLanguageCode];
+		} else {
+			$text = $default;
+		}
 
-		return $error;
+		return $text;
 	}
 
 	private function buildHTML( array $error ) {
-		$logo = $this->options['wgScriptPath'] . '/resources/assets/mediawiki.png';
-		$content = isset( $error['content'] ) ? $error['content'] : '';
-		$title = isset( $error['title'] ) ? $error['title'] : '' ;
-		$borderColor = isset( $error['borderColor'] ) ? $error['borderColor'] : '#fff';
 
-		$output = <<<HTML
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-	<head>
-		<meta http-equiv="refresh" content="30" charset="UTF-8" />
-		<title>{$title}</title>
-		<style media='screen'>
-			body {
-				color: #000;
-				background-color: #fff;
-				font-family: sans-serif;
-				padding: 0em;
-			}
-			img, h1, h2, ul  {
-				text-align: left;
-				margin: 0.1em 0 0.3em;
-				margin-left:10px;
-			}
-			p, h2 {
-				text-align: left;
-				margin: 0.5em 0 1em;
-				margin-left:10px;
-			}
-			.title {
-				margin-left:10px;
-			}
-			h1 {
-				font-size: 140%;
-			}
-			h2 {
-				font-size: 110%;
-			}
-			h3 {
-				font-size: 100%;
-				margin-left:10px;
-			}
-			.errorbox {
-				color: #d33;
-				border-color: #fac5c5;
-				background-color: #fae3e3;
-				border: 0px solid;
-				word-break: normal;
-				padding: 0.5em 0.5em;
-				display: inline-block;
-				zoom: 1;
-				margin-left:10px;
-				margin-right:10px;
-			}
-			pre {
-				margin: 0px;
-				white-space: pre-wrap;       /* css-3 */
-				white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-				white-space: -pre-wrap;      /* Opera 4-6 */
-				white-space: -o-pre-wrap;    /* Opera 7 */
-				word-wrap: break-word;       /* Internet Explorer 5.5+ */
-			}
-			.progress-bar-animated {
-				animation: progress-bar-stripes 2s linear infinite;
-			}
-			.progress-bar-striped {
-				background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-size: 1rem 1rem;
-			}
-			.progress-bar-section {
-				margin-right: 20px;margin-bottom:10px;margin-top:10px;white-space: nowrap;padding: 8px 0 8px 0;;
-			}
-			.progress-bar {
-				background-color: #eee;transition: width .6s ease;justify-content: center;display: flex;white-space: nowrap;
-			}
-			.section {
-				background-color: #F5F5F5; padding: 6px; margin-left: -8px; margin-right: -8px;
-			}
-			@keyframes progress-bar-stripes {
-				from { background-position: 28px 0; } to { background-position: 0 0; }
-			}
-		</style>
-	</head>
-	<body>
-		<div style="height: 60px;background-color:#f8f9fa;padding-bottom:2px; margin-top: -8px;margin-left: -8px;margin-right: -8px; border-bottom: 4px solid {$borderColor};">
-		<img style="width:50px;margin-left:18px;padding-top:6px;padding-right: 18px;float:right;" src="{$logo}" alt='The MediaWiki logo' />
-		<h1 style="color:#222;margin-left:18px;padding-top:20px;">{$title}</h1></div>
-		<div style="margin-top:10px;line-height:1.4em;">{$content}
-		</div>
-	</body>
-</html>
-HTML;
+		$args = [
+			'title' => $error['title'] ?? '',
+			'indicator' => $error['indicator_title'] ?? '',
+			'content' => $error['content'] ?? '',
+			'borderColor' => $error['borderColor'] ?? '#fff',
+			'refresh' => $error['refresh'] ?? '30',
+		];
 
-		return $output;
-	}
+		$this->templateEngine->compile(
+			'setupcheck-html',
+			$args
+		);
 
-	private function progress( $msg, $value ) {
-		return <<<EOT
-         <div class='progress-bar-section'>
-         <div style='width:100%;margin-left: 8px;margin-bottom: 5px;'>$msg</div>
-         <div class='progress-bar progress-bar-striped progress-bar-animated' style='background-color:#FFC107;height:16px;padding:2px;width:$value%;margin-left: 8px;'></div>
-         </div>
-EOT;
+		$html = $this->templateEngine->publish( 'setupcheck-html' );
+
+		// Minify CSS rules, we keep them readable in the template to allow for
+		// better adaption
+		// @see http://manas.tungare.name/software/css-compression-in-php/
+		$html = preg_replace_callback( "/<style\\b[^>]*>(.*?)<\\/style>/s", function( $matches ) {
+				// Remove space after colons
+				$style = str_replace( ': ', ':', $matches[0] );
+
+				// Remove whitespace
+				return str_replace( [ "\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $style );
+			},
+			$html
+		);
+
+		return $html;
 	}
 
 }

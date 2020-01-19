@@ -1,0 +1,1 @@
+<!--{{template}}--><div class="errorbox"><pre>{{text}}</pre></div>
