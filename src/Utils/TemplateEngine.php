@@ -29,21 +29,28 @@ class TemplateEngine {
 	private $container = [];
 
 	/**
+	 * @var []
+	 */
+	private $compiled = [];
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param string|null $templateDir
-	 * @param boolean $resetTemplates
 	 */
-	public function __construct( $templateDir = null, $resetTemplates = false ) {
+	public function __construct( $templateDir = null ) {
 		$this->templateDir = $templateDir;
 
 		if ( $this->templateDir === null ) {
 			$this->templateDir = $GLOBALS['smwgTemplateDir'];
 		}
+	}
 
-		if ( $resetTemplates ) {
-			self::$templates = [];
-		}
+	/**
+	 * @since 3.2
+	 */
+	public function clearTemplates() {
+		self::$templates = [];
 	}
 
 	/**
@@ -54,6 +61,17 @@ class TemplateEngine {
 	 */
 	public function setContents( $target, $contents ) {
 		$this->container[$target] = $contents;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $files
+	 */
+	public function bulkLoad( array $files ) {
+		foreach ( $files as $file => $target ) {
+			$this->load( $file, $target );
+		}
 	}
 
 	/**
@@ -70,7 +88,7 @@ class TemplateEngine {
 			return $this->container[$target] = self::$templates[$file];
 		}
 
-		$_file = str_replace( [ '\\', '/', '//' ], DIRECTORY_SEPARATOR, $this->templateDir . '/' . $file );
+		$_file = str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, $this->templateDir . '/' . $file );
 
 		if ( !is_readable( $_file ) ) {
 			throw new FileNotReadableException( $_file );
@@ -91,12 +109,17 @@ class TemplateEngine {
 			return;
 		}
 
+		$complied = $this->container[$target];
+
 		foreach ( $args as $key => $value ) {
-			$this->container[$target] = str_replace( [ '{{' . $key . '}}', '{{#' . $key . '}}' ], $value, $this->container[$target] );
+			$complied = str_replace( [ '{{' . $key . '}}', '{{#' . $key . '}}' ], $value, $complied );
 		}
+
+		$this->compiled[$target] = $complied;
 	}
 
 	/**
+	 * @deprecated 3.2, use TemplateEngine::publish
 	 * @since 3.1
 	 *
 	 * @param string $target
@@ -105,12 +128,24 @@ class TemplateEngine {
 	 * @throws RuntimeException
 	 */
 	public function code( $target ) {
+		return $this->publish( $target );
+	}
 
-		if ( !isset( $this->container[$target] ) ) {
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $target
+	 *
+	 * @return string
+	 * @throws RuntimeException
+	 */
+	public function publish( $target ) {
+
+		if ( !isset( $this->compiled[$target] ) ) {
 			throw new RuntimeException( "Unknown `$target` reference!" );
 		}
 
-		return $this->container[$target];
+		return $this->compiled[$target];
 	}
 
 }

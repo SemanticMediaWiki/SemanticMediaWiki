@@ -31,7 +31,34 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 		$instance = new TemplateEngine();
 
 		$this->setExpectedException( '\RuntimeException' );
-		$instance->code( 'Foo' );
+		$instance->publish( 'Foo' );
+	}
+
+	public function testLoad() {
+
+		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance->load( '/Fixtures/readable.file', 'Foo' );
+
+		$instance->compile( 'Foo', [] );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->publish( 'Foo' )
+		);
+	}
+
+	public function testBulkLoad() {
+
+		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance->clearTemplates();
+
+		$instance->bulkLoad( [ '/Fixtures/readable.file' => 'Foo' ] );
+		$instance->compile( 'Foo', [] );
+
+		$this->assertEquals(
+			'Foo',
+			$instance->publish( 'Foo' )
+		);
 	}
 
 	/**
@@ -46,7 +73,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame(
 			$expected,
-			$instance->code( __METHOD__ )
+			$instance->publish( __METHOD__ )
 		);
 	}
 
