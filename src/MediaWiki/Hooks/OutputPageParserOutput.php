@@ -98,7 +98,7 @@ class OutputPageParserOutput extends HookHandler {
 
 		$request = $outputPage->getContext()->getRequest();
 
-		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit' ] ) ) {
+		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'purge', 'protect', 'unprotect', 'history', 'edit', 'formedit' ] ) ) {
 			return '';
 		}
 
