@@ -74,13 +74,13 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testRegisterExtensionCheck() {
+	public function testCheckExtensionRegistration() {
 
 		$vars = [
 			'smwgIgnoreExtensionRegistrationCheck' => true
 		];
 
-		Setup::registerExtensionCheck( $vars );
+		Setup::checkExtensionRegistration( $vars );
 
 		$this->assertCount(
 			1,
@@ -91,7 +91,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgIgnoreExtensionRegistrationCheck' => false
 		];
 
-		Setup::registerExtensionCheck( $vars );
+		Setup::checkExtensionRegistration( $vars );
 
 		$this->assertCount(
 			2,

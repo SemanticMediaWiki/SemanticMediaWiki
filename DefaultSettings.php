@@ -105,12 +105,8 @@ return [
 
 	###
 	# Allows to ignore the check for whether the extension was correctly enabled
-	# or not. It will display an error message on `Special:Version` in case it was
+	# or not. It will display a error message on `Special:Version` in case it was
 	# not.
-	#
-	# SMW 3.2 added an additional validation to check that `wfLoadExtension(
-	# 'SemanticMediaWiki')` isn't used given its conflict with `enableSemantics`.
-	# If the setting is set to `false` then this check is disabled as well.
 	#
 	# To ignore the check and suppress the error, set the value to `true`.
 	#

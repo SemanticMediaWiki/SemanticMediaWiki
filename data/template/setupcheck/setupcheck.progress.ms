@@ -1,1 +1,0 @@
-<!--{{template}}--><div class="progress-bar-section"><div style="width:100%;margin-left: 10px;margin-bottom: 5px;">{{label}}</div><div class="progress-bar progress-bar-striped progress-bar-animated" style="background-color:#FFC107;height:16px;padding:2px;width:{{value}}%;margin-left:10px;"></div></div>
