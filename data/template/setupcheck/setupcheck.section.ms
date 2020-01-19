@@ -1,1 +1,0 @@
-<!--{{template}}--><h3 class="section"><span class="title">{{text}}</span></h3>
