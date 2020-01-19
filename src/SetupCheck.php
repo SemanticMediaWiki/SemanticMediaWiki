@@ -247,7 +247,7 @@ class SetupCheck {
 
 		// When it is not a test run or run from the command line we expect that
 		// the extension is registered using `enableSemantics`
-		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) && !$this->isCli() ) {
 			$this->errorType = self::ERROR_EXTENSION_LOAD;
 		} elseif ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
