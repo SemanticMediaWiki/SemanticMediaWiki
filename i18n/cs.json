@@ -353,7 +353,7 @@
 	"smw-property-predefined-keyw": "\"$1\" je předdefinovaná vlastnost a [[Special:Types/Keyword|druh]] poskytnutý [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Sémantickou MediaWiki], který normalizuje text a má omezenou délku.",
 	"smw-type-keyw": "\"$1\" je druh [[Special:Types/Text|textu]], který má omezenou délku a normalizuje reprezentaci obsahu.",
 	"smw-change-propagation-protection": "Tato stránka je zamčena kvůli prevenci náhodných editací dat během [https://www.semantic-mediawiki.org/wiki/Change_propagation změny anotací hodnot]. Proces může trvat chvíli, než bude stránka odemčena, což záleží na velikosti a frekvenci [https://www.mediawiki.org/wiki/Manual:Job_queue plánovače].",
-	"smw-types-title": "Typ: $1",
+	"smw-types-title": "Datentyp: $1",
 	"smw-schema-usage": "Použití",
 	"smw-ask-title-keyword-type": "Hledání klíčových slov",
 	"smw-ask-message-keyword-type": "Toto vyhledává shody se stavem <code><nowiki>$1</nowiki></code>.",

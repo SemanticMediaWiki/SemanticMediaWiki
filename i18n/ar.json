@@ -919,6 +919,7 @@
 	"smw-copy-clipboard-title": "ينسخ المحتوى إلى الحافظة",
 	"smw-jsonview-expand-title": "يوسع عرض JSON",
 	"smw-jsonview-collapse-title": "يطوي عرض JSON",
+	"smw-jsonview-search-label": "بحث:",
 	"smw-redirect-target-unresolvable": "الهدف غير قابل للحل بسبب \"$1\"",
 	"smw-types-title": "النوع: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "غير مسموح بتغيير نموذج محتوى [https://www.semantic-mediawiki.org/wiki/Help:Schema صفحة مخطط].",
