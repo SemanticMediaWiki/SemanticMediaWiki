@@ -628,6 +628,7 @@
 	"smw-collapse": "접기",
 	"smw-copy": "복사",
 	"smw-copy-clipboard-title": "내용을 클립보드에 복사합니다",
+	"smw-jsonview-search-label": "검색:",
 	"smw-types-title": "유형: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "[https://www.semantic-mediawiki.org/wiki/Help:Schema 스키마 문서]의 콘텐츠 모델을 변경할 권한이 없습니다.",
 	"smw-schema-error-title": "유효성 검사 {{PLURAL:$1|오류}}",

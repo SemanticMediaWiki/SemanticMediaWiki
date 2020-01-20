@@ -309,7 +309,7 @@
 	"smw-admin-permissionswarn": "Ако постапката не успее со грешки при исполнувањето на SQL-наредбите, тогаш корисникот на базата на податоци што го употребува вашето вики (проверете ја вашата податотека „LocalSettings.php“) нема доволно дозволи.\nДоделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во „LocalSettings.php“, или пак употребете ја скриптата за одржување <code>setupStore.php</code> која може да ги користи акредитивите за администратор.",
 	"smw-admin-dbbutton": "Започни или поднови табели",
 	"smw-admin-announce": "Објавете го вашето вики",
-	"smw-admin-announce-text": "Ако вашето вики е јавно, можете да го регистрирате на <a href=\"https://wikiapiary.com\">WikiApiary</a> — викито за следење на викија.",
+	"smw-admin-announce-text": "Ако вашето вики е јавно, можете да го пријавите на <a href=\"https://wikiapiary.com\">WikiApiary</a> — викито за следење на викија.",
 	"smw-admin-deprecation-notice-title": "Напомени за застарување",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> е отстранет во $2",
 	"smw-admin-deprecation-notice-title-notice": "Претстојни промени",

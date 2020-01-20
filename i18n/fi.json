@@ -265,6 +265,7 @@
 	"smw-admin-smwhomepage": "Semantic MediaWikin täydellinen käyttäjän opas löytyy osoitteesta <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Ohjelmistovirheet voi raportoida <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubiin</a>.",
 	"smw-admin-questions": "Jos sinulla on kysymyksiä tai ehdotuksia, liity keskusteluun <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">Semanttisen MediaWikin käyttäjäfoorumilla</a> tai <a href=\"https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom\">keskusteluhuoneessa</a>.",
+	"smw-admin-statistics": "Tilastot",
 	"smw-admin-supplementary-settings-title": "Määritysasetukset",
 	"smw-admin-main-title": "Semanttinen MediaWiki » $1",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Välimuistitilastot",
