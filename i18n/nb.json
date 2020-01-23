@@ -911,6 +911,7 @@
 	"smw-copy-clipboard-title": "Kopierer innholdet til utklippstavlen",
 	"smw-jsonview-expand-title": "Utvider JSON-visningen",
 	"smw-jsonview-collapse-title": "Slår sammen JSON-visningen",
+	"smw-jsonview-search-label": "Søk:",
 	"smw-redirect-target-unresolvable": "Målet kan ikke løses fordi «$1»",
 	"smw-types-title": "Type: $1",
 	"smw-schema-namespace-editcontentmodel-disallowed": "Endring av innholdsmodellen til en [https://www.semantic-mediawiki.org/wiki/Help:Schema skjemaside] er ikke tillatt.",
