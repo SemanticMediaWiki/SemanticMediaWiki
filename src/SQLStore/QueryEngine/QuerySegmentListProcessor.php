@@ -243,7 +243,7 @@ class QuerySegmentListProcessor {
 
 			if ( $subQuery->joinTable !== '' ) {
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-				       $this->connection->tableName( $query->alias ) .
+					   $this->connection->tableName( $query->alias ) .
 					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
 					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
 			} elseif ( $subQuery->joinfield !== '' ) {
@@ -347,12 +347,12 @@ class QuerySegmentListProcessor {
 			"SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1"
 		];
 
-		$query->joinTable = $query->alias;
+		$query->joinTable = $smwtable;
 		$query->joinfield = "$query->alias.id";
 
 		$this->hierarchyTempTableBuilder->fillTempTable(
 			$type,
-			$tablename,
+			$smwtable,
 			$values,
 			$depth
 		);
