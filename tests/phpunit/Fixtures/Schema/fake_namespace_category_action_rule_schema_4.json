@@ -1,0 +1,42 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_rules": {
+		"rule_4_1": {
+			"if": {
+				"action": [ "edit", "view" ],
+				"namespace": "NS_HELP",
+				"category": [ "action-4-a", "action-4-b" ]
+			},
+			"then": {
+				"action": "4_1"
+			}
+		},
+		"rule_4_2": {
+			"if": {
+				"action": [ "edit" ],
+				"namespace": [ "NS_MAIN", "NS_HELP" ],
+				"category": { "oneOf" : [ "action-4-a", "action-4-b" ] }
+			},
+			"then": {
+				"action": "4_2"
+			}
+		},
+		"rule_4_3": {
+			"if": {
+				"action": [ "view", "delete" ],
+				"category": "action-4-a"
+			},
+			"then": {
+				"action": "4_3"
+			}
+		},
+		"rule_4_4": {
+			"if": {
+				"action": "delete"
+			},
+			"then": {
+				"action": "4_4"
+			}
+		}
+	}
+}

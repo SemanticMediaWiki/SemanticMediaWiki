@@ -38,6 +38,10 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 
 		$data = current( $this->container );
 
+		if ( $data instanceof Compartment ) {
+			return $data;
+		}
+
 		if ( !is_array( $data ) ) {
 			$data = [ $this->position => $data ];
 		}
@@ -66,21 +70,22 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 
 		foreach ( $data as $section => $value ) {
 
-			if ( is_string( $value ) ) {
-				continue;
+			if ( $value instanceof Compartment && $value->has( $key ) ) {
+				$result[] = $value;
+			} elseif ( is_array( $value ) ) {
+
+				if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {
+					$meta[Compartment::ASSOCIATED_SCHEMA] = $data[Compartment::ASSOCIATED_SCHEMA];
+				}
+
+				$meta[Compartment::ASSOCIATED_SECTION] = $section;
+
+				if ( isset( $value[$key] ) ) {
+					$result[] = $value + $meta;
+				}
+
+				$this->search( $key, $value, $meta, $result );
 			}
-
-			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {
-				$meta[Compartment::ASSOCIATED_SCHEMA] = $data[Compartment::ASSOCIATED_SCHEMA];
-			}
-
-			$meta[Compartment::ASSOCIATED_SECTION] = $section;
-
-			if ( isset( $value[$key] ) ) {
-				$result[] = $value + $meta;
-			}
-
-			$this->search( $key, $value, $meta, $result );
 		}
 
 		return $result;

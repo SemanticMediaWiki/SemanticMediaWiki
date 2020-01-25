@@ -78,6 +78,16 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructSchemaFilterFactory() {
+
+		$instance = new SchemaFactory();
+
+		$this->assertInstanceof(
+			'\SMW\Schema\SchemaFilterFactory',
+			$instance->newSchemaFilterFactory()
+		);
+	}
+
 	public function testIsRegisteredType() {
 
 		$instance = new SchemaFactory(

@@ -101,18 +101,20 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function newCompartmentIteratorByKey( $key ) {
+	public function newCompartmentIteratorByKey( string $key ) : CompartmentIterator {
 
 		$list = [];
 
 		foreach ( $this->getList() as $schema ) {
-			if ( $schema instanceof SchemaDefinition && $schema->has( $key ) ) {
-				$list[] = $schema->get( $key ) + [ Compartment::ASSOCIATED_SCHEMA => $schema->getName() ];
-			}
-		}
 
-		if ( $list === [] ) {
-			return new CompartmentIterator();
+			if ( !$schema instanceof SchemaDefinition || !$schema->has( $key ) ) {
+				continue;
+			}
+
+			// Keep the reference to the original schema
+			$list[] = $schema->get( $key ) + [
+				Compartment::ASSOCIATED_SCHEMA => $schema->getName()
+			];
 		}
 
 		return new CompartmentIterator( $list );

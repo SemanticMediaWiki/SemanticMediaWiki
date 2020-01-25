@@ -1,0 +1,30 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_rules": {
+		"rule_1_1": {
+			"if": {
+				"namespace": "NS_MAIN"
+			},
+			"then": {
+				"action": "1_1"
+			}
+		},
+		"rule_1_2": {
+			"if": {
+				"namespace": [ "NS_MAIN", "NS_FILE" ]
+			},
+			"then": {
+				"action": "1_2"
+			}
+		},
+		"rule_1_3": {
+			"if": {
+				"namespace": [ "NS_MAIN", "NS_FILE" ],
+				"category": "Foo"
+			},
+			"then": {
+				"action": "1_3"
+			}
+		}
+	}
+}
