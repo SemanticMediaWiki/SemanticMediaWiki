@@ -9,10 +9,17 @@ use SMW\Setup;
 use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\Utils\CliMsgFormatter;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv('MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * @license GNU GPL v2+
@@ -28,16 +35,26 @@ class PurgeEntityCache extends \Maintenance {
 	private $store;
 
 	/**
+	 * @var EntityCache
+	 */
+	private $entityCache;
+
+	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
 
 	/**
+	 * @var integer
+	 */
+	private $lastId = 0;
+
+	/**
 	 * @since 3.1
 	 */
 	public function __construct() {
-		$this->mDescription = "Purge cache entries for known entities and their associated data.";
 		parent::__construct();
+		$this->addDescription( "Purge cache entries for known entities and their associated data." );
 	}
 
 	/**
@@ -68,20 +85,50 @@ class PurgeEntityCache extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have Semantic MediaWiki enabled in order to run the maintenance script!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
-		$this->store = ApplicationFactory::getInstance()->getStore();
+		$cliMsgFormatter = new CliMsgFormatter();
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$this->store = $applicationFactory->getStore();
+		$this->entityCache = $applicationFactory->getEntityCache();
 
 		$this->reportMessage(
-			"\nThe script purges cache entries and their associate data for actively\n" .
-			"used entities.\n"
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'About' )
+		);
+
+		$text = [
+			"The script purges cache entries and their associate data for actively",
+			"used entities."
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'Cache purge' )
 		);
 
 		$this->reportMessage( "\nSelecting entities ...\n" );
-		$this->doPurge( $this->fetchRows() );
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... fetching rows from table ...", 3 )
+		);
+
+		$rows = $this->fetchRows();
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
+
+		$this->doPurge( $rows );
 
 		$this->reportMessage( "   ... done.\n" );
 
@@ -91,6 +138,13 @@ class PurgeEntityCache extends \Maintenance {
 	private function fetchRows() {
 
 		$connection = $this->store->getConnection( 'mw.db' );
+
+		$this->lastId = (int)$connection->selectField(
+			SQLStore::ID_TABLE,
+			'MAX(smw_id)',
+			'',
+			__METHOD__
+		);
 
 		return $connection->select(
 			SQLStore::ID_TABLE,
@@ -110,9 +164,28 @@ class PurgeEntityCache extends \Maintenance {
 		);
 	}
 
+	private function canExecute() {
+
+		if ( !Setup::isEnabled() ) {
+			return $this->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
+			);
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			return $this->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
+		}
+
+		return true;
+	}
+
 	private function doPurge( \Iterator $rows ) {
 
-		$entityCache = ApplicationFactory::getInstance()->getEntityCache();
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$count = $rows->numRows();
@@ -122,45 +195,50 @@ class PurgeEntityCache extends \Maintenance {
 			return $this->reportMessage( "   ... no entities selected ...\n"  );
 		}
 
-		$this->reportMessage( "   ... counting $count rows ...\n"  );
+		$this->reportMessage(
+			$cliMsgFormatter->twoCols( "... entities matched ...", "(rows) $count", 3 )
+		);
 
 		foreach ( $rows as $row ) {
-			$namespace = (int)$row->smw_namespace;
+			$i++;
 
-			if (  $namespace === SMW_NS_PROPERTY ) {
-				$property = DIProperty::newFromUserLabel( $row->smw_title );
-				$subject = $property->getCanonicalDiWikiPage();
-			} else {
-				$subject = new DIWikiPage(
-					$row->smw_title,
-					$namespace,
-					$row->smw_iw,
-					$row->smw_subobject
-				);
-			}
+			$msg = $cliMsgFormatter->progressCompact( $i, $count, $row->smw_id, $this->lastId );
 
 			$this->reportMessage(
-				$this->progress( $row->smw_id, $i++, $count )
+				$cliMsgFormatter->twoColsOverride( "... invalidating cache for ...", $msg, 3 )
 			);
 
-			$entityCache->invalidate( $subject );
+			$this->entityCache->invalidate( $this->newFromRow( $row ) );
 		}
 
 		$this->reportMessage( "\n"  );
 	}
 
-	/**
-	 * @see Maintenance::addDefaultParams
-	 */
-	protected function addDefaultParams() {
-		parent::addDefaultParams();
-	}
+	public function newFromRow( $row ) {
 
-	private function progress( $id, $i, $count ) {
-		return "\r". sprintf( "%-35s%s", "   ... purging document no.", sprintf( "%s (%1.0f%%)", $id, round( ( $i / $count ) * 100 ) ) );
+		$namespace = (int)$row->smw_namespace;
+		$title = $row->smw_title;
+
+		if ( $namespace === SMW_NS_PROPERTY ) {
+			try {
+				$property = DIProperty::newFromUserLabel( $row->smw_title );
+				$title = str_replace( ' ', '_', $property->getLabel() );
+			} catch( PredefinedPropertyLabelMismatchException $e ) {
+				//
+			}
+		}
+
+		$subject = new DIWikiPage(
+			$title,
+			$namespace,
+			$row->smw_iw,
+			$row->smw_subobject
+		);
+
+		return $subject;
 	}
 
 }
 
-$maintClass = 'SMW\Maintenance\PurgeEntityCache';
+$maintClass = PurgeEntityCache::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
