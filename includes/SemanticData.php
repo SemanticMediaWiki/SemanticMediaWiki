@@ -205,7 +205,7 @@ class SemanticData {
 	 *
 	 * @return boolean
 	 */
-	public function isStub() {
+	public function isStub() : bool {
 		return false;
 	}
 
