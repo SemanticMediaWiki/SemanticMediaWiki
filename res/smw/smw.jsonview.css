@@ -95,6 +95,14 @@
     outline:0;
 }
 
+.jsonview {
+    font-size: 12px;
+}
+
+.jsonview ul {
+    margin-bottom: 0px !important;
+}
+
 .jsonview .collapsible {
     list-style: unset;
 }
