@@ -293,6 +293,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callBlockIpComplete' ],
 			[ 'callUnblockUserComplete' ],
 			[ 'callUserGroupsChanged' ],
+			[ 'callDeleteAccount' ],
 			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
 			[ 'callSMWAdminTaskHandlerFactory' ],
 			[ 'callSMWApiAddTasks' ],
@@ -1513,6 +1514,30 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$user->expects( $this->any() )
 			->method( 'getName' )
 			->will( $this->returnValue( 'Foo' ) );
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $user ]
+		);
+
+		return $handler;
+	}
+
+	public function callDeleteAccount( $instance ) {
+
+		$handler = 'DeleteAccount';
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'foo_user' ) );
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )

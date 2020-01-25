@@ -52,6 +52,7 @@ use SMW\MediaWiki\Hooks\TitleIsMovable;
 use SMW\MediaWiki\Hooks\TitleMoveComplete;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
+use SMW\MediaWiki\Hooks\DeleteAccount;
 use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\SpecialPageList;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
@@ -300,6 +301,7 @@ class Hooks {
 			'BlockIpComplete' => [ $this, 'onBlockIpComplete' ],
 			'UnblockUserComplete' => [ $this, 'onUnblockUserComplete' ],
 			'UserGroupsChanged' => [ $this, 'onUserGroupsChanged' ],
+			'DeleteAccount' => [ $this, 'onDeleteAccount' ],
 
 			'SMW::SQLStore::AfterDataUpdateComplete' => [ $this, 'onAfterDataUpdateComplete'],
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete' => [ $this, 'onAfterCreateTablesComplete' ],
@@ -779,7 +781,7 @@ class Hooks {
 			$applicationFactory->getEventDispatcher()
 		);
 
-		return $articleDelete->process( $wikiPage );
+		return $articleDelete->process( $wikiPage->getTitle() );
 	}
 
 	/**
@@ -1132,6 +1134,33 @@ class Hooks {
 			$parser,
 			$applicationFactory->getSettings()->get( 'smwgSupportSectionTag' )
 		);
+
+		return true;
+	}
+
+	/**
+	 * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654
+	 * @provided by Extension:UserMerge
+	 *
+	 */
+	public function onDeleteAccount( $user ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$articleDelete = new ArticleDelete(
+			$applicationFactory->getStore()
+		);
+
+		$articleDelete->setEventDispatcher(
+			$applicationFactory->getEventDispatcher()
+		);
+
+		$deleteAccount = new DeleteAccount(
+			$applicationFactory->getNamespaceExaminer(),
+			$articleDelete
+		);
+
+		$deleteAccount->process( $user );
 
 		return true;
 	}

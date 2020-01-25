@@ -75,7 +75,7 @@ class UserChange implements HookListener {
 			]
 		);
 
-		$updateJob->insert();
+		$updateJob->lazyPush();
 
 		return true;
 	}

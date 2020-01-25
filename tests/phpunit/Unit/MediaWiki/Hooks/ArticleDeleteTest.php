@@ -98,14 +98,6 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $subject->getTitle() ) );
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
@@ -121,7 +113,7 @@ class ArticleDeleteTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$instance->process( $wikiPage )
+			$instance->process( $subject->getTitle() )
 		);
 	}
 
