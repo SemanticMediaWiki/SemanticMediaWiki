@@ -123,11 +123,19 @@ class PropertySubjectsLookup {
 		}
 
 		$res = $this->doFetch( $pid, $proptable, $ids, $requestOptions );
+
+		$resultLimiter = new ResultLimiter();
+		$resultLimiter->calcSize( $requestOptions );
+
 		$result = [];
 		$warmupCache = [];
 
 		// Reassign per ID
 		foreach ( $res as $row ) {
+
+			if ( $resultLimiter->canSkip( $row->id ) ) {
+				continue;
+			}
 
 			if ( !isset( $result[$row->id] ) ) {
 				$result[$row->id] = [];

@@ -556,8 +556,15 @@ class SemanticDataLookup {
 			'propertyKey' => ''
 		];
 
+		$resultLimiter = new ResultLimiter();
+		$resultLimiter->calcSize( $requestOptions );
+
 		foreach ( $res as $row ) {
 			$params['propertyKey'] = '';
+
+			if ( isset( $row->s_id ) && $resultLimiter->canSkip( $row->s_id ) ) {
+				continue;
+			}
 
 			// use joined or predefined property name
 			if ( $isSubject && $propTable->isFixedPropertyTable() ) {
