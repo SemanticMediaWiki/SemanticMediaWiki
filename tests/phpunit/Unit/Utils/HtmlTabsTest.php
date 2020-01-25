@@ -15,6 +15,16 @@ use SMW\Utils\HtmlTabs;
  */
 class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
 
+	public function testHasContents() {
+
+		$instance = new HtmlTabs();
+
+		$this->assertInternalType(
+			'bool',
+			$instance->hasContents()
+		);
+	}
+
 	public function testTab_Contents() {
 
 		$instance = new HtmlTabs();

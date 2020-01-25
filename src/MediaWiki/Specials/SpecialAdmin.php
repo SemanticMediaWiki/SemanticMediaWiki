@@ -141,13 +141,15 @@ class SpecialAdmin extends SpecialPage {
 			$supplementarySection .= $supplementaryTask->getHtml();
 		}
 
-		$deprecationNoticeTaskList = $taskHandlerList[TaskHandler::SECTION_DEPRECATION];
-		$deprecationNoticeTaskHandler = end( $deprecationNoticeTaskList );
+		$alertsSection = '';
 
-		$deprecationNotices = $deprecationNoticeTaskHandler->getHtml();
+		foreach ( $taskHandlerList[TaskHandler::SECTION_ALERTS] as $alertTask ) {
+			$alertsSection .= $alertTask->getHtml();
+		}
+
 		$htmlTabs = new HtmlTabs();
 
-		$default = $deprecationNotices === '' ? 'general' : 'notices';
+		$default = $alertsSection === '' ? 'general' : 'alerts';
 
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
@@ -158,10 +160,10 @@ class SpecialAdmin extends SpecialPage {
 		$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
 
 		$htmlTabs->tab(
-			'notices',
-			'⚠ ' . $this->msg_text( 'smw-admin-tab-notices' ),
+			'alerts',
+			'<span class="smw-icon-alert smw-tab-icon"></span>' . $this->msg_text( 'smw-admin-tab-alerts' ),
 			[
-				'hide'  => $deprecationNotices === '' ? true : false,
+				'hide'  => $alertsSection === '' ? true : false,
 				'class' => 'smw-tab-warning'
 			]
 		);
@@ -173,7 +175,7 @@ class SpecialAdmin extends SpecialPage {
 		$supportSection = end( $supportTaskList )->getHtml();
 
 		$htmlTabs->content( 'general', $supportSection );
-		$htmlTabs->content( 'notices', $deprecationNotices );
+		$htmlTabs->content( 'alerts', $alertsSection );
 		$htmlTabs->content( 'maintenance', $maintenanceSection );
 		$htmlTabs->content( 'supplement', $supplementarySection );
 

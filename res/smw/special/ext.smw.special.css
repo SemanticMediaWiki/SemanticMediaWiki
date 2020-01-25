@@ -54,8 +54,9 @@
 	border-top: 1px solid #ddd;
 }
 
-.smw-admin-deprecation-section {
-	padding-left: 20px;
+.smw-admin-deprecation-section,
+.smw-admin-deprecation-notice-section-legend {
+	padding-left: 10px;
 }
 
 .smw-admin-deprecation h4 {
@@ -69,6 +70,46 @@
 	font-weight: bold;
 	font-size: 16px !important;
 	margin-left: 10px;
+}
+
+.smw-admin-alerts-section-legend {
+	color: #999;
+}
+
+.smw-admin-alerts-section-legend p {
+	color: #222;
+}
+
+.smw-admin-alerts fieldset {
+	border-top: 1px solid #9E9E9E;
+	margin: 0 0 5px 0;
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+.smw-admin-alerts fieldset.smw-admin-alerts-section-legend {
+	border-top: 1px solid #ddd;
+}
+
+.smw-admin-alerts-section-legend-info {
+	color: #ffb20f;
+}
+
+.smw-admin-alerts-section-legend-info p {
+	color: #222;
+}
+
+.smw-admin-alerts fieldset.smw-admin-alerts-section-legend-info {
+	border-top: 1px solid #ffb20f;
+}
+
+.smw-admin-alerts fieldset legend {
+	font-weight: bold;
+	font-size: 16px !important;
+	margin-left: 14px;
 }
 
 .smw-admin-hr {
@@ -136,8 +177,22 @@
 .smw-admin #tab-supplement:checked ~ #tab-content-supplement,
 .smw-admin #tab-maintenance:checked ~ #tab-content-maintenance,
 .smw-admin #tab-registry:checked ~ #tab-content-registry,
+.smw-admin #tab-alerts:checked ~ #tab-content-alerts,
 .smw-admin #tab-notices:checked ~ #tab-content-notices {
 	display: block;
+}
+
+.smw-tab-icon,
+.smw-tab-alert-symbol {
+	margin-left: -10px;
+	margin-right: 10px;
+}
+
+.smw-icon-alert {
+	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath d='M10.01 21.01c0 1.1.89 1.99 1.99 1.99s1.99-.89 1.99-1.99h-3.98zM12 6c2.76 0 5 2.24 5 5v7H7v-7c0-2.76 2.24-5 5-5zm0-4.5c-.83 0-1.5.67-1.5 1.5v1.17C7.36 4.85 5 7.65 5 11v6l-2 2v1h18v-1l-2-2v-6c0-3.35-2.36-6.15-5.5-6.83V3c0-.83-.67-1.5-1.5-1.5zM11 8h2v4h-2zm0 6h2v2h-2z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	padding: 0 0 0 16px;
+	background-position: center;
 }
 
 .smw-admin section {
@@ -153,6 +208,10 @@
 
 .smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
 	border-top: 2px solid rgb(204, 0, 0);
+}
+
+.smw-admin input.nav-tab:checked + label.nav-label.smw-tab-notice {
+    border-top: 2px solid rgb(255, 178, 15);
 }
 
 .client-nojs .smw-admin-supplementary-duplookup-content:after {

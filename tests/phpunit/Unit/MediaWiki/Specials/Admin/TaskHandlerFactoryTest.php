@@ -134,7 +134,12 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'newDeprecationNoticeTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler'
+			'\SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler'
+		];
+
+		$provider[] = [
+			'newAlertsTaskHandler',
+			'\SMW\MediaWiki\Specials\Admin\AlertsTaskHandler'
 		];
 
 		$provider[] = [

@@ -1,10 +1,12 @@
 <?php
 
-namespace SMW\MediaWiki\Specials\Admin;
+namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
 use SMW\Message;
 use WebRequest;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -40,8 +42,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
-		return self::SECTION_DEPRECATION;
+	public function getName() : string {
+		return 'deprecationnotices';
 	}
 
 	/**
@@ -100,8 +102,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 				[
 					'class' => 'plainlinks'
 				],
-				$this->msg( 'smw-admin-deprecation-notice-docu' ) . $explanation
-			) . $html
+				$this->msg( 'smw-admin-deprecation-notice-docu' )
+			) . $explanation . $html
 		);
 	}
 

@@ -48,6 +48,15 @@ class HtmlTabs {
 	private $isSubTab = false;
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return bool
+	 */
+	public function hasContents() : bool {
+		return $this->contents !== [];
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param boolean $isRTL

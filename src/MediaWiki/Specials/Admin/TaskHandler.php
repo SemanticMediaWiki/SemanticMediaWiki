@@ -21,6 +21,7 @@ abstract class TaskHandler {
 	const SECTION_SCHEMA = 'section/schema';
 	const SECTION_MAINTENANCE = 'section/maintenance';
 	const SECTION_DEPRECATION ='section/deprecation';
+	const SECTION_ALERTS ='section/alerts';
 	const SECTION_SUPPORT ='section/support';
 
 	/**
@@ -104,6 +105,15 @@ abstract class TaskHandler {
 	 * @return string
 	 */
 	public function getSection() {
+		return '';
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getName() : string {
 		return '';
 	}
 
