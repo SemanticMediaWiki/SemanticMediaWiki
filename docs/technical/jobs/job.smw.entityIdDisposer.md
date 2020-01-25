@@ -5,7 +5,7 @@
 
 ## Usage
 
-```php
+<pre>
 use SMW\Services\ServicesFactory;
 
 $jobFactory = ServicesFactory::getInstance()->newJobFactory();
@@ -16,7 +16,7 @@ $entityIdDisposerJob = $jobFactory->newEntityIdDisposerJob(
 );
 
 $entityIdDisposerJob->insert();
-```
+</pre>
 
 ## Notes
 
