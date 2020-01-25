@@ -528,6 +528,10 @@ class SetupFile {
 			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];
 		}
 
+		// Recognize when the version requirements change and force
+		// an update to be able to check the requirements
+		$components += Setup::MINIMUM_DB_VERSION;
+
 		return json_encode( $components );
 	}
 

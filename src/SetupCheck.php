@@ -256,7 +256,7 @@ class SetupCheck {
 			$this->errorType = self::ERROR_EXTENSION_LOAD;
 		} elseif ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
-		} elseif ( $this->setupFile->hasDatabaseMinRequirement() === false ) {
+		} elseif ( !$this->isCli() && !$this->setupFile->hasDatabaseMinRequirement() ) {
 			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
 		} elseif ( $this->setupFile->isGoodSchema() === false ) {
 			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;

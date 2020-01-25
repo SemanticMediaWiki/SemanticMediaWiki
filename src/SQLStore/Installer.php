@@ -17,6 +17,7 @@ use SMW\TypesRegistry;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\Timer;
+use SMW\Setup;
 
 /**
  * @private
@@ -174,6 +175,10 @@ class Installer implements MessageReporter {
 		$this->tableBuildExaminer->setMessageReporter(
 			$messageReporter
 		);
+
+		if ( $this->meetsVersionMinRequirement( $messageReporter, Setup::MINIMUM_DB_VERSION ) === false ) {
+			return true;
+		}
 
 		// #3559
 		$tables = $this->tableSchemaManager->getTables();
@@ -449,6 +454,45 @@ class Installer implements MessageReporter {
 				$cliMsgFormatter->twoCols( "- $key", "$t $unit", 0, '.' )
 			);
 		}
+	}
+
+	private function meetsVersionMinRequirement( $messageReporter, $version ) {
+
+		$requirements = $this->tableBuildExaminer->defineDatabaseRequirements(
+			$version
+		);
+
+		if ( $this->tableBuildExaminer->meetsMinimumRequirement( $requirements ) ) {
+			return $this->setupFile->remove( SetupFile::DB_REQUIREMENTS );
+		}
+
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Compatibility notice' )
+		);
+
+		$text = [
+			"The {$requirements['type']} database version of {$requirements['latest_version']}",
+			"doesn't meet the minimum requirement of {$requirements['minimum_version']}",
+			"for Semantic MediaWiki.",
+			"\n\n",
+			 "The installation of Semantic MediaWiki was aborted!"
+		];
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$this->setupFile->set( [ SetupFile::DB_REQUIREMENTS => $requirements ] );
+		$this->setupFile->finalize();
+
+		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+			$messageReporter->reportMessage( $cliMsgFormatter->section( '', 0, '=' ) );
+			$messageReporter->reportMessage( "\n" );
+		}
+
+		return false;
 	}
 
 }
