@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Events;
+namespace SMW\Tests\Listener\EventListener\EventListeners;
 
 use SMW\DIWikiPage;
-use SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener
+ * @covers \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

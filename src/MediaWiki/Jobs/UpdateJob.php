@@ -9,7 +9,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;
-use SMW\EventHandler;
+use SMW\Listener\EventListener\EventHandler;
 use Title;
 
 /**

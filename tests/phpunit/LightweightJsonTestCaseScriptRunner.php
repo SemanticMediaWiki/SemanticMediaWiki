@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\EventHandler;
+use SMW\Listener\EventListener\EventHandler;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;

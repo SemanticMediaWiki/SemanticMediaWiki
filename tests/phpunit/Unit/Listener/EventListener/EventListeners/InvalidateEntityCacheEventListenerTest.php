@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Events;
+namespace SMW\Tests\Listener\EventListener\EventListeners;
 
 use SMW\DIWikiPage;
-use SMW\Events\InvalidateEntityCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Events\InvalidateEntityCacheEventListener
+ * @covers \SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

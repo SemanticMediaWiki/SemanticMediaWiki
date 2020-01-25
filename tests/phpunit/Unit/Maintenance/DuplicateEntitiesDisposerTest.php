@@ -20,21 +20,21 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $messageReporter;
 	private $connection;
-	private $propertyTableIdReferenceFinder;
 
 	protected function setUp() {
+
+		$propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->store->expects( $this->any() )
-			->method( 'getPropertyTableIdReferenceFinder' )
-			->will( $this->returnValue( $this->propertyTableIdReferenceFinder ) );
+			->method( 'service' )
+			->with( $this->equalTo( 'PropertyTableIdReferenceDisposer' ) )
+			->will( $this->returnValue( $propertyTableIdReferenceDisposer ) );
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()
@@ -152,22 +152,9 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$idTable = $this->getMockBuilder( '\stdClss' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getDataItemById' ] )
-			->getMock();
-
-		$this->store->expects( $this->atLeastOnce() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
-
-		$this->propertyTableIdReferenceFinder->expects( $this->atLeastOnce() )
-			->method( 'hasResidualReferenceForId' )
-			->will( $this->returnValue( false ) );
 
 		$instance = new DuplicateEntitiesDisposer(
 			$this->store

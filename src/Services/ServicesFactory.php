@@ -16,7 +16,7 @@ use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
 use SMW\DeferredTransactionalCallableUpdate;
 use SMW\EntityCache;
-use SMW\EventHandler;
+use SMW\Listener\EventListener\EventHandler;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\InTextAnnotationParser;

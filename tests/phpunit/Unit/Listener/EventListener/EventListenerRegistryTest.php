@@ -1,13 +1,14 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Listener\EventListener;
 
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;
-use SMW\EventListenerRegistry;
+use SMW\Listener\EventListener\EventListenerRegistry;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\EventListenerRegistry
+ * @covers \SMW\Listener\EventListener\EventListenerRegistry
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

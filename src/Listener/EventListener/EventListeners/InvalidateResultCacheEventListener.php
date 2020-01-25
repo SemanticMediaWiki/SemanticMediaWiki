@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Events;
+namespace SMW\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
@@ -17,6 +17,8 @@ use Psr\Log\LoggerAwareTrait;
 class InvalidateResultCacheEventListener implements EventListener {
 
 	use LoggerAwareTrait;
+
+	const EVENT_ID = 'InvalidateResultCache';
 
 	/**
 	 * @var ResultCache

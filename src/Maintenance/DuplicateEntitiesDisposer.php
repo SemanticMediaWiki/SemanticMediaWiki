@@ -198,10 +198,7 @@ class DuplicateEntitiesDisposer {
 
 	private function id_table( $table, $duplicates, &$log ) {
 
-		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
-			$this->store
-		);
-
+		$propertyTableIdReferenceDisposer = $this->store->service( 'PropertyTableIdReferenceDisposer' );
 		$propertyTableIdReferenceDisposer->setRedirectRemoval( true );
 
 		$connection = $this->store->getConnection( 'mw.db' );

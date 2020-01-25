@@ -21,6 +21,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $titleFactory;
 	private $entityValidator;
+	private $propertyTableIdReferenceDisposer;
 
 	protected function setUp() {
 		parent::setUp();
@@ -43,6 +44,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->entityValidator = $this->getMockBuilder( '\SMW\SQLStore\Rebuilder\EntityValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +91,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Rebuilder::class,
-			new Rebuilder( $store, $this->titleFactory, $this->entityValidator )
+			new Rebuilder( $store, $this->titleFactory, $this->entityValidator, $this->propertyTableIdReferenceDisposer )
 		);
 	}
 
@@ -123,7 +128,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$store,
 			$this->titleFactory,
-			$this->entityValidator
+			$this->entityValidator,
+			$this->propertyTableIdReferenceDisposer
 		);
 
 		$instance->setDispatchRangeLimit( 1 );
@@ -211,7 +217,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$store,
 			$this->titleFactory,
-			$this->entityValidator
+			$this->entityValidator,
+			$this->propertyTableIdReferenceDisposer
 		);
 
 		$instance->setDispatchRangeLimit( 1 );

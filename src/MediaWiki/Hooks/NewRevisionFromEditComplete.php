@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Hooks;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use ParserOutput;
 use SMW\ApplicationFactory;
-use SMW\EventHandler;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\PageInfoProvider;
 use Title;

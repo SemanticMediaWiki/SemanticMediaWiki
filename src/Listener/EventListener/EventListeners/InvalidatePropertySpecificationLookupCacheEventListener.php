@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Events;
+namespace SMW\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
