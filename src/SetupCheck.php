@@ -50,6 +50,11 @@ class SetupCheck {
 	const ERROR_EXTENSION_INCOMPATIBLE = 'ERROR_EXTENSION_INCOMPATIBLE';
 
 	/**
+	 * Extension doesn't match the DB requirement for Semantic MediaWiki.
+	 */
+	const ERROR_DB_REQUIREMENT_INCOMPATIBLE = 'ERROR_DB_REQUIREMENT_INCOMPATIBLE';
+
+	/**
 	 * The upgrade key has change causing the schema to be invalid
 	 */
 	const ERROR_SCHEMA_INVALID_KEY = 'ERROR_SCHEMA_INVALID_KEY';
@@ -251,6 +256,8 @@ class SetupCheck {
 			$this->errorType = self::ERROR_EXTENSION_LOAD;
 		} elseif ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
+		} elseif ( $this->setupFile->hasDatabaseMinRequirement() === false ) {
+			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
 		} elseif ( $this->setupFile->isGoodSchema() === false ) {
 			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;
 		}
@@ -309,7 +316,8 @@ class SetupCheck {
 				'/setupcheck/setupcheck.section.ms'   => 'section',
 				'/setupcheck/setupcheck.version.ms'   => 'version',
 				'/setupcheck/setupcheck.paragraph.ms' => 'paragraph',
-				'/setupcheck/setupcheck.errorbox.ms'  => 'errorbox'
+				'/setupcheck/setupcheck.errorbox.ms'  => 'errorbox',
+				'/setupcheck/setupcheck.db.requirement.ms' => 'db-requirement',
 			]
 		);
 
@@ -452,8 +460,19 @@ class SetupCheck {
 			$args['code-type'] = $type;
 		}
 
-		// The type is exepcted to match a defined target and in an event those
-		// don't match an exception will be raised.
+		if ( $value['type'] === 'db-requirement' ) {
+			$requirements = $this->setupFile->get( SetupFile::DB_REQUIREMENTS );
+			$args['version-title'] = $text;
+			$args['db-title'] = $this->createCopy( 'smw-setupcheck-db-title' );
+			$args['db-type'] = $requirements['type'];
+			$args['db-current-title'] = $this->createCopy( 'smw-setupcheck-db-current-title' );
+			$args['db-minimum-title'] = $this->createCopy( 'smw-setupcheck-db-minimum-title' );
+			$args['db-current-version'] = $requirements['latest_version'];
+			$args['db-minimum-version'] = $requirements['minimum_version'];
+		}
+
+		// The type is expected to match a defined target and in an event
+		// that those don't match an exception will be raised.
 		$this->templateEngine->compile(
 			$value['type'],
 			$args
