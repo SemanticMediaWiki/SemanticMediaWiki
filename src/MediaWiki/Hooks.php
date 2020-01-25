@@ -55,6 +55,7 @@ use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\SpecialPageList;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
+use SMW\Maintenance\RunImport;
 
 /**
  * @license GNU GPL v2+
@@ -1333,20 +1334,24 @@ class Hooks {
 	 */
 	public function onAfterCreateTablesComplete ( $tableBuilder, $messageReporter, $options ) {
 
+		$messageReporter->reportMessage(
+			( new \SMW\Utils\CliMsgFormatter() )->section( 'Import tasks', 3, '-', true )
+		);
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$importerServiceFactory = $applicationFactory->create( 'ImporterServiceFactory' );
 
-		$importer = $importerServiceFactory->newImporter(
-			$importerServiceFactory->newJsonContentIterator(
-				$applicationFactory->getSettings()->get( 'smwgImportFileDirs' )
-			)
+		$contentIterator = $importerServiceFactory->newJsonContentIterator(
+			$applicationFactory->getSettings()->get( 'smwgImportFileDirs' )
 		);
 
-		$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::OPT_IMPORT, false ) );
-		$importer->setMessageReporter( $messageReporter );
-		$importer->doImport();
+		$importer = $importerServiceFactory->newImporter(
+			$contentIterator
+		);
 
-		$options->set( 'hook-execution', [ 'import' ] );
+		$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::RUN_IMPORT, false ) );
+		$importer->setMessageReporter( $messageReporter );
+		$importer->runImport();
 
 		return true;
 	}

@@ -3,7 +3,9 @@
 namespace SMW\Importer;
 
 use RuntimeException;
-use SMW\Utils\ErrorCodeFormatter;
+use SMW\Exception\JSONFileParseException;
+use SMW\Utils\FileFetcher;
+use SMW\Utils\File;
 
 /**
  * @license GNU GPL v2+
@@ -17,6 +19,16 @@ class JsonImportContentsFileDirReader {
 	 * @var ContentModeller
 	 */
 	private $contentModeller;
+
+	/**
+	 * @var FileFetcher
+	 */
+	private $fileFetcher;
+
+	/**
+	 * @var File
+	 */
+	private $file;
 
 	/**
 	 * @var array
@@ -37,14 +49,22 @@ class JsonImportContentsFileDirReader {
 	 * @since 2.5
 	 *
 	 * @param ContentModeller $contentModeller
+	 * @param FileFetcher $fileFetcher
+	 * @param File|null $file
 	 * @param array $importFileDirs
 	 */
-	public function __construct( ContentModeller $contentModeller, $importFileDirs = [] ) {
+	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, File $file = null, $importFileDirs = [] ) {
 		$this->contentModeller = $contentModeller;
+		$this->fileFetcher = $fileFetcher;
+		$this->file = $file;
 		$this->importFileDirs = $importFileDirs;
 
 		if ( $this->importFileDirs === [] ) {
-			$this->importFileDirs = $GLOBALS['smwgImportFileDirss'];
+			$this->importFileDirs = $GLOBALS['smwgImportFileDirs'];
+		}
+
+		if ( $this->file === null ) {
+			$this->file = new File();
 		}
 	}
 
@@ -65,28 +85,37 @@ class JsonImportContentsFileDirReader {
 	public function getContentList() {
 
 		$contents = [];
+		sort( $this->importFileDirs );
 
 		foreach ( $this->importFileDirs as $importFileDir ) {
 
 			try{
-				$files = $this->getFilesFromLocation( $this->normalize( $importFileDir ), 'json' );
+				$files = $this->getFilesFromLocation( $importFileDir, 'json' );
 			} catch( RuntimeException $e ) {
 				$this->errors[] = $importFileDir . ' is not accessible.';
-				$files = [];
+				continue;
 			}
 
 			foreach ( $files as $file => $path ) {
 
+				try {
+					$content = $this->readJSONFile( $file );
+				} catch( JSONFileParseException $e ) {
+					$this->errors[] = $e->getMessage();
+					continue;
+				}
+
 				$contentList = $this->contentModeller->makeContentList(
 					$importFileDir,
-					$this->readJSONFile( $path )
+					$content
 				);
 
 				if ( $contentList === [] ) {
 					continue;
 				}
 
-				$contents[$file] = $contentList;
+				$fileName = pathinfo( $file, PATHINFO_BASENAME );
+				$contents[$fileName] = $contentList;
 			}
 		}
 
@@ -96,7 +125,7 @@ class JsonImportContentsFileDirReader {
 	private function readJSONFile( $file ) {
 
 		$contents = json_decode(
-			file_get_contents( $file ),
+			$this->file->read( $file ),
 			true
 		);
 
@@ -104,22 +133,7 @@ class JsonImportContentsFileDirReader {
 			return $contents;
 		}
 
-		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
-	}
-
-	private function normalize( $importFileDir ) {
-
-		if ( $importFileDir === '' ) {
-			return '';
-		}
-
-		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $importFileDir );
-
-		if ( is_readable( $path ) ) {
-			return $path;
-		}
-
-		throw new RuntimeException( "Expected an accessible {$path} path" );
+		throw new JSONFileParseException( $file );
 	}
 
 	private function getFilesFromLocation( $path, $extension ) {
@@ -128,17 +142,10 @@ class JsonImportContentsFileDirReader {
 			return [];
 		}
 
-		$files = [];
+		$this->fileFetcher->setMaxDepth( 1 );
+		$this->fileFetcher->setDir( $path );
 
-		$directoryIterator = new \RecursiveDirectoryIterator( $path );
-
-		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
-			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
-				$files[$fileInfo->getFilename()] = $fileInfo->getPathname();
-			}
-		}
-
-		return $files;
+		return $this->fileFetcher->findByExtension( $extension );
 	}
 
 }

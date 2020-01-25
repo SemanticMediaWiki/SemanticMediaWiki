@@ -59,6 +59,15 @@ class JsonContentIterator implements ContentIterator {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() : string {
+		return md5( json_encode( $this->jsonImportContentsFileDirReader->getContentList() ) );
+	}
+
+	/**
 	 * @see IteratorAggregate::getIterator
 	 *
 	 * @since 2.5

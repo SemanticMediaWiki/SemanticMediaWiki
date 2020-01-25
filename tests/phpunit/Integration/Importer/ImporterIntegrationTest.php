@@ -41,7 +41,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		$importer->setMessageReporter( $this->spyMessageReporter );
 		$importer->setReqVersion( 1 );
 
-		$importer->doImport();
+		$importer->runImport();
 
 		$this->stringValidator->assertThatStringContains(
 			[
@@ -54,10 +54,6 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 
 	public function testValidXmlContent() {
 
-		if ( !interface_exists( '\ImportSource' ) ) {
-			$this->markTestSkipped( "ImportSource interface is unknown (MW 1.25-)" );
-		}
-
 		$importer = $this->importerServiceFactory->newImporter(
 			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidXmlContent' ] )
 		);
@@ -65,7 +61,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 		$importer->setMessageReporter( $this->spyMessageReporter );
 		$importer->setReqVersion( 1 );
 
-		$importer->doImport();
+		$importer->runImport();
 
 		$this->stringValidator->assertThatStringContains(
 			[

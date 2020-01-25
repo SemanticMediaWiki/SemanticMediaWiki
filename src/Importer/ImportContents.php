@@ -158,6 +158,22 @@ class ImportContents {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() : string {
+
+		$fingerprint = md5( $this->contents );
+
+		if ( $this->contentsFile !== '' ) {
+			$fingerprint .= hash_file( 'md5', $this->contentsFile );
+		}
+
+		return md5( $this->version . $fingerprint );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return string

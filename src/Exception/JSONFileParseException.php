@@ -28,6 +28,10 @@ class JSONFileParseException extends JSONParseException {
 			$message = "JSON error in file $file caused by:";
 		}
 
+		if ( !is_readable( $file ) ) {
+			return "$file is not readable!";
+		}
+
 		return "$message\n" . $this->getParseError( file_get_contents( $file ) );
 	}
 

@@ -88,7 +88,7 @@ return [
 	#
 	# @since 2.5
 	##
-	'smwgImportFileDirs' => [ 'default' => __DIR__ . '/data/import' ],
+	'smwgImportFileDirs' => [ 'smw' => __DIR__ . '/data/import' ],
 	'smwgImportReqVersion' => 1,
 	##
 

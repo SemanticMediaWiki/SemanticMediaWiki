@@ -43,7 +43,7 @@ class Installer implements MessageReporter {
 	/**
 	 * Import option
 	 */
-	const OPT_IMPORT = 'installer.import';
+	const RUN_IMPORT = 'installer/import';
 
 	/**
 	 * `smw_hash` field population
@@ -235,13 +235,20 @@ class Installer implements MessageReporter {
 
 		$this->setupFile->finalize();
 
+		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
+
 		$messageReporter->reportMessage(
 			$cliMsgFormatter->section( 'AfterCreateTablesComplete (Hook)' )
 		);
 
-		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
+		$text = [
+			'Tasks registered via the hook depend on the functionality implemented',
+			'and may take a comment to complete.'
+		];
 
-		$this->options->set( 'hook-execution', [] );
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 
 		Hooks::run(
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
@@ -357,7 +364,7 @@ class Installer implements MessageReporter {
 	private function runTableOptimization( $messageReporter ) {
 
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
-			return $messageReporter->reportMessage( "   ... skipping the table optimization\n" );
+			return $messageReporter->reportMessage( "Table optimization was not enabled (or skipped), stopping the task.\n" );
 		}
 
 		$cliMsgFormatter = new CliMsgFormatter();

@@ -139,7 +139,7 @@ class CliMsgFormatter {
 	public function section( string $title, int $indentLen = 3, string $placeHolder = '-', bool $reverse = false ) : string {
 
 		if ( $reverse ) {
-			$title = "$title " . sprintf( "%'{$placeHolder}" . $indentLen . "s", '' );
+			$title = "$title" . ( $indentLen == 0 ? '' : ' ' ) . sprintf( "%'{$placeHolder}" . $indentLen . "s", '' );
 			return "\n" . sprintf( "%'{$placeHolder}" . ( self::MAX_LEN - mb_strlen( $title ) ) . "s%s", ' ', $title ) . "\n";
 		}
 
@@ -214,6 +214,10 @@ class CliMsgFormatter {
 
 		$len = self::MAX_LEN - mb_strlen( $secondCol );
 		$placeholderLen = $len - mb_strlen( $firstCol );
+
+		if ( $placeholderLen <= 0 ) {
+			$placeholderLen = 0;
+		}
 
 		$content = (
 			sprintf( "%-{$len}s%s", "$firstCol" . sprintf( "%'{$placeHolder}{$placeholderLen}s", ' ' ), $secondCol )
@@ -374,8 +378,8 @@ class CliMsgFormatter {
 	private function trimContent( $content ) {
 
 		$length = mb_strlen( $content ) - 1;
-		$startOff = 32;
-		$endOff = 32;
+		$startOff = ( self::MAX_LEN / 2 ) - 3;
+		$endOff = ( self::MAX_LEN / 2 ) - 3;
 
 		if ( $length >= self::MAX_LEN ) {
 			$content = mb_substr( $content, 0, $startOff ) . ' ... ' . mb_substr( $content, $length - $endOff );

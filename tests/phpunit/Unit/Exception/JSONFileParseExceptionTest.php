@@ -27,4 +27,16 @@ class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstruct_FileNotReadable() {
+
+		$instance = new JSONFileParseException(
+			'Foo'
+		);
+
+		$this->assertContains(
+			"Foo is not readable!",
+			$instance->getMessage()
+		);
+	}
+
 }

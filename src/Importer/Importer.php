@@ -4,6 +4,7 @@ namespace SMW\Importer;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -81,52 +82,45 @@ class Importer implements MessageReporterAware {
 	/**
 	 * @since 2.5
 	 */
-	public function doImport() {
-
-		$this->messageReporter->reportMessage( "\nImport tasks ..." );
+	public function runImport() {
 
 		if ( $this->isEnabled === false ) {
-			return $this->messageReporter->reportMessage( "\n   ... skipping the import process.\n" );
+			return $this->messageReporter->reportMessage( "\nImport support was not enabled (or skipped), stopping the task.\n" );
 		}
 
 		if ( $this->reqVersion === false ) {
-			return $this->messageReporter->reportMessage( "\n   ... import support not enabled, processing completed.\n" );
+			return $this->messageReporter->reportMessage( "\nRequired import version is missing, stopping the task.\n" );
 		}
 
-		$import = false;
-		$this->messageReporter->reportMessage( "\n" );
-
-		foreach ( $this->contentIterator as $key => $importContents ) {
+		foreach ( $this->contentIterator as $key => $contents ) {
 			$this->messageReporter->reportMessage( "\nImporting from $key ...\n" );
 
-			foreach ( $importContents as $impContents ) {
+			foreach ( $contents as $importContents ) {
 
-				if ( $impContents->getVersion() !== $this->reqVersion ) {
+				if ( $importContents->getVersion() !== $this->reqVersion ) {
 					$this->messageReporter->reportMessage( "   ... version mismatch, abort import for $key\n" );
 					break;
 				}
 
-				$this->doImportContents( $impContents );
+				$this->doImport( $importContents );
 			}
 
 			$this->messageReporter->reportMessage( "   ... done.\n" );
-			$import = true;
 		}
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->contentIterator->getErrors() !== [] ) {
 			$this->messageReporter->reportMessage(
-				"\n" . 'Import failed on "' . implode( ", ", $this->contentIterator->getErrors() ) . '"'
+				"\n" . $cliMsgFormatter->oneCol( 'Import failed on:' ) .
+				$cliMsgFormatter->wordWrap( $this->contentIterator->getErrors() )
 			);
-		}
-
-		if ( $import ) {
-			$this->messageReporter->reportMessage( "\nImport processing completed.\n" );
 		}
 	}
 
-	private function doImportContents( ImportContents $importContents ) {
+	private function doImport( ImportContents $importContents ) {
 
-		$indent = '   ...';
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $importContents->getErrors() === [] ) {
 			$this->contentCreator->setMessageReporter( $this->messageReporter );
@@ -134,7 +128,9 @@ class Importer implements MessageReporterAware {
 		}
 
 		foreach ( $importContents->getErrors() as $error ) {
-			$this->messageReporter->reportMessage( "$indent " . $error . " ...\n" );
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->oneCol( "... $error ...\n", 3 )
+			);
 		}
 	}
 
