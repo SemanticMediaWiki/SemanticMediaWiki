@@ -72,6 +72,15 @@ class StubSemanticData extends SemanticData {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isStub() {
+		return true;
+	}
+
+	/**
 	 * Required to support php-serialization
 	 *
 	 * @since 2.3

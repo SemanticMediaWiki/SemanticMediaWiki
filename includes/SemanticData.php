@@ -201,6 +201,15 @@ class SemanticData {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isStub() {
+		return false;
+	}
+
+	/**
 	 * Return subject to which the stored semantic annotations refer to.
 	 *
 	 * @return DIWikiPage subject
@@ -713,7 +722,7 @@ class SemanticData {
 				$key = $property->getKey();
 				$this->mPropVals[$key] = $semanticData->getPropertyValues( $property );
 
-				if ( SequenceMap::canMap( $property ) && isset( $this->sequenceMap[$key] ) ) {
+				if ( isset( $this->sequenceMap[$key] ) && SequenceMap::canMap( $property ) ) {
 					$sequenceMap = array_flip( $this->sequenceMap[$key] );
 
 					usort ( $this->mPropVals[$key], function( $a, $b ) use( $sequenceMap ) {
@@ -738,8 +747,17 @@ class SemanticData {
 			}
 		}
 
-		foreach( $semanticData->getSubSemanticData() as $semData ) {
-			$this->addSubSemanticData( $semData );
+		// Postpone the import and avoid resolving `SubSemanticData` for
+		// a `StubSemanticData` objects that would otherwise create the entire
+		// object graph recursively even though it might not be necessary as in
+		// case when retrieving data via `Special:Browse`
+		//
+		// Subobject references are part of the value representation and assigned
+		// to the relevant property which may be resolved at a later point
+		if ( !$semanticData->isStub() ) {
+			foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
+				$this->addSubSemanticData( $subSemanticData );
+			}
 		}
 	}
 
