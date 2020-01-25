@@ -55,7 +55,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewSlaveQueryEngineReturnType() {
+	public function testCanConstructSlaveQueryEngine() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -65,7 +65,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewMasterQueryEngineReturnType() {
+	public function testCanConstructMasterQueryEngine() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -75,7 +75,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewMasterConceptCache() {
+	public function testCanConstructMasterConceptCache() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -85,7 +85,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNewSlaveConceptCache() {
+	public function testCanConstructSlaveConceptCache() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -95,7 +95,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstractEntityIdManager() {
+	public function testCanConstructEntityIdManager() {
 
 		$instance = new SQLStoreFactory( new SMWSQLStore3() );
 
@@ -613,6 +613,184 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\Services\ServicesContainer',
 			$instance->newServicesContainer()
 		);
+	}
+
+	public function testCanConstructPropertyTableUpdater() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTableUpdater',
+			$instance->newPropertyTableUpdater()
+		);
+	}
+
+	public function testCanConstructPropertyTableInfoFetcher() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTableInfoFetcher',
+			$instance->newPropertyTableInfoFetcher()
+		);
+	}
+
+	public function testCanConstructTraversalPropertyLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\TraversalPropertyLookup',
+			$instance->newTraversalPropertyLookup()
+		);
+	}
+
+	public function testCanConstructPropertySubjectsLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\PropertySubjectsLookup',
+			$instance->newPropertySubjectsLookup()
+		);
+	}
+
+	public function testCanConstructPropertiesLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\PropertiesLookup',
+			$instance->newPropertiesLookup()
+		);
+	}
+
+	public function testCanConstructPropertyTableRowDiffer() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\PropertyTableRowDiffer',
+			$instance->newPropertyTableRowDiffer()
+		);
+	}
+
+	public function testCanConstructEntityIdFinder() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\EntityIdFinder',
+			$instance->newEntityIdFinder( $idCacheManager )
+		);
+	}
+
+	public function testCanConstructRedirectUpdater() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\RedirectUpdater',
+			$instance->newRedirectUpdater()
+		);
+	}
+
+	public function testCanConstructPrefetchCache() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\EntityStore\PrefetchCache',
+			$instance->newPrefetchCache()
+		);
+	}
+
+	public function testCanConstructSingleEntityQueryLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\SingleEntityQueryLookup',
+			$instance->newSingleEntityQueryLookup()
+		);
+	}
+
+	public function testCanConstructDeferredCallableCachedListLookupUpdate() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Deferred\TransactionalCallableUpdate',
+			$instance->newDeferredCallableCachedListLookupUpdate()
+		);
+	}
+
+	public function testCanConstructRebuilder() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Rebuilder\Rebuilder',
+			$instance->newRebuilder()
+		);
+	}
+
+	public function testConfirmAllCanConstructMethodsWereCalled() {
+
+		// Available class methods to be tested
+		$classMethods = get_class_methods( SQLStoreFactory::class );
+
+		// Match all "testCanConstruct" to define the expected set of methods
+		$testMethods = preg_grep('/^testCanConstruct/', get_class_methods( $this ) );
+
+		$testMethods = array_flip(
+			str_replace( 'testCanConstruct', 'new', $testMethods )
+		);
+
+		foreach ( $classMethods as $name ) {
+
+			if ( substr( $name, 0, 3 ) !== 'new' ) {
+				continue;
+			}
+
+			$this->assertArrayHasKey( $name, $testMethods );
+		}
 	}
 
 }
