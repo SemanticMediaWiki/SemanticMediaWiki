@@ -75,6 +75,30 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			return '';
 		}
 
+		$explanation = [];
+
+		foreach ( [ 'notice', 'replacement', 'removal' ] as $key ) {
+			$explanation[] = Html::rawElement(
+				'li',
+				[],
+				$this->msg( "smw-admin-deprecation-notice-title-$key-explanation" )
+			);
+		}
+
+		$explanation = Html::rawElement(
+			'fieldset',
+			[
+				'class' => "smw-admin-deprecation-notice-section-legend"
+			],
+			Html::rawElement(
+				'legend',
+				[
+					'class' => "smw-admin-deprecation-notice-section-legend"
+				],
+				$this->msg( "smw-admin-deprecation-notice-section-legend" )
+			) . '<ul>' . implode( '', $explanation ) . '</ul>'
+		);
+
 		return Html::rawElement(
 			'div',
 			[
@@ -85,7 +109,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 				[
 					'class' => 'plainlinks'
 				],
-				$this->msg( 'smw-admin-deprecation-notice-docu' )
+				$this->msg( 'smw-admin-deprecation-notice-docu' ) . $explanation
 			) . $html
 		);
 	}
@@ -206,13 +230,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			'h4',
 			[],
 			$this->msg( $title )
-		) . Html::rawElement(
-			'p',
-			[
-				'class' => "$section-admin-deprecation-notice-section-explanation",
-				'style' => 'margin-bottom:10px;'
-			],
-			$this->msg( $title . '-explanation' )
 		) . Html::rawElement(
 			'ul',
 			[
