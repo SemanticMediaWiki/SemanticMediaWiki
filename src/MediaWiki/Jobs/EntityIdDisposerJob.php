@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use Title;
+use SMW\RequestOptions;
 
 /**
  * @license GNU GPL v2+
@@ -21,6 +22,12 @@ class EntityIdDisposerJob extends Job {
 	 * Commit chunk size
 	 */
 	const CHUNK_SIZE = 200;
+
+	/**
+	 * Defines the row size for the batching process and to be processed within
+	 * a single job request.
+	 */
+	const BATCH_ROW_SIZE = 5000;
 
 	/**
 	 * @var PropertyTableIdReferenceDisposer
@@ -46,15 +53,17 @@ class EntityIdDisposerJob extends Job {
 	/**
 	 * @since 2.5
 	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator() {
+	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
 
 		if ( $this->propertyTableIdReferenceDisposer === null ) {
 			$this->propertyTableIdReferenceDisposer = $this->newPropertyTableIdReferenceDisposer();
 		}
 
-		return $this->propertyTableIdReferenceDisposer->newOutdatedEntitiesResultIterator();
+		return $this->propertyTableIdReferenceDisposer->newOutdatedEntitiesResultIterator( $requestOptions );
 	}
 
 	/**
@@ -127,19 +136,42 @@ class EntityIdDisposerJob extends Job {
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {
-			$this->dispose_all( $this->newOutdatedEntitiesResultIterator() );
+			$this->disposeOutdatedEntities();
 		}
 
 		return true;
 	}
 
-	private function dispose_all( $outdatedEntitiesResultIterator ) {
+	private function disposeOutdatedEntities() {
 
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
+
+		$requestOptions = new RequestOptions();
+		$requestOptions->setLimit( self::BATCH_ROW_SIZE );
+
+		$outdatedEntitiesResultIterator = $this->newOutdatedEntitiesResultIterator(
+			$requestOptions
+		);
+
+		$count = $outdatedEntitiesResultIterator->count();
+		$cycle = $this->hasParameter( 'cycle' ) ? (int)$this->getParameter( 'cycle' ) : 0;
+
+		if ( $count == 0 ) {
+			return;
+		}
+
+		// We expect more outdated entities to be contained in the ID_TABLE
+		// therefore reenter the disposal cycle
+		$entityIdDisposerJob = new self(
+			$this->getTitle(),
+			$this->params + [ 'cycle' => ++$cycle ]
+		);
+
+		$entityIdDisposerJob->insert();
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
