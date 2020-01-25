@@ -106,7 +106,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	public function testSetMaintenanceMode() {
 
 		$fields = [
-			'upgrade_key' => '7540cc7b594b305fa2525c33d8963acb0c2d7b29',
+			'upgrade_key' => 'e230d2baae635d8af7f20be34b2de36f23b6d610',
 			SetupFile::MAINTENANCE_MODE => true,
 			// "upgrade_key_base" => '["",[],"",[]]'
 		];

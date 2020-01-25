@@ -183,4 +183,45 @@ class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->checkOnPostDestruction( $tableBuilder );
 	}
 
+	public function testRequirements() {
+
+		$connection = $this->getMockBuilder( '\DatabaseBase' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getServerInfo' ] )
+			->getMockForAbstractClass();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'getServerInfo' )
+			->will( $this->returnValue( 1 ) );
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'foo' ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new TableBuildExaminer(
+			$store,
+			$this->tableBuildExaminerFactory
+		);
+
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$requirements = $instance->defineDatabaseRequirements( [ 'foo' => 2 ] );
+
+		$this->assertArrayHasKey( 'type', $requirements );
+		$this->assertArrayHasKey( 'latest_version', $requirements );
+		$this->assertArrayHasKey( 'minimum_version', $requirements );
+
+		$this->assertFalse(
+			$instance->meetsMinimumRequirement( $requirements )
+		);
+	}
+
 }

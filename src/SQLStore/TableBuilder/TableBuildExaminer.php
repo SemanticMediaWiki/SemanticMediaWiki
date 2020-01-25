@@ -84,6 +84,36 @@ class TableBuildExaminer {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param array $requirements
+	 *
+	 * @return array
+	 */
+	public function defineDatabaseRequirements( array $requirements ) : array {
+
+		$connection = $this->store->getConnection( DB_MASTER );
+		$type = $connection->getType();
+
+		return [
+			'type' => $type,
+			'latest_version' => $connection->getServerInfo(),
+			'minimum_version' => $requirements[$type]
+		];
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $requirements
+	 *
+	 * @return boolean
+	 */
+	public function meetsMinimumRequirement( array $requirements ) : bool {
+		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TableBuilder $tableBuilder

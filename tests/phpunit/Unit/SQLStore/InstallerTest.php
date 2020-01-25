@@ -33,7 +33,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$this->tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,6 +66,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsMinimumRequirement' )
+			->will( $this->returnValue( true ) );
+
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
 			->will( $this->returnValue( [ $table ] ) );
@@ -95,6 +99,33 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInstall_FailsMinimumRequirement() {
+
+		$this->tableBuildExaminer->expects( $this->once() )
+			->method( 'defineDatabaseRequirements' )
+			->will( $this->returnValue( [ 'type' => 'foo', 'latest_version' => 1, 'minimum_version' => 2 ] ) );
+
+		$this->tableBuildExaminer->expects( $this->once() )
+			->method( 'meetsMinimumRequirement' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableBuildExaminer
+		);
+
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setSetupFile( $this->setupFile );
+
+		$instance->install();
+
+		$this->assertContains(
+			"The foo database version of 1 doesn't meet the minimum requirement of 2",
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+	}
+
 	public function testInstallWithSupplementJobs() {
 
 		$this->jobQueue->expects( $this->exactly( 2 ) )
@@ -103,6 +134,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsMinimumRequirement' )
+			->will( $this->returnValue( true ) );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
@@ -142,6 +177,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsMinimumRequirement' )
+			->will( $this->returnValue( true ) );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )

@@ -17,6 +17,22 @@ use SMW\Utils\Logo;
 final class Setup {
 
 	/**
+	 * Describes the minimum requirements for the database version that Semantic
+	 * MediaWiki expects and may differ from what is defined in:
+	 *
+	 * - `MysqlInstaller`
+	 * - `PostgresInstaller`
+	 * - `SqliteInstaller`
+	 *
+	 * Any change to a version will modify the key computed by `SetupFile::makeKey`.
+	 */
+	const MINIMUM_DB_VERSION = [
+		'postgres' => '9.2',
+		'sqlite' => '3.3.7',
+		'mysql' => '5.5.8'
+	];
+
+	/**
 	 * Registers a hook even before the "early" registration to allow checking
 	 * whether the extension is loaded and enabled.
 	 *
