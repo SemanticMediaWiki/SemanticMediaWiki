@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\Status;
 use SMWDIBlob as DIBlob;
 use SMW\Parameters;
 use SMW\SQLStore\PropertyStatisticsTable;
@@ -98,7 +99,7 @@ class SQLStoreUpdater {
 			$title->getNamespace()
 		);
 
-		$extensionList = array_flip( $idList );
+		$deleteList = array_flip( $idList );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$emptySemanticData = new SemanticData( $subject );
@@ -108,7 +109,7 @@ class SQLStoreUpdater {
 		$propertyTableIdReferenceFinder = $this->store->service( 'PropertyTableIdReferenceFinder' );
 
 		foreach ( $idList as $id ) {
-			$this->doDelete( $id, $subject, $subobjectListFinder, $extensionList );
+			$this->doDelete( $id, $subject, $subobjectListFinder, $deleteList );
 			$this->doDataUpdate( $emptySemanticData );
 
 			if ( $propertyTableIdReferenceFinder->hasResidualPropertyTableReference( $id ) === false ) {
@@ -128,14 +129,18 @@ class SQLStoreUpdater {
 			}
 		}
 
-		$extensionList = array_keys( $extensionList );
-
-		$this->store->extensionData['delete.list'] = $extensionList;
+		$status = new Status(
+			[
+				'delete_list' => array_keys( $deleteList )
+			]
+		);
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
 		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
 
 		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
+
+		return $status;
 	}
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
@@ -254,8 +259,12 @@ class SQLStoreUpdater {
 
 		$propertyChangeListener->matchAndTriggerChangeListeners();
 
-		$this->store->extensionData['delete.list'] = $deleteList;
-		$this->store->extensionData['change.diff'] = $changeDiff;
+		$status = new Status(
+			[
+				'delete_list' => $deleteList,
+				'change_diff' => $changeDiff
+			]
+		);
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
 		\Hooks::run( 'SMWSQLStore3::updateDataAfter', [ $this->store, $semanticData ] );
@@ -267,6 +276,8 @@ class SQLStoreUpdater {
 		] );
 
 		$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
+
+		return $status;
 	}
 
 	/**
@@ -433,6 +444,8 @@ class SQLStoreUpdater {
 			$newTitle,
 			$options
 		);
+
+		return new Status();
 	}
 
 }
