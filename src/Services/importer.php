@@ -10,6 +10,8 @@ use SMW\Importer\ContentModeller;
 use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
+use SMW\Utils\FileFetcher;
+use SMW\Utils\File;
 
 /**
  * @codeCoverageIgnore
@@ -99,6 +101,8 @@ return [
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
 			new ContentModeller(),
+			new FileFetcher(),
+			new File(),
 			$importFileDirs
 		);
 

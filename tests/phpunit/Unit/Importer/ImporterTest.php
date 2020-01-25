@@ -69,15 +69,15 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $spyMessageReporter );
 		$instance->isEnabled( false );
 
-		$instance->doImport();
+		$instance->runImport();
 
 		$this->assertContains(
-			'skipping the import process',
+			'Import support was not enabled (or skipped), stopping the task',
 			$spyMessageReporter->getMessagesAsString()
 		);
 	}
 
-	public function testDoImport() {
+	public function testRunImport() {
 
 		$importContents = new ImportContents();
 
@@ -107,10 +107,10 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->messageReporter );
 		$instance->setReqVersion( 1 );
 
-		$instance->doImport();
+		$instance->runImport();
 	}
 
-	public function testDoImportWithError() {
+	public function testrunImportWithError() {
 
 		$importContents = new ImportContents();
 
@@ -136,7 +136,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->messageReporter );
 		$instance->setReqVersion( 1 );
 
-		$instance->doImport();
+		$instance->runImport();
 	}
 
 }

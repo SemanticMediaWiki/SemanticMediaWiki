@@ -26,4 +26,11 @@ interface ContentIterator extends IteratorAggregate {
 	 */
 	public function getErrors();
 
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getFingerprint() : string;
+
 }

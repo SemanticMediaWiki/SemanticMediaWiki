@@ -8,6 +8,7 @@ use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\TitleFactory;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**
@@ -61,12 +62,16 @@ class TextContentCreator implements ContentCreator {
 			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
 		}
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$indent = '   ...';
 		$indent_e = '      ';
 		$name = $importContents->getName();
 
 		if ( $name === '' ) {
-			return $this->messageReporter->reportMessage( "$indent no valid page name, abort import." );
+			return $this->messageReporter->reportMessage(
+				$cliMsgFormatter->oneCol( "... no valid page name, abort import.", 3 )
+			);
 		}
 
 		$title = $this->titleFactory->newFromText(
@@ -75,13 +80,16 @@ class TextContentCreator implements ContentCreator {
 		);
 
 		if ( $title === null ) {
-			return $this->messageReporter->reportMessage( "$indent $name returned with a null title, abort import." );
+			return $this->messageReporter->reportMessage(
+				$cliMsgFormatter->oneCol( "... $name returned with a null title, abort import.", 3 )
+			);
 		}
 
 		$page = $this->titleFactory->createPage( $title );
 		$prefixedText = $title->getPrefixedText();
 
 		$replaceable = false;
+		$action = '';
 
 		if ( $importContents->getOption( 'canReplace' ) ) {
 			$replaceable = $importContents->getOption( 'canReplace' );
@@ -94,13 +102,27 @@ class TextContentCreator implements ContentCreator {
 		}
 
 		if ( $title->exists() && !$replaceable ) {
-			return $this->messageReporter->reportMessage( "$indent skipping $prefixedText\n$indent_e already exists ...\n" );
+			return $this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols( "... $prefixedText ...", '[EXISTS,SKIP]', 3 )
+			);
 		} elseif( $title->exists() && $replaceable ) {
-			$this->messageReporter->reportMessage( "$indent replacing $prefixedText\n$indent_e importer was last editor ...\n" );
+			$action = 'EXISTS,REPLACE';
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+			);
 		} elseif( $title->exists() ) {
-			$this->messageReporter->reportMessage( "$indent replacing $prefixedText ...\n" );
+			$action = 'EXISTS,REPLACE';
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+			);
 		} else {
-			$this->messageReporter->reportMessage( "$indent creating $prefixedText ...\n" );
+			$action = 'CREATE';
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+			);
 		}
 
 		// Avoid a possible "Notice: WikiPage::doEditContent: Transaction already
@@ -109,6 +131,10 @@ class TextContentCreator implements ContentCreator {
 		$this->connection->onTransactionIdle( function() use ( $page, $title, $importContents ) {
 			$this->doCreateContent( $page, $title, $importContents );
 		} );
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( "[$action]" )
+		);
 	}
 
 	private function doCreateContent( $page, $title, $importContents ) {

@@ -28,7 +28,8 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\UpdateEntityCollation'      => __DIR__ . '/../maintenance/updateEntityCollation.php',
 	'SMW\Maintenance\RemoveDuplicateEntities'    => __DIR__ . '/../maintenance/removeDuplicateEntities.php',
 	'SMW\Maintenance\PurgeEntityCache'           => __DIR__ . '/../maintenance/purgeEntityCache.php',
-	'SMW\Maintenance\UpdateQueryDependencies'    => __DIR__ . '/../maintenance/updateQueryDependencies.php'
+	'SMW\Maintenance\UpdateQueryDependencies'    => __DIR__ . '/../maintenance/updateQueryDependencies.php',
+	'SMW\Maintenance\RunImport'                  => __DIR__ . '/../maintenance/runImport.php'
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );

@@ -4,7 +4,7 @@ namespace SMW\Tests\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Tests\TestEnvironment;
+use SMW\Utils\FileFetcher;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -21,37 +21,62 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $contentModeller;
-	private $testEnvironment;
-	private $fixtures;
+	private $fileFetcher;
+	private $file;
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->contentModeller = new ContentModeller();
+		$this->contentModeller = $this->getMockBuilder( '\SMW\Importer\ContentModeller' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->testEnvironment = new TestEnvironment();
-		$this->fixtures = __DIR__ . '/Fixtures';
+		$this->fileFetcher = $this->getMockBuilder( '\SMW\Utils\FileFetcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			JsonImportContentsFileDirReader::class,
-			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fixtures )
+			new JsonImportContentsFileDirReader( $this->contentModeller, $this->fileFetcher, $this->file )
 		);
 	}
 
-	public function testGetContentList() {
+	public function tesGetContentList() {
+
+		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->contentModeller->expects( $this->atLeastOnce() )
+			->method( 'makeContentList' )
+			->will( $this->returnValue( $importContents ) );
+
+		$this->fileFetcher->expects( $this->atLeastOnce() )
+			->method( 'findByExtension' )
+			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+
+		$this->file->expects( $this->atLeastOnce() )
+			->method( 'read' )
+			->with( $this->stringContains( 'FooFile' ) )
+			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
-			[ $this->fixtures . '/ValidTextContent' ]
+			$this->fileFetcher,
+			$this->file
 		);
 
 		$contents = $instance->getContentList();
 
 		$this->assertArrayHasKey(
-			'content.json',
+			'FooFile',
 			$contents
 		);
 
@@ -65,54 +90,34 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function testGetContentListOnFalseImportFormat() {
+	public function testGetContentList_WithError() {
+
+		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->fileFetcher->expects( $this->atLeastOnce() )
+			->method( 'findByExtension' )
+			->will( $this->returnValue( [ 'FooFile' => [] ] ) );
+
+		$this->file->expects( $this->atLeastOnce() )
+			->method( 'read' )
+			->with( $this->stringContains( 'FooFile' ) )
+			->will( $this->returnValue( 'Foo' ) );
 
 		$instance = new JsonImportContentsFileDirReader(
 			$this->contentModeller,
-			[ $this->fixtures . '/NoImportFormat' ]
+			$this->fileFetcher,
+			$this->file,
+			[ 'Foo' ]
 		);
 
-		$this->assertEmpty(
-			$instance->getContentList()
-		);
-	}
-
-	public function testGetContentListOnMissingSections() {
-
-		$instance = new JsonImportContentsFileDirReader(
-			$this->contentModeller,
-			[ $this->fixtures . '/MissingSections' ]
-		);
-
-		$contents = $instance->getContentList();
-
-		$this->assertArrayHasKey(
-			'error.json',
-			$contents
-		);
-	}
-
-	public function testGetContentListWithInvalidPath() {
-
-		$instance = new JsonImportContentsFileDirReader(
-			$this->contentModeller,
-			[ __DIR__ . '/InvalidPath' ]
-		);
-
-		$this->assertEmpty(
-			$instance->getContentList()
-		);
-	}
-
-	public function testGetContentListOnInvalidJsonThrowsException() {
-
-		$instance = new JsonImportContentsFileDirReader(
-			$this->contentModeller,
-			[ $this->fixtures . '/InvalidJsonContent' ]
-		);
-
-		$this->setExpectedException( 'RuntimeException' );
 		$instance->getContentList();
+
+		$this->assertContains(
+			'FooFile is not readable',
+			implode( '', $instance->getErrors() )
+		);
 	}
 
 }
