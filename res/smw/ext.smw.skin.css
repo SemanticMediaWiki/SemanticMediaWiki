@@ -97,6 +97,8 @@
 
 .skin-chameleon fieldset legend {
 	width:unset;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 /**

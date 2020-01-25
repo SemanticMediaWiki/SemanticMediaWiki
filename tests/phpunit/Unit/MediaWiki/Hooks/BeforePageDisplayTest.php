@@ -131,6 +131,40 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $this->outputPage, $this->skin );
 	}
 
+	public function testEmptyPrependHTML_IncompleteTasks_DisallowedSpecialPages() {
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->title->expects( $this->any() )
+			->method( 'isSpecialPage' )
+			->will( $this->returnValue( true ) );
+
+		$this->title->expects( $this->any() )
+			->method( 'isSpecial' )
+			->with( $this->equalTo( 'Userlogin' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->outputPage->expects( $this->once() )
+			->method( 'prependHTML' )
+			->with( $this->equalTo( '' ) );
+
+		$this->outputPage->expects( $this->atLeastOnce() )
+			->method( 'getUser' )
+			->will( $this->returnValue( $user ) );
+
+		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'incomplete_tasks' => [ 'Foo', 'Bar' ]
+			]
+		);
+
+		$instance->process( $this->outputPage, $this->skin );
+	}
+
 	/**
 	 * @dataProvider titleDataProvider
 	 */

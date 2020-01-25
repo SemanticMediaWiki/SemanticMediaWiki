@@ -449,10 +449,12 @@ class Hooks {
 	public function onBeforePageDisplay( &$outputPage, &$skin ) {
 
 		$beforePageDisplay = new BeforePageDisplay();
+		$setupFile = new SetupFile();
 
 		$beforePageDisplay->setOptions(
 			[
-				'incomplete_tasks' => SetupFile::findIncompleteTasks( $GLOBALS )
+				'incomplete_tasks' => $setupFile->findIncompleteTasks(),
+				'is_upgrade' => $setupFile->get( SetupFile::PREVIOUS_VERSION )
 			]
 		);
 

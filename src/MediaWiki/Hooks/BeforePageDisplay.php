@@ -81,8 +81,8 @@ class BeforePageDisplay extends HookHandler {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 
-		if ( ( $tasks = $this->getOption( 'incomplete_tasks', [] ) ) !== [] ) {
-			$outputPage->prependHTML( $this->incompleteTasksHTML( $tasks ) );
+		if ( $this->getOption( 'incomplete_tasks', [] ) !== [] ) {
+			$outputPage->prependHTML( $this->createIncompleteSetupTaskNotification( $title ) );
 		}
 
 		// Add export link to the head
@@ -103,13 +103,24 @@ class BeforePageDisplay extends HookHandler {
 		return true;
 	}
 
-	private function incompleteTasksHTML( array $messages ) {
+	private function createIncompleteSetupTaskNotification( $title ) {
 
-		$html = '';
+		$disallowSpecialPages = [
+			'Userlogin',
+			'PendingTaskList',
+			'CreateAccount'
+		];
 
-		foreach ( $messages as $message ) {
-			$html .= Html::rawElement( 'li', [], Message::get( $message, Message::PARSE ) );
+		if ( $title->isSpecialPage() ) {
+			foreach ( $disallowSpecialPages as $specialPage ) {
+				if ( $title->isSpecial( $specialPage ) ) {
+					return '';
+				}
+			}
 		}
+
+		$is_upgrade = $this->getOption( 'is_upgrade' ) !== null ? 2 : 1;
+		$count = count( $this->getOption( 'incomplete_tasks' ) );
 
 		return Html::rawElement(
 			'div',
@@ -119,18 +130,17 @@ class BeforePageDisplay extends HookHandler {
 			Html::rawElement(
 				'div',
 				[
-					'class' => 'title',
-					'style' => 'margin-bottom:10px'
+					'style' => 'font-size: 10px;text-align: right;margin-top: 5px;margin-bottom: -5px; float:right;'
 				],
-				Message::get( 'smw-install-incomplete-tasks-title' )
+				Message::get( [ 'smw-install-incomplete-intro-note' ], Message::PARSE, Message::USER_LANGUAGE )
 			) . Html::rawElement(
 				'div',
 				[
-					'style' => 'margin-bottom:10px'
+					'class' => 'title'
 				],
-				Message::get( 'smw-install-incomplete-intro' )
+				Message::get( 'smw-title' )
 			) .
-			"<ul>$html</ul>"
+			Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE )
 		);
 	}
 

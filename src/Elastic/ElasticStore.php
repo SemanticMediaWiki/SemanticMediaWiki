@@ -38,7 +38,7 @@ class ElasticStore extends SQLStore {
 	 * Setup key to verify that the `rebuildElasticIndex.php` has been executed.
 	 */
 	const REBUILD_INDEX_RUN_COMPLETE = 'elastic.rebuild_index_run_complete';
-	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-rebuildelasticindex-run-incomplete';
+	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-elastic-rebuildelasticindex-run-incomplete';
 
 	/**
 	 * @var ElasticFactory

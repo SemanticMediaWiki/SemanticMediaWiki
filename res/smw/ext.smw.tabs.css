@@ -103,7 +103,7 @@
  * Requires to be adjusted by each set that uses the rules
  * to assign a tab to a content section.
  */
-#tab1:checked ~ #content1,
+#tab-setup:checked ~ #tab-content-setup,
 #tab2:checked ~ #content2,
 #tab3:checked ~ #content3,
 #tab4:checked ~ #content4 {

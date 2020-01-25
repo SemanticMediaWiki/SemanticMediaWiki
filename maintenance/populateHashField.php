@@ -77,6 +77,9 @@ class PopulateHashField extends \Maintenance {
 			$setupFile->addIncompleteTask( 'smw-populatehashfield-incomplete' );
 		}
 
+		// Remove legacy by 3.3
+		$setupFile->remove( \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE );
+
 		$this->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
