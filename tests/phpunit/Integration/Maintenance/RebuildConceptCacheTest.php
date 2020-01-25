@@ -10,11 +10,11 @@ use SMW\Tests\TestEnvironment;
  * @group medium
  *
  * @license GNU GPL v2+
- * @since 3.1
+ * @since 3.2
  *
  * @author mwjames
  */
-class PopulateHashFieldTest extends MwDBaseUnitTestCase {
+class RebuildConceptCacheTest extends MwDBaseUnitTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
@@ -32,10 +32,14 @@ class PopulateHashFieldTest extends MwDBaseUnitTestCase {
 	public function testRun() {
 
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\PopulateHashField'
+			'SMW\Maintenance\RebuildConceptCache'
 		);
 
 		$maintenanceRunner->setQuiet();
+
+		$maintenanceRunner->setOptions(
+			[ 'create' => true ]
+		);
 
 		$this->assertTrue(
 			$maintenanceRunner->run()

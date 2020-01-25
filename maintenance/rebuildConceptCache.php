@@ -4,10 +4,16 @@ namespace SMW\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\Setup;
+use SMW\Utils\CliMsgFormatter;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * Manage concept caches
@@ -67,25 +73,7 @@ class RebuildConceptCache extends \Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-
-		$this->addDescription( "\n" .
-			"This script is used to manage concept caches for Semantic MediaWiki. Concepts \n" .
-			"are semantic queries stored on Concept: pages. The elements of concepts can be \n" .
-			"computed online, or they can come from a pre-computed cache. The wiki may even \n" .
-			"be configured to display certain concepts only if they are available cached. \n" .
-			"\n" . "This script can create, delete and update these caches, or merely show their \n".
-			"status. "
-		);
-
-		$this->addDefaultParams();
-	}
-
-	/**
-	 * @see Maintenance::addDefaultParams
-	 */
-	protected function addDefaultParams() {
-
-		parent::addDefaultParams();
+		$this->addDescription( "Maintenance script to manage concept caches in Semantic MediaWiki." );
 
 		// Actions
 		$this->addOption( 'status', 'Show the cache status of the selected concepts' );
@@ -115,15 +103,33 @@ class RebuildConceptCache extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
-		if ( !Setup::isValid( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
-			exit;
-		}
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'About' )
+		);
+
+		$text = [
+			"This script is used to manage concept caches for Semantic MediaWiki. Concepts",
+			"are semantic queries stored on Concept: pages. The elements of concepts can be",
+			"computed online, or they can come from a pre-computed cache. The wiki may even",
+			"be configured to display certain concepts only if they are available cached.",
+			"\n\n",
+			"This script can create, delete and update these caches, or merely show their",
+			"status. "
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
@@ -149,8 +155,11 @@ class RebuildConceptCache extends \Maintenance {
 		);
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
-			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
+			$this->reportMessage( $cliMsgFormatter->section( 'Runtime report' ) );
+
+			$this->reportMessage(
+				"\n" . $maintenanceHelper->getFormattedRuntimeValues()
+			);
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
@@ -179,10 +188,28 @@ class RebuildConceptCache extends \Maintenance {
 		$this->output( $message );
 	}
 
+	private function canExecute() {
+
+		if ( !Setup::isEnabled() ) {
+			return $this->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
+			);
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			return $this->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
+		}
+
+		return true;
+	}
+
 	private function checkForRebuildState( $rebuildResult ) {
 
 		if ( !$rebuildResult ) {
-			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
+			$this->reportMessage( "\n" . 'Use option --help for usage details.' . "\n"  );
 			return false;
 		}
 
@@ -191,5 +218,5 @@ class RebuildConceptCache extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildConceptCache';
+$maintClass = RebuildConceptCache::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );

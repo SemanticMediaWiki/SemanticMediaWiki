@@ -8,6 +8,7 @@ use SMW\DIConcept;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**
@@ -112,12 +113,41 @@ class ConceptCacheRebuilder {
 	 */
 	public function rebuild() {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'Concept(s)' )
+		);
+
+		if ( $this->hasOption( 'hard' ) ) {
+
+			$this->reportMessage(
+				"\nOption 'hard' defined with:\n"
+			);
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... smwgQMaxDepth' , $this->settings->get( 'smwgQMaxDepth' ), 3, '.' )
+			);
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... smwgQMaxSize' , $this->settings->get( 'smwgQMaxSize' ), 3, '.' )
+			);
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... smwgQFeatures' , $this->settings->get( 'smwgQFeatures' ), 3, '.' )
+			);
+
+			$this->reportMessage(
+				$cliMsgFormatter->section( 'Tasks', 3, '-', true )
+			);
+		}
+
 		switch ( $this->action ) {
 			case 'status':
-				$this->reportMessage( "\nDisplaying concept cache status information. Use CTRL-C to abort.\n\n" );
+				$this->reportMessage( "\nCache status information ...\n" );
 				break;
 			case 'create':
-				$this->reportMessage(  "\nCreating/updating concept caches. Use CTRL-C to abort.\n\n" );
+				$this->reportMessage(  "\nCreating (or updating) concept caches ...\n" );
 				break;
 			case 'delete':
 				$delay = 5;
@@ -127,19 +157,10 @@ class ConceptCacheRebuilder {
 					swfCountDown( $delay );
 				}
 
-				$this->reportMessage( "\nDeleting concept caches.\n\n" );
+				$this->reportMessage( "\nDeleting concept caches ...\n" );
 				break;
 			default:
 				return false;
-		}
-
-		if ( $this->hasOption( 'hard' ) ) {
-
-			$settings  = ' smwgQMaxDepth: ' . $this->settings->get( 'smwgQMaxDepth' );
-			$settings .= ' smwgQMaxSize: '  . $this->settings->get( 'smwgQMaxSize' );
-			$settings .= ' smwgQFeatures: ' . $this->settings->get( 'smwgQFeatures' );
-
-			$this->reportMessage( "Option 'hard' is parameterized by{$settings}\n\n" );
 		}
 
 		$concepts = $this->getConcepts();
@@ -149,9 +170,9 @@ class ConceptCacheRebuilder {
 		}
 
 		if ( $concepts === [] ) {
-			$this->reportMessage( "No concept available.\n" );
+			$this->reportMessage( "No concept(s) available.\n" );
 		} else {
-			$this->reportMessage( "\nDone.\n" );
+			$this->reportMessage( "   ... done.\n" );
 		}
 
 		return true;
@@ -165,11 +186,7 @@ class ConceptCacheRebuilder {
 			return $this->lines += $this->verbose ? 1 : 0;
 		}
 
-		$result = $this->performAction( $title, $concept );
-
-		if ( $result ) {
-			$this->reportMessage( '  ' . implode( $result, "\n  " ) . "\n" );
-		}
+		$this->performAction( $title, $concept );
 
 		return $this->lines += 1;
 	}
@@ -200,28 +217,46 @@ class ConceptCacheRebuilder {
 	}
 
 	private function performAction( Title $title, DIConcept $concept ) {
-		$this->reportMessage( "($this->lines) " );
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->action ===  'create' ) {
-			$this->reportMessage( 'Creating cache for "' . $title->getPrefixedText() . "\" ...\n" );
-			return $this->store->refreshConceptCache( $title );
+
+			$this->store->refreshConceptCache( $title );
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... ' . $title->getPrefixedText() . ' ...', CliMsgFormatter::OK, 3 )
+			);
+
+			return;
 		}
 
 		if ( $this->action === 'delete' ) {
-			$this->reportMessage( 'Deleting cache for "' . $title->getPrefixedText() . "\" ...\n" );
+
+			$this->reportMessage(
+				$cliMsgFormatter->oneCol( '... ' . $title->getPrefixedText() . ' ...', 3 )
+			);
+
 			return $this->store->deleteConceptCache( $title );
 		}
 
-		$this->reportMessage( 'Status for "' . $title->getPrefixedText() . '": ' );
+		$this->reportMessage(
+			$cliMsgFormatter->oneCol( '... ' . $title->getPrefixedText() . ' ...', 3 )
+		);
 
 		if ( $concept->getCacheStatus() === 'full' ) {
-			$this->reportMessage( 'Cache created at ' .
-				$this->getCacheDateInfo( $concept->getCacheDate() ) .
-				"{$concept->getCacheCount()} elements in cache\n"
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... created at', $this->getCacheDateInfo( $concept->getCacheDate() ), 7 )
 			);
-		}
-		else {
-			$this->reportMessage( "Not cached.\n" );
+
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( '... elements count', $concept->getCacheCount(), 7, '.' )
+			);
+		} else {
+			$this->reportMessage(
+				$cliMsgFormatter->oneCol( '... not cached', 7 )
+			);
 		}
 	}
 
@@ -267,7 +302,7 @@ class ConceptCacheRebuilder {
 	}
 
 	private function getCacheDateInfo( $date ) {
-		return date( 'Y-m-d H:i:s', $date ) . ' (' . floor( ( strtotime( 'now' ) - $date ) / 60 ) . ' minutes old), ';
+		return date( 'Y-m-d H:i:s', $date ) . ' (' . floor( ( strtotime( 'now' ) - $date ) / 60 ) . ' minutes old)';
 	}
 
 }
