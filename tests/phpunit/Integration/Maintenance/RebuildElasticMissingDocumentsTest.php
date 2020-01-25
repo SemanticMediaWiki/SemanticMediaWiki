@@ -54,7 +54,7 @@ class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->assertContains(
-			'removing replication trail',
+			'removed replication trail',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
