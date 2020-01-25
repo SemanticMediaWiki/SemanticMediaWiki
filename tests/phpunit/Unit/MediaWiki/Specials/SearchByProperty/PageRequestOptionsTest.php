@@ -178,7 +178,7 @@ class PageRequestOptionsTest extends \PHPUnit_Framework_TestCase {
 				'offset' => 0,
 				'nearbySearch' => false,
 				'propertyString' => 'Number',
-				'valueString'    => '2.0',
+				'valueString'    => '2',
 			]
 		];
 

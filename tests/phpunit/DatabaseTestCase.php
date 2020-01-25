@@ -151,7 +151,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( \PHPUnit_Framework_TestResult $result = null ) {
+	public function run( ?\PHPUnit_Framework_TestResult $result = null ) : \PHPUnit_Framework_TestResult {
 
 		$this->getStore()->clear();
 
@@ -171,9 +171,11 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 			$this->isUsableUnitTestDatabase = false;
 		}
 
-		parent::run( $result );
+		$testResult = parent::run( $result );
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
+
+		return $testResult;
 	}
 
 	protected function removeDatabaseTypeFromTest( $databaseToBeExcluded ) {

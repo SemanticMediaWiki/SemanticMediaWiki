@@ -279,7 +279,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 			null,
 			'en',
 			'en',
-			'312.235455550'
+			'312.23545555'
 		];
 
 		$provider['un.10'] = [
