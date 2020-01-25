@@ -33,8 +33,16 @@ class RevisionGuard {
 	 */
 	public static function isSkippableUpdate( Title $title, &$latestRevID = null ) {
 
+		// MW 1.34+
+		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
+		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
+			$flag = Title::READ_LATEST;
+		} else {
+			$flag = Title::GAID_FOR_UPDATE;
+		}
+
 		if ( $latestRevID === null ) {
-			$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+			$latestRevID = $title->getLatestRevID( $flag );
 		}
 
 		// If for some reason an extension decides that the current used revision
@@ -55,7 +63,16 @@ class RevisionGuard {
 	 */
 	public static function getLatestRevID( Title $title ) {
 
-		$latestRevID = $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+		// MW 1.34+
+		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
+		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
+			$flag = Title::READ_LATEST;
+		} else {
+			$flag = Title::GAID_FOR_UPDATE;
+		}
+
+		$latestRevID = $title->getLatestRevID( $flag );
+		$origLatestRevID = $latestRevID;
 
 		\Hooks::run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
 
@@ -63,7 +80,7 @@ class RevisionGuard {
 			return $latestRevID;
 		}
 
-		return $title->getLatestRevID( Title::GAID_FOR_UPDATE );
+		return $origLatestRevID;
 	}
 
 	/**
@@ -76,7 +93,7 @@ class RevisionGuard {
 	 */
 	public static function getRevision( Title $title, $revision ) {
 
-		$_revision = $revision;
+		$origRevision = $revision;
 
 		\Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 
@@ -84,7 +101,7 @@ class RevisionGuard {
 			return $revision;
 		}
 
-		return $_revision;
+		return $origRevision;
 	}
 
 	/**
@@ -97,7 +114,7 @@ class RevisionGuard {
 	 */
 	public static function getFile( Title $title, File $file = null ) {
 
-		$_file = $file;
+		$origFile = $file;
 
 		\Hooks::run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 
@@ -105,7 +122,7 @@ class RevisionGuard {
 			return $file;
 		}
 
-		return $_file;
+		return $origFile;
 	}
 
 }
