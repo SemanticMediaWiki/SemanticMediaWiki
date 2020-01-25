@@ -10,6 +10,7 @@ use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 
@@ -19,7 +20,7 @@ use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
  *
  * @author mwjames
  */
-class TableStatisticsTaskHandler extends TaskHandler {
+class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -56,16 +57,7 @@ class TableStatisticsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * {@inheritDoc}
-	 */
-	public function getTask() {
+	public function getTask() : string {
 		return 'stats/table';
 	}
 
@@ -74,8 +66,8 @@ class TableStatisticsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === $this->getTask();
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**

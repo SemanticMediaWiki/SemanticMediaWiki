@@ -13,7 +13,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class SupplementTaskHandler extends TaskHandler {
+class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -46,12 +46,12 @@ class SupplementTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.1
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return '';
 	}
 
 	/**
@@ -59,7 +59,7 @@ class SupplementTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
+	public function isTaskFor( string $action ) : bool {
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
@@ -104,9 +104,9 @@ class SupplementTaskHandler extends TaskHandler {
 				continue;
 			}
 
-			$taskHandler->setStore(
-				$this->getStore()
-			);
+			if ( $taskHandler instanceof TaskHandler ) {
+				$taskHandler->setStore( $this->getStore() );
+			}
 
 			return $taskHandler->handleRequest( $webRequest );
 		}

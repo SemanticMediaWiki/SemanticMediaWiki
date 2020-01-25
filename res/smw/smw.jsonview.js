@@ -40,34 +40,34 @@ var jsonview = ( function( mw ) {
 
 			container.prev().append(
 				'<div class="smw-jsonview-button-group-left">' +
-				'<span class="smw-jsonview-search-label">' + mw.msg( 'smw-jsonview-search-label' ) + '</span><input id="smw-jsonview-search" type="search" placeholder="..." align="middle">' +
+				'<span class="smw-jsonview-search-label">' + mw.msg( 'smw-jsonview-search-label' ) + '</span><input id="smw-jsonview-search" class="smw-jsonview-search" type="search" placeholder="..." align="middle">' +
 				'</div>'
 			);
 
 			container.prev().append(
 				'<div class="smw-jsonview-button-group-right">' +
 				'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + '<span class="smw-jsonview-clipboard"></span>' + '</button>' +
-				'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button"><span class="smw-jsonview-expand">' + '+' + '</span></button>' +
+				'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button"><span class="smw-jsonview-toogle smw-jsonview-expand">' + '+' + '</span></button>' +
 				'</div>'
 			);
 		} else {
 			container.find( '.jsonview' ).before(
 				'<div class="smw-jsonview-button-group-right">' +
 				'<button id="smw-jsonview-copy-btn" title="' + mw.msg( 'smw-copy-clipboard-title' ) + '" class="smw-jsonview-button">' + '<span class="smw-jsonview-clipboard"></span>' + '</button>' +
-				'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button"><span class="smw-jsonview-expand">' + '+' + '</span></button>' +
+				'<button id="smw-jsonview-toggle-btn"title="' + mw.msg( 'smw-jsonview-expand-title' ) + '" class="smw-jsonview-button"><span class="smw-jsonview-toogle smw-jsonview-expand">' + '+' + '</span></button>' +
 				'</div>'
 			);
 		}
 
-		$( "#smw-jsonview-search" ).on( 'input', function() {
+		$( ".smw-jsonview-search" ).on( 'input', function() {
 			s.findAndMarkSearch( this.value, container );
 		} );
 
-		$( "#smw-jsonview-copy-btn" ).on('click', function() {
+		$( ".smw-jsonview-clipboard" ).on('click', function() {
 			s.copyToClipboard( json );
 		} );
 
-		$( "#smw-jsonview-toggle-btn" ).on('click', function() {
+		$( ".smw-jsonview-toogle" ).on('click', function() {
 			s.toggle( $( this ), container );
 		} );
 	}

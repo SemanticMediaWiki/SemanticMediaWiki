@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Message;
 use Title;
 use WebRequest;
@@ -18,7 +19,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class DisposeJobTaskHandler extends TaskHandler {
+class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var HtmlFormRenderer
@@ -65,17 +66,17 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function isApiTask() {
+		return $this->isApiTask;
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
-		return $this->isApiTask;
+	public function getTask() : string {
+		return 'dispose';
 	}
 
 	/**
@@ -83,8 +84,8 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'dispose';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -107,7 +108,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 					]
 				);
 
-		if ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) && !$this->hasPendingJob() ) {
+		if ( $this->hasFeature( SMW_ADM_DISPOSAL ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'dispose' )
@@ -115,11 +116,11 @@ class DisposeJobTaskHandler extends TaskHandler {
 					$this->msg( 'smw-admin-outdateddisposal-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
-						'data-job' => 'SMW\EntityIdDisposerJob',
+						'data-job' => 'smw.entityIdDisposer',
 						'data-subject' => $subject->getHash()
 					]
 				);
-		} elseif ( $this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
+		} elseif ( $this->hasFeature( SMW_ADM_DISPOSAL ) ) {
 			$this->htmlFormRenderer->addParagraph(
 					Html::element(
 						'span',
@@ -155,7 +156,7 @@ class DisposeJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
+		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}
 

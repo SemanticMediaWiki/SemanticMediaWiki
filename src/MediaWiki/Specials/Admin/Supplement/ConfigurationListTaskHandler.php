@@ -9,6 +9,7 @@ use SMW\NamespaceManager;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Utils\HtmlTabs;
 
 /**
@@ -17,7 +18,7 @@ use SMW\Utils\HtmlTabs;
  *
  * @author mwjames
  */
-class ConfigurationListTaskHandler extends TaskHandler {
+class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -43,12 +44,12 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return 'settings';
 	}
 
 	/**
@@ -56,8 +57,8 @@ class ConfigurationListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'settings';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -70,7 +71,7 @@ class ConfigurationListTaskHandler extends TaskHandler {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-settings-title' ),
 			[
-				'action' => 'settings'
+				'action' => $this->getTask()
 			]
 		);
 

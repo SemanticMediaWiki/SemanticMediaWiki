@@ -114,7 +114,7 @@ class TaskHandlerFactory {
 					break;
 			}
 
-			if ( $taskHandler->hasAction() ) {
+			if ( $taskHandler instanceof ActionableTask ) {
 				$taskHandlerList['actions'][] = $taskHandler;
 			}
 		}

@@ -49,15 +49,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return false;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
 	public function getHtml() {
 
 		$html = '';
@@ -113,20 +104,6 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 			) . $html
 		);
 	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function isTaskFor( $task ) {}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function handleRequest( WebRequest $webRequest ) {}
 
 	private function buildSection( $section, $deprecationNoticeList ) {
 

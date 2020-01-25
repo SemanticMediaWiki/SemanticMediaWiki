@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Message;
 use Title;
 use WebRequest;
@@ -18,7 +19,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
+class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var HtmlFormRenderer
@@ -60,17 +61,17 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function isApiTask() {
+		return $this->isApiTask;
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isApiTask() {
-		return $this->isApiTask;
+	public function getTask() : string {
+		return 'pstatsrebuild';
 	}
 
 	/**
@@ -78,8 +79,8 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'pstatsrebuild';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -96,19 +97,19 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 				->addHeader( 'h4', $this->msg( 'smw-admin-propertystatistics-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-propertystatistics-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] );
 
-		if ( $this->isEnabledFeature( SMW_ADM_PSTATS ) && !$this->hasPendingJob() ) {
+		if ( $this->hasFeature( SMW_ADM_PSTATS ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
 				->setMethod( 'post' )
-				->addHiddenField( 'action', 'pstatsrebuild' )
+				->addHiddenField( 'action', $this->getTask() )
 				->addSubmitButton(
 					$this->msg( 'smw-admin-propertystatistics-button' ),
 					[
 						'class' => $this->isApiTask() ? 'smw-admin-api-job-task' : '',
-						'data-job' => 'SMW\PropertyStatisticsRebuildJob',
+						'data-job' => 'smw.propertyStatisticsRebuild',
 						'data-subject' => $subject->getHash()
 					]
 				 );
-		} elseif ( $this->isEnabledFeature( SMW_ADM_PSTATS ) ) {
+		} elseif ( $this->hasFeature( SMW_ADM_PSTATS ) ) {
 			$this->htmlFormRenderer->addParagraph(
 					Html::element(
 						'span',
@@ -143,7 +144,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
+		if ( !$this->hasFeature( SMW_ADM_PSTATS ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}
 

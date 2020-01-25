@@ -8,6 +8,7 @@ use SMW\Message;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Utils\HtmlTabs;
 
 /**
@@ -16,7 +17,7 @@ use SMW\Utils\HtmlTabs;
  *
  * @author mwjames
  */
-class CacheStatisticsListTaskHandler extends TaskHandler {
+class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -42,20 +43,11 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function hasAction() {
-		return true;
-	}
-
-	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() {
+	public function getTask() : string {
 		return 'stats/cache';
 	}
 
@@ -64,8 +56,8 @@ class CacheStatisticsListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === $this->getTask();
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**

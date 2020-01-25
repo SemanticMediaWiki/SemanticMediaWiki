@@ -38,24 +38,6 @@ class SupportListTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function hasAction() {
-		return false;
-	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * {@inheritDoc}
-	 */
-	public function isTaskFor( $task ) {
-		return false;
-	}
-
-	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
@@ -74,13 +56,6 @@ class SupportListTaskHandler extends TaskHandler {
 
 		return $html;
 	}
-
-	/**
-	 * @since 2.5
-	 *
-	 * {@inheritDoc}
-	 */
-	public function handleRequest( WebRequest $webRequest ) {}
 
 	private function ennvironmentSection() {
 
