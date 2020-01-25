@@ -283,7 +283,7 @@ class SetupFile {
 	 *
 	 * @return []
 	 */
-	public static function findIncompleteTasks( $vars = [] ) {
+	public function findIncompleteTasks( $vars = [] ) {
 
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;

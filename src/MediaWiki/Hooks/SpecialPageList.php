@@ -39,6 +39,9 @@ class SpecialPageList implements HookListener {
 			'SMWAdmin' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAdmin'
 			],
+			'PendingTaskList' => [
+				'page' => \SMW\MediaWiki\Specials\SpecialPendingTaskList::class
+			],
 			'Ask' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'
 			],

@@ -40,7 +40,8 @@
 	color: #999;
 }
 
-.smw-admin-deprecation fieldset {
+.smw-admin-deprecation fieldset,
+.smw-pending-task fieldset {
 	border-top: 1px solid #9E9E9E;
 	margin: 0 0 5px 0;
 	border-bottom: 0px;
@@ -63,9 +64,11 @@
 	line-height: 2.2 !important;
 }
 
-.smw-admin-deprecation fieldset legend {
+.smw-admin-deprecation fieldset legend,
+.smw-pending-task fieldset legend {
 	font-weight: bold;
 	font-size: 16px !important;
+	margin-left: 10px;
 }
 
 .smw-admin-hr {

@@ -19,6 +19,7 @@ $specialPageAliases['en'] = [
 	'Properties' => [ 'Properties' ],
 	'Concepts' => [ 'Concepts' ],
 	'SMWAdmin' => [ 'SemanticMediaWiki', 'SMWAdmin' ],
+	'PendingTaskList' => [ 'PendingTaskList' ],
 	'SearchByProperty' => [ 'SearchByProperty' ],
 	'ProcessingErrorList' => [ 'ProcessingErrorList' ],
 	'ConstraintErrorList' => [ 'ConstraintErrorList' ],
