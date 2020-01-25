@@ -9,6 +9,7 @@ use SMW\Options;
 use SMW\SQLStore\Installer;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Schema update to set up the needed database tables
@@ -20,7 +21,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdates {
+class ExtensionSchemaUpdates implements HookListener {
 
 	/**
 	 * @var DatabaseUpdater

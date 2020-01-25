@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Query\QueryRefFinder;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\HookListener;
 use Title;
 
 /**
@@ -29,7 +30,7 @@ use Title;
  *
  * @author mwjames
  */
-class OutputPageParserOutput extends HookHandler {
+class OutputPageParserOutput implements HookListener {
 
 	/**
 	 * @var NamespaceExaminer

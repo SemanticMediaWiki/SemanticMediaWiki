@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SkinTemplate;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Alter the structured navigation links in SkinTemplates.
@@ -14,7 +15,7 @@ use SkinTemplate;
  *
  * @author mwjames
  */
-class SkinTemplateNavigation {
+class SkinTemplateNavigation implements HookListener {
 
 	/**
 	 * @var SkinTemplate

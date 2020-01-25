@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\HookListener;
 
 /**
  * TitleMoveComplete occurs whenever a request to move an article
@@ -20,7 +21,7 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class TitleMoveComplete {
+class TitleMoveComplete implements HookListener {
 
 	use EventDispatcherAwareTrait;
 

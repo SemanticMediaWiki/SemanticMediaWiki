@@ -1,20 +1,16 @@
 <?php
 
-namespace SMW\MediaWiki\Hooks;
+namespace SMW;
 
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use SMW\Options;
 
 /**
  * @license GNU GPL v2+
- * @since 2.5
+ * @since 3.2
  *
  * @author mwjames
  */
-class HookHandler {
-
-	use LoggerAwareTrait;
+trait OptionsAwareTrait {
 
 	/**
 	 * @var Options
@@ -22,14 +18,7 @@ class HookHandler {
 	private $options;
 
 	/**
-	 * @since 2.5
-	 */
-	public function __construct() {
-		$this->options = new Options();
-	}
-
-	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * @param array $options
 	 */
@@ -53,7 +42,7 @@ class HookHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * @param string $key
 	 * @param mixed $default
@@ -70,7 +59,7 @@ class HookHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * @param string $key
 	 * @param mixed $flag
@@ -79,12 +68,6 @@ class HookHandler {
 	 */
 	public function isFlagSet( $key, $flag ) {
 		return $this->options->isFlagSet( $key, $flag );
-	}
-
-	protected function log( $message, $context = [] ) {
-		if ( $this->logger instanceof LoggerInterface ) {
-			$this->logger->info( $message, $context );
-		}
 	}
 
 }

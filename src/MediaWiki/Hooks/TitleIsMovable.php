@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
 use Title;
+use SMW\MediaWiki\HookListener;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
@@ -13,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleIsMovable extends HookHandler {
+class TitleIsMovable implements HookListener {
 
 	/**
 	 * @var Title

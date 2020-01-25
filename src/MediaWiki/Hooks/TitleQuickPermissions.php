@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\MediaWiki\PermissionManager;
 use SMW\NamespaceExaminer;
 use Title;
+use SMW\MediaWiki\HookListener;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleQuickPermissions
@@ -14,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleQuickPermissions extends HookHandler {
+class TitleQuickPermissions implements HookListener {
 
 	/**
 	 * @var NamespaceExaminer

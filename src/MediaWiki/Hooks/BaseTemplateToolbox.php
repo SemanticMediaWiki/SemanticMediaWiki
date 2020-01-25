@@ -6,6 +6,8 @@ use SMW\NamespaceExaminer;
 use SMWInfolink as Infolink;
 use SpecialPage;
 use Title;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * Hook: Called by BaseTemplate when building the toolbox array and
@@ -23,7 +25,9 @@ use Title;
  *
  * @author mwjames
  */
-class BaseTemplateToolbox extends HookHandler {
+class BaseTemplateToolbox implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer

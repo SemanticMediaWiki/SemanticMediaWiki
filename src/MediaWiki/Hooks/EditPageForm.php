@@ -7,6 +7,8 @@ use Html;
 use SMW\DIProperty;
 use SMW\Message;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
@@ -16,7 +18,9 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class EditPageForm extends HookHandler {
+class EditPageForm implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer

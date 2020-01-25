@@ -9,6 +9,8 @@ use SMW\EventHandler;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\PageInfoProvider;
 use Title;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted
@@ -27,8 +29,9 @@ use Title;
  *
  * @author mwjames
  */
-class NewRevisionFromEditComplete extends HookHandler {
+class NewRevisionFromEditComplete implements HookListener {
 
+	use OptionsAwareTrait;
 	use EventDispatcherAwareTrait;
 
 	/**
@@ -54,7 +57,6 @@ class NewRevisionFromEditComplete extends HookHandler {
 	 * @param PageInfoProvider $pageInfoProvider
 	 */
 	public function __construct( Title $title, EditInfo $editInfo, PageInfoProvider $pageInfoProvider ) {
-		parent::__construct();
 		$this->title = $title;
 		$this->editInfo = $editInfo;
 		$this->pageInfoProvider = $pageInfoProvider;

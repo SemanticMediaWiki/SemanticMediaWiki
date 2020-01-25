@@ -7,6 +7,8 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;
+use SMW\MediaWiki\HookListener;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * LinksUpdateConstructed hook is called at the end of LinksUpdate()
@@ -18,7 +20,9 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class LinksUpdateConstructed extends HookHandler {
+class LinksUpdateConstructed implements HookListener {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer
@@ -127,7 +131,7 @@ class LinksUpdateConstructed extends HookHandler {
 	 */
 	private function updateSemanticData( &$parserData, $title, $reason = '' ) {
 
-		$this->log(
+		$this->logger->info(
 			[
 				'LinksUpdateConstructed',
 				"Required content re-parse due to $reason",

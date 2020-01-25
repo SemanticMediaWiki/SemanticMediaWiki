@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\HookListener;
 use Title;
 use User;
 
@@ -21,7 +22,7 @@ use User;
  *
  * @author mwjames
  */
-class UserChange extends HookHandler {
+class UserChange implements HookListener {
 
 	/**
 	 * @var NamespaceExaminer

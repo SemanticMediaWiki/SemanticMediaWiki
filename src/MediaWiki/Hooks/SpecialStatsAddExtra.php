@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use SMW\DataTypeRegistry;
 use SMW\Store;
 use SMW\Message;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * Add extra statistic at the end of Special:Statistics
@@ -16,7 +18,9 @@ use SMW\Message;
  *
  * @author mwjames
  */
-class SpecialStatsAddExtra extends HookHandler {
+class SpecialStatsAddExtra implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * Specifies the point where outdated entities should be removed

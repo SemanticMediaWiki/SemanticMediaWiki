@@ -2,13 +2,18 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
+
 /**
  * @license GNU GPL v2+
  * @since 3.1
  *
  * @author mwjames
  */
-class ApiModuleManager extends HookHandler {
+class ApiModuleManager implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @since 3.1
