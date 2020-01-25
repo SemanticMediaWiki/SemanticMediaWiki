@@ -36,26 +36,45 @@
 	color: #8a6d3b;
 }
 
+.smw-admin-deprecation-notice-section-legend {
+	color: #999;
+}
+
 .smw-admin-deprecation fieldset {
 	border-top: 1px solid #9E9E9E;
 	margin: 0 0 5px 0;
 	border-bottom: 0px;
 	border-left: 0px;
 	border-right: 0px;
+	padding-bottom: 0px;
+}
+
+.smw-admin-deprecation fieldset.smw-admin-deprecation-notice-section-legend {
+	border-top: 1px solid #ddd;
+}
+
+.smw-admin-deprecation-section {
+	padding-left: 20px;
 }
 
 .smw-admin-deprecation h4 {
 	margin-top: 0px !important;
 	padding-top: 0px !important;
+	line-height: 2.2 !important;
 }
 
 .smw-admin-deprecation fieldset legend {
 	font-weight: bold;
+	font-size: 16px !important;
 }
 
 .smw-admin-hr {
 	margin-top:20px;
 	background-color: #ddd;
+}
+
+.smw-admin-deprecation-notice-section {
+	margin-left: -10px;
 }
 
 .smw-admin-deprecation-notice-section-explanation {
@@ -146,8 +165,10 @@
 	padding: 10px 0 10px 0;
 }
 
-.smw-admin h4,
-h4.smw-title, {
+.smw-admin h3,
+h3.smw-title,
+h4.smw-title,
+h3 .smw-title {
 	background: #f5f5f5;
 	padding: 2px 5px;
 	margin-top: 10px !important;
