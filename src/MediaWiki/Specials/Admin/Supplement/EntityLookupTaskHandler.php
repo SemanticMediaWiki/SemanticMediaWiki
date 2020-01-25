@@ -11,6 +11,7 @@ use SMW\Store;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
  * @license GNU GPL v2+
@@ -18,7 +19,7 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
  *
  * @author mwjames
  */
-class EntityLookupTaskHandler extends TaskHandler {
+class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var Store
@@ -63,12 +64,12 @@ class EntityLookupTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return 'lookup';
 	}
 
 	/**
@@ -76,8 +77,8 @@ class EntityLookupTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'lookup';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -99,7 +100,7 @@ class EntityLookupTaskHandler extends TaskHandler {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-idlookup-short-title' ),
 			[
-				'action' => 'lookup'
+				'action' => $this->getTask()
 			]
 		);
 

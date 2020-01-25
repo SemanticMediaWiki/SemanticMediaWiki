@@ -7,6 +7,7 @@ use SMW\Message;
 use WebRequest;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
  * @license GNU GPL v2+
@@ -14,7 +15,7 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
  *
  * @author mwjames
  */
-class DuplicateLookupTaskHandler extends TaskHandler {
+class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -40,12 +41,12 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return 'duplicate-lookup';
 	}
 
 	/**
@@ -53,8 +54,8 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'duplicate-lookup';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -67,7 +68,7 @@ class DuplicateLookupTaskHandler extends TaskHandler {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-duplookup-title' ),
 			[
-				'action' => 'duplicate-lookup'
+				'action' => $this->getTask()
 			]
 		);
 

@@ -113,9 +113,14 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 			->disableOriginalConstructor()
 			->getMock();
 
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$webRequest->expects( $this->once() )
+			->method( 'getText' )
+			->with( $this->equalTo( 'action' ) )
+			->will( $this->returnValue( 'foo' ) );
+
+		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )

@@ -8,6 +8,7 @@ use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
  * @license GNU GPL v2+
@@ -15,7 +16,7 @@ use SMW\MediaWiki\Specials\Admin\OutputFormatter;
  *
  * @author mwjames
  */
-class OperationalStatisticsListTaskHandler extends TaskHandler {
+class OperationalStatisticsListTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -52,17 +53,8 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() {
+	public function getTask() : string {
 		return 'stats';
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function hasAction() {
-		return true;
 	}
 
 	/**
@@ -70,7 +62,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
+	public function isTaskFor( string $action ) : bool {
 
 		$actions = [
 			$this->getTask(),
@@ -80,7 +72,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 			$actions[] = $taskHandler->getTask();
 		}
 
-		return in_array( $task, $actions );
+		return in_array( $action, $actions );
 	}
 
 	/**
@@ -120,10 +112,16 @@ class OperationalStatisticsListTaskHandler extends TaskHandler {
 			$this->outputHead();
 		} else {
 			foreach ( $this->taskHandlers as $taskHandler ) {
-				if ( $taskHandler->isTaskFor( $action ) ) {
-					$taskHandler->setStore( $this->getStore());
-					return $taskHandler->handleRequest( $webRequest );
+
+				if ( !$taskHandler->isTaskFor( $action ) ) {
+					continue;
 				}
+
+				if ( $taskHandler instanceof TaskHandler ) {
+					$taskHandler->setStore( $this->getStore());
+				}
+
+				return $taskHandler->handleRequest( $webRequest );
 			}
 		}
 

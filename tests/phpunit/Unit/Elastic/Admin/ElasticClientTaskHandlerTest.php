@@ -50,10 +50,9 @@ class ElasticClientTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsTask() {
 
-		$task = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$task = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getTask' ] )
-			->getMockForAbstractClass();
+			->getMock();
 
 		$task->expects( $this->once() )
 			->method( 'getTask' )

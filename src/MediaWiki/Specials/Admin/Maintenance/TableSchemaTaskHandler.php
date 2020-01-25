@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Store;
 use WebRequest;
 
@@ -16,7 +17,7 @@ use WebRequest;
  *
  * @author mwjames
  */
-class TableSchemaTaskHandler extends TaskHandler {
+class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var Store
@@ -56,12 +57,12 @@ class TableSchemaTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return 'updatetables';
 	}
 
 	/**
@@ -69,8 +70,8 @@ class TableSchemaTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'updatetables';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -83,11 +84,11 @@ class TableSchemaTaskHandler extends TaskHandler {
 		$this->htmlFormRenderer
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
-			->addHiddenField( 'action', 'updatetables' )
+			->addHiddenField( 'action', $this->getTask() )
 			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
 			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
-		if ( $this->isEnabledFeature( SMW_ADM_SETUP ) ) {
+		if ( $this->hasFeature( SMW_ADM_SETUP ) ) {
 			$this->htmlFormRenderer
 				->addHiddenField( 'udsure', 'yes' )
 				->addSubmitButton(
@@ -111,7 +112,7 @@ class TableSchemaTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_SETUP ) ) {
+		if ( !$this->hasFeature( SMW_ADM_SETUP ) ) {
 			return;
 		}
 

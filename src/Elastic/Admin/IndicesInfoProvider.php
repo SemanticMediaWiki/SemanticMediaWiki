@@ -98,7 +98,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 
 		$htmlTabs->content(
 			'indices',
-			'<pre>' . $this->outputFormatter->encodeAsJson( $indices ) . '</pre>'
+			$this->getJsonView( 'indices' ,$this->outputFormatter->encodeAsJson( $indices ), 3 )
 		);
 
 		$htmlTabs->tab(
@@ -108,7 +108,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 
 		$htmlTabs->content(
 			'statistics',
-			'<pre>' . $this->outputFormatter->encodeAsJson( $connection->stats( 'indices' ) ) . '</pre>'
+			$this->getJsonView( 'statistics', $this->outputFormatter->encodeAsJson( $connection->stats( 'indices' ) ), 2 )
 		);
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'es-indices' ] );
@@ -121,6 +121,52 @@ class IndicesInfoProvider extends InfoProviderHandler {
 			'.es-indices #tab-indices:checked ~ #tab-content-indices,' .
 			'.es-indices #tab-statistics:checked ~ #tab-content-statistics {' .
 			'display: block;}'
+		);
+	}
+
+	private function getJsonView( $id, $data, $level = 1 ) {
+
+		$placeholder = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-schema-placeholder-message',
+			],
+			$this->msg( 'smw-data-lookup-with-wait' ) .
+			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
+		) .	Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-overlay-spinner medium',
+				'style' => 'transform: translate(-50%, -50%);'
+			]
+		);
+
+		return Html::rawElement(
+				'div',
+				[
+					'id' => 'smw-admin-configutation-json',
+					'class' => '',
+				],
+				Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-jsonview-menu',
+					]
+				) . Html::rawElement(
+					'pre',
+					[
+						'id' => "smw-json-container-$id",
+						'class' => 'smw-json-container smw-json-placeholder',
+						'data-level' => $level
+					],
+					$placeholder . Html::rawElement(
+						'div',
+						[
+							'class' => 'smw-json-data'
+						],
+						$data
+				)
+			)
 		);
 	}
 

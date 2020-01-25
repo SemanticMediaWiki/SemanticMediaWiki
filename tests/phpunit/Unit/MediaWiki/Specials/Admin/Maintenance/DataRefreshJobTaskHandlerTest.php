@@ -90,12 +90,12 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'hasPendingJob' )
-			->with( $this->equalTo( 'SMW\RefreshJob' ) )
+			->with( $this->equalTo( 'smw.refresh' ) )
 			->will( $this->returnValue( true ) );
 
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'pop' )
-			->with( $this->equalTo( 'SMW\RefreshJob' ) )
+			->with( $this->equalTo( 'smw.refresh' ) )
 			->will( $this->returnValue( false ) );
 
 		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
@@ -129,7 +129,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'SMW\RefreshJob' ) );
+			->with( $this->equalTo( 'smw.refresh' ) );
 
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()

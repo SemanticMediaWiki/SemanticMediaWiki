@@ -14,7 +14,7 @@ use SMW\Utils\HtmlTabs;
  *
  * @author mwjames
  */
-class MaintenanceTaskHandler extends TaskHandler {
+class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var OutputFormatter
@@ -54,12 +54,12 @@ class MaintenanceTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.1
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return '';
 	}
 
 	/**
@@ -67,7 +67,7 @@ class MaintenanceTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
+	public function isTaskFor( string $action ) : bool {
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
@@ -133,9 +133,9 @@ class MaintenanceTaskHandler extends TaskHandler {
 				continue;
 			}
 
-			$taskHandler->setStore(
-				$this->getStore()
-			);
+			if ( $taskHandler instanceof TaskHandler ) {
+				$taskHandler->setStore( $this->getStore() );
+			}
 
 			return $taskHandler->handleRequest( $webRequest );
 		}

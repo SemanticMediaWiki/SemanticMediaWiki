@@ -4,6 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +12,9 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
  *
  * @author mwjames
  */
-abstract class InfoProviderHandler extends TaskHandler {
+abstract class InfoProviderHandler extends TaskHandler implements ActionableTask {
+
+	// ElasticsClientInfoTaskHandler
 
 	/**
 	 * @var OutputFormatter
@@ -39,10 +42,10 @@ abstract class InfoProviderHandler extends TaskHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * {@inheritDoc}
+	 * @return string
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return $this->getParentTask() . '/' . $this->getSupplementTask();
 	}
 
 	/**
@@ -50,8 +53,8 @@ abstract class InfoProviderHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === $this->getTask();
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -61,15 +64,6 @@ abstract class InfoProviderHandler extends TaskHandler {
 	 */
 	public function getParentTask() {
 		return 'elastic';
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return string
-	 */
-	public function getTask() {
-		return $this->getParentTask() . '/' . $this->getSupplementTask();
 	}
 
 	/**

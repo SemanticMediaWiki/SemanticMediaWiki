@@ -7,6 +7,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use Title;
 use WebRequest;
 use SMW\MediaWiki\Job;
@@ -17,7 +18,7 @@ use SMW\MediaWiki\Job;
  *
  * @author mwjames
  */
-class DataRefreshJobTaskHandler extends TaskHandler {
+class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @var HtmlFormRenderer
@@ -55,12 +56,12 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
-		return true;
+	public function getTask() : string {
+		return 'refreshstore';
 	}
 
 	/**
@@ -68,8 +69,8 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $task ) {
-		return $task === 'refreshstore';
+	public function isTaskFor( string $action ) : bool {
+		return $action === $this->getTask();
 	}
 
 	/**
@@ -83,7 +84,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			->addHeader( 'h4', $this->msg( 'smw_smwadmin_datarefresh' ) )
 			->addParagraph( $this->msg( 'smw_smwadmin_datarefreshdocu' ) );
 
-		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
+		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			$this->htmlFormRenderer->addParagraph( $this->msg( 'smw-admin-feature-disabled' ) );
 		} elseif ( $this->getRefreshJob() !== null ) {
 			$this->htmlFormRenderer
@@ -126,7 +127,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
+		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return '';
 		}
 
@@ -139,7 +140,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 			if ( $refreshjob === null ) { // careful, there might be race conditions here
 
 				$newjob = $applicationFactory->newJobFactory()->newByType(
-					'SMW\RefreshJob',
+					'smw.refresh',
 					\SpecialPage::getTitleFor( 'SMWAdmin' ),
 					[ 'spos' => 1, 'prog' => 0, 'rc' => 2 ]
 				);
@@ -150,7 +151,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 		} elseif ( $sure == 'stop' ) {
 			$jobQueue = $applicationFactory->getJobQueue();
 			$jobQueue->disableCache();
-			$jobQueue->delete( 'SMW\RefreshJob' );
+			$jobQueue->delete( 'smw.refresh' );
 		}
 
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
@@ -166,7 +167,7 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 
 	private function getRefreshJob() {
 
-		if ( !$this->isEnabledFeature( SMW_ADM_REFRESH ) ) {
+		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return null;
 		}
 
@@ -176,13 +177,13 @@ class DataRefreshJobTaskHandler extends TaskHandler {
 
 		$jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
-		if ( !$jobQueue->hasPendingJob( 'SMW\RefreshJob' ) ) {
+		if ( !$jobQueue->hasPendingJob( 'smw.refresh' ) ) {
 			return null;
 		}
 
 		// Pop and acknowledge the job to fetch progress details
 		// from itself
-		$refreshJob = $jobQueue->pop( 'SMW\RefreshJob' );
+		$refreshJob = $jobQueue->pop( 'smw.refresh' );
 
 		if ( $refreshJob instanceof Job ) {
 			$refreshJob->run();

@@ -69,7 +69,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
-		$mappings = [
+		$mappings = array_merge(
 			$connection->getMapping(
 				[
 					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
@@ -80,7 +80,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
 				]
 			)
-		];
+		);
 
 		$limits = [
 			ElasticClient::TYPE_DATA => [
@@ -116,7 +116,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 		$htmlTabs->content(
 			'fields',
-			'<pre>' . $this->outputFormatter->encodeAsJson( $mappings ) . '</pre>'
+			$this->getJsonView( $this->outputFormatter->encodeAsJson( $mappings ) )
 		);
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'es-mapping' ] );
@@ -159,6 +159,52 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		}
 
 		return $summary;
+	}
+
+	private function getJsonView( $data ) {
+
+		$placeholder = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-schema-placeholder-message',
+			],
+			$this->msg( 'smw-data-lookup-with-wait' ) .
+			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
+		) .	Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-overlay-spinner medium',
+				'style' => 'transform: translate(-50%, -50%);'
+			]
+		);
+
+		return Html::rawElement(
+				'div',
+				[
+					'id' => 'smw-admin-configutation-json',
+					'class' => '',
+				],
+				Html::rawElement(
+					'div',
+					[
+						'class' => 'smw-jsonview-menu',
+					]
+				) . Html::rawElement(
+					'pre',
+					[
+						'id' => 'smw-json-container',
+						'class' => 'smw-json-container smw-json-placeholder',
+						'data-level' => 2
+					],
+					$placeholder . Html::rawElement(
+						'div',
+						[
+							'class' => 'smw-json-data'
+						],
+						$data
+				)
+			)
+		);
 	}
 
 	private function countFields( $value, $type, &$count ) {
