@@ -49,25 +49,14 @@
 		var self = this,
 			subject = self.context.data( 'subject' );
 
-		// Expect a serialization format (see DIWikiPage::getHash)
-		if ( subject.indexOf( "#" ) == -1 ) {
-			return this.context.find( '.smwb-status' )
-				.append(
-					mw.msg( 'smw-browse-api-subject-serialization-invalid' )
-				)
-				.addClass( 'smw-callout smw-callout-error' );
-		}
-
-		subject = subject.split( "#" );
-
 		self.api.post( {
 			action: "smwbrowse",
 			browse: "subject",
 			params: JSON.stringify( {
-				subject: subject[0],
-				ns: subject[1],
-				iw: subject[2],
-				subobject: subject[3],
+				subject: subject.dbkey,
+				ns: subject.ns,
+				iw: subject.iw,
+				subobject: subject.subobject,
 				options: self.options,
 				type: 'html'
 			} )

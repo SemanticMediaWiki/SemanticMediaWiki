@@ -140,10 +140,18 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function legacy() {
+
+		$subject = [
+			'dbkey' => $this->subject->getDBKey(),
+			'ns' => $this->subject->getNamespace(),
+			'iw' => $this->subject->getInterwiki(),
+			'subobject' => $this->subject->getSubobjectName(),
+		];
+
 		return Html::rawElement(
 			'div',
 			[
-				'data-subject' => $this->subject->getHash(),
+				'data-subject' => json_encode( $subject, JSON_UNESCAPED_UNICODE ),
 				'data-options' => json_encode( $this->options )
 			],
 			$this->buildHTML()
@@ -156,11 +164,19 @@ class HtmlBuilder {
 	 * @return string
 	 */
 	public function placeholder() {
+
+		$subject = [
+			'dbkey' => $this->subject->getDBKey(),
+			'ns' => $this->subject->getNamespace(),
+			'iw' => $this->subject->getInterwiki(),
+			'subobject' => $this->subject->getSubobjectName(),
+		];
+
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smwb-container',
-				'data-subject' => $this->subject->getHash(),
+				'data-subject' => json_encode( $subject, JSON_UNESCAPED_UNICODE ),
 				'data-options' => json_encode( $this->options )
 			],
 			Html::rawElement(
