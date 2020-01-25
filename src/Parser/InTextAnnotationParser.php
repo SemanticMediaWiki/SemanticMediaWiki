@@ -10,6 +10,7 @@ use SMW\SemanticData;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\ParserData;
 use SMW\Utils\Timer;
 use SMWOutputs;
@@ -30,6 +31,8 @@ use Title;
  * @author mwjames
  */
 class InTextAnnotationParser {
+
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
@@ -186,12 +189,7 @@ class InTextAnnotationParser {
 			$this->parserData->canUse()
 		);
 
-		Hooks::run( 'SMW::Parser::AfterLinksProcessingComplete',
-			[
-				&$text,
-				$this->annotationProcessor
-			]
-		);
+		$this->hookDispatcher->onAfterLinksProcessingComplete( $text, $this->annotationProcessor );
 
 		// Ensure remaining encoded entities are decoded again
 		$text = LinksEncoder::removeLinkObfuscation( $text );
@@ -456,7 +454,7 @@ class InTextAnnotationParser {
 			'SMW_SHOWFACTBOX'
 		];
 
-		Hooks::run( 'SMW::Parser::BeforeMagicWordsFinder', [ &$magicWords ] );
+		$this->hookDispatcher->onBeforeMagicWordsFinder( $magicWords );
 
 		foreach ( $magicWords as $magicWord ) {
 			$words[] = $this->magicWordsFinder->findMagicWordInText( $magicWord, $text );

@@ -55,6 +55,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
+		$this->title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 9900 ) );
+
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -487,12 +487,19 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->setMethods( null )
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function( &$magicWords ) {
-			$magicWords = [ 'Foo' ];
+		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 
-			// Just to make MW 1.19 happy, otherwise it is not really needed
-			return true;
-		} );
+		$hookDispatcher->expects( $this->once() )
+			->method( 'onBeforeMagicWordsFinder' )
+			->will($this->returnCallback( function( &$magicWords ) {
+				$magicWords = [ 'Foo' ];
+			} ) );
+
+		$inTextAnnotationParser->setHookDispatcher(
+			$hookDispatcher
+		);
 
 		$text = '';
 

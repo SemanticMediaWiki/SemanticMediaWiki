@@ -7,6 +7,7 @@ use User;
 use Xml;
 use SMW\Utils\Logo;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\OptionsAwareTrait;
 
 /**
@@ -22,6 +23,7 @@ use SMW\OptionsAwareTrait;
 class GetPreferences implements HookListener {
 
 	use OptionsAwareTrait;
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * @var User
@@ -47,8 +49,7 @@ class GetPreferences implements HookListener {
 	public function process( array &$preferences ) {
 
 		$otherPreferences = [];
-
-		Hooks::run( 'SMW::GetPreferences', [ $this->user, &$otherPreferences ] );
+		$this->hookDispatcher->onGetPreferences( $this->user, $otherPreferences );
 
 		$html = $this->makeImage( Logo::get( '100x90' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();

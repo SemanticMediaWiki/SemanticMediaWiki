@@ -121,6 +121,10 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_SPECIAL ) );
 
+		$title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 9900 ) );
+
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $parserOutput ) );
@@ -178,6 +182,10 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
 			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 9901 ) );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )

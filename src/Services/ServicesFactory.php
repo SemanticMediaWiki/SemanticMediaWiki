@@ -29,6 +29,7 @@ use SMW\MediaWiki\MwCollaboratorFactory;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
@@ -228,30 +229,47 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.0
+	 *
+	 * @return Store
 	 */
-	public function getStore( $store = null ): Store {
+	public function getStore( $store = null ) : Store {
 		return $this->containerBuilder->singleton( 'Store', $store );
 	}
 
 	/**
 	 * @since 2.0
+	 *
+	 * @return Settings
 	 */
-	public function getSettings(): Settings {
+	public function getSettings() : Settings {
 		return $this->containerBuilder->singleton( 'Settings' );
 	}
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return ConnectionManager
 	 */
-	public function getConnectionManager(): ConnectionManager {
+	public function getConnectionManager() : ConnectionManager {
 		return $this->containerBuilder->singleton( 'ConnectionManager' );
 	}
 
 	/**
 	 * @since 3.1
+	 *
+	 * @return EventDispatcher
 	 */
-	public function getEventDispatcher(): EventDispatcher {
+	public function getEventDispatcher() : EventDispatcher {
 		return EventHandler::getInstance()->getEventDispatcher();
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return HookDispatcher
+	 */
+	public function getHookDispatcher() : HookDispatcher {
+		return $this->containerBuilder->singleton( 'HookDispatcher' );
 	}
 
 	/**
@@ -360,6 +378,10 @@ class ServicesFactory {
 			$settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR )
 		);
 
+		$inTextAnnotationParser->setHookDispatcher(
+			$this->getHookDispatcher()
+		);
+
 		return $inTextAnnotationParser;
 	}
 
@@ -417,6 +439,10 @@ class ServicesFactory {
 
 		$dataUpdater->setEventDispatcher(
 			$this->getEventDispatcher()
+		);
+
+		$dataUpdater->setRevisionGuard(
+			$this->singleton( 'RevisionGuard' )
 		);
 
 		return $dataUpdater;

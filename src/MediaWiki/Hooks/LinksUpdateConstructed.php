@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use LinksUpdate;
 use SMW\ApplicationFactory;
-use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;
 use SMW\MediaWiki\HookListener;
@@ -22,6 +22,7 @@ use Psr\Log\LoggerAwareTrait;
  */
 class LinksUpdateConstructed implements HookListener {
 
+	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
 
 	/**
@@ -79,7 +80,7 @@ class LinksUpdateConstructed implements HookListener {
 
 		$title = $linksUpdate->getTitle();
 
-		if ( RevisionGuard::isSkippableUpdate( $title ) ) {
+		if ( $this->revisionGuard->isSkippableUpdate( $title ) ) {
 			return true;
 		}
 

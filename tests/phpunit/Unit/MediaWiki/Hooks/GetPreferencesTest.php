@@ -15,6 +15,16 @@ use SMW\MediaWiki\Hooks\GetPreferences;
  */
 class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
+	private $hookDispatcher;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$user = $this->getMockBuilder( '\User' )
@@ -41,6 +51,10 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = [];
 
 		$instance = new GetPreferences( $user );
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
 
 		$instance->setOptions(
 			[
