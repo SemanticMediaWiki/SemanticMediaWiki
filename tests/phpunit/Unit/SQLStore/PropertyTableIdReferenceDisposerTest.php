@@ -20,11 +20,16 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $testEnvironment;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getDataItemById' ] )
@@ -84,6 +89,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$this->assertTrue(
 			$instance->isDisposable( 42 )
 		);
@@ -127,6 +136,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$instance->removeOutdatedEntityReferencesById( 42 );
 	}
 
@@ -164,6 +177,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$instance->cleanUpTableEntriesById( 42 );
 	}
 
@@ -183,6 +200,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$this->assertInstanceOf(
@@ -215,6 +236,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
 		$instance->cleanUpTableEntriesByRow( $row );
 	}
 
@@ -244,6 +269,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$this->store
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$instance->waitOnTransactionIdle();
@@ -356,6 +385,10 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyTableIdReferenceDisposer(
 			$store
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
 		);
 
 		$instance->cleanUpTableEntriesById( 42 );

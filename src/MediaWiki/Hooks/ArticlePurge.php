@@ -6,7 +6,6 @@ use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\EventHandler;
 use WikiPage;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;

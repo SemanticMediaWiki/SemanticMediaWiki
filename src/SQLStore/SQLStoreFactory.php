@@ -340,7 +340,8 @@ class SQLStoreFactory {
 		$rebuilder = new Rebuilder(
 			$this->store,
 			$applicationFactory->newTitleFactory(),
-			$entityValidator
+			$entityValidator,
+			$this->newPropertyTableIdReferenceDisposer()
 		);
 
 		return $rebuilder;
@@ -894,10 +895,17 @@ class SQLStoreFactory {
 	 * @return PropertyTableIdReferenceDisposer
 	 */
 	public function newPropertyTableIdReferenceDisposer() {
-		return new PropertyTableIdReferenceDisposer(
+
+		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			$this->store,
 			$this->getIteratorFactory()
 		);
+
+		$propertyTableIdReferenceDisposer->setEventDispatcher(
+			ApplicationFactory::getInstance()->getEventDispatcher()
+		);
+
+		return $propertyTableIdReferenceDisposer;
 	}
 
 	/**

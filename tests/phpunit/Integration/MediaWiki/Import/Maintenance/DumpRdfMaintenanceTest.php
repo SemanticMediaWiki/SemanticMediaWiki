@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\ApplicationFactory;
-use SMW\EventHandler;
+use SMW\Listener\EventListener\EventHandler;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 

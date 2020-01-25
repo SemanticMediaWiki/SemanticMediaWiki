@@ -100,7 +100,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( \SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID ) );
+			->with( $this->equalTo( \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID ) );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 

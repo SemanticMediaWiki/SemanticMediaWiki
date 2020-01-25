@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Listener\EventListener;
 
-use SMW\EventHandler;
+use SMW\Listener\EventListener\EventHandler;
 
 /**
- * @covers \SMW\EventHandler
+ * @covers \SMW\Listener\EventListener\EventHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -28,12 +28,12 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\EventHandler',
+			EventHandler::class,
 			new EventHandler( $eventDispatcher )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\EventHandler',
+			EventHandler::class,
 			EventHandler::getInstance()
 		);
 	}

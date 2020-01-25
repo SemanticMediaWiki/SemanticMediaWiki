@@ -2,9 +2,9 @@
 
 namespace SMW\Services;
 
-use SMW\Events\InvalidateResultCacheEventListener;
-use SMW\Events\InvalidateEntityCacheEventListener;
-use SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 
 /**
  * @codeCoverageIgnore

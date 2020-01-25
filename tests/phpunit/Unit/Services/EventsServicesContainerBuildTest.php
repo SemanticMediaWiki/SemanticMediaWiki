@@ -65,19 +65,19 @@ class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'InvalidateResultCacheEventListener',
 			[],
-			'\SMW\Events\InvalidateResultCacheEventListener'
+			'\SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener'
 		];
 
 		$provider[] = [
 			'InvalidateEntityCacheEventListener',
 			[],
-			'\SMW\Events\InvalidateEntityCacheEventListener'
+			'\SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener'
 		];
 
 		$provider[] = [
 			'InvalidatePropertySpecificationLookupCacheEventListener',
 			[],
-			'\SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener'
+			'\SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener'
 		];
 
 		return $provider;

@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\EventHandler;
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\Iterators\ResultIterator;
 
 /**
@@ -20,6 +20,8 @@ use SMW\Iterators\ResultIterator;
  * @author mwjames
  */
 class PropertyTableIdReferenceDisposer {
+
+	use EventDispatcherAwareTrait;
 
 	/**
 	 * @var SQLStore
@@ -268,17 +270,14 @@ class PropertyTableIdReferenceDisposer {
 			return;
 		}
 
-		$eventHandler = EventHandler::getInstance();
-		$eventDispatcher = $eventHandler->getEventDispatcher();
-
 		$context = [
 			'context' => 'PropertyTableIdReferenceDisposal',
 			'title' => $subject->getTitle(),
 			'subject' => $subject
 		];
 
-		$eventDispatcher->dispatch( 'InvalidateResultCache', $context );
-		$eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
+		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
+		$this->eventDispatcher->dispatch( 'InvalidateEntityCache', $context );
 	}
 
 }

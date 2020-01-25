@@ -96,12 +96,14 @@ class Rebuilder {
 	 *
 	 * @param SQLStore $store
 	 * @param TitleFactory $titleFactory
+	 * @param EntityValidator $entityValidator
+	 * @param PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer
 	 */
-	public function __construct( SQLStore $store, TitleFactory $titleFactory, EntityValidator $entityValidator ) {
+	public function __construct( SQLStore $store, TitleFactory $titleFactory, EntityValidator $entityValidator, PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer ) {
 		$this->store = $store;
 		$this->titleFactory = $titleFactory;
 		$this->entityValidator = $entityValidator;
-		$this->propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer( $store );
+		$this->propertyTableIdReferenceDisposer = $propertyTableIdReferenceDisposer;
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$this->lru = new Lru( 10000 );
 	}

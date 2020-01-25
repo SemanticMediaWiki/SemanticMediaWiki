@@ -5,7 +5,6 @@ namespace SMW\MediaWiki\Hooks;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\EventHandler;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\HookListener;
 use SMW\SemanticData;

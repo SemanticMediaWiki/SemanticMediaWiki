@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Events;
+namespace SMW\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\EventListener;
 use Onoi\EventDispatcher\DispatchContext;
@@ -17,6 +17,8 @@ class InvalidateEntityCacheEventListener implements EventListener {
 
 	use LoggerAwareTrait;
 
+	const EVENT_ID = 'InvalidateEntityCache';
+
 	/**
 	 * @var EntityCache
 	 */
@@ -24,6 +26,8 @@ class InvalidateEntityCacheEventListener implements EventListener {
 
 	/**
 	 * @since 3.1
+	 *
+	 * @param EntityCache $entityCache
 	 */
 	public function __construct( EntityCache $entityCache ) {
 		$this->entityCache = $entityCache;

@@ -1,11 +1,14 @@
 <?php
 
-namespace SMW;
+namespace SMW\Listener\EventListener;
 
 use Onoi\EventDispatcher\EventListenerCollection;
 use SMW\Query\QueryComparator;
 use SMWExporter as Exporter;
-use SMW\Events\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\ApplicationFactory;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 
 /**
  * @license GNU GPL v2+
@@ -42,32 +45,40 @@ class EventListenerRegistry implements EventListenerCollection {
 	public function getCollection() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$logger = $applicationFactory->getMediaWikiLogger();
+
 		$invalidateResultCacheEventListener = $applicationFactory->create(
 			'InvalidateResultCacheEventListener'
 		);
 
 		$invalidateResultCacheEventListener->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			$logger
 		);
 
-		$this->eventListenerCollection->registerListener( 'InvalidateResultCache', $invalidateResultCacheEventListener );
+		$this->eventListenerCollection->registerListener(
+			InvalidateResultCacheEventListener::EVENT_ID,
+			$invalidateResultCacheEventListener
+		);
 
 		$invalidateEntityCacheEventListener = $applicationFactory->create(
 			'InvalidateEntityCacheEventListener'
 		);
 
 		$invalidateEntityCacheEventListener->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			$logger
 		);
 
-		$this->eventListenerCollection->registerListener( 'InvalidateEntityCache', $invalidateEntityCacheEventListener );
+		$this->eventListenerCollection->registerListener(
+			InvalidateEntityCacheEventListener::EVENT_ID,
+			$invalidateEntityCacheEventListener
+		);
 
 		$invalidatePropertySpecificationLookupCacheEventListener = $applicationFactory->create(
 			'InvalidatePropertySpecificationLookupCacheEventListener'
 		);
 
 		$invalidatePropertySpecificationLookupCacheEventListener->setLogger(
-			$applicationFactory->getMediaWikiLogger()
+			$logger
 		);
 
 		$this->eventListenerCollection->registerListener(
