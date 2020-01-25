@@ -17,6 +17,7 @@ use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
 use SMW\Store;
 use SMW\SetupFile;
 use SMw\ApplicationFactory;
@@ -301,6 +302,9 @@ class TaskHandlerFactory {
 		$maintenanceAlertsTaskHandlers = [
 			new LastOptimizationRunMaintenanceAlertTaskHandler(
 				new SetupFile()
+			),
+			new OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler(
+				$this->store
 			)
 		];
 
