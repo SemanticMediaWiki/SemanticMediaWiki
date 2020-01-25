@@ -4,7 +4,7 @@ namespace SMW\Elastic\Hooks;
 
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Store;
-use SMW\Elastic\Indexer\Rebuilder;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 
 /**
  * @license GNU GPL v2+

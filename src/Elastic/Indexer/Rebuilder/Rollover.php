@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Indexer\Rebuilder;
 
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Exception\NoConnectionException;
