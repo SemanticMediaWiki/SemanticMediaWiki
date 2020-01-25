@@ -1363,7 +1363,7 @@ class Hooks {
 	public function onAfterCreateTablesComplete ( $tableBuilder, $messageReporter, $options ) {
 
 		$messageReporter->reportMessage(
-			( new \SMW\Utils\CliMsgFormatter() )->section( 'Import tasks', 3, '-', true )
+			( new \SMW\Utils\CliMsgFormatter() )->section( 'Import task(s)', 3, '-', true )
 		);
 
 		$applicationFactory = ApplicationFactory::getInstance();

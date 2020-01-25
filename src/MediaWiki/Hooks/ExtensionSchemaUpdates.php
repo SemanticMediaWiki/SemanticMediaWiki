@@ -81,7 +81,6 @@ class ExtensionSchemaUpdates implements HookListener {
 		// problems, since the connection is not restored on wakeup." given that the
 		// DatabaseUpdater prior MW 1.31 as issues with serialization the options
 		// array.
-		// $options->set( 'messageReporter', $messageReporter );
 		$store = StoreFactory::getStore();
 		$store->setMessageReporter( $messageReporter );
 

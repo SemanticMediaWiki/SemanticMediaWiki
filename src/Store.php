@@ -476,7 +476,6 @@ abstract class Store implements QueryEngine {
 	public static function setupStore( $verbose = true, $options = null ) {
 
 		$store = StoreFactory::getStore();
-		$messageReporter = null;
 
 		// See notes in ExtensionSchemaUpdates
 		if ( is_bool( $verbose ) ) {
@@ -489,18 +488,6 @@ abstract class Store implements QueryEngine {
 
 		if ( isset( $options['options'] ) ) {
 			$options = $options['options'];
-		}
-
-		if ( $options instanceof Options && $options->has( 'messageReporter' ) ) {
-			$messageReporter = $options->get( 'messageReporter' );
-		}
-
-		if ( $messageReporter !== null ) {
-			$store->setMessageReporter( $messageReporter );
-
-			$messageReporter->reportMessage(
-				"\nSemantic MediaWiki " . SMW_VERSION . " updater\n"
-			);
 		}
 
 		return $store->setup( $options );
