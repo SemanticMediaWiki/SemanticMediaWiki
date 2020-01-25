@@ -9,6 +9,7 @@ use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableRowMapper;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @private
@@ -167,11 +168,29 @@ class Rebuilder {
 	 */
 	public function deleteAndSetupIndices() {
 
-		$this->messageReporter->reportMessage( "\n   ... deleting indices and aliases ..." );
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage( "\n" );
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( '   ... deleting indices and aliases ...' )
+		);
+
 		$this->indexer->drop();
 
-		$this->messageReporter->reportMessage( "\n   ... setting up indices and aliases ..." );
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( '   ... setting up indices and aliases ...' )
+		);
+
 		$this->indexer->setup();
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 	}
 
 	/**
@@ -205,16 +224,29 @@ class Rebuilder {
 	 */
 	public function setDefaults() {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage( "\n" );
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( '   ... finding default settings ... ' )
+		);
+
 		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->secondCol( CliMsgFormatter::FAILED )
+			);
+
 			return false;
 		}
 
-		$this->messageReporter->reportMessage( "\n" . '   ... updating settings and mappings ...' );
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 
 		$this->setDefaultByType( ElasticClient::TYPE_DATA );
 		$this->setDefaultByType( ElasticClient::TYPE_LOOKUP );
-
-		return true;
 	}
 
 	/**
@@ -298,16 +330,27 @@ class Rebuilder {
 	 */
 	public function refresh() {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( '   ... refreshing indices ...' )
+		);
+
 		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->secondCol( CliMsgFormatter::FAILED )
+			);
+
 			return false;
 		}
-
-		$this->messageReporter->reportMessage( "\n" . '   ... refreshing indices ...' );
 
 		$this->refreshIndexByType( ElasticClient::TYPE_DATA );
 		$this->refreshIndexByType( ElasticClient::TYPE_LOOKUP );
 
-		return true;
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 	}
 
 	private function fetchRawText( $dataItem ) {
@@ -351,19 +394,25 @@ class Rebuilder {
 
 	private function setDefaultByType( $type ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->oneCol( "... $type index ...", 3 )
+		);
+
 		$indices = $this->client->indices();
 
 		$index = $this->client->getIndexName(
 			$type
 		);
 
-		$this->messageReporter->reportMessage( "\n   ... *$type* index ... " );
-
 		if ( $this->client->hasLock( $type ) ) {
 			$this->rolloverByTypeAndVersion( $type, $this->client->getLock( $type ) );
 		}
 
-		$this->messageReporter->reportMessage( "\n       ... closing" );
+		$this->messageReporter->reportMessage(
+			str_replace( "\n", '', $cliMsgFormatter->oneCol( "... closing", 7 ) )
+		);
 
 		// Certain changes ( ... to define new analyzers ...) requires to close
 		// and reopen an index
@@ -403,11 +452,19 @@ class Rebuilder {
 
 		$this->client->putMapping( $params );
 
-		$this->messageReporter->reportMessage( ", reopening the index ... " );
+		$this->messageReporter->reportMessage( ', reopening ...' );
 		$indices->open( [ 'index' => $index ] );
 
 
 		$this->client->releaseLock( $type );
+
+		$cliMsgFormatter->setFirstColLen(
+			$cliMsgFormatter->getLen( '... closing, reopening ...', 7 )
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 	}
 
 	private function createIndexByType( $type ) {
@@ -442,13 +499,15 @@ class Rebuilder {
 
 	private function rolloverByTypeAndVersion( $type, $version ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$old = $this->rollover->rollover(
 			$type,
 			$version
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . sprintf( "      ... switching (rollover) from %s to %s ...", $old, $version )
+			$cliMsgFormatter->twoCols( sprintf( "... rollover from %s to %s ...", $old, $version ), CliMsgFormatter::OK, 7 )
 		);
 	}
 
