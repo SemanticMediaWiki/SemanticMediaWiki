@@ -16,6 +16,7 @@ use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler
 use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
 use SMW\Store;
 use SMW\SetupFile;
 use SMw\ApplicationFactory;
@@ -69,7 +70,7 @@ class TaskHandlerFactory {
 			$this->newMaintenanceTaskHandler( $adminFeatures ),
 
 			// TaskHandler::SECTION_ALERTS
-			$this->newAlertsTaskHandler(),
+			$this->newAlertsTaskHandler( $adminFeatures ),
 
 			// TaskHandler::SECTION_SUPPLEMENT
 			$this->newSupplementTaskHandler( $adminFeatures, $user ),
@@ -291,15 +292,24 @@ class TaskHandlerFactory {
 	/**
 	 * @since 3.2
 	 *
+	 * @param integer $adminFeatures
+	 *
 	 * @return AlertsTaskHandler
 	 */
-	public function newAlertsTaskHandler() {
+	public function newAlertsTaskHandler( $adminFeatures = 0 ) {
 
 		$maintenanceAlertsTaskHandlers = [
+			new LastOptimizationRunMaintenanceAlertTaskHandler(
+				new SetupFile()
+			)
 		];
 
 		$maintenanceAlertsTaskHandler = new MaintenanceAlertsTaskHandler(
 			$maintenanceAlertsTaskHandlers
+		);
+
+		$maintenanceAlertsTaskHandler->setFeatureSet(
+			$adminFeatures
 		);
 
 		$taskHandlers = [

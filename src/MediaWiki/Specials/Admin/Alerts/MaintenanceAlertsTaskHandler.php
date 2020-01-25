@@ -59,6 +59,11 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 		$contents = '';
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
+
+			$taskHandler->setFeatureSet(
+				$this->featureSet
+			);
+
 			$contents .= $taskHandler->getHtml();
 		}
 

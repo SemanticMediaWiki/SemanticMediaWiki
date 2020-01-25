@@ -27,7 +27,7 @@ abstract class TaskHandler {
 	/**
 	 * @var integer
 	 */
-	private $featureSet = 0;
+	protected $featureSet = 0;
 
 	/**
 	 * @var Store

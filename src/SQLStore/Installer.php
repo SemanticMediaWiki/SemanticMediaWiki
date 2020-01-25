@@ -390,6 +390,9 @@ class Installer implements MessageReporter {
 		}
 
 		$messageReporter->reportMessage( "   ... done.\n" );
+
+		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+		$this->setupFile->set( [ SetupFile::LAST_OPTIMIZATION_RUN => $dateTimeUtc->format( 'Y-m-d h:i' ) ] );
 	}
 
 	private function addSupplementJobs( $messageReporter ) {
