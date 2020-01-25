@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
 use Title;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Allows overriding default behaviour for determining if a page exists
@@ -15,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class TitleIsAlwaysKnown {
+class TitleIsAlwaysKnown implements HookListener {
 
 	/**
 	 * @var Title

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Before displaying noarticletext or noarticletext-nopermission messages
@@ -14,7 +15,7 @@ use SMW\DIProperty;
  *
  * @author mwjames
  */
-class BeforeDisplayNoArticleText {
+class BeforeDisplayNoArticleText implements HookListener {
 
 	/**
 	 * @var Page

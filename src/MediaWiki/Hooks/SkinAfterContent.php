@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use Skin;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * SkinAfterContent hook to add text after the page content and
@@ -16,7 +18,9 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class SkinAfterContent {
+class SkinAfterContent implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var Skin
@@ -50,7 +54,7 @@ class SkinAfterContent {
 
 	private function canAddFactbox() {
 
-		if ( !$this->skin instanceof Skin || !ApplicationFactory::getInstance()->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !$this->skin instanceof Skin || !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			return false;
 		}
 

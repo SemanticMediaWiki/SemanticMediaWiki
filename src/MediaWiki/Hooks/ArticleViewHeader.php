@@ -7,6 +7,8 @@ use Page;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 use SMW\DependencyValidator;
 use SMW\Message;
 use SMW\Store;
@@ -15,15 +17,17 @@ use Title;
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
  *
- * Note: This hook is not called on non-article pages (including edit pages) and it is also not
- * called prior to outputting the edit preview.
+ * Note: This hook is not called on non-article pages (including edit pages) and
+ * it is also not called prior to outputting the edit preview.
  *
  * @license GNU GPL v2+
  * @since 3.0
  *
  * @author mwjames
  */
-class ArticleViewHeader extends HookHandler {
+class ArticleViewHeader implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var Store

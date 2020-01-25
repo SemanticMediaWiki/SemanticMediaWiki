@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use ResourceLoader;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Add new JavaScript/QUnit testing modules
@@ -14,7 +15,7 @@ use ResourceLoader;
  *
  * @author mwjames
  */
-class ResourceLoaderTestModules extends HookHandler {
+class ResourceLoaderTestModules implements HookListener {
 
 	/**
 	 * @var ResourceLoader

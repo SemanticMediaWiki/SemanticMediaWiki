@@ -8,6 +8,8 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
 use WikiPage;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * A function hook being executed before running "&action=purge"
@@ -22,8 +24,9 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurge {
+class ArticlePurge implements HookListener {
 
+	use OptionsAwareTrait;
 	use EventDispatcherAwareTrait;
 
 	const CACHE_NAMESPACE = 'smw:arc';

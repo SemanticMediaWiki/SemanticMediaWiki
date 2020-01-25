@@ -6,6 +6,8 @@ use Page;
 use SMW\MediaWiki\PageFactory;
 use SMW\Store;
 use Title;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPageList
@@ -15,7 +17,9 @@ use Title;
  *
  * @author mwjames
  */
-class SpecialPageList extends HookHandler {
+class SpecialPageList implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @since 3.1

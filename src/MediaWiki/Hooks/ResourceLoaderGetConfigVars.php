@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use SMW\Localizer;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * Hook: ResourceLoaderGetConfigVars called right before
@@ -18,7 +20,9 @@ use SMW\MediaWiki\NamespaceInfo;
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVars extends HookHandler {
+class ResourceLoaderGetConfigVars implements HookListener {
+
+	use OptionsAwareTrait;
 
 	const OPTION_KEYS = [
 		'smwgQMaxLimit',

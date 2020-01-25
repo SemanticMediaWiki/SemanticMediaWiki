@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 use StripState;
 
 /**
@@ -26,7 +28,9 @@ use StripState;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinks extends HookHandler {
+class InternalParseBeforeLinks implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var Parser

@@ -10,6 +10,7 @@ use SMW\Localizer;
 use SMW\NamespaceExaminer;
 use Title;
 use User;
+use SMW\MediaWiki\HookListener;
 
 /**
  * Fires when a local file upload occurs
@@ -21,7 +22,7 @@ use User;
  *
  * @author mwjames
  */
-class FileUpload extends HookHandler {
+class FileUpload implements HookListener {
 
 	/**
 	 * @var NamespaceExaminer

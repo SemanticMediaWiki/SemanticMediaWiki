@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Hooks;
 
 use SkinTemplate;
 use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
@@ -13,7 +15,9 @@ use SMW\MediaWiki\JobQueue;
  *
  * @author mwjames
  */
-class PersonalUrls extends HookHandler {
+class PersonalUrls implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var SkinTemplate

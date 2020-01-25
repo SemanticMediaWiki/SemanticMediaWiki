@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\MediaWiki\HookListener;
+
 /**
  * Called when generating the extensions credits, use this to change the tables headers
  *
@@ -12,7 +14,7 @@ namespace SMW\MediaWiki\Hooks;
  *
  * @author mwjames
  */
-class ExtensionTypes extends HookHandler {
+class ExtensionTypes implements HookListener {
 
 	/**
 	 * @since 2.0

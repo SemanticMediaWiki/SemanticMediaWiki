@@ -344,10 +344,6 @@ class Hooks {
 			Site::isReady()
 		);
 
-		$parserAfterTidy->setLogger(
-			$applicationFactory->getMediaWikiLogger()
-		);
-
 		$parserAfterTidy->setOptions(
 			[
 				'smwgCheckForRemnantEntities' => $settings->get( 'smwgCheckForRemnantEntities' )
@@ -379,10 +375,6 @@ class Hooks {
 			]
 		);
 
-		$baseTemplateToolbox->setLogger(
-			$applicationFactory->getMediaWikiLogger()
-		);
-
 		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 	}
 
@@ -396,6 +388,12 @@ class Hooks {
 
 		$skinAfterContent = new SkinAfterContent(
 			$skin
+		);
+
+		$skinAfterContent->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
+			]
 		);
 
 		return $skinAfterContent->performUpdate( $data );
@@ -666,10 +664,6 @@ class Hooks {
 			]
 		);
 
-		$articleViewHeader->setLogger(
-			$applicationFactory->getMediaWikiLogger()
-		);
-
 		$articleViewHeader->process( $page, $outputDone, $useParserCache );
 
 		return true;
@@ -746,10 +740,19 @@ class Hooks {
 	public function onArticlePurge( &$wikiPage ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
 		$articlePurge = new ArticlePurge();
 
 		$articlePurge->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
+		);
+
+		$articlePurge->setOptions(
+			[
+				'smwgAutoRefreshOnPurge' => $settings->get( 'smwgAutoRefreshOnPurge' ),
+				'smwgQueryResultCacheRefreshOnPurge' => $settings->get( 'smwgQueryResultCacheRefreshOnPurge' )
+			]
 		);
 
 		return $articlePurge->process( $wikiPage );
@@ -769,18 +772,8 @@ class Hooks {
 			$applicationFactory->getStore()
 		);
 
-		$articleDelete->setLogger(
-			$applicationFactory->getMediaWikiLogger()
-		);
-
 		$articleDelete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
-		);
-
-		$articleDelete->setOptions(
-			[
-				'smwgEnabledQueryDependencyLinksStore' => $applicationFactory->getSettings()->get( 'smwgEnabledQueryDependencyLinksStore' )
-			]
 		);
 
 		return $articleDelete->process( $wikiPage );

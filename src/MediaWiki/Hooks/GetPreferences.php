@@ -6,6 +6,8 @@ use Hooks;
 use User;
 use Xml;
 use SMW\Utils\Logo;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * Hook: GetPreferences adds user preference
@@ -17,7 +19,9 @@ use SMW\Utils\Logo;
  *
  * @author mwjames
  */
-class GetPreferences extends HookHandler {
+class GetPreferences implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var User

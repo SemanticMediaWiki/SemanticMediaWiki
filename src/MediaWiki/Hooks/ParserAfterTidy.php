@@ -9,6 +9,9 @@ use SMW\ParserData;
 use SMW\SemanticData;
 use Onoi\Cache\Cache;
 use SMW\NamespaceExaminer;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -21,7 +24,10 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class ParserAfterTidy extends HookHandler {
+class ParserAfterTidy implements HookListener {
+
+	use OptionsAwareTrait;
+	use LoggerAwareTrait;
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 

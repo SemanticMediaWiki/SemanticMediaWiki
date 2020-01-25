@@ -59,6 +59,8 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$data = '';
 		$instance = new SkinAfterContent( null );
 
+		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
+
 		$this->assertTrue(
 			$instance->performUpdate( $data )
 		);
@@ -72,6 +74,8 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$data = '';
 
 		$instance = new SkinAfterContent( $parameters['skin'] );
+
+		$instance->setOption( 'SMW_EXTENSION_LOADED', true );
 
 		// Replace CachedFactbox instance
 		if ( isset( $parameters['title'] ) ) {

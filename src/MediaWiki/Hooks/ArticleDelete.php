@@ -7,6 +7,7 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\EventHandler;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\MediaWiki\HookListener;
 use SMW\SemanticData;
 use SMW\Store;
 use Title;
@@ -20,7 +21,7 @@ use Wikipage;
  *
  * @author mwjames
  */
-class ArticleDelete extends HookHandler {
+class ArticleDelete implements HookListener {
 
 	use EventDispatcherAwareTrait;
 

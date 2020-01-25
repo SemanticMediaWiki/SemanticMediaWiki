@@ -8,6 +8,8 @@ use SMW\DIWikiPage;
 use SMW\EntityCache;
 use Title;
 use Page;
+use SMW\MediaWiki\HookListener;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
@@ -17,7 +19,9 @@ use Page;
  *
  * @author mwjames
  */
-class RejectParserCacheValue extends HookHandler {
+class RejectParserCacheValue implements HookListener {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var NamespaceExaminer

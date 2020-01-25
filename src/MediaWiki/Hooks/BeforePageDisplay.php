@@ -8,6 +8,8 @@ use SpecialPage;
 use Title;
 use SMW\Message;
 use Html;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -20,7 +22,9 @@ use Html;
  *
  * @author mwjames
  */
-class BeforePageDisplay extends HookHandler {
+class BeforePageDisplay implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @since 3.1

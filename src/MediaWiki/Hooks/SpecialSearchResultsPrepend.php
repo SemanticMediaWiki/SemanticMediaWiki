@@ -8,6 +8,8 @@ use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Message;
 use SMW\Utils\HtmlModal;
 use SpecialSearch;
+use SMW\MediaWiki\HookListener;
+use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
@@ -17,7 +19,9 @@ use SpecialSearch;
  *
  * @author mwjames
  */
-class SpecialSearchResultsPrepend extends HookHandler {
+class SpecialSearchResultsPrepend implements HookListener {
+
+	use OptionsAwareTrait;
 
 	/**
 	 * @var SpecialSearch
