@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
-use SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Specials\Admin\DeprecationNoticeTaskHandler
+ * @covers \SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

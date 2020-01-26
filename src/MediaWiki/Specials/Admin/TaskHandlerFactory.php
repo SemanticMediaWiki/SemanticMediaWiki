@@ -14,7 +14,10 @@ use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
 use SMW\Store;
+use SMW\SetupFile;
 use SMw\ApplicationFactory;
 use SMW\Utils\FileFetcher;
 
@@ -65,8 +68,8 @@ class TaskHandlerFactory {
 			// TaskHandler::SECTION_MAINTENANCE
 			$this->newMaintenanceTaskHandler( $adminFeatures ),
 
-			// TaskHandler::SECTION_DEPRECATION
-			$this->newDeprecationNoticeTaskHandler(),
+			// TaskHandler::SECTION_ALERTS
+			$this->newAlertsTaskHandler(),
 
 			// TaskHandler::SECTION_SUPPLEMENT
 			$this->newSupplementTaskHandler( $adminFeatures, $user ),
@@ -79,7 +82,7 @@ class TaskHandlerFactory {
 
 		$taskHandlerList = [
 			TaskHandler::SECTION_MAINTENANCE => [],
-			TaskHandler::SECTION_DEPRECATION => [],
+			TaskHandler::SECTION_ALERTS => [],
 			TaskHandler::SECTION_SUPPLEMENT => [],
 			TaskHandler::SECTION_SUPPORT => [],
 			'actions' => []
@@ -103,8 +106,8 @@ class TaskHandlerFactory {
 				case TaskHandler::SECTION_MAINTENANCE:
 					$taskHandlerList[TaskHandler::SECTION_MAINTENANCE][] = $taskHandler;
 					break;
-				case TaskHandler::SECTION_DEPRECATION:
-					$taskHandlerList[TaskHandler::SECTION_DEPRECATION][] = $taskHandler;
+				case TaskHandler::SECTION_ALERTS:
+					$taskHandlerList[TaskHandler::SECTION_ALERTS][] = $taskHandler;
 					break;
 				case TaskHandler::SECTION_SUPPLEMENT:
 					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $taskHandler;
@@ -285,6 +288,27 @@ class TaskHandlerFactory {
 		return new FulltextSearchTableRebuildJobTaskHandler( $this->htmlFormRenderer, $this->outputFormatter );
 	}
 
+	/**
+	 * @since 3.2
+	 *
+	 * @return AlertsTaskHandler
+	 */
+	public function newAlertsTaskHandler() {
+
+		$maintenanceAlertsTaskHandlers = [
+		];
+
+		$maintenanceAlertsTaskHandler = new MaintenanceAlertsTaskHandler(
+			$maintenanceAlertsTaskHandlers
+		);
+
+		$taskHandlers = [
+			$this->newDeprecationNoticeTaskHandler(),
+			$maintenanceAlertsTaskHandler
+		];
+
+		return new AlertsTaskHandler( $this->outputFormatter, $taskHandlers );
+	}
 	/**
 	 * @since 3.0
 	 *
