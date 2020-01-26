@@ -205,4 +205,13 @@ class SchemaFactory {
 		);
 	}
 
+	/**
+	 * @since 3.2
+	 *
+	 * @return SchemaFilterFactory
+	 */
+	public function newSchemaFilterFactory() : SchemaFilterFactory {
+		return new SchemaFilterFactory();
+	}
+
 }

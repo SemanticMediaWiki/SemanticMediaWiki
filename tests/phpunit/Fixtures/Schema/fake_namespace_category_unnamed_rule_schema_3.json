@@ -1,0 +1,49 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_rules": [
+		{
+			"if": {
+				"namespace": "NS_HELP",
+				"category": [ "Foo", "Bar" ]
+			},
+			"then": {
+				"action": "3_1"
+			}
+		},
+		{
+			"if": {
+				"namespace": [ "NS_MAIN", "NS_HELP" ],
+				"category": [ "Foo", "Bar" ]
+			},
+			"then": {
+				"action": "3_2"
+			}
+		},
+		{
+			"if": {
+				"category": "Foo"
+			},
+			"then": {
+				"action": "3_3"
+			}
+		},
+		{
+			"if": {
+				"namespace": "NS_TEMPLATE",
+				"category": { "allOf" : [ "Foo", "Bar", "Foobar-1" ] }
+			},
+			"then": {
+				"action": "3_4"
+			}
+		},
+		{
+			"if": {
+				"namespace": "NS_TEMPLATE",
+				"category": { "allOf" : [ "Foo", "Bar", "Foobar-2" ] }
+			},
+			"then": {
+				"action": "3_5"
+			}
+		}
+	]
+}
