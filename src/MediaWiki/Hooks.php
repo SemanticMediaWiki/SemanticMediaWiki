@@ -339,6 +339,10 @@ class Hooks {
 			$applicationFactory->getCache()
 		);
 
+		$parserAfterTidy->setLogger(
+			$applicationFactory->getMediaWikiLogger()
+		);
+
 		$parserAfterTidy->isCommandLineMode(
 			Site::isCommandLineMode()
 		);
