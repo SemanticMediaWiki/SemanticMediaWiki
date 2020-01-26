@@ -6,6 +6,7 @@ use ALTree;
 use ALSection;
 use ALItem;
 use ALRow;
+use SMW\MediaWiki\HookListener;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +14,7 @@ use ALRow;
  *
  * @author mwjames
  */
-class AdminLinks extends HookHandler {
+class AdminLinks implements HookListener {
 
 	/**
 	 * @since 3.1
