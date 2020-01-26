@@ -100,7 +100,7 @@ class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
 		$maintenanceRunner->run();
 
 		$this->assertContains(
-			'Core tables',
+			'Core table(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
