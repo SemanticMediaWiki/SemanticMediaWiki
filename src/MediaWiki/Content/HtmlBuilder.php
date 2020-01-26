@@ -136,6 +136,12 @@ class HtmlBuilder {
 				);
 
 				$parameters[$key] = $params['attributes_extra']['link_type'];
+
+				if (
+					isset( $params['attributes']['type_description'] ) &&
+					$params['attributes']['type_description'] !== '' ) {
+					$parameters[$key] .= '<div style="padding:5px 0 5px 0;">' . $params['attributes']['type_description'] . '</div>';
+				}
 			}
 
 			if ( $key === 'schema_description' ) {
@@ -147,11 +153,6 @@ class HtmlBuilder {
 					$params['attributes_extra']['msg_description']
 				);
 
-				$parameters[$key] = $value;
-			}
-
-			if ( $key === 'type_description' ) {
-				$key = $params['attributes_extra']['type_description'];
 				$parameters[$key] = $value;
 			}
 

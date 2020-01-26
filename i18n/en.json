@@ -947,7 +947,7 @@
 	"smw-schema-title": "Schema",
 	"smw-schema-type-help-link": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/$1",
 	"smw-schema-usage": "Usage",
-	"smw-schema-type": "Type",
+	"smw-schema-type": "Schema type",
 	"smw-schema-type-description": "Type description",
 	"smw-schema-description": "Schema description",
 	"smw-schema-description-link-format-schema": "This schema type supports the definition of characteristics for creating context sensitive links in connection with a [[Property:Formatter schema|formatter schema]] assigned property.",
