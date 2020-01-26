@@ -465,6 +465,9 @@ class Installer implements MessageReporter {
 
 	private function meetsVersionMinRequirement( $messageReporter, $version ) {
 
+		$messageReporter->reportMessage( "\nChecking database version requirement ..." );
+		$messageReporter->reportMessage( "\n   ... done.\n" );
+
 		$requirements = $this->tableBuildExaminer->defineDatabaseRequirements(
 			$version
 		);
