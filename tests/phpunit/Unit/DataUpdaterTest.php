@@ -26,6 +26,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $changePropagationNotifier;
 	private $eventDispatcher;
+	private $revisionGuard;
 
 	protected function setUp() {
 		parent::setUp();
@@ -39,6 +40,14 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
 		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,6 +84,8 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 		$this->testEnvironment->registerObject( 'Store', $this->store );
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 	}
@@ -114,6 +125,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 			$this->eventDispatcher
 		);
 
+		$instance->setRevisionGuard(
+			$this->revisionGuard
+		);
+
 		$this->assertTrue(
 			$instance->doUpdate()
 		);
@@ -131,6 +146,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance->setEventDispatcher(
 			$this->eventDispatcher
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->setLogger( $this->spyLogger );
@@ -472,6 +491,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance->setEventDispatcher(
 			$this->eventDispatcher
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->canCreateUpdateJob( true );

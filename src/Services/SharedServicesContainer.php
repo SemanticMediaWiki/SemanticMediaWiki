@@ -34,6 +34,8 @@ use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\TitleFactory;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
 use SMW\Parser\LinksProcessor;
@@ -262,6 +264,22 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'TitleFactory', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'TitleFactory', '\SMW\MediaWiki\TitleFactory' );
 			return new TitleFactory();
+		} );
+
+		$containerBuilder->registerCallback( 'HookDispatcher', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'HookDispatcher', HookDispatcher::class );
+			return new HookDispatcher();
+		} );
+
+		$containerBuilder->registerCallback( 'RevisionGuard', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'RevisionGuard', RevisionGuard::class );
+			$revisionGuard = new RevisionGuard();
+
+			$revisionGuard->setHookDispatcher(
+				$containerBuilder->singleton( 'HookDispatcher' )
+			);
+
+			return $revisionGuard;
 		} );
 
 		$containerBuilder->registerCallback( 'ContentParser', function( $containerBuilder, \Title $title ) {

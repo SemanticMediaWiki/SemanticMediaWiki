@@ -31,6 +31,12 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->dataValueFactory = DataValueFactory::getInstance();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
 	protected function tearDown() {
@@ -265,24 +271,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSkipUpdateOnMatchedMarker() {
 
-		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'findAssociatedRev' ] )
-			->getMock();
+		$this->revisionGuard->expects( $this->once() )
+			->method( 'isSkippableUpdate' )
+			->will( $this->returnValue( true ) );
 
-		$idTable->expects( $this->once() )
-			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
-
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds' ] )
-			->getMock();
-
-		$store->expects( $this->any() )
-			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
-
-		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

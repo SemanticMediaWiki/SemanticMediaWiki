@@ -29,6 +29,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $linksProcessor;
 	private $magicWordsFinder;
+	private $hookDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,6 +47,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$this->linksProcessor = new LinksProcessor();
 
 		$this->magicWordsFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -117,6 +122,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			new RedirectTargetFinder()
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->parse( $text );
 
 		$this->assertEquals(
@@ -144,6 +153,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			$this->linksProcessor,
 			$this->magicWordsFinder,
 			new RedirectTargetFinder()
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$instance->showErrors(
@@ -205,6 +218,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			$redirectTargetFinder
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->parse( $text );
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -246,6 +263,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			$this->linksProcessor,
 			$this->magicWordsFinder,
 			$redirectTargetFinder
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$instance->setRedirectTarget( $redirectTarget );
@@ -294,6 +315,10 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$text = '[[Foo::<nowiki>Bar</nowiki>]]';
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
 
 		$instance->setStripMarkerDecoder( $stripMarkerDecoder );
 		$instance->parse( $text );

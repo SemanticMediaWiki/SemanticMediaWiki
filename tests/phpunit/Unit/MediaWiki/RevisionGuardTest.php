@@ -16,6 +16,16 @@ use SMW\DIWikiPage;
  */
 class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
+	private $hookDispatcher;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
@@ -34,9 +44,15 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
+		$instance = new RevisionGuard();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertInternalType(
 			'boolean',
-			RevisionGuard::isSkippableUpdate( $title )
+			$instance->isSkippableUpdate( $title )
 		);
 	}
 
@@ -51,9 +67,15 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 		$latestRevID = 1001;
 
+		$instance = new RevisionGuard();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertInternalType(
 			'boolean',
-			RevisionGuard::isSkippableUpdate( $title, $latestRevID )
+			$instance->isSkippableUpdate( $title, $latestRevID )
 		);
 	}
 

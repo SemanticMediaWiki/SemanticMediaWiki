@@ -9,6 +9,7 @@ use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
 use Revision;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\MediaWiki\RevisionGuard;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 
@@ -31,6 +32,7 @@ use Onoi\EventDispatcher\EventDispatcherAwareTrait;
  */
 class DataUpdater {
 
+	use RevisionGuardAwareTrait;
 	use LoggerAwareTrait;
 	use EventDispatcherAwareTrait;
 
@@ -165,7 +167,7 @@ class DataUpdater {
 
 		$latestRevID = null;
 
-		if ( RevisionGuard::isSkippableUpdate( $title, $latestRevID ) ) {
+		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
 			return true;
 		}
 

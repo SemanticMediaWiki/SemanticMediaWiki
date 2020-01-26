@@ -49,6 +49,10 @@ class MwHooksHandler {
 		'SMW::Browse::AfterIncomingPropertiesLookupComplete',
 		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
 
+		'SMW::GetPreferences',
+		'SMW::Parser::AfterLinksProcessingComplete',
+		'SMW::RevisionGuard::IsApprovedRevision',
+
 		'SMWSQLStore3::updateDataBefore',
 		'SMW::SQLStore::BeforeDataUpdateComplete'
 	];

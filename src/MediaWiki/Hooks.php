@@ -802,11 +802,18 @@ class Hooks {
 		);
 
 		$linksUpdateConstructed->setLogger(
-			 $applicationFactory->getMediaWikiLogger()
+			$applicationFactory->getMediaWikiLogger()
 		);
 
+		// #3341
+		// When running as part of the install don't try to access the DB
+		// or update the Store
 		$linksUpdateConstructed->isReady(
 			Site::isReady()
+		);
+
+		$linksUpdateConstructed->setRevisionGuard(
+			 $applicationFactory->singleton( 'RevisionGuard' )
 		);
 
 		$linksUpdateConstructed->process( $linksUpdate );
@@ -910,10 +917,15 @@ class Hooks {
 	 */
 	public function onGetPreferences( $user, &$preferences ) {
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$getPreferences = new GetPreferences(
 			$user
+		);
+
+		$getPreferences->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
 		);
 
 		$getPreferences->setOptions(

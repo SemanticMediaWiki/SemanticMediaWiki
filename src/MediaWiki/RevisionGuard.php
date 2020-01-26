@@ -7,6 +7,7 @@ use Title;
 use File;
 use User;
 use WikiPage;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @private
@@ -23,6 +24,8 @@ use WikiPage;
  */
 class RevisionGuard {
 
+	use HookDispatcherAwareTrait;
+
 	/**
 	 * @since 3.1
 	 *
@@ -31,7 +34,7 @@ class RevisionGuard {
 	 *
 	 * @return boolean
 	 */
-	public static function isSkippableUpdate( Title $title, &$latestRevID = null ) {
+	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
 
 		// MW 1.34+
 		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
@@ -47,7 +50,7 @@ class RevisionGuard {
 
 		// If for some reason an extension decides that the current used revision
 		// isn't approved then the hook should return `false`
-		if ( \Hooks::run( 'SMW::RevisionGuard::IsApprovedRevision', [ $title, $latestRevID ] ) === false ) {
+		if ( $this->hookDispatcher->onIsApprovedRevision( $title, $latestRevID ) === false ) {
 			return true;
 		}
 

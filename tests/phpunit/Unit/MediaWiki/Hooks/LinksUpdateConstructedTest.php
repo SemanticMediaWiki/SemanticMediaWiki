@@ -22,12 +22,22 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $namespaceExaminer;
 	private $spyLogger;
+	private $revisionGuard;
+
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'isSkippableUpdate' )
+			->will( $this->returnValue( false ) );
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
@@ -47,6 +57,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $idTable ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
 	protected function tearDown() {
@@ -71,6 +82,10 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$title->expects( $this->any() )
 			->method( 'getArticleID' )
 			->will( $this->returnValue( 11001 ) );
+
+		$title->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 9999 ) );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
@@ -122,6 +137,11 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setLogger( $this->spyLogger );
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
+		);
+
 		$instance->disableDeferredUpdate();
 
 		$this->assertTrue(
@@ -165,6 +185,10 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new LinksUpdateConstructed(
 			$this->namespaceExaminer
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$this->assertTrue(
@@ -212,6 +236,10 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new LinksUpdateConstructed(
 			$this->namespaceExaminer
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->process( $linksUpdate );
