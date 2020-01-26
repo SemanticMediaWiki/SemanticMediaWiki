@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\Iterators\ResultIterator;
+use SMW\RequestOptions;
 
 /**
  * @private
@@ -106,15 +107,27 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 2.5
 	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator() {
+	public function newOutdatedEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+
+		$options = [];
+
+		if ( $requestOptions !== null ) {
+			$options = [
+				'LIMIT'  => $requestOptions->getLimit(),
+				'OFFSET' => $requestOptions->getOffset()
+			];
+		}
 
 		$res = $this->connection->select(
 			SQLStore::ID_TABLE,
 			[ 'smw_id' ],
 			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
-			__METHOD__
+			__METHOD__,
+			$options
 		);
 
 		return new ResultIterator( $res );
