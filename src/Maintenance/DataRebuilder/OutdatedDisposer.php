@@ -5,6 +5,7 @@ namespace SMW\Maintenance\DataRebuilder;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\IteratorFactory;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**
@@ -30,6 +31,11 @@ class OutdatedDisposer {
 	private $iteratorFactory;
 
 	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param EntityIdDisposerJob $entityIdDisposerJob
@@ -38,6 +44,7 @@ class OutdatedDisposer {
 	public function __construct( EntityIdDisposerJob $entityIdDisposerJob, IteratorFactory $iteratorFactory ) {
 		$this->entityIdDisposerJob = $entityIdDisposerJob;
 		$this->iteratorFactory = $iteratorFactory;
+		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
 
 	/**
@@ -45,73 +52,100 @@ class OutdatedDisposer {
 	 */
 	public function run() {
 
-		$this->messageReporter->reportMessage( "Removing outdated entities and query links ..." );
-		$this->messageReporter->reportMessage( "\n   ... checking outdated entities ..." );
+		$this->messageReporter->reportMessage(
+			"Removing outdated entities and query links ...\n"
+		);
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->firstCol( '   ... checking outdated entities ...' )
+		);
 
 		$resultIterator = $this->entityIdDisposerJob->newOutdatedEntitiesResultIterator();
 
 		if ( ( $count = $resultIterator->count() ) > 0 ) {
 			$this->disposeOutdatedEntities( $resultIterator, $count );
+		} else {
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			);
 		}
 
-		$this->messageReporter->reportMessage( "\n   ... done." );
-		$this->messageReporter->reportMessage( "\n   ... checking invalid query links ..." );
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->firstCol( '   ... checking query links (invalid) ...' )
+		);
 
 		$resultIterator = $this->entityIdDisposerJob->newOutdatedQueryLinksResultIterator();
 
 		if ( ( $count = $resultIterator->count() ) > 0 ) {
 			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (invalid)' );
+		} else {
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			);
 		}
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->firstCol( '... checking query links (unassigned) ...', 3 )
+		);
 
 		$resultIterator = $this->entityIdDisposerJob->newUnassignedQueryLinksResultIterator();
 
 		if ( ( $count = $resultIterator->count() ) > 0 ) {
 			$this->disposeOutdatedQueryLinks( $resultIterator, $count, 'query links (unassigned)' );
+		} else {
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			);
 		}
 
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
 	private function disposeOutdatedEntities( $resultIterator, $count ) {
 
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
-
-		$counter = 0;
+		$i = 0;
 
 		foreach ( $chunkedIterator as $chunk ) {
 			foreach ( $chunk as $row ) {
-				$counter++;
-				$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $count * 100 ) );
+				$progress = $this->cliMsgFormatter->progressCompact( ++$i, $count );
 
 				$this->messageReporter->reportMessage(
-					"\r". sprintf( "%-50s%s", "       ... cleaning up entity", $msg )
+					$this->cliMsgFormatter->twoColsOverride( '... cleaning up entity ...', $progress, 7 )
 				);
 
 				$this->entityIdDisposerJob->dispose( $row );
 			}
 		}
 
-		$this->messageReporter->reportMessage( "\n       ... {$count} IDs removed ..." );
+		$this->messageReporter->reportMessage( "\n" );
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->twoCols( '... removed (IDs) ...', $count, 7 )
+		);
 	}
 
 	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ) {
 
 		$this->messageReporter->reportMessage( "\n" );
-		$counter = 0;
+		$i = 0;
 
 		foreach ( $resultIterator as $row ) {
-			$counter++;
-			$msg = sprintf( "%s (%1.0f%%)", $row->id, round( $counter / $count * 100 ) );
+			$progress = $this->cliMsgFormatter->progressCompact( ++$i, $count );
 
 			$this->messageReporter->reportMessage(
-				"\r". sprintf( "%-50s%s", "       ... cleaning up {$label}", $msg )
+				$this->cliMsgFormatter->twoColsOverride( "... cleaning up {$label} ...", $progress, 7 )
 			);
 
 			$this->entityIdDisposerJob->disposeQueryLinks( $row );
 		}
 
-		$this->messageReporter->reportMessage( "\n       ... {$count} IDs removed ..." );
+		$this->messageReporter->reportMessage( "\n" );
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->twoCols( '... removed (IDs) ...', $count, 7 )
+		);
 	}
 
 }
