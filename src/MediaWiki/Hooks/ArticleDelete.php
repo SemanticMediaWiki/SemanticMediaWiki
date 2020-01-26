@@ -25,9 +25,14 @@ class ArticleDelete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var
+	 * @var Store
 	 */
 	private $store;
+
+	/**
+	 * @var string
+	 */
+	private $origin = 'ArticleDelete';
 
 	/**
 	 * @since 3.0
@@ -39,16 +44,25 @@ class ArticleDelete implements HookListener {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $origin
+	 */
+	public function setOrigin( string $origin ) {
+		$this->origin = $origin;
+	}
+
+	/**
 	 * @since 2.0
 	 *
-	 * @param Wikipage $wikiPage
+	 * @param Title $title
 	 *
 	 * @return true
 	 */
-	public function process( Wikipage $wikiPage ) {
+	public function process( Title $title ) {
 
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $wikiPage ) {
-			$this->doDelete( $wikiPage->getTitle() );
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title ) {
+			$this->doDelete( $title );
 		} );
 
 		$deferredCallableUpdate->setOrigin( __METHOD__ );
@@ -92,7 +106,7 @@ class ArticleDelete implements HookListener {
 			$semanticData
 		);
 
-		$parameters['origin'] = 'ArticleDelete';
+		$parameters['origin'] = $this->origin;
 
 		// Fetch the ID before the delete process marks it as outdated to help
 		// run a dispatch process on secondary tables
@@ -109,7 +123,7 @@ class ArticleDelete implements HookListener {
 		$this->store->deleteSubject( $title );
 
 		$context = [
-			'context' => 'ArticleDelete',
+			'context' => $this->origin,
 			'title' => $title,
 			'subject' => $subject
 		];
