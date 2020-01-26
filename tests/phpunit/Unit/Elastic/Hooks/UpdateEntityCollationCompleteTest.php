@@ -51,7 +51,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSemanticData' )
 			->will( $this->returnValue( $this->semanticData ) );
 
-		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder' )
+		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 

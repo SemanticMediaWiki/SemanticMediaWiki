@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer;
+namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
-use SMW\Elastic\Indexer\Rebuilder;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Elastic\Indexer\Rebuilder
+ * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -38,7 +38,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rollover' )
+		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer;
+namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
-use SMW\Elastic\Indexer\Rollover;
+use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Elastic\Indexer\Rollover
+ * @covers \SMW\Elastic\Indexer\Rebuilder\Rollover
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
