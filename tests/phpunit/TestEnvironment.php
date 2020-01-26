@@ -150,8 +150,26 @@ class TestEnvironment {
 		} else {
 			$lbFactory->setDomainPrefix( $prefix );
 		}
-		
+
 		$GLOBALS['wgDBprefix'] = $prefix;
+	}
+	/**
+	 * @see https://github.com/wikimedia/mediawiki/commit/7b4eafda0d986180d20f37f2489b70e8eca00df4
+	 * @since 3.2
+	 */
+	public static function overrideUserPermissions( $user, $permissions = [] ) {
+
+		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getPermissionManager' ) ) {
+			return;
+		}
+
+		$permissionManager = \MediaWiki\MediaWikiServices::getInstance()->getPermissionManager();
+
+		if ( !method_exists( $permissionManager, 'overrideUserRightsForTesting' ) ) {
+			return;
+		}
+
+		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
 	}
 
 	/**
