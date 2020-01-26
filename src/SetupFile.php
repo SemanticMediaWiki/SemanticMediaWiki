@@ -32,6 +32,11 @@ class SetupFile {
 	const DB_REQUIREMENTS = 'db_requirements';
 
 	/**
+	 * Key that describes the date of the last table optimization run.
+	 */
+	const LAST_OPTIMIZATION_RUN = 'last_optimization_run';
+
+	/**
 	 * Describes the file name
 	 */
 	const FILE_NAME = '.smw.json';
