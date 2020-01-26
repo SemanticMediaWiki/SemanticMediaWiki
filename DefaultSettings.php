@@ -1080,9 +1080,16 @@ return [
 	# - SMW_ADM_PSTATS: Property statistics update
 	# - SMW_ADM_FULLT:
 	#
+	#   Maintenance alerts
+	#
+	# - SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN: Alerts when table optimization is
+	#   overdue
+	#
 	# @since 2.5
 	##
-	'smwgAdminFeatures' => SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT,
+	'smwgAdminFeatures' =>
+		SMW_ADM_REFRESH | SMW_ADM_SETUP | SMW_ADM_DISPOSAL | SMW_ADM_PSTATS | SMW_ADM_FULLT |
+		SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN,
 	##
 
 	###

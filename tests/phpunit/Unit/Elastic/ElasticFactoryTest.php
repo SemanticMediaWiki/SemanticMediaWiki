@@ -125,7 +125,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Rollover',
+			'\SMW\Elastic\Indexer\Rebuilder\Rollover',
 			$instance->newRollover( $this->connection )
 		);
 	}
@@ -163,7 +163,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Rebuilder',
+			'\SMW\Elastic\Indexer\Rebuilder\Rebuilder',
 			$instance->newRebuilder( $store )
 		);
 	}
@@ -423,7 +423,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder' )
+		$rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 

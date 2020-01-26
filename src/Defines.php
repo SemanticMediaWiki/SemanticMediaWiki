@@ -199,6 +199,7 @@ define( 'SMW_ADM_DISPOSAL', 4 ); // IDDisposal
 define( 'SMW_ADM_SETUP', 8 ); // SetupStore
 define( 'SMW_ADM_PSTATS', 16 ); // Property statistics update
 define( 'SMW_ADM_FULLT', 32 ); // Fulltext update
+define( 'SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN', 2048 ); // Table optimization alert
 /**@}*/
 
 /**@{

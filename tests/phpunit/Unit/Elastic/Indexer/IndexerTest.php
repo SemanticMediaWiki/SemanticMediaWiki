@@ -60,7 +60,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSetup() {
 
-		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rollover' )
+		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,7 +82,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDrop() {
 
-		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rollover' )
+		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
 			->disableOriginalConstructor()
 			->getMock();
 

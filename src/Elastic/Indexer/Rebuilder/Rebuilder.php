@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Indexer\Rebuilder;
 
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableRowMapper;
 use SMW\SQLStore\SQLStore;
@@ -290,7 +291,9 @@ class Rebuilder {
 				$skip = (bool)$this->options['skip-fileindex'];
 			}
 
-			if ( !$skip && $this->client->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
+			$config = $this->client->getConfig();
+
+			if ( !$skip && $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
 				$this->fileIndexer = $this->indexer->getFileIndexer();
 			} else {
 				$this->fileIndexer = false;
@@ -307,6 +310,7 @@ class Rebuilder {
 
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
+	//	$this->indexer->setState( Indexer::REBUILD_STATE );
 
 		$changeDiff = $changeOp->newChangeDiff();
 
@@ -355,7 +359,11 @@ class Rebuilder {
 
 	private function fetchRawText( $dataItem ) {
 
-		if ( !$this->client->getConfig()->dotGet( 'indexer.raw.text', false ) || $dataItem->getSubobjectName() !== ''  ) {
+		$config = $this->client->getConfig();
+
+		if (
+			!$config->dotGet( 'indexer.raw.text', false ) ||
+			$dataItem->getSubobjectName() !== ''  ) {
 			return '';
 		}
 
