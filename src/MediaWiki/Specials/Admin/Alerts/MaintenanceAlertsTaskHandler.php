@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
 use SMW\Message;
-use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -45,15 +44,6 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
-		return false;
-	}
-
-	/**
-	 * @since 3.2
-	 *
-	 * {@inheritDoc}
-	 */
 	public function getHtml() {
 
 		$contents = '';
@@ -77,12 +67,5 @@ class MaintenanceAlertsTaskHandler extends TaskHandler {
 			$this->msg( 'smw-admin-maintenancealerts-section-intro' )
 		) . $contents;
 	}
-
-	/**
-	 * @since 3.2
-	 *
-	 * {@inheritDoc}
-	 */
-	public function handleRequest( WebRequest $webRequest ) {}
 
 }
