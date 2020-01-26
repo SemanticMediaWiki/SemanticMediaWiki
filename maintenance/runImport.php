@@ -23,7 +23,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class runImport extends \Maintenance {
+class RunImport extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
