@@ -106,7 +106,7 @@ class ElasticStore extends SQLStore {
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
-		parent::deleteSubject( $title );
+		$status = parent::deleteSubject( $title );
 
 		if ( $this->indexer === null ) {
 			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
@@ -115,13 +115,13 @@ class ElasticStore extends SQLStore {
 		$this->indexer->setOrigin( 'ElasticStore::DeleteSubject' );
 		$idList = [];
 
-		if ( isset( $this->extensionData['delete.list'] ) ) {
-			$idList = $this->extensionData['delete.list'];
+		if ( $status->has( 'delete_list' ) ) {
+			$idList = $status->get( 'delete_list' );
 		}
 
 		$this->indexer->delete( $idList, $title->getNamespace() === SMW_NS_CONCEPT );
 
-		unset( $this->extensionData['delete.list'] );
+		return $status;
 	}
 
 	/**
@@ -134,7 +134,7 @@ class ElasticStore extends SQLStore {
 	 * @param integer $redirid
 	 */
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
-		parent::changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
+		$status = parent::changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
 		$id = $this->getObjectIds()->getSMWPageID(
 			$oldTitle->getDBkey(),
@@ -151,8 +151,8 @@ class ElasticStore extends SQLStore {
 		$this->indexer->setOrigin( 'ElasticStore::ChangeTitle' );
 		$idList = [ $id ];
 
-		if ( isset( $this->extensionData['delete.list'] ) ) {
-			$idList = array_merge( $idList, $this->extensionData['delete.list'] );
+		if ( $status->has( 'delete_list' ) ) {
+			$idList = array_merge( $idList, $status->get( 'delete_list' ) );
 		}
 
 		$this->indexer->delete( $idList );
@@ -175,7 +175,7 @@ class ElasticStore extends SQLStore {
 			$this->indexer->create( $dataItem );
 		}
 
-		unset( $this->extensionData['delete.list'] );
+		return $status;
 	}
 
 	/**
@@ -232,7 +232,7 @@ class ElasticStore extends SQLStore {
 	 * @param SemanticData $semanticData
 	 */
 	protected function doDataUpdate( SemanticData $semanticData ) {
-		parent::doDataUpdate( $semanticData );
+		$status = parent::doDataUpdate( $semanticData );
 
 		$time = -microtime( true );
 		$config = $this->getConnection( 'elastic' )->getConfig();
@@ -244,16 +244,16 @@ class ElasticStore extends SQLStore {
 		$this->indexer->setOrigin( 'ElasticStore::DoDataUpdate' );
 		$subject = $semanticData->getSubject();
 
-		if ( isset( $this->extensionData['delete.list'] ) ) {
-			$this->indexer->delete( $this->extensionData['delete.list'] );
+		if ( $status->has( 'delete_list' ) ) {
+			$this->indexer->delete( $status->get( 'delete_list' ) );
 		}
 
-		if ( !isset( $this->extensionData['change.diff'] ) ) {
+		if ( !$status->has( 'change_diff' ) ) {
 			throw new RuntimeException( "Unable to replicate, missing a `change.diff` object!" );
 		}
 
 		$text = '';
-		$changeDiff = $this->extensionData['change.diff'];
+		$changeDiff = $status->get( 'change_diff' );
 		$rev_id = $semanticData->getExtensionData( 'revision_id' );
 		$changeDiff->setAssociatedRev( $rev_id );
 
@@ -265,9 +265,6 @@ class ElasticStore extends SQLStore {
 			$changeDiff,
 			$text
 		);
-
-		unset( $this->extensionData['delete.list'] );
-		unset( $this->extensionData['change.diff'] );
 
 		$this->logger->info(
 			[
@@ -285,6 +282,8 @@ class ElasticStore extends SQLStore {
 		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
 			$this->ingestFile( $subject->getTitle() );
  		}
+
+		return $status;
 	}
 
 	/**

@@ -297,11 +297,13 @@ class SQLStore extends Store {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$this->updater->deleteSubject( $title );
+		$status = $this->updater->deleteSubject( $title );
 
 		$this->doDeferredCachedListLookupUpdate(
 			$subject
 		);
+
+		return $status;
 	}
 
 	protected function doDataUpdate( SemanticData $semanticData ) {
@@ -310,11 +312,13 @@ class SQLStore extends Store {
 			$this->updater = $this->factory->newUpdater();
 		}
 
-		$this->updater->doDataUpdate( $semanticData );
+		$status = $this->updater->doDataUpdate( $semanticData );
 
 		$this->doDeferredCachedListLookupUpdate(
 			$semanticData->getSubject()
 		);
+
+		return $status;
 	}
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
@@ -328,11 +332,13 @@ class SQLStore extends Store {
 			[ $this, $oldTitle, $newTitle, $pageId, $redirectId ]
 		);
 
-		$this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
+		$status = $this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
 		$this->doDeferredCachedListLookupUpdate(
 			DIWikiPage::newFromTitle( $oldTitle )
 		);
+
+		return $status;
 	}
 
 	private function doDeferredCachedListLookupUpdate( DIWikiPage $subject ) {
