@@ -513,6 +513,7 @@
 	"smw-collapse": "Samenvouwen",
 	"smw-copy": "Kopiëren",
 	"smw-copy-clipboard-title": "Inhoud naar het klembord kopiëren",
+	"smw-jsonview-search-label": "Zoeken:",
 	"smw-types-title": "Type: $1",
 	"smw-schema-validation-schema-title": "JSON-schema",
 	"smw-schema-usage": "Gebruik",
