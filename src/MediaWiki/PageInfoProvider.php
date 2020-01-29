@@ -66,6 +66,10 @@ class PageInfoProvider implements PageInfo {
 	 * @return integer
 	 */
 	public function getCreationDate() {
+		if ( $this->wikiPage->getTitle()->getFirstRevision() === null ) {
+			return wfTimestamp( TS_MW, 0 );
+		}
+
 		return $this->wikiPage->getTitle()->getFirstRevision()->getTimestamp();
 	}
 
