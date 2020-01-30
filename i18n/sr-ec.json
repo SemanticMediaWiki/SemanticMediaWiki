@@ -346,7 +346,7 @@
 	"smw-schema-error-title": "Провера {{PLURAL:$1|грешке|грешака}}",
 	"smw-schema-error-violation": "[„$1”, „$2”]",
 	"smw-schema-title": "Шема",
-	"smw-schema-type": "Тип",
+	"smw-schema-type": "Тип шеме",
 	"smw-schema-tag": "{{PLURAL:$1|Ознака|Ознаке}}",
 	"smw-property-tab-usage": "Употреба",
 	"smw-property-tab-redirects": "Синоними",

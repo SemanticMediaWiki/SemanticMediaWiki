@@ -335,6 +335,7 @@
 	"smw-admin-deprecation-notice-title-replacement-explanation": "Följande avsnitt innehåller inställningar som har döpts om eller annars förändrats och rekommenderas att uppdatera deras namn eller format omedelbart.",
 	"smw-admin-deprecation-notice-title-removal": "Borttagna inställningar",
 	"smw-admin-deprecation-notice-title-removal-explanation": "Inställningarna som listas har tagits bort i en tidigare utgåva men användning har upptäckts på denna wiki.",
+	"smw-admin-deprecation-notice-section-legend": "Teckenförklaring",
 	"smw-smwadmin-refresh-title": "Datareparation och -uppdatering",
 	"smw_smwadmin_datarefresh": "Datauppbyggning",
 	"smw_smwadmin_datarefreshdocu": "Det är möjligt att återställa all Semantic MediaWiki-data baserat på det aktuella innehållet för din wiki.\nDetta kan vara användbart för att reparera eller fräscha upp data om det interna formatet har ändrats på grund av programuppdateringar.\nUppdateringen utförs sida för sida och blir inte klar omedelbart.\nDet följande visar om en uppdatering pågår och tillåter dig att starta eller stoppa uppdateringar (såvida inte denna finess har stängts av av administratören).",
@@ -554,7 +555,7 @@
 	"smw-schema-summary-title": "Sammanfattning",
 	"smw-schema-title": "Schema",
 	"smw-schema-usage": "Användning",
-	"smw-schema-type": "Typ",
+	"smw-schema-type": "Schematyp",
 	"smw-schema-tag": "{{PLURAL:$1|Märke|Märken}}",
 	"smw-ask-title-keyword-type": "Nyckelordssökning",
 	"smw-ask-message-keyword-type": "Denna sökning matchar villkoret <code><nowiki>$1</nowiki></code>.",
@@ -569,6 +570,7 @@
 	"smw-ask-tab-extra": "Extra",
 	"smw-ask-tab-debug": "Felsökning",
 	"smw-ask-tab-code": "Kod",
+	"smw-pendingtasks-setup-tasks": "Uppgifter",
 	"smw-report": "Rapportera",
 	"smw-legend": "Teckenförklaring"
 }
