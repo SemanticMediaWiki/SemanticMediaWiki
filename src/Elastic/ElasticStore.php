@@ -12,6 +12,7 @@ use SMW\Options;
 use Title;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Elastic\Jobs\FileIngestJob;
 
 /**
  * @private
@@ -279,8 +280,10 @@ class ElasticStore extends SQLStore {
 			]
 		);
 
-		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) && $semanticData->getOption( 'is.fileupload' ) ) {
-			$this->ingestFile( $subject->getTitle() );
+		if (
+			$config->dotGet( 'indexer.experimental.file.ingest', false ) &&
+			$semanticData->getOption( 'is_fileupload' ) ) {
+			FileIngestJob::pushIngestJob( $subject->getTitle() );
  		}
 
 		return $status;
@@ -454,15 +457,6 @@ class ElasticStore extends SQLStore {
 		return [
 			'SMWElasticStore' => $database->getInfo() + [ 'es' => $client->getVersion() ]
 		];
-	}
-
-	private function ingestFile( $title, array $params = [] ) {
-
-		if ( $title->getNamespace() !== NS_FILE ) {
-			return;
-		}
-
-		$this->indexer->getFileIndexer()->pushIngestJob( $title, $params );
 	}
 
 }

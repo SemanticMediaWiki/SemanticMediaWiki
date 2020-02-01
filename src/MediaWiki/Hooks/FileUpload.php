@@ -80,7 +80,7 @@ class FileUpload implements HookListener {
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
 
 		$semanticData = $parserData->getSemanticData();
-		$semanticData->setOption( 'is.fileupload', true );
+		$semanticData->setOption( 'is_fileupload', true );
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData

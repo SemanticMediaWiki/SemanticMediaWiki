@@ -9,6 +9,7 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableRowMapper;
 use SMW\SQLStore\SQLStore;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
@@ -35,6 +36,11 @@ class Rebuilder {
 	private $indexer;
 
 	/**
+	 * @var FileIndexer
+	 */
+	private $fileIndexer;
+
+	/**
 	 * @var PropertyTableRowMapper
 	 */
 	private $propertyTableRowMapper;
@@ -43,11 +49,6 @@ class Rebuilder {
 	 * @var Rollover
 	 */
 	private $rollover;
-
-	/**
-	 * @var FileIndexer
-	 */
-	private $fileIndexer;
 
 	/**
 	 * @var array
@@ -69,12 +70,14 @@ class Rebuilder {
 	 *
 	 * @param ElasticClient $client
 	 * @param Indexer $indexer
+	 * @param FileIndexer $fileIndexer
 	 * @param PropertyTableRowMapper $propertyTableRowMapper
 	 * @param Rollover $rollover
 	 */
-	public function __construct( ElasticClient $client, Indexer $indexer, PropertyTableRowMapper $propertyTableRowMapper, Rollover $rollover ) {
+	public function __construct( ElasticClient $client, Indexer $indexer, FileIndexer $fileIndexer, PropertyTableRowMapper $propertyTableRowMapper, Rollover $rollover ) {
 		$this->client = $client;
 		$this->indexer = $indexer;
+		$this->fileIndexer = $fileIndexer;
 		$this->propertyTableRowMapper = $propertyTableRowMapper;
 		$this->rollover = $rollover;
 	}
@@ -284,29 +287,26 @@ class Rebuilder {
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {
 
-		if ( $this->fileIndexer === null ) {
-			$skip = false;
+		$dataItem = $semanticData->getSubject();
+		$dataItem->setId( $id );
 
-			if ( isset( $this->options['skip-fileindex'] ) ) {
-				$skip = (bool)$this->options['skip-fileindex'];
-			}
+		$fileIndexer = null;
+		$skip = false;
 
-			$config = $this->client->getConfig();
+		if ( isset( $this->options['skip-fileindex'] ) ) {
+			$skip = (bool)$this->options['skip-fileindex'];
+		}
 
-			if ( !$skip && $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
-				$this->fileIndexer = $this->indexer->getFileIndexer();
-			} else {
-				$this->fileIndexer = false;
-			}
+		$config = $this->client->getConfig();
+
+		if ( !$skip && $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
+			$fileIndexer = $this->fileIndexer;
 		}
 
 		$changeOp = $this->propertyTableRowMapper->newChangeOp(
 			$id,
 			$semanticData
 		);
-
-		$dataItem = $semanticData->getSubject();
-		$dataItem->setId( $id );
 
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
@@ -323,9 +323,10 @@ class Rebuilder {
 			$this->fetchRawText( $dataItem )
 		);
 
-		if ( $this->fileIndexer && $dataItem->getNamespace() === NS_FILE ) {
-			$this->fileIndexer->noSha1Check();
-			$this->fileIndexer->index( $dataItem, null );
+		if ( $fileIndexer !== null ) {
+			$fileIndexer->setVersions( $this->versions );
+			$fileIndexer->noSha1Check();
+			$fileIndexer->index( $dataItem );
 		}
 	}
 

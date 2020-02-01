@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\LoggerInterface;
 use SMW\ApplicationFactory;
+use SMW\MediaWiki\FileRepoFinder;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
 use SMW\Elastic\Admin\IndicesInfoProvider;
 use SMW\Elastic\Admin\MappingsInfoProvider;
@@ -19,6 +20,8 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Elastic\Indexer\Attachment\FileHandler;
+use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\IndicatorProvider;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
@@ -129,9 +132,13 @@ class ElasticFactory {
 	 *
 	 * @return Indexer
 	 */
-	public function newIndexer( Store $store, MessageReporter $messageReporter = null ) {
+	public function newIndexer( Store $store = null, MessageReporter $messageReporter = null ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+
+		if ( $store === null ) {
+			$store = $applicationFactory->getStore();
+		}
 
 		// Construction is postponed to the point where it is needed
 		$servicesContainer = new ServicesContainer(
@@ -140,7 +147,6 @@ class ElasticFactory {
 					'_service' => [ $this, 'newRollover' ],
 					'_type' => Rollover::class
 				],
-				'FileIndexer' => [ $this, 'newFileIndexer' ],
 				'Bulk' => [ $this, 'newBulk' ],
 			]
 		);
@@ -194,8 +200,48 @@ class ElasticFactory {
 	 *
 	 * @return FileIndexer
 	 */
-	public function newFileIndexer( Indexer $indexer ) {
-		return new FileIndexer( $indexer );
+	public function newFileIndexer( Store $store, Indexer $indexer ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
+
+		// Don't use the `ElasticStore` instance otherwise we index fields
+		// recursively since the annotation for attachment information can only
+		// happen after the ES ingest processor has been run.
+		$fileAttachment = new FileAttachment(
+			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' ),
+			$indexer
+		);
+
+		$fileAttachment->setLogger(
+			$logger
+		);
+
+		$fileHandler = new FileHandler(
+			$applicationFactory->create( 'FileRepoFinder' )
+		);
+
+		$fileHandler->setLogger(
+			$logger
+		);
+
+		$fileIndexer = new FileIndexer(
+			$store,
+			$applicationFactory->getEntityCache(),
+			$fileHandler,
+			$fileAttachment
+		);
+
+		$fileIndexer->setRevisionGuard(
+			$applicationFactory->singleton( 'RevisionGuard' )
+		);
+
+		$fileIndexer->setLogger(
+			$logger
+		);
+
+		return $fileIndexer;
 	}
 
 	/**
@@ -354,10 +400,12 @@ class ElasticFactory {
 	public function newRebuilder( Store $store ) {
 
 		$connection = $store->getConnection( 'elastic' );
+		$indexer = $this->newIndexer( $store );
 
 		$rebuilder = new Rebuilder(
 			$connection,
-			$this->newIndexer( $store ),
+			$indexer,
+			$this->newFileIndexer( $store, $indexer ),
 			new PropertyTableRowMapper( $store ),
 			$this->newRollover( $connection )
 		);

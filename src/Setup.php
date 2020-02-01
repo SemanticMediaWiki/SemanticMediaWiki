@@ -300,7 +300,7 @@ final class Setup {
 			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
 			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
 			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
-			'smw.elasticFileIngest' => 'SMW\Elastic\Indexer\FileIngestJob',
+			'smw.elasticFileIngest' => 'SMW\Elastic\Jobs\FileIngestJob',
 			'smw.parserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 
 			// Legacy 3.0-

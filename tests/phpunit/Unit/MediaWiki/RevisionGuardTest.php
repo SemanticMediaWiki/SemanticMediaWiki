@@ -121,9 +121,21 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onChangeFile' )
+			->with(
+				$this->equalTo( $title ),
+				$this->equalTo( $file ) );
+
+		$instance = new RevisionGuard();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertInstanceOf(
 			'\File',
-			RevisionGuard::getFile( $title, $file )
+			$instance->getFile( $title, $file )
 		);
 	}
 

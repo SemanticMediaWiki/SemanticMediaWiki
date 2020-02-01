@@ -134,6 +134,41 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnChangeFile() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$file = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$anotherFile = $this->getMockBuilder( '\File' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$anotherFile->extraProperty = 'Foo';
+
+		$this->assertNotEquals(
+			$anotherFile,
+			$file
+		);
+
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', function( $title, &$file ) use ( $anotherFile ) {
+			$file = $anotherFile;
+		} );
+
+		$hookDispatcher->onChangeFile( $title, $file );
+
+		$this->assertEquals(
+			$anotherFile,
+			$file
+		);
+	}
+
 	public function testConfirmAllOnMethodsWereCalled() {
 
 		// Expected class methods to be tested
