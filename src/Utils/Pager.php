@@ -84,11 +84,12 @@ class Pager {
 		);
 
 		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
+		$content = Message::get( 'smw-property-page-filter-note', Message::PARSE, Message::USER_LANGUAGE );
 
 		$highlighter->setContent(
 			[
-				'content' => Message::get( 'smw-property-page-filter-note', Message::PARSE, Message::USER_LANGUAGE ),
-				'style' => 'margin-left: 5px; vertical-align: -1px;'
+				'content' => $content,
+				'style' => 'margin-left: 5px;'
 			]
 		);
 
