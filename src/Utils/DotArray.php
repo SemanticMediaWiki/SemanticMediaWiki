@@ -5,8 +5,8 @@ namespace SMW\Utils;
 /**
  * Utility class to resolve array access using the dot path syntax.
  *
- * For example, an arra with [ 'foo' => [ 'bar' => [ 'foobar' => 42 ] ] ] can be
- * accessed using the simaple `foo.bar.foobar` path.
+ * For example, an array with `[ 'foo' => [ 'bar' => [ 'foobar' => 42 ] ] ]` can
+ * be accessed using a simple dot path such as `foo.bar.foobar`.
  *
  * @license GNU GPL v2+
  * @since 3.2
@@ -63,6 +63,14 @@ class DotArray {
 			// No path left, use the last key as access node
 			if ( $paths === [] ) {
 				return $array[$key];
+			}
+
+			// Check whether a compound is directly accessible or not over
+			// a specific "deep" array match
+			$compound = implode( '.', $paths );
+
+			if ( isset( $array[$key][$compound] ) ) {
+				return $array[$key][$compound];
 			}
 
 			return self::find( $array[$key], $paths, $default );
