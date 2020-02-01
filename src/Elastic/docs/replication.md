@@ -1,16 +1,18 @@
 [Usage][section:usage] | [Settings][section:config] | [Technical notes][section:technical] | [FAQ][section:faq]
 
-Updates to an Elasticsearch index happens instantaneously after a new revision has been saved in MediaWiki and after the a storage layer receives an event that has been emitted by the MediaWiki hook to guarantee that queries can use the latest available data set as soon as possible.
+Updates to an Elasticsearch index happens instantaneously after a new revision has been saved in MediaWiki and after the storage layer receives an event that has been emitted by the Semantic MediaWiki/MediaWiki hook to guarantee that queries can use the latest available data set as soon as possible.
 
-The [index creation][es:create:index] documentation describes how the index process occurs in Elasticsearch where Semantic MediaWiki provides two separate indices:
+The [index creation][es:create:index] documentation describes how the index process occurs in Elasticsearch. Semantic MediaWiki provides two separate indices:
 
 - the `data` index hosts all user-facing queryable data (structured and unstructured content)
 - the `lookup` index stores term and lookup queries used for concept, property path, and inverse match computations
 
-Each MediaWiki instance (hereby Semantic MediaWiki) with its own `wikiID` (internal name of the database, wiki site identification) builds its own index name which is why different MediaWiki instance can be hosted on the same Elasticsearch cluster without interfering with each other or the query results.
+Each MediaWiki instance (hereby Semantic MediaWiki) with its own `wikiID` (internal name of the database, wiki site identification) replicates to a separate index which is why different MediaWiki installations (assuming the `wikiID` is different) can be hosted on the same Elasticsearch cluster without interfering with each other during the update or search.
 
 <pre>
 {
+	// `smw-data` is the fixed part, `mw-foo` describes the wikiID, and
+	// `v1` identifies the active version (required for the roll-over)
 	"_index": "smw-data-mw-foo-v1",
 	"_type": "data"
 }
@@ -18,11 +20,11 @@ Each MediaWiki instance (hereby Semantic MediaWiki) with its own `wikiID` (inter
 
 ## Active replication (update-based)
 
-In the normal operative mode, the `ElasticStore` uses an __active replication__ to transfer the data to the Elasticsearch cluster which means that changes (i.e those caused by an update, delete etc.) from wikipages are actively and immediately replicated.
+In the normal operative mode, `ElasticStore` uses an __active replication__ to transfer the data to the Elasticsearch cluster which means that changes (i.e those caused by an update, delete etc.) from wikipages are actively relicated and mostly instantaneously (depends on the refresh interval) visiable.
 
 ### Safe replication
 
-The `ElasticStore` by default is set to use the safe replication mode which entails that if during a page storage __no__ connection could be established to an Elasticsearch cluster, a `smw.elasticIndexerRecovery` job is planned for changes that weren't replicated. These jobs should be executed on a regular basis to ensure that data are kept in sync with the backend.
+The `ElasticStore` by default is set to use a safe replication mode which entails that if during a page storage __no__ connection could be established to an Elasticsearch cluster, a `smw.elasticIndexerRecovery` job is planned for changes that weren't replicated. These jobs should be executed on a regular basis to ensure that data are kept in sync with the backend.
 
 The `job.recovery.retries` setting is set to a maximum of retry attempts in case the job itself cannot establish a connection, in which case the job is then canceled even though it could __not__ recover.
 
