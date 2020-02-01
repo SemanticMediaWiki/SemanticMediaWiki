@@ -20,12 +20,30 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	use SeekableIteratorTrait;
 
 	/**
+	 * Directly match a specific key without iterating for additional
+	 * compartments.
+	 */
+	const MATCH_KEY = 'match/key';
+
+	/**
+	 * Defines a rule compartment type
+	 */
+	const RULE_COMPARTMENT = 'type/rule';
+
+	/**
+	 * @var string|null
+	 */
+	private $type;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $compartments
+	 * @param string|null $type
 	 */
-	public function __construct( array $compartments = [] ) {
+	public function __construct( array $compartments = [], ?string $type = null ) {
 		$this->container = $compartments;
+		$this->type = $type;
 	}
 
 	/**
@@ -46,6 +64,10 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 			$data = [ $this->position => $data ];
 		}
 
+		if ( $this->type === self::RULE_COMPARTMENT ) {
+			return new Rule( $data );
+		}
+
 		return new Compartment( $data );
 	}
 
@@ -53,38 +75,42 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 * @since 3.2
 	 *
 	 * @param string $key
+	 * @param string|null $flag
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function find( string $key ) : CompartmentIterator {
+	public function find( string $key, ?string $flag = null ) : CompartmentIterator {
 
 		$meta = [];
 		$result = [];
 
 		return new CompartmentIterator(
-			$this->search( $key, $this->container, $meta, $result )
+			$this->search( $key, $flag, $this->container, $meta, $result ),
+			$this->type
 		);
 	}
 
-	private function search( $key, $data, $meta, &$result ) {
+	private function search( $key, $flag, $data, $meta, &$result ) {
 
 		foreach ( $data as $section => $value ) {
 
+			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {
+				$meta[Compartment::ASSOCIATED_SCHEMA] = $data[Compartment::ASSOCIATED_SCHEMA];
+			}
+
+			$meta[Compartment::ASSOCIATED_SECTION] = $section;
+
 			if ( $value instanceof Compartment && $value->has( $key ) ) {
 				$result[] = $value;
+			} elseif ( is_array( $value ) && isset( $value[$key] ) && $flag === self::MATCH_KEY ) {
+				$result[] = $value[$key] + $meta;
 			} elseif ( is_array( $value ) ) {
-
-				if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {
-					$meta[Compartment::ASSOCIATED_SCHEMA] = $data[Compartment::ASSOCIATED_SCHEMA];
-				}
-
-				$meta[Compartment::ASSOCIATED_SECTION] = $section;
 
 				if ( isset( $value[$key] ) ) {
 					$result[] = $value + $meta;
 				}
 
-				$this->search( $key, $value, $meta, $result );
+				$this->search( $key, $flag, $value, $meta, $result );
 			}
 		}
 

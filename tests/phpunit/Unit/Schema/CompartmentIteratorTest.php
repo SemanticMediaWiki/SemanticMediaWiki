@@ -155,6 +155,26 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testIterate_Associatve_RuleType() {
+
+		$data = [
+			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
+			'test_2' => [ 'Bar' => [] ]
+		];
+
+		$instance = new CompartmentIterator(
+			$data,
+			CompartmentIterator::RULE_COMPARTMENT
+		);
+
+		foreach ( $instance as $compartment ) {
+			$this->assertInstanceOf(
+				'\SMW\Schema\Rule',
+				$compartment
+			);
+		}
+	}
+
 	public function testFind() {
 
 		$data = [
@@ -174,9 +194,47 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $compartmentIterator as $compartment ) {
+
 			$this->assertInstanceOf(
 				'\SMW\Schema\Compartment',
 				$compartment
+			);
+
+			$this->assertEquals(
+				'{"Foo":["Foobar"],"___assoc_section":"test_1"}',
+				$compartment->jsonSerialize()
+			);
+		}
+	}
+
+	public function testFind_Match_Key() {
+
+		$data = [
+			'test_1' => [ 'Foo' => [ 'Foobar' ] ],
+			'test_2' => [ 'Bar' => [] ]
+		];
+
+		$instance = new CompartmentIterator(
+			$data
+		);
+
+		$compartmentIterator = $instance->find( 'Foo', CompartmentIterator::MATCH_KEY );
+
+		$this->assertInstanceOf(
+			CompartmentIterator::class,
+			$compartmentIterator
+		);
+
+		foreach ( $compartmentIterator as $compartment ) {
+
+			$this->assertInstanceOf(
+				'\SMW\Schema\Compartment',
+				$compartment
+			);
+
+			$this->assertEquals(
+				'{"0":"Foobar","___assoc_section":"test_1"}',
+				$compartment->jsonSerialize()
 			);
 		}
 	}

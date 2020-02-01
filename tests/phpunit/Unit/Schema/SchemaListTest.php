@@ -35,6 +35,26 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testJsonSerialize() {
+
+		$instance = new SchemaList( [] );
+
+		$this->assertInternalType(
+			'string',
+			$instance->jsonSerialize()
+		);
+	}
+
+	public function testGetFingerprint() {
+
+		$instance = new SchemaList( [] );
+
+		$this->assertInternalType(
+			'string',
+			$instance->getFingerprint()
+		);
+	}
+
 	public function testAdd() {
 
 		$schemaDefinition = new SchemaDefinition(
@@ -116,6 +136,21 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGet_Empty() {
+
+		$data[] = new SchemaDefinition(
+			'Foo',
+			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
+		);
+
+		$instance = new SchemaList( $data );
+
+		$this->assertEquals(
+			[],
+			$instance->get( 'Foobar' )
+		);
+	}
+
 	public function testNewCompartmentIteratorByKey() {
 
 		$data[] = new SchemaDefinition(
@@ -138,6 +173,27 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertCount(
 			2,
+			$compartmentIterator
+		);
+	}
+
+	public function testNewCompartmentIteratorByKey_NoValidKey() {
+
+		$data[] = new SchemaDefinition(
+			'Foo',
+			[ 'Foo' => [ 'Bar' => 42 ], 1001 ]
+		);
+
+		$instance = new SchemaList( $data );
+		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foobar' );
+
+		$this->assertInstanceOf(
+			'\SMW\Schema\CompartmentIterator',
+			$compartmentIterator
+		);
+
+		$this->assertCount(
+			0,
 			$compartmentIterator
 		);
 	}

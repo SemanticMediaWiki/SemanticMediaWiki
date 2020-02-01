@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Filters\CategoryFilter;
+use SMW\Schema\Filters\CompositeFilter;
 use SMW\DIWikiPage;
 
 /**
@@ -13,6 +14,17 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class SchemaFilterFactory {
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $filters
+	 *
+	 * @return CompositeFilter
+	 */
+	public function newCompositeFilter( array $filters ) : CompositeFilter {
+		return new CompositeFilter( $filters );
+	}
 
 	/**
 	 * @since 3.2

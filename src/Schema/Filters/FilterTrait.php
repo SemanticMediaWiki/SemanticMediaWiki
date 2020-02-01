@@ -23,6 +23,11 @@ trait FilterTrait {
 	private $matches = [];
 
 	/**
+	 * @var []
+	 */
+	private $options = [];
+
+	/**
 	 * @var SchemaFilter
 	 */
 	private $nodeFilter;
@@ -43,6 +48,15 @@ trait FilterTrait {
 	 */
 	public function getMatches() : iterable {
 		return $this->matches;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * {@inheritDoc}
+	 */
+	public function addOption( string $key, $value ) {
+		$this->options[$key] = $value;
 	}
 
 	/**
@@ -95,7 +109,7 @@ trait FilterTrait {
 		}
 
 		$this->nodeFilter->filter(
-			new CompartmentIterator( $this->matches )
+			new CompartmentIterator( $this->matches, CompartmentIterator::RULE_COMPARTMENT )
 		);
 
 		$this->matches = $this->nodeFilter->getMatches();
@@ -107,5 +121,14 @@ trait FilterTrait {
 	 * @param Compartment $compartment
 	 */
 	abstract protected function match( Compartment $compartment );
+
+	private function getOption( string $key ) {
+
+		if ( !isset( $this->options[$key] ) ) {
+			return false;
+		}
+
+		return $this->options[$key];
+	}
 
 }

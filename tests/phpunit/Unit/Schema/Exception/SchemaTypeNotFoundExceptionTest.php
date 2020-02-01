@@ -30,4 +30,14 @@ class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetType() {
+
+		$instance = new SchemaTypeNotFoundException( 'foo' );
+
+		$this->assertEquals(
+			'foo',
+			$instance->getType()
+		);
+	}
+
 }

@@ -4,8 +4,10 @@ namespace SMW\Schema\Filters;
 
 use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaFilter;
+use SMW\Schema\ChainableFilter;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
+use SMW\Schema\Rule;
 use RuntimeException;
 
 /**
@@ -14,7 +16,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class CategoryFilter implements SchemaFilter {
+class CategoryFilter implements SchemaFilter, ChainableFilter {
 
 	use FilterTrait;
 
@@ -24,21 +26,17 @@ class CategoryFilter implements SchemaFilter {
 	private $categories = [];
 
 	/**
+	 * @var bool
+	 */
+	private $loadedCategories = false;
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param string|array|callable $categories
 	 */
 	public function __construct( $categories = '' ) {
-
-		if ( is_array( $categories ) || is_string( $categories ) ) {
-			$this->categories = array_flip( str_replace( ' ', '_', (array)$categories ) );
-		} elseif ( is_callable( $categories ) ) {
-			// Allow categories to be lazy loaded when for example those are
-			// fetched from the DB
-			$this->categories = $categories;
-		} else {
-			throw new RuntimeException( "Requires a string, array, or callable as constructor argument!" );
-		}
+		$this->categories = $categories;
 	}
 
 	/**
@@ -52,21 +50,27 @@ class CategoryFilter implements SchemaFilter {
 
 	private function match( Compartment $compartment ) {
 
-		if ( is_callable( $this->categories ) ) {
-			$this->categories = array_flip( str_replace( ' ', '_', ( $this->categories )() ) );
+		if ( $this->loadedCategories === false ) {
+			$this->loadCategories();
 		}
 
 		$conditions = $compartment->get( 'if.category' );
 
-		// No condition to test means it is allowed to remain in the pool
-		// of matches
+		// In case the filter was marked as elective allows sets to remain in
+		// the match pool.
+		if ( $conditions === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
+			return $this->matches[] = $compartment;
+		}
+
+		// No restriction and no `category` filter was defined hence allow the
+		// rule to remain in the pool of matches.
 		if ( $this->categories === [] && $conditions === null ) {
 			return $this->matches[] = $compartment;
 		}
 
 		$matchedCondition = false;
 
-		if ( is_string( $conditions ) || (is_array( $conditions ) && isset( $conditions[0] ) ) ) {
+		if ( is_string( $conditions ) || ( is_array( $conditions ) && isset( $conditions[0] ) ) ) {
 			$matchedCondition = $this->matchOneOf( (array)$conditions );
 		} elseif ( isset( $conditions['oneOf'] ) ) {
 			 /**
@@ -152,9 +156,39 @@ class CategoryFilter implements SchemaFilter {
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 		}
 
+		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+			$compartment->incrFilterScore();
+		}
+
 		if ( $matchedCondition === true ) {
 			$this->matches[] = $compartment;
 		}
+	}
+
+	private function loadCategories() {
+
+		// Allow categories to be lazy loaded when for example those are
+		// fetched from the DB
+		if ( is_callable( $this->categories ) ) {
+			$this->categories = ( $this->categories )();
+		}
+
+		if ( is_array( $this->categories ) || is_string( $this->categories ) ) {
+			$this->categories = str_replace( ' ', '_', (array)$this->categories );
+		} else {
+			throw new RuntimeException(
+				"Requires a string, array, or callable for the `categories` parameter!"
+			);
+		}
+
+		// Always ensure we have an associative array for an index access
+		if (
+			\array_key_exists( 0, $this->categories ) &&
+			array_keys( $this->categories ) === range( 0, count( $this->categories ) - 1 ) ) {
+			$this->categories = array_flip( $this->categories );
+		}
+
+		$this->loadedCategories = true;
 	}
 
 	private function matchAllOf( array $categories ) : bool {

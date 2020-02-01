@@ -62,6 +62,48 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testInfo_Default() {
+
+		$instance = new SchemaDefinition(
+			'foo',
+			[],
+			[ SchemaDefinition::SCHEMA_VALIDATION_FILE => 'BAR' ]
+		);
+
+		$this->assertEquals(
+			'default_value',
+			$instance->info( 'Foo', 'default_value' )
+		);
+	}
+
+	public function testToArray() {
+
+		$def = [
+			'type' => 'foo_bar',
+			'description' => 'bar foo bar',
+			'Schema' => [
+				'if' => [
+					'doSomething',
+					'and' => [
+						'doSomethingElse'
+					]
+				],
+				'then' => [
+				]
+			]
+		];
+
+		$instance = new SchemaDefinition(
+			'foo',
+			$def
+		);
+
+		$this->assertEquals(
+			$def,
+			$instance->toArray()
+		);
+	}
+
 	public function testGet() {
 
 		$def = [
