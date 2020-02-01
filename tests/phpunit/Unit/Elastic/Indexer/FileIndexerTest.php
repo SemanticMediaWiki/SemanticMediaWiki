@@ -22,8 +22,11 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $indexer;
+	private $fileHandler;
+	private $fileAttachment;
 	private $logger;
 	private $entityCache;
+	private $revisionGuard;
 
 	protected function setUp() {
 
@@ -33,7 +36,19 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->fileHandler = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\FileHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->fileAttachment = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\FileAttachment' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +57,11 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 			->setMethods( [ 'save', 'associate', 'fetch' ] )
 			->getMock();
 
-		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
 	protected function tearDown() {
@@ -54,7 +73,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			FileIndexer::class,
-			new FileIndexer( $this->indexer )
+			new FileIndexer( $this->store, $this->entityCache, $this->fileHandler, $this->fileAttachment )
 		);
 	}
 
@@ -69,6 +88,10 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 		$file->expects( $this->once() )
 			->method( 'getFullURL' )
 			->will( $this->returnValue( $url ) );
+
+		$this->revisionGuard->expects( $this->once() )
+			->method( 'getFile' )
+			->will( $this->returnValue( $file ) );
 
 		$ingest = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -86,7 +109,7 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'ingest' )
 			->will( $this->returnValue( $ingest ) );
 
-		$this->indexer->expects( $this->atLeastOnce() )
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
 			->will( $this->returnValue( $client ) );
 
@@ -101,19 +124,14 @@ class FileIndexerTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'smw:entity:d2711ab614dfb2d68dcea212c71769d5' ) );
 
 		$instance = new FileIndexer(
-			$this->indexer
+			$this->store,
+			$this->entityCache,
+			$this->fileHandler,
+			$this->fileAttachment
 		);
 
-		$instance->setReadCallback( function( $read_url ) use( $url ) {
-
-			if ( $read_url !== $url ) {
-				throw new \RuntimeException( "Invalid read URL!" );
-			}
-
-			return 'Foo';
-		} );
-
 		$instance->setLogger( $this->logger );
+		$instance->setRevisionGuard( $this->revisionGuard );
 
 		$dataItem = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 		$dataItem->setId( 42 );

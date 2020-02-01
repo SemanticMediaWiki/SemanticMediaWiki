@@ -3,9 +3,11 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\ElasticStore;
+use SMw\Elastic\Config;
 use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Elastic\ElasticStore
@@ -20,16 +22,28 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $elasticFactory;
 	private $spyMessageReporter;
+	private $spyLogger;
 
 	protected function setUp() {
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
+		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+
+		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
+		$this->spyLogger = $utilityFactory->newSpyLogger();
+	}
+
+	public function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
@@ -188,6 +202,110 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			'Indices removal',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
+	}
+
+	public function testUpdateData_PushFileIngestJob() {
+
+		$config = new Config(
+			[
+				'indexer.experimental.file.ingest' => true
+			]
+		);
+
+		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
+
+		// Check that the IngestJob is referencing to the same subject instance
+		$checkJobParameterCallback = function( $job ) use( $subject ) {
+			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
+		};
+
+		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jobQueue->expects( $this->once() )
+			->method( 'lazyPush' )
+			->with( $this->callback( $checkJobParameterCallback ) );
+
+		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->setOption( 'is_fileupload', true );
+
+		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$client->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $config ) );
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'getType' )
+			->will( $this->returnValue( 'mysql' ) );
+
+		$connection->expects( $this->any() )
+			->method( 'select' )
+			->will( $this->returnValue( [] ) );
+
+		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callback = function( $type ) use( $connection, $client ) {
+
+			if ( $type === 'mw.db' ) {
+				return $connection;
+			};
+
+			return $client;
+		};
+
+		$connectionManager->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnCallback( $callback ) );
+
+		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->elasticFactory->expects( $this->once() )
+			->method( 'newIndexer' )
+			->will( $this->returnValue( $indexer ) );
+
+		$instance = new ElasticStore();
+		$instance->setOption( 'smwgSemanticsEnabled', true );
+
+		$instance->setConnectionManager( $connectionManager );
+		$instance->setElasticFactory( $this->elasticFactory );
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setLogger( $this->spyLogger );
+
+		$instance->updateData( $semanticData );
 	}
 
 }

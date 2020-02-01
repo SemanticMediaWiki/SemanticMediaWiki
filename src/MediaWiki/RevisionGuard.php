@@ -115,11 +115,11 @@ class RevisionGuard {
 	 *
 	 * @return File|null
 	 */
-	public static function getFile( Title $title, File $file = null ) {
+	public function getFile( Title $title, File $file = null ) {
 
 		$origFile = $file;
 
-		\Hooks::run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
+		$this->hookDispatcher->onChangeFile( $title, $file );
 
 		if ( $file instanceof File ) {
 			return $file;

@@ -52,6 +52,7 @@ class MwHooksHandler {
 		'SMW::GetPreferences',
 		'SMW::Parser::AfterLinksProcessingComplete',
 		'SMW::RevisionGuard::IsApprovedRevision',
+		'SMW::RevisionGuard::ChangeFile',
 
 		'SMWSQLStore3::updateDataBefore',
 		'SMW::SQLStore::BeforeDataUpdateComplete'

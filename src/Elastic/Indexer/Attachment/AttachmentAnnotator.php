@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Indexer\Attachment;
 
 use SMW\DataItemFactory;
 use SMW\DIProperty;
@@ -33,7 +33,7 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	 * @param ContainerSemanticData $containerSemanticData
 	 * @param array $doc
 	 */
-	public function __construct( ContainerSemanticData $containerSemanticData, array $doc ) {
+	public function __construct( ContainerSemanticData $containerSemanticData, array $doc = [] ) {
 		$this->containerSemanticData = $containerSemanticData;
 		$this->doc = $doc;
 	}
@@ -124,7 +124,7 @@ class AttachmentAnnotator implements PropertyAnnotator {
 		if ( isset( $this->doc['_source']['attachment']['keywords'] ) ) {
 			$this->containerSemanticData->addPropertyObjectValue(
 				$dataItemFactory->newDIProperty( '_CONT_KEYW' ),
-				$dataItemFactory->newDINumber( intval( $this->doc['_source']['attachment']['keywords'] ) )
+				$dataItemFactory->newDIBlob( $this->doc['_source']['attachment']['keywords'] )
 			);
 		}
 

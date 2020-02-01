@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Jobs;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Job;
 use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\DIWikiPage;
@@ -19,14 +20,40 @@ use Title;
 class FileIngestJob extends Job {
 
 	/**
+	 * Name of the job
+	 */
+	const JOB_COMMAND = 'smw.elasticFileIngest';
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = [] ) {
-		parent::__construct( 'smw.elasticFileIngest', $title, $params );
+		parent::__construct( self::JOB_COMMAND, $title, $params );
 		$this->removeDuplicates = true;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param File|null $file
+	 */
+	public static function pushIngestJob( Title $title, array $params = [] ) {
+
+		if ( $title->getNamespace() !== NS_FILE ) {
+			return;
+		}
+
+		$params = $params + [ 'waitOnCommandLine' => true ];
+
+		$fileIngestJob = new self(
+			$title,
+			array_merge( $params, self::newRootJobParams( self::JOB_COMMAND, $title ) )
+		);
+
+		$fileIngestJob->lazyPush();
 	}
 
 	/**
@@ -43,9 +70,7 @@ class FileIngestJob extends Job {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore();
-
-		$connection = $store->getConnection( 'elastic' );
+		$connection = $applicationFactory->getStore()->getConnection( 'elastic' );
 
 		// Make sure a node is available
 		if ( $connection->hasLock( ElasticClient::TYPE_DATA ) || !$connection->ping() ) {
@@ -57,45 +82,43 @@ class FileIngestJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$elasticFactory = new ElasticFactory();
+		( new ScopeMemoryLimiter() )->execute( [ $this, 'runFileIndexer' ] );
 
-		$indexer = $elasticFactory->newIndexer(
-			$store
+		return true;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function runFileIndexer() {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
+
+		$store = $applicationFactory->getStore();
+		$connection = $store->getConnection( 'elastic' );
+
+		$fileIndexer = $elasticFactory->newFileIndexer(
+			$store,
+			$elasticFactory->newIndexer()
 		);
-
-		$fileIndexer = $indexer->getFileIndexer();
 
 		$fileIndexer->setOrigin( __METHOD__ );
 
-		$fileIndexer->setLogger(
-			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
+		$file = $fileIndexer->findFile(
+			$this->getTitle()
 		);
 
-		$file = wfFindFile( $this->getTitle() );
-
 		// File isn't available yet (or uploaded), try again!
-		if ( $file === false ) {
+		if ( $file === false || $file === null ) {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		// It has been observed that when this job is run, the job runner can
-		// return with "Fatal error: Allowed memory size of ..." which in most
-		// cases happen when large files are involved therefore temporary lift
-		// the limitation!
-		$memory_limit = ini_get( 'memory_limit' );
-
-		if ( wfShorthandToInteger( $memory_limit ) < wfShorthandToInteger( '1024M' ) ) {
-			ini_set( 'memory_limit', '1024M' );
-		}
-
-		$fileIndexer->index(
-			DIWikiPage::newFromTitle( $this->getTitle() ),
-			$file
+		$subject = DIWikiPage::newFromTitle(
+			$this->getTitle()
 		);
 
-		ini_set( 'memory_limit', $memory_limit );
-
-		return true;
+		$fileIndexer->index( $subject, $file );
 	}
 
 	private function requeueRetry( $config ) {

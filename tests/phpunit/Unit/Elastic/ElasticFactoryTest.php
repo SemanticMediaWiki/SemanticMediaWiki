@@ -116,7 +116,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\Elastic\Indexer\FileIndexer',
-			$instance->newFileIndexer( $indexer )
+			$instance->newFileIndexer( $this->store, $indexer )
 		);
 	}
 

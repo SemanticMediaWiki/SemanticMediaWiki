@@ -19,6 +19,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $connection;
+	private $fileIndexer;
 	private $indexer;
 	private $propertyTableRowMapper;
 	private $rollover;
@@ -31,6 +32,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->fileIndexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\FileIndexer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +56,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Rebuilder::class,
-			new Rebuilder( $this->connection, $this->indexer, $this->propertyTableRowMapper, $this->rollover )
+			new Rebuilder( $this->connection, $this->indexer, $this->fileIndexer, $this->propertyTableRowMapper, $this->rollover )
 		);
 	}
 
@@ -73,6 +78,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -94,6 +100,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -114,6 +121,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -142,6 +150,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -179,6 +188,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -198,6 +208,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -249,6 +260,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);
@@ -268,6 +280,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
+			$this->fileIndexer,
 			$this->propertyTableRowMapper,
 			$this->rollover
 		);

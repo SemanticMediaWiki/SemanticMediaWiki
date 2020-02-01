@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Store;
 use SMW\Utils\CharArmor;
 use SMW\MediaWiki\RevisionGuard;
@@ -86,24 +87,6 @@ class Indexer {
 	 */
 	public function setOrigin( $origin ) {
 		$this->origin = $origin;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return FileIndexer
-	 */
-	public function getFileIndexer() {
-
-		if ( $this->fileIndexer === null ) {
-			$this->fileIndexer = $this->servicesContainer->get( 'FileIndexer', $this );
-		}
-
-		$this->fileIndexer->setLogger(
-			$this->logger
-		);
-
-		return $this->fileIndexer;
 	}
 
 	/**
@@ -440,7 +423,7 @@ class Indexer {
 		// Of course, this will cause a delay for the file content being searchable
 		// but that should be acceptable to avoid blocking any online transaction.
 		if ( !$this->isRebuild && $subject->getNamespace() === NS_FILE ) {
-			$this->getFileIndexer()->pushIngestJob( $subject->getTitle() );
+			FileIngestJob::pushIngestJob( $subject->getTitle() );
 		}
 
 		$this->logger->info(

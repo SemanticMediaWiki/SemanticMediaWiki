@@ -11,7 +11,9 @@ use MediaWiki\MediaWikiServices;
 use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\MediaWiki\FileRepoFinder;
 use WikiImporter;
+use RepoGroup;
 
 /**
  * @codeCoverageIgnore
@@ -214,6 +216,26 @@ return [
 		}
 
 		return new NamespaceInfo( $namespaceInfo );
+	},
+
+	/**
+	 * RepoGroup
+	 *
+	 * @return callable
+	 */
+	'FileRepoFinder' => function( $containerBuilder ) {
+
+		$repoGroup = null;
+
+		// MW > 1.34
+		// https://github.com/wikimedia/mediawiki/commit/21e2d71560cb87191dd80ae0750d0190b45063c1
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getRepoGroup' ) ) {
+			$repoGroup = MediaWikiServices::getInstance()->getRepoGroup();
+		} else {
+			$repoGroup = RepoGroup::singleton();
+		}
+
+		return new FileRepoFinder( $repoGroup );
 	},
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use Psr\Log\LoggerAwareTrait;
 use Job as MediaWikiJob;
 use JobQueueGroup;
 use SMW\ApplicationFactory;
@@ -18,6 +19,8 @@ use Title;
  * @author mwjames
  */
 abstract class Job extends MediaWikiJob {
+
+	use LoggerAwareTrait;
 
 	/**
 	 * @var boolean
