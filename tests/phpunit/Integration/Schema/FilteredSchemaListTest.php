@@ -181,7 +181,7 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function tesCategoryFilter() {
+	public function testCategoryFilter() {
 
 		$expected = [
 			"if" => [ "category" => "Brown fox" ], "then" => [ "action" => "2_4" ],
