@@ -47,6 +47,7 @@ Implementing a hook should be made in consideration of the expected performance 
 
 - [`SMW::Parser::BeforeMagicWordsFinder`][hook.parser.beforemagicwordsfinder] to extend the magic words list that the `InTextAnnotationParser` should inspect on a given text section
 - [`SMW::Parser::AfterLinksProcessingComplete`][hook.parser.afterlinksprocessingcomplete] to add additional annotation parsing after `InTextAnnotationParser` has finished the processing of standard annotation links (e.g. `[[...::...]]`)
+- [`SMW::Parser::ParserAfterTidyPropertyAnnotationComplete`][hook.parser.parseraftertidypropertyannotationcomplete] allows to add additional `PropertyAnnotator` as part of the `ParserAfterTidy` after default annotators have been executed
 - [`SMW::FileUpload::BeforeUpdate`][hook.fileupload.beforeupdate] to add extra annotations on a `FileUpload` event before the `Store` update is triggered
 - [`SMW::RevisionGuard::ChangeRevision`][hook.revisionguard.changerevision] to forcibly change a revision used during content parsing
 - [`SMW::RevisionGuard::ChangeRevisionID`][hook.revisionguard.changerevisionid] to forcibly change the revision ID as in case of the `Factbox` when building the content.
@@ -90,6 +91,7 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.sqlstore.beforechangetitlecomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforechangetitlecomplete.md
 [hook.parser.beforemagicwordsfinder]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.parser.beforemagicwordsfinder.md
 [hook.parser.afterlinksprocessingcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.parser.afterlinksprocessingcomplete.md
+[hook.parser.parseraftertidypropertyannotationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.parser.parseraftertidypropertyannotationcomplete.md
 [hook.sqlstore.beforedatarebuildjobinserts]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.beforedatarebuildjobinserts.md
 [hook.sqlstore.addcustomfixedpropertytables]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.addcustomfixedpropertytables.md
 [hook.browse.afterincomingpropertieslookupcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.browse.afterincomingpropertieslookupcomplete.md

@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use Hooks;
 use SMW\Parser\AnnotationProcessor;
+use SMW\Property\Annotator as PropertyAnnotator;
 
 /**
  * @private
@@ -55,6 +56,17 @@ class HookDispatcher {
 	 */
 	public function onAfterLinksProcessingComplete( string &$text, AnnotationProcessor $annotationProcessor ) {
 		Hooks::run( 'SMW::Parser::AfterLinksProcessingComplete', [ &$text, $annotationProcessor ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.parser.parseraftertidypropertyannotationcomplete.md
+	 * @since 3.2
+	 *
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param ParserOutput $parserOutput
+	 */
+	public function onParserAfterTidyPropertyAnnotationComplete( PropertyAnnotator $propertyAnnotator, \ParserOutput $parserOutput ) {
+		\Hooks::run( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', [ $propertyAnnotator, $parserOutput ] );
 	}
 
 	/**

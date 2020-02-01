@@ -95,6 +95,28 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnParserAfterTidyPropertyAnnotationComplete() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyAnnotator->expects( $this->once() )
+			->method( 'addAnnotation' );
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', function( $propertyAnnotator, $parserOutput ) {
+			$propertyAnnotator->addAnnotation();
+		} );
+
+		$hookDispatcher->onParserAfterTidyPropertyAnnotationComplete( $propertyAnnotator, $parserOutput );
+	}
+
 	public function testOnIsApprovedRevision() {
 
 		$hookDispatcher = new HookDispatcher();

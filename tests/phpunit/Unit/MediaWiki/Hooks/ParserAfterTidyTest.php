@@ -27,6 +27,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $parser;
 	private $namespaceExaminer;
+	private $hookDispatcher;
 	private $cache;
 
 	protected function setUp() {
@@ -58,6 +59,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -213,6 +218,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$cache
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertTrue(
 			$instance->process( $text )
 		);
@@ -266,6 +275,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->process( $text );
 	}
 
@@ -297,6 +310,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			$parser,
 			$this->namespaceExaminer,
 			$this->cache
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$this->assertTrue(
