@@ -11,6 +11,7 @@ use Onoi\Cache\Cache;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 
 /**
@@ -28,6 +29,7 @@ class ParserAfterTidy implements HookListener {
 
 	use OptionsAwareTrait;
 	use LoggerAwareTrait;
+	use HookDispatcherAwareTrait;
 
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
@@ -238,6 +240,8 @@ class ParserAfterTidy implements HookListener {
 		);
 
 		$propertyAnnotator->addAnnotation();
+
+		$this->hookDispatcher->onParserAfterTidyPropertyAnnotationComplete( $propertyAnnotator, $parserOutput );
 	}
 
 	/**

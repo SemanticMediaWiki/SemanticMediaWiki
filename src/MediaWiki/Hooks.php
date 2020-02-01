@@ -343,6 +343,10 @@ class Hooks {
 			$applicationFactory->getMediaWikiLogger()
 		);
 
+		$parserAfterTidy->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
 		$parserAfterTidy->isCommandLineMode(
 			Site::isCommandLineMode()
 		);
