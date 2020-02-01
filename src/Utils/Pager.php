@@ -3,6 +3,7 @@
 namespace SMW\Utils;
 
 use Html;
+use SMW\Highlighter;
 use SMW\Localizer;
 use SMW\Message;
 use Title;
@@ -82,13 +83,22 @@ class Pager {
 			)
 		);
 
+		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
+
+		$highlighter->setContent(
+			[
+				'content' => Message::get( 'smw-property-page-filter-note', Message::PARSE, Message::USER_LANGUAGE ),
+				'style' => 'margin-left: 5px; vertical-align: -1px;'
+			]
+		);
+
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ui-input-filter'
 			],
 			$form
-		);
+		) . $highlighter->getHtml();
 	}
 
 	/**
