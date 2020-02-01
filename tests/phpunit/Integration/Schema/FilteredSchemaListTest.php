@@ -4,9 +4,12 @@ namespace SMW\Tests\Integration\Schema;
 
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\Compartment;
+use SMW\Schema\CompartmentIterator;
 use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaFilterFactory;
 use SMW\Schema\Filters\CategoryFilter;
+use SMW\Schema\Filters\CompositeFilter;
+use SMW\Schema\SchemaFilter;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 
@@ -37,14 +40,15 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		foreach ( $schemata as $name ) {
-
-			$schema = new SchemaDefinition(
-				$name,
-				json_decode( file_get_contents( SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
-			);
-
-			$this->schemaList->add( $schema );
+			$this->schemaList->add( $this->newSchemaDefinition( $name ) );
 		}
+	}
+
+	private function newSchemaDefinition( $name ) {
+		return new SchemaDefinition(
+			$name,
+			json_decode( file_get_contents( SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
+		);
 	}
 
 	/**
@@ -83,7 +87,101 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCategoryFilter() {
+	public function testNamespaceCategoryFilter_FindBestFilter() {
+
+		$schemaList = new SchemaList(
+			[
+				$this->newSchemaDefinition( 'fake_namespace_category_rule_schema_best_sort_5' )
+			]
+		);
+
+		$compartments = $schemaList->newCompartmentIteratorByKey(
+			'filter_rules',
+			CompartmentIterator::RULE_COMPARTMENT
+		);
+
+		$schemaFilterFactory = new SchemaFilterFactory();
+
+		$categoryFilter = $schemaFilterFactory->newCategoryFilter(
+			[ 'Foo' ]
+		);
+
+		$namespaceFilter = $schemaFilterFactory->newNamespaceFilter(
+			NS_MAIN
+		);
+
+		$namespaceFilter->addOption( SchemaFilter::FILTER_CONDITION_NOT_REQUIRED, true );
+
+		$compositeFilter = $schemaFilterFactory->newCompositeFilter(
+			[
+				$categoryFilter,
+				$namespaceFilter
+			]
+		);
+
+		$compositeFilter->filter( $compartments );
+		$compositeFilter->sortMatches( CompositeFilter::SORT_FILTER_SCORE );
+
+		$sections = [];
+
+		foreach ( $compositeFilter->getMatches() as $compartment ) {
+			$sections[] = $compartment->get( Compartment::ASSOCIATED_SECTION );
+		}
+
+		$this->assertEquals(
+			[ 'rule_5_2', 'rule_5_3' ],
+			$sections
+		);
+	}
+
+	public function testNamespaceCategoryFilter_FindBestFilter_ReverseComposite() {
+
+		$schemaList = new SchemaList(
+			[
+				$this->newSchemaDefinition( 'fake_namespace_category_rule_schema_best_sort_5' )
+			]
+		);
+
+		$compartments = $schemaList->newCompartmentIteratorByKey(
+			'filter_rules',
+			CompartmentIterator::RULE_COMPARTMENT
+		);
+
+		$schemaFilterFactory = new SchemaFilterFactory();
+
+		$categoryFilter = $schemaFilterFactory->newCategoryFilter(
+			[ 'Foo' ]
+		);
+
+		$namespaceFilter = $schemaFilterFactory->newNamespaceFilter(
+			NS_MAIN
+		);
+
+		$namespaceFilter->addOption( SchemaFilter::FILTER_CONDITION_NOT_REQUIRED, true );
+
+		$compositeFilter = $schemaFilterFactory->newCompositeFilter(
+			[
+				$namespaceFilter,
+				$categoryFilter
+			]
+		);
+
+		$compositeFilter->filter( $compartments );
+		$compositeFilter->sortMatches( CompositeFilter::SORT_FILTER_SCORE );
+
+		$sections = [];
+
+		foreach ( $compositeFilter->getMatches() as $compartment ) {
+			$sections[] = $compartment->get( Compartment::ASSOCIATED_SECTION );
+		}
+
+		$this->assertEquals(
+			[ 'rule_5_2', 'rule_5_3' ],
+			$sections
+		);
+	}
+
+	public function tesCategoryFilter() {
 
 		$expected = [
 			"if" => [ "category" => "Brown fox" ], "then" => [ "action" => "2_4" ],
@@ -163,50 +261,6 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 			[ 3 /* unnamed_rule_schema_3 */ ]
 		];
 
-	}
-
-	public function multi2ChainFilterProvider() {
-
-		yield "NS_MAIN" => [
-			NS_MAIN,
-			[],
-			2
-		];
-
-		yield "NS_MAIN, category Foo" => [
-			NS_MAIN,
-			[ 'Foo' ],
-			6
-		];
-
-		/**
-		 * {
-		 *	"if": {
-		 *		"category": "Foo"
-		 *	},
-		 *	"then": {
-		 *		"action": "3_3"
-		 *	}
-		 *},
-		 */
-		yield "category Foo" => [
-			null,
-			[ 'Foo' ],
-			2
-		];
-
-		yield "category Foo, Bar" => [
-			null,
-			[ 'Foo', 'Bar' ],
-			2
-		];
-
-
-		yield "category Foo, Bar, Foobar" => [
-			NS_TEMPLATE,
-			[ 'Foo', 'Bar', 'Foobar-1' ],
-			3
-		];
 	}
 
 }

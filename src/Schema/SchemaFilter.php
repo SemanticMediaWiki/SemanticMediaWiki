@@ -11,11 +11,28 @@ namespace SMW\Schema;
 interface SchemaFilter {
 
 	/**
-	 * @since 3.2
+	 * Indicates that a specific filter condition is not required to exists.
 	 *
-	 * @return string
+	 * For example, in case `NamespaceFilter` is marked with to be not required
+	 * then both rule sets will be for inspection.
+	 *
+	 *```
+	 * {
+	 *	"if": {
+	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
+	 *	}
+	 *}
+	 *```
+	 *```
+	 * {
+	 *	"if": {
+	 *		"namespace": "NS_MAIN",
+	 *		"category": { "anyOf": [ "Foo", "Bar" ] }
+	 *	}
+	 *}
+	 *```
 	 */
-	public function getName() : string;
+	const FILTER_CONDITION_NOT_REQUIRED = 'filter/condition/not_required';
 
 	/**
 	 * @since 3.2
@@ -32,15 +49,12 @@ interface SchemaFilter {
 	public function getMatches() : iterable;
 
 	/**
-	 * Inject a filter as a node to build a decision tree by chaining together
-	 * different filters so that each "root" returns matches for next node to
-	 * continue.
-	 *
 	 * @since 3.2
 	 *
-	 * @param SchemaFilter $nodeFilter
+	 * @param string $key
+	 * @param mixed $value
 	 */
-	public function setNodeFilter( SchemaFilter $nodeFilter );
+	public function addOption( string $key, $value );
 
 	/**
 	 * @since 3.2

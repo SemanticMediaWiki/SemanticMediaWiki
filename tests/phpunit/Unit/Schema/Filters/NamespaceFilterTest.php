@@ -4,6 +4,7 @@ namespace SMW\Tests\Schema\Filters;
 
 use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Compartment;
+use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
 
 /**
@@ -49,6 +50,27 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 		$instance->filter( $compartment );
 	}
 
+	public function testNoCondition_FilterNotRequired() {
+
+		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compartment->expects( $this->once() )
+			->method( 'get' )
+			->with(	$this->equalTo( 'if.namespace' ) );
+
+		$instance = new NamespaceFilter( NS_MAIN );
+		$instance->addOption( NamespaceFilter::FILTER_CONDITION_NOT_REQUIRED, true );
+
+		$instance->filter( $compartment );
+
+		$this->assertEquals(
+			[ $compartment ],
+			$instance->getMatches()
+		);
+	}
+
 	/**
 	 * @dataProvider namespaceFilterProvider
 	 */
@@ -65,6 +87,32 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->hasMatches()
+		);
+	}
+
+	/**
+	 * @dataProvider namespaceFilterProvider
+	 */
+	public function testHasMatches_Rule( $ns, $compartment, $expected ) {
+
+		$instance = new NamespaceFilter(
+			$ns
+		);
+
+		$rule = new Rule(
+			$compartment
+		);
+
+		$instance->filter( $rule );
+
+		$this->assertEquals(
+			$expected,
+			$instance->hasMatches()
+		);
+
+		$this->assertEquals(
+			$expected ? 1 : 0,
+			$rule->filterScore
 		);
 	}
 

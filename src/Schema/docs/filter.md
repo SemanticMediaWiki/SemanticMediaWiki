@@ -75,18 +75,17 @@ $subject = '';
 $schemaFactory = new SchemaFactory();
 $schemaFilterFactory = $schemaFactory->newSchemaFilterFactory();
 
-// Find a schema/list by type and which can included different pages
+// Find an accumulated schema by type and which can included different pages
 // from MediaWiki where the type is used
 $schemaList = $schemaFactory->newSchemaFinder()->getSchemaListByType( 'SOME_SCHEMA' );
 
 $callback = function() use( $subject ) {
-	return $this->categoryLookup->findCategories(
-		$subject
-	);
+	return $this->categoryLookup->findCategories( $subject );
 };
 
+// Could be a simple list of categories, or as in the demonstrated case a callback
+// to lazy-load a possible expensive fetch
 $categoryFilter = $schemaFilterFactory->newCategoryFilter(
-	// Expensive fetch, lazy-load when required due to DB lookup
 	$callback
 );
 
@@ -94,19 +93,30 @@ $namespaceFilter = $schemaFilterFactory->newNamespaceFilter(
 	$namespace
 );
 
-// As with a decision tree attach an additional filter as "Node" filter
-// so that matches can be further restricted by the node filter
-$namespaceFilter->setNodeFilter(
-	$categoryFilter
+// Similar to a decision tree, attach additional filters as "Node" filter
+// so that matches can be further restricted on every succeeding filter
+$compositeFilter = $schemaFilterFactory->newCompositeFilter(
+	[
+		$namespaceFilter,
+		$categoryFilter
+	]
 );
 
-$namespaceFilter->filter(
-	$schemaList->newCompartmentIteratorByKey( 'some_rules' )
+$rules = $schemaList->newCompartmentIteratorByKey(
+	'some_rules',
+
+	// Allows to keep track of filter scores
+	CompartmentIterator::RULE_COMPARTMENT
 );
 
-if ( $namespaceFilter->hasMatches() ) {
-	// Act on those compartments that matched the condition(s)
-	$matches = $namespaceFilter->getMatches();
+$compositeFilter->filter( $rules );
+
+// Sort matches by filter score so that the "best" (aka. highest score) will be
+// be first in the match set
+$compositeFilter->sortMatches( CompositeFilter::SORT_FILTER_SCORE );
+
+if ( $compositeFilter->hasMatches() ) {
+	$matches = $compositeFilter->getMatches();
 }
 ```
 

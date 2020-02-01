@@ -1,0 +1,39 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_rules": {
+		"rule_5_1": {
+			"if": {
+				"namespace": "NS_HELP",
+				"category": [ "Foo", "Bar" ]
+			},
+			"then": {
+				"action": "5_1"
+			}
+		},
+		"rule_5_2": {
+			"if": {
+				"namespace": [ "NS_MAIN", "NS_HELP" ],
+				"category": { "oneOf" : [ "Foo", "Bar" ] }
+			},
+			"then": {
+				"action": "5_2"
+			}
+		},
+		"rule_5_3": {
+			"if": {
+				"category": "Foo"
+			},
+			"then": {
+				"action": "5_3"
+			}
+		},
+		"rule_5_4": {
+			"if": {
+				"category": "Brown fox"
+			},
+			"then": {
+				"action": "5_4"
+			}
+		}
+	}
+}

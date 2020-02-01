@@ -143,6 +143,24 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewSchemaList_NoMatch() {
+
+		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+			->method( 'getSpecification' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup,
+			$this->cache
+		);
+
+		$this->assertEquals(
+			[],
+			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+		);
+	}
+
 	public function testNewSchemaList_EmptyDefinition() {
 
 		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
@@ -204,6 +222,46 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->cache->expects( $this->once() )
 			->method( 'delete' )
 			->with( $this->stringContains( 'smw:schema:c3ddb092fa95e99be46cbbc922e04900' ) );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup,
+			$this->cache
+		);
+
+		$instance->invalidateCache( new DIProperty( '_SCHEMA_TYPE' ), $changeRecord );
+	}
+
+	public function testInvalidateCacheFromChangeRecord_InvalidKey() {
+
+		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+			[
+				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
+			]
+		);
+
+		$this->cache->expects( $this->never() )
+			->method( 'delete' );
+
+		$instance = new SchemaFinder(
+			$this->store,
+			$this->propertySpecificationLookup,
+			$this->cache
+		);
+
+		$instance->invalidateCache( new DIProperty( 'Foo' ), $changeRecord );
+	}
+
+	public function testInvalidateCacheFromChangeRecord_NoHashField() {
+
+		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+			[
+				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_id' => 42 ] ] )
+			]
+		);
+
+		$this->cache->expects( $this->never() )
+			->method( 'delete' );
 
 		$instance = new SchemaFinder(
 			$this->store,

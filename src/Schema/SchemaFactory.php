@@ -168,10 +168,6 @@ class SchemaFactory {
 		return $schema;
 	}
 
-	public static function newTest( $name, $data ) {
-		return '';
-	}
-
 	/**
 	 * @since 3.1
 	 *

@@ -98,10 +98,11 @@ class SchemaList implements JsonSerializable {
 	 * @since 3.1
 	 *
 	 * @param string $key
+	 * @param string|null $type
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function newCompartmentIteratorByKey( string $key ) : CompartmentIterator {
+	public function newCompartmentIteratorByKey( string $key, ?string $type = null ) : CompartmentIterator {
 
 		$list = [];
 
@@ -117,7 +118,7 @@ class SchemaList implements JsonSerializable {
 			];
 		}
 
-		return new CompartmentIterator( $list );
+		return new CompartmentIterator( $list, $type );
 	}
 
 	/**

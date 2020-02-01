@@ -17,6 +17,16 @@ use SMW\Tests\TestEnvironment;
  */
 class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	public function testCanConstructCompositeFilter() {
+
+		$instance = new SchemaFilterFactory();
+
+		$this->assertInstanceof(
+			'\SMW\Schema\Filters\CompositeFilter',
+			$instance->newCompositeFilter( [] )
+		);
+	}
+
 	public function testCanConstructNamespaceFilter() {
 
 		$instance = new SchemaFilterFactory();

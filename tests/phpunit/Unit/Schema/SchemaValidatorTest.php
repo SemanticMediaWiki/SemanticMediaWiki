@@ -105,4 +105,22 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testValidate_EmptySchema() {
+
+		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$jsonSchemaValidator->expects( $this->never() )
+			->method( 'validate' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new SchemaValidator( $jsonSchemaValidator );
+
+		$this->assertEquals(
+			[],
+			$instance->validate( null )
+		);
+	}
+
 }

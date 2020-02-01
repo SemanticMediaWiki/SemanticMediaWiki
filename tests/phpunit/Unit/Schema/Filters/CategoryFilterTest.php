@@ -4,7 +4,9 @@ namespace SMW\Tests\Schema\Filters;
 
 use SMW\Schema\Filters\CategoryFilter;
 use SMW\Schema\Compartment;
+use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\CategoryFilter
@@ -16,6 +18,8 @@ use SMW\Schema\CompartmentIterator;
  * @author mwjames
  */
 class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -49,6 +53,43 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		$instance->filter( $compartment );
 	}
 
+	public function testNoCondition_FilterNotRequired() {
+
+		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$compartment->expects( $this->once() )
+			->method( 'get' )
+			->with(	$this->equalTo( 'if.category' ) );
+
+		$instance = new CategoryFilter();
+		$instance->addOption( CategoryFilter::FILTER_CONDITION_NOT_REQUIRED, true );
+
+		$instance->filter( $compartment );
+
+		$this->assertEquals(
+			[ $compartment ],
+			$instance->getMatches()
+		);
+	}
+
+	public function testFilterOnCallbackWhileFailingReturnFormat_ThrowsException() {
+
+		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callback = function() {
+			return null;
+		};
+
+		$instance = new CategoryFilter( $callback );
+
+		$this->setExpectedException( '\RuntimeException' );
+		$instance->filter( $compartment );
+	}
+
 	/**
 	 * @dataProvider categoryFilterProvider
 	 */
@@ -65,6 +106,55 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->hasMatches()
+		);
+	}
+
+	/**
+	 * @dataProvider categoryFilterProvider
+	 */
+	public function testHasMatches_Callback_Compartment( $categories, $compartment, $expected ) {
+
+		$callback = function() use ( $categories ) {
+			return $categories;
+		};
+
+		$instance = new CategoryFilter(
+			$callback
+		);
+
+		$instance->filter(
+			new Compartment( $compartment )
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->hasMatches()
+		);
+	}
+
+	/**
+	 * @dataProvider categoryFilterProvider
+	 */
+	public function testHasMatches_Rule( $categories, $compartment, $expected ) {
+
+		$instance = new CategoryFilter(
+			$categories
+		);
+
+		$rule = new Rule(
+			$compartment
+		);
+
+		$instance->filter( $rule );
+
+		$this->assertEquals(
+			$expected,
+			$instance->hasMatches()
+		);
+
+		$this->assertEquals(
+			$expected ? 1 : 0,
+			$rule->filterScore
 		);
 	}
 
@@ -91,6 +181,16 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 
 		yield 'oneOf.1: single one_of' => [
 			[ 'Foo', 'Bar' ],
+			[
+				'if' => [
+					'category' => 'Foo'
+				]
+			],
+			true
+		];
+
+		yield 'oneOf.1: single one_of, flipped' => [
+			[ 'Foo' => true, 'Bar' => true ],
 			[
 				'if' => [
 					'category' => 'Foo'
