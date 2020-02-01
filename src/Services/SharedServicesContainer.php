@@ -55,6 +55,7 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\Schema\SchemaFactory;
 use SMW\Settings;
+use SMW\SetupFile;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMW\StoreFactory;
@@ -174,6 +175,16 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'ConnectionManager', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'ConnectionManager', ConnectionManager::class );
 			return new ConnectionManager();
+		} );
+
+		/**
+		 * SetupFile
+		 *
+		 * @return callable
+		 */
+		$containerBuilder->registerCallback( 'SetupFile', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'SetupFile', SetupFile::class );
+			return new SetupFile();
 		} );
 
 		$containerBuilder->registerCallback( 'Cache', function( $containerBuilder, $cacheType = null ) {

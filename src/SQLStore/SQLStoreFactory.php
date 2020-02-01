@@ -422,7 +422,8 @@ class SQLStoreFactory {
 	 */
 	public function newInstaller() {
 
-		$settings = ApplicationFactory::getInstance()->getSettings();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$tableBuilder = TableBuilder::factory(
 			$this->store->getConnection( DB_MASTER )
@@ -456,6 +457,10 @@ class SQLStoreFactory {
 			$tableSchemaManager,
 			$tableBuilder,
 			$tableBuildExaminer
+		);
+
+		$installer->setSetupFile(
+			$applicationFactory->singleton( 'SetupFile' )
 		);
 
 		$installer->setMessageReporter(

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Elastic\Indexer;
+namespace SMW\Elastic\Jobs;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
@@ -8,6 +8,8 @@ use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\Elastic\Indexer\Document;
+use SMW\Utils\HmacSerializer;
 use Title;
 
 /**
@@ -19,14 +21,82 @@ use Title;
 class IndexerRecoveryJob extends Job {
 
 	/**
+	 * Name of the job
+	 */
+	const JOB_COMMAND = 'smw.elasticIndexerRecovery';
+
+	/**
+	 * Repository specific namespace
+	 */
+	const CACHE_NAMESPACE = 'smw:elastic:document';
+
+	const TTL_DAY = 86400; // 24 * 3600
+	const TTL_WEEK = 604800; // 7 * 24 * 3600
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = [] ) {
-		parent::__construct( 'smw.elasticIndexerRecovery', $title, $params );
+		parent::__construct( self::JOB_COMMAND, $title, $params );
 		$this->removeDuplicates = true;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string|array $key
+	 *
+	 * @return string
+	 */
+	public static function makeCacheKey( $subject ) {
+
+		if ( $subject instanceof Title ) {
+			$subject = DIWikiPage::newFromTitle( $subject );
+		}
+
+		return smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param Document $document
+	 */
+	public static function pushFromDocument( Document $document ) {
+
+		$cache = ApplicationFactory::getInstance()->getCache();
+		$subject = $document->getSubject();
+
+		$cache->save(
+			self::makeCacheKey( $subject ),
+			HmacSerializer::compress( $document ),
+			self::TTL_WEEK
+		);
+
+		$indexerRecoveryJob = new IndexerRecoveryJob(
+			$subject->getTitle(),
+			[ 'index' => $subject->getHash() ]
+		);
+
+		$indexerRecoveryJob->insert();
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $params
+	 */
+	public static function pushFromParams( Title $title, array $params ) {
+
+		$indexerRecoveryJob = new IndexerRecoveryJob(
+			$title,
+			$params
+		);
+
+		$indexerRecoveryJob->insert();
 	}
 
 	/**
@@ -82,7 +152,6 @@ class IndexerRecoveryJob extends Job {
 
 		if ( $this->hasParameter( 'index' ) ) {
 			$this->index(
-				$connection,
 				$applicationFactory->getCache(),
 				$this->getParameter( 'index' )
 			);
@@ -122,23 +191,23 @@ class IndexerRecoveryJob extends Job {
 		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $connection, $cache, $hash ) {
+	private function index( $cache, $hash ) {
 
-		$subject = DIWikiPage::doUnserialize( $hash );
-		$text = '';
-
-		$changeDiff = ChangeDiff::fetch(
-			$cache,
-			$subject
+		$key = self::makeCacheKey(
+			DIWikiPage::doUnserialize( $hash )
 		);
 
-		if ( $connection->getConfig()->dotGet( 'indexer.raw.text', false ) ) {
-			$text = $this->indexer->fetchNativeData( $subject );
+		$document = null;
+
+		if ( ( $data = $cache->fetch( $key ) ) !== false ) {
+			$document = HmacSerializer::uncompress( $data );
 		}
 
-		if ( $changeDiff !== false ) {
-			$this->indexer->index( $changeDiff, $text );
+		if ( $document instanceof Document ) {
+			$this->indexer->indexDocument( $document, false );
 		}
+
+		$cache->delete( $key );
 	}
 
 }

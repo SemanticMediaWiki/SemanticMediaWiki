@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Integration\Elastic;
 
+use SMW\Exception\JSONParseException;
+
 /**
  * @license GNU GPL v2+
  * @since 3.2
@@ -14,18 +16,26 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->contents = file_get_contents( $GLOBALS['smwgIP'] . 'data/elastic/default-profile.json' );
+		$this->contents = file_get_contents(
+			$GLOBALS['smwgIP'] . 'data/elastic/default-profile.json'
+		);
 	}
 
-	public function testJSONFile() {
+	public function testJSONFileValidity() {
 
-		$this->assertInternalType(
-			'string',
-			json_encode( json_decode( $this->contents ) )
+		$jsonParseException = new JSONParseException(
+			$this->contents
+		);
+
+		$this->assertEmpty(
+			'',
+			$jsonParseException->getMessage()
 		);
 	}
 
 	/**
+	 * @depends testJSONFileValidity
+	 *
 	 * @dataProvider defaultSettingsProvider
 	 */
 	public function testComparePHP_JSONConfigKeys( $key, $k, $expected ) {

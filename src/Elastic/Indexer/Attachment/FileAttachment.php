@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Store;
 use SMWContainerSemanticData as ContainerSemanticData;
@@ -38,6 +39,11 @@ class FileAttachment {
 	private $indexer;
 
 	/**
+	 * @var Bulk
+	 */
+	private $bulk;
+
+	/**
 	 * @var string
 	 */
 	private $origin = '';
@@ -47,10 +53,12 @@ class FileAttachment {
 	 *
 	 * @param Store $store
 	 * @param Indexer $indexer
+	 * @param Bulk $bulk
 	 */
-	public function __construct( Store $store, Indexer $indexer ) {
+	public function __construct( Store $store, Indexer $indexer, Bulk $bulk ) {
 		$this->store = $store;
 		$this->indexer = $indexer;
+		$this->bulk = $bulk;
 	}
 
 	/**
@@ -271,7 +279,8 @@ class FileAttachment {
 			'_type'  => ElasticClient::TYPE_DATA
 		];
 
-		$bulk = $this->indexer->newBulk( $params );
+		$this->bulk->clear();
+		$this->bulk->head( $params );
 		$data = [];
 
 		$pid = $this->indexer->getId(
@@ -290,9 +299,9 @@ class FileAttachment {
 		// Upsert of the base document to link subject -> subobject otherwise
 		// a property path like `File attachment.Content length`) is not going
 		// to work
-		$bulk->upsert( [ '_id' => $baseDocId ], $data );
+		$this->bulk->upsert( [ '_id' => $baseDocId ], $data );
 
-		return $bulk->execute();
+		return $this->bulk->execute();
 	}
 
 	private function newContainerSemanticData( $dataItem, $doc ) {

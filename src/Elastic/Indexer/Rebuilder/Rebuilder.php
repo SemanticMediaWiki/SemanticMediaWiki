@@ -6,8 +6,9 @@ use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Installer;
 use SMW\SemanticData;
-use SMW\SQLStore\PropertyTableRowMapper;
+use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\SQLStore\SQLStore;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
@@ -41,14 +42,14 @@ class Rebuilder {
 	private $fileIndexer;
 
 	/**
-	 * @var PropertyTableRowMapper
+	 * @var DocumentCreator
 	 */
-	private $propertyTableRowMapper;
+	private $documentCreator;
 
 	/**
-	 * @var Rollover
+	 * @var Installer
 	 */
-	private $rollover;
+	private $installer;
 
 	/**
 	 * @var array
@@ -71,15 +72,15 @@ class Rebuilder {
 	 * @param ElasticClient $client
 	 * @param Indexer $indexer
 	 * @param FileIndexer $fileIndexer
-	 * @param PropertyTableRowMapper $propertyTableRowMapper
-	 * @param Rollover $rollover
+	 * @param DocumentCreator $documentCreator
+	 * @param Installer $installer
 	 */
-	public function __construct( ElasticClient $client, Indexer $indexer, FileIndexer $fileIndexer, PropertyTableRowMapper $propertyTableRowMapper, Rollover $rollover ) {
+	public function __construct( ElasticClient $client, Indexer $indexer,  FileIndexer $fileIndexer, DocumentCreator $documentCreator, Installer $installer ) {
 		$this->client = $client;
 		$this->indexer = $indexer;
 		$this->fileIndexer = $fileIndexer;
-		$this->propertyTableRowMapper = $propertyTableRowMapper;
-		$this->rollover = $rollover;
+		$this->documentCreator = $documentCreator;
+		$this->installer = $installer;
 	}
 
 	/**
@@ -180,7 +181,7 @@ class Rebuilder {
 			$cliMsgFormatter->firstCol( '   ... deleting indices and aliases ...' )
 		);
 
-		$this->indexer->drop();
+		$this->installer->drop();
 
 		$this->messageReporter->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
@@ -190,7 +191,7 @@ class Rebuilder {
 			$cliMsgFormatter->firstCol( '   ... setting up indices and aliases ...' )
 		);
 
-		$this->indexer->setup();
+		$this->installer->setup();
 
 		$this->messageReporter->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
@@ -303,25 +304,17 @@ class Rebuilder {
 			$fileIndexer = $this->fileIndexer;
 		}
 
-		$changeOp = $this->propertyTableRowMapper->newChangeOp(
-			$id,
-			$semanticData
-		);
-
 		$this->indexer->setVersions( $this->versions );
 		$this->indexer->isRebuild();
 	//	$this->indexer->setState( Indexer::REBUILD_STATE );
 
-		$changeDiff = $changeOp->newChangeDiff();
+		$dataItem = $semanticData->getSubject();
+		$dataItem->setId( $id );
 
-		$changeDiff->setAssociatedRev(
-			$semanticData->getExtensionData( 'revision_id', 0 )
-		);
+		$document = $this->documentCreator->newFromSemanticData( $semanticData );
+		$document->setTextBody( $this->fetchRawText( $dataItem ) );
 
-		$this->indexer->index(
-			$changeDiff,
-			$this->fetchRawText( $dataItem )
-		);
+		$this->indexer->indexDocument( $document );
 
 		if ( $fileIndexer !== null ) {
 			$fileIndexer->setVersions( $this->versions );
@@ -510,7 +503,7 @@ class Rebuilder {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$old = $this->rollover->rollover(
+		$old = $this->installer->rollover(
 			$type,
 			$version
 		);

@@ -299,7 +299,7 @@ final class Setup {
 			'smw.changePropagationUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
 			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
 			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
-			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Indexer\IndexerRecoveryJob',
+			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Jobs\IndexerRecoveryJob',
 			'smw.elasticFileIngest' => 'SMW\Elastic\Jobs\FileIngestJob',
 			'smw.parserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
 

@@ -18,7 +18,8 @@
 		"job.recovery.retries": 5,
 		"job.file.ingest.retries": 3,
 		"monitor.entity.replication": true,
-		"monitor.entity.replication.cache_lifetime": 3600
+		"monitor.entity.replication.cache_lifetime": 3600,
+		"data.sqlstore_compatibility": true
 	},
 	"query": {
 		"fallback.no_connection": false,

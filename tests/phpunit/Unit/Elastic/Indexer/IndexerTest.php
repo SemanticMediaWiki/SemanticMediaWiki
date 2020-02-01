@@ -5,6 +5,7 @@ namespace SMW\Tests\Elastic\Indexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Services\ServicesContainer;
 use SMW\DIWikiPage;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\Indexer
@@ -18,16 +19,25 @@ use SMW\DIWikiPage;
 class IndexerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
+	private $bulk;
 	private $servicesContainer;
 	private $logger;
+	private $jobQueue;
+	private $testEnvironment;
 
 	protected function setUp() {
+
+		$this->testEnvironment = new TestEnvironment();
 
 		$options = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->bulk = $this->getMockBuilder( '\SMW\Elastic\Indexer\Bulk' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,182 +53,198 @@ class IndexerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->connection ) );
 
-		$this->servicesContainer = new ServicesContainer();
-
 		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+	}
+
+	protected function tearDown() {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			Indexer::class,
-			new Indexer( $this->store, $this->servicesContainer )
+			new Indexer( $this->store, $this->bulk )
 		);
 	}
 
-	public function testSetup() {
+	public function testCreate() {
 
-		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$rollover->expects( $this->exactly( 2 ) )
-			->method( 'update' );
-
-		$this->servicesContainer->add(
-			'Rollover',
-			function() use( $rollover ) { return $rollover;	}
-		);
-
-		$instance = new Indexer(
-			$this->store,
-			$this->servicesContainer
-		);
-
-		$instance->setup();
-	}
-
-	public function testDrop() {
-
-		$rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$rollover->expects( $this->exactly( 2 ) )
-			->method( 'delete' );
-
-		$this->servicesContainer->add(
-			'Rollover',
-			function() use( $rollover ) { return $rollover;	}
-		);
-
-		$instance = new Indexer(
-			$this->store,
-			$this->servicesContainer
-		);
-
-		$instance->drop();
-	}
-
-	public function testTextIndex() {
+		$expected = [
+			'index' => '_index_abc',
+			'type' => 'data',
+			'id' => 42,
+			'body' => [ 'subject' => [
+				'title' => 'Foo',
+				'subobject' => '',
+				'namespace' => 0,
+				'interwiki' => '',
+				'sortkey' => 'Foo'
+			] ]
+		];
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
-		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
 
-		$changeDiff->expects( $this->once() )
-			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+		$this->connection->expects( $this->any() )
+			->method( 'getIndexNameByType' )
+			->with( $this->equalTo( 'data' ) )
+			->will( $this->returnValue( '_index_abc' ) );
 
-		$changeDiff->expects( $this->once() )
-			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( [] ) );
-
-		$changeDiff->expects( $this->once() )
-			->method( 'getDataOps' )
-			->will( $this->returnValue( [] ) );
-
-		$bulk = $this->getMockBuilder( '\SMW\Elastic\Indexer\Bulk' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$bulk->expects( $this->once() )
-			->method( 'upsert' )
-			->with(
-				$this->anything(),
-				$this->equalTo( [ 'text_raw' => 'Bar' ] ) );
-
-		$this->servicesContainer->add(
-			'Bulk',
-			function() use( $bulk ) { return $bulk;	}
-		);
+		$this->connection->expects( $this->once() )
+			->method( 'index' )
+			->with( $this->equalTo( $expected ) )
+			->will( $this->returnValue( true ) );
 
 		$instance = new Indexer(
 			$this->store,
-			$this->servicesContainer
+			$this->bulk
 		);
 
 		$instance->setLogger( $this->logger );
-		$instance->index( $changeDiff, 'Bar' );
+		$instance->create( $subject, [] );
 	}
 
-	/**
-	 * @dataProvider textLinksProvider
-	 */
-	public function testRemoveLinks( $text, $expected ) {
+	public function testCreate_FailedConnection_PushJob() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'push' );
+
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( false ) );
 
 		$instance = new Indexer(
 			$this->store,
-			$this->servicesContainer
+			$this->bulk
 		);
 
-		$this->assertEquals(
-			$expected,
-			$instance->removeLinks( $text )
-		);
+		$instance->setLogger( $this->logger );
+		$instance->create( $subject, [] );
 	}
 
-	public function textLinksProvider() {
+	public function testDelete() {
 
-		yield [
-			'abc',
-			'abc'
-		];
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
 
-		yield [
-			'{{DEFAULTSORT: FOO}}',
-			''
-		];
+		$this->bulk->expects( $this->once() )
+			->method( 'clear' );
 
-		yield [
-			'{{Foo|bar=foobar}}',
-			'bar=foobar'
-		];
+		$this->bulk->expects( $this->once() )
+			->method( 'head' );
 
-		yield [
-			'[[Has foo::Bar]]',
-			'Bar'
-		];
+		$this->bulk->expects( $this->exactly( 2 ) )
+			->method( 'delete' );
 
-		yield [
-			'[[:foo|abc]]',
-			'abc'
-		];
+		$this->bulk->expects( $this->once() )
+			->method( 'execute' );
 
-		yield [
-			'abc [[:foo|abc]]',
-			'abc abc'
-		];
+		$instance = new Indexer(
+			$this->store,
+			$this->bulk
+		);
 
-		yield [
-			'[[:|abc]]',
-			'[[:|abc]]'
-		];
+		$instance->setLogger( $this->logger );
+		$instance->delete( [ 42, 1001 ] );
+	}
 
-		yield [
-			'[[:abc]]',
-			':abc'
-		];
+	public function testDelete_FailedConnection_PushJob() {
 
-		yield [
-			'abc [[abc]]',
-			'abc abc'
-		];
+		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		yield [
-			'[[abc]] abc [[:bar|foobar]]',
-			'abc abc foobar'
-		];
+		$this->jobQueue->expects( $this->once() )
+			->method( 'push' );
 
-		yield [
-			'[[:Spécial%3ARequêter&cl=Yzo1jUEKwzAMBF8T3RKMS486tPTQb8iJjE3sGCSH9PlVGgpzWLRi9oPj_Wm8SUfvtr0GluH2OPF2fxkQm1TqGKTR0ikUhpJr7uids7StSKVAYlpYFDW1A5RJ5lQocMFpmgbv4i49mdo7Yd1LV5gLqb03-SmtOPKa_1nrcS2dPUITcyPpDC1G5Y4OKuXtGvgC|foo]]',
-			'foo'
-		];
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new Indexer(
+			$this->store,
+			$this->bulk
+		);
+
+		$instance->setLogger( $this->logger );
+		$instance->delete( [ 42, 1001 ] );
+	}
+
+	public function testIndexDocument() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject->setId( 42 );
+
+		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$document->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$this->bulk->expects( $this->once() )
+			->method( 'head' );
+
+		$this->bulk->expects( $this->once() )
+			->method( 'infuseDocument' );
+
+		$this->bulk->expects( $this->once() )
+			->method( 'clear' );
+
+		$this->bulk->expects( $this->once() )
+			->method( 'execute' );
+
+		$instance = new Indexer(
+			$this->store,
+			$this->bulk
+		);
+
+		$instance->setLogger( $this->logger );
+		$instance->indexDocument( $document, false );
+	}
+
+	public function testIndexDocument_FailedConnection_PushJob() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$document->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$this->jobQueue->expects( $this->once() )
+			->method( 'push' );
+
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new Indexer(
+			$this->store,
+			$this->bulk
+		);
+
+		$instance->setLogger( $this->logger );
+		$instance->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
 	}
 
 }
