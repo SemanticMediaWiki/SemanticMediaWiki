@@ -16,47 +16,39 @@ The objective is to provide an interface to Elasticsearch to:
 - Semantic MediaWiki: 3.0+
 - [`elasticsearch/elasticsearch`][packagist:es] (PHP ^7.0 `~6.0` or PHP ^5.6.6 `~5.3`)
 
-We rely on the [elasticsearch php-api][es:php-api] to communicate with Elasticsearch and are therefore independent from any other vendor or MediaWiki extension that may use ES as search backend (e.g. `CirrusSearch`).
+The `ElasticStore` relies on the [elasticsearch php-api][es:php-api] to communicate with Elasticsearch directly and is therefore independent from any other vendor or MediaWiki extension that may use Elasticsearch as search backend (e.g. `CirrusSearch`).
 
-It is recommended to use:
+It is recommended to:
 
-- ES 6+ due to improvements to its [sparse field][es:6] handling
-- ES hardware with "... machine with 64 GB of RAM is the ideal sweet spot, but 32 GB and 16 GB machines are also common ..." as noted in the [elasticsearch guide][es:hardware]
+- Use Elasticsearch 6+ due to improvements to its [sparse field][es:6] handling
+- Consult the official hardware [guide][es:hardware] on specific Elasticsearch requirements
 
 ## Features
 
-- Handle property type changes without the need to rebuild the entire index itself after it is ensured that all `ChangePropagation` jobs have been processed
-- Inverse queries are supported (e.g. `[[-Foo::Bar]]`)
-- Property chains and paths queries are supported (e.g. `[[Foo.Bar::Foobar]]`)
-- Category and property hierarchies are supported
+The `ElasticStore` provides the same query features (given those are tested) as the `SQLStore` making its functionality equivalent to the `SQLStore` but provides better support for free text matches or for unstructured text (if enabled) when retrieved from an article or file. Furthermore, improved performance and scalability is expected especially when the document count becomes significant larger than 50000 articles or a lot of fulltext queries are executed.
+
+- Active [replication monitoring][smw:monitoring] to inform user about the replication state of a document
+- Handling of active property type changes without the need to rebuild the entire index itself after it is ensured that all [`ChangePropagation`][smw:changeprop] jobs have been processed
+- Support of inverse queries such as `[[-Foo::Bar]]`
+- Support of property chain and path queries (e.g. `[[Foo.Bar::Foobar]]`)
+- Support of category and property hierarchies
 
 ## Setup
 
-Before the ElasticStore (hereby Elasticsearch) can be used as drop-in replacement for the existing `SQLStore` based `QueryEngine` the following settings and operations are necessary:
+Before the ElasticStore (hereby Elasticsearch) can be used as drop-in replacement for the existing `SQLStore` based `QueryEngine` the following settings and operations are required:
 
-- Set `$GLOBALS['smwgDefaultStore'] = 'SMWElasticStore';`
-- Set `$GLOBALS['smwgElasticsearchEndpoints'] = [ ... ];`
+- Set `$GLOBALS['smwgDefaultStore'] = 'SMWElasticStore';` (see [`$smwgDefaultStore`][smw:smwgDefaultStore])
+- Set `$GLOBALS['smwgElasticsearchEndpoints'] = [ ... ];` (see [`$smwgElasticsearchEndpoints`][smw:smwgElasticsearchEndpoints])
 - Run `php setupStore.php` or `php update.php`
-- Rebuild the index using `php rebuildElasticIndex.php`
+- Rebuild the index using `php rebuildElasticIndex.php` (see [`rebuildElasticIndex.php`][smw:rebuildElasticIndex.php])
 
-For a more detailed introduction, see the [usage][section:usage] and [settings][section:config] section as well as:
-
-- [`$smwgDefaultStore`][help:smwgDefaultStore]
-- [`$smwgElasticsearchEndpoints`][help:smwgElasticsearchEndpoints]
-- [`rebuildElasticIndex.php`][help:rebuildElasticIndex.php]
+A more detailed introduction can be found as part of the [usage][section:usage] and [settings][section:config] section.
 
 ## General notes
 
-Elasticsearch is not expected to be used as data store replacement and therefore it is not assumed that ES will return all `_source` fields during a request.
+Elasticsearch is not expected to be used as data store replacement which means a RDMBS backend (MySQL, SQLite, or Postgres) is still required.
 
-The `ElasticStore` provides a customized serialization format to transform and transfer its data, an DSL interpreter (see  [domain language][es:dsl]) allows for existing `#ask` queries to be answered by an ES instance without changing its syntax when switching from a `SQLStore` (or `SPARQLStore`).
-
-## more ...
-
-- [Usage][section:usage]
-- [Configuration and settings][section:config]
-- [Technical notes][section:technical]
-- [FAQ][section:faq]
+The `ElasticStore` provides a customized serialization format to transform and transfer the required data to Elasticsearch. The `QueryEngine` provides a #ask-ES DSL interpreter (see [domain language][es:dsl]) which ensures that any existing `#ask` query can be answered by the Elasticsearch cluster without changing its syntax when switching from a `SQLStore` (given that index process has been completed).
 
 [packagist:es]:https://packagist.org/packages/elasticsearch/elasticsearch
 [es:php-api]: https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_installation_2.html
@@ -68,6 +60,8 @@ The `ElasticStore` provides a customized serialization format to transform and t
 [section:config]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/config.md
 [section:technical]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/technical.md
 [section:faq]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/faq.md
-[help:smwgDefaultStore]:https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultStore
-[help:smwgElasticsearchEndpoints]:https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchEndpoints
-[help:rebuildElasticIndex.php]:https://www.semantic-mediawiki.org/wiki/Help:rebuildElasticIndex.php
+[smw:smwgDefaultStore]:https://www.semantic-mediawiki.org/wiki/Help:$smwgDefaultStore
+[smw:smwgElasticsearchEndpoints]:https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchEndpoints
+[smw:rebuildElasticIndex.php]:https://www.semantic-mediawiki.org/wiki/Help:rebuildElasticIndex.php
+[smw:monitoring]:https://www.semantic-mediawiki.org/wiki/Help:Replication_monitoring
+[smw:changeprop]:https://www.semantic-mediawiki.org/wiki/Help:Change_propagation
