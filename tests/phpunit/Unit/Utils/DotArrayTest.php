@@ -42,8 +42,7 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 
 			'dot_6' => [
 				'foo' => [
-					// A real array definition takes precedence over a dot
-					// path stored key
+					// A dot path stored key takes precedence over real array definition
 					'bar' => [ 'foobar' => [ 'foo' => [ 'n' => 123 ], 'foo.n' => 666, 'foo.size' => 777 ] ],
 					'bar.foobar' => [ 'foo' => [ 'n' => 999, 'size' => 444 ] ],
 				]
@@ -125,14 +124,27 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 		yield 'dot_6.foo.bar.foobar.foo.n' => [
 			$options,
 			'dot_6.foo.bar.foobar.foo.n',
-			123
+			666
 		];
 
 		yield 'dot_6.foo.bar.foobar.foo.size' => [
 			$options,
 			'dot_6.foo.bar.foobar.foo.size',
-			false
+			777
 		];
+
+		yield 'compound_key_takes_precedence_over_array_match' => [
+			[
+				'query' => [
+					'highlight.fragment' => [ 'number' => 1 ,'size' => 100, 'type' => false ],
+					'highlight.fragment.type' => 'foo'
+				]
+
+			],
+			'query.highlight.fragment.type',
+			'foo'
+		];
+
 	}
 
 }
