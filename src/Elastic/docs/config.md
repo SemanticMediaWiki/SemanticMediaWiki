@@ -1,27 +1,27 @@
-# Configuration and settings
+[Usage][section:usage] | [Settings][section:config] | [Technical notes][section:technical] | [FAQ][section:faq]
 
-Accessing an ES cluster from within Semantic MediaWiki requires some settings and customization and includes:
+Accessing an Elasticsearch cluster from within Semantic MediaWiki requires to alter the following settings:
 
 - [`$smwgElasticsearchEndpoints`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchEndpoints)
 - [`$smwgElasticsearchConfig`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchConfig)
 - [`$smwgElasticsearchProfile`](https://www.semantic-mediawiki.org/wiki/Help:$smwgElasticsearchProfile)
 
-### Endpoints
+## Connection to Elasticsearch
 
-`smwgElasticsearchEndpoints` is a __required__ setting and contains a list of available endpoints to create a connection with an ES cluster.
+`smwgElasticsearchEndpoints` is a __required__ setting and contains a list of available endpoints to establish a connection with a Elasticsearch cluster.
 
 <pre>
 $GLOBALS['smwgElasticsearchEndpoints'] = [
-	[ 'host' => '192.168.1.126', 'port' => 9200, 'scheme' => 'http' ],
-	'localhost:9200'
+	[ 'host' => '192.168.1.126', 'port' => 9200, 'scheme' => 'http' ], // extended
+	'localhost:9200' // inline
 ];
 </pre>
 
-Please consult the [reference material][es:conf:hosts] for details about the correct notation form.
+Please consult the official [documentation][es:conf:hosts] for details about how to use the inline or extended form.
 
-## Settings
+## Configuration
 
-`$smwgElasticsearchConfig` is a compound setting that collects various settings related to connection, index, and query details.
+`$smwgElasticsearchConfig` is a compound setting that collects various parameters into one Semantic MediaWiki setting to shape the interaction with Elasticsearch including specific index and query details.
 
 <pre>
 $GLOBALS['smwgElasticsearchConfig'] = [
@@ -29,13 +29,13 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 	// Points to index and mapping definition files
 	'index_def'       => [ ... ],
 
-	// Defines connection details for ES endpoints
+	// Defines connection details for Elasticsearch endpoints
 	'connection'  => [ ... ],
 
 	// Holds replication details
 	'indexer' => [ ... ],
 
-	// Used to modify ES specific settings
+	// Used to modify Elasticsearch specific settings
 	'settings'    => [ ... ],
 
 	// Section to optimize the query execution
@@ -43,7 +43,9 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 ];
 </pre>
 
-A detailed list of settings and their explanations are available in the `DefaultSettings.php`. Please make sure that after changing any setting, `php rebuildElasticIndex.php --update-settings` is executed.
+### Changing a setting
+
+A detailed list of settings and their explanations is available in the `DefaultSettings.php`. Please make sure that after changing any setting, `php rebuildElasticIndex.php --update-settings` is executed.
 
 When modifying a particular setting, use an appropriate key to change the value of a parameter otherwise it is possible that the entire configuration is replaced.
 
@@ -59,12 +61,12 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 ];
 </pre>
 
-### Shards and replicas
+## Shards and replicas
 
 The default shards/replica configuration is set to:
 
 - The `data` index has two primary shards and two replicas
-- The `lookup` index has one primary shard and no replica (the ES documentation [notes][es:query-dsl-terms-lookup] that "... consider using an index with a single shard ... lookup terms filter will prefer to execute the get request on a local node if possible ...")
+- The `lookup` index has one primary shard and no replica (the Elasticsearch [documentation][es:query-dsl-terms-lookup] notes that "... consider using an index with a single shard ... lookup terms filter will prefer to execute the get request on a local node if possible ...")
 
 If it is required to change the numbers of [shards][es:shards] and replicas it is preferable to use the `$smwgElasticsearchConfig` setting for this with.
 
@@ -75,15 +77,15 @@ $GLOBALS['smwgElasticsearchConfig']['settings']['data'] = [
 ]
 </pre>
 
-ES comes with a precondition that any change to the `number_of_shards` requires to rebuild the entire index, so changes to that setting should be made carefully and in advance.
+Elasticsearch comes with a precondition that any change to the `number_of_shards` requires to rebuild the entire index, so changes to that setting should be made carefully and in advance.
 
-Read-heavy wikis might want to add (without the need re-index the data) replica shards where ES performance is in decline (the ES documentation notes that [replica shards][es:replica-shards] should be put on an extra hardware).
+Read-heavy wikis might want to add (without the need the re-index the data) replica shards where Elasticsearch performance is in decline (the Elasticsearch documentation notes that [replica shards][es:replica-shards] should be put on an extra hardware).
 
-### Index mappings
+## Field mappings
 
-The `index_def` settings points to the index definition with the `data` index to be assigned the `smw-data-standard.json` as default to define its settings and mappings that influence how ES analyzes and index documents including fields that are identified to contain text and string elements. Those text fields rely on the [standard analyzer][es:standard:analyzer] and should work for most applications.
+The `index_def` settings points to the index definition with the `data` index to be assigned the `smw-data-standard.json` as default to define its field mappings which influences how Elasticsearch analyzes and index documents including fields that are identified to contain text and string elements. Those text fields rely on the [standard analyzer][es:standard:analyzer] and should work for most applications.
 
-The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`), the wikiID, and a version indicator (part of the [rollover][es:alias-zero] support) so that a single ES cluster can host different indices from different Semantic MediaWiki instances without interfering with each other.
+The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`), the `wikiID`, and a version indicator (part of the [rollover][es:alias-zero] support) so that a single ES cluster can host different indices from different Semantic MediaWiki instances without interfering with each other.
 
 <pre>
 {
@@ -95,7 +97,7 @@ The index name will be composed of a prefix such as `smw-data` (or `smw-lookup`)
 }
 </pre>
 
-### Text, languages, and analyzers
+## Text, languages, and analyzers
 
 For certain languages the `icu` analyzer (or any other language specific configuration) may provide better results, so one may alter the `index_def` index definitions hereby allowing custom settings such as deviating language [analyzers][es:lang:analyzer] to be used to increase the likelihood of better matching precision on text elements.
 
@@ -120,7 +122,7 @@ Please note that any change to the index or its analyzer settings __requires__ t
 }
 </pre>
 
-The profile is loaded last and will override any default or individual settings made to `$smwgElasticsearchConfig`.
+The profile is loaded at the end of the configuration stack and will override any default or individual settings made to `$smwgElasticsearchConfig`.
 
 [es:conf]: https://www.elastic.co/guide/en/elasticsearch/reference/6.1/system-config.html
 [es:conf:hosts]: https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_configuration.html#_extended_host_configuration
@@ -159,3 +161,9 @@ The profile is loaded last and will override any default or individual settings 
 [es:highlighting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
 [es:query-dsl-terms-lookup]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-lookup
 [smw:search]: https://www.semantic-mediawiki.org/wiki/Help:SMWSearch
+[section:usage]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/usage.md
+[section:config]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/config.md
+[section:technical]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/technical.md
+[section:faq]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/faq.md
+[section:replication]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/replication.md
+[section:search]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/docs/search.md

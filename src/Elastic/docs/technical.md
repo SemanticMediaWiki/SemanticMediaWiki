@@ -15,7 +15,7 @@ SMW\Elastic
 └─ ElasticStore
 </pre>
 
-## Data mapping and serialization 
+## Data mapping and serialization
 
 ### Serialization format
 
