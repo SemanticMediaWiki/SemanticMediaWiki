@@ -65,7 +65,7 @@ class ReplicationStatus {
 	 *
 	 * @return boolean
 	 */
-	private function documentExistsById( $id ) {
+	private function exists( $id ) {
 
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),

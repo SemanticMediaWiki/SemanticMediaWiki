@@ -3,6 +3,7 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
@@ -69,17 +70,18 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_NotExists() {
 
+		$error = new ReplicationError(
+			ReplicationError::TYPE_MODIFICATION_DATE_MISSING,
+			[ 'id' => 42 ]
+		);
+
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
 			->will( $this->returnValue( false ) );
 
-		$replicationStatus = [
-			'modification_date_missing' => true
-		];
-
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $replicationStatus ) );
+			->will( $this->returnValue( $error ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -125,7 +127,9 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->entityCache
 		);
 
-		$html = $instance->checkReplication( DIWikiPage::newFromText( 'Foo' ), [] );
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$html = $instance->checkReplication( $subject );
 
 		$this->assertContains(
 			'smw-highlighter',
@@ -134,6 +138,15 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckReplication_ModificationDate() {
+
+		$error = new ReplicationError(
+			ReplicationError::TYPE_MODIFICATION_DATE_DIFF,
+			[
+				'id' => 42,
+				'time_es' => DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' ),
+				'time_store' =>DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
+			]
+		);
 
 		$config = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
@@ -152,17 +165,9 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
-		$time_es = DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' );
-		$time_store = DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' );
-
-		$replicationStatus = [
-			'modification_date_diff' => [ 'time_es' => $time_es, 'time_store' => $time_store ]
-		];
-
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $replicationStatus ) );
+			->will( $this->returnValue( $error ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -174,7 +179,9 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->entityCache
 		);
 
-		$html = $instance->checkReplication( $subject, [] );
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$html = $instance->checkReplication( $subject );
 
 		$this->assertContains(
 			'smw-highlighter',
@@ -189,6 +196,15 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCheckReplication_AssociateRev() {
 
+		$error = new ReplicationError(
+			ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF,
+			[
+				'id' => 42,
+				'rev_es' => 42,
+				'rev_store' => 99999
+			]
+		);
+
 		$config = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -206,16 +222,9 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConfig' )
 			->will( $this->returnValue( $config ) );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
-
-		$replicationStatus = [ 'associated_revision_diff' => [
-			'rev_es' => 42,
-			'rev_store' => 99999
-		] ];
-
 		$this->documentReplicationExaminer->expects( $this->once() )
 			->method( 'check' )
-			->will( $this->returnValue( $replicationStatus ) );
+			->will( $this->returnValue( $error ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -226,6 +235,8 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject, [] );
 
@@ -236,56 +247,6 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'99999',
-			$html
-		);
-	}
-
-	public function testCheckReplication_File() {
-
-		$config = $this->getMockBuilder( '\SMW\Options' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$config->expects( $this->any() )
-			->method( 'dotGet' )
-			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
-			->will( $this->returnValue( true ) );
-
-		$this->elasticClient->expects( $this->any() )
-			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( false ) );
-
-		$this->elasticClient->expects( $this->any() )
-			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
-
-		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-
-		$this->documentReplicationExaminer->expects( $this->once() )
-			->method( 'check' )
-			->will( $this->returnValue( [] ) );
-
-		$this->store->expects( $this->at( 3 ) )
-			->method( 'getPropertyValues' )
-			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_FILE_ATTCH' ) ) )
-			->will( $this->returnValue( [] ) );
-
-		$this->store->expects( $this->any() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
-
-		$instance = new CheckReplicationTask(
-			$this->store,
-			$this->documentReplicationExaminer,
-			$this->entityCache
-		);
-
-		$html = $instance->checkReplication( $subject, [] );
-
-		$this->assertContains(
-			'smw-highlighter',
 			$html
 		);
 	}

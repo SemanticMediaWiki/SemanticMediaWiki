@@ -12,6 +12,9 @@ use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Elastic\Indexer\Replication\ReplicationError;
+use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
+use SMW\Elastic\Jobs\FileIngestJob;
 
 /**
  * Load the required class
@@ -56,6 +59,11 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 	private $lastId = 0;
 
 	/**
+	 * @var []
+	 */
+	private $missingDocuments = [];
+
+	/**
 	 * @since 3.1
 	 */
 	public function __construct() {
@@ -63,6 +71,11 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 		$this->addDescription(
 			"Find missing entities (aka. documents) in Elasticsearch and schedule appropriate update jobs."
 		);
+
+		$this->addOption( 'namespace', 'Only check entities in the selected namespace. Example: --namespace="NS_MAIN"', false, false );
+		$this->addOption( 'check-file-attachment', 'If file ingestion is enabled, provide means to check for the `File attachment` property', false, false );
+		$this->addOption( 'id', 'Only check for a particular ID. Example: --id=42', false, false );
+		$this->addOption( 'v', 'Be verbose about the progress', false );
 	}
 
 	/**
@@ -108,15 +121,6 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			$this->store
 		);
 
-		if ( !$this->store->getConnection( 'elastic' )->ping() ) {
-
-			$this->reportMessage(
-				"\n" . 'Elasticsearch endpoint(s) are not available!' . "\n"
-			);
-
-			return true;
-		}
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -138,6 +142,19 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
+		if ( !$this->store->getConnection( 'elastic' )->ping() ) {
+
+			$this->reportMessage(
+				$cliMsgFormatter->section( 'Compatibility notice' )
+			);
+
+			$this->reportMessage(
+				"\n" . 'Elasticsearch endpoint(s) are not available!' . "\n"
+			);
+
+			return true;
+		}
+
 		$this->reportMessage(
 			$cliMsgFormatter->section( 'Document search and update' )
 		);
@@ -154,7 +171,7 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
-		$report = $this->checkAndRebuild( $rows );
+		$errorCount = $this->checkAndRebuild( $rows );
 
 		$this->reportMessage(
 			"\n" . $cliMsgFormatter->firstCol( "... removed replication trail", 3 )
@@ -176,17 +193,25 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			$cliMsgFormatter->section( "Summary" ) . "\n"
 		);
 
-		$this->reportMessage(
-			$cliMsgFormatter->twoCols( "- Document(s) missing", $report['notExists_count'], 0, '.' )
-		);
+		foreach ( $errorCount as $t => $count ) {
+			$this->reportMessage( $cliMsgFormatter->twoCols( "Type ($t)", $count, 0, '.' ) );
+		}
 
-		$this->reportMessage(
-			$cliMsgFormatter->twoCols( "- Document(s) with divergent revision/date", $report['dataDiff_count'], 0, '.' )
-		);
+		if ( $this->missingDocuments !== [] ) {
+			foreach ( $this->missingDocuments as $key => $missingDocuments ) {
+				$this->reportMessage( $cliMsgFormatter->section( $key, 3, '-', true ) . "\n" );
 
-		$this->reportMessage(
-			$cliMsgFormatter->twoCols( "- Update job(s) run", $report['jobs'], 0, '.' )
-		);
+				foreach ( $missingDocuments as $missingDocument ) {
+					$this->reportMessage( $cliMsgFormatter->oneCol( "- $missingDocument", 0 ) );
+				}
+			}
+		}
+
+		if ( array_sum( $errorCount ) == 0 ) {
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( "Total missing", 0, 0, '.' )
+			);
+		}
 
 		return true;
 	}
@@ -220,6 +245,25 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			__METHOD__
 		);
 
+		if ( $this->hasOption( 'id' ) ) {
+			$conditions = [
+				"smw_id" => (int)$this->getOption( 'id' )
+			];
+		} elseif ( $this->hasOption( 'namespace' ) ) {
+			$conditions = [
+				"smw_namespace" => constant( $this->getOption( 'namespace' ) ),
+				"smw_subobject=''",
+				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
+				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
+			];
+		} else {
+			$conditions = [
+				"smw_subobject=''",
+				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
+				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWINTDEFIW ),
+			];
+		}
+
 		return $connection->select(
 			SQLStore::ID_TABLE,
 			[
@@ -227,13 +271,10 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 				'smw_title',
 				'smw_namespace',
 				'smw_iw',
-				'smw_subobject'
+				'smw_subobject',
+				'smw_rev'
 			],
-			[
-				"smw_subobject=''",
-				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW ),
-				'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWREDIIW )
-			],
+			$conditions,
 			__METHOD__,
 			[ 'ORDER BY' => 'smw_id' ]
 		);
@@ -246,8 +287,7 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 
 		$count = $rows->numRows();
 		$i = 0;
-		$notExists_count = 0;
-		$dataDiff_count = 0;
+		$errorCount = [];
 
 		if ( $count == 0 ) {
 			return $this->reportMessage( "   ... no entities selected ...\n"  );
@@ -277,35 +317,72 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			);
 
 			$subject = $this->newFromRow( $row );
+
+			if ( $subject === null ) {
+				continue;
+			}
+
 			$title = $subject->getTitle();
 
 			if ( $title === null ) {
 				continue;
 			}
 
-			if ( !$this->documentReplicationExaminer->documentExistsById( $row->smw_id ) ) {
-				$notExists_count++;
-				$this->runJob( $title );
-			} elseif ( $title->exists() && ( $res = $this->documentReplicationExaminer->check( $subject ) ) !== [] ) {
-				$dataDiff_count++;
-				$this->runJob( $title );
+			// Check on object and page entity
+			$result = $this->documentReplicationExaminer->check(
+				$subject,
+				[
+					DocumentReplicationExaminer::CHECK_DOCUMENT_EXISTS => true,
+					DocumentReplicationExaminer::CHECK_MISSING_FILE_ATTACHMENT => $this->getOption( 'check-file-attachment', false )
+				]
+			);
+
+			if ( !$result instanceof ReplicationError ) {
+				continue;
 			}
+
+			// If the object isn't a page ($row->smw_rev === null) and it is a
+			// `TYPE_MODIFICATION_DATE_MISSING` error reported then skip any update
+			// since it is only an object entity that should exists in ES but is
+			// allowed to have no modification date as plain object.
+			if (
+				$result->getType() === ReplicationError::TYPE_MODIFICATION_DATE_MISSING &&
+				$row->smw_rev === null ) {
+				continue;
+			}
+
+			// A redirect may point to an unresolved (red-linked) redirect target
+			// which is created as object but doesn't posses any modification date
+			if (
+				$result->getType() === ReplicationError::TYPE_MODIFICATION_DATE_MISSING &&
+				$row->smw_iw === SMW_SQL3_SMWREDIIW ) {
+				continue;
+			}
+
+			if ( $this->hasOption( 'v' ) ) {
+				if ( !isset( $this->missingDocuments[$result->getType()] ) ) {
+					$this->missingDocuments[$result->getType()] = [];
+				}
+
+				$this->missingDocuments[$result->getType()][] = $subject->getHash();
+			}
+
+			if ( !isset( $errorCount[$result->getType()] ) ) {
+				$errorCount[$result->getType()] = 0;
+			}
+
+			$errorCount[$result->getType()]++;
+
+			if ( $result->getType() === ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ) {
+				$job = new FileIngestJob( $title );
+			} else {
+				$job = $this->jobFactory->newUpdateJob( $title );
+			}
+
+			$job->run();
 		}
 
-		return [
-			'notExists_count' => $notExists_count,
-			'dataDiff_count' => $dataDiff_count,
-			'jobs' => $notExists_count + $dataDiff_count
-		];
-	}
-
-	private function runJob( $title ) {
-
-		$job = $this->jobFactory->newUpdateJob(
-			$title
-		);
-
-		$job->run();
+		return $errorCount;
 	}
 
 	public function newFromRow( $row ) {
@@ -318,9 +395,9 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 				$property = DIProperty::newFromUserLabel( $row->smw_title );
 				$title = str_replace( ' ', '_', $property->getLabel() );
 			} catch( PropertyLabelNotResolvedException $e ) {
-				//
+				return;
 			} catch( PredefinedPropertyLabelMismatchException $e ) {
-				//
+				return;
 			}
 		}
 
@@ -336,5 +413,5 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildElasticMissingDocuments';
+$maintClass = RebuildElasticMissingDocuments::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

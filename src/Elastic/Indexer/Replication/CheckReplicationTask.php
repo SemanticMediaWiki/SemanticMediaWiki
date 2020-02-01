@@ -22,7 +22,7 @@ use Title;
  */
 class CheckReplicationTask extends Task {
 
-	const CKEY_CHECK_REPLICATION_TASK = 'CheckReplicationTask';
+	const REPLICATION_CHECK_TASK_CACKE_KEY = 'CheckReplicationTask';
 	const TYPE_SUCCESS = 'success';
 
 	/**
@@ -90,7 +90,7 @@ class CheckReplicationTask extends Task {
 	 * @return []
 	 */
 	public function getReplicationFailures() {
-		return $this->entityCache->fetch( $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ) );
+		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class CheckReplicationTask extends Task {
 	 * @param Title $title
 	 */
 	public function deleteEntireReplicationTrail() {
-		$this->entityCache->delete( $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ) );
+		$this->entityCache->delete( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class CheckReplicationTask extends Task {
 		}
 
 		$this->entityCache->deleteSub(
-			$this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK ),
+			$this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ),
 			$this->makeCacheKey( $subject )
 		);
 	}
@@ -177,12 +177,12 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		if ( ( $html = $this->canConnect() ) ) {
-			return $this->wrapHTML( $html );
-		}
+		$connection = $this->store->getConnection( 'elastic' );
 
-		if ( ( $html = $this->inMaintenanceMode() ) ) {
-			return $this->wrapHTML( $html );
+		if ( $connection->ping() === false ) {
+			return $this->wrapHTML( $this->connectionError() );
+		} elseif ( $connection->hasMaintenanceLock() ) {
+			return $this->wrapHTML( $this->maintenanceError() );
 		}
 
 		return $this->check( $subject, $options );
@@ -190,11 +190,13 @@ class CheckReplicationTask extends Task {
 
 	private function check( $subject, $options ) {
 
-		$result = $this->documentReplicationExaminer->check(
-			$subject
+		$error = $this->documentReplicationExaminer->check(
+			$subject,
+			[
+				DocumentReplicationExaminer::CHECK_MISSING_FILE_ATTACHMENT => true
+			]
 		);
 
-		$id = $subject->getId();
 		$title = $subject->getTitle();
 		$html = '';
 
@@ -205,20 +207,12 @@ class CheckReplicationTask extends Task {
 			$title = $property->getDiWikiPage()->getTitle();
 		}
 
-		if ( $result !== [] && isset( $result['exception'] ) ) {
-			$html = $this->exceptionErrorMsg( $result['exception'] );
-		} elseif ( $result !== [] && isset( $result['modification_date_missing'] ) ) {
-			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id );
-		} elseif ( $result !== [] && isset( $result['modification_date_diff'] ) ) {
-			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, $result['modification_date_diff'] );
-		} elseif ( $result !== [] && isset( $result['associated_revision_diff'] ) ) {
-			$html = $this->replicationErrorMsg( $title->getPrefixedText(), $id, [], $result['associated_revision_diff'] );
-		} elseif ( $subject->getNamespace() === NS_FILE ) {
-			$html = $this->checkFileIngest( $subject );
+		if ( $error instanceof ReplicationError ) {
+			$html = $this->buildHTML( $error, $title->getPrefixedText() );
 		}
 
 		$key = $this->makeCacheKey( $subject );
-		$taskKey = $this->makeCacheKey( self::CKEY_CHECK_REPLICATION_TASK );
+		$taskKey = $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY );
 
 		// Only keep the cache around when ES has successful replicated the entity
 		if ( $html === '' ) {
@@ -233,75 +227,31 @@ class CheckReplicationTask extends Task {
 		return $this->wrapHTML( $html );
 	}
 
-	private function exceptionErrorMsg( $e ) {
+	private function buildHTML( ReplicationError $error, $title_text ) {
 
-		$content = '';
 		$this->errorTitle = 'smw-es-replication-error';
 
 		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+		$this->templateEngine->load( '/elastic/indexer/checkreplication.compare.list.ms', 'compare_template' );
 
-		$this->templateEngine->compile(
-			'comment_template',
-			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions-exception' )
-			]
-		);
-
-		if ( $e === 'BadRequest400Exception' ) {
-			$content .= $this->msg( [ 'smw-es-replication-error-bad-request-exception', $e ] );
+		if ( $error->is( ReplicationError::TYPE_EXCEPTION ) ) {
+			$html = $this->exceptionError( $error );
+		} elseif ( $error->is( ReplicationError::TYPE_MODIFICATION_DATE_DIFF ) ) {
+			$html = $this->modificationDateDiffError( $error, $title_text );
+		} elseif ( $error->is( ReplicationError::TYPE_ASSOCIATED_REVISION_DIFF ) ) {
+			$html = $this->associatedRevisionDiffError( $error, $title_text );
+		} elseif ( $error->is( ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ) ) {
+			$html = $this->fileAttachmentError( $error, $title_text );
 		} else {
-			$content .= $this->msg( [ 'smw-es-replication-error-exception', $e->getMessage() ] );
+			$html = $this->missingDocumentError( $error, $title_text );
 		}
 
-		$content .= $this->templateEngine->code( 'line_template' );
-		$content .= $this->templateEngine->code( 'comment_template' );
-
-		return $content;
+		return $html;
 	}
 
-	private function replicationErrorMsg( $title_text, $id, $dates = [], $revs = [] ) {
+	private function connectionError() {
 
-		$content = '';
-		$this->errorTitle = 'smw-es-replication-error';
-
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
-
-		$this->templateEngine->compile(
-			'comment_template',
-			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
-			]
-		);
-
-		if ( $dates !== [] ) {
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $id ] );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-date-detail', $dates['time_es'], $dates['time_store'] ], Message::PARSE );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->templateEngine->code( 'comment_template' );
-		} elseif ( $revs !== [] ) {
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $id ] );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->msg( [ 'smw-es-replication-error-divergent-revision-detail', $revs['rev_es'], $revs['rev_store'] ], Message::PARSE );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->templateEngine->code( 'comment_template' );
-		} else {
-			$content .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $id ] );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->templateEngine->code( 'comment_template' );
-		}
-
-		return $content;
-	}
-
-	private function canConnect() {
-
-		$connection = $this->store->getConnection( 'elastic' );
-		$content = '';
-
-		if ( $connection->ping() ) {
-			return false;
-		}
+		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
 		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
@@ -313,21 +263,16 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$content .= $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE );
-		$content .= $this->templateEngine->code( 'line_template' );
-		$content .= $this->templateEngine->code( 'comment_template' );
+		$html .= $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
 
-		return $content;
+		return $html;
 	}
 
-	private function inMaintenanceMode() {
+	private function maintenanceError() {
 
-		$connection = $this->store->getConnection( 'elastic' );
-		$content = '';
-
-		if ( $connection->hasMaintenanceLock() === false ) {
-			return false;
-		}
+		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
 		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
@@ -339,47 +284,134 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$content .= $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE );
-		$content .= $this->templateEngine->code( 'line_template' );
-		$content .= $this->templateEngine->code( 'comment_template' );
+		$html .= $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
 
-		return $content;
+		return $html;
 	}
 
-	private function checkFileIngest( $subject ) {
+	private function exceptionError( ReplicationError $error ) {
 
-		$config = $this->store->getConnection( 'elastic' )->getConfig();
-		$content = '';
+		$html = '';
 
-		$this->errorTitle = 'smw-es-replication-file-ingest-error';
-
-		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) === false ) {
-			return '';
-		}
-
-		$pv = $this->store->getPropertyValues(
-			$subject,
-			new DIProperty( '_FILE_ATTCH' )
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-exception' )
+			]
 		);
 
-		if ( $pv === [] ) {
+		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
+			$html .= $this->msg( [ 'smw-es-replication-error-bad-request-exception', $error->get( 'exception_error' ) ], Message::PARSE );
+		} else {
+			$html .= $this->msg( [ 'smw-es-replication-error-exception', $error->get( 'exception_error' ) ] );
+		}
 
-			$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template_ingest' );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
 
-			$this->templateEngine->compile(
-				'comment_template_ingest',
-				[
-					'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE )
-				]
-			);
+		return $html;
+	}
 
-			$title = $subject->getTitle();
-			$content .= $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title->getPrefixedText() ], Message::PARSE );
-			$content .= $this->templateEngine->code( 'line_template' );
-			$content .= $this->templateEngine->code( 'comment_template_ingest' );
-		};
+	private function modificationDateDiffError( ReplicationError $error, $title_text ) {
 
-		return $content;
+		$html = '';
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+			]
+		);
+
+		$this->templateEngine->compile(
+			'compare_template',
+			[
+				'explain' => $this->msg( 'smw-es-replication-error-divergent-date-short' ),
+				'es_key' => 'Elasticsearch',
+				'es_value' => $error->get( 'time_es' ),
+				'backend_key' => 'Database',
+				'backend_value' => $error->get( 'time_store' )
+			]
+		);
+
+		$html .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'compare_template' );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
+
+		return $html;
+	}
+
+	private function associatedRevisionDiffError( ReplicationError $error, $title_text ) {
+
+		$html = '';
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+			]
+		);
+
+		$this->templateEngine->compile(
+			'compare_template',
+			[
+				'explain' => $this->msg( 'smw-es-replication-error-divergent-revision-short' ),
+				'es_key' => 'Elasticsearch',
+				'es_value' => $error->get( 'rev_es' ),
+				'backend_key' => 'Database',
+				'backend_value' => $error->get( 'rev_store' )
+			]
+		);
+
+		$html .= $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'compare_template' );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
+
+		return $html;
+	}
+
+	private function missingDocumentError( ReplicationError $error, $title_text ) {
+
+		$html = '';
+
+		$this->templateEngine->compile(
+			'comment_template',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+			]
+		);
+
+		$html .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template' );
+
+		return $html;
+	}
+
+	private function fileAttachmentError( ReplicationError $error, $title_text ) {
+
+		$html = '';
+
+		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template_ingest' );
+
+		$this->templateEngine->compile(
+			'comment_template_ingest',
+			[
+				'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE )
+			]
+		);
+
+		$html .= $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title_text ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'line_template' );
+		$html .= $this->templateEngine->code( 'comment_template_ingest' );
+
+		return $html;
 	}
 
 	private function wrapHTML( $content ) {
