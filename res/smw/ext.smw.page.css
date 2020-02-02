@@ -107,6 +107,11 @@
 	margin-top: 0.5em;
 }
 
+.smw-page-nav-container {
+	display: flex;
+	justify-content: space-between;
+}
+
 .smw-page-nav-container::after {
 	display: block;
 	content: '';
@@ -114,12 +119,10 @@
 }
 
 .smw-page-nav-left {
-	float: left;
-	margin-right: 20px;
 }
 
 .smw-page-nav-right {
-	float: right;
+	margin-left: auto;
 }
 
 .smw-ui-pagination .page-link {
@@ -261,6 +264,11 @@
 	width: 150px !important;
 }
 
+.smw-ui-input-filter-tooltip {
+	border-left: 1px solid #ddd;
+	padding: .42em .25em .35em .25em;
+ }
+
 .smw-property-page-results .value-row:nth-child(odd) {
 	/* background-color: #f9f9f9; */
 }
@@ -400,7 +408,7 @@
 	 }
 
 	.smw-page-nav-right {
-		float: left;
+		margin-left: unset;
 	}
 
 	.smw-tabs label.nav-label.smw-tab-right  {
