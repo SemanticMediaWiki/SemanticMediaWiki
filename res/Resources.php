@@ -818,6 +818,9 @@ return [
 
 	'smw.check.replication'  => $moduleTemplate + [
 		'position' => 'top',
+		'styles' => [
+			'smw/util/smw.check.replication.css'
+		],
 		'scripts'  => [
 			'smw/util/smw.check.replication.js'
 		],

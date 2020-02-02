@@ -72,6 +72,32 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGet_exists() {
+
+		$params = [
+			'index' => 'FOO',
+			'type' => 'data',
+			'id' => 1001
+		];
+
+		$this->connection->expects( $this->once() )
+			->method( 'getIndexName' )
+			->will( $this->returnValue( "FOO" ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->with(	$this->equalTo( $params ) )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertTrue(
+			$instance->get( 'exists', 1001 )
+		);
+	}
+
 	public function testGet_last_update() {
 
 		$res = [
@@ -138,6 +164,38 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			1001,
+			$instance->getAssociatedRev( 42 )
+		);
+	}
+
+	public function testGetAssociatedRev_NotExists() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			0,
+			$instance->getAssociatedRev( 42 )
+		);
+	}
+
+	public function testGetAssociatedRev_NoMatch() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			0,
 			$instance->getAssociatedRev( 42 )
 		);
 	}
@@ -225,6 +283,91 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 				'associated_revision' => 1001
 			],
 			$instance->get( 'modification_date_associated_revision', 42 )
+		);
+	}
+
+	public function testGet_modification_date_associated_revision_not_exists() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			[
+				'modification_date' => false,
+				'associated_revision' => 0
+			],
+			$instance->get( 'modification_date_associated_revision', 42 )
+		);
+	}
+
+	public function testGet_modification_date_associated_revision_no_match() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			[
+				'modification_date' => false,
+				'associated_revision' => 0
+			],
+			$instance->get( 'modification_date_associated_revision', 42 )
+		);
+	}
+
+	public function testGetModificationDate_NoMatch() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			false,
+			$instance->getModificationDate( 42 )
+		);
+	}
+
+	public function testGetModificationDate() {
+
+		$doc = [
+			'_source' => [
+				'subject' => [
+					'rev_id' => 1001
+				],
+				'P:29' => [
+					'datField' => [ 2458322.0910764 ]
+				]
+			]
+		];
+
+		$this->connection->expects( $this->once() )
+			->method( 'get' )
+			->will( $this->returnValue( $doc ) );
+
+		$this->connection->expects( $this->once() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new ReplicationStatus(
+			$this->connection
+		);
+
+		$this->assertEquals(
+			DITime::newFromJD( '2458322.0910764', DITime::CM_GREGORIAN, DITime::PREC_YMDT ),
+			$instance->getModificationDate( 42 )
 		);
 	}
 
