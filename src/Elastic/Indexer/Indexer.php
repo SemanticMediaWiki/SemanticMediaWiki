@@ -11,10 +11,12 @@ use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Store;
 use SMW\Utils\CharArmor;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\Collator;
+use SMW\Utils\Timer;
 use SMWDIBlob as DIBlob;
 use Title;
 use Revision;
@@ -31,14 +33,19 @@ class Indexer {
 	use LoggerAwareTrait;
 
 	/**
+	 * Whether safe replication is required during the indexing process or not.
+	 */
+	const REQUIRE_SAFE_REPLICATION = 'replication/safe';
+
+	/**
 	 * @var Store
 	 */
 	private $store;
 
 	/**
-	 * @var ServicesContainer
+	 * @var Bulk
 	 */
-	private $servicesContainer;
+	private $bulk;
 
 	/**
 	 * @var FileIndexer
@@ -64,11 +71,11 @@ class Indexer {
 	 * @since 3.0
 	 *
 	 * @param Store $store
-	 * @param ServicesContainer $servicesContainer
+	 * @param Bulk $bulk
 	 */
-	public function __construct( Store $store, ServicesContainer $servicesContainer ) {
+	public function __construct( Store $store, Bulk $bulk ) {
 		$this->store = $store;
-		$this->servicesContainer = $servicesContainer;
+		$this->bulk = $bulk;
 	}
 
 	/**
@@ -106,7 +113,7 @@ class Indexer {
 	 * @return boolean
 	 */
 	public function isAccessible() {
-		return $this->isSafe();
+		return $this->canReplicate();
 	}
 
 	/**
@@ -125,38 +132,6 @@ class Indexer {
 	 */
 	public function getConnection() {
 		return $this->store->getConnection( 'elastic' );
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function setup() {
-
-		$rollover = $this->servicesContainer->get(
-			'Rollover',
-			$this->store->getConnection( 'elastic' )
-		);
-
-		return [
-			$rollover->update( ElasticClient::TYPE_DATA ),
-			$rollover->update( ElasticClient::TYPE_LOOKUP )
-		];
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public function drop() {
-
-		$rollover = $this->servicesContainer->get(
-			'Rollover',
-			$this->store->getConnection( 'elastic' )
-		);
-
-		return [
-			$rollover->delete( ElasticClient::TYPE_DATA ),
-			$rollover->delete( ElasticClient::TYPE_LOOKUP )
-		];
 	}
 
 	/**
@@ -184,25 +159,6 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $params
-	 *
-	 * @return Bulk
-	 */
-	public function newBulk( array $params ) {
-
-		$bulk = $this->servicesContainer->get(
-			'Bulk',
-			$this->store->getConnection( 'elastic' )
-		);
-
-		$bulk->head( $params );
-
-		return $bulk;
-	}
-
-	/**
-	 * @since 3.0
-	 *
 	 * @param array $idList
 	 */
 	public function delete( array $idList, $isConcept = false ) {
@@ -213,12 +169,8 @@ class Indexer {
 
 		$title = Title::newFromText( $this->origin . ':' . md5( json_encode( $idList ) ) );
 
-		$params = [
-			'delete' => $idList
-		];
-
-		if ( $this->isSafe( $title, $params ) === false ) {
-			return $this->pushRecoveryJob( $title, $params );
+		if ( !$this->canReplicate() ) {
+			return IndexerRecoveryJob::pushFromParams( $title, [ 'delete' => $idList ] );
 		}
 
 		$index = $this->getIndexName(
@@ -230,15 +182,17 @@ class Indexer {
 			'_type'  => ElasticClient::TYPE_DATA
 		];
 
-		$bulk = $this->newBulk( $params );
+		$this->bulk->clear();
+		$this->bulk->head( $params );
+
 		$time = -microtime( true );
 
 		foreach ( $idList as $id ) {
 
-			$bulk->delete( [ '_id' => $id ] );
+			$this->bulk->delete( [ '_id' => $id ] );
 
 			if ( $isConcept ) {
-				$bulk->delete(
+				$this->bulk->delete(
 					[
 						'_index' => $this->getIndexName( ElasticClient::TYPE_LOOKUP ),
 						'_type' => ElasticClient::TYPE_LOOKUP,
@@ -248,7 +202,7 @@ class Indexer {
 			}
 		}
 
-		$response = $bulk->execute();
+		$response = $this->bulk->execute();
 
 		$this->logger->info(
 			[
@@ -277,12 +231,8 @@ class Indexer {
 
 		$title = $dataItem->getTitle();
 
-		$params = [
-			'create' => $dataItem->getHash()
-		];
-
-		if ( $this->isSafe() === false ) {
-			return $this->pushRecoveryJob( $title, $params );
+		if ( !$this->canReplicate() ) {
+			return IndexerRecoveryJob::pushFromParams( $title, [ 'create' => $dataItem->getHash() ] );
 		}
 
 		if ( $dataItem->getId() == 0 ) {
@@ -324,27 +274,6 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ChangeDiff $changeDiff
-	 * @param string $text
-	 */
-	public function safeReplicate( ChangeDiff $changeDiff, $text = '' ) {
-
-		$subject = $changeDiff->getSubject();
-
-		$params = [
-			'index' => $subject->getHash()
-		];
-
-		if ( $this->isSafe() === false ) {
-			return $this->pushRecoveryJob( $subject->getTitle(), $params ) ;
-		}
-
-		$this->index( $changeDiff, $text );
-	}
-
-	/**
-	 * @since 3.0
-	 *
 	 * @param DIWikiPage|Title|integer $id
 	 *
 	 * @return string
@@ -375,61 +304,35 @@ class Indexer {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
 	 *
-	 * @param ChangeDiff $changeDiff
-	 * @param string $text
+	 * @param Document $document
+	 * @param string $type
 	 */
-	public function index( ChangeDiff $changeDiff, $text = '' ) {
+	public function indexDocument( Document $document, $type = self::REQUIRE_SAFE_REPLICATION ) {
 
-		$time = -microtime( true );
-		$subject = $changeDiff->getSubject();
+		Timer::start( __METHOD__ );
+
+		$subject = $document->getSubject();
+
+		if ( $type === self::REQUIRE_SAFE_REPLICATION && !$this->canReplicate() ) {
+			return IndexerRecoveryJob::pushFromDocument( $document ) ;
+		}
 
 		$params = [
 			'_index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
 			'_type'  => ElasticClient::TYPE_DATA
 		];
 
-		$bulk = $this->newBulk( $params );
+		$this->bulk->clear();
+		$this->bulk->head( $params );
 
-		$this->map_data( $bulk, $changeDiff );
-		$this->map_text( $bulk, $subject, $text );
-
-		// On occasions where the change didn't contain any data but the subject
-		// has been recognized to exists, create a subject body as reference
-		// point
-		if ( $bulk->isEmpty() ) {
-			$this->map_empty( $bulk, $subject );
-		}
-
-		$response = $bulk->execute();
-
-		// We always index (not upsert) since we want to have a complete state of
-		// an entity (and ES would delete and insert any document) so trying
-		// to filter and diff the data update has no real merit besides that it
-		// would require us to read each ID in the update from ES and wire the data
-		// back and forth which has shown to be ineffective especially when a
-		// subject has many subobjects.
-		//
-		// The disadvantage is that we loose any auxiliary data that were attached
-		// while not being part of the on-wiki information such as attachment
-		// information from a file ingest.
-		//
-		// In order to reapply those information we could read them in the same
-		// transaction before the actual update but since we expect the
-		// `attachment.content` to contain a large chunk of text, we push that
-		// into the job-queue so that the background process can take of it.
-		//
-		// Of course, this will cause a delay for the file content being searchable
-		// but that should be acceptable to avoid blocking any online transaction.
-		if ( !$this->isRebuild && $subject->getNamespace() === NS_FILE ) {
-			FileIngestJob::pushIngestJob( $subject->getTitle() );
-		}
+		$this->bulk->infuseDocument( $document );
+		$this->bulk->execute();
 
 		$this->logger->info(
-			[
-				'Indexer',
-				'Data index completed ({subject})',
+			[	'Indexer',
+				'Data index completed ({subject}, {id})',
 				'procTime (in sec): {procTime}',
 				'Response: {response}'
 			],
@@ -438,40 +341,14 @@ class Indexer {
 				'role' => 'developer',
 				'origin' => $this->origin,
 				'subject' => $subject->getHash(),
-				'procTime' => $time + microtime( true ),
-				'response' => $response
+				'id' => $document->getId(),
+				'procTime' => Timer::getElapsedTime( __METHOD__ ),
+				'response' => $this->bulk->getResponse()
 			]
 		);
 	}
 
-	/**
-	 * Remove anything that resembles [[:...|foo]] to avoid distracting the indexer
-	 * with internal links annotation that are not relevant.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
-	 */
-	public function removeLinks( $text ) {
-
-		// [[Has foo::Bar]]
-		$text = \SMW\Parser\LinksEncoder::removeAnnotation( $text );
-
-		// {{DEFAULTSORT: ... }}
-		$text = preg_replace( "/\\{\\{([^|]+?)\\}\\}/", "", $text );
-
-		// Removed too much ...
-		//	$text = preg_replace( '/\\[\\[[\s\S]+?::/', '[[', $text );
-
-		// [[:foo|bar]]
-		$text = preg_replace( '/\\[\\[:[^|]+?\\|/', '[[', $text );
-		$text = preg_replace( "/\\{\\{([^|]+\\|)(.*?)\\}\\}/", "\\2", $text );
-		$text = preg_replace( "/\\[\\[([^|]+?)\\]\\]/", "\\1", $text );
-
-		return $text;
-	}
-
-	private function isSafe() {
+	private function canReplicate() {
 
 		$connection = $this->store->getConnection( 'elastic' );
 
@@ -481,275 +358,6 @@ class Indexer {
 		}
 
 		return false;
-	}
-
-	private function pushRecoveryJob( $title, array $params ) {
-
-		$indexerRecoveryJob = new IndexerRecoveryJob(
-			$title,
-			$params
-		);
-
-		$indexerRecoveryJob->insert();
-
-		$this->logger->info(
-			[ 'Indexer', 'Insert IndexerRecoveryJob: {subject}' ],
-			[ 'method' => __METHOD__, 'role' => 'user', 'origin' => $this->origin, 'subject' => $title->getPrefixedDBKey() ]
-		);
-	}
-
-	private function map_empty( $bulk, $subject ) {
-
-		if ( $subject->getId() == 0 ) {
-			$subject->setId( $this->getId( $subject ) );
-		}
-
-		$data = [];
-		$data['subject'] = $this->makeSubject( $subject );
-
-		$bulk->index(
-			[
-				'_id' => $subject->getId()
-			],
-			$data
-		);
-	}
-
-	private function map_text( $bulk, $subject, $text ) {
-
-		if ( $text === '' ) {
-			return;
-		}
-
-		$id = $subject->getId();
-
-		if ( $id == 0 ) {
-			$id = $this->store->getObjectIds()->getSMWPageID(
-				$subject->getDBkey(),
-				$subject->getNamespace(),
-				$subject->getInterwiki(),
-				$subject->getSubobjectName(),
-				true
-			);
-		}
-
-		$bulk->upsert(
-			[
-				'_index' => $this->getIndexName( ElasticClient::TYPE_DATA ),
-				'_type'  => ElasticClient::TYPE_DATA,
-				'_id'    => $id
-			],
-			[
-				'text_raw' => $this->removeLinks( $text )
-			]
-		);
-	}
-
-	private function map_data( $bulk, $changeDiff ) {
-
-		$inserts = [];
-		$inverted = [];
-		$rev = $changeDiff->getAssociatedRev();
-		$propertyList = $changeDiff->getPropertyList( 'id' );
-
-		// In the event that a _SOBJ (or hereafter any inherited object)
-		// is deleted, remove the reference directly from the index since
-		// the object is embedded and is therefore handled outside of the
-		// normal wikiPage delete action
-		foreach ( $changeDiff->getTableChangeOps() as $tableChangeOp ) {
-			foreach ( $tableChangeOp->getFieldChangeOps( ChangeOp::OP_DELETE ) as $fieldChangeOp ) {
-
-				if ( !$fieldChangeOp->has( 'o_id' ) ) {
-					continue;
-				}
-
-				if (
-					$fieldChangeOp->has( 'p_id' ) &&
-					isset( $propertyList[$fieldChangeOp->has( 'p_id' )] ) &&
-					$propertyList[$fieldChangeOp->has( 'p_id' )]['_type'] === '__sob' ) {
-					$bulk->delete( [ '_id' => $fieldChangeOp->get( 'o_id' ) ] );
-				}
-			}
-		}
-
-		foreach ( $changeDiff->getDataOps() as $tableChangeOp ) {
-			foreach ( $tableChangeOp->getFieldChangeOps() as $fieldChangeOp ) {
-
-				if ( !$fieldChangeOp->has( 's_id' ) ) {
-					continue;
-				}
-
-				$this->mapRows( $fieldChangeOp, $propertyList, $inserts, $inverted, $rev );
-			}
-		}
-
-		foreach ( $inverted as $id => $update ) {
-			$bulk->upsert( [ '_id' => $id ], $update );
-		}
-
-		foreach ( $inserts as $id => $value ) {
-			$bulk->index( [ '_id' => $id ], $value );
-		}
-	}
-
-	private function mapRows( $fieldChangeOp, $propertyList, &$insertRows, &$invertedRows, $rev ) {
-
-		// The structure to be expected in ES:
-		//
-		// "subject": {
-		//    "title": "Foaf:knows",
-		//    "subobject": "",
-		//    "namespace": 102,
-		//    "interwiki": "",
-		//    "sortkey": "Foaf:knows"
-		// },
-		// "P:8": {
-		//    "txtField": [
-		//       "foaf knows http://xmlns.com/foaf/0.1/ Type:Page"
-		//    ]
-		// },
-		// "P:29": {
-		//    "datField": [
-		//       2458150.6958333
-		//    ]
-		// },
-		// "P:1": {
-		//    "uriField": [
-		//       "http://semantic-mediawiki.org/swivt/1.0#_wpg"
-		//    ]
-		// }
-
-		// - datField (time value) is a numeric field (JD number) to allow using
-		// ranges on dates with values being representable from January 1, 4713 BC
-		// (proleptic Julian calendar)
-
-		$sid = $fieldChangeOp->get( 's_id' );
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		if ( !isset( $insertRows[$sid] ) ) {
-			$insertRows[$sid] = [];
-		}
-
-		if ( !isset( $insertRows[$sid]['subject'] ) ) {
-			$dataItem = $this->store->getObjectIds()->getDataItemById( $sid );
-
-			$subject = $this->makeSubject( $dataItem );
-
-			if ( $rev != 0 && $subject['subobject'] === '' ) {
-				$subject['rev_id'] = $rev;
-			}
-
-			$insertRows[$sid]['subject'] = $subject;
-		}
-
-		// Avoid issues where the p_id is unknown as in case of an empty
-		// concept (red linked) as reference
-		if ( !$fieldChangeOp->has( 'p_id' ) ) {
-			return;
-		}
-
-		$ins = $fieldChangeOp->getChangeOp();
-		$pid = $fieldChangeOp->get( 'p_id' );
-
-		$prop = isset( $propertyList[$pid] ) ? $propertyList[$pid] : [];
-
-		$pid = 'P:' . $pid;
-		unset( $ins['s_id'] );
-
-		$val = 'n/a';
-		$type = 'wpgField';
-
-		if ( $fieldChangeOp->has( 'o_blob' ) && $fieldChangeOp->has( 'o_hash' ) ) {
-			$type = 'txtField';
-			$val = $ins['o_hash'];
-
-			// Postgres requires special handling of blobs otherwise escaped
-			// text elements are used as index input
-			// Tests: P9010, Q0704, Q1206, and Q0103
-			if ( $ins['o_blob'] !== null ) {
-				$val = $connection->unescape_bytea( $ins['o_blob'] );
-			}
-
-			// #3020, 3035
-			if ( isset( $prop['_type'] ) && $prop['_type'] === '_keyw' ) {
-				$val = DIBlob::normalize( $ins['o_hash'] );
-			}
-
-			// Remove control chars and avoid Elasticsearch to throw a
-			// "SmartSerializer.php: Failed to JSON encode: 5" since JSON requires
-			// valid UTF-8
-			$val = $this->removeLinks( mb_convert_encoding( $val, 'UTF-8', 'UTF-8' ) );
-		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_blob' ) ) {
-			$type = 'uriField';
-			$val = $ins['o_serialized'];
-
-			if ( $ins['o_blob'] !== null ) {
-				$val = $connection->unescape_bytea( $ins['o_blob'] );
-			}
-
-		} elseif ( $fieldChangeOp->has( 'o_serialized' ) && $fieldChangeOp->has( 'o_sortkey' ) ) {
-			$type = strpos( $ins['o_serialized'], '/' ) !== false ? 'datField' : 'numField';
-			$val = (float)$ins['o_sortkey'];
-		} elseif ( $fieldChangeOp->has( 'o_value' ) ) {
-			$type = 'booField';
-			// Avoid a "Current token (VALUE_NUMBER_INT) not of boolean type ..."
-			$val = $ins['o_value'] ? true : false;
-		} elseif ( $fieldChangeOp->has( 'o_lat' ) ) {
-			// https://www.elastic.co/guide/en/elasticsearch/reference/6.1/geo-point.html
-			// Geo-point expressed as an array with the format: [ lon, lat ]
-			// Geo-point expressed as a string with the format: "lat,lon".
-			$type = 'geoField';
-			$val = $ins['o_serialized'];
-		} elseif ( $fieldChangeOp->has( 'o_id' ) ) {
-			$type = 'wpgField';
-			$dataItem = $this->store->getObjectIds()->getDataItemById( $ins['o_id'] );
-
-			$val = $dataItem->getSortKey();
-			$val = mb_convert_encoding( $val, 'UTF-8', 'UTF-8' );
-
-			if ( !isset( $insertRows[$sid][$pid][$type] ) ) {
-				$insertRows[$sid][$pid][$type] = [];
-			}
-
-			$insertRows[$sid][$pid][$type] = array_merge( $insertRows[$sid][$pid][$type], [ $val ] );
-			$type = 'wpgID';
-			$val = (int)$ins['o_id'];
-
-			// Create a minimal body for an inverted relation
-			//
-			// When a query `[[-Has mother::Michael]]` inquiries that relationship
-			// on the fact of `Michael` -> `[[Has mother::Carol]] with `Carol`
-			// being redlinked (not exists as page) the query can match the object
-			if ( !isset( $invertedRows[$val] ) ) {
-
-				// Ensure we have something to sort on
-				// See also Q0105#8
-				$invertedRows[$val] = [ 'subject' => $this->makeSubject( $dataItem ) ];
-			}
-
-			// A null, [] (an empty array), and [null] are all equivalent, they
-			// simply don't exists in an inverted index
-		}
-
-		if ( !isset( $insertRows[$sid][$pid][$type] ) ) {
-			$insertRows[$sid][$pid][$type] = [];
-		}
-
-		$insertRows[$sid][$pid][$type] = array_merge(
-			$insertRows[$sid][$pid][$type],
-			[ $val ]
-		);
-
-		// Replicate dates in the serialized raw_format to give aggregations a chance
-		// to filter dates by term
-		if ( $type === 'datField' && isset( $ins['o_serialized'] ) ) {
-
-			if ( !isset( $insertRows[$sid][$pid]["dat_raw"] ) ) {
-				$insertRows[$sid][$pid]["dat_raw"] = [];
-			}
-
-			$insertRows[$sid][$pid]["dat_raw"][] = $ins['o_serialized'];
-		}
 	}
 
 	private function makeSubject( DIWikiPage $subject ) {

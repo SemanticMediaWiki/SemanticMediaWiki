@@ -3,14 +3,21 @@
 namespace SMW\Elastic\Indexer;
 
 use SMW\Elastic\Connection\Client as ElasticClient;
+use JsonSerializable;
 
 /**
+ * @note Elasticsearch provides a bulk API to perform several index/delete operations
+ * with a single API call and can greatly improve the indexing speed.
+ *
+ * This class builds a call stack for a single bulk request and can contain different
+ * operational tasks.
+ *
  * @license GNU GPL v2+
  * @since 3.0
  *
  * @author mwjames
  */
-class Bulk {
+class Bulk implements JsonSerializable {
 
 	/**
 	 * @var ElasticClient
@@ -28,6 +35,11 @@ class Bulk {
 	private $head = [];
 
 	/**
+	 * @var array
+	 */
+	private $response = [];
+
+	/**
 	 * @since 3.0
 	 */
 	public function __construct( ElasticClient $connection ) {
@@ -40,6 +52,7 @@ class Bulk {
 	public function clear() {
 		$this->bulk = [];
 		$this->head = [];
+		$this->response = [];
 	}
 
 	/**
@@ -90,26 +103,61 @@ class Bulk {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param Document $document
+	 */
+	public function infuseDocument( Document $document ) {
+
+		if ( $document->isType( Document::TYPE_DELETE ) ) {
+			$this->delete( [ '_id' => $document->getId() ] );
+		}
+
+		foreach ( $document->getPriorityDeleteList() as $id ) {
+			$this->delete( [ '_id' => $id ] );
+		}
+
+		if ( $document->isType( Document::TYPE_UPSERT ) ) {
+			$this->upsert( [ '_id' => $document->getId() ], $document->getData() );
+		}
+
+		if ( $document->isType( Document::TYPE_INSERT ) ) {
+			$this->index( [ '_id' => $document->getId() ], $document->getData() );
+		}
+
+		foreach ( $document->getSubDocuments() as $subDocument ) {
+			$this->infuseDocument( $subDocument );
+		}
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return array
+	 */
+	public function getResponse() : array {
+		return $this->response;
+	}
+
+	/**
 	 * @since 3.0
 	 */
 	public function execute() {
 
-		$response = $this->connection->bulk(
+		$this->response = $this->connection->bulk(
 			$this->bulk
 		);
 
 		$this->bulk = [];
-
-		return $response;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return array
+	 * @return string
 	 */
-	public function toJson( $flags = 0 ) {
-		return json_encode( $this->bulk, $flags );
+	public function jsonSerialize() {
+		return json_encode( $this->bulk );
 	}
 
 }

@@ -481,6 +481,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 		$conditions = [];
 		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$conditions[] = "smw_subobject=''";
 
 		if ( $this->hasOption( 'auto-recovery' ) && $this->autoRecovery->has( 'ar_id' ) ) {
 			$conditions[] = 'smw_id >= ' . $connection->addQuotes( $this->autoRecovery->get( 'ar_id' ) );

@@ -21,8 +21,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $fileIndexer;
 	private $indexer;
-	private $propertyTableRowMapper;
-	private $rollover;
+	private $documentCreator;
+	private $installer;
 	private $messageReporter;
 
 	protected function setUp() {
@@ -39,11 +39,11 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyTableRowMapper = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowMapper' )
+		$this->documentCreator = $this->getMockBuilder( '\SMW\Elastic\Indexer\DocumentCreator' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
+		$this->installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +56,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Rebuilder::class,
-			new Rebuilder( $this->connection, $this->indexer, $this->fileIndexer, $this->propertyTableRowMapper, $this->rollover )
+			new Rebuilder( $this->connection, $this->indexer, $this->fileIndexer, $this->documentCreator, $this->installer )
 		);
 	}
 
@@ -79,8 +79,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$this->assertInternalType(
@@ -91,18 +91,18 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDeleteAndSetupIndices() {
 
-		$this->indexer->expects( $this->once() )
+		$this->installer->expects( $this->once() )
 			->method( 'drop' );
 
-		$this->indexer->expects( $this->once() )
+		$this->installer->expects( $this->once() )
 			->method( 'setup' );
 
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->setMessageReporter(
@@ -122,8 +122,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$this->assertFalse(
@@ -151,8 +151,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->setMessageReporter(
@@ -189,8 +189,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->setMessageReporter(
@@ -209,8 +209,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->delete( 42 );
@@ -222,17 +222,9 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$changeOp->expects( $this->once() )
-			->method( 'newChangeDiff' )
-			->will( $this->returnValue( $changeDiff ) );
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -246,23 +238,23 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSubject' )
 			->will( $this->returnValue( $subject ) );
 
-		$this->propertyTableRowMapper->expects( $this->any() )
-			->method( 'newChangeOp' )
-			->will( $this->returnValue( $changeOp ) );
+		$this->documentCreator->expects( $this->any() )
+			->method( 'newFromSemanticData' )
+			->will( $this->returnValue( $document ) );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
 			->will( $this->returnValue( $options ) );
 
 		$this->indexer->expects( $this->once() )
-			->method( 'index' );
+			->method( 'indexDocument' );
 
 		$instance = new Rebuilder(
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->rebuild( 42, $semanticData );
@@ -281,8 +273,8 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->connection,
 			$this->indexer,
 			$this->fileIndexer,
-			$this->propertyTableRowMapper,
-			$this->rollover
+			$this->documentCreator,
+			$this->installer
 		);
 
 		$instance->setMessageReporter(

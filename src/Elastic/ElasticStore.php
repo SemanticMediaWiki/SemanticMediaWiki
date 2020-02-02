@@ -13,6 +13,8 @@ use Title;
 use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\Indexer;
 
 /**
  * @private
@@ -244,9 +246,10 @@ class ElasticStore extends SQLStore {
 
 		$this->indexer->setOrigin( 'ElasticStore::DoDataUpdate' );
 		$subject = $semanticData->getSubject();
+		$priorityDeleteList = [];
 
 		if ( $status->has( 'delete_list' ) ) {
-			$this->indexer->delete( $status->get( 'delete_list' ) );
+			$priorityDeleteList = $status->get( 'delete_list' );
 		}
 
 		if ( !$status->has( 'change_diff' ) ) {
@@ -254,18 +257,19 @@ class ElasticStore extends SQLStore {
 		}
 
 		$text = '';
-		$changeDiff = $status->get( 'change_diff' );
 		$rev_id = $semanticData->getExtensionData( 'revision_id' );
-		$changeDiff->setAssociatedRev( $rev_id );
 
 		if ( $config->dotGet( 'indexer.raw.text', false ) && $rev_id !== null ) {
 			$text = $this->indexer->fetchNativeData( $rev_id );
 		}
 
-		$this->indexer->safeReplicate(
-			$changeDiff,
-			$text
-		);
+		$documentCreator = $this->elasticFactory->newDocumentCreator( $this );
+		$document = $documentCreator->newFromSemanticData( $semanticData );
+
+		$document->setPriorityDeleteList( $priorityDeleteList );
+		$document->setTextBody( $text );
+
+		$this->indexer->indexDocument( $document, Indexer::REQUIRE_SAFE_REPLICATION );
 
 		$this->logger->info(
 			[
@@ -280,9 +284,25 @@ class ElasticStore extends SQLStore {
 			]
 		);
 
-		if (
-			$config->dotGet( 'indexer.experimental.file.ingest', false ) &&
-			$semanticData->getOption( 'is_fileupload' ) ) {
+		// We always index (not upsert) since we want to have a complete state of
+		// an entity (and ES would delete and insert any document) so trying
+		// to filter and diff the data update has no real merit besides that it
+		// would require us to read each ID in the update from ES and wire the data
+		// back and forth which has shown to be ineffective especially when a
+		// subject has many subobjects.
+		//
+		// The disadvantage is that we loose any auxiliary data that were attached
+		// while not being part of the on-wiki information such as attachment
+		// information from a file ingest.
+		//
+		// In order to reapply those information we could read them in the same
+		// transaction before the actual update but since we expect the
+		// `attachment.content` to contain a large chunk of text, we push that
+		// into the job-queue so that the background process can take of it.
+		//
+		// Of course, this will cause a delay for the file content being searchable
+		// but that should be acceptable to avoid blocking any online transaction.
+		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
 			FileIngestJob::pushIngestJob( $subject->getTitle() );
  		}
 
@@ -298,13 +318,11 @@ class ElasticStore extends SQLStore {
 	public function setup( $options = true ) {
 
 		$cliMsgFormatter = new CliMsgFormatter();
-
-		if ( $this->indexer === null ) {
-			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
-		}
-
-		$indices = $this->indexer->setup();
 		$client = $this->getConnection( 'elastic' );
+
+		$installer = $this->elasticFactory->newInstaller( $client );
+		$indices = $installer->setup();
+
 		$version = $client->getVersion();
 
 		if ( $options instanceof Options && $options->get( 'verbose' ) ) {
@@ -320,7 +338,7 @@ class ElasticStore extends SQLStore {
 				$options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
 			}
 
-			$setupFile = new SetupFile();
+			$setupFile = $installer->newSetupFile();
 
 			// Remove REBUILD_INDEX_RUN_COMPLETE with 3.3+
 
@@ -376,14 +394,12 @@ class ElasticStore extends SQLStore {
 	public function drop( $verbose = true ) {
 
 		$cliMsgFormatter = new CliMsgFormatter();
+		$client = $this->getConnection( 'elastic' );
 
-		if ( $this->indexer === null ) {
-			$this->indexer = $this->elasticFactory->newIndexer( $this, $this->messageReporter );
-		}
+		$installer = $this->elasticFactory->newInstaller( $client );
+		$indices = $installer->drop();
 
-		$indices = $this->indexer->drop();
-
-		$setupFile = new SetupFile();
+		$setupFile = $installer->newSetupFile();
 
 		$setupFile->remove(
 			ElasticStore::REBUILD_INDEX_RUN_COMPLETE

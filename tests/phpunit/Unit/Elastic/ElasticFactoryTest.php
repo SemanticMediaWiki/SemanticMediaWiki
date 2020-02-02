@@ -130,6 +130,16 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructInstaller() {
+
+		$instance = new ElasticFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Installer',
+			$instance->newInstaller( $this->connection )
+		);
+	}
+
 	public function testCanConstructBulk() {
 
 		$instance = new ElasticFactory();

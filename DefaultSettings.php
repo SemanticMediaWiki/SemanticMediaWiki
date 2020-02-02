@@ -2249,6 +2249,13 @@ return [
 			// replicated to Elasticsearch.
 			'monitor.entity.replication' => true,
 			'monitor.entity.replication.cache_lifetime' => 3600,
+
+			// DataItems (Blob, Uri, Page etc.) are transformed in exactly the
+			// same way as done by the SQLStore `DataItemHandler` before being
+			// added to the storage layer (includes transformations like
+			// htmlspecialchars_decode, rawurldecode etc.) to ensure that data
+			// have a test compatibility with the SQLStore.
+			'data.sqlstore_compatibility' => true
 		],
 		'query' => [
 

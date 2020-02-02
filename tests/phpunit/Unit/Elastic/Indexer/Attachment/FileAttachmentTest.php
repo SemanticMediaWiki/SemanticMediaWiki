@@ -52,7 +52,7 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			FileAttachment::class,
-			new FileAttachment( $this->store, $this->indexer )
+			new FileAttachment( $this->store, $this->indexer, $this->bulk )
 		);
 	}
 
@@ -100,13 +100,10 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->client ) );
 
-		$this->indexer->expects( $this->once() )
-			->method( 'newBulk' )
-			->will( $this->returnValue( $this->bulk ) );
-
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$instance->setOrigin( __METHOD__ );
@@ -138,7 +135,8 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$instance->setLogger( $this->logger );
@@ -167,7 +165,8 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$instance->setLogger( $this->logger );
@@ -214,19 +213,22 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $semanticData ) );
 
 		$this->bulk->expects( $this->once() )
+			->method( 'clear' );
+
+		$this->bulk->expects( $this->once() )
+			->method( 'head' );
+
+		$this->bulk->expects( $this->once() )
 			->method( 'upsert' );
 
 		$this->indexer->expects( $this->atLeastOnce() )
 			->method( 'getId' )
 			->will( $this->returnValue( 42 ) );
 
-		$this->indexer->expects( $this->once() )
-			->method( 'newBulk' )
-			->will( $this->returnValue( $this->bulk ) );
-
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$instance->setLogger( $this->logger );
@@ -258,7 +260,8 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$this->setExpectedException( '\RuntimeException' );
@@ -289,7 +292,8 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$this->setExpectedException( '\RuntimeException' );
@@ -304,7 +308,8 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileAttachment(
 			$this->store,
-			$this->indexer
+			$this->indexer,
+			$this->bulk
 		);
 
 		$this->setExpectedException( '\RuntimeException' );

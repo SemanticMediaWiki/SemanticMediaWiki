@@ -24,6 +24,7 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\IndicatorProvider;
 use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
 use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
@@ -114,6 +115,26 @@ class ElasticFactory {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param Store $store
+	 *
+	 * @return DocumentCreator
+	 */
+	public function newDocumentCreator( Store $store ) : DocumentCreator {
+
+		$config = $store->getConnection( 'elastic' )->getConfig();
+
+		$documentCreator = new DocumentCreator( $store );
+
+		$documentCreator->setCompatibilityMode(
+			$config->dotGet( 'indexer.data.sqlstore_compatibility' )
+		);
+
+		return $documentCreator;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Store $store
@@ -122,6 +143,17 @@ class ElasticFactory {
 	 */
 	public function newProximityPropertyValueLookup( Store $store ) {
 		return new ProximityPropertyValueLookup( $store );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param ElasticClient $connection
+	 *
+	 * @return Installer
+	 */
+	public function newInstaller( ElasticClient $connection ) {
+		return new Installer( $this->newRollover( $connection ) );
 	}
 
 	/**
@@ -140,20 +172,11 @@ class ElasticFactory {
 			$store = $applicationFactory->getStore();
 		}
 
-		// Construction is postponed to the point where it is needed
-		$servicesContainer = new ServicesContainer(
-			[
-				'Rollover'    => [
-					'_service' => [ $this, 'newRollover' ],
-					'_type' => Rollover::class
-				],
-				'Bulk' => [ $this, 'newBulk' ],
-			]
-		);
+		$connection = $store->getConnection( 'elastic' );
 
 		$indexer = new Indexer(
 			$store,
-			$servicesContainer
+			$this->newBulk( $connection )
 		);
 
 		if ( $messageReporter === null ) {
@@ -205,13 +228,15 @@ class ElasticFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
+		$connection = $store->getConnection( 'elastic' );
 
 		// Don't use the `ElasticStore` instance otherwise we index fields
 		// recursively since the annotation for attachment information can only
 		// happen after the ES ingest processor has been run.
 		$fileAttachment = new FileAttachment(
 			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' ),
-			$indexer
+			$indexer,
+			$this->newBulk( $connection )
 		);
 
 		$fileAttachment->setLogger(
@@ -406,8 +431,8 @@ class ElasticFactory {
 			$connection,
 			$indexer,
 			$this->newFileIndexer( $store, $indexer ),
-			new PropertyTableRowMapper( $store ),
-			$this->newRollover( $connection )
+			$this->newDocumentCreator( $store ),
+			$this->newInstaller( $connection )
 		);
 
 		return $rebuilder;

@@ -24,6 +24,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $elasticFactory;
+	private $setupFile;
 	private $spyMessageReporter;
 	private $spyLogger;
 
@@ -31,9 +32,15 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
+		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment->registerObject( 'SetupFile', $this->setupFile );
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
@@ -113,17 +120,21 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnCallback( $callback ) );
 
-		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$indexer->expects( $this->once() )
+		$installer->expects( $this->once() )
+			->method( 'newSetupFile' )
+			->will( $this->returnValue( $this->setupFile ) );
+
+		$installer->expects( $this->once() )
 			->method( 'setup' )
 			->will( $this->returnValue( [] ) );
 
 		$this->elasticFactory->expects( $this->once() )
-			->method( 'newIndexer' )
-			->will( $this->returnValue( $indexer ) );
+			->method( 'newInstaller' )
+			->will( $this->returnValue( $installer ) );
 
 		$instance = new ElasticStore();
 		$instance->setConnectionManager( $connectionManager );
@@ -146,6 +157,10 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDrop() {
 
+		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -166,7 +181,11 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) use( $connection, $database ) {
+		$callback = function( $type ) use( $connection, $database, $client ) {
+
+			if ( $type === 'elastic' ) {
+				return $client;
+			};
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
@@ -179,17 +198,21 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnCallback( $callback ) );
 
-		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$indexer->expects( $this->once() )
+		$installer->expects( $this->once() )
 			->method( 'drop' )
 			->will( $this->returnValue( [] ) );
 
+		$installer->expects( $this->once() )
+			->method( 'newSetupFile' )
+			->will( $this->returnValue( $this->setupFile ) );
+
 		$this->elasticFactory->expects( $this->once() )
-			->method( 'newIndexer' )
-			->will( $this->returnValue( $indexer ) );
+			->method( 'newInstaller' )
+			->will( $this->returnValue( $installer ) );
 
 		$instance = new ElasticStore();
 		$instance->setConnectionManager( $connectionManager );
@@ -293,9 +316,25 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$documentCreator = $this->getMockBuilder( '\SMW\Elastic\Indexer\DocumentCreator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$documentCreator->expects( $this->once() )
+			->method( 'newFromSemanticData' )
+			->will( $this->returnValue( $document ) );
+
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newIndexer' )
 			->will( $this->returnValue( $indexer ) );
+
+		$this->elasticFactory->expects( $this->any() )
+			->method( 'newDocumentCreator' )
+			->will( $this->returnValue( $documentCreator ) );
 
 		$instance = new ElasticStore();
 		$instance->setOption( 'smwgSemanticsEnabled', true );

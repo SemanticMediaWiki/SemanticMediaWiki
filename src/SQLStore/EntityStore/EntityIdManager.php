@@ -467,7 +467,12 @@ class EntityIdManager {
 
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			try {
+				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			} catch( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
+				return 0;
+			}
+
 			$key = $property->getKey();
 
 			// Has a fixed ID?
