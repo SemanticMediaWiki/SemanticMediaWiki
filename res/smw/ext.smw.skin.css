@@ -78,11 +78,15 @@
 }
 
 .smw-ui-input-filter input {
-	padding: .20em .55em .20em .55em !important;
+	padding: .25em .55em .25em .55em !important;
 }
 
 .skin-chameleon .smw-ui-input-filter input {
 	padding: .35em .55em .35em .55em !important;
+}
+
+.skin-chameleon .smw-ui-input-filter-tooltip {
+	padding: .20em .25em .35em .25em;
 }
 
 .skin-chameleon .smw-callout ul,

@@ -93,13 +93,21 @@ class Pager {
 			]
 		);
 
+		$tooltip = Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-ui-input-filter-tooltip'
+			],
+			$highlighter->getHtml()
+		);
+
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ui-input-filter'
 			],
-			$form
-		) . $highlighter->getHtml();
+			$form . $tooltip
+		);
 	}
 
 	/**
