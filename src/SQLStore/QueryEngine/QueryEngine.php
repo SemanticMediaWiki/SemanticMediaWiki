@@ -399,7 +399,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sql_options = $this->getSQLOptions( $query, $rootid );
 
 		// Selecting those is required in standard SQL (but MySQL does not require it).
-		$sortfields = implode( $qobj->sortfields, ',' );
+		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ',' . $sortfields : '';
 
 		$res = $connection->select(
