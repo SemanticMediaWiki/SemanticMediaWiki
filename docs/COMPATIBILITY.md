@@ -73,7 +73,7 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 		<td>Obsolete</td>
 	</tr>
 	<tr>
-		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.0">2.1.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0.0">2.0.x</a></th>
 		<td>5.3.2 - 5.6.x</td>
 		<td>1.19.0 - 1.23.x</td>
 		<td>2014-08-04</td>
