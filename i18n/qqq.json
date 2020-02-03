@@ -998,6 +998,7 @@
 	"smw-install-incomplete-intro": "This is an error message.",
 	"smw-install-incomplete-populate-hash-field": "This is an error/informatory message.",
 	"smw-install-incomplete-elasticstore-indexrebuild": "This is a information on the software status page.",
+	"smw-pendingtasks-setup-tasks": "{{Identical|Task}}",
 	"smw-helplink": "This is the URL formatter for an link to the homepage to Semantic MediaWiki.\n{{Optional}} \n\nor\n\n{{Notranslate}}",
 	"smw-filter-count": "This is the name of a tab.",
 	"smw-es-replication-check": "This is a header.",

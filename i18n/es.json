@@ -51,7 +51,8 @@
 			"Harvest",
 			"Johny Weissmuller Jr",
 			"Hasley",
-			"Ihojose"
+			"Ihojose",
+			"DannyS712"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -637,7 +638,7 @@
 	"smw-query-condition-circular": "Se detectó una posible condición circular en \"$1\".",
 	"smw-types-list": "Lista de tipos de datos",
 	"smw-types-default": "\"$1\" es un tipo de datos.",
-	"smw-types-help": "Más información y ejemplos en la [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ayuda].",
+	"smw-types-help": "Más información y ejemplos en esta [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 página de ayuda].",
 	"smw-type-anu": "«$1» es una variante del tipo de datos [[Special:Types/URL|URL]] y se utiliza en gran parte para declaraciones de exportación del tipo ''owl:AnnotationProperty''.",
 	"smw-type-boo": "«$1» es un tipo de datos primitivo para describir un valor de verdadero/falso.",
 	"smw-type-cod": "«$1» es una variante del tipo de datos [[Special:Types/Text|Text]] que está destinado para utilizarse con textos técnicos de cualquier longitud, tales como listados de código fuente.",
