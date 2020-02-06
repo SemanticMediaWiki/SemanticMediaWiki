@@ -564,6 +564,8 @@
 	"smw-admin-tab-notices": "Avisos de obsolescencia",
 	"smw-admin-tab-supplement": "Funciones suplementarias",
 	"smw-admin-tab-registry": "Registro",
+	"smw-admin-tab-alerts": "Alertas",
+	"smw-admin-alerts-tab-deprecationnotices": "Avisos de obsolescencia",
 	"smw-livepreview-loading": "Cargando…",
 	"smw-sp-searchbyproperty-description": "Esta página proporciona una [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfaz de exploración] simple para encontrar entidades descritas por una propiedad y un valor con nombre. Otras interfaces de búsqueda disponibles incluyen la  [[Special:PageProperty|búsqueda de propiedades de página]] y el [[Special:Ask|constructor de consultas]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
@@ -829,6 +831,7 @@
 	"smw-types-title": "Tipo: $1",
 	"smw-schema-error-title": "{{PLURAL:$1|Error|Errores}} de validación",
 	"smw-schema-summary-title": "Resumen",
+	"smw-schema-type": "Tipo de esquema",
 	"smw-schema-type-description": "Descripción del tipo",
 	"smw-schema-description": "Descripción del esquema",
 	"smw-schema-description-property-profile-schema": "Este tipo de esquema soporta la definición de un perfil para declarar características a la propiedad asignada y sus valores de anotación.",
@@ -851,5 +854,6 @@
 	"smw-ask-tab-extra": "Extras",
 	"smw-ask-tab-debug": "Depuración",
 	"smw-ask-tab-code": "Código",
+	"smw-pendingtasks-setup-tasks": "Tareas",
 	"smw-legend": "Leyenda"
 }

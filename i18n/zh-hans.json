@@ -39,7 +39,8 @@
 			"Xiplus",
 			"A Retired User",
 			"Josephine W.",
-			"Tiger"
+			"Tiger",
+			"铁桶"
 		]
 	},
 	"smw-desc": "让您更亲近wiki——对机器''与''人都是如此（[https://www.semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -370,7 +371,7 @@
 	"smw-admin-deprecation-notice-config-replacement-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code>{{PLURAL:$2|选项}}：",
 	"smw-admin-deprecation-notice-config-replacement-option-list": "<code>$1</code>正在替换为<code>$2</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code>已在$2中被移除",
-	"smw-admin-deprecation-notice-title-notice": "即将进行的更改",
+	"smw-admin-deprecation-notice-title-notice": "弃用设置",
 	"smw-admin-deprecation-notice-title-notice-explanation": "现已检测到该wiki使用了以下设置，并计划在今后的发布版本中移除或更改。",
 	"smw-admin-deprecation-notice-title-replacement": "已替换或重命名的设置",
 	"smw-admin-deprecation-notice-title-replacement-explanation": "以下包含已重命名或有另外修改的设置，并建议立刻更新其名称或格式。",
@@ -535,6 +536,7 @@
 	"smw-admin-tab-notices": "弃用通告",
 	"smw-admin-tab-supplement": "补充函数",
 	"smw-admin-tab-registry": "注册",
+	"smw-admin-tab-alerts": "提醒",
 	"smw-admin-maintenance-no-description": "无描述",
 	"smw-admin-maintenance-script-section-intro": "以下维护脚本需要管理员和对命令行的访问权限才能执行列出的脚本。",
 	"smw-admin-maintenance-script-description-rebuildpropertystatistics": "重新生成所有属性实体的使用统计信息。",
@@ -805,7 +807,7 @@
 	"smw-schema-error-title": "验证$1个错误",
 	"smw-schema-error-input-schema": "不能保存：在有效性检验过程 '''$1''' 中发现下列错误；您可查看[https://www.semantic-mediawiki.org/wiki/Help:Schema/Error_handling help page]以获得更多帮助。",
 	"smw-schema-validation-schema-title": "JSON 纲要",
-	"smw-schema-type": "类型",
+	"smw-schema-type": "架构类型",
 	"smw-schema-tag": "{{PLURAL:$1|标签|标签}}",
 	"smw-ask-title-keyword-type": "关键词搜索",
 	"smw-ask-message-keyword-type": "此搜索匹配<code><nowiki>$1</nowiki></code>条件。",
@@ -826,5 +828,7 @@
 	"smw-ask-tab-extra": "附加功能",
 	"smw-ask-tab-debug": "调试",
 	"smw-ask-tab-code": "代码",
+	"smw-pendingtasks-tab-setup": "安装",
+	"smw-pendingtasks-setup-tasks": "任务",
 	"smw-es-replication-error-suggestions-no-connection": "建议您联系维基管理员以提交此次“无法连接”问题报告。"
 }
