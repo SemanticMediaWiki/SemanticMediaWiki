@@ -26,7 +26,7 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
 		<td><strong>7.0.0</strong> - latest</td>
-		<td><strong>1.31.0</strong> - 1.33.x</td>
+		<td><strong>1.31.0</strong> - 1.34.x</td>
 		<td>2019-09-23</td>
 		<td>Current</td>
 	</tr>
