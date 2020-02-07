@@ -1,4 +1,4 @@
-# Semantic MediaWiki 3.1.3
+# Semantic MediaWiki 3.1.4
 
 Released on February 8, 2020.
 
