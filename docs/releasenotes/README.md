@@ -1,6 +1,7 @@
 ## Release notes
 
 ### Semantic MediaWiki 3.1.x
+* [SMW 3.1.4 release notes](RELEASE-NOTES-3.1.4.md)
 * [SMW 3.1.3 release notes](RELEASE-NOTES-3.1.3.md)
 * [SMW 3.1.2 release notes](RELEASE-NOTES-3.1.2.md)
 * [SMW 3.1.1 release notes](RELEASE-NOTES-3.1.1.md)
