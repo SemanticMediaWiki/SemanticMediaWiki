@@ -10,6 +10,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\ApplicationFactory;
+use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
 use SMW\Store;
 use SMWQueryProcessor;
@@ -135,24 +136,33 @@ class DistinctEntityDataRebuilder {
 			]
 		);
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( "Rebuild ($type)", 3, '-', true ) . "\n"
+		);
+
 		$total = count( $pages );
-		$this->reportMessage( "Rebuilding $type pages ...\n" );
-		$this->reportMessage( "   ... selecting $total pages ...\n" );
+		$this->reportMessage( "Find and rebuild $type pages ...\n" );
+
+		$this->reportMessage(
+			$cliMsgFormatter->twoCols( "... selected pages ...", $total, 3 )
+		);
 
 		$jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 
 		foreach ( $pages as $key => $page ) {
 
 			$this->rebuildCount++;
-			$progress = round( ( $this->rebuildCount / $total ) * 100 );
+			$progress = $cliMsgFormatter->progressCompact(  $this->rebuildCount, $total );
 
 			if ( !$this->options->has( 'v' ) ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", $progress, $this->rebuildCount, $total ) )
+					$cliMsgFormatter->twoColsOverride( '   ... updating ', $progress )
 				);
 			} else {
 				$this->reportMessage(
-					sprintf( "%-25s%s\n", "   ... ($this->rebuildCount/$total $progress%)", $key ),
+					sprintf( "%-25s%s\n", "   ... $progress", $key ),
 					$this->options->has( 'v' )
 				);
 			}
@@ -160,7 +170,11 @@ class DistinctEntityDataRebuilder {
 			$this->doUpdate( $jobFactory, $page );
 		}
 
-		$this->reportMessage( ( $this->options->has( 'v' ) ? "" : "\n" ) . "   ... done.\n" );
+		if ( $pages !== [] && !$this->options->has( 'v' ) ) {
+			$this->reportMessage( "\n" );
+		}
+
+		$this->reportMessage( "   ... done.\n" );
 
 		return true;
 	}

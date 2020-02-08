@@ -85,7 +85,7 @@ class OutdatedDisposer {
 		}
 
 		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->firstCol( '... checking query links (unassigned) ...', 3 )
+			$this->cliMsgFormatter->firstCol( '   ... checking query links (unassigned) ...' )
 		);
 
 		$resultIterator = $this->entityIdDisposerJob->newUnassignedQueryLinksResultIterator();
@@ -105,14 +105,16 @@ class OutdatedDisposer {
 
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
-		$i = 0;
+
+		$counter = 0;
 
 		foreach ( $chunkedIterator as $chunk ) {
 			foreach ( $chunk as $row ) {
-				$progress = $this->cliMsgFormatter->progressCompact( ++$i, $count );
+				$counter++;
+				$msg = sprintf( "%s (%1.0f%%)", $row->smw_id, round( $counter / $count * 100 ) );
 
 				$this->messageReporter->reportMessage(
-					$this->cliMsgFormatter->twoColsOverride( '... cleaning up entity ...', $progress, 7 )
+					$this->cliMsgFormatter->twoColsOverride( '       ... cleaning up entity', $msg )
 				);
 
 				$this->entityIdDisposerJob->dispose( $row );
@@ -122,20 +124,21 @@ class OutdatedDisposer {
 		$this->messageReporter->reportMessage( "\n" );
 
 		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->twoCols( '... removed (IDs) ...', $count, 7 )
+			$this->cliMsgFormatter->twoCols( '       ... removed (IDs) ...', $count )
 		);
 	}
 
 	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ) {
 
 		$this->messageReporter->reportMessage( "\n" );
-		$i = 0;
+		$counter = 0;
 
 		foreach ( $resultIterator as $row ) {
-			$progress = $this->cliMsgFormatter->progressCompact( ++$i, $count );
+			$counter++;
+			$msg = sprintf( "%s (%1.0f%%)", $row->id, round( $counter / $count * 100 ) );
 
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->twoColsOverride( "... cleaning up {$label} ...", $progress, 7 )
+				$this->cliMsgFormatter->twoColsOverride( "       ... cleaning up {$label}", $msg )
 			);
 
 			$this->entityIdDisposerJob->disposeQueryLinks( $row );
@@ -144,7 +147,7 @@ class OutdatedDisposer {
 		$this->messageReporter->reportMessage( "\n" );
 
 		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->twoCols( '... removed (IDs) ...', $count, 7 )
+			$this->cliMsgFormatter->twoCols( '       ... removed (IDs) ...', $count )
 		);
 	}
 
