@@ -4,6 +4,7 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMW\MediaWiki\Connection\Sequence;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -431,13 +432,31 @@ EOT;
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$this->reportMessage( "Checking table $tableName ...\n" );
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... $tableName ...", 3 )
+		);
+
+		$tableName = $this->connection->tableName( $tableName );
+
+		$this->reportMessage(
+			$cliMsgFormatter->positionCol( "[ANALYZE", 58 )
+		);
 
 		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
-		$this->reportMessage( "   ... analyze " );
-		$this->connection->query( 'ANALYZE ' . $this->connection->tableName( $tableName ), __METHOD__ );
+		$this->connection->query( "ANALYZE $tableName" , __METHOD__ );
 
-		$this->reportMessage( "done.\n" );
+		$this->reportMessage(
+			$cliMsgFormatter->positionCol( ", VACUUM]" )
+		);
+
+		// https://www.postgresql.org/docs/9.5/sql-vacuum.html
+		// "... VACUUM reclaims storage occupied by dead tuples ... ANALYZE Updates
+		// statistics used by the planner to determine the most efficient ..."
+		$this->connection->query( "VACUUM (ANALYZE) $tableName", __METHOD__ );
+
+		$this->reportMessage( "\n" );
 	}
 
 	/**
@@ -453,14 +472,24 @@ EOT;
 
 	private function doCheckOnPostCreation() {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$sequence = new Sequence( $this->connection );
+
+		$this->reportMessage( "Checking `smw_id` sequence consistency ...\n" );
 
 		// To avoid things like:
 		// "Error: 23505 ERROR:  duplicate key value violates unique constraint "smw_object_ids_pkey""
 		$seq_num = $sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
 
-		$this->reportMessage( "Checking `smw_id` sequence consistency ...\n" );
-		$this->reportMessage( "   ... setting sequence to {$seq_num} ...\n" );
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... setting sequence to {$seq_num} ...", 3 )
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
+
 		$this->reportMessage( "   ... done.\n" );
 	}
 
