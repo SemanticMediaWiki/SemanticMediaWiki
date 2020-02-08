@@ -247,7 +247,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $options ) );
 
 		$this->indexer->expects( $this->once() )
-			->method( 'indexDocument' );
+			->method( 'indexDocument' )
+			->with(
+				$this->anything( $document ),
+				$this->equalTo( false ) );
 
 		$instance = new Rebuilder(
 			$this->connection,
