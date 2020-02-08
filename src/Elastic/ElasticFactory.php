@@ -187,6 +187,10 @@ class ElasticFactory {
 			$applicationFactory->getMediaWikiLogger( 'smw-elastic' )
 		);
 
+		$indexer->setRevisionGuard(
+			$applicationFactory->singleton( 'RevisionGuard' )
+		);
+
 		$indexer->setMessageReporter(
 			$messageReporter
 		);

@@ -73,6 +73,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $parameters, $expected ) {
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( $parameters['smwgNamespacesWithSemanticLinks'] ) );
@@ -97,6 +101,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
+
+		$cachedFactbox->setRevisionGuard(
+			$revisionGuard
+		);
 
 		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
 			->disableOriginalConstructor()

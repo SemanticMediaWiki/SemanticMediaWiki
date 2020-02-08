@@ -421,13 +421,15 @@ class ParserData {
 			$this->semanticData
 		);
 
+		$latestRevID = null;
+
 		if (
 			$this->getOption( self::OPT_FORCED_UPDATE, false ) === false &&
-			$dataUpdater->isSkippable( $this->title ) ) {
+			$dataUpdater->isSkippable( $this->title, $latestRevID ) ) {
 
 			$this->logger->info(
 				[ 'Update', 'Skipping update', 'Found revision', '{revID}' ],
-				[ 'role' => 'user', 'revID' => RevisionGuard::getLatestRevID( $this->title ) ]
+				[ 'role' => 'user', 'revID' => $latestRevID ]
 			);
 
 			return false;

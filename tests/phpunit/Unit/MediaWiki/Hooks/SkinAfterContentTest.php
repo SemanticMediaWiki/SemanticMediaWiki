@@ -71,6 +71,10 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testperformUpdateFactboxPresenterIntegration( $parameters, $expected ) {
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$data = '';
 
 		$instance = new SkinAfterContent( $parameters['skin'] );
@@ -81,6 +85,10 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		if ( isset( $parameters['title'] ) ) {
 
 			$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
+
+			$cachedFactbox->setRevisionGuard(
+				$revisionGuard
+			);
 
 			$cachedFactbox->addContentToCache(
 				$cachedFactbox->makeCacheKey( $parameters['title'] ),

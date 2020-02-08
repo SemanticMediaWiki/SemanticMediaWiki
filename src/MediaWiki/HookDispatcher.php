@@ -89,6 +89,20 @@ class HookDispatcher {
 	}
 
 	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevisionid.md
+	 *
+	 * @note This hook is only to be called from the `RevisionGuard` class.
+	 *
+	 * @since 3.2
+	 *
+	 * @param Title $title
+	 * @param int &$latestRevID
+	 */
+	public function onChangeRevisionID( \Title $title, int &$latestRevID ) {
+		Hooks::run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
+	}
+
+	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changeFile.md
 	 *
 	 * @note This hook is only to be called from the `RevisionGuard` class.
