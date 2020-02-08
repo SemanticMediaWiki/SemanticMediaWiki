@@ -119,10 +119,12 @@
 }
 
 .smw-page-nav-left {
+	white-space:nowrap;
 }
 
 .smw-page-nav-right {
 	margin-left: auto;
+	white-space:nowrap;
 }
 
 .smw-ui-pagination .page-link {
