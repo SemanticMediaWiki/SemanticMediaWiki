@@ -134,6 +134,28 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnChangeRevisionID() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$latestRevID = 9999;
+
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', function( $title, &$latestRevID ) {
+			$latestRevID = 1001;
+		} );
+
+		$hookDispatcher->onChangeRevisionID( $title, $latestRevID );
+
+		$this->assertEquals(
+			1001,
+			$latestRevID
+		);
+	}
+
 	public function testOnChangeFile() {
 
 		$hookDispatcher = new HookDispatcher();

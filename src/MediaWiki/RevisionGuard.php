@@ -64,7 +64,7 @@ class RevisionGuard {
 	 *
 	 * @return integer
 	 */
-	public static function getLatestRevID( Title $title ) {
+	public function getLatestRevID( Title $title ) {
 
 		// MW 1.34+
 		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
@@ -77,7 +77,7 @@ class RevisionGuard {
 		$latestRevID = $title->getLatestRevID( $flag );
 		$origLatestRevID = $latestRevID;
 
-		\Hooks::run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
+		$this->hookDispatcher->onChangeRevisionID( $title, $latestRevID );
 
 		if ( is_int( $latestRevID ) ) {
 			return $latestRevID;

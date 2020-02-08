@@ -10,7 +10,7 @@ use SMW\Parser\InTextAnnotationParser;
 use Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\HmacSerializer;
-use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
  * Factbox output caching
@@ -26,6 +26,7 @@ use SMW\MediaWiki\RevisionGuard;
 class CachedFactbox {
 
 	use LoggerAwareTrait;
+	use RevisionGuardAwareTrait;
 
 	/**
 	 * @var EntityCache
@@ -324,7 +325,7 @@ class CachedFactbox {
 			return $request->getInt( 'oldid' );
 		}
 
-		return RevisionGuard::getLatestRevID( $title );
+		return $this->revisionGuard->getLatestRevID( $title );
 	}
 
 	/**

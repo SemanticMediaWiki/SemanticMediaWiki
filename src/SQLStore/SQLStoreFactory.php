@@ -339,6 +339,10 @@ class SQLStoreFactory {
 			$settings->get( 'smwgPropertyRetiredList' )
 		);
 
+		$entityValidator->setRevisionGuard(
+			$applicationFactory->singleton( 'RevisionGuard' )
+		);
+
 		$rebuilder = new Rebuilder(
 			$this->store,
 			$applicationFactory->newTitleFactory(),

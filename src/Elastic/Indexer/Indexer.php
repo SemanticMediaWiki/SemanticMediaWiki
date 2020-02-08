@@ -14,7 +14,7 @@ use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Store;
 use SMW\Utils\CharArmor;
-use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\MediaWiki\Collator;
 use SMW\Utils\Timer;
 use SMWDIBlob as DIBlob;
@@ -31,6 +31,7 @@ class Indexer {
 
 	use MessageReporterAwareTrait;
 	use LoggerAwareTrait;
+	use RevisionGuardAwareTrait;
 
 	/**
 	 * Whether safe replication is required during the indexing process or not.
@@ -285,7 +286,7 @@ class Indexer {
 		}
 
 		if ( $id instanceof Title ) {
-			$id = RevisionGuard::getLatestRevID( $id );
+			$id = $this->revisionGuard->getLatestRevID( $id );
 		}
 
 		if ( $id == 0 ) {

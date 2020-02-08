@@ -161,11 +161,12 @@ class DataUpdater {
 	 *
 	 * @since 3.1
 	 *
+	 * @param Title $title
+	 * @param int|null &$latestRevID
+	 *
 	 * @return boolean
 	 */
-	public function isSkippable( Title $title ) {
-
-		$latestRevID = null;
+	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
 
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
 			return true;

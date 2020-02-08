@@ -26,6 +26,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $memoryCache;
+	private $revisionGuard;
 	private $entityCache;
 	private $spyLogger;
 
@@ -43,6 +44,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -70,6 +75,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 10001 ) );
+
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
@@ -86,6 +95,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CachedFactbox(
 			new EntityCache( $this->memoryCache )
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->isEnabled( true );

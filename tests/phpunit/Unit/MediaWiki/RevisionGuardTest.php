@@ -89,9 +89,15 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 1001 ) );
 
+		$instance = new RevisionGuard();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertEquals(
 			1001,
-			RevisionGuard::getLatestRevID( $title )
+			$instance->getLatestRevID( $title )
 		);
 	}
 

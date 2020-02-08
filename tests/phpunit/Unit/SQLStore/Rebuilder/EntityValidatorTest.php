@@ -109,6 +109,48 @@ class EntityValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHasLatestRevID() {
+
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionGuard->expects( $this->once() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 42 ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( false ) );
+
+		$row = (object)[
+			'smw_subobject' => 'foo',
+			'smw_proptable_hash' => [],
+			'smw_rev' => 42
+		];
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityValidator(
+			$store,
+			$this->namespaceExaminer
+		);
+
+		$instance->setRevisionGuard(
+			$revisionGuard
+		);
+
+		$this->assertTrue(
+			$instance->hasLatestRevID( $title, $row )
+		);
+	}
+
 	public function testIsDetachedQueryRef() {
 
 		$row = (object)[
