@@ -174,9 +174,11 @@ class MaintenanceTaskHandler extends TaskHandler {
 			$classes = get_declared_classes();
 			$class = end( $classes );
 
-			$mainClass = new $class;
+			$reflectionClass = new \ReflectionClass( $class );
 
-			if ( !$mainClass instanceof \Maintenance ) {
+			if (
+				!$reflectionClass->getParentClass() ||
+				$reflectionClass->getParentClass()->getName() !== 'Maintenance' ) {
 				continue;
 			}
 
