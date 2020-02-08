@@ -5,9 +5,14 @@ namespace SMW\Maintenance;
 use SMW\ApplicationFactory;
 use SMW\Setup;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * Maintenance script for rebuilding the property usage statistics.
@@ -20,19 +25,9 @@ require_once $basePath . '/maintenance/Maintenance.php';
 class RebuildPropertyStatistics extends \Maintenance {
 
 	public function __construct() {
+		parent::__construct();
 		$this->mDescription = 'Rebuild the property usage statistics (only works with SQLStore3 for now)';
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
-
-		parent::__construct();
-	}
-
-	/**
-	 * @see Maintenance::addDefaultParams
-	 *
-	 * @since 1.9
-	 */
-	protected function addDefaultParams() {
-		parent::addDefaultParams();
 	}
 
 	/**
@@ -40,13 +35,7 @@ class RebuildPropertyStatistics extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
-			exit;
-		}
-
-		if ( !Setup::isValid( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
@@ -87,7 +76,25 @@ class RebuildPropertyStatistics extends \Maintenance {
 		$this->output( $message );
 	}
 
+	private function canExecute() {
+
+		if ( !Setup::isEnabled() ) {
+			return $this->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
+			);
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			return $this->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
+		}
+
+		return true;
+	}
+
 }
 
-$maintClass = 'SMW\Maintenance\RebuildPropertyStatistics';
+$maintClass = RebuildPropertyStatistics::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );

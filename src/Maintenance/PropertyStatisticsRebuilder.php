@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
 use SMW\SQLStore\SQLStore;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Simple class for rebuilding property usage statistics.
@@ -59,11 +60,47 @@ class PropertyStatisticsRebuilder {
 	 * @since 1.9
 	 */
 	public function rebuild() {
-		$this->reportMessage( "\nRebulding property statistics (this may take a while) ..." );
+
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'About' )
+		);
+
+		$text = [
+			"Rebuilding property usage statistics by reading all registered tables",
+			"and accumulate property data from stored records.",
+			"\n\n",
+			"Depending on the size and amount of referenced properties in registered",
+			"tables, the rebuild may take a moment."
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'Statistics rebuild' )
+		);
+
 		$table = SQLStore::PROPERTY_STATISTICS_TABLE;
 
-		$this->reportMessage( "\n   ... deleting `$table` content ..." );
+		$this->reportMessage( "\nRebulding the `$table` statistics table ...\n" );
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... deleting all rows ...", 3 )
+		);
+
 		$this->propertyStatisticsStore->deleteAll();
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -78,7 +115,10 @@ class PropertyStatisticsRebuilder {
 		);
 
 		$propCount = $res->numRows();
-		$this->reportMessage( "\n   ... selecting $propCount properties ...\n" );
+
+		$this->reportMessage(
+			$cliMsgFormatter->twoCols( '... properties count:', "$propCount (rows)", 3 )
+		);
 
 		$i = 0;
 
@@ -87,7 +127,7 @@ class PropertyStatisticsRebuilder {
 			$i++;
 
 			$this->reportMessage(
-				"\r". sprintf( "%-47s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", round( ( $i / $propCount ) * 100 ), $i, $propCount ) )
+				$cliMsgFormatter->twoColsOverride( '... updating ...', $cliMsgFormatter->progressCompact( $i, $propCount ), 3 )
 			);
 
 			$this->propertyStatisticsStore->insertUsageCount(
@@ -174,19 +214,6 @@ class PropertyStatisticsRebuilder {
 		}
 
 		return [ $usageCount, $nullCount ];
-	}
-
-	private function progress( $propCount, $i ) {
-
-		if ( $i % 60 === 0 ) {
-			if ( $i < 1 ) {
-				return "\n";
-			}
-
-			return ' ' . round( ( $i / $propCount ) * 100 ) . ' %' . "\n";
-		}
-
-		return '.';
 	}
 
 	protected function reportMessage( $message ) {
