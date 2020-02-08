@@ -12,6 +12,7 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
@@ -73,6 +74,11 @@ class Installer implements MessageReporter {
 	private $versionExaminer;
 
 	/**
+	 * @var TableOptimizer
+	 */
+	private $tableOptimizer;
+
+	/**
 	 * @var Options
 	 */
 	private $options;
@@ -94,12 +100,14 @@ class Installer implements MessageReporter {
 	 * @param TableBuilder $tableBuilder
 	 * @param TableBuildExaminer $tableBuildExaminer
 	 * @param VersionExaminer VersionExaminer
+	 * @param TableOptimizer $tableOptimizer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer ) {
+	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer, TableOptimizer $tableOptimizer ) {
 		$this->tableSchemaManager = $tableSchemaManager;
 		$this->tableBuilder = $tableBuilder;
 		$this->tableBuildExaminer = $tableBuildExaminer;
 		$this->versionExaminer = $versionExaminer;
+		$this->tableOptimizer = $tableOptimizer;
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
 	}
@@ -188,6 +196,10 @@ class Installer implements MessageReporter {
 		);
 
 		$this->versionExaminer->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$this->tableOptimizer->setMessageReporter(
 			$this->messageReporter
 		);
 
@@ -380,48 +392,14 @@ class Installer implements MessageReporter {
 	private function runTableOptimization() {
 
 		if ( !$this->options->safeGet( self::OPT_TABLE_OPTIMIZE, false ) ) {
-			return $this->messageReporter->reportMessage( "Table optimization was not enabled (or skipped), stopping the task.\n" );
+			return $this->messageReporter->reportMessage(
+				"Table optimization was not enabled (or skipped), stopping the task.\n"
+			);
 		}
 
-		$this->cliMsgFormatter = new CliMsgFormatter();
-
-		$text = [
-			'The optimization task can take a moment to complete and depending',
-			'on the database backend, tables can be locked during the operation.'
-		];
-
-		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->wordwrap( $text ) . "\n"
+		$this->tableOptimizer->runForTables(
+			$this->tableSchemaManager->getTables()
 		);
-
-		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
-		);
-
-		$custom = false;
-		$this->messageReporter->reportMessage( "Checking table ...\n" );
-
-		foreach ( $this->tableSchemaManager->getTables() as $table ) {
-
-			if ( !$custom && !$table->isCoreTable() ) {
-				$custom = true;
-
-				$this->messageReporter->reportMessage( "   ... done.\n" );
-
-				$this->messageReporter->reportMessage(
-					$this->cliMsgFormatter->section( 'Custom table(s)', 6, '-', true ) . "\n"
-				);
-
-				$this->messageReporter->reportMessage( "Checking table ...\n" );
-			}
-
-			$this->tableBuilder->optimize( $table );
-		}
-
-		$this->messageReporter->reportMessage( "   ... done.\n" );
-
-		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-		$this->setupFile->set( [ SetupFile::LAST_OPTIMIZATION_RUN => $dateTimeUtc->format( 'Y-m-d h:i' ) ] );
 	}
 
 	private function addSupplementJobs() {

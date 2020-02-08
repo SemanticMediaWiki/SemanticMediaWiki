@@ -52,6 +52,7 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CircularReferenceGuard;
@@ -466,11 +467,20 @@ class SQLStoreFactory {
 			$setupFile
 		);
 
+		$tableOptimizer = new TableOptimizer(
+			$tableBuilder
+		);
+
+		$tableOptimizer->setSetupFile(
+			$setupFile
+		);
+
 		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
 			$tableBuildExaminer,
-			$versionExaminer
+			$versionExaminer,
+			$tableOptimizer
 		);
 
 		$installer->setSetupFile(
