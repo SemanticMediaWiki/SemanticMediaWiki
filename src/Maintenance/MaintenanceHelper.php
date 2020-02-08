@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use SMW\ApplicationFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -62,10 +63,27 @@ class MaintenanceHelper {
 	 */
 	public function getFormattedRuntimeValues( $indent = '' ) {
 
-		$runtimeValues = $this->getRuntimeValues();
+		$cliMsgFormatter = new CliMsgFormatter();
+		$output = '';
 
-		return "$indent Memory used: " . $runtimeValues['memory-used'] . "\n" .
-			"$indent Time: " . $runtimeValues['humanreadable-time'];
+		foreach ( $this->getRuntimeValues() as $key => $value ) {
+
+			if ( $key === 'time' ) {
+				continue;
+			}
+
+			if ( $key === 'humanreadable-time' ) {
+				$key = 'Time (used)';
+			}
+
+			if ( strpos( $key, 'memory-' ) !== false ) {
+				$key = str_replace( 'memory-', 'Memory (', $key ) . ')';
+			}
+
+			$output .= $cliMsgFormatter->twoCols( "- $key", $value, 0, '.' );
+		}
+
+		return $output;
 	}
 
 	/**

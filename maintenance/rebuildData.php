@@ -7,11 +7,17 @@ use SMW\StoreFactory;
 use SMW\Store;
 use SMW\Setup;
 use SMW\Options;
+use SMW\Utils\CliMsgFormatter;
 use InvalidArgumentException;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * Recreates all the semantic data in the database, by cycling through all
@@ -55,21 +61,11 @@ class RebuildData extends \Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->addDescription( "\n" .
+		$this->addDescription(
 			"Recreates all the semantic data in the database, by cycling through all \n" .
 			"the pages that might have semantic data, and calling functions that \n" .
-			"re-save semantic data for each one. \n"
+			"re-save semantic data for each one."
 		);
-
-		$this->addDefaultParams();
-	}
-
-	/**
-	 * @see Maintenance::addDefaultParams
-	 */
-	protected function addDefaultParams() {
-
-		parent::addDefaultParams();
 
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing an article, useful for limiting server load.', false, true );
 		$this->addOption( 's', '<startid> Start refreshing at given article ID, useful for partial refreshing.', false, true );
@@ -125,13 +121,7 @@ class RebuildData extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
-			exit;
-		}
-
-		if ( !Setup::isValid( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
@@ -198,18 +188,28 @@ class RebuildData extends \Maintenance {
 			new Options( $this->mOptions )
 		);
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
 		$result = $this->checkForRebuildState(
 			$dataRebuilder->rebuild()
 		);
 
 		if ( $result && $this->hasOption( 'refresh-propertystatistics' ) ) {
+			$this->reportMessage( $cliMsgFormatter->section( 'Property statistics' ) );
 			$rebuildPropertyStatistics = $maintenanceFactory->newRebuildPropertyStatistics();
 			$rebuildPropertyStatistics->execute();
 		}
 
 		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
-			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
+			$this->reportMessage( $cliMsgFormatter->section( 'Runtime report' ) );
+
+			$this->reportMessage(
+				"\n" . $maintenanceHelper->getFormattedRuntimeValues()
+			);
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
@@ -230,7 +230,22 @@ class RebuildData extends \Maintenance {
 		$maintenanceHelper->reset();
 
 		if ( $this->hasOption( 'report-poolcache' ) ) {
-			$this->reportMessage( "\n" . ApplicationFactory::getInstance()->getInMemoryPoolCache()->getStats( \SMW\Utils\StatsFormatter::FORMAT_JSON ) . "\n" );
+			$stats = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getStats();
+
+			$this->reportMessage( $cliMsgFormatter->section( 'Poolcache report' ) );
+			$this->reportMessage( "\n" );
+
+			foreach ( $stats as $key => $values) {
+				$this->reportMessage( "$key ..." . "\n" );
+
+				foreach ( $values as $k => $v ) {
+					$this->reportMessage(
+						$cliMsgFormatter->twoCols( "   ... $k", $v )
+					);
+				}
+
+				$this->reportMessage( "\n" );
+			}
 		}
 
 		return $result;
@@ -250,6 +265,24 @@ class RebuildData extends \Maintenance {
 		if ( !$rebuildResult ) {
 			$this->reportMessage( $this->mDescription . "\n\n" . 'Use option --help for usage details.' . "\n"  );
 			return false;
+		}
+
+		return true;
+	}
+
+	private function canExecute() {
+
+		if ( !Setup::isEnabled() ) {
+			return $this->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
+			);
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			return $this->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
 		}
 
 		return true;

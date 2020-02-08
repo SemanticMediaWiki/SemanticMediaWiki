@@ -97,12 +97,17 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
 		$this->assertContains(
-			'removed (IDs) ...                                             42',
+			'removed (IDs)',
 			$messages
 		);
 
 		$this->assertContains(
-			'cleaning up entity ...                             1 / 42 (  2%)',
+			'42',
+			$messages
+		);
+
+		$this->assertContains(
+			'1001 (2%)',
 			$messages
 		);
 	}
@@ -147,12 +152,22 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
 		$this->assertContains(
-			'removed (IDs) ...                                           9999',
+			'removed (IDs)',
 			$messages
 		);
 
 		$this->assertContains(
-			'cleaning up query links (invalid) ...            1 / 9999 (  0%)',
+			'9999',
+			$messages
+		);
+
+		$this->assertContains(
+			'cleaning up query links (invalid)',
+			$messages
+		);
+
+		$this->assertContains(
+			'1002 (0%)',
 			$messages
 		);
 	}
@@ -197,12 +212,22 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
 		$this->assertContains(
-			'removed (IDs) ...                                             10',
+			'removed (IDs)',
 			$messages
 		);
 
 		$this->assertContains(
-			'cleaning up query links (unassigned) ...           1 / 10 ( 10%)',
+			'10',
+			$messages
+		);
+
+		$this->assertContains(
+			'cleaning up query links (unassigned)',
+			$messages
+		);
+
+		$this->assertContains(
+			'3333 (10%)',
 			$messages
 		);
 	}

@@ -10,6 +10,7 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
+use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
 use SMW\Store;
 use Title;
@@ -66,6 +67,11 @@ class DataRebuilder {
 	private $exceptionFileLogger;
 
 	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
 	 * @var integer
 	 */
 	private $rebuildCount = 0;
@@ -99,6 +105,7 @@ class DataRebuilder {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $store, $titleFactory );
 		$this->exceptionFileLogger = new ExceptionFileLogger( 'rebuilddata' );
+		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
 
 	/**
@@ -168,36 +175,51 @@ class DataRebuilder {
 	public function rebuild() {
 
 		$this->reportMessage(
-			"\nLong-running scripts may cause memory leaks, if a deteriorating\n" .
-			"rebuild process is detected (after many pages, typically more\n".
-			"than 10000), please abort with CTRL-C and resume this script\n" .
-			"at the last processed ID using the parameter -s. Continue this\n" .
-			"until all pages have been refreshed.\n"
+			$this->cliMsgFormatter->section( 'Notice' )
 		);
+
+		$text = [
+			'Long-running scripts may cause memory leaks, if a deteriorating rebuild',
+			'process is detected (after many pages, typically more than 10000),',
+			'please abort with CTRL-C and resume this script at the last processed',
+			'ID using the parameter -s. Continue this until all pages have been',
+			'refreshed.',
+			"\n\n",
+			'Using the --auto-recovery option should help with unexpected events or',
+			'disruptions (CTRL-C, exceptions etc.) during the rebuild process to',
+			'recover and restart from the last successful processed ID.',
+			"\n\n",
+			'Any progress displayed is an estimation and is self-adjusting',
+			'during the maintenance process.'
+		];
 
 		$this->reportMessage(
-			"\nThe progress displayed is an estimation and is self-adjusting \n" .
-			"during the maintenance process.\n"
+			"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
-
-		$storeName = get_class( $this->store );
-
-		if ( strpos( $storeName, "\\") !== false ) {
-			$storeName = explode("\\", $storeName );
-			$storeName = end( $storeName );
-		}
-
-		$this->reportMessage( "\nRunning for storage: " . $storeName . "\n\n" );
 
 		if ( $this->options->has( 'f' ) ) {
 			$this->performFullDelete();
 		}
 
-		if ( $this->options->has( 'page' ) || $this->options->has( 'query' ) || $this->hasFilters() || $this->options->has( 'redirects' ) ) {
-			return $this->rebuild_selection();
+		$this->reportMessage(
+			$this->cliMsgFormatter->section( 'Data rebuild' )
+		);
+
+		$this->reportMessage( "\n" );
+
+		$this->reportMessage(
+			$this->cliMsgFormatter->twoCols( 'Storage engine:', $GLOBALS['smwgDefaultStore'] )
+		);
+
+		if (
+			$this->options->has( 'page' ) ||
+			$this->options->has( 'query' ) ||
+			$this->hasFilters() ||
+			$this->options->has( 'redirects' ) ) {
+			return $this->rebuildFromSelection();
 		}
 
-		return $this->rebuild_all();
+		return $this->rebuildAll();
 	}
 
 	private function hasFilters() {
@@ -222,7 +244,13 @@ class DataRebuilder {
 		return $this->exceptionCount;
 	}
 
-	private function rebuild_selection() {
+	private function rebuildFromSelection( $params = [] ) {
+
+		if ( $params !== [] ) {
+			foreach ( $params as $key => $value ) {
+				$this->options->set( $key, $value );
+			}
+		}
 
 		$this->distinctEntityDataRebuilder->setOptions(
 			$this->options
@@ -259,7 +287,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function rebuild_all() {
+	private function rebuildAll() {
 
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
@@ -286,13 +314,13 @@ class DataRebuilder {
 			return true;
 		}
 
-		$this->reportMessage( "\n" );
-
 		if ( !$this->options->has( 'skip-properties' ) ) {
-			$this->options->set( 'p', true );
-			$this->rebuild_selection();
-			$this->reportMessage( "\n" );
+			$this->rebuildFromSelection( [ 'p' => true ] );
 		}
+
+		$this->reportMessage(
+			$this->cliMsgFormatter->section( 'Rebuild (data)', 3, '-', true ) . "\n"
+		);
 
 		if ( $this->autoRecovery !== null && $this->autoRecovery->has( self::AUTO_RECOVERY_ID ) ) {
 			$this->start = $this->autoRecovery->get( self::AUTO_RECOVERY_ID );
@@ -301,24 +329,30 @@ class DataRebuilder {
 
 			if ( ( $last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START ) ) ) {
 				$this->reportMessage(
-					sprintf( "%-51s%s\n", "   ... last start recorded", $last_start )
+					$this->cliMsgFormatter->twoCols( '   ... rebuild record from', $last_start )
 				);
 			}
 
 			$this->reportMessage(
-				sprintf( "%-51s%s\n", "   ... starting with", sprintf( "%s", $this->start ) )
+				$this->cliMsgFormatter->twoCols( '   ... starting with ID', $this->start )
 			);
 
 			$this->reportMessage( "\n" );
 		}
 
 		$this->store->clear();
+		$maxId = $this->entityRebuildDispatcher->getMaxId();
 
 		if ( $this->start > 1 && $this->end === false ) {
-			$this->end = $this->entityRebuildDispatcher->getMaxId();
+			$this->end = $maxId;
 		}
 
-		$total = $this->end && $this->end - $this->start > 0 ? $this->end - $this->start : $this->entityRebuildDispatcher->getMaxId();
+		if ( $this->end && $this->end - $this->start > 0 ) {
+			$total = $this->end - $this->start;
+		} else {
+			$total = $maxId;
+		}
+
 		$id = $this->start;
 
 		$this->reportMessage(
@@ -327,7 +361,7 @@ class DataRebuilder {
 
 		$this->reportMessage(
 			"\n   ... selecting $this->start to " .
-			( $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId() ) . " IDs ...\n"
+			( $this->end ? "$this->end" : $maxId ) . " IDs ...\n"
 		);
 
 		$this->rebuildCount = $this->start;
@@ -335,7 +369,7 @@ class DataRebuilder {
 		$estimatedProgress = 0;
 		$skipped_update = 0;
 		$current_id = 0;
-		$max = ( $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId() ) ;
+		$max = ( $this->end ? "$this->end" : $maxId ) ;
 
 		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
 
@@ -346,14 +380,15 @@ class DataRebuilder {
 			$current_id = $id;
 
 			// Changes the ID to next target!
-			$this->do_update( $id );
+			$this->doUpdateById( $id );
 
-			if ( $this->rebuildCount % 60 === 0 ) {
+			// Refresh progressively
+			if ( $this->rebuildCount % round( log10( $this->rebuildCount ) * 100, 0 ) === 0 ) {
 				$estimatedProgress = $this->entityRebuildDispatcher->getEstimatedProgress();
-				$max = $this->entityRebuildDispatcher->getMaxId();
+				$max = $this->end ? "$this->end" : $this->entityRebuildDispatcher->getMaxId();
 			}
 
-			$progress = round( ( $this->end - $this->start > 0 ? $current_id / $max : $estimatedProgress ) * 100 );
+			$progress = $this->cliMsgFormatter->progressCompact( $current_id, $max );
 
 			foreach ( $this->entityRebuildDispatcher->getDispatchedEntities() as $value ) {
 
@@ -372,15 +407,19 @@ class DataRebuilder {
 
 			if ( !$this->options->has( 'v' ) && $id > 0 ) {
 				$this->reportMessage(
-					"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", min( 100, $progress ), $current_id, $max ) )
+					$this->cliMsgFormatter->twoColsOverride( '   ... updating ...', $progress )
 				);
 			}
 		}
 
 		if ( !$this->options->has( 'v' ) ) {
+			$progress = $this->cliMsgFormatter->progressCompact( $current_id, $max );
+
 			$this->reportMessage(
-				"\r". sprintf( "%-50s%s", "   ... updating", sprintf( "%4.0f%% (%s/%s)", 100, $current_id, $max ) )
+				$this->cliMsgFormatter->twoColsOverride( '   ... updating ...', $progress )
 			);
+
+			$this->reportMessage( "\n" );
 		}
 
 		if (  $this->autoRecovery !== null ) {
@@ -391,16 +430,20 @@ class DataRebuilder {
 		$this->write_to_file( $id );
 
 		$this->reportMessage(
-			"\n". sprintf( "%-51s%s", "   ... IDs checked or refreshed", sprintf( "%s", $this->rebuildCount ) )
+			$this->cliMsgFormatter->twoCols( '   ... refreshed (IDs)', sprintf( "%s", ( $this->rebuildCount - $this->start ) ) )
 		);
 
 		$this->reportMessage(
-			"\n". sprintf( "%-51s%s", "   ... IDs skipped", sprintf( "%s", $skipped_update ) )
+			$this->cliMsgFormatter->twoCols( '   ... skipped (IDs)', sprintf( "%s", $skipped_update ) )
 		);
 
-		$this->reportMessage( "\n   ... done.\n" );
+		$this->reportMessage( "   ... done.\n" );
 
 		if ( $this->options->has( 'ignore-exceptions' ) && $this->exceptionFileLogger->getExceptionCount() > 0 ) {
+			$this->reportMessage(
+				$this->cliMsgFormatter->section( 'Exception log' )
+			);
+
 			$this->exceptionCount += $this->exceptionFileLogger->getExceptionCount();
 			$this->exceptionFileLogger->doWrite();
 
@@ -408,7 +451,7 @@ class DataRebuilder {
 				str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->exceptionFileLogger->getExceptionFile() )
 			);
 
-			$this->reportMessage( "\nException log ..." );
+			$this->reportMessage( "\nReport exceptions ..." );
 			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions"	);
 			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename']	);
 			$this->reportMessage( "\n   ... done.\n" );
@@ -417,7 +460,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function do_update( &$id ) {
+	private function doUpdateById( &$id ) {
 
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
@@ -467,48 +510,85 @@ class DataRebuilder {
 	private function performFullDelete() {
 
 		$this->reportMessage(
-			"Deleting all stored data completely and rebuilding it again later!\n\n" .
-			"Semantic data in the wiki might be incomplete for some time while\n".
-			"this operation runs.\n\n" .
-			"NOTE: It is usually necessary to run this script ONE MORE TIME\n".
-			"after this operation, given that some properties and types are not\n" .
-			"yet stored with the first run.\n\n"
+			$this->cliMsgFormatter->section( 'Delete data' )
+		);
+
+		$text = [
+			'Deleting all stored data completely and rebuilding it again later!',
+			"\n\n",
+			'Semantic data in the wiki might be incomplete for some time while',
+			'this operation runs.',
+			"\n\n",
+			'NOTE: It is usually necessary to run this script ONE MORE TIME',
+			'after this operation, given that some properties and types are not',
+			'yet stored with the first run.',
+		];
+
+		$this->reportMessage(
+			"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		if ( $this->options->has( 's' ) || $this->options->has( 'e' ) ) {
+			$text = [
+				"WARNING: -s or -e are used, so some pages will not be refreshed at all!",
+				"Data for those pages will only be available again when they have been",
+				"refreshed as well!"
+			];
+
 			$this->reportMessage(
-				"WARNING: -s or -e are used, so some pages will not be refreshed at all!\n" .
-				"Data for those pages will only be available again when they have been\n" .
-				"refreshed as well!\n\n"
+				"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 			);
 		}
 
+		$this->reportMessage( "\n" );
+
 		$obLevel = ob_get_level();
 
-		$this->reportMessage( 'Abort with control-c in the next five seconds ...  ' );
-		swfCountDown( 6 );
+		if ( !$this->options->has( 'quiet' ) ) {
+			$this->reportMessage(
+				$this->cliMsgFormatter->countDown( 'Abort with control-c in the next five seconds ...  ', 6 )
+			);
+		}
 
-		$this->reportMessage( "\nDeleting all data ..." );
+		$this->reportMessage( "\nDeleting all data ...\n" );
 
-		$this->reportMessage( "\n   ... dropping tables ..." );
+		$this->reportMessage(
+			$this->cliMsgFormatter->firstCol( '   ... dropping tables ...' )
+		);
+
 		$this->store->drop( $this->verbose );
 
-		$this->reportMessage( "\n   ... creating tables ..." );
+		$this->reportMessage(
+			$this->cliMsgFormatter->secondCol( '✓' )
+		);
+
+		$this->reportMessage(
+			$this->cliMsgFormatter->firstCol( '   ... creating tables ...' )
+		);
+
 		$this->store->setupStore( $this->verbose );
 
-		$this->reportMessage( "\n   ... done.\n" );
+		$this->reportMessage(
+			$this->cliMsgFormatter->secondCol( '✓' )
+		);
+
+		$this->reportMessage( "   ... done.\n" );
 
 		// Be sure to have some buffer, otherwise some PHPs complain
 		while ( ob_get_level() > $obLevel ) {
 			ob_end_flush();
 		}
 
-		$this->reportMessage( "\nAll storage structures have been deleted and recreated.\n\n" );
+		$this->reportMessage( "\nAll storage structures have been deleted and recreated.\n" );
 
 		return true;
 	}
 
 	private function runOutdatedDisposer() {
+
+		$this->reportMessage(
+			$this->cliMsgFormatter->section( 'Outdated disposal', 3, '-', true ) . "\n"
+		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$title = Title::newFromText( __METHOD__ );
