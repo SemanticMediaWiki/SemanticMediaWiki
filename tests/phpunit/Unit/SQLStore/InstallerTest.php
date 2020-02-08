@@ -23,7 +23,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableBuilder;
 	private $tableBuildExaminer;
 	private $versionExaminer;
-	private $SetupFile;
+	private $tableOptimizer;
+	private $setupFile;
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,6 +47,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->tableOptimizer = $this->getMockBuilder( '\SMW\SQLStore\Installer\TableOptimizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,9 +64,17 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
+		$instance = new Installer(
+			$this->tableSchemaManager,
+			$this->tableBuilder,
+			$this->tableBuildExaminer,
+			$this->versionExaminer,
+			$this->tableOptimizer
+		);
+
 		$this->assertInstanceOf(
 			Installer::class,
-			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableBuildExaminer, $this->versionExaminer )
+			$instance
 		);
 	}
 
@@ -94,7 +107,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -115,7 +129,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$this->tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -156,7 +171,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -194,7 +210,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -227,7 +244,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -244,7 +262,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableSchemaManager,
 			$this->tableBuilder,
 			$this->tableBuildExaminer,
-			$this->versionExaminer
+			$this->versionExaminer,
+			$this->tableOptimizer
 		);
 
 		$callback = function() use( $instance ) {
