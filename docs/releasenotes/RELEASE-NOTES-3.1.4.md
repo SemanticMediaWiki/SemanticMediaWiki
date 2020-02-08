@@ -4,7 +4,7 @@ Released on February 8, 2020.
 
 ## Bug fixes and internal code changes
 
-* [#4470](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4470) as `b4d47a7`: Replaces the `GAID_FOR_UPDATE` constant with the `READ_LATEST` to bring compatibility with MediaWiki 1.34 and later
+* [#4470](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4470) as `b4d47a7`: Replaces the `GAID_FOR_UPDATE` constant with `READ_LATEST` to bring compatibility with MediaWiki 1.34 and later
 * [#4473](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4473) as `e806689`: Adds `overrideUserPermissions` to bring compatibility with MediaWiki 1.34 and later
 * [#4401](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4401) as `c0e3ae9`: Fixes "Error: Class `SMW\Maintenance\*` not found"
 
