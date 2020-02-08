@@ -404,7 +404,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
-			$cliMsgFormatter->firstCol( "... $tableName ", 3 )
+			$cliMsgFormatter->firstCol( "... $tableName ...", 3 )
 		);
 
 		$tableName = $this->connection->tableName( $tableName );
@@ -413,7 +413,7 @@ class MySQLTableBuilder extends TableBuilder {
 		// Performs a key distribution analysis and stores the distribution for
 		// the named table or tables
 		$this->reportMessage(
-			$cliMsgFormatter->positionCol( "analyze", 55, '.' )
+			$cliMsgFormatter->positionCol( "[ANALYZE", 56 )
 		);
 
 		$this->connection->query( "ANALYZE TABLE $tableName", __METHOD__ );
@@ -422,14 +422,12 @@ class MySQLTableBuilder extends TableBuilder {
 		// Reorganizes the physical storage of table data and associated index data,
 		// to reduce storage space and improve I/O efficiency
 		$this->reportMessage(
-			$cliMsgFormatter->positionCol( ", optimize" )
+			$cliMsgFormatter->positionCol( ", OPTIMIZE]" )
 		);
 
 		$this->connection->query( "OPTIMIZE TABLE $tableName", __METHOD__ );
 
-		$this->reportMessage(
-			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
-		);
+		$this->reportMessage( "\n" );
 	}
 
 }
