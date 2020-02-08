@@ -13,8 +13,23 @@
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "WD reference",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "WD reference (url,eid)",
 			"contents": "[[Has type::Reference]] [[Has fields::URL;WDID]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "WD reference (eid,url)",
+			"contents": "[[Has type::Reference]] [[Has fields::WDID;URL]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "WD reference (wpg,eid,url)",
+			"contents": "[[Has type::Reference]] [[Has fields::Has page;WDID;URL]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -22,19 +37,43 @@
 			"contents": "[[Has type::Reference]] [[Has fields::Number;wikipedia]]"
 		},
 		{
-			"page": "Example/P0916/1",
-			"contents": "[[WD reference::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
+			"page": "Franz Schubert",
+			"contents": "[[WD reference (url,eid)::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
 		},
 		{
-			"page": "Test:P0916/2",
+			"page": "P0916/1",
+			"contents": "[[WD reference (url,eid)::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
+		},
+		{
+			"page": "P0916/Q.1.1",
+			"contents": "{{#show: P0916/1 |?WD reference (url,eid) }}"
+		},
+		{
+			"page": "P0916/2",
 			"contents": "[[Wikipedia reference::837787373;Truid Aagesen{837787373}]]"
+		},
+		{
+			"page": "P0916/3",
+			"contents": "[[WD reference (eid,url)::Q7312;https://en.wikipedia.org/wiki/Franz_Schubert]]"
+		},
+		{
+			"page": "P0916/Q.3.1",
+			"contents": "{{#show: P0916/3 |?WD reference (eid,url) }}"
+		},
+		{
+			"page": "P0916/4",
+			"contents": "[[WD reference (wpg,eid,url)::Franz Schubert;Q7312;https://en.wikipedia.org/wiki/Franz_Schubert]]"
+		},
+		{
+			"page": "P0916/Q.4.1",
+			"contents": "{{#show: P0916/4 |?WD reference (wpg,eid,url) }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 (correct formatting for external identifier)",
-			"subject": "Example/P0916/1",
+			"about": "#0 (reference with url,eid)",
+			"subject": "P0916/1",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -42,7 +81,7 @@
 					"propertyKeys": [
 						"_MDAT",
 						"_SKEY",
-						"WD reference"
+						"WD reference (url,eid)"
 					]
 				}
 			},
@@ -58,8 +97,8 @@
 		},
 		{
 			"type": "parser",
-			"about": "#1 (external id with multiple substitutes)",
-			"subject": "Test:P0916/2",
+			"about": "#1 (reference with url,eid)",
+			"subject": "P0916/2",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -74,6 +113,46 @@
 			"assert-output": {
 				"to-contain": [
 					"Wikipedia&quot;&gt;Wikipedia&lt;/a&gt;: &lt;a href=&quot;https://en.wikipedia.org/w/index.php?title=Truid_Aagesen&amp;amp;oldid=837787373&quot; target=&quot;_blank&quot;&gt;Truid Aagesen"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (#show reference with url,eid)",
+			"subject": "P0916/Q.1.1",
+			"assert-output": {
+				"to-contain": [
+					"<p><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/wiki/Franz_Schubert\">https://en.wikipedia.org/wiki/Franz Schubert</a>",
+					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;.*WDID&quot; title=&quot;.*WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a",
+					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#show reference with eid,url)",
+			"subject": "P0916/Q.3.1",
+			"assert-output": {
+				"to-contain": [
+					"<p><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a></span>",
+					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a",
+					"href=&quot;.*URL&quot; title=&quot;.*URL&quot;&gt;URL&lt;/a&gt;: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot;",
+					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz_Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#show reference with wpg,eid,url)",
+			"subject": "P0916/Q.4.1",
+			"assert-output": {
+				"to-contain": [
+					"<p><a href=\".*Franz_Schubert\" title=\"Franz Schubert\">Franz Schubert</a>",
+					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a",
+					"href=&quot;.*WDID&quot; title=&quot;.*WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a",
+					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a",
+					"href=&quot;.*URL&quot; title=&quot;.*URL&quot;&gt;URL&lt;/a&gt;: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot;",
+					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz_Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		}
