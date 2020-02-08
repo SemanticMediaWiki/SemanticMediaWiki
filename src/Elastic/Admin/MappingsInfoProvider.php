@@ -209,11 +209,11 @@ class MappingsInfoProvider extends InfoProviderHandler {
 
 	private function countFields( $value, $type, &$count ) {
 
-		if ( !isset( $value['mappings'][$type] ) ) {
+		if ( !isset( $value[$type] ) ) {
 			return;
 		}
 
-		foreach ( $value['mappings'][$type]['properties'] as $k => $val ) {
+		foreach ( $value[$type]['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {
 					foreach ( $v as $field => $mappings ) {
