@@ -149,10 +149,13 @@ class ReferenceValueFormatter extends DataValueFormatter {
 
 		$dataItem = $dataValue->getDataItem();
 
-		// Turn Uri/Page links into a href representation when not used as value
-		if ( !$isValue &&
-			( $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage ) &&
-			$type !== self::VALUE || $dataValue->getTypeID() === ExternalIdentifierValue::TYPE_ID ) {
+		// Turn URI, External identifier, or Page links into a href representation
+		// when not used as (first) value
+		if (
+			$isValue === false && $type !== self::VALUE && (
+			$dataItem instanceof DIUri ||
+			$dataItem instanceof DIWikiPage ||
+			$dataValue->getTypeID() === ExternalIdentifierValue::TYPE_ID ) ) {
 			return $dataValue->getShortHTMLText( smwfGetLinker() );
 		}
 
