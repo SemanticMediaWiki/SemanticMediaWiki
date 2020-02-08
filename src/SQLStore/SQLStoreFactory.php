@@ -51,6 +51,7 @@ use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
+use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CircularReferenceGuard;
@@ -425,8 +426,10 @@ class SQLStoreFactory {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
+		$connection = $this->store->getConnection( DB_MASTER );
+
 		$tableBuilder = TableBuilder::factory(
-			$this->store->getConnection( DB_MASTER )
+			$connection
 		);
 
 		$tableBuilder->setMessageReporter(
@@ -453,14 +456,25 @@ class SQLStoreFactory {
 			$settings->get( 'smwgFieldTypeFeatures' )
 		);
 
+		$setupFile = $applicationFactory->singleton( 'SetupFile' );
+
+		$versionExaminer = new VersionExaminer(
+			$connection
+		);
+
+		$versionExaminer->setSetupFile(
+			$setupFile
+		);
+
 		$installer = new Installer(
 			$tableSchemaManager,
 			$tableBuilder,
-			$tableBuildExaminer
+			$tableBuildExaminer,
+			$versionExaminer
 		);
 
 		$installer->setSetupFile(
-			$applicationFactory->singleton( 'SetupFile' )
+			$setupFile
 		);
 
 		$installer->setMessageReporter(
