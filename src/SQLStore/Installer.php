@@ -11,6 +11,7 @@ use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
@@ -67,6 +68,11 @@ class Installer implements MessageReporter {
 	private $tableBuildExaminer;
 
 	/**
+	 * @var VersionExaminer
+	 */
+	private $versionExaminer;
+
+	/**
 	 * @var Options
 	 */
 	private $options;
@@ -77,16 +83,23 @@ class Installer implements MessageReporter {
 	private $setupFile;
 
 	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TableSchemaManager $tableSchemaManager
 	 * @param TableBuilder $tableBuilder
 	 * @param TableBuildExaminer $tableBuildExaminer
+	 * @param VersionExaminer VersionExaminer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer ) {
+	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer ) {
 		$this->tableSchemaManager = $tableSchemaManager;
 		$this->tableBuilder = $tableBuilder;
 		$this->tableBuildExaminer = $tableBuildExaminer;
+		$this->versionExaminer = $versionExaminer;
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
 	}
@@ -132,7 +145,7 @@ class Installer implements MessageReporter {
 			CompatibilityMode::enableTemporaryCliUpdateMode();
 		}
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 		$timer = new Timer();
 
 		$timer->keys = [
@@ -152,20 +165,18 @@ class Installer implements MessageReporter {
 			$this->options->has( 'verbose' ) && $this->options->get( 'verbose' )
 		);
 
-		if (
-			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
-			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
-			$this->messageReporter->reportMessage( $cliMsgFormatter->section( 'Semantic MediaWiki', 3, '=' ) );
-			$this->messageReporter->reportMessage( "\n" . $cliMsgFormatter->head() );
-			$this->options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
-		}
+		$this->printHead();
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Database setup' )
+			$this->cliMsgFormatter->section( 'Database setup' )
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . $cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+		);
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->twoCols( 'Database:', $this->tableBuildExaminer->getDatabaseInfo() )
 		);
 
 		$this->tableBuilder->setMessageReporter(
@@ -176,8 +187,12 @@ class Installer implements MessageReporter {
 			$this->messageReporter
 		);
 
-		if ( $this->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
-			return true;
+		$this->versionExaminer->setMessageReporter(
+			$this->messageReporter
+		);
+
+		if ( $this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
+			return $this->printBottom();
 		}
 
 		// #3559
@@ -193,7 +208,7 @@ class Installer implements MessageReporter {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
+			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
 		);
 
 		$custom = false;
@@ -201,7 +216,7 @@ class Installer implements MessageReporter {
 		foreach ( $tables as $table ) {
 
 			if ( !$custom && !$table->isCoreTable() ) {
-				$custom = $cliMsgFormatter->section( 'Custom table(s)', 6, '-', true ) . "\n";
+				$custom = $this->cliMsgFormatter->section( 'Custom table(s)', 6, '-', true ) . "\n";
 
 				$this->messageReporter->reportMessage(
 					$custom
@@ -214,7 +229,7 @@ class Installer implements MessageReporter {
 		$timer->stop( 'create-tables' )->new( 'post-creation' );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Post-creation examination' ) . "\n"
+			$this->cliMsgFormatter->section( 'Post-creation examination' ) . "\n"
 		);
 
 		$this->setupFile->setMaintenanceMode( [ 'post-creation' => 40 ] );
@@ -223,7 +238,7 @@ class Installer implements MessageReporter {
 		$timer->stop( 'post-creation' )->new( 'table-optimization' );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Table optimization' ) . "\n"
+			$this->cliMsgFormatter->section( 'Table optimization' ) . "\n"
 		);
 
 		$this->setupFile->setMaintenanceMode( [ 'table-optimization' => 60 ] );
@@ -232,7 +247,7 @@ class Installer implements MessageReporter {
 		$timer->stop( 'table-optimization' )->new( 'supplement-jobs' );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Supplement jobs' ) . "\n"
+			$this->cliMsgFormatter->section( 'Supplement jobs' ) . "\n"
 		);
 
 		$this->setupFile->setMaintenanceMode( [ 'supplement-jobs' => 80 ] );
@@ -243,7 +258,7 @@ class Installer implements MessageReporter {
 		$timer->stop( 'supplement-jobs' )->new( 'hook-execution' );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'AfterCreateTablesComplete (Hook)' )
+			$this->cliMsgFormatter->section( 'AfterCreateTablesComplete (Hook)' )
 		);
 
 		$text = [
@@ -252,7 +267,7 @@ class Installer implements MessageReporter {
 		];
 
 		$this->messageReporter->reportMessage(
-			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		Hooks::run(
@@ -267,15 +282,11 @@ class Installer implements MessageReporter {
 		$timer->stop( 'hook-execution' );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Summary' ) . "\n"
+			$this->cliMsgFormatter->section( 'Summary' ) . "\n"
 		);
 
 		$this->outputReport( $timer );
-
-		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
-			$this->messageReporter->reportMessage( $cliMsgFormatter->section( '', 0, '=' ) );
-			$this->messageReporter->reportMessage( "\n" );
-		}
+		$this->printBottom();
 
 		return true;
 	}
@@ -287,16 +298,16 @@ class Installer implements MessageReporter {
 	 */
 	public function uninstall( $verbose = true ) {
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Database table cleanup' )
+			$this->cliMsgFormatter->section( 'Database table cleanup' )
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . $cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
 		);
 
 		$this->messageReporter->reportMessage( "\nSemantic MediaWiki related tables ...\n" );
@@ -327,7 +338,7 @@ class Installer implements MessageReporter {
 		];
 
 		$this->messageReporter->reportMessage(
-			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		$this->setupFile->reset();
@@ -372,7 +383,7 @@ class Installer implements MessageReporter {
 			return $this->messageReporter->reportMessage( "Table optimization was not enabled (or skipped), stopping the task.\n" );
 		}
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$text = [
 			'The optimization task can take a moment to complete and depending',
@@ -380,11 +391,11 @@ class Installer implements MessageReporter {
 		];
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->wordwrap( $text ) . "\n"
+			$this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
+			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
 		);
 
 		$custom = false;
@@ -398,7 +409,7 @@ class Installer implements MessageReporter {
 				$this->messageReporter->reportMessage( "   ... done.\n" );
 
 				$this->messageReporter->reportMessage(
-					$cliMsgFormatter->section( 'Custom table(s)', 6, '-', true ) . "\n"
+					$this->cliMsgFormatter->section( 'Custom table(s)', 6, '-', true ) . "\n"
 				);
 
 				$this->messageReporter->reportMessage( "Checking table ...\n" );
@@ -415,18 +426,18 @@ class Installer implements MessageReporter {
 
 	private function addSupplementJobs() {
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->options->safeGet( self::OPT_SUPPLEMENT_JOBS, false ) ) {
 			return $this->messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
 		}
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->oneCol( "Adding jobs ..." )
+			$this->cliMsgFormatter->oneCol( "Adding jobs ..." )
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
+			$this->cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
 		);
 
 		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
@@ -439,11 +450,11 @@ class Installer implements MessageReporter {
 		$propertyStatisticsRebuildJob->insert();
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
+			$this->cliMsgFormatter->firstCol( "... Entity disposer job ...", 3 )
 		);
 
 		$entityIdDisposerJob = new EntityIdDisposerJob(
@@ -454,7 +465,7 @@ class Installer implements MessageReporter {
 		$entityIdDisposerJob->insert();
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
@@ -462,7 +473,7 @@ class Installer implements MessageReporter {
 
 	private function outputReport( $timer ) {
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
 		foreach ( $timer->getTimes() as $key => $time ) {
@@ -479,51 +490,30 @@ class Installer implements MessageReporter {
 			$key = $keys[$key];
 
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->twoCols( "- $key", "$t $unit", 0, '.' )
+				$this->cliMsgFormatter->twoCols( "- $key", "$t $unit", 0, '.' )
 			);
 		}
 	}
 
-	private function meetsVersionMinRequirement( $version ) {
+	private function printHead() {
 
-		$this->messageReporter->reportMessage( "\nChecking database version requirement ..." );
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
-
-		$requirements = $this->tableBuildExaminer->defineDatabaseRequirements(
-			$version
-		);
-
-		if ( $this->tableBuildExaminer->meetsMinimumRequirement( $requirements ) ) {
-			return $this->setupFile->remove( SetupFile::DB_REQUIREMENTS );
+		if (
+			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
+			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( 'Semantic MediaWiki', 3, '=' ) );
+			$this->messageReporter->reportMessage( "\n" . $this->cliMsgFormatter->head() );
+			$this->options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
 		}
+	}
 
-		$cliMsgFormatter = new CliMsgFormatter();
-
-		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Compatibility notice' )
-		);
-
-		$text = [
-			"The {$requirements['type']} database version of {$requirements['latest_version']}",
-			"doesn't meet the minimum requirement of {$requirements['minimum_version']}",
-			"for Semantic MediaWiki.",
-			"\n\n",
-			 "The installation of Semantic MediaWiki was aborted!"
-		];
-
-		$this->messageReporter->reportMessage(
-			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
-		);
-
-		$this->setupFile->set( [ SetupFile::DB_REQUIREMENTS => $requirements ] );
-		$this->setupFile->finalize();
+	private function printBottom() {
 
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
-			$this->messageReporter->reportMessage( $cliMsgFormatter->section( '', 0, '=' ) );
+			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );
 		}
 
-		return false;
+		return true;
 	}
 
 }

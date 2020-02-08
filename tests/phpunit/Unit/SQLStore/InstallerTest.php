@@ -22,6 +22,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableSchemaManager;
 	private $tableBuilder;
 	private $tableBuildExaminer;
+	private $versionExaminer;
 	private $SetupFile;
 
 	protected function setUp() {
@@ -41,6 +42,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->versionExaminer = $this->getMockBuilder( '\SMW\SQLStore\Installer\VersionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -56,7 +61,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Installer::class,
-			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableBuildExaminer )
+			new Installer( $this->tableSchemaManager, $this->tableBuilder, $this->tableBuildExaminer, $this->versionExaminer )
 		);
 	}
 
@@ -66,8 +71,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
-			->method( 'meetsMinimumRequirement' )
+		$this->versionExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsVersionMinRequirement' )
 			->will( $this->returnValue( true ) );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
@@ -88,7 +93,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -101,29 +107,21 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInstall_FailsMinimumRequirement() {
 
-		$this->tableBuildExaminer->expects( $this->once() )
-			->method( 'defineDatabaseRequirements' )
-			->will( $this->returnValue( [ 'type' => 'foo', 'latest_version' => 1, 'minimum_version' => 2 ] ) );
-
-		$this->tableBuildExaminer->expects( $this->once() )
-			->method( 'meetsMinimumRequirement' )
+		$this->versionExaminer->expects( $this->once() )
+			->method( 'meetsVersionMinRequirement' )
 			->will( $this->returnValue( false ) );
 
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
 		$instance->install();
-
-		$this->assertContains(
-			"The foo database version of 1 doesn't meet the minimum requirement of 2",
-			$this->spyMessageReporter->getMessagesAsString()
-		);
 	}
 
 	public function testInstallWithSupplementJobs() {
@@ -135,8 +133,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
-			->method( 'meetsMinimumRequirement' )
+		$this->versionExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsVersionMinRequirement' )
 			->will( $this->returnValue( true ) );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
@@ -157,7 +155,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -178,8 +177,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuildExaminer->expects( $this->atLeastOnce() )
-			->method( 'meetsMinimumRequirement' )
+		$this->versionExaminer->expects( $this->atLeastOnce() )
+			->method( 'meetsVersionMinRequirement' )
 			->will( $this->returnValue( true ) );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
@@ -194,7 +193,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -226,7 +226,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$instance->setMessageReporter( $this->spyMessageReporter );
@@ -242,7 +243,8 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
-			$this->tableBuildExaminer
+			$this->tableBuildExaminer,
+			$this->versionExaminer
 		);
 
 		$callback = function() use( $instance ) {
