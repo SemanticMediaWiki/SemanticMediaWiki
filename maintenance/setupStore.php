@@ -22,46 +22,43 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 }
 
 /**
- * Sets up the storage backend currently selected in LocalSettings.php
- * (or the default MySQL store if no other store was selected). This
+ * Sets up the storage backend currently selected in the "LocalSettings.php"
+ * file (or the default MySQL store if no other store was selected). This
  * is equivalent to clicking the respective button on the special page
- * Special:SMWAdmin. However, the latter may timeout if the setup involves
- * migrating a lot of existing data.
+ * Special:SemanticMediaWiki. However, the latter may timeout if the setup
+ * involves migrating a lot of existing data.
  *
- * Note: If SMW is not installed in its standard path under ./extensions
- *       then the MW_INSTALL_PATH environment variable must be set.
- *       See README in the maintenance directory.
+ * Note:
+ * If SMW is not installed in its standard path under ./extensions
+ * then the MW_INSTALL_PATH environment variable must be set.
+ * See README in the maintenance directory.
  *
  * Usage:
  * php setupStore.php [options...]
  *
- * -password Password for user account
- * NOTE: specifying user credentials in a command line call will usually store them
- * within the shell history file. For security, provide credentials in Adminssetings.php
- * instead and ensure that your text editor does not create world-readable backup copies
- * when modifying this file.
+ * --delete          Delete all SMW data, uninstall the selected storage backend.
+ *                   This is useful when moving to a new storage engine, and in
+ *                   the rare case of unsinstalling SMW. Deleted data can be
+ *                   recreated using this script (setup) followed by the use
+ *                   of the rebuildhData.php script which may take some time.
  *
- * --delete   Delete all SMW data, uninstall the selected storage backend. This is useful
- *            when moving to a new storage engine, and in the rare case of unsinstalling
- *            SMW. Deleted data can be recreated using this script (setup) followed by the
- *            use of the rebuildhData.php script which may take some time.
+ * --backend         The backend to use, e.g. SMWSQLStore3.
  *
- * --backend  The backend to use, e.g. SMWSQLStore3.
+ * --skip-optimize   Skips the table optimization process.
  *
- * --skip-optimize Skips the table optimization process.
+ * --skip-import     Skips the import process.
  *
- * --skip-import Skips the import process.
- *
- * --nochecks When specified, no prompts are provided. Deletion will thus happen
- *            without the need to provide any confirmation.
+ * --nochecks        When specified, no prompts are provided. Deletion will thus happen
+ *                   without the need to provide any confirmation.
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author James Hong Kong
  */
 class SetupStore extends \Maintenance {
 
 	/**
-	 * Name of the store class configured in LocalSettings.php. Stored to
+	 * Name of the store class configured in the "LocalSettings.php" file. Stored to
 	 * be able to tell if the selected store is the currecnt default or not.
 	 *
 	 * @var string
@@ -247,7 +244,7 @@ class SetupStore extends \Maintenance {
 
 		$text = [
 			"You are about to delete all data stored in the SMW backend. To undo",
-			"this operation later on, a complete refresh of the data will be needed."
+			"this operation later on, a complete rebuild of the data will be needed."
 		];
 
 		$this->messageReporter->reportMessage(
