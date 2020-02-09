@@ -5,6 +5,9 @@ sudo: required
 # https://docs.travis-ci.com/user/trusty-ci-environment/
 dist: trusty
 
+addons:
+  postgresql: "9.5"
+
 matrix:
   fast_finish: true
   include:

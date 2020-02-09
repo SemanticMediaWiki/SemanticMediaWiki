@@ -322,6 +322,7 @@ class Database {
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
 
 		$connection = $this->connRef->getConnection( 'write' );
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
@@ -332,6 +333,13 @@ class Database {
 		}
 
 		if ( $this->isType( 'postgres' ) ) {
+
+			// Requires postgres 9.5+
+			// https://www.postgresql.org/docs/9.5/sql-insert.html
+			if ( strpos( $sql, "INSERT IGNORE INTO" ) !== false ) {
+				$sql = ( str_replace( 'IGNORE ', '', $sql ) ) . " ON CONFLICT DO NOTHING";
+			}
+
 			$sql = str_replace( '@INT', '::integer', $sql );
 			$sql = str_replace( 'IGNORE', '', $sql );
 			$sql = str_replace( 'DROP TEMPORARY TABLE', 'DROP TABLE IF EXISTS', $sql );
@@ -374,6 +382,7 @@ class Database {
 
 		// State is only valid for a single transaction
 		$this->flags = false;
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		if ( $exception ) {
 			throw $exception;

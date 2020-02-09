@@ -27,7 +27,7 @@ final class Setup {
 	 * Any change to a version will modify the key computed by `SetupFile::makeKey`.
 	 */
 	const MINIMUM_DB_VERSION = [
-		'postgres' => '9.2',
+		'postgres' => '9.5',
 		'sqlite' => '3.3.7',
 		'mysql' => '5.5.8'
 	];

@@ -41,7 +41,7 @@ then
   # and the first command that accesses PostgreSQL
   sleep 3
 
-  sudo /etc/init.d/postgresql start
+  sudo /etc/init.d/postgresql start 9.5
   sleep 3
 
   psql -c 'create database its_a_mw;' -U postgres
