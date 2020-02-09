@@ -19,7 +19,8 @@ The general policy of the `Semantic MediaWiki` software and the development ther
 - No MediaWiki tables are modified or altered, any data that needs to be stored persistently is relying on the Semantic MediaWiki's own [`database schema`][db-schema] (writing to the cache is an exception)
 - No MediaWiki classes are modified, patched, or otherwise changed
 - Only publicly available `Hooks` and `API` interfaces are used to extend MediaWiki with Semantic MediaWiki functions
-- Classes and methods (i.e. declared using the `public` visibility attribute) marked as `@private` are not considered for public consumption or API hence a users should not relied upon its availability and can change their signature anytime without prio notice
+- Classes and public methods (i.e. those declared using the `public` visibility attribute) marked as `@private` are not considered for public consumption or part of the public API hence a user should not rely upon these to be available as they may change their signature anytime or removed without prio notice
+- Tables created and managed by Semantic MediaWiki should not be accessed directly, instead a user (or extension) should make use of the public available API to fetch relevant information
 
 ### Conventions
 
