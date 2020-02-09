@@ -113,58 +113,64 @@ but since it is no longer tested functionality can no longer be validated and as
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
+		<th>3.2.x</th>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.5.0+)</td>
+	</tr>
+	<tr>
 		<th>3.1.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.2.0+)</td>
 	</tr>
 	<tr>
 		<th>3.0.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.2.0+)</td>
 	</tr>
 	<tr>
 		<th>2.5.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.1.0+)</td>
 	</tr>
 	<tr>
 		<th>2.4.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.0.0+)</td>
 	</tr>
 	<tr>
 		<th>2.3.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.0.0+)</td>
 	</tr>
 	<tr>
 		<th>2.2.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.0.0+)</td>
 	</tr>
 	<tr>
 		<th>2.1.x</th>
-		<td>Full support (5.x)</td>
-		<td>Full support (3.x)</td>
-		<td>Full support (9.x)</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.0.0+)</td>
 	</tr>
 	<tr>
 		<th>2.0.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Beta support</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Beta support (8.3.0+)</td>
 	</tr>
 	<tr>
 		<th>1.9.x</th>
-		<td>Full support</td>
-		<td>Full support</td>
-		<td>Beta support</td>
+		<td>Full support (5.0.2+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Beta support (8.3.0+)</td>
 	</tr>
 </table>
 
@@ -180,6 +186,14 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 		<th><a href="https://github.com/garlik/4store">4store</a></th>
 		<th><a href="http://rdf4j.org/">Sesame</a></th>
 		<th><a href="https://wiki.blazegraph.com/">Blazegraph</a></th>
+	</tr>
+	<tr>
+		<th>3.2.x</th>
+		<td>Full support<br />(1.x >=1.1) + 2.4.0</td>
+		<td>Full support<br />(6.x >=6.1) + 7.2<sup>[t.1]</sup></td>
+		<td>Beta support<br />(1.x >=1.1)<sup>[t.2]</sup></td>
+		<td>Full support<br />(2.8.x)</td>
+		<td>Full support<br />(1.5.2) + 2.1.0<sup>[t.3]</sup></td>
 	</tr>
 	<tr>
 		<th>3.1.x</th>
