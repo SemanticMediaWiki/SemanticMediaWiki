@@ -351,8 +351,6 @@ class RebuildElasticIndex extends \Maintenance {
 			$this->cliMsgFormatter->section( 'Indices rebuild' )
 		);
 
-		$isSelective = false;
-
 		if ( $this->autoRecovery->has( 'ar_id' ) ) {
 
 			$this->reportMessage(
@@ -363,8 +361,8 @@ class RebuildElasticIndex extends \Maintenance {
 				$this->cliMsgFormatter->twoCols( '... ID (document):', $this->autoRecovery->get( 'ar_id' ), 3 )
 			);
 		} elseif ( $this->hasOption( 's' ) || $this->hasOption( 'page' ) ) {
-			$isSelective = true;
-		}else {
+			//
+		} else {
 			$this->autoRecovery->set( 'ar_id', false );
 		}
 
@@ -399,6 +397,7 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 
 		$this->rebuilder->prepare();
+		$this->rebuilder->set( 'skip-fileindex', $this->getOption( 'skip-fileindex' ) );
 
 		list( $res, $last ) = $this->rebuilder->select(
 			$this->store,
@@ -406,24 +405,30 @@ class RebuildElasticIndex extends \Maintenance {
 		);
 
 		$count = $res->numRows();
-
-		if ( $isSelective ) {
-			$last = $count;
-		}
+		$i = 0;
 
 		if ( $count == 0 ) {
 			$this->reportMessage( '   ... no documents to process ...' );
+		} else {
+			$this->reportMessage(
+				$this->cliMsgFormatter->twoCols( '... selected entities ...', "$count (rows)", 3 )
+			);
 		}
 
-		$this->rebuilder->set( 'skip-fileindex', $this->getOption( 'skip-fileindex' ) );
-		$i = 0;
-
-		$this->reportMessage(
-			$this->cliMsgFormatter->twoCols( '... selected entities ...', "$count (rows)", 3 )
-		);
-
 		foreach ( $res as $row ) {
-			$this->rebuildFromRow( ++$i, $row, $last, $isSelective );
+			$this->rebuildFromRow( ++$i, $count, $row, $last );
+		}
+
+		// This is to match the last output to signal to the user that 100% were
+		// matched even in the case where last wasn't a "real" entity and would
+		// count towards the last. We don't want to confuse a user with some
+		// unbalanced progress display.
+		if ( $i > 0 ) {
+			$progress = $this->cliMsgFormatter->progressCompact( $i, $count, $last, $last );
+
+			$this->reportMessage(
+				$this->cliMsgFormatter->twoColsOverride( "   ... updating document (current/last) ...", $progress )
+			);
 		}
 
 		$this->reportMessage( "\n   ... done.\n" );
@@ -447,14 +452,12 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 	}
 
-	private function rebuildFromRow( $i, $row, $last, $isSelective ) {
+	private function rebuildFromRow( $i, $count, $row, $last ) {
 
-		$i = $isSelective ? $i : $row->smw_id;
-		$key = $isSelective ? '(count)' : 'no.';
-		$progress = $this->cliMsgFormatter->progressCompact( $i, $last );
+		$progress = $this->cliMsgFormatter->progressCompact( $i, $count, $row->smw_id, $last );
 
 		$this->reportMessage(
-			$this->cliMsgFormatter->twoColsOverride( "   ... updating document ...", $progress )
+			$this->cliMsgFormatter->twoColsOverride( "   ... updating document (current/last) ...", $progress )
 		);
 
 		if ( $row->smw_iw === SMW_SQL3_SMWDELETEIW || $row->smw_iw === SMW_SQL3_SMWREDIIW ) {
@@ -529,7 +532,7 @@ class RebuildElasticIndex extends \Maintenance {
 
 				$conditions[] = implode( ' AND ', $cond );
 			}
-		} else {
+		} elseif( !$this->hasOption( 's' ) || $this->getOption( 's' ) < 2 ) {
 			// Make sure we always replicate properties whether they have a
 			// `smw_proptable_hash` or not (which hints to predefined properties
 			// without an actual page)
