@@ -314,7 +314,7 @@ class Rebuilder {
 		$document = $this->documentCreator->newFromSemanticData( $semanticData );
 		$document->setTextBody( $this->fetchRawText( $dataItem ) );
 
-		$this->indexer->indexDocument( $document );
+		$this->indexer->indexDocument( $document, false );
 
 		if ( $fileIndexer !== null ) {
 			$fileIndexer->setVersions( $this->versions );

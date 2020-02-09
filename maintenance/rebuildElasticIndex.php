@@ -405,20 +405,25 @@ class RebuildElasticIndex extends \Maintenance {
 			$this->select_conditions()
 		);
 
+		$count = $res->numRows();
+
 		if ( $isSelective ) {
-			$last = $res->numRows();
+			$last = $count;
 		}
 
-		if ( $res->numRows() == 0 ) {
+		if ( $count == 0 ) {
 			$this->reportMessage( '   ... no documents to process ...' );
 		}
 
 		$this->rebuilder->set( 'skip-fileindex', $this->getOption( 'skip-fileindex' ) );
 		$i = 0;
 
+		$this->reportMessage(
+			$this->cliMsgFormatter->twoCols( '... selected entities ...', "$count (rows)", 3 )
+		);
+
 		foreach ( $res as $row ) {
-			$i++;
-			$this->rebuildByRow( $i, $row, $last, $isSelective );
+			$this->rebuildFromRow( ++$i, $row, $last, $isSelective );
 		}
 
 		$this->reportMessage( "\n   ... done.\n" );
@@ -442,7 +447,7 @@ class RebuildElasticIndex extends \Maintenance {
 		}
 	}
 
-	private function rebuildByRow( $i, $row, $last, $isSelective ) {
+	private function rebuildFromRow( $i, $row, $last, $isSelective ) {
 
 		$i = $isSelective ? $i : $row->smw_id;
 		$key = $isSelective ? '(count)' : 'no.';
@@ -482,6 +487,7 @@ class RebuildElasticIndex extends \Maintenance {
 		$conditions = [];
 		$conditions[] = "smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
 		$conditions[] = "smw_subobject=''";
+		$conditions[] = "smw_proptable_hash IS NOT NULL";
 
 		if ( $this->hasOption( 'auto-recovery' ) && $this->autoRecovery->has( 'ar_id' ) ) {
 			$conditions[] = 'smw_id >= ' . $connection->addQuotes( $this->autoRecovery->get( 'ar_id' ) );
@@ -523,6 +529,15 @@ class RebuildElasticIndex extends \Maintenance {
 
 				$conditions[] = implode( ' AND ', $cond );
 			}
+		} else {
+			// Make sure we always replicate properties whether they have a
+			// `smw_proptable_hash` or not (which hints to predefined properties
+			// without an actual page)
+			$cond = [
+				'smw_namespace=' . $connection->addQuotes( SMW_NS_PROPERTY )
+			];
+
+			$conditions = [ implode( ' AND ', $conditions ) . ' OR (' . implode( ' ', $cond ) . ')' ];
 		}
 
 		return $conditions;
