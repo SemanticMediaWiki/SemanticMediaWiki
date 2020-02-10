@@ -66,7 +66,7 @@
 			"subject": "P0106/Numeric_value",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title>",
+					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"1\">",
 					"<span class=\"smwtticon info\">",
 					"<span class=\"smwttcontent\">1</span>"
 				]
