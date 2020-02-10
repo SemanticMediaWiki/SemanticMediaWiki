@@ -129,7 +129,7 @@ class UpdateQueryDependencies extends \Maintenance {
 		);
 
 		$res = $connection->select(
-			[ SQLStore::ID_TABLE, $tableName . ' AS p' ],
+			[ SQLStore::ID_TABLE, 'p' => $tableName ],
 			[
 				'smw_id',
 				'smw_title',
@@ -144,7 +144,7 @@ class UpdateQueryDependencies extends \Maintenance {
 				'GROUP BY' => 'smw_id'
 			],
 			[
-				$tableName . ' AS p' => [ 'INNER JOIN', [ 'p.s_id=smw_id' ] ],
+				'p' => [ 'INNER JOIN', [ 'p.s_id=smw_id' ] ],
 			]
 		);
 
