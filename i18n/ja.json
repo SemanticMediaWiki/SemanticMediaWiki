@@ -31,7 +31,8 @@
 			"Suyama",
 			"Wat",
 			"Aefgh39622",
-			"Abijeet Patro"
+			"Abijeet Patro",
+			"Rootflag"
 		]
 	},
 	"smw-desc": "ウィキを機械や人間にとってよりアクセスしやすいものにする ([https://www.semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])",
@@ -129,6 +130,7 @@
 	"smw_manytypes": "プロパティに対して複数の型を定義しました。",
 	"smw_emptystring": "空文字列は受け入れられません。",
 	"smw_notinenum": "「$1」は、「$3」プロパティに対して[[Property:Allows value|許可された値]]の一覧 ($2) の中に存在しません。",
+	"smw-datavalue-constraint-error-allows-value-list": "\"$1\"は、\"$3\"で [[Property:Allows value|許可された値]] ($2) にありません。",
 	"smw_noboolean": "「$1」は真偽値 (true/false) として認識されません。",
 	"smw_true_words": "真,true,t,yes,y",
 	"smw_false_words": "偽,false,f,no,n",
@@ -255,7 +257,7 @@
 	"searchbyproperty": "プロパティによる検索",
 	"processingerrorlist": "処理エラーの一覧",
 	"propertylabelsimilarity": "プロパティラベル類似性レポート",
-	"smw-processingerrorlist-intro": "以下の一覧は[https://www.semantic-mediawiki.org/ Semantic MediaWiki] に関連して発生した[https://www.semantic-mediawiki.org//wiki/Processing_errors 処理エラー]の概要を提供します。この一覧は定期的に監視し、無効な値の注記を訂正することをお勧めします。",
+	"smw-processingerrorlist-intro": "以下の一覧は[https://www.semantic-mediawiki.org/ Semantic MediaWiki] に関連して発生した[https://www.semantic-mediawiki.org/wiki/Processing_errors 処理エラー]の概要を提供します。この一覧は定期的に監視し、無効な値の注記を訂正することをお勧めします。",
 	"smw_sbv_docu": "指定したプロパティと値を持つすべてのページを検索します。",
 	"smw_sbv_novalue": "そのプロパティに対して有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。",
 	"smw_sbv_displayresult": "プロパティ「$1」の値が「$2」であるすべてのページの一覧",
@@ -535,6 +537,7 @@
 	"smw-ask-tab-result": "結果",
 	"smw-ask-tab-debug": "デバッグ",
 	"smw-ask-tab-code": "コード",
+	"smw-pendingtasks-tab-setup": "セットアップ",
 	"smw-report": "レポート",
 	"smw-legend": "凡例"
 }

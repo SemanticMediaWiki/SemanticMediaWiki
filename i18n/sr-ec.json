@@ -198,6 +198,7 @@
 	"smw_inverse_label_default": "$1 од",
 	"smw_inverse_label_property": "Обрнута ознака својства",
 	"pageproperty": "Страница за претрагу својства",
+	"pendingtasklist": "Списак задатака на чекању",
 	"smw_pp_docu": "Претражи све вредности особине на датој страници.\nУнесите обоје, и страницу, и особину.",
 	"smw_pp_from": "Са странице:",
 	"smw_pp_type": "Својство:",
@@ -225,9 +226,10 @@
 	"smw-admin-deprecation-notice-config-notice": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је застарео параметар и биће уклоњен у верзији $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је замењен параметар са параметром <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> је уклоњен параметар у верзији $2",
-	"smw-admin-deprecation-notice-title-notice": "Предстојеће промене",
+	"smw-admin-deprecation-notice-title-notice": "Застарела подешавања",
 	"smw-admin-deprecation-notice-title-replacement": "Замењена или преименована подешавања",
 	"smw-admin-deprecation-notice-title-removal": "Уклоњена подешавања",
+	"smw-admin-deprecation-notice-section-legend": "Легенда",
 	"smw_smwadmin_datarefresh": "Поправљање података",
 	"smw_smwadmin_datarefreshdocu": "Постоји могућност за враћање свих података семантичког Медијавикија који су засновани на тренутном садржају викија.\nОво је корисно за исправку оштећених података или за обнову података ако је унутрашњи формат промењен као резултат доградње софтвера.\nАжурирање се врши за сваку страницу понаособ, и треба да прође неко време како би се све вратило у нормалу.\nИспод је приказано да ли је ажурирање у току, а то вам омогућава да започнете или зауставите доградње (осим ако ту могућност није искључио администратор).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Једно ажурирање је већ у току.</strong>\nНормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.\nДа би се ово ажурирање брже завршило, можете покренути скрипту за одржавање Медијавикија <code>runJobs.php</code> (користите опцију <code>--maxjobs 1000</code> за ограничење броја ажурирања у једном пакету).\nПроцена напредовања тренутног ажурирања:",
@@ -278,6 +280,9 @@
 	"smw-admin-tab-maintenance": "Одржавање",
 	"smw-admin-tab-supplement": "Допунске функције",
 	"smw-admin-tab-registry": "Регистар",
+	"smw-admin-tab-alerts": "Упозорења",
+	"smw-admin-alerts-tab-maintenancealerts": "Упозорења одржавања",
+	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert-title": "Застарели ентитети",
 	"smw-admin-maintenance-no-description": "Без описа.",
 	"smw-livepreview-loading": "Учитавам…",
 	"smw-sp-searchbyproperty-resultlist-header": "Листа резултата",
@@ -355,5 +360,7 @@
 	"smw-concept-tab-list": "Списак",
 	"smw-concept-tab-errors": "Грешке",
 	"smw-ask-tab-extra": "Додатно",
-	"smw-ask-tab-code": "Кôд"
+	"smw-ask-tab-code": "Кôд",
+	"smw-pendingtasks-setup-tasks": "Задаци",
+	"smw-es-replication-error-divergent-date-short": "Следеће информације о датуму коришћене су ради поређења:"
 }
