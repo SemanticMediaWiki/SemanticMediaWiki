@@ -35,6 +35,7 @@ class Message {
 	const TEXT = 0x2;
 	const ESCAPED = 0x4;
 	const PARSE = 0x8;
+	const RAW = 0x16;
 
 	/**
 	 * Predefined language mode
@@ -203,6 +204,10 @@ class Message {
 
 		if ( $type === null ) {
 			$type = self::TEXT;
+		}
+
+		if ( is_int( $parameters[0] ) ) {
+			$type = self::RAW;
 		}
 
 		if ( $language === null || !$language ) {

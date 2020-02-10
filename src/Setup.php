@@ -5,6 +5,7 @@ namespace SMW;
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
+use RawMessage;
 
 /**
  * Extension setup and registration
@@ -232,6 +233,12 @@ final class Setup {
 	}
 
 	private function initMessageCallbackHandler() {
+
+		Message::registerCallbackHandler( Message::RAW, function( $arguments, $language ) {
+			$rawtext = array_shift( $arguments );
+			$rawmessage = new RawMessage( "$rawtext", $arguments );
+			return $rawmessage->text();
+		} );
 
 		Message::registerCallbackHandler( Message::TEXT, function( $arguments, $language ) {
 
