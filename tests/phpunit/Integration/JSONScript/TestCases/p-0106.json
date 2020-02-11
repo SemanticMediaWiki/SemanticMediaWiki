@@ -15,7 +15,13 @@
 			"message-cache": "clear",
 			"page": "P0106/Note",
 			"contents": "{{#info: an info note | note }}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "P0106/Numeric_value",
+			"contents": "{{#info: 1 }}"
 		}
+
 	],
 	"tests": [
 		{
@@ -53,7 +59,20 @@
 					"<span class=\"smwttcontent\">an info note</span>"
 				]
 			}
+		},
+		{
+			"type": "parser",
+			"about": "#3",
+			"subject": "P0106/Numeric_value",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"1\">",
+					"<span class=\"smwtticon info\">",
+					"<span class=\"smwttcontent\">1</span>"
+				]
+			}
 		}
+
 	],
 	"settings": {
 		"wgContLang": "en",
