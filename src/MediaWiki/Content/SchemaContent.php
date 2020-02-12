@@ -15,7 +15,6 @@ use Title;
 use User;
 use ParserOptions;
 use ParserOutput;
-use Html;
 use WikiPage;
 use Status;
 
@@ -43,7 +42,7 @@ class SchemaContent extends JsonContent {
 	private $schemaFactory;
 
 	/**
-	 * @var ContentFormatter
+	 * @var SchemaContentFormatter
 	 */
 	private $contentFormatter;
 
@@ -339,7 +338,7 @@ class SchemaContent extends JsonContent {
 	 * @since 3.0
 	 *
 	 * @param SchemaFactory $schemaFactory
-	 * @param ContentFormatter|null $contentFormatter
+	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
 	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
 		$this->schemaFactory = $schemaFactory;
@@ -400,7 +399,7 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	private function setTitlePrefix( $title ) {
+	private function setTitlePrefix( Title $title ) {
 
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
