@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki;
 
+use ParserOutput;
 use Revision;
 use SMW\ParserData;
+use SMW\SemanticData;
 use User;
 use WikiPage;
 
@@ -75,10 +77,8 @@ class EditInfo {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @return EditInfoProvider
 	 */
-	public function fetchEditInfo() {
+	public function fetchEditInfo(): self {
 
 		if ( $this->page !== null && $this->revision === null ) {
 			$this->revision = $this->page->getRevision();
