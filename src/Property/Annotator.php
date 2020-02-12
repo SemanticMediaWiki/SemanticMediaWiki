@@ -2,6 +2,9 @@
 
 namespace SMW\Property;
 
+use SMW\PropertyAnnotator;
+use SMW\SemanticData;
+
 /**
  * Interface specifying available methods to interact with the Decorator
  *

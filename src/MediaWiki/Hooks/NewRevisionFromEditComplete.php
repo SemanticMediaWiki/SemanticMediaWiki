@@ -7,6 +7,8 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\PageInfoProvider;
+use SMW\ParserData;
+use SMW\Schema\Schema;
 use Title;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
@@ -85,7 +87,7 @@ class NewRevisionFromEditComplete implements HookListener {
 		);
 
 		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
-			$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
+			$schemaFactory = $applicationFactory->getSchemaFactory();
 
 			try {
 				$schema = $schemaFactory->newSchema(
@@ -122,9 +124,9 @@ class NewRevisionFromEditComplete implements HookListener {
 		return true;
 	}
 
-	private function addPredefinedPropertyAnnotation( $applicationFactory, $parserData, $schema = null ) {
+	private function addPredefinedPropertyAnnotation( ApplicationFactory $applicationFactory, ParserData $parserData, Schema $schema = null ) {
 
-		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
+		$propertyAnnotatorFactory = $applicationFactory->getPropertyAnnotatorFactory();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()

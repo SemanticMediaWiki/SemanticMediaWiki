@@ -4,6 +4,7 @@ namespace SMW\Property\Annotators;
 
 use SMW\DataItemFactory;
 use SMW\PropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * Decorator that contains the reference to the invoked PropertyAnnotator
