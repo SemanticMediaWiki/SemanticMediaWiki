@@ -91,7 +91,7 @@ class ByPageSemanticDataFinder {
 	 * @return SemanticData
 	 */
 	public function fetchFromOutput() {
-		return $this->getPageData()->getData();
+		return $this->getPageData()->getSemanticData();
 	}
 
 	protected function getPageData() {
