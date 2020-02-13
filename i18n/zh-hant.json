@@ -954,7 +954,7 @@
 	"smw-parser-recursion-level-exceeded": "$1 個遞迴的層次在解析期間溢出。建議您驗證模板結構，或是如有需要可設置參數 <code>$maxRecursionDepth</code>。",
 	"smw-property-page-list-count": "顯示使用到此屬性的 $1 個{{PLURAL:$1|頁面|頁面}}。",
 	"smw-property-page-list-search-count": "顯示使用到符合值「$2」之屬性的 $1 個{{PLURAL:$1|頁面|頁面}}。",
-	"smw-property-page-filter-note": "[https://www.semantic-mediawiki.org/wiki/Help:Property_page/Filter 搜尋篩選]允許包含查詢表達式，例如像是 <code>~</code> 或 <code>!</code>。所選的[https://www.semantic-mediawiki.org/wiki/Query_engine 查詢引擎]可能會支援不區分大小寫，或是其它較短的表達式。例如像：\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Query_expressions/in <code>in:</code>] 的結果為應有包含，如：'<code>in:Foo</code>'\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Query_expressions/not <code>not:</code>] 的結果為應不包含，如：'<code>not:Bar</code>'",
+	"smw-property-page-filter-note": "[https://www.semantic-mediawiki.org/wiki/Help:Property_page/Filter 搜尋篩選]允許包含查詢表達式，例如像是 <code>~</code> 或 <code>!</code>。所選的[https://www.semantic-mediawiki.org/wiki/Help:Query_expressions 查詢引擎]可能會支援不區分大小寫，或是其它較短的表達式。例如像：\n\n* <code>in:</code> 的結果為應有包含，如：'<code>in:Foo</code>'\n\n* <code>not:</code> 的結果為應不包含，如：'<code>not:Bar</code>'",
 	"smw-property-reserved-category": "分類",
 	"smw-category": "分類",
 	"smw-datavalue-uri-invalid-scheme": "「$1」未被列入在有效的 URI 架構。",
