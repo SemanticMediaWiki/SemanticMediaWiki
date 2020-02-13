@@ -34,10 +34,12 @@ use SMW\NamespaceExaminer;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
+use SMW\Property\AnnotatorFactory;
 use SMW\PropertyLabelFinder;
 use SMW\PropertySpecificationLookup;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
+use SMW\Schema\SchemaFactory;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Settings;
@@ -623,6 +625,14 @@ class ServicesFactory {
 
 	public function newPostProcHandler( ParserOutput $parserOutput ): PostProcHandler {
 		return $this->create( 'PostProcHandler', $parserOutput );
+	}
+
+	public function getSchemaFactory(): SchemaFactory {
+		return $this->singleton( 'SchemaFactory' );
+	}
+
+	public function getPropertyAnnotatorFactory(): AnnotatorFactory {
+		return $this->singleton( 'PropertyAnnotatorFactory' );
 	}
 
 }
