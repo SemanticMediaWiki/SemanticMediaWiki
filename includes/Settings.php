@@ -219,9 +219,7 @@ class Settings extends Options {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @param array $vars
+	 * Package private. Should not be used from outside SMW.
 	 */
 	public function override( array $vars ) {
 
