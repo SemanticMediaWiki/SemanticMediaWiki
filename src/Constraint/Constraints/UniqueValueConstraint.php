@@ -23,6 +23,11 @@ use RuntimeException;
 class UniqueValueConstraint implements Constraint {
 
 	/**
+	 * Defines the expected key in the JSON
+	 */
+	const CONSTRAINT_KEY = 'unique_value_constraint';
+
+	/**
 	 * @var Store
 	 */
 	private $store;
@@ -89,7 +94,7 @@ class UniqueValueConstraint implements Constraint {
 
 		$key = key( $constraint );
 
-		if ( isset( $constraint['unique_value_constraint'] ) && $constraint['unique_value_constraint'] ) {
+		if ( isset( $constraint[self::CONSTRAINT_KEY] ) && $constraint[self::CONSTRAINT_KEY] ) {
 			$this->check( $dataValue );
 		}
 	}
@@ -133,7 +138,7 @@ class UniqueValueConstraint implements Constraint {
 		// same property
 		if ( $count < 1 && $this->isKnown( $dataValue ) ) {
 			$error = [
-				'smw-datavalue-constraint-uniqueness-violation-isknown',
+				'smw-constraint-violation-uniqueness-isknown',
 				$property->getLabel(),
 				$contextPage->getTitle()->getPrefixedText(),
 				$dataValue->getWikiValue()
@@ -156,7 +161,7 @@ class UniqueValueConstraint implements Constraint {
 			}
 
 			$error = [
-				'smw-datavalue-constraint-uniqueness-violation',
+				'smw-constraint-violation-uniqueness',
 				$property->getLabel(),
 				$val,
 				$text

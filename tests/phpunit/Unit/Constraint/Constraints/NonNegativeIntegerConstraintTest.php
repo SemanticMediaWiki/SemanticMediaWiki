@@ -58,7 +58,7 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 			'non_negative_integer' => true
 		];
 
-		$expectedErrMsg = 'smw-datavalue-constraint-violation-non-negative-integer';
+		$expectedErrMsg = 'smw-constraint-violation-non-negative-integer';
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

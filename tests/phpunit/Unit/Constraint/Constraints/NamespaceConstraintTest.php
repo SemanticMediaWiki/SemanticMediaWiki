@@ -62,7 +62,7 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 			'allowed_namespaces' => [ 'NS_HELP' ]
 		];
 
-		$expectedErrMsg = 'smw-constraint-schema-violation-allowed-namespace-no-match';
+		$expectedErrMsg = 'smw-constraint-violation-allowed-namespace-no-match';
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()

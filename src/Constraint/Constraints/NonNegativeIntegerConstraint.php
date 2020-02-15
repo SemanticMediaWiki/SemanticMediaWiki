@@ -17,6 +17,11 @@ use RuntimeException;
 class NonNegativeIntegerConstraint implements Constraint {
 
 	/**
+	 * Defines the expected key in the JSON
+	 */
+	const CONSTRAINT_KEY = 'non_negative_integer';
+
+	/**
 	 * @var boolean
 	 */
 	private $hasViolation = false;
@@ -54,7 +59,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 
 		$key = key( $constraint );
 
-		if ( isset( $constraint['non_negative_integer'] ) && $constraint['non_negative_integer'] ) {
+		if ( isset( $constraint[self::CONSTRAINT_KEY] ) && $constraint[self::CONSTRAINT_KEY] ) {
 			$this->check( $dataValue );
 		}
 	}
@@ -80,7 +85,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 		$this->hasViolation = true;
 
 		$dataValue->addError( new ConstraintError( [
-				'smw-datavalue-constraint-violation-non-negative-integer',
+				'smw-constraint-violation-non-negative-integer',
 				$dataValue->getProperty()->getLabel(),
 				$number
 			] )

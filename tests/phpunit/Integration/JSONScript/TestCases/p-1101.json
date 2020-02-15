@@ -14,15 +14,15 @@
 			"contents": "[[Has type::Number]] [[Constraint schema::Constraint:NonNegative]]"
 		},
 		{
-			"page": "Test:P1101/1",
+			"page": "P1101/1",
 			"contents": "[[Has int::-1]]"
 		},
 		{
-			"page": "Test:P1101/2",
+			"page": "P1101/2",
 			"contents": "[[Has int::1001]]"
 		},
 		{
-			"page": "Test:P1101/3",
+			"page": "P1101/3",
 			"contents": "[[Has int::0]]"
 		}
 	],
@@ -30,42 +30,76 @@
 		{
 			"type": "parser",
 			"about": "#0 (invalid assignment on `non_negative_integer`)",
-			"subject": "Test:P1101/1",
+			"subject": "P1101/1",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
 					"propertyCount": 3,
 					"propertyKeys": [
-						"_MDAT",
 						"_SKEY",
+						"_MDAT",
 						"_ERRC"
 					]
 				}
-			},
-			"assert-output": {
-				"to-contain": [
-					"<span class=\"smwttcontent\">Property \"Has int\" has a \"non negative integer\" constraint and value <i>-1</i> is violating that requirement.</span>"
-				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.1 (invalid assignment on `non_negative_integer`)",
+			"namespace": "NS_MAIN",
+			"subject": "P1101/1#_ERR47ba1a0b46170006c2bb5ef6c8cea171",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERRP",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						{ "serialization": "[2,\"smw-constraint-violation-non-negative-integer\",\"Has int\",\"-1\"]" }
+					]
+				}
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1 (valid assignment on `non_negative_integer`)",
-			"subject": "Test:P1101/2",
-			"assert-output": {
-				"to-contain": [
-					"1001"
-				]
+			"subject": "P1101/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has int"
+					],
+					"propertyValues": [
+						"1001"
+					]
+				}
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#2 (valid assignment on `non_negative_integer`)",
-			"subject": "Test:P1101/3",
-			"assert-output": {
-				"to-contain": [
-					"0"
-				]
+			"subject": "P1101/3",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has int"
+					],
+					"propertyValues": [
+						"0"
+					]
+				}
 			}
 		}
 	],

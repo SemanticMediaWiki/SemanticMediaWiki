@@ -68,7 +68,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	public function validate( $dataValue ) {
 
 		$this->hasConstraintViolation = false;
-		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-list';
+		$this->errorMsg = 'smw-constraint-error-allows-value-list';
 
 		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
 			return $this->hasConstraintViolation;
@@ -247,7 +247,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			return true;
 		}
 
-		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-range';
+		$this->errorMsg = 'smw-constraint-error-allows-value-range';
 
 		return false;
 	}
@@ -268,7 +268,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$allowedValueList[$allowedValue->getString()] = true;
 		}
 
-		$this->errorMsg = 'smw-datavalue-constraint-error-allows-value-range';
+		$this->errorMsg = 'smw-constraint-error-allows-value-range';
 
 		return false;
 	}

@@ -69,9 +69,9 @@ class ConstraintSchemaValue extends WikiPageValue {
 		$ns = $contextPage->getNamespace();
 
 		if ( $ns === NS_CATEGORY && $schema['type'] !== Constraint::CLASS_CONSTRAINT_SCHEMA ) {
-			$error = [ 'smw-datavalue-constraint-schema-category-invalid-type', $value, Constraint::CLASS_CONSTRAINT_SCHEMA ];
+			$error = [ 'smw-constraint-schema-category-invalid-type', $value, Constraint::CLASS_CONSTRAINT_SCHEMA ];
 		} elseif ( $ns === SMW_NS_PROPERTY && $schema['type'] !== Constraint::PROPERTY_CONSTRAINT_SCHEMA ) {
-			$error = [ 'smw-datavalue-constraint-schema-property-invalid-type', $value, Constraint::PROPERTY_CONSTRAINT_SCHEMA ];
+			$error = [ 'smw-constraint-schema-property-invalid-type', $value, Constraint::PROPERTY_CONSTRAINT_SCHEMA ];
 		}
 
 		if ( $error !== [] ) {

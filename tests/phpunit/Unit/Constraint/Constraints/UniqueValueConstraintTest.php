@@ -140,7 +140,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$error = new ConstraintError(
-			[ 'smw-datavalue-constraint-uniqueness-violation', $property->getLabel(), '...', 'Foo' ]
+			[ 'smw-constraint-violation-uniqueness', $property->getLabel(), '...', 'Foo' ]
 		);
 
 		$this->entityUniquenessLookup->expects( $this->atLeastOnce() )

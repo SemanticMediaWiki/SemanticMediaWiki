@@ -58,7 +58,7 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 			'single_value_constraint' => true
 		];
 
-		$expectedErrMsg = 'smw-datavalue-constraint-violation-single-value';
+		$expectedErrMsg = 'smw-constraint-violation-single-value';
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()

@@ -180,7 +180,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(
 			[
-				'a3cb94437b0f3619eaebd527123a4558' => '[8,"smw-datavalue-constraint-error-allows-value-list","","VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
+				'f36bb09e4f4a0e9b0a6f8bb437d61556' => '[8,"smw-constraint-error-allows-value-list","","VAL1, VAL2, VAL3, VAL4, VAL5, VAL6, VAL7, VAL8, VAL9, VAL0, ...","InvalidAllowedValue"]'
 			],
 			$dataValue->getErrors()
 		);
@@ -336,7 +336,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			],
 			$dataItemFactory->newDINumber( 5 ),
 			[
-				'9b7a08f3296c976852260443ff290b16' => '[8,"smw-datavalue-constraint-error-allows-value-range","5","<4","InvalidAllowedValue"]'
+				'e7690021e785b6d8d4134876eb5a8f77' => '[8,"smw-constraint-error-allows-value-range","5","<4","InvalidAllowedValue"]'
 			]
 		];
 
@@ -347,7 +347,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			],
 			$dataItemFactory->newDINumber( 5 ),
 			[
-				'28e3bb64ee1452b03e0e2afac787c010' => '[8,"smw-datavalue-constraint-error-allows-value-range","5","<4, >1","InvalidAllowedValue"]'
+				'b4fd5d4a6e16686601b355e61cf99e60' => '[8,"smw-constraint-error-allows-value-range","5","<4, >1","InvalidAllowedValue"]'
 			]
 		];
 
@@ -403,7 +403,7 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			],
 			$dataItemFactory->newDINumber( 15 ),
 			[
-				'437bd520d612acf0ccb7f460c2784275' => '[8,"smw-datavalue-constraint-error-allows-value-range","15","1...10","InvalidAllowedValue"]'
+				'cf3a2d2e576e418b1a9e6a215eb567db' => '[8,"smw-constraint-error-allows-value-range","15","1...10","InvalidAllowedValue"]'
 			]
 		];
 	}

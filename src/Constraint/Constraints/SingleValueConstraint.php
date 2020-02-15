@@ -90,7 +90,7 @@ class SingleValueConstraint implements Constraint {
 		$this->hasViolation = true;
 
 		$error = [
-			'smw-datavalue-constraint-violation-single-value',
+			'smw-constraint-violation-single-value',
 			$property->getLabel(),
 			$dataValue->getWikiValue()
 		];
