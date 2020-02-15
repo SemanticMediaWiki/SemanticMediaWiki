@@ -240,7 +240,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCommandLineMode( false );
-		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
+		$instance->setEqualitySupport( SMW_EQ_FULL );
 
 		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
@@ -302,7 +302,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setCommandLineMode( true );
-		$instance->setEqualitySupportFlag( SMW_EQ_FULL );
+		$instance->setEqualitySupport( SMW_EQ_FULL );
 
 		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
@@ -326,7 +326,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 			$store
 		);
 
-		$instance->setEqualitySupportFlag( SMW_EQ_NONE );
+		$instance->setEqualitySupport( SMW_EQ_NONE );
 		$instance->updateRedirect( 42, 'Foo', NS_MAIN );
 	}
 

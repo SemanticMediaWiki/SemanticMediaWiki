@@ -4,6 +4,7 @@ namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Utils\Flag;
 use SMW\MediaWiki\Collator;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
@@ -19,6 +20,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\TypesRegistry;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use Iterator;
 
 /**
@@ -130,6 +132,11 @@ class EntityIdManager {
 	private $propertyTableHashes;
 
 	/**
+	 * @var int
+	 */
+	private $equalitySupport = 0;
+
+	/**
 	 * @since 1.8
 	 * @param SQLStore $store
 	 */
@@ -149,6 +156,31 @@ class EntityIdManager {
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
 
 		self::$special_ids = TypesRegistry::getFixedProperties( 'id' );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param integer $equalitySupport
+	 */
+	public function setEqualitySupport( int $equalitySupport ) {
+		$this->equalitySupport = new Flag( $equalitySupport );
+	}
+
+	/**
+	 * This method applies changes from when the `Settings` change listener
+	 * receives change events from `Settings:set`.
+	 *
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param ChangeRecord $changeRecord
+	 */
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+
+		if ( $key === 'smwgQEqualitySupport' ) {
+			$this->setEqualitySupport( $changeRecord->get( $key ) );
+		}
 	}
 
 	/**
@@ -292,7 +324,6 @@ class EntityIdManager {
 	 * @return integer SMW id or 0 if there is none
 	 */
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
-		global $smwgQEqualitySupport;
 
 		$sha1 = $this->idCacheManager->computeSha1(
 			[
@@ -313,7 +344,7 @@ class EntityIdManager {
 		// for objects marked as redirect
 		if (
 			$iw === SMW_SQL3_SMWREDIIW &&
-			$smwgQEqualitySupport !== SMW_EQ_NONE &&
+			$this->equalitySupport->not( SMW_EQ_NONE ) &&
 			$subobjectName === '' &&
 			$canonical ) {
 			$id = $this->findRedirect( $title, $namespace );
@@ -326,7 +357,7 @@ class EntityIdManager {
 			$sortkey = $this->idCacheManager->getSort( $sha1 );
 		} elseif (
 			$iw === SMW_SQL3_SMWREDIIW &&
-			$smwgQEqualitySupport !== SMW_EQ_NONE &&
+			$this->equalitySupport->not( SMW_EQ_NONE ) &&
 			$subobjectName === '' &&
 			$canonical ) {
 			list( $id, $sortkey ) = $this->entityIdFinder->fetchFieldsFromTableById(

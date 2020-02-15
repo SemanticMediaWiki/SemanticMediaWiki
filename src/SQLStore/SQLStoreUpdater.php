@@ -293,16 +293,17 @@ class SQLStoreUpdater {
 		// Take care of redirects
 		$redirects = $data->getPropertyValues( new DIProperty( '_REDI' ) );
 
-		if ( count( $redirects ) > 0 ) {
-			$redirect = end( $redirects ); // at most one redirect per page
-			$this->redirectUpdater->updateRedirects( $subject, $redirect );
-			// Stop here:
-			// * no support for annotations on redirect pages
-			// * updateRedirects takes care of deleting any previous data
-			return;
-		} else {
-			$this->redirectUpdater->updateRedirects( $subject );
+		// Redirects:
+		// * Generally, there is no support for annotations on redirect pages
+		// * Any data on a redirect page will be removed where the subject is
+		//   classified as redirect
+		// * If the redirect equality support was disabled (=== SMW_EQ_NONE) then
+		//   under certain circumstances, annotations are allowed to remain
+		if ( $this->redirectUpdater->shouldCleanUpAnnotationsAndRedirects( $redirects ) ) {
+			return $this->redirectUpdater->cleanUpAnnotationsAndRedirects( $subject, $redirects );
 		}
+
+		$this->redirectUpdater->discardRemnantRedirects( $subject );
 
 		// Find an approriate sortkey, the field is influenced by various
 		// elements incl. DEFAULTSORT and can be altered without modifying

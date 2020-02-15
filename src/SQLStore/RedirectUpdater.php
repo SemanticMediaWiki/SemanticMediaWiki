@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\Utils\Flag;
 use SMW\SemanticData;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SQLStore\PropertyStatisticsStore;
@@ -12,6 +13,7 @@ use SMW\Store;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 
 /**
@@ -50,7 +52,7 @@ class RedirectUpdater {
 	/**
 	 * @var boolean
 	 */
-	private $hasEqualitySupport = false;
+	private $equalitySupport = 0;
 
 	/**
 	 * @since 3.1
@@ -65,7 +67,6 @@ class RedirectUpdater {
 		$this->idChanger = $idChanger;
 		$this->tableFieldUpdater = $tableFieldUpdater;
 		$this->propertyStatisticsStore = $propertyStatisticsStore;
-		$this->setEqualitySupportFlag( $GLOBALS['smwgQEqualitySupport'] );
 	}
 
 	/**
@@ -73,8 +74,24 @@ class RedirectUpdater {
 	 *
 	 * @param integer $equalitySupport
 	 */
-	public function setEqualitySupportFlag( $equalitySupport ) {
-		$this->hasEqualitySupport = $equalitySupport != SMW_EQ_NONE;
+	public function setEqualitySupport( int $equalitySupport ) {
+		$this->equalitySupport = new Flag( $equalitySupport );
+	}
+
+	/**
+	 * This method applies changes from when the `Settings` change listener
+	 * receives change events from `Settings:set`.
+	 *
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param ChangeRecord $changeRecord
+	 */
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+
+		if ( $key === 'smwgQEqualitySupport' ) {
+			$this->setEqualitySupport( $changeRecord->get( $key ) );
+		}
 	}
 
 	/**
@@ -154,7 +171,7 @@ class RedirectUpdater {
 		);
 
 		// Easy case: target not used anywhere yet, just hijack its title for our current id
-		if ( ( $tid == 0 ) && $this->hasEqualitySupport ) {
+		if ( ( $tid == 0 ) && $this->equalitySupport->not( SMW_EQ_NONE ) ) {
 			$this->updateTarget( $source, $target, $sid );
 		} else { // General move method: should always be correct
 			$this->moveAsRedirect( $source, $target, $sid, $tid, $options );
@@ -186,6 +203,56 @@ class RedirectUpdater {
 		}
 
 		ChangeTitleUpdate::addUpdate( $source, $target );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $redirects
+	 *
+	 * @return boolean
+	 */
+	public function shouldCleanUpAnnotationsAndRedirects( array $redirects = [] ) : bool {
+
+		if ( $redirects === [] ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param DIWikiPage $subject
+	 * @param array $redirects
+	 */
+	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ) {
+		$this->updateRedirects( $subject, end( $redirects ) );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param DIWikiPage $subject
+	 */
+	public function discardRemnantRedirects( DIWikiPage $subject ) {
+
+		$entityIdManager = $this->store->getObjectIds();
+		$target_id = 0;
+
+		// Any remanent redirects on a subject that isn't suppose to have one?
+		$redirect_id = $entityIdManager->findRedirect(
+			$subject->getDBkey(),
+			$subject->getNamespace()
+		);
+
+		// No changes required!
+		if ( $redirect_id == $target_id ) {
+			return;
+		}
+
+		$this->updateRedirects( $subject );
 	}
 
 	/**
@@ -271,7 +338,7 @@ class RedirectUpdater {
 		// It means $old_tid != $new_tid in all cases below
 		// Make relevant changes in property tables (don't write the new
 		// redirect yet)
-		if ( ( $old_tid == 0 ) && ( $sid != 0 ) && $this->hasEqualitySupport ) { // new redirect
+		if ( ( $old_tid == 0 ) && ( $sid != 0 ) && $this->equalitySupport->not( SMW_EQ_NONE ) ) { // new redirect
 			// $smwgQEqualitySupport requires us to change all tables' page references from $sid to $new_tid.
 			// Since references must not be 0, we don't have to do this is $sid == 0.
 			$this->idChanger->change(
@@ -304,7 +371,7 @@ class RedirectUpdater {
 			// (3) update canonical cache.
 			// This order must be obeyed unless you really understand what you are doing!
 
-			if ( ( $old_tid == 0 ) && $this->hasEqualitySupport ) {
+			if ( ( $old_tid == 0 ) && $this->equalitySupport->not( SMW_EQ_NONE ) ) {
 				// mark subject as redirect (if it was no redirect before)
 				if ( $sid == 0 ) { // every redirect page must have an ID
 					$sid = $idTable->makeSMWPageID(
@@ -357,7 +424,7 @@ class RedirectUpdater {
 			// This case implies $old_tid != 0 (or we would have new_tid == old_tid above).
 			// Therefore $subject had a redirect, and it must also have an ID.
 			// This shows that $sid != 0 here.
-			if ( $this->hasEqualitySupport ) { // mark subject as non-redirect
+			if ( $this->equalitySupport->not( SMW_EQ_NONE ) ) { // mark subject as non-redirect
 
 				$sha1 = $idTable->computeSha1(
 					[ $source->getDBkey(), $source->getNamespace(), '' , '' ]

@@ -65,7 +65,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection' ] )
+			->setMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )

@@ -7,6 +7,8 @@ use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
+use SMW\Utils\Flag;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 
 /**
@@ -30,9 +32,9 @@ class RedirectStore {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var int
 	 */
-	private $hasEqualitySupport = false;
+	private $equalitySupport = 0;
 
 	/**
 	 * @var boolean
@@ -52,8 +54,6 @@ class RedirectStore {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
-
-		$this->setEqualitySupportFlag( $GLOBALS['smwgQEqualitySupport'] );
 	}
 
 	/**
@@ -66,12 +66,27 @@ class RedirectStore {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 *
 	 * @param integer $equalitySupport
 	 */
-	public function setEqualitySupportFlag( $equalitySupport ) {
-		$this->hasEqualitySupport = $equalitySupport != SMW_EQ_NONE;
+	public function setEqualitySupport( int $equalitySupport ) {
+		$this->equalitySupport = new Flag( $equalitySupport );
+	}
+
+	/**
+	 * This method applies changes from when the `Settings` change listener
+	 * receives change events from `Settings:set`.
+	 *
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param ChangeRecord $changeRecord
+	 */
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+		if ( $key === 'smwgQEqualitySupport' ) {
+			$this->setEqualitySupport( $changeRecord->get( $key ) );
+		}
 	}
 
 	/**
@@ -144,7 +159,7 @@ class RedirectStore {
 
 		$this->deleteRedirect( $title, $namespace );
 
-		if ( !$this->canCreateUpdateJobs() || !$this->hasEqualitySupport ) {
+		if ( !$this->canCreateUpdateJobs() || $this->equalitySupport->is( SMW_EQ_NONE ) ) {
 			return;
 		}
 

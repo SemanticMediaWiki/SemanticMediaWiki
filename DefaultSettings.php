@@ -584,13 +584,27 @@ return [
 	'smwgQSubcategoryDepth' => 10, // Restrict level of sub-category inclusion (steps within category hierarchy)
 	'smwgQSubpropertyDepth' => 10, // Restrict level of sub-property inclusion (steps within property hierarchy)
 					// (Use 0 to disable hierarchy-inferencing in queries)
-	'smwgQEqualitySupport' => SMW_EQ_SOME, // Evaluate #redirects as equality between page names, with possible
-						// performance-relevant restrictions depending on the storage engine
-	// 'smwgQEqualitySupport' => SMW_EQ_FULL, // Evaluate #redirects as equality between page names in all cases
-	// 'smwgQEqualitySupport' => SMW_EQ_NONE, // Never evaluate #redirects as equality between page names
 	'smwgQDefaultNamespaces' => null, // Which namespaces should be searched by default?
 						// (value NULL switches off default restrictions on searching -- this is faster)
 						// Example with namespaces: 'smwgQDefaultNamespaces' => array(NS_MAIN, NS_FILE)
+
+	##
+	# Evaluate #redirects
+	#
+	# - SMW_EQ_NONE: Never evaluate #redirects as equality between page names
+	#
+	# - SMW_EQ_SOME: Evaluate #redirects as equality between page names, with
+	#   possible performance-relevant restrictions depending on the storage
+	#   engine
+	#
+	# - SMW_EQ_FULL: Evaluate #redirects as equality between page names in all
+	#   cases
+	#
+	# @since 1.0
+	# @default: SMW_EQ_SOME
+	##
+	'smwgQEqualitySupport' => SMW_EQ_SOME,
+	##
 
 	###
 	# Sort features
