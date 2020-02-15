@@ -98,7 +98,7 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CompartmentIterator();
 
-		$this->setExpectedException( '\OutOfBoundsException' );
+		$this->expectException( '\OutOfBoundsException' );
 		$instance->seek( 0 );
 	}
 
@@ -113,7 +113,7 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 			$data
 		);
 
-		$this->setExpectedException( '\OutOfBoundsException' );
+		$this->expectException( '\OutOfBoundsException' );
 		$instance->seek( 'bar' );
 	}
 

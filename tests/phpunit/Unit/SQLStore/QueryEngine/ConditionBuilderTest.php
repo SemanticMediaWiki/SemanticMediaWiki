@@ -240,7 +240,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->circularReferenceGuard
 		);
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->findQuerySegment( null );
 	}
 
@@ -253,7 +253,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->circularReferenceGuard
 		);
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->findQuerySegment( 1 );
 	}
 

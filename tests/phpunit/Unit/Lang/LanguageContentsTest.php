@@ -197,7 +197,7 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 			$this->fallbackFinder
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->get( 'Bar', $languageCode );
 	}
 

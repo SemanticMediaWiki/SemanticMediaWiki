@@ -58,7 +58,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValueFactory->addCallable( 'foo.test', [ $this, 'testAddCallableOnAlreadyRegisteredKeyThrowsException' ] );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$dataValueFactory->addCallable( 'foo.test', [ $this, 'testAddCallableOnAlreadyRegisteredKeyThrowsException' ] );
 
 		$dataValueFactory->clearCallable( 'foo.test' );
@@ -73,7 +73,7 @@ class DataValueFactoryTest extends \PHPUnit_Framework_TestCase {
 			'foo'
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$dataValue->getCallable( 'foo.test' );
 	}
 

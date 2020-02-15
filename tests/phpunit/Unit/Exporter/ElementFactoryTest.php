@@ -53,7 +53,7 @@ class ElementFactoryTest extends \PHPUnit_Framework_TestCase {
 			return new \stdclass;
 		} );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->newFromDataItem( $dataItemFactory->newDIBlob( 'foo' ) );
 	}
 

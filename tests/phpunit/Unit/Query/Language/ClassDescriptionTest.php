@@ -48,7 +48,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testConstructThrowsException() {
 
-		$this->setExpectedException( 'Exception' );
+		$this->expectException( 'Exception' );
 
 		new ClassDescription( new \stdClass );
 	}

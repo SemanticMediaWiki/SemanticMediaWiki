@@ -70,7 +70,7 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
 
-		$this->setExpectedException( '\SMW\Exception\DataTypeLookupException' );
+		$this->expectException( '\SMW\Exception\DataTypeLookupException' );
 		$property->setPropertyTypeId( '_unknownTypeId' );
 	}
 
@@ -78,7 +78,7 @@ class DIPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$property = new DIProperty( '_MDAT' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$property->setPropertyTypeId( '_txt' );
 	}
 

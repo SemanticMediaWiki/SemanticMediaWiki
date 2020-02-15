@@ -58,7 +58,7 @@ class QuerySegmentListProcessorTest extends \PHPUnit_Framework_TestCase {
 			$hierarchyTempTableBuilder
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->process( 42 );
 	}
 

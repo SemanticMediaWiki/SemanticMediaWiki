@@ -121,7 +121,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->addIndex( 'foobar, bar' );
 	}
 
@@ -150,7 +150,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->get( 'bar' );
 	}
 
@@ -161,7 +161,7 @@ class TableTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Table( 'Foo' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->addOption( $key, [] );
 	}
 

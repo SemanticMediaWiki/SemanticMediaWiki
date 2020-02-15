@@ -111,7 +111,7 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MonolingualTextValueFormatter();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( MonolingualTextValueFormatter::VALUE );
 	}
 

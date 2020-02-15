@@ -77,7 +77,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->semanticDataLookup
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->getSemanticDataById( 42 );
 	}
 

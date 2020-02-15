@@ -58,7 +58,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$config
 		);
 
-		$this->setExpectedException( '\SMW\Elastic\Exception\MissingEndpointConfigException' );
+		$this->expectException( '\SMW\Elastic\Exception\MissingEndpointConfigException' );
 		$instance->getConnection();
 	}
 
@@ -128,7 +128,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 			$config
 		);
 
-		$this->setExpectedException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
+		$this->expectException( '\SMW\Elastic\Exception\ClientBuilderNotFoundException' );
 		$instance->getConnection();
 	}
 

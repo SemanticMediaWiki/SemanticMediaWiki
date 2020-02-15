@@ -116,7 +116,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setLoadBalancer( $loadBalancer );
 		$instance->asConnectionRef( false );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();
 	}
 

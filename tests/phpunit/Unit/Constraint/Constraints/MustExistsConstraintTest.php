@@ -116,7 +116,7 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MustExistsConstraint();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->checkConstraint( $constraint, 'Foo' );
 	}
 

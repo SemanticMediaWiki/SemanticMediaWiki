@@ -58,7 +58,7 @@ class EngineOptionsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EngineOptions();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->get( 'Foo' );
 	}
 

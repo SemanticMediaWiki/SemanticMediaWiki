@@ -95,7 +95,7 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->getContext()->setUser( $user );
 
-		$this->setExpectedException( 'PermissionsError' );
+		$this->expectException( 'PermissionsError' );
 		$instance->execute( $query );
 	}
 

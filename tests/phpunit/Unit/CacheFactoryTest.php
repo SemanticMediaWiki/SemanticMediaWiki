@@ -100,7 +100,7 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CacheFactory( 'hash' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		$cacheOptions = $instance->newCacheOptions( [
 			'useCache' => true

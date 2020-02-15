@@ -135,13 +135,13 @@ class DITimeTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryToDeserializeOnNonNumericElementsThrowsException() {
 
-		$this->setExpectedException( '\SMW\Exception\DataItemException' );
+		$this->expectException( '\SMW\Exception\DataItemException' );
 		DITime::doUnserialize( '1/2013/0/2/0/foo' );
 	}
 
 	public function testTryToDeserializeOnInvalidCountOfElementsThrowsException() {
 
-		$this->setExpectedException( '\SMW\Exception\DataItemException' );
+		$this->expectException( '\SMW\Exception\DataItemException' );
 		DITime::doUnserialize( '1' );
 	}
 

@@ -60,7 +60,7 @@ class MaintenanceLoggerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MaintenanceLogger( 'Foo', $manualEntryLogger );
 		$instance->setMaxNameChars( 2 );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->log( 'bar' );
 	}
 

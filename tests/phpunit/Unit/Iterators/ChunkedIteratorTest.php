@@ -56,13 +56,13 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidConstructorArgumentThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance = new ChunkedIterator( 2 );
 	}
 
 	public function testInvalidChunkSizeArgumentThrowsException() {
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance = new ChunkedIterator( [], -1 );
 	}
 

@@ -55,7 +55,7 @@ class SMWQueryProcessorTest extends MwDBaseUnitTestCase {
 	
 	public function testGetResultPrinter_ThrowsException() {
 
-		$this->setExpectedException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
+		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
 		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
 	}
 	

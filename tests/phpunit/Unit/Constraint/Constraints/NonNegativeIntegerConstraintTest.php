@@ -96,7 +96,7 @@ class NonNegativeIntegerConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new NonNegativeIntegerConstraint();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->checkConstraint( $constraint, 'Foo' );
 	}
 

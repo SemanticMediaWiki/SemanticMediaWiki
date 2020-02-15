@@ -45,7 +45,7 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Parameters();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->get( 'Foo' );
 	}
 

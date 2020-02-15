@@ -46,7 +46,7 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidFileThrowsException() {
 
-		$this->setExpectedException( '\SMW\Exception\FileNotFoundException' );
+		$this->expectException( '\SMW\Exception\FileNotFoundException' );
 		new CsvFileIterator( 'Foo' );
 	}
 

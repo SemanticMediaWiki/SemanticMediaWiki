@@ -59,7 +59,7 @@ class DataItemHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataItemHandlerFactory( $store );
 
-		$this->setExpectedException( 'SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( 'SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->getHandlerByType( $type );
 	}
 

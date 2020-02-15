@@ -293,7 +293,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 			$this->parser
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->transcludeAnnotation( false );
 	}
 

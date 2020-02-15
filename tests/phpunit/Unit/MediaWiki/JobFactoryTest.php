@@ -57,7 +57,7 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new JobFactory();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->newByType( 'Foo', Title::newFromText( __METHOD__ ) );
 	}
 

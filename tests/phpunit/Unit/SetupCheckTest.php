@@ -70,7 +70,7 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->setExpectedException( '\SMW\Exception\FileNotReadableException' );
+		$this->expectException( '\SMW\Exception\FileNotReadableException' );
 		$instance->readFromFile( 'File' );
 	}
 
@@ -78,7 +78,7 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->readFromFile( SMW_PHPUNIT_DIR . '/Fixtures/invalid.json' );
 	}
 
@@ -105,7 +105,7 @@ class SetupCheckTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setErrorType( 'foo' );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->getError();
 	}
 

@@ -60,7 +60,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
-		$this->setExpectedException( '\SMW\Exception\SettingNotFoundException' );
+		$this->expectException( '\SMW\Exception\SettingNotFoundException' );
 		$instance->get( 'foo' );
 	}
 

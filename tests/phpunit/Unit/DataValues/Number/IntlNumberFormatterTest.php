@@ -131,7 +131,7 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->getSeparatorByLanguage( 'Foo' );
 	}
 

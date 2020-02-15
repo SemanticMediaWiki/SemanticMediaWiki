@@ -132,7 +132,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SomeValueDescriptionBuilder();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->newDescription( $dataValue, [] );
 	}
 

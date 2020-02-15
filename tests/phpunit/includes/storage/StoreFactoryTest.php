@@ -61,12 +61,12 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStoreInstanceException() {
-		$this->setExpectedException( '\SMW\Exception\StoreNotFoundException' );
+		$this->expectException( '\SMW\Exception\StoreNotFoundException' );
 		StoreFactory::getStore( '\SMW\StoreFactory' );
 	}
 
 	public function testStoreWithInvalidClassThrowsException() {
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		StoreFactory::getStore( 'foo' );
 	}
 

@@ -122,7 +122,7 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ServicesContainer();
 
-		$this->setExpectedException( '\SMW\Services\Exception\ServiceNotFoundException' );
+		$this->expectException( '\SMW\Services\Exception\ServiceNotFoundException' );
 		$instance->get( 'test' );
 	}
 
@@ -134,7 +134,7 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->get( 'test' );
 	}
 

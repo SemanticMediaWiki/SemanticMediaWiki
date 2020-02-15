@@ -194,7 +194,7 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->check();
 	}
 
@@ -204,7 +204,7 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 
 		$instance->check(
 			[

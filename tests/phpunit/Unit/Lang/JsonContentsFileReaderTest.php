@@ -107,7 +107,7 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new JsonContentsFileReader();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->readByLanguageCode( 'foo', true );
 	}
 

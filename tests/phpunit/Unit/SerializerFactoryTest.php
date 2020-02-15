@@ -106,7 +106,7 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SerializerFactory();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->getSerializerFor( 'Foo' );
 	}
 
@@ -114,7 +114,7 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SerializerFactory();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->getDeserializerFor( [ 'Foo' ] );
 	}
 

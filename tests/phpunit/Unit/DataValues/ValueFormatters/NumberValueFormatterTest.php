@@ -83,7 +83,7 @@ class NumberValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new NumberValueFormatter();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( NumberValueFormatter::VALUE );
 	}
 

@@ -65,7 +65,7 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->getFixedProperty();
 	}
 

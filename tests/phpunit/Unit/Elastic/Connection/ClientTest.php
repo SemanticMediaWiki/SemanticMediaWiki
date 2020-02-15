@@ -97,7 +97,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 			'index' => 'foo'
 		];
 
-		$this->setExpectedException( '\SMW\Elastic\Exception\ReplicationException' );
+		$this->expectException( '\SMW\Elastic\Exception\ReplicationException' );
 		$instance->bulk( $params );
 	}
 

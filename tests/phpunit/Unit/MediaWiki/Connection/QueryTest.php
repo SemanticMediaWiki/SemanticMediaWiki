@@ -44,7 +44,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Query( $this->connection );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->build();
 	}
 
@@ -55,7 +55,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->table( 'foo' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->build();
 	}
 
@@ -63,7 +63,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Query( $this->connection );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->join( 'foo' );
 	}
 

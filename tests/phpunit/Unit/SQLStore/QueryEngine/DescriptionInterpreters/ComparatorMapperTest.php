@@ -36,7 +36,7 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ComparatorMapper();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->mapComparator( $valueDescription, $value );
 	}
 

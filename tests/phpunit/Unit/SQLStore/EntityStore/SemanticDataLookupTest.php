@@ -114,7 +114,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->newStubSemanticData( 'Foo' );
 	}
 
@@ -467,7 +467,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getSemanticData( 42, null, $propertyTable );
 	}
 

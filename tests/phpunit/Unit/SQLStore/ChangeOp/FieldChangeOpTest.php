@@ -59,7 +59,7 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FieldChangeOp();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->get( 'o_serialized' );
 	}
 

@@ -149,7 +149,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaFactory();
 
-		$this->setExpectedException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
+		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
 		$instance->newSchema( 'foo_bar', [ 'type' => 'foo' ] );
 	}
 
@@ -161,7 +161,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
+		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
 		$instance->newSchema( 'foo_bar', [] );
 	}
 

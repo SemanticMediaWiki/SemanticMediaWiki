@@ -48,7 +48,7 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new PageFactory( $this->store );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->newPageFromTitle( $title );
 	}
 

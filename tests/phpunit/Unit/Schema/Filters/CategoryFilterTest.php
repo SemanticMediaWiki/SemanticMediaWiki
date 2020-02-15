@@ -86,7 +86,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CategoryFilter( $callback );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->filter( $compartment );
 	}
 

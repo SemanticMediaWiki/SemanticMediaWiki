@@ -35,7 +35,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ExpDataDeserializer();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->deserialize( 'Foo' );
 	}
 
@@ -43,7 +43,7 @@ class ExpDataDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ExpDataDeserializer();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->deserialize( [ 'version' => 0.2 ] );
 	}
 

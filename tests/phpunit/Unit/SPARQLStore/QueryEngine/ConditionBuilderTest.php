@@ -195,7 +195,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 		$instance->setSortKeys( [ 'Foo', 'ASC' ] );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConditionFrom( $description );
 	}
 

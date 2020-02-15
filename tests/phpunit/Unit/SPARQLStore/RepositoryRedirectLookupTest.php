@@ -193,7 +193,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->findRedirectTargetResource( $expNsResource, $exists );
 	}
 

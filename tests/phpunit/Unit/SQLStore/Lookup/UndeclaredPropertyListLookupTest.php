@@ -82,7 +82,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$defaultPropertyType
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->fetchList();
 	}
 
@@ -96,7 +96,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->fetchList();
 	}
 

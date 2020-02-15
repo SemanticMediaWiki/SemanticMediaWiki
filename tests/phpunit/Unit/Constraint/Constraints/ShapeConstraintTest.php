@@ -244,7 +244,7 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ShapeConstraint();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->checkConstraint( $constraint, 'Foo' );
 	}
 

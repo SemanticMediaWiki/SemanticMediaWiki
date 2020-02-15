@@ -386,7 +386,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 
 		$instance->getConsecutiveHierarchyList( new DIWikiPage( __METHOD__, NS_MAIN ) );
 	}

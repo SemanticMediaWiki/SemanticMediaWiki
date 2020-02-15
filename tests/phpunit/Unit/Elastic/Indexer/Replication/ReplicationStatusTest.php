@@ -42,7 +42,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->get( 'Foo' );
 	}
 

@@ -22,7 +22,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TemplateEngine();
 
-		$this->setExpectedException( '\SMW\Exception\FileNotReadableException' );
+		$this->expectException( '\SMW\Exception\FileNotReadableException' );
 		$instance->load( 'foo', 'bar' );
 	}
 
@@ -30,7 +30,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TemplateEngine();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->publish( 'Foo' );
 	}
 

@@ -104,7 +104,7 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SingleValueConstraint();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->checkConstraint( $constraint, 'Foo' );
 	}
 

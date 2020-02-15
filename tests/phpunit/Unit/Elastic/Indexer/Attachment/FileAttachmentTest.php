@@ -264,7 +264,7 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 			$this->bulk
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->indexAttachmentInfo( $attachmentAnnotator );
 	}
 
@@ -296,7 +296,7 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 			$this->bulk
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->indexAttachmentInfo( $attachmentAnnotator );
 	}
 
@@ -312,7 +312,7 @@ class FileAttachmentTest extends \PHPUnit_Framework_TestCase {
 			$this->bulk
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->createAttachment( $dataItem );
 	}
 

@@ -32,7 +32,7 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new File();
 
-		$this->setExpectedException( '\SMW\Exception\FileNotWritableException' );
+		$this->expectException( '\SMW\Exception\FileNotWritableException' );
 		$instance->write( 'abc/Foo', '' );
 	}
 

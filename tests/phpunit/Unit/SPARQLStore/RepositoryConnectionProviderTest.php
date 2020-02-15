@@ -203,7 +203,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RepositoryConnectionProvider( 'custom' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();
 	}
 
@@ -216,7 +216,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RepositoryConnectionProvider( 'custom' );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();
 	}
 

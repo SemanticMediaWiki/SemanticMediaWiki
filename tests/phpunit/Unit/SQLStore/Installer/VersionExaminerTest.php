@@ -91,7 +91,7 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 			$connection
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 
 		$requirements = $instance->defineDatabaseRequirements(
 			[ 'foobar' => 2 ]

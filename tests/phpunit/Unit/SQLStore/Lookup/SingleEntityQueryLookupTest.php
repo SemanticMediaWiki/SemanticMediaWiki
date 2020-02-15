@@ -63,7 +63,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->getQueryResult( $query );
 	}
 
@@ -89,7 +89,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->getQueryResult( $query );
 	}
 

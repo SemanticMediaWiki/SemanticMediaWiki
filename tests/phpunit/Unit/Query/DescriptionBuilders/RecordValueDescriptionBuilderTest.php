@@ -98,7 +98,7 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new RecordValueDescriptionBuilder();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->newDescription( $recordValue, [] );
 	}
 
