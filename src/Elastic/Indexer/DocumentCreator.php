@@ -4,6 +4,7 @@ namespace SMW\Elastic\Indexer;
 
 use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\SemanticData;
 use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Collator;
@@ -161,9 +162,19 @@ class DocumentCreator {
 			$data['subject']['parent_id'] = $parent_id;
 		}
 
+		$type = Document::TYPE_INSERT;
+
+		// Remove any document that has been identified as redirect to avoid
+		// having Elasticsearch to match those documents and create a subject
+		// match similar to `[[::smw-redi:Issue/1286|Issue/1286]]` (#P0904)
+		if ( $semanticData->hasProperty( new DIProperty( '_REDI' ) ) ) {
+			$type = Document::TYPE_DELETE;
+		}
+
 		$document = new Document(
 			$id,
-			$data
+			$data,
+			$type
 		);
 
 		$properties = $semanticData->getProperties();
