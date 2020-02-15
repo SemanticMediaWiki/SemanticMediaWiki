@@ -46,6 +46,68 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewFromSemanticData_RedirectDelete() {
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject->setOption( 'sort', 'abc' );
+
+		$property = new DIProperty( 'FooProp' );
+
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdManager->expects( $this->any() )
+			->method( 'getSMWPageID' )
+			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+
+		$entityIdManager->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 1001 ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( $subject ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [ $property ] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->with( $this->equalTo( $property ) )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'hasProperty' )
+			->with( $this->equalTo( new DIProperty( '_REDI' ) ) )
+			->will( $this->returnValue( true ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new DocumentCreator( $this->store );
+		$document = $instance->newFromSemanticData( $semanticData );
+
+		$this->assertInstanceOf(
+			'\SMW\Elastic\Indexer\Document',
+			$document
+		);
+
+		$this->assertTrue(
+			$document->isType( 'type/delete' )
+		);
+	}
+
 	/**
 	 * @dataProvider dataItemsProvider
 	 */

@@ -28,6 +28,10 @@
 			"contents": "{{#ask: [[~Example/P0904*]] |?Has page |format=table |link=none }}"
 		},
 		{
+			"page": "P0904/Q.3",
+			"contents": "{{#ask: [[~Example/P0904*]] |?Has page |format=category |link=none }}"
+		},
+		{
 			"page": "Example/P0904/4",
 			"contents": "{{#show: Example/P0904/1 |?Has page |format=table |link=none }}"
 		}
@@ -86,7 +90,24 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (#show with redirected subject, redirect target is: `Help:Example/P0904/1`)",
+			"about": "#3 (same as #2, indirect test that ES removes any redirects and no `smw-redi` reference remains)",
+			"subject": "P0904/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<li>.*Example/P0904/1.*</li>",
+					"<li>Example/P0904/2  </li>",
+					"<li>Example/P0904/2#_QUERY37a5a96c1ca51601b7eb2d79de6573f2  </li>",
+					"<li>Example/P0904/4  </li>",
+					"<li>Example/P0904/4#_QUERY214c3e831228139be58b2f0db16e18c1  </li>"
+				],
+				"not-contain": [
+					"<li>:smw-redi:Example/P0904/1.*</li>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#show with redirected subject, redirect target is: `Help:Example/P0904/1`)",
 			"subject": "Example/P0904/4",
 			"assert-output": {
 				"to-contain": [
