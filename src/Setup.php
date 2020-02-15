@@ -195,6 +195,27 @@ final class Setup {
 				'targets' => [ 'desktop', 'mobile' ]
 			];
 		}
+
+		// #4505
+		//
+		// In case an extension is setting some smwg* related parameters during
+		// its registration via `ExtensionRegistry` at the `callback` point the
+		// relative position to `enableSemantics` matters whether those
+		// settings can be recognized in time of the invocation or not.
+		//
+		// Why?
+		//
+		// We isolate smwg* GLOBALS access during `Setup::initExtension` which
+		// is called during the `callback` point of the `ExtensionRegistry` and
+		// means that the sequence of an extension added in `LocalSettings.php`
+		// matters on whether settings can be manipulated or not via
+		// `extension.json` and `ExtensionRegistry`.
+		//
+		// `Setup::init` is called during the `ExtensionFunctions` point of the
+		// `ExtensionRegistry` which comes last and makes it possible for
+		// settings to be overriden that happen during the `callback` point
+		// in `ExtensionRegistry`.
+		ApplicationFactory::getInstance()->getSettings()->override( $vars );
 	}
 
 	private static function initConnectionProviders() {

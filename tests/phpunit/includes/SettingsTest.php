@@ -99,6 +99,32 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance->clearChangeListeners();
 	}
 
+	public function testOverride_ListingToOverride() {
+
+		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeListener->expects( $this->once() )
+			->method( 'canTrigger' )
+			->with( $this->equalTo( 'Foo' ) )
+			->will( $this->returnValue( true ) );
+
+		$changeListener->expects( $this->once() )
+			->method( 'setAttrs' )
+			->with( $this->equalTo( [ 'Foo' => 'Foobar' ] ) );
+
+		$changeListener->expects( $this->once() )
+			->method( 'trigger' )
+			->with( $this->equalTo( 'Foo' ) );
+
+		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
+		$instance->registerChangeListener( $changeListener );
+
+		$instance->override( [ 'Foo' => 'Foobar' ] );
+		$instance->clearChangeListeners();
+	}
+
 	/**
 	 * @dataProvider settingsProvider
 	 */

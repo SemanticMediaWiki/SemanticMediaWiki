@@ -219,6 +219,23 @@ class Settings extends Options {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param array $vars
+	 */
+	public function override( array $vars ) {
+
+		foreach ( $this->options as $key => $value ) {
+
+			if ( !isset( $vars[$key] ) || $vars[$key] === $value ) {
+				continue;
+			}
+
+			$this->set( $key, $vars[$key] );
+		}
+	}
+
+	/**
 	 * Factory method for immediate instantiation of a settings object for a
 	 * given array
 	 *
