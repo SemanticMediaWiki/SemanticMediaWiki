@@ -1,3 +1,5 @@
+[List of tests][section:list] | Test design and usage | [Extension usage][section:extension] | [Technical notes][section:notes]
+
 ## Test design and usage
 
 The `JSONScript` follows the arrange, act, assert approach, with the `setup` section containing object definitions that are planned to be used during a test. The section expects that an entity page and its contents (generally the page content in wikitext, annotations etc.) to follow a predefined structure.
@@ -299,3 +301,7 @@ OK (1 test, 16 assertions)
 [bootstrap.json]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/bootstrap.json
 [css_selector]: https://symfony.com/doc/current/components/css_selector.html
 [domdocument]: http://php.net/manual/en/domdocument.loadhtml.php#refsect1-domdocument.loadhtml-errors
+
+[section:list]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/README.md
+[section:extension]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/docs/extension.md
+[section:notes]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/Integration/JSONScript/docs/notes.md
