@@ -35,11 +35,18 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFetchFromTable() {
+	/**
+	 * @dataProvider subjectProvider
+	 */
+	public function testFetchFromTable( $subject, $languageCode, $expected ) {
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'tablename' )
+			->will( $this->returnArgument( 0 ) );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
@@ -47,7 +54,6 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query = new Query( $connection );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
@@ -57,6 +63,10 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$idTable->expects( $this->any() )
+			->method( 'getSMWPropertyID' )
+			->will( $this->returnValue( 42 ) );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -86,18 +96,42 @@ class MonolingualTextLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$instance->fetchFromTable( $subject, $property, 'fr' );
+		$instance->fetchFromTable( $subject, $property, $languageCode );
 
 		$this->assertSame(
-			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
-			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
-			' INNER JOIN  AS t1 ON t0.p_id=t1.smw_id' .
-			' INNER JOIN  AS o0 ON t0.o_id=o0.smw_id' .
-			' INNER JOIN  AS t2 ON t2.s_id=o0.smw_id' .
-			' INNER JOIN  AS t3 ON t3.s_id=o0.smw_id' .
-			' WHERE (t0.s_id=) AND (t0.p_id=) AND (o0.smw_iw!=:smw) AND (o0.smw_iw!=:smw-delete) AND (t3.o_hash=fr)',
+			$expected,
 			$query->getSQL()
 		);
+	}
+
+	public function subjectProvider() {
+
+		yield 'Foo' => [
+			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
+			'fr',
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
+			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
+			' INNER JOIN smw_object_ids AS o1 ON t0.s_id=o1.smw_id' .
+			' INNER JOIN smw_object_ids AS t1 ON t0.p_id=t1.smw_id' .
+			' INNER JOIN  AS t2 ON t2.s_id=o0.smw_id' .
+			' INNER JOIN  AS t3 ON t3.s_id=o0.smw_id' .
+			' WHERE (o1.smw_hash=ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6) AND (o0.smw_iw!=:smw) AND (o0.smw_iw!=:smw-delete)' .
+			' AND (t0.p_id=42) AND (t3.o_hash=fr)'
+		];
+
+		yield 'Foo#_ML123' => [
+			new DIWikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
+			'en',
+			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,'.
+			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
+			' INNER JOIN smw_object_ids AS o0 ON t0.o_id=o0.smw_id' .
+			' INNER JOIN smw_object_ids AS t1 ON t0.p_id=t1.smw_id' .
+			' INNER JOIN  AS t2 ON t2.s_id=o0.smw_id' .
+			' INNER JOIN  AS t3 ON t3.s_id=o0.smw_id' .
+			' WHERE (o0.smw_hash=22e50d45339970c49c3f3e35f73b38efee8fc60b) AND (o0.smw_iw!=:smw) AND (o0.smw_iw!=:smw-delete)' .
+			' AND (t0.p_id=42) AND (t3.o_hash=en)'
+		];
 	}
 
 	public function testNewDIContainer() {

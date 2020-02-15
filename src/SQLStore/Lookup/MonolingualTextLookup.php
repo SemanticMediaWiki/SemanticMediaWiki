@@ -206,16 +206,6 @@ class MonolingualTextLookup {
 		 * optimize the query and produce something like:
 		 *
 		 */
-
-		$subobjectName = $subject->getSubobjectName();
-
-		$sid = $this->store->getObjectIds()->getSMWPageID(
-			$subject->getDBKey(),
-			$subject->getNamespace(),
-			$subject->getInterWiki(),
-			$subobjectName
-		);
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -249,11 +239,40 @@ class MonolingualTextLookup {
 		 *  (o0.smw_iw!=':smw') AND
 		 *  (o0.smw_iw!=':smw-delete')
 		 */
-		if ( substr( $subobjectName, 0, 3 ) === '_ML' ) {
-			$query->condition( $query->eq( "t0.o_id", $sid ) );
-		} else {
-			$query->condition( $query->eq( "t0.s_id", $sid ) );
+
+		// Account for special properties
+		if ( $subject->inNamespace( SMW_NS_PROPERTY ) ) {
+			$prop = DIProperty::newFromUserLabel( $subject->getDBKey() );
+
+			$subject = new DIWikiPage(
+				$prop->getKey(),
+				$subject->getNamespace(),
+				$subject->getInterWiki(),
+				$subject->getSubobjectName()
+			);
 		}
+
+		$query->join(
+			'INNER JOIN',
+			[ SQLStore::ID_TABLE => 'o0 ON t0.o_id=o0.smw_id' ]
+		);
+
+		// Is it a Monolingual representation?
+		if ( $subject->isSubEntityOf( SMW_SUBENTITY_MONOLINGUAL ) ) {
+			$query->condition( $query->eq( "o0.smw_hash", $subject->getSha1() ) );
+		} else {
+			// We don't have a _ML entity reference hence we add a JOIN to find
+			// such entity
+			$query->condition( $query->eq( "o1.smw_hash", $subject->getSha1() ) );
+
+			$query->join(
+				'INNER JOIN',
+				[ SQLStore::ID_TABLE => 'o1 ON t0.s_id=o1.smw_id' ]
+			);
+		}
+
+		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
+		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWDELETEIW ) );
 
 		if ( !$propTable->isFixedPropertyTable() ) {
 
@@ -268,14 +287,6 @@ class MonolingualTextLookup {
 				[ SQLStore::ID_TABLE => 't1 ON t0.p_id=t1.smw_id' ]
 			);
 		}
-
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-		$query->condition( $query->neq( "o0.smw_iw", SMW_SQL3_SMWDELETEIW ) );
-
-		$query->join(
-			'INNER JOIN',
-			[ SQLStore::ID_TABLE => 'o0 ON t0.o_id=o0.smw_id' ]
-		);
 
 		$text = new DIProperty( '_TEXT' );
 

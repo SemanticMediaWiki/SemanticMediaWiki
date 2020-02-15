@@ -65,6 +65,41 @@ class DIWikiPageTest extends DataItemTest {
 		);
 	}
 
+	/**
+	 * @dataProvider subEntityProvider
+	 */
+	public function testIsSubEntityOf( $dbKey, $subobjectName, $subEntity, $expected ) {
+
+		$instance = new DIWikiPage( $dbKey, NS_MAIN, '', $subobjectName );
+
+		$this->assertEquals(
+			$expected,
+			$instance->isSubEntityOf( $subEntity )
+		);
+	}
+
+	public function testInNamespace() {
+
+		$instance = new DIWikiPage( 'Foo', NS_HELP );
+
+		$this->assertFalse(
+			$instance->inNamespace( SMW_NS_PROPERTY )
+		);
+
+		$this->assertTrue(
+			$instance->inNamespace( NS_HELP )
+		);
+	}
+
+	public function testInNamespace_EmptyDBKey() {
+
+		$instance = new DIWikiPage( '', NS_HELP );
+
+		$this->assertFalse(
+			$instance->inNamespace( NS_HELP )
+		);
+	}
+
 	public function testDoUnserialize() {
 
 		$expected = new DIWikiPage( 'Foo', 0 , '', '' );
@@ -107,6 +142,51 @@ class DIWikiPageTest extends DataItemTest {
 		];
 
 		return $provider;
+	}
+
+	public function subEntityProvider() {
+
+		yield 'empty dbkey' => [
+			'',
+			'_ML-foo',
+			SMW_SUBENTITY_MONOLINGUAL,
+			false
+		];
+
+		yield 'empty prefix' => [
+			'FOO',
+			'_ML-foo',
+			'',
+			false
+		];
+
+		yield SMW_SUBENTITY_MONOLINGUAL => [
+			'FOO',
+			'_ML-foo',
+			SMW_SUBENTITY_MONOLINGUAL,
+			true
+		];
+
+		yield SMW_SUBENTITY_REFERENCE => [
+			'FOO',
+			'_REF-foo',
+			SMW_SUBENTITY_REFERENCE,
+			true
+		];
+
+		yield SMW_SUBENTITY_QUERY => [
+			'FOO',
+			'_QUERY-foo',
+			SMW_SUBENTITY_QUERY,
+			true
+		];
+
+		yield SMW_SUBENTITY_ERROR => [
+			'FOO',
+			'_ERR-foo',
+			SMW_SUBENTITY_ERROR,
+			true
+		];
 	}
 
 }

@@ -114,6 +114,36 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $prefix
+	 *
+	 * @return boolean
+	 */
+	public function isSubEntityOf( string $prefix ) : bool {
+
+		if (
+			$this->m_dbkey === '' ||
+			$this->m_subobjectname ===  '' ||
+			$prefix ===  '' ) {
+			return false;
+		}
+
+		return substr( $this->m_subobjectname, 0, strlen( $prefix ) ) === $prefix;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param int $namespace
+	 *
+	 * @return boolean
+	 */
+	public function inNamespace( int $namespace ) : bool {
+		return $this->m_dbkey !== '' && $this->m_namespace === $namespace;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @return string

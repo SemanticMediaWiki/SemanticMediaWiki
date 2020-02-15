@@ -96,7 +96,7 @@ class EntityIdFinder {
 		);
 
 		if ( $row !== false ) {
-			$id = $row->smw_id;
+			$id = (int)$row->smw_id;
 
 			$this->idCacheManager->setCache(
 				$dataItem->getDBKey(),
