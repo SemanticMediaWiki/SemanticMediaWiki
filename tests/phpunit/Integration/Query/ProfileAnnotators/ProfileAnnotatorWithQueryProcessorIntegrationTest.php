@@ -25,7 +25,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
-			return $this->markTestSkipped( 'Category title produces different fingerprint!' );
+			$this->markTestSkipped( 'Category title produces different fingerprint!' );
 		}
 
 		$testEnvironment = new TestEnvironment();
