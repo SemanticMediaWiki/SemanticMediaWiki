@@ -96,12 +96,12 @@ class ParametersProcessor {
 		// request data as array
 		if ( ( $sort_values = $request->getArray( 'sort_num', [] ) ) !== [] ) {
 
-			// Find out whether something like `|?sort=,Has text` was used
-			if ( $sort_values[0] === '' ) {
-				$empty_first_sort = true;
-			}
-
 			if ( is_array( $sort_values ) ) {
+
+				// Find out whether something like `|?sort=,Has text` was used
+				if ( $sort_values[0] === '' ) {
+					$empty_first_sort = true;
+				}
 
 				// Filter all empty values
 				$sort = array_filter( $sort_values );
@@ -231,7 +231,11 @@ class ParametersProcessor {
 						$val = self::replace( '0x7C', '|', $val );
 					}
 
-					$parameters[] = $k == 0 && $key[0] == '?' ? $key . '=' . $val : $val;
+					if ( $k == 0 && is_string( $key ) && $key[0] == '?' ) {
+						$parameters[] = $key . '=' . $val;
+					} else {
+						$parameters[] = $val;
+					}
 				}
 			} elseif ( is_string( $key ) ) {
 				$parameters[$key] = $value;
@@ -245,7 +249,7 @@ class ParametersProcessor {
 
 	private static function hasPipe( $key, $value ) {
 
-		if ( $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
+		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}
 
