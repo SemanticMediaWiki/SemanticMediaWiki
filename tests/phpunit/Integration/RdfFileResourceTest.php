@@ -27,7 +27,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
-			return $this->markTestSkipped( 'Property title produces different representation!' );
+			$this->markTestSkipped( 'Property title produces different representation!' );
 		}
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
