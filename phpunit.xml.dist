@@ -24,6 +24,9 @@
         </listener>
     </listeners>
     <testsuites>
+        <testsuite name="semantic-mediawiki-check">
+          <file>tests/phpunit/PHPUnitCheckRunnerTest.php</file>
+        </testsuite>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
             <directory>tests/phpunit/Unit</directory>
