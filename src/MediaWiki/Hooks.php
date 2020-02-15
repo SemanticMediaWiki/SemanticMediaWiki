@@ -589,16 +589,19 @@ class Hooks {
 		);
 
 		$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
-			$wikiPage->getTitle(),
 			$editInfo,
-			$pageInfoProvider
+			$pageInfoProvider,
+			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
+			$applicationFactory->singleton( 'SchemaFactory' )
 		);
 
 		$newRevisionFromEditComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		return $newRevisionFromEditComplete->process();
+		$newRevisionFromEditComplete->process( $wikiPage->getTitle() );
+
+		return true;
 	}
 
 	/**

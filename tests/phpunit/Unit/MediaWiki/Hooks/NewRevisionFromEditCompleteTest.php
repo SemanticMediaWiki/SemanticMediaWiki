@@ -2,13 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use ParserOutput;
-use Revision;
-use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
 use SMW\Tests\TestEnvironment;
-use Title;
-use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\NewRevisionFromEditComplete
@@ -25,6 +20,8 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $eventDispatcher;
 	private $editInfo;
+	private $propertyAnnotatorFactory;
+	private $schemaFactory;
 
 	protected function setUp() {
 		parent::setUp();
@@ -46,6 +43,30 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$annotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyAnnotatorFactory = $this->getMockBuilder( '\SMW\Property\AnnotatorFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->propertyAnnotatorFactory->expects( $this->any() )
+			->method( 'newNullPropertyAnnotator' )
+			->will( $this->returnValue( $annotator ) );
+
+		$this->propertyAnnotatorFactory->expects( $this->any() )
+			->method( 'newPredefinedPropertyAnnotator' )
+			->will( $this->returnValue( $annotator ) );
+
+		$this->propertyAnnotatorFactory->expects( $this->any() )
+			->method( 'newSchemaPropertyAnnotator' )
+			->will( $this->returnValue( $annotator ) );
+
+		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() {
@@ -55,81 +76,60 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			NewRevisionFromEditComplete::class,
-			new NewRevisionFromEditComplete( $title, $this->editInfo, $pageInfoProvider )
+			new NewRevisionFromEditComplete( $this->editInfo, $pageInfoProvider, $this->propertyAnnotatorFactory, $this->schemaFactory )
 		);
 	}
 
-	/**
-	 * @dataProvider wikiPageDataProvider
-	 */
-	public function testProcess( $settings, $title, $editInfo, $pageInfoProvider, $expected ) {
+	public function testProcess_NoParserOutput() {
 
-		$this->eventDispatcher->expects( $expected ? $this->atLeastOnce() : $this->never() )
-			->method( 'dispatch' )
-			->withConsecutive(
-				[ $this->equalTo( 'InvalidateResultCache' ) ],
-				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
+		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$this->testEnvironment->withConfiguration( $settings );
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->editInfo->expects( $this->once() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( null ) );
+
+		$this->schemaFactory->expects( $this->never() )
+			->method( 'newSchema' );
+
+		$this->eventDispatcher->expects( $this->never() )
+			->method( 'dispatch' );
 
 		$instance = new NewRevisionFromEditComplete(
-			$title,
-			$editInfo,
-			$pageInfoProvider
+			$this->editInfo,
+			$pageInfoProvider,
+			$this->propertyAnnotatorFactory,
+			$this->schemaFactory
 		);
 
 		$instance->setEventDispatcher(
 			$this->eventDispatcher
 		);
 
-		$this->assertTrue(
-			$instance->process()
-		);
-
-		if ( $expected ) {
-			$this->semanticDataValidator->assertThatPropertiesAreSet(
-				$expected,
-				$editInfo->fetchSemanticData()
-			);
-		}
+		$instance->process( $title );
 	}
 
-	public function wikiPageDataProvider() {
+	public function testProcess_OnSchemaNamespace() {
 
-		#0 No parserOutput object
-
-		$title = $this->getMockBuilder( '\Title' )
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
-			->getMock();
-
-		$editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getOutput' ] )
 			->getMock();
 
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$provider[] = [
-			[],
-			$title,
-			$editInfo,
-			$pageInfoProvider,
-			false
-		];
-
-		#1 With annotation
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -140,91 +140,141 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
 
-		$editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getOutput' ] )
-			->getMock();
-
-		$editInfo->expects( $this->any() )
+		$this->editInfo->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( new ParserOutput() ) );
+			->will( $this->returnValue( $parserOutput ) );
+
+		$this->schemaFactory->expects( $this->once() )
+			->method( 'newSchema' );
+
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
+
+		$instance = new NewRevisionFromEditComplete(
+			$this->editInfo,
+			$pageInfoProvider,
+			$this->propertyAnnotatorFactory,
+			$this->schemaFactory
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
+		$instance->process( $title );
+	}
+
+	public function testProcess_OnSchemaNamespace_InvalidSchema() {
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfoProvider->expects( $this->atLeastOnce() )
-			->method( 'getModificationDate' )
-			->will( $this->returnValue( 1272508903 ) );
-
-		$provider[] = [
-			[
-				'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ],
-				'smwgDVFeatures' => ''
-			],
-			$title,
-			$editInfo,
-			$pageInfoProvider,
-			[
-				'propertyCount'  => 1,
-				'propertyKeys'   => '_MDAT',
-				'propertyValues' => [ '2010-04-29T02:41:43' ],
-			]
-		];
-
-		#2 on schema page
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo_schema' ) );
+			->will( $this->returnValue( 'Foo' ) );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
 			->will( $this->returnValue( SMW_NS_SCHEMA ) );
 
-		$editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
+		$this->editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$this->schemaFactory->expects( $this->once() )
+			->method( 'newSchema' )
+			->will( $this->throwException( new \Exception() ) );
+
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
+
+		$instance = new NewRevisionFromEditComplete(
+			$this->editInfo,
+			$pageInfoProvider,
+			$this->propertyAnnotatorFactory,
+			$this->schemaFactory
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
+		$instance->process( $title );
+	}
+
+	public function testProcess_OnConceptNamespace() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getOutput' ] )
 			->getMock();
 
-		$editInfo->expects( $this->any() )
-			->method( 'getOutput' )
-			->will( $this->returnValue( new ParserOutput() ) );
+		$store->expects( $this->once() )
+			->method( 'deleteConceptCache' );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$data = json_encode(
-			[ 'description' => 'Foobar', 'type' => 'FOO_ROLE' ]
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'Foo' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_CONCEPT ) );
+
+		$this->editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$this->schemaFactory->expects( $this->never() )
+			->method( 'newSchema' );
+
+		$this->eventDispatcher->expects( $this->atLeastOnce() )
+			->method( 'dispatch' )
+			->withConsecutive(
+				[ $this->equalTo( 'InvalidateResultCache' ) ],
+				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
+
+		$instance = new NewRevisionFromEditComplete(
+			$this->editInfo,
+			$pageInfoProvider,
+			$this->propertyAnnotatorFactory,
+			$this->schemaFactory
 		);
 
-		$pageInfoProvider->expects( $this->atLeastOnce() )
-			->method( 'getNativeData' )
-			->will( $this->returnValue( $data ) );
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
 
-		$provider[] =[
-			[
-				'smwgPageSpecialProperties' => [],
-				'smwgDVFeatures' => '',
-				'smwgSchemaTypes' => [ 'FOO_ROLE' => [] ]
-			],
-			$title,
-			$editInfo,
-			$pageInfoProvider,
-			[
-				'propertyCount'  => 3,
-				'propertyKeys'   => [ '_SCHEMA_DESC', '_SCHEMA_TYPE', '_SCHEMA_DEF' ],
-				'propertyValues' => [ 'Foobar', 'FOO_ROLE', '{"description":"Foobar","type":"FOO_ROLE"}' ],
-			]
-		];
-
-		return $provider;
+		$instance->process( $title );
 	}
 
 }
