@@ -164,6 +164,12 @@ class ItemFetcher {
 
 			if ( $requestOptions->isChain ) {
 				$list = $dataItems;
+
+				// Allow the first chain element to use the entire result list
+				// to filter members as early as possible from the chain
+				if ( $requestOptions->isFirstChain ?? false ) {
+					$list = $this->dataItems;
+				}
 			}
 
 			$this->prefetchCache->prefetch( $list, $property, $requestOptions );

@@ -316,6 +316,7 @@ class FieldItemFinder {
 		}
 
 		$requestOptions->isChain = false;
+		$requestOptions->isFirstChain = false;
 
 		// If it is a chain then try to find a connected DIWikiPage subject that
 		// matches the property on the chained PrintRequest.
@@ -327,9 +328,11 @@ class FieldItemFinder {
 		// retrieved from `Has page`.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
 			$requestOptions->isChain = $dataValue->getDataItem()->getString();
+			$isFirstChain = true;
 
 			// Output of the previous iteration is the input for the next iteration
 			foreach ( $dataValue->getPropertyChainValues() as $pv ) {
+				$requestOptions->isFirstChain = $isFirstChain;
 				$dataItems = $this->itemFetcher->fetch( $dataItems, $pv->getDataItem(), $requestOptions );
 
 				// If the results return empty then it means that for this element
@@ -337,9 +340,12 @@ class FieldItemFinder {
 				if ( $dataItems === [] ) {
 					return [];
 				}
+
+				$isFirstChain = false;
 			}
 
 			$dataValue = $dataValue->getLastPropertyChainValue();
+			$requestOptions->isFirstChain = false;
 		}
 
 		$content = $this->itemFetcher->fetch(

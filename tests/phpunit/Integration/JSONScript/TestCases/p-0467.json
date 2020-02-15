@@ -1,0 +1,77 @@
+{
+	"description": "Test use case for lookup prefetch cache strategy in connection with printrequest chain filtering",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has Page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"page": "P0467/1",
+			"contents": "[[Has page::P0467/1/A]] {{#subobject: Has page=P0467/1/A |@category=P0467 }} [[Category:P0467]]"
+		},
+		{
+			"page": "P0467/1/A",
+			"contents": "[[Has page::P0467/2]] [[Has number::1001]]"
+		},
+		{
+			"page": "P0467/2",
+			"contents": "[[Has number::123]]"
+		},
+		{
+			"page": "P0467/Q.1",
+			"contents": "{{#ask: [[Category:P0467]] |?Has page.Has page.Has number#- |format=table |link=none }}"
+		},
+		{
+			"page": "P0467/Q.2",
+			"contents": "{{#ask: [[Category:P0467]] |?Has page.Has page.-Has page.Has number#- |format=table |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (Verifies that the prefetch cache correctly tracks lookup queries and returns a number for both subjects)",
+			"subject": "P0467/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">P0467/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>",
+					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+				],
+				"not-contain": [
+					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\"></td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (Verifies that the prefetch cache correctly tracks lookup queries, incl. inverted request)",
+			"subject": "P0467/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">P0467/1</td><td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1001</td>",
+					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\" data-sort-value=\"1001\">1001</td>"
+				],
+				"not-contain": [
+					"<td class=\"smwtype_wpg\">P0467/1#_e242c306cd92f5de7da4528c9e2987f6</td><td class=\"Has-number smwtype_num\"></td>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
