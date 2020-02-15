@@ -136,8 +136,12 @@ class PropertyPage extends Page {
 
 		$label = $this->getTitle()->getText();
 
+		if ( ( $key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label ) ) === false ) {
+			return false;
+		}
+
 		$property = new DIProperty(
-			PropertyRegistry::getInstance()->findPropertyIdByLabel( $label )
+			$key
 		);
 
 		// Ensure to redirect to `Property:Modification date` and not using
