@@ -279,7 +279,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 		list( $startOpts, $useIndex, $tailOpts ) = $connection->makeSelectOptions( $sqlOptions );
 
-		$sortfields = implode( $qobj->sortfields, ',' );
+		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
 
 		$format = DebugFormatter::getFormat(
