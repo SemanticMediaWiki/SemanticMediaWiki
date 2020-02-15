@@ -14,11 +14,11 @@
 			"contents": "[[Has type::Page]] [[Constraint schema::Constraint:User namespace]]"
 		},
 		{
-			"page": "Test:P1100/1",
+			"page": "P1100/1",
 			"contents": "[[Username::P1100]]"
 		},
 		{
-			"page": "Test:P1100/2",
+			"page": "P1100/2",
 			"contents": "[[Username::User:P1100]]"
 		}
 	],
@@ -26,21 +26,57 @@
 		{
 			"type": "parser",
 			"about": "#0 (invalid assignment on `allowed_namespaces`)",
-			"subject": "Test:P1100/1",
-			"assert-output": {
-				"to-contain": [
-					"<span class=\"smwttcontent\">\"P1100\" as value violates the namespace constraint (\"NS_USER\") defined by a schema assigned to the \"Username\" property.</span>"
-				]
+			"subject": "P1100/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.1 (invalid assignment on `allowed_namespaces`)",
+			"namespace": "NS_MAIN",
+			"subject": "P1100/1#_ERRf6039d44b29456b20f8f373155ae4973",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERRP",
+						"_ERR_TYPE"
+					],
+					"propertyValues": [
+						{ "serialization": "[2,\"smw-constraint-violation-allowed-namespace-no-match\",\"Username\",\"P1100\",\"NS_USER\"]" }
+					]
+				}
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1 (valid assignment on `allowed_namespaces`)",
-			"subject": "Test:P1100/2",
-			"assert-output": {
-				"to-contain": [
-					">User:P1100</a>"
-				]
+			"subject": "P1100/2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Username"
+					],
+					"propertyValues": [
+						"P1100#2##"
+					]
+				}
 			}
 		}
 	],

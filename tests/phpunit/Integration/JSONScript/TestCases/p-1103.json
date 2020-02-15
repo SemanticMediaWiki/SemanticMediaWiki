@@ -58,7 +58,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						"[8,\"smw-datavalue-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
+						"[8,\"smw-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
 					]
 				}
 			}
@@ -78,7 +78,7 @@
 					],
 					"propertyValues": [
 						"Value 3",
-						"Test:P1103/2#_ERRc45cee5c6ff92924215e31b8674870a7"
+						"Test:P1103/2#_ERR933d2aae5adcd1576dbc1a7700b29fac"
 					]
 				}
 			}
@@ -86,7 +86,7 @@
 		{
 			"type": "parser",
 			"about": "#3 (subobject with violation of `single_value_constraint`)",
-			"subject": "Test:P1103/2#_ERRc45cee5c6ff92924215e31b8674870a7",
+			"subject": "Test:P1103/2#_ERR933d2aae5adcd1576dbc1a7700b29fac",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -98,7 +98,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						"[8,\"smw-datavalue-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
+						"[8,\"smw-constraint-violation-single-value\",\"Has page\",\"Value 2\"]"
 					]
 				}
 			}

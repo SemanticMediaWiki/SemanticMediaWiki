@@ -58,7 +58,7 @@ class MustExistsConstraintTest extends \PHPUnit_Framework_TestCase {
 			'must_exists' => true
 		];
 
-		$expectedErrMsg = 'smw-datavalue-constraint-violation-must-exists';
+		$expectedErrMsg = 'smw-constraint-violation-must-exists';
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

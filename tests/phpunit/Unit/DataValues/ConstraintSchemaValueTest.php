@@ -99,7 +99,7 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertContains(
-			'[2,"smw-datavalue-constraint-schema-property-invalid-type","Foo","PROPERTY_CONSTRAINT_SCHEMA"]',
+			'[2,"smw-constraint-schema-property-invalid-type","Foo","PROPERTY_CONSTRAINT_SCHEMA"]',
 			implode(',', $instance->getErrors() )
 		);
 	}
@@ -131,7 +131,7 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo' );
 
 		$this->assertContains(
-			'[2,"smw-datavalue-constraint-schema-category-invalid-type","Foo","CLASS_CONSTRAINT_SCHEMA"]',
+			'[2,"smw-constraint-schema-category-invalid-type","Foo","CLASS_CONSTRAINT_SCHEMA"]',
 			implode(',', $instance->getErrors() )
 		);
 	}

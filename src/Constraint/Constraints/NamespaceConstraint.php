@@ -17,6 +17,11 @@ use RuntimeException;
 class NamespaceConstraint implements Constraint {
 
 	/**
+	 * Defines the expected key in the JSON
+	 */
+	const CONSTRAINT_KEY = 'allowed_namespaces';
+
+	/**
 	 * @var boolean
 	 */
 	private $hasViolation = false;
@@ -54,7 +59,7 @@ class NamespaceConstraint implements Constraint {
 
 		$key = key( $constraint );
 
-		if ( $key === 'allowed_namespaces' ) {
+		if ( $key === self::CONSTRAINT_KEY ) {
 			return $this->check( $constraint[$key], $dataValue );
 		}
 	}
@@ -62,11 +67,12 @@ class NamespaceConstraint implements Constraint {
 	private function check( $namespaces, $dataValue ) {
 
 		$dataItem = $dataValue->getDataItem();
+		$property = $dataValue->getProperty();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
 
 			$error = [
-				'smw-constraint-schema-violation-requires-page-type'
+				'smw-constraint-violation-allowed-namespaces-requires-page-type'
 			];
 
 			return $this->reportError( $dataValue, $error );
@@ -79,10 +85,10 @@ class NamespaceConstraint implements Constraint {
 		}
 
 		$error = [
-			'smw-constraint-schema-violation-allowed-namespace-no-match',
+			'smw-constraint-violation-allowed-namespace-no-match',
+			$property->getLabel(),
 			$dataValue->getWikiValue(),
-			implode(', ', $namespaces ),
-			$dataValue->getProperty()->getLabel()
+			implode(', ', $namespaces )
 		];
 
 		$this->reportError( $dataValue, $error );

@@ -17,6 +17,11 @@ use RuntimeException;
 class MustExistsConstraint implements Constraint {
 
 	/**
+	 * Defines the expected key in the JSON
+	 */
+	const CONSTRAINT_KEY = 'must_exists';
+
+	/**
 	 * @var boolean
 	 */
 	private $hasViolation = false;
@@ -54,7 +59,7 @@ class MustExistsConstraint implements Constraint {
 
 		$key = key( $constraint );
 
-		if ( $key === 'must_exists' ) {
+		if ( $key === self::CONSTRAINT_KEY ) {
 			return $this->check( $constraint[$key], $dataValue );
 		}
 	}
@@ -80,7 +85,7 @@ class MustExistsConstraint implements Constraint {
 
 		$dataValue->addError(
 			new ConstraintError( [
-				'smw-datavalue-constraint-violation-must-exists',
+				'smw-constraint-violation-must-exists',
 				$dataValue->getProperty()->getLabel(),
 				$dataValue->getWikiValue()
 			] )
