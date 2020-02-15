@@ -22,7 +22,7 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'tableExists', 'query', 'dbSchema', 'tablePrefix', 'onTransactionIdle', 'selectField' ] )
+			->setMethods( [ 'tableExists', 'query', 'dbSchema', 'tablePrefix', 'selectField' ] )
 			->getMockForAbstractClass();
 
 		$this->connection->expects( $this->any() )
@@ -310,10 +310,6 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
 
-		$this->connection->expects( $this->any() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
-
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with( $this->stringContains( 'ALTER SEQUENCE' ) );
@@ -332,10 +328,6 @@ class PostgresTableBuilderTest extends \PHPUnit_Framework_TestCase {
 		if ( version_compare( MW_VERSION, '1.32', '<' ) ) {
 			$this->markTestSkipped( 'MediaWiki changed the Database signature!' );
 		}
-
-		$this->connection->expects( $this->any() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) { return $callback(); } ) );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
