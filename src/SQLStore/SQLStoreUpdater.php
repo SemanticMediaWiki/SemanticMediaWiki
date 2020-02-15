@@ -11,6 +11,7 @@ use SMWDIBlob as DIBlob;
 use SMW\Parameters;
 use SMW\SQLStore\PropertyStatisticsTable;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\Enum;
 use Title;
 
 /**
@@ -226,8 +227,16 @@ class SQLStoreUpdater {
 		// Update data about our subobjects
 		$subSemanticData = $semanticData->getSubSemanticData();
 		$connection = $this->store->getConnection( 'mw.db' );
+		$isForcedUpdate = $semanticData->getOption( Enum::FORCED_UPDATE, false );
 
 		foreach( $subSemanticData as $subobjectData ) {
+
+			// Inherit the option from the parent to ensure all associated
+			// entities are going to be updated
+			if ( $isForcedUpdate ) {
+				$subobjectData->setOption( Enum::FORCED_UPDATE, $isForcedUpdate );
+			}
+
 			$this->doFlatDataUpdate( $subobjectData );
 		}
 

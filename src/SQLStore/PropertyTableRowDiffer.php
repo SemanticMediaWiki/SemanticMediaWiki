@@ -9,6 +9,7 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
+use SMW\Enum;
 use SMWDataItem as DataItem;
 
 /**
@@ -186,7 +187,8 @@ class PropertyTableRowDiffer {
 				$newHashes[$tableName] = $this->createHash(
 					$tableName,
 					$newData,
-					$semanticData->getOption( SemanticData::OPT_LAST_MODIFIED )
+					$semanticData->getOption( SemanticData::OPT_LAST_MODIFIED ) .
+					$semanticData->getOption( Enum::FORCED_UPDATE, '' )
 				);
 
 				if ( array_key_exists( $tableName, $oldHashes ) && $newHashes[$tableName] == $oldHashes[$tableName] ) {

@@ -273,6 +273,13 @@ class UpdateJob extends Job {
 			true
 		);
 
+		if ( $this->hasParameter( self::FORCED_UPDATE ) ) {
+			$parserData->getSemanticData()->setOption(
+				Enum::FORCED_UPDATE,
+				wfTimestamp( TS_UNIX )
+			);
+		}
+
 		$parserData->setOption(
 			$parserData::OPT_CHANGE_PROP_UPDATE,
 			$this->getParameter( self::CHANGE_PROP )
