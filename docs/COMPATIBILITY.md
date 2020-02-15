@@ -18,7 +18,7 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 	</tr>
 	<tr>
 		<th>3.2.x</th>
-		<td><strong>7.1.0</strong> - latest</td>
+		<td><strong>7.1.0</strong> - 7.4.x</td>
 		<td>1.31.0 - 1.35.x</td>
 		<td>Q2.2020</td>
 		<td>Future</td>
