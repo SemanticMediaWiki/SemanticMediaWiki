@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Utils\TemplateEngine;
+use SMW\Localizer\LocalMessageProvider;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
 use RuntimeException;
@@ -80,9 +81,9 @@ class SetupCheck {
 	private $templateEngine;
 
 	/**
-	 * @var []
+	 * @var LocalMessageProvider
 	 */
-	private $messages = [];
+	private $localMessageProvider;
 
 	/**
 	 * @var []
@@ -129,6 +130,7 @@ class SetupCheck {
 		$this->options = $options;
 		$this->setupFile = $setupFile;
 		$this->templateEngine = new TemplateEngine();
+		$this->localMessageProvider = new LocalMessageProvider( '/local/setupcheck.i18n.json' );
 
 		if ( $this->setupFile === null ) {
 			$this->setupFile =  new SetupFile();
@@ -290,7 +292,7 @@ class SetupCheck {
 			'content' => ''
 		];
 
-		$this->languageCode = $this->options['wgLanguageCode'] ?? 'en';
+		$this->languageCode = $_GET['uselang'] ?? $this->options['wgLanguageCode'] ?? 'en';
 
 		// Output forms for different error types are registered with a JSON file.
 		$this->definitions = $this->readFromFile(
@@ -301,9 +303,11 @@ class SetupCheck {
 		// on the MW message system especially when SMW isn't fully registered
 		// and we are unable to access any `smw-...` message keys from the standard
 		// i18n files.
-		$this->messages = $this->readFromFile(
-			$GLOBALS['smwgExtraneousLanguageFileDir'] . '/../local/setupcheck.i18n.json'
+		$this->localMessageProvider->setLanguageCode(
+			$this->languageCode
 		);
+
+		$this->localMessageProvider->loadMessages();
 
 		// HTML specific formatting is contained in the following files where
 		// a defined group of targets correspond to types used in the JSON
@@ -510,19 +514,11 @@ class SetupCheck {
 
 	private function createCopy( $value, $default = 'n/a' ) {
 
-		if ( is_string( $value ) && isset( $this->messages[$value] ) ) {
-			$value = $this->messages[$value];
+		if ( is_string( $value ) && $this->localMessageProvider->has( $value ) ) {
+			return $this->localMessageProvider->msg( $value );
 		}
 
-		if( isset( $value[$this->languageCode] ) ) {
-			$text = $value[$this->languageCode];
-		} elseif( isset( $value[$this->fallbackLanguageCode] ) ) {
-			$text = $value[$this->fallbackLanguageCode];
-		} else {
-			$text = $default;
-		}
-
-		return $text;
+		return $default;
 	}
 
 	private function buildHTML( array $error ) {

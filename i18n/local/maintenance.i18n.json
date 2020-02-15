@@ -1,0 +1,32 @@
+{
+	"smw-maintenance-requires-enabled-semantic-mediawiki": {
+		"en": "You need to have Semantic MediaWiki enabled in order to run the maintenance script!"
+	},
+	"smw-maintenance-done": {
+		"en": "done."
+	},
+	"smw-maintenance-populatehashfield-description": {
+		"en": "Populate the 'smw_hash' field for all entities that have a missing entry."
+	},
+	"smw-maintenance-populatehashfield-table-update": {
+		"en": "Table update"
+	},
+	"smw-maintenance-populatehashfield-checking-hash-field": {
+		"en": "Checking the 'smw_hash' field integrity"
+	},
+	"smw-maintenance-runlocalmessagecopy-about": {
+		"en": "The script allows to copy messages from a local `$1` file to/from the i18n translation system."
+	},
+	"smw-maintenance-runlocalmessagecopy-usage-notice": {
+		"en": "This script is not expected to be used by any user or administrator and is only provided for convenience to the Semantic MediaWiki project."
+	},
+	"smw-maintenance-updating-hash-field": {
+		"en": "updating `$1` status"
+	},
+	"smw-maintenance-populated-all-rows": {
+		"en": "all rows populated"
+	},
+	"smw-maintenance-missing-rows": {
+		"en": "missing $1 rows"
+	}
+}

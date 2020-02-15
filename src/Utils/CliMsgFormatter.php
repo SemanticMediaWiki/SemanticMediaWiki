@@ -57,6 +57,39 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function red( string $text ) : string {
+		return "\x1b[91m$text\x1b[0m";
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function green( string $text ) : string {
+		return "\x1b[32m$text\x1b[0m";
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function yellow( string $text ) : string {
+		return "\x1b[33m$text\x1b[0m";
+	}
+
+	/**
+	 * @since 3.2
+	 *
 	 * @param integer $i
 	 * @param integer $total
 	 *

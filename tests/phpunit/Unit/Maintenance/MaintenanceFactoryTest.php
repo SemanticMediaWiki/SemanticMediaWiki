@@ -43,6 +43,16 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructLocalMessageProvider() {
+
+		$instance = new MaintenanceFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\Localizer\LocalMessageProvider',
+			$instance->newLocalMessageProvider( 'foo' )
+		);
+	}
+
 	public function testCanConstructDataRebuilder() {
 
 		$instance = new MaintenanceFactory();

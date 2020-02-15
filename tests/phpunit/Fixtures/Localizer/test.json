@@ -1,0 +1,12 @@
+{
+	"foo-abc": {
+		"en": "abc",
+		"fr": "abc",
+		"ja": "あいう"
+	},
+	"foo-abc-replacement": {
+		"en": "$1 abc $2",
+		"fr": "$1 abc $2",
+		"ja": "$1 あいう $2"
+	}
+}
