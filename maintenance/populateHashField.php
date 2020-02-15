@@ -127,9 +127,16 @@ class PopulateHashField extends \Maintenance {
 			exit;
 		}
 
-		$this->store = ApplicationFactory::getInstance()->getStore(
-			'SMW\SQLStore\SQLStore'
+		$applicationFactory = ApplicationFactory::getInstance();
+		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+
+		$this->store = $applicationFactory->getStore( SQLStore::class );
+
+		$localMessageProvider = $maintenanceFactory->newLocalMessageProvider(
+			'/local/maintenance.i18n.json'
 		);
+
+		$localMessageProvider->loadMessages();
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
@@ -138,13 +145,17 @@ class PopulateHashField extends \Maintenance {
 		);
 
 		$this->reportMessage(
-			$cliMsgFormatter->section( 'Table update' )
+			$cliMsgFormatter->section( $localMessageProvider->msg( 'smw-maintenance-populatehashfield-table-update' ) )
 		);
 
-		$this->reportMessage( "\nChecking 'smw_hash' field consistency ...\n" );
+		$this->reportMessage(
+			"\n". $localMessageProvider->msg( 'smw-maintenance-populatehashfield-checking-hash-field' ) . "...\n" );
+
 		$this->populate();
 
-		$this->reportMessage( "   ... done.\n" );
+		$this->reportMessage(
+			$cliMsgFormatter->oneCol( "... " . $localMessageProvider->msg( 'smw-maintenance-done' ), 3 )
+		);
 
 		return true;
 	}

@@ -55,6 +55,13 @@ class SemanticMediaWiki {
 			}
 		}
 
+		/**
+		 * @see https://www.mediawiki.org/wiki/Localisation#Localising_namespaces_and_special_page_aliases
+		 */
+		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = __DIR__ . '/i18n';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.alias.php';
+		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.magic.php';
+
 		// Registration point before any `extension.json` invocation
 		// takes place
 		Setup::registerExtensionCheck( $GLOBALS );
@@ -73,13 +80,6 @@ class SemanticMediaWiki {
 		if ( !defined( 'MW_VERSION' ) ) {
 			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
 		}
-
-		/**
-		 * @see https://www.mediawiki.org/wiki/Localisation#Localising_namespaces_and_special_page_aliases
-		 */
-		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = __DIR__ . '/i18n';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiAlias'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.alias.php';
-		$GLOBALS['wgExtensionMessagesFiles']['SemanticMediaWikiMagic'] = __DIR__ . '/i18n/extra/SemanticMediaWiki.magic.php';
 
 		// Release the check after the extension was successfully loaded
 		Setup::releaseExtensionCheck( $GLOBALS );

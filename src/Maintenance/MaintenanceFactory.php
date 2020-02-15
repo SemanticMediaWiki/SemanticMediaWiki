@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
+use SMW\Localizer\LocalMessageProvider;
 
 /**
  * @license GNU GPL v2+
@@ -24,6 +25,18 @@ class MaintenanceFactory {
 	 */
 	public function newMaintenanceHelper() {
 		return new MaintenanceHelper();
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $file
+	 * @param string $languageCode
+	 *
+	 * @return LocalMessageProvider
+	 */
+	public function newLocalMessageProvider( string $file, string $languageCode = 'en' ) : LocalMessageProvider {
+		return new LocalMessageProvider( $file, $languageCode );
 	}
 
 	/**
