@@ -73,7 +73,7 @@
 		"en": "You may also consult the following pages for further assistance:<ul><li><a href='www.semantic-mediawiki.org/wiki/Help:Installation'>Installation</a> instructions</li><li><a href='www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting'>Troubleshooting</a> help page</li></ul>"
 	},
 	"smw-setupcheck-requires-software-update": {
-		"en": "The issue can only be resolved by updating the software (or environment) to match the minimum requirement."
+		"en": "The issue can only be resolved by updating the software (or environment) to match the requirement."
 	},
 	"smw-setupcheck-invalid-upgrade-key": {
 		"en": "<a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> was installed and enabled but is missing an appropriate <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade_key'>upgrade key</a>."
