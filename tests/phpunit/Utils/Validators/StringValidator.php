@@ -27,7 +27,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 			}
 		};
 
-		$this->doAssertWith( $expected, $actual, $message, 'StringContains', $callback );
+		$this->doAssertWith( $expected, (string)$actual, $message, 'StringContains', $callback );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 			}
 		};
 
-		$this->doAssertWith( $expected, $actual, $message, 'StringNotContains', $callback );
+		$this->doAssertWith( $expected, (string)$actual, $message, 'StringNotContains', $callback );
 	}
 
 	private function doAssertWith( $expected, $actual, $message = '', $method = '', $callback ) {
