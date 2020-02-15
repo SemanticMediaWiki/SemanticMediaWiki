@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlTabs;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\HtmlTabs
@@ -14,6 +15,8 @@ use SMW\Utils\HtmlTabs;
  * @author mwjames
  */
 class HtmlTabsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testHasContents() {
 

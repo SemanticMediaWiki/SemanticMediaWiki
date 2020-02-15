@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use ParserOutput;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\MagicWordsFinder
@@ -16,6 +17,8 @@ use SMW\ApplicationFactory;
  * @author mwjames
  */
 class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $magicWordsFinder;
 

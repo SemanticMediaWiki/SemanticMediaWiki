@@ -5,6 +5,7 @@ namespace SMW\Tests\Schema;
 use SMW\DIWikiPage;
 use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList
@@ -16,6 +17,8 @@ use SMW\Schema\SchemaDefinition;
  * @author mwjames
  */
 class SchemaListTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

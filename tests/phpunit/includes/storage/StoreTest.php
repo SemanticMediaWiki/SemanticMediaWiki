@@ -9,6 +9,7 @@ use SMW\StoreFactory;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMWRequestOptions;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWStore class.
@@ -23,6 +24,8 @@ use Title;
  * @author Nischay Nahata
  */
 class StoreTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 ///// Reading methods /////
 

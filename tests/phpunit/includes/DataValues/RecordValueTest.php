@@ -5,6 +5,7 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWRecordValue
@@ -16,6 +17,8 @@ use SMWRecordValue as RecordValue;
  * @author mwjames
  */
 class RecordValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

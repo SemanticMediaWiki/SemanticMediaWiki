@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleProtectComplete
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $spyLogger;
 	private $testEnvironment;

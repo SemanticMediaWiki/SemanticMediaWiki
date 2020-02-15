@@ -10,6 +10,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
 use TextContent;
 use TextContentHandler;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ContentParser
@@ -24,6 +25,8 @@ use Title;
  * @author mwjames
  */
 class ContentParserTest extends SemanticMediaWikiTestCase {
+
+	use PHPUnitCompat;
 
 	public function getClass() {
 		return '\SMW\ContentParser';

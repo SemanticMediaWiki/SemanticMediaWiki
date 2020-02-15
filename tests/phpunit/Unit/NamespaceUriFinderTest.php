@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceUriFinder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceUriFinder
@@ -14,6 +15,8 @@ use SMW\NamespaceUriFinder;
  * @author mwjames
  */
 class NamespaceUriFinderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider namespaceProvider

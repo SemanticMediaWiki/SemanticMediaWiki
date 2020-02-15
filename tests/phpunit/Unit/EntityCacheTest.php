@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\EntityCache;
 use SMW\DIWikiPage;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\EntityCache
@@ -15,6 +16,8 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class EntityCacheTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $cache;
 

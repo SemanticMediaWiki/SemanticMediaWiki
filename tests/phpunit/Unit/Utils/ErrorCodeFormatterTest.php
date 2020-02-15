@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\ErrorCodeFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\ErrorCodeFormatter
@@ -14,6 +15,8 @@ use SMW\Utils\ErrorCodeFormatter;
  * @author mwjames
  */
 class ErrorCodeFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGetStringFromJsonErrorCode() {
 

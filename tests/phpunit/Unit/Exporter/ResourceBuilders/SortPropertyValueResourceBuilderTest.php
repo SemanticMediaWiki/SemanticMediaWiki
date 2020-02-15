@@ -8,6 +8,7 @@ use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
 use SMW\Serializers\ExpDataSerializer;
 use SMW\Tests\TestEnvironment;
 use SMWExpData as ExpData;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder
@@ -19,6 +20,8 @@ use SMWExpData as ExpData;
  * @author mwjames
  */
 class SortPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 	private $testEnvironment;

@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMWQuery as Query;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWQuery
@@ -14,6 +15,8 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $smwgQMaxLimit;
 	private $smwgQMaxInlineLimit;

@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiRequestParameterFormatter
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ApiRequestParameterFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

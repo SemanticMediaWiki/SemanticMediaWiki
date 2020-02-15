@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\HelpWidget
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Ask\HelpWidget;
  * @author mwjames
  */
 class HelpWidgetTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testSessionFailure() {
 

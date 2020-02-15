@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver
@@ -16,6 +17,8 @@ use Title;
  * @author mwjames
  */
 class SpecialURIResolverTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $stringValidator;

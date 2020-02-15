@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMWExpLiteral as ExpLiteral;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RepositoryResult
@@ -15,6 +16,8 @@ use SMWExpLiteral as ExpLiteral;
  * @author mwjames
  */
 class RepositoryResultTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

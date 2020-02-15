@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;

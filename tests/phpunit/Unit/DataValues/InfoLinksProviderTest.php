@@ -9,6 +9,7 @@ use SMW\DataValues\StringValue;
 use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
@@ -20,6 +21,8 @@ use SMWNumberValue as NumberValue;
  * @author mwjames
  */
 class InfoLinksProviderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

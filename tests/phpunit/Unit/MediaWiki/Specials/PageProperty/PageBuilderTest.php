@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PageProperty\PageBuilder
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PagePropertyTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $htmlFormRenderer;

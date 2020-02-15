@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\Timer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\Timer
@@ -14,6 +15,8 @@ use SMW\Utils\Timer;
  * @author mwjames
  */
 class TimerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGetElapsedTime() {
 

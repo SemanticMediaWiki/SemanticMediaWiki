@@ -7,6 +7,7 @@ use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
 use SMW\Services\ServicesContainer;
 use FakeResultWrapper;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup
@@ -18,6 +19,8 @@ use FakeResultWrapper;
  * @author mwjames
  */
 class PValueLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 

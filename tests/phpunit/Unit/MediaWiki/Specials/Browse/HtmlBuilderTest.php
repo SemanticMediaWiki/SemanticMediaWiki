@@ -6,6 +6,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\HtmlBuilder
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HtmlBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;

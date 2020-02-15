@@ -10,6 +10,7 @@ use SMW\Factbox\CheckMagicWords;
 use SMW\ParserData;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox
@@ -21,6 +22,8 @@ use Title;
  * @author mwjames
  */
 class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\SchemaContent;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContent
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Content\SchemaContent;
  * @author mwjames
  */
 class SchemaContentTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

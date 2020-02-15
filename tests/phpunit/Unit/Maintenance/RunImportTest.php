@@ -5,6 +5,7 @@ namespace SMW\Tests\Maintenance;
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\RunImport;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\RunImport
@@ -16,6 +17,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class RunImportTest extends TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $spyMessageReporter;

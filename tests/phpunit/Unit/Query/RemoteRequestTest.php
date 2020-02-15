@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\RemoteRequest;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\RemoteRequest
@@ -14,6 +15,8 @@ use SMW\Query\RemoteRequest;
  * @author mwjames
  */
 class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $httpRequest;
 	private $query;

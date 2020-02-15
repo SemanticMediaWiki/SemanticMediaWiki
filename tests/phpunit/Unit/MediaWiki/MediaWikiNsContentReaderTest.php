@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\MediaWikiNsContentReader
@@ -14,6 +15,8 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  * @author mwjames
  */
 class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

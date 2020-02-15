@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\SetupFile;
 use SMW\Utils\File;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SetupFile
@@ -15,6 +16,8 @@ use SMW\Utils\File;
  * @author mwjames
  */
 class SetupFileTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testIsGoodSchema() {
 

@@ -8,6 +8,7 @@ use SMWDataItem;
 use SMWDINumber;
 use SMWQueryResult;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
@@ -19,6 +20,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AggregatablePrinterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $queryResult;
 	private $resultPrinterReflector;

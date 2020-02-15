@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\UrlArgs;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\UrlArgs
@@ -14,6 +15,8 @@ use SMW\Utils\UrlArgs;
  * @author mwjames
  */
 class UrlArgsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testToString() {
 

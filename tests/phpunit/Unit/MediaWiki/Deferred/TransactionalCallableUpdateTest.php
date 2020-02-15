@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\TransactionalCallableUpdate
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $spyLogger;

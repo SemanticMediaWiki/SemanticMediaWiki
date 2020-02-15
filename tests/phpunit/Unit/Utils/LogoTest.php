@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\Logo;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\Logo
@@ -14,6 +15,8 @@ use SMW\Utils\Logo;
  * @author mwjames
  */
 class LogoTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGet_Small() {
 

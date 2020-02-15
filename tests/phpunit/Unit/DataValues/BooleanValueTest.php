@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\BooleanValue;
 use SMW\Localizer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\BooleanValue
@@ -15,6 +16,8 @@ use SMW\Localizer;
  * @author mwjames
  */
 class BooleanValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

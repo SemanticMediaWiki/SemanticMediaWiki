@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataUpdater
@@ -18,6 +19,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $transactionalCallableUpdate;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\ParserFunctions;
 
 use SMW\ParserFunctions\InfoParserFunction;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\InfoParserFunction
@@ -14,6 +15,8 @@ use SMW\ParserFunctions\InfoParserFunction;
  * @author mwjames
  */
 class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

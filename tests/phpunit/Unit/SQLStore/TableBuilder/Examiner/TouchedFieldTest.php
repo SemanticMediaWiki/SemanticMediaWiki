@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\TouchedField
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;

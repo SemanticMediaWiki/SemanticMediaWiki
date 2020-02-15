@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use ParserOutput;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\NamespaceInfo
@@ -15,6 +16,8 @@ use SMW\MediaWiki\NamespaceInfo;
  * @author mwjames
  */
 class NamespaceInfoTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

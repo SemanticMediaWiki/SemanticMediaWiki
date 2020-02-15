@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIWikiPage;
 use SMW\PostProcHandler;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -16,6 +17,8 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
  * @author mwjames
  */
 class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $parserOutput;
 	private $cache;

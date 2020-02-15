@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableRowMapper;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowMapper
@@ -17,6 +18,8 @@ use SMW\SQLStore\PropertyTableRowMapper;
  * @author mwjames
  */
 class PropertyTableRowMapperTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

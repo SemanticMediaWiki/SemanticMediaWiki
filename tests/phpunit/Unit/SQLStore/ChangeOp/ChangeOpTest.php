@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeOp
@@ -15,6 +16,8 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
  * @author mwjames
  */
 class ChangeOpTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

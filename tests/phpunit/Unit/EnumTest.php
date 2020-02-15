@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\Enum;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Enum
@@ -14,6 +15,8 @@ use SMW\Enum;
  * @author mwjames
  */
 class EnumTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 *@dataProvider constProvider

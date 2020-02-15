@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\SortWidget
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SortWidgetTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $stringValidator;
 

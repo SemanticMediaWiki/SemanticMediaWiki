@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

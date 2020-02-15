@@ -8,6 +8,7 @@ use SMW\DataValues\ConstraintSchemaValue;
 use SMW\PropertySpecificationLookup;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ConstraintSchemaValue
@@ -19,6 +20,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

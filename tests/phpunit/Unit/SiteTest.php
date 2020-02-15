@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\Site;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Site
@@ -14,6 +15,8 @@ use SMW\Site;
  * @author mwjames
  */
 class SiteTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testIsReadOnly() {
 

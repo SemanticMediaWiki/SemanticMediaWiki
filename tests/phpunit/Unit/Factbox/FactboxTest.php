@@ -13,6 +13,7 @@ use SMW\SemanticData;
 use SMW\TableFormatter;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox
@@ -24,6 +25,8 @@ use Title;
  * @author mwjames
  */
 class FactboxTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $stringValidator;
 	private $testEnvironment;

@@ -9,6 +9,7 @@ use SMW\ParameterFormatterFactory;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction
@@ -20,6 +21,8 @@ use Title;
  * @author mwjames
  */
 class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;

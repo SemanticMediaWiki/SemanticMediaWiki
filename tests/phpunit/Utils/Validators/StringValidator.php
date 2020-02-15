@@ -1,6 +1,7 @@
 <?php
 
 namespace SMW\Tests\Utils\Validators;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @license GNU GPL v2+
@@ -9,6 +10,8 @@ namespace SMW\Tests\Utils\Validators;
  * @author mwjames
  */
 class StringValidator extends \PHPUnit_Framework_Assert {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @since 2.1

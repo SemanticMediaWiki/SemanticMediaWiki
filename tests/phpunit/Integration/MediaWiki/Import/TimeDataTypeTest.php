@@ -7,6 +7,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
@@ -21,6 +22,8 @@ use Title;
  * @author mwjames
  */
 class TimeDataTypeTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

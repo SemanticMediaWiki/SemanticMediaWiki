@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\StatsFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\StatsFormatter
@@ -14,6 +15,8 @@ use SMW\Utils\StatsFormatter;
  * @author mwjames
  */
 class StatsFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider statsProvider

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\OptionsBuilder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Connection\OptionsBuilder
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Connection\OptionsBuilder;
  * @author mwjames
  */
 class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

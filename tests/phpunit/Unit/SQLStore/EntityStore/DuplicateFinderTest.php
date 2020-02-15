@@ -6,6 +6,7 @@ use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Query;
 use SMW\IteratorFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
@@ -17,6 +18,8 @@ use SMW\IteratorFactory;
  * @author mwjames
  */
 class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $connection;

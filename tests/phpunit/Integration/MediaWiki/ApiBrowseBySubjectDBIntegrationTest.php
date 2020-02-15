@@ -9,6 +9,7 @@ use SMW\Subobject;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
@@ -20,6 +21,8 @@ use SMW\Tests\Utils\SemanticDataFactory;
  * @author mwjames
  */
 class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

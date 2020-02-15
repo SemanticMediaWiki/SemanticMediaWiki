@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\RevisionGuard;
 use SMW\DIWikiPage;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\RevisionGuard
@@ -15,6 +16,8 @@ use SMW\DIWikiPage;
  * @author mwjames
  */
 class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $hookDispatcher;
 

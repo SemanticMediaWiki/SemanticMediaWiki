@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
 use SMW\PropertySpecificationLookup;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\KeywordValue
@@ -18,6 +19,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class KeywordValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

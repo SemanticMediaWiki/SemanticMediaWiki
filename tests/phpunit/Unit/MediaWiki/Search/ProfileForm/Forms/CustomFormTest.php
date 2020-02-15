@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
  * @author mwjames
  */
 class CustomFormTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $webRequest;
 

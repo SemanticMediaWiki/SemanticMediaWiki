@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\CompatibilityMode;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\CompatibilityMode
@@ -14,6 +15,8 @@ use SMW\CompatibilityMode;
  * @author mwjames
  */
 class CompatibilityModeTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testExtensionNotEnabled() {
 

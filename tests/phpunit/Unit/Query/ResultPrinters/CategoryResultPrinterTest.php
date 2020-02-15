@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\CategoryResultPrinter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\CategoryResultPrinter
@@ -14,6 +15,8 @@ use SMW\Query\ResultPrinters\CategoryResultPrinter;
  * @author mwjames
  */
 class CategoryResultPrinterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\TitleFactory
@@ -14,6 +15,8 @@ use SMW\MediaWiki\TitleFactory;
  * @author mwjames
  */
 class TitleFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
