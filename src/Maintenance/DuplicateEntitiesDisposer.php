@@ -9,6 +9,7 @@ use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 
 /**
@@ -62,7 +63,6 @@ class DuplicateEntitiesDisposer {
 
 		$count = count( $duplicates );
 
-		$this->messageReporter->reportMessage( "   ... done.\n" );
 		$this->messageReporter->reportMessage( "\nInspecting $count table(s) ...\n" );
 
 		if ( $count > 0 ) {
@@ -76,30 +76,62 @@ class DuplicateEntitiesDisposer {
 
 	private function doDispose( $duplicates ) {
 
-		$log = [];
+		$cliMsgFormatter = new CliMsgFormatter();
+		$logs = [];
 
 		foreach ( $duplicates as $table => $duplicate ) {
-			$this->messageReporter->reportMessage( '   ... ' . $table . ' found ' . count( $duplicate ) . ' record(s) ...' );
+
+			$count = count( $duplicate );
+
+			$this->messageReporter->reportMessage(
+					$cliMsgFormatter->twoCols( "... $table ...", "$count (records)", 3
+				)
+			);
 
 			if ( $table === SQLStore::ID_TABLE ) {
-				$this->id_table( $table, $duplicate, $log );
+				$this->id_table( $table, $duplicate, $logs );
 			} elseif ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
-				$this->wikipage_table( $table, $duplicate, $log );
+				$this->wikipage_table( $table, $duplicate, $logs );
 			} elseif( $table === RedirectStore::TABLE_NAME ) {
-				$this->redi_table( $table, $duplicate, $log );
+				$this->redi_table( $table, $duplicate, $logs );
 			}
 
-			$this->messageReporter->reportMessage( "\n" );
+			if ( $count > 0 ) {
+				$this->messageReporter->reportMessage( "\n" );
+			}
 		}
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 
-		$this->messageReporter->reportMessage( "\nReported entries marked with 'untouched' require manual intervention as\n" );
-		$this->messageReporter->reportMessage( "those entities have unresolved references that cannot be removed using\n" );
-		$this->messageReporter->reportMessage( "this script.\n" );
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Report(s)' )
+		);
 
-		$this->messageReporter->reportMessage( "\nReporting on ..." );
-		$this->messageReporter->reportMessage( "\n" . implode( "\n", $log ) . "\n" );
+		$text = [
+			"Reported entries marked with 'RETAIN' require manual intervention as",
+			"those entities have unresolved references or represent the original record",
+			"that cannot be removed using this script."
+		];
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$this->messageReporter->reportMessage( "\nDisposal log(s) ...\n" );
+
+		foreach ( $logs as $log ) {
+
+			if ( is_string( $log ) ) {
+				$this->messageReporter->reportMessage( $log . "\n" );
+			} elseif( is_array( $log ) ) {
+				foreach ( $log as $key => $value ) {
+					$this->messageReporter->reportMessage(
+						$cliMsgFormatter->twoCols( "- $value", "[$key]", 7 )
+					);
+				}
+			}
+		}
+
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
@@ -122,12 +154,14 @@ class DuplicateEntitiesDisposer {
 
 		foreach ( $duplicates as $duplicate ) {
 
-			if ( ( $i ) % 60 === 0 ) {
+			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
+			} elseif ( $i == 0 ) {
+				$this->messageReporter->reportMessage( "       " );
 			}
 
 			$this->messageReporter->reportMessage( '.' );
-			$log[] = "       ... disposed: " . $duplicate['s_id'] . "|" . $duplicate['p_id'] . '|' . $duplicate['o_id'];
+			$log[] = ['DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
 
 			$connection->delete(
 				$table,
@@ -161,12 +195,14 @@ class DuplicateEntitiesDisposer {
 
 		foreach ( $duplicates as $duplicate ) {
 
-			if ( ( $i ) % 60 === 0 ) {
+			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
+			} elseif ( $i == 0 ) {
+				$this->messageReporter->reportMessage( "       " );
 			}
 
 			$this->messageReporter->reportMessage( '.' );
-			$log[] = "       ... disposed: " . $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")";
+			$log[] = [ 'DELETE' => $duplicate['o_id'] . " (" . $duplicate['s_title'] . '#' . $duplicate['s_namespace'] . ")" ];
 
 			$connection->delete(
 				$table,
@@ -208,8 +244,10 @@ class DuplicateEntitiesDisposer {
 
 		foreach ( $duplicates as $duplicate ) {
 
-			if ( ( $i ) % 60 === 0 ) {
+			if ( $i > 0 && ( $i ) % CliMsgFormatter::MAX_LEN === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
+			} elseif ( $i == 0 ) {
+				$this->messageReporter->reportMessage( "       " );
 			}
 
 			$this->messageReporter->reportMessage( '.' );
@@ -232,9 +270,9 @@ class DuplicateEntitiesDisposer {
 			foreach ( $res as $row ) {
 				if ( $propertyTableIdReferenceDisposer->isDisposable( $row->smw_id ) ) {
 					$propertyTableIdReferenceDisposer->cleanUpTableEntriesById( $row->smw_id );
-					$log[] = "       ... disposed: " . $row->smw_id . " ($hash)";
+					$log[] = [ 'DELETE' => $row->smw_id . " ($hash)" ];
 				} else {
-					$log[] = "       ... untouched: " . $row->smw_id . " ($hash)";
+					$log[] = [ 'RETAIN' => $row->smw_id . " ($hash)" ];
 				}
 			}
 
