@@ -26,8 +26,9 @@ use SMW\Elastic\Indexer\IndicatorProvider;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
@@ -60,6 +61,15 @@ class ElasticFactory {
 	 * @var Indexer
 	 */
 	private $indexer;
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return Hooks
+	 */
+	public function newHooks() {
+		return new Hooks( $this );
+	}
 
 	/**
 	 * @since 3.0
@@ -313,9 +323,9 @@ class ElasticFactory {
 	 *
 	 * @param Store $store
 	 *
-	 * @return CheckReplicationTask
+	 * @return ReplicationCheck
 	 */
-	public function newCheckReplicationTask( Store $store = null ) {
+	public function newReplicationCheck( Store $store = null ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -326,41 +336,17 @@ class ElasticFactory {
 		$connection = $store->getConnection( 'elastic' );
 		$config = $connection->getConfig();
 
-		$checkReplicationTask = new CheckReplicationTask(
+		$replicationCheck = new ReplicationCheck(
 			$store,
 			$this->newDocumentReplicationExaminer( $store ),
 			$applicationFactory->getEntityCache()
 		);
 
-		$checkReplicationTask->setCacheTTL(
+		$replicationCheck->setCacheTTL(
 			$config->dotGet( 'indexer.monitor.entity.replication.cache_lifetime' )
 		);
 
-		return $checkReplicationTask;
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param Store $store
-	 *
-	 * @return IndicatorProvider
-	 */
-	public function newIndicatorProvider( ElasticStore $store ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-		$config = $store->getConnection( 'elastic' )->getConfig();
-
-		$indicatorProvider = new IndicatorProvider(
-			$store,
-			$applicationFactory->getEntityCache()
-		);
-
-		$indicatorProvider->canCheckReplication(
-			$config->dotGet( 'indexer.monitor.entity.replication' )
-		);
-
-		return $indicatorProvider;
+		return $replicationCheck;
 	}
 
 	/**
@@ -477,7 +463,7 @@ class ElasticFactory {
 
 		$replicationInfoProvider = new ReplicationInfoProvider(
 			$outputFormatter,
-			$this->newCheckReplicationTask( $store ),
+			$this->newReplicationCheck( $store ),
 			$applicationFactory->getEntityCache()
 		);
 
@@ -624,15 +610,6 @@ class ElasticFactory {
 	}
 
 	/**
-	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Api::AddTasks
-	 * @since 3.1
-	 */
-	public function onApiTasks( &$services ) {
-		$services['check-es-replication'] = [ $this, 'newCheckReplicationTask' ];
-		return true;
-	}
-
-	/**
 	 * @since 3.1
 	 *
 	 * @param DispatchContext $dispatchContext
@@ -651,11 +628,11 @@ class ElasticFactory {
 			$subject = $dispatchContext->get( 'title' );
 		}
 
-		$checkReplicationTask = $this->newCheckReplicationTask(
+		$replicationCheck = $this->newReplicationCheck(
 			$store
 		);
 
-		$checkReplicationTask->deleteReplicationTrail(
+		$replicationCheck->deleteReplicationTrail(
 			$subject
 		);
 	}

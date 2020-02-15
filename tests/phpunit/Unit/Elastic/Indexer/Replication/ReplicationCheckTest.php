@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
-use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Tests\PHPUnitCompat;
 use SMW\DIWikiPage;
@@ -10,7 +10,7 @@ use SMW\DIProperty;
 use SMWDITime as DITime;
 
 /**
- * @covers \SMW\Elastic\Indexer\Replication\CheckReplicationTask
+ * @covers \SMW\Elastic\Indexer\Replication\ReplicationCheck
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -18,7 +18,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
+class ReplicationCheckTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,6 +26,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 	private $documentReplicationExaminer;
 	private $entityCache;
 	private $elasticClient;
+	private $messageLocalizer;
 	private $idTable;
 
 	protected function setUp() : void {
@@ -47,6 +48,10 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,8 +68,77 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			CheckReplicationTask::class,
-			new CheckReplicationTask( $this->store, $this->documentReplicationExaminer, $this->entityCache )
+			ReplicationCheck::class,
+			new ReplicationCheck( $this->store, $this->documentReplicationExaminer, $this->entityCache )
+		);
+	}
+
+	public function testGetErrorTitle() {
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getErrorTitle()
+		);
+	}
+
+	public function testGetSeverityType() {
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getSeverityType()
+		);
+	}
+
+	public function testProcess_Invalid() {
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$expected = [
+			'done' => false
+		];
+
+		$this->assertEquals(
+			$expected,
+			$instance->process( [] )
+		);
+	}
+
+	public function testProcess() {
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$expected = [
+			'done' => true,
+			'html' => ''
+		];
+
+		$this->assertEquals(
+			$expected,
+			$instance->process( [ 'subject' => 'Foo#0##' ] )
 		);
 	}
 
@@ -87,16 +161,20 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
 		);
 
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
 		$html = $instance->checkReplication( DIWikiPage::newFromText( 'Foo' ), [] );
 
 		$this->assertContains(
-			'smw-highlighter',
+			'data-error-code="smw-es-replication-error-missing-id"',
 			$html
 		);
 	}
@@ -121,10 +199,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $elasticClient ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
@@ -132,7 +214,103 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$html = $instance->checkReplication( $subject );
 
 		$this->assertContains(
-			'smw-highlighter',
+			'data-error-code="smw-es-replication-error-no-connection"',
+			$html
+		);
+	}
+
+	public function testCheckReplication_ConnectionHasMaintenanceLock() {
+
+		$elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$elasticClient->expects( $this->any() )
+			->method( 'ping' )
+			->will( $this->returnValue( true ) );
+
+		$elasticClient->expects( $this->once() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( true ) );
+
+		$this->documentReplicationExaminer->expects( $this->never() )
+			->method( 'check' );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $elasticClient ) );
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$html = $instance->checkReplication( $subject );
+
+		$this->assertContains(
+			'data-error-code="smw-es-replication-error-maintenance-mode"',
+			$html
+		);
+	}
+
+	public function testCheckReplication_Exception() {
+
+		$error = new ReplicationError(
+			ReplicationError::TYPE_EXCEPTION ,
+			[
+				'id' => 42,
+				'exception_error' => ''
+			]
+		);
+
+		$config = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$config->expects( $this->any() )
+			->method( 'dotGet' )
+			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $config ) );
+
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
+			->will( $this->returnValue( $error ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$html = $instance->checkReplication( $subject );
+
+		$this->assertContains(
+			'data-error-code="smw-es-replication-error-other-exception"',
 			$html
 		);
 	}
@@ -173,10 +351,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
@@ -184,7 +366,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$html = $instance->checkReplication( $subject );
 
 		$this->assertContains(
-			'smw-highlighter',
+			'data-error-code="smw-es-replication-error-divergent-date"',
 			$html
 		);
 
@@ -230,10 +412,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getConnection' )
 			->will( $this->returnValue( $this->elasticClient ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
@@ -241,7 +427,7 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		$html = $instance->checkReplication( $subject, [] );
 
 		$this->assertContains(
-			'smw-highlighter',
+			'data-error-code="smw-es-replication-error-divergent-revision"',
 			$html
 		);
 
@@ -251,13 +437,67 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckReplication_FileAttachment() {
+
+		$error = new ReplicationError(
+			ReplicationError::TYPE_FILE_ATTACHMENT_MISSING ,
+			[
+				'id' => 42
+			]
+		);
+
+		$config = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$config->expects( $this->any() )
+			->method( 'dotGet' )
+			->with(	$this->equalTo( 'indexer.experimental.file.ingest' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->will( $this->returnValue( false ) );
+
+		$this->elasticClient->expects( $this->any() )
+			->method( 'getConfig' )
+			->will( $this->returnValue( $config ) );
+
+		$this->documentReplicationExaminer->expects( $this->once() )
+			->method( 'check' )
+			->will( $this->returnValue( $error ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $this->elasticClient ) );
+
+		$instance = new ReplicationCheck(
+			$this->store,
+			$this->documentReplicationExaminer,
+			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		$subject = DIWikiPage::newFromText( 'Foo' );
+
+		$html = $instance->checkReplication( $subject, [] );
+
+		$this->assertContains(
+			'data-error-code="smw-es-replication-error-file-ingest-missing-file-attachment"',
+			$html
+		);
+	}
+
 	public function testMakeCacheKey() {
 
 		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->assertSame(
-			CheckReplicationTask::makeCacheKey( $subject->getHash() ),
-			CheckReplicationTask::makeCacheKey( $subject )
+			ReplicationCheck::makeCacheKey( $subject->getHash() ),
+			ReplicationCheck::makeCacheKey( $subject )
 		);
 	}
 
@@ -267,10 +507,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->with( $this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->getReplicationFailures();
@@ -286,10 +530,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
 				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->deleteReplicationTrail( $subject->getTitle() );
@@ -305,10 +553,14 @@ class CheckReplicationTaskTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'smw:entity:1ce32bc49b4f8bc82a53098238ded208' ),
 				$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) );
 
-		$instance = new CheckReplicationTask(
+		$instance = new ReplicationCheck(
 			$this->store,
 			$this->documentReplicationExaminer,
 			$this->entityCache
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->deleteReplicationTrail( $subject );

@@ -10,6 +10,8 @@ use SMW\MediaWiki\Api\Tasks\DuplicateLookupTask;
 use SMW\MediaWiki\Api\Tasks\InsertJobTask;
 use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
+use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use RuntimeException;
 
 /**
@@ -30,7 +32,7 @@ class TaskFactory {
 	 *
 	 * @return []
 	 */
-	public static function getAllowedTypes() {
+	public function getAllowedTypes() {
 
 		if ( self::$services === null ) {
 			\Hooks::run( 'SMW::Api::AddTasks', [ &self::$services ] );
@@ -42,6 +44,9 @@ class TaskFactory {
 
 			// Run a query check
 			'check-query',
+
+			// Run deferred integrity examiners
+			'run-entity-examiner',
 
 			// Duplicate lookup support
 			'duplicate-lookup',
@@ -81,6 +86,9 @@ class TaskFactory {
 				break;
 			case 'check-query':
 				return new CheckQueryTask( $applicationFactory->getStore() );
+				break;
+			case 'run-entity-examiner':
+				return $this->newEntityExaminerTask();
 				break;
 			case 'duplicate-lookup':
 				return $this->newDuplicateLookupTask();
@@ -147,6 +155,23 @@ class TaskFactory {
 		);
 
 		return $tableStatisticsTask;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return EntityExaminerTask
+	 */
+	public function newEntityExaminerTask() : EntityExaminerTask {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$entityExaminerTask = new EntityExaminerTask(
+			$applicationFactory->getStore(),
+			new EntityExaminerIndicatorsFactory()
+		);
+
+		return $entityExaminerTask;
 	}
 
 }

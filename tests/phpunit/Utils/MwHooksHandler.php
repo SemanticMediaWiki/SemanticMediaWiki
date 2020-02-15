@@ -55,6 +55,9 @@ class MwHooksHandler {
 
 		'SMW::Maintenance::AfterUpdateEntityCollationComplete',
 
+		'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders',
+		'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders',
+
 		'SMW::RevisionGuard::IsApprovedRevision',
 		'SMW::RevisionGuard::ChangeRevisionID',
 		'SMW::RevisionGuard::ChangeFile',

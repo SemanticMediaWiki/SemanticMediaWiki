@@ -28,18 +28,18 @@
  * @author mwjames
  */
 
-.smw-check-replication-compare-list {
+.smw-indicator-compare-list {
     font-size: 12px;
     margin-top: 5px;
 }
 
-.smw-check-replication-compare-list-row {
+.smw-indicator-compare-list-row {
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
     height: 100%;
 }
 
-.smw-check-replication-compare-list-row span {
+.smw-indicator-compare-list-row span {
     width: 50%;
 }

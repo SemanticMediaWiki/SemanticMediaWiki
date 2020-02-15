@@ -81,7 +81,10 @@ class OutputPageParserOutput implements HookListener {
 			'isRTL' => $context->getLanguage()->isRTL()
 		];
 
-		if ( $this->indicatorRegistry !== null && $this->indicatorRegistry->hasIndicator( $title, $options ) ) {
+		if (
+			$title->exists() &&
+			$this->indicatorRegistry !== null &&
+			$this->indicatorRegistry->hasIndicator( $title, $options ) ) {
 			$this->indicatorRegistry->attachIndicators( $outputPage );
 		}
 

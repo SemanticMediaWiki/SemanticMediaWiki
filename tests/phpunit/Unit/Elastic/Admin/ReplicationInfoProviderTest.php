@@ -21,7 +21,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	private $outputFormatter;
 	private $webRequest;
-	private $checkReplicationTask;
+	private $replicationCheck;
 	private $entityCache;
 	private $store;
 
@@ -31,7 +31,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->checkReplicationTask = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\CheckReplicationTask' )
+		$this->replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +58,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ReplicationInfoProvider::class,
-			new ReplicationInfoProvider( $this->outputFormatter, $this->checkReplicationTask, $this->entityCache )
+			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->entityCache )
 		);
 	}
 
@@ -66,7 +66,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
-			$this->checkReplicationTask,
+			$this->replicationCheck,
 			$this->entityCache
 		);
 
@@ -85,7 +85,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
-			$this->checkReplicationTask,
+			$this->replicationCheck,
 			$this->entityCache
 		);
 
@@ -101,13 +101,13 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addParentLink' )
 			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
 
-		$this->checkReplicationTask->expects( $this->once() )
+		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
-			$this->checkReplicationTask,
+			$this->replicationCheck,
 			$this->entityCache
 		);
 
@@ -119,13 +119,13 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$ns = NS_FILE;
 
-		$this->checkReplicationTask->expects( $this->once() )
+		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
 			->will( $this->returnValue( [ 'Foo#0##', "Bar#$ns##" ] ) );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
-			$this->checkReplicationTask,
+			$this->replicationCheck,
 			$this->entityCache
 		);
 

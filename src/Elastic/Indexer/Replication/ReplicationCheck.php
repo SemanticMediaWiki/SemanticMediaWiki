@@ -6,12 +6,12 @@ use Onoi\Cache\Cache;
 use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\Message;
 use SMW\EntityCache;
 use Html;
 use SMW\Utils\TemplateEngine;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Localizer\MessageLocalizerTrait;
 use Title;
 
 /**
@@ -20,10 +20,15 @@ use Title;
  *
  * @author mwjames
  */
-class CheckReplicationTask extends Task {
+class ReplicationCheck {
+
+	use MessageLocalizerTrait;
 
 	const REPLICATION_CHECK_TASK_CACKE_KEY = 'CheckReplicationTask';
 	const TYPE_SUCCESS = 'success';
+
+	const SEVERITY_TYPE_ERROR = 'error';
+	const SEVERITY_TYPE_WARNING = 'warning';
 
 	/**
 	 * @var Store
@@ -49,6 +54,11 @@ class CheckReplicationTask extends Task {
 	 * @var boolean
 	 */
 	private $errorTitle = '';
+
+	/**
+	 * @var string
+	 */
+	private $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
 	 * @var integer
@@ -133,6 +143,24 @@ class CheckReplicationTask extends Task {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getErrorTitle() : string {
+		return $this->errorTitle;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getSeverityType() : string {
+		return $this->severityType;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $parameters
@@ -141,7 +169,7 @@ class CheckReplicationTask extends Task {
 	 */
 	public function process( array $parameters ) {
 
-		if ( $parameters['subject'] === '' ) {
+		if ( !isset( $parameters['subject'] ) || $parameters['subject'] === '' ) {
 			return [ 'done' => false ];
 		}
 
@@ -168,7 +196,14 @@ class CheckReplicationTask extends Task {
 	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
 
 		$this->templateEngine = new TemplateEngine();
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskLine.ms', 'line_template' );
+		$this->templateEngine->bulkLoad(
+			[
+				'/elastic/indexer/line.ms' => 'line_template',
+				'/elastic/indexer/compare.list.ms' => 'compare_template',
+				'/elastic/indexer/text.ms' => 'text_template',
+				'/indicator/comment.ms' => 'comment_template',
+			]
+		);
 
 		$this->templateEngine->compile(
 			'line_template',
@@ -231,9 +266,6 @@ class CheckReplicationTask extends Task {
 
 		$this->errorTitle = 'smw-es-replication-error';
 
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
-		$this->templateEngine->load( '/elastic/indexer/checkreplication.compare.list.ms', 'compare_template' );
-
 		if ( $error->is( ReplicationError::TYPE_EXCEPTION ) ) {
 			$html = $this->exceptionError( $error );
 		} elseif ( $error->is( ReplicationError::TYPE_MODIFICATION_DATE_DIFF ) ) {
@@ -254,7 +286,14 @@ class CheckReplicationTask extends Task {
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-no-connection',
+				'text' => $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE )
+			]
+		);
 
 		$this->templateEngine->compile(
 			'comment_template',
@@ -263,7 +302,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'comment_template' );
 
@@ -275,7 +314,14 @@ class CheckReplicationTask extends Task {
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template' );
+
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-maintenance-mode',
+				'text' => $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE )
+			]
+		);
 
 		$this->templateEngine->compile(
 			'comment_template',
@@ -284,7 +330,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'comment_template' );
 
@@ -295,6 +341,22 @@ class CheckReplicationTask extends Task {
 
 		$html = '';
 
+		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
+			$text = $this->msg( [ 'smw-es-replication-error-bad-request-exception', $error->get( 'exception_error' ) ], Message::PARSE );
+			$error_code = 'smw-es-replication-error-bad-request-exception';
+		} else {
+			$text = $this->msg( [ 'smw-es-replication-error-other-exception', $error->get( 'exception_error' ) ] );
+			$error_code = 'smw-es-replication-error-other-exception';
+		}
+
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => $error_code,
+				'text' => $text
+			]
+		);
+
 		$this->templateEngine->compile(
 			'comment_template',
 			[
@@ -302,12 +364,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
-			$html .= $this->msg( [ 'smw-es-replication-error-bad-request-exception', $error->get( 'exception_error' ) ], Message::PARSE );
-		} else {
-			$html .= $this->msg( [ 'smw-es-replication-error-exception', $error->get( 'exception_error' ) ] );
-		}
-
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'comment_template' );
 
@@ -317,6 +374,14 @@ class CheckReplicationTask extends Task {
 	private function modificationDateDiffError( ReplicationError $error, $title_text ) {
 
 		$html = '';
+
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-divergent-date',
+				'text' => $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $error->get( 'id' ) ] )
+			]
+		);
 
 		$this->templateEngine->compile(
 			'comment_template',
@@ -336,7 +401,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'compare_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
@@ -348,6 +413,17 @@ class CheckReplicationTask extends Task {
 	private function associatedRevisionDiffError( ReplicationError $error, $title_text ) {
 
 		$html = '';
+
+		$this->severityType = self::SEVERITY_TYPE_WARNING;
+		$this->errorTitle = 'smw-es-replication-maintenance-mode';
+
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-divergent-revision',
+				'text' => $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $error->get( 'id' ) ] )
+			]
+		);
 
 		$this->templateEngine->compile(
 			'comment_template',
@@ -367,7 +443,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'compare_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
@@ -380,6 +456,15 @@ class CheckReplicationTask extends Task {
 
 		$html = '';
 
+		$this->severityType = self::SEVERITY_TYPE_ERROR;
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-missing-id',
+				'text' => $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $error->get( 'id' ) ] )
+			]
+		);
+
 		$this->templateEngine->compile(
 			'comment_template',
 			[
@@ -387,7 +472,7 @@ class CheckReplicationTask extends Task {
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $error->get( 'id' ) ] );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
 		$html .= $this->templateEngine->code( 'comment_template' );
 
@@ -398,18 +483,24 @@ class CheckReplicationTask extends Task {
 
 		$html = '';
 
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskComment.ms', 'comment_template_ingest' );
+		$this->templateEngine->compile(
+			'text_template',
+			[
+				'error_code' => 'smw-es-replication-error-file-ingest-missing-file-attachment',
+				'text' => $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title_text ], Message::PARSE )
+			]
+		);
 
 		$this->templateEngine->compile(
-			'comment_template_ingest',
+			'comment_template',
 			[
 				'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE )
 			]
 		);
 
-		$html .= $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title_text ], Message::PARSE );
+		$html .= $this->templateEngine->code( 'text_template' );
 		$html .= $this->templateEngine->code( 'line_template' );
-		$html .= $this->templateEngine->code( 'comment_template_ingest' );
+		$html .= $this->templateEngine->code( 'comment_template' );
 
 		return $html;
 	}
@@ -420,21 +511,7 @@ class CheckReplicationTask extends Task {
 			return '';
 		}
 
-		$this->templateEngine->load( '/elastic/indexer/CheckReplicationTaskHighlighter.ms', 'highlighter_template' );
-
-		$this->templateEngine->compile(
-			'highlighter_template',
-			[
-				'title' => $this->msg( $this->errorTitle ),
-				'content' => htmlspecialchars( $content, ENT_QUOTES )
-			]
-		);
-
-		return $this->templateEngine->code( 'highlighter_template' );
-	}
-
-	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
-		return Message::get( $key, $type, $lang );
+		return $content;
 	}
 
 }

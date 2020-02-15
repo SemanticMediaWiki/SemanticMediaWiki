@@ -177,11 +177,11 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 			"\n" . $cliMsgFormatter->firstCol( "... removed replication trail", 3 )
 		);
 
-		$checkReplicationTask = $elasticFactory->newCheckReplicationTask(
+		$replicationCheck = $elasticFactory->newReplicationCheck(
 			$this->store
 		);
 
-		$checkReplicationTask->deleteEntireReplicationTrail();
+		$replicationCheck->deleteEntireReplicationTrail();
 
 		$this->reportMessage(
 			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )

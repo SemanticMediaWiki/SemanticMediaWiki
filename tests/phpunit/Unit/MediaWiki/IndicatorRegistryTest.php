@@ -20,7 +20,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 
-		$this->indicatorProvider = $this->getMockBuilder( '\SMW\MediaWiki\IndicatorProvider' )
+		$this->indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -39,6 +39,10 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'hasIndicator' )
 			->will( $this->returnValue( true ) );
@@ -54,7 +58,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->indicatorProvider );
 
-		$instance->hasIndicator( $title, '' );
+		$instance->hasIndicator( $title, [] );
 	}
 
 	public function testAttachIndicators() {

@@ -1,0 +1,1 @@
+<div style="padding-top:10px;text-align: justify;" data-error-code="{{error_code}}">{{text}}</div>

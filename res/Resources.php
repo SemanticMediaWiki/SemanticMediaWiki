@@ -816,13 +816,13 @@ return [
 		]
 	],
 
-	'smw.check.replication'  => $moduleTemplate + [
+	'smw.entityexaminer'  => $moduleTemplate + [
 		'position' => 'top',
 		'styles' => [
-			'smw/util/smw.check.replication.css'
+			'smw/util/smw.entityexaminer.css'
 		],
 		'scripts'  => [
-			'smw/util/smw.check.replication.js'
+			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
 			'mediawiki.api',
@@ -833,5 +833,6 @@ return [
 			'desktop'
 		]
 	],
+
 
 ];

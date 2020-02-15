@@ -198,7 +198,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructCheckReplicationTask() {
+	public function testCanConstructReplicationCheck() {
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -211,26 +211,8 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Replication\CheckReplicationTask',
-			$instance->newCheckReplicationTask( $store )
-		);
-	}
-
-	public function testCanConstructIndicatorProvider() {
-
-		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$store->expects( $this->atLeastOnce() )
-			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
-
-		$instance = new ElasticFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\IndicatorProvider',
-			$instance->newIndicatorProvider( $store )
+			'\SMW\Elastic\Indexer\Replication\ReplicationCheck',
+			$instance->newReplicationCheck( $store )
 		);
 	}
 
@@ -349,21 +331,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$instance->onTaskHandlerFactory( $taskHandlers, $this->store, $outputFormatter, null )
-		);
-	}
-
-	public function testOnApiTasks() {
-
-		$instance = new ElasticFactory();
-		$services = [];
-
-		$this->assertTrue(
-			$instance->onApiTasks( $services )
-		);
-
-		$this->assertArrayHasKey(
-			'check-es-replication',
-			$services
 		);
 	}
 

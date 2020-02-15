@@ -4,6 +4,8 @@ namespace SMW\MediaWiki;
 
 use Title;
 use OutputPage;
+use SMW\DIWikiPage;
+use SMW\Indicator\IndicatorProvider;
 
 /**
  * @license GNU GPL v2+
@@ -51,14 +53,19 @@ class IndicatorRegistry {
 	 * @since 3.1
 	 *
 	 * @param Title $title
+	 * @param array $options
 	 *
 	 * @return boolean
 	 */
-	public function hasIndicator( Title $title, $parserOutput ) {
+	public function hasIndicator( Title $title, array $options ) {
+
+		$subject = DIWikiPage::newFromTitle(
+			$title
+		);
 
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
 
-			if ( !$indicatorProvider->hasIndicator( $title, $parserOutput ) ) {
+			if ( !$indicatorProvider->hasIndicator( $subject, $options ) ) {
 				continue;
 			}
 

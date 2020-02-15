@@ -1,0 +1,1 @@
+<span style="margin-top: 4.5px;height: 10px; width: 10px; background-color: {{color}}; border-radius: 50%; display: inline-block;"></span><span style="width:80%">{{title}}</span>

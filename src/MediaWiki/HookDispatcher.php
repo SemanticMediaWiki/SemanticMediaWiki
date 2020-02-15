@@ -83,6 +83,28 @@ class HookDispatcher {
 	}
 
 	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.indicator.entityexaminerregisterindicatorproviders.md
+	 * @since 3.2
+	 *
+	 * @param Store $store
+	 * @param array &$indicatorProviders
+	 */
+	public function onRegisterEntityExaminerIndicatorProviders( Store $store, array &$indicatorProviders ) {
+		Hooks::run( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', [ $store, &$indicatorProviders ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.indicator.entityexaminerregisterdeferrableindicatorproviders.md
+	 * @since 3.2
+	 *
+	 * @param Store $store
+	 * @param array &$indicatorProviders
+	 */
+	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, array &$indicatorProviders ) {
+		Hooks::run( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', [ $store, &$indicatorProviders ] );
+	}
+
+	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.isapprovedrevision.md
 	 *
 	 * Hooks to define whether the latest used revision is approved or not, and

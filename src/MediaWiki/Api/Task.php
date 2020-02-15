@@ -49,8 +49,8 @@ class Task extends ApiBase {
 			}
 		}
 
-		$taskFactory = new TaskFactory();
-		$task = $taskFactory->newByType( $params['task'] );
+		$this->taskFactory = new TaskFactory();
+		$task = $this->taskFactory->newByType( $params['task'] );
 
 		$results = $task->process(
 			$parameters
@@ -70,10 +70,12 @@ class Task extends ApiBase {
 	 * @return array
 	 */
 	public function getAllowedParams() {
+		$taskFactory = new TaskFactory();
+
 		return [
 			'task' => [
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => TaskFactory::getAllowedTypes()
+				ApiBase::PARAM_TYPE => $taskFactory->getAllowedTypes()
 			],
 			'params' => [
 				ApiBase::PARAM_TYPE => 'string',
@@ -141,6 +143,29 @@ class Task extends ApiBase {
 		return [
 			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
 		];
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getExamplesMessages
+	 *
+	 * @return array
+	 */
+	protected function getExamplesMessages() {
+		return [
+			'action=smwtask&task=update&params={ "subject": "Foo" }'
+				=> 'smw-apihelp-smwtask-example-update'
+		];
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 * @see ApiBase::getExamplesMessages
+	 *
+	 * @return string
+	 */
+	public function getHelpUrls() {
+		return 'https://www.semantic-mediawiki.org/wiki/Help:API:smwtask';
 	}
 
 	/**

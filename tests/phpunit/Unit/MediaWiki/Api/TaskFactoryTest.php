@@ -46,9 +46,11 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetAllowedTypes() {
 
+		$instance = new TaskFactory();
+
 		$this->assertInternalType(
 			'array',
-			TaskFactory::getAllowedTypes()
+			$instance->getAllowedTypes()
 		);
 	}
 
@@ -74,7 +76,9 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeProvider() {
-		yield TaskFactory::getAllowedTypes();
+		$taskFactory = new TaskFactory();
+
+		yield $taskFactory->getAllowedTypes();
 	}
 
 }

@@ -28,6 +28,10 @@
  * @author mwjames
  */
 
+.tippy-popper {
+    z-index: 100 !important;
+}
+
 .tippy-header {
     padding: .5em .8em .3em .8em;
     margin-bottom: 0;
@@ -90,6 +94,18 @@
      border-bottom-color: #f7f7f7
 }
 
+.tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after {
+     border-bottom-color: #fff;
+}
+
+.tippy-tooltip.light-border-theme.square-border,
+.tippy-tooltip.light-border-theme.square-border-transparent-arrow {
+    border-radius: 0;
+}
+
 .tippy-cancel {
     width: auto;
     height: auto;
@@ -150,6 +166,30 @@
     margin-bottom: 0px;
     font-size: 14px;
     overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 300px;
+}
+
+.tippy-header.accordion-popup, .tippy-header.accordion-popup.plain {
+    padding: .5em .8em .5em .8em;
+    font-weight: 600;
+}
+
+.tippy-header.accordion-popup.plain {
+    background-color: transparent;
+}
+
+.tippy-top.accordion-popup, .tippy-top.accordion-popup.plain {
+    text-align: justify;
+    padding: 0.8em;
+}
+
+.tippy-content-container.accordion-popup, .tippy-content-container.accordion-popup.plain {
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 14px;
+    overflow-y: hidden;
     overflow-x: hidden;
     max-height: 300px;
 }
