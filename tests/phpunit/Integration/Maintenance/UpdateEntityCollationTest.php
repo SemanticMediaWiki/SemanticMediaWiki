@@ -1,0 +1,61 @@
+<?php
+
+namespace SMW\Tests\Integration\Maintenance;
+
+use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @group semantic-mediawiki
+ * @group medium
+ *
+ * @license GNU GPL v2+
+ * @since 3.2
+ *
+ * @author mwjames
+ */
+class UpdateEntityCollationTest extends DatabaseTestCase {
+
+	protected $destroyDatabaseTablesAfterRun = true;
+	private $runnerFactory;
+	private $spyMessageReporter;
+	private $hookDispatcher;
+
+	protected function setUp() {
+		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
+		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+	}
+
+	public function testRun() {
+
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
+			'SMW\Maintenance\UpdateEntityCollation'
+		);
+
+		$maintenanceRunner->setMessageReporter(
+			$this->spyMessageReporter
+		);
+
+		$maintenanceRunner->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$maintenanceRunner->run();
+
+		$this->assertContains(
+			'Collation update(s)',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+	}
+
+}

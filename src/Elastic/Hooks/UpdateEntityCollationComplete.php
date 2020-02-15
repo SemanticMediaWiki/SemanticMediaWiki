@@ -2,9 +2,10 @@
 
 namespace SMW\Elastic\Hooks;
 
-use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Store;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -14,15 +15,12 @@ use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
  */
 class UpdateEntityCollationComplete {
 
+	use MessageReporterAwareTrait;
+
 	/**
 	 * @var Store
 	 */
 	private $store;
-
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
 
 	/**
 	 * @var integer
@@ -33,11 +31,9 @@ class UpdateEntityCollationComplete {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param MessageReporter $messageReporter
 	 */
-	public function __construct( Store $store, MessageReporter $messageReporter ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
-		$this->messageReporter = $messageReporter;
 	}
 
 	/**
@@ -56,18 +52,10 @@ class UpdateEntityCollationComplete {
 	 */
 	public function runUpdate( Rebuilder $rebuilder ) {
 
-		$this->messageReporter->reportMessage(
-			"\nThe entity collation was updated which requires to rebuild\n" .
-			"the Elasticsearch indicies as well to reflect those changes\n" .
-			"therefore a rebuild is planned to run shortly.\n"
-		);
-
-		if ( $this->countDown > 0 ) {
-			$this->showCountDown();
-		}
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
-			"\nRunning an index rebuild ..."
+			$cliMsgFormatter->section( 'Elasticsearch update (AfterUpdateEntityCollationComplete)' )
 		);
 
 		$rebuilder->setMessageReporter(
@@ -80,9 +68,38 @@ class UpdateEntityCollationComplete {
 			);
 		}
 
+		$text = [
+			"The entity collation was updated which requires to rebuild",
+			"the Elasticsearch indicies as well to reflect those changes",
+			"therefore a rebuild is planned to run shortly."
+		];
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->countDown(
+				"Abort the rebuild with CTRL-C in ...",
+				$this->countDown
+			)
+		);
+
+		$this->messageReporter->reportMessage(
+			"\nRunning indices rebuild ...\n"
+		);
+
 		if ( !$rebuilder->hasIndices() ) {
-			$this->messageReporter->reportMessage( "\n   ... creating required indices and aliases ..." );
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->firstCol( '   ... creating required indices and aliases ...' )
+			);
+
 			$rebuilder->createIndices();
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			);
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -98,20 +115,20 @@ class UpdateEntityCollationComplete {
 			$conditions
 		);
 
-		if ( $res->numRows() > 0 ) {
-			$this->messageReporter->reportMessage( "\n" );
-		} else {
-			$this->messageReporter->reportMessage( "\n" . '   ... no documents to process ...' );
+		if ( $res->numRows() == 0 ) {
+			$this->messageReporter->reportMessage( '   ... no documents to process ...' );
 		}
 
 		$this->rebuild( $rebuilder, $res, $last );
 
-		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+		$this->messageReporter->reportMessage( "   ... done.\n" );
 
 		return true;
 	}
 
 	private function rebuild( $rebuilder, $res, $last ) {
+
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );
 
@@ -121,9 +138,10 @@ class UpdateEntityCollationComplete {
 
 		foreach ( $res as $row ) {
 			$i++;
+			$progress = $cliMsgFormatter->progressCompact( $i, $last, $i, $last );
 
 			$this->messageReporter->reportMessage(
-				"\r". sprintf( "%-50s%s", "   ... updating document", sprintf( "%4.0f%% (%s/%s)", ( $i / $last ) * 100, $i, $last ) )
+				$cliMsgFormatter->twoColsOverride( '... updating document ...', $progress, 3 )
 			);
 
 			if ( $row->smw_iw === SMW_SQL3_SMWDELETEIW || $row->smw_iw === SMW_SQL3_SMWREDIIW ) {
@@ -145,17 +163,11 @@ class UpdateEntityCollationComplete {
 			$rebuilder->rebuild( $row->smw_id, $semanticData );
 		}
 
+		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+		$this->messageReporter->reportMessage( "\nSettings and mappings ..." );
+
 		$rebuilder->setDefaults();
 		$rebuilder->refresh();
-	}
-
-	private function showCountDown() {
-
-		$this->messageReporter->reportMessage(
-			"\nAbort the rebuild with control-c in the next five seconds ...  "
-		);
-
-		swfCountDown( $this->countDown );
 	}
 
 }

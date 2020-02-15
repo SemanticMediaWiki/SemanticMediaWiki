@@ -3,8 +3,10 @@
 namespace SMW\MediaWiki;
 
 use Hooks;
+use SMW\Store;
 use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
+use Onoi\MessageReporter\MessageReporter;
 
 /**
  * @private
@@ -67,6 +69,17 @@ class HookDispatcher {
 	 */
 	public function onParserAfterTidyPropertyAnnotationComplete( PropertyAnnotator $propertyAnnotator, \ParserOutput $parserOutput ) {
 		\Hooks::run( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', [ $propertyAnnotator, $parserOutput ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.maintenance.afterupdateentitycollationcomplete.md
+	 * @since 3.2
+	 *
+	 * @param Store $store
+	 * @param MessageReporter $messageReporter
+	 */
+	public function onAfterUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
+		\Hooks::run( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', [ $store, $messageReporter ] );
 	}
 
 	/**

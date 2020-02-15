@@ -53,6 +53,8 @@ class MwHooksHandler {
 		'SMW::Parser::AfterLinksProcessingComplete',
 		'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete',
 
+		'SMW::Maintenance::AfterUpdateEntityCollationComplete',
+
 		'SMW::RevisionGuard::IsApprovedRevision',
 		'SMW::RevisionGuard::ChangeRevisionID',
 		'SMW::RevisionGuard::ChangeFile',
