@@ -66,7 +66,7 @@ abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 	 */
 	protected $connectorId = '';
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -96,7 +96,7 @@ abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		if ( $this->deletePagesOnTearDown ) {
 			$this->testEnvironment->flushPages( $this->itemsMarkedForDeletion );

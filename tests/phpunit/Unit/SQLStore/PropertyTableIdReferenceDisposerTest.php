@@ -22,7 +22,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $eventDispatcher;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -57,7 +57,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

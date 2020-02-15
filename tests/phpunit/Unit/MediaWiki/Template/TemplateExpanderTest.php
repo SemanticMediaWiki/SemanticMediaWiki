@@ -21,7 +21,7 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 
 	private $parser;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->parser = $this->getMockBuilder( '\Parser' )

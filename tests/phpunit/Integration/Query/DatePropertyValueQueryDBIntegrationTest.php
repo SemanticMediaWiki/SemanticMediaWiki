@@ -36,7 +36,7 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -48,7 +48,7 @@ class DatePropertyValueQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 

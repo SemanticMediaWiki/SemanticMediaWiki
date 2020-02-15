@@ -21,7 +21,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $loadBalancerFactory;
 	private $transactionProfiler;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		if ( interface_exists( '\Wikimedia\Rdbms\ILBFactory' ) ) {
 			$this->loadBalancerFactory = $this->getMockBuilder( '\Wikimedia\Rdbms\ILBFactory' )

@@ -20,7 +20,7 @@ class XmlContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	private $wikiImporter;
 	private $messageReporter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		if ( !interface_exists( '\ImportSource' ) ) {

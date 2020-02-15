@@ -22,7 +22,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $factory;
 	private $idTable;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()

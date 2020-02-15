@@ -22,7 +22,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 	private $connRef;
 	private $transactionHandler;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->connRef = $this->getMockBuilder( '\SMW\Connection\ConnRef' )

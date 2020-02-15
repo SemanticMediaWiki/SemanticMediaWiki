@@ -33,7 +33,7 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $queryResultValidator;
 	private $subjects = [];
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->semanticDataFactory  = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -43,7 +43,7 @@ class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner

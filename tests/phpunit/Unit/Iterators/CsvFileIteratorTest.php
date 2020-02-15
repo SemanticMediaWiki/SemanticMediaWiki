@@ -22,7 +22,7 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 	private $file;
 	private $tempFile;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->tempFile = new TempFile();
@@ -31,7 +31,7 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		$this->tempFile->write( $this->file, 'Foo' );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->tempFile->delete( $this->file );
 		parent::tearDown();
 	}

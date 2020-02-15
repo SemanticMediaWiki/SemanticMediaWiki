@@ -18,7 +18,7 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )

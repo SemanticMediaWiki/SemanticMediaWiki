@@ -23,7 +23,7 @@ class SchemaPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataValidator;
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();

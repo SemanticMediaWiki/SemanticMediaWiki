@@ -33,7 +33,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $semanticDataValidator;
 	private $pageDeleter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration(
@@ -50,7 +50,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->pageDeleter = $this->testEnvironment->getUtilityFactory()->newPageDeleter();
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 
 		$this->mwHooksHandler->restoreListedHooks();
 

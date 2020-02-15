@@ -21,7 +21,7 @@ class ImporterIntegrationTest extends MwDBaseUnitTestCase {
 	private $stringValidator;
 	private $fixtures;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();

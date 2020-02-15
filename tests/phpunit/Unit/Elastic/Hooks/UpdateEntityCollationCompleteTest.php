@@ -25,7 +25,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $rebuilder;
 	private $entityIdManager;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->testEnvironment = new TestEnvironment();
 
@@ -79,7 +79,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

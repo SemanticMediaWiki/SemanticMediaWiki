@@ -22,7 +22,7 @@ class ConstraintErrorIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $errorLookup;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()

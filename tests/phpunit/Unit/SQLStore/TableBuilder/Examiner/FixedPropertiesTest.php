@@ -20,7 +20,7 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $connection;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 

@@ -15,7 +15,7 @@ use SMW\Utils\HtmlVTabs;
  */
 class HtmlVTabsTest extends \PHPUnit_Framework_TestCase {
 
-	protected function setUp() {
+	protected function setUp() : void {
 		HtmlVTabs::init();
 	}
 

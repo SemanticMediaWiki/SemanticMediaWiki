@@ -23,7 +23,7 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	private $key;
 	private $changeRecord;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )

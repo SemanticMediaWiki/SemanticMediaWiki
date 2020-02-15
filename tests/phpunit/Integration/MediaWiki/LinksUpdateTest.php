@@ -27,7 +27,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
@@ -44,7 +44,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		$this->title = Title::newFromText( __METHOD__ );
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 

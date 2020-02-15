@@ -19,7 +19,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	private $lang;
 	private $default;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
@@ -50,7 +50,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

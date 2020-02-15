@@ -17,7 +17,7 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 	private $client;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()

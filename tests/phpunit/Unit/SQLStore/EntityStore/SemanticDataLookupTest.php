@@ -27,7 +27,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemHandler;
 	private $query;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
@@ -64,7 +64,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->setConnectionManager( $connectionManager );
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		parent::tearDown();
 	}
 

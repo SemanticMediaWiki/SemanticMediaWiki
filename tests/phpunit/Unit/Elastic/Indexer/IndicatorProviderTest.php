@@ -22,7 +22,7 @@ class IndicatorProviderTest extends \PHPUnit_Framework_TestCase {
 	private $elasticClient;
 	private $entityCache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()

@@ -22,7 +22,7 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,7 +30,7 @@ class KeywordPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

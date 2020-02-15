@@ -27,7 +27,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,7 +38,7 @@ class BrowseBySubjectTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

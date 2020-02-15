@@ -19,7 +19,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 	private $language;
 	private $namespaceInfo;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->language = $this->getMockBuilder( '\Language' )
@@ -31,7 +31,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		Localizer::clear();
 	}
 

@@ -20,7 +20,7 @@ class PropertyTableRowDifferTest extends \PHPUnit_Framework_TestCase {
 
 	private $propertyTableRowMapper;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->propertyTableRowMapper = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowMapper' )
 			->disableOriginalConstructor()

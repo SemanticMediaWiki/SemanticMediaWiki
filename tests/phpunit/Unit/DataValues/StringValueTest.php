@@ -18,7 +18,7 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )

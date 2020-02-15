@@ -44,7 +44,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $schemaFactory;
 	private $entityCache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )

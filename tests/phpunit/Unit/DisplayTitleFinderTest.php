@@ -20,7 +20,7 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityCache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

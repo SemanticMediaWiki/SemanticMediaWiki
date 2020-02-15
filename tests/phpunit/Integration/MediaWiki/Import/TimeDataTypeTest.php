@@ -29,7 +29,7 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 	private $titleValidator;
 	private $semanticDataValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		if ( strpos( strtolower( $GLOBALS['smwgSparqlRepositoryConnector'] ), 'virtuoso' ) !== false ) {
@@ -57,7 +57,7 @@ class TimeDataTypeTest extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );

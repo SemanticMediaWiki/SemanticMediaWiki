@@ -24,7 +24,7 @@ class JsonFileDirReaderTest extends \PHPUnit_Framework_TestCase {
 	private $fileFetcher;
 	private $file;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->contentModeller = new ContentModeller();

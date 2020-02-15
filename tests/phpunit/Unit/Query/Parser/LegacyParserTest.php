@@ -26,7 +26,7 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	private $descriptionFactory;
 	private $queryParser;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,7 +45,7 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

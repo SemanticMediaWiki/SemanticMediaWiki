@@ -21,7 +21,7 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 
 	private $conditionBuilder;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()

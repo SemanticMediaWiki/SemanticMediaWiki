@@ -23,7 +23,7 @@ class HierarchyLookupTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 

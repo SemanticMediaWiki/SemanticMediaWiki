@@ -18,7 +18,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->testEnvironment = new TestEnvironment(
 			[
@@ -27,7 +27,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

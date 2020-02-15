@@ -23,7 +23,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	private $loadBalancer;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->loadBalancer = $this->getMockBuilder( '\LoadBalancer' )
 			->disableOriginalConstructor()

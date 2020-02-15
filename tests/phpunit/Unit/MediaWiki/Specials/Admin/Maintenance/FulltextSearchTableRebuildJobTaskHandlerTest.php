@@ -21,7 +21,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 	private $outputFormatter;
 	private $jobQueue;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,7 +41,7 @@ class FulltextSearchTableRebuildJobTaskHandlerTest extends \PHPUnit_Framework_Te
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

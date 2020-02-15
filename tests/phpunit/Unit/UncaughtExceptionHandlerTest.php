@@ -17,7 +17,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $setupCheck;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->setupCheck = $this->getMockBuilder( '\SMW\SetupCheck' )

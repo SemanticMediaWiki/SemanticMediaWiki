@@ -67,7 +67,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * components therefore add configurations that needs to be initialized before
 	 * any service is created.
 	 */
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 
 		$defaultSettingKeys = [
 			'smwgQEqualitySupport'
@@ -76,7 +76,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		TestEnvironment::loadDefaultSettings( $defaultSettingKeys );
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -128,7 +128,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$GLOBALS['wgUseDatabaseMessages'] = false;
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		// If setUp is skipped early this might not be initialized
 		if ( $this->testEnvironment !== null ) {

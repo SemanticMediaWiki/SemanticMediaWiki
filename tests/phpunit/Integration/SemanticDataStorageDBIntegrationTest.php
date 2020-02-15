@@ -39,7 +39,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -57,7 +57,7 @@ class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$this->pageDeleter
 			->doDeletePoolOfPages( $this->subjects );

@@ -23,7 +23,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $connection;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->connection = $this->getMockBuilder( 'DatabaseBase' )
@@ -31,7 +31,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

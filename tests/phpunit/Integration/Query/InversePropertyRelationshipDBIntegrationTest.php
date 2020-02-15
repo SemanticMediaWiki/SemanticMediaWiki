@@ -39,7 +39,7 @@ class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
@@ -49,7 +49,7 @@ class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

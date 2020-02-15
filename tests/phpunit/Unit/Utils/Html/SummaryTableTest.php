@@ -18,7 +18,7 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();

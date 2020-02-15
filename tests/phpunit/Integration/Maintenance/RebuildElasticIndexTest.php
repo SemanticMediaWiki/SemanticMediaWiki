@@ -22,7 +22,7 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 	private $spyMessageReporter;
 	private $store;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = ApplicationFactory::getInstance()->getStore();
@@ -37,7 +37,7 @@ class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

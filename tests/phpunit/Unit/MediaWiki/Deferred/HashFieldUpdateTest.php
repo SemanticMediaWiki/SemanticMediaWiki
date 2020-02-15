@@ -21,7 +21,7 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
@@ -32,7 +32,7 @@ class HashFieldUpdateTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

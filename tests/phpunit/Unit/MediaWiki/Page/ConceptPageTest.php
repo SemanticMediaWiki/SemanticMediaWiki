@@ -18,7 +18,7 @@ class ConceptPageTest extends \PHPUnit_Framework_TestCase {
 
 	private $title;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_CONCEPT );

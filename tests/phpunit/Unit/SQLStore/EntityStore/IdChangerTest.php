@@ -22,7 +22,7 @@ class IdChangerTest extends \PHPUnit_Framework_TestCase {
 	private $jobFactory;
 	private $nullJob;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->testEnvironment = new TestEnvironment();
 

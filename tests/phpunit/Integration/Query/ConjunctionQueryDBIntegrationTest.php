@@ -35,7 +35,7 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -53,7 +53,7 @@ class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner

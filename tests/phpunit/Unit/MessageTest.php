@@ -17,7 +17,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->resetPoolCacheById( Message::POOLCACHE_ID );
 	}

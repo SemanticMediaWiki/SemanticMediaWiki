@@ -26,7 +26,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 	private $stringValidator;
 	private $tableName = 'rdbms_test';
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->messageReporterFactory = MessageReporterFactory::getInstance();
@@ -38,7 +38,7 @@ class TableBuilderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

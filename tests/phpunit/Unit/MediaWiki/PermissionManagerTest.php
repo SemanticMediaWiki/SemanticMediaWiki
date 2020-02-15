@@ -18,7 +18,7 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $protectionValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )

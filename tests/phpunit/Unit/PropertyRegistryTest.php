@@ -25,7 +25,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $cache;
 	private $store;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
@@ -33,7 +33,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		PropertyRegistry::clear();
 		DataTypeRegistry::clear();
 

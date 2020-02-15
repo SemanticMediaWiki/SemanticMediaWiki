@@ -21,7 +21,7 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 	private $parserAfterTidyHook;
 	private $applicationFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -35,7 +35,7 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
 

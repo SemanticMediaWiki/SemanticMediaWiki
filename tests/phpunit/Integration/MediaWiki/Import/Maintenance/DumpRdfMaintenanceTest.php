@@ -28,7 +28,7 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 	private $titleValidator;
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -48,7 +48,7 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		ApplicationFactory::getInstance()->clear();
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();

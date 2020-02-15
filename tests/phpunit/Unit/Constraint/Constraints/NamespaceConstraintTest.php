@@ -20,12 +20,12 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

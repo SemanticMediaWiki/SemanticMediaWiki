@@ -15,7 +15,7 @@ use SMW\InMemoryPoolCache;
  */
 class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		InMemoryPoolCache::getInstance()->clear();
 		parent::tearDown();
 	}

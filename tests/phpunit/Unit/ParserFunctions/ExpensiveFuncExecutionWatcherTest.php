@@ -17,7 +17,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserData;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )

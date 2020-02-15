@@ -19,14 +19,14 @@ class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment::getUtilityFactory()->newRunnerFactory();
 		$this->spyMessageReporter = $this->testEnvironment::getUtilityFactory()->newSpyMessageReporter();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

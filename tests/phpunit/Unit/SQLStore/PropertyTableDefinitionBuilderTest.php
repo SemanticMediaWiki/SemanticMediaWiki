@@ -21,7 +21,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
@@ -32,7 +32,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$this->mwHooksHandler->restoreListedHooks();
 

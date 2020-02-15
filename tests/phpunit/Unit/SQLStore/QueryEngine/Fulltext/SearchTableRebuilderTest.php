@@ -22,7 +22,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $iteratorMockBuilder;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

@@ -28,7 +28,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 	private $semanticDataValidator;
 	private $pageEditor;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -70,7 +70,7 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		$this->getStore()->setup( false );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 

@@ -18,7 +18,7 @@ class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 

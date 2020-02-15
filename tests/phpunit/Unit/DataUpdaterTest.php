@@ -28,7 +28,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	private $eventDispatcher;
 	private $revisionGuard;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -90,7 +90,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

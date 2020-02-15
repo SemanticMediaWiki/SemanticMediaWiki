@@ -22,7 +22,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $descriptionFactory;
 	private $queryParser;
 
-	public function setUp() {
+	public function setUp() : void {
 
 		$this->descriptionFactory = new DescriptionFactory();
 

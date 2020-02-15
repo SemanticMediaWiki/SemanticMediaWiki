@@ -23,7 +23,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 	private $semanticDataSerializer;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -57,7 +57,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->semanticDataSerializer = \SMW\ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

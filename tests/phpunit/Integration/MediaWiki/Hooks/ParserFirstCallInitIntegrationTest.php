@@ -23,7 +23,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $queryResult;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -68,7 +68,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 

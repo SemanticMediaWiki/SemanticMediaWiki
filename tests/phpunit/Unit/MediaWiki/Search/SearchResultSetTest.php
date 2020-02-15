@@ -22,7 +22,7 @@ class SearchResultSetTest extends \PHPUnit_Framework_TestCase {
 	protected $resultSet;
 	private $queryResult;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()

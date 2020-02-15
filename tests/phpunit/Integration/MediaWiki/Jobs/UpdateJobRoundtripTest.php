@@ -34,7 +34,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 	private $jobQueueRunner;
 	private $jobQueue;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -69,7 +69,7 @@ class UpdateJobRoundtripTest extends MwDBaseUnitTestCase {
 		$this->jobQueueRunner->deleteAllJobs();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$this->pageDeleter->doDeletePoolOfPages(
 			$this->deletePoolOfPages

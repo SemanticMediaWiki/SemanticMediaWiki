@@ -20,7 +20,7 @@ class CleanUpTablesTest extends \PHPUnit_Framework_TestCase {
 
 	private $connection;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->connection = $this->getMockBuilder( '\DatabaseBase' )
 			->disableOriginalConstructor()

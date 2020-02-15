@@ -17,7 +17,7 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 	private $conection;
 
-	public function setUp() {
+	public function setUp() : void {
 
 		$this->connection = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()

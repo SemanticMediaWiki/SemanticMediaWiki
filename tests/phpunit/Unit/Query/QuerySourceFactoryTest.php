@@ -22,7 +22,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -32,7 +32,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

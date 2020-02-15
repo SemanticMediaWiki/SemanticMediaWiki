@@ -24,7 +24,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	private $itemFetcher;
 	private $printRequest;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();

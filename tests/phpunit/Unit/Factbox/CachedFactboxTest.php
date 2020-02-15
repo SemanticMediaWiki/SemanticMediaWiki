@@ -30,7 +30,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -57,7 +57,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

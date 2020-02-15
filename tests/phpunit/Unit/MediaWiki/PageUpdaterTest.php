@@ -19,7 +19,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setup();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();

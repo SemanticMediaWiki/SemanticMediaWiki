@@ -19,7 +19,7 @@ class PropertyTableIdReferenceFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

@@ -18,7 +18,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )

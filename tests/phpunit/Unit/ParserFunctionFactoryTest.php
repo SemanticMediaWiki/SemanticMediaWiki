@@ -17,7 +17,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $parserFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -31,7 +31,7 @@ class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

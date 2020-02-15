@@ -30,7 +30,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 	private $mwHooksHandler;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
@@ -46,7 +46,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 

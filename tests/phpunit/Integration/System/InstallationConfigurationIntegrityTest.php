@@ -22,14 +22,14 @@ class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCa
 	private $globalsProvider;
 	private $applicationFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->globalsProvider = GlobalsProvider::getInstance();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->globalsProvider->clear();
 		$this->applicationFactory->clear();
 

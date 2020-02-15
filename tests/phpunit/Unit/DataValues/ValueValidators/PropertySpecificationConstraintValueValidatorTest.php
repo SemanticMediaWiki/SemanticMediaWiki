@@ -20,7 +20,7 @@ class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit_Framewo
 	private $dataItemFactory;
 	private $dataValueFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();

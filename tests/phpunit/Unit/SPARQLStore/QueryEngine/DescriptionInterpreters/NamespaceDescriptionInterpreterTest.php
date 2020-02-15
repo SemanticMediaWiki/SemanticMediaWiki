@@ -21,7 +21,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();

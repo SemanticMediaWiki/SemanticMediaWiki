@@ -27,7 +27,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $entityUniquenessLookup;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -52,7 +52,7 @@ class UniqueValueConstraintTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

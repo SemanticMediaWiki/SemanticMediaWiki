@@ -20,7 +20,7 @@ class ImporterServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $servicesFileDir;
 	private $titleFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )

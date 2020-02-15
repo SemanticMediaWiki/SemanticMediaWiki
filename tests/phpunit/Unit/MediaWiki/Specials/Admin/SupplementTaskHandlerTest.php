@@ -20,7 +20,7 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,7 +36,7 @@ class SupplementTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

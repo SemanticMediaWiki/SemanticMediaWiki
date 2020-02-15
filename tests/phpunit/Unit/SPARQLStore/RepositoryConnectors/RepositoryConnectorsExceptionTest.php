@@ -36,7 +36,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 		'SMWSparqlDatabase'
 	];
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->defaultGraph = 'http://foo/myDefaultGraph';

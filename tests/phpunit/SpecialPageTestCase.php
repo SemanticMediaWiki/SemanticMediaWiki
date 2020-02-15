@@ -26,12 +26,12 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	protected $obLevel;
 	protected $store = null;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->obLevel = ob_get_level();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$obLevel = ob_get_level();
 

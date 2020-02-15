@@ -18,7 +18,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	private $smwgQMaxLimit;
 	private $smwgQMaxInlineLimit;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];

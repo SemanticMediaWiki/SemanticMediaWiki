@@ -27,7 +27,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();

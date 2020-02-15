@@ -20,7 +20,7 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
@@ -30,7 +30,7 @@ class DependencyLinksValidatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

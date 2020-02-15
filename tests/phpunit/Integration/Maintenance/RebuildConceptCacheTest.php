@@ -19,13 +19,13 @@ class RebuildConceptCacheTest extends MwDBaseUnitTestCase {
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = TestEnvironment::getUtilityFactory()->newRunnerFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

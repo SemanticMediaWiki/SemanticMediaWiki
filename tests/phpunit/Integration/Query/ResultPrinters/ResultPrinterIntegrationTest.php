@@ -23,7 +23,7 @@ class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 	private $stringBuilder;
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -33,7 +33,7 @@ class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		parent::tearDown();
 	}

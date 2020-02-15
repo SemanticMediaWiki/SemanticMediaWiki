@@ -30,7 +30,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageCreator;
 	private $semanticDataValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment->addConfiguration(
@@ -47,7 +47,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->resetMediaWikiService( 'NameTableStoreFactory' );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 

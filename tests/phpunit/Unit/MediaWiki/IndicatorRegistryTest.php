@@ -18,7 +18,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	private $indicatorProvider;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->indicatorProvider = $this->getMockBuilder( '\SMW\MediaWiki\IndicatorProvider' )
 			->disableOriginalConstructor()

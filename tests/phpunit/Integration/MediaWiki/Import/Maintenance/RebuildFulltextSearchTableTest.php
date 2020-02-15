@@ -21,7 +21,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 	private $runnerFactory;
 	private $titleValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -40,7 +40,7 @@ class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}

@@ -34,7 +34,7 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -48,7 +48,7 @@ class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	//	$this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

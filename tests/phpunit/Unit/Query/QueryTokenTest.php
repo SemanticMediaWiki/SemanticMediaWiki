@@ -18,7 +18,7 @@ class QueryTokenTest extends \PHPUnit_Framework_TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();

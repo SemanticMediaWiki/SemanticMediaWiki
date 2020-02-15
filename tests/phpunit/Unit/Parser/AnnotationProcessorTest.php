@@ -19,7 +19,7 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticData;
 	private $dataValueFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
 			->disableOriginalConstructor()
