@@ -159,9 +159,19 @@ class QueryResultLookup {
 		// get (they expect properties to be given to them).
 		// Since we want to continue using the property for our
 		// purposes, we give a clone to the print request.
+		$printout = new PrintRequest(
+			PrintRequest::PRINT_PROP,
+			'',
+			clone $pageRequestOptions->property
+		);
+
+		// No more than one value is displayed therefore limit the query
+		// to only look for one and not all
+		$printout->setParameter( 'limit', 1 );
+
 		$printouts = [
 			new PrintRequest( PrintRequest::PRINT_THIS, '' ),
-			new PrintRequest( PrintRequest::PRINT_PROP, '', clone $pageRequestOptions->property )
+			$printout
 		];
 
 		$query->setExtraPrintouts( $printouts );
