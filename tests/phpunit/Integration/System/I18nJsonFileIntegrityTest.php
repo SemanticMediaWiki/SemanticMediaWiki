@@ -15,6 +15,29 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
+	public function testPrettifyCanonicalMediaWikiI18NJson() {
+
+		$target = $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] . '/en.json';
+
+		$contents = json_decode( file_get_contents( $target ), true );
+
+		$json = json_encode(
+			$contents,
+			JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		// Change the four-space indent to a tab indent
+		$json = str_replace( "\n    ", "\n\t", $json );
+
+		while ( strpos( $json, "\t    " ) !== false ) {
+			$json = str_replace( "\t    ", "\t\t", $json );
+		}
+
+		$this->assertNotFalse(
+			file_put_contents( $target, $json . "\n" )
+		);
+	}
+
 	/**
 	 * @dataProvider mediawikiI18nFileProvider
 	 */
