@@ -67,6 +67,15 @@ define( 'SMW_EQ_FULL', 4 );
 /**@}*/
 
 /**@{
+ * Constants for internal entity types
+ */
+define( 'SMW_SUBENTITY_MONOLINGUAL', '_ML' );
+define( 'SMW_SUBENTITY_REFERENCE', '_REF' );
+define( 'SMW_SUBENTITY_QUERY', '_QUERY' );
+define( 'SMW_SUBENTITY_ERROR', '_ERR' );
+/**@}*/
+
+/**@{
  * Flags to classify available query descriptions,
  * used to enable/disable certain features
  */

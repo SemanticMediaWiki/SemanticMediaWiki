@@ -331,7 +331,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();
 		} else {
-			$subobjectName = '_ML' . md5( $value );
+			$subobjectName = SMW_SUBENTITY_MONOLINGUAL . md5( $value );
 
 			$subject = new DIWikiPage(
 				$this->m_contextPage->getDBkey(),

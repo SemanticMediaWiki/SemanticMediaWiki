@@ -133,7 +133,7 @@ class PredefinedProperties {
 		if ( $row === false ) {
 			$row = (object)[
 				'smw_proptable_hash' => null,
-				'smw_hash' => null,
+				'smw_hash' => $property->getSha1(),
 				'smw_rev' => null,
 				'smw_touched' => $connection->timestamp( '1970-01-01 00:00:00' )
 			];
