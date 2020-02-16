@@ -12,3 +12,4 @@ composer.lock
 !.*
 .idea/
 .smw.json
+.phpunit.result.cache
