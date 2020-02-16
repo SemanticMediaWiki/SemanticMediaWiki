@@ -303,7 +303,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callDeleteAccount' ],
 			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
 			[ 'callSMWAdminTaskHandlerFactory' ],
-			[ 'callSMWApiAddTasks' ],
 			[ 'callSMWEventRegisterEventListeners' ],
 			[ 'callSMWSQLStorAfterDataUpdateComplete' ],
 			[ 'callSMWStoreBeforeQueryResultLookupComplete' ],
@@ -312,6 +311,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSMWBrowseBeforeIncomingPropertyValuesFurtherLinkCreate' ],
 			[ 'callSMWSQLStoreInstallerAfterCreateTablesComplete' ],
 			[ 'callSMWMaintenanceAfterUpdateEntityCollationComplete' ],
+			[ 'callSMWIndicatorEntityExaminerRegisterDeferrableIndicatorProviders' ]
 
 		];
 	}
@@ -1622,24 +1622,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		return $handler;
 	}
 
-	public function callSMWApiAddTasks( $instance ) {
-
-		$handler = 'SMW::Api::AddTasks';
-
-		if ( !$instance->getHandlerFor( $handler ) ) {
-			return $this->markTestSkipped( "$handler not used" );
-		}
-
-		$services = [];
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ &$services ]
-		);
-
-		return $handler;
-	}
-
 	public function callSMWEventRegisterEventListeners( $instance ) {
 
 		$handler = 'SMW::Event::RegisterEventListeners';
@@ -1905,6 +1887,30 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $store, $messageReporter ]
+		);
+
+		return $handler;
+	}
+
+	public function callSMWIndicatorEntityExaminerRegisterDeferrableIndicatorProviders( $instance ) {
+
+		$handler = 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders';
+
+		$result = '';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$indicatorProviders = [];
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $store, &$indicatorProviders ]
 		);
 
 		return $handler;

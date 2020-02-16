@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\Indicator;
 
-use Title;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
@@ -15,11 +15,12 @@ interface IndicatorProvider {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title $title
+	 * @param DIWikiPage $subject
+	 * @param array $options
 	 *
 	 * @return boolean
 	 */
-	public function hasIndicator( Title $title, $parserOutput );
+	public function hasIndicator( DIWikiPage $subject, array $options );
 
 	/**
 	 * @since 3.1
@@ -41,5 +42,12 @@ interface IndicatorProvider {
 	 * @return string
 	 */
 	public function getInlineStyle();
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getName() : string;
 
 }

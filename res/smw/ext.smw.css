@@ -264,14 +264,18 @@ span.smwwarning {
 	font-size: 90%;
 }
 
-.smw-protection-indicator .smw-edit-protection {
+/*
 	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABE9JREFUeNqcll1olmUcxu93e/apm83lu0a5tjk2UUGR/KpMxMTqQA0MPcgDKewgFMr8OBGEVBQ9MDBBomBSFAVCEXYSszoIP1DexWyp62Wu5YqNbW7te3vXdT1c/3HvYfOd3vBje97n4/rf/8871tfX52awMsBSsAY8BxaBACTBDXAVXAdpPxZLI1gM3gFvgTLwr0Tug1EQBxW61wu+AWfA7ccR3AcOgyFwHnwNGsHYFM9S8DXwLlgIPgMHwIOZCBaCL8HL4EPwkax3sVjMZWRkhH9tjY+Pu7GxSTa8CU7I0C2g4WGCFKsD82TxLbuRmZnphoeHXUdHh+M7FMnKynJFRUUhXKlUyh5/AnwB1oKXQGI6wR/AcrAMtNmugiBwbW1trqmpyfX390/OJuy4uLjY1dTUuPz8fDc6Ouon2vdKMrq5Myq4S75nJl6xj9HqZDLpWlpaJgSiiyIUq66udvF43Bctkpfq5OoJwbngL3AKHDEXDgwMuIaGBtfd3R3uUms92AZKwe/gc/CHubOystJVVFT4cV0vwXXgFzN3DxhQsEM3Dg0Nufr6+qjYae/lPPA2+A3ssGSi2+kNGqx1GVwCx83P2ao1ZuOg7a61tdX19PT4YttVKofAEvAqN6S414IFFOS7zc3NbnBw0Hf/MfACY2kdhO75yu7SHZ2dnb6VTsV/D5z0fmMGvSejt/reobFe+TAn/gabKbhCGZm0pGBcmY2RBJkD7k5R9El1nYKJ1IcQDfYWA3yNuwyUtn9aB6EI3cma89z5vrrJiMXZWzkKzSuK50V+o7293ZWXl7ucnByrT97bFqgR3/M7B13idxPFbZ7+PzhNK1zF5KEg32Vp0GgKarH/zg1kXcp3R15eXvRjW9U9xtNMlKTfECI5EGpQ8A542r8T6Y1OibEgjSBdchEcpZdoeMRLT4HuQPNsrV4IP8jY8SVvPasxlG7FfU9Fkm4xQxdocD4D5oMWChUWFkat26UsTLfD+5YHDEt2drbf0FeCC7ZDzq3XVfx+dtqiq6pnsMNP2X0oyG/QaHlqmZrEt4FaWq1S/ywsGuMOCwoKXG9vrwX+Y/B8GrGUJn4owibueWm/yiJhzZtJw3Gwlx+nCMUSiURYIpFsm3bZMC4rKwvHlZJvqeYhh/F3/ng6oAbLurxDEfbDxsbGsIh5HYnrJCHGis9UVVWFgrzG7yzCm6AVbIrOw0wlEPviavCfPw+7urrCYh4ZGZmUwZz6hAVeWlrqSkpKwp3pmU/ATlBjzSU68enaX3U62wz+sfSmMAWJ1ZlNFiaIuV1u5MU5sBtsBD/63cFf7OgvapcM8k6Li2Vebm5uON2Z9oS7MyGJrdM5leNsgy82laDT5F+jk1uthFmHcYpavAy5bpbmI2fjT6BdpVD3qAdh+v4D8AbDpXPpLY0zbudJHZA4kGdLgNPk58c9efuHITvyLVILo3e6QJPiflml9dD1vwADAEsW2XutLd7kAAAAAElFTkSuQmCC');
-    background-size: 26px 26px;
+
+ */
+.smw-protection-indicator .smw-edit-protection {
+	background: url("data:image/svg+xml,%3Csvg width='25' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3C!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ --%3E%3Cg%3E%3Ctitle%3Ebackground%3C/title%3E%3Crect fill='none' id='canvas_background' height='22' width='27' y='-1' x='-1'/%3E%3Cg display='none' overflow='visible' y='0' x='0' height='100%25' width='100%25' id='canvasGrid'%3E%3Crect fill='url(%23gridpattern)' stroke-width='0' y='0' x='0' height='100%25' width='100%25'/%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Ctitle%3ELayer 1%3C/title%3E%3Crect stroke='%23b2b2b2' rx='1' id='svg_1' height='19.125' width='24.24996' y='0.4375' x='0.37502' stroke-width='0.5' fill='none'/%3E%3Cpath stroke='null' id='svg_2' d='m16.72335,9.09456l0,-1.71048l-0.00052,0c-0.00074,-2.11109 -1.89085,-3.82158 -4.2227,-3.82158s-4.22299,1.7114 -4.22299,3.82249l0,0l0,1.70957l-1.52717,0l0,7.34294l11.50005,0l0,-7.34294l-1.52667,0zm-7.11202,-1.70957c0,0 0,0 0,0c0,-1.44252 1.296,-2.61571 2.88881,-2.61571c1.59382,0 2.88982,1.17319 2.88982,2.61479c0,0 0,0 0,0l0,1.71048l-5.77863,0l0,-1.70957z' stroke-width='1.5' fill='%23b2b2b2'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 25px 20px;
     background-repeat: no-repeat;
-    height: 26px;
-    width: 26px;
     display: inline-block;
-    margin-top: 2px;
+    padding: 20px 0 0px 26px;
+    top: 5px;
+    position: relative;
 }
 
 /* Search, browse, RDF icons/ FIXME: this was only used for Factbox docu, should be removed from code */
@@ -908,7 +912,6 @@ a.smw-ask-action-btn-dblue:focus {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	border: 1px solid transparent;
 	/* font-size: 1rem; */
 	border-radius: 0.25rem;
 	-webkit-transition: all 0.2s ease-in-out;
@@ -918,9 +921,6 @@ a.smw-ask-action-btn-dblue:focus {
 	border-radius: 0.2rem;
 	color: #292b2c;
 	border-color: transparent;
-	width: 28px;
-	height: 28px;
-	vertical-align: middle;
 }
 
 .smw-protection-indicator.with-border {

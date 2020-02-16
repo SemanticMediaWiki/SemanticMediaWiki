@@ -1,0 +1,1 @@
+<div style="padding-top:10px;text-align: justify;">{{text}}</div>

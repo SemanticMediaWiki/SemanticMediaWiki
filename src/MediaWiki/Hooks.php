@@ -252,7 +252,9 @@ class Hooks {
 
 		$elasticFactory = ApplicationFactory::getInstance()->singleton( 'ElasticFactory' );
 
-		$this->handlers = [
+		$this->handlers = $elasticFactory->newHooks()->getHandlers();
+
+		$this->handlers += [
 			'ParserAfterTidy' => [ $this, 'onParserAfterTidy' ],
 			'ParserOptionsRegister' => [ $this, 'onParserOptionsRegister' ],
 			'ParserFirstCallInit' => [ $this, 'onParserFirstCallInit' ],
@@ -314,7 +316,6 @@ class Hooks {
 
 			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
 			'SMW::Admin::TaskHandlerFactory' => [ $elasticFactory, 'onTaskHandlerFactory' ],
-			'SMW::Api::AddTasks' => [ $elasticFactory, 'onApiTasks' ],
 			'SMW::Event::RegisterEventListeners' => [ $elasticFactory, 'onRegisterEventListeners' ],
 			'SMW::Maintenance::AfterUpdateEntityCollationComplete' => [ $elasticFactory, 'onAfterUpdateEntityCollationComplete' ],
 

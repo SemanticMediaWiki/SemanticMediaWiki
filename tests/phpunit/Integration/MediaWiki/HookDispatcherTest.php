@@ -139,6 +139,50 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$hookDispatcher->onAfterUpdateEntityCollationComplete( $store, $messageReporter );
 	}
 
+	public function testOnRegisterEntityExaminerIndicatorProviders() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$indicatorProviders = [];
+
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', function( $store, &$indicatorProviders ) {
+			$indicatorProviders[] = 'Foo';
+		} );
+
+		$hookDispatcher->onRegisterEntityExaminerIndicatorProviders( $store, $indicatorProviders );
+
+		$this->assertEquals(
+			[ 'Foo' ],
+			$indicatorProviders
+		);
+	}
+
+	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$indicatorProviders = [];
+
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', function( $store, &$indicatorProviders ) {
+			$indicatorProviders[] = 'Foo';
+		} );
+
+		$hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
+
+		$this->assertEquals(
+			[ 'Foo' ],
+			$indicatorProviders
+		);
+	}
+
 	public function testOnIsApprovedRevision() {
 
 		$hookDispatcher = new HookDispatcher();

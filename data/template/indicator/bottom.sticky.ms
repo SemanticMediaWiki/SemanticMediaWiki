@@ -1,0 +1,1 @@
+<div style="position: sticky; bottom: 0px;text-align: justify;background: #fff; padding-bottom: 20px;">{{content}}</div>

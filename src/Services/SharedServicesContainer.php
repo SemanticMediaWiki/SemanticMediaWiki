@@ -25,7 +25,6 @@ use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\ManualEntryLogger;
@@ -36,8 +35,11 @@ use SMW\MediaWiki\PermissionManager;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\IndicatorRegistry;
+use SMW\Services\DataValueServiceFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
@@ -129,32 +131,15 @@ class SharedServicesContainer implements CallbackContainer {
 	 */
 	public function newIndicatorRegistry( ContainerBuilder $containerBuilder ) {
 
-		$store = $containerBuilder->singleton( 'Store', null );
-		$settings = $containerBuilder->singleton( 'Settings' );
-
 		$indicatorRegistry = new IndicatorRegistry();
+		$entityExaminerIndicatorsFactory = new EntityExaminerIndicatorsFactory();
 
-		$constraintErrorIndicatorProvider = new ConstraintErrorIndicatorProvider(
-			$store,
-			$containerBuilder->singleton( 'EntityCache' )
-		);
-
-		$constraintErrorIndicatorProvider->setConstraintErrorCheck(
-			$settings->get( 'smwgCheckForConstraintErrors' )
+		$entityExaminerIndicatorProvider = $entityExaminerIndicatorsFactory->newEntityExaminerIndicatorProvider(
+			$containerBuilder->singleton( 'Store', null )
 		);
 
 		$indicatorRegistry->addIndicatorProvider(
-			$constraintErrorIndicatorProvider
-		);
-
-		try{
-			$indicatorProvider = $store->service( 'IndicatorProvider' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
-			$indicatorProvider = null;
-		}
-
-		$indicatorRegistry->addIndicatorProvider(
-			$indicatorProvider
+			$entityExaminerIndicatorProvider
 		);
 
 		return $indicatorRegistry;

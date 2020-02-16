@@ -10,7 +10,7 @@ use SMW\Message;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Utils\HtmlColumns;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Elastic\Indexer\Replication\CheckReplicationTask;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
 
 /**
@@ -27,20 +27,20 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	private $entityCache;
 
 	/**
-	 * @var CheckReplicationTask
+	 * @var ReplicationCheck
 	 */
-	private $checkReplicationTask;
+	private $replicationCheck;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param OutputFormatter $outputFormatter
-	 * @param CheckReplicationTask $checkReplicationTask
+	 * @param ReplicationCheck $replicationCheck
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter, CheckReplicationTask $checkReplicationTask, EntityCache $entityCache ) {
+	public function __construct( OutputFormatter $outputFormatter, ReplicationCheck $replicationCheck, EntityCache $entityCache ) {
 		parent::__construct( $outputFormatter );
-		$this->checkReplicationTask = $checkReplicationTask;
+		$this->replicationCheck = $replicationCheck;
 		$this->entityCache = $entityCache;
 	}
 
@@ -113,7 +113,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 
 		$connection = $this->getStore()->getConnection( 'elastic' );
-		$failures = $this->checkReplicationTask->getReplicationFailures();
+		$failures = $this->replicationCheck->getReplicationFailures();
 
 		if ( $failures === false ) {
 			return;

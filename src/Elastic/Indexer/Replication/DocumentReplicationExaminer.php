@@ -73,26 +73,53 @@ class DocumentReplicationExaminer {
 
 		$subject->setId( $id );
 
-		if ( ( $replicationError = $this->isMissingDocument( $params, $id ) ) instanceof ReplicationError ) {
+		$replicationError = $this->isMissingDocument( $params, $id );
+
+		if ( $replicationError instanceof ReplicationError ) {
 			return $replicationError;
 		}
 
-		$this->replicationStatusResponse = $this->checkAndCatchException( 'modification_date_associated_revision', $id );
+		$this->replicationStatusResponse = $this->runCheck(
+			'modification_date_associated_revision',
+			$id
+		);
 
 		if ( $this->replicationStatusResponse instanceof ReplicationError ) {
 			return $this->replicationStatusResponse;
 		}
 
 		// What is stored in the DB
-		$dataItems = $this->store->getPropertyValues( $subject, new DIProperty( '_MDAT' ) );
+		$dataItems = $this->store->getPropertyValues(
+			$subject,
+			new DIProperty( '_MDAT' )
+		);
 
-		if ( ( $replicationError = $this->hasMissingModificationDate( $dataItems, $id ) ) instanceof ReplicationError ) {
+		return $this->findError( $subject, $params, $dataItems, $id );
+	}
+
+	private function findError( $subject, $params, $dataItems, $id ) {
+
+		$replicationError = $this->hasMissingModificationDate( $dataItems, $id );
+
+		if ( $replicationError instanceof ReplicationError ) {
 			return $replicationError;
-		} elseif ( ( $replicationError = $this->hasModificationDateDiff( $dataItems, $id ) ) instanceof ReplicationError ) {
+		}
+
+		$replicationError = $this->hasModificationDateDiff( $dataItems, $id );
+
+		if ( $replicationError instanceof ReplicationError ) {
 			return $replicationError;
-		} elseif ( ( $replicationError = $this->hasAssociatedRevisionDiff( $id ) ) instanceof ReplicationError ) {
+		}
+
+		$replicationError = $this->hasAssociatedRevisionDiff( $id );
+
+		if ( $replicationError instanceof ReplicationError ) {
 			return $replicationError;
-		} elseif( ( $replicationError = $this->hasMissingFileAttachment( $params, $subject ) ) instanceof ReplicationError ) {
+		}
+
+		$replicationError = $this->hasMissingFileAttachment( $params, $subject );
+
+		if ( $replicationError instanceof ReplicationError ) {
 			return $replicationError;
 		}
 
@@ -109,7 +136,7 @@ class DocumentReplicationExaminer {
 			return false;
 		}
 
-		$response = $this->checkAndCatchException( 'exists', $id );
+		$response = $this->runCheck( 'exists', $id );
 
 		if ( $response instanceof ReplicationError ) {
 			return $response;
@@ -118,7 +145,7 @@ class DocumentReplicationExaminer {
 		}
 	}
 
-	private function checkAndCatchException( $method, $id ) {
+	private function runCheck( $method, $id ) {
 
 		try {
 			$replicationStatusResponse = $this->replicationStatus->get( $method, $id );

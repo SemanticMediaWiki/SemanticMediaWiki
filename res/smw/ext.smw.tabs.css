@@ -130,3 +130,130 @@
 #tab4:checked ~ #content4 {
 	display: block;
 }
+
+/**
+ * https://codepen.io/markcaron/pen/MvGRYV
+ */
+.smw-tabset > input[type="radio"] {
+  position: absolute;
+  left: -200vw;
+}
+
+.smw-tabset > input[type="checkbox"] {
+  display: none;
+}
+
+.smw-tabset .tab-panel {
+  display: none;
+}
+
+.smw-tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.smw-tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.smw-tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.smw-tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.smw-tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.smw-tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+  display: block;
+}
+
+.smw-tabset > label {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px 25px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 300;
+  color: #8d8d8d;
+  margin-bottom: 0px;
+}
+
+.smw-tabset > label::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 22px;
+  height: 4px;
+  background: #8d8d8d;
+}
+
+.smw-tabset > input:focus + label,
+.smw-tabset > input:checked + label {
+  color: #06c;
+}
+
+.smw-tabset > input:focus + label::after,
+.smw-tabset > input:checked + label::after {
+  background: #06c;
+}
+
+.smw-tabset > input:focus + label.smw-indicator-severity-error::after,
+.smw-tabset > input:checked + label.smw-indicator-severity-error::after {
+  background: #d33;
+}
+
+.smw-tabset > input:focus + label.smw-indicator-severity-warning::after,
+.smw-tabset > input:checked + label.smw-indicator-severity-warning::after {
+  background: #ffa500;
+}
+
+.smw-tabset > label:hover {
+  color: #444;
+}
+
+.smw-tabset > label:hover::after {
+  background: #444;
+}
+
+.smw-tabset > input:checked + label {
+  border-color: #ccc;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+  border-top: 2px solid #06c;
+}
+
+.smw-tabset > input:checked + label.smw-indicator-severity-error {
+  border-top: 2px solid #d33;
+  color: #d33;
+}
+
+.smw-tabset > input:checked + label.smw-indicator-severity-warning {
+  border-top: 2px solid #ffa500;
+  color: #ffa500;
+}
+
+.tab-panel {
+  padding: 30px 0;
+  border-top: 1px solid #ccc;
+}
+
+.smw-issue-panel > label {
+	padding: 2px 5px 5px;
+}
+
+.smw-issue-panel > input + label {
+	margin-left: 5px;
+}
+
+.smw-issue-panel > label::after {
+  left: 5px;
+  bottom: 3px;
+  width: 12px;
+  height: 2px;
+  background: #8d8d8d;
+}
+
+.smw-issue-panel .tab-panel {
+	padding: 0 10px 10px 10px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 280px;
+}
+
+.smw-issue-panel .tab-panel:after2 {
+  content: "";
+  display: block;
+  height: 10px;
+  width: 100%;
+}

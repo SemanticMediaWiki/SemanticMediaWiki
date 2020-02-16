@@ -74,8 +74,7 @@
 					var distance = $( tip.reference ).offset().left - $( '#bodyContent' ).offset().left;
 				}
 
-				var width = tip.reference.offsetWidth <= 16 ? tip.props.maxWidth : tip.reference.offsetWidth;
-				var center = ( width / 2 ) - 20;
+				var center = ( tip.props.maxWidth / 2 ) - ( tip.reference.offsetWidth / 2 );
 
 				if ( distance == 0 ) {
 					tip.set( { offset: center } );
@@ -108,6 +107,10 @@
 					tip.set( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
 				}
 
+				if ( tip.reference.getAttribute( "data-tooltipclass" ) ) {
+					tip.popperChildren.tooltip.classList.add( tip.reference.getAttribute( "data-tooltipclass" ) );
+				}
+
 				if ( tip.reference.getAttribute( "data-theme" ) ) {
 					tip.smw.theme = tip.reference.getAttribute( "data-theme" );
 				}
@@ -121,6 +124,15 @@
 				} else {
 					tip.smw.title = mw.msg( 'smw-ui-tooltip-title-info' );
 				}
+
+				// create and dispatch the event
+				var event = new CustomEvent( "smw.tooltip.onshow", {
+				  detail: {
+				    context: tip
+				  }
+				});
+
+				document.dispatchEvent(event);
 			};
 
 			// #260
@@ -144,6 +156,7 @@
 
 				if ( tip.reference.getAttribute( "data-content" ) !== '' ) {
 					content = tip.reference.getAttribute( "data-content" );
+					tip.reference.setAttribute( "data-content", '' );
 				};
 
 				if ( content === null ) {
