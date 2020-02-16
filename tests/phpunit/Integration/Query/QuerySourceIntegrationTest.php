@@ -165,7 +165,7 @@ class QuerySourceIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'source=foobar'
 		];
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$this->makeQueryResultFromRawParameters( $rawParams );
 	}
 

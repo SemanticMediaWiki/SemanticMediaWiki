@@ -58,7 +58,7 @@ class TemplateExpanderTest extends \PHPUnit_Framework_TestCase {
 			'Foo'
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->expand( '' );
 	}
 

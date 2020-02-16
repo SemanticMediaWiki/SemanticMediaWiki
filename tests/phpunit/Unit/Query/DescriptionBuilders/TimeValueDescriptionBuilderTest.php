@@ -94,7 +94,7 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TimeValueDescriptionBuilder();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->newDescription( $timeValue, [] );
 	}
 

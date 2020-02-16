@@ -53,7 +53,7 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new XmlResponseParser();
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\XmlParserException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\XmlParserException' );
 		$instance->parse( $rawResultProvider->getInvalidSparqlResultXml() );
 	}
 

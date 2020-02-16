@@ -334,7 +334,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			$this->transactionHandler
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		$this->assertInstanceOf(
 			'ResultWrapper',
@@ -373,7 +373,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			$this->transactionHandler
 		);
 
-		$this->setExpectedException( 'Exception' );
+		$this->expectException( 'Exception' );
 		$instance->query( 'Foo', __METHOD__ );
 	}
 
@@ -640,7 +640,7 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 			$this->transactionHandler
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		call_user_func_array( [ $instance, $func ], $args );
 	}
 

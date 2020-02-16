@@ -59,7 +59,7 @@ class MySQLTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getType' )
 			->will( $this->returnValue( 'sqlite' ) );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		MySQLTableBuilder::factory( $connection );
 	}
 

@@ -210,7 +210,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 			$this->cacheStats
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getQueryResult( $query );
 	}
 

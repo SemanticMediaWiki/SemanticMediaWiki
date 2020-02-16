@@ -178,7 +178,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->iteratorFactory
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->findAll( 'Foo' );
 	}
 

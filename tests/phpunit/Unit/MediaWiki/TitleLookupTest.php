@@ -224,7 +224,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -236,7 +236,7 @@ class TitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSelectByRangeOnMissingNamespaceThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()

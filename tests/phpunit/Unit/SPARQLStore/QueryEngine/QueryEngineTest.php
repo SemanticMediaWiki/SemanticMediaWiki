@@ -213,7 +213,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 		$query = new Query( $description );
 		$query->setSortKeys( $sortKeys );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getQueryResult( $query );
 	}
 

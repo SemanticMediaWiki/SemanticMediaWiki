@@ -49,7 +49,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit_Framework_Test
 
 		$instance = new MonolingualTextValueDescriptionBuilder();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->newDescription( $recordValue, [] );
 	}
 

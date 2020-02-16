@@ -104,7 +104,7 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new StringValueFormatter();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( StringValueFormatter::VALUE );
 	}
 

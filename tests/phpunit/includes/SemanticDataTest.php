@@ -330,7 +330,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 
 		$instance->addSubSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( 'addSubSemanticData' ) ) )
@@ -341,7 +341,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->addSubobject( $this->newSubobject( Title::newFromText( 'addSubSemanticData' ) ) );
 	}
 
@@ -349,7 +349,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) ) );
 
-		$this->setExpectedException( '\SMW\Exception\SemanticDataImportException' );
+		$this->expectException( '\SMW\Exception\SemanticDataImportException' );
 
 		$instance->importDataFrom(
 			new SemanticData( DIWikiPage::newFromTitle( Title::newFromText( 'importDataFrom' ) ) )

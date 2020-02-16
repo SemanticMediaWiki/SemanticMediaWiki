@@ -130,7 +130,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Config();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->readFile( 'Foo' );
 	}
 

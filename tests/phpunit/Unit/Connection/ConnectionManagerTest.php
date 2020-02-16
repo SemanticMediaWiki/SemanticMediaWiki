@@ -55,7 +55,7 @@ class ConnectionManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConnectionManager();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection( 'mw.master' );
 	}
 

@@ -87,7 +87,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInvalidConstructorThrowsException( $uri, $dataItem ) {
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpResource(
 			$uri,
@@ -100,7 +100,7 @@ class ExpResourceTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
 			$serialization

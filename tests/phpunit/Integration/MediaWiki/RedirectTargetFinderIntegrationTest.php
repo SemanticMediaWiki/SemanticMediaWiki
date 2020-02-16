@@ -246,7 +246,7 @@ class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
 		// Resolver will raise an exception as actions can not act on
 		// a circular redirect oppose to a possible annotation created by the
 		// store
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$deepRedirectTargetResolver->findRedirectTargetFor( $source );
 
 		$this->deletePoolOfPages = [

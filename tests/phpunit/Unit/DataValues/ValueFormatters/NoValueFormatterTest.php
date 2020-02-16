@@ -75,7 +75,7 @@ class NoValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new NoValueFormatter();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( NoValueFormatter::VALUE );
 	}
 

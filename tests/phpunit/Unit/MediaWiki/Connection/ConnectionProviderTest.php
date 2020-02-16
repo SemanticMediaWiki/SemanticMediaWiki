@@ -136,7 +136,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setLocalConnectionConf( $conf );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();
 	}
 

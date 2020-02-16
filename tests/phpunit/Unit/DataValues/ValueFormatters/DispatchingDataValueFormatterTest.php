@@ -120,7 +120,7 @@ class DispatchingDataValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DispatchingDataValueFormatter();
 		$instance->addDataValueFormatter( $dataValueFormatter );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getDataValueFormatterFor( $dataValue );
 	}
 

@@ -69,7 +69,7 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->validate( 'Foo' );
 	}
 

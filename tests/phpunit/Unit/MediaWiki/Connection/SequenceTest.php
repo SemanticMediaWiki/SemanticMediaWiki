@@ -35,7 +35,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructWithInvalidConnectionThrowsException() {
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		new Sequence( 'Foo' );
 	}
 

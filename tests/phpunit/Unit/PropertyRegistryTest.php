@@ -206,7 +206,7 @@ class PropertyRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->registerProperty( '_TYPE', '__typ', 'Has type', true, true );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->registerProperty( '_TYPE', '__typ', 'Has type', true, false );
 	}
 

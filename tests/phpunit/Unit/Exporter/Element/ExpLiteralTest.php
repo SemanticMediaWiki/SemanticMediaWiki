@@ -96,7 +96,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInvalidConstructorThrowsException( $lexicalForm, $datatype, $lang, $dataItem ) {
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 
 		$instance = new ExpLiteral(
 			$lexicalForm,
@@ -111,7 +111,7 @@ class ExpLiteralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testDeserializiationForMissingElementThrowsException( $serialization ) {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 
 		ExpElement::newFromSerialization(
 			$serialization

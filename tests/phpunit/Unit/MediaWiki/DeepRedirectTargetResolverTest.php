@@ -102,7 +102,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isRedirect' )
 			->will( $this->returnValue( false ) );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->findRedirectTargetFor( $title );
 	}
 
@@ -135,7 +135,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isRedirect' )
 			->will( $this->returnValue( true ) );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->findRedirectTargetFor( $title );
 	}
 

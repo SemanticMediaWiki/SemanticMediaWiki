@@ -167,7 +167,7 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->newSeekableIterator();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->seek( 'foo' );
 	}
 

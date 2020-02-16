@@ -96,7 +96,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngineFactory = new SearchEngineFactory();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
 	}
 
@@ -130,7 +130,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngineFactory = new SearchEngineFactory();
 
-		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
+		$this->expectException( '\SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException' );
 		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
 	}
 
@@ -152,7 +152,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngineFactory = new SearchEngineFactory();
 
-		$this->setExpectedException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
+		$this->expectException( '\SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException' );
 		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
 	}
 
@@ -162,7 +162,7 @@ class SearchEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngineFactory = new SearchEngineFactory();
 
-		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
+		$this->expectException( '\SMW\Exception\ClassNotFoundException' );
 		$searchEngineFactory->newFallbackSearchEngine( $this->connection );
 	}
 

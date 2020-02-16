@@ -218,7 +218,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( '\SMW\SQLStore\Exception\TableMissingIdFieldException' );
+		$this->expectException( '\SMW\SQLStore\Exception\TableMissingIdFieldException' );
 		$instance->update( 42, $params );
 	}
 

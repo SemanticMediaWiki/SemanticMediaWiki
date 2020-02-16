@@ -30,7 +30,7 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInvalidConstructorArgumentThrowsException() {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance = new MappingIterator( 2, function() {
 		} );
 	}

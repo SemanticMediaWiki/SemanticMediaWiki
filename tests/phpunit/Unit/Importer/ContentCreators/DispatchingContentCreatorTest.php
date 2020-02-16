@@ -126,7 +126,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->create( $importContents );
 	}
 

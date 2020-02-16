@@ -61,7 +61,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IdCacheManager( $this->caches );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->get( 'foo' );
 	}
 
@@ -173,7 +173,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IdCacheManager( $this->caches );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->setCache( 'foo bar', '', '' , '', '', '' );
 	}
 
@@ -181,7 +181,7 @@ class IdCacheManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IdCacheManager( $this->caches );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->setCache( [ 'foo bar' ], '', '' , '', '', '' );
 	}
 

@@ -146,7 +146,7 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->setExpectedException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 

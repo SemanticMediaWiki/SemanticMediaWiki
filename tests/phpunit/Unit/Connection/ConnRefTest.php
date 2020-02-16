@@ -61,7 +61,7 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection( 'Foo' );
 	}
 
@@ -69,7 +69,7 @@ class ConnRefTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConnRef( [] );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getConnection( 'Foo' );
 	}
 

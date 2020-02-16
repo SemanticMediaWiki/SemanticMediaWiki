@@ -71,7 +71,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 			$httpRequest
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
 		$instance->doQuery( '' );
 	}
 
@@ -89,7 +89,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 			$httpRequest
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
 		$instance->doUpdate( '' );
 	}
 
@@ -107,7 +107,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 			$httpRequest
 		);
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
 		$instance->doHttpPost( '' );
 	}
 
@@ -129,7 +129,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit_Framework_TestCase {
 			$httpRequest
 		);
 
-		$this->setExpectedException( 'Exception' );
+		$this->expectException( 'Exception' );
 		$instance->doHttpPost( '' );
 	}
 

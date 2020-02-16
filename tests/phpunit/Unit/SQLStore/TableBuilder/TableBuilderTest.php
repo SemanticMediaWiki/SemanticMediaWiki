@@ -76,12 +76,12 @@ class TableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getType' )
 			->will( $this->returnValue( 'foo' ) );
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		TableBuilder::factory( $connection );
 	}
 
 	public function testConstructWithInvalidInstanceThrowsException() {
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		TableBuilder::factory( 'foo' );
 	}
 

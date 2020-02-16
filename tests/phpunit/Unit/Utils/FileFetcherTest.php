@@ -32,7 +32,7 @@ class FileFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new FileFetcher();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->findByExtension( 'foo' );
 	}
 

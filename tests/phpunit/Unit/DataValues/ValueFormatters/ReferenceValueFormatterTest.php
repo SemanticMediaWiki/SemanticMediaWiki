@@ -114,7 +114,7 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ReferenceValueFormatter();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( ReferenceValueFormatter::VALUE );
 	}
 

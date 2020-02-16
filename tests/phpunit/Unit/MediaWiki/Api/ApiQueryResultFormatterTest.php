@@ -48,7 +48,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$arr = [];
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->setIndexedTagName( $arr, null );
 	}
 

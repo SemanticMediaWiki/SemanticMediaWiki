@@ -63,7 +63,7 @@ class DotSeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->newDotSeekableIterator();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->seek( 'foo' );
 	}
 

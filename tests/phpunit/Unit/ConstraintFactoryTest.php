@@ -87,7 +87,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConstraintFactory();
 
-		$this->setExpectedException( '\SMW\Exception\ClassNotFoundException' );
+		$this->expectException( '\SMW\Exception\ClassNotFoundException' );
 		$instance->newConstraintByClass( 'Foo' );
 	}
 
@@ -95,7 +95,7 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConstraintFactory();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->newConstraintByClass( PlainClass::class );
 	}
 

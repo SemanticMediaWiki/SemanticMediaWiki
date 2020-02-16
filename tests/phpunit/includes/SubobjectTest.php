@@ -55,7 +55,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->setSemanticData( '' );
 	}
 
@@ -196,7 +196,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->addDataValue( $dataValue );
 	}
 
@@ -204,7 +204,7 @@ class SubobjectTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->getSemanticData();
 	}
 

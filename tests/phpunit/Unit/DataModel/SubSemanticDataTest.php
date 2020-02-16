@@ -65,7 +65,7 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException');
+		$this->expectException( '\SMW\Exception\SubSemanticDataException');
 
 		$instance->addSubSemanticData(
 			ContainerSemanticData::makeAnonymousContainer( true, true )

@@ -59,7 +59,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
@@ -86,7 +86,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->setExpectedException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 

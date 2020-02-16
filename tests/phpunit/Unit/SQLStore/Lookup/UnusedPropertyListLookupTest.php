@@ -103,7 +103,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->fetchList();
 	}
 

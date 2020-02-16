@@ -46,7 +46,7 @@ class ReplicationErrorTest extends \PHPUnit_Framework_TestCase {
 			ReplicationError::TYPE_EXCEPTION
 		);
 
-		$this->setExpectedException( '\InvalidArgumentException' );
+		$this->expectException( '\InvalidArgumentException' );
 		$instance->get( 'Foo' );
 	}
 

@@ -103,7 +103,7 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 
 		$changeRecord = new ChangeRecord();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$changeRecord->get( 'foo' );
 	}
 

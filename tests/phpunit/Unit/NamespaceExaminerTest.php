@@ -93,7 +93,7 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 		$instance->isSemanticEnabled( 'ichi' );
 	}
 

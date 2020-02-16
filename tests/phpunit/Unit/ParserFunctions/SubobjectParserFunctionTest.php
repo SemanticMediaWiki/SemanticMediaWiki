@@ -292,7 +292,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterFormatter( $parameters ) );
 
-		$this->setExpectedException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$subobject->getSubobjectId();
 	}
 

@@ -43,7 +43,7 @@ class XsdValueMapperTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTryToMatchUnsupportedTypeThrowsException( $dataItem ) {
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		XsdValueMapper::map( $dataItem );
 	}
 

@@ -28,4 +28,13 @@ trait PHPUnitCompat {
 			parent::setExpectedException( $name, $message, $code );
 		}
 	}
+
+	public function expectException( $exception ) {
+		if ( !is_callable( [ $this, 'expectException' ] ) ) {
+			parent::setExpectedException( $exception );
+		} else {
+			parent::expectException( $exception );
+		}
+	}
+
 }

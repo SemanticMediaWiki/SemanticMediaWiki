@@ -38,7 +38,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new HtmlColumns();
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( 'InvalidArgumentException' );
 
 		$instance->addContents(
 			[ 'Foo' ],

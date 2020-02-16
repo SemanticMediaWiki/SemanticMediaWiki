@@ -51,7 +51,7 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SchemaLinkProfileAnnotator( $profileAnnotator, [] );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->addAnnotation();
 	}
 

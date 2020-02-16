@@ -69,7 +69,7 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new TaskFactory();
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->newByType( '__foo__' );
 	}
 

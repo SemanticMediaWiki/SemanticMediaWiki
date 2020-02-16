@@ -50,7 +50,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct_ThrowsException() {
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		new TransactionHandler( 'Foo' );
 	}
 
@@ -148,7 +148,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->markSectionTransaction( __METHOD__ );
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->markSectionTransaction( 'Foo' );
 	}
 
@@ -158,7 +158,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->loadBalancerFactory
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->detachSectionTransaction( __METHOD__ );
 	}
 

@@ -120,7 +120,7 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$this->setExpectedException( '\SMW\Elastic\Exception\NoConnectionException' );
+		$this->expectException( '\SMW\Elastic\Exception\NoConnectionException' );
 		$instance->update( 'Foo' );
 	}
 
@@ -134,7 +134,7 @@ class RolloverTest extends \PHPUnit_Framework_TestCase {
 			$this->connection
 		);
 
-		$this->setExpectedException( '\SMW\Elastic\Exception\NoConnectionException' );
+		$this->expectException( '\SMW\Elastic\Exception\NoConnectionException' );
 		$instance->delete( 'Foo' );
 	}
 

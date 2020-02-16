@@ -63,7 +63,7 @@ class OrderConditionTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->addConditions( $this->conditionBuilder, 42 );
 
 		$querySegment->reset();

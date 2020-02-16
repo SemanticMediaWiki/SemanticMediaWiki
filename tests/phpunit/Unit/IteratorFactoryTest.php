@@ -74,7 +74,7 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IteratorFactory();
 
-		$this->setExpectedException( 'SMW\Exception\FileNotFoundException' );
+		$this->expectException( 'SMW\Exception\FileNotFoundException' );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\CsvFileIterator',

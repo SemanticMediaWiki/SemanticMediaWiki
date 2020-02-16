@@ -55,7 +55,7 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 
-		$this->setExpectedException( '\SMW\Exception\DataItemException' );
+		$this->expectException( '\SMW\Exception\DataItemException' );
 		$instance->getSubject();
 	}
 

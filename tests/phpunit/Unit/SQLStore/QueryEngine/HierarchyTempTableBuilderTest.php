@@ -68,7 +68,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->temporaryTableBuilder
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getTableDefinitionByType( 'foo' );
 	}
 

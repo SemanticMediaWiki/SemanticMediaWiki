@@ -129,7 +129,7 @@ class MessageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MessageBuilder();
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->getMessage( 'properties' );
 	}
 

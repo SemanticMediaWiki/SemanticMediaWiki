@@ -149,7 +149,7 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->setExpectedException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 

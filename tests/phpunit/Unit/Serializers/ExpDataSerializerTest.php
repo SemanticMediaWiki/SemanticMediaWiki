@@ -34,7 +34,7 @@ class ExpDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ExpDataSerializer();
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 		$instance->serialize( 'Foo' );
 	}
 

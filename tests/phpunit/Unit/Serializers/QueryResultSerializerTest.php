@@ -55,7 +55,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSerializeOutOfBoundsException() {
 
-		$this->setExpectedException( 'OutOfBoundsException' );
+		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new QueryResultSerializer();
 		$instance->serialize( 'Foo' );

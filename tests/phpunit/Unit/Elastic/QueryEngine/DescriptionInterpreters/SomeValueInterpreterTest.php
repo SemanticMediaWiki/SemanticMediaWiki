@@ -63,7 +63,7 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->interpretDescription( $description, $options );
 	}
 
@@ -81,7 +81,7 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$this->setExpectedException( '\RuntimeException' );
+		$this->expectException( '\RuntimeException' );
 		$instance->interpretDescription( $description, $options );
 	}
 

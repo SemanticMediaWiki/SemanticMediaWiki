@@ -108,7 +108,7 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 			'foo'
 		);
 
-		$this->setExpectedException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
 		$instance->addToUsageCount( 12, 'foo' );
 	}
 
@@ -122,7 +122,7 @@ class PropertyStatisticsStoreTest extends MwDBaseUnitTestCase {
 			$connection
 		);
 
-		$this->setExpectedException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
+		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException');
 		$instance->addToUsageCount( 'Foo', 12 );
 	}
 

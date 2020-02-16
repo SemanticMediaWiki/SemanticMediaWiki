@@ -343,7 +343,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$this->setExpectedException( 'RuntimeException' );
+		$this->expectException( 'RuntimeException' );
 		$instance->format( PropertyValueFormatter::VALUE );
 	}
 

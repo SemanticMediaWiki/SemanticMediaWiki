@@ -83,7 +83,7 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$instance->catchExceptionAndRethrow( true );
 		$instance->setLogger( $this->spyLogger );
 
-		$this->setExpectedException( '\Exception' );
+		$this->expectException( '\Exception' );
 		$instance->doUpdate();
 
 		$this->assertContains(
