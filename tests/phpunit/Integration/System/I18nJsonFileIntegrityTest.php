@@ -18,23 +18,28 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	public function testPrettifyCanonicalMediaWikiI18NJson() {
 
 		$target = $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] . '/en.json';
-
-		$contents = json_decode( file_get_contents( $target ), true );
+		$contents = file_get_contents( $target );
 
 		$json = json_encode(
-			$contents,
+			json_decode( $contents, true ),
 			JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 		);
 
 		// Change the four-space indent to a tab indent
-		$json = str_replace( "\n    ", "\n\t", $json );
+		$json = str_replace( "\n    ", "\n\t", $json ) . "\n";
 
 		while ( strpos( $json, "\t    " ) !== false ) {
 			$json = str_replace( "\t    ", "\t\t", $json );
 		}
 
-		$this->assertNotFalse(
-			file_put_contents( $target, $json . "\n" )
+		if ( $contents !== $json ) {
+			$isPretty = (bool)file_put_contents( $target, $json );
+		} else {
+			$isPretty = true;
+		}
+
+		$this->assertTrue(
+			$isPretty
 		);
 	}
 
