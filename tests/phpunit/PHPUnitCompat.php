@@ -29,14 +29,6 @@ trait PHPUnitCompat {
 		}
 	}
 
-	public function expectException( $exception ) {
-		if ( !is_callable( [ $this, 'expectException' ] ) ) {
-			parent::setExpectedException( $exception );
-		} else {
-			parent::expectException( $exception );
-		}
-	}
-
 	/**
 	 * "Using assertContains() with string haystacks is deprecated and will not
 	 * be supported in PHPUnit 9. Refactor your test to use assertStringContainsString()
