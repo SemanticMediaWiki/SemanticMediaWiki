@@ -86,7 +86,7 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function __construct( $key, $inverse = false ) {
 
-		if ( ( $key === '' ) || ( $key[0] == '-' ) ) {
+		if ( ( $key === false ) || ( $key === '' ) || ( $key[0] == '-' ) ) {
 			throw new PropertyLabelNotResolvedException( "Illegal property key \"$key\"." );
 		}
 
@@ -302,6 +302,10 @@ class DIProperty extends SMWDataItem {
 			$dbkey = PropertyRegistry::getInstance()->findCanonicalPropertyLabelById( $this->m_key );
 		}
 
+		if ( $dbkey === false ) {
+			$dbkey = $this->m_key;
+		}
+
 		return $this->newDIWikiPage( $dbkey, $subobjectName );
 	}
 
@@ -429,7 +433,7 @@ class DIProperty extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		$inverse = false;
 
-		if ( $serialization[0] == '-' ) {
+		if ( is_string( $serialization ) && $serialization[0] == '-' ) {
 			$serialization = substr( $serialization, 1 );
 			$inverse = true;
 		}
@@ -465,6 +469,10 @@ class DIProperty extends SMWDataItem {
 	 * @return DIProperty object
 	 */
 	public static function newFromUserLabel( $label, $inverse = false, $languageCode = false ) {
+
+		// Explicitly cast to a string so we are able to return an object from
+		// any user label
+		$label = (string)$label;
 
 		if ( $label !== '' && $label[0] == '-' ) {
 			$label = substr( $label, 1 );
