@@ -29,7 +29,7 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageDeleter;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
@@ -37,7 +37,7 @@ class RefreshSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->pageCreator = new PageCreator();
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 
 		$this->mwHooksHandler->restoreListedHooks();
 

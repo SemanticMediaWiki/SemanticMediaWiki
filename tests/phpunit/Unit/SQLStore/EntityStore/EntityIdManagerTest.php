@@ -27,7 +27,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	private $tableFieldUpdater;
 	private $factory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$idCacheManager = new IdCacheManager(
 			[

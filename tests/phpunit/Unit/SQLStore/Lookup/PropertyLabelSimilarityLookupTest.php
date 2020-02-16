@@ -22,7 +22,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->dataItemFactory = new DataItemFactory();
 

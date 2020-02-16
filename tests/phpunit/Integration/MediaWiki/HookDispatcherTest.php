@@ -18,7 +18,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -27,7 +27,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();

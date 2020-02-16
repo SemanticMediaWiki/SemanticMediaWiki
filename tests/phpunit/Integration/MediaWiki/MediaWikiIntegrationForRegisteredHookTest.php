@@ -30,7 +30,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 	private $mwHooksHandler;
 	private $pageDeleter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
@@ -57,7 +57,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
 		$this->pageDeleter = new PageDeleter();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 

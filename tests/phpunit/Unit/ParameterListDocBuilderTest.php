@@ -26,7 +26,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();

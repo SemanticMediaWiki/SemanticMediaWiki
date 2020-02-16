@@ -18,7 +18,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $store;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

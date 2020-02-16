@@ -21,7 +21,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -52,7 +52,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

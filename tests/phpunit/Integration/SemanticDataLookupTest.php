@@ -27,7 +27,7 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -41,7 +41,7 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

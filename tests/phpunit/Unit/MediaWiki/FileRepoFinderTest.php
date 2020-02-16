@@ -18,7 +18,7 @@ class FileRepoFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $repoGroup;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->repoGroup = $this->getMockBuilder( '\RepoGroup' )
 			->disableOriginalConstructor()

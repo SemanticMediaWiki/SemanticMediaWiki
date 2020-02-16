@@ -18,7 +18,7 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	private $skinTemplate;
 	private $jobQueue;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
 			->disableOriginalConstructor()

@@ -20,7 +20,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 	private $namespaceExaminer;
 	private $skinTemplate;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -32,7 +32,7 @@ class BaseTemplateToolboxTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

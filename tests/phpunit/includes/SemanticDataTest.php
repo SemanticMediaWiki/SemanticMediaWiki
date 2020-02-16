@@ -29,7 +29,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -49,7 +49,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

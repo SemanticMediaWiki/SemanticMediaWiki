@@ -21,7 +21,7 @@ class DeleteAccountTest extends \PHPUnit_Framework_TestCase {
 	private $namespaceExaminer;
 	private $articleDelete;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )

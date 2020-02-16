@@ -23,7 +23,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $iteratorFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )

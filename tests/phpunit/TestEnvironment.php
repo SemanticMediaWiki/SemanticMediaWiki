@@ -230,7 +230,7 @@ class TestEnvironment {
 	/**
 	 * @since 2.4
 	 */
-	public function tearDown() {
+	public function tearDown() : void {
 		$this->testConfig->reset();
 		$this->applicationFactory->clear();
 		$this->dataValueFactory->clear();

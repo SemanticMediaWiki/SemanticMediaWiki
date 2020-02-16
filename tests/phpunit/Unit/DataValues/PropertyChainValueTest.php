@@ -19,7 +19,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 	}
 

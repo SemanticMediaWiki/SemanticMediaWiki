@@ -28,7 +28,7 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $pageCreator;
 	private $stringBuilder;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -62,7 +62,7 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 		};
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		UtilityFactory::getInstance()->newPageDeleter()->doDeletePoolOfPages( $this->subjects );
 		unset( $GLOBALS['wgHooks']['InterwikiLoadPrefix'] );

@@ -17,7 +17,7 @@ class TextSanitizerTest extends \PHPUnit_Framework_TestCase {
 
 	private $sanitizerFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->sanitizerFactory = $this->getMockBuilder( '\Onoi\Tesa\SanitizerFactory' )
 			->disableOriginalConstructor()

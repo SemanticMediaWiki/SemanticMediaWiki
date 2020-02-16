@@ -28,7 +28,7 @@ class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $serializerFactory;
 	private $semanticDataFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();

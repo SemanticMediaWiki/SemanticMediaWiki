@@ -30,7 +30,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	private $toBeDeleted = [];
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -54,7 +54,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();

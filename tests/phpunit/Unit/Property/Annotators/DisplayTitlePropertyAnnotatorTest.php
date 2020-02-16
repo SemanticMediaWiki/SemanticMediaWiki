@@ -21,7 +21,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$testEnvironment = new TestEnvironment();

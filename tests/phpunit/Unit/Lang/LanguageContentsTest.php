@@ -23,7 +23,7 @@ class LanguageContentsTest extends \PHPUnit_Framework_TestCase {
 	private $jsonContentsFileReader;
 	private $fallbackFinder;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->jsonContentsFileReader = $this->getMockBuilder( JsonContentsFileReader::class )
 			->disableOriginalConstructor()

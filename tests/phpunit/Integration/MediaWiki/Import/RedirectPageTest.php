@@ -31,7 +31,7 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 	private $pageRefresher;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = $this->testEnvironment->getUtilityFactory()->newRunnerFactory();
@@ -51,7 +51,7 @@ class RedirectPageTest extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->flushPages( $this->importedTitles );
 		parent::tearDown();
 	}

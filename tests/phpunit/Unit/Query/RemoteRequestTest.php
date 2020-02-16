@@ -18,7 +18,7 @@ class RemoteRequestTest extends \PHPUnit_Framework_TestCase {
 	private $httpRequest;
 	private $query;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()

@@ -22,7 +22,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	private $wikiImporter;
 	private $messageReporter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$importStreamSource = $this->getMockBuilder( '\ImportStreamSource' )

@@ -27,7 +27,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $semanticDataFactory;
 	private $subjects = [];
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -36,7 +36,7 @@ class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );

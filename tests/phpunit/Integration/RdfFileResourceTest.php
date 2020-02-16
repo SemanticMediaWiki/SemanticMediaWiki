@@ -23,7 +23,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 	private $fixturesFileProvider;
 	private $stringValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -56,7 +56,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		\SMWExporter::clear();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

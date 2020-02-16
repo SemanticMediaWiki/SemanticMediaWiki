@@ -20,7 +20,7 @@ class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $resultCache;
 	private $entityCache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )

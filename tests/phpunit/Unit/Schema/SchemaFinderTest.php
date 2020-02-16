@@ -21,7 +21,7 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $propertySpecificationLookup;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

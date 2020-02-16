@@ -21,7 +21,7 @@ class QueryEngineTest extends \PHPUnit_Framework_TestCase {
 	private $querySegmentListProcessor;
 	private $engineOptions;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
 			->disableOriginalConstructor()

@@ -20,7 +20,7 @@ class PropertyPageTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $declarationExaminerFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->declarationExaminerFactory = $this->getMockBuilder( '\SMW\Property\DeclarationExaminerFactory' )

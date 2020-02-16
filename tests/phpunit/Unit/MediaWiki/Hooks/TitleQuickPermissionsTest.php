@@ -23,7 +23,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 	private $title;
 	private $user;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,7 +45,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

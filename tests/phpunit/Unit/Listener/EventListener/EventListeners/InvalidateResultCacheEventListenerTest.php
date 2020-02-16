@@ -21,7 +21,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 	private $resultCache;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
@@ -31,7 +31,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit_Framework_TestCase
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

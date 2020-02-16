@@ -30,7 +30,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $hookDispatcher;
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$settings = [
@@ -71,7 +71,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

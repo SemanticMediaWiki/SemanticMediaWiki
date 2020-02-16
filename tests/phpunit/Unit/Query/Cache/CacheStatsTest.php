@@ -19,7 +19,7 @@ class CacheStatsTest extends \PHPUnit_Framework_TestCase {
 
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()

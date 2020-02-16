@@ -22,7 +22,7 @@ class IdBorderTest extends \PHPUnit_Framework_TestCase {
 	private $spyMessageReporter;
 	private $store;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 

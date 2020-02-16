@@ -17,7 +17,7 @@ class StringResultTest extends \PHPUnit_Framework_TestCase {
 
 	private $query;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()

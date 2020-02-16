@@ -22,13 +22,13 @@ class CallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();

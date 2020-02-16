@@ -20,7 +20,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $messageReporter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )

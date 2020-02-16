@@ -17,7 +17,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framew
 
 	private $setupFile;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )

@@ -21,7 +21,7 @@ class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
 	private $runnerFactory;
 	private $spyMessageReporter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$store = ApplicationFactory::getInstance()->getStore();
@@ -36,7 +36,7 @@ class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
 		$this->spyMessageReporter = $utilityFactory->newSpyMessageReporter();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 	}
 

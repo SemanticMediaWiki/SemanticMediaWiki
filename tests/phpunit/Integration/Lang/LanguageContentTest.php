@@ -14,7 +14,7 @@ use SMW\Lang\Lang;
  */
 class LanguageContent extends \PHPUnit_Framework_TestCase {
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		Lang::clear();
 		parent::tearDown();
 	}

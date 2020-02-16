@@ -22,7 +22,7 @@ class DurationProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->semanticDataValidator = UtilityFactory::getInstance()->newValidatorFactory()->newSemanticDataValidator();

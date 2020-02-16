@@ -23,7 +23,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $semanticDataLookup;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
@@ -31,7 +31,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		CachingSemanticDataLookup::clear();
 	}
 

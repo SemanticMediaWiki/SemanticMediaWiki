@@ -29,7 +29,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 	// The Store writes to the output buffer during drop/setupStore, to avoid
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class DataRebuilderTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 		$this->testEnvironment->tearDown();
 

@@ -20,7 +20,7 @@ class SQLiteValueMatchConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $searchTable;
 	private $dataItemFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->dataItemFactory = new DataItemFactory();
 

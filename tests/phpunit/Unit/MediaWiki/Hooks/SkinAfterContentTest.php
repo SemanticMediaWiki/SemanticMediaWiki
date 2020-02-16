@@ -20,7 +20,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 
 	private $applicationFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -36,7 +36,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$this->applicationFactory->registerObject( 'Settings', $settings );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

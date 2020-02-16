@@ -24,7 +24,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $idChanger;
 	private $jobFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -50,7 +50,7 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

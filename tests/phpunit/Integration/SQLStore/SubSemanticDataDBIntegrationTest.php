@@ -27,7 +27,7 @@ class SubSemanticDataDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $title;
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$pageDeleter= new PageDeleter();
 
 		$pageDeleter->deletePage( $this->title );

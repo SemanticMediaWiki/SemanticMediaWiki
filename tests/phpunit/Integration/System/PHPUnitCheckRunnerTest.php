@@ -14,26 +14,36 @@ use SMW\Utils\FileFetcher;
  */
 class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
-	private $checkFailures = [
-		// #4564
-		'setExpectedException' => [],
-		// 'assertInternalType' => []
-	];
+	private static $iterator;
 
-	public function testCheckDeprecatedUsages() {
+	public static function setUpBeforeClass() : void {
+
+		$fileFetcher = new FileFetcher(
+			SMW_PHPUNIT_DIR
+		);
+
+		self::$iterator = $fileFetcher->findByExtension( 'php' );
+	}
+
+	/**
+	 * @see https://phpunit.de/announcements/phpunit-8.html
+	 */
+	public function testCheckMissingVoidType() {
 
 		$exceptions = [
-			'PHPUnitCompat',
 			'PHPUnitCheckRunnerTest'
 		];
 
 		$exceptions = array_flip( $exceptions );
-		$checks = array_keys( $this->checkFailures );
 
-		$fileFetcher = new FileFetcher( SMW_PHPUNIT_DIR );
-		$iterator = $fileFetcher->findByExtension( 'php' );
+		$missingVoidTest = [
+			'setUp' => [],
+			'tearDown' => [],
+			'setUpBeforeClass' => [],
+			'tearDownAfterClass' => []
+		];
 
-		foreach ( $iterator as $file => $v ) {
+		foreach ( self::$iterator as $file => $v ) {
 
 			$pathinfo = pathinfo( $file );
 
@@ -43,28 +53,71 @@ class PHPUnitCheckRunnerTest extends \PHPUnit_Framework_TestCase {
 
 			$contents = file_get_contents( $file );
 
-			$this->runUsageCheck( $checks, $contents, $pathinfo['basename'] );
+			if ( (
+				strpos( $contents, 'function setUp() {' ) ||
+				strpos( $contents, 'function setUp(){' ) ) !== false ) {
+				$missingVoidTest['setUp'][] = $pathinfo['basename'];
+			} elseif ( (
+				strpos( $contents, 'function tearDown() {' ) ||
+				strpos( $contents, 'function tearDown(){' ) ) !== false ) {
+				$missingVoidTest['tearDown'][] = $pathinfo['basename'];
+			} elseif ( (
+				strpos( $contents, 'function setUpBeforeClass() {' ) ||
+				strpos( $contents, 'function setUpBeforeClass(){' ) ) !== false ) {
+				$missingVoidTest['setUpBeforeClass'][] = $pathinfo['basename'];
+			} elseif ( (
+				strpos( $contents, 'function tearDownAfterClass() {' ) ||
+				strpos( $contents, 'function tearDownAfterClass(){' ) ) !== false ) {
+				$missingVoidTest['tearDownAfterClass'][] = $pathinfo['basename'];
+			}
 		}
 
-		foreach ( $this->checkFailures as $key => $failures ) {
+		foreach ( $missingVoidTest as $key => $files ) {
 			$this->assertEquals(
 				[],
-				$failures,
-				"\nFailed because listed file(s) contains a deprecated usage of: `$key`\n"
+				$files,
+				"\nFailed because listed file(s) is missing a `: void` type for `$key`!\n"
 			);
 		}
-
 	}
 
-	private function runUsageCheck( $checks, $contents, $basename ) {
-		foreach ( $checks as $check ) {
+	public function testCheckDeprecatedUsages() {
 
-			if ( strpos( $contents, $check ) === false ) {
+		$exceptions = [
+			'PHPUnitCompat',
+			'PHPUnitCheckRunnerTest'
+		];
+
+		$exceptions = array_flip( $exceptions );
+
+		$deprecatedUsageCheckFailures = [
+			// #4564
+			'setExpectedException' => [],
+
+			// 'assertInternalType' => []
+		];
+
+		foreach ( self::$iterator as $file => $v ) {
+
+			$pathinfo = pathinfo( $file );
+
+			if ( isset( $exceptions[$pathinfo['filename']] ) ) {
 				continue;
 			}
 
-			$this->checkFailures[$check][] = $basename;
-			break;
+			$contents = file_get_contents( $file );
+
+			if ( strpos( $contents, 'setExpectedException' ) !== false ) {
+				$deprecatedUsageCheckFailures['setExpectedException'][] = $pathinfo['basename'];
+			}
+		}
+
+		foreach ( $deprecatedUsageCheckFailures as $key => $files ) {
+			$this->assertEquals(
+				[],
+				$files,
+				"\nFailed because listed file(s) contains a deprecated usage of: `$key`\n"
+			);
 		}
 	}
 

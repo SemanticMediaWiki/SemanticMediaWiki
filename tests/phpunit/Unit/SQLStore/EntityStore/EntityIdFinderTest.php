@@ -25,7 +25,7 @@ class EntityIdFinderTest extends \PHPUnit_Framework_TestCase {
 	private $idCacheManager;
 	private $conection;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )

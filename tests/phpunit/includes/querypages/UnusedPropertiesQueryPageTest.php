@@ -27,7 +27,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,7 +45,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

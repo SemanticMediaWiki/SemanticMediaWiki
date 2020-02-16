@@ -35,7 +35,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private static $handlers = [];
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->testEnvironment = new TestEnvironment();
 
@@ -122,7 +122,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ParserCache', $parserCache );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

@@ -18,7 +18,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 	private $namespaceExaminer;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )

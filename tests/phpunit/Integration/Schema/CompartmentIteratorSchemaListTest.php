@@ -18,7 +18,7 @@ class CompartmentIteratorSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 	private $schemaList;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->schemaList = new SchemaList( [] );

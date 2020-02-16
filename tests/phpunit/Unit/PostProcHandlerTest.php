@@ -20,7 +20,7 @@ class PostProcHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $parserOutput;
 	private $cache;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )

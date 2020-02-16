@@ -21,12 +21,12 @@ class EventListenerRegistryTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $eventDispatcherFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->eventDispatcherFactory = EventDispatcherFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 	}
 

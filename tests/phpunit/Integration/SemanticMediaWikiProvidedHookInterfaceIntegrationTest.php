@@ -21,7 +21,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 	private $applicationFactory;
 	private $spyLogger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
@@ -56,7 +56,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
 		$this->testEnvironment->tearDown();

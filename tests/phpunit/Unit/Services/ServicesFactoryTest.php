@@ -17,12 +17,12 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $ServicesFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->servicesFactory = ServicesFactory::getInstance();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->servicesFactory->clear();
 
 		parent::tearDown();

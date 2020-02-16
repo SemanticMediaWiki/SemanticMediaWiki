@@ -34,14 +34,14 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends MwDBaseUnitTestCas
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

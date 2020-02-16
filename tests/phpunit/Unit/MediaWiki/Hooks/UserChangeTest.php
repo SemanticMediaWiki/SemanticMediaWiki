@@ -20,7 +20,7 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $jobFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -36,7 +36,7 @@ class UserChangeTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

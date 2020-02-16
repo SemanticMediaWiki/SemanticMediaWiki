@@ -18,7 +18,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
 	private $languageContents;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->languageContents = $this->getMockBuilder( LanguageContents::class )
@@ -26,7 +26,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		Lang::clear();
 		parent::tearDown();
 	}

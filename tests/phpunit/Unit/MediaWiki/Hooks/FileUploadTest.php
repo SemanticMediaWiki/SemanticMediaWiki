@@ -20,7 +20,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment( [
@@ -52,7 +52,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

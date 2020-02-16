@@ -35,7 +35,7 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -45,7 +45,7 @@ class GeneralQueryDBIntegrationTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );

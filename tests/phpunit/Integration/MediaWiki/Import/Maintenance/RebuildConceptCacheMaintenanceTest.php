@@ -27,7 +27,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 	private $titleValidator;
 	private $pageCreator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -44,7 +44,7 @@ class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
 		}
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );

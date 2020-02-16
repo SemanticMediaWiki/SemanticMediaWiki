@@ -22,7 +22,7 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $logger;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -44,7 +44,7 @@ class DependencyValidatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

@@ -24,14 +24,14 @@ class RandomQueryResultOrderIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $fixturesProvider;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->fixturesProvider = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesProvider();
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner->purgeAllKnownFacts();

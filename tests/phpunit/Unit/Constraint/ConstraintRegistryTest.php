@@ -18,7 +18,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	private $constraintFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
 			->disableOriginalConstructor()

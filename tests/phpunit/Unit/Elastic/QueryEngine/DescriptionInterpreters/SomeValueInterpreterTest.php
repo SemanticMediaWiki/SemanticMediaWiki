@@ -26,7 +26,7 @@ class SomeValueInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $descriptionFactory;
 	private $dataItemFactory;
 
-	public function setUp() {
+	public function setUp() : void {
 
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();

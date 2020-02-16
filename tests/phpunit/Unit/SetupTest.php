@@ -20,7 +20,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $defaultConfig;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -61,7 +61,7 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

@@ -19,7 +19,7 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $outputFormatter;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,7 +29,7 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

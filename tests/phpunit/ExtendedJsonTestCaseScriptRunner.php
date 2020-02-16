@@ -32,7 +32,7 @@ abstract class ExtendedJsonTestCaseScriptRunner extends LightweightJsonTestCaseS
 	 */
 	protected $deletePagesOnTearDown = true;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();

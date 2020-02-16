@@ -17,7 +17,7 @@ class FormsFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	private $webRequest;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()

@@ -26,7 +26,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	private $applicationFactory;
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -47,7 +47,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->applicationFactory->clear();
 
 		parent::tearDown();

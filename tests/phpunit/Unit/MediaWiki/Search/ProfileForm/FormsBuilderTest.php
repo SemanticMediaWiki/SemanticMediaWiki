@@ -20,7 +20,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $formsFactory;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 

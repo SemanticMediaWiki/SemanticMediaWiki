@@ -19,7 +19,7 @@ class MagicWordsFinderTest extends \PHPUnit_Framework_TestCase {
 
 	private $magicWordsFinder;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->magicWordsFinder = ApplicationFactory::getInstance()->create( 'MagicWordsFinder' );

@@ -20,7 +20,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	private $skin;
 	private $title;
 
-	protected function setUp() {
+	protected function setUp() : void {
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

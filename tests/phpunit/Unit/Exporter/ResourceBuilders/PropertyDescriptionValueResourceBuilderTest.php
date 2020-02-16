@@ -24,7 +24,7 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,7 +33,7 @@ class PropertyDescriptionValueResourceBuilderTest extends \PHPUnit_Framework_Tes
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

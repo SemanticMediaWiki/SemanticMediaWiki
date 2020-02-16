@@ -26,7 +26,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableOptimizer;
 	private $setupFile;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();

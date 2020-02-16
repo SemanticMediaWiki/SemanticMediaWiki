@@ -20,7 +20,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -31,7 +31,7 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		$this->testEnvironment->tearDown();
  	}
 
