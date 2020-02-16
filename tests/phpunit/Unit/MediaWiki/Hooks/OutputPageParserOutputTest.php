@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput
@@ -22,6 +23,8 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $applicationFactory;
 	private $outputPage;

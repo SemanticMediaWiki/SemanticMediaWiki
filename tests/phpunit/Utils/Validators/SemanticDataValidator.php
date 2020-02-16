@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  *
@@ -19,6 +20,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class SemanticDataValidator extends \PHPUnit_Framework_Assert {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @var boolean

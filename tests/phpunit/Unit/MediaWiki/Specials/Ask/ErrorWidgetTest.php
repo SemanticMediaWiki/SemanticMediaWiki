@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Ask\ErrorWidget;
  * @author mwjames
  */
 class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testSessionFailure() {
 

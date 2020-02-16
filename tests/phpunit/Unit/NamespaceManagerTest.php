@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\NamespaceManager;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\NamespaceManager
@@ -14,6 +15,8 @@ use SMW\NamespaceManager;
  * @author mwjames
  */
 class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $varsEnvironment;
 	private $lang;

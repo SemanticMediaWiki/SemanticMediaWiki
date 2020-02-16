@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\Time;
 
 use DateTime;
 use SMW\DataValues\Time\Timezone;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Time\Timezone
@@ -15,6 +16,8 @@ use SMW\DataValues\Time\Timezone;
  * @author mwjames
  */
 class TimezoneTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

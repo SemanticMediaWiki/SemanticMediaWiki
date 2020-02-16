@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\SchemaContentFormatter;
 use SMW\Schema\Schema;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContentFormatter
@@ -15,6 +16,8 @@ use SMW\Schema\Schema;
  * @author mwjames
  */
 class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 

@@ -11,6 +11,7 @@ use SMW\Factbox\CachedFactbox;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\EntityCache;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox
@@ -23,6 +24,8 @@ use SMW\EntityCache;
  * @author mwjames
  */
 class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $memoryCache;

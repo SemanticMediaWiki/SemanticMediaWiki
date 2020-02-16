@@ -3,6 +3,7 @@
 namespace SMW\Tests\Factbox;
 
 use SMW\Factbox\AttachmentFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\AttachmentFormatter
@@ -14,6 +15,8 @@ use SMW\Factbox\AttachmentFormatter;
  * @author mwjames
  */
 class AttachmentFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 

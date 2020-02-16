@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\Query\ResultPrinters;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
@@ -16,6 +17,8 @@ use Title;
  * @author mwjames
  */
 class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	private $subjects = [];
 	private $pageCreator;

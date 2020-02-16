@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ErrorMsgTextValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ErrorMsgTextValue
@@ -15,6 +16,8 @@ use SMW\DataValues\ErrorMsgTextValue;
  * @author mwjames
  */
 class ErrorMsgTextValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use SMW\Tests\TestEnvironment;
 use SMWInfolink as Infolink;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWInfolink
@@ -15,6 +16,8 @@ use SMWInfolink as Infolink;
  * @author mwjames
  */
 class InfolinkTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

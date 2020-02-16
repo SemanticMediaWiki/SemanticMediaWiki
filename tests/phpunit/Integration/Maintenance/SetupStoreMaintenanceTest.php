@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\Maintenance;
 
 use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration
@@ -14,6 +15,8 @@ use SMW\Tests\MwDBaseUnitTestCase;
  * @author mwjames
  */
 class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

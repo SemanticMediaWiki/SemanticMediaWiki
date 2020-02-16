@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\Maintenance;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\TestEnvironment;
 use SMW\ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -16,6 +17,8 @@ use SMW\ApplicationFactory;
  * @author mwjames
  */
 class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;

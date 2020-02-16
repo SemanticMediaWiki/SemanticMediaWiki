@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
@@ -15,6 +16,8 @@ use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
  * @author mwjames
  */
 class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
@@ -47,7 +50,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternaltype(
+		$this->assertInternalType(
 			'array',
 			$instance->doQuery( $pageRequestOptions )
 		);

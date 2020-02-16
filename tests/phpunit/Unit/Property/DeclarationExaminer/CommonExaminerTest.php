@@ -6,6 +6,7 @@ use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\DataItemFactory;
 use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\CommonExaminer
@@ -17,6 +18,8 @@ use SMW\ProcessingErrorMsgHandler;
  * @author mwjames
  */
 class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $entityManager;

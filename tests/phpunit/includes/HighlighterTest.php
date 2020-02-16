@@ -3,6 +3,7 @@
 namespace SMW\Test;
 
 use SMW\Highlighter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Highlighter
@@ -14,6 +15,8 @@ use SMW\Highlighter;
  * @author mwjames
  */
 class HighlighterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider getTypeDataProvider

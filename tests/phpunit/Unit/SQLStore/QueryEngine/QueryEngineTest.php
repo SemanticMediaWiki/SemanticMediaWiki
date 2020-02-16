@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMWQuery as Query;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryEngine
@@ -15,6 +16,8 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryEngineTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $conditionBuilder;

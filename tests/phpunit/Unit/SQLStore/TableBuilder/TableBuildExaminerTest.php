@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\Tests\TestEnvironment;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableBuildExaminer
@@ -15,6 +16,8 @@ use SMW\SQLStore\TableBuilder\TableBuildExaminer;
  * @author mwjames
  */
 class TableBuildExaminerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $hashField;

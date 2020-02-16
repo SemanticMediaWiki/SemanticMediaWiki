@@ -4,6 +4,7 @@ namespace SMW\Tests\Query;
 
 use SMW\DIWikiPage;
 use SMW\Query\ScoreSet;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ScoreSet
@@ -15,6 +16,8 @@ use SMW\Query\ScoreSet;
  * @author mwjames
  */
 class ScoreSetTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

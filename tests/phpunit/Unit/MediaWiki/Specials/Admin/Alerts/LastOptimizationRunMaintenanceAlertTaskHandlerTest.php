@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskH
  * @author mwjames
  */
 class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $setupFile;
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Admin;
 
 use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Admin\SettingsInfoProvider
@@ -15,6 +16,8 @@ use SMW\Elastic\Connection\DummyClient;
  * @author mwjames
  */
 class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $outputFormatter;
 	private $webRequest;

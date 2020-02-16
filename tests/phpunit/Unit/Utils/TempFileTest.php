@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\TempFile;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\TempFile
@@ -14,6 +15,8 @@ use SMW\Utils\TempFile;
  * @author mwjames
  */
 class TempFileTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGenerate() {
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\Field
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
  * @author mwjames
  */
 class FieldTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testTooltip() {
 

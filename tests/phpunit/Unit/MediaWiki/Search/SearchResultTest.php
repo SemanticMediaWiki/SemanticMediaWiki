@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResult;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResult
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\SearchResult;
  * @author mwjames
  */
 class SearchResultTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGetSectionTitle_WithFragment() {
 

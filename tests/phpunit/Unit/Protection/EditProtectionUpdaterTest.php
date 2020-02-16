@@ -5,6 +5,7 @@ namespace SMW\Tests\Protection;
 use SMW\DataItemFactory;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Protection\EditProtectionUpdater
@@ -16,6 +17,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EditProtectionUpdaterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataItemFactory;
 	private $wikiPage;

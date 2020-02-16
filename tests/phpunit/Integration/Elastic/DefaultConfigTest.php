@@ -59,7 +59,7 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 			}
 
 			foreach ( $configs as $k => $v ) {
-				yield $key => [ $key, $k, $v ];
+				yield "$key-$k" => [ $key, $k, $v ];
 			}
 		}
 	}

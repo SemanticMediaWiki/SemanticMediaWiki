@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\PendingTasks;
 
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
  * @author mwjames
  */
 class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

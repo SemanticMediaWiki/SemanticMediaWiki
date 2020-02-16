@@ -9,6 +9,7 @@ use SMW\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\AskParserFunction
@@ -20,6 +21,8 @@ use Title;
  * @author mwjames
  */
 class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -522,7 +525,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 4,
 				'propertyKeys'   => [ '_ASKST', '_ASKSI', '_ASKDE', '_ASKFO' ],
-				'propertyValues' => [ 'feed', 1, 1, "[[:$fileNS:Fooo]]" ]
+				'propertyValues' => [ 'feed', 1, 0, "[[:$fileNS:Fooo]]" ]
 			],
 			[
 				'smwgQueryProfiler' => true

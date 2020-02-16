@@ -8,6 +8,7 @@ use SMW\Store;
 use SMW\StoreAware;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QuerySourceFactory
@@ -19,6 +20,8 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 

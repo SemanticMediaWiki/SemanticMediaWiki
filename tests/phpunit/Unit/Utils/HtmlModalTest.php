@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlModal;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\HtmlModal
@@ -14,6 +15,8 @@ use SMW\Utils\HtmlModal;
  * @author mwjames
  */
 class HtmlModalTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGetModules() {
 

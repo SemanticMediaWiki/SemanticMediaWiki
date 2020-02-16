@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\Deferred;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Deferred
@@ -14,6 +15,8 @@ use SMW\Query\Deferred;
  * @author mwjames
  */
 class DeferredTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testRegisterResourceModules() {
 

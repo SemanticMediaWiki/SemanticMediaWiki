@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\LanguageCodeValue;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\LanguageCodeValue
@@ -14,6 +15,8 @@ use SMW\DataValues\LanguageCodeValue;
  * @author mwjames
  */
 class LanguageCodeValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

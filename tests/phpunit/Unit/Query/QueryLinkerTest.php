@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\QueryLinker;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QueryLinker
@@ -14,6 +15,8 @@ use SMW\Query\QueryLinker;
  * @author mwjames
  */
 class QueryLinkerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

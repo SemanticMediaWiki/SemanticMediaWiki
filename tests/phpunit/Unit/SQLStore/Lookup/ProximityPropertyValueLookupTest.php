@@ -7,6 +7,7 @@ use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\MediaWiki\Connection\Query;
 use FakeResultWrapper;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ProximityPropertyValueLookup
@@ -18,6 +19,8 @@ use FakeResultWrapper;
  * @author mwjames
  */
 class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

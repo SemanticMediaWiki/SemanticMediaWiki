@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\FormsBuilder
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $stringValidator;
 	private $webRequest;

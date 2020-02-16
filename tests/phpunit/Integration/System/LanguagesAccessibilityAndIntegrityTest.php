@@ -3,6 +3,7 @@
 namespace SMW\Tests\System;
 
 use SMW\Lang\Lang;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
@@ -17,6 +18,8 @@ use SMW\Lang\Lang;
  * @author mwjames
  */
 class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider languageCodeProvider

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
  * @author mwjames
  */
 class OpenFormTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $webRequest;
 

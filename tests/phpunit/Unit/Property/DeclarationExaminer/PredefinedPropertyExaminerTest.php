@@ -5,6 +5,7 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer
@@ -16,6 +17,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PredefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $semanticData;

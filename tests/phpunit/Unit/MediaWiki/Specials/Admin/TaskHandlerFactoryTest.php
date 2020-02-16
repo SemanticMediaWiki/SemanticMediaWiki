@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerFactory
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $htmlFormRenderer;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
  * @author mwjames
  */
 class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $namespaceInfo;
 

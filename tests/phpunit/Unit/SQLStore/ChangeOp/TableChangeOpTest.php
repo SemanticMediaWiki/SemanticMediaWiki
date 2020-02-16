@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\SQLStore\ChangeOp\TableChangeOp;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\TableChangeOp
@@ -14,6 +15,8 @@ use SMW\SQLStore\ChangeOp\TableChangeOp;
  * @author mwjames
  */
 class TableChangeOpTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

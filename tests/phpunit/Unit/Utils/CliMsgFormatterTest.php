@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\CliMsgFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\CliMsgFormatter
@@ -14,6 +15,8 @@ use SMW\Utils\CliMsgFormatter;
  * @author mwjames
  */
 class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testHead() {
 

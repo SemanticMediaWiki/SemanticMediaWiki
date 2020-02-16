@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\DownloadLinksWidget
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
  * @author mwjames
  */
 class DownloadLinksWidgetTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testOnNull() {
 

@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use ResourceLoader;
 use ResourceLoaderContext;
 use ResourceLoaderModule;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -16,6 +17,8 @@ use ResourceLoaderModule;
  * @author mwjames
  */
 class ResourcesAccessibilityTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider moduleDataProvider

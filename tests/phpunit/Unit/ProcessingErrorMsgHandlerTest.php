@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
@@ -16,6 +17,8 @@ use SMW\ProcessingErrorMsgHandler;
  * @author mwjames
  */
 class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 	private $testEnvironment;

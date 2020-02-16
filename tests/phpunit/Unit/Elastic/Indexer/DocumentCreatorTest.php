@@ -19,6 +19,8 @@ use SMW\Tests\TestEnvironment;
  */
 class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $store;
 
 	protected function setUp() : void {

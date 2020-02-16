@@ -7,6 +7,7 @@ use SMW\DataItemFactory;
 use SMW\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ChangePropagationExaminer
@@ -18,6 +19,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $store;

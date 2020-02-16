@@ -6,6 +6,7 @@ use SMW\NamespaceManager;
 use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\Tests\Utils\MwHooksHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -16,6 +17,8 @@ use SMW\Tests\Utils\MwHooksHandler;
  * @author mwjames
  */
 class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $mwHooksHandler;
 

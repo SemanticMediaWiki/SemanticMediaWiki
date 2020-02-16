@@ -5,6 +5,7 @@ namespace SMW\Test;
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPage
@@ -16,6 +17,8 @@ use Title;
  * @author mwjames
  */
 class QueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * Helper method that returns a QueryPage object

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Exception;
 
 use SMW\Exception\JSONFileParseException;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exception\JSONFileParseException
@@ -14,6 +15,8 @@ use SMW\Exception\JSONFileParseException;
  * @author mwjames
  */
 class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

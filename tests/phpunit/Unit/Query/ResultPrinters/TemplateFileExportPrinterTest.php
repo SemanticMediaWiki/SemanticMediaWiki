@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\TemplateFileExportPrinter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\TemplateFileExportPrinter
@@ -14,6 +15,8 @@ use SMW\Query\ResultPrinters\TemplateFileExportPrinter;
  * @author mwjames
  */
 class TemplateFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

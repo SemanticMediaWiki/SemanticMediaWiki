@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\Time;
 
 use SMW\DataValues\Time\Components;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Time\Components
@@ -14,6 +15,8 @@ use SMW\DataValues\Time\Components;
  * @author mwjames
  */
 class ComponentsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testPublicProperties() {
 

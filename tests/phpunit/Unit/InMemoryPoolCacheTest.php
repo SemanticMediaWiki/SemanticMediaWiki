@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\InMemoryPoolCache;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\InMemoryPoolCache
@@ -14,6 +15,8 @@ use SMW\InMemoryPoolCache;
  * @author mwjames
  */
 class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	protected function tearDown() : void {
 		InMemoryPoolCache::getInstance()->clear();

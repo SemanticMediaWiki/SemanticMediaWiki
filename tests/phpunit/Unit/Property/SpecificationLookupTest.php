@@ -7,6 +7,7 @@ use SMW\Property\SpecificationLookup;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\SpecificationLookup
@@ -18,6 +19,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $monolingualTextLookup;
 	private $dataItemFactory;

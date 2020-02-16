@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\CsvFileExportPrinter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\CsvFileExportPrinter
@@ -14,6 +15,8 @@ use SMW\Query\ResultPrinters\CsvFileExportPrinter;
  * @author mwjames
  */
 class CsvFileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

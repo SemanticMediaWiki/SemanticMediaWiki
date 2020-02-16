@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
@@ -22,6 +23,8 @@ use Title;
  * @author mwjames
  */
 class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider baseTemplateToolboxDataProvider

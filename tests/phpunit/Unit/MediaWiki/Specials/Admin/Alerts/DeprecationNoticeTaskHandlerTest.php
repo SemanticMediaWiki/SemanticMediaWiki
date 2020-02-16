@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $outputFormatter;

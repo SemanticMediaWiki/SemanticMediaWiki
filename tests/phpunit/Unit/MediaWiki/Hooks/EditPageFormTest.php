@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\EditPageForm;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
@@ -15,6 +16,8 @@ use Title;
  * @author mwjames
  */
 class EditPageFormTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $namespaceExaminer;
 

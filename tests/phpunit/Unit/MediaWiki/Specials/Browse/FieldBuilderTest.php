@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\FieldBuilder
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Browse\FieldBuilder;
  * @author mwjames
  */
 class FieldBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCreateQueryForm() {
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\Processor;
 
 use SMW\Query\Processor\DefaultParamDefinition;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Processor\DefaultParamDefinition
@@ -14,6 +15,8 @@ use SMW\Query\Processor\DefaultParamDefinition;
  * @author mwjames
  */
 class DefaultParamDefinitionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

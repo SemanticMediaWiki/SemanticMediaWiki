@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\HashBuilder
@@ -19,6 +20,8 @@ use Title;
  * @author mwjames
  */
 class HashBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider segmentProvider

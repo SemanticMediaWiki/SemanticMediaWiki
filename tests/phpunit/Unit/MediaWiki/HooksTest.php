@@ -7,6 +7,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks
@@ -19,6 +20,8 @@ use Title;
  * @author mwjames
  */
 class HooksTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $parser;
 	private $title;

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlVTabs;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\HtmlVTabs
@@ -14,6 +15,8 @@ use SMW\Utils\HtmlVTabs;
  * @author mwjames
  */
 class HtmlVTabsTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	protected function setUp() : void {
 		HtmlVTabs::init();

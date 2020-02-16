@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\TypesRegistry;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\TypesRegistry
@@ -14,6 +15,8 @@ use SMW\TypesRegistry;
  * @author mwjames
  */
 class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testGetDataTypeList() {
 

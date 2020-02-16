@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableInfoFetcher
@@ -16,6 +17,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class PropertyTableInfoFetcherTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $propertyTypeFinder;
 

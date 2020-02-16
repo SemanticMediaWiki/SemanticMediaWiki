@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\ParserFunctionFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctionFactory
@@ -14,6 +15,8 @@ use SMW\ParserFunctionFactory;
  * @author mwjames
  */
 class ParserFunctionFactoryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $parserFactory;
 

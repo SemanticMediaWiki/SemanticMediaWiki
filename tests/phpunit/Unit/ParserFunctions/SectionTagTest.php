@@ -3,6 +3,7 @@
 namespace SMW\Tests\ParserFunctions;
 
 use SMW\ParserFunctions\SectionTag;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SectionTag
@@ -14,6 +15,8 @@ use SMW\ParserFunctions\SectionTag;
  * @author mwjames
  */
 class SectionTagTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $frame;
 	private $parser;

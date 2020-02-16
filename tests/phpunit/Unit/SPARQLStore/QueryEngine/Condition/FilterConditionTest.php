@@ -3,6 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\FilterCondition
@@ -14,6 +15,8 @@ use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
  * @author mwjames
  */
 class FilterConditionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

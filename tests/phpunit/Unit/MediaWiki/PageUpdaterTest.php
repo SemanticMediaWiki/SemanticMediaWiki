@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageUpdater;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\PageUpdater
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $connection;
 	private $spyLogger;

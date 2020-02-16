@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\SortForm
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
  * @author mwjames
  */
 class SortFormTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $webRequest;
 

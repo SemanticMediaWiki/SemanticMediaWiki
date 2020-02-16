@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableSchemaManager
@@ -15,6 +16,8 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  * @author mwjames
  */
 class TableSchemaManagerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $connection;

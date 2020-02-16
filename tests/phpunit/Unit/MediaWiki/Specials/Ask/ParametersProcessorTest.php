@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ParametersProcessor
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
  * @author mwjames
  */
 class ParametersProcessorTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testEmpty() {
 

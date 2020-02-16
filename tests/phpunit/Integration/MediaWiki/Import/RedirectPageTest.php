@@ -7,6 +7,7 @@ use SMW\DIWikiPage;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
@@ -21,6 +22,8 @@ use Title;
  * @author mwjames
  */
 class RedirectPageTest extends MwDBaseUnitTestCase {
+
+	use PHPUnitCompat;
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

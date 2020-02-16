@@ -6,6 +6,7 @@ use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\AllowsPatternValue
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

@@ -5,6 +5,7 @@ namespace SMW\Test;
 use SMW\DataItemFactory;
 use SMW\Settings;
 use SMW\WantedPropertiesQueryPage;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\WantedPropertiesQueryPage
@@ -16,6 +17,8 @@ use SMW\WantedPropertiesQueryPage;
  * @author mwjames
  */
 class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $store;
 	private $skin;

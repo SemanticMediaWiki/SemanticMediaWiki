@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataTypeRegistry
@@ -15,6 +16,8 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $dataTypeRegistry;
 

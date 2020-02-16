@@ -8,6 +8,7 @@ use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\ShowParserFunction
@@ -19,6 +20,8 @@ use Title;
  * @author mwjames
  */
 class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -68,7 +71,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getQueryResult' )
 			->will( $this->returnValue( $queryResult ) );
 
-		$this->testEnvironment->registerObject( 'Store', $store );	
+		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
 	protected function tearDown() : void {
@@ -214,7 +217,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			'output' => 'class="smwtticon warning"', // lazy content check for the error
 			'propertyCount'  => 4,
 			'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
-			'propertyValues' => [ 'table', 0, 1, '[[:]]' ]
+			'propertyValues' => [ 'table', 0, 1, '[[::]]' ]
 		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -259,7 +262,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'output' => '',
 				'propertyCount'  => 4,
 				'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
-				'propertyValues' => [ 'list', 0, 1, '[[:Foo]]' ]
+				'propertyValues' => [ 'plainlist', 0, 1, '[[:Foo-show]]' ]
 			]
 		];
 
@@ -278,7 +281,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'output' => 'no results',
 				'propertyCount'  => 4,
 				'propertyKeys'   => [ '_ASKFO', '_ASKDE', '_ASKSI', '_ASKST' ],
-				'propertyValues' => [ 'list', 0, 1, '[[:Help:Bar]]' ]
+				'propertyValues' => [ 'plainlist', 0, 1, '[[:Help:Bar]]' ]
 			]
 		];
 

@@ -5,6 +5,7 @@ namespace SMW\Test;
 use Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the MessageFormatter class
@@ -25,6 +26,8 @@ use SMW\MessageFormatter;
  * @group SMWExtension
  */
 class MessageFormatterTest extends SemanticMediaWikiTestCase {
+
+	use PHPUnitCompat;
 
 	/**
 	 * Returns the name of the class to be tested

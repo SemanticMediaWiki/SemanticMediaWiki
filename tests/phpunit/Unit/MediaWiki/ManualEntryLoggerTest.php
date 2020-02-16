@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\ManualEntryLogger;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\ManualEntryLogger
@@ -14,6 +15,8 @@ use SMW\MediaWiki\ManualEntryLogger;
  * @author mwjames
  */
 class ManualEntryLoggerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;

@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials\Browse;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\GroupFormatter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\GroupFormatter
@@ -16,6 +17,8 @@ use SMW\MediaWiki\Specials\Browse\GroupFormatter;
  * @author mwjames
  */
 class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $propertySpecificationLookup;
 	private $schemaFinder;

@@ -8,6 +8,7 @@ use SMW\Importer\Importer;
 use SMW\Importer\JsoncontentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\Importer
@@ -19,6 +20,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ImporterTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $testEnvironment;

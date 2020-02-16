@@ -7,6 +7,7 @@ use SMW\ApplicationFactory;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DeclareParserFunction
@@ -18,6 +19,8 @@ use Title;
  * @author mwjames
  */
 class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;

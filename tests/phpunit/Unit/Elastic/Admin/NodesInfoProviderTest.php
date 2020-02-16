@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Admin;
 
 use SMW\Elastic\Admin\NodesInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Admin\NodesInfoProvider
@@ -15,6 +16,8 @@ use SMW\Elastic\Connection\DummyClient;
  * @author mwjames
  */
 class NodesInfoProviderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $outputFormatter;
 	private $webRequest;

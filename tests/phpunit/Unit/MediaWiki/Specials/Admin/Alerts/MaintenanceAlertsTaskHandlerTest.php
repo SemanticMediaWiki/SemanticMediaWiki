@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler
@@ -14,6 +15,8 @@ use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
  * @author mwjames
  */
 class MaintenanceAlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 

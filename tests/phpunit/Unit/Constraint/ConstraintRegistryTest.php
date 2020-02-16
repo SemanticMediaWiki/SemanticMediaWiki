@@ -4,6 +4,7 @@ namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry
@@ -15,6 +16,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $constraintFactory;
 
@@ -39,7 +42,7 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->constraintFactory
 		);
 
-		$this->assertInternaltype(
+		$this->assertInternalType(
 			'array',
 			$instance->getConstraintKeys()
 		);

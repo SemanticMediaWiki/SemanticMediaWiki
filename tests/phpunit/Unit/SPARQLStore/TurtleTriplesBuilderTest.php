@@ -7,6 +7,7 @@ use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder
@@ -18,6 +19,8 @@ use SMWExporter as Exporter;
  * @author mwjames
  */
 class TurtleTriplesBuilderTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $repositoryRedirectLookup;
 

@@ -6,6 +6,7 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -16,6 +17,8 @@ use Title;
  * @author mwjames
  */
 class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 	private $testEnvironment;

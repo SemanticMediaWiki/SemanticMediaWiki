@@ -6,6 +6,7 @@ use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\DataItemFactory;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer
@@ -17,6 +18,8 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
+
+	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $semanticData;
