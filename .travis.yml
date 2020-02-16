@@ -51,6 +51,10 @@ matrix:
     #- env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
+    # Temporary allow failure due to "... signatures couldn't be verified ... public key is not available"
+    - env: DB=mysql; MW=REL1_31; SESAME=2.8.7; PHPUNIT=6.5.*
+    - env: DB=mysql; MW=REL1_31; VIRTUOSO=6.1; PHPUNIT=6.5.*
+    - env: DB=mysql; MW=REL1_32; FUSEKI=2.4.0; PHPUNIT=6.5.*
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
