@@ -61,9 +61,9 @@ define( 'SMW_FACTBOX_DISPLAY_ATTACHMENT', 128 );
 /**@{
  * Constants for regulating equality reasoning
  */
-define( 'SMW_EQ_NONE', 0 );
-define( 'SMW_EQ_SOME', 1 );
-define( 'SMW_EQ_FULL', 2 );
+define( 'SMW_EQ_NONE', 1 );
+define( 'SMW_EQ_SOME', 2 );
+define( 'SMW_EQ_FULL', 4 );
 /**@}*/
 
 /**@{

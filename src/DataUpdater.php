@@ -405,7 +405,7 @@ class DataUpdater {
 			$this->canCreateUpdateJob
 		);
 
-		$semanticData = $this->checkOnRequiredRedirectUpdate(
+		$semanticData = $this->checkForPossibleRedirectPreUpdate(
 			$this->semanticData
 		);
 
@@ -424,7 +424,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function checkOnRequiredRedirectUpdate( SemanticData $semanticData ) {
+	private function checkForPossibleRedirectPreUpdate( SemanticData $semanticData ) {
 
 		// Check only during online-mode so that when a user operates Special:MovePage
 		// or #redirect the same process is applied
@@ -436,29 +436,36 @@ class DataUpdater {
 			new DIProperty( '_REDI' )
 		);
 
-		if ( $redirects !== [] && !$semanticData->getSubject()->equals( end( $redirects ) ) ) {
-			return $this->doUpdateUnknownRedirectTarget( $semanticData, end( $redirects ) );
+		$target = end( $redirects );
+
+		if ( $target === false || $semanticData->getSubject()->equals( $target ) ) {
+			return $semanticData;
 		}
 
-		return $semanticData;
+		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function doUpdateUnknownRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
+	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
 
-		// Only keep the reference to safeguard that even in case of a text keeping
-		// its annotations there are removed from the Store. A redirect is not
-		// expected to contain any other annotation other than that of the redirect
-		// target
 		$subject = $semanticData->getSubject();
+
+		// The general rule is that a redirect page is not expected to contain
+		// any other annotation other than that of the redirect target.
+
+		// #4336
+		// An exception to this rule is when equality support is disabled and
+		// `smwgAnnotationSupportForRedirects` was explicitly set to allow
+		// annotations to remain on the redirect page.
+
+		// Clear the data and only keep the reference to the traget, using this as
+		// safeguard so that even when text contains annotations there are removed
+		// from the `Store`.
 		$semanticData = new SemanticData( $subject );
+		$semanticData->addPropertyObjectValue( new DIProperty( '_REDI' ), $target );
 
-		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_REDI' ),
-			$target
-		);
-
+		// #895
 		// Force a manual changeTitle before the general update otherwise
-		// #redirect can cause an inconsistent data container as observed in #895
+		// #redirect can cause an inconsistent data container
 		$source = $subject->getTitle();
 		$target = $target->getTitle();
 

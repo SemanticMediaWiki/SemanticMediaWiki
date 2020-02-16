@@ -8,6 +8,7 @@ use Onoi\MessageReporter\NullMessageReporter;
 use SMW\MediaWiki\Collator;
 use SMW\ApplicationFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Site;
@@ -133,7 +134,27 @@ class SQLStoreFactory {
 	 * @return EntityIdManager
 	 */
 	public function newEntityIdManager() {
-		return new EntityIdManager( $this->store, $this );
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$entityIdManager = new EntityIdManager(
+			$this->store,
+			$this
+		);
+
+		$entityIdManager->setEqualitySupport(
+			$settings->get( 'smwgQEqualitySupport' )
+		);
+
+		$callableChangeListener = $this->newCallableChangeListener(
+			[
+				'smwgQEqualitySupport' => [ $entityIdManager, 'applyChangesFromListener' ]
+			]
+		);
+
+		$settings->registerChangeListener( $callableChangeListener );
+
+		return $entityIdManager;
 	}
 
 	/**
@@ -738,9 +759,17 @@ class SQLStoreFactory {
 			$this->newPropertyStatisticsStore()
 		);
 
-		$redirectUpdater->setEqualitySupportFlag(
+		$redirectUpdater->setEqualitySupport(
 			$settings->get( 'smwgQEqualitySupport' )
 		);
+
+		$callableChangeListener = $this->newCallableChangeListener(
+			[
+				'smwgQEqualitySupport' => [ $redirectUpdater, 'applyChangesFromListener' ]
+			]
+		);
+
+		$settings->registerChangeListener( $callableChangeListener );
 
 		return $redirectUpdater;
 	}
@@ -819,6 +848,8 @@ class SQLStoreFactory {
 	 */
 	public function newRedirectStore() {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
 		$redirectStore = new RedirectStore(
 			$this->store
 		);
@@ -826,6 +857,18 @@ class SQLStoreFactory {
 		$redirectStore->setCommandLineMode(
 			Site::isCommandLineMode()
 		);
+
+		$redirectStore->setEqualitySupport(
+			$settings->get( 'smwgQEqualitySupport' )
+		);
+
+		$callableChangeListener = $this->newCallableChangeListener(
+			[
+				'smwgQEqualitySupport' => [ $redirectStore, 'applyChangesFromListener' ]
+			]
+		);
+
+		$settings->registerChangeListener( $callableChangeListener );
 
 		return $redirectStore;
 	}
@@ -1123,4 +1166,14 @@ class SQLStoreFactory {
 		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
+	private function newCallableChangeListener( array $args ) : CallableChangeListener {
+
+		$callableChangeListener = new CallableChangeListener( $args );
+
+		$callableChangeListener->setLogger(
+			$this->getLogger()
+		);
+
+		return $callableChangeListener;
+	}
 }

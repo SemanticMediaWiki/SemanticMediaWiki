@@ -31,6 +31,7 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
+use SMW\SQLStore\RedirectStore;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
@@ -412,13 +413,15 @@ class ServicesFactory {
 	 */
 	public function newDataUpdater( SemanticData $semanticData ) {
 
+		$settings = $this->getSettings();
+
 		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
 			$this->getStore(),
 			$this->newSerializerFactory()
 		);
 
 		$changePropagationNotifier->setPropertyList(
-			$this->getSettings()->get( 'smwgChangePropagationWatchlist' )
+			$settings->get( 'smwgChangePropagationWatchlist' )
 		);
 
 		$changePropagationNotifier->isCommandLineMode(

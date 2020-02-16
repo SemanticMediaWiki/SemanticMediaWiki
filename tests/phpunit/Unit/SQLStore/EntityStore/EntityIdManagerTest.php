@@ -286,6 +286,8 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			$this->factory
 		);
 
+		$instance->setEqualitySupport( SMW_EQ_SOME );
+
 		$sortkey = $parameters['sortkey'];
 
 		$result  = $instance->makeSMWPageID(

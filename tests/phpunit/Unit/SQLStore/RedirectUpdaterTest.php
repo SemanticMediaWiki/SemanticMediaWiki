@@ -123,6 +123,8 @@ class RedirectUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
+		$instance->setEqualitySupport( SMW_EQ_NONE );
+
 		$instance->updateRedirects(
 			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )
 		);

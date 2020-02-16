@@ -21,6 +21,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $factory;
 	private $idTable;
+	private $redirectUpdater;
 
 	protected function setUp() : void {
 
@@ -60,7 +61,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
+		$this->redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +119,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->factory->expects( $this->any() )
 			->method( 'newRedirectUpdater' )
-			->will( $this->returnValue( $redirectUpdater ) );
+			->will( $this->returnValue( $this->redirectUpdater ) );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsStore' )
@@ -272,6 +273,10 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDoDataUpdateForMainNamespaceWithRedirect() {
 
+		$this->redirectUpdater->expects( $this->any() )
+			->method( 'shouldCleanUpAnnotationsAndRedirects' )
+			->will( $this->returnValue( true ) );
+
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -320,6 +325,10 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAtomicTransactionOnDataUpdate() {
+
+		$this->redirectUpdater->expects( $this->any() )
+			->method( 'shouldCleanUpAnnotationsAndRedirects' )
+			->will( $this->returnValue( true ) );
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
