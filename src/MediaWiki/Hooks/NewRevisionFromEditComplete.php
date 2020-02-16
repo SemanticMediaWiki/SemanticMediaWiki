@@ -12,6 +12,8 @@ use SMW\Schema\Schema;
 use Title;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
+use SMW\Schema\SchemaFactory;
 
 /**
  * Hook: NewRevisionFromEditComplete called when a revision was inserted
@@ -36,11 +38,6 @@ class NewRevisionFromEditComplete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @var EditInfo
 	 */
 	private $editInfo;
@@ -51,29 +48,42 @@ class NewRevisionFromEditComplete implements HookListener {
 	private $pageInfoProvider;
 
 	/**
+	 * @var PropertyAnnotatorFactory
+	 */
+	private $propertyAnnotatorFactory;
+
+	/**
+	 * @var SchemaFactory
+	 */
+	private $schemaFactory;
+
+	/**
 	 * @since 1.9
 	 *
-	 * @param Title $title
 	 * @param EditInfo $editInfo
 	 * @param PageInfoProvider $pageInfoProvider
+	 * @param PropertyAnnotatorFactory $propertyAnnotatorFactory
+	 * @param SchemaFactory $schemaFactory
 	 */
-	public function __construct( Title $title, EditInfo $editInfo, PageInfoProvider $pageInfoProvider ) {
-		$this->title = $title;
+	public function __construct( EditInfo $editInfo, PageInfoProvider $pageInfoProvider, PropertyAnnotatorFactory $propertyAnnotatorFactory, SchemaFactory $schemaFactory ) {
 		$this->editInfo = $editInfo;
 		$this->pageInfoProvider = $pageInfoProvider;
+		$this->propertyAnnotatorFactory = $propertyAnnotatorFactory;
+		$this->schemaFactory = $schemaFactory;
 	}
 
 	/**
 	 * @since 1.9
 	 *
+	 * @param Title $title
+	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process( Title $title ) {
 
 		$this->editInfo->fetchEditInfo();
 
 		$parserOutput = $this->editInfo->getOutput();
-		$schema = null;
 
 		if ( !$parserOutput instanceof ParserOutput ) {
 			return true;
@@ -82,39 +92,25 @@ class NewRevisionFromEditComplete implements HookListener {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
-			$this->title,
+			$title,
 			$parserOutput
 		);
 
-		if ( $this->title->getNamespace() === SMW_NS_SCHEMA ) {
-			$schemaFactory = $applicationFactory->getSchemaFactory();
-
-			try {
-				$schema = $schemaFactory->newSchema(
-					$this->title->getDBKey(),
-					$this->pageInfoProvider->getNativeData()
-				);
-			} catch( \Exception $e ) {
-				// Do nothing!
-			}
-		}
-
 		$this->addPredefinedPropertyAnnotation(
-			$applicationFactory,
 			$parserData,
-			$schema
+			$this->tryCreateSchema( $title )
 		);
 
 		$context = [
-			'context' => 'NewRevisionFromEditComplete',
-			'title' => $this->title
+			'context' => NewRevisionFromEditComplete::class,
+			'title' => $title
 		];
 
 		$this->eventDispatcher->dispatch( 'InvalidateResultCache', $context );
 
 		// If the concept was altered make sure to delete the cache
-		if ( $this->title->getNamespace() === SMW_NS_CONCEPT ) {
-			$applicationFactory->getStore()->deleteConceptCache( $this->title );
+		if ( $title->getNamespace() === SMW_NS_CONCEPT ) {
+			$applicationFactory->getStore()->deleteConceptCache( $title );
 		}
 
 		$parserData->copyToParserOutput();
@@ -124,20 +120,36 @@ class NewRevisionFromEditComplete implements HookListener {
 		return true;
 	}
 
-	private function addPredefinedPropertyAnnotation( ApplicationFactory $applicationFactory, ParserData $parserData, Schema $schema = null ) {
+	private function tryCreateSchema( $title ) {
 
-		$propertyAnnotatorFactory = $applicationFactory->getPropertyAnnotatorFactory();
+		if ( $title->getNamespace() !== SMW_NS_SCHEMA ) {
+			return null;
+		}
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
+		try {
+			$schema = $this->schemaFactory->newSchema(
+				$title->getDBKey(),
+				$this->pageInfoProvider->getNativeData()
+			);
+		} catch( \Exception $e ) {
+			return null;
+		}
+
+		return $schema;
+	}
+
+	private function addPredefinedPropertyAnnotation( ParserData $parserData, Schema $schema = null ) {
+
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$parserData->getSemanticData()
 		);
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newPredefinedPropertyAnnotator(
 			$propertyAnnotator,
 			$this->pageInfoProvider
 		);
 
-		$propertyAnnotator = $propertyAnnotatorFactory->newSchemaPropertyAnnotator(
+		$propertyAnnotator = $this->propertyAnnotatorFactory->newSchemaPropertyAnnotator(
 			$propertyAnnotator,
 			$schema
 		);

@@ -627,12 +627,4 @@ class ServicesFactory {
 		return $this->create( 'PostProcHandler', $parserOutput );
 	}
 
-	public function getSchemaFactory(): SchemaFactory {
-		return $this->singleton( 'SchemaFactory' );
-	}
-
-	public function getPropertyAnnotatorFactory(): AnnotatorFactory {
-		return $this->singleton( 'PropertyAnnotatorFactory' );
-	}
-
 }
