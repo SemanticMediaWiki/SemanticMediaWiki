@@ -265,7 +265,11 @@ class SemanticDataLookup {
 			$result[$sid]["$i#$hash"] = $data[1];
 		}
 
-		$entityIdManager->loadSequenceMap( $list );
+		// Only try to load a sequence map when it is kown that results
+		// are available for the list of selected IDs
+		if ( $result !== [] ) {
+			$entityIdManager->loadSequenceMap( $list );
+		}
 
 		return $result;
 	}

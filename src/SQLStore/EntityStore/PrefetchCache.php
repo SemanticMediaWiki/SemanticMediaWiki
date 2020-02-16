@@ -36,6 +36,11 @@ class PrefetchCache {
 	private $cache = [];
 
 	/**
+	 * @var []
+	 */
+	private $lookupCache = [];
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param SQLStore $store
@@ -62,6 +67,7 @@ class PrefetchCache {
 	 */
 	public function clear() {
 		$this->cache = [];
+		$this->lookupCache = [];
 	}
 
 	/**
@@ -77,7 +83,14 @@ class PrefetchCache {
 		// Use the .dot notation to distingish it from other prrintouts that
 		// use the same property
 		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
-			$key .= $requestOptions->isChain;
+			$key .= '#' . $requestOptions->isChain;
+			$key .= '#' . $property->isInverse();
+		}
+
+		// T:P0467, requires an extra identification to ensure the test passes
+		// when the lookup is part of the firstChain request
+		if ( $requestOptions->isFirstChain ?? false ) {
+			$key .= '#' . 'isFirstChain';
 		}
 
 		return $key;
@@ -103,6 +116,15 @@ class PrefetchCache {
 		}
 
 		$requestOptions->setOption( RequestOptions::PREFETCH_FINGERPRINT, md5( $fingerprint ) );
+		$key = $this->makeCacheKey( $property, $requestOptions );
+
+		// Use an aggressive cache strategy to avoid repetitive queries especially
+		// when called as part of a printrequest chain
+		$lookupKey = md5( $key . '#' . $fingerprint );
+
+		if ( isset( $this->lookupCache[$lookupKey] ) ) {
+			return;
+		}
 
 		$result = $this->prefetchItemLookup->getPropertyValues(
 			$subjects,
@@ -110,8 +132,8 @@ class PrefetchCache {
 			$requestOptions
 		);
 
-		$key = $this->makeCacheKey( $property, $requestOptions );
 		$this->cache[$key] = $result;
+		$this->lookupCache[$lookupKey] = true;
 	}
 
 	/**
