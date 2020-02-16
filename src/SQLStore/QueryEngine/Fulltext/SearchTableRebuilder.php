@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Database;
 use SMWDataItem as DataItem;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -95,6 +96,15 @@ class SearchTableRebuilder {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function canRebuild() {
+		return $this->searchTableUpdater->isEnabled();
+	}
+
+	/**
 	 * @see RebuildFulltextSearchTable::execute
 	 *
 	 * @since 2.5
@@ -103,8 +113,8 @@ class SearchTableRebuilder {
 	 */
 	public function rebuild() {
 
-		if ( !$this->searchTableUpdater->isEnabled() ) {
-			return $this->reportMessage( "\n" . "FullText search indexing is not enabled or supported." ."\n" );
+		if ( !$this->canRebuild() ) {
+			return;
 		}
 
 		if ( $this->optimization ) {
@@ -165,12 +175,20 @@ class SearchTableRebuilder {
 
 	private function doOptimize() {
 
-		$this->reportMessage( "\nOptimization ...\n" );
+		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
-			"\nRunning table optimization (Depending on the SQL back-end " .
-			"\nthis operation may lock the table and suspend any inserts or" .
-			"\ndeletes during the process.)\n"
+			$cliMsgFormatter->section( 'optimization', 3 , '-', true )
+		);
+
+		$text = [
+			"Running table optimization (Depending on the SQL back-end",
+			"this operation may lock the table and suspend any inserts or",
+			"deletes during the process.)"
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		if ( $this->searchTableUpdater->optimize() ) {
@@ -184,37 +202,72 @@ class SearchTableRebuilder {
 
 	private function doRebuild() {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+		$propertyTables = [];
+
+		$this->reportMessage( "\nProcessing table(s) ..." );
+
 		$this->reportMessage(
-			"\nThe entire index table is going to be purged first and it may\n" .
-			"take a moment before the rebuild is completed due to varying\n" .
-			"table contents.\n"
+			"\n" . $cliMsgFormatter->firstCol( "... purging the index table ...", 3 )
 		);
 
-		$this->reportMessage( "\nIndex process ..." );
-		$this->reportMessage( "\n" . "   ... purging the index table ..." );
-
 		$this->searchTableUpdater->flushTable();
-		$this->reportMessage( "\n" . "   ... rebuilding (finished/expected) ..." );
+
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->firstCol( "... counting suitable table(s) ...", 3 )
+		);
 
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 
 			// Only care for Blob/Uri tables
 			if ( !$this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
-				$this->skippedTables[$proptable->getName()] = 'Not a valid DI type';
+				$this->skippedTables[$proptable->getName()] = '[INVALID]';
 				continue;
 			}
 
-			$this->doRebuildByPropertyTable( $proptable );
+			$propertyTables[] = $proptable;
 		}
 
-		$this->reportMessage( "\n   ... done." );
-		$this->reportMessage( "\n   ... report unindexed table(s) ...", $this->reportVerbose );
+		$this->reportMessage(
+			$cliMsgFormatter->secondCol( count( $propertyTables ) )
+		);
+
+		foreach ( $propertyTables as $propertyTable ) {
+			$this->doRebuildByPropertyTable( $propertyTable );
+		}
+
+		$this->reportMessage( "   ... done.\n" );
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( "Unindexed table(s)", 3, '-', true ),
+			$this->reportVerbose
+		);
+
+		$text = [
+			"[INVALID] refers to an invalid `DataItem` type, [EMPTY] describes",
+			"a table to contain no data, [EXEMPT] is exempted from processing"
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n",
+			$this->reportVerbose
+		);
+
+		$this->reportMessage(
+			"\nList unprocessed table(s) ...\n",
+			$this->reportVerbose
+		);
 
 		foreach ( $this->skippedTables as $tableName => $reason ) {
-			$this->reportMessage( "\n". sprintf( "%-38s%s", "      ... {$tableName}", $reason ), $this->reportVerbose );
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( "... $tableName",  $reason, 3, '.' ),
+				$this->reportVerbose
+			);
 		}
-
-		$this->reportMessage( "\n" );
 	}
 
 	private function doRebuildByPropertyTable( $proptable ) {
@@ -240,7 +293,7 @@ class SearchTableRebuilder {
 			$property = new DIProperty( $proptable->getFixedProperty() );
 
 			if ( $property->getLabel() === '' ) {
-				return $this->skippedTables[$table] = 'Fixed property, ' . $property->getKey() . ' is invalid';
+				return $this->skippedTables[$table] = '[FIXED]';
 			}
 
 			$pid = $searchTable->getIdByProperty(
@@ -248,7 +301,7 @@ class SearchTableRebuilder {
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
-				return $this->skippedTables[$table] = 'Fixed property table, belongs to exempted ' . $proptable->getFixedProperty() . ' property';
+				return $this->skippedTables[$table] = '[EXEMPT]';
 			}
 		}
 
@@ -260,7 +313,7 @@ class SearchTableRebuilder {
 		);
 
 		if ( $rows === false || $rows === null ) {
-			return $this->skippedTables[$table] = 'Empty table';
+			return $this->skippedTables[$table] = '[EMPTY]';
 		}
 
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
@@ -268,17 +321,16 @@ class SearchTableRebuilder {
 
 	private function doRebuildFromRows( $searchTable, $table, $pid, $rows ) {
 
+		$cliMsgFormatter = new CliMsgFormatter();
+
 		$i = 0;
 		$expected = $rows->numRows();
 
 		if ( $expected == 0 ) {
-			return $this->skippedTables[$table] = 'Empty table';
+			return $this->skippedTables[$table] = '[EMPTY]';
 		}
 
-		$this->reportMessage( "\n" );
-
 		foreach ( $rows as $row ) {
-			$i++;
 
 			$sid = $row->s_id;
 			$pid = !isset( $row->p_id ) ? $pid : $row->p_id;
@@ -288,12 +340,16 @@ class SearchTableRebuilder {
 				$row
 			);
 
-			if ( $searchTable->isExemptedPropertyById( $pid ) || !$searchTable->hasMinTokenLength( $indexableText ) ) {
+			if (
+				$searchTable->isExemptedPropertyById( $pid ) ||
+				!$searchTable->hasMinTokenLength( $indexableText ) ) {
 				continue;
 			}
 
+			$progress = $cliMsgFormatter->progressCompact( ++$i, $expected );
+
 			$this->reportMessage(
-				"\r". sprintf( "%-38s%s", "      ... {$table}", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
+				$cliMsgFormatter->twoColsOverride( "... {$table} ...", $progress, 7 )
 			);
 
 			$text = $this->searchTableUpdater->read( $sid, $pid );
@@ -305,6 +361,8 @@ class SearchTableRebuilder {
 
 			$this->searchTableUpdater->update( $sid, $pid, trim( $text ) . ' ' . $indexableText );
 		}
+
+		$this->reportMessage( "\n" );
 	}
 
 	private function reportMessage( $message, $verbose = true ) {

@@ -2,15 +2,22 @@
 
 namespace SMW\Maintenance;
 
-use Onoi\MessageReporter\MessageReporterFactory;
+use Onoi\MessageReporter\CallbackMessageReporter;
+use Onoi\MessageReporter\MessageReporter;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMW\Setup;
+use SMW\Utils\CliMsgFormatter;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * @license GNU GPL v2+
@@ -20,26 +27,39 @@ require_once $basePath . '/maintenance/Maintenance.php';
  */
 class RebuildFulltextSearchTable extends \Maintenance {
 
+	/**
+	 * @var MessageReporter
+	 */
+	private $messageReporter;
+
 	public function __construct() {
+		parent::__construct();
 		$this->mDescription = 'Rebuild the fulltext search index (only works with SQLStore)';
 		$this->addOption( 'report-runtime', 'Report execution time and memory usage', false );
 		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 		$this->addOption( 'optimize', 'Run possible table optimization (support depends on the SQL back-end) ', false );
 		$this->addOption( 'v', 'Show additional (verbose) information about the progress', false );
 		$this->addOption( 'quick', 'Suppress abort operation', false );
-
-		parent::__construct();
 	}
 
+	/**
+	 * @since 3.2
+	 *
+	 * @param MessageReporter $messageReporter
+	 */
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->messageReporter = $messageReporter;
+	}
 
 	/**
-	 * @see Maintenance::addDefaultParams
+	 * @see Maintenance::reportMessage
 	 *
 	 * @since 2.5
+	 *
+	 * @param string $message
 	 */
-	protected function addDefaultParams() {
-
-		parent::addDefaultParams();
+	public function reportMessage( $message ) {
+		$this->output( $message );
 	}
 
 	/**
@@ -47,15 +67,35 @@ class RebuildFulltextSearchTable extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
-		if ( !Setup::isValid( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
-			exit;
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		if ( $this->messageReporter === null ) {
+			$this->messageReporter = new CallbackMessageReporter( [ $this, 'reportMessage' ] );
 		}
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'About' )
+		);
+
+		$text = [
+			"The script rebuilds the search index from property tables that",
+			"support a fulltext search. Any change of the index rules (altered",
+			"stopwords, new stemmer etc.) and/or a newly added or altered table",
+			"requires to run this script again to ensure that the index complies",
+			"with the rules set forth by the SQL back-end or Sanitizer."
+		];
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
@@ -77,12 +117,16 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			$this->hasOption( 'optimize' )
 		);
 
-		$this->reportMessage(
-			"\nThe script rebuilds the search index from property tables that\n" .
-			"support a fulltext search. Any change of the index rules (altered\n".
-			"stopwords, new stemmer etc.) and/or a newly added or altered table\n".
-			"requires to run this script again to ensure that the index complies\n".
-			"with the rules set forth by the SQL back-end or Sanitizer.\n"
+		if ( !$searchTableRebuilder->canRebuild() ) {
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->section( 'Notice' )
+			);
+
+			return $this->messageReporter->reportMessage( "\n" . "Full-text search indexing is not enabled or supported." ."\n" );
+		}
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Setting(s)' )
 		);
 
 		$this->reportConfiguration(
@@ -90,25 +134,38 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			$textSanitizer
 		);
 
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Rebuild', 3 , '-', true )
+		);
+
+		$text = [
+			"The entire index table is going to be purged first and it may",
+			"take a moment before the rebuild is completed due to varying",
+			"table contents."
+		];
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
 		if ( !$this->hasOption( 'quick' ) ) {
-			$this->reportMessage( "\n" . 'Abort the rebuild with control-c in the next five seconds ...  ' );
-			swfCountDown( 5 );
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->countDown( 'Abort the rebuild with CTRL-C in ...', 5 )
+			);
 		}
 
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();
 
-		// Need to instantiate an extra object here since we cannot make this class itself
-		// into a MessageReporter since the maintenance script does not load the interface in time.
-		$reporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
-		$reporter->registerReporterCallback( [ $this, 'reportMessage' ] );
-
-		$searchTableRebuilder->setMessageReporter( $reporter );
+		$searchTableRebuilder->setMessageReporter( $this->messageReporter );
 		$result = $searchTableRebuilder->rebuild();
 
-		if ( $result && $this->hasOption( 'report-runtime' ) ) {
-			$this->reportMessage( "\n" . "Runtime report ..." . "\n" );
-			$this->reportMessage( $maintenanceHelper->getFormattedRuntimeValues( '   ...' ) . "\n" );
+		if ( $this->hasOption( 'report-runtime' ) ) {
+			$this->messageReporter->reportMessage( $cliMsgFormatter->section( 'Runtime report' ) );
+
+			$this->messageReporter->reportMessage(
+				"\n" . $maintenanceHelper->getFormattedRuntimeValues()
+			);
 		}
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
@@ -129,10 +186,14 @@ class RebuildFulltextSearchTable extends \Maintenance {
 
 	private function reportConfiguration( $searchTableRebuilder, $textSanitizer ) {
 
-		$this->reportMessage( "\nConfiguration ..." );
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage( "\n" );
 
 		foreach ( $textSanitizer->getVersions() as $key => $value ) {
-			$this->reportMessage( "\n" . sprintf( "%-36s%s", "   ... {$key}", $value ) );
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols( "- $key", $value )
+			);
 		}
 
 		$searchTable = $searchTableRebuilder->getSearchTable();
@@ -150,35 +211,42 @@ class RebuildFulltextSearchTable extends \Maintenance {
 			}
 		}
 
-		$this->reportMessage( "\n" . sprintf( "%-36s%s", "   ... DataTypes (indexable)", implode( ', ', $indexableDataTypes ) ) );
-		$this->reportMessage( "\n\nExempted properties (not indexable) ..." );
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( "- DataTypes (indexable)", implode( ', ', $indexableDataTypes ) )
+		);
 
-		$exemptionList = '';
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Exempted propertie(s)', 3, '-', true )
+		);
 
-		foreach ( $searchTable->getPropertyExemptionList() as $prop ) {
-			$exemptionList .= ( $exemptionList === '' ? '' : ', ' ) . $prop;
+		$text = [
+			implode( ', ', $searchTable->getPropertyExemptionList() )
+		];
 
-			if ( strlen( $exemptionList ) > 50 ) {
-				$this->reportMessage( "\n   ... " . $exemptionList );
-				$exemptionList = '';
-			}
-		}
-
-		$this->reportMessage( "\n   ... " . $exemptionList . "\n" );
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
 	}
 
-	/**
-	 * @see Maintenance::reportMessage
-	 *
-	 * @since 2.5
-	 *
-	 * @param string $message
-	 */
-	public function reportMessage( $message ) {
-		$this->output( $message );
+	private function canExecute() {
+
+		if ( !Setup::isEnabled() ) {
+			return $this->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
+			);
+		}
+
+		if ( !Setup::isValid( true ) ) {
+			return $this->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
+		}
+
+		return true;
 	}
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildFulltextSearchTable';
+$maintClass = RebuildFulltextSearchTable::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
