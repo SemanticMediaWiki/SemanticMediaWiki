@@ -451,10 +451,16 @@ class ElasticFactory {
 	 * @return UpdateEntityCollationComplete
 	 */
 	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
-		return new UpdateEntityCollationComplete(
-			$store,
+
+		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
+			$store
+		);
+
+		$updateEntityCollationComplete->setMessageReporter(
 			$messageReporter
 		);
+
+		return $updateEntityCollationComplete;
 	}
 
 

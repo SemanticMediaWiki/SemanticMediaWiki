@@ -10,10 +10,18 @@ use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Setup;
+use SMW\Utils\CliMsgFormatter;
+use SMW\MediaWiki\HookDispatcher;
+use Onoi\MessageReporter\MessageReporter;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv('MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * @license GNU GPL v2+
@@ -23,21 +31,57 @@ require_once $basePath . '/maintenance/Maintenance.php';
  */
 class UpdateEntityCollation extends \Maintenance {
 
+	/**
+	 * @var Store
+	 */
+	private $store;
+
+	/**
+	 * @var HookDispatcher
+	 */
+	private $hookDispatcher;
+
+	/**
+	 * @var MessageReporter
+	 */
+	private $messageReporter;
+
+	/**
+	 * @var int
+	 */
+	private $lastId = 0;
+
 	public function __construct() {
+		parent::__construct();
 		$this->mDescription = 'Update the smw_sort field (relying on the $smwgEntityCollation setting)';
 		$this->addOption( 's', 'ID starting point', false, true );
-
-		parent::__construct();
 	}
 
 	/**
-	 * @see Maintenance::addDefaultParams
+	 * @since 3.2
 	 *
-	 * @since 3.0
+	 * @param HookDispatcher $hookDispatcher
 	 */
-	protected function addDefaultParams() {
+	public function setHookDispatcher( HookDispatcher $hookDispatcher ) {
+		$this->hookDispatcher = $hookDispatcher;
+	}
 
-		parent::addDefaultParams();
+	/**
+	 * @since 3.2
+	 *
+	 * @param MessageReporter $messageReporter
+	 */
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @since 1.9
+	 *
+	 * @param string $message
+	 */
+	public function reportMessage( $message ) {
+		$this->output( $message );
 	}
 
 	/**
@@ -45,35 +89,129 @@ class UpdateEntityCollation extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
-			exit;
-		}
-
-		if ( !Setup::isValid( true ) ) {
-			$this->reportMessage( "\nYou need to run `update.php` or `setupStore.php` first before continuing\nwith any maintenance tasks!\n" );
+		if ( $this->canExecute() !== true ) {
 			exit;
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
-		$store = $applicationFactory->getStore( 'SMW\SQLStore\SQLStore' );
+		$this->store = $applicationFactory->getStore(
+			SQLStore::class
+		);
 
-		$messageReporter = $maintenanceFactory->newMessageReporter( [ $this, 'reportMessage' ] );
+		if ( $this->hookDispatcher === null ) {
+			$this->hookDispatcher = $applicationFactory->getHookDispatcher();
+		}
 
-		$connection = $store->getConnection( 'mw.db' );
-		$tableFieldUpdater = new TableFieldUpdater( $store );
+		if ( $this->messageReporter === null ) {
+			$this->messageReporter = $maintenanceFactory->newMessageReporter( [ $this, 'reportMessage' ] );
+		}
 
-		$condition = " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED ) . " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
-		$i = 1;
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$intl = 'N/A';
+
+		if ( extension_loaded( 'intl' ) ) {
+			$intl = phpversion( 'intl' ) . ' / ' . INTL_ICU_VERSION;
+		}
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->twoCols( 'Intl / ICU:', $intl )
+		);
+
+		$smwgEntityCollation = $applicationFactory->getSettings()->get( 'smwgEntityCollation' );
+		$wgCategoryCollation = $GLOBALS['wgCategoryCollation'];
+
+		if ( $smwgEntityCollation !== $wgCategoryCollation ) {
+			$this->informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation );
+		}
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Collation update(s)' )
+		);
+
+		$this->messageReporter->reportMessage(
+			"\nRunning `$smwgEntityCollation` update ...\n"
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->firstCol( '... fetching from table ...', 3 )
+		);
+
+		$rows = $this->fetchRows();
+		$count = $rows->numRows();
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( "... `smw_sort` field records ...", "$count (rows)", 3 )
+		);
+
+		$this->runUpdate( $rows, $count );
+		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+
+		$this->hookDispatcher->onAfterUpdateEntityCollationComplete( $this->store, $this->messageReporter );
+	}
+
+	private function informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation ) {
+
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Notice' )
+		);
+
+		$text = [
+			"The `smwgEntityCollation` and `wgCategoryCollation` have different",
+			"collation settings and may therefore result in an inconsitent sorting",
+			"display for entities."
+		];
+
+		$this->messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n\n"
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->oneCol( 'Settings ...' )
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( '... `$smwgEntityCollation`', $smwgEntityCollation, 3, '.' )
+		);
+
+		$this->messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols( '... `$wgCategoryCollation`', $wgCategoryCollation, 3, '.' )
+		);
+	}
+
+	private function fetchRows() {
+
+		$connection = $this->store->getConnection( 'mw.db' );
+
+		$this->lastId = (int)$connection->selectField(
+			SQLStore::ID_TABLE,
+			'MAX(smw_id)',
+			'',
+			__METHOD__
+		);
+
+		$condition = '';
+
+		$condition .= " smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWIW_OUTDATED );
+		$condition .= " AND smw_iw!=" . $connection->addQuotes( SMW_SQL3_SMWDELETEIW );
 
 		if ( $this->hasOption( 's' ) ) {
-			$i = $this->getOption( 's' );
 			$condition .= ' AND smw_id > ' . $connection->addQuotes( $this->getOption( 's' ) );
 		}
 
-		$res = $connection->select(
+		return $connection->select(
 			SQLStore::ID_TABLE,
 			[
 				'smw_id',
@@ -81,60 +219,60 @@ class UpdateEntityCollation extends \Maintenance {
 				'smw_sortkey'
 			],
 			$condition,
-			__METHOD__
+			__METHOD__,
+			[ 'ORDER BY' => 'smw_id' ]
 		);
+	}
 
-		$expected = $res->numRows() + $i;
+	private function canExecute() {
 
-		if ( $applicationFactory->getSettings()->get( 'smwgEntityCollation' ) !== $GLOBALS['wgCategoryCollation'] ) {
-			$smwgEntityCollation = $applicationFactory->getSettings()->get( 'smwgEntityCollation' );
-			$wgCategoryCollation = $GLOBALS['wgCategoryCollation'];
-
-			$this->reportMessage( "\n" . '$smwgEntityCollation: ' . $smwgEntityCollation );
-			$this->reportMessage( "\n" . '$wgCategoryCollation: ' . $wgCategoryCollation . "\n" );
-
-			$this->reportMessage(
-				"\nThe setting of `smwgEntityCollation` and `wgCategoryCollation`\n" .
-				"are different and may result in an inconsitent sorting display\n" .
-				"for entities.\n"
+		if ( !Setup::isEnabled() ) {
+			return $this->messageReporter->reportMessage(
+				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
 			);
 		}
 
-		$this->reportMessage(
-			"\nRunning `$smwgEntityCollation` update ..."
-		);
+		if ( !Setup::isValid( true ) ) {
+			return $this->messageReporter->reportMessage(
+				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
+				"with this maintenance task!\n"
+			);
+		}
 
-		$this->reportMessage( "\n   ... selecting $expected rows ..." );
-		$this->reportMessage( "\n" );
-
-		$this->doUpdate( $store, $tableFieldUpdater, $res, $i, $expected );
-		$this->reportMessage( "\n   ... done.\n" );
-
-		\Hooks::run( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', [ $store, $messageReporter ] );
+		return true;
 	}
 
-	private function doUpdate( $store, $tableFieldUpdater, $res, $i, $expected ) {
-		$property = new DIProperty( '_SKEY' );
+	private function runUpdate( $rows, $count ) {
 
-		foreach ( $res as $row ) {
+		$tableFieldUpdater = new TableFieldUpdater(
+			$this->store
+		);
+
+		$cliMsgFormatter = new CliMsgFormatter();
+		$property = new DIProperty( '_SKEY' );
+		$i = 0;
+
+		foreach ( $rows as $row ) {
 
 			if ( $row->smw_title === '' ) {
 				continue;
 			}
 
-			$i++;
+			$dataItem = $this->store->getObjectIds()->getDataItemById(
+				$row->smw_id
+			);
 
-			$dataItem = $store->getObjectIds()->getDataItemById( $row->smw_id );
-			$pv = $store->getPropertyValues( $dataItem, $property );
-
+			$pv = $this->store->getPropertyValues( $dataItem, $property );
 			$search = $this->getSortKey( $row, $pv );
 
 			if ( $search === '' && $row->smw_title !== '' ) {
 				$search = str_replace( '_', ' ', $row->smw_title );
 			}
 
-			$this->reportMessage(
-				"\r". sprintf( "%-50s%s", "   ... updating `smw_sort` field", sprintf( "%4.0f%% (%s/%s)", ( $i / $expected ) * 100, $i, $expected ) )
+			$progress = $cliMsgFormatter->progressCompact( ++$i, $count, $row->smw_id, $this->lastId );
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoColsOverride( "... updating field (current/last) ...", $progress, 3 )
 			);
 
 			$tableFieldUpdater->updateSortField( $row->smw_id, $search );
@@ -160,18 +298,7 @@ class UpdateEntityCollation extends \Maintenance {
 		return $property->getCanonicalLabel();
 	}
 
-	/**
-	 * @see Maintenance::reportMessage
-	 *
-	 * @since 1.9
-	 *
-	 * @param string $message
-	 */
-	public function reportMessage( $message ) {
-		$this->output( $message );
-	}
-
 }
 
-$maintClass = 'SMW\Maintenance\UpdateEntityCollation';
+$maintClass = UpdateEntityCollation::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

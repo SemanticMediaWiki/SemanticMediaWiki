@@ -8,7 +8,7 @@ use SMW\Tests\TestEnvironment;
 use FakeResultWrapper;
 
 /**
- * @covers \SMW\Elastic\Config
+ * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -88,7 +88,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceof(
 			UpdateEntityCollationComplete::class,
-			new UpdateEntityCollationComplete( $this->store, $this->messageReporter )
+			new UpdateEntityCollationComplete( $this->store )
 		);
 	}
 
@@ -121,11 +121,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			$this->messageReporter
 		);
 
+		$instance->setMessageReporter(
+			$this->messageReporter
+		);
+
 		$instance->setCountDown( 0 );
 		$instance->runUpdate( $this->rebuilder );
 
 		$this->assertContains(
-			'updating document                           100% (1/1)',
+			'... updating document ...                                   1 / 1 (100%)',
 			$this->messageReporter->getMessagesAsString()
 		);
 	}

@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
 use SMW\ApplicationFactory;
 
@@ -23,6 +24,7 @@ use SMW\ApplicationFactory;
 class MaintenanceRunner {
 
 	use MessageReporterAwareTrait;
+	use HookDispatcherAwareTrait;
 
 	protected $maintenanceClass = null;
 	protected $options = [];
@@ -97,6 +99,10 @@ class MaintenanceRunner {
 
 		if ( $this->messageReporter !== null && method_exists( $maintenance, 'setMessageReporter' ) ) {
 			$maintenance->setMessageReporter( $this->messageReporter );
+		}
+
+		if ( $this->hookDispatcher !== null && method_exists( $maintenance, 'setHookDispatcher' ) ) {
+			$maintenance->setHookDispatcher( $this->hookDispatcher );
 		}
 
 		ob_start();

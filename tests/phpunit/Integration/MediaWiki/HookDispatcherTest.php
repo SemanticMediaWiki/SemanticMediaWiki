@@ -117,6 +117,28 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$hookDispatcher->onParserAfterTidyPropertyAnnotationComplete( $propertyAnnotator, $parserOutput );
 	}
 
+	public function testOnAfterUpdateEntityCollationComplete() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter->expects( $this->once() )
+			->method( 'reportMessage' );
+
+		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function( $store, $messageReporter ) {
+			$messageReporter->reportMessage( 'foo' );
+		} );
+
+		$hookDispatcher->onAfterUpdateEntityCollationComplete( $store, $messageReporter );
+	}
+
 	public function testOnIsApprovedRevision() {
 
 		$hookDispatcher = new HookDispatcher();
@@ -204,7 +226,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		foreach ( $classMethods as $name ) {
-			$this->assertArrayHasKey( $name, $testMethods );
+			$this->assertArrayHasKey(
+				$name,
+				$testMethods,
+				"Failed to find a test for the `$name` listener!"
+			);
 		}
 	}
 
