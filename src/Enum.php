@@ -25,4 +25,8 @@ class Enum {
 	 */
 	const SUSPEND_CACHE_WARMUP = 'smw.suspend.cache.warmup';
 
+	/**
+	 * Indicates whether the operation expects a forced update or not.
+	 */
+	const FORCED_UPDATE = 'smw/forced_update';
 }
