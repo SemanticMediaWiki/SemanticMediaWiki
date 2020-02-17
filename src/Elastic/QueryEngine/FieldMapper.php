@@ -118,10 +118,10 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $query
+	 * @param int $boost
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function function_score_random( $query, $boost = 5 ) {
 		return [
@@ -241,7 +241,7 @@ class FieldMapper {
 	 * @param string $field
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function range( $field, $value, $comp = '' ) {
 
@@ -260,10 +260,10 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $field
+	 * @param string|string[] $field
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function match( $field, $value, $operator = 'or' ) {
 
@@ -303,11 +303,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
+	 * @param string[] $fields
 	 * @param mixed $value
 	 * @param array $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function multi_match( $fields, $value, array $params = [] ) {
 
@@ -335,7 +335,7 @@ class FieldMapper {
 	 * @param mixed $value
 	 * @param array $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function match_phrase( $field, $value, array $params = [] ) {
 
@@ -366,7 +366,7 @@ class FieldMapper {
 	 *
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function query_string_compat( $value, array $params = [] ) {
 
@@ -462,7 +462,7 @@ class FieldMapper {
 	 * @param mixed $value
 	 * @param array $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function query_string( $fields, $value, array $params = [] ) {
 
@@ -485,7 +485,7 @@ class FieldMapper {
 	 *
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function ids( $value ) {
 		return [ 'ids' => [ "values" => $value ] ];
@@ -498,7 +498,7 @@ class FieldMapper {
 	 * @param string $field
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function term( $field, $value ) {
 		return [ 'term' => [ "$field" => $value ] ];
@@ -515,7 +515,7 @@ class FieldMapper {
 	 * @param string $field
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function terms( $field, $value ) {
 
@@ -532,7 +532,7 @@ class FieldMapper {
 	 * @param string $field
 	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function wildcard( $field, $value ) {
 		return [ 'wildcard' => [ "$field" => $value ] ];
@@ -543,7 +543,7 @@ class FieldMapper {
 	 *
 	 * @param string $field
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function exists( $field ) {
 		return [ 'exists' => [ "field" => "$field" ] ];
@@ -554,10 +554,10 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $name
+	 * @param mixed $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function aggs( $name, $params ) {
 		return [ 'aggregations' => [ "$name" => $params ] ];
@@ -568,10 +568,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $key
+	 * @param mixed $field
+	 * @param array $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function aggs_terms( $key, $field, $params = [] ) {
 		return [ $key => [ 'terms' => [ "field" => $field ] + $params ] ];
@@ -585,10 +586,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $key
+	 * @param mixed $field
+	 * @param array $params
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public function aggs_significant_terms( $key, $field, $params = [] ) {
 		return [ $key => [ 'significant_terms' => [ "field" => $field ] + $params ] ];
@@ -603,10 +605,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $key
+	 * @param mixed $field
+	 * @param $interval
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function aggs_histogram( $key, $field, $interval ) {
 		return [ $key => [ 'histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
@@ -620,10 +623,11 @@ class FieldMapper {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $field
-	 * @param mixed $value
+	 * @param string $key
+	 * @param mixed $field
+	 * @param $interval
 	 *
-	 * @return string
+	 * @return array
 	 */
 	public static function aggs_date_histogram( $key, $field, $interval ) {
 		return [ $key => [ 'date_histogram' => [ "field" => $field, 'interval' => $interval ] ] ];
