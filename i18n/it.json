@@ -118,7 +118,6 @@
 	"smw_manytypes": "È stato definito più di un tipo per la proprietà.",
 	"smw_emptystring": "Le stringhe vuote non sono accettate.",
 	"smw_notinenum": "\"$1\" non è nell'elenco ($2) dei [[Property:Allows value|valori consentiti]] per la proprietà \"$3\".",
-	"smw-constraint-schema-violation-requires-page-type": "Il vincolo richiede un tipo di pagina.",
 	"smw_noboolean": "“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).",
 	"smw_true_words": "vero,v,si,s,true,t,yes,y",
 	"smw_false_words": "falso,f,no,n,false",

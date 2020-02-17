@@ -129,7 +129,6 @@
 	"smw_notinenum": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용된 값]] 목록($2)에 없습니다.",
 	"smw-datavalue-constraint-error-allows-value-list": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용된 값]] 목록($2)에 없습니다.",
 	"smw-datavalue-constraint-error-allows-value-range": "\"$1\"은(는) \"$3\" 속성의 [[Property:Allows value|허용값]] 제한을 통해 지정된 \"$2\"의 범위에 속하지 않습니다.",
-	"smw-constraint-schema-violation-requires-page-type": "제약 조건에 페이지 유형은 필수입니다.",
 	"smw-constraint-error-limit": "목록은 최대 $1개의 위반을 포함합니다.",
 	"smw_noboolean": "\"$1\"은(는) 불리언(참/거짓) 값으로 인식하지 않습니다.",
 	"smw_true_words": "true,t,yes,y",
@@ -637,7 +636,7 @@
 	"smw-schema-validation-schema-title": "JSON 스키마",
 	"smw-schema-summary-title": "요약",
 	"smw-schema-title": "스키마",
-	"smw-schema-type": "종류",
+	"smw-schema-type": "스키마 종류",
 	"smw-schema-tag": "{{PLURAL:$1|태그}}",
 	"smw-ask-title-keyword-type": "키워드 검색",
 	"smw-ask-message-keyword-type": "이 검색은 <code><nowiki>$1</nowiki></code> 조건과 일치합니다.",
@@ -654,6 +653,8 @@
 	"smw-ask-tab-extra": "기타",
 	"smw-ask-tab-debug": "디버그",
 	"smw-ask-tab-code": "코드",
+	"smw-pendingtasks-tab-setup": "설정",
+	"smw-es-replication-error-divergent-date-short": "다음의 날짜 정보가 비교를 위해 사용되었습니다:",
 	"smw-report": "보고서",
 	"smw-legend": "범례"
 }

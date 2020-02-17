@@ -147,8 +147,6 @@
 	"smw_notinenum": "«$1» no és a la llista ($2) de [[Property:Allows value|valors permesos]] de la propietat «$3».",
 	"smw-datavalue-constraint-error-allows-value-list": "«$1» no es troba a la llista ($2) de [[Property:Allows value|valors permesos]] de la propietat «$3».",
 	"smw-datavalue-constraint-error-allows-value-range": "«$1» no es troba en el rang «$2» especificat per la restricció «[[Property:Allows value|permet valor]]» de la propietat «$3».",
-	"smw-constraint-schema-violation-allowed-namespace-no-match": "«$1» com a valor viola la constricció d'espai de noms («$2») definida per un esquema assignat a la propietat «$3».",
-	"smw-constraint-schema-violation-requires-page-type": "La restricció requereix un tipus de pàgina.",
 	"smw-constraint-error": "Problema de restricció",
 	"smw-constraint-error-limit": "La llista contindrà un màxim de $1 violacions.",
 	"smw_noboolean": "«$1» no es pot reconèixer com un valor booleà (cert/fals).",
