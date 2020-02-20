@@ -21,7 +21,8 @@
 			"Abijeet Patro",
 			"Omotecho",
 			"Zoranzoki21",
-			"Hello903hello"
+			"Hello903hello",
+			"BaRaN6161 TURK"
 		]
 	},
 	"smw-desc": "{{desc|name=Semantic MediaWiki|url=https://www.mediawiki.org/wiki/Extension:Semantic_MediaWiki}}",
@@ -190,7 +191,7 @@
 	"smw_noconjunctions": "This is an error/warning message. Parameters:\n* $1 holds the part(s) of the query which were dropped.",
 	"smw_nodisjunctions": "This is an error/warning message. Parameters:\n* $1 holds the part(s) of the query which were dropped.",
 	"smw_querytoolarge": "This is an error/warning message.\n\nParameters:\n* $1 holds the part(s) of the query which were dropped.\n* $2 holds the number of parts of the query which were dropped.",
-	"smw_notemplategiven": "This is an error/warning message.",
+	"smw_notemplategiven": "{{doc-important|Do not translate the \"template\" parameter.}}\n\nThis is an error/warning message.",
 	"smw_db_sparqlqueryproblem": "This is an error message.",
 	"smw_db_sparqlqueryincomplete": "This is an error message.",
 	"smw_type_header": "This is the header on [[Special:Types]]. Parameters:\n* $1 holds the name of the respective data type.",

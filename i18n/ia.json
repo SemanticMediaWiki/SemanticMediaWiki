@@ -299,7 +299,7 @@
 	"smw-livepreview-loading": "Cargamento in curso…",
 	"smw-property-predefined-errc": "\"$1\" es un proprietate predefinite fornite per [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] que representa errores connexe a mal annotationes de valores o mal tractamento de entrata.",
 	"smw-property-predefined-long-errc": "Le errores se collige in un [https://www.semantic-mediawiki.org/wiki/Help:Container receptaculo] que pote includer un referentia al proprietate que ha causate le discrepantia.",
-	"smw-constraint-violation-class-mandatory-properties-constraint": "Le categoria \"[[:Category:$1|$1]]\" ha un restriction <code>mandatory_properties</code> assignate e require le proprietates obligatori sequente: $2",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "Un restriction <code>mandatory_properties</code> ha essite assignate al categoria \"[[:Category:$1|$1]]\" de sorta que illo require le proprietates obligatori sequente: $2",
 	"smw-section-expand": "Displicar le section",
 	"smw-section-collapse": "Plicar le section",
 	"smw-schema-description-class-constraint-schema": "Iste typo de schema supporta le definition de regulas de restriction pro un instantia de classe (i.e. un categoria).",

@@ -1002,5 +1002,6 @@
 	"smw-report": "أبلغ",
 	"smw-legend": "عنوان تفسيري",
 	"smw-datavalue-constraint-schema-category-invalid-type": "المخطط \"$1\" المشروح غير صالح لتصنيف؛ فهو يتطلب نوع \"$2\".",
-	"smw-datavalue-constraint-schema-property-invalid-type": "المخطط \"$1\" المشروح غير صالح لخاصية؛ فهو يتطلب نوع \"$2\"."
+	"smw-datavalue-constraint-schema-property-invalid-type": "المخطط \"$1\" المشروح غير صالح لخاصية؛ فهو يتطلب نوع \"$2\".",
+	"smw-entity-examiner-deferred-fake": "مزيف"
 }

@@ -655,6 +655,7 @@
 	"smw-ask-tab-code": "코드",
 	"smw-pendingtasks-tab-setup": "설정",
 	"smw-es-replication-error-divergent-date-short": "다음의 날짜 정보가 비교를 위해 사용되었습니다:",
+	"smw-es-replication-error-divergent-revision-short": "다음의 관련 판 데이터는 비교를 위해 사용되었습니다:",
 	"smw-report": "보고서",
 	"smw-legend": "범례"
 }

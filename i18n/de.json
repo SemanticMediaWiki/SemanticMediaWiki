@@ -26,7 +26,8 @@
 			"Krabina",
 			"Abijeet Patro",
 			"Mirzali",
-			"Tobi 406"
+			"Tobi 406",
+			"Killarnee"
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
@@ -893,6 +894,7 @@
 	"apihelp-smwtask-summary": "API-Modul zum Ausführen Semantic MediaWiki betreffender Aufgaben.",
 	"apihelp-smwbrowse-summary": "API-Modul zur Unterstützung von Aktivitäten beim Browsen für unterschiedliche Objekttypen in Semantic MediaWiki.",
 	"apihelp-ask-parameter-api-version": "Ausgabeformat:\n;2:Rückwärtskompatibles Format, das {} für Ergebnislisten verwendet.\n;3:Experimentelles Format, das [] für Ergebnislisten verwendet.",
+	"apihelp-smwtask-param-task": "Definiert den Aufgabentyp",
 	"smw-api-invalid-parameters": "Ungültige Parameter: „$1“",
 	"smw-parser-recursion-level-exceeded": "Die Obergrenze von $1 Rekursionen wurde während des Parsens überschritten. Es wird empfohlen, die Vorlagenstruktur zu validieren oder – falls notwendig, den Konfigurationsparameter „<code>$maxRecursionDepth</code>“ anzupassen.",
 	"smw-property-page-list-count": "Unterhalb {{PLURAL:$1|wird eine Seite|werden $1 Seiten}} angezeigt, auf denen für dieses Attribut ein Datenwert gespeichert wurde.",
@@ -992,6 +994,7 @@
 	"smw-es-replication-check": "Datenreplikationsprüfung (Elasticsearch)",
 	"smw-es-replication-error": "Datenreplikationsproblem",
 	"smw-es-replication-file-ingest-error": "Dateiindexierungsproblem",
+	"smw-es-replication-maintenance-mode": "Elasticsearch Wartung",
 	"smw-es-replication-error-missing-id": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: <code>$2</code>) nicht in der Elasticsearch-Datenbank enthalten ist.",
 	"smw-es-replication-error-divergent-date": "Während der Überwachung der Datenreplikation wurde festgestellt, dass die Seite „$1“ (Kennung: $2) in der Elasticsearch-Datenbank ein abweichendes <b>Änderungsdatum</b> aufweist.",
 	"smw-es-replication-error-divergent-date-detail": "Änderungsdatum:\n* Elasticsearch: $1 \n* Datenbank: $2",
@@ -1009,5 +1012,9 @@
 	"smw-report": "Bericht",
 	"smw-legend": "Legende",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Das annotierte Schema „$1“ kann nicht für Kategorien genutzt werden. Es muss der Schematyp „$2“ genutzt werden.",
-	"smw-datavalue-constraint-schema-property-invalid-type": "Das annotierte Schema „$1“ kann nicht für Kategorien genutzt werden. Es muss der Schematyp „$2“ genutzt werden."
+	"smw-datavalue-constraint-schema-property-invalid-type": "Das annotierte Schema „$1“ kann nicht für Kategorien genutzt werden. Es muss der Schematyp „$2“ genutzt werden.",
+	"smw-entity-examiner-deferred-elastic-replication": "Elastisch",
+	"smw-entity-examiner-deferred-constraint-error": "Zwang",
+	"smw-entity-examiner-deferred-fake": "Fälchung",
+	"smw-indicator-revision-mismatch": "Revision"
 }

@@ -1014,6 +1014,7 @@
 	"smw-es-replication-check": "Situação da replicação (Elasticsearch)",
 	"smw-es-replication-error": "Problema de replicação do Elasticsearch",
 	"smw-es-replication-file-ingest-error": "Problema na entrada de arquivo",
+	"smw-es-replication-maintenance-mode": "Manutenção do Elasticsearch",
 	"smw-es-replication-error-missing-id": "O monitoramento de replicação descobriu que o artigo \"$1\" (ID: $2) está faltando no back-end do Elasticsearch.",
 	"smw-es-replication-error-divergent-date": "O monitoramento de replicação descobriu que, para o artigo \"$1\" (ID: $2), a <b>data de modificação</b> mostra uma discrepância.",
 	"smw-es-replication-error-divergent-date-short": "As seguintes informações de data foram usadas para comparação:",
