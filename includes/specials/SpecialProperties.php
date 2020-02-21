@@ -69,9 +69,9 @@ class SpecialProperties extends SpecialPage {
 		$request = $this->getRequest();
 		if ( method_exists( $request, 'getLimitOffsetForUser' ) ) {
 			// MW 1.35+
-			return = $request->getLimitOffsetForUser( $this->getUser() );
+			return $request->getLimitOffsetForUser( $this->getUser() );
 		} else {
-			return = $request->getLimitOffset();
+			return $request->getLimitOffset();
 		}
 	}
 
