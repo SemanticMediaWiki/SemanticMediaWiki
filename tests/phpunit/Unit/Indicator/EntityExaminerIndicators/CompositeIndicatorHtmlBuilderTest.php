@@ -61,7 +61,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'highlighter_title' => '',
 			'placeholder_title' => '',
 			'options_raw' => '',
-			'dir' => ''
+			'dir' => '',
+			'uselang' => ''
 		];
 
 		$indicatorProviders = [];
@@ -78,7 +79,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
-			'data-subject="Foo#0##" data-dir="" ' .
+			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
 			'title="__foo__"></div>',
 			$html
 		);
@@ -106,7 +107,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'highlighter_title' => '',
 			'placeholder_title' => '',
 			'options_raw' => '',
-			'dir' => ''
+			'dir' => '',
+			'uselang' => ''
 		];
 
 		$indicatorProviders = [
@@ -153,7 +155,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'highlighter_title' => '',
 			'placeholder_title' => '',
 			'options_raw' => '',
-			'dir' => ''
+			'dir' => '',
+			'uselang' => ''
 		];
 
 		$indicatorProviders = [
@@ -193,7 +196,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'highlighter_title' => '',
 			'placeholder_title' => '',
 			'options_raw' => '',
-			'dir' => ''
+			'dir' => '',
+			'uselang' => ''
 		];
 
 		$indicatorProviders = [
@@ -241,7 +245,8 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 			'highlighter_title' => '',
 			'placeholder_title' => '',
 			'options_raw' => '',
-			'dir' => ''
+			'dir' => '',
+			'uselang' => ''
 		];
 
 		$indicatorProviders = [
@@ -260,7 +265,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
-			'data-subject="Foo#0##" data-dir="" ' .
+			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
 			'title="__foo__"></div>',
 			$html
 		);

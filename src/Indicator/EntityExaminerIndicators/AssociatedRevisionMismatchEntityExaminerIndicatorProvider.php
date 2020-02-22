@@ -38,6 +38,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $severityType = '';
 
 	/**
+	 * @var string
+	 */
+	private $languageCode = '';
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param Store $store
@@ -140,6 +145,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 			]
 		);
 
+		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
+
 		$this->templateEngine->compile(
 			'line_template',
 			[
@@ -150,7 +157,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		$this->templateEngine->compile(
 			'text_template',
 			[
-				'text' => $this->msg( [ 'smw-indicator-revision-mismatch-error' ], Message::PARSE )
+				'text' => $this->msg( [ 'smw-indicator-revision-mismatch-error' ], Message::PARSE, $this->languageCode )
 			]
 		);
 
@@ -168,7 +175,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		$this->templateEngine->compile(
 			'bottom_comment_template',
 			[
-				'comment' => $this->msg( 'smw-indicator-revision-mismatch-comment' )
+				'comment' => $this->msg( 'smw-indicator-revision-mismatch-comment', Message::TEXT, $this->languageCode )
 			]
 		);
 
@@ -187,7 +194,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 		$this->indicators = [
 			'id' => $this->getName(),
-			'title' => $this->msg( 'smw-indicator-revision-mismatch' ),
+			'title' => $this->msg( 'smw-indicator-revision-mismatch', Message::TEXT, $this->languageCode ),
 			'content' => $content
 		];
 	}

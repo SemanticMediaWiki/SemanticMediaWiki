@@ -1,41 +1,176 @@
 /*!
- * This file is part of the Semantic MediaWiki Reload module
- * @see https://www.semantic-mediawiki.org/wiki/Help:Purge
+ * @license GNU GPL v2+
+ * @since  3.2
  *
- * @since 3.0
- *
- * @file
- * @ingroup SMW
- *
- * @licence GNU GPL v2+
  * @author mwjames
  */
-
-/*global jQuery, mediaWiki, smw */
-/*jslint white: true */
-
-( function( $, mw ) {
-
+( function( $, mw, smw ) {
 	'use strict';
 
 	/**
-	 * @since 3.0
+	 * @since 3.2
+	 * @class
 	 */
-	mw.loader.using( [ 'mediawiki.api', 'smw.tippy', 'ext.smw.style' ] ).then( function () {
+	smw.entityexaminer = {};
 
-		$( '.smw-entity-examiner.smw-indicator-vertical-bar-loader' ).each( function() {
+	/**
+	 * @since 3.2
+	 *
+	 * @class
+	 * @constructor
+	 */
+	smw.entityexaminer = function () {
 
-			var self = $( this );
-			var api = new mw.Api();
-			var subject = $( this ).data( 'subject' );
+		this.userLanguage = mw.config.get( 'wgUserLanguage' );
+		this.api = new mw.Api();
+		this.tooltipWasObserved = false;
+		this.addedResponse = false;
+		this.examinationData = null;
 
-			if ( subject !== undefined && subject !== '' ) {
+		return this;
+	};
+
+	/* Public methods */
+
+	smw.entityexaminer.prototype = {
+
+		/**
+		 * Enable the `mw-indicator-mw-helplink` in case it was disabled
+		 *
+		 * @since 3.2
+		 * @method
+		 */
+		showHelpLink: function() {
+			if ( document.getElementById( 'mw-indicator-mw-helplink' ) !== null ) {
+				document.getElementById( 'mw-indicator-mw-helplink' ).style.display = 'inline-block';
+			};
+		},
+
+		/**
+		 * @since 3.2
+		 * @method
+		 *
+		 * @param {Object} mutations
+		 */
+		subscriber: function ( mutations, observer ) {
+
+			var self = this;
+
+			mutations.forEach( ( mutation ) => {
+
+				if (
+					self.examinationData !== null &&
+					self.addedResponse === false &&
+					mutation.type === 'attributes' &&
+					mutation.attributeName === 'aria-describedby') {
+
+					for ( var key in self.examinationData.task['indicators'] ) {
+						var el = $( '#' + key );
+
+						if ( self.examinationData.task['indicators'][key].content === '' ) {
+							$('label[for="' + 'itab' + key + '"]').hide();
+							el.hide();
+						} else if( self.examinationData.task['indicators'][key].severity_class !== '' ) {
+							$('label[for="' + 'itab' + key + '"]').addClass( self.examinationData.task['indicators'][key].severity_class );
+						}
+
+						if ( el.length > 0 && self.examinationData.task['indicators'][key].content !== '' ) {
+							el.replaceWith( self.examinationData.task['indicators'][key].content );
+							self.addedResponse = true
+						};
+					};
+
+					self.tooltipWasObserved = true;
+
+					if ( self.addedResponse === true ) {
+						observer.disconnect();
+					};
+				}
+			} );
+		},
+
+		/**
+		 * @since 3.2
+		 * @method
+		 *
+		 * @param {Object} subject
+		 * @param {Object} params
+		 */
+		update: function ( subject, params ) {
+
+			var self = this;
+
+			if (
+				subject === undefined ||
+				subject === '' ) {
+				return;
+			}
+
+			var postArgs = {
+				'action': 'smwtask',
+				'task': 'run-entity-examiner',
+				'params': JSON.stringify( params )
+			};
+
+			this.api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
+				self.examinationData = data;
+
+				for ( var key in self.examinationData.task['indicators'] ) {
+					var el = $( '#' + key );
+
+					if ( self.examinationData.task['indicators'][key].content === '' ) {
+						var parent = $('label[for="' + 'itab' + key + '"]').parent();
+
+						if ( parent.length > 0 ) {
+							$( parent.find( 'input')[0] ).prop( 'checked', true );
+						};
+
+						$('label[for="' + 'itab' + key + '"]').hide();
+						el.hide();
+					} else if( self.examinationData.task['indicators'][key].severity_class !== '' ) {
+						$('label[for="' + 'itab' + key + '"]').addClass( self.examinationData.task['indicators'][key].severity_class );
+					}
+
+					if ( el.length > 0 && self.examinationData.task['indicators'][key].content !== '' ) {
+						el.replaceWith( self.examinationData.task['indicators'][key].content );
+						self.addedResponse = true
+					};
+				};
+
+				if ( data.task.html === '' ) {
+					self.showHelpLink();
+				};
+			} );
+		},
+
+		/**
+		 * @since 3.2
+		 * @method
+		 *
+		 * @param {Object} subject
+		 * @param {Object} params
+		 */
+		runOnPlaceholder: function ( context ) {
+
+			var self = this;
+
+			context.each( function() {
+
+				var that = $( this );
+				var subject = that.data( 'subject' );
+
+				if (
+					subject === undefined ||
+					subject === '' ) {
+					return;
+				}
 
 				var params = {
 					'subject': subject,
 					'is_placeholder': true,
-					'dir': $( this ).data( 'dir' ),
-					'count': $( this ).data( 'count' )
+					'dir': that.data( 'dir' ),
+					'uselang': that.data( 'uselang' ),
+					'count': that.data( 'count' )
 				};
 
 				var postArgs = {
@@ -44,121 +179,68 @@
 					'params': JSON.stringify( params )
 				};
 
-				api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
+				self.api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
 
-					self.replaceWith( data.task.html['smw-entity-examiner'] );
-					self.find( '.is-disabled' ).removeClass( 'is-disabled' );
+					// When run as placholder replacement, we expect the entire HTML
+					// the be replaced therefore using the `html` accessor.
+					that.replaceWith( data.task.html['smw-entity-examiner'] );
+					that.find( '.is-disabled' ).removeClass( 'is-disabled' );
 
-					// Enable the `mw-indicator-mw-helplink` in case it was disabled
-					if (
-						data.task.html['smw-entity-examiner'] === undefined &&
-						document.getElementById( 'mw-indicator-mw-helplink' ) !== null ) {
-						document.getElementById( 'mw-indicator-mw-helplink' ).style.display = 'inline-block';
-					};
+					if ( data.task.html['smw-entity-examiner'] === undefined ) {
+						self.showHelpLink();
+					}
 				} );
-			}
+			} );
+		}
+	};
 
-		} );
+	mw.loader.using( [ 'mediawiki.api', 'smw.tippy', 'ext.smw.style' ] ).then( function () {
 
+		var entityexaminer = new smw.entityexaminer();
+
+		var config = {
+			attributes: true,
+			childList: true,
+			subtree: true
+		};
+
+		var tooltipReferenceElement = document.getElementById( 'mw-indicator-smw-entity-examiner' );
+
+		// Run a replacement for the entire placeholder
+		entityexaminer.runOnPlaceholder(
+			$( '.smw-entity-examiner.smw-indicator-vertical-bar-loader' )
+		);
+
+		// Run on those examiners that have been marked as deferred and require
+		// an update via the API
 		$( '#mw-indicator-smw-entity-examiner > .smw-highlighter' ).each( function() {
 
-			if ( $( this ).data( 'deferred' ) !== 'yes' ) {
+			var that = $( this );
+
+			if ( that.data( 'deferred' ) !== 'yes' ) {
 				return;
 			};
 
-			var self = $( this );
-			var api = new mw.Api();
-			var subject = $( this ).data( 'subject' );
-			var tooltipWasObserved = false;
-			var addedResponse = false;
-			var consistencyCheckData = null;
+			var subject = that.data( 'subject' );
 
-			var tooltipReferenceElement = document.getElementById( 'mw-indicator-smw-entity-examiner' );
+			// Attach an observer to update the specific section once the information
+			// is returned from the API
+			var observer = new MutationObserver( function( mutations, observer ) {
+				return entityexaminer.subscriber( mutations, observer );
+			} );
 
-			var config = { attributes: true, childList: true, subtree: true };
-
-			var callback = function( mutationsList, observer) {
-
-			    for( let mutation of mutationsList ) {
-			        if (
-						consistencyCheckData !== null &&
-						addedResponse === false &&
-						mutation.type === 'attributes' &&
-						mutation.attributeName === 'aria-describedby') {
-
-					for ( var key in consistencyCheckData.task['indicators'] ) {
-						var el = $( '#' + key );
-
-						if ( consistencyCheckData.task['indicators'][key].content === '' ) {
-							$('label[for="' + 'itab' + key + '"]').hide();
-						} else if( consistencyCheckData.task['indicators'][key].severity_class !== '' ) {
-							$('label[for="' + 'itab' + key + '"]').addClass( consistencyCheckData.task['indicators'][key].severity_class );
-						}
-
-						if ( el.length > 0 ) {
-							el.replaceWith( consistencyCheckData.task['indicators'][key].content );
-							addedResponse = true
-						};
-					};
-				};
-
-				tooltipWasObserved = true;
-
-				if ( addedResponse === true ) {
-					observer.disconnect();
-				};
-			}
-		};
-
-		var observer = new MutationObserver(callback);
-
-		observer.observe( tooltipReferenceElement, config);
-
-		if ( subject !== undefined && subject !== '' ) {
+			observer.observe( tooltipReferenceElement, config );
 
 			var params = {
 				'subject': subject,
-				'dir': $( this ).data( 'dir' ),
-				'count': $( this ).data( 'count' ),
-				'options': $( this ).data( 'options' )
+				'dir': that.data( 'dir' ),
+				'uselang': that.data( 'uselang' ),
+				'count': that.data( 'count' ),
+				'options': that.data( 'options' )
 			};
 
-			var postArgs = {
-				'action': 'smwtask',
-				'task': 'run-entity-examiner',
-				'params': JSON.stringify( params )
-			};
-
-			api.postWithToken( 'csrf', postArgs ).then( function ( data ) {
-				consistencyCheckData = data;
-
-				if ( tooltipWasObserved && addedResponse === false ) {
-					for ( var key in consistencyCheckData.task['indicators'] ) {
-						var el = $( '#' + key );
-
-						if ( consistencyCheckData.task['indicators'][key].content === '' ) {
-							$('label[for="' + 'itab' + key + '"]').hide();
-						} else if( consistencyCheckData.task['indicators'][key].severity_class !== '' ) {
-							$('label[for="' + 'itab' + key + '"]').addClass( consistencyCheckData.task['indicators'][key].severity_class );
-						}
-
-						if ( el.length > 0 ) {
-							el.replaceWith( consistencyCheckData.task['indicators'][key].content );
-							addedResponse = true
-						};
-					};
-				};
-
-				// Enable the `mw-indicator-mw-helplink` in case it was disabled
-				if ( data.task.html === '' && document.getElementById( 'mw-indicator-mw-helplink' ) !== null ) {
-					document.getElementById( 'mw-indicator-mw-helplink' ).style.display = 'inline-block';
-				};
-			} );
-
-			}
-
+			entityexaminer.update( subject, params )
 		} );
-
 	} );
 
-}( jQuery, mediaWiki ) );
+} )( jQuery, mediaWiki, semanticMediaWiki );
