@@ -241,10 +241,18 @@ class Highlighter {
 		}
 
 		$language = is_string( $this->language ) ? $this->language : Message::USER_LANGUAGE;
-		$style = [];
+		$attribs = [];
 
 		if ( isset( $this->options['style'] ) ) {
-			$style = [ 'style' => $this->options['style'] ];
+			$attribs['style'] = $this->options['style'];
+		}
+
+		if ( isset( $this->options['maxwidth'] ) && $this->options['maxwidth'] !== '' ) {
+			$attribs['data-maxwidth'] = $this->options['maxwidth'];
+		}
+
+		if ( isset( $this->options['themeclass'] ) && $this->options['themeclass'] !== '' ) {
+			$attribs['data-tooltipclass'] = $this->options['themeclass'];
 		}
 
 		// In case the text contains HTML, remove trailing line feeds to avoid breaking
@@ -268,7 +276,7 @@ class Highlighter {
 				'data-state'   => $this->options['state'],
 				'data-title'   => Message::get( $this->options['title'], Message::TEXT, $language ),
 				'title'        => $title
-			] + $style,
+			] + $attribs,
 			Html::rawElement(
 				'span',
 				[

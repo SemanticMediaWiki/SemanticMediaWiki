@@ -46,6 +46,8 @@ class InfoParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParameters' )
 			->will( $this->returnValue( [
 				'message'  => $processedParam,
+				'max-width'  => $processedParam,
+				'theme'  => $processedParam,
 				'icon'     => $processedParam ] ) );
 
 		$this->assertInternalType(

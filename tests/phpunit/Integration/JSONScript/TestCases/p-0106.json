@@ -20,8 +20,12 @@
 			"message-cache": "clear",
 			"page": "P0106/Numeric_value",
 			"contents": "{{#info: 1 }}"
+		},
+		{
+			"message-cache": "clear",
+			"page": "P0106/maxwidth_theme",
+			"contents": "{{#info: some text |max-width=300 |theme=square-border}}"
 		}
-
 	],
 	"tests": [
 		{
@@ -71,8 +75,19 @@
 					"<span class=\"smwttcontent\">1</span>"
 				]
 			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (adding max-width, theme parameters)",
+			"subject": "P0106/maxwidth_theme",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"some text\" data-maxwidth=\"300\" data-tooltipclass=\"square-border\">",
+					"<span class=\"smwtticon info\">",
+					"<span class=\"smwttcontent\">some text</span>"
+				]
+			}
 		}
-
 	],
 	"settings": {
 		"wgContLang": "en",
