@@ -133,6 +133,15 @@ class OutputPageParserOutput implements HookListener {
 			$this->getParserOutput( $outputPage, $parserOutput )
 		);
 
+		// #4146
+		//
+		// Due to how MW started to move the `mw-data-after-content` out of the
+		// `bodyContent` we need a way to distinguish content from a top level
+		// to apply additional CSS rules
+		if ( isset( $outputPage->mSMWFactboxText ) && $outputPage->mSMWFactboxText !== '' ) {
+			$outputPage->addBodyClasses( 'smw-factbox-view' );
+		}
+
 		return true;
 	}
 
