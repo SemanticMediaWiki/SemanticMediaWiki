@@ -62,10 +62,11 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 	public function testCanonicalNames() {
 
 		$this->mwHooksHandler->deregisterListedHooks();
-		$namespaceInfo = ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' );
+		$applicationFactory = ApplicationFactory::getInstance();
+		$namespaceInfo = $applicationFactory->singleton( 'NamespaceInfo' );
 
 		$count = 0;
-		$index = NamespaceManager::buildNamespaceIndex( Settings::newFromGlobals()->get( 'smwgNamespaceIndex' ) );
+		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
 
 		$this->assertInternalType( 'array', $names );

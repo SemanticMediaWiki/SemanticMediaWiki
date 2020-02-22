@@ -2,15 +2,11 @@
 
 namespace SMW\Tests;
 
-use SMW\Settings;
 use SMW\StoreFactory;
 
 /**
  * @covers \SMW\StoreFactory
- *
- *
- * @group SMW
- * @group SMWExtension
+ * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -23,7 +19,6 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() : void {
 		StoreFactory::clear();
-
 		parent::tearDown();
 	}
 
@@ -32,7 +27,7 @@ class StoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
-			Settings::newFromGlobals()->get( 'smwgDefaultStore' ),
+			$GLOBALS['smwgDefaultStore'],
 			$instance
 		);
 

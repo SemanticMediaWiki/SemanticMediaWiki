@@ -119,11 +119,6 @@ class ServicesFactory {
 	 * @since 2.0
 	 */
 	public static function clear() {
-
-		if ( self::$instance !== null ) {
-			self::$instance->getSettings()->clear();
-		}
-
 		self::$instance = null;
 	}
 

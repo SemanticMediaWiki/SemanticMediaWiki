@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\Services\ServicesFactory;
+
 /**
  * Semantic MediaWiki SpecialPage base class
  *
@@ -84,7 +86,7 @@ class SpecialPage extends \SpecialPage {
 	public function getSettings() {
 
 		if ( $this->settings === null ) {
-			$this->settings = Settings::newFromGlobals();
+			$this->settings = ServicesFactory::getInstance()->getSettings();
 		}
 
 		return $this->settings;

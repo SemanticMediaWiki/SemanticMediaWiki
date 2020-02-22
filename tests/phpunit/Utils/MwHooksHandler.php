@@ -33,6 +33,8 @@ class MwHooksHandler {
 		//	'smwInitDatatypes',
 		//	'SMW::DataType::initTypes',
 
+		'SMW::Settings::BeforeInitializationComplete',
+
 		'smwInitProperties',
 		'SMW::Property::initProperties',
 		'SMW::Factbox::BeforeContentGeneration',

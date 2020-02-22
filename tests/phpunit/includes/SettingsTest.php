@@ -20,8 +20,17 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $hookDispatcher;
+
+	protected function setUp() : void {
+		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	protected function tearDown() : void {
-		Settings::clear();
 		parent::tearDown();
 	}
 
@@ -119,22 +128,33 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testNewFromGlobals( $setting ) {
 
-		$instance = Settings::newFromGlobals();
+		$instance = new Settings();
 
-		// Assert that newFromGlobals is a static instance
-		$this->assertTrue(
-			$instance === Settings::newFromGlobals()
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
-		// Reset instance
-		$instance->clear();
-		$this->assertTrue( $instance !== Settings::newFromGlobals() );
+		$instance->loadFromGlobals();
 
 		$this->assertTrue(
 			$instance->has( $setting ),
 			"Failed asserting that `{$setting}` exists. It could be that `{$setting}`\n" .
 			"is invoked by the `LocalSettings.php` or some parameter is using the `smwg` prefix.\n"
 		);
+	}
+
+	public function testReloadAttemptThrowsException() {
+
+		$instance = new Settings();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->loadFromGlobals();
+
+		$this->expectException( '\SMW\Exception\SettingsAlreadyLoadedException' );
+		$instance->loadFromGlobals();
 	}
 
 	/**

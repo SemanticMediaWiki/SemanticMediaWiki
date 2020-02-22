@@ -33,6 +33,28 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
+	public function testOnSettingsBeforeInitializationComplete() {
+
+		$configuration = [];
+
+		$hookDispatcher = new HookDispatcher();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', function( &$configuration ) {
+			$configuration = [ 'Foo' ];
+		} );
+
+		$hookDispatcher->onSettingsBeforeInitializationComplete( $configuration );
+
+		$this->assertEquals(
+			[ 'Foo' ],
+			$configuration
+		);
+	}
+
 	public function testOnGetPreferences() {
 
 		$preferences = [];

@@ -3,11 +3,15 @@
 namespace SMW;
 
 use SMW\Exception\SettingNotFoundException;
+use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
- * Encapsulate Semantic MediaWiki settings to access values through a
- * specified interface
+ * @private
+ *
+ * Encapsulate Semantic MediaWiki specific settings from GLOBALS access using a
+ * dedicated interface.
  *
  * @license GNU GPL v2+
  * @since 1.9
@@ -18,16 +22,12 @@ class Settings extends Options {
 
 	use ConfigLegacyTrait;
 	use ChangeListenerAwareTrait;
+	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var Settings
+	 * @var bool
 	 */
-	private static $instance = null;
-
-	/**
-	 * @var array
-	 */
-	private $iterate = [];
+	private $isLoaded = false;
 
 	/**
 	 * Assemble individual SMW related settings into one accessible array for
@@ -35,17 +35,22 @@ class Settings extends Options {
 	 * SMW related settings ( e.g. $smwgSettings['...']) we need this method
 	 * as short cut to invoke only smwg* related settings
 	 *
-	 * @par Example:
-	 * @code
-	 *  $settings = Settings::newFromGlobals();
-	 *  $settings->get( 'smwgDefaultStore' );
-	 * @endcode
+	 * @since 3.2
 	 *
-	 * @since 1.9
-	 *
-	 * @return Settings
+	 * @throws SettingsAlreadyLoadedException
 	 */
-	public static function newFromGlobals() {
+	public function loadFromGlobals() {
+
+		// This function is never expected to be called more than once per active
+		// instance which should only happen via the service factory, yet, if
+		// someone attempted to call this function then we want to know by what
+		// or whom!
+		if ( $this->isLoaded ) {
+			throw new SettingsAlreadyLoadedException(
+				'Some function (or program) tried to reload the settings while '.
+				'already being initialized!'
+			);
+		}
 
 		// #4150
 		// If someone tried to use SMW without proper initialization then something
@@ -60,7 +65,7 @@ class Settings extends Options {
 		 * TO REGISTER THEM WITH THE `ConfigLegacyTrait`.
 		 */
 
-		$configuration = [
+		$this->options = [
 			'smwgIP' => $GLOBALS['smwgIP'],
 			'smwgExtraneousLanguageFileDir' => $GLOBALS['smwgExtraneousLanguageFileDir'],
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
@@ -202,20 +207,17 @@ class Settings extends Options {
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 		];
 
-		// @see ConfigLegacyTrait
-		self::loadLegacyMappings( $configuration );
+		$this->isLoaded = true;
 
-		// Deprecated since 3.1
-		\Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
+		/**
+		 * @see ConfigLegacyTrait::loadLegacyMappings
+		 */
+		$this->loadLegacyMappings( $this->options );
 
-		// Since 3.1
-		\Hooks::run( 'SMW::Settings::BeforeInitializationComplete', [ &$configuration ] );
-
-		if ( self::$instance === null ) {
-			self::$instance = self::newFromArray( $configuration );
-		}
-
-		return self::$instance;
+		/**
+		 * @see HookDispatcher::onSettingsBeforeInitializationComplete
+		 */
+		$this->hookDispatcher->onSettingsBeforeInitializationComplete( $this->options );
 	}
 
 	/**
@@ -290,13 +292,6 @@ class Settings extends Options {
 		}
 
 		return $r;
-	}
-
-	/**
-	 * @since 1.9
-	 */
-	public static function clear() {
-		self::$instance = null;
 	}
 
 }
