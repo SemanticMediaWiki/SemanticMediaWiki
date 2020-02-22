@@ -62,7 +62,7 @@ class SpecialConstraintErrorListTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'%5D%5D+%5B%5BProcessing+error+type%3A%3Aconstraint%5D%5D',
 			'&po=%3FHas+improper+value+for%7C%3FHas+processing+error+text',
-			'&p=class%3Dsortable-20smwtable-2Dstriped-20smwtable-2Dclean%2Fsep%3Dul',
+			'&p=class%3Dsortable-20smwbroadtable-2Dstriped-20smwtable-2Dclean%2Fsep%3Dul',
 			'&eq=no&limit=5',
 			'&bTitle=constrainterrorlist',
 			'&bHelp=smw-constrainterrorlist-helplink',
