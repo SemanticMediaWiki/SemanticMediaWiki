@@ -107,7 +107,7 @@ class SMWURIValue extends SMWDataValue {
 				// check against blacklist
 				$uri_blacklist = explode( "\n", Message::get( 'smw_uri_blacklist', Message::TEXT, Message::CONTENT_LANGUAGE ) );
 				foreach ( $uri_blacklist as $uri ) {
-					$uri = trim( $uri );
+					$uri = trim( (string)$uri );
 					if ( $uri !== '' && $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
 						$this->addErrorMsg( [ 'smw_baduri', $value ] );
 						return;

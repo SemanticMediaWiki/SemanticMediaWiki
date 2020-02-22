@@ -135,8 +135,8 @@ class JsonResultPrinter extends FileExportPrinter {
 
 	private function buildJSON( QueryResult $res, $outputMode ) {
 
-		$flags = $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
-		$flags = $flags | ( $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
+		$flags = isset( $this->params['prettyprint'] ) && $this->params['prettyprint'] ? JSON_PRETTY_PRINT : 0;
+		$flags = $flags | ( isset( $this->params['unescape'] ) && $this->params['unescape'] ? JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES : 0 );
 
 		if ( isset( $this->params['type'] ) && $this->params['type'] === 'simple' ) {
 			$result = $this->buildSimpleList( $res );

@@ -78,6 +78,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
 
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
+
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 10001 ) );

@@ -203,7 +203,7 @@ class ExpResourceMapper {
 		);
 
 		$resource->isImported = $importDataItem instanceof DataItem;
-		$dbKey = $diWikiPage->getDBkey();
+		$dbKey = (string)$diWikiPage->getDBkey();
 
 		if ( $diWikiPage->getNamespace() === SMW_NS_PROPERTY && $dbKey !== '' && $dbKey[0] !== '-' ) {
 			$resource->isUserDefined = DIProperty::newFromUserLabel( $diWikiPage->getDBkey() )->isUserDefined();

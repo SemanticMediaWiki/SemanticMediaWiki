@@ -468,11 +468,11 @@ class SetupCheck {
 			$requirements = $this->setupFile->get( SetupFile::DB_REQUIREMENTS );
 			$args['version-title'] = $text;
 			$args['db-title'] = $this->createCopy( 'smw-setupcheck-db-title' );
-			$args['db-type'] = $requirements['type'];
+			$args['db-type'] = $requirements['type'] ?? 'N/A';
 			$args['db-current-title'] = $this->createCopy( 'smw-setupcheck-db-current-title' );
 			$args['db-minimum-title'] = $this->createCopy( 'smw-setupcheck-db-minimum-title' );
-			$args['db-current-version'] = $requirements['latest_version'];
-			$args['db-minimum-version'] = $requirements['minimum_version'];
+			$args['db-current-version'] = $requirements['latest_version'] ?? 'N/A';
+			$args['db-minimum-version'] = $requirements['minimum_version'] ?? 'N/A';
 		}
 
 		// The type is expected to match a defined target and in an event

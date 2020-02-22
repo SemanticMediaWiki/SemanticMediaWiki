@@ -92,6 +92,7 @@ class QueryLinker {
 		foreach ( $sortKeys as $key => $order_by ) {
 
 			$order_by = strtolower( $order_by );
+			$key = (string)$key;
 
 			// Default mode, skip
 			if ( $count == 1 && $key === '' && $order_by === 'asc' ) {
