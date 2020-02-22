@@ -6,6 +6,7 @@ use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
 use SMW\Services\ImporterServiceFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GNU GPL v2+
@@ -24,6 +25,16 @@ class XmlContentCreator implements ContentCreator {
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
+
+	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
+	 * @var string
+	 */
+	private $action = '';
 
 	/**
 	 * @since 3.0
@@ -61,10 +72,15 @@ class XmlContentCreator implements ContentCreator {
 	 */
 	public function create( ImportContents $importContents ) {
 
-		$indent = '   ...';
+		$this->cliMsgFormatter = new CliMsgFormatter();
+		$this->action = 'DONE';
 
-		if ( $importContents->getOption( 'skip' ) === true || $importContents->getContentsFile() === '' ) {
-			return $this->messageReporter->reportMessage( "\n   " . $importContents->getDescription() . " was skipped.\n" );
+		if (
+			$importContents->getOption( 'skip' ) === true ||
+			$importContents->getContentsFile() === '' ) {
+			return $this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->twoCols( '... ' . $importContents->getDescription() . ' ...', '[SKIP]', 3 )
+			);
 		}
 
 		$importSource = $this->importerServiceFactory->newImportStreamSource(
@@ -78,17 +94,24 @@ class XmlContentCreator implements ContentCreator {
 		$importer->setDebug( false );
 		$importer->setPageOutCallback( [ $this, 'reportPage' ] );
 
+		$info = pathinfo( $importContents->getContentsFile(), PATHINFO_BASENAME  );
+
 		if ( $importContents->getDescription() !== '' ) {
-			$this->messageReporter->reportMessage( "\n   " . $importContents->getDescription() . "\n" );
+			$info .= " (" . $importContents->getDescription() . ')';
 		}
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->firstCol( "... $info ...", 3 )
+		);
 
 		try {
 			$importer->doImport();
 		} catch ( \Exception $e ) {
-			$this->messageReporter->reportMessage( "Failed with " . $e->getMessage() );
+			$this->action = 'FAILED';
+			$importContents->addError( $e->getMessage() );
 		}
 
-		$this->messageReporter->reportMessage( "$indent done.\n" );
+		$this->reportAction();
 	}
 
 	/**
@@ -102,20 +125,34 @@ class XmlContentCreator implements ContentCreator {
 	 */
 	public function reportPage( $title, $foreignTitle, $revisionCount, $successCount, $pageInfo ) {
 
-		$indent = '   ...';
-
 		// Invalid or non-importable title
 		if ( $title === null ) {
 			return;
 		}
 
 		$title->invalidateCache();
+		$this->reportAction();
 
-		if ( $successCount > 0 ) {
-			$this->messageReporter->reportMessage( "$indent importing " . $title->getPrefixedText() . "\n" );
-		} else {
-			$this->messageReporter->reportMessage( "$indent skipping " . $title->getPrefixedText() . ", no new revision\n" );
+		// `IDENTICAL` refers to that no new revision has been created hence
+		// the content is identical
+		$state = $successCount > 0 ? "IMPORT" : "IDENTICAL,SKIP";
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->twoCols( '... ' . $title->getPrefixedText() . ' ...', "[$state]", 7 )
+		);
+	}
+
+	private function reportAction() {
+
+		if ( $this->action === '' ) {
+			return;
 		}
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->secondCol( "[{$this->action}]" )
+		);
+
+		$this->action = '';
 	}
 
 }
