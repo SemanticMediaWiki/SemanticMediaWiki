@@ -39,24 +39,6 @@ class ConstraintFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @return Options
-	 */
-	public function newConstraintOptions() {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-		$schemaTypes = $applicationFactory->getSettings()->get( 'smwgSchemaTypes' );
-
-		$options = [
-			Constraint::CLASS_CONSTRAINT_SCHEMA => $schemaTypes[Constraint::CLASS_CONSTRAINT_SCHEMA],
-			Constraint::PROPERTY_CONSTRAINT_SCHEMA => $schemaTypes[Constraint::PROPERTY_CONSTRAINT_SCHEMA]
-		];
-
-		return new Options( $options );
-	}
-
-	/**
-	 * @since 3.1
-	 *
 	 * @return ConstraintCheckRunner
 	 */
 	public function newConstraintCheckRunner() {
@@ -204,7 +186,7 @@ class ConstraintFactory {
 	public function newConstraintSchemaCompiler( Store $store ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$schemaFactory = $applicationFactory->create( 'SchemaFactory' );
+		$schemaFactory = $applicationFactory->singleton( 'SchemaFactory' );
 
 		$constraintSchemaCompiler = new ConstraintSchemaCompiler(
 			$schemaFactory->newSchemaFinder( $store ),

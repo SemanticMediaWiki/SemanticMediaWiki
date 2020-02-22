@@ -29,16 +29,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testCanConstructConstraintOptions() {
-
-		$instance = new ConstraintFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\Options',
-			$instance->newConstraintOptions()
-		);
-	}
-
 	public function testCanConstructConstraintRegistry() {
 
 		$instance = new ConstraintFactory();
