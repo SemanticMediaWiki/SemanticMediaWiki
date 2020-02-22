@@ -6,6 +6,7 @@ use DatabaseUpdater;
 use Maintenance;
 use ReflectionProperty;
 use SMW\Options;
+use SMW\Store;
 use SMW\SQLStore\Installer;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -53,9 +54,11 @@ class ExtensionSchemaUpdates implements HookListener {
 	/**
 	 * @since 2.0
 	 *
+	 * @param Store $store
+	 *
 	 * @return true
 	 */
-	public function process() {
+	public function process( Store $store ) {
 
 		$verbose = true;
 
@@ -77,11 +80,10 @@ class ExtensionSchemaUpdates implements HookListener {
 		$messageReporter = $messageReporterFactory->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( [ $this->updater, 'output' ] );
 
-		// Inject the instance here to avoid "Database serialization may cause
-		// problems, since the connection is not restored on wakeup." given that the
-		// DatabaseUpdater prior MW 1.31 as issues with serialization the options
-		// array.
-		$store = StoreFactory::getStore();
+		// Injecting `MessageReporter` here to avoid "Database serialization may
+		// cause problems, since the connection is not restored on wakeup." given
+		// that the `DatabaseUpdater` prior MW 1.31 has issues with serializing
+		// the options array.
 		$store->setMessageReporter( $messageReporter );
 
 		if ( defined( 'MW_UPDATER' ) ) {

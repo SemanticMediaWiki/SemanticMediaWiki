@@ -15,30 +15,40 @@ use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
  */
 class ExtensionSchemaUpdatesTest extends \PHPUnit_Framework_TestCase {
 
-	public function testCanConstruct() {
+	private $databaseUpdater;
+	private $store;
+
+	protected function setUp() : void {
 
 		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
+	public function testCanConstruct() {
+
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\ExtensionSchemaUpdates',
-			new ExtensionSchemaUpdates( $databaseUpdater )
+			ExtensionSchemaUpdates::class,
+			new ExtensionSchemaUpdates( $this->databaseUpdater )
 		);
 	}
 
 	public function testProcess() {
 
-		$databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
+		$this->databaseUpdater = $this->getMockBuilder( '\DatabaseUpdater' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'addExtensionUpdate' ] )
 			->getMockForAbstractClass();
 
-		$databaseUpdater->expects( $this->once() )
+		$this->databaseUpdater->expects( $this->once() )
 			->method( 'addExtensionUpdate' );
 
-		$instance = new ExtensionSchemaUpdates( $databaseUpdater );
-		$instance->process();
+		$instance = new ExtensionSchemaUpdates( $this->databaseUpdater );
+		$instance->process( $this->store );
 	}
 
 	public function testAddMaintenanceUpdateParams() {

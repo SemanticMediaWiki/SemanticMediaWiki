@@ -993,11 +993,17 @@ class Hooks {
 	 */
 	public function onLoadExtensionSchemaUpdates( $databaseUpdater ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$extensionSchemaUpdates = new ExtensionSchemaUpdates(
 			$databaseUpdater
 		);
 
-		return $extensionSchemaUpdates->process();
+		$extensionSchemaUpdates->process(
+			$applicationFactory->getStore()
+		);
+
+		return true;
 	}
 
 	/**
