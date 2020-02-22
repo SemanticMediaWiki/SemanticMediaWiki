@@ -67,6 +67,14 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
+		$status = $this->getMockBuilder( '\Status' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$status->expects( $this->any() )
+			->method( 'isOK' )
+			->will( $this->returnValue( true ) );
+
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,7 +92,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' );
+			->method( 'doEditContent' )
+			->will( $this->returnValue( $status ) );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
@@ -108,6 +117,75 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 		$importContents->setName( 'Foo' );
 
 		$instance->create( $importContents );
+	}
+
+	public function testCreate_WithError() {
+
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionIdle' )
+			->will( $this->returnCallback( function( $callback ) {
+				return call_user_func( $callback ); }
+			) );
+
+		$status = $this->getMockBuilder( '\Status' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$status->expects( $this->any() )
+			->method( 'isOK' )
+			->will( $this->returnValue( false ) );
+
+		$status->expects( $this->any() )
+			->method( 'getErrorsArray' )
+			->will( $this->returnValue( [ 'FooError', 'BarError' ] ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$title->expects( $this->any() )
+			->method( 'getContentModel' )
+			->will( $this->returnValue( CONTENT_MODEL_TEXT ) );
+
+		$page = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->once() )
+			->method( 'doEditContent' )
+			->will( $this->returnValue( $status ) );
+
+		$this->titleFactory->expects( $this->atLeastOnce() )
+			->method( 'newFromText' )
+			->will( $this->returnValue( $title ) );
+
+		$this->titleFactory->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->will( $this->returnValue( $page ) );
+
+		$instance = new TextContentCreator(
+			$this->titleFactory,
+			$this->connection
+		);
+
+		$instance->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$importContents = new ImportContents();
+		$importContents->setContentType( ImportContents::CONTENT_TEXT );
+		$importContents->setName( 'Foo' );
+
+		$instance->create( $importContents );
+
+		$this->assertEquals(
+			[ 'FooError', 'BarError' ],
+			$importContents->getErrors()
+		);
 	}
 
 	public function testCreate_NotReplaceable() {
@@ -163,6 +241,14 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
+		$status = $this->getMockBuilder( '\Status' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$status->expects( $this->any() )
+			->method( 'isOK' )
+			->will( $this->returnValue( true ) );
+
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -192,7 +278,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' );
+			->method( 'doEditContent' )
+			->will( $this->returnValue( $status ) );
 
 		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
@@ -231,6 +318,14 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 				return call_user_func( $callback ); }
 			) );
 
+		$status = $this->getMockBuilder( '\Status' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$status->expects( $this->any() )
+			->method( 'isOK' )
+			->will( $this->returnValue( true ) );
+
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -252,7 +347,8 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( 'doEditContent' );
+			->method( 'doEditContent' )
+			->will( $this->returnValue( $status ) );
 
 		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )

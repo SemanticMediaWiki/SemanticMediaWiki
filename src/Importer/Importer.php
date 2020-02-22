@@ -127,9 +127,19 @@ class Importer implements MessageReporterAware {
 			$this->contentCreator->create( $importContents );
 		}
 
-		foreach ( $importContents->getErrors() as $error ) {
+		$errors = $importContents->getErrors();
+		$count = count( $errors );
+
+		foreach ( $errors as $k => $error ) {
+
+			if ( is_array( $error ) ) {
+				$error = implode( ', ', $error );
+			}
+
+			$prefix = $k == ( $count - 1 ) ? '└' : '├';
+
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->oneCol( "... $error ...\n", 3 )
+				$cliMsgFormatter->oneCol( "$prefix $error", 7 )
 			);
 		}
 	}
