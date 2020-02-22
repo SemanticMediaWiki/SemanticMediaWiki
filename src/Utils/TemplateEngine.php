@@ -42,7 +42,7 @@ class TemplateEngine {
 		$this->templateDir = $templateDir;
 
 		if ( $this->templateDir === null ) {
-			$this->templateDir = $GLOBALS['smwgTemplateDir'];
+			$this->templateDir = $GLOBALS['smwgDir'] . '/data/template';
 		}
 	}
 

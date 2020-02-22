@@ -22,19 +22,34 @@ class SchemaFactory {
 	/**
 	 * @var []
 	 */
-	private $schemaTypes = [];
+	private $types = [];
+
+	/**
+	 * @var SchemaTypes
+	 */
+	private $schemaTypes;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $schemaTypes
+	 * @param array $types
 	 */
-	public function __construct( array $schemaTypes = [] ) {
-		$this->schemaTypes = $schemaTypes;
+	public function __construct( array $types = [] ) {
+		$this->types = $types;
+	}
 
-		if ( $this->schemaTypes === [] ) {
-			$this->schemaTypes = $GLOBALS['smwgSchemaTypes'];
+	/**
+	 * @since 3.2
+	 *
+	 * @return SchemaTypes
+	 */
+	public function getSchemaTypes() : SchemaTypes {
+
+		if ( $this->schemaTypes === null ) {
+			$this->schemaTypes = $this->newSchemaTypes( $this->types );
 		}
+
+		return $this->schemaTypes;
 	}
 
 	/**
@@ -45,48 +60,7 @@ class SchemaFactory {
 	 * @return []
 	 */
 	public function getType( $type ) {
-		return isset( $this->schemaTypes[$type] ) ? $this->schemaTypes[$type] : [];
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string $type
-	 *
-	 * @return boolean
-	 */
-	public function isRegisteredType( $type ) {
-		return isset( $this->schemaTypes[$type] );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @return []
-	 */
-	public function getRegisteredTypes() {
-		return array_keys( $this->schemaTypes );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param string|array $group
-	 *
-	 * @return []
-	 */
-	public function getRegisteredTypesByGroup( $group ) {
-
-		$registeredTypes = [];
-		$groups = (array)$group;
-
-		foreach ( $this->schemaTypes as $type => $val ) {
-			if ( isset( $val['group'] ) && in_array( $val['group'], $groups ) ) {
-				$registeredTypes[] = $type;
-			}
-		}
-
-		return $registeredTypes;
+		return $this->getSchemaTypes()->getType( $type );
 	}
 
 	/**
@@ -147,16 +121,20 @@ class SchemaFactory {
 			$type = $data['type'];
 		}
 
-		if ( !isset( $this->schemaTypes[$type] ) ) {
+		$schemaTypes = $this->getSchemaTypes();
+
+		if ( !$schemaTypes->isRegisteredType( $type ) ) {
 			throw new SchemaTypeNotFoundException( $type );
 		}
 
-		if ( isset( $this->schemaTypes[$type]['validation_schema'] ) ) {
-			$info[Schema::SCHEMA_VALIDATION_FILE] = $this->schemaTypes[$type]['validation_schema'];
+		$schemaType = $schemaTypes->getType( $type );
+
+		if ( isset( $schemaType['validation_schema'] ) ) {
+			$info[Schema::SCHEMA_VALIDATION_FILE] = $schemaType['validation_schema'];
 		}
 
-		if ( isset( $this->schemaTypes[$type]['__factory'] ) && is_callable( $this->schemaTypes[$type]['__factory'] ) ) {
-			$schema = $this->schemaTypes[$type]['__factory']( $name, $data, $info );
+		if ( isset( $schemaType['__factory'] ) && is_callable( $schemaType['__factory'] ) ) {
+			$schema = $schemaType['__factory']( $name, $data, $info );
 		} else {
 			$schema = new SchemaDefinition( $name, $data, $info );
 		}
@@ -208,6 +186,29 @@ class SchemaFactory {
 	 */
 	public function newSchemaFilterFactory() : SchemaFilterFactory {
 		return new SchemaFilterFactory();
+	}
+
+	private function newSchemaTypes( array $types ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
+
+		if ( $types === [] ) {
+			$types = $settings->get( 'smwgSchemaTypes' );
+		}
+
+		$schemaTypes = new SchemaTypes(
+			$types,
+			$settings->mung( 'smwgDir', '/data/schema' )
+		);
+
+		$schemaTypes->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
+		$schemaTypes->registerSchemaTypes( $types );
+
+		return $schemaTypes;
 	}
 
 }

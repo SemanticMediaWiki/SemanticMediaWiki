@@ -88,49 +88,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testIsRegisteredType() {
-
-		$instance = new SchemaFactory(
-			[
-				'foo' => []
-			]
-		);
-
-		$this->assertTrue(
-			$instance->isRegisteredType( 'foo' )
-		);
-	}
-
-	public function testGetRegisteredTypes() {
-
-		$instance = new SchemaFactory(
-			[
-				'foo' => [],
-				'bar' => []
-			]
-		);
-
-		$this->assertEquals(
-			[ 'foo', 'bar' ],
-			$instance->getRegisteredTypes()
-		);
-	}
-
-	public function testGetRegisteredTypesByGroup() {
-
-		$instance = new SchemaFactory(
-			[
-				'foo' => [ 'group' => 'f_group' ],
-				'bar' => [ 'group' => 'b_group' ]
-			]
-		);
-
-		$this->assertEquals(
-			[ 'foo' ],
-			$instance->getRegisteredTypesByGroup( 'f_group' )
-		);
-	}
-
 	public function testNewSchemaDefinition() {
 
 		$instance = new SchemaFactory(

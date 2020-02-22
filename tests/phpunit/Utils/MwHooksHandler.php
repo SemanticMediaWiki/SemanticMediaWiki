@@ -51,6 +51,8 @@ class MwHooksHandler {
 		'SMW::Browse::AfterIncomingPropertiesLookupComplete',
 		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
 
+		'SMW::Schema::RegisterSchemaTypes',
+
 		'SMW::GetPreferences',
 		'SMW::Parser::AfterLinksProcessingComplete',
 		'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete',

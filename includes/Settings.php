@@ -6,6 +6,7 @@ use SMW\Exception\SettingNotFoundException;
 use SMW\Exception\SettingsAlreadyLoadedException;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use RuntimeException;
 
 /**
  * @private
@@ -71,7 +72,7 @@ class Settings extends Options {
 			'smwgServicesFileDir' => $GLOBALS['smwgServicesFileDir'],
 			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'smwgMaintenanceDir' => $GLOBALS['smwgMaintenanceDir'],
-			'smwgTemplateDir' => $GLOBALS['smwgTemplateDir'],
+			'smwgDir' => $GLOBALS['smwgDir'],
 			'smwgConfigFileDir' => $GLOBALS['smwgConfigFileDir'],
 			'smwgImportFileDirs' => $GLOBALS['smwgImportFileDirs'],
 			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
@@ -292,6 +293,24 @@ class Settings extends Options {
 		}
 
 		return $r;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param mixed $key
+	 *
+	 * @return mixed
+	 * @throws RuntimeException
+	 */
+	public function mung( string $key, $mung ) {
+
+		if ( is_string( $mung ) ) {
+			return (string)$this->get( $key ) . $mung;
+		}
+
+		throw new RuntimeException( "Operation for the current type is not supported!" );
 	}
 
 }

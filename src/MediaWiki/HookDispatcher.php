@@ -7,6 +7,7 @@ use SMW\Store;
 use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
+use SMW\Schema\SchemaTypes;
 
 /**
  * @private
@@ -27,6 +28,16 @@ use Onoi\MessageReporter\MessageReporter;
  * @author mwjames
  */
 class HookDispatcher {
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md
+	 * @since 3.2
+	 *
+	 * @param SchemaTypes $schemaTypes
+	 */
+	public function onRegisterSchemaTypes( SchemaTypes $schemaTypes ) {
+		Hooks::run( 'SMW::Schema::RegisterSchemaTypes', [ $schemaTypes ] );
+	}
 
 	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
