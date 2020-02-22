@@ -32,6 +32,21 @@ class HookDispatcher {
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
 	 * @since 3.2
 	 *
+	 * @param array &$configuration
+	 */
+	public function onSettingsBeforeInitializationComplete( array &$configuration ) {
+
+		// Deprecated since 3.1
+		\Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
+
+
+		Hooks::run( 'SMW::Settings::BeforeInitializationComplete', [ &$configuration ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
+	 * @since 3.2
+	 *
 	 * @param User $user
 	 * @param array &$preferences
 	 */

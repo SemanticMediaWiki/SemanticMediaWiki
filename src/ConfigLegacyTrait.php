@@ -24,7 +24,7 @@ trait ConfigLegacyTrait {
 	 * @since 3.2
 	 *
 	 */
-	public static function loadLegacyMappings( &$configuration ) {
+	public function loadLegacyMappings( &$configuration ) {
 		self::setLegacyMappings( $configuration );
 		self::fillDeprecationNotices();
 	}

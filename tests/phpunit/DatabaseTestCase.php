@@ -137,7 +137,6 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 
 		ServicesFactory::clear();
 		PropertyRegistry::clear();
-		Settings::clear();
 		Exporter::getInstance()->clear();
 
 		parent::tearDown();

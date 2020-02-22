@@ -149,7 +149,16 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$containerBuilder->registerCallback( 'Settings', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
-			return Settings::newFromGlobals();
+
+			$settings = new Settings();
+
+			$settings->setHookDispatcher(
+				$containerBuilder->singleton( 'HookDispatcher' )
+			);
+
+			$settings->loadFromGlobals();
+
+			return $settings;
 		} );
 
 		/**
