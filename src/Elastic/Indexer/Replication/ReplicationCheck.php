@@ -58,6 +58,11 @@ class ReplicationCheck {
 	/**
 	 * @var string
 	 */
+	private $languageCode = '';
+
+	/**
+	 * @var string
+	 */
 	private $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
@@ -205,6 +210,8 @@ class ReplicationCheck {
 			]
 		);
 
+		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
+
 		$this->templateEngine->compile(
 			'line_template',
 			[
@@ -291,14 +298,14 @@ class ReplicationCheck {
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-no-connection',
-				'text' => $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE )
+				'text' => $this->msg( [ 'smw-es-replication-error-no-connection' ], Message::PARSE, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions-no-connection', Message::PARSE )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-no-connection', Message::PARSE, $this->languageCode )
 			]
 		);
 
@@ -319,14 +326,14 @@ class ReplicationCheck {
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-maintenance-mode',
-				'text' => $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE )
+				'text' => $this->msg( [ 'smw-es-replication-error-maintenance-mode' ], Message::PARSE, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions-maintenance-mode', Message::PARSE )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-maintenance-mode', Message::PARSE, $this->languageCode )
 			]
 		);
 
@@ -342,10 +349,10 @@ class ReplicationCheck {
 		$html = '';
 
 		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
-			$text = $this->msg( [ 'smw-es-replication-error-bad-request-exception', $error->get( 'exception_error' ) ], Message::PARSE );
+			$text = $this->msg( [ 'smw-es-replication-error-bad-request-exception', $error->get( 'exception_error' ) ], Message::PARSE, $this->languageCode );
 			$error_code = 'smw-es-replication-error-bad-request-exception';
 		} else {
-			$text = $this->msg( [ 'smw-es-replication-error-other-exception', $error->get( 'exception_error' ) ] );
+			$text = $this->msg( [ 'smw-es-replication-error-other-exception', $error->get( 'exception_error' ) ], Message::PARSE, $this->languageCode );
 			$error_code = 'smw-es-replication-error-other-exception';
 		}
 
@@ -360,7 +367,7 @@ class ReplicationCheck {
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions-exception' )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions-exception', Message::TEXT, $this->languageCode )
 			]
 		);
 
@@ -379,21 +386,21 @@ class ReplicationCheck {
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-divergent-date',
-				'text' => $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $error->get( 'id' ) ] )
+				'text' => $this->msg( [ 'smw-es-replication-error-divergent-date', $title_text, $error->get( 'id' ) ], Message::TEXT, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions', Message::TEXT, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'compare_template',
 			[
-				'explain' => $this->msg( 'smw-es-replication-error-divergent-date-short' ),
+				'explain' => $this->msg( 'smw-es-replication-error-divergent-date-short', Message::TEXT, $this->languageCode ),
 				'es_key' => 'Elasticsearch',
 				'es_value' => $error->get( 'time_es' ),
 				'backend_key' => 'Database',
@@ -421,21 +428,21 @@ class ReplicationCheck {
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-divergent-revision',
-				'text' => $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $error->get( 'id' ) ] )
+				'text' => $this->msg( [ 'smw-es-replication-error-divergent-revision', $title_text, $error->get( 'id' ) ], Message::TEXT, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions', Message::TEXT, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'compare_template',
 			[
-				'explain' => $this->msg( 'smw-es-replication-error-divergent-revision-short' ),
+				'explain' => $this->msg( 'smw-es-replication-error-divergent-revision-short', Message::TEXT, $this->languageCode ),
 				'es_key' => 'Elasticsearch',
 				'es_value' => $error->get( 'rev_es' ),
 				'backend_key' => 'Database',
@@ -461,14 +468,14 @@ class ReplicationCheck {
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-missing-id',
-				'text' => $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $error->get( 'id' ) ] )
+				'text' => $this->msg( [ 'smw-es-replication-error-missing-id', $title_text, $error->get( 'id' ) ], Message::TEXT, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-suggestions' )
+				'comment' => $this->msg( 'smw-es-replication-error-suggestions', Message::TEXT, $this->languageCode )
 			]
 		);
 
@@ -482,19 +489,20 @@ class ReplicationCheck {
 	private function fileAttachmentError( ReplicationError $error, $title_text ) {
 
 		$html = '';
+		$this->severityType = self::SEVERITY_TYPE_WARNING;
 
 		$this->templateEngine->compile(
 			'text_template',
 			[
 				'error_code' => 'smw-es-replication-error-file-ingest-missing-file-attachment',
-				'text' => $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title_text ], Message::PARSE )
+				'text' => $this->msg( [ 'smw-es-replication-error-file-ingest-missing-file-attachment', $title_text ], Message::PARSE, $this->languageCode )
 			]
 		);
 
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE )
+				'comment' => $this->msg( 'smw-es-replication-error-file-ingest-missing-file-attachment-suggestions', Message::PARSE, $this->languageCode )
 			]
 		);
 

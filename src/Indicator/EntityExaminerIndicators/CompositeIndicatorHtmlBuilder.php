@@ -56,6 +56,7 @@ class CompositeIndicatorHtmlBuilder {
 			'highlighter_title' => $options['highlighter_title'],
 			'placeholder_title' => $options['placeholder_title'],
 			'dir' => $options['dir'],
+			'uselang' => $options['uselang'],
 			'subject' => $options['subject'],
 			'options_raw' => $options['options_raw'],
 			'count' => count( $indicatorProviders ),
@@ -169,6 +170,7 @@ class CompositeIndicatorHtmlBuilder {
 				'has_deferred' => $options['has_deferred'] ? 'yes' : 'no',
 				'subject' => $options['subject'],
 				'dir' => $options['dir'],
+				'uselang' => $options['uselang'],
 				'count' => $options['count'],
 				'options' => $options['options_raw'],
 
@@ -190,7 +192,8 @@ class CompositeIndicatorHtmlBuilder {
 			[
 				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ] ),
 				'subject' => $options['subject'],
-				'dir' => $options['dir']
+				'dir' => $options['dir'],
+				'uselang' => $options['uselang']
 			]
 		);
 

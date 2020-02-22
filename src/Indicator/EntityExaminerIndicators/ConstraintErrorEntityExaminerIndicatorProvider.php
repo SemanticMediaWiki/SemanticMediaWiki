@@ -51,6 +51,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	private $severityType = '';
 
 	/**
+	 * @var string
+	 */
+	private $languageCode = '';
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param Store $store
@@ -142,6 +147,8 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	protected function runCheck( $subject, $options ) {
 
+		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
+
 		$errors = $this->findErrors( $subject );
 		$top = '';
 
@@ -185,7 +192,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, Message::USER_LANGUAGE )
+				'comment' => $this->msg( 'smw-constraint-error-suggestions', Message::TEXT, $this->languageCode )
 			]
 		);
 
@@ -200,7 +207,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		);
 
 		if ( count( $errors ) >= self::LOOKUP_LIMIT ) {
-			$top = $this->msg( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, Message::USER_LANGUAGE );
+			$top = $this->msg( [ 'smw-constraint-error-limit', self::LOOKUP_LIMIT ], Message::TEXT, $this->languageCode );
 			$top .= $this->templateEngine->code( 'top_line_template' );
 
 			$this->templateEngine->compile( 'sticky_top_template', [ 'content' => $top ] );
@@ -229,7 +236,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		$title = $this->msg(
 			[ 'smw-indicator-constraint-violation', count( $errors ) ],
 			Message::TEXT,
-			Message::USER_LANGUAGE
+			$this->languageCode
 		);
 
 		$this->indicators = [
@@ -286,7 +293,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		$messages = [];
 
 		foreach ( $errors as $error ) {
-			$messages[] = Message::decode( $error, Message::PARSE, Message::USER_LANGUAGE );
+			$messages[] = Message::decode( $error, Message::PARSE, $this->languageCode );
 		}
 
 		return $messages;

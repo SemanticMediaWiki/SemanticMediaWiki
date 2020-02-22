@@ -78,7 +78,8 @@ class OutputPageParserOutput implements HookListener {
 		$options = [
 			'action' => $request->getVal( 'action' ),
 			'diff' => $request->getVal( 'diff' ),
-			'isRTL' => $context->getLanguage()->isRTL()
+			'isRTL' => $context->getLanguage()->isRTL(),
+			'uselang' => $request->getVal( 'uselang' ),
 		];
 
 		if (
