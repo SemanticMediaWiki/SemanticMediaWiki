@@ -131,11 +131,11 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @param $affix string
+	 * @param string $affix
 	 *
 	 * @return string
 	 */
-	public static function id( $affix = '' ) {
+	public static function id( string $affix = '' ) : string {
 
 		if ( $affix !== '' && $affix[0] !== ':' ) {
 			$affix = ':' . $affix;

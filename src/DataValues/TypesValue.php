@@ -189,6 +189,8 @@ class TypesValue extends DataValue {
 	 */
 	protected function parseUserValue( $value ) {
 
+		$value = (string)$value;
+
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}

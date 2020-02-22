@@ -126,7 +126,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		// support inputs like " [[Test]] ";
 		// note that this only works when SMW_PARSER_LINV is set
-		$value = ltrim( rtrim( $value, ' ]' ), ' [' );
+		$value = ltrim( rtrim( (string)$value, ' ]' ), ' [' );
 
 		// #1066, Manipulate the output only for when the value has no caption
 		// assigned and only if a single :Foo is being present, ::Foo is not permitted
@@ -217,7 +217,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_dataitem = $dataItem;
 		$this->m_id = -1;
 		$this->m_title = null;
-		$this->m_fragment = $dataItem->getSubobjectName();
+		$this->m_fragment = (string)$dataItem->getSubobjectName();
 		$this->m_prefixedtext = '';
 		$this->m_caption = false; // this class can handle this
 		$this->linkAttributes = [];

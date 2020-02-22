@@ -133,6 +133,8 @@ class PropertyAliasFinder {
 	 */
 	public function registerAliasByFixedLabel( $id, $label ) {
 
+		$label = (string)$label;
+
 		// Prevent an extension to register an already known
 		// label
 		if ( isset( $this->canonicalPropertyAliases[$label] ) && $this->canonicalPropertyAliases[$label] !== $id ) {

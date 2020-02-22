@@ -134,7 +134,7 @@ class ListLookup extends Lookup {
 		if ( isset( $parameters['search'] ) && $parameters['search'] === '*' ) {
 			// wildcard
 		} elseif ( isset( $parameters['search'] ) && isset( $parameters['strict'] ) ) {
-			$search = str_replace( "*", "", $parameters['search'] );
+			$search = str_replace( "*", "", (string)$parameters['search'] );
 
 			if ( $search !== '' && $search[0] !== '_' ) {
 				$search = str_replace( "_", " ", $search );
@@ -146,7 +146,7 @@ class ListLookup extends Lookup {
 			);
 
 		} elseif ( isset( $parameters['search'] ) ) {
-			$search = str_replace( "*", "", $parameters['search'] );
+			$search = str_replace( "*", "", (string)$parameters['search'] );
 
 			if ( $search !== '' && $search[0] !== '_' ) {
 				$search = str_replace( "_", " ", $search );

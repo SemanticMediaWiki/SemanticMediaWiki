@@ -440,7 +440,7 @@ class Rebuilder {
 		$params = [
 			'index' => $index,
 			'body' => [
-				'settings' => $indexDef['settings']
+				'settings' => $indexDef['settings'] ?? []
 			]
 		];
 
@@ -449,7 +449,7 @@ class Rebuilder {
 		$params = [
 			'index' => $index,
 			'type'  => $type,
-			'body'  => $indexDef['mappings']
+			'body'  => $indexDef['mappings'] ?? []
 		];
 
 		$this->client->putMapping( $params );

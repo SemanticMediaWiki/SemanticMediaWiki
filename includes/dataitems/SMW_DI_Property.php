@@ -86,14 +86,14 @@ class DIProperty extends SMWDataItem {
 	 */
 	public function __construct( $key, $inverse = false ) {
 
-		if ( $key === false || $key === '' || $key[0] == '-' ) {
+		$key = (string)$key;
+
+		if ( $key === '' || $key[0] == '-' ) {
 			throw new PropertyLabelNotResolvedException( "Illegal property key \"$key\"." );
 		}
 
-		if ( $key[0] == '_' ) {
-			if ( !PropertyRegistry::getInstance()->isRegistered( $key ) ) {
-				throw new PredefinedPropertyLabelMismatchException( "There is no predefined property with \"$key\"." );
-			}
+		if ( $key[0] == '_' && !PropertyRegistry::getInstance()->isRegistered( $key ) ) {
+			throw new PredefinedPropertyLabelMismatchException( "There is no predefined property with \"$key\"." );
 		}
 
 		$this->m_key = $key;

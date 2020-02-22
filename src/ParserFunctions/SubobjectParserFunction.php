@@ -295,6 +295,7 @@ class SubobjectParserFunction {
 		foreach ( $parameters as $property => $values ) {
 
 			$prop = $property;
+			$property = (string)$property;
 
 			// Normalize property names to generate the same hash for when
 			// CapitalLinks is enabled (has foo === Has foo)

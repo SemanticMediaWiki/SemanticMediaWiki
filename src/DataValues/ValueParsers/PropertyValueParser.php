@@ -164,6 +164,7 @@ class PropertyValueParser implements ValueParser {
 
 		$inverse = false;
 		$capitalizedName = '';
+		$value = (string)$value;
 
 		// slightly normalise label
 		$propertyName = $this->doNormalize(
@@ -176,8 +177,8 @@ class PropertyValueParser implements ValueParser {
 		}
 
 		// property refers to an inverse
-		if ( ( $propertyName !== '' ) && ( $propertyName [0] == '-' ) ) {
-			$propertyName = $this->doNormalize( (string)substr( $value, 1 ), $this->isCapitalLinks );
+		if ( $propertyName !== '' && $propertyName[0] == '-' ) {
+			$propertyName = $this->doNormalize( substr( $value, 1 ), $this->isCapitalLinks );
 			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
 			/// NOTE It is necessary to normalize again here, since normalization may uppercase the first letter.
 			$inverse = true;

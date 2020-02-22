@@ -125,7 +125,7 @@ class JsonTestCaseFileHandler {
 			$noop = '';
 
 			if ( is_array( $value ) ) {
-				$versionToSkip = $value[0];
+				$versionToSkip = (string)$value[0];
 				$reason = $value[1];
 			} else {
 				$reason = $value;

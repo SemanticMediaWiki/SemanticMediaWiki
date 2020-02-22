@@ -177,7 +177,7 @@ class PSubjectLookup extends Lookup {
 		$requestOptions->setOffset( $offset );
 
 		if ( isset( $parameters['search'] ) && $parameters['search'] !== '' ) {
-			$search = $parameters['search'];
+			$search = (string)$parameters['search'];
 
 			if ( $search !== '' && $search[0] !== '_' ) {
 				$search = str_replace( "_", " ", $search );

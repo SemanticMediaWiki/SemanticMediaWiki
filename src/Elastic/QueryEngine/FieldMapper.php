@@ -272,7 +272,7 @@ class FieldMapper {
 		}
 
 		// Is it a phrase match as in "Foo bar"?
-		if ( $value !=='' && $value[0] === '"' && substr( $value, -1 ) === '"' ) {
+		if ( is_string( $value ) && $value !== '' && $value[0] === '"' && substr( $value, -1 ) === '"' ) {
 			return $this->match_phrase( $field, trim( $value, '"' ) );
 		}
 

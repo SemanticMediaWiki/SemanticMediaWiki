@@ -67,7 +67,7 @@ class StringValueFormatter extends DataValueFormatter {
 
 	protected function doFormat( $dataValue, $type, $linker ) {
 
-		$text = $dataValue->getDataItem()->getString();
+		$text = (string)$dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
 
 		// Make a possibly shortened printout string for displaying the value.

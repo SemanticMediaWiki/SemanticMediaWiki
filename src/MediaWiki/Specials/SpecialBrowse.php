@@ -56,7 +56,7 @@ class SpecialBrowse extends SpecialPage {
 		}
 
 		// Auto-generated link is marked with a leading :
-		if ( $query !== '' && $query[0] === ':' ) {
+		if ( is_string( $query ) && $query !== '' && $query[0] === ':' ) {
 			$articletext = Encoder::unescape( $query );
 		} elseif ( $articletext === null ) {
 			$articletext = $query;

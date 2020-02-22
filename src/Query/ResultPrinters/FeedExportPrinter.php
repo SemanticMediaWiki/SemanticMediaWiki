@@ -369,7 +369,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		$text = FeedItem::stripComment( implode( '', $items ) ) . FeedItem::stripComment( $pageContent );
 
 		// Abstract of the first 200 chars
-		if ( $this->params['page'] === 'abstract' ) {
+		if ( ( $this->params['page'] ?? '' ) === 'abstract' ) {
 			$text = preg_replace('/\s+?(\S+)?$/', '', substr( $text, 0, 201 ) ) . ' ...';
 		}
 

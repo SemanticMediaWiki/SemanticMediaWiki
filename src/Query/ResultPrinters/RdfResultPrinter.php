@@ -36,7 +36,12 @@ class RdfResultPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType( QueryResult $queryResult ) {
-		return $this->params['syntax'] === 'turtle' ? 'application/x-turtle' : 'application/xml';
+
+		if ( ( $this->params['syntax'] ?? '' ) === 'turtle' ) {
+			return 'application/x-turtle';
+		}
+
+		return 'application/xml';
 	}
 
 	/**

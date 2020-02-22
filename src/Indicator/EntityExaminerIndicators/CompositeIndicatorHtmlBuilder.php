@@ -109,7 +109,7 @@ class CompositeIndicatorHtmlBuilder {
 			} else {
 				$options['is_placeholder'] = false;
 				$indicator = $indicatorProvider->getIndicators();
-				$indicator['tab_id'] = "itab" . $indicator['id'];
+				$indicator['tab_id'] = "itab" . ( $indicator['id'] ?? 'unkown' );
 
 				$indicator['subject'] = $options['subject'];
 				$indicator['dir'] = $options['dir'];
