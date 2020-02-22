@@ -10,6 +10,16 @@
 			"options": {
 				"replaceable": { "LAST_EDITOR": "IS_IMPORTER" }
 			}
+		},
+		{
+			"page": "Group:Predefined properties",
+			"namespace": "SMW_NS_SCHEMA",
+			"contents": {
+				"importFrom": "/groups/predefined.properties.json"
+			},
+			"options": {
+				"replaceable": { "LAST_EDITOR": "IS_IMPORTER" }
+			}
 		}
 	],
 	"meta": {

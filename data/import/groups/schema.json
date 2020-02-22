@@ -1,10 +1,10 @@
 {
     "type": "PROPERTY_GROUP_SCHEMA",
-    "groups": [
-        {
-            "group_name": "Schema properties",
+    "groups": {
+        "schema_group": {
+            "canonical_name": "Schema properties",
             "message_key": "smw-property-group-label-schema-group",
-            "properties": [
+            "property_keys": [
                 "_SCHEMA_TYPE",
                 "_SCHEMA_DEF",
                 "_SCHEMA_DESC",
@@ -15,7 +15,7 @@
                 "_PROFILE_SCHEMA"
             ]
         }
-    ],
+    },
     "tags": [
         "group",
         "property group"

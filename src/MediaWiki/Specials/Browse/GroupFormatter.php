@@ -257,19 +257,34 @@ class GroupFormatter {
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
 			foreach ( $schemaDefinition->get( 'groups' ) as $data ) {
 
-				if ( !isset( $data['properties'] ) || !isset( $data['group_name'] ) ) {
+				$message_key = '';
+
+				if ( isset( $data['properties'] ) ) {
+					$property_keys = $data['properties'];
+				} elseif ( isset( $data['property_keys'] ) ) {
+					$property_keys = $data['property_keys'];
+				} else {
 					continue;
 				}
 
-				$group = str_replace( '_', ' ', $data['group_name'] );
-				$message_key = isset( $data['message_key'] ) ? $data['message_key'] : '';
+				if( isset( $data['message_key'] ) ) {
+					$message_key = $data['message_key'];
+				}
 
-				if ( $message_key !== '' && !Message::exists( $message_key ) && isset( $data['group_name'] ) ) {
+				if ( isset( $data['canonical_name'] ) ) {
+					$group = $data['canonical_name'];
+				} elseif ( isset( $data['group_name'] ) ) {
 					$group = $data['group_name'];
+				} elseif( $message_key === '' ) {
+					continue;
+				}
+
+				if ( $message_key !== '' && !Message::exists( $message_key ) ) {
+					$message_key = $group;
 				}
 
 				$list[$group] = [
-					'properties' => array_flip( $data['properties'] ),
+					'properties' => array_flip( $property_keys ),
 					'msg_key' => $message_key,
 					'item' => DIWikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
 				];

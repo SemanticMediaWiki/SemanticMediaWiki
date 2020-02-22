@@ -45,16 +45,22 @@
 			}
 		},
 		"groups": {
-			"$id": "#/properties/groups",
-			"type": "array",
-			"title": "group list",
-			"minItems": 1,
-			"items": {
-				"$ref": "#/definitions/group"
-			}
+			"$ref": "#/definitions/groups"
 		}
 	},
 	"definitions": {
+		"groups": {
+			"$id": "#/definitions/groups",
+			"type": "object",
+			"title": "Definition of groups",
+			"minProperties": 1,
+			"patternProperties": {
+				"^(.*)_group": {
+					"$ref": "#/definitions/group"
+				}
+			},
+			"additionalProperties": false
+		},
 		"group": {
 			"$id": "#/definitions/group",
 			"type": "object",
@@ -63,44 +69,41 @@
 			"propertyNames": {
 				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
 			},
-			"required": [ "properties", "group_name" ],
+			"required": [ "property_keys", "canonical_name" ],
 			"properties": {
 				"message_key": {
 					"$ref": "#/definitions/message_key"
 				},
-				"group_name": {
-					"$ref": "#/definitions/group_name"
+				"canonical_name": {
+					"$ref": "#/definitions/canonical_name"
 				},
-				"properties": {
-					"$ref": "#/definitions/properties"
+				"property_keys": {
+					"$ref": "#/definitions/property_keys"
 				}
 			},
-			"additionalProperties": false,
-			"required": [
-				"properties"
-			]
+			"additionalProperties": false
 		},
 		"message_key": {
 			"$id": "#/definitions/message_key",
 			"type": "string",
-			"title": "message key/label",
+			"title": "Group name as message key",
 			"default": "",
 			"examples": [
 				"smw-property-group-label-schema-group"
 			],
 			"pattern": "^(smw|sar|sesp|sbl|scite|sg)-property-group-label-(.*)$"
 		},
-		"group_name": {
-			"$id": "#/definitions/group_name",
+		"canonical_name": {
+			"$id": "#/definitions/canonical_name",
 			"type": "string",
-			"title": "Simple group label",
+			"title": "Canonical group name",
 			"default": "",
 			"pattern": "^(.*)$"
 		},
-		"properties": {
-			"$id": "#/definitions/properties",
+		"property_keys": {
+			"$id": "#/definitions/property_keys",
 			"type": "array",
-			"title": "property list",
+			"title": "List of properties keys",
 			"minItems": 1,
 			"items": {
 				"type": "string",
