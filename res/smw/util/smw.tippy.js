@@ -315,6 +315,7 @@
 	// Running in default mode which would be on
 	// $( document ).ready( function() { ... } ); when relying on jQuery
 	tippy( '#bodyContent', options )
+	tippy( '#mw-data-after-content', options )
 	tippy( '.mw-indicators', options )
 
 	/**
