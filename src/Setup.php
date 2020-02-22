@@ -98,7 +98,7 @@ final class Setup {
 	 * @since 3.0
 	 */
 	public static function isEnabled() {
-		return defined( 'SMW_VERSION' ) && $GLOBALS['smwgSemanticsEnabled'];
+		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
 	}
 
 	/**
@@ -146,10 +146,6 @@ final class Setup {
 		$this->initMessageCallbackHandler();
 		$this->addDefaultConfigurations( $vars, $rootDir );
 
-		if ( CompatibilityMode::extensionNotEnabled() ) {
-			CompatibilityMode::disableSemantics();
-		}
-
 		$this->registerJobClasses( $vars );
 		$this->registerPermissions( $vars );
 
@@ -194,6 +190,43 @@ final class Setup {
 				'dependencies' => 'mediawiki.api',
 				'targets' => [ 'desktop', 'mobile' ]
 			];
+		}
+
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		// #4505
+		//
+		// In case an extension is setting some smwg* related parameters during
+		// its registration via `ExtensionRegistry` at the `callback` point the
+		// relative position to `enableSemantics` matters whether those
+		// settings can be recognized in time of the invocation or not.
+		//
+		// Why?
+		//
+		// We isolate smwg* GLOBALS access during `Setup::initExtension` which
+		// is called during the `callback` point of the `ExtensionRegistry` and
+		// means that the sequence of an extension added in `LocalSettings.php`
+		// matters on whether settings can be manipulated or not via
+		// `extension.json` and `ExtensionRegistry`.
+		//
+		// `Setup::init` is called during the `ExtensionFunctions` point of the
+		// `ExtensionRegistry` which comes last and makes it possible for
+		// settings to be overriden that happen during the `callback` point
+		// in `ExtensionRegistry`.
+		$this->overrideSettings( $settings, $vars );
+	}
+
+	private function overrideSettings( Settings $settings, array $vars ) {
+
+		$options = $settings->toArray();
+
+		foreach ( $options as $key => $value ) {
+
+			if ( !isset( $vars[$key] ) || $vars[$key] === $value ) {
+				continue;
+			}
+
+			$settings->set( $key, $vars[$key] );
 		}
 	}
 
@@ -331,10 +364,7 @@ final class Setup {
 	 */
 	private function registerPermissions( &$vars ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
-
-		if ( !$settings->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 
@@ -371,8 +401,8 @@ final class Setup {
 		}
 
 		// Add an additional protection level restricting edit/move/etc
-		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
-			$vars['wgRestrictionLevels'][] = $editProtectionRight;
+		if ( ( $vars['smwgEditProtectionRight'] ?? false ) !== false ) {
+			$vars['wgRestrictionLevels'][] = $vars['smwgEditProtectionRight'];
 		}
 	}
 
@@ -387,9 +417,7 @@ final class Setup {
 	 */
 	private function registerFooterIcon( &$vars, $path ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		if ( !$applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 

@@ -59,6 +59,17 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment( $this->defaultConfig );
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$settings = $this->getMockBuilder( '\SMW\Settings' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'toArray' ] )
+			->getMock();
+
+		$settings->expects( $this->any() )
+			->method( 'toArray' )
+			->will( $this->returnValue( [] ) );
+
+		$this->testEnvironment->registerObject( 'Settings', $settings );
 	}
 
 	protected function tearDown() : void {
@@ -168,6 +179,46 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 
+	}
+
+	public function testOverrideSettings() {
+
+		$default = [
+			'smwgNamespacesWithSemanticLinks' => [],
+			'smwgResourceLoaderDefFiles' => [],
+			'smwgConfigFileDir' => '',
+			'smwgUpgradeKey' => '',
+			'wgLanguageCode' => 'en',
+			'wgServer' => '',
+		];
+
+		$options = [
+			'smwgNamespacesWithSemanticLinks' => [ 'Foo' => true ]
+		] + $default;
+
+		$settings = $this->getMockBuilder( '\SMW\Settings' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'toArray', 'set' ] )
+			->getMock();
+
+		$settings->expects( $this->once() )
+			->method( 'toArray' )
+			->will( $this->returnValue( $options ) );
+
+		// Only override the one that is different
+		$settings->expects( $this->once() )
+			->method( 'set' )
+			->with( $this->stringContains( 'smwgNamespacesWithSemanticLinks' ) );
+
+		$this->testEnvironment->registerObject( 'Settings', $settings );
+
+		$config = $default + [
+			'wgLanguageCode' => 'en',
+			'wgServer' => '',
+		];
+
+		$instance = new Setup();
+		$instance->init( $config, 'Foo' );
 	}
 
 	public function testRegisterParamDefinitions() {
