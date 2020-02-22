@@ -45,11 +45,9 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 	}
 
 	public function testCanConstruct() {
@@ -62,21 +60,19 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDisabled() {
 
-		$spyMessageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
-
 		$instance = new Importer(
 			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
 		);
 
-		$instance->setMessageReporter( $spyMessageReporter );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->isEnabled( false );
 
 		$instance->runImport();
 
 		$this->assertContains(
 			'Import support was not enabled (or skipped), stopping the task',
-			$spyMessageReporter->getMessagesAsString()
+			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
 
@@ -107,7 +103,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			$this->contentCreator
 		);
 
-		$instance->setMessageReporter( $this->messageReporter );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setReqVersion( 1 );
 
 		$instance->runImport();
@@ -136,10 +132,48 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			$this->contentCreator
 		);
 
-		$instance->setMessageReporter( $this->messageReporter );
+		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setReqVersion( 1 );
 
 		$instance->runImport();
+	}
+
+	public function testrunImportWithErrorDuringCreation() {
+
+		$importContents = new ImportContents();
+		$importContents->setVersion( 1 );
+
+		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
+			->method( 'getContentList' )
+			->will( $this->returnValue( [ 'Foo' => [ $importContents ] ] ) );
+
+		$this->jsonImportContentsFileDirReader->expects( $this->atLeastOnce() )
+			->method( 'getErrors' )
+			->will( $this->returnValue( [] ) );
+
+		$this->contentCreator->expects( $this->once() )
+			->method( 'create' )
+			->with( $this->callback( function( $importContents ) {
+					$importContents->addError( 'BarError from create' );
+					$importContents->addError( [ 'Foo1', 'Foo2' ] );
+					return true;
+				}
+			) );
+
+		$instance = new Importer(
+			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			$this->contentCreator
+		);
+
+		$instance->setMessageReporter( $this->spyMessageReporter );
+		$instance->setReqVersion( 1 );
+
+		$instance->runImport();
+
+		$this->assertContains(
+			'BarError from create',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
 	}
 
 }

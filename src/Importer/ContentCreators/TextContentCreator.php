@@ -32,6 +32,11 @@ class TextContentCreator implements ContentCreator {
 	private $connection;
 
 	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param TitleFactory $titleFactory
@@ -62,7 +67,7 @@ class TextContentCreator implements ContentCreator {
 			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
 		}
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$indent = '   ...';
 		$indent_e = '      ';
@@ -70,7 +75,7 @@ class TextContentCreator implements ContentCreator {
 
 		if ( $name === '' ) {
 			return $this->messageReporter->reportMessage(
-				$cliMsgFormatter->oneCol( "... no valid page name, abort import.", 3 )
+				$this->cliMsgFormatter->oneCol( "... no valid page name, abort import.", 3 )
 			);
 		}
 
@@ -81,7 +86,7 @@ class TextContentCreator implements ContentCreator {
 
 		if ( $title === null ) {
 			return $this->messageReporter->reportMessage(
-				$cliMsgFormatter->oneCol( "... $name returned with a null title, abort import.", 3 )
+				$this->cliMsgFormatter->oneCol( "... $name returned with a null title, abort import.", 3 )
 			);
 		}
 
@@ -103,54 +108,62 @@ class TextContentCreator implements ContentCreator {
 
 		if ( $title->exists() && !$replaceable ) {
 			return $this->messageReporter->reportMessage(
-				$cliMsgFormatter->twoCols( "... $prefixedText ...", '[EXISTS,SKIP]', 3 )
+				$this->cliMsgFormatter->twoCols( "... $prefixedText ...", '[EXISTS,SKIP]', 3 )
 			);
 		} elseif( $title->exists() && $replaceable ) {
 			$action = 'EXISTS,REPLACE';
 
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
 			);
 		} elseif( $title->exists() ) {
 			$action = 'EXISTS,REPLACE';
 
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
 			);
 		} else {
 			$action = 'CREATE';
 
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
 			);
 		}
 
 		// Avoid a possible "Notice: WikiPage::doEditContent: Transaction already
 		// in progress (from DatabaseUpdater::doUpdates), performing implicit
 		// commit ..."
-		$this->connection->onTransactionIdle( function() use ( $page, $title, $importContents ) {
-			$this->doCreateContent( $page, $title, $importContents );
+		$this->connection->onTransactionIdle( function() use ( $page, $title, $importContents, $action ) {
+			$this->doCreateContent( $page, $title, $importContents, $action );
 		} );
-
-		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->secondCol( "[$action]" )
-		);
 	}
 
-	private function doCreateContent( $page, $title, $importContents ) {
+	private function doCreateContent( $page, $title, $importContents, $action ) {
 
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title
 		);
 
-		$page->doEditContent(
+		$status = $page->doEditContent(
 			$content,
 			$importContents->getDescription(),
 			EDIT_FORCE_BOT
 		);
 
+		if ( !$status->isOk() ) {
+			$action = 'FAILED';
+
+			foreach ( $status->getErrorsArray() as $error ) {
+				$importContents->addError( $error );
+			}
+		}
+
 		$title->invalidateCache();
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->secondCol( "[$action]" )
+		);
 	}
 
 	private function fetchContents( $importContents ) {
