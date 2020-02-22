@@ -205,6 +205,13 @@ span.smwtlcomment {
 }
 
 .smwtable-clean {
+	max-width: 100%;
+	margin-bottom: 20px;
+	background-color: transparent;
+	border-spacing: 0px;
+}
+
+.smwbroadtable-clean {
 	width: 100%;
 	max-width: 100%;
 	margin-bottom: 20px;
@@ -212,19 +219,25 @@ span.smwtlcomment {
 	border-spacing: 0px;
 }
 
-.smwtable-clean tr {
-border-top: 1px solid #dddddd;
+.smwtable-clean tr,
+.smwbroadtable-clean tr {
+	border-top: 1px solid #dddddd;
 }
 
-.smwtable-clean th {
+.smwtable-clean th,
+.smwbroadtable-clean th {
 	text-align: left;
 }
 
-.smwtable-clean td, .smwtable-clean th {
+.smwtable-clean td,
+.smwbroadtable-clean td,
+.smwtable-clean th,
+.smwbroadtable-clean th {
 	padding: 0;
 }
 
-.smwtable-clean tr > th {
+.smwtable-clean tr > th,
+.smwbroadtable-clean tr > th {
 	padding: 8px !important;
 	line-height: 1.42857143;
 	vertical-align: top;
@@ -235,7 +248,8 @@ border-top: 1px solid #dddddd;
 	vertical-align: middle;
 }
 
-.smwtable-clean tr > td {
+.smwtable-clean tr > td,
+.smwbroadtable-clean tr > td {
 	padding: 8px !important;
 	line-height: 1.42857143;
 	vertical-align: top;
@@ -244,11 +258,13 @@ border-top: 1px solid #dddddd;
 	border-spacing: 0;
 }
 
-.smwtable-clean tbody > tr:nth-child(even) {
+.smwtable-clean tbody > tr:nth-child(even),
+.smwbroadtable-clean tbody > tr:nth-child(even) {
 	background-color: #f5f5f5;
 }
 
-.smwtable-clean tr > th.headerSort {
+.smwtable-clean tr > th.headerSort,
+.smwbroadtable-clean tr > th.headerSort {
 	padding-right: 21px !important;
 }
 
