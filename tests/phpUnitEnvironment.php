@@ -66,6 +66,13 @@ class PHPUnitEnvironment {
 	}
 
 	/**
+	 * @return boolean|string
+	 */
+	public function getPcreInfo() {
+		return defined( 'PCRE_VERSION' ) ? PCRE_VERSION : false;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getSiteLanguageCode() {
