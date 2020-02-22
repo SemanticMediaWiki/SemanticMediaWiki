@@ -18,7 +18,6 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 
 	private $contentModeller;
 	private $testEnvironment;
-	private $fixtures;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -26,7 +25,6 @@ class ContentModellerTest extends \PHPUnit_Framework_TestCase {
 		$this->contentModeller = new ContentModeller();
 
 		$this->testEnvironment = new TestEnvironment();
-		$this->fixtures = __DIR__ . '/Fixtures';
 	}
 
 	public function testCanConstruct() {

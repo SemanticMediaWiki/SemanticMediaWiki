@@ -40,6 +40,10 @@ class ContentModeller {
 				$importContents->setName( $value['page'] );
 			}
 
+			if ( isset( $value['import_performer'] ) ) {
+				$importContents->setImportPerformer( $value['import_performer'] );
+			}
+
 			if ( isset( $value['description'] ) ) {
 				$importContents->setDescription( $value['description'] );
 			} elseif ( isset( $fileContents['description'] ) ) {
@@ -54,11 +58,7 @@ class ContentModeller {
 				$importContents->setVersion( 0 );
 			}
 
-			if ( isset( $value['contents']['type'] ) && $value['contents']['type'] === 'xml' ) {
-				$contents[] = $this->newImportContents( $importContents, $fileDir, $value );
-			} else {
-				$contents[] = $this->newImportContents( $importContents, $fileDir, $value );
-			}
+			$contents[] = $this->newImportContents( $importContents, $fileDir, $value );
 		}
 
 		return $contents;
