@@ -65,6 +65,11 @@
 
 			var isRTL = document.documentElement.dir === "rtl";
 
+			// Set a possinle maxwidth before accessing the props
+			if ( tip.reference.getAttribute( "data-maxwidth" ) ) {
+				tip.set( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
+			}
+
 			// Move away from the `bodyContent` border
 			if ( tip.reference.offsetWidth < tip.props.maxWidth ) {
 
@@ -101,10 +106,6 @@
 
 				if ( tip.reference.getAttribute( "data-state" ) ) {
 					tip.smw.isPersistent = tip.reference.getAttribute( "data-state" ) === 'persistent';
-				}
-
-				if ( tip.reference.getAttribute( "data-maxwidth" ) ) {
-					tip.set( { maxWidth: parseInt( tip.reference.getAttribute( "data-maxwidth" ) ) } );
 				}
 
 				if ( tip.reference.getAttribute( "data-tooltipclass" ) ) {

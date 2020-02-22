@@ -8,6 +8,7 @@ use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
 use SMWOutputs;
+use SMW\Highlighter;
 
 /**
  * Class that provides the {{#info}} parser function
@@ -36,28 +37,50 @@ class InfoParserFunction implements HookHandler {
 			return '';
 		}
 
-		$message = $parser->mStripState ? $parser->mStripState->unstripBoth( $parameters[ 'message' ]->getValue() ) : $parameters[ 'message' ]->getValue();
+		/**
+		 * Non-escaping is safe bacause a user's message is passed through parser, which will
+		 * handle unsafe HTM elements.
+		 */
+		$message = $parameters[ 'message' ]->getValue();
+
+		if ( $parser->mStripState ) {
+			$message = $parser->mStripState->unstripBoth( $message );
+		}
+
+		// If the message contains another highlighter (caused by recursive
+		// parsing etc.) remove the tags to allow to show the text without making
+		// the JS go berserk due to having more than one `smw-highlighter`
+		if ( strpos( $message, 'smw-highlighter' ) !== '' ) {
+			$message = preg_replace_callback(
+					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
+					function( $matches ) {
+						return strip_tags( $matches[0] );
+					},
+					$message
+			);
+		}
 
 		if ( $message === '' ) {
 			return '';
 		}
 
-		/**
-		 * Non-escaping is safe bacause a user's message is passed through parser, which will
-		 * handle unsafe HTM elements.
-		 */
-		$result = smwfEncodeMessages(
-			[ $message ],
-			$parameters['icon']->getValue(),
-			' <!--br-->',
-			false // No escaping.
+		$highlighter = Highlighter::factory(
+			$parameters['icon']->getValue()
 		);
+
+		$highlighter->setContent( [
+			'caption'    => null,
+			'content'    => Highlighter::decode( $message ),
+			'maxwidth'   => $parameters['max-width']->getValue(),
+			'themeclass' => $parameters['theme']->getValue()
+		] );
+
+		$result = $highlighter->getHtml();
 
 		if ( !is_null( $parser->getTitle() ) && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
-		}
-		else {
+		} else {
 			SMWOutputs::commitToParser( $parser );
 		}
 
@@ -87,6 +110,17 @@ class InfoParserFunction implements HookHandler {
 					'default' => 'info',
 					'values' => [ 'info', 'warning', 'error', 'note' ],
 				],
+				[
+					'name' => 'max-width',
+					'default' => '',
+					'message' => 'smw-info-par-max-width',
+				],
+				[
+					'name' => 'theme',
+					'default' => '',
+					'values' => [ 'square-border', 'square-border-light' ],
+					'message' => 'smw-info-par-theme',
+				]
 			],
 			[
 				'message',

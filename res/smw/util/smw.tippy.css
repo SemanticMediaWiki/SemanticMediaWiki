@@ -57,15 +57,13 @@
 }
 
 .tippy-content-container {
-    padding: .3em .8em;
-    margin-bottom: 0.2em;
-    margin-top: 0.2em;
+    padding: .5em .8em;
     text-align: initial;
     word-break: break-word;
-   /* max-width: 260px; */
-   font-size: 14px;
-   max-height: 250px;
-   overflow-y: auto;
+    /* max-width: 260px; */
+    font-size: 14px;
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 .tippy-content-container ul {
@@ -95,15 +93,24 @@
 }
 
 .tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-border-theme.square-border-light[x-placement^=bottom] .tippy-arrow,
 .tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow,
+.tippy-tooltip.light-theme.square-border-light[x-placement^=bottom] .tippy-arrow,
 .tippy-tooltip.light-border-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after,
-.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after {
+.tippy-tooltip.light-border-theme.square-border-light[x-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme.square-border-transparent-arrow[x-placement^=bottom] .tippy-arrow:after,
+.tippy-tooltip.light-theme.square-border-light[x-placement^=bottom] .tippy-arrow:after {
      border-bottom-color: #fff;
 }
 
 .tippy-tooltip.light-border-theme.square-border,
+.tippy-tooltip.light-border-theme.square-border-light,
 .tippy-tooltip.light-border-theme.square-border-transparent-arrow {
     border-radius: 0;
+}
+
+.square-border-light .tippy-header {
+    background-color: #fff
 }
 
 .tippy-cancel {
