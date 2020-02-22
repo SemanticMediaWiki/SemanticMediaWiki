@@ -205,4 +205,41 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 		);
 	}
 
+	public function testPredefinedPropertyHasIndicator_DifferentRevision() {
+
+		$this->entityIdManager->expects( $this->once() )
+			->method( 'findAssociatedRev' )
+			->with( $this->equalTo( '_MDAT' ) )
+			->will( $this->returnValue( 42 ) );
+
+		$this->revisionGuard->expects( $this->once() )
+			->method( 'getLatestRevID' )
+			->will( $this->returnValue( 1001 ) );
+
+		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
+
+		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
+			$this->store
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
+		$this->assertTrue(
+			$instance->hasIndicator( $subject, [] )
+		);
+
+		$res = $instance->getIndicators();
+
+		$this->assertEquals(
+			'smw-entity-examiner-associated-revision-mismatch',
+			$res['id']
+		);
+	}
+
 }

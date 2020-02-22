@@ -5,6 +5,7 @@ namespace SMW\Indicator\EntityExaminerIndicators;
 use SMW\Message;
 use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Utils\TemplateEngine;
@@ -114,12 +115,24 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 		$this->indicators = [];
 
+		$latestRevID = $this->revisionGuard->getLatestRevID(
+			$subject->getTitle()
+		);
+
+		// Make sure to match the correct internal predefined property key
+		// when it is not a user-defined property
+		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
+			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+
+			if ( !$property->isUserDefined() ) {
+				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+			}
+		}
+
 		$associatedRev = (int)$this->store->getObjectIds()->findAssociatedRev(
 			$subject->getDBKey(),
 			$subject->getNamespace()
 		);
-
-		$latestRevID = $this->revisionGuard->getLatestRevID( $subject->getTitle() );
 
 		if ( $latestRevID != $associatedRev ) {
 			$this->buildHTML( $latestRevID, $associatedRev, $options );
