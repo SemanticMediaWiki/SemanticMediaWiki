@@ -49,11 +49,12 @@ $phpUnitEnvironment->writeLn( "", $phpUnitEnvironment->getVersion( 'store' ) );
 $phpUnitEnvironment->writeNewLn( "MediaWiki:", $phpUnitEnvironment->getVersion( 'mw' ) );
 $phpUnitEnvironment->writeLn( "", $autoloadType );
 
-$phpUnitEnvironment->writeLn( "Site language:", $phpUnitEnvironment->getSiteLanguageCode() );
-$phpUnitEnvironment->writeNewLn( "Execution time:", $phpUnitEnvironment->executionTime() );
-$phpUnitEnvironment->writeLn( "Debug logs:", ( $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled' ) );
-$phpUnitEnvironment->writeNewLn( "Xdebug:", ( ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' ) );
-$phpUnitEnvironment->writeLn( "Intl/ICU:", ( ( $intl = $phpUnitEnvironment->getIntlInfo() ) ? $intl : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeNewLn( "Site language:", $phpUnitEnvironment->getSiteLanguageCode() );
+$phpUnitEnvironment->writeLn( "Execution time:", $phpUnitEnvironment->executionTime() );
+$phpUnitEnvironment->writeNewLn( "Debug logs:", ( $phpUnitEnvironment->enabledDebugLogs() ? 'Enabled' : 'Disabled' ) );
+$phpUnitEnvironment->writeLn( "Xdebug:", ( ( $version = $phpUnitEnvironment->getXdebugInfo() ) ? $version : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeNewLn( "Intl/ICU:", ( ( $intl = $phpUnitEnvironment->getIntlInfo() ) ? $intl : 'Disabled (or not installed)' ) );
+$phpUnitEnvironment->writeLn( "PCRE:", ( ( $pcre = $phpUnitEnvironment->getPcreInfo() ) ? $pcre : 'Disabled (or not installed)' ) );
 $phpUnitEnvironment->writeNewLn();
 
 unset( $phpUnitEnvironment );
