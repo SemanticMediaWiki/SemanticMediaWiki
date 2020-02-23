@@ -188,7 +188,7 @@
 	padding: 1px 5px 1px 25px;
 	margin-bottom: 8px;
 	font-weight: normal;
-	width: 75%;
+	max-width: 75%;
 }
 
 .smw-factbox .smwpropname, .smw-factbox .smwprops, .smw-factbox .smwspecname, .smw-factbox .smwspecs {
