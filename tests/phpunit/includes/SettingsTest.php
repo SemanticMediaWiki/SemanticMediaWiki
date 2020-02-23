@@ -157,6 +157,24 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance->loadFromGlobals();
 	}
 
+	public function testMung() {
+
+		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
+
+		$this->assertEquals(
+			'123bar',
+			$instance->mung( 'Foo', 'bar' )
+		);
+	}
+
+	public function testMungOnUnknownTypeThrowsException() {
+
+		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
+
+		$this->expectException( '\RuntimeException' );
+		$instance->mung( 'Foo', 456 );
+	}
+
 	/**
 	 * Provides sample data to be tested
 	 *

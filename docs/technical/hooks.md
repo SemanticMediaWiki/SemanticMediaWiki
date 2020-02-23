@@ -14,6 +14,7 @@ Implementing a hook should be made in consideration of the expected performance 
 - `SMW::Settings::BeforeInitializationComplete` to modify the Semantic MediaWiki configuration before the initialization is completed
 - [`SMW::Event::RegisterEventListeners`][hook.event.registereventlisteners] to register additional event listeners
 - [`SMW::Listener::ChangeListener::RegisterPropertyChangeListeners`][hook.listener.registerpropertychangelisteners] allows to register and listen to individual property changes
+- [`SMW::Schema::RegisterSchemaTypes`][hook.schema.registerschematypes] allows to register additional schema types
 
 ### Store
 
@@ -120,3 +121,4 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.constraint.initconstraints]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.constraint.initconstraints.md
 [hook.maintenance.afterupdateentitycollationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.maintenance.afterupdateentitycollationcomplete.md
 [hook.listener.registerpropertychangelistener]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelistener.md
+[hook.schema.registerschematypes]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md

@@ -296,7 +296,7 @@ class SetupCheck {
 
 		// Output forms for different error types are registered with a JSON file.
 		$this->definitions = $this->readFromFile(
-			$GLOBALS['smwgTemplateDir'] . '/setupcheck/setupcheck.json'
+			$GLOBALS['smwgDir'] . '/data/template/setupcheck/setupcheck.json'
 		);
 
 		// Error messages are specified in a special i18n JSON file to avoid relying

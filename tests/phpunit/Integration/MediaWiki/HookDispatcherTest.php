@@ -55,6 +55,24 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnRegisterSchemaTypes() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$schemaTypes = $this->getMockBuilder( '\SMW\Schema\SchemaTypes' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaTypes->expects( $this->once() )
+			->method( 'registerSchemaType' );
+
+		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', function( $schemaTypes ) {
+			$schemaTypes->registerSchemaType( 'Foo', [] );
+		} );
+
+		$hookDispatcher->onRegisterSchemaTypes( $schemaTypes );
+	}
+
 	public function testOnGetPreferences() {
 
 		$preferences = [];
