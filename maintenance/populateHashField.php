@@ -9,6 +9,7 @@ use SMW\SQLStore\Installer;
 use SMW\SetupFile;
 use SMW\Setup;
 use SMW\Store;
+use SMW\Maintenance\MaintenanceCheck;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -48,6 +49,16 @@ class PopulateHashField extends \Maintenance {
 	private $messageReporter;
 
 	/**
+	 * @var CliMsgFormatter
+	 */
+	private $cliMsgFormatter;
+
+	/**
+	 * @var int
+	 */
+	private $last = 0;
+
+	/**
 	 * @since 3.1
 	 */
 	public function __construct() {
@@ -63,10 +74,10 @@ class PopulateHashField extends \Maintenance {
 	 */
 	public function setComplete( $complete ) {
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
-			$cliMsgFormatter->firstCol( "... updating the setup file key ...", 3 )
+			$this->cliMsgFormatter->firstCol( "... updating the setup file key ...", 3 )
 		);
 
 		$setupFile = new SetupFile();
@@ -81,7 +92,7 @@ class PopulateHashField extends \Maintenance {
 		$setupFile->remove( \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE );
 
 		$this->reportMessage(
-			$cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 		);
 	}
 
@@ -122,15 +133,16 @@ class PopulateHashField extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( !Setup::isEnabled() ) {
-			$this->reportMessage( "\nYou need to have Semantic MediaWiki enabled in order to run the maintenance script!\n" );
-			exit;
+		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+			exit ( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 
-		$this->store = $applicationFactory->getStore( SQLStore::class );
+		$this->store = $applicationFactory->getStore(
+			SQLStore::class
+		);
 
 		$localMessageProvider = $maintenanceFactory->newLocalMessageProvider(
 			'/local/maintenance.i18n.json'
@@ -138,23 +150,28 @@ class PopulateHashField extends \Maintenance {
 
 		$localMessageProvider->loadMessages();
 
-		$cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
-			"\n" . $cliMsgFormatter->head()
+			"\n" . $this->cliMsgFormatter->head()
 		);
 
-		$this->reportMessage(
-			$cliMsgFormatter->section( $localMessageProvider->msg( 'smw-maintenance-populatehashfield-table-update' ) )
-		);
+		$text = $localMessageProvider->msg( 'smw-maintenance-populatehashfield-table-update' );
 
 		$this->reportMessage(
-			"\n". $localMessageProvider->msg( 'smw-maintenance-populatehashfield-checking-hash-field' ) . "...\n" );
+			$this->cliMsgFormatter->section( $text )
+		);
+
+		$text = $localMessageProvider->msg( 'smw-maintenance-populatehashfield-checking-hash-field' );
+
+		$this->reportMessage("\n$text...\n" );
 
 		$this->populate();
 
+		$text = $localMessageProvider->msg( 'smw-maintenance-done' );
+
 		$this->reportMessage(
-			$cliMsgFormatter->oneCol( "... " . $localMessageProvider->msg( 'smw-maintenance-done' ), 3 )
+			$this->cliMsgFormatter->oneCol( "... $text", 3 )
 		);
 
 		return true;
@@ -178,6 +195,13 @@ class PopulateHashField extends \Maintenance {
 			unset( $conditions['smw_hash' ] );
 		}
 
+		$this->last = (int)$connection->selectField(
+			SQLStore::ID_TABLE,
+			'MAX(smw_id)',
+			$conditions,
+			__METHOD__
+		);
+
 		return $connection->select(
 			SQLStore::ID_TABLE,
 			[
@@ -194,40 +218,14 @@ class PopulateHashField extends \Maintenance {
 	}
 
 	/**
-	 * @since 3.2
-	 *
-	 * @return integer
-	 */
-	public function getLastMissing() {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
-		$conditions = [
-			'smw_hash' => null,
-			'smw_iw != ' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
-		];
-
-		if ( $this->hasOption( 'force-update' ) ) {
-			unset( $conditions['smw_hash' ] );
-		}
-
-		return (int)$connection->selectField(
-			SQLStore::ID_TABLE,
-			'MAX(smw_id)',
-			$conditions,
-			__METHOD__
-		);
-	}
-
-	/**
 	 * @since 3.1
 	 *
 	 * @param Iterator $rows
 	 */
 	public function populate( \Iterator $rows = null ) {
 
-		$cliMsgFormatter = new CliMsgFormatter();
-		$cliMsgFormatter->setStartTime( microtime( true ) );
+		$this->cliMsgFormatter = new CliMsgFormatter();
+		$this->cliMsgFormatter->setStartTime( microtime( true ) );
 
 		if ( $rows === null ) {
 			$rows = $this->fetchRows();
@@ -245,52 +243,48 @@ class PopulateHashField extends \Maintenance {
 
 		if ( $count == 0 ) {
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( "... all rows populated ...", CliMsgFormatter::OK, 3 )
+				$this->cliMsgFormatter->twoCols( "... all rows populated ...", CliMsgFormatter::OK, 3 )
 			);
-		} else {
 
-			if ( $this->hasOption( 'force-update' ) ) {
-				$msg = $cliMsgFormatter->twoCols( "... matching rows ...", "(rows) $count", 3 );
-			} else {
-				$msg = $cliMsgFormatter->twoCols( "... missing rows ...", "(rows) $count", 3 );
-			}
-
-			$this->reportMessage( $msg );
-			$last_id = $this->getLastMissing();
-
-			foreach ( $rows as $row ) {
-
-				$i++;
-				$hash = $idTable->computeSha1(
-					[
-						$row->smw_title,
-						(int)$row->smw_namespace,
-						$row->smw_iw,
-						$row->smw_subobject
-					]
-				);
-
-				$progress = $cliMsgFormatter->progressCompact( $i, $count, $row->smw_id, $last_id );
-
-				$this->reportMessage(
-					$cliMsgFormatter->twoColsOverride( "... updating the `smw_hash` field ...", "$progress", 3 )
-				);
-
-				$connection->update(
-					SQLStore::ID_TABLE,
-					[
-						'smw_hash' => $hash
-					],
-					[
-						'smw_id' => $row->smw_id
-					],
-					__METHOD__
-				);
-			}
-
-			$this->reportMessage( "\n"  );
+			return $this->setComplete( true );
 		}
 
+		$msg = $this->hasOption( 'force-update' ) ? 'matching rows' : 'missing rows';
+
+		$this->reportMessage(
+			$this->cliMsgFormatter->twoCols( "... $msg ...", "$count (rows)", 3 )
+		);
+
+		foreach ( $rows as $row ) {
+
+			$hash = $idTable->computeSha1(
+				[
+					$row->smw_title,
+					(int)$row->smw_namespace,
+					$row->smw_iw,
+					$row->smw_subobject
+				]
+			);
+
+			$progress = $this->cliMsgFormatter->progressCompact( ++$i, $count, $row->smw_id, $this->last );
+
+			$this->reportMessage(
+				$this->cliMsgFormatter->twoColsOverride( "... updating the `smw_hash` field ...", "$progress", 3 )
+			);
+
+			$connection->update(
+				SQLStore::ID_TABLE,
+				[
+					'smw_hash' => $hash
+				],
+				[
+					'smw_id' => $row->smw_id
+				],
+				__METHOD__
+			);
+		}
+
+		$this->reportMessage( "\n"  );
 		$this->setComplete( true );
 	}
 
