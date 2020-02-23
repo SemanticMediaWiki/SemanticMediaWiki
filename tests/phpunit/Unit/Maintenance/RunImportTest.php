@@ -54,7 +54,7 @@ class RunImportTest extends TestCase {
 		$instance->execute();
 
 		$this->assertContains(
-			'Import tasks',
+			'Import task(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}

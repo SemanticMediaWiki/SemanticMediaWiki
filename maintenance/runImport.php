@@ -7,6 +7,7 @@ use Onoi\MessageReporter\CallbackMessageReporter;
 use SMW\ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
+use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class
@@ -61,8 +62,8 @@ class RunImport extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( $this->canExecute() !== true ) {
-			exit;
+		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+			exit ( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -93,7 +94,7 @@ class RunImport extends \Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Import tasks' ) . "\n"
+			$cliMsgFormatter->section( 'Import task(s)' ) . "\n"
 		);
 
 		$this->messageReporter->reportMessage(
@@ -120,24 +121,6 @@ class RunImport extends \Maintenance {
 
 		$importer->setMessageReporter( $this->messageReporter );
 		$importer->runImport();
-
-		return true;
-	}
-
-	private function canExecute() {
-
-		if ( !Setup::isEnabled() ) {
-			return $this->reportMessage(
-				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
-			);
-		}
-
-		if ( !Setup::isValid( true ) ) {
-			return $this->reportMessage(
-				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
-				"with this maintenance task!\n"
-			);
-		}
 
 		return true;
 	}
