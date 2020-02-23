@@ -145,7 +145,7 @@ class ImportContents {
 	}
 
 	/**
-	 * @since 2.5
+	 * @since 3.2
 	 *
 	 * @return string
 	 */
