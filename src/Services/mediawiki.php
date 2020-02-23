@@ -251,6 +251,22 @@ return [
 	},
 
 	/**
+	 * Parser
+	 *
+	 * @return callable
+	 */
+	'Parser' => function( $containerBuilder ) {
+
+		// MW 1.34+
+		// https://github.com/wikimedia/mediawiki/commit/e6df285854622144df973764af908d34b4befbe9#diff-3352fb15886da832b6b01b6f5023eb00
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getParser' ) ) {
+			return MediaWikiServices::getInstance()->getParser();
+		}
+
+		return $GLOBALS['wgParser'];
+	},
+
+	/**
 	 * ParserCache
 	 *
 	 * @return callable
