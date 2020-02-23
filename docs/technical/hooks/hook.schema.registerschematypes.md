@@ -24,4 +24,4 @@ Hooks::register( 'SMW::Schema::RegisterSchemaTypes', function( SchemaTypes $sche
 } );
 ```
 
-[RevisionGuard.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/SchemaTypes.php
+[SchemaTypes.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/SchemaTypes.php
