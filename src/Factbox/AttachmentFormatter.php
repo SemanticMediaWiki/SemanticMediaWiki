@@ -118,7 +118,7 @@ class AttachmentFormatter {
 					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:50%;'] ) .
 					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
 					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
-					HtmlDivTable::cell( $isLocalMsg, [ 'style' => 'width:10%;'] )
+					HtmlDivTable::cell( $isLocalMsg, [ 'style' => 'width:10%;text-align:center'] )
 				) . HtmlDivTable::body( $rows ),
 				[
 					// ID is used for the sorting JS!
@@ -179,7 +179,7 @@ class AttachmentFormatter {
 			$isLocal = '✗';
 		}
 
-		$row .= HtmlDivTable::cell( $isLocal );
+		$row .= HtmlDivTable::cell( $isLocal, [ 'style' => 'text-align:center'] );
 
 		return $row;
 	}
