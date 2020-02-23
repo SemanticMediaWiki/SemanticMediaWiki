@@ -277,7 +277,9 @@ final class Setup {
 			//
 			// Message::setInterfaceMessageFlag "... used to restore the flag
 			// after setting a language"
-			return $message->setInterfaceMessageFlag( true )->title( $GLOBALS['wgTitle'] )->parse();
+			$title = $GLOBALS['wgTitle'] ?? \Title::newFromText( 'Blank', NS_SPECIAL );
+
+			return $message->setInterfaceMessageFlag( true )->title( $title )->parse();
 		} );
 	}
 

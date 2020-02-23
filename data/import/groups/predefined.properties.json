@@ -1,0 +1,76 @@
+{
+    "type": "PROPERTY_GROUP_SCHEMA",
+    "groups": {
+        "adminstrative_group": {
+            "canonical_name": "Adminstrative properties",
+            "message_key": "smw-property-group-label-adminstrative-properties",
+            "property_keys": [
+                "_MDAT",
+                "_CDAT",
+                "_NEWP",
+                "_LEDT",
+                "_DTITLE",
+                "_CHGPRO",
+                "_EDIP",
+                "_ERRC"
+            ]
+        },
+        "classification_group": {
+            "canonical_name": "Classification properties",
+            "message_key": "smw-property-group-label-classification-properties",
+            "property_keys": [
+                "_INST",
+                "_PPGR",
+                "_SUBP",
+                "_SUBC"
+            ]
+        },
+        "content_group": {
+            "canonical_name": "Content properties",
+            "message_key": "smw-property-group-label-content-properties",
+            "property_keys": [
+                "_SOBJ",
+                "_ASK",
+                "_MEDIA",
+                "_MIME",
+                "_ATTCH_LINK",
+                "_FILE_ATTCH",
+                "_CONT_TYPE",
+                "_CONT_AUTHOR",
+                "_CONT_LEN",
+                "_CONT_LANG",
+                "_CONT_TITLE",
+                "_CONT_DATE",
+                "_CONT_KEYW",
+                "_TRANS",
+                "_TRANS_SOURCE",
+                "_TRANS_GROUP"
+            ]
+        },
+        "declarative_group": {
+            "canonical_name": "Declarative properties",
+            "message_key" : "smw-property-group-label-declarative-properties",
+            "property_keys": [
+                "_TYPE",
+                "_UNIT",
+                "_IMPO",
+                "_CONV",
+                "_SERV",
+                "_PVAL",
+                "_LIST",
+                "_PREC",
+                "_PDESC",
+                "_PPLB",
+                "_PVAP",
+                "_PVALI",
+                "_PVUC",
+                "_PEID",
+                "_PEFU"
+            ]
+        }
+    },
+    "tags": [
+        "group",
+        "property group"
+    ]
+}
