@@ -10,6 +10,7 @@ use SMW\MediaWiki\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
 use Title;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -145,10 +146,18 @@ class TextContentCreator implements ContentCreator {
 			$title
 		);
 
+		$user = null;
+
+		if ( $importContents->getImportPerformer() !== '' ) {
+			$user = User::newSystemUser( $importContents->getImportPerformer(), [ 'steal' => true ] );
+		}
+
 		$status = $page->doEditContent(
 			$content,
 			$importContents->getDescription(),
-			EDIT_FORCE_BOT
+			EDIT_FORCE_BOT,
+			false,
+			$user
 		);
 
 		if ( !$status->isOk() ) {
@@ -188,17 +197,17 @@ class TextContentCreator implements ContentCreator {
 
 	private function isCreatorLastEditor( $page ) {
 
-		$lastEditor = \User::newFromID(
+		$lastEditor = User::newFromID(
 			$page->getUser()
 		);
 
-		if ( !$lastEditor instanceof \User ) {
+		if ( !$lastEditor instanceof User ) {
 			return false;
 		}
 
 		$creator = $page->getCreator();
 
-		if ( !$creator instanceof \User ) {
+		if ( !$creator instanceof User ) {
 			return false;
 		}
 

@@ -29,6 +29,11 @@ class ImportContents {
 	private $name = '';
 
 	/**
+	 * @var string
+	 */
+	private $importPerformer = '';
+
+	/**
 	 * @var integer
 	 */
 	private $namespace = 0;
@@ -128,6 +133,24 @@ class ImportContents {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $importPerformer
+	 */
+	public function setImportPerformer( string $importPerformer ) {
+		$this->importPerformer = $importPerformer;
+	}
+
+	/**
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function getImportPerformer() : string {
+		return $this->importPerformer;
 	}
 
 	/**

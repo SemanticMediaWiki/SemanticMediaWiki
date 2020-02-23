@@ -59,6 +59,18 @@ class ImportContentsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testImportPerformer() {
+
+		$instance = new ImportContents();
+
+		$instance->setImportPerformer( 'Foo' );
+
+		$this->assertSame(
+			'Foo',
+			$instance->getImportPerformer()
+		);
+	}
+
 	public function testNamespace() {
 
 		$instance = new ImportContents();
