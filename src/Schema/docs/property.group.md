@@ -6,10 +6,12 @@ The `PROPERTY_GROUP_SCHEMA` schema type defines property groups to help structur
 
 - `type`
 - `manifest_version`
-- `groups` identifies the section that contains a group definition
-    - `group_name` group identifier and canonical group label
-    - `message_key` contains a `key` that can be translated and replace the canonical group label
-    - `properties` list of properties keys assigned to the group
+- `description` describes the entire group schema
+- `groups` identifies the section that contains a group definitions
+    - `..._group` identifies an individual group (the name has to end with `_group`)
+      - `canonical_name` canonical group label
+      - `message_key` contains a `key` that can be translated and replaces the canonical group label (if available)
+      - `property_keys` list of property keys assigned to the group
 - `tags` simple tags to categorize a schema
 
 ### Example
@@ -17,15 +19,22 @@ The `PROPERTY_GROUP_SCHEMA` schema type defines property groups to help structur
 <pre>
 {
     "type": "PROPERTY_GROUP_SCHEMA",
-    "groups": [
-        {
-            "group_name": "My properties",
+    "groups": {
+        "x_group": {
+            "canonical_name": "My properties X",
             "message_key": "smw-...",
-            "properties": [
-                "MY_PROPERTY"
+            "property_keys": [
+                "MY_PROPERTY_X"
+            ]
+        },
+        "y_group": {
+            "canonical_name": "My properties Y",
+            "message_key": "smw-...",
+            "property_keys": [
+                "MY_PROPERTY_Y"
             ]
         }
-    ],
+    },
     "tags": [
         "group",
         "property groups"
