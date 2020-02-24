@@ -362,5 +362,9 @@
 	"smw-pendingtasks-tab-setup": "Astellung",
 	"smw-pendingtasks-setup-tasks": "Aufgaben",
 	"smw-report": "Rapport",
-	"smw-legend": "Erklärung"
+	"smw-legend": "Erklärung",
+	"smw-entity-examiner-deferred-elastic-replication": "Elastesch",
+	"smw-entity-examiner-deferred-constraint-error": "Limitatioun",
+	"smw-entity-examiner-deferred-fake": "Fälschung",
+	"smw-indicator-revision-mismatch": "Revisioun"
 }

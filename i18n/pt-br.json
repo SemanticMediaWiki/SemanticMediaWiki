@@ -33,7 +33,8 @@
 			"Abijeet Patro",
 			"Leonardo.guimaraes",
 			"Luig",
-			"Waldyrious"
+			"Waldyrious",
+			"Dr03ramos"
 		]
 	},
 	"smw-desc": "Tornando seu wiki mais acessível - para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentação online])",
@@ -799,6 +800,7 @@
 	"smw-datavalue-constraint-violation-non-negative-integer": "A propriedade \"$1\" tem uma restrição \"inteiro não negativo\" e o valor ''$2'' viola esse requisito.",
 	"smw-datavalue-constraint-violation-must-exists": "A propriedade \"$1\" tem uma restrição <code>must_exists</code> e um valor ''$2'' que viola aquele requisito.",
 	"smw-datavalue-constraint-violation-single-value": "A propriedade \"[[Property:$1|$1]]\" tem uma restrição <code>single_value</code> e o valor \"$2\" viola aquele requisito.",
+	"smw-constraint-violation-must-exists": "Uma limitação <code>must_exists</code> assinada à propriedade \"[[Property:$1|$1]]\" e ao valor de anotação ''$2'' está violando o requisito de restrição.",
 	"smw-constraint-violation-class-mandatory-properties-constraint": "A categoria \"[[:Category:$1|$1]]\" tem atribuída uma restrição <code>mandatory_properties</code> e requer as seguintes propriedades obrigatórias: $2",
 	"smw-constraint-schema-category-invalid-type": "O esquema anotado \"$1\" é inválido para uma categoria; requer um tipo \"$2\".",
 	"smw-constraint-schema-property-invalid-type": "O esquema anotado \"$1\" é inválido para uma propriedade; requer um tipo \"$2\".",
@@ -910,6 +912,7 @@
 	"apihelp-smwbrowse-summary": "Módulo de API para dar suporte a atividades de navegação para diferentes tipos de entidade na Semantic MediaWiki.",
 	"apihelp-ask-parameter-api-version": "Formatação da saída:\n;2:Formato compatível com versões anteriores, usando {} para a lista de resultados.\n;3:Formato experimental, usando [] como lista de resultados.",
 	"apihelp-smwtask-param-task": "Define o tipo de tarefa",
+	"smw-apihelp-smwtask-example-update": "Exemplo de execução de uma tarefa de atualização para um assunto específico:",
 	"smw-api-invalid-parameters": "Parâmetros inválidos, \"$1\"",
 	"smw-parser-recursion-level-exceeded": "O nível de $1 recursões foi excedido durante um processo de análise sintática. É sugerido que valide a estrutura de predefinições, ou que ajuste o parâmetro de configuração <code>$maxRecursionDepth</code> se necessário.",
 	"smw-property-page-list-count": "Exibindo $1 {{PLURAL:$1|página que utiliza|páginas que utilizam}} esta propriedade.",
@@ -1025,6 +1028,7 @@
 	"smw-es-replication-error-maintenance-mode": "A replicação e o motor de pesquisa estão em [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Maintenance_mode <b>modo de manutenção</b>], fazendo com que as alterações de entidades e páginas não sejam imediatamente visíveis <b>não</b> são imediatamente visível e replicado, portanto, não aparecem nos resultados da consulta.",
 	"smw-es-replication-error-no-connection": "O monitoramento de replicação não pode executar nenhuma verificação, pois '''não pode estabelecer uma conexão''' com o cluster Elasticsearch.",
 	"smw-es-replication-error-bad-request-exception": "O manipulador de conexão do Elasticsearch lançou uma exceção de solicitação incorreta (\"Erro 400 de conflito HTTP\") indicando um problema contínuo durante solicitações de replicação e pesquisa.",
+	"smw-es-replication-error-other-exception": "O manipulador de conexões do Elasticsearch lançou uma exceção: \"$1\".",
 	"smw-es-replication-error-suggestions": "Sugere-se editar ou limpar a página para remover a discrepância. Se o problema persistir, verifique o próprio cluster do Elasticsearch (alocador, exceções, espaço em disco, etc.).",
 	"smw-es-replication-error-suggestions-maintenance-mode": "Sugere-se entrar em contato com o administrador da wiki para verificar se está a ocorrer uma [https://www.semantic-mediawiki.org/wiki/Help:ElasticStore/Index_rebuild recriação do índice] ou se o <code>refresh_interval</code> não foi definido com o valor por omissão esperado.",
 	"smw-es-replication-error-suggestions-no-connection": "É sugerido que contacte o administrador da wiki e reporte o problema \"falta de ligação\".",
@@ -1035,9 +1039,12 @@
 	"smw-legend": "Legenda",
 	"smw-datavalue-constraint-schema-category-invalid-type": "O esquema anotado \"$1\" é inválido para uma categoria; requer um tipo \"$2\".",
 	"smw-datavalue-constraint-schema-property-invalid-type": "O esquema anotado \"$1\" é inválido para uma propriedade; requer um tipo \"$2\".",
+	"smw-entity-examiner-indicator": "Painel de problema da entidade",
 	"smw-entity-examiner-deferred-check-awaiting-response": "O examinador \"$1\" está aguardando uma resposta do back-end.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elástico",
 	"smw-entity-examiner-deferred-constraint-error": "Limitação",
 	"smw-entity-examiner-deferred-fake": "Falso",
-	"smw-indicator-revision-mismatch": "Revisão"
+	"smw-indicator-constraint-violation": "{{PLURAL:$1|Limitação|Limitações}}",
+	"smw-indicator-revision-mismatch": "Revisão",
+	"smw-indicator-revision-mismatch-error": "A verificação da [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner revisão associada] encontrou uma incompatibilidade entre a revisão mencionada no MediaWiki e a que está sendo associada no Semantic MediaWiki para esta entidade."
 }
