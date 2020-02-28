@@ -94,10 +94,10 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
-		$this->store->expects( $this->once() )
-			->method( 'getPropertyValues' )
+		$this->itemFetcher->expects( $this->once() )
+			->method( 'fetch' )
 			->with(
-				$this->equalTo( $dataItem ),
+				$this->equalTo( [ $dataItem ] ),
 				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
 			->will( $this->returnValue( [ $expected ] ) );
 
