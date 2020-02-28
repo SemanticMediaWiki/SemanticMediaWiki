@@ -196,12 +196,25 @@
 				callbacks: {}
 			};
 
+			options.callbacks.highlighter = function ( li, query ) {
+				var regexp;
+
+				if ( !query || query == '?' ) {
+					return li;
+				};
+
+				regexp = new RegExp(">\\s*([^\<]*?)(" + query.replace("+", "\\+") + ")([^\<]*)\\s*<", 'ig');
+				return li.replace(regexp, function(str, $1, $2, $3) {
+					return '> ' + $1 + '<strong>' + $2 + '</strong>' + $3 + ' <';
+				} );
+			};
+
 			// https://github.com/ichord/At.js/wiki/How-to-use-remoteFilter
 			options.callbacks.remoteFilter = function ( term, callback ) {
 
 				var cacheKey = token + term;
 
-				if ( term == null || term.length < 2 ) {
+				if ( term == null || term.length < 2 && term != '?' ) {
 					return callback( [] );
 				}
 

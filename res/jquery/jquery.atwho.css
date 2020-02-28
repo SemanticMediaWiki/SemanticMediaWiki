@@ -56,7 +56,7 @@
     list-style:none;
     padding:0;
     margin:auto;
-    max-height: 200px;
+    max-height: 150px;
     overflow-y: auto;
 }
 .atwho-view ul li {
