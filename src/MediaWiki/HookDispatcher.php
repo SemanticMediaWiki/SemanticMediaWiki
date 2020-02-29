@@ -51,7 +51,7 @@ class HookDispatcher {
 	}
 
 	/**
-	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.settings.beforeinitializationcomplete.md
 	 * @since 3.2
 	 *
 	 * @param array &$configuration

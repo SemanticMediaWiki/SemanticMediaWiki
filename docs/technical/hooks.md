@@ -11,7 +11,7 @@ Implementing a hook should be made in consideration of the expected performance 
 - [`SMW::Constraint::initConstraints`][hook.constraint.initconstraints] to add custom constraints
 - [`SMW::GetPreferences`][hook.getpreferences] to add extra preferences that are ordered on the Semantic MediaWiki user preference tab
 - [`SMW::Setup::AfterInitializationComplete`][hook.setup.afterinitializationcomplete] to modify global configuration after initialization of Semantic MediaWiki is completed
-- `SMW::Settings::BeforeInitializationComplete` to modify the Semantic MediaWiki configuration before the initialization is completed
+- [`SMW::Settings::BeforeInitializationComplete`][hook.settings.beforeinitializationcomplete] to modify the Semantic MediaWiki configuration before the initialization is completed
 - [`SMW::Event::RegisterEventListeners`][hook.event.registereventlisteners] to register additional event listeners
 - [`SMW::Listener::ChangeListener::RegisterPropertyChangeListeners`][hook.listener.registerpropertychangelisteners] allows to register and listen to individual property changes
 - [`SMW::Schema::RegisterSchemaTypes`][hook.schema.registerschematypes] allows to register additional schema types
@@ -122,3 +122,5 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.maintenance.afterupdateentitycollationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.maintenance.afterupdateentitycollationcomplete.md
 [hook.listener.registerpropertychangelistener]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelistener.md
 [hook.schema.registerschematypes]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md
+[hook.listener.registerpropertychangelisteners]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelisteners.md
+[hook.settings.beforeinitializationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.settings.beforeinitializationcomplete.md
