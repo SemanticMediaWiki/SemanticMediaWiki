@@ -318,6 +318,8 @@ trait ConfigLegacyTrait {
 				'smwgFactboxUseCache' => 'smwgFactboxFeatures',
 				'smwgFactboxCacheRefreshOnPurge' => 'smwgFactboxFeatures',
 
+				'smwgContLang' => 'smwfContLang()',
+
 				// Identifies options of settings planned to be replaced
 				'options' => [
 					'smwgCacheUsage' => [
@@ -346,6 +348,7 @@ trait ConfigLegacyTrait {
 				'smwgEntityLookupCacheType' => '3.1.0',
 				'smwgEntityLookupCacheLifetime' => '3.1.0',
 				'smwgEntityLookupFeatures' => '3.1.0',
+				'smwgContLang' => '3.2.0'
 			]
 		];
 	}

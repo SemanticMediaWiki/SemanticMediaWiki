@@ -5,6 +5,7 @@ use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
 use SMW\NamespaceManager;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -14,6 +15,17 @@ use SMW\ProcessingErrorMsgHandler;
  * yet.
  * @ingroup SMW
  */
+
+/**
+ * Convenience function for external users. Replaces the `smwgContLang` setting.
+ *
+ * @since 3.2
+ *
+ * @return LocalLanguage
+ */
+function smwfContLang() : LocalLanguage {
+	return LocalLanguage::getInstance()->fetch( $GLOBALS['wgLanguageCode'] );
+}
 
 /**
  * Takes a title text and turns it safely into its DBKey. This function

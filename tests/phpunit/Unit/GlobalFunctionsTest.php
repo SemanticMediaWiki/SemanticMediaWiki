@@ -101,6 +101,13 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSmwfContLang() {
+		$this->assertInstanceOf(
+			'\SMW\Localizer\LocalLanguage\LocalLanguage',
+			smwfContLang()
+		);
+	}
+
 	/**
 	 * Provides available global functions
 	 *
