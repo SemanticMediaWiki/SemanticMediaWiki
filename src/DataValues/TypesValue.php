@@ -9,6 +9,7 @@ use SMWDataItemException as DataItemException;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
 use SpecialPageFactory;
+use SMW\Services\ServicesFactory;
 use Title;
 
 /**
@@ -243,7 +244,7 @@ class TypesValue extends DataValue {
 	}
 
 	protected function makeSpecialPageTitleText() {
-		return SpecialPageFactory::getLocalNameFor( 'Types', $this->typeLabel );
+		return ServicesFactory::getInstance()->singleton( 'SpecialPageFactory' )->getLocalNameFor( 'Types', $this->typeLabel );
 	}
 
 }

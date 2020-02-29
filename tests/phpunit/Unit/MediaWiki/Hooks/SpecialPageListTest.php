@@ -15,21 +15,21 @@ use SMW\MediaWiki\Hooks\SpecialPageList;
  */
 class SpecialPageListTest extends \PHPUnit_Framework_TestCase {
 
-	private $store;
+	private $specialPageFactory;
 
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->specialPageFactory = $this->getMockBuilder( '\SMW\MediaWiki\SpecialPageFactory' )
 			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			SpecialPageList::class,
-			new SpecialPageList()
+			new SpecialPageList( $this->specialPageFactory )
 		);
 	}
 
@@ -40,7 +40,16 @@ class SpecialPageListTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [];
 
-		$instance = new SpecialPageList();
+		$instance = new SpecialPageList(
+			$this->specialPageFactory
+		);
+
+		$instance->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => true
+			]
+		);
+
 		$instance->process( $vars );
 
 		$this->assertArrayHasKey(
@@ -65,7 +74,8 @@ class SpecialPageListTest extends \PHPUnit_Framework_TestCase {
 			'UnusedProperties',
 			'WantedProperties',
 			'ProcessingErrorList',
-			'PropertyLabelSimilarity'
+			'PropertyLabelSimilarity',
+			'PendingTaskList'
 		];
 
 		foreach ( $specials as $special ) {

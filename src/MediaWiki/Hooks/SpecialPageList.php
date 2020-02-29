@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Page;
-use SMW\MediaWiki\PageFactory;
 use SMW\Store;
 use Title;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\SpecialPageFactory;
 use SMW\OptionsAwareTrait;
 
 /**
@@ -22,13 +22,22 @@ class SpecialPageList implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param SpecialPageFactory $specialPageFactory
+	 */
+	public function __construct( SpecialPageFactory $specialPageFactory ) {
+		$this->specialPageFactory = $specialPageFactory;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array &$specialPages
 	 */
 	public function process( array &$specialPages ) {
 
-		if ( $this->getOption( 'smwgSemanticsEnabled' ) === false ) {
+		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) === false ) {
 			return;
 		}
 
@@ -41,6 +50,7 @@ class SpecialPageList implements HookListener {
 			],
 			'PendingTaskList' => [
 				'page' => \SMW\MediaWiki\Specials\SpecialPendingTaskList::class
+				//'page' => [ $this->specialPageFactory, 'newSpecialPendingTaskList' ]
 			],
 			'Ask' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'

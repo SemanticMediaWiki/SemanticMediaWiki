@@ -210,12 +210,14 @@ class Hooks {
 		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
 
 			$applicationFactory = ApplicationFactory::getInstance();
-			$settings = $applicationFactory->getSettings();
 
-			$specialPageList = new SpecialPageList();
+			$specialPageList = new SpecialPageList(
+				$applicationFactory->singleton( 'SpecialPageFactory' )
+			);
+
 			$specialPageList->setOptions(
 				[
-					'smwgSemanticsEnabled' => $settings->get( 'smwgSemanticsEnabled' )
+					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
 				]
 			);
 

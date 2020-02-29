@@ -7,6 +7,8 @@ use Language;
 use RequestContext;
 use SpecialPage;
 use SpecialPageFactory;
+use SMW\Services\ServicesFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * Tests for registered special pages
@@ -37,16 +39,7 @@ use SpecialPageFactory;
  * @group SMWExtension
  * @group medium
  */
-class SpecialsTest extends SemanticMediaWikiTestCase {
-
-	/**
-	 * Returns the name of the class to be tested
-	 *
-	 * @return string|false
-	 */
-	public function getClass() {
-		return false;
-	}
+class SpecialsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider specialPageProvider
@@ -110,6 +103,10 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 	 * @return array
 	 */
 	public function specialPageProvider() {
+
+		$specialPageFactory = ServicesFactory::getInstance()->singleton( 'SpecialPageFactory' );
+		$user = TestEnvironment::getUtilityFactory()->newMockSuperUser();
+
 		$request = new FauxRequest( [], true );
 		$argLists = [];
 
@@ -132,7 +129,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 		foreach ( $specialPages as $special ) {
 
-			$specialPage = SpecialPageFactory::getPage(
+			$specialPage = $specialPageFactory->getPage(
 				$special
 			);
 
@@ -145,11 +142,12 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 			$specialPage->setContext( clone $context );
 			$argLists[] = [ clone $specialPage ];
 
-			$context->setUser( $this->getUser() );
+			$context->setUser( $user );
 			$specialPage->setContext( $context );
 			$argLists[] = [ $specialPage ];
 		}
 
 		return $argLists;
 	}
+
 }

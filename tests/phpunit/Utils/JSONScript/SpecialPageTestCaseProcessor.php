@@ -84,8 +84,10 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$queryParameters = [];
 		}
 
+		$specialPageFactory = ServicesFactory::getInstance()->singleton( 'SpecialPageFactory' );
+
 		$text = $this->getTextForRequestBy(
-			SpecialPageFactory::getPage( $case['special-page']['page'] ),
+			$specialPageFactory->getPage( $case['special-page']['page'] ),
 			new FauxRequest( $case['special-page']['request-parameters'] ),
 			$queryParameters
 		);

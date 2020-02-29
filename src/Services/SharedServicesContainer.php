@@ -37,6 +37,7 @@ use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\IndicatorRegistry;
+use SMW\MediaWiki\SpecialPageFactory;
 use SMW\Services\DataValueServiceFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
@@ -762,6 +763,20 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $propertyRestrictionExaminer;
+		} );
+
+		/**
+		 * @var SpecialPageFactory
+		 */
+		$containerBuilder->registerCallback( 'SpecialPageFactory', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'SpecialPageFactory', '\SMW\MediaWiki\SpecialPageFactory' );
+
+			$specialPageFactory = new SpecialPageFactory(
+				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->create( 'MediaWiki.SpecialPageFactory' )
+			);
+
+			return $specialPageFactory;
 		} );
 
 		/**
