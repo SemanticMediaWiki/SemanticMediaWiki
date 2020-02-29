@@ -29,7 +29,7 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticDataValidator = TestEnvironment::newValidatorFactory()->newSemanticDataValidator();
 		$this->dataItemFactory = new DataItemFactory();
-		$this->fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
+		$this->fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 	}
 
 	public function testCanConstruct() {

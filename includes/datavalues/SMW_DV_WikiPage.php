@@ -162,7 +162,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
 				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
-			} elseif ( !$localizer->getNamespaceIndexByName( substr( $value, 0, -1 ) ) ) {
+			} elseif ( !$localizer->getNsIndex( substr( $value, 0, -1 ) ) ) {
 				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
 			}
 		}
@@ -189,7 +189,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->addErrorMsg( [ 'smw-datavalue-wikipage-invalid-title', $value ] );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-			$this->addErrorMsg( [ 'smw_wrong_namespace', $localizer->getNamespaceTextById( $this->m_fixNamespace ) ] );
+			$this->addErrorMsg( [ 'smw_wrong_namespace', $localizer->getNsText( $this->m_fixNamespace ) ] );
 		} else {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
@@ -227,7 +227,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->addErrorMsg(
 					[
 						'smw_wrong_namespace',
-						Localizer::getInstance()->getNamespaceTextById( $this->m_fixNamespace )
+						Localizer::getInstance()->getNsText( $this->m_fixNamespace )
 					]
 				);
 		}
@@ -549,7 +549,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$errArg = $this->m_caption;
 
 		if ( $this->isValid() ) {
-			$ns = Localizer::getInstance()->getNamespaceTextById(
+			$ns = Localizer::getInstance()->getNsText(
 				$this->m_dataitem->getNamespace()
 			);
 
@@ -635,7 +635,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $this->isValid() ) {
-			$nstext = Localizer::getInstance()->getNamespaceTextById( $this->m_dataitem->getNamespace() );
+			$nstext = Localizer::getInstance()->getNsText( $this->m_dataitem->getNamespace() );
 			$this->m_prefixedtext =
 				( $this->m_dataitem->getInterwiki() !== '' ? $this->m_dataitem->getInterwiki() . ':' : '' ) .
 				( $nstext !== '' ? "$nstext:" : '' ) . $this->getText();

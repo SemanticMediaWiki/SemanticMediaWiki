@@ -56,7 +56,7 @@ class Serializer {
 
 	private static function doSerializeCat( $printRequest, $parameters ) {
 
-		$catlabel = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$catlabel = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$result = '?' . $catlabel;
 
 		if ( $printRequest->getLabel() != $catlabel ) {

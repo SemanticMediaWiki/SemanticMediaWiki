@@ -101,7 +101,7 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function disjunctionProvider() {
 
-		$nsHelp = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
+		$nsHelp = Localizer::getInstance()->getNsText( NS_HELP );
 
 		$descriptions = [
 			'N:cfcd208495d565ef66e7dff9f98764da' => new NamespaceDescription( NS_MAIN ),

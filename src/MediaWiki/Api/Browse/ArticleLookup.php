@@ -180,7 +180,7 @@ class ArticleLookup extends Lookup {
 		if ( strpos( $search, ':' ) !== false ) {
 			list( $ns, $term ) = explode( ':', $search );
 
-			if ( ( $namespace = Localizer::getInstance()->getNamespaceIndexByName( $ns ) ) !== false ) {
+			if ( ( $namespace = Localizer::getInstance()->getNsIndex( $ns ) ) !== false ) {
 				$search = $term;
 			} else {
 				$namespace = null;

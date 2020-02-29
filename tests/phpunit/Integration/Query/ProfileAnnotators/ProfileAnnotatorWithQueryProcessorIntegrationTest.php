@@ -70,7 +70,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit_Framewo
 
 	public function queryDataProvider() {
 
-		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$provider = [];
 

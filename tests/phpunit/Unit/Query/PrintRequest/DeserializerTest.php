@@ -87,7 +87,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		#3
 		// Category
-		$categoryName = Localizer::getInstance()->getNamespaceTextById(
+		$categoryName = Localizer::getInstance()->getNsText(
 			NS_CATEGORY
 		);
 
@@ -102,7 +102,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		#4
 		// Category
-		$categoryName = Localizer::getInstance()->getNamespaceTextById(
+		$categoryName = Localizer::getInstance()->getNsText(
 			NS_CATEGORY
 		);
 

@@ -173,7 +173,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		#5 TYPE_LAST_EDITOR
 		$userPage = MockTitle::buildMock( 'Lula' );
-		$userNS = Localizer::getInstance()->getNamespaceTextById( NS_USER );
+		$userNS = Localizer::getInstance()->getNsText( NS_USER );
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )
@@ -196,7 +196,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		#6 Combined entries
 		$userPage = MockTitle::buildMock( 'Lula' );
-		$userNS = Localizer::getInstance()->getNamespaceTextById( NS_USER );
+		$userNS = Localizer::getInstance()->getNsText( NS_USER );
 
 		$userPage->expects( $this->any() )
 			->method( 'getNamespace' )

@@ -68,7 +68,7 @@ class AllowsListValue extends StringValue {
 
 		$id = $this->getDataItem()->getString();
 
-		return '[['. Localizer::getInstance()->getNamespaceTextById( NS_MEDIAWIKI ) . ':' . self::LIST_PREFIX . $id . '|' . $id .']]';
+		return '[['. Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::LIST_PREFIX . $id . '|' . $id .']]';
 	}
 
 	/**

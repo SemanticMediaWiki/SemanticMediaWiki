@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use Title;
 
@@ -66,7 +66,7 @@ class Deserializer {
 			$printmode = PrintRequest::PRINT_CATS;
 
 			if ( $showMode === false ) {
-				$label = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+				$label = Localizer::getInstance()->getNsText( NS_CATEGORY );
 			}
 		} elseif ( PropertyChainValue::isChained( $printRequestLabel ) ) {
 			$printmode = PrintRequest::PRINT_CHAIN;
@@ -162,7 +162,7 @@ class Deserializer {
 			return true;
 		}
 
-		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == $text;
+		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == $text;
 	}
 
 	private static function getPartsFromText( $text ) {
@@ -188,7 +188,7 @@ class Deserializer {
 		$printRequestLabel = trim( $propparts[0] );
 		$outputFormat = isset( $propparts[1] ) ? trim( $propparts[1] ) : false;
 
-		return [ $parts, $outputFormat, smwfNormalTitleText( $printRequestLabel ) ];
+		return [ $parts, $outputFormat, Localizer::getInstance()->normalizeTitleText( $printRequestLabel ) ];
 	}
 
 }

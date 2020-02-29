@@ -19,10 +19,20 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $namespaceInfo;
+	private $localizer;
+	private $messageLocalizer;
 
 	protected function setUp() : void {
 
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->localizer = $this->getMockBuilder( '\SMW\Localizer\Localizer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -31,14 +41,19 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			NamespaceForm::class,
-			new NamespaceForm( $this->namespaceInfo )
+			new NamespaceForm( $this->namespaceInfo, $this->localizer )
 		);
 	}
 
 	public function testMakeFields() {
 
 		$instance = new NamespaceForm(
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->localizer
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->setSearchableNamespaces( [ 0 => 'Foo '] );
@@ -71,7 +86,12 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $user ) );
 
 		$instance = new NamespaceForm(
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->localizer
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->checkNamespaceEditToken( $specialSearch );

@@ -25,7 +25,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
-		$this->cat_name = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$this->cat_name = Localizer::getInstance()->getNsText( NS_CATEGORY );
 	}
 
 	public function testCanConstruct() {
@@ -55,7 +55,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCommonMethods() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$class = new DIWikiPage( 'Foo', NS_CATEGORY );
 		$instance = new ClassDescription( $class );
@@ -75,7 +75,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddDescription() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 		$instance->addDescription( new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
@@ -93,7 +93,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testAddClass() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
 		$instance->addClass( new DIWikiPage( 'Bar', NS_CATEGORY ) );
@@ -244,7 +244,7 @@ class ClassDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetQueryStringWithHierarchyDepth() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY )

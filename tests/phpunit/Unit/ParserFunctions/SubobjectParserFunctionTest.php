@@ -339,7 +339,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function parameterDataProvider() {
 
-		$helpNS = Localizer::getInstance()->getNamespaceTextById( NS_HELP );
+		$helpNS = Localizer::getInstance()->getNsText( NS_HELP );
 
 		$provider = [];
 

@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Message;
 use SpecialSearch;
 use Xml;
@@ -19,10 +21,17 @@ use Xml;
  */
 class NamespaceForm {
 
+	use MessageLocalizerTrait;
+
 	/**
 	 * @var NamespaceInfo
 	 */
 	private $namespaceInfo;
+
+	/**
+	 * @var Localizer
+	 */
+	private $localizer;
 
 	/**
 	 * @var []
@@ -53,9 +62,11 @@ class NamespaceForm {
 	 * @since 3.1
 	 *
 	 * @param NamespaceInfo $namespaceInfo
+	 * @param Localizer $localizer
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo ) {
+	public function __construct( NamespaceInfo $namespaceInfo, Localizer $localizer ) {
 		$this->namespaceInfo = $namespaceInfo;
+		$this->localizer = $localizer;
 	}
 
 	/**
@@ -118,7 +129,6 @@ class NamespaceForm {
 	 * @return string
 	 */
 	public function makeFields() {
-		global $wgContLang;
 
 		$divider = "<div class='divider'></div>";
 		$rows = [];
@@ -137,10 +147,10 @@ class NamespaceForm {
 				$rows[$subject] = "";
 			}
 
-			$name = $wgContLang->getConverter()->convertNamespace( $namespace );
+			$name = $this->localizer->convertNamespace( $namespace );
 
 			if ( $name === '' ) {
-				$name = Message::get( 'blanknamespace', Message::TEXT, Message::USER_LANGUAGE );
+				$name = $this->msg( 'blanknamespace', Message::TEXT, Message::USER_LANGUAGE );
 			}
 
 			$isChecked = in_array( $namespace, $this->activeNamespaces );
@@ -174,7 +184,7 @@ class NamespaceForm {
 
 		if ( $this->token ) {
 			$remember = $divider . Xml::checkLabel(
-				Message::get( 'powersearch-remember', Message::TEXT, Message::USER_LANGUAGE ),
+				$this->msg( 'powersearch-remember', Message::TEXT, Message::USER_LANGUAGE ),
 				'nsRemember',
 				'mw-search-powersearch-remember',
 				false,
@@ -191,8 +201,8 @@ class NamespaceForm {
 		}
 
 		return "<fieldset id='mw-searchoptions'>" .
-			"<legend>" . Message::get( 'powersearch-legend', Message::ESCAPED, Message::USER_LANGUAGE ) . '</legend>' .
-			"<h4>" . Message::get( 'powersearch-ns', Message::PARSE, Message::USER_LANGUAGE ) . '</h4>' .
+			"<legend>" . $this->msg( 'powersearch-legend', Message::ESCAPED, Message::USER_LANGUAGE ) . '</legend>' .
+			"<h4>" . $this->msg( 'powersearch-ns', Message::PARSE, Message::USER_LANGUAGE ) . '</h4>' .
 			// populated by js if available
 			"<div id='smw-search-togglensview'>" .
 			'<input type="button" id="smw-togglensview" value="' . $val . '">' .
@@ -214,10 +224,6 @@ class NamespaceForm {
 			) .
 			$remember . "</div>" .
 		"</fieldset>";
-	}
-
-	private function msg( $key, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
-		return Message::get( $key, $type, $lang );
 	}
 
 }

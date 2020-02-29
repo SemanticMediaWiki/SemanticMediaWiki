@@ -38,7 +38,7 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCommonMethods() {
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( SMW_NS_CONCEPT );
+		$ns = Localizer::getInstance()->getNsText( SMW_NS_CONCEPT );
 
 		$concept = new DIWikiPage( 'Foo', SMW_NS_CONCEPT );
 		$instance = new ConceptDescription( $concept );

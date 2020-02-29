@@ -95,7 +95,7 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::doUnserialize( 'Foo#0##' )
 		);
 
-		$key = Localizer::getInstance()->getNamespaceTextById( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
+		$key = Localizer::getInstance()->getNsText( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
 
 		$expected = [
 			'propertyCount'  => 1,

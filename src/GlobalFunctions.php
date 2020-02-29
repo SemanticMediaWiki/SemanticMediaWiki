@@ -36,26 +36,10 @@ function smwfNormalTitleDBKey( $text ) {
 }
 
 /**
- * Takes a text and turns it into a normalised version. This function
- * reimplements the title normalization as done in Title.php in order to
- * achieve conversion with less overhead. The official code could be called
- * here if more advanced normalization is needed.
- *
- * @param string $text
+ * @deprecated since 3.2, use `Localizer::normalizeTitleText`
  */
 function smwfNormalTitleText( $text ) {
-	global $wgCapitalLinks, $wgContLang;
-
-	$text = trim( $text );
-
-	if ( $wgCapitalLinks ) {
-		$text = $wgContLang->ucfirst( $text );
-	}
-
-	// https://www.mediawiki.org/wiki/Manual:Page_title
-	// Titles beginning or ending with a space (underscore), or containing two
-	// or more consecutive spaces (underscores).
-	return str_replace( [ '__', '_', '  ' ], ' ', $text );
+	return Localizer::getInstance()->normalizeTitleText( $text );
 }
 
 /**
