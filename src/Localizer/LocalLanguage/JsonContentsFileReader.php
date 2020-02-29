@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Lang;
+namespace SMW\Localizer\LocalLanguage;
 
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;

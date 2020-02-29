@@ -13,7 +13,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class I18nExtraneousLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider i18nFileProvider

@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Integration\Lang;
+namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
-use SMW\Lang\FallbackFinder;
-use SMW\Lang\JsonContentsFileReader;
-use SMW\Lang\Lang;
-use SMW\Lang\LanguageContents;
+use SMW\Localizer\LocalLanguage\FallbackFinder;
+use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\Localizer\LocalLanguage\LanguageContents;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -38,7 +38,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 
 		$JsonContentsFileReader = new JsonContentsFileReader(
 			null,
-			__DIR__ . '/../../Fixtures/Lang/'
+			SMW_PHPUNIT_DIR . '/Fixtures/Localizer/LocalLanguage/'
 		);
 
 		$languageContents = new LanguageContents(
@@ -46,18 +46,18 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 			new FallbackFinder( $JsonContentsFileReader )
 		);
 
-		$lang = new Lang(
+		$localLanguage = new LocalLanguage(
 			$languageContents
 		);
 
-		$lang = $lang->fetch( 'foo-partial' );
+		$localLanguage = $localLanguage->fetch( 'foo-partial' );
 
 		// Loaded from foo-partial.json
 		$this->assertEquals(
 			[
 				'dataTypeLabels-partial' => 'bar'
 			],
-			$lang->getDatatypeLabels()
+			$localLanguage->getDatatypeLabels()
 		);
 
 		// foo-partial.json doesn't contain a `dataTypeAliases` declaration and is
@@ -66,7 +66,7 @@ class PartialLanguageFallback extends \PHPUnit_Framework_TestCase {
 			[
 				'dataTypeAliases-fallback' => 'bar'
 			],
-			$lang->getDatatypeAliases()
+			$localLanguage->getDatatypeAliases()
 		);
 	}
 
