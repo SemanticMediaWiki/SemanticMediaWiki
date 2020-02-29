@@ -65,7 +65,7 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 		Localizer::getInstance()->clear();
 
 		$subject = new DIWikiPage( 'RdfLinkedFile.txt', NS_FILE );
-		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
+		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile(
 			'RdfLinkedFile.txt'

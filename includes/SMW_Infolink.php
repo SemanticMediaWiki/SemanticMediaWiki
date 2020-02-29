@@ -1,6 +1,7 @@
 <?php
 
 use SMW\Site;
+use SMW\Localizer\Localizer;
 
 /**
  * This class mainly is a container to store URLs for the factbox in a
@@ -145,12 +146,11 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
-		global $wgContLang;
 
 		$infolink = new SMWInfolink(
 			true,
 			$caption,
-			$wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty',
+			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':SearchByProperty',
 			$style,
 			[ ':' . $propertyName, $propertyValue ] // `:` is marking that the link was auto-generated
 		);
@@ -175,11 +175,11 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newInversePropertySearchLink( $caption, $subject, $propertyname, $style = false ) {
-		global $wgContLang;
+
 		return new SMWInfolink(
 			true,
 			$caption,
-			$wgContLang->getNsText( NS_SPECIAL ) . ':PageProperty',
+			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':PageProperty',
 			$style,
 			[ $subject . '::' . $propertyname ]
 		);
@@ -195,11 +195,11 @@ class SMWInfolink {
 	 * @return SMWInfolink
 	 */
 	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ) {
-		global $wgContLang;
+
 		return new SMWInfolink(
 			true,
 			$caption,
-			$wgContLang->getNsText( NS_SPECIAL ) . ':Browse',
+			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':Browse',
 			$style,
 			[ ':' . $titleText ]
 		);

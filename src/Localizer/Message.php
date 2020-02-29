@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\Localizer;
 
 use Closure;
 use Language;
+use SMW\InMemoryPoolCache;
 
 /**
  * @private

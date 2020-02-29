@@ -2,9 +2,9 @@
 
 namespace SMW;
 
-use MWException;
 use SMW\DataModel\SubSemanticData;
 use SMW\DataModel\SequenceMap;
+use SMW\Localizer\Localizer;
 use SMW\Exception\SemanticDataImportException;
 use SMWContainerSemanticData;
 use SMWDataItem;
@@ -523,8 +523,7 @@ class SemanticData {
 			$property = $this->mProperties[$propertyKey];
 		} else {
 			if ( self::$mPropertyPrefix === '' ) {
-				global $wgContLang;
-				self::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
+				self::$mPropertyPrefix = Localizer::getInstance()->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
 
 			$propertyDV = DataValueFactory::getInstance()->newPropertyValueByLabel( self::$mPropertyPrefix . $propertyName );

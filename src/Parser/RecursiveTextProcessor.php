@@ -316,7 +316,7 @@ class RecursiveTextProcessor {
 		}
 
 		// Content language dep. category name
-		$category = Localizer::getInstance()->getNamespaceTextById(
+		$category = Localizer::getInstance()->getNsText(
 			NS_CATEGORY
 		);
 

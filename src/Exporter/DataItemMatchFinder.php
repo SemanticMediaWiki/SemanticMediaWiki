@@ -110,12 +110,12 @@ class DataItemMatchFinder {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
 
-		if ( ( $namespaceId = Localizer::getInstance()->getNamespaceIndexByName( $name ) ) !== false ) {
+		if ( ( $namespaceId = Localizer::getInstance()->getNsIndex( $name ) ) !== false ) {
 			return $namespaceId;
 		}
 
 		foreach ( [ SMW_NS_PROPERTY, NS_CATEGORY, NS_USER, NS_HELP ] as $nsId ) {
-			if ( $namespaceName == Localizer::getInstance()->getNamespaceTextById( $nsId ) ) {
+			if ( $namespaceName == Localizer::getInstance()->getNsText( $nsId ) ) {
 				$namespaceId = $nsId;
 				break;
 			}

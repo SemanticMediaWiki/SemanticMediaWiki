@@ -1,6 +1,9 @@
 <?php
 
 use SMW\Query\PrintRequest;
+use SMW\Localizer\Localizer;
+use SMW\StoreFactory;
+use SMW\DataValueFactory;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged
@@ -55,16 +58,15 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public function getNavigationLinks( Title $title, $query = [] ) {
-		global $wgLang;
 
-		$limitText = $wgLang->formatNum( $this->mLimit );
+		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
 		$beyondLimit = ( $resultCount > $this->mLimit );
 
 		if ( !is_null( $this->mUntil ) && $this->mUntil !== '' ) {
 			if ( $beyondLimit ) {
-				$first = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
+				$first = StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[1] );
 			} else {
 				$first = '';
 			}
@@ -74,7 +76,7 @@ class SMWPageLister {
 			$first = $this->mFrom;
 
 			if ( $beyondLimit ) {
-				$last = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[$resultCount - 1] );
+				$last = StoreFactory::getStore()->getWikiPageSortKey( $this->mDiWikiPages[$resultCount - 1] );
 			} else {
 				$last = '';
 			}
@@ -209,7 +211,6 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-		global $wgContLang;
 
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
@@ -237,12 +238,12 @@ class SMWPageLister {
 					continue;
 				}
 
-				$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+				$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
 				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
 				// check for change of starting letter or beginning of chunk
-				$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
-				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+				$sortkey = StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
+				$startChar = self::getFirstChar( $sortkey );
 
 				if ( ( $index == $startChunk ) ||
 					 ( $startChar != $prevStartChar ) ) {
@@ -298,7 +299,7 @@ class SMWPageLister {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
-		$startDv = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
+		$startDv = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
 		$searchlink = \SMWInfolink::newBrowsingLink( '+', $startDv->getWikiValue() );
 
 		// For a redirect, disable the DisplayTitle to show the original (aka source) page
@@ -313,7 +314,7 @@ class SMWPageLister {
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
-			$dataValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
+			$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
 			$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
 			// For a redirect, disable the DisplayTitle to show the original (aka source) page
@@ -341,15 +342,15 @@ class SMWPageLister {
 	}
 
 	private static function getFirstChar( $dataItem ) {
-		global $wgContLang;
+		$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
-		$sortkey = \SMW\StoreFactory::getStore()->getWikiPageSortKey( $dataItem );
+		$sortkey = StoreFactory::getStore()->getWikiPageSortKey( $dataItem );
 
 		if ( $sortkey === '' ) {
 			$sortkey = $dataItem->getDBKey();
 		}
 
-		return $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+		return $contentLanguage->convert( $contentLanguage->firstChar( $sortkey ) );
 	}
 
 }

@@ -16,7 +16,7 @@ use SMW\Exporter\ElementFactory;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
 use SMW\TypesRegistry;
 
@@ -148,7 +148,8 @@ class SMWExporter {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
-		global $wgContLang;
+
+		$localizer = Localizer::getInstance();
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 
@@ -164,20 +165,23 @@ class SMWExporter {
 		self::$m_ent_wikiurl  = Site::wikiurl();
 		self::$m_ent_wiki     = $smwgNamespace;
 
-		$property = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) ) ) : 'Property';
-		$category = $GLOBALS['smwgExportBCNonCanonicalFormUse'] ? urlencode( str_replace( ' ', '_', $wgContLang->getNsText( NS_CATEGORY ) ) ) : 'Category';
+		$property = 'Property';
+		$category = 'Category';
+
+		if ( $GLOBALS['smwgExportBCNonCanonicalFormUse'] ) {
+			$property = urlencode( str_replace( ' ', '_', $localizer->getNsText( SMW_NS_PROPERTY ) ) );
+			$category = urlencode( str_replace( ' ', '_', $localizer->getNsText( NS_CATEGORY ) ) );
+		}
 
 		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( $property . ':' );
 		self::$m_ent_category = self::$m_ent_wiki . Escaper::encodeUri( $category . ':' );
 
 		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
-		self::$m_exporturl    = self::$m_ent_wikiurl . $title->getPrefixedURL();
+		self::$m_exporturl = self::$m_ent_wikiurl . $title->getPrefixedURL();
 
 		// Canonical form, the title object always contains a wgContLang reference
 		// therefore replace it
 		if ( !$GLOBALS['smwgExportBCNonCanonicalFormUse'] ) {
-			$localizer = Localizer::getInstance();
-
 			self::$m_ent_property = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_property );
 			self::$m_ent_category = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_category );
 			self::$m_ent_wiki = $localizer->getCanonicalizedUrlByNamespace( NS_SPECIAL, self::$m_ent_wiki );
@@ -306,7 +310,7 @@ class SMWExporter {
 
 			$pageTitle = str_replace( '_', ' ', $subject->getDBkey() );
 			if ( $subject->getNamespace() !== 0 ) {
-				$prefixedSubjectTitle = Localizer::getInstance()->getNamespaceTextById( $subject->getNamespace() ) . ":" . $pageTitle;
+				$prefixedSubjectTitle = Localizer::getInstance()->getNsText( $subject->getNamespace() ) . ":" . $pageTitle;
 			} else {
 				$prefixedSubjectTitle = $pageTitle;
 			}

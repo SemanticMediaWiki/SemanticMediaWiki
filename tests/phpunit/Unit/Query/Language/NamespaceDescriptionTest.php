@@ -56,7 +56,7 @@ class NamespaceDescriptionTest extends \PHPUnit_Framework_TestCase {
 
 		$namespace = NS_CATEGORY;
 
-		$ns = Localizer::getInstance()->getNamespaceTextById( $namespace );
+		$ns = Localizer::getInstance()->getNsText( $namespace );
 		$instance = new NamespaceDescription( $namespace );
 
 		$this->assertEquals(

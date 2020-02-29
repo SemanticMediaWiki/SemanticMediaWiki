@@ -3,6 +3,7 @@
 namespace SMW\Exporter;
 
 use SMW\DIWikiPage;
+use SMW\Localizer\Localizer;
 
 /**
  * @license GNU GPL v2+
@@ -32,7 +33,7 @@ class Escaper {
 		} elseif ( $diWikiPage->getNamespace() === NS_CATEGORY ) {
 			$localName .= 'Category' . ':' . $diWikiPage->getDBkey();
 		} elseif ( $diWikiPage->getNamespace() !== NS_MAIN ) {
-			$localName .= str_replace( ' ', '_', $GLOBALS['wgContLang']->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
+			$localName .= str_replace( ' ', '_', Localizer::getInstance()->getNSText( $diWikiPage->getNamespace() ) ) . ':' . $diWikiPage->getDBkey();
 		} else {
 			$localName .= $diWikiPage->getDBkey();
 		}

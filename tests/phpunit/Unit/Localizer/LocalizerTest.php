@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Localizer;
 
 use Language;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
- * @covers \SMW\Localizer
+ * @covers \SMW\Localizer\Localizer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -59,11 +59,6 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 			$this->language,
 			$instance->getContentLanguage()
 		);
-
-		$this->assertSame(
-			$GLOBALS['wgContLang'],
-			Localizer::getInstance()->getContentLanguage()
-		);
 	}
 
 	public function testNamespaceTextById() {
@@ -75,7 +70,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			'Property',
-			$instance->getNamespaceTextById( SMW_NS_PROPERTY )
+			$instance->getNsText( SMW_NS_PROPERTY )
 		);
 	}
 
@@ -88,7 +83,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			SMW_NS_PROPERTY,
-			$instance->getNamespaceIndexByName( 'property' )
+			$instance->getNsIndex( 'property' )
 		);
 	}
 
@@ -284,6 +279,23 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			'Property:foo bar',
 			$instance->createTextWithNamespacePrefix( SMW_NS_PROPERTY, 'foo bar' )
+		);
+	}
+
+	public function testNormalizeTitleText() {
+
+		$this->language->expects( $this->once() )
+			->method( 'ucfirst' )
+			->will( $this->returnValue( 'Fo_o' ) );
+
+		$instance = new Localizer(
+			$this->language,
+			$this->namespaceInfo
+		);
+
+		$this->assertEquals(
+			'Fo o',
+			$instance->normalizeTitleText( 'fo_o' )
 		);
 	}
 

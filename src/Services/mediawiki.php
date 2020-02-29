@@ -282,6 +282,22 @@ return [
 	},
 
 	/**
+	 * ContentLanguage
+	 *
+	 * @return callable
+	 */
+	'ContentLanguage' => function( $containerBuilder ) {
+
+		// MW 1.35+
+		// https://phabricator.wikimedia.org/T245940
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getContentLanguage' ) ) {
+			return MediaWikiServices::getInstance()->getContentLanguage();
+		}
+
+		return $GLOBALS['wgContLang'];
+	},
+
+	/**
 	 * ParserCache
 	 *
 	 * @return callable

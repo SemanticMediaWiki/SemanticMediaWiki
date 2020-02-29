@@ -297,7 +297,7 @@ class TestEnvironment {
 	 */
 	public function replaceNamespaceWithLocalizedText( $index, $text ) {
 
-		$namespace = Localizer::getInstance()->getNamespaceTextById( $index );
+		$namespace = Localizer::getInstance()->getNsText( $index );
 
 		return str_replace(
 			Localizer::getInstance()->getCanonicalNamespaceTextById( $index ) . ':',

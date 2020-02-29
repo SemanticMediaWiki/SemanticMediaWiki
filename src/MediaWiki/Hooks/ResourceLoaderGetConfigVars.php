@@ -70,7 +70,7 @@ class ResourceLoaderGetConfigVars implements HookListener {
 			$name = $this->namespaceInfo->getCanonicalName( $ns );
 			$vars['smw-config']['settings']['namespace'][$name] = $ns;
 			$vars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
-			$vars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNamespaceTextById( $ns );
+			$vars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
 		}
 
 		foreach ( array_keys( $this->getOption( 'smwgResultFormats' ) ) as $format ) {

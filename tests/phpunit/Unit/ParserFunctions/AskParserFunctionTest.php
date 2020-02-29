@@ -436,8 +436,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryDataProvider() {
 
-		$categoryNS = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
-		$fileNS = Localizer::getInstance()->getNamespaceTextById( NS_FILE );
+		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
+		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 
 		$provider = [];
 

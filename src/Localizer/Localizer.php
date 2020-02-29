@@ -1,12 +1,16 @@
 <?php
 
-namespace SMW;
+namespace SMW\Localizer;
 
 use DateTime;
 use Language;
 use SMW\Lang\Lang;
+use SMW\DIWikiPage;
+use SMW\Site;
+use SMW\NamespaceManager;
 use SMW\MediaWiki\LocalTime;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\Services\ServicesFactory;
 use Title;
 use User;
 
@@ -50,9 +54,11 @@ class Localizer {
 			return self::$instance;
 		}
 
+		$servicesFactory = ServicesFactory::getInstance();
+
 		self::$instance = new self(
-			$GLOBALS['wgContLang'],
-			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' )
+			$servicesFactory->singleton( 'ContentLanguage' ),
+			$servicesFactory->singleton( 'NamespaceInfo' )
 		);
 
 		return self::$instance;
@@ -215,7 +221,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getNamespaceTextById( $index ) {
+	public function getNsText( $index ) {
 		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
 	}
 
@@ -244,8 +250,24 @@ class Localizer {
 	 *
 	 * @return integer|boolean
 	 */
-	public function getNamespaceIndexByName( $namespaceName ) {
+	public function getNsIndex( $namespaceName ) {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
+	}
+
+	/**
+	 * Convert a namespace index to a string in the preferred variant
+	 *
+	 * @since 3.2
+	 *
+	 * @deprecated since 1.35 use LanguageConverter::convertNamespace instead
+	 *
+	 * @param int $ns namespace
+	 * @param string|null $variant
+	 *
+	 * @return string a string representation of the namespace
+	 */
+	public function convertNamespace( $ns, $variant = null ) : string {
+		return $this->contentLanguage->getConverter()->convertNamespace( $ns, $variant );
 	}
 
 	/**
@@ -306,7 +328,7 @@ class Localizer {
 	 * @return string
 	 */
 	public function createTextWithNamespacePrefix( $index, $text ) {
-		return $this->getNamespaceTextById( $index ) . ':' . $text;
+		return $this->getNsText( $index ) . ':' . $text;
 	}
 
 	/**
@@ -319,7 +341,7 @@ class Localizer {
 	 */
 	public function getCanonicalizedUrlByNamespace( $index, $url ) {
 
-		$namespace = $this->getNamespaceTextById( $index );
+		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
 			return str_replace(
@@ -365,6 +387,32 @@ class Localizer {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Takes a text and turns it into a normalised version. This function
+	 * reimplements the title normalization as done in Title.php in order to
+	 * achieve conversion with less overhead. The official code could be called
+	 * here if more advanced normalization is needed.
+	 *
+	 * @since 3.2
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public function normalizeTitleText( string $text ) : string {
+
+		$text = trim( $text );
+
+		if ( Site::isCapitalLinks() ) {
+			$text = $this->contentLanguage->ucfirst( $text );
+		}
+
+		// https://www.mediawiki.org/wiki/Manual:Page_title
+		// Titles beginning or ending with a space (underscore), or containing two
+		// or more consecutive spaces (underscores).
+		return str_replace( [ '__', '_', '  ' ], ' ', $text );
 	}
 
 	/**

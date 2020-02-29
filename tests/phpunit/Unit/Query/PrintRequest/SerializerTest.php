@@ -32,7 +32,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
 
 	public function textProvider() {
 
-		$category = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$category = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$provider['print-cats'] = [
 			new PrintRequest( PrintRequest::PRINT_CATS, 'Foo' ),

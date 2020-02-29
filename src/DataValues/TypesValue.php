@@ -3,7 +3,7 @@
 namespace SMW\DataValues;
 
 use SMW\DataTypeRegistry;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDataItem as DataItem;
 use SMWDataItemException as DataItemException;
 use SMWDataValue as DataValue;
@@ -201,7 +201,7 @@ class TypesValue extends DataValue {
 		if ( $value !== '' && $value[0] === '_' ) {
 			$this->m_typeId = $value;
 		} else {
-			$this->givenLabel = smwfNormalTitleText( $value );
+			$this->givenLabel = Localizer::getInstance()->normalizeTitleText( $value );
 			$this->m_typeId = DataTypeRegistry::getInstance()->findTypeByLabelAndLanguage( $this->givenLabel, $contentLanguage );
 		}
 

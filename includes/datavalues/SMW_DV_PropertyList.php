@@ -26,20 +26,21 @@ class SMWPropertyListValue extends SMWDataValue {
 
 		$this->m_diProperties = [];
 		$stringValue = '';
+		$localizer = Localizer::getInstance();
 
 		$valueList = preg_split( '/[\s]*;[\s]*/u', trim( $value ) );
-		$propertyNamespace = Localizer::getInstance()->getNamespaceTextById(
+		$propertyNamespace = $localizer->getNsText(
 			SMW_NS_PROPERTY
 		);
 
 		foreach ( $valueList as $propertyName ) {
 			$propertyNameParts = explode( ':', $propertyName, 2 );
 			if ( count( $propertyNameParts ) > 1 ) {
-				$namespace = smwfNormalTitleText( $propertyNameParts[0] );
+				$namespace = $localizer->normalizeTitleText( $propertyNameParts[0] );
 
 				// Is it a registered namespace? Or just a property with a `:`
 				// divider such as `foaf:name`?
-				if ( Localizer::getInstance()->getNamespaceIndexByName( $namespace ) ) {
+				if ( $localizer->getNsIndex( $namespace ) ) {
 					$propertyName = $propertyNameParts[1];
 
 					if ( $namespace != $propertyNamespace ) {
@@ -48,7 +49,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				}
 			}
 
-			$propertyName = smwfNormalTitleText( $propertyName );
+			$propertyName = $localizer->normalizeTitleText( $propertyName );
 
 			try {
 				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );

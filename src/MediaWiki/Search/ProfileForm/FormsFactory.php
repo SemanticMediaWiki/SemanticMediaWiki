@@ -8,6 +8,7 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use WebRequest;
 use SMW\ApplicationFactory;
+use SMW\Localizer\Localizer;
 
 /**
  * @private
@@ -57,9 +58,10 @@ class FormsFactory {
 	 *
 	 * @return NamespaceForm
 	 */
-	public function newNamespaceForm() {
+	public function newNamespaceForm() : NamespaceForm {
 		return new NamespaceForm(
-			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' )
+			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' ),
+			Localizer::getInstance()
 		);
 	}
 

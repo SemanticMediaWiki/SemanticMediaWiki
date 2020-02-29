@@ -389,7 +389,7 @@ class Factbox {
 
 		$rdflink = SMWInfolink::newInternalLink(
 			Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
-			Localizer::getInstance()->getNamespaceTextById( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
+			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 			'rdflink'
 		);
 

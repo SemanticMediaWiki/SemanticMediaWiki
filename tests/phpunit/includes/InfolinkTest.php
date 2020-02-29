@@ -23,11 +23,13 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 
-		$this->testEnvironment = new TestEnvironment(
-			[
-				'wgContLang' => \Language::factory( 'en' )
-			]
-		);
+		$this->testEnvironment = new TestEnvironment();
+
+		$language = $this->getMockBuilder( '\Language' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'ContentLanguage', $language );
 	}
 
 	protected function tearDown() : void {

@@ -1,11 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Localizer;
 
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Message
+ * @covers \SMW\Localizer\Message
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -25,7 +26,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\Message',
+			Message::class,
 			new Message()
 		);
 	}

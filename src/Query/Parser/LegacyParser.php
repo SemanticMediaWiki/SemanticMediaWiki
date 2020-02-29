@@ -6,7 +6,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
@@ -711,7 +711,7 @@ class LegacyParser implements Parser {
 			// try namespace restriction
 			if ( ( count( $list ) == 2 ) && ( $list[1] == '+' ) ) {
 
-				$idx = $localizer->getNamespaceIndexByName( $list[0] );
+				$idx = $localizer->getNsIndex( $list[0] );
 
 				if ( $idx !== false ) {
 					$description = $this->descriptionProcessor->asOr(
@@ -836,11 +836,32 @@ class LegacyParser implements Parser {
 	}
 
 	private function hasClassPrefix( $chunk ) {
-		return in_array( smwfNormalTitleText( $chunk ), [ $this->categoryPrefix, $this->conceptPrefix, $this->categoryPrefixCannonical, $this->conceptPrefixCannonical ] );
+
+		$prefix = [
+			$this->categoryPrefix,
+			$this->conceptPrefix,
+			$this->categoryPrefixCannonical,
+			$this->conceptPrefixCannonical
+		];
+
+		return in_array( $this->normalizeTitleText( $chunk ), $prefix );
 	}
 
 	private function isClass( $chunk ) {
-		return smwfNormalTitleText( $chunk ) == $this->categoryPrefix || smwfNormalTitleText( $chunk ) == $this->categoryPrefixCannonical;
+
+		$chunk = $this->normalizeTitleText( $chunk );
+
+		if (
+			$chunk == $this->categoryPrefix ||
+			$chunk == $this->categoryPrefixCannonical ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private function normalizeTitleText( string $text ) : string {
+		return Localizer::getInstance()->normalizeTitleText( $text );
 	}
 
 }

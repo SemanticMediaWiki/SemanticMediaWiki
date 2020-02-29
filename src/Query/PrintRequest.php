@@ -178,7 +178,7 @@ class PrintRequest {
 		} elseif ( $this->m_mode === self::PRINT_CHAIN ) {
 			return $this->m_data->getDataItem()->getString();
 		} elseif ( $this->m_mode === self::PRINT_CATS ) {
-			return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+			return Localizer::getInstance()->getNsText( NS_CATEGORY );
 		} elseif ( $this->m_mode === self::PRINT_CCAT ) {
 			return $this->m_data->getPrefixedText();
 		}

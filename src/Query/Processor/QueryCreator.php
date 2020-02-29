@@ -242,7 +242,7 @@ class QueryCreator implements QueryContext {
 	}
 
 	private function normalize_sort( $sort ) {
-		return Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
+		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
 	}
 
 	private function getParam( $key, $default ) {

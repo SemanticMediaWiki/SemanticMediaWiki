@@ -135,7 +135,7 @@ class ClassDescription extends Description {
 	public function getQueryString( $asValue = false ) {
 
 		$first = true;
-		$namespaceText = Localizer::getInstance()->getNamespaceTextById( NS_CATEGORY );
+		$namespaceText = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
 			$wikiValue = DataValueFactory::getInstance()->newDataValueByItem( $wikiPage, null );

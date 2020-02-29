@@ -4,6 +4,10 @@
  * SemanticMediaWiki compatibility aliases for classes that got moved into the SMW namespace
  */
 
+// 3.2
+class_alias( \SMW\Localizer\Localizer::class, '\SMW\Localizer' );
+class_alias( \SMW\Localizer\Message::class, '\SMW\Message' );
+
 // 3.1
 class_alias( \SMW\Query\ResultPrinters\RdfResultPrinter::class, 'SMWRDFResultPrinter' );
 class_alias( \SMW\Query\ResultPrinters\EmbeddedResultPrinter::class, 'SMWEmbeddedResultPrinter' );
