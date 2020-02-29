@@ -3,7 +3,7 @@
 namespace SMW;
 
 use SMW\DataValues\TypeList;
-use SMW\Lang\Lang;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
 use RuntimeException;
 
@@ -28,9 +28,9 @@ class DataTypeRegistry {
 	protected static $instance = null;
 
 	/**
-	 * @var Lang
+	 * @var LocalLanguage
 	 */
-	private $lang;
+	private $LocalLanguage;
 
 	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.
@@ -124,10 +124,8 @@ class DataTypeRegistry {
 			return self::$instance;
 		}
 
-		$lang = Localizer::getInstance()->getLang();
-
 		self::$instance = new self(
-			$lang
+			Localizer::getInstance()->getLang()
 		);
 
 		self::$instance->initDatatypes(
@@ -149,10 +147,10 @@ class DataTypeRegistry {
 	/**
 	 * @since 1.9.0.2
 	 *
-	 * @param Lang $lang
+	 * @param Lang $localLanguage
 	 */
-	public function __construct( Lang $lang ) {
-		$this->lang = $lang;
+	public function __construct( LocalLanguage $localLanguage ) {
+		$this->localLanguage = $localLanguage;
 		$this->registerLabels();
 	}
 
@@ -317,7 +315,7 @@ class DataTypeRegistry {
 			return $this->findTypeByLabel( $label );
 		}
 
-		$lang = $this->lang->fetch(
+		$lang = $this->localLanguage->fetch(
 			$languageCode
 		);
 
@@ -570,15 +568,15 @@ class DataTypeRegistry {
 
 	private function registerLabels() {
 
-		foreach ( $this->lang->getDatatypeLabels() as $typeId => $typeLabel ) {
+		foreach ( $this->localLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}
 
-		foreach ( $this->lang->getDatatypeAliases() as $typeAlias => $typeId ) {
+		foreach ( $this->localLanguage->getDatatypeAliases() as $typeAlias => $typeId ) {
 			$this->registerDataTypeAlias( $typeId, $typeAlias );
 		}
 
-		foreach ( $this->lang->getCanonicalDatatypeLabels() as $label => $id ) {
+		foreach ( $this->localLanguage->getCanonicalDatatypeLabels() as $label => $id ) {
 			$this->canonicalLabels[$id] = $label;
 		}
 	}

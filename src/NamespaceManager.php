@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Lang\Lang;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @license GNU GPL v2+
@@ -14,20 +14,20 @@ use SMW\Lang\Lang;
 class NamespaceManager {
 
 	/**
-	 * @var Lang
+	 * @var LocalLanguage
 	 */
-	private $lang;
+	private $LocalLanguage;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param Lang|null $lang
+	 * @param LocalLanguage|null $LocalLanguage
 	 */
-	public function __construct( Lang $lang = null ) {
-		$this->lang = $lang;
+	public function __construct( LocalLanguage $LocalLanguage = null ) {
+		$this->localLanguage = $LocalLanguage;
 
-		if ( $this->lang === null ) {
-			$this->lang = Lang::getInstance();
+		if ( $this->localLanguage === null ) {
+			$this->localLanguage = LocalLanguage::getInstance();
 		}
 	}
 
@@ -44,7 +44,7 @@ class NamespaceManager {
 
 		// Legacy seeting in case some extension request a `smwgContLang` reference
 		if ( empty( $vars['smwgContLang'] ) ) {
-			$vars['smwgContLang'] = $this->lang->fetch( $vars['wgLanguageCode'] );
+			$vars['smwgContLang'] = $this->localLanguage->fetch( $vars['wgLanguageCode'] );
 		}
 
 		$this->addNamespaceSettings( $vars );
@@ -148,11 +148,11 @@ class NamespaceManager {
 	 * @since 1.9
 	 *
 	 * @param array &$vars
-	 * @param Lang|null $lang
+	 * @param LocalLanguage|null $localLanguage
 	 */
-	public static function initCustomNamespace( &$vars, Lang $lang = null ) {
+	public static function initCustomNamespace( &$vars, LocalLanguage $localLanguage = null ) {
 
-		$instance = new self( $lang );
+		$instance = new self( $localLanguage );
 
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			$vars['smwgNamespaceIndex'] = 100;
@@ -257,12 +257,12 @@ class NamespaceManager {
 	}
 
 	protected function getNamespacesByLanguageCode( $languageCode ) {
-		$GLOBALS['smwgContLang'] = $this->lang->fetch( $languageCode );
+		$GLOBALS['smwgContLang'] = $this->localLanguage->fetch( $languageCode );
 		return $GLOBALS['smwgContLang']->getNamespaces();
 	}
 
 	private function getNamespaceAliasesByLanguageCode( $languageCode ) {
-		return $this->lang->fetch( $languageCode )->getNamespaceAliases();
+		return $this->localLanguage->fetch( $languageCode )->getNamespaceAliases();
 	}
 
 }

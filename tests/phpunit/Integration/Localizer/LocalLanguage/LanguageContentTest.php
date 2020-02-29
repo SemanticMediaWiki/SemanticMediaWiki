@@ -1,8 +1,8 @@
 <?php
 
-namespace SMW\Tests\Integration\Lang;
+namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
-use SMW\Lang\Lang;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @group semantic-mediawiki
@@ -15,7 +15,7 @@ use SMW\Lang\Lang;
 class LanguageContent extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown() : void {
-		Lang::clear();
+		LocalLanguage::clear();
 		parent::tearDown();
 	}
 
@@ -24,7 +24,7 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetCanonicalPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
 
-		$lang = Lang::getInstance()->fetch(
+		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
 
@@ -41,7 +41,7 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPropertyAliases( $languageCode, $canonicalMatch, $aliasMatch, $expected ) {
 
-		$lang = Lang::getInstance()->fetch(
+		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
 
@@ -58,7 +58,7 @@ class LanguageContent extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetCanonicalPropertyLabels( $languageCode, $aliasMatch, $expected ) {
 
-		$lang = Lang::getInstance()->fetch(
+		$lang = LocalLanguage::getInstance()->fetch(
 			$languageCode
 		);
 

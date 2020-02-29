@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\System;
 
-use SMW\Lang\Lang;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -51,7 +51,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		$baseToCompareInstance = Lang::getInstance()->fetch( 'en' );
+		$baseToCompareInstance = LocalLanguage::getInstance()->fetch( 'en' );
 		$targetLanguageInstance = $class;
 
 		$result = array_diff_key(
@@ -100,7 +100,7 @@ class LanguagesAccessibilityAndIntegrityTest extends \PHPUnit_Framework_TestCase
 	}
 
 	private function loadLanguageFileAndConstructClass( $langcode ) {
-		return Lang::getInstance()->fetch( $langcode );
+		return LocalLanguage::getInstance()->fetch( $langcode );
 	}
 
 	private function formatAsString( $expected ) {

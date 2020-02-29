@@ -7,6 +7,7 @@
 // 3.2
 class_alias( \SMW\Localizer\Localizer::class, '\SMW\Localizer' );
 class_alias( \SMW\Localizer\Message::class, '\SMW\Message' );
+class_alias( \SMW\Localizer\LocalLanguage\LocalLanguage::class, '\SMW\Lang\Lang' );
 
 // 3.1
 class_alias( \SMW\Query\ResultPrinters\RdfResultPrinter::class, 'SMWRDFResultPrinter' );

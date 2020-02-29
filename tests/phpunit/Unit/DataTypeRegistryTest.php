@@ -164,24 +164,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [ '_wpg' => 'Page' ] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [ 'URI'  => '_uri' ] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$this->assertEquals(
@@ -199,24 +199,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testKnownAliasAsLanguageIndependantInvocation() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [ 'URI'  => '_uri' ] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$this->assertEquals(
@@ -260,32 +260,32 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testFindTypeByLabelAndLanguageFromRegisteredTypeWithoutLanguageMatch() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $lang ) );
+			->will( $this->returnValue( $localLanguage ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'findDatatypeByLabel' )
 			->will( $this->returnValue( '' ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_NOTYPE, 'Foo' );
@@ -298,24 +298,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSubDataType() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_NOTYPE, false, true );
@@ -327,24 +327,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testBrowsableType() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_NOTYPE, false, true, true );
@@ -361,24 +361,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetFieldType() {
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$instance->registerDataType( '_foo', 'FooValue', DataItem::TYPE_BLOB, false, true );
@@ -393,24 +393,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$id = '_wpg';
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [ $inputLabel => $id ] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		foreach ( $equivalentLabels as $caseVariant ) {
@@ -421,24 +421,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 	protected function assertRegistryFindsIdForAliases( $inputLabel, array $equivalentLabels ) {
 		$id = '_wpg';
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [ $id => $inputLabel ] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		foreach ( $equivalentLabels as $caseVariant ) {
@@ -452,24 +452,24 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			return 'foo';
 		};
 
-		$lang = $this->getMockBuilder( '\SMW\Lang\Lang' )
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getDatatypeAliases' )
 			->will( $this->returnValue( [] ) );
 
-		$lang->expects( $this->once() )
+		$localLanguage->expects( $this->once() )
 			->method( 'getCanonicalDatatypeLabels' )
 			->will( $this->returnValue( [] ) );
 
 		$instance = new DataTypeRegistry(
-			$lang
+			$localLanguage
 		);
 
 		$instance->registerDataType(

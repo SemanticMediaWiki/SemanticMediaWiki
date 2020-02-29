@@ -1,21 +1,21 @@
 <?php
 
-namespace SMW\Lang;
+namespace SMW\Localizer\LocalLanguage;
 
 /**
- * This class provides "extraneous" language functions independent from MediaWiki
- * to handle certain language options in a way required by Semantic MediaWiki and
- * its registration system.
+ * This class provides "local" language functions independent from MediaWiki
+ * to handle certain language options in a way required by Semantic MediaWiki
+ * and its registration system.
  *
  * @license GNU GPL v2+
  * @since 2.4
  *
  * @author mwjames
  */
-class Lang {
+class LocalLanguage {
 
 	/**
-	 * @var Lang
+	 * @var LocalLanguage
 	 */
 	private static $instance = null;
 
@@ -61,9 +61,9 @@ class Lang {
 	/**
 	 * @since 2.4
 	 *
-	 * @return Lang
+	 * @return LocalLanguage
 	 */
-	public static function getInstance() {
+	public static function getInstance() : LocalLanguage {
 
 		if ( self::$instance !== null ) {
 			return self::$instance;

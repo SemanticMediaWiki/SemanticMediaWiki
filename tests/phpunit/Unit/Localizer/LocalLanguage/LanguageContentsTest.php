@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Lang;
+namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Lang\FallbackFinder;
-use SMW\Lang\JsonContentsFileReader;
-use SMW\Lang\LanguageContents;
+use SMW\Localizer\LocalLanguage\FallbackFinder;
+use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
+use SMW\Localizer\LocalLanguage\LanguageContents;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Lang\LanguageContents
+ * @covers \SMW\Localizer\LocalLanguage\LanguageContents
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

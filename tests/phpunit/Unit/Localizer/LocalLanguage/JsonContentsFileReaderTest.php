@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Lang;
+namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Lang\JsonContentsFileReader;
+use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Lang\JsonContentsFileReader
+ * @covers \SMW\Localizer\LocalLanguage\JsonContentsFileReader
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

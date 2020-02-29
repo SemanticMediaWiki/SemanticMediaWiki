@@ -1,4 +1,4 @@
-It provides "extraneous" language functions independent of MediaWiki that ate required by Semantic MediaWiki and its registration system.
+It provides "local" language functions independent of MediaWiki that are required by Semantic MediaWiki and its registration system.
 
 ## JSON format
 
@@ -96,8 +96,8 @@ The location of the content files is determined by the [`$smwgExtraneousLanguage
 ## Technical notes
 
 <pre>
-SMW\Lang
-├─ Lang 			# interface to the language functions
+SMW\Localizer\LocalLanguage
+├─ LocalLanguage 			# interface to the language functions
 ├─ JsonContentsFileReader	# access the contents of a `JSON` file
 └─ FallbackFinder		# resolving a fallback language
 </pre>

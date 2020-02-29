@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Lang;
+namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Lang\Lang;
-use SMW\Lang\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\Localizer\LocalLanguage\LanguageContents;
 
 /**
- * @covers \SMW\Lang\Lang
+ * @covers \SMW\Localizer\LocalLanguage
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Lang\LanguageContents;
  *
  * @author mwjames
  */
-class LangTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 
 	private $languageContents;
 
@@ -27,23 +27,23 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tearDown() : void {
-		Lang::clear();
+		LocalLanguage::clear();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			Lang::class,
-			new Lang( $this->languageContents )
+			LocalLanguage::class,
+			new LocalLanguage( $this->languageContents )
 		);
 
 		$this->assertInstanceOf(
-			Lang::class,
-			Lang::getInstance()
+			LocalLanguage::class,
+			LocalLanguage::getInstance()
 		);
 
-		Lang::clear();
+		LocalLanguage::clear();
 	}
 
 	public function testGetNamespaces() {
@@ -59,7 +59,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -82,7 +82,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -105,7 +105,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -128,7 +128,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -151,7 +151,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -171,7 +171,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 			->method( 'get' )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -205,7 +205,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 			->method( 'get' )
 			->will( $this->returnValue( [] ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -227,7 +227,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 			->method( 'get' )
 			->will( $this->onConsecutiveCalls( $propertyLabels, [], [], [] ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -257,7 +257,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -282,7 +282,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 
@@ -307,7 +307,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 				$this->anything() )
 			->will( $this->returnValue( $contents ) );
 
-		$instance = new Lang(
+		$instance = new LocalLanguage(
 			$this->languageContents
 		);
 

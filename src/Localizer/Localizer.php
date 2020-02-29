@@ -4,7 +4,7 @@ namespace SMW\Localizer;
 
 use DateTime;
 use Language;
-use SMW\Lang\Lang;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
 use SMW\Site;
 use SMW\NamespaceManager;
@@ -211,7 +211,7 @@ class Localizer {
 			$languageCode = $this->getContentLanguage()->getCode();
 		}
 
-		return Lang::getInstance()->fetch( $languageCode );
+		return LocalLanguage::getInstance()->fetch( $languageCode );
 	}
 
 	/**
