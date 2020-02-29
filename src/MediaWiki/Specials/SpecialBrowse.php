@@ -162,6 +162,7 @@ class SpecialBrowse extends SpecialPage {
 		$htmlBuilder->setOptions(
 			[
 				'dir' => $webRequest->getVal( 'dir' ),
+				'lang' => $webRequest->getVal( 'lang', $this->getLanguage()->getCode() ),
 				'group' => $webRequest->getVal( 'group' ),
 				'printable' => $webRequest->getVal( 'printable' ),
 				'offset' => $webRequest->getVal( 'offset' ),

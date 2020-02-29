@@ -217,7 +217,7 @@
 					"action": "smwbrowse",
 					"format": "json",
 					"browse": "subject",
-					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": {} }"
+					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": { \"lang\" : \"en\" } }"
 				}
 			},
 			"assert-output": {
