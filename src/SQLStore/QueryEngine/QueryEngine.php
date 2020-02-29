@@ -246,12 +246,18 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
+		$debugFormatter = new DebugFormatter(
+			$this->store->getConnection( 'mw.db.queryengine' )->getType()
+		);
+
+		$debugFormatter->setName( 'SQLStore' );
+
 		$sqlOptions = $this->getSQLOptions( $query, $rootid );
 
 		$entries['SQL Query'] = '';
 		$entries['SQL Explain'] = '';
 
-		$this->doExecuteDebugQueryResult( $qobj, $sqlOptions, $entries );
+		$this->doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, $entries );
 		$auxtables = '';
 
 		foreach ( $this->querySegmentListProcessor->getExecutedQueries() as $table => $log ) {
@@ -268,10 +274,10 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$entries['Auxilliary Tables'] = 'No auxilliary tables used.';
 		}
 
-		return DebugFormatter::getStringFrom( 'SQLStore', $entries, $query );
+		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function doExecuteDebugQueryResult( $qobj, $sqlOptions, &$entries ) {
+	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
 
 		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
 			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
@@ -282,10 +288,6 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
-
-		$format = DebugFormatter::getFormat(
-			$connection->getType()
-		);
 
 		$sql = "SELECT DISTINCT ".
 			"$qobj->alias.smw_id AS id," .
@@ -304,13 +306,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		if ( $connection->isType( 'sqlite' ) ) {
 			$query = "EXPLAIN QUERY PLAN $sql";
 		} else {
+			$format = $debugFormatter->getFormat();
 			$query = "EXPLAIN $format $sql";
 		}
 
 		$res = $connection->query( $query , __METHOD__ );
 
-		$entries['SQL Explain'] = DebugFormatter::prettifyExplain( $connection->getType(), new ResultIterator( $res ) );
-		$entries['SQL Query'] = DebugFormatter::prettifySql( $sql, $qobj->alias );
+		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
+		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );
 
 		$connection->freeResult( $res );
 	}

@@ -250,7 +250,7 @@ class QueryEngine implements IQueryEngine {
 				[
 					'class' => 'smw-debug-box-header'
 				],
-				'<big>ElasticStore debug output</big>'
+				'<big>Debug output<span style="float:right">ElasticStore</span></big>'
 			) . $info
 		);
 

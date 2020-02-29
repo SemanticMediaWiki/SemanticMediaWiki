@@ -24,17 +24,17 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getStringFrom( 'foo', [], null )
+			$instance->buildHTML( [], null )
 		);
 	}
 
 	public function testExplainFormat() {
 
-		DebugFormatter::setExplainFormat( DebugFormatter::JSON_FORMAT );
+		$instance = new DebugFormatter( 'mysql', DebugFormatter::JSON_FORMAT );
 
 		$this->assertEquals(
 			'FORMAT=json',
-			DebugFormatter::getFormat( 'mysql' )
+			$instance->getFormat()
 		);
 	}
 
@@ -60,7 +60,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->getStringFrom( 'foo', [], $query )
+			$instance->buildHTML( [], $query )
 		);
 	}
 
@@ -73,7 +73,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->prettifyExplain( $type, $res )
+			$instance->prettifyExplain( $res )
 		);
 	}
 
@@ -85,7 +85,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->prettifySparql( $sparql )
+			$instance->prettifySPARQL( $sparql )
 		);
 
 		$this->assertEquals(
@@ -103,7 +103,7 @@ class DebugFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$instance->prettifySql( $sql, $alias )
+			$instance->prettifySQL( $sql, $alias )
 		);
 	}
 
