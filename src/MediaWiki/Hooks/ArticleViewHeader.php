@@ -60,6 +60,12 @@ class ArticleViewHeader implements HookListener {
 	public function process( Page $page, &$outputDone, &$useParserCache ) {
 
 		$title = $page->getTitle();
+		$subject = DIWikiPage::newFromTitle( $title );
+
+		// Preload data most likely to be used during a request hereby providing
+		// a possibility to bundle relevant data objects early given that this
+		// hook runs before any other GET request
+		$this->store->getObjectIds()->preload( [ $subject ] );
 
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
@@ -69,8 +75,6 @@ class ArticleViewHeader implements HookListener {
 		if ( isset( $changePropagationWatchlist['_SUBC'] ) && $title->getNamespace() === NS_CATEGORY ) {
 			$useParserCache = $this->updateCategoryTop( $title, $page->getContext()->getOutput() );
 		}
-
-		$subject = DIWikiPage::newFromTitle( $title );
 
 		if ( $this->dependencyValidator->hasArchaicDependencies( $subject ) ) {
 			$this->dependencyValidator->markTitle( $title );

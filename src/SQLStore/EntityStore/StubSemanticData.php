@@ -120,6 +120,7 @@ class StubSemanticData extends SemanticData {
 		$result->mHasVisibleSpecs = $semanticData->mHasVisibleSpecs;
 		$result->stubObject = $semanticData->stubObject;
 		$result->sequenceMap = $semanticData->sequenceMap;
+		$result->countMap = $semanticData->countMap;
 		return $result;
 	}
 
@@ -131,6 +132,16 @@ class StubSemanticData extends SemanticData {
 	 */
 	public function setSequenceMap( $sid, $sequenceMap ) {
 		$this->sequenceMap = is_array( $sequenceMap ) ? $sequenceMap : [];
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param integer $sid
+	 * @param [] $countMap
+	 */
+	public function setCountMap( $sid, $countMap ) {
+		$this->countMap = is_array( $countMap ) ? $countMap : [];
 	}
 
 	/**

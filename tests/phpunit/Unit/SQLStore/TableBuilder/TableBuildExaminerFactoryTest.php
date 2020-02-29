@@ -15,6 +15,20 @@ use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
  */
 class TableBuildExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	public function testCanConstructCountMapField() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new TableBuildExaminerFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableBuilder\Examiner\CountMapField',
+			$instance->newCountMapField( $store )
+		);
+	}
+
 	public function testCanConstructHashField() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

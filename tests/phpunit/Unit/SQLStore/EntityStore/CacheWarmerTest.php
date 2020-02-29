@@ -43,7 +43,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testFillFromList_Page() {
+	public function testPrepareCache_Page() {
 
 		$list = [
 			new DIWikiPage( 'Bar', NS_MAIN )
@@ -92,10 +92,10 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setThresholdLimit( 1 );
-		$instance->fillFromList( $list );
+		$instance->prepareCache( $list );
 	}
 
-	public function testFillFromList_DisplayTitleFinder() {
+	public function testPrepareCache_DisplayTitleFinder() {
 
 		$displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
 			->disableOriginalConstructor()
@@ -112,10 +112,10 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setDisplayTitleFinder( $displayTitleFinder );
 		$instance->setThresholdLimit( 1 );
 
-		$instance->fillFromList( [] );
+		$instance->prepareCache( [] );
 	}
 
-	public function testFillFromList_Property() {
+	public function testPrepareCache_Property() {
 
 		$list = [
 			// Both represent the same object hence only cache once
@@ -166,10 +166,10 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setThresholdLimit( 1 );
-		$instance->fillFromList( $list );
+		$instance->prepareCache( $list );
 	}
 
-	public function testFillFromList_UnknownPredefinedProperty() {
+	public function testPrepareCache_UnknownPredefinedProperty() {
 
 		$list = [
 			new DIWikiPage( '_Foo', SMW_NS_PROPERTY )
@@ -196,7 +196,7 @@ class CacheWarmerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setThresholdLimit( 1 );
-		$instance->fillFromList( $list );
+		$instance->prepareCache( $list );
 	}
 
 }

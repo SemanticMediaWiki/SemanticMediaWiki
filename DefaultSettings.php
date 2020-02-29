@@ -71,7 +71,7 @@ return [
 	#
 	# @since 3.0
 	##
-	'smwgUpgradeKey' => 'smw:2019-09-23',
+	'smwgUpgradeKey' => 'smw:2020-02-29',
 	##
 
 	###

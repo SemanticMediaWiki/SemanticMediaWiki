@@ -756,13 +756,17 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getNamespace' )
 			->will( $this->returnValue( NS_MAIN ) );
 
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
+			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getObjectIds' ] )
 			->getMock();
 
 		$store->expects( $this->any() )
@@ -772,6 +776,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
 			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

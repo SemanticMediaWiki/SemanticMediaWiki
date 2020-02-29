@@ -130,6 +130,48 @@ class SemanticDataTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetCountMap() {
+
+		$instance = new SemanticData(
+			DIWikiPage::newFromText( __METHOD__ )
+		);
+
+		$dv = DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' );
+
+		$instance->addDataValue(
+			$dv
+		);
+
+		$subobject = $this->newSubobject(
+			$instance->getSubject()->getTitle()
+		);
+
+		$instance->addPropertyObjectValue(
+			$subobject->getProperty(),
+			$subobject->getContainer()
+		);
+
+		$this->assertEquals(
+			[
+				'Foo' => 1,
+				'_SOBJ' => 1
+			],
+			$instance->getCountMap()
+		);
+
+		$instance->removePropertyObjectValue(
+			$dv->getProperty(),
+			$dv->getDataItem()
+		);
+
+		$this->assertEquals(
+			[
+				'_SOBJ' => 1
+			],
+			$instance->getCountMap()
+		);
+	}
+
 	public function testPropertyOrderDoesNotInfluenceHash() {
 
 		$instance = new SemanticData(

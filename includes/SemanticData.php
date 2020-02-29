@@ -163,6 +163,11 @@ class SemanticData {
 	protected $sequenceMap = [];
 
 	/**
+	 * @var array
+	 */
+	protected $countMap = [];
+
+	/**
 	 * This is kept public to keep track of the depth during a recursive processing
 	 * when accessed through the SubSemanticData instance.
 	 *
@@ -197,7 +202,9 @@ class SemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return [ 'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData', 'sequenceMap' ];
+		return [
+			'mSubject', 'mPropVals', 'mProperties', 'subSemanticData', 'mHasVisibleProps', 'mHasVisibleSpecs', 'options', 'extensionData', 'sequenceMap', 'countMap'
+		];
 	}
 
 	/**
@@ -227,6 +234,17 @@ class SemanticData {
 	 */
 	public function getSequenceMap() {
 		return $this->sequenceMap;
+	}
+
+	/**
+	 * Returns a map of property value counts
+	 *
+	 * @since 3.2
+	 *
+	 * @return []
+	 */
+	public function getCountMap() {
+		return $this->countMap;
 	}
 
 	/**
@@ -465,6 +483,8 @@ class SemanticData {
 			return;
 		}
 
+		$key = $property->getKey();
+
 		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
 			$this->mPropVals[$property->getKey()] = [];
 			$this->mProperties[$property->getKey()] = $property;
@@ -472,6 +492,8 @@ class SemanticData {
 			if ( SequenceMap::canMap( $property ) ) {
 				$this->sequenceMap[$property->getKey()] = [];
 			}
+
+			$this->countMap[$key] = $key === '_INST' ? [] : 0;
 		}
 
 		$hash = md5( $dataItem->getHash() );
@@ -482,6 +504,16 @@ class SemanticData {
 			isset( $this->sequenceMap[$property->getKey()] ) &&
 			!isset( $this->mPropVals[$property->getKey()][$hash] ) ) {
 			$this->sequenceMap[$property->getKey()][] = $hash;
+		}
+
+		if ( !isset( $this->mPropVals[$property->getKey()][$hash] ) ) {
+
+			// Count categories differently
+			if ( $key === '_INST' ) {
+				$this->countMap[$key][$dataItem->getDBKey()] = 1;
+			} else {
+				$this->countMap[$key]++;
+			}
 		}
 
 		if ( $this->mNoDuplicates ) {
@@ -607,6 +639,8 @@ class SemanticData {
 			return;
 		}
 
+		$key = $property->getKey();
+
 		if (
 			!array_key_exists( $property->getKey(), $this->mPropVals ) ||
 			!array_key_exists( $property->getKey(), $this->mProperties ) ) {
@@ -616,13 +650,30 @@ class SemanticData {
 		if ( $this->mNoDuplicates ) {
 			//this didn't get checked for my tests, but should work
 			unset( $this->mPropVals[$property->getKey()][md5( $dataItem->getHash() )] );
+
+			if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {
+				unset( $this->countMap[$key][$dataItem->getDBKey()] );
+			} elseif ( isset( $this->countMap[$key] ) ) {
+				$this->countMap[$key]--;
+			}
 		} else {
 			foreach( $this->mPropVals[$property->getKey()] as $index => $di ) {
 				if( $di->equals( $dataItem ) ) {
 					unset( $this->mPropVals[$property->getKey()][$index] );
 				}
+
+				if ( isset( $this->countMap[$key] ) && $key === '_INST' ) {
+					unset( $this->countMap[$key][$dataItem->getDBKey()] );
+				} elseif ( isset( $this->countMap[$key] ) ) {
+					$this->countMap[$key]--;
+				}
 			}
+
 			$this->mPropVals[$property->getKey()] = array_values( $this->mPropVals[$property->getKey()] );
+		}
+
+		if ( isset( $this->countMap[$key] ) && $this->countMap[$key] == 0 ) {
+			unset( $this->countMap[$key] );
 		}
 
 		if ( $this->mPropVals[$property->getKey()] === [] ) {
@@ -660,6 +711,8 @@ class SemanticData {
 
 		unset( $this->mPropVals[$key] );
 		unset( $this->mProperties[$key] );
+		unset( $this->sequenceMap[$key] );
+		unset( $this->countMap[$key] );
 	}
 
 	/**
@@ -715,6 +768,7 @@ class SemanticData {
 
 			$this->mProperties = $semanticData->getProperties();
 			$this->sequenceMap = $semanticData->getSequenceMap();
+			$this->countMap = $semanticData->getCountMap();
 			$this->mPropVals = [];
 
 			foreach ( $this->mProperties as $property ) {

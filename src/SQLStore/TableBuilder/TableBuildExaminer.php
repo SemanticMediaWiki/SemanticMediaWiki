@@ -153,6 +153,13 @@ class TableBuildExaminer {
 		$touchedField->setMessageReporter( $this->messageReporter );
 		$touchedField->check();
 
+		$countMapField = $this->tableBuildExaminerFactory->newCountMapField(
+			$this->store
+		);
+
+		$countMapField->setMessageReporter( $this->messageReporter );
+		$countMapField->check( $tableBuilder->getLog() );
+
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_CREATION );
 	}
