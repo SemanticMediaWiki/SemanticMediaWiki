@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Settings;
 use SMW\Tests\TestEnvironment;
@@ -42,7 +42,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 		$instance = Settings::newFromArray( $settings );
 
 		$this->assertInstanceOf(
-			'\SMW\Settings',
+			Settings::class,
 			$instance
 		);
 
