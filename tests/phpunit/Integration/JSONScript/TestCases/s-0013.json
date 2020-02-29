@@ -19,7 +19,8 @@
 				"page": "Browse",
 				"query-parameters": "Example/S0013/1",
 				"request-parameters": {
-					"output": "legacy"
+					"output": "legacy",
+					"lang": "es"
 				}
 			},
 			"assert-output": {

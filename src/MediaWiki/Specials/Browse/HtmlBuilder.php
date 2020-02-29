@@ -80,6 +80,11 @@ class HtmlBuilder {
 	private $options = [];
 
 	/**
+	 * @var array
+	 */
+	private $language = 'en';
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Store $store
@@ -172,6 +177,8 @@ class HtmlBuilder {
 			'subobject' => $this->subject->getSubobjectName(),
 		];
 
+		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
+
 		return Html::rawElement(
 			'div',
 			[
@@ -192,7 +199,7 @@ class HtmlBuilder {
 						[
 							'class' => 'smw-callout smw-callout-error',
 						],
-						Message::get( 'smw-noscript', Message::PARSE )
+						Message::get( 'smw-noscript', Message::PARSE, $this->language )
 					)
 				)
 			) . Html::rawElement(
@@ -220,6 +227,8 @@ class HtmlBuilder {
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}
+
+		$this->language = $this->getOption( 'lang' ) !== null ? $this->getOption( 'lang' ) : Message::USER_LANGUAGE;
 
 		$this->outgoingValuesCount = $this->getOption( 'valuelistlimit.out', 200 );
 
@@ -273,7 +282,7 @@ class HtmlBuilder {
 		$html .= $this->displayBottom( false );
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$form = FieldBuilder::createQueryForm( $this->articletext );
+			$form = FieldBuilder::createQueryForm( $this->articletext, $this->language );
 		}
 
 		return Html::rawElement(
@@ -306,6 +315,8 @@ class HtmlBuilder {
 		$semanticData = new SemanticData(
 			$this->dataValue->getDataItem()
 		);
+
+		$this->dataValue->setOption( $this->dataValue::OPT_USER_LANGUAGE, $this->language );
 
 		$html .= $this->displayHead();
 		$html .= $this->displayActions();
@@ -356,7 +367,7 @@ class HtmlBuilder {
 		);
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FieldBuilder::createQueryForm( $this->articletext ) ;
+			$html .= FieldBuilder::createQueryForm( $this->articletext, $this->language ) ;
 		}
 
 		$html .= Html::element(
@@ -465,7 +476,7 @@ class HtmlBuilder {
 			);
 
 			$lColumn = HtmlDivTable::cell(
-				wfMessage( $isLoading ? 'smw-browse-from-backend' : $noMsgKey )->escaped(),
+				 Message::get( $isLoading ? 'smw-browse-from-backend' : $noMsgKey, Message::ESCAPED, $this->language ),
 				[
 					"class" => 'smwb-cell smwb-propval'
 				]
@@ -500,13 +511,13 @@ class HtmlBuilder {
 		$comma = Message::get(
 			'comma-separator',
 			Message::ESCAPED,
-			Message::USER_LANGUAGE
+			$this->language
 		);
 
 		$and = Message::get(
 			'and',
 			Message::ESCAPED,
-			Message::USER_LANGUAGE
+			$this->language
 		);
 
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -524,6 +535,8 @@ class HtmlBuilder {
 				null
 			);
 
+			$dvProperty->setOption( $this->dataValue::OPT_USER_LANGUAGE, $this->language );
+
 			$dvProperty->setContextPage(
 				$contextPage
 			);
@@ -536,7 +549,7 @@ class HtmlBuilder {
 
 			// Make the sortkey visible which is otherwise hidden from the user
 			if ( $showSort && $diProperty->getKey() === '_SKEY' ) {
-				$propertyLabel = Message::get( 'smw-property-predefined-label-skey', Message::TEXT, Message::USER_LANGUAGE );
+				$propertyLabel = Message::get( 'smw-property-predefined-label-skey', Message::TEXT, $this->language );
 			}
 
 			if ( $propertyLabel === null ) {
@@ -707,7 +720,7 @@ class HtmlBuilder {
 				$linkMsg = 'smw-browse-hide-group';
 			}
 
-			$html .= FieldBuilder::createLink( $linkMsg, $parameters );
+			$html .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
 			$html .= '<span class="smwb-action-separator">&nbsp;</span>';
 		}
 
@@ -733,7 +746,7 @@ class HtmlBuilder {
 				$linkMsg = 'smw_browse_show_incoming';
 			}
 
-			$html .= FieldBuilder::createLink( $linkMsg, $parameters );
+			$html .= FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
 		}
 
 		return HtmlDivTable::table(
@@ -801,7 +814,7 @@ class HtmlBuilder {
 
 			$linkMsg = 'smw_result_prev';
 
-			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters );
+			$html .= ( $this->offset == 0 ) ? wfMessage( $linkMsg )->escaped() : FieldBuilder::createLink( $linkMsg, $parameters, $this->language );
 
 			$offset = $this->offset + $this->incomingPropertiesCount - 1;
 
@@ -815,7 +828,7 @@ class HtmlBuilder {
 
 			$html .= " &#160;&#160;&#160;  <strong>" . wfMessage( 'smw_result_results' )->escaped() . " " . ( $this->offset + 1 ) .
 					 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
-			$html .= $more ? FieldBuilder::createLink( $linkMsg, $parameters ) : wfMessage( $linkMsg )->escaped();
+			$html .= $more ? FieldBuilder::createLink( $linkMsg, $parameters, $this->language ) : wfMessage( $linkMsg )->escaped();
 
 			$html = HtmlDivTable::row(
 				$html,

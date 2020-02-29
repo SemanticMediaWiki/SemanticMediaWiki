@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Browse;
 use Html;
 use SMW\Message;
 use SpecialPage;
+use SMW\Localizer;
 
 /**
  * @private
@@ -27,10 +28,15 @@ class FieldBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createQueryForm( $articletext = '' ) {
+	public static function createQueryForm( $articletext = '', $lang = Message::USER_LANGUAGE ) {
 
 		$title = SpecialPage::getTitleFor( 'Browse' );
-		$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
+
+		if ( $lang !== Message::USER_LANGUAGE ) {
+			$dir = Localizer::getInstance()->getLanguage( $lang )->isRTL() ? 'rtl' : 'ltr';
+		} else {
+			$dir = $title->getPageLanguage()->isRTL() ? 'rtl' : 'ltr';
+		}
 
 		$html = "<div class=\"smwb-form\">". Html::rawElement(
 			'div',
@@ -52,7 +58,7 @@ class FieldBuilder {
 					'name'  => 'title',
 					'value' => $title->getPrefixedText()
 				],
-				 Message::get( 'smw_browse_article', Message::ESCAPED, Message::USER_LANGUAGE )
+				 Message::get( 'smw_browse_article', Message::ESCAPED, $lang )
 			) .
 			Html::rawElement(
 				'div',
@@ -87,7 +93,7 @@ class FieldBuilder {
 						[
 							'type'  => 'submit',
 							'class' => 'input-button mw-ui-button',
-							'value' => Message::get( 'smw_browse_go', Message::ESCAPED, Message::USER_LANGUAGE )
+							'value' => Message::get( 'smw_browse_go', Message::ESCAPED, $lang )
 						]
 					)
 				)
@@ -107,7 +113,7 @@ class FieldBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createLink( $linkMsg, array $parameters ) {
+	public static function createLink( $linkMsg, array $parameters, $lang = Message::USER_LANGUAGE ) {
 
 		$title = SpecialPage::getSafeTitleFor( 'Browse' );
 		$fragment = $linkMsg === 'smw_browse_show_incoming' ? '#smw_browse_incoming' : '';
@@ -118,7 +124,7 @@ class FieldBuilder {
 				'href' => $title->getLocalURL( $parameters ) . $fragment,
 				'class' => $linkMsg
 			],
-			Message::get( $linkMsg, Message::TEXT, Message::USER_LANGUAGE )
+			Message::get( $linkMsg, Message::TEXT, $lang )
 		);
 	}
 
