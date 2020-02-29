@@ -8,6 +8,7 @@ use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Schema\SchemaTypes;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
  * @private
@@ -28,6 +29,16 @@ use SMW\Schema\SchemaTypes;
  * @author mwjames
  */
 class HookDispatcher {
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelisteners.md
+	 * @since 3.2
+	 *
+	 * @param PropertyChangeListener $propertyChangeListener
+	 */
+	public function onRegisterPropertyChangeListeners( PropertyChangeListener $propertyChangeListener ) {
+		Hooks::run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $propertyChangeListener ] );
+	}
 
 	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md

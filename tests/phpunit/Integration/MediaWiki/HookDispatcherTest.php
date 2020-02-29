@@ -55,6 +55,28 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnRegisterPropertyChangeListeners() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyChangeListener->expects( $this->once() )
+			->method( 'addListenerCallback' );
+
+		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function( $propertyChangeListener ) use ( $property ) {
+			$propertyChangeListener->addListenerCallback( $property, function(){} );
+		} );
+
+		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );
+	}
+
 	public function testOnRegisterSchemaTypes() {
 
 		$hookDispatcher = new HookDispatcher();
