@@ -130,6 +130,21 @@ return [
 	},
 
 	/**
+	 * PermissionManager
+	 *
+	 * @return callable
+	 */
+	'MediaWiki.PermissionManager' => function( $containerBuilder ) {
+
+		// > MW 1.33
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getPermissionManager' ) ) {
+			return MediaWikiServices::getInstance()->getPermissionManager();
+		}
+
+		return null;
+	},
+
+	/**
 	 * LBFactory
 	 *
 	 * @return callable
