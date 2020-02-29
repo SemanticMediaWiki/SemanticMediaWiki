@@ -17,11 +17,16 @@ use Title;
 class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
 	private $protectionValidator;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -30,7 +35,7 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			PermissionManager::class,
-			new PermissionManager( $this->protectionValidator  )
+			new PermissionManager( $this->protectionValidator, $this->permissionExaminer )
 		);
 	}
 
@@ -43,7 +48,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertTrue(
@@ -68,15 +74,18 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->once() )
-			->method( 'isAllowed' )
-			->with( $this->equalTo( $permission ) )
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'userHasRight' )
+			->with(
+				$this->equalTo( $user ),
+				$this->equalTo( $permission ) )
 			->will( $this->returnValue( false ) );
 
 		$result = [];
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -125,13 +134,16 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->once() )
-			->method( 'isAllowed' )
-			->with( $this->equalTo( $editProtectionRight ) )
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'userHasRight' )
+			->with(
+				$this->equalTo( $user ),
+				$this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -173,7 +185,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertTrue(
@@ -210,7 +223,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -252,7 +266,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -292,7 +307,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -334,7 +350,8 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertTrue(
@@ -371,13 +388,16 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->once() )
-			->method( 'isAllowed' )
-			->with( $this->equalTo( 'smw-schemaedit' ) )
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'userHasRight' )
+			->with(
+				$this->equalTo( $user ),
+				$this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( false ) );
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -416,13 +436,16 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->once() )
-			->method( 'isAllowed' )
-			->with( $this->equalTo( 'smw-schemaedit' ) )
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'userHasRight' )
+			->with(
+				$this->equalTo( $user ),
+				$this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( true ) );
 
 		$instance = new PermissionManager(
-			$this->protectionValidator
+			$this->protectionValidator,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(

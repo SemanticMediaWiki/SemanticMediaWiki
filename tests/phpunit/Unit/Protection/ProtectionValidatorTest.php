@@ -19,6 +19,7 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $store;
 	private $entityCache;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -33,13 +34,17 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate' ] )
 			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			ProtectionValidator::class,
-			new ProtectionValidator( $this->store, $this->entityCache )
+			new ProtectionValidator( $this->store, $this->entityCache, $this->permissionExaminer )
 		);
 	}
 
@@ -47,7 +52,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setEditProtectionRight(
@@ -78,7 +84,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setEditProtectionRight(
@@ -108,7 +115,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertTrue(
@@ -130,7 +138,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -152,7 +161,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -169,7 +179,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setChangePropagationProtection(
@@ -195,7 +206,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertTrue(
@@ -212,7 +224,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setChangePropagationProtection(
@@ -228,7 +241,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setCreateProtectionRight(
@@ -247,13 +261,18 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->once() )
+		$this->permissionExaminer->expects( $this->once() )
 			->method( 'userCan' )
+			->with(
+				$this->equalTo( 'edit' ),
+				$this->equalTo( null ),
+				$this->equalTo( $title ) )
 			->will( $this->returnValue( false ) );
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$instance->setCreateProtectionRight(
@@ -269,7 +288,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(
@@ -281,7 +301,8 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ProtectionValidator(
 			$this->store,
-			$this->entityCache
+			$this->entityCache,
+			$this->permissionExaminer
 		);
 
 		$this->assertFalse(

@@ -21,6 +21,11 @@ class PermissionManager {
 	private $protectionValidator;
 
 	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
+
+	/**
 	 * @var []
 	 */
 	private $errors = [];
@@ -29,9 +34,11 @@ class PermissionManager {
 	 * @since 2.5
 	 *
 	 * @param ProtectionValidator $protectionValidator
+	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function __construct( ProtectionValidator $protectionValidator ) {
+	public function __construct( ProtectionValidator $protectionValidator, PermissionExaminer $permissionExaminer ) {
 		$this->protectionValidator = $protectionValidator;
+		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
@@ -117,7 +124,9 @@ class PermissionManager {
 	private function checkMwNamespacePatternEditPermission( Title $title, User $user, $action ) {
 
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Allows_pattern
-		if ( $title->getDBKey() !== AllowsPatternValue::REFERENCE_PAGE_ID || $user->isAllowed( 'smw-patternedit' ) ) {
+		if (
+			$title->getDBKey() !== AllowsPatternValue::REFERENCE_PAGE_ID ||
+			$this->permissionExaminer->userHasRight( $user, 'smw-patternedit' ) ) {
 			return true;
 		}
 
@@ -128,7 +137,7 @@ class PermissionManager {
 
 	private function checkSchemaNamespacePermission( Title $title, User $user, $action ) {
 
-		if ( !$user->isAllowed( 'smw-schemaedit' ) ) {
+		if ( !$this->permissionExaminer->userHasRight( $user, 'smw-schemaedit' ) ) {
 			$this->errors[] = [ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ];
 			return false;
 		}
@@ -150,7 +159,7 @@ class PermissionManager {
 			$protectionRight = $this->protectionValidator->getEditProtectionRight();
 		}
 
-		if ( $user->isAllowed( $protectionRight ) ) {
+		if ( $this->permissionExaminer->userHasRight( $user, $protectionRight ) ) {
 			return $this->checkPropertyNamespaceEditPermission( $title, $user, $action );
 		}
 
@@ -194,7 +203,9 @@ class PermissionManager {
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		// @see https://www.semantic-mediawiki.org/wiki/Help:Special_property_Is_edit_protected
-		if ( !$this->protectionValidator->hasProtection( $title ) || $user->isAllowed( $editProtectionRight ) ) {
+		if (
+			!$this->protectionValidator->hasProtection( $title ) ||
+			$this->permissionExaminer->userHasRight( $user, $editProtectionRight ) ) {
 			return true;
 		}
 
