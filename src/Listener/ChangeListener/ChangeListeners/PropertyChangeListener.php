@@ -8,6 +8,8 @@ use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Store;
 use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -18,6 +20,7 @@ use SMW\Exception\PropertyLabelNotResolvedException;
 class PropertyChangeListener implements ChangeListener {
 
 	use CallableChangeListenerTrait;
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * @var Store
@@ -35,9 +38,9 @@ class PropertyChangeListener implements ChangeListener {
 	private $changes = [];
 
 	/**
-	 * @var boolean|null
+	 * @var bool
 	 */
-	private $initListeners;
+	private $initListeners = false;
 
 	/**
 	 * @since 3.2
@@ -46,6 +49,19 @@ class PropertyChangeListener implements ChangeListener {
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function loadListeners() {
+
+		if ( $this->initListeners === true ) {
+			return;
+		}
+
+		$this->initListeners = true;
+		$this->hookDispatcher->onRegisterPropertyChangeListeners( $this );
 	}
 
 	/**
@@ -76,11 +92,15 @@ class PropertyChangeListener implements ChangeListener {
 	 *
 	 * @param integer $pid
 	 * @param array $record
+	 *
+	 * @throws RuntimeException
 	 */
 	public function recordChange( int $pid, array $record ) {
 
-		if ( $this->initListeners === null ) {
-			$this->initListeners = \Hooks::run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $this ] );
+		if ( $this->initListeners === false ) {
+			throw new RuntimeException(
+				"Hook wasn't run, possible listeners weren't registered from the available hook!"
+			);
 		}
 
 		// Don't record anything when there is no listener that can be triggered!

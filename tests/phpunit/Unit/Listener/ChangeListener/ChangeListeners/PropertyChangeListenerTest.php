@@ -21,6 +21,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $logger;
+	private $hookDispatcher;
 	private $property;
 	private $changeRecord;
 
@@ -32,6 +33,10 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -92,6 +97,12 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->loadListeners();
+
 		$instance->setLogger(
 			$this->logger
 		);
@@ -108,6 +119,28 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			'foobar',
 			$this->changeRecord->get( 0 )->get( 'row.o_hash' )
 		);
+	}
+
+	public function testLoadListeners() {
+
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onRegisterPropertyChangeListeners' );
+
+		$instance = new PropertyChangeListener( $this->store );
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->loadListeners();
+	}
+
+	public function testMissedLoadListenersThrowsException() {
+
+		$instance = new PropertyChangeListener( $this->store );
+
+		$this->expectException( '\RuntimeException' );
+		$instance->recordChange( 42, [] );
 	}
 
 	public function observeChange( $property, $record ) {

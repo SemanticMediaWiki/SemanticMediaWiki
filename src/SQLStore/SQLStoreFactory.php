@@ -890,6 +890,12 @@ class SQLStoreFactory {
 			$this->getLogger()
 		);
 
+		$propertyChangeListener->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
+		$propertyChangeListener->loadListeners();
+
 		$hierarchyLookup = $applicationFactory->newHierarchyLookup();
 
 		// #2698
