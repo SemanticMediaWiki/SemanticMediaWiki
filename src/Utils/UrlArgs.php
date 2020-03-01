@@ -21,6 +21,15 @@ class UrlArgs {
 	private $fragment = '';
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param array $args
+	 */
+	public function __construct( array $args = [] ) {
+		$this->args = $args;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $key
@@ -34,11 +43,23 @@ class UrlArgs {
 	 * @since 3.0
 	 *
 	 * @param string $key
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function get( $key ) {
-		return isset( $this->args[$key] ) ? $this->args[$key] : null;
+	public function get( $key, $default = null ) {
+		return isset( $this->args[$key] ) ? $this->args[$key] : $default;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 *
+	 * @return int|null
+	 */
+	public function getInt( string $key ) : ?int {
+		return isset( $this->args[$key] ) ? (int)$this->args[$key] : null;
 	}
 
 	/**
@@ -64,6 +85,13 @@ class UrlArgs {
 	 */
 	public function toArray() {
 		return  $this->args;
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function clone() : self {
+		return clone $this;
 	}
 
 	/**
