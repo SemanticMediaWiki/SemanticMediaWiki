@@ -163,7 +163,7 @@ class TableResultPrinter extends ResultPrinter {
 			);
 		}
 
-		$transpose = $this->mShowHeaders !== SMW_HEADERS_HIDE && $this->params['transpose'];
+		$transpose = $this->mShowHeaders !== SMW_HEADERS_HIDE && ( $this->params['transpose'] ?? false );
 
 		$html = $this->htmlTable->table(
 			$tableAttrs,
