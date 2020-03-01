@@ -8,6 +8,7 @@ use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Query\DebugFormatter;
+use SMW\Iterators\ResultIterator;
 use SMW\Query\Language\ThingDescription;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
@@ -300,12 +301,15 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
 			"OFFSET " . $sqlOptions['OFFSET'];
 
-		$res = $connection->query(
-			"EXPLAIN $format $sql",
-			__METHOD__
-		);
+		if ( $connection->isType( 'sqlite' ) ) {
+			$query = "EXPLAIN QUERY PLAN $sql";
+		} else {
+			$query = "EXPLAIN $format $sql";
+		}
 
-		$entries['SQL Explain'] = DebugFormatter::prettifyExplain( $connection->getType(), $res );
+		$res = $connection->query( $query , __METHOD__ );
+
+		$entries['SQL Explain'] = DebugFormatter::prettifyExplain( $connection->getType(), new ResultIterator( $res ) );
 		$entries['SQL Query'] = DebugFormatter::prettifySql( $sql, $qobj->alias );
 
 		$connection->freeResult( $res );

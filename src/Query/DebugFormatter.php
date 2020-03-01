@@ -115,7 +115,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public static function prettifyExplain( $type, $res ) {
+	public static function prettifyExplain( string $type, iterable $res ) {
 
 		$output = '';
 
@@ -167,9 +167,28 @@ class DebugFormatter {
 			$output .= '</div>';
 		}
 
-		// SQlite doesn't support this
 		if ( $type === 'sqlite' ) {
-			$output .= 'Not supported.';
+			$output .= 'QUERY PLAN' . "<br>";
+			$plan = '';
+			$last = count( $res ) - 1;
+
+			foreach ( $res as $k => $row ) {
+
+				// https://www.sqlite.org/eqp.html notes "... output format did change
+				// substantially with the version 3.24.0 release ..."
+				if ( !isset( $row->id ) ) {
+					continue;
+				}
+
+				$marker = $k === $last ? '└──' : '├──';
+				$plan .= "<div style='margin-left:15px;'>$marker [" . $row->id . '] `' . $row->detail . "`</div>";
+			}
+
+			if ( $plan === '' ) {
+				$plan = 'The SQLite version doesn\'t support a query plan.';
+			}
+
+			$output .= $plan;
 		}
 
 		return $output;
