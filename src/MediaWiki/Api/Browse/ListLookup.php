@@ -131,7 +131,7 @@ class ListLookup extends Lookup {
 			$requestOptions->ascending = false;
 		}
 
-		if ( isset( $parameters['search'] ) && $parameters['search'] === '*' ) {
+		if ( isset( $parameters['search'] ) && ( $parameters['search'] === '*' || $parameters['search'] === '?' ) ) {
 			// wildcard
 		} elseif ( isset( $parameters['search'] ) && isset( $parameters['strict'] ) ) {
 			$search = str_replace( "*", "", (string)$parameters['search'] );
