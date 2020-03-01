@@ -133,10 +133,15 @@ class FieldItemFinder {
 		// Request all direct categories of the current element
 		// Always recompute cache here to ensure output format is respected.
 		if ( $this->printRequest->isMode( PrintRequest::PRINT_CATS ) ) {
-			self::$catCache = $this->store->getPropertyValues(
-				$dataItem,
+			$options = new RequestOptions();
+			$options->isChain = false;
+			$options->isFirstChain = false;
+
+			// Rely on the prefetch
+			self::$catCache = $this->itemFetcher->fetch(
+				[ $dataItem ],
 				new DIProperty( '_INST' ),
-				$this->getRequestOptions( false )
+				$options
 			);
 
 			self::$catCacheObj = $dataItem->getHash();
