@@ -199,7 +199,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * semantic property within the Page Schemas 'editschema' page.
 	 */
 	public static function getFieldEditingHTML( $psTemplateField ) {
-		global $smwgContLang;
+
+		$smwgContLang = smwfContLang();
 
 		$prop_array = [];
 		$hasExistingValues = false;
@@ -258,9 +259,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * passed-in Page Schemas XML object.
 	 */
 	public static function generatePages( $pageSchemaObj, $selectedPages ) {
-		global $smwgContLang, $wgUser;
+		global $wgUser;
 
-		$datatypeLabels = $smwgContLang->getDatatypeLabels();
+		$datatypeLabels = smwfContLang()->getDatatypeLabels();
 		$pageTypeLabel = $datatypeLabels['_wpg'];
 
 		$jobs = [];
@@ -308,10 +309,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Creates the text for a property page.
 	 */
 	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
-		/**
-		 * @var SMWLanguage $smwgContLang
-		 */
-		global $smwgContLang, $wgContLang;
+
+		$smwgContLang = smwfContLang();
 
 		$propLabels = $smwgContLang->getPropertyLabels();
 		$hasTypeLabel = $propLabels['_TYPE'];
@@ -326,7 +325,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $wgContLang->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
+			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $GLOBALS['wgContLang']->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
 			foreach ( $allowedValues as $value ) {
 				$prop_labels = $smwgContLang->getPropertyLabels();

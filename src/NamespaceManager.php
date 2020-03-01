@@ -42,11 +42,6 @@ class NamespaceManager {
 			$this->initCustomNamespace( $vars );
 		}
 
-		// Legacy seeting in case some extension request a `smwgContLang` reference
-		if ( empty( $vars['smwgContLang'] ) ) {
-			$vars['smwgContLang'] = $this->localLanguage->fetch( $vars['wgLanguageCode'] );
-		}
-
 		$this->addNamespaceSettings( $vars );
 		$this->addExtraNamespaceSettings( $vars );
 	}
@@ -177,13 +172,12 @@ class NamespaceManager {
 			};
 		}
 
-		$extraNamespaces = $instance->getNamespacesByLanguageCode(
+		$localLanguage = $instance->getLocalLanguage(
 			$vars['wgLanguageCode']
 		);
 
-		$namespaceAliases = $instance->getNamespaceAliasesByLanguageCode(
-			$vars['wgLanguageCode']
-		);
+		$extraNamespaces = $localLanguage->getNamespaces();
+		$namespaceAliases = $localLanguage->getNamespaceAliases();
 
 		$vars['wgCanonicalNamespaceNames'] += $instance->getCanonicalNames();
 		$vars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
@@ -256,13 +250,8 @@ class NamespaceManager {
 		return defined( $constant );
 	}
 
-	protected function getNamespacesByLanguageCode( $languageCode ) {
-		$GLOBALS['smwgContLang'] = $this->localLanguage->fetch( $languageCode );
-		return $GLOBALS['smwgContLang']->getNamespaces();
-	}
-
-	private function getNamespaceAliasesByLanguageCode( $languageCode ) {
-		return $this->localLanguage->fetch( $languageCode )->getNamespaceAliases();
+	protected function getLocalLanguage( $languageCode ) {
+		return $this->localLanguage->fetch( $languageCode );
 	}
 
 }
