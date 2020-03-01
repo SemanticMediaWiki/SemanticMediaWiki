@@ -191,6 +191,8 @@ class QueryEngine implements QueryEngineInterface {
 	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
 
 		$entries = [];
+		$debugFormatter = new DebugFormatter();
+		$debugFormatter->setName( 'SPARQLStore' );
 
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
@@ -218,9 +220,11 @@ class QueryEngine implements QueryEngineInterface {
 			);
 		}
 
-		$entries['SPARQL Query'] = DebugFormatter::prettifySparql( $sparql );
+		$entries['SPARQL Query'] = $debugFormatter->prettifySPARQL(
+			$sparql
+		);
 
-		return DebugFormatter::getStringFrom( 'SPARQLStore', $entries, $query );
+		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
 	private function isSingletonConditionWithElementMatch( $condition ) {
