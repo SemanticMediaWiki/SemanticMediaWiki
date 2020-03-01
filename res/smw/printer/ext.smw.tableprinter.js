@@ -62,7 +62,7 @@
 			$.map( column.sort, function( val, i ) {
 
 				if ( val === '' || $.inArray( val, column.list ) < 0 ) {
-					return;
+					i = 0;
 				};
 
 				order.push( [
