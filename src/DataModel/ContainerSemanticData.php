@@ -72,7 +72,8 @@ class ContainerSemanticData extends SemanticData {
 			'subSemanticData',
 			'options',
 			'extensionData',
-			'sequenceMap'
+			'sequenceMap',
+			'countMap'
 		];
 	}
 
@@ -152,6 +153,7 @@ class ContainerSemanticData extends SemanticData {
 		$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
 		$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
 		$this->sequenceMap = $semanticData->getSequenceMap();
+		$this->countMap = $semanticData->getCountMap();
 		$this->mNoDuplicates = $semanticData->mNoDuplicates;
 	}
 

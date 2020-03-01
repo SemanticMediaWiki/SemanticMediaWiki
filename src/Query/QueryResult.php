@@ -10,6 +10,7 @@ use SMW\Query\Result\ItemJournal;
 use SMW\Query\Result\FieldItemFinder;
 use SMW\Query\Result\ItemFetcher;
 use SMW\Query\Result\ResultArray;
+use SMW\Query\Result\FilterMap;
 use SMW\Query\ScoreSet;
 use SMW\SerializerFactory;
 use SMW\Store;
@@ -112,6 +113,11 @@ class QueryResult {
 	private $excerpts;
 
 	/**
+	 * @var FilterMap
+	 */
+	private $filterMap;
+
+	/**
 	 * @param PrintRequest[] $printRequests
 	 * @param Query $query
 	 * @param DIWikiPage[] $results
@@ -138,6 +144,17 @@ class QueryResult {
 			$store,
 			$itemFetcher
 		);
+
+		$this->filterMap = new FilterMap( $this->mStore, $this->mResults );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return FilterMap
+	 */
+	public function getFilterMap() {
+		return $this->filterMap;
 	}
 
 	/**

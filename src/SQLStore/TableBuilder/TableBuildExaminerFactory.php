@@ -2,12 +2,14 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use SMW\Services\ServicesFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
 
 /**
  * @private
@@ -20,7 +22,29 @@ use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 class TableBuildExaminerFactory {
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param SQLStore $store
+	 *
+	 * @return CountMapField
+	 */
+	public function newCountMapField( SQLStore $store ) : CountMapField {
+
+		$countMapField = new CountMapField(
+			$store
+		);
+
+		$countMapField->setSetupFile(
+			ServicesFactory::getInstance()->singleton( 'SetupFile' )
+		);
+
+		return $countMapField;
+	}
+
+	/**
 	 * @since 3.1
+	 *
+	 * @param SQLStore $store
 	 *
 	 * @return HashField
 	 */
@@ -31,6 +55,8 @@ class TableBuildExaminerFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @param SQLStore $store
+	 *
 	 * @return FixedProperties
 	 */
 	public function newFixedProperties( SQLStore $store ) {
@@ -39,6 +65,8 @@ class TableBuildExaminerFactory {
 
 	/**
 	 * @since 3.1
+	 *
+	 * @param SQLStore $store
 	 *
 	 * @return TouchedField
 	 */
@@ -49,6 +77,8 @@ class TableBuildExaminerFactory {
 	/**
 	 * @since 3.1
 	 *
+	 * @param SQLStore $store
+	 *
 	 * @return HashField
 	 */
 	public function newIdBorder( SQLStore $store ) {
@@ -57,6 +87,8 @@ class TableBuildExaminerFactory {
 
 	/**
 	 * @since 3.1
+	 *
+	 * @param SQLStore $store
 	 *
 	 * @return PredefinedProperties
 	 */

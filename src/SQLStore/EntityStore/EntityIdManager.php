@@ -116,10 +116,15 @@ class EntityIdManager {
 	 */
 	private $entityIdFinder;
 
-	/*
+	/**
 	 * @var SequenceMapFinder
 	 */
 	private $sequenceMapFinder;
+
+	/**
+	 * @var AuxiliaryFields
+	 */
+	private $auxiliaryFields;
 
 	/**
 	 * @var DuplicateFinder
@@ -150,6 +155,10 @@ class EntityIdManager {
 		);
 
 		$this->sequenceMapFinder = $this->factory->newSequenceMapFinder(
+			$this->idCacheManager
+		);
+
+		$this->auxiliaryFields = $this->factory->newAuxiliaryFields(
 			$this->idCacheManager
 		);
 
@@ -922,7 +931,7 @@ class EntityIdManager {
 	 * @param array $list
 	 */
 	public function warmUpCache( $list = [] ) {
-		$this->cacheWarmer->fillFromList( $list );
+		$this->cacheWarmer->prepareCache( $list );
 	}
 
 	/**
@@ -1004,6 +1013,7 @@ class EntityIdManager {
 				'propertytable.hash' => self::MAX_CACHE_SIZE,
 				'warmup.byid' => self::MAX_CACHE_SIZE,
 				'sequence.map' => self::MAX_CACHE_SIZE,
+				AuxiliaryFields::COUNTMAP_CACHE_ID => self::MAX_CACHE_SIZE,
 			]
 		);
 
@@ -1050,13 +1060,34 @@ class EntityIdManager {
 	}
 
 	/**
-	 * @since 3.1
+	 * @since 3.2
+	 *
+	 * @param DIWikiPage[] $subjects
+	 *
+	 * @return FieldList
+	 */
+	public function preload( array $subjects ) : FieldList {
+
+		$fieldList = $this->auxiliaryFields->prefetchFieldList(
+			$subjects
+		);
+
+		$this->cacheWarmer->prefetchFromList(
+			$fieldList->getHashList()
+		);
+
+		return $fieldList;
+	}
+
+	/**
+	 * @since 3.2
 	 *
 	 * @param integer $sid
-	 * @param array $dataMap
+	 * @param array $sequenceMap
+	 * @param array $countMap
 	 */
-	public function setSequenceMap( $sid, array $map = null ) {
-		$this->sequenceMapFinder->setMap( $sid, $map );
+	public function updateFieldMaps( $sid, array $sequenceMap = null, array $countMap = null ) {
+		$this->auxiliaryFields->setFieldMaps( $sid, $sequenceMap, $countMap );
 	}
 
 	/**

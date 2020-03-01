@@ -74,7 +74,7 @@ class CacheWarmer {
 	 *
 	 * @param array $list
 	 */
-	public function fillFromList( $list = [] ) {
+	public function prepareCache( $list = [] ) {
 
 		$hashList = [];
 		$linkBatch = LinkBatch::singleton();
@@ -125,7 +125,7 @@ class CacheWarmer {
 		}
 
 		$linkBatch->execute();
-		$this->loadByHash( array_keys( $hashList ) );
+		$this->prefetchFromList( array_keys( $hashList ) );
 
 		if ( $this->displayTitleFinder !== null ) {
 			$this->displayTitleFinder->prefetchFromList( $list );
@@ -137,7 +137,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function loadByHash( $hashList = [] ) {
+	public function prefetchFromList( $hashList = [] ) {
 
 		if ( $hashList === [] ) {
 			return;

@@ -384,9 +384,10 @@ class SQLStoreUpdater {
 		// Update caches (may be important if jobs are directly following this call)
 		$this->semanticDataLookup->setLookupCache( $sid, $data );
 
-		$this->store->getObjectIds()->setSequenceMap(
+		$this->store->getObjectIds()->updateFieldMaps(
 			$sid,
-			$data->getSequenceMap()
+			$data->getSequenceMap(),
+			$data->getCountMap()
 		);
 	}
 

@@ -37,6 +37,32 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testGetFilterMap() {
+
+		$query = $this->getMockBuilder( '\SMWQuery' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$printRequests = [];
+		$results = [];
+
+		$instane = new QueryResult(
+			$printRequests,
+			$query,
+			$results,
+			$store
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Query\Result\FilterMap',
+			$instane->getFilterMap()
+		);
+	}
+
 	public function testVerifyThatAfterSerializeToArrayResultNextCanBeUsed() {
 
 		$query = $this->getMockBuilder( '\SMWQuery' )

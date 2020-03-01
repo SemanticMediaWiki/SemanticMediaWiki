@@ -27,9 +27,18 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
+			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
+
+		$this->store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
 
 		$this->dependencyValidator = $this->getMockBuilder( '\SMW\DependencyValidator' )
 			->disableOriginalConstructor()

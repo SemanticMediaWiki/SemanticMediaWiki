@@ -31,7 +31,8 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\PurgeEntityCache'           => __DIR__ . '/../maintenance/purgeEntityCache.php',
 	'SMW\Maintenance\UpdateQueryDependencies'    => __DIR__ . '/../maintenance/updateQueryDependencies.php',
 	'SMW\Maintenance\RunImport'                  => __DIR__ . '/../maintenance/runImport.php',
-	'SMW\Maintenance\DisposeOutdatedEntities'    => __DIR__ . '/../maintenance/disposeOutdatedEntities.php'
+	'SMW\Maintenance\DisposeOutdatedEntities'    => __DIR__ . '/../maintenance/disposeOutdatedEntities.php',
+	'SMW\Maintenance\UpdateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
 ] );
 
 define( 'SMW_PHPUNIT_DIR', __DIR__ . '/phpunit' );

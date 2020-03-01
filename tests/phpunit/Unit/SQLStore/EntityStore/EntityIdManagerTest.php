@@ -25,6 +25,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 	private $idMatchFinder;
 	private $duplicateFinder;
 	private $tableFieldUpdater;
+	private $auxiliaryFields;
 	private $factory;
 
 	protected function setUp() : void {
@@ -67,6 +68,10 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->sequenceMapFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SequenceMapFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->auxiliaryFields = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\AuxiliaryFields' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -123,6 +128,10 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->factory->expects( $this->any() )
 			->method( 'newSequenceMapFinder' )
 			->will( $this->returnValue( $this->sequenceMapFinder ) );
+
+		$this->factory->expects( $this->any() )
+			->method( 'newAuxiliaryFields' )
+			->will( $this->returnValue( $this->auxiliaryFields ) );
 
 		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
 			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
@@ -429,7 +438,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->cacheWarmer->expects( $this->once() )
-			->method( 'fillFromList' )
+			->method( 'prepareCache' )
 			->with( $this->equalTo( $list ) );
 
 		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
@@ -520,10 +529,37 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testSetSequenceMap() {
+	public function testPreload() {
 
-		$this->sequenceMapFinder->expects( $this->once() )
-			->method( 'setMap' )
+		$subjects = [
+			DIWikiPage::newFromText( 'Foo' )
+		];
+
+		$fieldList = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\FieldList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$fieldList->expects( $this->any() )
+			->method( 'getHashList' )
+			->will( $this->returnValue( [] ) );
+
+		$this->auxiliaryFields->expects( $this->once() )
+			->method( 'prefetchFieldList' )
+			->with( $this->equalTo( $subjects ) )
+			->will( $this->returnValue( $fieldList ) );
+
+		$instance = new EntityIdManager(
+			$this->store,
+			$this->factory
+		);
+
+		$instance->preload( $subjects );
+	}
+
+	public function testUpdateFieldMaps() {
+
+		$this->auxiliaryFields->expects( $this->once() )
+			->method( 'setFieldMaps' )
 			->with(
 				$this->equalTo( 42 ),
 				$this->equalTo( [ 'Foo' ] ) );
@@ -533,7 +569,7 @@ class EntityIdManagerTest extends \PHPUnit_Framework_TestCase {
 			$this->factory
 		);
 
-		$instance->setSequenceMap( 42, [ 'Foo' ] );
+		$instance->updateFieldMaps( 42, [ 'Foo' ], [ 'F' => 1 ] );
 	}
 
 	public function testGetSequenceMap() {

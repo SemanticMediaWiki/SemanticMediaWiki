@@ -241,6 +241,7 @@ class TableSchemaManager {
 
 		$table->addColumn( 'smw_id', [ FieldType::FIELD_ID, 'NOT NULL' ] );
 		$table->addColumn( 'smw_seqmap', FieldType::TYPE_BLOB );
+		$table->addColumn( 'smw_countmap', FieldType::TYPE_BLOB );
 
 		// $table->addColumn( 'smw_proptable', FieldType::TYPE_BLOB );
 

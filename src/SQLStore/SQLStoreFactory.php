@@ -22,6 +22,7 @@ use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
+use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -704,6 +705,23 @@ class SQLStoreFactory {
 		);
 
 		return $sequenceMapFinder;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param IdCacheManager $idCacheManager
+	 *
+	 * @return AuxiliaryFields
+	 */
+	public function newAuxiliaryFields( IdCacheManager $idCacheManager ) : AuxiliaryFields {
+
+		$auxiliaryFields = new AuxiliaryFields(
+			$this->store->getConnection( 'mw.db' ),
+			$idCacheManager
+		);
+
+		return $auxiliaryFields;
 	}
 
 	/**
