@@ -5,7 +5,8 @@
 			"Shirayuki",
 			"Chase me ladies, I'm the Cavalry",
 			"Codynguyen1116",
-			"Pierpao"
+			"Pierpao",
+			"ChrisJr4Eva87"
 		]
 	},
 	"smw_printername_ul": "Itemisation",
@@ -15,5 +16,7 @@
 	"smw-admin-permissionswarn": "If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.\nEither grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <code>setupStore.php</code> which can use the credentials of an administrator.",
 	"smw-admin-dbbutton": "Initialise or upgrade tables",
 	"smw-prefs-intro-text": "Options below are provided by [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (or related extensions) to enable individual customisation on selected functions. For more information, please have a look at this [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help section].",
-	"smw-admin-settings-docu": "Displays a list of all default and localised settings that are relevant to the Semantic MediaWiki environment. For details on individual settings, please consult the [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] help page."
+	"smw-admin-settings-docu": "Displays a list of all default and localised settings that are relevant to the Semantic MediaWiki environment. For details on individual settings, please consult the [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] help page.",
+	"smw-populatehashfield-incomplete": "The <code>smw_hash</code> field population was skipped during the setup, the <code>[https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] </code>script is required to be executed.",
+	"smw-install-incomplete-populate-hash-field": "The <code>smw_hash</code> field population was skipped during the setup, the <code>[https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php]</code> script is required to be executed.<code></code>"
 }
