@@ -52,11 +52,13 @@
 			"Johny Weissmuller Jr",
 			"Hasley",
 			"Ihojose",
-			"DannyS712"
+			"DannyS712",
+			"Joanmp17"
 		]
 	},
 	"smw-desc": "Hace tu wiki más accesible para las máquinas y las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	"smw-error": "Error",
+	"smw-upgrade-progress": "Progreso",
 	"smw-upgrade-error-title": "Error • Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "¿Por qué veo esta página?",
 	"smw-upgrade-error-how-title": "¿Cómo corrijo este error?",
