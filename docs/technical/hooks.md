@@ -61,7 +61,7 @@ Implementing a hook should be made in consideration of the expected performance 
 - [`SMW::Browse::AfterIncomingPropertiesLookupComplete`][hook.browse.afterincomingpropertieslookupcomplete] to extend the incoming properties display for `Special:Browse`
 - [`SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate`][hook.browse.beforeincomingpropertyvaluesfurtherlinkcreate] to replace the standard `SearchByProperty` with a custom link in `Special:Browse` to an extended list of results (return `false` to replace the link)
 - [`SMW::Browse::AfterDataLookupComplete`][hook.browse.afterdatalookupcomplete] to extend the HTML with data displayed on `Special:Browse`
-- [`SMW::Admin::TaskHandlerFactory`][hook.admin.taskhandlerfactory] to extend available `TaskHandler` used in the `Special:SemanticMediaWiki` dashboard
+- [`SMW::Admin::RegisterTaskHandlers`][hook.admin.registertaskhandlers] to extend available `TaskHandler` used in the `Special:SemanticMediaWiki` dashboard
 - [`SMW::ResultFormat::OverrideDefaultFormat`][hook.resultformat.overridedefaultformat] to override the default result format handling
 - [`SMW::Job::AfterUpdateDispatcherJobComplete`][hook.job.afterupdatedispatcherjobcomplete] to add additional update jobs for a property and related subjects
 - [`SMW::Exporter::Controller::AddExpData`][hook.exporter.controller.addexpdata] to add additional RDF data for a selected subject
@@ -111,7 +111,7 @@ Implementing a hook should be made in consideration of the expected performance 
 [hook.setup.afterinitializationcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.setup.afterinitializationcomplete.md
 [hook.exporter.controller.addexpdata]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.exporter.controller.addexpdata.md
 [hook.sqlstore.entityreferencecleanupcomplete]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.entityreferencecleanupcomplete.md
-[hook.admin.taskhandlerfactory]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.admin.taskhandlerfactory.md
+[hook.admin.registertaskhandlers]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.admin.registertaskhandlers.md
 [hook.revisionguard.changerevision]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevision.md
 [hook.revisionguard.changerevisionid]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevisionid.md
 [hook.revisionguard.isapprovedrevision]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.isapprovedrevision.md

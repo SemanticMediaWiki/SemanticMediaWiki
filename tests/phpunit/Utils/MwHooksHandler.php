@@ -52,7 +52,7 @@ class MwHooksHandler {
 		'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate',
 
 		'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners',
-
+		'SMW::Admin::RegisterTaskHandlers',
 		'SMW::Schema::RegisterSchemaTypes',
 
 		'SMW::GetPreferences',

@@ -315,7 +315,6 @@ class Hooks {
 			'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate' => [ $this, 'onBeforeIncomingPropertyValuesFurtherLinkCreate' ],
 
 			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
-			'SMW::Admin::TaskHandlerFactory' => [ $elasticFactory, 'onTaskHandlerFactory' ],
 			'SMW::Event::RegisterEventListeners' => [ $elasticFactory, 'onRegisterEventListeners' ],
 			'SMW::Maintenance::AfterUpdateEntityCollationComplete' => [ $elasticFactory, 'onAfterUpdateEntityCollationComplete' ],
 

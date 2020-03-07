@@ -98,7 +98,11 @@ class SpecialAdmin extends SpecialPage {
 			$outputFormatter
 		);
 
-		$taskHandlerList = $taskHandlerFactory->getTaskHandlerList(
+		$taskHandlerFactory->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
+		$taskHandlerRegistry = $taskHandlerFactory->newTaskHandlerRegistry(
 			$this->getUser(),
 			$adminFeatures
 		);
@@ -109,14 +113,14 @@ class SpecialAdmin extends SpecialPage {
 
 		$action = $this->getRequest()->getText( 'action' );
 
-		foreach ( $taskHandlerList['actions'] as $actionTask ) {
-			if ( $actionTask->isTaskFor( $action ) ) {
-				return $actionTask->handleRequest( $this->getRequest() );
+		foreach ( $taskHandlerRegistry->get( TaskHandler::ACTIONABLE ) as $taskHandler ) {
+			if ( $taskHandler->isTaskFor( $action ) ) {
+				return $taskHandler->handleRequest( $this->getRequest() );
 			}
 		}
 
 		$output->addHTML(
-			$this->buildHTML( $taskHandlerList )
+			$this->buildHTML( $taskHandlerRegistry )
 		);
 	}
 
@@ -127,23 +131,23 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function buildHTML( $taskHandlerList ) {
+	private function buildHTML( $taskHandlerRegistry ) {
 
 		$maintenanceSection = '';
 
-		foreach ( $taskHandlerList[TaskHandler::SECTION_MAINTENANCE] as $maintenanceTask ) {
+		foreach ( $taskHandlerRegistry->get( TaskHandler::SECTION_MAINTENANCE ) as $maintenanceTask ) {
 			$maintenanceSection .= $maintenanceTask->getHtml();
 		}
 
 		$supplementarySection = '';
 
-		foreach ( $taskHandlerList[TaskHandler::SECTION_SUPPLEMENT] as $supplementaryTask ) {
+		foreach ( $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPLEMENT ) as $supplementaryTask ) {
 			$supplementarySection .= $supplementaryTask->getHtml();
 		}
 
 		$alertsSection = '';
 
-		foreach ( $taskHandlerList[TaskHandler::SECTION_ALERTS] as $alertTask ) {
+		foreach ( $taskHandlerRegistry->get( TaskHandler::SECTION_ALERTS ) as $alertTask ) {
 			$alertsSection .= $alertTask->getHtml();
 		}
 
@@ -171,7 +175,7 @@ class SpecialAdmin extends SpecialPage {
 		$htmlTabs->tab( 'maintenance', $this->msg_text( 'smw-admin-tab-maintenance' ) );
 		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
-		$supportTaskList = $taskHandlerList[TaskHandler::SECTION_SUPPORT];
+		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
 		$supportSection = end( $supportTaskList )->getHtml();
 
 		$htmlTabs->content( 'general', $supportSection );

@@ -23,6 +23,7 @@ abstract class TaskHandler {
 	const SECTION_DEPRECATION ='section/deprecation';
 	const SECTION_ALERTS ='section/alerts';
 	const SECTION_SUPPORT ='section/support';
+	const ACTIONABLE ='actionable';
 
 	/**
 	 * @var integer
