@@ -12,6 +12,21 @@ namespace SMW\SPARQLStore;
 interface RepositoryConnection {
 
 	/**
+	 * Flag denoting endpoints being capable of querying
+	 */
+	const QUERY_ENDPOINT = 1;
+
+	/**
+	 * Flag denoting endpoints being capable of updating
+	 */
+	const UPDATE_ENDPOINT = 2;
+
+	/**
+	 * Flag denoting endpoints being capable of SPARQL HTTP graph management
+	 */
+	const DATA_ENDPOINT = 4;
+
+	/**
 	 * The function returns connection details required for establishing an active
 	 * repository connection.
 	 *

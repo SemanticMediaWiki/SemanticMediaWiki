@@ -24,17 +24,17 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	/**
 	 * Flag denoting endpoints being capable of querying
 	 */
-	const ENDP_QUERY = 1;
+	const ENDP_QUERY = RepositoryConnection::QUERY_ENDPOINT;
 
 	/**
 	 * Flag denoting endpoints being capable of updating
 	 */
-	const ENDP_UPDATE = 2;
+	const ENDP_UPDATE = RepositoryConnection::UPDATE_ENDPOINT;
 
 	/**
 	 * Flag denoting endpoints being capable of SPARQL HTTP graph management
 	 */
-	const ENDP_DATA = 4;
+	const ENDP_DATA = RepositoryConnection::DATA_ENDPOINT;
 
 	/**
 	 * @var RepositoryClient
@@ -85,6 +85,39 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string|int $type
+	 *
+	 * @return string
+	 */
+	public function getEndpoint( $type ) : ?string {
+
+		if ( $type === RepositoryConnection::QUERY_ENDPOINT ) {
+			return $this->repositoryClient->getQueryEndpoint();
+		}
+
+		if ( $type === RepositoryConnection::UPDATE_ENDPOINT ) {
+			return $this->repositoryClient->getUpdateEndpoint();
+		}
+
+		if ( $type === RepositoryConnection::DATA_ENDPOINT ) {
+			return $this->repositoryClient->getDataEndpoint();
+		}
+
+		return null;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function getLastErrorCode() {
+		return $this->httpRequest->getLastErrorCode();
+	}
+
+	/**
 	 * Get the URI of the default graph that this database connector is
 	 * using, or the empty string if none is used (no graph related
 	 * statements in queries/updates).
@@ -102,6 +135,15 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 */
 	public function setConnectionTimeout( $timeout = 10 ) {
 		$this->httpRequest->setOption( CURLOPT_CONNECTTIMEOUT, $timeout );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function shouldPing() : bool {
+		return $this->repositoryClient->isFlagSet( SMW_SPARQL_CONNECTION_PING );
 	}
 
 	/**

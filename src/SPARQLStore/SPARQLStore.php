@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWExpNsResource as ExpNsResource;
@@ -180,6 +181,17 @@ class SPARQLStore extends Store {
 	 * @param SemanticData $semanticData
 	 */
 	public function doSparqlDataUpdate( SemanticData $semanticData ) {
+
+		$connection = $this->getConnection( 'sparql' );
+
+		if (
+			$connection->shouldPing() &&
+			$connection->ping( RepositoryConnection::UPDATE_ENDPOINT ) === false ) {
+			throw new HttpEndpointConnectionException(
+				$connection->getEndpoint( RepositoryConnection::UPDATE_ENDPOINT ),
+				$connection->getLastErrorCode()
+			);
+		}
 
 		$replicationDataTruncator = $this->factory->newReplicationDataTruncator();
 		$semanticData = $replicationDataTruncator->doTruncate( $semanticData );

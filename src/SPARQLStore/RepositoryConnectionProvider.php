@@ -77,6 +77,11 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	private $httpVersion = false;
 
 	/**
+	 * @var integer
+	 */
+	private $featureSet = 0;
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param string|null $connectorId
@@ -132,6 +137,15 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return integer $featureSet
+	 */
+	public function setFeatureSet( int $featureSet ) {
+		$this->featureSet = $featureSet;
+	}
+
+	/**
 	 * @see ConnectionProvider::getConnection
 	 *
 	 * @since 2.0
@@ -175,6 +189,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 			$this->dataEndpoint
 		);
 
+		$repositoryClient->setFeatureSet( $this->featureSet );
 		$repositoryClient->setName( $id );
 
 		$repositoryConnector = $this->createRepositoryConnector(
