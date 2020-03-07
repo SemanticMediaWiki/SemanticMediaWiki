@@ -3,6 +3,7 @@
 namespace SMW\DataValues;
 
 use SMW\ApplicationFactory;
+use SMW\SemanticData;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
@@ -261,9 +262,26 @@ class ReferenceValue extends AbstractMultiValue {
 			$this->m_dataitem = $dataItem;
 			return true;
 		} elseif ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
-			$semanticData = new ContainerSemanticData( $dataItem );
-			$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
-			$this->m_dataitem = new DIContainer( $semanticData );
+
+			$semanticData = null;
+			$subobjectName = $dataItem->getSubobjectName();
+
+			if ( $this->hasCallable( SemanticData::class ) ) {
+				$semanticData = $this->getCallable( SemanticData::class )();
+			}
+
+			if (
+				$semanticData instanceof SemanticData &&
+				$semanticData->hasSubSemanticData( $subobjectName ) ) {
+				$this->m_dataitem = new DIContainer(
+					$semanticData->findSubSemanticData( $subobjectName )
+				);
+			} else {
+				$semanticData = new ContainerSemanticData( $dataItem );
+				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
+				$this->m_dataitem = new DIContainer( $semanticData );
+			}
+
 			return true;
 		}
 

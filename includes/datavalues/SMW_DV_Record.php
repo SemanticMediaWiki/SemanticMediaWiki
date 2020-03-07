@@ -5,6 +5,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\AbstractMultiValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
@@ -150,13 +151,35 @@ class SMWRecordValue extends AbstractMultiValue {
 			$this->m_dataitem = $dataItem;
 			return true;
 		} elseif ( $dataItem->getDIType() == DataItem::TYPE_WIKIPAGE ) {
-			$semanticData = new ContainerSemanticData( $dataItem );
-			$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
-			$this->m_dataitem = new DIContainer( $semanticData );
+
+			$semanticData = null;
+			$subobjectName = $dataItem->getSubobjectName();
+
+			if ( $this->hasCallable( SemanticData::class ) ) {
+				$semanticData = $this->getCallable( SemanticData::class )();
+			}
+
+			// In case we have access to the instance as part of an ongoing parsing
+			// process use the instance directly which allows values to be displayed
+			// immediately without delay instead of calling the store which requires
+			// newly added values to be stored first before the store has access
+			// to them.
+			if (
+				$semanticData instanceof SemanticData &&
+				$semanticData->hasSubSemanticData( $subobjectName ) ) {
+				$this->m_dataitem = new DIContainer(
+					$semanticData->findSubSemanticData( $subobjectName )
+				);
+			} else {
+				$semanticData = new ContainerSemanticData( $dataItem );
+				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
+				$this->m_dataitem = new DIContainer( $semanticData );
+			}
+
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	public function getShortWikiText( $linked = null ) {
