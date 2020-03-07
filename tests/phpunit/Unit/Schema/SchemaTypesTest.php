@@ -114,11 +114,26 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 
 	public function testWithDir() {
 
-		$instance = new SchemaTypes( [], __DIR__ );
+		$instance = new SchemaTypes( __DIR__ );
 
 		$this->assertEquals(
-			__DIR__ . '/Foo',
+			str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, __DIR__ . '/Foo' ),
 			$instance->withDir( 'Foo' )
+		);
+	}
+
+	/**
+	 * @dataProvider defaultTypeProvider
+	 */
+	public function testRegisterDefaultTypes( $type ) {
+
+		$instance = new SchemaTypes( __DIR__ );
+		$instance->setHookDispatcher( $this->hookDispatcher );
+
+		$instance->registerSchemaTypes();
+
+		$this->assertTrue(
+			$instance->isRegisteredType( $type )
 		);
 	}
 
@@ -130,6 +145,33 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expectException( '\SMW\Schema\Exception\SchemaTypeAlreadyExistsException' );
 		$instance->registerSchemaType( 'Foo', [] );
+	}
+
+	public function defaultTypeProvider() {
+
+		yield [
+			'LINK_FORMAT_SCHEMA'
+		];
+
+		yield [
+			'SEARCH_FORM_SCHEMA'
+		];
+
+		yield [
+			'PROPERTY_GROUP_SCHEMA'
+		];
+
+		yield [
+			'PROPERTY_CONSTRAINT_SCHEMA'
+		];
+
+		yield [
+			'CLASS_CONSTRAINT_SCHEMA'
+		];
+
+		yield [
+			'PROPERTY_PROFILE_SCHEMA'
+		];
 	}
 
 }

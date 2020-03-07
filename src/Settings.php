@@ -195,7 +195,7 @@ class Settings extends Options {
 			'smwgBrowseFeatures' => $GLOBALS['smwgBrowseFeatures'],
 			'smwgCategoryFeatures' => $GLOBALS['smwgCategoryFeatures'],
 			'smwgURITypeSchemeList' => $GLOBALS['smwgURITypeSchemeList'],
-			'smwgSchemaTypes' => $GLOBALS['smwgSchemaTypes'],
+			'smwgSchemaTypes' => $GLOBALS['smwgSchemaTypes'] ?? [],
 			'smwgElasticsearchConfig' => $GLOBALS['smwgElasticsearchConfig'],
 			'smwgElasticsearchProfile' => $GLOBALS['smwgElasticsearchProfile'],
 			'smwgElasticsearchEndpoints' => $GLOBALS['smwgElasticsearchEndpoints'],

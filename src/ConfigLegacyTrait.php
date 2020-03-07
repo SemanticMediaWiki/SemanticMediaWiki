@@ -213,6 +213,10 @@ trait ConfigLegacyTrait {
 		if ( isset( $GLOBALS['smwgCacheType'] ) ) {
 			$configuration['smwgMainCacheType'] = $GLOBALS['smwgCacheType'];
 		}
+
+		if ( isset( $GLOBALS['smwgSchemaTypes'] ) && $GLOBALS['smwgSchemaTypes'] === [] ) {
+			unset( $GLOBALS['smwgSchemaTypes'] );
+		}
 	}
 
 	/**
@@ -266,6 +270,9 @@ trait ConfigLegacyTrait {
 				'smwgFactboxUseCache' => '3.1.0',
 				'smwgFactboxCacheRefreshOnPurge' => '3.1.0',
 
+				// 3.2
+				'smwgSchemaTypes' => '3.3.0',
+
 				// Identifies options of settings planned to be removed
 				'options' => [
 					'smwgCacheUsage' =>  [
@@ -318,7 +325,9 @@ trait ConfigLegacyTrait {
 				'smwgFactboxUseCache' => 'smwgFactboxFeatures',
 				'smwgFactboxCacheRefreshOnPurge' => 'smwgFactboxFeatures',
 
-				'smwgContLang' => 'smwfContLang()',
+				// 3.2
+				'smwgContLang' => 'smwfContLang() (#4618)',
+				'smwgSchemaTypes' => 'SchemaTypes (#4591)',
 
 				// Identifies options of settings planned to be replaced
 				'options' => [

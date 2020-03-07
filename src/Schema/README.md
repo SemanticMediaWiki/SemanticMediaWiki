@@ -14,10 +14,10 @@ The following annotation properties are provided to make elements of a schema an
 
 ## Registration
 
-Extensibility for new schema types and interpreters is provided by adding a new type to the `$smwgSchemaTypes` setting.
+Extensibility for new schema types and interpreters is provided by adding a new type to the `SchemaTypes::defaultTypes` setting or via the [`SMW::Schema::RegisterSchemaTypes`][SMW::Schema::RegisterSchemaTypes] hook.
 
 <pre>
-$GLOBALS['smwgSchemaTypes'] = [
+$schemaTypes = [
 	'FOO_SCHEMA' => [
 		'group' => SMW_SCHEMA_FOO_GROUP,
 		'validation_schema => __DIR__ . '/data/schema/foo-schema.v1.json',
@@ -73,3 +73,4 @@ As outlined above, the use of a [JSON schema][json:schema] is an important part 
 
 [ns:schema]: https://www.semantic-mediawiki.org/wiki/Help:Schema
 [json:schema]: http://json-schema.org/
+[SMW::Schema::RegisterSchemaTypes]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.schema.registerschematypes.md

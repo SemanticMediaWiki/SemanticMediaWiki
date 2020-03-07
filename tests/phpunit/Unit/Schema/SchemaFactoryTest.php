@@ -31,7 +31,12 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
+		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
 	}
 
 	protected function tearDown() : void {
