@@ -692,22 +692,28 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'ProtectionValidator', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', '\SMW\Protection\ProtectionValidator' );
 
+			$settings = $containerBuilder->singleton( 'Settings' );
+
 			$protectionValidator = new ProtectionValidator(
 				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'EntityCache' ),
 				$containerBuilder->singleton( 'PermissionExaminer' )
 			);
 
+			$protectionValidator->setImportPerformers(
+				$settings->get( 'smwgImportPerformers' )
+			);
+
 			$protectionValidator->setEditProtectionRight(
-				$containerBuilder->singleton( 'Settings' )->get( 'smwgEditProtectionRight' )
+				$settings->get( 'smwgEditProtectionRight' )
 			);
 
 			$protectionValidator->setCreateProtectionRight(
-				$containerBuilder->singleton( 'Settings' )->get( 'smwgCreateProtectionRight' )
+				$settings->get( 'smwgCreateProtectionRight' )
 			);
 
 			$protectionValidator->setChangePropagationProtection(
-				$containerBuilder->singleton( 'Settings' )->get( 'smwgChangePropagationProtection' )
+				$settings->get( 'smwgChangePropagationProtection' )
 			);
 
 			return $protectionValidator;

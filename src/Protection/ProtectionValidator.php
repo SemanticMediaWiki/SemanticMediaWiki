@@ -10,6 +10,7 @@ use SMW\Store;
 use SMW\EntityCache;
 use SMW\MediaWiki\PermissionExaminer;
 use Title;
+use User;
 
 /**
  * Handles protection validation.
@@ -50,6 +51,16 @@ class ProtectionValidator {
 	 * @var boolean|string
 	 */
 	private $changePropagationProtection = true;
+
+	/**
+	 * @var []
+	 */
+	private $importPerformers = [];
+
+	/**
+	 * @var []
+	 */
+	private $importPerformerProtectionLookupCache = [];
 
 	/**
 	 * @since 2.5
@@ -110,6 +121,15 @@ class ProtectionValidator {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param array $importPerformers
+	 */
+	public function setImportPerformers( array $importPerformers ) {
+		$this->importPerformers = $importPerformers;
+	}
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param Title $title
@@ -123,6 +143,53 @@ class ProtectionValidator {
 		);
 
 		return $this->editProtectionRight && $this->checkProtection( $subject->asBase() );
+	}
+
+	/**
+	 * If a page was imported by a dedicated `import_performer` and the performer
+	 * is the creator of the page, yet the current user that is trying to edit the
+	 * page isn't matched to the creator/import performer then the page is classified
+	 * as to be protected to make sure only an import performer can alter the
+	 * content without having to fear that other users may have changed the
+	 * content hereby may loose information when replacing the content during
+	 * the next import.
+	 *
+	 * @since 3.2
+	 *
+	 * @param Title $title
+	 * @param User $user
+	 *
+	 * @return boolean
+	 */
+	public function isClassifiedAsImportPerformerProtected( Title $title, User $user ) : bool {
+
+		if ( $this->importPerformers === [] ) {
+			return false;
+		}
+
+		$key = md5( $title->getDBKey() . "#" . $user->getName() );
+
+		// `WikiPage::getCreator` -> `Title::getFirstRevision` isn't cached therefore
+		// avoid repeated requests for the `key` combination
+		if ( isset( $this->importPerformerProtectionLookupCache[$key] ) ) {
+			return $this->importPerformerProtectionLookupCache[$key];
+		}
+
+		$creator = \WikiPage::factory( $title )->getCreator();
+
+		if ( !$creator instanceof User ) {
+			return $this->importPerformerProtectionLookupCache[$key] = false;
+		}
+
+		$importPerformers = array_flip( $this->importPerformers );
+
+		// Was the creator a dedicated import performer?, if yes, it means
+		// only this user is allowed to alter the content
+		if ( !isset( $importPerformers[$creator->getName()] ) ) {
+			return $this->importPerformerProtectionLookupCache[$key] = false;
+		}
+
+		return $this->importPerformerProtectionLookupCache[$key] = !$creator->equals( $user );
 	}
 
 	/**

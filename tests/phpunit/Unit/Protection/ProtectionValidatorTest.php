@@ -310,4 +310,119 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIsClassifiedAsImportPerformerProtected_NoImportersNoProtection() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionExaminer
+		);
+
+		$this->assertFalse(
+			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
+		);
+	}
+
+	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch() {
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getUserText' )
+			->will( $this->returnValue( 'FooImporter' ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'FooSchema' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionExaminer
+		);
+
+		$instance->setImportPerformers(
+			[ 'FooImporter' ]
+		);
+
+		$this->assertTrue(
+			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
+		);
+	}
+
+	public function testIsClassifiedAsNotImportPerformerProtected_CreatorAndCurrentUserDoMatch() {
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision->expects( $this->any() )
+			->method( 'getUserText' )
+			->will( $this->returnValue( 'FooImporter' ) );
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'FooSchema' ) );
+
+		$title->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'getName' )
+			->will( $this->returnValue( 'FooImporter' ) );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionExaminer
+		);
+
+		$instance->setImportPerformers(
+			[ 'FooImporter' ]
+		);
+
+		$this->assertFalse(
+			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
+		);
+	}
+
 }

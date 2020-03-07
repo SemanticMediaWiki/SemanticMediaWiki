@@ -148,6 +148,11 @@ class PermissionManager {
 			return false;
 		}
 
+		if ( $action === 'edit' && $this->protectionValidator->isClassifiedAsImportPerformerProtected( $title, $user ) ) {
+			$this->errors[] = [ 'smw-schema-namespace-edit-protection-by-import-performer' ];
+			return false;
+		}
+
 		return true;
 	}
 

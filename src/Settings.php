@@ -76,6 +76,7 @@ class Settings extends Options {
 			'smwgConfigFileDir' => $GLOBALS['smwgConfigFileDir'],
 			'smwgImportFileDirs' => $GLOBALS['smwgImportFileDirs'],
 			'smwgImportReqVersion' => $GLOBALS['smwgImportReqVersion'],
+			'smwgImportPerformers' => $GLOBALS['smwgImportPerformers'],
 			'smwgSemanticsEnabled' => $GLOBALS['smwgSemanticsEnabled'],
 			'smwgIgnoreExtensionRegistrationCheck' => $GLOBALS['smwgIgnoreExtensionRegistrationCheck'],
 			'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey'],

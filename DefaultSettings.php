@@ -93,6 +93,22 @@ return [
 	##
 
 	###
+	# List of users for import activities
+	#
+	# Users listed here are to be used exclusively for the import task and can
+	# depending on the specific protection level lock certain content from being
+	# altered by any other user.
+	#
+	# The protection is only enabled when a specific import content has defined
+	# the `import_performer` with a listed user.
+	#
+	# @since 3.2
+	# @default []
+	##
+	'smwgImportPerformers' => [ 'SemanticMediaWikiImporter' ],
+	##
+
+	###
 	# Semantic MediaWiki's operational state
 	#
 	# It is expected that enableSemantics() is used to enable SMW otherwise it is
