@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use SMW\Message;
 use SMW\Store;
 use WebRequest;
+use SMW\Localizer\MessageLocalizerTrait;
 
 /**
  * @license GNU GPL v2+
@@ -13,6 +14,8 @@ use WebRequest;
  * @author mwjames
  */
 abstract class TaskHandler {
+
+	use MessageLocalizerTrait;
 
 	/**
 	 * Identifies an individual section to where the task is associated with.
@@ -133,9 +136,5 @@ abstract class TaskHandler {
 	 * @return string
 	 */
 	abstract public function getHtml();
-
-	protected function msg( $key, $type = Message::TEXT ) {
-		return Message::get( $key, $type, Message::USER_LANGUAGE );
-	}
 
 }

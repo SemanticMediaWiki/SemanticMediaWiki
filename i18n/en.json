@@ -392,6 +392,7 @@
 	"smw-admin-deprecation-notice-config-notice-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> will remove (or replace) the following {{PLURAL:$2|option|options}}:",
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> is deprecated and will be removed in $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> was replaced by <code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
+	"smw-admin-deprecation-notice-config-replacement-other": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> was replaced by <code>$2</code>",
 	"smw-admin-deprecation-notice-config-replacement-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> {{PLURAL:$2|option|options}}:",
 	"smw-admin-deprecation-notice-config-replacement-option-list": "<code>$1</code> is being replaced by <code>$2</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> was removed in $2",
