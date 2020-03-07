@@ -61,6 +61,25 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHtmlTidy() {
+
+		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance->clearTemplates();
+
+		$instance->setContents( __METHOD__, "{{foo}}<span>\n    </span>" );
+		$instance->compile( __METHOD__, [ 'foo' => 'bar' ] );
+
+		$this->assertEquals(
+			"bar<span>\n    </span>",
+			$instance->publish( __METHOD__ )
+		);
+
+		$this->assertEquals(
+			"bar<span></span>",
+			$instance->publish( __METHOD__, TemplateEngine::HTML_TIDY )
+		);
+	}
+
 	/**
 	 * @dataProvider contentsProvider
 	 */

@@ -14,6 +14,11 @@ use RuntimeException;
 class TemplateEngine {
 
 	/**
+	 * Remove some whitespace from the generate HTML.
+	 */
+	const HTML_TIDY = 2;
+
+	/**
 	 * @var []
 	 */
 	private static $templates = [];
@@ -135,14 +140,19 @@ class TemplateEngine {
 	 * @since 3.2
 	 *
 	 * @param string $target
+	 * @param int $flag
 	 *
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function publish( $target ) {
+	public function publish( $target, int $flag = -1 ) {
 
 		if ( !isset( $this->compiled[$target] ) ) {
 			throw new RuntimeException( "Unknown `$target` reference!" );
+		}
+
+		if ( ( self::HTML_TIDY & $flag ) == $flag ) {
+			return preg_replace('/(\>)\s*(\<)/m', '$1$2', $this->compiled[$target] );
 		}
 
 		return $this->compiled[$target];
