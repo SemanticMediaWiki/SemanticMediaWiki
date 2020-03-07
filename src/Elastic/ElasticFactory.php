@@ -449,7 +449,6 @@ class ElasticFactory {
 		return $updateEntityCollationComplete;
 	}
 
-
 	/**
 	 * @since 3.0
 	 *
@@ -587,24 +586,6 @@ class ElasticFactory {
 
 		$this->indexer->setOrigin( __METHOD__ );
 		$this->indexer->delete( [ $id ] );
-
-		return true;
-	}
-
-	/**
-	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::TaskHandlerFactory
-	 * @since 3.0
-	 */
-	public function onTaskHandlerFactory( &$taskHandlers, Store $store, $outputFormatter, $user ) {
-
-		if ( !$store instanceof ElasticStore ) {
-			return true;
-		}
-
-		$taskHandlers[] = $this->newInfoTaskHandler(
-			$store,
-			$outputFormatter
-		);
 
 		return true;
 	}

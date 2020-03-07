@@ -63,6 +63,47 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnRegisterTaskHandlers() {
+
+		$infoTaskHandler = $this->getMockBuilder( '\SMW\Elastic\Admin\ElasticClientTaskHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->elasticFactory->expects( $this->once() )
+			->method( 'newInfoTaskHandler' )
+			->will( $this->returnValue( $infoTaskHandler ) );
+
+		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->once() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new Hooks(
+			$this->elasticFactory
+		);
+
+		$instance->onRegisterTaskHandlers( $taskHandlerRegistry, $store, $outputFormatter, $user );
+	}
+
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
 
 		$indicatorProviders = [];

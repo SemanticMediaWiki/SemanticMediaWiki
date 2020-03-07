@@ -3,12 +3,15 @@
 namespace SMW\MediaWiki;
 
 use Hooks;
+use User;
 use SMW\Store;
 use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Schema\SchemaTypes;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 
 /**
  * @private
@@ -29,6 +32,19 @@ use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
  * @author mwjames
  */
 class HookDispatcher {
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.admin.registertaskhandlers.md
+	 * @since 3.2
+	 *
+	 * @param TaskHandlerRegistry $taskHandlerRegistry
+	 * @param Store $store
+	 * @param OutputFormatter $outputFormatter
+	 * @param User $user
+	 */
+	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, OutputFormatter $outputFormatter, User $user ) {
+		Hooks::run( 'SMW::Admin::RegisterTaskHandlers', [ $taskHandlerRegistry, $store, $outputFormatter, $user ] );
+	}
 
 	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.listener.registerpropertychangelisteners.md

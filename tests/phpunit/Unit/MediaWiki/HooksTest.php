@@ -302,7 +302,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callUserGroupsChanged' ],
 			[ 'callDeleteAccount' ],
 			[ 'callSMWSQLStoreEntityReferenceCleanUpComplete' ],
-			[ 'callSMWAdminTaskHandlerFactory' ],
+			[ 'callSMWAdminRegisterTaskHandlers' ],
 			[ 'callSMWEventRegisterEventListeners' ],
 			[ 'callSMWSQLStorAfterDataUpdateComplete' ],
 			[ 'callSMWStoreBeforeQueryResultLookupComplete' ],
@@ -1600,15 +1600,17 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		return $handler;
 	}
 
-	public function callSMWAdminTaskHandlerFactory( $instance ) {
+	public function callSMWAdminRegisterTaskHandlers( $instance ) {
 
-		$handler = 'SMW::Admin::TaskHandlerFactory';
+		$handler = 'SMW::Admin::RegisterTaskHandlers';
 
 		if ( !$instance->getHandlerFor( $handler ) ) {
 			return $this->markTestSkipped( "$handler not used" );
 		}
 
-		$taskHandlers = [];
+		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -1624,7 +1626,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ &$taskHandlers, $store, $outputFormatter, $user ]
+			[ $taskHandlerRegistry, $store, $outputFormatter, $user ]
 		);
 
 		return $handler;

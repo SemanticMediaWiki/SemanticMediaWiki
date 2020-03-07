@@ -55,6 +55,40 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnRegisterTaskHandlers() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$taskHandlerRegistry->expects( $this->once() )
+			->method( 'registerTaskHandler' );
+
+		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', function( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
+			$taskHandlerRegistry->registerTaskHandler( $taskHandler );
+		} );
+
+		$hookDispatcher->onRegisterTaskHandlers( $taskHandlerRegistry, $store, $outputFormatter, $user );
+	}
+
 	public function testOnRegisterPropertyChangeListeners() {
 
 		$hookDispatcher = new HookDispatcher();

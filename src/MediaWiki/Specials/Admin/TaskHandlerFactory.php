@@ -18,10 +18,12 @@ use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 use SMW\SetupFile;
 use SMw\ApplicationFactory;
 use SMW\Utils\FileFetcher;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -30,6 +32,8 @@ use SMW\Utils\FileFetcher;
  * @author mwjames
  */
 class TaskHandlerFactory {
+
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * @var Store
@@ -62,69 +66,37 @@ class TaskHandlerFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return []
+	 * @param User $user
+	 * @param int $adminFeatures
+	 *
+	 * @return TaskHandlerRegistry
 	 */
-	public function getTaskHandlerList( $user, $adminFeatures ) {
+	public function newTaskHandlerRegistry( User $user, int $adminFeatures ) {
 
-		$taskHandlers = [
-			// TaskHandler::SECTION_MAINTENANCE
-			$this->newMaintenanceTaskHandler( $adminFeatures ),
+		$taskHandlerRegistry = new TaskHandlerRegistry(
+			$this->store,
+			$this->outputFormatter
+		);
 
-			// TaskHandler::SECTION_ALERTS
-			$this->newAlertsTaskHandler( $adminFeatures ),
+		$taskHandlerRegistry->setHookDispatcher(
+			$this->hookDispatcher
+		);
 
-			// TaskHandler::SECTION_SUPPLEMENT
-			$this->newSupplementTaskHandler( $adminFeatures, $user ),
+		$taskHandlerRegistry->setFeatureSet(
+			$adminFeatures
+		);
 
-			// TaskHandler::SECTION_SUPPORT
-			$this->newSupportListTaskHandler()
-		];
+		$taskHandlerRegistry->registerTaskHandlers(
+			[
+				$this->newMaintenanceTaskHandler( $adminFeatures ),
+				$this->newAlertsTaskHandler( $adminFeatures ),
+				$this->newSupplementTaskHandler( $adminFeatures, $user ),
+				$this->newSupportListTaskHandler()
+			],
+			$user
+		);
 
-		\Hooks::run( 'SMW::Admin::TaskHandlerFactory', [ &$taskHandlers, $this->store, $this->outputFormatter, $user ] );
-
-		$taskHandlerList = [
-			TaskHandler::SECTION_MAINTENANCE => [],
-			TaskHandler::SECTION_ALERTS => [],
-			TaskHandler::SECTION_SUPPLEMENT => [],
-			TaskHandler::SECTION_SUPPORT => [],
-			'actions' => []
-		];
-
-		foreach ( $taskHandlers as $taskHandler ) {
-
-			if ( !is_a( $taskHandler, 'SMW\MediaWiki\Specials\Admin\TaskHandler' ) ) {
-				continue;
-			}
-
-			$taskHandler->setFeatureSet(
-				$adminFeatures
-			);
-
-			$taskHandler->setStore(
-				$this->store
-			);
-
-			switch ( $taskHandler->getSection() ) {
-				case TaskHandler::SECTION_MAINTENANCE:
-					$taskHandlerList[TaskHandler::SECTION_MAINTENANCE][] = $taskHandler;
-					break;
-				case TaskHandler::SECTION_ALERTS:
-					$taskHandlerList[TaskHandler::SECTION_ALERTS][] = $taskHandler;
-					break;
-				case TaskHandler::SECTION_SUPPLEMENT:
-					$taskHandlerList[TaskHandler::SECTION_SUPPLEMENT][] = $taskHandler;
-					break;
-				case TaskHandler::SECTION_SUPPORT:
-					$taskHandlerList[TaskHandler::SECTION_SUPPORT][] = $taskHandler;
-					break;
-			}
-
-			if ( $taskHandler instanceof ActionableTask ) {
-				$taskHandlerList['actions'][] = $taskHandler;
-			}
-		}
-
-		return $taskHandlerList;
+		return $taskHandlerRegistry;
 	}
 
 	/**

@@ -323,17 +323,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testOnTaskHandlerFactory() {
-
-		$instance = new ElasticFactory();
-		$taskHandlers = [];
-		$outputFormatter = null;
-
-		$this->assertTrue(
-			$instance->onTaskHandlerFactory( $taskHandlers, $this->store, $outputFormatter, null )
-		);
-	}
-
 	public function testOnRegisterEventListeners() {
 
 		$instance = new ElasticFactory();

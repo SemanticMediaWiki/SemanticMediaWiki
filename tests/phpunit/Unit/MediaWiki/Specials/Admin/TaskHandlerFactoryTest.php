@@ -20,6 +20,8 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $testEnvironment;
+	private $hookDispatcher;
+	private $store;
 	private $htmlFormRenderer;
 	private $outputFormatter;
 
@@ -27,6 +29,10 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -51,13 +57,13 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetTaskHandlerList() {
+	public function testNewTaskHandlerRegistry() {
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$adminFeatures = '';
+		$adminFeatures = 0;
 
 		$instance = new TaskHandlerFactory(
 			$this->store,
@@ -65,9 +71,13 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'array',
-			$instance->getTaskHandlerList( $user, $adminFeatures )
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry',
+			$instance->newTaskHandlerRegistry( $user, $adminFeatures )
 		);
 	}
 
