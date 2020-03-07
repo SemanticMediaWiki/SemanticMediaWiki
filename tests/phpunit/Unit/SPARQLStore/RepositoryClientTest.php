@@ -18,8 +18,22 @@ class RepositoryClientTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryClient',
+			RepositoryClient::class,
 			new RepositoryClient( '', '', '', '' )
+		);
+	}
+
+	public function testFeatureFlag() {
+
+		$instance = new RepositoryClient( 'Foo', 'Bar', 'Nu', 'Vim' );
+		$instance->setFeatureSet( 2 | 4 | 8 );
+
+		$this->assertTrue(
+			$instance->isFlagSet( 8 )
+		);
+
+		$this->assertFalse(
+			$instance->isFlagSet( 16 )
 		);
 	}
 

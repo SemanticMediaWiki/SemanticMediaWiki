@@ -242,6 +242,44 @@ class SPARQLStoreTest extends \PHPUnit_Framework_TestCase {
 		$instance->doSparqlDataUpdate( $semanticData );
 	}
 
+	public function testDoSparqlDataUpdate_FailedPingThrowsException() {
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'shouldPing' )
+			->will( $this->returnValue( true ) );
+
+		$connection->expects( $this->once() )
+			->method( 'ping' )
+			->will( $this->returnValue( false ) );
+
+		$connection->expects( $this->never() )
+			->method( 'insertData' );
+
+		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+			->setMethods( [ 'getConnection' ] )
+			->getMock();
+
+		$instance->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$this->expectException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
+
+		$instance->doSparqlDataUpdate( $semanticData );
+	}
+
 	public function testGetQueryResult() {
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )

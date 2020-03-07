@@ -291,6 +291,20 @@ return [
 	##
 
 	##
+	# SPARQL respository specific features
+	#
+	# - SMW_SPARQL_NONE does not support any features
+	#
+	# - SMW_SPARQL_CONNECTION_PING to support the verifcation that a connection
+	#   can be established and allows for an uninterruppted update and query
+	#   process
+	#
+	# @since 3.2
+	##
+	'smwgSparqlRepositoryFeatures' => SMW_SPARQL_NONE,
+	##
+
+	##
 	# @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
 	#
 	# Setting to explicitly force a CURLOPT_HTTP_VERSION for the endpoint communication

@@ -19,8 +19,11 @@ class HttpEndpointConnectionException extends \Exception {
 	 * @param integer $errorCode
 	 * @param string $errorText
 	 */
-	public function __construct( $endpoint, $errorCode, $errorText ) {
-		parent::__construct( "Failed to communicate to Endpoint: $endpoint\n" . "due to curl error: $errorCode ($errorText).\n" );
+	public function __construct( $endpoint, $errorCode, $errorText = '' ) {
+		parent::__construct(
+			"Failed to communicate with $endpoint (endpoint), due to cURL error: $errorCode" .
+			( $errorText !== '' ? " ($errorText)" : '' ) . "\n"
+		);
 	}
 
 }

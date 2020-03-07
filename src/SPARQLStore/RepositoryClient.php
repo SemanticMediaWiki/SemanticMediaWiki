@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
+use SMW\Utils\Flag;
+
 /**
  * Provides information about the client and how to communicate with
  * its services
@@ -51,6 +53,11 @@ class RepositoryClient {
 	private $name = '';
 
 	/**
+	 * @var Flag|null
+	 */
+	private $featureSet;
+
+	/**
 	 * @since 2.2
 	 *
 	 * @param string $defaultGraph
@@ -63,6 +70,24 @@ class RepositoryClient {
 		$this->queryEndpoint = $queryEndpoint;
 		$this->updateEndpoint = $updateEndpoint;
 		$this->dataEndpoint = $dataEndpoint;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param int $featureSet
+	 */
+	public function setFeatureSet( int $featureSet ) {
+		$this->featureSet = new Flag( $featureSet );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param int $key
+	 */
+	public function isFlagSet( int $key ) : bool {
+		return $this->featureSet !== null && $this->featureSet->is( $key );
 	}
 
 	/**

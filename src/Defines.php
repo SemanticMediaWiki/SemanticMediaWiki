@@ -154,7 +154,7 @@ define( 'SMW_PREC_YMDTZ', 4 ); // with time zone
 /**@}*/
 
 /**@{
- * Constants for SPARQL supported features (mostly SPARQL 1.1) because we are unable
+ * Constants for SPARQL supported query features (mostly SPARQL 1.1) because we are unable
  * to verify against the REST API whether a feature is supported or not
  */
 define( 'SMW_SPARQL_QF_NONE', 0 ); // does not support any features
@@ -163,6 +163,13 @@ define( 'SMW_SPARQL_QF_SUBP', 4 ); // support for rdfs:subPropertyOf*
 define( 'SMW_SPARQL_QF_SUBC', 8 ); // support for rdfs:subClassOf*
 define( 'SMW_SPARQL_QF_COLLATION', 16 ); // support for use of $smwgEntityCollation
 define( 'SMW_SPARQL_QF_NOCASE', 32 ); // support case insensitive pattern matches
+/**@}*/
+
+/**@{
+ * Constants for SPARQL repository sepcific features
+ */
+define( 'SMW_SPARQL_NONE', 0 ); // does not support any features
+define( 'SMW_SPARQL_CONNECTION_PING', 2 ); // ping connection before update
 /**@}*/
 
 /**@{
