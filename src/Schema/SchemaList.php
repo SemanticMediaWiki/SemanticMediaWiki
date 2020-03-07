@@ -81,9 +81,9 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @param string $key
 	 *
-	 * @return []
+	 * @return mixed
 	 */
-	public function get( $key ) {
+	public function get( $key, $default = [] ) {
 
 		$list = $this->toArray();
 
@@ -91,7 +91,7 @@ class SchemaList implements JsonSerializable {
 			return $list[$key];
 		}
 
-		return [];
+		return $default;
 	}
 
 	/**
