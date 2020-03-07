@@ -36,6 +36,10 @@ class CacheStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->outputFormatter->expects( $this->any() )
+			->method( 'encodeAsJson' )
+			->will( $this->returnValue( '' ) );
+
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 

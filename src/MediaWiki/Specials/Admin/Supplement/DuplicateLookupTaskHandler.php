@@ -115,6 +115,21 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 			)
 		);
 
+		$placeholder = Html::rawElement(
+			'div',
+			[
+				'class' => 'smw-admin-supplementary-duplicate-lookup-placeholder',
+			],
+			Message::get( 'smw-data-lookup-with-wait' ) .
+			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
+		) .	Html::rawElement(
+			'span',
+			[
+				'class' => 'smw-overlay-spinner medium',
+				'style' => 'transform: translate(-50%, -50%);'
+			]
+		);
+
 		// Ajax is doing the query and result display to avoid a timeout issue
 		$html = Html::rawElement(
 				'div',
@@ -128,25 +143,22 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 						]
 					)
 				],
-				Html::element(
-					'div',
-					[
-						'class' => 'smw-admin-supplementary-duplookup-error'
-					]
-				) . Html::rawElement(
+				Html::rawElement(
+				'div',
+				[
+					'class' => 'smw-admin-supplementary-duplookup-error'
+				]
+			) . Html::rawElement(
+				'div',
+				[
+					'class' => 'smw-jsonview-menu',
+				]
+			) . Html::rawElement(
 				'pre',
 				[
 					'class' => 'smw-admin-supplementary-duplookup-content'
 				],
-				$this->msg( 'smw-data-lookup-with-wait' ) .
-				"\n\n\n" . $this->msg( 'smw-processing' ) . "\n" .
-				Html::rawElement(
-					'span',
-					[
-						'class' => 'smw-overlay-spinner medium',
-						'style' => 'transform: translate(-50%, -50%);'
-					]
-				)
+				$placeholder
 			)
 		);
 

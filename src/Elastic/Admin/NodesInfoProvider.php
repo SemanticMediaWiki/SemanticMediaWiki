@@ -4,6 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use WebRequest;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -70,8 +71,14 @@ class NodesInfoProvider extends InfoProviderHandler {
 		$nodes = $connection->stats( 'nodes' );
 		ksort( $nodes );
 
-		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson( $nodes )
+		$html = ( new JsonView() )->create(
+			'elastic-nodes',
+			$this->outputFormatter->encodeAsJson( $nodes ),
+			2
+		);
+
+		$this->outputFormatter->addHtml(
+			$html
 		);
 	}
 

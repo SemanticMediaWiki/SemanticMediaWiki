@@ -161,15 +161,7 @@ class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 					[
 						'class' => 'smw-admin-supplementary-table-statistics-content'
 					],
-					$this->msg( 'smw-data-lookup-with-wait' ) .
-					"\n\n\n" . $this->msg( 'smw-processing' ) . "\n" .
-					Html::rawElement(
-						'span',
-						[
-							'class' => 'smw-overlay-spinner medium',
-							'style' => 'transform: translate(-50%, -50%);'
-						]
-				)
+					$placeholder
 			)
 		);
 

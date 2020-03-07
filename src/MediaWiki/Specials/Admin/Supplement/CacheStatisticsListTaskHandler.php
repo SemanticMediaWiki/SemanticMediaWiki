@@ -10,6 +10,7 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -122,39 +123,10 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 			Html::rawElement( 'p', [], $this->msg( 'smw-admin-statistics-section-explain' ) )
 		);
 
-		$placeholder = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-json-placeholder-message',
-			],
-			Message::get( 'smw-data-lookup-with-wait' ) .
-			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
-		) .	Html::rawElement(
-			'span',
-			[
-				'class' => 'smw-overlay-spinner medium',
-				'style' => 'transform: translate(-50%, -50%);'
-			]
-		);
-
-		$html = Html::rawElement(
-				'div',
-				[
-					'id' => 'smw-admin-querycache-json',
-					'class' => 'smw-json-placeholder',
-				],  Html::rawElement(
-				'pre',
-				[
-					'id' => 'smw-json-container'
-				],
-				$placeholder . Html::rawElement(
-					'div',
-					[
-						'class' => 'smw-json-data'
-					],
-					$this->outputFormatter->encodeAsJson( $resultCache->getStats() )
-				)
-			)
+		$html = ( new JsonView() )->create(
+			'querycache',
+			$this->outputFormatter->encodeAsJson( $resultCache->getStats() ),
+			2
 		);
 
 		$htmlTabs = new HtmlTabs();

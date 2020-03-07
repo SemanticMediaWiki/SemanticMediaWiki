@@ -13,6 +13,7 @@ use SMW\Elastic\Indexer\ReplicationStatus;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Config;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -200,10 +201,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$html = '';
 
-		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson( $connection->info() )
-		);
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
 
@@ -263,25 +260,36 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 			$list .= $taskHandler->getHtml();
 		}
 
+		$jsonView = ( new JsonView() )->create(
+			'elastic-info',
+			$this->outputFormatter->encodeAsJson( $connection->info() ),
+			2
+		);
+
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'elastic' );
 
 		$htmlTabs->tab( 'status', $this->msg( 'smw-admin-supplementary-elastic-status-replication' ) );
 		$htmlTabs->content( 'status', Html::rawElement( 'ul', [ 'style' => 'margin-top:10px;' ], $html ) );
 
-		$htmlTabs->tab( 'tasks', $this->msg( 'smw-admin-supplementary-elastic-functions' ) );
-		$htmlTabs->content( 'tasks', Html::rawElement( 'ul', [ 'style' => 'margin-top:10px;' ], $list ) );
+		$htmlTabs->tab( 'info', $this->msg( 'smw-admin-supplementary-elastic-version-info' ) );
+		$htmlTabs->content( 'info', Html::rawElement( 'div', [ 'style' => 'margin-top:10px;' ], $jsonView ) );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'elastic' ] );
 
 		$this->outputFormatter->addInlineStyle(
 			'.elastic #tab-status:checked ~ #tab-content-status,' .
-			'.elastic #tab-tasks:checked ~ #tab-content-tasks {' .
+			'.elastic #tab-info:checked ~ #tab-content-info {' .
 			'display: block;}'
 		);
 
 		$this->outputFormatter->addHTML(
 			$html
+		);
+
+		$this->outputFormatter->addHTML(
+			'<h3 class="smw-title">' . $this->msg( 'smw-admin-supplementary-elastic-functions' ) . '</h3>' .
+			$list
 		);
 	}
 
