@@ -42,7 +42,7 @@ class SchemaTypes {
 			'type_description' => 'smw-schema-description-link-format-schema'
 		],
 		'SEARCH_FORM_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
+			'group' => SMW_SCHEMA_GROUP_SEARCH,
 			'validation_schema' => 'search-form-schema.v1.json',
 			'type_description' => 'smw-schema-description-search-form-schema'
 		],

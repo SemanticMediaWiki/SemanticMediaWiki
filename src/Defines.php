@@ -308,7 +308,7 @@ define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
   * Constants for Schema groups
   */
 define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema/group/format' );
-define( 'SMW_SCHEMA_GROUP_SEARCH_FORM', 'schema/group/searchform' );
+define( 'SMW_SCHEMA_GROUP_SEARCH', 'schema/group/search' );
 define( 'SMW_SCHEMA_GROUP_PROPERTY', 'schema/group/property' );
 define( 'SMW_SCHEMA_GROUP_CONSTRAINT', 'schema/group/constraint' );
 define( 'SMW_SCHEMA_GROUP_PROFILE', 'schema/group/profile' );
