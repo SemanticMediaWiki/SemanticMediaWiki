@@ -485,6 +485,10 @@ class SemanticData {
 
 		$key = $property->getKey();
 
+		if ( !isset( $this->countMap[$key] ) ) {
+			$this->countMap[$key] = $key === '_INST' ? [] : 0;
+		}
+
 		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
 			$this->mPropVals[$property->getKey()] = [];
 			$this->mProperties[$property->getKey()] = $property;
@@ -492,8 +496,6 @@ class SemanticData {
 			if ( SequenceMap::canMap( $property ) ) {
 				$this->sequenceMap[$property->getKey()] = [];
 			}
-
-			$this->countMap[$key] = $key === '_INST' ? [] : 0;
 		}
 
 		$hash = md5( $dataItem->getHash() );
