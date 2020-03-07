@@ -175,7 +175,7 @@ class TableResultPrinter extends ResultPrinter {
 
 			// Simple approximation to avoid a massive text reflow once the DT JS
 			// has finished processing the HTML table
-			$count = $this->params['transpose'] ? $res->getColumnCount() : $res->getCount();
+			$count = ( $this->params['transpose'] ?? false ) ? $res->getColumnCount() : $res->getCount();
 			$height = ( min( ( $count + ( $res->hasFurtherResults() ? 1 : 0 ) ), 10 ) * 50 ) + 40;
 
 			$html = Html::rawElement(
