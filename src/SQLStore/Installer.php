@@ -184,7 +184,7 @@ class Installer implements MessageReporter {
 		);
 
 		$this->messageReporter->reportMessage(
-			$this->cliMsgFormatter->twoCols( 'Database:', $this->tableBuildExaminer->getDatabaseInfo() )
+			$this->cliMsgFormatter->twoCols( 'Database (type/version):', $this->tableBuildExaminer->getDatabaseInfo() )
 		);
 
 		$this->tableBuilder->setMessageReporter(
