@@ -35,7 +35,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $user )
+			new GetPreferences()
 		);
 	}
 
@@ -50,7 +50,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$preferences = [];
 
-		$instance = new GetPreferences( $user );
+		$instance = new GetPreferences();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -62,7 +62,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$instance->process( $preferences );
+		$instance->process( $user, $preferences );
 
 		$this->assertArrayHasKey(
 			$key,

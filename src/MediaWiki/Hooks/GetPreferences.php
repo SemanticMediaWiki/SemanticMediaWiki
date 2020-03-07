@@ -7,8 +7,11 @@ use User;
 use Xml;
 use SMW\Utils\Logo;
 use SMW\MediaWiki\HookListener;
+use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\OptionsAwareTrait;
+use SMW\Schema\Compartment;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
 /**
  * Hook: GetPreferences adds user preference
@@ -24,32 +27,25 @@ class GetPreferences implements HookListener {
 
 	use OptionsAwareTrait;
 	use HookDispatcherAwareTrait;
+	use MessageLocalizerTrait;
 
 	/**
-	 * @var User
+	 * Option to enable textinput suggester
 	 */
-	private $user;
-
-	/**
-	 * @since  2.0
-	 *
-	 * @param User $user
-	 */
-	public function __construct( User $user ) {
-		$this->user = $user;
-	}
+	const ENABLE_ENTITY_SUGGESTER = 'smw-prefs-general-options-suggester-textinput';
 
 	/**
 	 * @since 2.0
 	 *
+	 * @param User $user
 	 * @param array &$preferences
 	 *
 	 * @return true
 	 */
-	public function process( array &$preferences ) {
+	public function process( User $user, array &$preferences ) {
 
 		$otherPreferences = [];
-		$this->hookDispatcher->onGetPreferences( $this->user, $otherPreferences );
+		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 
 		$html = $this->makeImage( Logo::get( '100x90' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
@@ -70,20 +66,6 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/general-options',
 		];
 
-		$preferences['smw-prefs-general-options-disable-editpage-info'] = [
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
-			'section' => 'smw/general-options',
-			'disabled' => !$this->getOption( 'smwgEnabledEditPageHelp', false )
-		];
-
-		$preferences['smw-prefs-general-options-disable-search-info'] = [
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-general-options-disable-search-info',
-			'section' => 'smw/general-options',
-			'disabled' => $this->getOption( 'wgSearchType' ) !== SMW_SPECIAL_SEARCHTYPE
-		];
-
 		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
@@ -92,12 +74,26 @@ class GetPreferences implements HookListener {
 			'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
 		];
 
+		$preferences['smw-prefs-general-options-disable-editpage-info'] = [
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
+			'section' => 'smw/general-options',
+			'disabled' => !$this->getOption( 'smwgEnabledEditPageHelp', false )
+		];
+
 		// Option to enable input assistance
-		$preferences['smw-prefs-general-options-suggester-textinput'] = [
+		$preferences[self::ENABLE_ENTITY_SUGGESTER] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-suggester-textinput',
 			'help-message' => 'smw-prefs-help-general-options-suggester-textinput',
 			'section' => 'smw/general-options',
+		];
+
+		$preferences['smw-prefs-general-options-disable-search-info'] = [
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-disable-search-info',
+			'section' => 'smw/extended-search-options',
+			'disabled' => $this->getOption( 'wgSearchType' ) !== SMW_SPECIAL_SEARCHTYPE
 		];
 
 		// Option to enable tooltip info

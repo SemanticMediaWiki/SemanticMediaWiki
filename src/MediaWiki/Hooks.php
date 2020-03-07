@@ -927,9 +927,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$getPreferences = new GetPreferences(
-			$user
-		);
+		$getPreferences = new GetPreferences();
 
 		$getPreferences->setHookDispatcher(
 			$applicationFactory->getHookDispatcher()
@@ -943,7 +941,7 @@ class Hooks {
 			]
 		);
 
-		$getPreferences->process( $preferences);
+		$getPreferences->process( $user, $preferences );
 
 		return true;
 	}
