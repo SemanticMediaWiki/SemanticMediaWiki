@@ -61,8 +61,12 @@
 			// [1, 'asc'], [2, 'desc']
 			$.map( column.sort, function( val, i ) {
 
-				if ( val === '' || $.inArray( val, column.list ) < 0 ) {
+				if ( val === '' ) {
 					i = 0;
+				};
+
+				if ( $.inArray( val, column.list ) < 0 ) {
+					return
 				};
 
 				order.push( [
