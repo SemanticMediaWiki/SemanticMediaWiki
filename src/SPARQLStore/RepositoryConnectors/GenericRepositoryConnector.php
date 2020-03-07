@@ -621,6 +621,15 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return string|int
+	 */
+	public function getVersion() {
+		return 'n/a';
+	}
+
+	/**
 	 * @param $endpoint string URL of endpoint that was used
 	 * @param $sparql string query that caused the problem
 	 */

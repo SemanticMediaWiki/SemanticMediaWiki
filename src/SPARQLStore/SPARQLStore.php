@@ -446,10 +446,11 @@ class SPARQLStore extends Store {
 	 */
 	public function getInfo( $type = null ) {
 
-		$client = $this->getConnection( 'sparql' )->getRepositoryClient();
+		$respositoryConnetion = $this->getConnection( 'sparql' );
+		$repositoryClient = $respositoryConnetion->getRepositoryClient();
 
 		if ( $type === 'store' ) {
-			return [ 'SMWSPARQLStore', $client->getName() ];
+			return [ 'SMWSPARQLStore', $repositoryClient->getName() ];
 		}
 
 		$connection = $this->getConnection( 'mw.db' );
@@ -459,7 +460,7 @@ class SPARQLStore extends Store {
 		}
 
 		return [
-			'SMWSPARQLStore' => $connection->getInfo() + [ $client->getName() => 'n/a' ]
+			'SMWSPARQLStore' => $connection->getInfo() + [ $repositoryClient->getName() => $respositoryConnetion->getVersion() ]
 		];
 	}
 
