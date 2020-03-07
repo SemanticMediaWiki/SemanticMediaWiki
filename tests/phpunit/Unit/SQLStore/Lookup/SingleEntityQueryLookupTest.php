@@ -49,48 +49,32 @@ class SingleEntityQueryLookupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testNotAValueDescription_ThrowsException() {
+	public function testNonValueDescriptionReturnsEmptyQueryResult() {
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->any() )
+			->method( 'getPrintrequests' )
+			->will( $this->returnValue( [] ) );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query->expects( $this->any() )
+		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( 'Foo' ) );
+			->will( $this->returnValue( $description ) );
 
 		$instance = new SingleEntityQueryLookup(
 			$this->store
 		);
 
-		$this->expectException( '\RuntimeException' );
-		$instance->getQueryResult( $query );
-	}
-
-	public function testNotADIWikiPage_ThrowsException() {
-
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$valueDescription->expects( $this->any() )
-			->method( 'getDataItem' )
-			->will( $this->returnValue( 'Foo' ) );
-
-		$query = $this->getMockBuilder( '\SMWQuery' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$query->expects( $this->any() )
-			->method( 'getDescription' )
-			->will( $this->returnValue( $valueDescription ) );
-
-		$instance = new SingleEntityQueryLookup(
-			$this->store
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryResult',
+			$instance->getQueryResult( $query )
 		);
-
-		$this->expectException( '\RuntimeException' );
-		$instance->getQueryResult( $query );
 	}
 
 	public function testGetQueryResult_PageEntity() {

@@ -52,16 +52,18 @@ class SingleEntityQueryLookup implements QueryEngine {
 		$results = [];
 		$furtherResults = false;
 
-		if (
-			!$description instanceof ValueDescription ||
-			!( $dataItem = $description->getDataItem() ) instanceof DIWikiPage ) {
-			throw new RuntimeException( "Expected a ValueDescription instance!" );
-		}
-
-		if ( $query->getLimit() == 0 ) {
+		// #4349 We only expect a `ValueDescription` instance while other uses such
+		// as `{{ #show: [[someX]][[SomeX]] ...}}` that would produce a non
+		// `ValueDescription` description aren't supported!
+		if ( !$description instanceof ValueDescription ) {
+			$results = [];
+			$furtherResults = false;
+		} else if ( $query->getLimit() == 0 ) {
 			$results = [];
 			$furtherResults = true;
 		} else {
+			$dataItem = $description->getDataItem();
+
 			// #4370
 			$dataItem = $this->store->getRedirectTarget( $dataItem );
 
