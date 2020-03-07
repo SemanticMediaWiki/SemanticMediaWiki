@@ -5,6 +5,7 @@ namespace SMW\SPARQLStore\RepositoryConnectors;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
+use SMW\Utils\Url;
 
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html
@@ -54,6 +55,30 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 		$repositoryResult->setErrorCode( RepositoryResult::ERROR_UNREACHABLE );
 
 		return $repositoryResult;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @see GenericRepositoryConnector::getVersion
+	 */
+	public function getVersion() {
+
+		$url = new Url(
+			$this->repositoryClient->getQueryEndpoint()
+		);
+
+		// https://jena.apache.org/documentation/fuseki2/fuseki-server-protocol.html
+		$this->httpRequest->setOption( CURLOPT_URL, $url->path( '/$/server' ) );
+		$httpResponse = $this->httpRequest->execute();
+
+		if ( is_string( $httpResponse ) ) {
+			$httpResponse = json_decode( $httpResponse, true );
+
+			return $httpResponse['version'] ?? '/na';
+		}
+
+		return 'n/a';
 	}
 
 }
