@@ -4,6 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Utils\JsonView;
 use WebRequest;
 
 /**
@@ -81,8 +82,14 @@ class SettingsInfoProvider extends InfoProviderHandler {
 			)
 		];
 
-		$this->outputFormatter->addAsPreformattedText(
-			$this->outputFormatter->encodeAsJson( $settings )
+		$html = ( new JsonView() )->create(
+			'elastic-settings',
+			$this->outputFormatter->encodeAsJson( $settings ),
+			2
+		);
+
+		$this->outputFormatter->addHtml(
+			$html
 		);
 	}
 

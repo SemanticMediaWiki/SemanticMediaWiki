@@ -6,6 +6,7 @@ use Html;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use WebRequest;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -114,9 +115,15 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			$this->msg( 'smw-admin-supplementary-elastic-mappings-fields' )
 		);
 
+		$jsonView = ( new JsonView() )->create(
+			'elastic-mappings',
+			$this->outputFormatter->encodeAsJson( $mappings ),
+			2
+		);
+
 		$htmlTabs->content(
 			'fields',
-			$this->getJsonView( $this->outputFormatter->encodeAsJson( $mappings ) )
+			$jsonView
 		);
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'es-mapping' ] );
@@ -159,52 +166,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 		}
 
 		return $summary;
-	}
-
-	private function getJsonView( $data ) {
-
-		$placeholder = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-schema-placeholder-message',
-			],
-			$this->msg( 'smw-data-lookup-with-wait' ) .
-			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
-		) .	Html::rawElement(
-			'span',
-			[
-				'class' => 'smw-overlay-spinner medium',
-				'style' => 'transform: translate(-50%, -50%);'
-			]
-		);
-
-		return Html::rawElement(
-				'div',
-				[
-					'id' => 'smw-admin-configutation-json',
-					'class' => '',
-				],
-				Html::rawElement(
-					'div',
-					[
-						'class' => 'smw-jsonview-menu',
-					]
-				) . Html::rawElement(
-					'pre',
-					[
-						'id' => 'smw-json-container',
-						'class' => 'smw-json-container smw-json-placeholder',
-						'data-level' => 2
-					],
-					$placeholder . Html::rawElement(
-						'div',
-						[
-							'class' => 'smw-json-data'
-						],
-						$data
-				)
-			)
-		);
 	}
 
 	private function countFields( $value, $type, &$count ) {

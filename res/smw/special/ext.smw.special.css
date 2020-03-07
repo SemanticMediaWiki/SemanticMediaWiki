@@ -238,7 +238,7 @@ h3 .smw-title {
 }
 
 .smw-admin h3,
-.smw-admin h3.smw-title {
+h3.smw-title {
 	background: unset;
     padding: 2px 5px;
     margin-top: 10px !important;

@@ -29,6 +29,10 @@ class SettingsInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->outputFormatter->expects( $this->any() )
+			->method( 'encodeAsJson' )
+			->will( $this->returnValue( '' ) );
+
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
