@@ -4,6 +4,7 @@ namespace SMW\DataValues;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\SemanticData;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -174,8 +175,25 @@ class MonolingualTextValue extends AbstractMultiValue {
 			$this->m_dataitem = $dataItem;
 			return true;
 		} elseif ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
-			$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
-			$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
+
+			$semanticData = null;
+			$subobjectName = $dataItem->getSubobjectName();
+
+			if ( $this->hasCallable( SemanticData::class ) ) {
+				$semanticData = $this->getCallable( SemanticData::class )();
+			}
+
+			if (
+				$semanticData instanceof SemanticData &&
+				$semanticData->hasSubSemanticData( $subobjectName ) ) {
+				$this->m_dataitem = new DIContainer(
+					$semanticData->findSubSemanticData( $subobjectName )
+				);
+			} else {
+				$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
+				$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
+			}
+
 			return true;
 		}
 

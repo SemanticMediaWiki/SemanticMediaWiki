@@ -820,6 +820,17 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 *
+	 * @return bool
+	 */
+	public function hasCallable( $key ) : bool {
+		return isset( $this->callables[$key] );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param string $key
@@ -827,7 +838,7 @@ abstract class SMWDataValue {
 	 * @return callable
 	 * @throws RuntimeException
 	 */
-	public function getCallable( $key ) {
+	public function getCallable( $key ) : callable {
 
 		if ( !isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` as callable is unknown or not registered!" );
