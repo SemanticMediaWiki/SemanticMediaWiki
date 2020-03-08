@@ -198,7 +198,6 @@ class SchemaFactory {
 		}
 
 		$schemaTypes = new SchemaTypes(
-			$types,
 			$settings->mung( 'smwgDir', '/data/schema' )
 		);
 

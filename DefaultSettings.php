@@ -2156,6 +2156,9 @@ return [
 	##
 
 	##
+	# @deprecated since 3.2, use `SchemaTypes` or the
+	# `SMW::Schema::RegisterSchemaTypes` hook.
+	#
 	# Schema types
 	#
 	# The mapping defines the relation between a specific type, group and
@@ -2166,45 +2169,7 @@ return [
 	#
 	# @since 3.0
 	##
-	'smwgSchemaTypes' => [
-		'LINK_FORMAT_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_FORMAT,
-			'validation_schema' => __DIR__ . '/data/schema/link-format-schema.v1.json',
-			'type_description' => 'smw-schema-description-link-format-schema',
-			// 'class' => [ 'SMW\Schema\SchemaFactory', 'newTest' ]
-		],
-		'SEARCH_FORM_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
-			'validation_schema' => __DIR__ . '/data/schema/search-form-schema.v1.json',
-			'type_description' => 'smw-schema-description-search-form-schema'
-		],
-		'PROPERTY_GROUP_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_PROPERTY,
-			'validation_schema' => __DIR__ . '/data/schema/property-group-schema.v1.json',
-			'type_description' => 'smw-schema-description-property-group-schema'
-		],
-		'PROPERTY_CONSTRAINT_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
-			'validation_schema' => __DIR__ . '/data/schema/property-constraint-schema.v1.json',
-			'type_description' => 'smw-schema-description-property-constraint-schema',
-			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
-			'usage_lookup' => '_CONSTRAINT_SCHEMA'
-		],
-		'CLASS_CONSTRAINT_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
-			'validation_schema' => __DIR__ . '/data/schema/class-constraint-schema.v1.json',
-			'type_description' => 'smw-schema-description-class-constraint-schema',
-			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
-			'usage_lookup' => '_CONSTRAINT_SCHEMA'
-		],
-		'PROPERTY_PROFILE_SCHEMA' => [
-			'group' => SMW_SCHEMA_GROUP_PROFILE,
-			'validation_schema' => __DIR__ . '/data/schema/property-profile-schema.v1.json',
-			'type_description' => 'smw-schema-description-property-profile-schema',
-			'change_propagation' => '_PROFILE_SCHEMA',
-			'usage_lookup' => '_PROFILE_SCHEMA'
-		],
-	],
+	'smwgSchemaTypes' => [],
 	##
 
 	##

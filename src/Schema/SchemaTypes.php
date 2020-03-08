@@ -31,13 +31,55 @@ class SchemaTypes {
 	private $onRegisterSchemaTypes = false;
 
 	/**
+	 * Default types
+	 *
+	 * @var []
+	 */
+	private static $defaultTypes = [
+		'LINK_FORMAT_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_FORMAT,
+			'validation_schema' => 'link-format-schema.v1.json',
+			'type_description' => 'smw-schema-description-link-format-schema'
+		],
+		'SEARCH_FORM_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_SEARCH_FORM,
+			'validation_schema' => 'search-form-schema.v1.json',
+			'type_description' => 'smw-schema-description-search-form-schema'
+		],
+		'PROPERTY_GROUP_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_PROPERTY,
+			'validation_schema' => 'property-group-schema.v1.json',
+			'type_description' => 'smw-schema-description-property-group-schema'
+		],
+		'PROPERTY_CONSTRAINT_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
+			'validation_schema' => 'property-constraint-schema.v1.json',
+			'type_description' => 'smw-schema-description-property-constraint-schema',
+			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
+			'usage_lookup' => '_CONSTRAINT_SCHEMA'
+		],
+		'CLASS_CONSTRAINT_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_CONSTRAINT,
+			'validation_schema' => 'class-constraint-schema.v1.json',
+			'type_description' => 'smw-schema-description-class-constraint-schema',
+			'change_propagation' => [ '_CONSTRAINT_SCHEMA' ],
+			'usage_lookup' => '_CONSTRAINT_SCHEMA'
+		],
+		'PROPERTY_PROFILE_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_PROFILE,
+			'validation_schema' => 'property-profile-schema.v1.json',
+			'type_description' => 'smw-schema-description-property-profile-schema',
+			'change_propagation' => '_PROFILE_SCHEMA',
+			'usage_lookup' => '_PROFILE_SCHEMA'
+		]
+	];
+
+	/**
 	 * @since 3.2
 	 *
-	 * @param array $schemaTypes
 	 * @param string $dir
 	 */
-	public function __construct( array $schemaTypes = [], string $dir = '' ) {
-		$this->schemaTypes = $schemaTypes;
+	public function __construct( string $dir = '' ) {
 		$this->dir = $dir;
 	}
 
@@ -49,7 +91,7 @@ class SchemaTypes {
 	 * @return string
 	 */
 	public function withDir( string $dir = '' ) : string {
-		return "{$this->dir}/$dir";
+		return str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, "{$this->dir}/$dir" );
 	}
 
 	/**
@@ -57,14 +99,22 @@ class SchemaTypes {
 	 *
 	 * @param array $schemaTypes
 	 */
-	public function registerSchemaTypes( array $schemaTypes ) {
+	public function registerSchemaTypes( array $schemaTypes = [] ) {
 
 		if ( $this->onRegisterSchemaTypes ) {
 			return;
 		}
 
 		$this->onRegisterSchemaTypes = true;
-		$this->schemaTypes = $schemaTypes;
+
+		foreach ( self::$defaultTypes + $schemaTypes as $key => $value ) {
+
+			if ( isset( $value['validation_schema'] ) ) {
+				$value['validation_schema'] = $this->withDir( $value['validation_schema'] );
+			}
+
+			$this->registerSchemaType( $key, $value );
+		}
 
 		$this->hookDispatcher->onRegisterSchemaTypes( $this );
 	}
