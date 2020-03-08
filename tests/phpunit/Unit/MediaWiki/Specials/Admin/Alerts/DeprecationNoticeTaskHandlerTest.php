@@ -21,6 +21,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $outputFormatter;
+	private $messageLocalizer;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -28,6 +29,10 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -49,6 +54,10 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DeprecationNoticeTaskHandler(
 			$this->outputFormatter
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$this->assertInternalType(
@@ -92,6 +101,10 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$deprecationNotice
 		);
 
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
+		);
+
 		$this->assertInternalType(
 			'string',
 			$instance->getHtml()
@@ -131,6 +144,10 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new DeprecationNoticeTaskHandler(
 			$this->outputFormatter,
 			$deprecationNotice
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$this->assertContains(

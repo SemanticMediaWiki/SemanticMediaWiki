@@ -163,8 +163,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		foreach ( $replacementConfigList as $setting => $value ) {
 			if ( $setting === 'options' ) {
 				$list[] = $this->createItems( "$section-admin-deprecation-notice-config-replacement", $value );
-			} elseif ( isset( $GLOBALS[$setting] ) ) {
+			} elseif ( isset( $GLOBALS[$setting] ) && strpos( $value, 'smwg' ) !== false ) {
 				$list[] = $this->createItem( [ "$section-admin-deprecation-notice-config-replacement", '$' . $setting, '$' . $value ] );
+			} elseif ( isset( $GLOBALS[$setting] ) ) {
+				$list[] = $this->createItem( [ "$section-admin-deprecation-notice-config-replacement-other", '$' . $setting, $value ] );
 			}
 		}
 
