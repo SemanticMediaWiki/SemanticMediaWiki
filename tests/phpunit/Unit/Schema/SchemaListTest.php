@@ -150,7 +150,12 @@ class SchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			[],
-			$instance->get( 'Foobar' )
+			$instance->get( 'NotAvailableKey' )
+		);
+
+		$this->assertEquals(
+			null,
+			$instance->get( 'NotAvailableKey', null )
 		);
 	}
 
