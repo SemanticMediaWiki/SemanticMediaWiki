@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Content;
 
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Exception\JSONParseException;
 use SMW\Schema\Schema;
 use SMW\ParserData;
 use SMW\Message;
@@ -393,9 +394,18 @@ class SchemaContent extends JsonContent {
 			// Objects and arrays are kept as distinguishable types in the PHP values.
 			$this->parse = json_decode( $this->mText );
 			$this->isValid = json_last_error() === JSON_ERROR_NONE;
-			$this->errorMsg = json_last_error_msg();
 
-			return $this->isValid;
+			if ( $this->isValid ) {
+				return true;
+			}
+
+			$jsonParseException = new JSONParseException(
+				$this->mText
+			);
+
+			$this->errorMsg = $jsonParseException->getTidyMessage();
+
+			return false;
 		}
 	}
 

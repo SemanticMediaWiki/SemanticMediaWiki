@@ -23,6 +23,13 @@ class JSONParseException extends RuntimeException {
 	}
 
 	/**
+	 * @since 3.2
+	 */
+	public function getTidyMessage() : string {
+		return str_replace( "\n", '', $this->getMessage() );
+	}
+
+	/**
 	 * PHP has no built-in functionality to find errors in a JSON therefore we rely
 	 * on `JsonLint` to help us find a more meaningful message other than
 	 * "Syntax error".

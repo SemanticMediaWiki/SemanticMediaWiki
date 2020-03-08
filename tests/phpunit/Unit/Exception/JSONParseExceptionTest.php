@@ -18,7 +18,7 @@ class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
-	public function testCanConstruct() {
+	public function testGetMessage() {
 
 		$json = '{ "test": 123, }';
 
@@ -29,6 +29,20 @@ class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertContains(
 			"Expected: 'STRING' - It appears you have an extra trailing comma",
 			$instance->getMessage()
+		);
+	}
+
+	public function testGetTidyMessage() {
+
+		$json = '{ "test": 123, }';
+
+		$instance = new JSONParseException(
+			$json
+		);
+
+		$this->assertInternalType(
+			'string',
+			$instance->getTidyMessage()
 		);
 	}
 
