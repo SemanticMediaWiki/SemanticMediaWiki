@@ -13,6 +13,8 @@ use SMWExporter as Exporter;
 use SMWQuery as Query;
 use SMWTurtleSerializer as TurtleSerializer;
 use Title;
+use SMW\Utils\CliMsgFormatter;
+use SMW\Options;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to
@@ -377,9 +379,44 @@ class SPARQLStore extends Store {
 	 * @see Store::setup()
 	 * @since 1.8
 	 */
-	public function setup( $verbose = true ) {
+	public function setup( $options = true ) {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
-		$this->baseStore->setup( $verbose );
+
+		$cliMsgFormatter = new CliMsgFormatter();
+
+		$repositoryConnector = $this->getConnection( 'sparql' );
+		$repositoryClient = $repositoryConnector->getRepositoryClient();
+
+		if ( $options instanceof Options && $options->get( 'verbose' ) ) {
+
+			if (
+				$options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
+				$options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
+				$this->messageReporter->reportMessage( $cliMsgFormatter->section( 'Sematic MediaWiki', 3, '=' ) );
+				$this->messageReporter->reportMessage( "\n" . $cliMsgFormatter->head() );
+
+				// Only output the head once hence for any succeeding processing
+				// remove the marker.
+				$options->set( SMW_EXTENSION_SCHEMA_UPDATER, false );
+			}
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->section( 'RDF store setup' )
+			);
+
+			$this->messageReporter->reportMessage(
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWSPARQLStore' )
+			);
+
+			$type = $repositoryClient->getName();
+			$version = $repositoryConnector->getVersion();
+
+			$this->messageReporter->reportMessage(
+				$cliMsgFormatter->twoCols( "Repository connector (type/version):", "$type ($version)" )
+			);
+		}
+
+		$this->baseStore->setup( $options );
 	}
 
 	/**
