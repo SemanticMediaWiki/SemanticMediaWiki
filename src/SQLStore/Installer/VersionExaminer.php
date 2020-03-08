@@ -90,7 +90,7 @@ class VersionExaminer {
 	 */
 	public function meetsVersionMinRequirement( array $minRequirements ) : bool {
 
-		$this->messageReporter->reportMessage( "\nChecking database version requirement ..." );
+		$this->messageReporter->reportMessage( "\nChecking version requirement ..." );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
 
 		try {
