@@ -412,6 +412,56 @@ class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testEditPermissionOnImportPerformer_SchemaNamespace() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getDBKey' )
+			->will( $this->returnValue( 'PermissionTest' ) );
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->will( $this->returnValue( true ) );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( SMW_NS_SCHEMA ) );
+
+		$user = $this->getMockBuilder( '\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'userHasRight' )
+			->with(
+				$this->equalTo( $user ),
+				$this->equalTo( 'smw-schemaedit' ) )
+			->will( $this->returnValue( true ) );
+
+		$this->protectionValidator->expects( $this->once() )
+			->method( 'isClassifiedAsImportPerformerProtected' )
+			->will( $this->returnValue( true ) );
+
+		$instance = new PermissionManager(
+			$this->protectionValidator,
+			$this->permissionExaminer
+		);
+
+		$this->assertFalse(
+			$instance->hasUserPermission( $title, $user, 'edit' )
+		);
+
+		$this->assertEquals(
+			[
+				[ 'smw-schema-namespace-edit-protection-by-import-performer' ]
+			],
+			$instance->getErrors()
+		);
+	}
+
 	public function testNoEditcontentmodelPermissionForAnyUser_SchemaNamespace() {
 
 		$editProtectionRight = 'Foo';
