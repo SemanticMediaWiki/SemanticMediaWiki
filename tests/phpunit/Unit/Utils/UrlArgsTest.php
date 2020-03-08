@@ -86,9 +86,32 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 			$instance->getInt( 'Foo' )
 		);
 
-
 		$this->assertNull(
-			$instance->getInt( 'Bar' )
+			$instance->getInt( 'NotAvailableReturnNull' )
+		);
+
+		$this->assertEquals(
+			1001,
+			$instance->getInt( 'NotAvailableReturnDefault', 1001 )
+		);
+	}
+
+	public function testGetArray() {
+
+		$instance = new UrlArgs(
+			[
+				'Foo' => '42'
+			]
+		);
+
+		$this->assertEquals(
+			[ '42' ],
+			$instance->getArray( 'Foo' )
+		);
+
+		$this->assertEquals(
+			[],
+			$instance->getArray( 'NotAvailableReturnEmptyArray' )
 		);
 	}
 

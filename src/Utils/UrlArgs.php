@@ -55,11 +55,33 @@ class UrlArgs {
 	 * @since 3.2
 	 *
 	 * @param string $key
+	 * @param int|null $default
 	 *
 	 * @return int|null
 	 */
-	public function getInt( string $key ) : ?int {
-		return isset( $this->args[$key] ) ? (int)$this->args[$key] : null;
+	public function getInt( string $key, ?int $default = null ) : ?int {
+
+		if ( isset( $this->args[$key] ) ) {
+			return (int)$this->args[$key];
+		}
+
+		return $default;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 *
+	 * @return array
+	 */
+	public function getArray( string $key ) : array {
+
+		if ( !isset( $this->args[$key] ) || $this->args[$key] === '' ) {
+			return [];
+		}
+
+		return (array)$this->args[$key];
 	}
 
 	/**
