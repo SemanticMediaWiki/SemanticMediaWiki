@@ -30,6 +30,7 @@
  * Special:Preferences
  */
 fieldset#mw-prefsection-smw-general-options,
+fieldset#mw-prefsection-smw-extended-search-options,
 fieldset#mw-prefsection-smw-ask-options,
 fieldset#mw-prefsection-smw-srf {
 	border: 0px solid #2a4b8d;
@@ -40,11 +41,14 @@ fieldset#mw-prefsection-smw-srf {
 	box-shadow: 0;
 }
 
-fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group {
+fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group,
+fieldset#mw-prefsection-smw-ask-options .oo-ui-fieldsetLayout-group,
+fieldset#mw-prefsection-smw-extended-search-options .oo-ui-fieldsetLayout-group {
 	columns: 2;
 }
 
 fieldset#mw-prefsection-smw-general-options .htmlform-tip,
+fieldset#mw-prefsection-smw-extended-search-options .htmlform-tip,
 fieldset#mw-prefsection-smw-ask-options .htmlform-tip,
 fieldset#mw-prefsection-smw-srf .htmlform-tip{
 	padding-left: 25px !important;
@@ -63,6 +67,7 @@ fieldset#mw-prefsection-smw-srf .htmlform-tip{
 	float: unset !important;
 	width: unset !important;
 	margin-bottom: 15px;
+	margin-top: 15px;
 }
 
 #mw-prefsection-smw-srf .oo-ui-fieldsetLayout-header {
@@ -88,6 +93,7 @@ fieldset#mw-prefsection-smw-srf .htmlform-tip{
 }
 
 #mw-prefsection-smw-general-options.oo-ui-layout,
+#mw-prefsection-smw-extended-search-options.oo-ui-layout,
 #mw-prefsection-smw-ask-options.oo-ui-layout,
 #mw-prefsection-smw-srf.oo-ui-layout {
 	/* margin-top: 5px; */
@@ -102,7 +108,9 @@ fieldset#mw-prefsection-smw-srf .htmlform-tip{
  * Responsive settings
  */
 @media screen and (max-width: 800px) {
-	fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group {
+	fieldset#mw-prefsection-smw-general-options .oo-ui-fieldsetLayout-group,
+	fieldset#mw-prefsection-smw-ask-options .oo-ui-fieldsetLayout-group,
+	fieldset#mw-prefsection-smw-extended-search-options .oo-ui-fieldsetLayout-group {
 		columns: 1;
 	}
 }
