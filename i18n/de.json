@@ -27,7 +27,8 @@
 			"Abijeet Patro",
 			"Mirzali",
 			"Tobi 406",
-			"Killarnee"
+			"Killarnee",
+			"Ferdinand0101"
 		]
 	},
 	"smw-desc": "Ermöglicht es, das Wiki zugänglicher zu machen – für Menschen ''und'' Maschinen ([https://www.semantic-mediawiki.org/wiki/Help:User_manual/de Dokumentation])",
@@ -87,8 +88,8 @@
 	"smw_printername_json": "Export (JSON)",
 	"smw_printername_list": "Liste",
 	"smw_printername_plainlist": "Liste (unformatiert)",
-	"smw_printername_ol": "Liste (Aufzählung)",
-	"smw_printername_ul": "Liste (Auflistung)",
+	"smw_printername_ol": "Nummerierte Liste",
+	"smw_printername_ul": "Aufgezählte Liste",
 	"smw_printername_table": "Tabelle",
 	"smw_printername_broadtable": "Tabelle (breit)",
 	"smw_printername_template": "Vorlage",
