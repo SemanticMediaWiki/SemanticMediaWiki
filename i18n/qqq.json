@@ -904,6 +904,7 @@
 	"apihelp-smwtask-summary": "This is an informatory message describing and API module.",
 	"apihelp-smwbrowse-summary": "This is an informatory message describing an API module.",
 	"apihelp-ask-parameter-api-version": "This is an informatory message for the API.",
+	"apihelp-smwtask-param-task": "This is an informatory message documenting an API parameter.",
 	"smw-api-invalid-parameters": "This is an error message emitted by an API module.\n\nParameter:\n* $1 - holds the name of the invalid parameter",
 	"smw-parser-recursion-level-exceeded": "This is an error message.\n\nParameter:\n* $1 - holds the count of recursions (integer) detected by the software",
 	"smw-property-page-list-count": "This is an informatory message on a property page.\n\nParameter:\n* $1 - holds the number of pages",
@@ -1006,6 +1007,7 @@
 	"smw-es-replication-check": "This is a header.",
 	"smw-es-replication-error": "This is the label of a tooltip.",
 	"smw-es-replication-file-ingest-error": "This is the label of a tooltip.",
+	"smw-es-replication-maintenance-mode": "This is a label.",
 	"smw-es-replication-error-missing-id": "This is an error message.\n\nParameters:\n* $1 - holds the name of the page\n* $2 - holds the ID of the page",
 	"smw-es-replication-error-divergent-date": "This is an error message.\n\nParameters:\n* $1 - Holds the name of the page\n* $2 - Holds the identifier (number) of the page",
 	"smw-es-replication-error-divergent-date-detail": "This is the content of a tooltip.\n\nParameter:\n* $1 - Holds the timestamp of the stored data \n* $2 - holds the timestamp of the stored data",
@@ -1023,5 +1025,9 @@
 	"smw-report": "This is a tab label on a subpage to special page \"SemanticMediaWiki\".\n\n{{Identical|Report}}",
 	"smw-legend": "This is a tab label on a subpage to special page \"SemanticMediaWiki\".",
 	"smw-datavalue-constraint-schema-category-invalid-type": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the schema.\n* $2 - Holds the name of a schema type.",
-	"smw-datavalue-constraint-schema-property-invalid-type": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the schema.\n* $2 - Holds the name of a schema type."
+	"smw-datavalue-constraint-schema-property-invalid-type": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the schema.\n* $2 - Holds the name of a schema type.",
+	"smw-entity-examiner-deferred-elastic-replication": "This is a label. Translate as noun. Elastic as Elasticsearch.",
+	"smw-entity-examiner-deferred-constraint-error": "This is a label.",
+	"smw-entity-examiner-deferred-fake": "This is a label.",
+	"smw-indicator-revision-mismatch": "This is a label."
 }
