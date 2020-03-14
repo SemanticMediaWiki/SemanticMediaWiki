@@ -993,6 +993,8 @@
 	"smw-schema-namespace-edit-protection-by-import-performer": "This page was imported by a listed [https://www.semantic-mediawiki.org/wiki/Import_performer import performer] and means that changing the content of this page is restricted to only those listed users.",
 	"smw-schema-error-title": "Validation {{PLURAL:$1|error|errors}}",
 	"smw-schema-error-schema": "The validation schema '''$1''' found the following inconsistencies:",
+	"smw-schema-error-miscellaneous": "Miscellaneous error ($1)",
+	"smw-schema-error-validation-json-validator-inaccessible": "The JSON validator \"<b>$1</b>\" is not accessible (or installed) and is the reason why the \"$2\" file cannot be examined which prevents the current page from being saved or altered.",
 	"smw-schema-error-validation-file-inaccessible": "The validation file \"$1\" is inaccessible.",
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-type-missing": "The content is missing a type in order for it to be recognized and usable in the [https://www.semantic-mediawiki.org/wiki/Help:Schema schema namespace].",
