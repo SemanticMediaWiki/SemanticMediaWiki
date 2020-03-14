@@ -341,16 +341,11 @@ class SchemaContentFormatter {
 
 		foreach ( $errors as $error ) {
 
-			if ( !isset( $error['property'] ) ) {
-				continue;
+			if ( isset( $error['property'] ) ) {
+				$list[$error['property']] = $error['message'];
+			} elseif ( is_array( $error ) ) {
+				$list[ $this->msg( [ 'smw-schema-error-miscellaneous', $error[0] ?? 'n/a' ])] = $this->msg( $error );
 			}
-
-			$params = [
-				'msg' => $error['message'],
-				'text' => $error['property']
-			];
-
-			$list[$error['property']] = $error['message'];
 		}
 
 		if ( $list === [] ) {

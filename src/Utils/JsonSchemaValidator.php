@@ -46,9 +46,21 @@ class JsonSchemaValidator {
 	 */
 	public function validate( JsonSerializable $data, $schemaLink = null ) {
 
-		if ( $this->schemaValidator === null || $schemaLink === null ) {
-			return;
+		// Raise an error because we expect the validator to be available
+		// when at the same time a schema link is present
+		if ( $this->schemaValidator === null && $schemaLink !== null ) {
+			$this->isValid = false;
+			$this->errors[] = [
+				'smw-schema-error-validation-json-validator-inaccessible',
+				'justinrainbow/json-schema',
+				pathinfo( $schemaLink, PATHINFO_BASENAME )
+			];
+		} elseif ( $this->schemaValidator !== null && $schemaLink !== null ) {
+			$this->runValidation( $data, $schemaLink );
 		}
+	}
+
+	private function runValidation( $data, $schemaLink ) {
 
 		// https://github.com/justinrainbow/json-schema/issues/203
 		$data = json_decode( $data->jsonSerialize() );

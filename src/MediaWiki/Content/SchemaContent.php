@@ -221,6 +221,8 @@ class SchemaContent extends JsonContent {
 				$parserData->addError(
 					[ ['smw-schema-error-violation', $error['property'], $error['message'] ] ]
 				);
+			} else {
+				$parserData->addError( (array)$error );
 			}
 		}
 

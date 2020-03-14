@@ -118,4 +118,33 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNoJSONValidatorButSchemaLink() {
+
+		$instance = new JsonSchemaValidator();
+
+		$instance->validate( $this->newJsonSerializable( [] ), 'Foo' );
+
+		$this->assertFalse(
+			$instance->isValid()
+		);
+
+		$this->assertNotEmpty(
+			$instance->getErrors()
+		);
+	}
+
+	public function newJsonSerializable( $data ) {
+		return new class( $data ) implements \JsonSerializable {
+
+			private $data;
+
+			public function __construct( $data ) {
+				$this->data = $data;
+			}
+
+			public function jsonSerialize() {
+				return json_encode( $this->data );
+			}
+		};
+	}
 }
