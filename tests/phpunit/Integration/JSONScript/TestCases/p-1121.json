@@ -1,0 +1,67 @@
+{
+	"description": "Test repeated change of DISPLAYTITLE propagation",
+	"setup": [
+		{
+			"page": "Test DISPLAYTITLE without query",
+			"namespace":"NS_MAIN",
+			"contents": "Set displaytitle to \"Test DISPLAYTITLE (aaa)\". \n\n{{DISPLAYTITLE:Test DISPLAYTITLE (aaa)}}"
+		},
+		{
+			"page": "Test DISPLAYTITLE without query",
+			"namespace":"NS_MAIN",
+			"contents": "Update displaytitle to \"Test DISPLAYTITLE (bbb)\". \n\n{{DISPLAYTITLE:Test DISPLAYTITLE (bbb)}}"
+		},
+		{
+			"page": "Test DISPLAYTITLE 1",
+			"namespace":"NS_MAIN",
+			"contents": "{{#ask:[[Test DISPLAYTITLE without query]]}}"
+		},
+		{
+			"page": "Test DISPLAYTITLE with query",
+			"namespace":"NS_MAIN",
+			"contents": "Set displaytitle to \"Test DISPLAYTITLE (aaa)\". \n\n{{DISPLAYTITLE:Test DISPLAYTITLE (aaa)}}\n\n{{#ask:[[Display title of::+]]|limit=5}}"
+		},
+		{
+			"page": "Test DISPLAYTITLE with query",
+			"namespace":"NS_MAIN",
+			"contents": "Update displaytitle to \"Test DISPLAYTITLE (bbb)\". \n\n{{DISPLAYTITLE:Test DISPLAYTITLE (bbb)}}\n\n{{#ask:[[Display title of::+]]|limit=5}}"
+		},
+		{
+			"page": "Test DISPLAYTITLE 2",
+			"namespace":"NS_MAIN",
+			"contents": "{{#ask:[[Test DISPLAYTITLE with query]]}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "Test DISPLAYTITLE of updated page without query",
+			"subject": "Test DISPLAYTITLE 1",
+			"assert-output": {
+				"to-contain": [
+					"Test DISPLAYTITLE (bbb)"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "Test DISPLAYTITLE of updated page with query",
+			"subject": "Test DISPLAYTITLE 2",
+			"assert-output": {
+				"to-contain": [
+					"Test DISPLAYTITLE (bbb)"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgAllowDisplayTitle": true
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
