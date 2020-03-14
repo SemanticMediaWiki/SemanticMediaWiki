@@ -260,9 +260,27 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 			$list .= $taskHandler->getHtml();
 		}
 
-		$jsonView = ( new JsonView() )->create(
+		$info = ( new JsonView() )->create(
 			'elastic-info',
 			$this->outputFormatter->encodeAsJson( $connection->info() ),
+			2
+		);
+
+		$config = $connection->getConfig()->toArray();
+		$endpoints = $config['elastic/endpoints' ];
+
+		unset( $config['elastic/defaultstore'] );
+		unset( $config['elastic/endpoints'] );
+
+		$config = ( new JsonView() )->create(
+			'elastic-config',
+			$this->outputFormatter->encodeAsJson( $config ),
+			2
+		);
+
+		$endpoints = ( new JsonView() )->create(
+			'elastic-endpoints',
+			$this->outputFormatter->encodeAsJson( $endpoints ),
 			2
 		);
 
@@ -273,12 +291,20 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$htmlTabs->content( 'status', Html::rawElement( 'ul', [ 'style' => 'margin-top:10px;' ], $html ) );
 
 		$htmlTabs->tab( 'info', $this->msg( 'smw-admin-supplementary-elastic-version-info' ) );
-		$htmlTabs->content( 'info', Html::rawElement( 'div', [ 'style' => 'margin-top:10px;' ], $jsonView ) );
+		$htmlTabs->content( 'info', Html::rawElement( 'div', [ 'style' => 'margin-top:10px;' ], $info ) );
+
+		$htmlTabs->tab( 'config', $this->msg( 'smw-admin-supplementary-elastic-config' ) );
+		$htmlTabs->content( 'config', Html::rawElement( 'div', [ 'style' => 'margin-top:10px;' ], $config ) );
+
+		$htmlTabs->tab( 'endpoints', $this->msg( 'smw-admin-supplementary-elastic-endpoints' ) );
+		$htmlTabs->content( 'endpoints', Html::rawElement( 'div', [ 'style' => 'margin-top:10px;' ], $endpoints ) );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'elastic' ] );
 
 		$this->outputFormatter->addInlineStyle(
 			'.elastic #tab-status:checked ~ #tab-content-status,' .
+			'.elastic #tab-endpoints:checked ~ #tab-content-endpoints,' .
+			'.elastic #tab-config:checked ~ #tab-content-config,' .
 			'.elastic #tab-info:checked ~ #tab-content-info {' .
 			'display: block;}'
 		);
