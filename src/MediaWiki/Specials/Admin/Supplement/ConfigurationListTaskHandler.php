@@ -11,6 +11,7 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -112,55 +113,28 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 			)
 		);
 
-		$options = ApplicationFactory::getInstance()->getSettings()->toArray();
+		$applicationFactory = ApplicationFactory::getInstance();
+		$options = $applicationFactory->getSettings()->toArray();
 
-		$placeholder = Html::rawElement(
-			'div',
-			[
-				'class' => 'smw-json-placeholder-message',
-			],
-			Message::get( 'smw-data-lookup-with-wait' ) .
-			"\n\n\n" . Message::get( 'smw-preparing' ) . "\n"
-		) .	Html::rawElement(
-			'span',
-			[
-				'class' => 'smw-overlay-spinner medium',
-				'style' => 'transform: translate(-50%, -50%);'
-			]
+		$settings = ( new JsonView() )->create(
+			'settings',
+			$this->outputFormatter->encodeAsJson( $this->cleanPath( $options ) ),
+			2
 		);
 
-		$html = Html::rawElement(
-				'div',
-				[
-					'id' => 'smw-admin-configutation-json',
-					'class' => '',
-				],
-				Html::rawElement(
-					'div',
-					[
-						'class' => 'smw-jsonview-menu',
-					]
-				) . Html::rawElement(
-					'pre',
-					[
-						'id' => 'smw-json-container',
-						'class' => 'smw-json-container smw-json-placeholder',
-					],
-					$placeholder . Html::rawElement(
-						'div',
-						[
-							'class' => 'smw-json-data'
-						],
-						$this->outputFormatter->encodeAsJson( $this->cleanPath( $options )
-					)
-				)
-			)
+		$namespaces = ( new JsonView() )->create(
+			'namespaces',
+			$this->outputFormatter->encodeAsJson( [ 'canonicalNames' => NamespaceManager::getCanonicalNames() ] ),
+			2
 		);
 
-		$namespaces = $this->outputFormatter->encodeAsJson(
-			[
-				'canonicalNames' => NamespaceManager::getCanonicalNames()
-			]
+		$schemaTypes = $applicationFactory->singleton( 'SchemaFactory' )->getSchemaTypes();
+		$schemaTypes = json_decode( $schemaTypes->jsonSerialize(), true );
+
+		$schematypes = ( new JsonView() )->create(
+			'schematypes',
+			$this->outputFormatter->encodeAsJson( $this->cleanPath( $schemaTypes ) ),
+			2
 		);
 
 		$htmlTabs = new HtmlTabs();
@@ -168,10 +142,13 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 		$htmlTabs->setActiveTab( 'settings' );
 
 		$htmlTabs->tab( 'settings', $this->msg( 'smw-admin-configutation-tab-settings' ) );
-		$htmlTabs->content( 'settings', $html );
+		$htmlTabs->content( 'settings', $settings );
 
 		$htmlTabs->tab( 'namespaces', $this->msg( 'smw-admin-configutation-tab-namespaces' ) );
-		$htmlTabs->content( 'namespaces', Html::rawElement( 'pre', [], $namespaces ) );
+		$htmlTabs->content( 'namespaces', $namespaces );
+
+		$htmlTabs->tab( 'schematypes', $this->msg( 'smw-admin-configutation-tab-schematypes' ) );
+		$htmlTabs->content( 'schematypes', $schematypes );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'configuration' ] );
 
@@ -179,6 +156,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 
 		$this->outputFormatter->addInlineStyle(
 			'.configuration #tab-settings:checked ~ #tab-content-settings,' .
+			'.configuration #tab-schematypes:checked ~ #tab-content-schematypes,' .
 			'.configuration #tab-namespaces:checked ~ #tab-content-namespaces {' .
 			'display: block;}'
 		);
@@ -193,6 +171,10 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 
 			if ( is_string( $value ) && strpos( $value , 'SemanticMediaWiki/') !== false ) {
 				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '../SemanticMediaWiki', $value );
+			}
+
+			if ( is_string( $value ) && strpos( $value , '\\SemanticMediaWiki' ) !== false ) {
+				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '..\SemanticMediaWiki', $value );
 			}
 		}
 
