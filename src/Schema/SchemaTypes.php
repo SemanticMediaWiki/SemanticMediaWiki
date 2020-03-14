@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use JsonSerializable;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +12,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  *
  * @author mwjames
  */
-class SchemaTypes {
+class SchemaTypes implements JsonSerializable {
 
 	use HookDispatcherAwareTrait;
 
@@ -189,6 +190,16 @@ class SchemaTypes {
 		}
 
 		return $registeredTypes;
+	}
+
+	/**
+	 * @see JsonSerializable::jsonSerialize
+	 * @since 3.2
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize() {
+		return json_encode( $this->schemaTypes );
 	}
 
 }

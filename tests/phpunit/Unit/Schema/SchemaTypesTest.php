@@ -45,6 +45,11 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 			SchemaTypes::class,
 			$instance
 		);
+
+		$this->assertInstanceof(
+			\JsonSerializable::class,
+			$instance
+		);
 	}
 
 	public function testRegisterSchemaTypes() {
@@ -119,6 +124,16 @@ class SchemaTypesTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, __DIR__ . '/Foo' ),
 			$instance->withDir( 'Foo' )
+		);
+	}
+
+	public function testJsonSerialize() {
+
+		$instance = new SchemaTypes();
+
+		$this->assertInternalType(
+			'string',
+			$instance->jsonSerialize()
 		);
 	}
 
