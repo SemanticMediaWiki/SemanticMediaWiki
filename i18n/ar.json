@@ -18,7 +18,8 @@
 			"20عبد العزيز",
 			"Yasser Yousssef",
 			"Abijeet Patro",
-			"Kassem7899"
+			"Kassem7899",
+			"NEHAOUA"
 		]
 	},
 	"smw-desc": "تقرّب الويكي إلى كلٍّ من النّظم الحاسوبية  ''و'' البشر ([https://www.semantic-mediawiki.org/wiki/Help:User_manual دليل المستخدم])",
@@ -401,6 +402,7 @@
 	"smw-admin-deprecation-notice-config-notice-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> سيزيل (أو يستبدل) {{PLURAL:$2|الخيار التالي|الخيارات التالية}}:",
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> يتم إهماله وستتم إزالته في $2",
 	"smw-admin-deprecation-notice-config-replacement": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> تم استبداله ب<code>[https://www.semantic-mediawiki.org/wiki/Help:$2 $2]</code>",
+	"smw-admin-deprecation-notice-config-replacement-other": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> أُستبدل بـ $2",
 	"smw-admin-deprecation-notice-config-replacement-option": "{{PLURAL:$2|خيار|خيارات}} <code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> :",
 	"smw-admin-deprecation-notice-config-replacement-option-list": "يتم استبدال <code>$1</code> بـ<code>$2</code>",
 	"smw-admin-deprecation-notice-config-removal": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> أُزيل في $2",
@@ -529,7 +531,7 @@
 	"smw-info-par-icon": "أيقونة تظهر، إما \"info\" أو \"warning\".",
 	"prefs-smw": "ميدياويكي الدلالية",
 	"prefs-general-options": "خيارات عامة",
-	"prefs-ask-options": "خيارات البحث الدلالي",
+	"prefs-ask-options": "البحث الدلالي",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ ميدياويكي الدلالي] والإضافات المرتبطة توفر تفضيلات فردية لمجموعة من الميزات والوظائف المحددة، تتوفر قائمة بالإعدادات الفردية مع وصفها وخصائصها على [https://www.semantic-mediawiki.org/wiki/Help:User_preferences صفحة المساعدة].",
 	"smw-prefs-ask-options-tooltip-display": "اعرض نص المعامل كبالون تلميحة",
 	"smw-prefs-ask-options-compact-view-basic": "تمكين العرض المضغوط الأساسي",
