@@ -1051,7 +1051,7 @@
 	"smw-ask-tab-code": "Code",
 	"smw-helplink-concepts": "https://www.semantic-mediawiki.org/wiki/Help:Concepts",
 	"smw-install-incomplete-tasks-title": "Incomplete administration tasks",
-	"smw-install-incomplete-intro": "The {{PLURAL:$1|installation|upgrade}} of [https://www.semantic-mediawiki.org Semantic MediaWiki] has classified $2 {{PLURAL:$2|task|tasks}} as incomplete or <b>[[Special:PendingTaskList|pending]]</b> and requires attention from an administrator or user with sufficient rights. The {{PLURAL:$2|task|tasks}} should be completed before users continue to create or alter content in order to prevent inconsistent or missing data.",
+	"smw-install-incomplete-intro": "There are $2 incomplete or [[Special:PendingTaskList|pending]] {{PLURAL:$2|task|tasks}} to finish {{PLURAL:$1|installation|upgrading}} of [https://www.semantic-mediawiki.org Semantic MediaWiki]. An administrator or user with sufficient rights can complete {{PLURAL:$2|it|these}}. This should be done before adding new data to avoid inconsistencies.",
 	"smw-install-incomplete-intro-note": "This message will disappear after all relevant tasks have been resolved.",
 	"smw-pendingtasks-intro-empty": "No tasks have been classified as pending, incomplete, or outstanding in connection with Semantic MediaWiki.",
 	"smw-pendingtasks-intro": "This page provides information about tasks that have been classified as pending, incomplete, or outstanding in connection with Semantic MediaWiki.",
