@@ -1037,7 +1037,7 @@
 	"smw-ask-tab-debug": "Ayıkla",
 	"smw-ask-tab-code": "Kod",
 	"smw-install-incomplete-tasks-title": "Eksik yönetim görevleri",
-	"smw-install-incomplete-intro": "[Https://www.semantic-mediawiki.org Semantic MediaWiki] sayfasının {{PLURAL:$1|kurulum|yükseltme}} $2 görevi eksik veya <b>[[Special:PendingTaskList|beklemede]]</b> ve yeterli haklara sahip bir yönetici veya kullanıcıdan dikkat gerektirir. Kullanıcılar tutarsız veya eksik verileri önlemek için içerik oluşturmaya veya değiştirmeye devam etmeden önce görev tamamlanmalıdır.",
+	"smw-install-incomplete-intro": "[https://www.semantic-mediawiki.org Semantic MediaWiki]'nin {{PLURAL:$1|kurulumu|yükseltmesi}} işini bitirmek için $2 eksik veya [[Special:PendingTaskList|beklemede]] görevi var. Yeterli haklara sahip bir yönetici veya kullanıcı bunu tamamlayabilir. Bu, tutarsızlıkları önlemek için yeni veriler eklenmeden önce yapılmalıdır.",
 	"smw-install-incomplete-intro-note": "Tüm ilgili görevler çözüldükten sonra bu mesaj kaybolacaktır.",
 	"smw-pendingtasks-intro-empty": "Semantic MediaWiki ile bağlantılı olarak hiçbir görev beklemede, eksik veya olağanüstü olarak sınıflandırılmamıştır.",
 	"smw-pendingtasks-intro": "Bu sayfa, Semantic MediaWiki ile bağlantılı olarak bekleyen, tamamlanmamış veya bekleyen olarak sınıflandırılmış görevler hakkında bilgi sağlar.",

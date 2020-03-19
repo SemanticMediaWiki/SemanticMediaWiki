@@ -437,6 +437,7 @@
 	"smw-clipboard-copy-link": "Copia il collegamento negli appunti",
 	"smw-no-data-available": "Nessun dato disponibile.",
 	"smw-property-req-violation-missing-fields": "Alla proprietà \"$1\" manca la dichiarazione obbligatoria [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields <code>Has fields</code>] per questo tipo \"$2\".",
+	"protect-level-smw-pageedit": "Consentito solo agli utenti con autorizzazione di modifica delle pagine (Semantic MediaWiki)",
 	"smw-edit-protection": "Questa pagina è [[Property:Is edit protected|protetta]] per prevenire la modifica accidentale di dati e può essere modificata solo da utenti in possesso di un'appropriata autorizzazione (\"$1\") oppure [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups gruppo utente].",
 	"smw-edit-protection-disabled": "La modifica di protezione è stata disattivata, pertanto \"$1\" non può essere utilizzato per proteggere il contenuto della pagina dalle modifiche non autorizzate.",
 	"smw-property-predefined-long-edip": "Mentre qualsiasi utente è qualificato per aggiungere questa proprietà ad un soggetto, soltanto utenti con uno specifico permesso possono modificare o rimuovere la protezione ad un'entità, una volta che questa è stata aggiunta.",

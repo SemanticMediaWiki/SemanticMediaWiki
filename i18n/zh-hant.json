@@ -1065,7 +1065,7 @@
 	"smw-ask-tab-debug": "除錯",
 	"smw-ask-tab-code": "代碼",
 	"smw-install-incomplete-tasks-title": "不完整的管理任務",
-	"smw-install-incomplete-intro": "[https://www.semantic-mediawiki.org Semantic MediaWiki] 的{{PLURAL:$1|安裝|更新}}已歸類出有 $2 個{{PLURAL:$2|任務}}為未完成或是<b>[[Special:PendingTaskList|待辦]]</b>，這需要有足夠權限的管理員或使用者來關注。在使用者繼續建立或是更改內容之前應將{{PLURAL:$2|任務}}完成，以避免資料不一致或是缺少資料。",
+	"smw-install-incomplete-intro": "這裡有 $2 個未完成或是用於結束{{PLURAL:$1|安裝|更新}} [https://www.semantic-mediawiki.org Semantic MediaWiki] 的[[Special:PendingTaskList|待定]]{{PLURAL:$2|任務}}。擁有足夠權限的管理員或使用者可以完成{{PLURAL:$2|它|這些}}。為了避免資料不一致，應在添加新資料之前處理好。",
 	"smw-install-incomplete-intro-note": "此訊息在所有相關任務解決後會消失。",
 	"smw-pendingtasks-intro-empty": "沒有與 Semantic MediaWiki 關聯的任務被歸類為待辦、未完成、或是需處理。",
 	"smw-pendingtasks-intro": "此頁面提供與 Semantic MediaWiki 關聯，被歸類在待辦、未完成、或是需處理的任務相關資訊。",

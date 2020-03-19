@@ -393,6 +393,7 @@
 	"smw-info-par-icon": "Ikon att visa, antingen \"info\" eller \"warning\".",
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Allmänna alternativ",
+	"prefs-extended-search-options": "Utökad sökning",
 	"prefs-ask-options": "Special:Frågealternativ",
 	"smw-prefs-intro-text": "Alternativen här nedanför är hämtade från [https://www.semantic-mediawiki.org/ Semantic MediaWiki] (och relaterade tillägg) i syfte att tillhandahålla inställningar för utvalda funktioner. På [https://www.semantic-mediawiki.org/wiki/Help:User_preferences hjälpsidan] finns en mer detaljerad beskrivning.",
 	"smw-prefs-ask-options-tooltip-display": "Visa parameterns text som inforuta",

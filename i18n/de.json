@@ -888,7 +888,7 @@
 	"smw-format-list-other-fields-close": ")",
 	"smw-category-invalid-redirect-target": "Die Kategorie „$1“ enthält ein Weiterleitungsziel, das sich nicht im Namensraum Kategorie befindet und daher ungültig ist.",
 	"smw-parser-function-expensive-execution-limit": "Die Parserfunktion hat die Grenze für aufwendige Ausführungen erreicht. Siehe hierzu die Seite zum [https://www.semantic-mediawiki.org/wiki/Help:$smwgQExpensiveExecutionLimit Konfigurationsparameter <code>$smwgQExpensiveExecutionLimit</code>].",
-	"smw-postproc-queryref": "Semantic MediaWiki wird aufgrund erforderlicher abfragebedingter Nachverarbeitungen eine Aktualisierung dieser Seite anstoßen.",
+	"smw-postproc-queryref": "Die Software Semantic MediaWiki wird diese Seite neu laden und so eine Aktualisierung der Daten bewirken.",
 	"apihelp-smwinfo-summary": "API-Modul zum Abrufen statistischer Daten und weiterer Metainformationen bezüglich der Nutzung von Semantic MediaWiki.",
 	"apihelp-ask-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki.",
 	"apihelp-askargs-summary": "API-Modul zum Abfragen eines Wikis mit der Abfragesprache von Semantic MediaWiki als Liste von Bedingungen, Ausgabeanweisungen und Parametern.",

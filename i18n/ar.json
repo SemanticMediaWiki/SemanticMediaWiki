@@ -505,6 +505,7 @@
 	"smw-admin-supplementary-elastic-replication-files": "ملفات",
 	"smw-admin-supplementary-elastic-replication-pages": "صفحات",
 	"smw-admin-supplementary-elastic-endpoints": "نقاط النهاية",
+	"smw-admin-supplementary-elastic-config": "الضبط",
 	"smw-admin-supplementary-elastic-no-connection": "'''يتعذر''' على الويكي حاليا إنشاء اتصال بمجموعة إلاستيك سيرش؛ يُرجَى الاتصال بإداري الويكي للتحقيق في المشكلة لأنه يعطل قدرة النظام على البحث والاستعلام.",
 	"smw-list-count": "تحتوي القائمة على $1 {{PLURAL:$1|إدخال واحد|إدخالات}}.",
 	"smw-property-label-uniqueness": "تمت مطابقة التصنيف \"$1\" مع تمثيل خاصية أخرى واحدة على الأقل، يُرجَى الرجوع إلى [https://www.semantic-mediawiki.org/wiki/Help:Property_uniqueness صفحة المساعدة] حول كيفية حل هذه المشكلة.",
