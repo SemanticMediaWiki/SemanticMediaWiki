@@ -7,6 +7,7 @@ use Iterator;
 use Countable;
 use OutOfBoundsException;
 use RuntimeException;
+use SMW\Utils\DotArray;
 use SMW\Iterators\SeekableIteratorTrait;
 
 /**
@@ -44,6 +45,24 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	public function __construct( array $compartments = [], ?string $type = null ) {
 		$this->container = $compartments;
 		$this->type = $type;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 *
+	 * @return bool
+	 */
+	public function has( string $key ) : bool {
+
+		foreach ( $this->container as $data ) {
+			if ( DotArray::get( $data, $key, false ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
