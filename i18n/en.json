@@ -1037,6 +1037,7 @@
 	"smw-remote-request-note-cached": "The result is '''cached''' from the '''$1''' remote source and it is likely for generated content to contain information that is not available from within the current wiki.",
 	"smw-parameter-missing": "Parameter \"$1\" is missing.",
 	"smw-property-tab-usage": "Usage",
+	"smw-property-tab-profile-schema": "Profile schema",
 	"smw-property-tab-redirects": "Synonyms",
 	"smw-property-tab-subproperties": "Subproperties",
 	"smw-property-tab-errors": "Improper assignments",

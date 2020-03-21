@@ -27,18 +27,24 @@ class JsonView {
 	public function create( string $id, string $data, int $level = 1 ) : string {
 
 		$placeholder = Html::rawElement(
+			'span',
+			[
+				'style' => 'width:100%;display:flex;justify-content: center;'
+			],
+			Html::rawElement(
+				'span',
+				[
+					'class' => 'smw-overlay-spinner medium flex',
+					'style' => 'transform: translate(-50%, -50%);'
+				]
+			)
+		) . Html::rawElement(
 			'div',
 			[
-				'class' => 'smw-schema-placeholder-message',
+				'class' => 'smw-schema-placeholder-message is-disabled',
 			],
 			$this->msg( 'smw-data-lookup-with-wait' ) .
 			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
-		) .	Html::rawElement(
-			'span',
-			[
-				'class' => 'smw-overlay-spinner medium',
-				'style' => 'transform: translate(-50%, -50%);'
-			]
 		);
 
 		return Html::rawElement(
