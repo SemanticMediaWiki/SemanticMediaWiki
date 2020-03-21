@@ -3,6 +3,7 @@
 namespace SMW\Query\Result;
 
 use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryToken;
 use SMW\RequestOptions;
@@ -242,7 +243,7 @@ class ResultArray {
 		}
 
 		if ( $this->printRequest->getMode() == PrintRequest::PRINT_PROP &&
-		    strpos( $this->printRequest->getTypeID(), '_rec' ) !== false &&
+		    DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 		    $this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
