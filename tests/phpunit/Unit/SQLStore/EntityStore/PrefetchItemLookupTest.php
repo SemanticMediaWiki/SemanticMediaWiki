@@ -160,7 +160,68 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySubjectsLookup
 		);
 
-		$instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $this->requestOptions );
+		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $this->requestOptions );
+
+		$this->assertEquals(
+			[
+				42 => [ 'Bar#0##' ]
+			],
+			$res
+		);
+	}
+
+	public function testGetPropertyValues_InvertedProperty_HashIndex() {
+
+		$subjects = [
+			DIWikiPage::newFromText( __METHOD__ ),
+		];
+
+		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$idTable->expects( $this->atLeastOnce() )
+			->method( 'getDataItemById' )
+			->with( $this->equalTo( 42 ) )
+			->will( $this->returnValue( DIWikiPage::newFromText( 'ABC' ) ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $idTable ) );
+
+		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getPropertyTables' )
+			->will( $this->returnValue( [ 'smw_foo' => $propertyTableDef ] ) );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'findPropertyTableID' )
+			->will( $this->returnValue( 'smw_foo' ) );
+
+		$this->propertySubjectsLookup->expects( $this->atLeastOnce() )
+			->method( 'prefetchFromTable' )
+			->will( $this->returnValue( [ 42 => [ 'Bar#0##' ] ] ) );
+
+		$instance = new PrefetchItemLookup(
+			$this->store,
+			$this->semanticDataLookup,
+			$this->propertySubjectsLookup
+		);
+
+		$requestOptions = new \SMW\RequestOptions();
+		$requestOptions->setOption( PrefetchItemLookup::HASH_INDEX, true );
+
+		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $requestOptions );
+
+		$this->assertEquals(
+			[
+				'ABC#0##' => [ 'Bar#0##' ]
+			],
+			$res
+		);
 	}
 
 }
