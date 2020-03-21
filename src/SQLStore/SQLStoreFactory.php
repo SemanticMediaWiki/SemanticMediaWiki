@@ -45,6 +45,7 @@ use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
@@ -1036,6 +1037,15 @@ class SQLStoreFactory {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @return ByGroupPropertyValuesLookup
+	 */
+	public function newByGroupPropertyValuesLookup() : ByGroupPropertyValuesLookup {
+		return new ByGroupPropertyValuesLookup( $this->store );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @return PrefetchItemLookup
@@ -1151,6 +1161,10 @@ class SQLStoreFactory {
 				'DisplayTitleLookup' => [
 					'_service' => [ $this, 'newDisplayTitleLookup' ],
 					'_type'    => DisplayTitleLookup::class
+				],
+				'ByGroupPropertyValuesLookup' => [
+					'_service' => [ $this, 'newByGroupPropertyValuesLookup' ],
+					'_type'    => ByGroupPropertyValuesLookup::class
 				],
 				'PropertyTypeFinder' => [
 					'_service' => [ $this, 'newPropertyTypeFinder' ],

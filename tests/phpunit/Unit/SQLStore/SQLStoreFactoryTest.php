@@ -793,6 +793,16 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructByGroupPropertyValuesLookup() {
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup',
+			$instance->newByGroupPropertyValuesLookup()
+		);
+	}
+
 	public function testConfirmAllCanConstructMethodsWereCalled() {
 
 		// Available class methods to be tested
