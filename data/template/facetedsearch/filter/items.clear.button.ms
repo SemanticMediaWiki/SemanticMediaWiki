@@ -1,0 +1,1 @@
+<span class="filter-uncheck-all"><button class="button-link" name="{{name}}" value="{{value}}" onchange="this.form.submit()" form="search-input-form" title="{{title}}"><span class="clearicon"></span></button></span>

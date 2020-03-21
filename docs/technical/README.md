@@ -18,7 +18,8 @@ This document collects technical resources to help improve the understanding of 
    - [suggester](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/res/smw/suggester/README.md) on how to register additional tokens or context objects
 - src
   - [Importer](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Importer/README.md) contains a summary about the process and technical background of the content importer
-  - [Lang](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Lang/README.md)
+  - Localizer
+    - [LocalLanguage](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Localizer/LocalLanguage/README.md)
   - [Serializers](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/doc.serializers.md) contains information about the Semantic MediaWiki serializers
   - [Schema](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/README.md) contains information about schemata provided by Semantic MediaWiki
   - [Services](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Services/README.md) contains information about the `ServicesFactory` and related classes
@@ -26,9 +27,14 @@ This document collects technical resources to help improve the understanding of 
     - [API](api.md) provides an overview for available API modules
     - [Hooks](hooks.md) provided by Semantic MediaWiki
     - [Search](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/MediaWiki/Search/README.md) `Special:Search` integration
+    - Specials
+      - [FacetedSearch][Special:FacetedSearch] `Special:FacetedSearch` documentation
   - SQLStore ( [Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/README.md), [QueryEngine](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/QueryEngine/README.md))
   - SPARQLStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SPARQLStore/README.md))
   - ElasticStore ([Overview](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md))
 - tests
   - [Unit](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/phpunit/README.md)
   - Integration ([JSONScript](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript))
+
+
+[Special:FacetedSearch]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/MediaWiki/Specials/FacetedSearch/README.md

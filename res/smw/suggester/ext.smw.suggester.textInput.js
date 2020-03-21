@@ -99,7 +99,7 @@
 		 */
 		var upload = function() {
 
-			var context = $( '#wpUploadDescription' );
+			var context = $( '#wpUploadDescription, #search-input' );
 
 			if ( context.length ) {
 
@@ -114,6 +114,62 @@
 						'concept',
 						'category'
 					]
+				);
+			};
+		};
+
+		/**
+		 * Support text input on Special:FacetedSearch
+		 *
+		 * @since 3.0
+		 */
+		var facetedSearch = function() {
+
+			var context = $( '.search-input' );
+
+			if ( context.length ) {
+
+				var entitySuggester= smw.Factory.newEntitySuggester(
+				context
+				);
+
+				// Register autocomplete default tokens
+				entitySuggester.registerDefaultTokenList(
+					[
+						'property',
+						'concept',
+						'category'
+					]
+				);
+
+				entitySuggester.registerTokenDefinition(
+					'property',
+					{
+						token: 'property:',
+						beforeInsert: function( token, value ) {
+							return value.replace( 'property:', '[[' ) + '::';
+						}
+					}
+				);
+
+				entitySuggester.registerTokenDefinition(
+					'category',
+					{
+						token: 'category:',
+						beforeInsert: function( token, value ) {
+							return '[[' + entitySuggester.category + ':' + value.replace( token, '' ) + ']]';
+						}
+					}
+				);
+
+				entitySuggester.registerTokenDefinition(
+					'concept',
+					{
+						token: 'concept:',
+						beforeInsert: function( token, value ) {
+							return '[[' + entitySuggester.concept + ':' + value.replace( token, '' ) + ']]';
+						}
+					}
 				);
 			};
 		};
@@ -195,7 +251,11 @@
 		if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'Upload' ) {
 			load( upload );
 		};
-			
+
+		if ( mw.config.get( 'wgCanonicalSpecialPageName' ) == 'FacetedSearch' ) {
+			load( facetedSearch );
+		};
+
 		var wgAction = mw.config.get( 'wgAction' );
 
 		if ( ( wgAction == 'edit' || wgAction == 'submit' ) && mw.config.get( 'wgPageContentModel' ) == 'wikitext'  ) {

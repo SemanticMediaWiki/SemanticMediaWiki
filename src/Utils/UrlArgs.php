@@ -85,6 +85,18 @@ class UrlArgs {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function find( string $key, $default = false ) {
+		return DotArray::get( $this->args, $key, $default );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param string $key
