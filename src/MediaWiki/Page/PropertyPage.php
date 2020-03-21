@@ -19,6 +19,7 @@ use Title;
 use SMW\Utils\HtmlTabs;
 use SMW\Property\DeclarationExaminerFactory;
 use SMW\Property\Constraint\ConstraintSchemaCompiler;
+use SMW\Utils\JsonView;
 
 /**
  * @license GNU GPL v2+
@@ -172,8 +173,8 @@ class PropertyPage extends Page {
 		$html = '';
 		$matches = [];
 
-		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
-		$context->getOutput()->addModules( 'smw.property.page' );
+		$context->getOutput()->addModuleStyles( [ 'ext.smw.style', 'ext.smw.page.styles' ] );
+		$context->getOutput()->addModules( [ 'smw.property.page', 'smw.jsonview' ] );
 
 		$context->getOutput()->setPageTitle(
 			$this->propertyValue->getFormattedLabel( DataValueFormatter::WIKI_LONG )
@@ -251,19 +252,44 @@ class PropertyPage extends Page {
 			$this->store
 		);
 
-		$html = $constraintSchemaCompiler->prettify(
-			$constraintSchemaCompiler->compileConstraintSchema( $this->property )
+		$data = $constraintSchemaCompiler->compileConstraintSchema(
+			$this->property
 		);
 
-		$isFirst = $isFirst && $html === '';
+		if ( $data !== [] ) {
+			$constraint = ( new JsonView() )->create(
+				'constraint',
+				json_encode( $data,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
+				2
+			);
 
-		$htmlTabs->tab( 'smw-property-constraint', $this->msg( 'smw-property-tab-constraint-schema' ), [
-				'hide' => $html === '',
+			$attr = [
 				'title' => $this->msg( 'smw-property-tab-constraint-schema-title' )
-			]
+			];
+
+			$htmlTabs->tab( 'smw-property-constraint', $this->msg( 'smw-property-tab-constraint-schema' ), $attr );
+			$htmlTabs->content( 'smw-property-constraint', $constraint );
+		}
+
+		$schemaFinder = $applicationFactory->singleton( 'SchemaFactory' )->newSchemaFinder();
+
+		$schemaList = $schemaFinder->newSchemaList(
+			$this->property,
+			new DIProperty( '_PROFILE_SCHEMA' )
 		);
 
-		$htmlTabs->content( 'smw-property-constraint', "<pre>$html</pre>" );
+		$data = $schemaList->toArray();
+
+		if ( $data !== [] ) {
+			$profile = ( new JsonView() )->create(
+				'profile',
+				json_encode( $data,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
+				2
+			);
+
+			$htmlTabs->tab( 'smw-property-profile', $this->msg( 'smw-property-tab-profile-schema' ) );
+			$htmlTabs->content( 'smw-property-profile', $profile );
+		}
 
 		// ... more
 		if ( isset( $matches[2] ) && $matches[2] !== [] ) {

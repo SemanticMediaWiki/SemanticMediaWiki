@@ -51,6 +51,18 @@
   display: block;
 }
 
+.client-nojs .smw-schema-placeholder-message {
+  display: none;
+}
+
+.smw-json-data {
+    display: none;
+}
+
+.client-nojs .smw-json-data {
+    display: block;
+}
+
 .client-nojs .smw-overlay-spinner {
 	 display: none;
 }

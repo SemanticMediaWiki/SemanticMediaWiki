@@ -45,6 +45,19 @@
 			} );
 		} );
 
+		/**
+		 * ...
+		 */
+		$( '.smw-json-container' ).each( function() {
+
+			var container = $( this ),
+				json = container.find( '.smw-json-data' ).text();
+
+			if ( json !== '' ) {
+				smw.jsonview.init( container, json );
+			};
+		} );
+
 	} );
 
 }( jQuery, mediaWiki ) );
