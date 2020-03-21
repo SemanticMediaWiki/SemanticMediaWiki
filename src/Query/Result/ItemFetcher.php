@@ -3,6 +3,7 @@
 namespace SMW\Query\Result;
 
 use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -105,7 +106,9 @@ class ItemFetcher {
 
 		// Avoid `_cod`, `_eid` or similar types that use the DIBlob as storage
 		// object
-		if ( $type !== '_txt' && strpos( $type, '_rec' ) === false ) {
+		if (
+			$type !== '_txt' &&
+			!DataTypeRegistry::getInstance()->isRecordType( $type ) ) {
 			return $dataItem;
 		}
 

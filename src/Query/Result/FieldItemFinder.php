@@ -3,6 +3,7 @@
 namespace SMW\Query\Result;
 
 use SMW\DataValueFactory;
+use SMW\DataTypeRegistry;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -299,7 +300,8 @@ class FieldItemFinder {
 	}
 
 	private function isMultiValueWithParameter( $parameter ) {
-		return strpos( $this->printRequest->getTypeID(), '_rec' ) !== false && $this->printRequest->getParameter( $parameter ) !== false;
+		return DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
+		$this->printRequest->getParameter( $parameter ) !== false;
 	}
 
 	private function fetchContent( DataItem $dataItem ) {
@@ -359,8 +361,6 @@ class FieldItemFinder {
 			$requestOptions
 		);
 
-		$isRecord = strpos( $this->printRequest->getTypeID(), '_rec' ) !== false;
-
 		if ( $this->printRequest->getParameter( 'order' ) !== false ) {
 			$content = Restrictions::applySortRestriction( $this->printRequest, $content );
 		}
@@ -368,7 +368,9 @@ class FieldItemFinder {
 		// Limit for records are applied later as it requires to find the value
 		// representation first (and sort on those values instead of the record/subobject
 		// reference)
-		if ( $this->printRequest->getParameter( 'limit' ) !== false && !$isRecord ) {
+		if (
+			$this->printRequest->getParameter( 'limit' ) !== false &&
+			!DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) ) {
 			$content = Restrictions::applyLimitRestriction( $this->printRequest, $content );
 		}
 

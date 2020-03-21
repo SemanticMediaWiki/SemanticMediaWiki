@@ -173,6 +173,10 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParameter' )
 			->will( $this->returnValue( false ) );
 
+		$this->printRequest->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '' ) );
+
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
 			->will( $this->returnValue( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
@@ -210,6 +214,10 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
 			->will( $this->returnValue( false ) );
+
+		$this->printRequest->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '' ) );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )

@@ -56,6 +56,48 @@ class ItemFetcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHighlightTokens_Blob() {
+
+		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryToken->expects( $this->any() )
+			->method( 'highlight' )
+			->will( $this->returnValue( '<b>Foo</b>' ) );
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getTypeID' )
+			->will( $this->returnValue( '_txt' ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getOutputFormat' )
+			->will( $this->returnValue( '' ) );
+
+		$dataItem = $this->dataItemFactory->newDIBlob( 'Foo' );
+
+		$instance = new ItemFetcher(
+			$this->store
+		);
+
+		$instance->setPrintRequest(
+			$printRequest
+		);
+
+		$instance->setQueryToken(
+			$queryToken
+		);
+
+		$this->assertEquals(
+			'<b>Foo</b>',
+			$instance->highlightTokens( $dataItem )->getString()
+		);
+	}
+
 	public function testFetchFromLegacy() {
 
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );

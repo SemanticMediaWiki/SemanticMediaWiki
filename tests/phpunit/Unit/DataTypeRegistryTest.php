@@ -296,6 +296,37 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider recordTypeProvider
+	 */
+	public function testIsRecordType( $typeId, $expected ) {
+
+		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$localLanguage->expects( $this->once() )
+			->method( 'getDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$localLanguage->expects( $this->once() )
+			->method( 'getDatatypeAliases' )
+			->will( $this->returnValue( [] ) );
+
+		$localLanguage->expects( $this->once() )
+			->method( 'getCanonicalDatatypeLabels' )
+			->will( $this->returnValue( [] ) );
+
+		$instance = new DataTypeRegistry(
+			$localLanguage
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->isRecordType(  $typeId )
+		);
+	}
+
 	public function testSubDataType() {
 
 		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
@@ -484,6 +515,29 @@ class DataTypeRegistryTest extends \PHPUnit_Framework_TestCase {
 			[ 'ext.test' => $callback ],
 			$instance->getCallablesByTypeId( '__foo' )
 		);
+	}
+
+	public function recordTypeProvider() {
+
+		yield [
+			'_rec',
+			true
+		];
+
+		yield [
+			'_ref_rec',
+			true
+		];
+
+		yield [
+			'_mlt_rec',
+			true
+		];
+
+		yield [
+			'_foo',
+			false
+		];
 	}
 
 }

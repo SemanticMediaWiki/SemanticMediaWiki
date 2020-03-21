@@ -7,6 +7,7 @@ use SMW\DIProperty;
 use SMW\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\PropertySpecificationLookup;
+use SMW\DataTypeRegistry;
 use SMWDataValue as DataValue;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -62,11 +63,6 @@ class InfoLinksProvider {
 	 * @var boolean|array
 	 */
 	private $serviceLinkParameters = false;
-
-	/**
-	 * @var []
-	 */
-	private $disabledBrowseLinksByType = [ '_rec', '_mlt_rec', '_ref_rec' ];
 
 	/**
 	 * @var []
@@ -173,7 +169,8 @@ class InfoLinksProvider {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-		if ( in_array( $this->dataValue->getTypeID(), $this->disabledBrowseLinksByType ) ) {
+
+		if ( DataTypeRegistry::getInstance()->isRecordType( $this->dataValue->getTypeID() ) ) {
 			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
 			$infoLink->setCompactLink( $this->compactLink );
 		} elseif ( in_array( $dataItem->getDIType(), [ DataItem::TYPE_WIKIPAGE, DataItem::TYPE_CONTAINER ] ) ) {

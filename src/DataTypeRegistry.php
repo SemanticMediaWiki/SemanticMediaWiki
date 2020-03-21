@@ -194,6 +194,17 @@ class DataTypeRegistry {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param string $typeId
+	 *
+	 * @return boolean
+	 */
+	public function isRecordType( string $typeId ) : bool {
+		return strpos( $typeId, '_rec' ) !== false;
+	}
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param string $typeId

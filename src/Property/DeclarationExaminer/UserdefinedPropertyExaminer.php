@@ -71,7 +71,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 	private function checkRecordType( $type, $property ) {
 
-		if ( $type !== '_ref_rec' && $type !== '_rec' ) {
+		if ( !DataTypeRegistry::getInstance()->isRecordType( $type ) ) {
 			return;
 		}
 
