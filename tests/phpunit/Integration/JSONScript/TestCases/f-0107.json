@@ -1,0 +1,92 @@
+{
+	"description": "Test `format=plainlist` output using `named args`/`namedargs` and `userparam`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Head",
+			"contents": "<includeonly><div>{{{#userparam}}}</div></includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Body",
+			"contents": "<includeonly>[{{{#}}}]:{{{page}}}:{{{text}}}:{{{#userparam}}}:</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Foot",
+			"contents": "<includeonly><div>{{{#userparam}}}</div></includeonly>"
+		},
+		{
+			"page": "Foo",
+			"contents": "[[Has text::ABC]] [[Category:Test]]"
+		},
+		{
+			"page": "Bar",
+			"contents": "[[Has text::ABC]] [[Category:Test]]"
+		},
+		{
+			"page": "123",
+			"contents": "[[Has text::ABC]] [[Category:Test]]"
+		},
+		{
+			"page": "yxz",
+			"contents": "[[Has text::ABC]] [[Category:Test]]"
+		},
+		{
+			"page": "test-asc-order-named-args-userparam",
+			"contents": "{{#ask: [[Category:Test]] [[Has text::ABC]] |?=page |?Has text=text |format=plainlist |order=ascending |link=none |userparam=HelloWorld |named args=yes |introtemplate=Head |template=Body |outrotemplate=Foot }}"
+		},
+		{
+			"page": "test-desc-order-namedargs-userparam",
+			"contents": "{{#ask: [[Category:Test]] [[Has text::ABC]] |?=page |?Has text=text |format=plainlist |order=descending |link=none |userparam=HelloWorld |namedargs=yes |introtemplate=Head |template=Body |outrotemplate=Foot }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 (1.31+) asc template output using named arguments and userparam",
+			"subject": "test-asc-order-named-args-userparam",
+			"assert-output": {
+				"to-contain": [
+					"<div>HelloWorld</div>",
+					"[0]:123:ABC:HelloWorld:",
+					"[1]:Bar:ABC:HelloWorld:",
+					"[2]:Foo:ABC:HelloWorld:",
+					"[3]:Yxz:ABC:HelloWorld:",
+					"<div>HelloWorld</div>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 (1.31+) desc template output using named arguments and userparam",
+			"subject": "test-desc-order-namedargs-userparam",
+			"assert-output": {
+				"to-contain": [
+					"<div>HelloWorld</div>",
+					"[0]:Yxz:ABC:HelloWorld:",
+					"[1]:Foo:ABC:HelloWorld:",
+					"[2]:Bar:ABC:HelloWorld:",
+					"[3]:123:ABC:HelloWorld:",
+					"<div>HelloWorld</div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
