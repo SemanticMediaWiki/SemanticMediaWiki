@@ -260,6 +260,15 @@ class ConditionBuilder {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param array $dataItems
+	 */
+	public function prepareCache( array $dataItems ) {
+		$this->store->getObjectIds()->warmUpCache( $dataItems );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @return integer
@@ -375,6 +384,8 @@ class ConditionBuilder {
 			if ( $hierarchyDepth !== null ) {
 				$members = $hierarchyDepth == 0 ? [] : array_slice( $members, 0, $hierarchyDepth );
 			}
+
+			$this->prepareCache( $members );
 
 			foreach ( $members as $member ) {
 				$ids[] = $this->getID( $member );

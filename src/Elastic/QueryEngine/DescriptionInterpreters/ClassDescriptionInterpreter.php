@@ -53,6 +53,7 @@ class ClassDescriptionInterpreter {
 		}
 
 		$fieldMapper = $this->conditionBuilder->getFieldMapper();
+		$this->conditionBuilder->prepareCache( $dataItems );
 
 		foreach ( $dataItems as $dataItem ) {
 			$value = $this->conditionBuilder->getID( $dataItem );
