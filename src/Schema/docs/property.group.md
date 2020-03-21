@@ -2,18 +2,19 @@
 
 The `PROPERTY_GROUP_SCHEMA` schema type defines property groups that help structure the browsing interface of a page.
 
-## Structure
+## Properties
 
-The structure of this schema is defined by the following properties:    
-- `type` – defindes the schema type    
-- `manifest_version` – sets the version of the schema type    
-- `description` – describes the entire group schema    
-- `groups`– identifies the section that contains group definitions    
-    - `..._group` – identifies an individual group (the name has to end with `_group`)    
-        - `canonical_name` – sets the canonical lable for the group    
-        - `message_key` – sets a system message key that can be used for translation and replaces the canonical label for the group if specified    
-        - `property_keys` – sets the property keys assigned to the group    
-- `tags` – sets simple tags to categorize a schema    
+The structure of this schema is defined by the following properties:
+
+- `type` – defindes the schema type
+- `manifest_version` – sets the version of the schema type
+- `description` – describes the entire group schema
+- `groups`– identifies the section that contains group definitions
+  - `..._group` – identifies an individual group (the name has to end with `_group`)
+    - `canonical_name` – sets the canonical lable for the group
+    - `message_key` – sets a system message key that can be used for translation and replaces the canonical label for the group if specified
+    - `property_keys` – sets the property keys assigned to the group
+- `tags` – sets simple tags to categorize a schema
 
 ## Example
 
@@ -44,7 +45,7 @@ The structure of this schema is defined by the following properties:
 }
 </pre>
 
-## Validation
+## Validation schema
 
 The structure of this schema is validated by the following definition file for the schema structure:
 
