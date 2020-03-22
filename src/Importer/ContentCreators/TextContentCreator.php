@@ -113,21 +113,24 @@ class TextContentCreator implements ContentCreator {
 			);
 		} elseif( $title->exists() && $replaceable ) {
 			$action = 'EXISTS,REPLACE';
+			$len = $this->cliMsgFormatter->getLen( $action ) + 3;
 
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3, $len )
 			);
 		} elseif( $title->exists() ) {
 			$action = 'EXISTS,REPLACE';
+			$len = $this->cliMsgFormatter->getLen( $action ) + 3;
 
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3, $len )
 			);
 		} else {
 			$action = 'CREATE';
+			$len = $this->cliMsgFormatter->getLen( $action ) + 3;
 
 			$this->messageReporter->reportMessage(
-				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3 )
+				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3, $len )
 			);
 		}
 
