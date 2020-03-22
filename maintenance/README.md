@@ -20,6 +20,8 @@ required to specify the location of "LocalSettings.php" explicitly, too:
 export MW_INSTALL_PATH="/path/to/mediawiki" && php setupStore.php --conf=/path/to/mediawiki/LocalSettings.php
 ```
 
+## Scripts
+
 ### dumpRDF.php
 
 Complete RDF export of existing triples.
