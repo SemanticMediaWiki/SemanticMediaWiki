@@ -27,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class PopulateHashField extends \Maintenance {
+class populateHashField extends \Maintenance {
 
 	/**
 	 * Threshold as the when the `populateHashField.php` should be used by an
