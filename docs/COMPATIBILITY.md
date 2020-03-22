@@ -116,7 +116,7 @@ but since it is no longer tested functionality can no longer be validated and as
 		<th>3.2.x</th>
 		<td>Full support (5.5.8+)</td>
 		<td>Full support (3.3.7+)</td>
-		<td>Full support (9.5.0+)</td>
+		<td>Full support <strong>(9.5.0+)</strong></td>
 	</tr>
 	<tr>
 		<th>3.1.x</th>
@@ -128,13 +128,13 @@ but since it is no longer tested functionality can no longer be validated and as
 		<th>3.0.x</th>
 		<td>Full support (5.5.8+)</td>
 		<td>Full support (3.3.7+)</td>
-		<td>Full support (9.2.0+)</td>
+		<td>Full support <strong>(9.2.0+)</strong></td>
 	</tr>
 	<tr>
 		<th>2.5.x</th>
-		<td>Full support (5.5.8+)</td>
+		<td>Full support <strong>(5.5.8+)</strong></td>
 		<td>Full support (3.3.7+)</td>
-		<td>Full support (9.1.0+)</td>
+		<td>Full support <strong>(9.1.0+)</strong></td>
 	</tr>
 	<tr>
 		<th>2.4.x</th>
@@ -158,7 +158,7 @@ but since it is no longer tested functionality can no longer be validated and as
 		<th>2.1.x</th>
 		<td>Full support (5.0.2+)</td>
 		<td>Full support (3.3.7+)</td>
-		<td>Full support (9.0.0+)</td>
+		<td>Full support <strong>(9.0.0+)</strong></td>
 	</tr>
 	<tr>
 		<th>2.0.x</th>
@@ -168,9 +168,9 @@ but since it is no longer tested functionality can no longer be validated and as
 	</tr>
 	<tr>
 		<th>1.9.x</th>
-		<td>Full support (5.0.2+)</td>
-		<td>Full support (3.3.7+)</td>
-		<td>Beta support (8.3.0+)</td>
+		<td>Full support <strong>(5.0.2+)</strong></td>
+		<td>Full support <strong>(3.3.7+)</strong></td>
+		<td>Beta support <strong>(8.3.0+)</td>
 	</tr>
 </table>
 
