@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class DisposeOutdatedEntities extends \Maintenance {
+class disposeOutdatedEntities extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -129,5 +129,5 @@ class DisposeOutdatedEntities extends \Maintenance {
 
 }
 
-$maintClass = DisposeOutdatedEntities::class;
+$maintClass = disposeOutdatedEntities::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

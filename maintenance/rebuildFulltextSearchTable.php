@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class RebuildFulltextSearchTable extends \Maintenance {
+class rebuildFulltextSearchTable extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -248,5 +248,5 @@ class RebuildFulltextSearchTable extends \Maintenance {
 
 }
 
-$maintClass = RebuildFulltextSearchTable::class;
+$maintClass = rebuildFulltextSearchTable::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );

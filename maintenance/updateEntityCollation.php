@@ -29,7 +29,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class UpdateEntityCollation extends \Maintenance {
+class updateEntityCollation extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -300,5 +300,5 @@ class UpdateEntityCollation extends \Maintenance {
 
 }
 
-$maintClass = UpdateEntityCollation::class;
+$maintClass = updateEntityCollation::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

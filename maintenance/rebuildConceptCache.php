@@ -69,7 +69,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RebuildConceptCache extends \Maintenance {
+class rebuildConceptCache extends \Maintenance {
 
 	public function __construct() {
 		parent::__construct();
@@ -218,5 +218,5 @@ class RebuildConceptCache extends \Maintenance {
 
 }
 
-$maintClass = RebuildConceptCache::class;
+$maintClass = rebuildConceptCache::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );

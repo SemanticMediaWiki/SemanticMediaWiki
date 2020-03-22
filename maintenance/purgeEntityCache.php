@@ -27,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class PurgeEntityCache extends \Maintenance {
+class purgeEntityCache extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -240,5 +240,5 @@ class PurgeEntityCache extends \Maintenance {
 
 }
 
-$maintClass = PurgeEntityCache::class;
+$maintClass = purgeEntityCache::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

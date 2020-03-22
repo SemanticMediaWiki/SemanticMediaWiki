@@ -38,7 +38,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * @author Markus Krötzsch
  * @author mwjames
  */
-class DumpRdf extends \Maintenance {
+class dumpRDF extends \Maintenance {
 
 	private $delay = 0;
 	private $delayeach = 0;
@@ -184,5 +184,5 @@ class DumpRdf extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\DumpRdf';
+$maintClass = 'SMW\Maintenance\dumpRDF';
 require_once ( RUN_MAINTENANCE_IF_MAIN );

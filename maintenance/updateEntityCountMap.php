@@ -25,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class UpdateEntityCountMap extends \Maintenance {
+class updateEntityCountMap extends \Maintenance {
 
 	/**
 	 * Incomplete task message
@@ -275,5 +275,5 @@ class UpdateEntityCountMap extends \Maintenance {
 
 }
 
-$maintClass = UpdateEntityCountMap::class;
+$maintClass = updateEntityCountMap::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
