@@ -23,7 +23,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getID', 'findHierarchyMembers' ] )
+			->setMethods( [ 'getID', 'findHierarchyMembers', 'prepareCache' ] )
 			->getMock();
 	}
 
