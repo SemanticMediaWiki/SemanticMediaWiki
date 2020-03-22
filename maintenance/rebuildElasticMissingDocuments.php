@@ -294,7 +294,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		}
 
 		$this->reportMessage(
-			$cliMsgFormatter->twoCols( "... found ...", "(rows) $count", 3 )
+			$cliMsgFormatter->twoCols( "... found ...", "$count (rows)", 3 )
 		);
 
 		$this->reportMessage(
