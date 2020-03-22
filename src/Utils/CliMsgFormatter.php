@@ -354,16 +354,23 @@ class CliMsgFormatter {
 	 *
 	 * @param string $firstCol
 	 * @param integer $indentLen
+	 * @param integer $expectedSecondColLen
 	 *
 	 * @return string
 	 */
-	public function firstCol( string $firstCol, int $indentLen = 0 ) : string {
+	public function firstCol( string $firstCol, int $indentLen = 0, int $expectedSecondColLen = 0 ) : string {
 
 		if ( $indentLen > 0 ) {
 			$firstCol = sprintf( "%-{$indentLen}s%s", '', $firstCol );
 		}
 
-		$firstCol = $this->trimContent( $firstCol );
+		$maxLen = self::MAX_LEN;
+
+		if ( $expectedSecondColLen > 0 ) {
+			$maxLen = $maxLen - $expectedSecondColLen;
+		}
+
+		$firstCol = $this->trimContent( $firstCol, $maxLen );
 		$this->firstColLen = mb_strlen( $firstCol );
 
 		return $firstCol;
@@ -408,13 +415,13 @@ class CliMsgFormatter {
 		return sprintf( "%'{$placeHolder}{$len}s%s", ' ', $value ) . "\n";
 	}
 
-	private function trimContent( $content ) {
+	private function trimContent( $content, $maxLen = self::MAX_LEN ) {
 
 		$length = mb_strlen( $content ) - 1;
-		$startOff = ( self::MAX_LEN / 2 ) - 3;
-		$endOff = ( self::MAX_LEN / 2 ) - 3;
+		$startOff = ( $maxLen / 2 ) - 3;
+		$endOff = ( $maxLen / 2 ) - 3;
 
-		if ( $length >= self::MAX_LEN ) {
+		if ( $length >= $maxLen ) {
 			$content = mb_substr( $content, 0, $startOff ) . ' ... ' . mb_substr( $content, $length - $endOff );
 		}
 
