@@ -587,7 +587,7 @@ class DataRebuilder {
 	private function runOutdatedDisposer() {
 
 		$this->reportMessage(
-			$this->cliMsgFormatter->section( 'Outdated disposal', 3, '-', true ) . "\n"
+			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
