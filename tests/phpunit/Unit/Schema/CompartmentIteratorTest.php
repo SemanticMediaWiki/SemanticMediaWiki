@@ -136,6 +136,36 @@ class CompartmentIteratorTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testHas() {
+
+		$data = [
+			[ 'Foo_1' => [ 'Foo2' ] ],
+			[ 'Foo' => [ 'Foobar' => [] ] ],
+			[ 'Bar' => [] ],
+		];
+
+		$instance = new CompartmentIterator(
+			$data
+		);
+
+		$this->assertTrue(
+			$instance->has( 'Foo.Foobar' )
+		);
+
+		$this->assertTrue(
+			$instance->has( 'Foo_1' )
+		);
+
+		$this->assertTrue(
+			$instance->has( 'Bar' )
+		);
+
+		// Foo_2 is not iterable
+		$this->assertFalse(
+			$instance->has( 'Foo_1.Foo_2' )
+		);
+	}
+
 	public function testIterate_Associatve() {
 
 		$data = [
