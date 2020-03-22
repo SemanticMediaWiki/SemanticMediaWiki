@@ -42,35 +42,43 @@
 		},
 		{
 			"page": "template-output-named-args-asc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n |named args=yes\n }}"
 		},
 		{
 			"page": "template-output-named-args-desc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n ||named args=yes\n}}"
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n |named args=yes\n }}"
+		},
+		{
+			"page": "template-output-namedargs-asc",
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n |namedargs=yes\n }}"
+		},
+		{
+			"page": "template-output-namedargs-desc",
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseNamedArgsTemplateForColumnOutput\n |namedargs=yes\n }}"
 		},
 		{
 			"page": "template-output-unnamed-args-asc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n |named args=no\n }}"
 		},
 		{
 			"page": "template-output-unnamed-args-desc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n |named args=no\n }}"
 		},
 		{
 			"page": "one-column-plainlist-output-asc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n}}"
+			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n }}"
 		},
 		{
 			"page": "limited-two-column-plainlist-output-desc",
-			"contents": "{{#ask:[[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |searchlabel=Test more\n |limit=2\n |columns=2\n}}"
+			"contents": "{{#ask: [[Has page property::Test]]\n |?Has page property\n |format=category\n |order=desc\n |link=none\n |headers=plain\n |searchlabel=Test more\n |limit=2\n |columns=2\n }}"
 		},
 		{
 			"page": "one-column-plainlist-output-with-default-sort-asc",
-			"contents": "{{#ask:[[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n}}"
+			"contents": "{{#ask: [[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |headers=plain |limit=10\n |columns=1\n }}"
 		},
 		{
 			"page": "template-output-unnamed-args-with-default-sort-asc",
-			"contents": "{{#ask:[[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n ||named args=no\n}}"
+			"contents": "{{#ask: [[Has page property::Test2]]\n |?Has page property\n |format=category\n |order=asc\n |link=none\n |limit=10\n |template=UseUnnamedArgsTemplateForColumnOutput\n |named args=no\n }}"
 		}
 	],
 	"tests": [
@@ -107,7 +115,7 @@
 		{
 			"type": "format",
 			"about": "#2",
-			"subject": "template-output-unnamed-args-asc",
+			"subject": "template-output-namedargs-asc",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
@@ -122,7 +130,7 @@
 		{
 			"type": "format",
 			"about": "#3",
-			"subject": "template-output-unnamed-args-desc",
+			"subject": "template-output-namedargs-desc",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
@@ -137,6 +145,36 @@
 		{
 			"type": "format",
 			"about": "#4",
+			"subject": "template-output-unnamed-args-asc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul>",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5",
+			"subject": "template-output-unnamed-args-desc",
+			"assert-output": {
+				"to-contain": [
+					"<div class=\"smw-columnlist-container\" dir=\"ltr\">",
+					"<div class=\"smw-column-header\">テ</div><ul><li>テスト, Test</li></ul>",
+					"<div class=\"smw-column-header\">F</div><ul><li>Foo, Test</li></ul></div>",
+					"<div class=\"smw-column-header\">B</div><ul><li>Bar, Test</li></ul>",
+					"<div class=\"smw-column-header\">1</div><ul><li>123, Test Test2</li></ul></div>",
+					"<br style=\"clear: both;\" />"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#6",
 			"subject": "one-column-plainlist-output-asc",
 			"assert-output": {
 				"to-contain": [
@@ -151,7 +189,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#5",
+			"about": "#7",
 			"subject": "limited-two-column-plainlist-output-desc",
 			"assert-output": {
 				"to-contain": [
@@ -166,7 +204,7 @@
 		},
 		{
 			"type": "format",
-			"about": "#6, refs #699",
+			"about": "#8, refs #699",
 			"subject": "one-column-plainlist-output-with-default-sort-asc",
 			"assert-output": {
 				"to-contain": [

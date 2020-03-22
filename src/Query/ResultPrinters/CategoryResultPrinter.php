@@ -110,6 +110,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
+			'aliases' => [ 'namedargs' ]
 		];
 
 		return $definitions;
