@@ -290,5 +290,5 @@ class PopulateHashField extends \Maintenance {
 
 }
 
-$maintClass = PopulateHashField::class;
+$maintClass = populateHashField::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

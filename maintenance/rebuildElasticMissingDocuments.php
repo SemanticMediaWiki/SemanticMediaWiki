@@ -31,7 +31,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class RebuildElasticMissingDocuments extends \Maintenance {
+class rebuildElasticMissingDocuments extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -413,5 +413,5 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 
 }
 
-$maintClass = RebuildElasticMissingDocuments::class;
+$maintClass = rebuildElasticMissingDocuments::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );

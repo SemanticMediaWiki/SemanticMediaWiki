@@ -20,7 +20,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class UpdateQueryDependencies extends \Maintenance {
+class updateQueryDependencies extends \Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -182,5 +182,5 @@ class UpdateQueryDependencies extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\UpdateQueryDependencies';
+$maintClass = 'SMW\Maintenance\updateQueryDependencies';
 require_once( RUN_MAINTENANCE_IF_MAIN );

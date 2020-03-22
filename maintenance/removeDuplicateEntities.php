@@ -21,7 +21,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class RemoveDuplicateEntities extends \Maintenance {
+class removeDuplicateEntities extends \Maintenance {
 
 	/**
 	 * @since 3.0
@@ -147,5 +147,5 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 }
 
-$maintClass = RemoveDuplicateEntities::class;
+$maintClass = removeDuplicateEntities::class;
 require_once( RUN_MAINTENANCE_IF_MAIN );
