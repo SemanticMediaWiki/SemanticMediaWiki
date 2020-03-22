@@ -89,6 +89,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,
+			'aliases' => [ 'namedargs' ]
 		];
 
 		$params['userparam'] = [

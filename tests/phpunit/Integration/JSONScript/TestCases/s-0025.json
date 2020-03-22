@@ -44,7 +44,7 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0 (named args)",
+			"about": "#0a (named args)",
 			"special-page": {
 				"page": "Ask",
 				"request-parameters": {
@@ -54,6 +54,32 @@
 						"offset": "0",
 						"mainlabel": "",
 						"named args": true,
+						"format": "templatefile",
+						"template": "BEACON (named)",
+						"introtemplate": "BEACON-INTRO"
+					},
+					"q": "[[Has GND::123456789]]",
+					"po": "?Has GND=GND|?Has name=Name"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.s-0025.0.txt"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#0b (namedargs)",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"namedargs": true,
 						"format": "templatefile",
 						"template": "BEACON (named)",
 						"introtemplate": "BEACON-INTRO"
