@@ -1,6 +1,8 @@
 # https://docs.travis-ci.com/user/languages/php
 language: php
-sudo: required
+
+os:
+  - linux
 
 # https://docs.travis-ci.com/user/trusty-ci-environment/
 dist: trusty
@@ -8,7 +10,7 @@ dist: trusty
 addons:
   postgresql: "9.5"
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*
