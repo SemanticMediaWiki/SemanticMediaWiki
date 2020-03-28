@@ -63,7 +63,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * @author Markus Krötzsch
  * @author mwjames
  */
-class RebuildConceptCache extends \Maintenance {
+class rebuildConceptCache extends \Maintenance {
 
 	public function __construct() {
 		parent::__construct();
@@ -191,5 +191,5 @@ class RebuildConceptCache extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildConceptCache';
+$maintClass = 'SMW\Maintenance\rebuildConceptCache';
 require_once ( RUN_MAINTENANCE_IF_MAIN );

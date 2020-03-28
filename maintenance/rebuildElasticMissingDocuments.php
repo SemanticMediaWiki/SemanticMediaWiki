@@ -20,7 +20,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class RebuildElasticMissingDocuments extends \Maintenance {
+class rebuildElasticMissingDocuments extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -252,5 +252,5 @@ class RebuildElasticMissingDocuments extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildElasticMissingDocuments';
+$maintClass = 'SMW\Maintenance\rebuildElasticMissingDocuments';
 require_once( RUN_MAINTENANCE_IF_MAIN );

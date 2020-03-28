@@ -18,7 +18,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class RebuildFulltextSearchTable extends \Maintenance {
+class rebuildFulltextSearchTable extends \Maintenance {
 
 	public function __construct() {
 		$this->mDescription = 'Rebuild the fulltext search index (only works with SQLStore)';
@@ -180,5 +180,5 @@ class RebuildFulltextSearchTable extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildFulltextSearchTable';
+$maintClass = 'SMW\Maintenance\rebuildFulltextSearchTable';
 require_once ( RUN_MAINTENANCE_IF_MAIN );
