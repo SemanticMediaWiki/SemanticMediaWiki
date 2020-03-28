@@ -53,7 +53,7 @@ class ParameterListDocBuilder {
 			'!' . $this->msg( 'validator-describe-header-description' )
 		], $tableRows );
 
-		return '{| class="wikitable sortable"' . "\n" .
+		return '{| class="smwtable-clean doctable sortable"' . "\n" .
 			implode( "\n|-\n", $tableRows ) .
 			"\n|}";
 	}

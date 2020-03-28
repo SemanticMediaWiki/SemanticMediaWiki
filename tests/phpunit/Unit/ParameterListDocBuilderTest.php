@@ -51,7 +51,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$expected = [
-			'{| class="wikitable sortable"',
+			'{| class="smwtable-clean doctable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
 			'!validator-describe-header-default',
@@ -76,7 +76,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$expected = [
-			'{| class="wikitable sortable"',
+			'{| class="smwtable-clean doctable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
 			'!validator-describe-header-default',
@@ -104,7 +104,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 		$wikiText = $this->builder->getParameterTable( [ $paramWithAliases, $paramWithoutAliases ] );
 
 		$expected = [
-			'{| class="wikitable sortable"',
+			'{| class="smwtable-clean doctable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
 			'!validator-describe-header-default',
@@ -136,7 +136,7 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$expected = [
-			'{| class="wikitable sortable"',
+			'{| class="smwtable-clean doctable sortable"',
 			'!validator-describe-header-parameter',
 			'!validator-describe-header-type',
 			'!validator-describe-header-default',
