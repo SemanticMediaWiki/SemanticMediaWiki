@@ -16,7 +16,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class RemoveDuplicateEntities extends \Maintenance {
+class removeDuplicateEntities extends \Maintenance {
 
 	/**
 	 * @since 3.0
@@ -108,5 +108,5 @@ class RemoveDuplicateEntities extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RemoveDuplicateEntities';
+$maintClass = 'SMW\Maintenance\removeDuplicateEntities';
 require_once( RUN_MAINTENANCE_IF_MAIN );

@@ -52,7 +52,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * @author Markus Krötzsch
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SetupStore extends \Maintenance {
+class setupStore extends \Maintenance {
 
 	/**
 	 * Name of the store class configured in LocalSettings.php. Stored to
@@ -267,5 +267,5 @@ class SetupStore extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\SetupStore';
+$maintClass = 'SMW\Maintenance\setupStore';
 require_once ( RUN_MAINTENANCE_IF_MAIN );

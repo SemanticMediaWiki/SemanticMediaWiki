@@ -20,7 +20,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class PurgeEntityCache extends \Maintenance {
+class purgeEntityCache extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -162,5 +162,5 @@ class PurgeEntityCache extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\PurgeEntityCache';
+$maintClass = 'SMW\Maintenance\purgeEntityCache';
 require_once( RUN_MAINTENANCE_IF_MAIN );

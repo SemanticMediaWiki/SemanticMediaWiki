@@ -17,7 +17,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class RebuildPropertyStatistics extends \Maintenance {
+class rebuildPropertyStatistics extends \Maintenance {
 
 	public function __construct() {
 		$this->mDescription = 'Rebuild the property usage statistics (only works with SQLStore3 for now)';
@@ -89,5 +89,5 @@ class RebuildPropertyStatistics extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildPropertyStatistics';
+$maintClass = 'SMW\Maintenance\rebuildPropertyStatistics';
 require_once ( RUN_MAINTENANCE_IF_MAIN );

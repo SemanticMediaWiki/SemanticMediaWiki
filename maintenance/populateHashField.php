@@ -20,7 +20,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class PopulateHashField extends \Maintenance {
+class populateHashField extends \Maintenance {
 
 	/**
 	 * Threshold as the when the `populateHashField.php` should be used by an
@@ -220,5 +220,5 @@ class PopulateHashField extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\PopulateHashField';
+$maintClass = 'SMW\Maintenance\populateHashField';
 require_once( RUN_MAINTENANCE_IF_MAIN );

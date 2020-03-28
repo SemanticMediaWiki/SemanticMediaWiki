@@ -21,7 +21,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class UpdateEntityCollation extends \Maintenance {
+class updateEntityCollation extends \Maintenance {
 
 	public function __construct() {
 		$this->mDescription = 'Update the smw_sort field (relying on the $smwgEntityCollation setting)';
@@ -173,5 +173,5 @@ class UpdateEntityCollation extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\UpdateEntityCollation';
+$maintClass = 'SMW\Maintenance\updateEntityCollation';
 require_once( RUN_MAINTENANCE_IF_MAIN );

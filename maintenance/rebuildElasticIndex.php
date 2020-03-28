@@ -19,7 +19,7 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *
  * @author mwjames
  */
-class RebuildElasticIndex extends \Maintenance {
+class rebuildElasticIndex extends \Maintenance {
 
 	/**
 	 * @var Store
@@ -433,5 +433,5 @@ class RebuildElasticIndex extends \Maintenance {
 
 }
 
-$maintClass = 'SMW\Maintenance\RebuildElasticIndex';
+$maintClass = 'SMW\Maintenance\rebuildElasticIndex';
 require_once( RUN_MAINTENANCE_IF_MAIN );
