@@ -12,6 +12,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
@@ -85,6 +86,11 @@ class EntityIdManager {
 	 * @var RedirectStore
 	 */
 	private $redirectStore;
+
+	/**
+	 * @var RedirectTargetLookup
+	 */
+	private $redirectTargetLookup;
 
 	/**
 	 * @var TableFieldUpdater
@@ -190,6 +196,18 @@ class EntityIdManager {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param DIWikiPage $target
+	 * @param string|null $flag
+	 *
+	 * @return string|bool
+	 */
+	public function findRedirectSource( DIWikiPage $target, ?string $flag = null ) {
+		return $this->redirectTargetLookup->findRedirectSource( $target, $flag );
 	}
 
 	/**
@@ -929,9 +947,14 @@ class EntityIdManager {
 	 * @since 3.0
 	 *
 	 * @param array $list
+	 * @param string|null $flag
 	 */
-	public function warmUpCache( $list = [] ) {
+	public function warmUpCache( $list = [], $flag = null ) {
 		$this->cacheWarmer->prepareCache( $list );
+
+		if ( $flag === RedirectTargetLookup::PREPARE_CACHE ) {
+			$this->redirectTargetLookup->prepareCache( (array)$list );
+		}
 	}
 
 	/**
@@ -1013,11 +1036,17 @@ class EntityIdManager {
 				'propertytable.hash' => self::MAX_CACHE_SIZE,
 				'warmup.byid' => self::MAX_CACHE_SIZE,
 				'sequence.map' => self::MAX_CACHE_SIZE,
+				IdCacheManager::REDIRECT_SOURCE => self::MAX_CACHE_SIZE,
+				IdCacheManager::REDIRECT_TARGET => self::MAX_CACHE_SIZE,
 				AuxiliaryFields::COUNTMAP_CACHE_ID => self::MAX_CACHE_SIZE,
 			]
 		);
 
 		$this->cacheWarmer = $this->factory->newCacheWarmer(
+			$this->idCacheManager
+		);
+
+		$this->redirectTargetLookup = $this->factory->newRedirectTargetLookup(
 			$this->idCacheManager
 		);
 

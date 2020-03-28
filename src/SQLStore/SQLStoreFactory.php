@@ -745,7 +745,26 @@ class SQLStoreFactory {
 			$applicationFactory->singleton( 'DisplayTitleFinder', $this->store )
 		);
 
+		$cacheWarmer->setThresholdLimit( 1 );
+
 		return $cacheWarmer;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param IdCacheManager $idCacheManager
+	 *
+	 * @return redirectTargetLookup
+	 */
+	public function newRedirectTargetLookup( IdCacheManager $idCacheManager ) : RedirectTargetLookup {
+
+		$redirectTargetLookup = new RedirectTargetLookup(
+			$this->store,
+			$idCacheManager
+		);
+
+		return $redirectTargetLookup;
 	}
 
 	/**

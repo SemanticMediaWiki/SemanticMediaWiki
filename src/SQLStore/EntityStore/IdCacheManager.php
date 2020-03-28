@@ -14,6 +14,14 @@ use SMW\SQLStore\SQLStore;
  */
 class IdCacheManager {
 
+	// InMemoryCacheManager
+
+	/**
+	 * Caching redirects, especially from prefetch
+	 */
+	const REDIRECT_SOURCE = 'redirect.source.lookup';
+	const REDIRECT_TARGET = 'redirect.target.lookup';
+
 	/**
 	 * @var []
 	 */

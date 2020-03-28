@@ -352,7 +352,7 @@ class TableSchemaManager {
 				's_namespace' => [ FieldType::FIELD_NAMESPACE, 'NOT NULL' ]
 			];
 
-			$indexes['sp'] = 's_title,s_namespace';
+			$indexes['sp'] = 's_title,s_namespace,o_id';
 		}
 
 		$indexes['po'] = $diHandler->getIndexField();

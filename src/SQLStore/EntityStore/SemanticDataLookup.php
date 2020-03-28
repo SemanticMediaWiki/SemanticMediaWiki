@@ -11,6 +11,7 @@ use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMWDataItem as DataItem;
 
 /**
@@ -591,7 +592,7 @@ class SemanticDataLookup {
 
 			// Using a short-cut to warmup the cache/linkbatch instance
 			if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-				$warmupCache[] = DIWikiPage::newFromText( $row->v0, $row->v1 );
+				$warmupCache[$row->id0] = DIWikiPage::newFromText( $row->v0, $row->v1 );
 			}
 		}
 
@@ -605,7 +606,7 @@ class SemanticDataLookup {
 		}
 
 		if ( $warmupCache !== [] ) {
-			$this->store->getObjectIds()->warmupCache( $warmupCache );
+			$this->store->getObjectIds()->warmupCache( $warmupCache, RedirectTargetLookup::PREPARE_CACHE );
 		}
 
 		return $result;

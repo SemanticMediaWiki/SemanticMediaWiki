@@ -141,7 +141,7 @@ class SequenceMapFinder {
 		$cache = $this->idCacheManager->get( 'sequence.map' );
 
 		$rows = $this->connection->select(
-			SQLStore::ID_AUXILIARY_TABLE,
+			$this->connection->tablename( SQLStore::ID_AUXILIARY_TABLE ),
 			[
 				'smw_id',
 				'smw_seqmap'
