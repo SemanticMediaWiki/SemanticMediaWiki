@@ -166,10 +166,8 @@ Usage:
 
 ### updateQueryDependencies.php
 
-Allows to do mass populating of database field "smw_countmap" when initially upgrading to
-Semantic MediaWiki 3.2.0 and later. Available since SMW 3.0.0
+Allows to update all entities that hold embedded queries. Available since SMW 3.1.0
 
 Usage:
 - php updateQueryDependencies.php
 
-Allows to update all entities that hold embedded queries. Available since SMW 3.1.0
