@@ -10,6 +10,7 @@ use SMW\Store;
 use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
 use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use RuntimeException;
 
 /**
@@ -261,6 +262,7 @@ class PrefetchItemLookup {
 		$i = 0;
 
 		$lookahead = $requestOptions->getLookahead();
+		$entityIdManager = $this->store->getObjectIds();
 
 		$limit = ( $requestOptions->limit + $requestOptions->offset ) + $lookahead;
 		$offset = $requestOptions->offset;
@@ -274,9 +276,9 @@ class PrefetchItemLookup {
 
 		foreach ( $itemList as $k => $dbkeys ) {
 
-			// When working with a sequence.map, first go through all matches
-			// without limiting the set to ensure it is ordered before
-			// in a second step the limit restriction is applied
+			// When working with a `sequence_map`, first go through all matches
+			// without limiting the set to ensure it is ordered before in a second
+			// step the limit restriction is applied
 			if ( $limit > 0 && $i >= $limit && $sequenceMap === [] ) {
 				break;
 			}
@@ -290,6 +292,31 @@ class PrefetchItemLookup {
 			}
 
 			$index_hash = md5( $dataItem->getHash() );
+
+			if ( $dataItem instanceof DIWikiPage ) {
+
+				// Avoid unnecessary DB lookups by relying on `CACHE_ONLY` which
+				// should match any item in the list given that
+				// `SemanticDataLookup::prefetchDataFromTable` did a cache warming
+				// for all relevant items found in the current list.
+				$flag = RedirectTargetLookup::CACHE_ONLY;
+
+				// #4669
+				//
+				// The input source doesn't know anything about a redirect and
+				// it shouldn't know anything about it since the source input is
+				// independent from a redirect declaration which can occur to an
+				// object at any time and may not involve any source editing.
+				//
+				// The prefetch lookup returns entities with resolved redirect
+				// targets and instead of using the target, the source needs to
+				// be matched here, if it exists.
+				$source = $entityIdManager->findRedirectSource( $dataItem, $flag );
+
+				if ( $source instanceof DIWikiPage ) {
+					$index_hash = md5( $source->getHash() );
+				}
+			}
 
 			if ( isset( $sequenceMap[$index_hash] ) ) {
 				$values[$sequenceMap[$index_hash]] = $dataItem;

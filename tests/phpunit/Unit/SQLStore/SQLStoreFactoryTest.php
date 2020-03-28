@@ -793,6 +793,20 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructRedirectTargetLookup() {
+
+		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SQLStoreFactory( $this->store );
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\Lookup\RedirectTargetLookup',
+			$instance->newRedirectTargetLookup( $idCacheManager )
+		);
+	}
+
 	public function testCanConstructByGroupPropertyValuesLookup() {
 
 		$instance = new SQLStoreFactory( $this->store );
