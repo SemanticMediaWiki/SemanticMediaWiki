@@ -62,6 +62,8 @@ class ByGroupPropertyValuesLookup {
 
 		$valueGroups = [];
 		$rawValues = [];
+		$dataItems = [];
+		$counts = [];
 
 		foreach ( $rows as $row ) {
 
@@ -81,9 +83,17 @@ class ByGroupPropertyValuesLookup {
 				}
 			}
 
+			$dbKeys = count( $dbKeys ) > 1 ? $dbKeys : $dbKeys[0];
+
 			$dataItem = $diHandler->dataItemFromDBKeys(
-				count( $dbKeys ) > 1 ? $dbKeys : $dbKeys[0]
+				$dbKeys
 			);
+
+			$dataItems[] = $dataItem;
+			$counts[] = $row->count;
+		}
+
+		foreach ( $dataItems as $k => $dataItem ) {
 
 			$dv = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,
@@ -96,11 +106,11 @@ class ByGroupPropertyValuesLookup {
 			$key = str_replace( [ '&#160;', '&nbsp;' ], ' ', $key );
 
 			if ( !isset( $valueGroups[$key] ) ) {
-				$valueGroups[$key] = $row->count;
+				$valueGroups[$key] = $counts[$k];
 			} else {
 				// Record types, monolingual types aren't grouped by a value label hence
 				// count them manually
-				$valueGroups[$key] += $row->count;
+				$valueGroups[$key] += $counts[$k];
 			}
 
 			$rawValues[$key] = $dv->getWikiValue();
@@ -128,27 +138,14 @@ class ByGroupPropertyValuesLookup {
 		$propTable = $proptables[$tableid];
 		$isIdField = false;
 
-		$fields =  [
-			'o.smw_id',
-			'o.smw_title',
-			'o.smw_namespace',
-			'o.smw_iw',
-			'o.smw_subobject',
-			'o.smw_hash',
-			'o.smw_sort',
-		];
-
 		$diHandler = $this->store->getDataItemHandlerForDIType(
 			$propTable->getDiType()
 		);
 
 		foreach ( $diHandler->getFetchFields() as $field => $fieldType ) {
-
 			if ( !$isIdField && $fieldType === FieldType::FIELD_ID ) {
 				$isIdField = true;
 			}
-
-			$fields[] = "p.$field";
 		}
 
 		$groupBy = $diHandler->getLabelField();
@@ -158,21 +155,37 @@ class ByGroupPropertyValuesLookup {
 			$groupBy = $diHandler->getIndexField();
 		}
 
-		$fields[] = "COUNT( p.$groupBy ) as count";
 		$groupBy = "p.$groupBy";
+		$orderBy = "count DESC, $groupBy ASC";
 
-		// Avoid a " 42803 ERROR:  column ... must appear in the GROUP BY
-		// clause or be used in an aggregate function"
-		if ( $connection->isType( 'postgres' ) ) {
-			$diType = $propTable->getDiType();
+		$diType = $propTable->getDiType();
 
-			if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-				$groupBy .= ', i.smw_id';
-			} elseif ( $diType === DataItem::TYPE_BLOB ) {
-				$groupBy .= ', p.o_blob, o.smw_id';
-			} else {
-				$groupBy .= ', o.smw_id';
-			}
+		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
+			$fields =  [
+				'i.smw_id',
+				'i.smw_title',
+				'i.smw_namespace',
+				'i.smw_iw',
+				'i.smw_subobject',
+				'i.smw_hash',
+				'i.smw_sort',
+				"COUNT( $groupBy ) as count"
+			];
+
+			$groupBy = 'p.o_id, i.smw_id';
+			$orderBy = 'count DESC, i.smw_sort ASC';
+		} elseif ( $diType === DataItem::TYPE_BLOB ) {
+			$fields = [ 'p.o_hash, p.o_blob', 'COUNT( p.o_hash ) as count' ];
+			$groupBy = 'p.o_hash, p.o_blob';
+		} elseif ( $diType === DataItem::TYPE_URI ) {
+			$fields = [ 'p.o_serialized, p.o_blob', 'COUNT( p.o_serialized ) as count' ];
+			$groupBy = 'p.o_serialized, p.o_blob';
+		} elseif ( $diType === DataItem::TYPE_NUMBER ) {
+			$fields = [ 'p.o_serialized,p.o_sortkey, COUNT( p.o_serialized ) as count' ];
+			$groupBy = 'p.o_serialized,p.o_sortkey';
+			$orderBy = 'count DESC, p.o_sortkey DESC';
+		} else {
+			$fields = [ "$groupBy", "COUNT( $groupBy ) as count" ];
 		}
 
 		if ( !$propTable->isFixedPropertyTable() ) {
@@ -180,11 +193,6 @@ class ByGroupPropertyValuesLookup {
 		}
 
 		if ( $isIdField ) {
-
-			foreach ( $fields as $k => $f ) {
-				$fields[$k] = str_replace( 'o.', 'i.', $f );
-			}
-
 			$res = $connection->select(
 				[
 					'o' => $connection->tableName( SQLStore::ID_TABLE ),
@@ -199,7 +207,8 @@ class ByGroupPropertyValuesLookup {
 				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ),
 				__METHOD__,
 				[
-					'GROUP BY' => "$groupBy"
+					'GROUP BY' => $groupBy,
+					'ORDER BY' => $orderBy
 				],
 				[
 					'p' => [ 'INNER JOIN', [ 'p.s_id=o.smw_id' ] ],
@@ -220,7 +229,8 @@ class ByGroupPropertyValuesLookup {
 				] + ( $pid !== '' ? [ 'p.p_id' => $pid ] : [] ),
 				__METHOD__,
 				[
-					'GROUP BY' => "$groupBy"
+					'GROUP BY' => $groupBy,
+					'ORDER BY' => $orderBy
 				],
 				[
 					'p' => [ 'INNER JOIN', [ 'p.s_id=o.smw_id' ] ],
