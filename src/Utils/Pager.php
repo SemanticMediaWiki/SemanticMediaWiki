@@ -65,11 +65,25 @@ class Pager {
 		);
 
 		$label = Message::get( 'smw-filter', Message::TEXT, Message::USER_LANGUAGE );
+		$content = Message::get( 'smw-property-page-filter-note', Message::PARSE, Message::USER_LANGUAGE );
+
+		$highlighter = Highlighter::factory(
+			Highlighter::TYPE_TEXT
+		);
+
+		$highlighter->setContent(
+			[
+				'caption' => $label,
+				'content' => $content,
+				'state'   => 'inline',
+				'style'   => 'text-decoration: underline dotted;text-underline-offset: 3px;'
+			]
+		);
 
 		$form .= Html::rawElement(
 			'label',
 			[],
-			$label .
+			$highlighter->getHtml() .
 			Html::rawElement(
 				'input',
 				[
@@ -83,30 +97,12 @@ class Pager {
 			)
 		);
 
-		$highlighter = Highlighter::factory( Highlighter::TYPE_NOTE );
-		$content = Message::get( 'smw-property-page-filter-note', Message::PARSE, Message::USER_LANGUAGE );
-
-		$highlighter->setContent(
-			[
-				'content' => $content,
-				'style' => 'margin-left: 5px;'
-			]
-		);
-
-		$tooltip = Html::rawElement(
-			'span',
-			[
-				'class' => 'smw-ui-input-filter-tooltip'
-			],
-			$highlighter->getHtml()
-		);
-
 		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-ui-input-filter'
 			],
-			$form . $tooltip
+			$form
 		);
 	}
 
