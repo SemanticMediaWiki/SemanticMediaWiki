@@ -12,6 +12,7 @@ use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\DataModel\SequenceMap;
 use SMWDataItem as DataItem;
 
 /**
@@ -246,6 +247,11 @@ class SemanticDataLookup {
 		$this->caller = __METHOD__;
 		$result = [];
 
+		$requestOptions->setOption(
+			'RedirectTargetLookup::PREPARE_CACHE',
+			SequenceMap::canMap( $property ) ? RedirectTargetLookup::PREPARE_CACHE : ''
+		);
+
 		$res = $this->fetchSemanticDataFromTableByList(
 			$list,
 			$pid,
@@ -268,7 +274,7 @@ class SemanticDataLookup {
 
 		// Only try to load a sequence map when it is kown that results
 		// are available for the list of selected IDs
-		if ( $result !== [] ) {
+		if ( SequenceMap::canMap( $property ) && $result !== [] ) {
 			$entityIdManager->loadSequenceMap( $list );
 		}
 
@@ -605,8 +611,10 @@ class SemanticDataLookup {
 			sort( $result );
 		}
 
+		$flag = $requestOptions->getOption( 'RedirectTargetLookup::PREPARE_CACHE' );
+
 		if ( $warmupCache !== [] ) {
-			$this->store->getObjectIds()->warmupCache( $warmupCache, RedirectTargetLookup::PREPARE_CACHE );
+			$this->store->getObjectIds()->warmupCache( $warmupCache, $flag );
 		}
 
 		return $result;
