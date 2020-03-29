@@ -199,6 +199,38 @@ class ByGroupPropertyValuesLookupIntegrationTest extends DatabaseTestCase {
 		);
 	}
 
+	public function testGroup_SingleSubject_Uri() {
+
+		$store = $this->getStore();
+		$subjects = [];
+
+		$semanticData = $this->semanticDataFactory
+			->newEmptySemanticData( __METHOD__ );
+
+		$this->subjects[] = $semanticData->getSubject();
+
+		$subjects[] = $semanticData->getSubject()->getSha1();
+		$property = new DIProperty( 'GroupUriCount_1' );
+		$property->setPropertyValueType( '_uri' );
+
+		$semanticData->addPropertyObjectValue(
+			$property,
+			\SMWDIUri::doUnserialize( 'http://username@example.org/' )
+		);
+
+		$store->updateData( $semanticData );
+
+		$byGroupPropertyValuesLookup = $store->service( 'ByGroupPropertyValuesLookup' );
+
+		$this->assertEquals(
+			[
+				'groups' => [ 'http://username@example.org/' => '1' ] ,
+				'raw' => [ 'http://username@example.org/' => 'http://username@example.org/' ]
+			],
+			$byGroupPropertyValuesLookup->findValueGroups( $property, $subjects )
+		);
+	}
+
 	public function testGroup_MultiSubjects() {
 
 		$store = $this->getStore();
