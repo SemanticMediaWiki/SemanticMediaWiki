@@ -1033,6 +1033,7 @@
 	"smw-remote-request-note-cached": "Результат '''кешовано''' з віддаленого джерела '''$1''', і є ймовірність, що згенерований контент містить інформацію, недоступну в межах поточної вікі.",
 	"smw-parameter-missing": "Відсутній параметр «$1».",
 	"smw-property-tab-usage": "Використання",
+	"smw-property-tab-profile-schema": "Схема профілю",
 	"smw-property-tab-redirects": "Синоніми",
 	"smw-property-tab-subproperties": "Підвластивості",
 	"smw-property-tab-errors": "Неналежні призначення",

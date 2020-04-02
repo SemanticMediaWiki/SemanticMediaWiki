@@ -1052,6 +1052,7 @@
 	"smw-remote-request-note-cached": "結果已從遠端來源「'''$1'''」給'''快取'''，並且可能用於產生包含目前 wiki 的不可用資訊內容。",
 	"smw-parameter-missing": "遺失參數「$1」。",
 	"smw-property-tab-usage": "使用量",
+	"smw-property-tab-profile-schema": "偏好設定架構",
 	"smw-property-tab-redirects": "同義詞",
 	"smw-property-tab-subproperties": "子屬性",
 	"smw-property-tab-errors": "不適當分配",
