@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\Exception\SiteLanguageChangeException;
 
 /**
  * @license GNU GPL v2+
@@ -17,6 +18,11 @@ class NamespaceManager {
 	 * @var LocalLanguage
 	 */
 	private $LocalLanguage;
+
+	/**
+	 * @var string
+	 */
+	private static $initLanguageCode = '';
 
 	/**
 	 * @since 1.9
@@ -44,6 +50,13 @@ class NamespaceManager {
 
 		$this->addNamespaceSettings( $vars );
 		$this->addExtraNamespaceSettings( $vars );
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public static function clear() {
+		self::$initLanguageCode = '';
 	}
 
 	/**
@@ -172,8 +185,9 @@ class NamespaceManager {
 			};
 		}
 
+
 		$localLanguage = $instance->getLocalLanguage(
-			$vars['wgLanguageCode']
+			$instance->getLanguageCode( $vars )
 		);
 
 		$extraNamespaces = $localLanguage->getNamespaces();
@@ -186,6 +200,24 @@ class NamespaceManager {
 		$instance->addNamespaceSettings( $vars );
 
 		return $instance;
+	}
+
+	private function getLanguageCode( $vars ) {
+
+		if ( self::$initLanguageCode === '' ) {
+			return self::$initLanguageCode = $vars['wgLanguageCode'];
+		} elseif ( self::$initLanguageCode !== '' && self::$initLanguageCode === $vars['wgLanguageCode'] ) {
+			return self::$initLanguageCode;
+		}
+
+		// #4680
+		//
+		// Overrides aren't allowed to prevent issues with others trying to
+		// manipulate the definition after the initialization (`enableSemantics`)
+		// but users may define `wgLanguageCode` after the initialization and expect
+		// it to work which it won't hence we raise an exception to inform the user
+		// about the unexpected change.
+		throw new SiteLanguageChangeException( self::$initLanguageCode, $vars['wgLanguageCode'] );
 	}
 
 	private function addNamespaceSettings( &$vars ) {
