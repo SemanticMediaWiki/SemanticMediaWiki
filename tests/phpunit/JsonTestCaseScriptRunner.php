@@ -156,6 +156,8 @@ abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 		$this->registerConfigValueCallback( 'wgContLang', function( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			\SMW\Localizer::getInstance()->clear();
+			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
+			\SMW\NamespaceManager::clear();
 			$lang = \Language::factory( $val );
 
 			// https://github.com/wikimedia/mediawiki/commit/49ce67be93dfbb40d036703dad2278ea9843f1ad
@@ -169,6 +171,7 @@ abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
 		$this->registerConfigValueCallback( 'wgLang', function( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			\SMW\Localizer::getInstance()->clear();
+			\SMW\NamespaceManager::clear();
 			return \Language::factory( $val );
 		} );
 
