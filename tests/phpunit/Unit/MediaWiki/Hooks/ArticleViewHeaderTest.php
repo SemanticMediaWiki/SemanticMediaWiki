@@ -20,12 +20,17 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $store;
+	private $namespaceExaminer;
 	private $dependencyValidator;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -56,7 +61,7 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			ArticleViewHeader::class,
-			new ArticleViewHeader( $this->store, $this->dependencyValidator )
+			new ArticleViewHeader( $this->store, $this->namespaceExaminer, $this->dependencyValidator )
 		);
 	}
 
@@ -64,6 +69,10 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_CATEGORY );
 		$property = new DIProperty( DIProperty::TYPE_CHANGE_PROP );
+
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -107,6 +116,7 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ArticleViewHeader(
 			$this->store,
+			$this->namespaceExaminer,
 			$this->dependencyValidator
 		);
 
@@ -130,6 +140,10 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
+
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -147,6 +161,7 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ArticleViewHeader(
 			$this->store,
+			$this->namespaceExaminer,
 			$this->dependencyValidator
 		);
 
@@ -165,6 +180,10 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 	public function testHasArchaicDependency() {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$this->namespaceExaminer->expects( $this->any() )
+			->method( 'isSemanticEnabled' )
+			->will( $this->returnValue( true ) );
 
 		$this->dependencyValidator->expects( $this->any() )
 			->method( 'hasArchaicDependencies' )
@@ -189,6 +208,7 @@ class ArticleViewHeaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ArticleViewHeader(
 			$this->store,
+			$this->namespaceExaminer,
 			$this->dependencyValidator
 		);
 
