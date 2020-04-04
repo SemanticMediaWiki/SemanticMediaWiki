@@ -104,7 +104,7 @@ class PageFactory {
 		$conceptPage = new ConceptPage( $title );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$propertyPage->setOption(
+		$conceptPage->setOption(
 			'SMW_EXTENSION_LOADED',
 			defined( 'SMW_EXTENSION_LOADED' )
 		);
