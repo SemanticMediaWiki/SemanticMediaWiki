@@ -5,6 +5,7 @@ namespace SMW;
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
+use SMW\Permission\GroupPermissions;
 
 /**
  * Extension setup and registration
@@ -336,37 +337,7 @@ final class Setup {
 			return;
 		}
 
-		$rights = [
-			'smw-admin' => [
-				'sysop',
-				'smwadministrator'
-			],
-			'smw-patternedit' => [
-				'smwcurator'
-			],
-			'smw-schemaedit' => [
-				'smwcurator'
-			],
-			'smw-pageedit' => [
-				'smwcurator'
-			],
-		//	'smw-watchlist' => [
-		//		'smwcurator'
-		//	],
-		];
-
-		foreach ( $rights as $right => $roles ) {
-
-			// Rights
-			$vars['wgAvailableRights'][] = $right;
-
-			// User group rights
-			foreach ( $roles as $role ) {
-				if ( !isset( $vars['wgGroupPermissions'][$role][$right] ) ) {
-					$vars['wgGroupPermissions'][$role][$right] = true;
-				}
-			}
-		}
+		( new GroupPermissions() )->initPermissions( $vars );
 
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
