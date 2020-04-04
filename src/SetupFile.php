@@ -514,6 +514,8 @@ class SetupFile {
 			TypesRegistry::getFixedProperties( 'custom_fixed' )
 		);
 
+		$pageSpecialProperties = array_unique( $pageSpecialProperties );
+
 		// Sort to ensure the key contains the same order
 		sort( $vars['smwgFixedProperties'] );
 		sort( $pageSpecialProperties );

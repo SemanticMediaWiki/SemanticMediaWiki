@@ -6,6 +6,7 @@ use SMW\Highlighter;
 use SMW\NamespaceManager;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\ConfigPreloader;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -233,7 +234,7 @@ function swfCountDown( $seconds ) {
  * @param mixed $namespace
  * @param boolean $complete
  *
- * @return true
+ * @return ConfigPreloader
  *
  * @codeCoverageIgnore
  */
@@ -264,7 +265,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	$GLOBALS['smwgSemanticsEnabled'] = true;
 
-	return true;
+	return new ConfigPreloader();
 }
 
 /**
