@@ -54,6 +54,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() : void {
+		NamespaceManager::clear();
 		$this->testEnvironment->tearDown();
 	}
 
@@ -145,6 +146,24 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			100,
 			$vars['smwgNamespaceIndex']
 		);
+	}
+
+	public function testInitCustomNamespaceOnDifferentLanguage_ThrowsException() {
+
+		$vars = [
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => []
+		];
+
+		NamespaceManager::initCustomNamespace( $vars );
+
+		$vars = [
+			'wgLanguageCode' => 'fr',
+			'wgContentNamespaces' => []
+		];
+
+		$this->expectException( '\SMW\Exception\SiteLanguageChangeException' );
+		NamespaceManager::initCustomNamespace( $vars );
 	}
 
 	public function testNamespacesInitWithEmptySettings() {
