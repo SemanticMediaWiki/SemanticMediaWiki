@@ -34,6 +34,7 @@ class MwHooksHandler {
 		//	'SMW::DataType::initTypes',
 
 		'SMW::Settings::BeforeInitializationComplete',
+		'SMW::GroupPermissions::BeforeInitializationComplete',
 
 		'smwInitProperties',
 		'SMW::Property::initProperties',

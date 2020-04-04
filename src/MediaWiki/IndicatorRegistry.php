@@ -6,6 +6,8 @@ use Title;
 use OutputPage;
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProvider;
+use SMW\Permission\PermissionExaminer;
+use SMW\Permission\PermissionAware;
 
 /**
  * @license GNU GPL v2+
@@ -53,17 +55,24 @@ class IndicatorRegistry {
 	 * @since 3.1
 	 *
 	 * @param Title $title
+	 * @param PermissionExaminer $permissionExaminer
 	 * @param array $options
 	 *
 	 * @return boolean
 	 */
-	public function hasIndicator( Title $title, array $options ) {
+	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
 
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
 
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
+
+			if (
+				$indicatorProvider instanceof PermissionAware &&
+				!$indicatorProvider->hasPermission( $permissionExaminer ) ) {
+				continue;
+			}
 
 			if ( !$indicatorProvider->hasIndicator( $subject, $options ) ) {
 				continue;

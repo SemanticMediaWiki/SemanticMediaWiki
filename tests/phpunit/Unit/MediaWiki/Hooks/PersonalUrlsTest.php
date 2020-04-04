@@ -17,6 +17,7 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 
 	private $skinTemplate;
 	private $jobQueue;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 
@@ -27,13 +28,17 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			PersonalUrls::class,
-			new PersonalUrls( $this->skinTemplate, $this->jobQueue )
+			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer )
 		);
 	}
 
@@ -47,11 +52,16 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getOutput' )
 			->will( $this->returnValue( $output ) );
 
+		$this->permissionExaminer->expects( $this->any() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( true ) );
+
 		$personalUrls = [];
 
 		$instance = new PersonalUrls(
 			$this->skinTemplate,
-			$this->jobQueue
+			$this->jobQueue,
+			$this->permissionExaminer
 		);
 
 		$instance->setOptions(

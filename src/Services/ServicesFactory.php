@@ -31,6 +31,7 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
+use SMW\Permission\PermissionExaminer;
 use SMW\SQLStore\RedirectStore;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
@@ -170,6 +171,17 @@ class ServicesFactory {
 	 */
 	public function create( ...$service ) {
 		return $this->containerBuilder->create( ...$service );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param User|null $user
+	 *
+	 * @return PermissionExaminer
+	 */
+	public function newPermissionExaminer( \User $user = null ) : PermissionExaminer {
+		return new PermissionExaminer( $this->containerBuilder->create( 'PermissionManager' ), $user );
 	}
 
 	/**

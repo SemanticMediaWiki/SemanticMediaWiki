@@ -19,9 +19,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $defaultConfig;
+	private $hookDispatcher;
 
 	protected function setUp() : void {
 		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -103,6 +108,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $config, '' );
 
 		$this->assertNotEmpty(
@@ -122,6 +132,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$config = $this->defaultConfig;
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -153,6 +168,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
@@ -176,6 +196,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -190,6 +215,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$config['wgFooterIcons']['poweredby'] = [];
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
@@ -245,6 +275,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty( $config[$target][$entry] );

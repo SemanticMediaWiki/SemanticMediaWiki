@@ -2,8 +2,7 @@
 
 namespace SMW\Permission;
 
-use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * Administrative class to manage the rights and roles in connection with
@@ -16,7 +15,10 @@ use SMWQueryResult as QueryResult;
  */
 class GroupPermissions {
 
-	const JOBQUEUE_WATCHLIST = 'smw-jobqueuewatchlist';
+	use HookDispatcherAwareTrait;
+
+	const VIEW_JOBQUEUE_WATCHLIST = 'smw-viewjobqueuewatchlist';
+	const VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH = 'smw-viewentityassociatedrevisionmismatch';
 
 	/**
 	 * @since 3.2
@@ -25,20 +27,25 @@ class GroupPermissions {
 	 */
 	public function initPermissions( &$vars ) {
 
-		$roles = [
+		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
 			'smwcurator' => $this->forCuratorRole()
 		];
 
-		foreach ( $roles as $role => $rights ) {
+		/**
+		 * @see HookDispatcher::onGroupPermissionsBeforeInitializationComplete
+		 */
+		$this->hookDispatcher->onGroupPermissionsBeforeInitializationComplete( $groups );
+
+		foreach ( $groups as $group => $rights ) {
 
 			// Rights
-			foreach ($rights as $right ) {
+			foreach ( $rights as $right ) {
 				$vars['wgAvailableRights'][] = $right;
 			}
 
-			if ( !isset( $vars['wgGroupPermissions'][$role] ) ) {
-				$vars['wgGroupPermissions'][$role] = $rights;
+			if ( !isset( $vars['wgGroupPermissions'][$group] ) ) {
+				$vars['wgGroupPermissions'][$group] = $rights;
 			}
 		}
 	}
@@ -54,7 +61,8 @@ class GroupPermissions {
 			'smw-patternedit' => true,
 			'smw-schemaedit' => true,
 			'smw-pageedit' => true,
-			self::JOBQUEUE_WATCHLIST => true
+			self::VIEW_JOBQUEUE_WATCHLIST => true,
+			self::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH => true
 		];
 	}
 

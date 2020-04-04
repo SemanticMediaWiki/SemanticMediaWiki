@@ -18,11 +18,30 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
+	private $hookDispatcher;
+
+	protected function setUp() : void {
+		parent::setUp();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testInitPermissions() {
+
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onGroupPermissionsBeforeInitializationComplete' );
 
 		$vars = [];
 
-		( new GroupPermissions() )->initPermissions( $vars );
+		$instance =  new GroupPermissions();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->initPermissions( $vars );
 
 		$this->assertArrayHasKey(
 			'smwadministrator',

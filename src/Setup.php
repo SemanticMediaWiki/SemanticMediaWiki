@@ -6,6 +6,7 @@ use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
 use SMW\Permission\GroupPermissions;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * Extension setup and registration
@@ -16,6 +17,8 @@ use SMW\Permission\GroupPermissions;
  * @author mwjames
  */
 final class Setup {
+
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * Describes the minimum requirements for the database version that Semantic
@@ -337,7 +340,13 @@ final class Setup {
 			return;
 		}
 
-		( new GroupPermissions() )->initPermissions( $vars );
+		$groupPermissions = new GroupPermissions();
+
+		$groupPermissions->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$groupPermissions->initPermissions( $vars );
 
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {

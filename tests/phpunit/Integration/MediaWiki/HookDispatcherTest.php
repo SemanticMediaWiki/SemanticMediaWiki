@@ -39,10 +39,6 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', function( &$configuration ) {
 			$configuration = [ 'Foo' ];
 		} );
@@ -52,6 +48,24 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			[ 'Foo' ],
 			$configuration
+		);
+	}
+
+	public function testOnGroupPermissionsBeforeInitializationComplete() {
+
+		$permissions = [];
+
+		$hookDispatcher = new HookDispatcher();
+
+		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', function( &$permissions ) {
+			$permissions = [ 'Foo' ];
+		} );
+
+		$hookDispatcher->onGroupPermissionsBeforeInitializationComplete( $permissions );
+
+		$this->assertEquals(
+			[ 'Foo' ],
+			$permissions
 		);
 	}
 
