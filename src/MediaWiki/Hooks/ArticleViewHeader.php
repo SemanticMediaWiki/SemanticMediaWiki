@@ -10,6 +10,7 @@ use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\DependencyValidator;
+use SMW\NamespaceExaminer;
 use SMW\Message;
 use SMW\Store;
 use Title;
@@ -35,6 +36,11 @@ class ArticleViewHeader implements HookListener {
 	private $store;
 
 	/**
+	 * @var NamespaceExaminer
+	 */
+	private $namespaceExaminer;
+
+	/**
 	 * @var DependencyValidator
 	 */
 	private $dependencyValidator;
@@ -43,10 +49,12 @@ class ArticleViewHeader implements HookListener {
 	 * @since 3.0
 	 *
 	 * @param Store $store
+	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param DependencyValidator $dependencyLinksValidator
 	 */
-	public function __construct( Store $store, DependencyValidator $dependencyValidator  ) {
+	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator  ) {
 		$this->store = $store;
+		$this->namespaceExaminer = $namespaceExaminer;
 		$this->dependencyValidator = $dependencyValidator;
 	}
 
@@ -60,6 +68,11 @@ class ArticleViewHeader implements HookListener {
 	public function process( Page $page, &$outputDone, &$useParserCache ) {
 
 		$title = $page->getTitle();
+
+		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+			return true;
+		}
+
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		// Preload data most likely to be used during a request hereby providing

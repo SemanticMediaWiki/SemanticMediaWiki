@@ -670,6 +670,7 @@ class Hooks {
 
 		$articleViewHeader = new ArticleViewHeader(
 			$applicationFactory->getStore(),
+			$applicationFactory->getNamespaceExaminer(),
 			$dependencyValidator
 		);
 
