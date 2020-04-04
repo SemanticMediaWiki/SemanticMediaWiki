@@ -31,7 +31,6 @@
         </whitelist>
     </filter>
     <php>
-       <var name="smwgSemanticsEnabled" value="true"/>
        <var name="smwgEnabledFulltextSearch" value="false"/>
        <var name="benchmarkPageCopyCount" value="200"/>
        <var name="benchmarkPageEditRepetitionCount" value="2"/>

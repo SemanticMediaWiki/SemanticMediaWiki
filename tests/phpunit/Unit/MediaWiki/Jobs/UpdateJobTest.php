@@ -31,7 +31,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnableUpdateJobs' => false,
 			'smwgEnabledDeferredUpdate' => false,
 			'smwgDVFeatures' => '',
-			'smwgSemanticsEnabled' => false
 		] );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )

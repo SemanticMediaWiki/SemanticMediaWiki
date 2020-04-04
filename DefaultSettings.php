@@ -109,17 +109,6 @@ return [
 	##
 
 	###
-	# Semantic MediaWiki's operational state
-	#
-	# It is expected that enableSemantics() is used to enable SMW otherwise it is
-	# disabled by default. disableSemantics() will also set the state to disabled.
-	#
-	# @since 2.4
-	##
-	'smwgSemanticsEnabled' => false,
-	##
-
-	###
 	# Allows to ignore the check for whether the extension was correctly enabled
 	# or not. It will display an error message on `Special:Version` in case it was
 	# not.

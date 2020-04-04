@@ -219,10 +219,6 @@ abstract class Store implements QueryEngine {
 	 */
 	public function updateData( SemanticData $semanticData ) {
 
-		if ( !$this->getOption( 'smwgSemanticsEnabled' ) ) {
-			return;
-		}
-
 		Timer::start( __METHOD__ );
 
 		$applicationFactory = ApplicationFactory::getInstance();

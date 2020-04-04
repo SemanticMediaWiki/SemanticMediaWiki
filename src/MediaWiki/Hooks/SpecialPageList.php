@@ -28,7 +28,7 @@ class SpecialPageList implements HookListener {
 	 */
 	public function process( array &$specialPages ) {
 
-		if ( $this->getOption( 'smwgSemanticsEnabled' ) === false ) {
+		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) === false ) {
 			return;
 		}
 

@@ -337,7 +337,6 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $documentCreator ) );
 
 		$instance = new ElasticStore();
-		$instance->setOption( 'smwgSemanticsEnabled', true );
 
 		$instance->setConnectionManager( $connectionManager );
 		$instance->setElasticFactory( $this->elasticFactory );

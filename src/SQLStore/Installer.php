@@ -6,7 +6,6 @@ use Hooks;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\CompatibilityMode;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
@@ -144,13 +143,6 @@ class Installer implements MessageReporter {
 
 		if ( $verbose instanceof Options ) {
 			$this->options = $verbose;
-		}
-
-		// If for some reason the enableSemantics was not yet enabled
-		// still allow to run the tables create in order for the
-		// setup to be completed
-		if ( CompatibilityMode::extensionNotEnabled() ) {
-			CompatibilityMode::enableTemporaryCliUpdateMode();
 		}
 
 		$this->cliMsgFormatter = new CliMsgFormatter();

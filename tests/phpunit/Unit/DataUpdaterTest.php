@@ -474,7 +474,6 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'changeTitle' );
 
-		$store->setOption( 'smwgSemanticsEnabled', true );
 		$store->setOption( 'smwgAutoRefreshSubject', true );
 
 		$store->setLogger( $this->spyLogger );

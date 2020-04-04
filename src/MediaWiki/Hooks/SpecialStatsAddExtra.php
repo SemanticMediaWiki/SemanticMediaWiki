@@ -97,7 +97,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 */
 	public function process( array &$extraStats ) {
 
-		if ( !$this->getOption( 'smwgSemanticsEnabled', false ) ) {
+		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
 

@@ -71,7 +71,7 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOptions(
 			[
-				'smwgSemanticsEnabled' => false
+				'SMW_EXTENSION_LOADED' => false
 			]
 		);
 
