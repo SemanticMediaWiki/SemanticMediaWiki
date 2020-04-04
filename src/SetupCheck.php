@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Utils\TemplateEngine;
+use SMW\Utils\Logo;
 use SMW\Localizer\LocalMessageProvider;
 use SMW\Exception\FileNotReadableException;
 use SMW\Exception\JSONFileParseException;
@@ -524,6 +525,7 @@ class SetupCheck {
 	private function buildHTML( array $error ) {
 
 		$args = [
+			'logo' => Logo::get( 'small' ),
 			'title' => $error['title'] ?? '',
 			'indicator' => $error['indicator_title'] ?? '',
 			'content' => $error['content'] ?? '',

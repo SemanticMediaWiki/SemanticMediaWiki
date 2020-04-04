@@ -136,7 +136,7 @@
 <body>
 <div class="nav sticky" style=" border-bottom: 4px solid {{borderColor}};">
 <span class="nav-info" style="background-color:{{borderColor}}">{{indicator}}</span>
-<h1 style="color:#222;margin-left:18px;padding-top:20px;">{{title}}</h1></div>
+<h1 style="color:#222;margin-left:18px;padding-top:20px;"><img style='margin-top: 2px;margin-right:10px;margin-left:2px;float:left;' src='{{logo}}' height='25' width='30'>{{title}}</h1></div>
 <div class="content">{{content}}</div>
 </body>
 </html>
