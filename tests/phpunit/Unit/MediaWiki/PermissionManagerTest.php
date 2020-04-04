@@ -2,538 +2,129 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use ParserOutput;
 use SMW\MediaWiki\PermissionManager;
-use Title;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\PermissionManager
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since  2.4
+ * @since   3.2
  *
  * @author mwjames
  */
 class PermissionManagerTest extends \PHPUnit_Framework_TestCase {
 
-	private $protectionValidator;
-	private $permissionExaminer;
-
-	protected function setUp() : void {
-		parent::setUp();
-
-		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\PermissionExaminer' )
-			->disableOriginalConstructor()
-			->getMock();
-	}
+	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			PermissionManager::class,
-			new PermissionManager( $this->protectionValidator, $this->permissionExaminer )
+			new PermissionManager()
 		);
 	}
 
-	public function testGrantPermissionToMainNamespace() {
+	public function testUserCan_Title() {
 
-		$title = Title::newFromText( 'Foo', NS_MAIN );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEmpty(
-			$instance->getErrors()
-		);
-	}
-
-	/**
-	 * @dataProvider titleProvider
-	 */
-	public function testToReturnFalseOnMwNamespacePermissionCheck( $title, $permission, $action, $expected ) {
-
-		$this->protectionValidator ->expects( $this->any() )
-			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'userHasRight' )
-			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( $permission ) )
-			->will( $this->returnValue( false ) );
-
-		$result = [];
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, $action )
-		);
-
-		$this->assertEquals(
-			$expected,
-			$instance->getErrors()
-		);
-	}
-
-	public function testNoUserPermissionOnNamespaceWithEditPermissionCheck() {
-
-		$editProtectionRight = 'Foo';
+		if ( method_exists( 'MediaWiki\Permissions\PermissionManager', 'userCan' ) ) {
+			$this->markTestSkipped( 'Using the PermissionManager::userCan' );
+		}
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
+			->method(  'userCan' )
 			->will( $this->returnValue( true ) );
 
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+		$instance = new PermissionManager();
 
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'hasProtection' )
-			->will( $this->returnValue( true ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( $editProtectionRight ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'hasEditProtectionOnNamespace' )
-			->will( $this->returnValue( true ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'userHasRight' )
-			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( $editProtectionRight ) )
-			->will( $this->returnValue( false ) );
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[ [ 'smw-edit-protection', $editProtectionRight ] ],
-			$instance->getErrors()
+		$this->assertInternalType(
+			'bool',
+			$instance->userCan( 'foo', null, $title )
 		);
 	}
 
-	public function testFalseEditProtectionRightToNeverCheckPermissionOnNonMwNamespace() {
+	public function testUserCan_PermissionManager() {
 
-		$editProtectionRight = false;
+		if ( !method_exists( 'MediaWiki\Permissions\PermissionManager', 'userCan' ) ) {
+			$this->markTestSkipped( 'PermissionManager::userCan is unknown' );
+		}
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
+		$permissionManager = $this->getMockBuilder( '\MediaWiki\Permissions\PermissionManager' )
+			->disableOriginalConstructor()
+			->getMock();
 
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+		$permissionManager->expects( $this->any() )
+			->method(  'userCan' )
+			->will( $this->returnValue( true ) );
 
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
+		$instance = new PermissionManager(
+			$permissionManager
+		);
 
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( $editProtectionRight ) );
+		$this->assertInternalType(
+			'bool',
+			$instance->userCan( 'foo', null, $title )
+		);
+	}
+
+	public function testUserHasRight_User() {
+
+		if ( method_exists( 'MediaWiki\Permissions\PermissionManager', 'userHasRight' ) ) {
+			$this->markTestSkipped( 'Using PermissionManager::userHasRight' );
+		}
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
+		$user->expects( $this->any() )
+			->method(  'isAllowed' )
+			->will( $this->returnValue( true ) );
 
-		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit' )
+		$instance = new PermissionManager();
+
+		$this->assertInternalType(
+			'bool',
+			$instance->userHasRight( $user, 'foo' )
 		);
 	}
 
-	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck() {
+	public function testUserHasRight_PermissionManager() {
 
-		$createProtectionRight = 'Foo';
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( false ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( $createProtectionRight ) );
+		if ( !method_exists( 'MediaWiki\Permissions\PermissionManager', 'userHasRight' ) ) {
+			$this->markTestSkipped( 'PermissionManager::userHasRight is unknown' );
+		}
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[ [ 'smw-create-protection', null, 'Foo' ] ],
-			$instance->getErrors()
-		);
-	}
-
-	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck_TitleExists() {
-
-		$createProtectionRight = 'Foo';
-
-		$title = $this->getMockBuilder( '\Title' )
+		$permissionManager = $this->getMockBuilder( '\MediaWiki\Permissions\PermissionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_PROPERTY ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( $createProtectionRight ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[ [ 'smw-create-protection-exists', null, 'Foo' ] ],
-			$instance->getErrors()
-		);
-	}
-
-	public function testNoUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'hasChangePropagationProtection' )
-			->will( $this->returnValue( true ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[
-				[ 'smw-change-propagation-protection' ]
-			],
-			$instance->getErrors()
-		);
-	}
-
-	public function testUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
-
-		$this->protectionValidator->expects( $this->any() )
-			->method( 'hasChangePropagationProtection' )
-			->will( $this->returnValue( false ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertTrue(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[],
-			$instance->getErrors()
-		);
-	}
-
-	public function testNoUserEditPermissionOnMissingRight_SchemaNamespace() {
-
-		$editProtectionRight = 'Foo';
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'userHasRight' )
-			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( false ) );
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
-		);
-
-		$this->assertEquals(
-			[
-				[ 'smw-schema-namespace-edit-protection', 'smw-schemaedit' ]
-			],
-			$instance->getErrors()
-		);
-	}
-
-	public function testEditPermissionOnImportPerformer_SchemaNamespace() {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'userHasRight' )
-			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( true ) );
-
-		$this->protectionValidator->expects( $this->once() )
-			->method( 'isClassifiedAsImportPerformerProtected' )
+		$permissionManager->expects( $this->any() )
+			->method(  'userHasRight' )
 			->will( $this->returnValue( true ) );
 
 		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
+			$permissionManager
 		);
 
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'edit' )
+		$this->assertInternalType(
+			'bool',
+			$instance->userHasRight( $user, 'foo' )
 		);
-
-		$this->assertEquals(
-			[
-				[ 'smw-schema-namespace-edit-protection-by-import-performer' ]
-			],
-			$instance->getErrors()
-		);
-	}
-
-	public function testNoEditcontentmodelPermissionForAnyUser_SchemaNamespace() {
-
-		$editProtectionRight = 'Foo';
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$title->expects( $this->any() )
-			->method( 'getDBKey' )
-			->will( $this->returnValue( 'PermissionTest' ) );
-
-		$title->expects( $this->any() )
-			->method( 'exists' )
-			->will( $this->returnValue( true ) );
-
-		$title->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( SMW_NS_SCHEMA ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->permissionExaminer->expects( $this->once() )
-			->method( 'userHasRight' )
-			->with(
-				$this->equalTo( $user ),
-				$this->equalTo( 'smw-schemaedit' ) )
-			->will( $this->returnValue( true ) );
-
-		$instance = new PermissionManager(
-			$this->protectionValidator,
-			$this->permissionExaminer
-		);
-
-		$this->assertFalse(
-			$instance->hasUserPermission( $title, $user, 'editcontentmodel' )
-		);
-
-		$this->assertEquals(
-			[
-				[ 'smw-schema-namespace-editcontentmodel-disallowed' ]
-			],
-			$instance->getErrors()
-		);
-	}
-
-	public function titleProvider() {
-
-		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
-			'smw-patternedit',
-			'edit',
-			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
-			'smw-patternedit',
-			'delete',
-			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
-		];
-
-		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
-			'smw-patternedit',
-			'move',
-			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
-		];
-
-		return $provider;
 	}
 
 }

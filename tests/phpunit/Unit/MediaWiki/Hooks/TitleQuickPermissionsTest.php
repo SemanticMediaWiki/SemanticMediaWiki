@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
 class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $permissionManager;
+	private $permissionsExaminer;
 	private $namespaceExaminer;
 	private $title;
 	private $user;
@@ -28,7 +28,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
+		$this->permissionsExaminer = $this->getMockBuilder( '\SMW\MediaWiki\PermissionsExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			TitleQuickPermissions::class,
-			new TitleQuickPermissions( $this->namespaceExaminer, $this->permissionManager )
+			new TitleQuickPermissions( $this->namespaceExaminer, $this->permissionsExaminer )
 		);
 	}
 
@@ -64,12 +64,15 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
 
-		$this->permissionManager->expects( $this->once() )
-			->method( 'checkQuickPermission' );
+		$this->permissionsExaminer->expects( $this->once() )
+			->method( 'checkPermissionFor' );
+
+		$this->permissionsExaminer->expects( $this->once() )
+			->method( 'getErrors' );
 
 		$instance = new TitleQuickPermissions(
 			$this->namespaceExaminer,
-			$this->permissionManager
+			$this->permissionsExaminer
 		);
 
 		$error = '';
@@ -83,12 +86,12 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
 
-		$this->permissionManager->expects( $this->never() )
-			->method( 'checkQuickPermission' );
+		$this->permissionsExaminer->expects( $this->never() )
+			->method( 'checkPermissionFor' );
 
 		$instance = new TitleQuickPermissions(
 			$this->namespaceExaminer,
-			$this->permissionManager
+			$this->permissionsExaminer
 		);
 
 		$error = '';
