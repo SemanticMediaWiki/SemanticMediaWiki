@@ -45,6 +45,11 @@ class PropertyTableIdReferenceDisposer {
 	private $redirectRemoval = false;
 
 	/**
+	 * @var boolean
+	 */
+	private $fulltextTableUsage = false;
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -61,6 +66,15 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function setRedirectRemoval( $redirectRemoval ) {
 		$this->redirectRemoval = $redirectRemoval;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param boolean $fulltextTableUsage
+	 */
+	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
+		$this->fulltextTableUsage = $fulltextTableUsage;
 	}
 
 	/**
@@ -260,14 +274,22 @@ class PropertyTableIdReferenceDisposer {
 			__METHOD__
 		);
 
+		$tableExists = false;
+
 		// Avoid Query: DELETE FROM `smw_ft_search` WHERE s_id = '92575'
 		// Error: 126 Incorrect key file for table '.\mw@002d25@002d01\smw_ft_search.MYI'; ...
 		try {
-			if ( $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE ) ) {
-				$this->connection->delete( SQLStore::FT_SEARCH_TABLE, [ 's_id' => $id ], __METHOD__ );
+			if ( $this->fulltextTableUsage ) {
+				$tableExists = $this->connection->tableExists( SQLStore::FT_SEARCH_TABLE );
 			}
 		} catch ( \DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
+		} catch ( \Wikimedia\Rdbms\DBQueryError $e ) {
+			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
+		}
+
+		if ( $tableExists ) {
+			$this->connection->delete( SQLStore::FT_SEARCH_TABLE, [ 's_id' => $id ], __METHOD__ );
 		}
 	}
 

@@ -81,6 +81,12 @@ class SemanticMediaWiki {
 			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
 		}
 
+		// Only allow to set the loading state while being part of the test
+		// environment
+		if ( defined( 'MW_PHPUNIT_TEST' )  && !defined( 'SMW_EXTENSION_LOADED' ) ) {
+			define( 'SMW_EXTENSION_LOADED', true );
+		}
+
 		// Release the check after the extension was successfully loaded
 		Setup::releaseExtensionCheck( $GLOBALS );
 

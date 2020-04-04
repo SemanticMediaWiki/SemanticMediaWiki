@@ -1016,13 +1016,19 @@ class SQLStoreFactory {
 	 */
 	public function newPropertyTableIdReferenceDisposer() {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			$this->store,
 			$this->getIteratorFactory()
 		);
 
 		$propertyTableIdReferenceDisposer->setEventDispatcher(
-			ApplicationFactory::getInstance()->getEventDispatcher()
+			$applicationFactory->getEventDispatcher()
+		);
+
+		$propertyTableIdReferenceDisposer->setFulltextTableUsage(
+			$applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' )
 		);
 
 		return $propertyTableIdReferenceDisposer;
