@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Exception\SiteLanguageChangeException;
+use SMW\Exception\NamespaceIndexChangeException;
 
 /**
  * @license GNU GPL v2+
@@ -15,6 +16,12 @@ use SMW\Exception\SiteLanguageChangeException;
 class NamespaceManager {
 
 	/**
+	 * Defines the default namespace index used as offset for building Semantic
+	 * MediaWiki's specific namespace numbers.
+	 */
+	const DEFAULT_NAMESPACEINDEX = 100;
+
+	/**
 	 * @var LocalLanguage
 	 */
 	private $LocalLanguage;
@@ -23,6 +30,11 @@ class NamespaceManager {
 	 * @var string
 	 */
 	private static $initLanguageCode = '';
+
+	/**
+	 * @var int|null
+	 */
+	private static $initNamespaceIndex = null;
 
 	/**
 	 * @since 1.9
@@ -57,6 +69,7 @@ class NamespaceManager {
 	 */
 	public static function clear() {
 		self::$initLanguageCode = '';
+		self::$initNamespaceIndex = null;
 	}
 
 	/**
@@ -162,9 +175,7 @@ class NamespaceManager {
 
 		$instance = new self( $localLanguage );
 
-		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
-			$vars['smwgNamespaceIndex'] = 100;
-		}
+		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
 
 		$defaultSettings = [
 			'wgNamespaceAliases',
@@ -185,7 +196,6 @@ class NamespaceManager {
 			};
 		}
 
-
 		$localLanguage = $instance->getLocalLanguage(
 			$instance->getLanguageCode( $vars )
 		);
@@ -200,6 +210,19 @@ class NamespaceManager {
 		$instance->addNamespaceSettings( $vars );
 
 		return $instance;
+	}
+
+	private function getNamespaceIndex( $vars ) {
+
+		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
+			return self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
+		} elseif ( self::$initNamespaceIndex === null ) {
+			return self::$initNamespaceIndex = $vars['smwgNamespaceIndex'];
+		} elseif ( self::$initNamespaceIndex !== null && self::$initNamespaceIndex === $vars['smwgNamespaceIndex'] ) {
+			return self::$initNamespaceIndex;
+		}
+
+		throw new NamespaceIndexChangeException( self::$initNamespaceIndex, $vars['smwgNamespaceIndex'] );
 	}
 
 	private function getLanguageCode( $vars ) {
