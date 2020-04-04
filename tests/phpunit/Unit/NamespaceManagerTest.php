@@ -166,6 +166,45 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		NamespaceManager::initCustomNamespace( $vars );
 	}
 
+	public function testInitCustomNamespaceWithDefaultDifferentNamespaceIndex_ThrowsException() {
+
+		$vars = [
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => []
+		];
+
+		NamespaceManager::initCustomNamespace( $vars );
+
+		$vars = [
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => [],
+			'smwgNamespaceIndex' => 2001
+		];
+
+		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
+		NamespaceManager::initCustomNamespace( $vars );
+	}
+
+	public function testInitCustomNamespaceWithPresetDifferentNamespaceIndex_ThrowsException() {
+
+		$vars = [
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => [],
+			'smwgNamespaceIndex' => 2000
+		];
+
+		NamespaceManager::initCustomNamespace( $vars );
+
+		$vars = [
+			'wgLanguageCode' => 'en',
+			'wgContentNamespaces' => [],
+			'smwgNamespaceIndex' => 2001
+		];
+
+		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
+		NamespaceManager::initCustomNamespace( $vars );
+	}
+
 	public function testNamespacesInitWithEmptySettings() {
 
 		$vars = $this->default + [
