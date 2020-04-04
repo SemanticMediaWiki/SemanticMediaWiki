@@ -46,6 +46,10 @@ class DeclarationExaminerFactory {
 			$semanticData
 		);
 
+		$commonExaminer->setNamespacesWithSemanticLinks(
+			$settings->get( 'smwgNamespacesWithSemanticLinks' )
+		);
+
 		$commonExaminer->setPropertyReservedNameList(
 			$settings->get( 'smwgPropertyReservedNameList' )
 		);

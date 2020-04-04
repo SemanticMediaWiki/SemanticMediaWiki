@@ -53,6 +53,26 @@ class CommonExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCheckNamespace() {
+
+		$instance = new CommonExaminer(
+			$this->store
+		);
+
+		$instance->setNamespacesWithSemanticLinks( [] );
+
+		$dataItemFactory = new DataItemFactory();
+
+		$instance->check(
+			$dataItemFactory->newDIProperty( 'Bar' )
+		);
+
+		$this->assertContains(
+			'["error","smw-property-namespace-disabled"]',
+			$instance->getMessagesAsString()
+		);
+	}
+
 	public function testCheckReservedName() {
 
 		$instance = new CommonExaminer(
