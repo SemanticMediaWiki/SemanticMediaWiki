@@ -98,7 +98,7 @@ final class Setup {
 	 * @since 3.0
 	 */
 	public static function isEnabled() {
-		return defined( 'SMW_VERSION' ) && $GLOBALS['smwgSemanticsEnabled'];
+		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
 	}
 
 	/**
@@ -145,10 +145,6 @@ final class Setup {
 
 		$this->initMessageCallbackHandler();
 		$this->addDefaultConfigurations( $vars, $rootDir );
-
-		if ( CompatibilityMode::extensionNotEnabled() ) {
-			CompatibilityMode::disableSemantics();
-		}
 
 		$this->registerJobClasses( $vars );
 		$this->registerPermissions( $vars );
@@ -336,7 +332,7 @@ final class Setup {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		if ( !$settings->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 
@@ -389,9 +385,7 @@ final class Setup {
 	 */
 	private function registerFooterIcon( &$vars, $path ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		if ( !$applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' ) ) {
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 

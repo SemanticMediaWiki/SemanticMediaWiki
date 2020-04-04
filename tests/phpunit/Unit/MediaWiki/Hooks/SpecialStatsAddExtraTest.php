@@ -53,7 +53,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOptions(
 			[
-				'smwgSemanticsEnabled' => true
+				'SMW_EXTENSION_LOADED' => true
 			]
 		);
 
@@ -99,7 +99,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOptions(
 			[
-				'smwgSemanticsEnabled' => true,
+				'SMW_EXTENSION_LOADED' => true,
 				'plain.msg_key' => true,
 				'no.tooltip' => true
 			]

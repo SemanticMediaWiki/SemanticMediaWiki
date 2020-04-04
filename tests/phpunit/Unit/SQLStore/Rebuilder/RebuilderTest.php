@@ -28,7 +28,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment(
 			[
-				'smwgSemanticsEnabled' => true,
 				'smwgAutoRefreshSubject' => true,
 				'smwgCacheType' => 'hash',
 				'smwgEnableUpdateJobs' => false,

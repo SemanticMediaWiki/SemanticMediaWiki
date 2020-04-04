@@ -70,8 +70,8 @@ class PageFactory {
 		);
 
 		$propertyPage->setOption(
-			'smwgSemanticsEnabled',
-			$settings->get( 'smwgSemanticsEnabled' )
+			'SMW_EXTENSION_LOADED',
+			defined( 'SMW_EXTENSION_LOADED' )
 		);
 
 		$propertyPage->setOption(
@@ -104,9 +104,9 @@ class PageFactory {
 		$conceptPage = new ConceptPage( $title );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$conceptPage->setOption(
-			'smwgSemanticsEnabled',
-			$settings->get( 'smwgSemanticsEnabled' )
+		$propertyPage->setOption(
+			'SMW_EXTENSION_LOADED',
+			defined( 'SMW_EXTENSION_LOADED' )
 		);
 
 		$conceptPage->setOption(

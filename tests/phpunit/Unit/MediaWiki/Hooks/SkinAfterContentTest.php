@@ -28,7 +28,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 		$settings = Settings::newFromArray( [
 			'smwgFactboxFeatures'  => SMW_FACTBOX_CACHE,
 			'smwgMainCacheType'        => 'hash',
-			'smwgSemanticsEnabled' => true,
 			'smwgShowFactboxEdit' => false,
 			'smwgShowFactbox' => false
 		] );

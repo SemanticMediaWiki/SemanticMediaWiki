@@ -160,9 +160,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function testInitExtension() {
 
-		$vars = [
-			'smwgSemanticsEnabled' => true
-		];
+		$vars = [];
 
 		Hooks::registerEarly( $vars );
 
@@ -905,8 +903,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
 			->will( $this->returnValue( $idTable ) );
-
-		$store->getOptions()->set( 'smwgSemanticsEnabled', false );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

@@ -209,13 +209,10 @@ class Hooks {
 		 */
 		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
 
-			$applicationFactory = ApplicationFactory::getInstance();
-			$settings = $applicationFactory->getSettings();
-
 			$specialPageList = new SpecialPageList();
 			$specialPageList->setOptions(
 				[
-					'smwgSemanticsEnabled' => $settings->get( 'smwgSemanticsEnabled' )
+					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
 				]
 			);
 
@@ -232,13 +229,10 @@ class Hooks {
 		 */
 		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $moduleManager ) {
 
-			$applicationFactory = ApplicationFactory::getInstance();
-			$settings = $applicationFactory->getSettings();
-
 			$apiModuleManager = new ApiModuleManager();
 			$apiModuleManager->setOptions(
 				[
-					'smwgSemanticsEnabled' => $settings->get( 'smwgSemanticsEnabled' )
+					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
 				]
 			);
 
@@ -868,7 +862,7 @@ class Hooks {
 
 		$specialStatsAddExtra->setOptions(
 			[
-				'smwgSemanticsEnabled' => $applicationFactory->getSettings()->get( 'smwgSemanticsEnabled' )
+				'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
 			]
 		);
 

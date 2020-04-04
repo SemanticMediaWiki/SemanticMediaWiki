@@ -22,7 +22,7 @@ class ApiModuleManager implements HookListener {
 	 */
 	public function process( \ApiModuleManager $apiModuleManager ) {
 
-		if ( $this->getOption( 'smwgSemanticsEnabled' ) === false ) {
+		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) === false ) {
 			return;
 		}
 

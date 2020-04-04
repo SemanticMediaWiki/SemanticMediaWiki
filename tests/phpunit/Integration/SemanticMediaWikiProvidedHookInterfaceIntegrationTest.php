@@ -553,7 +553,6 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'getPropertyTables' )
 			->will( $this->returnValue( [] ) );
 
-		$store->setOption( 'smwgSemanticsEnabled', true );
 		$store->setOption( 'smwgAutoRefreshSubject', true );
 
 		$store->setLogger( $this->spyLogger );
