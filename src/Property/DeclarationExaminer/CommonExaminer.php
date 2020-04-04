@@ -29,6 +29,11 @@ class CommonExaminer extends DeclarationExaminer {
 	/**
 	 * @var array
 	 */
+	private $namespacesWithSemanticLinks = [];
+
+	/**
+	 * @var array
+	 */
 	private $propertyReservedNameList = [];
 
 	/**
@@ -40,6 +45,15 @@ class CommonExaminer extends DeclarationExaminer {
 	public function __construct( Store $store, SemanticData $semanticData = null ) {
 		$this->store = $store;
 		$this->semanticData = $semanticData;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $namespacesWithSemanticLinks
+	 */
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
 	/**
@@ -81,11 +95,23 @@ class CommonExaminer extends DeclarationExaminer {
 
 		$propertyName = $dataValue->getFormattedLabel();
 
+		$this->checkNamespace();
 		$this->checkReservedName( $propertyName );
 		$this->checkUniqueness( $property );
 		$this->checkErrorMessages( $property );
 		$this->checkTypeDeclaration();
 		$this->checkCommonMessage( $propertyName );
+	}
+
+	private function checkNamespace() {
+
+		if (
+			isset( $this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) &&
+			$this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) {
+			return;
+		}
+
+		$this->messages[] = [ 'error', 'smw-property-namespace-disabled' ];
 	}
 
 	private function checkReservedName( $propertyName ) {
