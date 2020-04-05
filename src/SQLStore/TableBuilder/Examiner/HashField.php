@@ -4,7 +4,7 @@ namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
-use SMW\Maintenance\PopulateHashField;
+use SMW\Maintenance\populateHashField as PopulateHashField;
 use SMW\Utils\CliMsgFormatter;
 
 /**
