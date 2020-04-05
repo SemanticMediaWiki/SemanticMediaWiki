@@ -17,10 +17,15 @@ use SMW\DIWikiPage;
 class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	private $indicatorProvider;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 
 		$this->indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -58,7 +63,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->indicatorProvider );
 
-		$instance->hasIndicator( $title, [] );
+		$instance->hasIndicator( $title, $this->permissionExaminer, [] );
 	}
 
 	public function testAttachIndicators() {
@@ -74,4 +79,52 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance->attachIndicators( $outputPage );
 	}
 
+	public function testNoPermissionOnIndicatorProvider() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new IndicatorRegistry();
+		$instance->addIndicatorProvider( $this->newPermissionAwareIndicatorProvider() );
+
+		$instance->hasIndicator( $title, $this->permissionExaminer, [] );
+	}
+
+	private function newPermissionAwareIndicatorProvider() {
+		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\Permission\PermissionAware {
+
+			public function getName() : string {
+				return '';
+			}
+
+			public function getInlineStyle() {
+				return '';
+			}
+
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+				return false;
+			}
+
+			public function getModules() {
+				return [];
+			}
+
+			public function getIndicators() {
+				return [];
+			}
+
+			public function hasPermission( \SMW\Permission\PermissionExaminer $permissionExaminer ) : bool {
+				return $permissionExaminer->hasPermissionOf( 'Foo' );
+			}
+		};
+	}
 }

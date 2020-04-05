@@ -1,6 +1,7 @@
 <?php
 
 use SMW\NamespaceManager;
+use SMW\Services\ServicesFactory;
 use SMW\Setup;
 use SMW\SetupCheck;
 
@@ -111,6 +112,11 @@ class SemanticMediaWiki {
 		$namespace->init( $GLOBALS );
 
 		$setup = new Setup();
+
+		$setup->setHookDispatcher(
+			ServicesFactory::getInstance()->getHookDispatcher()
+		);
+
 		$setup->init( $GLOBALS, __DIR__ );
 	}
 

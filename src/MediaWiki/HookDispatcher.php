@@ -82,6 +82,16 @@ class HookDispatcher {
 	}
 
 	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.grouppermissions.beforeinitializationcomplete.md
+	 * @since 3.2
+	 *
+	 * @param array &$grouppermissions
+	 */
+	public function onGroupPermissionsBeforeInitializationComplete( array &$grouppermissions ) {
+		Hooks::run( 'SMW::GroupPermissions::BeforeInitializationComplete', [ &$grouppermissions ] );
+	}
+
+	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.getpreferences.md
 	 * @since 3.2
 	 *

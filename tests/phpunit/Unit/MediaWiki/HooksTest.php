@@ -123,6 +123,12 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'ParserCache', $parserCache );
+
+		$permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PermissionManager', $permissionManager );
 	}
 
 	protected function tearDown() : void {

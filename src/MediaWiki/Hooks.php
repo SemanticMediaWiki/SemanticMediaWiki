@@ -413,8 +413,13 @@ class Hooks {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		$permissionExaminer = $applicationFactory->newPermissionExaminer(
+			$outputPage->getUser()
+		);
+
 		$outputPageParserOutput = new OutputPageParserOutput(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$permissionExaminer
 		);
 
 		$outputPageParserOutput->setIndicatorRegistry(
@@ -922,7 +927,13 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$getPreferences = new GetPreferences();
+		$permissionExaminer = $applicationFactory->newPermissionExaminer(
+			$user
+		);
+
+		$getPreferences = new GetPreferences(
+			$permissionExaminer
+		);
 
 		$getPreferences->setHookDispatcher(
 			$applicationFactory->getHookDispatcher()
@@ -931,8 +942,8 @@ class Hooks {
 		$getPreferences->setOptions(
 			[
 				'smwgEnabledEditPageHelp' => $settings->get( 'smwgEnabledEditPageHelp' ),
-				'wgSearchType' => $GLOBALS['wgSearchType'],
-				'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' )
+				'smwgJobQueueWatchlist' => $settings->get( 'smwgJobQueueWatchlist' ),
+				'wgSearchType' => $GLOBALS['wgSearchType']
 			]
 		);
 
@@ -947,18 +958,22 @@ class Hooks {
 	public function onPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$user = $skinTemplate->getUser();
+
+		$permissionExaminer = $applicationFactory->newPermissionExaminer(
+			$user
+		);
 
 		$personalUrls = new PersonalUrls(
 			$skinTemplate,
-			$applicationFactory->getJobQueue()
+			$applicationFactory->getJobQueue(),
+			$permissionExaminer
 		);
-
-		$user = $skinTemplate->getUser();
 
 		$personalUrls->setOptions(
 			[
 				'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' ),
-				'prefs-jobqueue-watchlist' => $user->getOption( 'smw-prefs-general-options-jobqueue-watchlist' )
+				'prefs-jobqueue-watchlist' => $user->getOption( GetPreferences::VIEW_JOBQUEUE_WATCHLIST )
 			]
 		);
 

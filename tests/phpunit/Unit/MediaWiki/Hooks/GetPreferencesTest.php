@@ -16,11 +16,16 @@ use SMW\MediaWiki\Hooks\GetPreferences;
 class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -35,7 +40,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences()
+			new GetPreferences( $this->permissionExaminer )
 		);
 	}
 
@@ -44,13 +49,19 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $key ) {
 
+		$this->permissionExaminer->expects( $this->any() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( true ) );
+
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$preferences = [];
 
-		$instance = new GetPreferences();
+		$instance = new GetPreferences(
+			$this->permissionExaminer
+		);
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher

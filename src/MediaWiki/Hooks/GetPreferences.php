@@ -7,6 +7,8 @@ use User;
 use Xml;
 use SMW\Utils\Logo;
 use SMW\MediaWiki\HookListener;
+use SMW\Permission\PermissionExaminer;
+use SMW\Permission\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\OptionsAwareTrait;
@@ -35,6 +37,25 @@ class GetPreferences implements HookListener {
 	const ENABLE_ENTITY_SUGGESTER = 'smw-prefs-general-options-suggester-textinput';
 
 	/**
+	 * Option to enable jobqueue watchlist
+	 */
+	const VIEW_JOBQUEUE_WATCHLIST = 'smw-prefs-general-options-jobqueue-watchlist';
+
+	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param PermissionExaminer $permissionExaminer
+	 */
+	public function __construct( PermissionExaminer $permissionExaminer ) {
+		$this->permissionExaminer = $permissionExaminer;
+	}
+
+	/**
 	 * @since 2.0
 	 *
 	 * @param User $user
@@ -46,6 +67,7 @@ class GetPreferences implements HookListener {
 
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
+		$this->permissionExaminer->setUser( $user );
 
 		$html = $this->makeImage( Logo::get( '100x90' ) );
 		$html .= wfMessage( 'smw-prefs-intro-text' )->parseAsBlock();
@@ -66,13 +88,15 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/general-options',
 		];
 
-		$preferences['smw-prefs-general-options-jobqueue-watchlist'] = [
-			'type' => 'toggle',
-			'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
-			'help-message' => 'smw-prefs-help-general-options-jobqueue-watchlist',
-			'section' => 'smw/general-options',
-			'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
-		];
+		if ( $this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_JOBQUEUE_WATCHLIST ) ) {
+			$preferences[self::VIEW_JOBQUEUE_WATCHLIST] = [
+				'type' => 'toggle',
+				'label-message' => 'smw-prefs-general-options-jobqueue-watchlist',
+				'help-message' => 'smw-prefs-help-general-options-jobqueue-watchlist',
+				'section' => 'smw/general-options',
+				'disabled' => $this->getOption( 'smwgJobQueueWatchlist', [] ) === []
+			];
+		}
 
 		$preferences['smw-prefs-general-options-disable-editpage-info'] = [
 			'type' => 'toggle',

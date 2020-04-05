@@ -30,6 +30,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	private $outputPage;
 	private $parserOutput;
 	private $namespaceExaminer;
+	private $permissionExaminer;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -46,6 +47,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +72,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
-			new OutputPageParserOutput( $this->namespaceExaminer )
+			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer )
 		);
 	}
 
@@ -100,7 +105,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$parserOutput = $parameters['parserOutput'];
 
 		$instance = new OutputPageParserOutput(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->permissionExaminer
 		);
 
 		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();

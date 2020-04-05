@@ -8,6 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
+use SMW\Permission\PermissionExaminer;
 use Title;
 
 /**
@@ -35,6 +36,11 @@ class OutputPageParserOutput implements HookListener {
 	private $namespaceExaminer;
 
 	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
+
+	/**
 	 * @var IndicatorRegistry
 	 */
 	private $indicatorRegistry;
@@ -43,9 +49,11 @@ class OutputPageParserOutput implements HookListener {
 	 * @since 1.9
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
+	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionExaminer $permissionExaminer ) {
 		$this->namespaceExaminer = $namespaceExaminer;
+		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
@@ -85,7 +93,7 @@ class OutputPageParserOutput implements HookListener {
 		if (
 			$title->exists() &&
 			$this->indicatorRegistry !== null &&
-			$this->indicatorRegistry->hasIndicator( $title, $options ) ) {
+			$this->indicatorRegistry->hasIndicator( $title, $this->permissionExaminer, $options ) ) {
 			$this->indicatorRegistry->attachIndicators( $outputPage );
 		}
 

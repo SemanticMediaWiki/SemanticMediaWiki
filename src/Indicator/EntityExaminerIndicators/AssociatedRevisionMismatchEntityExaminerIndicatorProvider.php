@@ -10,6 +10,9 @@ use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Permission\PermissionAware;
+use SMW\Permission\PermissionExaminer;
+use SMW\Permission\GroupPermissions;
 use Title;
 
 /**
@@ -18,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements TypableSeverityIndicatorProvider {
+class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements TypableSeverityIndicatorProvider, PermissionAware {
 
 	use MessageLocalizerTrait;
 	use RevisionGuardAwareTrait;
@@ -50,6 +53,18 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 */
 	public function __construct( Store $store ) {
 		$this->store = $store;
+	}
+
+	/**
+	 * @see PermissionAware::hasPermission
+	 * @since 3.2
+	 *
+	 * @param PermissionExaminer $permissionExaminer
+	 *
+	 * @return bool
+	 */
+	public function hasPermission( PermissionExaminer $permissionExaminer ) : bool {
+		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
 	}
 
 	/**
