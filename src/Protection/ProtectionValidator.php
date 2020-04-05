@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\EntityCache;
-use SMW\MediaWiki\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
 use Title;
 use User;
 
@@ -33,9 +33,9 @@ class ProtectionValidator {
 	private $entityCache;
 
 	/**
-	 * @var PermissionExaminer
+	 * @var PermissionManager
 	 */
-	private $permissionExaminer;
+	private $permissionManager;
 
 	/**
 	 * @var boolean|string
@@ -67,12 +67,12 @@ class ProtectionValidator {
 	 *
 	 * @param Store $store
 	 * @param EntityCache $entityCache
-	 * @param PermissionExaminer $permissionExaminer
+	 * @param PermissionManager $permissionManager
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, PermissionExaminer $permissionExaminer ) {
+	public function __construct( Store $store, EntityCache $entityCache, PermissionManager $permissionManager ) {
 		$this->store = $store;
 		$this->entityCache = $entityCache;
-		$this->permissionExaminer = $permissionExaminer;
+		$this->permissionManager = $permissionManager;
 	}
 
 	/**
@@ -244,7 +244,7 @@ class ProtectionValidator {
 			return false;
 		}
 
-		return $this->createProtectionRight && !$this->permissionExaminer->userCan( 'edit', null, $title );
+		return $this->createProtectionRight && !$this->permissionManager->userCan( 'edit', null, $title );
 	}
 
 	/**
@@ -269,7 +269,7 @@ class ProtectionValidator {
 			$title
 		);
 
-		return !$this->permissionExaminer->userCan( 'edit', null, $title ) && $this->checkProtection( $subject->asBase() );
+		return !$this->permissionManager->userCan( 'edit', null, $title ) && $this->checkProtection( $subject->asBase() );
 	}
 
 	private function checkProtection( $subject, $property = null ) {

@@ -31,8 +31,7 @@ use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\PermissionExaminer;
-use SMW\MediaWiki\PermissionManager;
+use SMW\MediaWiki\PermissionsExaminer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
@@ -672,20 +671,6 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PermissionExaminer
-		 */
-		$containerBuilder->registerCallback( 'PermissionExaminer', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PermissionExaminer', '\SMW\MediaWiki\PermissionExaminer' );
-
-			$permissionExaminer = new PermissionExaminer(
-				$containerBuilder->create( 'MediaWiki.PermissionManager' )
-			);
-
-			return $permissionExaminer;
-		} );
-
-
-		/**
 		 * @var ProtectionValidator
 		 */
 		$containerBuilder->registerCallback( 'ProtectionValidator', function( $containerBuilder ) {
@@ -696,7 +681,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$protectionValidator = new ProtectionValidator(
 				$containerBuilder->singleton( 'Store', null ),
 				$containerBuilder->singleton( 'EntityCache' ),
-				$containerBuilder->singleton( 'PermissionExaminer' )
+				$containerBuilder->singleton( 'PermissionManager' )
 			);
 
 			$protectionValidator->setImportPerformers(
@@ -719,17 +704,17 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PermissionManager
+		 * @var PermissionsExaminer
 		 */
-		$containerBuilder->registerCallback( 'PermissionManager', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PermissionManager', '\SMW\MediaWiki\PermissionManager' );
+		$containerBuilder->registerCallback( 'PermissionsExaminer', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'PermissionsExaminer', '\SMW\MediaWiki\PermissionsExaminer' );
 
-			$permissionManager = new PermissionManager(
+			$permissionsExaminer = new PermissionsExaminer(
 				$containerBuilder->create( 'ProtectionValidator' ),
-				$containerBuilder->singleton( 'PermissionExaminer' )
+				$containerBuilder->singleton( 'PermissionManager' )
 			);
 
-			return $permissionManager;
+			return $permissionsExaminer;
 		} );
 
 		/**

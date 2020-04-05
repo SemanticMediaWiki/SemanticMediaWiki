@@ -12,6 +12,7 @@ use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\FileRepoFinder;
+use SMW\MediaWiki\PermissionManager;
 use WikiImporter;
 use RepoGroup;
 
@@ -134,14 +135,16 @@ return [
 	 *
 	 * @return callable
 	 */
-	'MediaWiki.PermissionManager' => function( $containerBuilder ) {
+	'PermissionManager' => function( $containerBuilder ) {
+
+		$permissionManager = null;
 
 		// > MW 1.33
 		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getPermissionManager' ) ) {
-			return MediaWikiServices::getInstance()->getPermissionManager();
+			$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
 		}
 
-		return null;
+		return new PermissionManager( $permissionManager );
 	},
 
 	/**

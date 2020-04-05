@@ -1107,7 +1107,7 @@ class Hooks {
 
 		$titleQuickPermissions = new TitleQuickPermissions(
 			$applicationFactory->getNamespaceExaminer(),
-			$applicationFactory->singleton( 'PermissionManager' )
+			$applicationFactory->singleton( 'PermissionsExaminer' )
 		);
 
 		return $titleQuickPermissions->process( $title, $user, $action, $errors );
