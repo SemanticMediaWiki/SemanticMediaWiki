@@ -1,0 +1,44 @@
+{
+    "type": "FACETEDSEARCH_PROFILE_SCHEMA",
+    "profiles": {
+        "default_profile": {
+            "message_key": "smw-facetedsearch-profile-label-default",
+            "debug_output": false,
+            "theme": "default-theme",
+            "result": {
+                "default_limit": 50,
+                "paging_limit": [
+                    10,
+                    20,
+                    50,
+                    250,
+                    500
+                ]
+            },
+            "filters": {
+                "property_filter": {
+                    "hierarchy_tree": false,
+                    "filter_input": {
+                        "min_item": 10
+                    }
+                },
+                "category_filter": {
+                    "hierarchy_tree": false,
+                    "filter_input": {
+                        "min_item": 10
+                    }
+                },
+                "value_filter": {
+                    "default_filter": "list_filter",
+                    "condition_field": false,
+                    "filter_input": {
+                        "min_item": 10
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        "faceted search"
+    ]
+}

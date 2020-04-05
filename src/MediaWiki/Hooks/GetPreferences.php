@@ -10,8 +10,10 @@ use SMW\MediaWiki\HookListener;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\OptionsAwareTrait;
+use SMW\Schema\SchemaFactory;
 use SMW\Schema\Compartment;
-use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
+use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 
 /**
  * Hook: GetPreferences adds user preference
@@ -33,6 +35,25 @@ class GetPreferences implements HookListener {
 	 * Option to enable textinput suggester
 	 */
 	const ENABLE_ENTITY_SUGGESTER = 'smw-prefs-general-options-suggester-textinput';
+
+	/**
+	 * User specific default profile preference
+	 */
+	const FACETEDSEARCH_PROFILE_PREFERENCE = 'smw-prefs-factedsearch-profile';
+
+	/**
+	 * @var SchemaFactory
+	 */
+	private $schemaFactory;
+
+	/**
+	 * @since 2.0
+	 *
+	 * @param SchemaFactory $schemaFactory
+	 */
+	public function __construct( SchemaFactory $schemaFactory ) {
+		$this->schemaFactory = $schemaFactory;
+	}
 
 	/**
 	 * @since 2.0
@@ -103,6 +124,14 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/ask-options',
 		];
 
+		$preferences[self::FACETEDSEARCH_PROFILE_PREFERENCE] = [
+			'type' => 'select',
+			'section' => 'smw/ask-options',
+			'label-message' => 'smw-prefs-factedsearch-profile',
+			'options' => $this->getProfileList(),
+			'default' => $user->getOption( 'smw-prefs-factedsearch-profile', 'default' ),
+		];
+
 		$preferences += $otherPreferences;
 
 		return true;
@@ -110,6 +139,35 @@ class GetPreferences implements HookListener {
 
 	private function makeImage( $logo ) {
 		return "<img style='float:right;margin-top: 10px;margin-left:20px;' src='{$logo}' height='63' width='70'>";
+	}
+
+	private function getProfileList() : array {
+
+		$facetedSearchProfile = new FacetedSearchProfile(
+			$this->schemaFactory
+		);
+
+		try {
+			$profileList = $facetedSearchProfile->getProfileList();
+		} catch ( DefaultProfileNotFoundException $e ) {
+			$profileList = [];
+		}
+
+		foreach ( $profileList as $name => $val ) {
+			$label = $this->msg( $val );
+
+			// Message contains itself, meaning label is unknown!
+			if ( strpos( $label, $val ) !== false ) {
+				$label = $name;
+			}
+
+			$profileList[$name] = $label;
+		}
+
+		$profileList = array_flip( $profileList );
+		ksort( $profileList );
+
+		return $profileList;
 	}
 
 }

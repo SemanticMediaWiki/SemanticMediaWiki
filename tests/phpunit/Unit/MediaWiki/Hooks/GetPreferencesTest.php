@@ -16,11 +16,16 @@ use SMW\MediaWiki\Hooks\GetPreferences;
 class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 	private $hookDispatcher;
+	private $schemaFactory;
 
 	protected function setUp() : void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -35,7 +40,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences()
+			new GetPreferences( $this->schemaFactory )
 		);
 	}
 
@@ -44,13 +49,31 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testProcess( $key ) {
 
+		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaFinder->expects( $this->any() )
+			->method( 'getSchemaListByType' )
+			->will( $this->returnValue( $schemaList ) );
+
+		$this->schemaFactory->expects( $this->any() )
+			->method( 'newSchemaFinder' )
+			->will( $this->returnValue( $schemaFinder ) );
+
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$preferences = [];
 
-		$instance = new GetPreferences();
+		$instance = new GetPreferences(
+			$this->schemaFactory
+		);
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -90,6 +113,10 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			'smw-prefs-general-options-jobqueue-watchlist'
+		];
+
+		$provider[] = [
+			GetPreferences::FACETEDSEARCH_PROFILE_PREFERENCE
 		];
 
 		return $provider;

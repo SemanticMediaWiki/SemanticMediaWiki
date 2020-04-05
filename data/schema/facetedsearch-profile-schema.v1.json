@@ -1,0 +1,465 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/FACETEDSEARCH_PROFILE_SCHEMA",
+	"type": "object",
+	"title": "Faceted search profile validation schema",
+	"required": [
+		"type",
+		"profiles"
+	],
+	"properties": {
+		"type": {
+			"$id": "#/properties/type",
+			"type": "string",
+			"enum": [
+				"FACETEDSEARCH_PROFILE_SCHEMA"
+			],
+			"title": "Schema type",
+			"default": "FACETEDSEARCH_PROFILE_SCHEMA"
+		},
+		"title_prefix": {
+			"$id": "#/properties/title_prefix",
+			"type": "string",
+			"enum": [
+				"Profile"
+			],
+			"title": "Title prefix"
+		},
+		"manifest_version": {
+			"$id": "#/properties/manifest_version",
+			"type": "number",
+			"title": "Manifest version",
+			"default": 1
+		},
+		"tags": {
+			"$id": "#/properties/tags",
+			"type": "array",
+			"title": "tags",
+			"default": null,
+			"items": {
+				"$id": "#/properties/tags/items",
+				"type": "string",
+				"title": "tags, keywords etc.",
+				"default": "",
+				"pattern": "^(.*)$"
+			}
+		},
+		"default_profile": {
+			"$id": "#/properties/default_profile",
+			"type": "string",
+			"pattern": "^(.*)_profile"
+		},
+		"profiles": {
+			"$ref": "#/definitions/profiles"
+		}
+	},
+	"definitions": {
+		"profiles": {
+			"$id": "#/definitions/profiles",
+			"type": "object",
+			"title": "Definition of profiles",
+			"minProperties": 1,
+			"patternProperties": {
+				"^[^\\s]*_profile": {
+					"$ref": "#/definitions/profile"
+				}
+			},
+			"properties": {
+				"default_profile": {
+					"$ref": "#/definitions/profile"
+				}
+			},
+			"additionalProperties": false
+		},
+		"profile": {
+			"$id": "#/definitions/profile",
+			"type": "object",
+			"title": "Profile definitions",
+			"minProperties": 1,
+			"propertyNames": {
+				"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+			},
+			"required": [],
+			"properties": {
+				"message_key": {
+					"$ref": "#/definitions/message_key"
+				},
+				"theme": {
+					"$ref": "#/definitions/theme"
+				},
+				"debug_output": {
+					"$ref": "#/definitions/debug_output"
+				},
+				"search": {
+					"$ref": "#/definitions/search"
+				},
+				"result": {
+					"$ref": "#/definitions/result"
+				},
+				"filters": {
+					"$ref": "#/definitions/filters"
+				},
+				"exploration": {
+					"$ref": "#/definitions/exploration_section"
+				}
+			},
+			"additionalProperties": false
+		},
+		"message_key": {
+			"$id": "#/definitions/message_key",
+			"type": "string",
+			"title": "Group name as message key",
+			"default": "",
+			"examples": [
+				"smw-facetedsearch-profile-label-default"
+			],
+			"pattern": "^(.*)-facetedsearch-profile-label-(.*)$"
+		},
+		"theme": {
+			"$id": "#/definitions/theme",
+			"type": "string",
+			"title": "CSS theme key",
+			"default": "",
+			"examples": [
+				"smw-facetedsearch-profile-label-default"
+			],
+			"pattern": "^(.*)-theme$"
+		},
+		"search": {
+			"$id": "#/definitions/search",
+			"type": "object",
+			"title": "Search options and definitions",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"extra_fields": {
+					"$ref": "#/definitions/extra_fields"
+				}
+			},
+			"additionalProperties": false
+		},
+		"extra_fields": {
+			"$id": "#/definitions/extra_fields",
+			"type": "object",
+			"title": "Search options and definitions",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"default_collapsed": {
+					"$ref": "#/definitions/default_collapsed"
+				},
+				"field_list": {
+					"$ref": "#/definitions/field_list"
+				}
+			},
+			"additionalProperties": false
+		},
+		"field_list": {
+			"$id": "#/definitions/field_list",
+			"type": "object",
+			"title": "Definition of extra fields",
+			"minProperties": 1,
+			"patternProperties": {
+				"^(.*)_field": {
+					"$ref": "#/definitions/field"
+				}
+			},
+			"additionalProperties": false
+		},
+		"field": {
+			"$id": "#/definitions/field",
+			"type": "object",
+			"title": "Field options and definitions",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"label": {
+					"$ref": "#/definitions/field_label"
+				},
+				"message_key": {
+					"$ref": "#/definitions/field_message_key"
+				},
+				"field_type": {
+					"$ref": "#/definitions/field_type"
+				},
+				"property": {
+					"$ref": "#/definitions/field_property"
+				},
+				"autocomplete": {
+					"$ref": "#/definitions/field_autocomplete"
+				}
+			},
+			"additionalProperties": false
+		},
+		"result": {
+			"$id": "#/definitions/result",
+			"type": "object",
+			"title": "Result options and definitions",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"default_limit": {
+					"$ref": "#/definitions/default_limit"
+				},
+				"default_format": {
+					"$ref": "#/definitions/default_format"
+				},
+				"paging_limit": {
+					"$ref": "#/definitions/paging_limit"
+				}
+			},
+			"additionalProperties": false
+		},
+		"filters": {
+			"$id": "#/definitions/filters",
+			"type": "object",
+			"title": "Filter definitions",
+			"minProperties": 1,
+			"patternProperties": {
+				"property_filter": {
+					"$ref": "#/definitions/property_filter"
+				},
+				"category_filter": {
+					"$ref": "#/definitions/category_filter"
+				},
+				"value_filter": {
+					"$ref": "#/definitions/value_filter"
+				}
+			},
+			"additionalProperties": false
+		},
+		"property_filter": {
+			"$id": "#/definitions/property_filter",
+			"type": "object",
+			"title": "Property filter definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"hierarchy_tree": {
+					"$ref": "#/definitions/hierarchy_tree"
+				},
+				"filter_input": {
+					"$ref": "#/definitions/filter_input"
+				},
+				"filter_type": {
+					"$ref": "#/definitions/filter_type"
+				}
+			},
+			"additionalProperties": false
+		},
+		"category_filter": {
+			"$id": "#/definitions/category_filter",
+			"type": "object",
+			"title": "Category filter definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"hierarchy_tree": {
+					"$ref": "#/definitions/hierarchy_tree"
+				},
+				"filter_input": {
+					"$ref": "#/definitions/filter_input"
+				},
+				"filter_type": {
+					"$ref": "#/definitions/filter_type"
+				}
+			},
+			"additionalProperties": false
+		},
+		"value_filter": {
+			"$id": "#/definitions/value_filter",
+			"type": "object",
+			"title": "Value filter definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"default_filter": {
+					"$ref": "#/definitions/value_filter_default_filter"
+				},
+				"filter_input": {
+					"$ref": "#/definitions/filter_input"
+				},
+				"filter_type": {
+					"$ref": "#/definitions/filter_type"
+				},
+				"condition_field": {
+					"$ref": "#/definitions/filter_condition_field"
+				}
+			},
+			"additionalProperties": false
+		},
+		"hierarchy_tree": {
+			"title": "Whether to generate a hierarchy tree for the selected members or not",
+			"type": "boolean"
+		},
+		"value_filter_default_filter": {
+			"$id": "#/definitions/value_filter_default_filter",
+			"type": "string",
+			"title": "Specified the default filter type where no other preference is matched",
+			"enum": [
+				"list_filter",
+				"checkbox_filter"
+			]
+		},
+		"filter_input": {
+			"$id": "#/definitions/filter_input",
+			"type": "object",
+			"title": "Filter input definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"min_item": {
+					"$ref": "#/definitions/min_item"
+				}
+			},
+			"additionalProperties": false
+		},
+		"filter_type": {
+			"$id": "#/definitions/filter_type",
+			"type": "object",
+			"title": "Filter type definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"range_group_filter_preference": {
+					"oneOf": [
+						{
+							"type": "boolean"
+						},
+						{
+							"$ref": "#/definitions/range_group_filter_preference"
+						}
+					]
+				},
+				"TYPE_NUMBER": {
+					"type": "string",
+					"enum": [
+						"range_filter",
+						"input_filter",
+						"histogram_range_filter"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"min_item": {
+			"$id": "#/definitions/min_item",
+			"type": "number",
+			"title": "Specifies the minimum of items required to show an input field for searching a filter item."
+		},
+		"filter_condition_field": {
+			"$id": "#/definitions/filter_condition_field",
+			"type": "boolean",
+			"title": "Whether to provide a conidition field (OR, AND, NOT) per filter or not."
+		},
+		"range_group_filter_preference": {
+			"$id": "#/definitions/range_group_filter_preference",
+			"title": "List of properties for which the preference is enabled",
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"type": "string"
+			}
+		},
+		"field_label": {
+			"$id": "#/definitions/field_label",
+			"type": "string",
+			"title": "Specifies a field label"
+		},
+		"field_message_key": {
+			"$id": "#/definitions/field_message_key",
+			"type": "string",
+			"title": "Specifies a field label message key to support i18n"
+		},
+		"field_type": {
+			"$id": "#/definitions/field_type",
+			"type": "string",
+			"title": "Specifies a field type"
+		},
+		"field_property": {
+			"$id": "#/definitions/field_property",
+			"type": "string",
+			"title": "Specifies the property releated to a field"
+		},
+		"field_autocomplete": {
+			"$id": "#/definitions/field_autocomplete",
+			"type": "boolean",
+			"title": "Specifies whether the input field has support for autocompletion"
+		},
+		"default_limit": {
+			"$id": "#/definitions/default_limit",
+			"type": "number",
+			"title": "Specifies the default limit for a result display"
+		},
+		"default_collapsed": {
+			"$id": "#/definitions/default_collapsed",
+			"type": "boolean",
+			"title": "Whether to show section/label by default"
+		},
+		"debug_output": {
+			"$id": "#/definitions/debug_output",
+			"type": "boolean",
+			"title": "Whether to show some debug information or not"
+		},
+		"default_format": {
+			"$id": "#/definitions/default_format",
+			"type": "string",
+			"enum": [
+				"table"
+			],
+			"title": "Specifies the default format for a result display"
+		},
+		"paging_limit": {
+			"$id": "#/properties/paging_limit",
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"type": "number"
+			}
+		},
+		"exploration_section": {
+			"$id": "#/definitions/exploration_section",
+			"type": "object",
+			"title": "Explore section definition",
+			"minProperties": 1,
+			"required": [],
+			"properties": {
+				"query_list": {
+					"$ref": "#/definitions/exploration_query_list"
+				}
+			},
+			"additionalProperties": false
+		},
+		"exploration_query_list": {
+			"$id": "#/definitions/exploration_query_list",
+			"type": "object",
+			"title": "Definition of a list of explorational queries",
+			"minProperties": 1,
+			"patternProperties": {
+				"^(.*)_query": {
+					"$ref": "#/definitions/exploration_query_link"
+				}
+			},
+			"additionalProperties": false
+		},
+		"exploration_query_link": {
+			"$id": "#/definitions/exploration_query_link",
+			"type": "object",
+			"title": "...",
+			"minProperties": 1,
+			"required": [ "query", "label" ],
+			"properties": {
+				"query": {
+					"type": "string"
+				},
+				"label": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": false
+		}
+	}
+}

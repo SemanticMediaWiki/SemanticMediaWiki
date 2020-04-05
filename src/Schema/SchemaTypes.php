@@ -47,6 +47,11 @@ class SchemaTypes implements JsonSerializable {
 			'validation_schema' => 'search-form-schema.v1.json',
 			'type_description' => 'smw-schema-description-search-form-schema'
 		],
+		'FACETEDSEARCH_PROFILE_SCHEMA' => [
+			'group' => SMW_SCHEMA_GROUP_SEARCH,
+			'validation_schema' => 'facetedsearch-profile-schema.v1.json',
+			'type_description' => 'smw-schema-description-facetedsearch-profile-schema'
+		],
 		'PROPERTY_GROUP_SCHEMA' => [
 			'group' => SMW_SCHEMA_GROUP_PROPERTY,
 			'validation_schema' => 'property-group-schema.v1.json',

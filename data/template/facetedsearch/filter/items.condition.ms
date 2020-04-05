@@ -1,0 +1,1 @@
+<select name="vc[{{property}}]" form="search-input-form" title="{{title}}" onchange="this.form.submit()" class="condition-field"><option value="or" {{or-selected}}>OR</option><option value="and" {{and-selected}}>AND</option><option value="not" {{not-selected}}>NOT</option></select>

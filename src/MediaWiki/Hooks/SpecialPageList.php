@@ -42,6 +42,9 @@ class SpecialPageList implements HookListener {
 			'PendingTaskList' => [
 				'page' => \SMW\MediaWiki\Specials\SpecialPendingTaskList::class
 			],
+			'FacetedSearch' => [
+				'page' => \SMW\MediaWiki\Specials\SpecialFacetedSearch::class
+			],
 			'Ask' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'
 			],

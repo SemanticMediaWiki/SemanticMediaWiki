@@ -922,7 +922,9 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
-		$getPreferences = new GetPreferences();
+		$getPreferences = new GetPreferences(
+			$applicationFactory->singleton( 'SchemaFactory' )
+		);
 
 		$getPreferences->setHookDispatcher(
 			$applicationFactory->getHookDispatcher()
@@ -1328,8 +1330,6 @@ class Hooks {
 		$queryDependencyLinksStore->updateDependencies( $result );
 
 		ApplicationFactory::getInstance()->singleton( 'ResultCache' )->recordStats();
-
-		$store->getObjectIds()->warmUpCache( $result );
 
 		return true;
 	}

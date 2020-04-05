@@ -25,6 +25,7 @@ $specialPageAliases['en'] = [
 	'ConstraintErrorList' => [ 'ConstraintErrorList' ],
 	'PropertyLabelSimilarity' => [ 'PropertyLabelSimilarity' ],
 	'MissingRedirectAnnotations' => [ 'MissingRedirectAnnotations' ],
+	'FacetedSearch' => [ 'FacetedSearch' ],
 	'Types' => [ 'Types' ],
 	'URIResolver' => [ 'URIResolver' ],
 	'UnusedProperties' => [ 'UnusedProperties' ],

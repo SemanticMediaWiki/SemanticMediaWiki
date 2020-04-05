@@ -1,0 +1,1 @@
+{{option}}<div class="filter-items {{css-class}}"><div class="unlinked-items">{{unlinked}}</div><div class="linked-items">{{linked}}</div></div>
