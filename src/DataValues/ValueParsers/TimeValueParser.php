@@ -144,13 +144,37 @@ class TimeValueParser implements ValueParser {
 			$timezone = Timezone::getIdByAbbreviation( $timzoneIdentifier );
 		}
 
+		// Do we have something like `2002-11-01T00:00:00.000-0800` or
+		// `2018-10-11 18:23:59 +0200`?
+		//
+		// http://www.faqs.org/rfcs/rfc2822.html
+		//
+		// The "+" or "-" indicates whether the time-of-day is ahead of ... or
+		// behind ... Universal Time. The first two digits indicate the number
+		// of hours difference from Universal Time, and the last two digits
+		// indicate the number of minutes difference from Universal Time ..."
+		//
+		// "... the time-of-day MUST be in the range 00:00:00 through 23:59:60
+		// ..."
+		$offsetMarker = substr( $string, -5, 1 );
+
+		if ( ( $offsetMarker === '+' || $offsetMarker === '-' ) && substr_count( $string, ':' ) == 2 ) {
+			$string = date( 'c', strtotime( $string ) ); // ISO 8601 date
+		}
+
 		// Preprocessing for supporting different date separation characters;
 		// * this does not allow localized time notations such as "10.34 pm"
 		// * this creates problems with keywords that contain "." such as "p.m."
 		// * yet "." is an essential date separation character in languages such as German
-		$parsevalue = str_replace( [ '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ], [ '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ], $string );
+		$parsevalue = str_replace(
+			[ '/', '.', '&nbsp;', ',', '年', '月', '日', '時', '分' ],
+			[ '-', ' ', ' ', ' ', ' ', ' ', ' ', ':', ' ' ],
+			$string
+		);
 
-		$matches = preg_split( "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u", $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+		$regex = "/([T]?[0-2]?[0-9]:[\:0-9]+[+\-]?[0-2]?[0-9\:]+|[\p{L}]+|[0-9]+|[ ])/u";
+
+		$matches = preg_split( $regex, $parsevalue, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 		$datecomponents = [];
 		$unclearparts = [];
 

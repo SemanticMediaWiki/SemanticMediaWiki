@@ -83,6 +83,43 @@ class TimeValueParserTest extends \PHPUnit_Framework_TestCase {
 			[]
 		];
 
+		yield '2002-11-01T00:00:00.000-0800' => [
+			'2002-11-01T00:00:00.000-0800',
+			[
+				'value' => '2002-11-01T00:00:00.000-0800',
+				'datecomponents' => [
+					'2002', '-', '11', '-', '01'
+				],
+				'calendarmodel' => false,
+				'era' => false,
+				'hours' => 8,
+				'minutes' => 0,
+				'seconds' => 0,
+				'microseconds' => false,
+				'timeoffset' => 0,
+				'timezone' => false
+			],
+			[]
+		];
+
+		yield '2018-10-11 18:23:59 +0200' => [
+			'2018-10-11 18:23:59 +0200',
+			[
+				'value' => '2018-10-11 18:23:59 +0200',
+				'datecomponents' => [
+					'2018', '-', '10', '-', '11'
+				],
+				'calendarmodel' => false,
+				'era' => false,
+				'hours' => 16,
+				'minutes' => 23,
+				'seconds' => 59,
+				'microseconds' => false,
+				'timeoffset' => 0,
+				'timezone' => false
+			],
+			[]
+		];
 	}
 
 }
