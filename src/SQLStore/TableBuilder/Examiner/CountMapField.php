@@ -6,7 +6,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder;
 use SMW\SetupFile;
-use SMW\Maintenance\UpdateEntityCountMap;
+use SMW\Maintenance\updateEntityCountMap as UpdateEntityCountMap;
 use SMW\Utils\CliMsgFormatter;
 
 /**
