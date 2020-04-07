@@ -305,7 +305,7 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function doFormatWithPrecision( $value, $precision = false, $decimal, $thousand ) {
+	private function doFormatWithPrecision( $value, $precision, $decimal, $thousand ) {
 
 		$replacement = 0;
 

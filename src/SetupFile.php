@@ -455,7 +455,7 @@ class SetupFile {
 	 * @param array $vars
 	 * @param array $args
 	 */
-	public function write( $args = [], array $vars ) {
+	public function write( array $args, array $vars ) {
 
 		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();

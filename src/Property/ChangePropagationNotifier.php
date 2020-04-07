@@ -182,7 +182,7 @@ class ChangePropagationNotifier {
 		$this->setDiff( !$this->isEqual( $oldValues, $newValues ), $key );
 	}
 
-	private function setDiff( $hasDiff = true, $key ) {
+	private function setDiff( $hasDiff, $key ) {
 
 		if ( !$hasDiff || $this->hasDiff ) {
 			return;

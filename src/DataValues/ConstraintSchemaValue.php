@@ -30,7 +30,7 @@ class ConstraintSchemaValue extends WikiPageValue {
 	/**
 	 * @param string $typeid
 	 */
-	public function __construct( $typeid = '', SpecificationLookup $specificationLookup ) {
+	public function __construct( $typeid, SpecificationLookup $specificationLookup ) {
 		parent::__construct( self::TYPE_ID );
 		$this->specificationLookup = $specificationLookup;
 		$this->m_fixNamespace = SMW_NS_SCHEMA;
