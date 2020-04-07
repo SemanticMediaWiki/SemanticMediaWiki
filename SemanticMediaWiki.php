@@ -39,6 +39,10 @@ class SemanticMediaWiki {
 	 * the extension is activated.
 	 */
 	public static function load() {
+		
+		if ( !defined( 'MEDIAWIKI' ) ) {
+			return;
+		}
 
 		if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 			include_once __DIR__ . '/vendor/autoload.php';
