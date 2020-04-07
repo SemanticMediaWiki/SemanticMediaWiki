@@ -51,7 +51,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @param string $result
 	 */
-	public function __construct( $result = '', Query $query, $hasFurtherResults = false ) {
+	public function __construct( $result, Query $query, $hasFurtherResults = false ) {
 		$this->result = $result;
 		$this->query = $query;
 		$this->hasFurtherResults = $hasFurtherResults;

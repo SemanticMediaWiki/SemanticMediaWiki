@@ -28,7 +28,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider uriProvider
 	 */
-	public function testUriOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+	public function testUriOutputFormatting( $uri, $caption, $linker, $expected ) {
 
 		$instance = new UriValue( '_uri' );
 		$instance->setUserValue( $uri, $caption );
@@ -43,7 +43,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider uriProvider
 	 */
-	public function testAnuOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+	public function testAnuOutputFormatting( $uri, $caption, $linker, $expected ) {
 
 		$instance = new UriValue( '_anu' );
 		$instance->setUserValue( $uri, $caption );
@@ -58,7 +58,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider telProvider
 	 */
-	public function testTelOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+	public function testTelOutputFormatting( $uri, $caption, $linker, $expected ) {
 
 		$instance = new UriValue( '_tel' );
 		$instance->setUserValue( $uri, $caption );
@@ -73,7 +73,7 @@ class UriValueTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider emaProvider
 	 */
-	public function testEmaOutputFormatting( $uri, $caption = false, $linker = null, $expected ) {
+	public function testEmaOutputFormatting( $uri, $caption, $linker, $expected ) {
 
 		$instance = new UriValue( '_ema' );
 		$instance->setUserValue( $uri, $caption );

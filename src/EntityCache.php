@@ -222,7 +222,7 @@ class EntityCache {
 	 *
 	 * @param DIWikiPage|Title $subject
 	 */
-	public function associate( $subject = null, $key ) {
+	public function associate( $subject, $key ) {
 
 		if ( $subject === null ) {
 			return;

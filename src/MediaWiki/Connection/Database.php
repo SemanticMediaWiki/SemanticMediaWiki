@@ -254,14 +254,14 @@ class Database {
 	 *
 	 * @param string $tableName
 	 * @param $fields
-	 * @param $conditions
+	 * @param array|string $conditions
 	 * @param array $options
 	 * @param array $joinConditions
 	 *
 	 * @return ResultWrapper
 	 * @throws UnexpectedValueException
 	 */
-	public function select( $tableName, $fields, $conditions = '', $fname, array $options = [], $joinConditions = [] ) {
+	public function select( $tableName, $fields, $conditions, $fname, array $options = [], $joinConditions = [] ) {
 
 		$tablePrefix = null;
 		$connection = $this->connRef->getConnection( 'read' );

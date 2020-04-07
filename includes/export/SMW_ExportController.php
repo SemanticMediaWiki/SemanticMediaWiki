@@ -507,7 +507,7 @@ class SMWExportController {
 	 * export to reduce server load in long-running operations
 	 * @param integer $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToFile( $outfile, $ns_restriction = false, $delay, $delayeach ) {
+	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
 
 		if ( !$this->prepareSerialization( $outfile ) ) {
 			return;
@@ -527,7 +527,7 @@ class SMWExportController {
 	 * export to reduce server load in long-running operations
 	 * @param integer $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToOutput( $ns_restriction = false, $delay, $delayeach ) {
+	public function printAllToOutput( $ns_restriction, $delay, $delayeach ) {
 		$this->prepareSerialization();
 		$this->printAll( $ns_restriction, $delay, $delayeach );
 	}
@@ -535,7 +535,7 @@ class SMWExportController {
 	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
-	protected function printAll( $ns_restriction = false, $delay, $delayeach ) {
+	protected function printAll( $ns_restriction, $delay, $delayeach ) {
 		$linkCache = LinkCache::singleton();
 		$db = wfGetDB( DB_REPLICA );
 

@@ -53,7 +53,7 @@ class StringValidator extends \PHPUnit_Framework_Assert {
 		$this->doAssertWith( $expected, (string)$actual, $message, 'StringNotContains', $callback );
 	}
 
-	private function doAssertWith( $expected, $actual, $message = '', $method = '', $callback ) {
+	private function doAssertWith( $expected, $actual, $message, $method, $callback ) {
 
 		if ( !is_array( $expected ) ) {
 			$expected = [ $expected ];
