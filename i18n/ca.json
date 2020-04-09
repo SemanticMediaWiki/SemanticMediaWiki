@@ -1,22 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abella",
+			"Abijeet Patro",
 			"Dvdgmz",
+			"Fitoschido",
+			"Hiperpobla",
+			"Jaumeortola",
+			"Kghbln",
 			"Loupeter",
+			"Macofe",
+			"Nemo bis",
 			"Pitort",
 			"SMP",
 			"Sociologist",
 			"Solde",
 			"Toniher",
-			"아라",
-			"Hiperpobla",
-			"Fitoschido",
-			"Macofe",
-			"Kghbln",
-			"Jaumeortola",
-			"Nemo bis",
-			"Abella",
-			"Abijeet Patro"
+			"아라"
 		]
 	},
 	"smw-desc": "Fem el vostre wiki més accessible, per a les màquines ''i també'' per als humans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
@@ -522,7 +522,6 @@
 	"right-smw-admin": "Accedeix a les tasques d'administració (Semantic MediaWiki)",
 	"right-smw-patternedit": "Modifica l'accés per a mantenir les expressions regulars i patrons permesos (Semantic MediaWiki)",
 	"right-smw-pageedit": "Accés d'edició per a pàgines anotades amb <code>Is edit protected</code> (Semantic MediaWiki)",
-	"right-smw-ruleedit": "Edita les pàgines de regles (Semantic MediaWiki)",
 	"restriction-level-smw-pageedit": "protegit (només usuaris elegibles)",
 	"action-smw-patternedit": "edita les expressions regulars que utilitza Semantic MediaWiki",
 	"action-smw-pageedit": "modifica pàgines anotades amb <code>Is edit protected</code> (Semantic MediaWiki)",

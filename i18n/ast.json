@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Tifinaghes",
-			"Xuacu",
+			"Fitoschido",
 			"Macofe",
-			"Fitoschido"
+			"Tifinaghes",
+			"Xuacu"
 		]
 	},
 	"smw-desc": "Facer la to wiki más accesible - pa les máquines ''y'' pa los humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en llinia])",
@@ -448,7 +448,6 @@
 	"right-smw-admin": "Entrar nes xeres alministratives (Semantic MediaWiki)",
 	"right-smw-patternedit": "Accesu d'edición pa caltener espresiones regulares y patrones permitíos (Semantic MediaWiki)",
 	"right-smw-pageedit": "Accesu d'edición pa páxines con anotación <code>is edit protected</code> (MediaWiki Semántica)",
-	"right-smw-ruleedit": "Editar les páxines de regles (Semantic MediaWiki)",
 	"restriction-level-smw-pageedit": "protexida (sólo usuarios permitíos)",
 	"action-smw-patternedit": "editar les espresiones regulares qu'usa Semantic MediaWiki",
 	"action-smw-pageedit": "editar páxines cola anotación <code>is edit protected</code> (MediaWiki Semántica)",

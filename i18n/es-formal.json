@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ivanhercaz",
 			"Ciencia Al Poder",
-			"Fitoschido"
+			"Fitoschido",
+			"Ivanhercaz"
 		]
 	},
 	"smw-desc": "Hacemos que tu wiki sea más accesible para las máquinas ''y'' las personas ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en línea]).",

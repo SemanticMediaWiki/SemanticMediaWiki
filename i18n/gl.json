@@ -1,16 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Toliño",
-			"Elisardojm",
-			"Banjo",
-			"Macofe",
-			"Nemo bis",
-			"Athena in Wonderland",
-			"Navhy",
-			"Maria zaos",
 			"Abijeet Patro",
-			"Iváns"
+			"Athena in Wonderland",
+			"Banjo",
+			"Elisardojm",
+			"Iváns",
+			"Macofe",
+			"Maria zaos",
+			"Nemo bis",
+			"Toliño"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -459,7 +458,6 @@
 	"right-smw-admin": "Acceder ás tarefas administrativas (Semantic MediaWiki)",
 	"right-smw-patternedit": "Acceso de edición para manter expresións regulares e patróns permitidos (MediaWiki Semántica)",
 	"right-smw-pageedit": "Acceso de edición para páxinas con anotación <code>Protexida contra a edición</code> (MediaWiki Semántica)",
-	"right-smw-ruleedit": "Editar páxinas de regra (MediaWiki Semántica)",
 	"restriction-level-smw-pageedit": "protexida (só os usuarios elexibles)",
 	"action-smw-patternedit": "editar expresións regulares utilizadas por MediaWiki Semántica",
 	"action-smw-pageedit": "editar páxinas anotadas con <code>Protexida contra a edición</code> (MediaWiki Semántica)",

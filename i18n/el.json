@@ -1,23 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abijeet Patro",
 			"Consta",
 			"Crazymadlover",
+			"FocalPoint",
 			"Geraki",
 			"Glavkos",
+			"KATRINE1992",
+			"Kghbln",
 			"Lou",
+			"Nemo bis",
+			"Nikosgranturismogt",
 			"Omnipaedista",
 			"Protnet",
-			"ZaDiak",
-			"FocalPoint",
-			"Kghbln",
-			"Ανώνυμος Βικιπαιδιστής",
-			"Nemo bis",
-			"Thodoris",
-			"KATRINE1992",
 			"Tgkarounos",
-			"Nikosgranturismogt",
-			"Abijeet Patro"
+			"Thodoris",
+			"ZaDiak",
+			"Ανώνυμος Βικιπαιδιστής"
 		]
 	},
 	"smw-desc": "Κάνοντας το wiki σας πιο προσιτό - σε μηχανές ''και'' ανθρώπους ([https://www.semantic-mediawiki.org/wiki/Help:User_manual ηλεκτρονική τεκμηρίωση])",
@@ -418,7 +418,6 @@
 	"smw-qp-empty-data": "Τα ζητούμενα δεδομένα δεν μπορούν να προβληθούν λόγω ανεπαρκών κριτηρίων επιλογής.",
 	"right-smw-admin": "Εργασίες διαχείρισης πρόσβασης (Σημασιολογικό MediaWiki)",
 	"right-smw-patternedit": "Πρόσβαση επεξεργασίας για τη συντήρηση των επιτρεπτών κανονικών εκφράσεων και μοτίβων (Σημασιολογικό MediaWiki)",
-	"right-smw-ruleedit": "Επεξεργασία σελίδων κανόνων (Σημασιολογικό MediaWiki)",
 	"action-smw-patternedit": "επεξεργαστείτε κανονικές εκφράσεις που χρησιμοποιούνται από το Σημασιολογικό MediaWiki",
 	"group-smwadministrator": "Διαχειριστές (Σημασιολογικού MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|διαχειριστής|διαχειρίστρια}} (Σημασιολογικού MediaWiki)",
