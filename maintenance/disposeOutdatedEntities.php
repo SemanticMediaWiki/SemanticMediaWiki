@@ -114,7 +114,14 @@ class disposeOutdatedEntities extends \Maintenance {
 
 		if ( $this->hasOption( 'with-maintenance-log' ) ) {
 			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'DisposeOutdatedEntitiesLogger' );
-			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+			$runtimeValues = $maintenanceHelper->getRuntimeValues();
+
+			$log = [
+				'Memory used' => $runtimeValues['memory-used'],
+				'Time used' => $runtimeValues['humanreadable-time']
+			];
+
+			$maintenanceLogger->logFromArray( $log );
 		}
 
 		return true;
