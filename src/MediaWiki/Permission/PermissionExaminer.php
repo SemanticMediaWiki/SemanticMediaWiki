@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Permission;
+namespace SMW\MediaWiki\Permission;
 
 use SMW\MediaWiki\PermissionManager;
 use User;

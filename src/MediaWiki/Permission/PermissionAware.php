@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Permission;
+namespace SMW\MediaWiki\Permission;
 
 /**
  * Describes an instance that is aware of a role or group permission on a user or

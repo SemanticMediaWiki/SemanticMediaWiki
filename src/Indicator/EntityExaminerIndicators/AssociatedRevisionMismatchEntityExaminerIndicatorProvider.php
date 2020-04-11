@@ -10,9 +10,9 @@ use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Permission\PermissionAware;
-use SMW\Permission\PermissionExaminer;
-use SMW\Permission\GroupPermissions;
+use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\GroupPermissions;
 use Title;
 
 /**

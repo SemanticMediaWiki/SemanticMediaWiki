@@ -25,7 +25,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -100,7 +100,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newPermissionAwareIndicatorProvider() {
-		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\Permission\PermissionAware {
+		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
 
 			public function getName() : string {
 				return '';
@@ -122,7 +122,7 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 				return [];
 			}
 
-			public function hasPermission( \SMW\Permission\PermissionExaminer $permissionExaminer ) : bool {
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

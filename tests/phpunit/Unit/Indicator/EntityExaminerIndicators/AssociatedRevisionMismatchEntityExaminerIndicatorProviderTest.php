@@ -80,6 +80,27 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 		);
 	}
 
+	public function testHasPermission() {
+
+		$permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->with( $this->equalTo( 'smw-viewentityassociatedrevisionmismatch' ) )
+			->will( $this->returnValue( true ) );
+
+		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
+			$this->store
+		);
+
+		$this->assertInternalType(
+			'bool',
+			$instance->hasPermission( $permissionExaminer )
+		);
+	}
+
 	public function testGetName() {
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(

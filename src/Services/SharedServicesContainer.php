@@ -31,7 +31,7 @@ use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\PageUpdater;
-use SMW\MediaWiki\PermissionsExaminer;
+use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
@@ -704,17 +704,17 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		/**
-		 * @var PermissionsExaminer
+		 * @var TitlePermissions
 		 */
-		$containerBuilder->registerCallback( 'PermissionsExaminer', function( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PermissionsExaminer', '\SMW\MediaWiki\PermissionsExaminer' );
+		$containerBuilder->registerCallback( 'TitlePermissions', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'TitlePermissions', '\SMW\MediaWiki\Permission\TitlePermissions' );
 
-			$permissionsExaminer = new PermissionsExaminer(
+			$titlePermissions = new TitlePermissions(
 				$containerBuilder->create( 'ProtectionValidator' ),
 				$containerBuilder->singleton( 'PermissionManager' )
 			);
 
-			return $permissionsExaminer;
+			return $titlePermissions;
 		} );
 
 		/**

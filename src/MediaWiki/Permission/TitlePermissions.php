@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW\MediaWiki;
+namespace SMW\MediaWiki\Permission;
 
 use SMW\DataValues\AllowsPatternValue;
 use SMW\Protection\ProtectionValidator;
+use SMW\MediaWiki\PermissionManager;
 use Title;
 use User;
 
@@ -13,7 +14,7 @@ use User;
  *
  * @author mwjames
  */
-class PermissionsExaminer {
+class TitlePermissions {
 
 	/**
 	 * @var ProtectionValidator

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Permission;
+namespace SMW\Tests\MediaWiki\Permission;
 
-use SMW\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Permission\PermissionExaminer
+ * @covers \SMW\MediaWiki\Permission\PermissionExaminer
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

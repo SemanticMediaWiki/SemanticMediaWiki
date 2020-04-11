@@ -5,7 +5,7 @@ namespace SMW;
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
-use SMW\Permission\GroupPermissions;
+use SMW\GroupPermissions;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**

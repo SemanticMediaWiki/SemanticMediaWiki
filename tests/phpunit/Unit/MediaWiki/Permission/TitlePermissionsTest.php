@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\MediaWiki\Permission;
 
-use SMW\MediaWiki\PermissionsExaminer;
+use SMW\MediaWiki\Permission\TitlePermissions;
 use Title;
 
 /**
- * @covers \SMW\MediaWiki\PermissionsExaminer
+ * @covers \SMW\MediaWiki\Permission\TitlePermissions
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use Title;
  *
  * @author mwjames
  */
-class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
+class TitlePermissionsTest extends \PHPUnit_Framework_TestCase {
 
 	private $protectionValidator;
 	private $permissionManager;
@@ -34,8 +34,8 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			PermissionsExaminer::class,
-			new PermissionsExaminer( $this->protectionValidator, $this->permissionManager )
+			TitlePermissions::class,
+			new TitlePermissions( $this->protectionValidator, $this->permissionManager )
 		);
 	}
 
@@ -47,7 +47,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -83,7 +83,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$result = [];
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -141,7 +141,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $editProtectionRight ) )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -184,7 +184,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -222,7 +222,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -265,7 +265,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -306,7 +306,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -349,7 +349,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -395,7 +395,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( false ) );
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -445,7 +445,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isClassifiedAsImportPerformerProtected' )
 			->will( $this->returnValue( true ) );
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
@@ -493,7 +493,7 @@ class PermissionsExaminerTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( 'smw-schemaedit' ) )
 			->will( $this->returnValue( true ) );
 
-		$instance = new PermissionsExaminer(
+		$instance = new TitlePermissions(
 			$this->protectionValidator,
 			$this->permissionManager
 		);
