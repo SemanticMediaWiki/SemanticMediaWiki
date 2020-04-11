@@ -20,10 +20,15 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $constraintFactory;
+	private $hookDispatcher;
 
 	protected function setUp() : void {
 
 		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -42,10 +47,30 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->constraintFactory
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertInternalType(
 			'array',
 			$instance->getConstraintKeys()
 		);
+	}
+
+	public function testRunHookOnInitConstraints() {
+
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onInitConstraints' );
+
+		$instance = new ConstraintRegistry(
+			$this->constraintFactory
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->getConstraintKeys();
 	}
 
 	public function testGetConstraintByUnkownKey() {
@@ -63,6 +88,10 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->constraintFactory
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->getConstraintByKey( '__unknown__' );
 	}
 
@@ -74,6 +103,10 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$instance->registerConstraint( 'foo', $constraint );
@@ -92,6 +125,10 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$instance->registerConstraint( 'foo', function() use( $constraint ) {
@@ -119,6 +156,10 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 			$this->constraintFactory
 		);
 
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$instance->registerConstraint( 'foo', '__class__' );
 
 		$this->assertInstanceOf(
@@ -143,6 +184,10 @@ class ConstraintRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConstraintRegistry(
 			$this->constraintFactory
+		);
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
 		);
 
 		$instance->getConstraintByKey( $key );

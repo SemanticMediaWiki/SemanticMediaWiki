@@ -11,6 +11,7 @@ use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Schema\SchemaTypes;
+use SMW\Constraint\ConstraintRegistry;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
@@ -56,6 +57,16 @@ class HookDispatcher {
 	 */
 	public function onRegisterPropertyChangeListeners( PropertyChangeListener $propertyChangeListener ) {
 		Hooks::run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $propertyChangeListener ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.constraint.initconstraints.md
+	 * @since 3.2
+	 *
+	 * @param ConstraintRegistry $constraintRegistry
+	 */
+	public function onInitConstraints( ConstraintRegistry $constraintRegistry ) {
+		Hooks::run( 'SMW::Constraint::initConstraints', [ $constraintRegistry ] );
 	}
 
 	/**

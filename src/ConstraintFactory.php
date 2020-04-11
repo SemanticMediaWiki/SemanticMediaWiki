@@ -33,7 +33,18 @@ class ConstraintFactory {
 	 * @return ConstraintRegistry
 	 */
 	public function newConstraintRegistry() {
-		return new ConstraintRegistry( $this );
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$constraintRegistry = new ConstraintRegistry(
+			$this
+		);
+
+		$constraintRegistry->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
+		return $constraintRegistry;
 	}
 
 	/**
