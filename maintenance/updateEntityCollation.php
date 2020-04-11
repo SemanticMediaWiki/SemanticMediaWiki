@@ -10,9 +10,11 @@ use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Setup;
+use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
 use SMW\MediaWiki\HookDispatcher;
 use Onoi\MessageReporter\MessageReporter;
+use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class
@@ -30,6 +32,11 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author mwjames
  */
 class updateEntityCollation extends \Maintenance {
+
+	/**
+	 * Incomplete task message
+	 */
+	const ENTITY_COLLATION_INCOMPLETE = 'smw-updateentitycollation-incomplete';
 
 	/**
 	 * @var Store
@@ -89,12 +96,13 @@ class updateEntityCollation extends \Maintenance {
 	 */
 	public function execute() {
 
-		if ( $this->canExecute() !== true ) {
-			exit;
+		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+			exit ( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+		$setupFile = $applicationFactory->singleton( 'SetupFile' );
 
 		$this->store = $applicationFactory->getStore(
 			SQLStore::class
@@ -151,11 +159,19 @@ class updateEntityCollation extends \Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->twoCols( "... `smw_sort` field records ...", "$count (rows)", 3 )
+			$cliMsgFormatter->twoCols( "... found `smw_sort` field records ...", "$count (rows)", 3 )
 		);
 
 		$this->runUpdate( $rows, $count );
 		$this->messageReporter->reportMessage( "\n   ... done.\n" );
+
+		$setupFile->removeIncompleteTask( self::ENTITY_COLLATION_INCOMPLETE );
+
+		$setupFile->set(
+			[
+				SetupFile::ENTITY_COLLATION => $smwgEntityCollation
+			]
+		);
 
 		$this->hookDispatcher->onAfterUpdateEntityCollationComplete( $this->store, $this->messageReporter );
 	}
@@ -179,7 +195,7 @@ class updateEntityCollation extends \Maintenance {
 		);
 
 		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->oneCol( 'Settings ...' )
+			$cliMsgFormatter->oneCol( 'Collation settings ...' )
 		);
 
 		$this->messageReporter->reportMessage(
@@ -224,24 +240,6 @@ class updateEntityCollation extends \Maintenance {
 		);
 	}
 
-	private function canExecute() {
-
-		if ( !Setup::isEnabled() ) {
-			return $this->messageReporter->reportMessage(
-				"\nYou need to have SMW enabled in order to run the maintenance script!\n"
-			);
-		}
-
-		if ( !Setup::isValid( true ) ) {
-			return $this->messageReporter->reportMessage(
-				"\nYou need to run `update.php` or `setupStore.php` first before continuing\n" .
-				"with this maintenance task!\n"
-			);
-		}
-
-		return true;
-	}
-
 	private function runUpdate( $rows, $count ) {
 
 		$tableFieldUpdater = new TableFieldUpdater(
@@ -272,7 +270,7 @@ class updateEntityCollation extends \Maintenance {
 			$progress = $cliMsgFormatter->progressCompact( ++$i, $count, $row->smw_id, $this->lastId );
 
 			$this->messageReporter->reportMessage(
-				$cliMsgFormatter->twoColsOverride( "... updating field (current/last) ...", $progress, 3 )
+				$cliMsgFormatter->twoColsOverride( "... updating entity (current/last) ...", $progress, 3 )
 			);
 
 			$tableFieldUpdater->updateSortField( $row->smw_id, $search );

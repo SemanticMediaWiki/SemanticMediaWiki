@@ -160,6 +160,13 @@ class TableBuildExaminer {
 		$countMapField->setMessageReporter( $this->messageReporter );
 		$countMapField->check( $tableBuilder->getLog() );
 
+		$entityCollation = $this->tableBuildExaminerFactory->newEntityCollation(
+			$this->store
+		);
+
+		$entityCollation->setMessageReporter( $this->messageReporter );
+		$entityCollation->check();
+
 		// Call out for RDBMS specific implementations
 		$tableBuilder->checkOn( TableBuilder::POST_CREATION );
 	}

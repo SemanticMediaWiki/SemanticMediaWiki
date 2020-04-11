@@ -15,6 +15,20 @@ use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
  */
 class TableBuildExaminerFactoryTest extends \PHPUnit_Framework_TestCase {
 
+	public function testCanConstructEntityCollation() {
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new TableBuildExaminerFactory();
+
+		$this->assertInstanceOf(
+			'\SMW\SQLStore\TableBuilder\Examiner\EntityCollation',
+			$instance->newEntityCollation( $store )
+		);
+	}
+
 	public function testCanConstructCountMapField() {
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
