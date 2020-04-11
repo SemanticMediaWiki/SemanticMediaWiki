@@ -19,6 +19,7 @@ class GroupPermissions {
 
 	const VIEW_JOBQUEUE_WATCHLIST = 'smw-viewjobqueuewatchlist';
 	const VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH = 'smw-viewentityassociatedrevisionmismatch';
+	const VIEW_EDITPAGE_INFO = 'smw-vieweditpageinfo';
 
 	/**
 	 * @since 3.2
@@ -29,7 +30,9 @@ class GroupPermissions {
 
 		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
-			'smwcurator' => $this->forCuratorRole()
+			'smwcurator' => $this->forCuratorRole(),
+			'smweditor' => $this->forEditorRole(),
+			'user' => $this->forDefaultUserRole()
 		];
 
 		/**
@@ -45,8 +48,10 @@ class GroupPermissions {
 			}
 
 			if ( !isset( $vars['wgGroupPermissions'][$group] ) ) {
-				$vars['wgGroupPermissions'][$group] = $rights;
+				$vars['wgGroupPermissions'][$group] = [];
 			}
+
+			$vars['wgGroupPermissions'][$group] = array_merge( $rights, $vars['wgGroupPermissions'][$group] );
 		}
 	}
 
@@ -62,7 +67,20 @@ class GroupPermissions {
 			'smw-schemaedit' => true,
 			'smw-pageedit' => true,
 			self::VIEW_JOBQUEUE_WATCHLIST => true,
-			self::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH => true
+			self::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH => true,
+			self::VIEW_EDITPAGE_INFO => true
+		];
+	}
+
+	private function forEditorRole() {
+		return [
+			self::VIEW_EDITPAGE_INFO => true
+		];
+	}
+
+	private function forDefaultUserRole() {
+		return [
+			self::VIEW_EDITPAGE_INFO => true
 		];
 	}
 

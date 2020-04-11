@@ -42,6 +42,16 @@ class GetPreferences implements HookListener {
 	const VIEW_JOBQUEUE_WATCHLIST = 'smw-prefs-general-options-jobqueue-watchlist';
 
 	/**
+	 * Option to diable the edit page information on an edit form
+	 */
+	const DISABLE_EDITPAGE_INFO = 'smw-prefs-general-options-disable-editpage-info';
+
+	/**
+	 * Option to disable the search information on the `Special:Search` page
+	 */
+	const DISABLE_SEARCH_INFO = 'smw-prefs-general-options-disable-search-info';
+
+	/**
 	 * @var PermissionExaminer
 	 */
 	private $permissionExaminer;
@@ -98,7 +108,7 @@ class GetPreferences implements HookListener {
 			];
 		}
 
-		$preferences['smw-prefs-general-options-disable-editpage-info'] = [
+		$preferences[self::DISABLE_EDITPAGE_INFO] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-editpage-info',
 			'section' => 'smw/general-options',
@@ -113,7 +123,7 @@ class GetPreferences implements HookListener {
 			'section' => 'smw/general-options',
 		];
 
-		$preferences['smw-prefs-general-options-disable-search-info'] = [
+		$preferences[self::DISABLE_SEARCH_INFO] = [
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-disable-search-info',
 			'section' => 'smw/extended-search-options',

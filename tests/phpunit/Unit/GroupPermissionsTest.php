@@ -52,6 +52,40 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 			'smwcurator',
 			$vars['wgGroupPermissions']
 		);
+
+		$this->assertArrayHasKey(
+			'smweditor',
+			$vars['wgGroupPermissions']
+		);
+
+		$this->assertArrayHasKey(
+			'user',
+			$vars['wgGroupPermissions']
+		);
+	}
+
+	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
+
+		// Avoid re-setting permissions, refs #1137
+		$vars['wgGroupPermissions']['sysop']['smw-admin'] = false;
+		$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
+
+		$instance =  new GroupPermissions();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->initPermissions( $vars );
+
+		$this->assertFalse(
+			$vars['wgGroupPermissions']['sysop']['smw-admin']
+		);
+
+		$this->assertFalse(
+			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
+		);
+
 	}
 
 }

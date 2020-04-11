@@ -476,18 +476,16 @@ class Hooks {
 	 */
 	public function onSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ) {
 
-		$user = $outputPage->getUser();
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
-			$specialSearch,
-			$outputPage
+		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+			$outputPage->getUser()
 		);
 
-		$specialSearchResultsPrepend->setOptions(
-			[
-				'prefs-suggester-textinput' => $user->getOption( 'smw-prefs-general-options-suggester-textinput' ),
-				'prefs-disable-search-info' => $user->getOption( 'smw-prefs-general-options-disable-search-info' )
-			]
+		$specialSearchResultsPrepend = new SpecialSearchResultsPrepend(
+			$preferenceExaminer,
+			$specialSearch,
+			$outputPage
 		);
 
 		return $specialSearchResultsPrepend->process( $term );
@@ -964,16 +962,20 @@ class Hooks {
 			$user
 		);
 
+		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+			$user
+		);
+
 		$personalUrls = new PersonalUrls(
 			$skinTemplate,
 			$applicationFactory->getJobQueue(),
-			$permissionExaminer
+			$permissionExaminer,
+			$preferenceExaminer
 		);
 
 		$personalUrls->setOptions(
 			[
-				'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' ),
-				'prefs-jobqueue-watchlist' => $user->getOption( GetPreferences::VIEW_JOBQUEUE_WATCHLIST )
+				'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' )
 			]
 		);
 
@@ -1095,14 +1097,23 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $output->getUser();
 
+		$permissionExaminer = $applicationFactory->newPermissionExaminer(
+			$user
+		);
+
+		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+			$user
+		);
+
 		$editPageForm = new EditPageForm(
-			$applicationFactory->getNamespaceExaminer()
+			$applicationFactory->getNamespaceExaminer(),
+			$permissionExaminer,
+			$preferenceExaminer
 		);
 
 		$editPageForm->setOptions(
 			[
-				'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' ),
-				'prefs-disable-editpage' => $user->getOption( 'smw-prefs-general-options-disable-editpage-info' )
+				'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
 			]
 		);
 

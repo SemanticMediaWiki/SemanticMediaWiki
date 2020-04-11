@@ -193,7 +193,7 @@ class ServicesFactory {
 	 * @return PreferenceExaminer
 	 */
 	public function newPreferenceExaminer( \User $user = null ) : PreferenceExaminer {
-		return new PreferenceExaminer( $user );
+		return $this->containerBuilder->create( 'PreferenceExaminer', $user );
 	}
 
 	/**

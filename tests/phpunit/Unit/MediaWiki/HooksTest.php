@@ -1045,6 +1045,16 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function callPersonalUrls( $instance ) {
 
+		$preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$preferenceExaminer->expects( $this->any() )
+			->method( 'hasPreferenceOf' )
+			->will( $this->returnValue( false ) );
+
+		$this->testEnvironment->registerObject( 'PreferenceExaminer', $preferenceExaminer );
+
 		$handler = 'PersonalUrls';
 
 		$user = $this->getMockBuilder( '\User' )
