@@ -514,8 +514,28 @@ class SMWExporter {
 		}
 	}
 
+	/**
+	 * Create an ExpNsResource for some special element that belongs to
+	 * a known vocabulary. An exception is generated when given parameters
+	 * that do not fit any known vocabulary.
+	 *
+	 * @param $namespaceId string (e.g. "rdf")
+	 * @param $localName string (e.g. "type")
+	 *
+	 * @return ExpNsResource
+	 */
+	public function newExpNsResourceById( $namespaceId, $localName ) {
+		$namespace = self::getNamespaceUri( $namespaceId );
+
+		if ( $namespace !== '' ) {
+			return new ExpNsResource( $localName, $namespace, $namespaceId );
+		}
+
+		throw new InvalidArgumentException( "The vocabulary '$namespaceId' is not a known special vocabulary." );
+	}
 
 	/**
+	 * @deprecated since 3.2, use
 	 * Create an ExpNsResource for some special element that belongs to
 	 * a known vocabulary. An exception is generated when given parameters
 	 * that do not fit any known vocabulary.
@@ -544,7 +564,7 @@ class SMWExporter {
 	 * @param $uri string of the URI to be expanded
 	 * @return string of the expanded URI
 	 */
-	static public function expandURI( $uri ) {
+	public function expandURI( $uri ) {
 		self::initBaseURIs();
 		$uri = str_replace( [ '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ],
 		                    [ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
@@ -598,44 +618,6 @@ class SMWExporter {
 			default:
 			return '';
 		}
-	}
-
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $syntax
-	 *
-	 * @return ExportSerializer
-	 */
-	public function newExportSerializer( $syntax = '' ) {
-		return $syntax === 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
-	}
-
-	/**
-	 * Create an SMWExpData container that encodes the ontology header for an
-	 * SMW exported OWL file.
-	 *
-	 * @param string $ontologyuri specifying the URI of the ontology, possibly
-	 * empty
-	 *
-	 * @return SMWExpData
-	 */
-	public function newOntologyExpData( $ontologyuri ) {
-
-		$expData = new SMWExpData(
-			new SMWExpResource( $ontologyuri )
-		);
-
-		$ed = self::getSpecialNsResource( 'owl', 'Ontology' );
-		$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), $ed );
-
-		$ed = new ExpLiteral( date( DATE_W3C ), 'http://www.w3.org/2001/XMLSchema#dateTime' );
-		$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'creationDate' ), $ed );
-
-		$ed = new SMWExpResource( 'http://semantic-mediawiki.org/swivt/1.0' );
-		$expData->addPropertyObjectValue( self::getSpecialNsResource( 'owl', 'imports' ), $ed );
-
-		return $expData;
 	}
 
 	/**

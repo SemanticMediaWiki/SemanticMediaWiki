@@ -2,9 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use SMWExportController as ExportController;
-use SMWRDFXMLSerializer as RDFXMLSerializer;
-use SMWTurtleSerializer as TurtleSerializer;
+use SMW\Exporter\ExporterFactory;
 
 /**
  * @group semantic-mediawiki
@@ -87,13 +85,15 @@ class RdfTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 
 	private function assertExportControllerOutputForCase( $case ) {
 
+		$exporterFactory = new ExporterFactory();
+
 		if ( isset( $case['exportcontroller']['syntax'] ) && $case['exportcontroller']['syntax'] === 'turtle' ) {
-			$serializer = new TurtleSerializer();
+			$serializer = $exporterFactory->newTurtleSerializer();
 		} else {
-			$serializer = new RDFXMLSerializer();
+			$serializer = $exporterFactory->newRDFXMLSerializer();
 		}
 
-		$exportController = new ExportController( $serializer );
+		$exportController = $exporterFactory->newExportController( $serializer );
 		$exportController->enableBacklinks( $case['exportcontroller']['parameters']['backlinks'] );
 
 		ob_start();

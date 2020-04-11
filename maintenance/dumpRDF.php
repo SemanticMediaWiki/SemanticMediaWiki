@@ -2,8 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMWExportController as ExportController;
-use SMWRDFXMLSerializer as RDFXMLSerializer;
+use SMW\Exporter\ExporterFactory;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
@@ -158,7 +157,11 @@ class dumpRDF extends \Maintenance {
 
 	private function exportRdfToOutputChannel() {
 
-		$exportController = new ExportController( new RDFXMLSerializer() );
+		$exporterFactory = new ExporterFactory();
+
+		$exportController = $exporterFactory->newExportController(
+			$exporterFactory->newRDFXMLSerializer()
+		);
 
 		if ( $this->pages !== [] ) {
 			return $exportController->printPages(

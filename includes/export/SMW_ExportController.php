@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Exporter\ExpDataFactory;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -29,20 +31,27 @@ class SMWExportController {
 	const CACHE_BACKJUMP = 500;  // kill this many cached entries if limit is reached,
 	                             // avoids too much array copying; <= MAX_CACHE_SIZE!
 	/**
-	 * The object used for serialisation.
-	 * @var SMWSerializer
+	 * @var Serializer
 	 */
 	protected $serializer;
+
+	/**
+	 * @var ExpDataFactory
+	 */
+	private $expDataFactory;
+
 	/**
 	 * An array that keeps track of the elements for which we still need to
 	 * write auxiliary definitions/declarations.
 	 */
 	protected $element_queue;
+
 	/**
 	 * An array that keeps track of the recursion depth with which each object
 	 * has been serialised.
 	 */
 	protected $element_done;
+
 	/**
 	 * Boolean to indicate whether all objects that are exported in full (with
 	 * all data) should also lead to the inclusion of all "inlinks" that they
@@ -52,7 +61,8 @@ class SMWExportController {
 	 * or not inlinking objects are included in full depends on the setting for
 	 * recursion depth. Setting this to true enables "browsable RDF".
 	 */
-	protected $add_backlinks;
+	protected $add_backlinks = false;
+
 	/**
 	 * Controls how long to wait until flushing content to output. Flushing
 	 * early may reduce the memory footprint of serialization functions.
@@ -61,6 +71,7 @@ class SMWExportController {
 	 * so that only local declarations are possible after the first flush.
 	 */
 	protected $delay_flush;
+
 	/**
 	 * File handle for a potential output file to write to, or null if printing
 	 * to standard output.
@@ -78,16 +89,14 @@ class SMWExportController {
 	private $namespaceExaminer;
 
 	/**
-	 * Constructor.
-	 * @param SMWSerializer $serializer defining the object used for syntactic
-	 * serialization.
-	 * @param boolean $enable_backlinks defining if backlinks are included,
-	 * see $add_backlinks for details.
+	 * @since 1.5.5
+	 *
+	 * @param Serializer $serializer instance used for syntactic serialization
+	 * @param ExpDataFactory $expDataFactory
 	 */
-	public function __construct( SMWSerializer $serializer, $enable_backlinks = false ) {
+	public function __construct( Serializer $serializer, ExpDataFactory $expDataFactory ) {
 		$this->serializer = $serializer;
-		$this->outputfile = null;
-		$this->add_backlinks = $enable_backlinks;
+		$this->expDataFactory = $expDataFactory;
 	}
 
 	/**
@@ -482,7 +491,7 @@ class SMWExportController {
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( $ontologyuri ) );
+		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( $ontologyuri ) );
 
 		while ( count( $this->element_queue ) > 0 ) {
 			$diPage = reset( $this->element_queue );
@@ -542,7 +551,7 @@ class SMWExportController {
 		$this->delay_flush = 10;
 
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
 		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; // DEBUG
@@ -608,7 +617,7 @@ class SMWExportController {
 		$linkCache = LinkCache::singleton();
 
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
@@ -665,75 +674,13 @@ class SMWExportController {
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 
-		// assemble export data:
-		$expData = new SMWExpData( new SMWExpResource( '&wiki;#wiki' ) );
-
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
-			new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'Wikisite' ) )
-		);
-
-		// basic wiki information
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'label' ),
-			new SMWExpLiteral( Site::name() )
-		);
-
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'siteName' ),
-			new SMWExpLiteral( Site::name(), 'http://www.w3.org/2001/XMLSchema#string' )
-		);
-
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'pagePrefix' ),
-			new SMWExpLiteral( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), 'http://www.w3.org/2001/XMLSchema#string' )
-		);
-
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'smwVersion' ),
-			new SMWExpLiteral( SMW_VERSION, 'http://www.w3.org/2001/XMLSchema#string' )
-		);
-
-		$expData->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'langCode' ),
-			new SMWExpLiteral( Site::languageCode(), 'http://www.w3.org/2001/XMLSchema#string' )
-		);
-
-		$mainpage = Title::newMainPage();
-
-		if ( !is_null( $mainpage ) ) {
-			$ed = new SMWExpData( new SMWExpResource( $mainpage->getFullURL() ) );
-			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'swivt', 'mainPage' ), $ed );
-		}
-
-		// statistical information
-		foreach ( Site::stats() as $key => $value ) {
-			$expData->addPropertyObjectValue(
-				SMWExporter::getInstance()->getSpecialNsResource( 'swivt', $key ),
-				new SMWExpLiteral( (string)$value, 'http://www.w3.org/2001/XMLSchema#int' )
-			);
-		}
-
 		$this->serializer->startSerialization();
-		$this->serializer->serializeExpData( SMWExporter::getInstance()->newOntologyExpData( '' ) );
-		$this->serializer->serializeExpData( $expData );
-
-		// link to list of existing pages:
-		if ( strpos( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
-			$nexturl = SMWExporter::getInstance()->expandURI( '&export;?offset=0' );
-		} else {
-			$nexturl = SMWExporter::getInstance()->expandURI( '&export;&amp;offset=0' );
-		}
-		$expData = new SMWExpData( new SMWExpResource( $nexturl ) );
-		$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
-		$ed = new SMWExpData( new SMWExpResource( $nexturl ) );
-		$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
-		$this->serializer->serializeExpData( $expData );
-
+		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
+		$this->serializer->serializeExpData( $this->expDataFactory->newSiteExpData() );
+		$this->serializer->serializeExpData( $this->expDataFactory->newDefinedExpData() );
 		$this->serializer->finishSerialization();
-		$this->flush( true );
 
+		$this->flush( true );
 	}
 
 	/**

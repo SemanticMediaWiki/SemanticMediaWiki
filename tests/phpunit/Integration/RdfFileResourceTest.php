@@ -5,8 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Tests\MwDBaseUnitTestCase;
-use SMWExportController as ExportController;
-use SMWRDFXMLSerializer as RDFXMLSerializer;
+use SMW\Exporter\ExporterFactory;
 use Title;
 
 /**
@@ -77,7 +76,12 @@ class RdfFileResourceTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$exportController = new ExportController( new RDFXMLSerializer() );
+		$exporterFactory = new ExporterFactory();
+
+		$exportController = $exporterFactory->newExportController(
+			$exporterFactory->newRDFXMLSerializer()
+		);
+
 		$exportController->enableBacklinks( false );
 
 		ob_start();

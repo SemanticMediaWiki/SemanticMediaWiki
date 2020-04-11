@@ -6,9 +6,8 @@ use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Tests\MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWExportController as ExportController;
+use SMW\Exporter\ExporterFactory;
 use SMWQuery as Query;
-use SMWRDFXMLSerializer as RDFXMLSerializer;
 use Title;
 
 /**
@@ -147,8 +146,11 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 	private function fetchSerializedRdfOutputFor( array $pages ) {
 
 		$this->subjects = $pages;
+		$exporterFactory = new ExporterFactory();
 
-		$instance = new ExportController( new RDFXMLSerializer() );
+		$instance = $exporterFactory->newExportController(
+			$exporterFactory->newRDFXMLSerializer()
+		);
 
 		ob_start();
 		$instance->printPages( $pages );
