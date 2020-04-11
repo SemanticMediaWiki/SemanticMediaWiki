@@ -11,6 +11,7 @@ use SMW\DataTypeRegistry;
 use SMWDataItem as DataItem;
 use SMW\MediaWiki\LinkBatch;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\DataModel\SequenceMap;
 use RuntimeException;
 
 /**
@@ -58,22 +59,34 @@ class PrefetchItemLookup {
 	private $linkBatch;
 
 	/**
+	 * @var SequenceMap
+	 */
+	private $sequenceMap;
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Store $store
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 * @param PropertySubjectsLookup $propertySubjectsLookup
 	 * @param LinkBatch|null $LinkBatch
+	 * @param SequenceMap|null $sequenceMap
 	 */
-	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, LinkBatch $linkBatch = null ) {
+	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, LinkBatch $linkBatch = null, SequenceMap $sequenceMap = null ) {
 		$this->store = $store;
 		$this->semanticDataLookup = $semanticDataLookup;
 		$this->propertySubjectsLookup = $propertySubjectsLookup;
+		$this->linkBatch = $linkBatch;
+		$this->sequenceMap = $sequenceMap;
 
 		// Help reduce the amount of queries by allowing to prefetch those
 		// links we know will be used for the display
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = LinkBatch::singleton();
+		}
+
+		if ( $this->sequenceMap === null ) {
+			$this->sequenceMap = new SequenceMap();
 		}
 	}
 
@@ -132,6 +145,8 @@ class PrefetchItemLookup {
 			$propTable->getDiType()
 		);
 
+		$hasSequenceMap = $this->sequenceMap->hasSequenceMap( $property );
+
 		foreach ( $data as $sid => $itemList ) {
 
 			// SID, the caller is responsible for reassigning the
@@ -160,10 +175,14 @@ class PrefetchItemLookup {
 				$result[$hash] = [];
 			}
 
-			$sequenceMap = $entityIdManager->getSequenceMap(
-				$sid,
-				$property->getKey()
-			);
+			$sequenceMap = [];
+
+			if ( $hasSequenceMap ) {
+				$sequenceMap = $entityIdManager->getSequenceMap(
+					$sid,
+					$property->getKey()
+				);
+			}
 
 			// List of subjects (index which is either the ID or hash) with its
 			// corresponding items

@@ -65,6 +65,14 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'Bar_3' )
 		];
 
+		$sequenceMap = $this->getMockBuilder( '\SMW\DataModel\SequenceMap' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$sequenceMap->expects( $this->atLeastOnce() )
+			->method( 'hasSequenceMap' )
+			->will( $this->returnValue( true ) );
+
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -108,7 +116,9 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PrefetchItemLookup(
 			$this->store,
 			$this->semanticDataLookup,
-			$this->propertySubjectsLookup
+			$this->propertySubjectsLookup,
+			null,
+			$sequenceMap
 		);
 
 		$requestOptions = new RequestOptions();

@@ -21,6 +21,17 @@ class SequenceMap {
 	private static $canMap = [];
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @param boolean
+	 */
+	public function hasSequenceMap( DIProperty $property ) : bool {
+		return self::canMap( $property );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param boolean
@@ -49,6 +60,5 @@ class SequenceMap {
 
 		return self::$canMap[$key] = $profile['sequence_map'] ?? false;
 	}
-
 
 }
