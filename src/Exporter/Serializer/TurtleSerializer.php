@@ -1,31 +1,35 @@
 <?php
 
+namespace SMW\Exporter\Serializer;
+
 use SMW\InMemoryPoolCache;
+use SMWExporter as Exporter;
+use SMWExpData as ExpData;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpElement;
+use InvalidArgumentException;
 
 /**
- * File holding the SMWTurtleSerializer class that provides basic functions for
- * serialising OWL data in Turtle syntax.
+ * Class for serializing exported data (encoded as ExpData object) in
+ * Turtle syntax.
  *
- * @ingroup SMW
+ * @license GNU GPL v2+
+ * @since 1.5.5
  *
  * @author Markus Krötzsch
  */
+class TurtleSerializer extends Serializer {
 
-/**
- * Class for serializing exported data (encoded as SMWExpData object) in
- * Turtle syntax.
- *
- * @ingroup SMW
- */
-class SMWTurtleSerializer extends SMWSerializer {
 	/**
-	 * Array of non-trivial sub-SMWExpData elements that cannot be nested while
-	 * serializing some SMWExpData. The elements of the array are serialized
+	 * Array of non-trivial sub-ExpData elements that cannot be nested while
+	 * serializing some ExpData. The elements of the array are serialized
 	 * later during the same serialization step (so this is not like another
-	 * queue for declarations or the like; it just unfolds an SMWExpData
+	 * queue for declarations or the like; it just unfolds an ExpData
 	 * object).
 	 *
-	 * @var array of SMWExpData
+	 * @var array of ExpData
 	 */
 	protected $subexpdata;
 
@@ -42,11 +46,19 @@ class SMWTurtleSerializer extends SMWSerializer {
 	 */
 	protected $sparql_namespaces;
 
+	/**
+	 * @since 1.5.5
+	 *
+	 * @param bool $sparqlMode
+	 */
 	public function __construct( $sparqlMode = false ) {
 		parent::__construct();
 		$this->sparqlmode = $sparqlMode;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function clear() {
 		parent::clear();
 		$this->sparql_namespaces = [];
@@ -73,49 +85,78 @@ class SMWTurtleSerializer extends SMWSerializer {
 		return $result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function serializeHeader() {
+		$exporter = Exporter::getInstance();
+
 		if ( $this->sparqlmode ) {
 			$this->pre_ns_buffer = '';
 			$this->sparql_namespaces = [
-				"rdf" => SMWExporter::getInstance()->expandURI( '&rdf;' ),
-				"rdfs" => SMWExporter::getInstance()->expandURI( '&rdfs;' ),
-				"owl" => SMWExporter::getInstance()->expandURI( '&owl;' ),
-				"swivt" => SMWExporter::getInstance()->expandURI( '&swivt;' ),
-				"wiki" => SMWExporter::getInstance()->expandURI( '&wiki;' ),
-				"category" => SMWExporter::getInstance()->expandURI( '&category;' ),
-				"property" => SMWExporter::getInstance()->expandURI( '&property;' ),
+				"rdf" => $exporter->expandURI( '&rdf;' ),
+				"rdfs" => $exporter->expandURI( '&rdfs;' ),
+				"owl" => $exporter->expandURI( '&owl;' ),
+				"swivt" => $exporter->expandURI( '&swivt;' ),
+				"wiki" => $exporter->expandURI( '&wiki;' ),
+				"category" => $exporter->expandURI( '&category;' ),
+				"property" => $exporter->expandURI( '&property;' ),
 				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
-				"wikiurl" => SMWExporter::getInstance()->expandURI( '&wikiurl;' )
+				"wikiurl" => $exporter->expandURI( '&wikiurl;' )
 			];
 		} else {
 			$this->pre_ns_buffer =
-			"@prefix rdf: <" . SMWExporter::getInstance()->expandURI( '&rdf;' ) . "> .\n" .
-			"@prefix rdfs: <" . SMWExporter::getInstance()->expandURI( '&rdfs;' ) . "> .\n" .
-			"@prefix owl: <" . SMWExporter::getInstance()->expandURI( '&owl;' ) . "> .\n" .
-			"@prefix swivt: <" . SMWExporter::getInstance()->expandURI( '&swivt;' ) . "> .\n" .
-			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number.
-			// In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
-			"@prefix wiki: <" . SMWExporter::getInstance()->expandURI( '&wiki;' ) . "> .\n" .
-			"@prefix category: <" . SMWExporter::getInstance()->expandURI( '&category;' ) . "> .\n" .
-			"@prefix property: <" . SMWExporter::getInstance()->expandURI( '&property;' ) . "> .\n" .
-			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" . // note that this XSD URI is hardcoded below (its unlikely to change, of course)
-			"@prefix wikiurl: <" . SMWExporter::getInstance()->expandURI( '&wikiurl;' ) . "> .\n";
+			"@prefix rdf: <" . $exporter->expandURI( '&rdf;' ) . "> .\n" .
+			"@prefix rdfs: <" . $exporter->expandURI( '&rdfs;' ) . "> .\n" .
+			"@prefix owl: <" . $exporter->expandURI( '&owl;' ) . "> .\n" .
+			"@prefix swivt: <" . $exporter->expandURI( '&swivt;' ) . "> .\n" .
+
+			// A note on "wiki": this namespace is crucial as a fallback when it
+			// would be illegal to start e.g. with a number. In this case, one can
+			// always use wiki:... followed by "_" and possibly some namespace,
+			// since _ is legal as a first character.
+			"@prefix wiki: <" . $exporter->expandURI( '&wiki;' ) . "> .\n" .
+			"@prefix category: <" . $exporter->expandURI( '&category;' ) . "> .\n" .
+			"@prefix property: <" . $exporter->expandURI( '&property;' ) . "> .\n" .
+
+			 // note that this XSD URI is hardcoded below (its unlikely to change, of course)
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" .
+			"@prefix wikiurl: <" . $exporter->expandURI( '&wikiurl;' ) . "> .\n";
 		}
-		$this->global_namespaces = [ 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true, 'category' => true ];
+
+		$this->global_namespaces = [
+			'rdf' => true,
+			'rdfs' => true,
+			'owl' => true,
+			'swivt' => true,
+			'wiki' => true,
+			'property' => true,
+			'category' => true
+		];
+
 		$this->post_ns_buffer = "\n";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function serializeFooter() {
 		if ( !$this->sparqlmode ) {
 			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, https://www.semantic-mediawiki.org/\n";
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function serializeDeclaration( $uri, $typename ) {
-		$this->post_ns_buffer .= "<" . SMWExporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
+		$this->post_ns_buffer .= "<" . Exporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
-	public function serializeExpData( SMWExpData $expData ) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public function serializeExpData( ExpData $expData ) {
 
 		$this->subExpData = [ $expData ];
 
@@ -126,6 +167,9 @@ class SMWTurtleSerializer extends SMWSerializer {
 		$this->serializeNamespaces();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function serializeNamespace( $shortname, $uri ) {
 		$this->global_namespaces[$shortname] = true;
 		if ( $this->sparqlmode ) {
@@ -136,20 +180,24 @@ class SMWTurtleSerializer extends SMWSerializer {
 	}
 
 	/**
-	 * Serialize the given SMWExpData object, possibly recursively with
+	 * Serialize the given ExpData object, possibly recursively with
 	 * increased indentation.
 	 *
-	 * @param $data SMWExpData containing the data to be serialised.
+	 * @param $data ExpData containing the data to be serialised.
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( SMWExpData $data, $indent ) {
+	protected function serializeNestedExpData( ExpData $data, $indent ) {
 		if ( count( $data->getProperties() ) == 0 ) {
 			return; // nothing to export
 		}
 
+		$subject = $data->getSubject();
+
 		// Avoid posting turtle property declarations already known for the
 		// subject more than once
-		if ( $data->getSubject()->getDataItem() !== null && $data->getSubject()->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
+		if (
+			$subject->getDataItem() !== null &&
+			$subject->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$hash = $data->getHash();
 			$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'turtle.serializer' );
@@ -165,14 +213,17 @@ class SMWTurtleSerializer extends SMWSerializer {
 
 		$bnode = false;
 		$this->post_ns_buffer .= $indent;
-		if ( !$data->getSubject()->isBlankNode() ) {
-			$this->serializeExpResource( $data->getSubject() );
+
+		if ( !$subject->isBlankNode() ) {
+			$this->serializeExpResource( $subject );
 		} else { // blank node
 			$bnode = true;
 			$this->post_ns_buffer .= "[";
 		}
 
-		if ( ( $indent !== '' ) && ( !$bnode ) ) { // called to generate a nested descripion; but Turtle cannot nest non-bnode descriptions, do this later
+		// Called to generate a nested descripion; but Turtle cannot nest non-bnode
+		// descriptions, do this later
+		if ( ( $indent !== '' ) && ( !$bnode ) ) {
 			$this->subexpdata[] = $data;
 			return;
 		} elseif ( !$bnode ) {
@@ -180,6 +231,7 @@ class SMWTurtleSerializer extends SMWSerializer {
 		}
 
 		$firstproperty = true;
+
 		foreach ( $data->getProperties() as $property ) {
 			$this->post_ns_buffer .= $firstproperty ? "\t" : " ;\n $indent\t";
 			$firstproperty = false;
@@ -192,13 +244,13 @@ class SMWTurtleSerializer extends SMWSerializer {
 				$this->post_ns_buffer .= $firstvalue ? '  ' : ' ,  ';
 				$firstvalue = false;
 
-				if ( $value instanceof SMWExpLiteral ) {
+				if ( $value instanceof ExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
 					$this->serializeExpLiteral( $value );
-				} elseif ( $value instanceof SMWExpResource ) {
+				} elseif ( $value instanceof ExpResource ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
 					$this->serializeExpResource( $value );
-				} elseif ( $value instanceof SMWExpData ) { // resource (maybe blank node), could have subdescriptions
+				} elseif ( $value instanceof ExpData ) { // resource (maybe blank node), could have subdescriptions
 					$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
 					$collection = $value->getCollection();
 					if ( $collection !== false ) { // RDF-style collection (list)
@@ -229,38 +281,41 @@ class SMWTurtleSerializer extends SMWSerializer {
 				}
 			}
 		}
+
 		$this->post_ns_buffer .= ( $bnode ? " ]" : " ." ) . ( $indent === '' ? "\n\n" : '' );
 	}
 
-	protected function serializeExpLiteral( SMWExpLiteral $element ) {
+	protected function serializeExpLiteral( ExpLiteral $element ) {
 		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 
-	protected function serializeExpResource( SMWExpResource $element ) {
-		if ( $element instanceof SMWExpNsResource ) {
+	protected function serializeExpResource( ExpResource $element ) {
+
+		if ( $element instanceof ExpNsResource ) {
 			$this->requireNamespace( $element->getNamespaceID(), $element->getNamespace() );
 		}
+
 		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 
 	/**
-	 * Get the Turtle serialization string for the given SMWExpElement. The
+	 * Get the Turtle serialization string for the given ExpElement. The
 	 * method just computes a name, and does not serialize triples, so the
-	 * parameter must be an SMWExpResource or SMWExpLiteral, no SMWExpData.
+	 * parameter must be an ExpResource or ExpLiteral, no ExpData.
 	 *
-	 * @param $expElement SMWExpElement being SMWExpLiteral or SMWExpResource
+	 * @param $expElement ExpElement being ExpLiteral or ExpResource
 	 * @return string
 	 */
-	public static function getTurtleNameForExpElement( SMWExpElement $expElement ) {
-		if ( $expElement instanceof SMWExpResource ) {
+	public static function getTurtleNameForExpElement( ExpElement $expElement ) {
+		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';
-			} elseif ( ( $expElement instanceof SMWExpNsResource ) && ( $expElement->hasAllowedLocalName() ) ) {
+			} elseif ( ( $expElement instanceof ExpNsResource ) && ( $expElement->hasAllowedLocalName() ) ) {
 				return $expElement->getQName();
 			} else {
-				return '<' . str_replace( '>', '\>', SMWExporter::getInstance()->expandURI( $expElement->getUri() ) ) . '>';
+				return '<' . str_replace( '>', '\>', Exporter::getInstance()->expandURI( $expElement->getUri() ) ) . '>';
 			}
-		} elseif ( $expElement instanceof SMWExpLiteral ) {
+		} elseif ( $expElement instanceof ExpLiteral ) {
 			$dataType = $expElement->getDatatype();
 			$lexicalForm = self::getCorrectLexicalForm( $expElement );
 
@@ -271,9 +326,9 @@ class SMWTurtleSerializer extends SMWSerializer {
 			} else {
 				return $lexicalForm;
 			}
-		} else {
-			throw new InvalidArgumentException( 'The method can only serialize atomic elements of type SMWExpResource or SMWExpLiteral.' );
 		}
+
+		throw new InvalidArgumentException( 'The method can only serialize atomic elements of type ExpResource or ExpLiteral.' );
 	}
 
 	private static function getCorrectLexicalForm( $expElement ) {

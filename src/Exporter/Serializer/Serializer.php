@@ -1,20 +1,13 @@
 <?php
 
-/**
- * File holding the SMWSerializer class that provides basic functions for
- * serialising data in OWL and RDF syntaxes.
- *
- * @ingroup SMW
- *
- * @author Markus Krötzsch
- */
+namespace SMW\Exporter\Serializer;
 
-define( 'SMW_SERIALIZER_DECL_CLASS', 1 );
-define( 'SMW_SERIALIZER_DECL_OPROP', 2 );
-define( 'SMW_SERIALIZER_DECL_APROP', 4 );
+use SMWExpData as ExpData;
+use SMW\Exporter\Element\ExpResource;
+use SMW\Exporter\Element\ExpNsResource;
 
 /**
- * Abstract class for serializing exported data (encoded as SMWExpData object)
+ * Abstract class for serializing exported data (encoded as ExpData object)
  * in a concrete syntactic format such as Turtle or RDF/XML. The serializer
  * adds object serialisations to an internal string that can be retrieved for
  * pushing it to an output. This abstract class does not define this string as
@@ -30,9 +23,13 @@ define( 'SMW_SERIALIZER_DECL_APROP', 4 );
  * (only the latter two are mutually exclusive). This class determines the
  * required declaration from the context in which an element is used.
  *
- * @ingroup SMW
+ * @license GNU GPL v2+
+ * @since 1.5.5
+ *
+ * @author Markus Krötzsch
  */
-abstract class SMWSerializer {
+abstract class Serializer {
+
 	/**
 	 * The current working string is obtained by concatenating the strings
 	 * $pre_ns_buffer and $post_ns_buffer. The split between the two is such
@@ -42,11 +39,13 @@ abstract class SMWSerializer {
 	 * @var string
 	 */
 	protected $pre_ns_buffer;
+
 	/**
 	 * See documentation for $pre_ns_buffer.
 	 * @var string
 	 */
 	protected $post_ns_buffer;
+
 	/**
 	 * Array for recording required declarations; format:
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
@@ -55,6 +54,7 @@ abstract class SMWSerializer {
 	 * @var array of integer
 	 */
 	protected $decl_todo;
+
 	/**
 	 * Array for recording previous declarations; format:
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
@@ -63,6 +63,7 @@ abstract class SMWSerializer {
 	 * @var array of integer
 	 */
 	protected $decl_done;
+
 	/**
 	 * Array of additional namespaces (abbreviation => URI), flushed on
 	 * closing the current namespace tag. Since we export in a streamed
@@ -74,6 +75,7 @@ abstract class SMWSerializer {
 	 * @var array of string
 	 */
 	protected $extra_namespaces;
+
 	/**
 	 * Array of namespaces that have been declared globally already. Contains
 	 * entries of format 'namespace abbreviation' => true, assuming that the
@@ -83,7 +85,7 @@ abstract class SMWSerializer {
 	protected $global_namespaces;
 
 	/**
-	 * Constructor.
+	 * @since 1.5.5
 	 */
 	public function __construct() {
 		$this->clear();
@@ -138,23 +140,30 @@ abstract class SMWSerializer {
 	 * serializing other elements.
 	 */
 	public function serializeDeclarations() {
+
 		foreach ( $this->decl_todo as $name => $flag ) {
 			$types = [];
+
 			if ( $flag & SMW_SERIALIZER_DECL_CLASS ) {
 				$types[] = 'owl:Class';
 			}
+
 			if ( $flag & SMW_SERIALIZER_DECL_OPROP ) {
 				$types[] = 'owl:ObjectProperty';
 			}
+
 			if ( $flag & SMW_SERIALIZER_DECL_APROP ) {
 				$types[] = 'owl:DatatypeProperty';
 			}
+
 			foreach ( $types as $typename ) {
 				$this->serializeDeclaration( $name, $typename );
 			}
+
 			$curdone = array_key_exists( $name, $this->decl_done ) ? $this->decl_done[$name] : 0;
 			$this->decl_done[$name] = $curdone | $flag;
 		}
+
 		$this->decl_todo = []; // reset all
 	}
 
@@ -168,28 +177,34 @@ abstract class SMWSerializer {
 	abstract public function serializeDeclaration( $uri, $typename );
 
 	/**
-	 * Serialise the given SMWExpData object. The method must not assume that
+	 * Serialise the given ExpData object. The method must not assume that
 	 * the exported data refers to wiki pages or other SMW data, and it must
 	 * ensure that all required auxiliary declarations for obtaining proper OWL
 	 * are included in any case (this can be done using requireDeclaration()).
 	 *
-	 * @param $data SMWExpData containing the data to be serialised.
+	 * @param $data ExpData containing the data to be serialised.
 	 */
-	abstract public function serializeExpData( SMWExpData $data );
+	abstract public function serializeExpData( ExpData $data );
 
 	/**
 	 * Get the string that has been serialized so far. This function also
 	 * resets the internal buffers for serilized strings and namespaces
 	 * (what is flushed is gone).
+	 *
+	 * @return string
 	 */
-	public function flushContent() {
+	public function flushContent() : string {
+
 		if ( ( $this->pre_ns_buffer === '' ) && ( $this->post_ns_buffer === '' ) ) {
 			return '';
 		}
+
 		$this->serializeNamespaces();
+
 		$result = $this->pre_ns_buffer . $this->post_ns_buffer;
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
+
 		return $result;
 	}
 
@@ -197,9 +212,11 @@ abstract class SMWSerializer {
 	 * Include collected namespace information into the serialization.
 	 */
 	protected function serializeNamespaces() {
+
 		foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 			$this->serializeNamespace( $nsshort, $nsuri );
 		}
+
 		$this->extra_namespaces = [];
 	}
 
@@ -208,6 +225,7 @@ abstract class SMWSerializer {
 	 * Namespaces that were serialized in such a way that they remain
 	 * available for all following output should be added to
 	 * $global_namespaces.
+	 *
 	 * @param $shortname string abbreviation/prefix to declare
 	 * @param $uri string URI prefix that the namespace encodes
 	 */
@@ -228,23 +246,26 @@ abstract class SMWSerializer {
 	 * State that a certain declaration is needed. The method checks if the
 	 * declaration is already available, and records a todo otherwise.
 	 */
-	protected function requireDeclaration( SMWExpResource $resource, $decltype ) {
+	protected function requireDeclaration( ExpResource $resource, $decltype ) {
 		// Do not declare predefined OWL language constructs:
-		if ( $resource instanceof SMWExpNsResource ) {
+		if ( $resource instanceof ExpNsResource ) {
 			$nsId = $resource->getNamespaceId();
 			if ( ( $nsId == 'owl' ) || ( $nsId == 'rdf' ) || ( $nsId == 'rdfs' ) ) {
 				return;
 			}
 		}
+
 		// Do not declare blank nodes:
 		if ( $resource->isBlankNode() ) {
 			return;
 		}
 
 		$name = $resource->getUri();
+
 		if ( array_key_exists( $name, $this->decl_done ) && ( $this->decl_done[$name] & $decltype ) ) {
 			return;
 		}
+
 		if ( !array_key_exists( $name, $this->decl_todo ) ) {
 			$this->decl_todo[$name] = $decltype;
 		} else {
@@ -256,20 +277,26 @@ abstract class SMWSerializer {
 	 * Update the declaration "todo" and "done" lists for the case that the
 	 * given data has been serialized with the type information it provides.
 	 *
-	 * @param $expData specifying the type data upon which declarations are based
+	 * @param ExpData $expData
 	 */
-	protected function recordDeclarationTypes( SMWExpData $expData ) {
+	protected function recordDeclarationTypes( ExpData $expData ) {
 		foreach ( $expData->getSpecialValues( 'rdf', 'type') as $typeresource ) {
-			if ( $typeresource instanceof SMWExpNsResource ) {
+
+			if ( $typeresource instanceof ExpNsResource ) {
 				switch ( $typeresource->getQName() ) {
-					case 'owl:Class': $typeflag = SMW_SERIALIZER_DECL_CLASS;
+					case 'owl:Class':
+					$typeflag = SMW_SERIALIZER_DECL_CLASS;
 					break;
-					case 'owl:ObjectProperty': $typeflag = SMW_SERIALIZER_DECL_OPROP;
+					case 'owl:ObjectProperty':
+					$typeflag = SMW_SERIALIZER_DECL_OPROP;
 					break;
-					case 'owl:DatatypeProperty': $typeflag = SMW_SERIALIZER_DECL_APROP;
+					case 'owl:DatatypeProperty':
+					$typeflag = SMW_SERIALIZER_DECL_APROP;
 					break;
-					default: $typeflag = 0;
+					default:
+					$typeflag = 0;
 				}
+
 				if ( $typeflag != 0 ) {
 					$this->declarationDone( $expData->getSubject(), $typeflag );
 				}
@@ -281,15 +308,17 @@ abstract class SMWSerializer {
 	 * Update the declaration "todo" and "done" lists to reflect the fact that
 	 * the given element has been declared to has the given type.
 	 *
-	 * @param $element SMWExpResource specifying the element to update
+	 * @param ExpResource $element specifying the element to update
 	 * @param $typeflag integer specifying the type (e.g. SMW_SERIALIZER_DECL_CLASS)
 	 */
-	protected function declarationDone( SMWExpResource $element, $typeflag ) {
+	protected function declarationDone( ExpResource $element, int $typeflag ) {
 		$name = $element->getUri();
 		$curdone = array_key_exists( $name, $this->decl_done ) ? $this->decl_done[$name] : 0;
 		$this->decl_done[$name] = $curdone | $typeflag;
+
 		if ( array_key_exists( $name, $this->decl_todo ) ) {
 			$this->decl_todo[$name] = $this->decl_todo[$name] & ( ~$typeflag );
+
 			if ( $this->decl_todo[$name] == 0 ) {
 				unset( $this->decl_todo[$name] );
 			}
@@ -310,12 +339,13 @@ abstract class SMWSerializer {
 	 * not use OWL Datatypes in SMW, so rdf:type, rdfs:domain, etc. always
 	 * refer to classes.
 	 *
-	 * @param SMWExpNsResource $property
+	 * @param ExpNsResource $property
 	 *
 	 * @return boolean
 	 */
-	protected function isOWLClassTypeProperty( SMWExpNsResource $property ) {
+	protected function isOWLClassTypeProperty( ExpNsResource $property ) : bool {
 		$locname = $property->getLocalName();
+
 		if ( $property->getNamespaceID() == 'rdf' ) {
 			return ( $locname == 'type' );
 		} elseif ( $property->getNamespaceID() == 'owl' ) {
@@ -325,9 +355,9 @@ abstract class SMWSerializer {
 			       ( $locname == 'allValuesFrom' ) || ( $locname == 'onClass' );
 		} elseif ( $property->getNamespaceID() == 'rdfs' ) {
 			return ( $locname == 'subClassOf' ) || ( $locname == 'range' ) || ( $locname == 'domain' );
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 }
