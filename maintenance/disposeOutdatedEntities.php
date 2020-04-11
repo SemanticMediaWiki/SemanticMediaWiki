@@ -38,6 +38,7 @@ class disposeOutdatedEntities extends \Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( "Dispose of outdated entities." );
+		$this->addOption( 'with-maintenance-log', 'Add log entry to `Special:Log` about the maintenance run.', false );
 	}
 
 	/**
@@ -68,6 +69,11 @@ class disposeOutdatedEntities extends \Maintenance {
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
+
+		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
+		$maintenanceHelper->initRuntimeValues();
+
 		$title = Title::newFromText( __METHOD__ );
 
 		$outdatedDisposer = new OutdatedDisposer(
@@ -105,6 +111,11 @@ class disposeOutdatedEntities extends \Maintenance {
 
 		$outdatedDisposer->setMessageReporter( $this->messageReporter );
 		$outdatedDisposer->run();
+
+		if ( $this->hasOption( 'with-maintenance-log' ) ) {
+			$maintenanceLogger = $maintenanceFactory->newMaintenanceLogger( 'DisposeOutdatedEntitiesLogger' );
+			$maintenanceLogger->log( $maintenanceHelper->transformRuntimeValuesForOutput() );
+		}
 
 		return true;
 	}
