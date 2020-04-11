@@ -16,6 +16,14 @@ define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
 /**@}*/
 
 /**@{
+  * Constants for the exporter/OWL serializer
+  */
+define( 'SMW_SERIALIZER_DECL_CLASS', 1 );
+define( 'SMW_SERIALIZER_DECL_OPROP', 2 );
+define( 'SMW_SERIALIZER_DECL_APROP', 4 );
+/**@}*/
+
+/**@{
   * Constants to indicate that the installer is called from the `ExtensionSchemaUpdates`
   * hook.
   */

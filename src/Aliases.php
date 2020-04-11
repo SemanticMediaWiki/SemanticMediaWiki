@@ -8,6 +8,9 @@
 class_alias( \SMW\Localizer\Localizer::class, '\SMW\Localizer' );
 class_alias( \SMW\Localizer\Message::class, '\SMW\Message' );
 class_alias( \SMW\Localizer\LocalLanguage\LocalLanguage::class, '\SMW\Lang\Lang' );
+class_alias( \SMW\Exporter\Serializer\Serializer::class, '\SMWSerializer' );
+class_alias( \SMW\Exporter\Serializer\TurtleSerializer::class, '\SMWTurtleSerializer' );
+class_alias( \SMW\Exporter\Serializer\RDFXMLSerializer::class, '\SMWRDFXMLSerializer' );
 
 // 3.1
 class_alias( \SMW\Query\ResultPrinters\RdfResultPrinter::class, 'SMWRDFResultPrinter' );
