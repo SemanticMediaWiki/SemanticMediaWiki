@@ -11,6 +11,7 @@ use Iterator;
 use SMW\MediaWiki\LinkBatch;
 use SMW\DisplayTitleFinder;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 
 /**
  * @license GNU GPL v2+
@@ -99,6 +100,8 @@ class CacheWarmer {
 					try {
 						$property = DIProperty::newFromUserLabel( $item->getDBKey() );
 					} catch ( PredefinedPropertyLabelMismatchException $e ) {
+						continue;
+					} catch ( PropertyLabelNotResolvedException $e ) {
 						continue;
 					}
 					$hash = $item->getSha1();
