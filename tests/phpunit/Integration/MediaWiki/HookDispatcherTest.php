@@ -385,6 +385,78 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnInstallerBeforeCreateTablesComplete() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$tables = [];
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter->expects( $this->once() )
+			->method( 'reportMessage' );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( $tables, $messageReporter ) {
+			$messageReporter->reportMessage( 'foo' );
+		} );
+
+		$hookDispatcher->onInstallerBeforeCreateTablesComplete( $tables, $messageReporter );
+	}
+
+	public function testOnInstallerAfterCreateTablesComplete() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$options = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter->expects( $this->once() )
+			->method( 'reportMessage' );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function( $tableBuilder, $messageReporter, $options ) {
+			$messageReporter->reportMessage( 'foo' );
+		} );
+
+		$hookDispatcher->onInstallerAfterCreateTablesComplete( $tableBuilder, $messageReporter, $options );
+	}
+
+	public function testOnInstallerAfterDropTablesComplete() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$options = $this->getMockBuilder( '\SMW\Options' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$messageReporter->expects( $this->once() )
+			->method( 'reportMessage' );
+
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function( $tableBuilder, $messageReporter, $options ) {
+			$messageReporter->reportMessage( 'foo' );
+		} );
+
+		$hookDispatcher->onInstallerAfterDropTablesComplete( $tableBuilder, $messageReporter, $options );
+	}
+
 	public function testConfirmAllOnMethodsWereCalled() {
 
 		// Expected class methods to be tested

@@ -510,6 +510,10 @@ class SQLStoreFactory {
 			$tableOptimizer
 		);
 
+		$installer->setHookDispatcher(
+			$applicationFactory->getHookDispatcher()
+		);
+
 		$installer->setSetupFile(
 			$setupFile
 		);

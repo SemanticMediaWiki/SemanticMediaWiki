@@ -5,6 +5,8 @@ namespace SMW\MediaWiki;
 use Hooks;
 use User;
 use SMW\Store;
+use SMW\SQLStore\TableBuilder;
+use SMW\Options;
 use SMW\Parser\AnnotationProcessor;
 use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
@@ -222,6 +224,41 @@ class HookDispatcher {
 	 */
 	public function onChangeFile( \Title $title, &$file ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.beforecreatetablescomplete.md
+	 * @since 3.2
+	 *
+	 * @param array $tables
+	 * @param MessageReporter $messageReporter
+	 */
+	public function onInstallerBeforeCreateTablesComplete( array $tables, MessageReporter $messageReporter ) {
+		Hooks::run( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', [ $tables, $messageReporter ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.aftercreatetablescomplete.md
+	 * @since 3.2
+	 *
+	 * @param TableBuilder $tableBuilder
+	 * @param MessageReporter $messageReporter
+	 * @param Options $options
+	 */
+	public function onInstallerAfterCreateTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ) {
+		Hooks::run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', [ $tableBuilder, $messageReporter, $options ] );
+	}
+
+	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.afterdroptablescomplete.md
+	 * @since 3.2
+	 *
+	 * @param TableBuilder $tableBuilder
+	 * @param MessageReporter $messageReporter
+	 * @param Options $options
+	 */
+	public function onInstallerAfterDropTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ) {
+		Hooks::run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', [ $tableBuilder, $messageReporter, $options ] );
 	}
 
 }

@@ -71,7 +71,11 @@ class MwHooksHandler {
 		'SMW::RevisionGuard::ChangeFile',
 
 		'SMWSQLStore3::updateDataBefore',
-		'SMW::SQLStore::BeforeDataUpdateComplete'
+		'SMW::SQLStore::BeforeDataUpdateComplete',
+
+		'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
+		'SMW::SQLStore::Installer::AfterCreateTablesComplete',
+		'SMW::SQLStore::Installer::AfterDropTablesComplete'
 	];
 
 	/**

@@ -12,6 +12,7 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Options;
 use SMW\Site;
 use SMW\TypesRegistry;
@@ -31,6 +32,7 @@ use SMW\Setup;
 class Installer implements MessageReporter {
 
 	use MessageReporterAwareTrait;
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * Optimize option
@@ -203,13 +205,10 @@ class Installer implements MessageReporter {
 		$tables = $this->tableSchemaManager->getTables();
 		$this->setupFile->setMaintenanceMode( [ 'create-tables' => 20 ] );
 
-		Hooks::run(
-			'SMW::SQLStore::Installer::BeforeCreateTablesComplete',
-			[
-				$tables,
-				$this->messageReporter
-			]
-		);
+		/**
+		 * @see HookDispatcher::onInstallerBeforeCreateTablesComplete
+		 */
+		$this->hookDispatcher->onInstallerBeforeCreateTablesComplete( $tables, $this->messageReporter );
 
 		$this->messageReporter->reportMessage(
 			$this->cliMsgFormatter->section( 'Core table(s)', 6, '-', true ) . "\n"
@@ -274,14 +273,10 @@ class Installer implements MessageReporter {
 			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
-		Hooks::run(
-			'SMW::SQLStore::Installer::AfterCreateTablesComplete',
-			[
-				$this->tableBuilder,
-				$this->messageReporter,
-				$this->options
-			]
-		);
+		/**
+		 * @see HookDispatcher::onInstallerAfterCreateTablesComplete
+		 */
+		$this->hookDispatcher->onInstallerAfterCreateTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
 
 		$timer->stop( 'hook-execution' );
 
@@ -327,14 +322,10 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 		$this->tableBuildExaminer->checkOnPostDestruction( $this->tableBuilder );
 
-		Hooks::run(
-			'SMW::SQLStore::Installer::AfterDropTablesComplete',
-			[
-				$this->tableBuilder,
-				$this->messageReporter,
-				$this->options
-			]
-		);
+		/**
+		 * @see HookDispatcher::onInstallerAfterDropTablesComplete
+		 */
+		$this->hookDispatcher->onInstallerAfterDropTablesComplete( $this->tableBuilder, $this->messageReporter, $this->options );
 
 		$text = [
 			'Standard and auxiliary tables with all corresponding data',
