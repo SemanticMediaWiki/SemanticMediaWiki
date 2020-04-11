@@ -65,6 +65,10 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( 'Bar_3' )
 		];
 
+		$linkBatch = $this->getMockBuilder( '\SMW\MediaWiki\LinkBatch' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$sequenceMap = $this->getMockBuilder( '\SMW\DataModel\SequenceMap' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +121,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->store,
 			$this->semanticDataLookup,
 			$this->propertySubjectsLookup,
-			null,
+			$linkBatch,
 			$sequenceMap
 		);
 
