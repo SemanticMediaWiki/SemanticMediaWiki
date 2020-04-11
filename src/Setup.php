@@ -157,7 +157,7 @@ final class Setup {
 		$this->registerFooterIcon( $vars, $rootDir );
 		$this->registerHooks( $vars, $rootDir );
 
-		\Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
+		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 	}
 
 	private function addDefaultConfigurations( &$vars, $rootDir ) {

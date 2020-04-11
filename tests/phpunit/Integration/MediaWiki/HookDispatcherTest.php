@@ -51,6 +51,24 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnSetupAfterInitializationComplete() {
+
+		$vars = [];
+
+		$hookDispatcher = new HookDispatcher();
+
+		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
+			$vars = [ 'Foo' ];
+		} );
+
+		$hookDispatcher->onSetupAfterInitializationComplete( $vars );
+
+		$this->assertEquals(
+			[ 'Foo' ],
+			$vars
+		);
+	}
+
 	public function testOnGroupPermissionsBeforeInitializationComplete() {
 
 		$permissions = [];
