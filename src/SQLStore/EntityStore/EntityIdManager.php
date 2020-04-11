@@ -529,6 +529,8 @@ class EntityIdManager {
 				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
 			} catch( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
+			} catch( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
+				return 0;
 			}
 
 			$key = $property->getKey();
