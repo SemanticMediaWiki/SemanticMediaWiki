@@ -32,6 +32,7 @@ use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\SQLStore\RedirectStore;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
@@ -182,6 +183,17 @@ class ServicesFactory {
 	 */
 	public function newPermissionExaminer( \User $user = null ) : PermissionExaminer {
 		return new PermissionExaminer( $this->containerBuilder->create( 'PermissionManager' ), $user );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param User|null $user
+	 *
+	 * @return PreferenceExaminer
+	 */
+	public function newPreferenceExaminer( \User $user = null ) : PreferenceExaminer {
+		return new PreferenceExaminer( $user );
 	}
 
 	/**
