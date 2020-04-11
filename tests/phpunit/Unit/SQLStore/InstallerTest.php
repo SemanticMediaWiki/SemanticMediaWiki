@@ -24,6 +24,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableBuildExaminer;
 	private $versionExaminer;
 	private $tableOptimizer;
+	private $hookDispatcher;
 	private $setupFile;
 
 	protected function setUp() : void {
@@ -52,6 +53,10 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,6 +116,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
+		$instance->setHookDispatcher( $this->hookDispatcher );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -133,6 +139,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
+		$instance->setHookDispatcher( $this->hookDispatcher );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -175,6 +182,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
+		$instance->setHookDispatcher( $this->hookDispatcher );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -214,6 +222,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
+		$instance->setHookDispatcher( $this->hookDispatcher );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
@@ -248,6 +257,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
+		$instance->setHookDispatcher( $this->hookDispatcher );
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
