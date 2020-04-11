@@ -1,8 +1,8 @@
 {
     "@metadata": {
-        "authors": []
+        "authors": ["Jaider Andrade Ferreira"]
     },
-    "fallback_language": "en",
+    "fallback_language": "pt",
     "namespace": {
         "labels": {
             "SMW_NS_PROPERTY": "Propriedade",
