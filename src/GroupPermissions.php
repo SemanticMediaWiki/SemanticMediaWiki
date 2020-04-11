@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Permission;
+namespace SMW;
 
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 

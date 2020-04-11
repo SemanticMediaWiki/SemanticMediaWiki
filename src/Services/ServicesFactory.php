@@ -31,7 +31,7 @@ use SMW\MediaWiki\PageUpdater;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\NamespaceExaminer;
-use SMW\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\SQLStore\RedirectStore;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;

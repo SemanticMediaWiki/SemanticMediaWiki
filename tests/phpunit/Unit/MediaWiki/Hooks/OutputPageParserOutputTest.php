@@ -50,7 +50,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 

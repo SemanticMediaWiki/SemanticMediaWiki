@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Permission;
+namespace SMW\Tests;
 
-use SMW\Permission\GroupPermissions;
+use SMW\GroupPermissions;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\Permission\GroupPermissions
+ * @covers \SMW\GroupPermissions
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+

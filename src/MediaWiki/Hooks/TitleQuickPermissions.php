@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\MediaWiki\PermissionsExaminer;
+use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\NamespaceExaminer;
 use Title;
 use SMW\MediaWiki\HookListener;
@@ -23,19 +23,19 @@ class TitleQuickPermissions implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 * @var PermissionsExaminer
+	 * @var TitlePermissions
 	 */
-	private $permissionsExaminer;
+	private $titlePermissions;
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param PermissionsExaminer $permissionsExaminer
+	 * @param TitlePermissions $titlePermissions
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionsExaminer $permissionsExaminer ) {
+	public function __construct( NamespaceExaminer $namespaceExaminer, TitlePermissions $titlePermissions ) {
 		$this->namespaceExaminer = $namespaceExaminer;
-		$this->permissionsExaminer = $permissionsExaminer;
+		$this->titlePermissions = $titlePermissions;
 	}
 
 	/**
@@ -54,13 +54,13 @@ class TitleQuickPermissions implements HookListener {
 			return true;
 		}
 
-		$ret = $this->permissionsExaminer->checkPermissionFor(
+		$ret = $this->titlePermissions->checkPermissionFor(
 			$title,
 			$user,
 			$action
 		);
 
-		$errors = $this->permissionsExaminer->getErrors();
+		$errors = $this->titlePermissions->getErrors();
 
 		return $ret;
 	}

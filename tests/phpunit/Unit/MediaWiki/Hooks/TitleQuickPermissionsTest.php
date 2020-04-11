@@ -18,7 +18,7 @@ use SMW\Tests\TestEnvironment;
 class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
-	private $permissionsExaminer;
+	private $titlePermissions;
 	private $namespaceExaminer;
 	private $title;
 	private $user;
@@ -28,7 +28,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->permissionsExaminer = $this->getMockBuilder( '\SMW\MediaWiki\PermissionsExaminer' )
+		$this->titlePermissions = $this->getMockBuilder( '\SMW\MediaWiki\Permission\TitlePermissions' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			TitleQuickPermissions::class,
-			new TitleQuickPermissions( $this->namespaceExaminer, $this->permissionsExaminer )
+			new TitleQuickPermissions( $this->namespaceExaminer, $this->titlePermissions )
 		);
 	}
 
@@ -64,15 +64,15 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( true ) );
 
-		$this->permissionsExaminer->expects( $this->once() )
+		$this->titlePermissions->expects( $this->once() )
 			->method( 'checkPermissionFor' );
 
-		$this->permissionsExaminer->expects( $this->once() )
+		$this->titlePermissions->expects( $this->once() )
 			->method( 'getErrors' );
 
 		$instance = new TitleQuickPermissions(
 			$this->namespaceExaminer,
-			$this->permissionsExaminer
+			$this->titlePermissions
 		);
 
 		$error = '';
@@ -86,12 +86,12 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( false ) );
 
-		$this->permissionsExaminer->expects( $this->never() )
+		$this->titlePermissions->expects( $this->never() )
 			->method( 'checkPermissionFor' );
 
 		$instance = new TitleQuickPermissions(
 			$this->namespaceExaminer,
-			$this->permissionsExaminer
+			$this->titlePermissions
 		);
 
 		$error = '';

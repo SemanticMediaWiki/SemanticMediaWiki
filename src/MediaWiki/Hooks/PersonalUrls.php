@@ -5,8 +5,8 @@ namespace SMW\MediaWiki\Hooks;
 use SkinTemplate;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\HookListener;
-use SMW\Permission\PermissionExaminer;
-use SMW\Permission\GroupPermissions;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\GroupPermissions;
 use SMW\OptionsAwareTrait;
 
 /**

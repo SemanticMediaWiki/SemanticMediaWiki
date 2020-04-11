@@ -21,4 +21,4 @@ Hooks::register( 'SMW::GroupPermissions::BeforeInitializationComplete', function
 } );
 ```
 
-[GroupPermissions.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Permission/GroupPermissions.php
+[GroupPermissions.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/GroupPermissions.php

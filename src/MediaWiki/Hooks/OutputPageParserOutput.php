@@ -8,7 +8,7 @@ use SMW\ApplicationFactory;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
-use SMW\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use Title;
 
 /**

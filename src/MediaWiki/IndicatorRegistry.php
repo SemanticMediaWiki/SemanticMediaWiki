@@ -6,8 +6,8 @@ use Title;
 use OutputPage;
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProvider;
-use SMW\Permission\PermissionExaminer;
-use SMW\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionAware;
 
 /**
  * @license GNU GPL v2+
