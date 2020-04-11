@@ -118,8 +118,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function matchAndTriggerChangeListeners() {
-
+	public function triggerChangeListeners() {
 		$keyIdMap = array_flip( $this->propertyIdKeyMap );
 
 		foreach ( $this->changeListeners as $key => $changeListeners ) {
@@ -139,6 +138,13 @@ class PropertyChangeListener implements ChangeListener {
 			$this->setAttrs( $attrs );
 			$this->trigger( $key );
 		}
+	}
+
+	/**
+	 * @since 3.2
+	 */
+	public function runChangeListeners() {
+		$this->store->getConnection( 'mw.db' )->onTransactionIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 
 	/**

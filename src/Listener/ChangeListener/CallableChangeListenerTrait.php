@@ -63,13 +63,13 @@ trait CallableChangeListenerTrait {
 			return;
 		}
 
-		$changeRecord = new ChangeRecord( $this->attrs );
-		$this->triggerByKey( $key, $changeRecord );
-
 		$this->logger->info(
 			[ 'Listener', 'ChangeListener', "{key}" ],
 			[ 'role' => 'developer', 'key' => $key ]
 		);
+
+		$changeRecord = new ChangeRecord( $this->attrs );
+		$this->triggerByKey( $key, $changeRecord );
 	}
 
 	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {

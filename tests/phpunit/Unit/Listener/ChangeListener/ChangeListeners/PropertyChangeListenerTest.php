@@ -108,7 +108,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->recordChange( 42, [ 'row' => [ 's_id' => 1000, 'o_hash' => 'foobar' ] ] );
-		$instance->matchAndTriggerChangeListeners();
+		$instance->triggerChangeListeners();
 
 		$this->assertEquals(
 			$property,
@@ -119,6 +119,26 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 			'foobar',
 			$this->changeRecord->get( 0 )->get( 'row.o_hash' )
 		);
+	}
+
+	public function testRunChangeListeners() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->once() )
+			->method( 'onTransactionIdle' );
+
+		$this->store->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new PropertyChangeListener(
+			$this->store
+		);
+
+		$instance->runChangeListeners();
 	}
 
 	public function testLoadListeners() {
