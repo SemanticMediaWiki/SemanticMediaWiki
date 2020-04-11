@@ -69,6 +69,10 @@ class SequenceMapTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(
 			SequenceMap::canMap( $property )
 		);
+
+		$this->assertTrue(
+			( new SequenceMap() )->hasSequenceMap( $property )
+		);
 	}
 
 }
