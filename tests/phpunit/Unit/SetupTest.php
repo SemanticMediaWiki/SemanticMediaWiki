@@ -120,6 +120,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testHookRunOnSetupAfterInitializationComplete() {
+
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onSetupAfterInitializationComplete' );
+
+		$config = $this->defaultConfig;
+
+		$instance = new Setup();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->init( $config, '' );
+	}
+
 	/**
 	 * @dataProvider jobClassesDataProvider
 	 */

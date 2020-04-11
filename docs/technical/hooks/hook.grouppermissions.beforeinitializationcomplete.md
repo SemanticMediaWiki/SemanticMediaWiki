@@ -11,6 +11,12 @@ use Hooks;
 
 Hooks::register( 'SMW::GroupPermissions::BeforeInitializationComplete', function( &$permissions ) {
 
+	// Assignments have the form of:
+	// $permissions['smw_group_x'] = [ 'right_x' => true, 'right_y' => true ];
+
+	// Rights added by Semantic MediaWiki are listed in the
+	// `GroupPermissions` class
+
 	return true;
 } );
 ```
