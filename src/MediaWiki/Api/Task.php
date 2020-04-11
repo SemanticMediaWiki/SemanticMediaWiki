@@ -50,10 +50,10 @@ class Task extends ApiBase {
 		}
 
 		$this->taskFactory = new TaskFactory();
-		$task = $this->taskFactory->newByType( $params['task'] );
+		$task = $this->taskFactory->newByType( $params['task'], $this->getUser() );
 
 		// If the `uselang` isn't set then inject the language from the
-		// user logged-on
+		// logged-in user
 		if ( !isset( $parameters['uselang'] ) || $parameters['uselang'] === '' ) {
 			$parameters['uselang'] = $this->getLanguage()->getCode();
 		}

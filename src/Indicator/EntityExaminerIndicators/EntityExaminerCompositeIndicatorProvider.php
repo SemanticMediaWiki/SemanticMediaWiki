@@ -4,6 +4,9 @@ namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +14,7 @@ use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
  *
  * @author mwjames
  */
-class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProvider {
+class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProvider, PermissionExaminerAware {
 
 	/**
 	 * @var CompositeIndicatorHtmlBuilder
@@ -22,6 +25,11 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 * @var []
 	 */
 	private $indicatorProviders = [];
+
+	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
 
 	/**
 	 * @var []
@@ -42,6 +50,16 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	public function __construct( CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder, array $indicatorProviders ) {
 		$this->compositeIndicatorHtmlBuilder = $compositeIndicatorHtmlBuilder;
 		$this->indicatorProviders = $indicatorProviders;
+	}
+
+	/**
+	 * @see PermissionExaminerAware::setPermissionExaminer
+	 * @since 3.2
+	 *
+	 * @param PermissionExaminer $permissionExaminer
+	 */
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
@@ -110,6 +128,16 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 		$options['options_raw'] = json_encode( $options );
 
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
+
+			if ( $indicatorProvider instanceof PermissionExaminerAware ) {
+				$indicatorProvider->setPermissionExaminer( $this->permissionExaminer );
+			}
+
+			if (
+				$indicatorProvider instanceof PermissionAware &&
+				!$indicatorProvider->hasPermission( $this->permissionExaminer ) ) {
+				continue;
+			}
 
 			if ( !$indicatorProvider->hasIndicator( $subject, $options ) ) {
 				continue;

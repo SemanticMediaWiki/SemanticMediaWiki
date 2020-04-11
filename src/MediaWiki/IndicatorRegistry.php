@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**
  * @license GNU GPL v2+
@@ -67,6 +68,10 @@ class IndicatorRegistry {
 		);
 
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
+
+			if ( $indicatorProvider instanceof PermissionExaminerAware ) {
+				$indicatorProvider->setPermissionExaminer( $permissionExaminer );
+			}
 
 			if (
 				$indicatorProvider instanceof PermissionAware &&

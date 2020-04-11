@@ -18,6 +18,7 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 
 	private $store;
 	private $entityExaminerIndicatorsFactory;
+	private $permissionExaminer;
 	private $testEnvironment;
 
 	protected function setUp() : void {
@@ -28,6 +29,10 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->entityExaminerIndicatorsFactory = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicatorsFactory' )
 			->disableOriginalConstructor()
@@ -66,6 +71,9 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$entityExaminerDeferrableCompositeIndicatorProvider->expects( $this->atLeastOnce() )
+			->method( 'setPermissionExaminer' );
+
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
 			->will( $this->returnValue( $entityExaminerDeferrableCompositeIndicatorProvider ) );
@@ -73,6 +81,10 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 		$instance = new EntityExaminerTask(
 			$this->store,
 			$this->entityExaminerIndicatorsFactory
+		);
+
+		$instance->setPermissionExaminer(
+			$this->permissionExaminer
 		);
 
 		$this->assertEquals(
@@ -87,9 +99,15 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$entityExaminerDeferrableCompositeIndicatorProvider->expects( $this->atLeastOnce() )
+			->method( 'setPermissionExaminer' );
+
 		$compositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$compositeIndicatorProvider->expects( $this->atLeastOnce() )
+			->method( 'setPermissionExaminer' );
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
@@ -102,6 +120,10 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 		$instance = new EntityExaminerTask(
 			$this->store,
 			$this->entityExaminerIndicatorsFactory
+		);
+
+		$instance->setPermissionExaminer(
+			$this->permissionExaminer
 		);
 
 		$this->assertEquals(

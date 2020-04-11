@@ -177,6 +177,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			$this->store
 		);
 
+		$instance->setDeferredMode(
+			true
+		);
+
 		$instance->setRevisionGuard(
 			$this->revisionGuard
 		);
@@ -204,6 +208,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
+		);
+
+		$instance->setDeferredMode(
+			true
 		);
 
 		$instance->setRevisionGuard(
@@ -241,6 +249,10 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
+		);
+
+		$instance->setDeferredMode(
+			true
 		);
 
 		$instance->setRevisionGuard(

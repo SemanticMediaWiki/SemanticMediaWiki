@@ -7,6 +7,7 @@ use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -21,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements TypableSeverityIndicatorProvider, PermissionAware {
+class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements TypableSeverityIndicatorProvider, DeferrableIndicatorProvider, PermissionAware {
 
 	use MessageLocalizerTrait;
 	use RevisionGuardAwareTrait;
@@ -47,6 +48,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $languageCode = '';
 
 	/**
+	 * @var boolean
+	 */
+	private $isDeferredMode = false;
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param Store $store
@@ -65,6 +71,24 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 */
 	public function hasPermission( PermissionExaminer $permissionExaminer ) : bool {
 		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param boolean $type
+	 */
+	public function setDeferredMode( bool $isDeferredMode ) {
+		$this->isDeferredMode = $isDeferredMode;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @return boolean
+	 */
+	public function isDeferredMode() : bool {
+		return $this->isDeferredMode;
 	}
 
 	/**
@@ -96,7 +120,14 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 * @return boolean
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-		return $this->checkForMismatch( $subject, $options );
+
+		if ( $this->isDeferredMode ) {
+			return $this->runCheck( $subject, $options );
+		}
+
+		$this->indicators = [ 'id' => $this->getName() ];
+
+		return $this->indicators !== [];
 	}
 
 	/**
@@ -126,7 +157,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return '';
 	}
 
-	private function checkForMismatch( $subject, $options ) {
+	private function runCheck( $subject, $options ) {
 
 		$this->indicators = [];
 
