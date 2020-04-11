@@ -20,8 +20,16 @@ class ConstraintRegistryFactoryTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetConstraint( $key ) {
 
+		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new ConstraintRegistry(
 			ApplicationFactory::getInstance()->create( 'ConstraintFactory' )
+		);
+
+		$instance->setHookDispatcher(
+			$hookDispatcher
 		);
 
 		$this->assertInstanceOf(
@@ -32,8 +40,16 @@ class ConstraintRegistryFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function constraintKeyProvider() {
 
+		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new ConstraintRegistry(
 			ApplicationFactory::getInstance()->create( 'ConstraintFactory' )
+		);
+
+		$instance->setHookDispatcher(
+			$hookDispatcher
 		);
 
 		foreach ( $instance->getConstraintKeys() as $key ) {

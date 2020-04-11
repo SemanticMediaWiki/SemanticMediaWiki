@@ -11,6 +11,7 @@ use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\Constraint\Constraints\ShapeConstraint;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
  * @license GNU GPL v2+
@@ -19,6 +20,8 @@ use SMW\Constraint\Constraints\ShapeConstraint;
  * @author mwjames
  */
 class ConstraintRegistry {
+
+	use HookDispatcherAwareTrait;
 
 	/**
 	 * @var ConstraintFactory
@@ -111,7 +114,7 @@ class ConstraintRegistry {
 			'shape_constraint' => ShapeConstraint::class
 		];
 
-		\Hooks::run( 'SMW::Constraint::initConstraints', [ $this ] );
+		$this->hookDispatcher->onInitConstraints( $this );
 	}
 
 	private function loadInstance( $class ) {

@@ -39,6 +39,7 @@ class MwHooksHandler {
 
 		'smwInitProperties',
 		'SMW::Property::initProperties',
+		'SMW::Constraint::initConstraints',
 		'SMW::Factbox::BeforeContentGeneration',
 		'SMW::SQLStore::updatePropertyTableDefinitions',
 		'SMW::Store::BeforeQueryResultLookupComplete',

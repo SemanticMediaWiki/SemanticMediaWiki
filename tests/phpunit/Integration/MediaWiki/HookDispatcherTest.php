@@ -143,6 +143,24 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );
 	}
 
+	public function testOnInitConstraints() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$constraintRegistry->expects( $this->once() )
+			->method( 'registerConstraint' );
+
+		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', function( $constraintRegistry ) {
+			$constraintRegistry->registerConstraint( 'foo', 'bar' );
+		} );
+
+		$hookDispatcher->onInitConstraints( $constraintRegistry );
+	}
+
 	public function testOnRegisterSchemaTypes() {
 
 		$hookDispatcher = new HookDispatcher();
