@@ -6,8 +6,7 @@ use SMW\Query\PrintRequest;
 use SMW\DIProperty;
 use SMWExporter as Exporter;
 use SMWQueryResult as QueryResult;
-use SMWRDFXMLSerializer;
-use SMWTurtleSerializer;
+use SMW\Exporter\ExporterFactory;
 
 /**
  * Printer class for generating RDF output
@@ -108,11 +107,22 @@ class RdfResultPrinter extends FileExportPrinter {
 
 	private function makeExport( QueryResult $res, $outputMode ) {
 
-		$exporter = Exporter::getInstance();
-		$serializer = $exporter->newExportSerializer( $this->params['syntax'] );
+		$exporterFactory = new ExporterFactory();
+		$exporter = $exporterFactory->getExporter();
+
+		$expDataFactory = $exporterFactory->newExpDataFactory(
+			$exporter
+		);
+
+		$serializer = $exporterFactory->newSerializerByType(
+			$this->params['syntax']
+		);
 
 		$serializer->startSerialization();
-		$serializer->serializeExpData( $exporter->newOntologyExpData( '' ) );
+
+		$serializer->serializeExpData(
+			$expDataFactory->newOntologyExpData( '' )
+		);
 
 		while ( $row = $res->getNext() ) {
 			$serializer->serializeExpData( $this->makeExportData( $exporter, $row ) );

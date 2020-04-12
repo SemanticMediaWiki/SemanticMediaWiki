@@ -1,5 +1,7 @@
 <?php
 
+use SMW\Exporter\ExporterFactory;
+
 /**
  * This special page (Special:ExportRDF) for MediaWiki implements an OWL-export of semantic data,
  * gathered both from the annotations in articles, and from metadata already
@@ -106,6 +108,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 	protected function startRDFExport() {
 		global $wgOut, $wgRequest;
 
+		$exporterFactory = new ExporterFactory();
+
 		$syntax = $wgRequest->getText( 'syntax' );
 
 		if ( $syntax === '' ) {
@@ -117,7 +121,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		if ( $syntax == 'turtle' ) {
 			$mimetype = 'application/x-turtle'; // may change to 'text/turtle' at some time, watch Turtle development
-			$serializer = new SMWTurtleSerializer();
+			$serializer = $exporterFactory->newTurtleSerializer();
 		} else { // rdfxml as default
 			// Only use rdf+xml mimetype if explicitly requested (browsers do
 			// not support it by default).
@@ -125,12 +129,12 @@ class SMWSpecialOWLExport extends SpecialPage {
 			// though; it is only meant to help some tools to see that HTML
 			// included resources are RDF (from there on they should be fine).
 			$mimetype = ( $wgRequest->getVal( 'xmlmime' ) == 'rdf' ) ? 'application/rdf+xml' : 'application/xml';
-			$serializer = new SMWRDFXMLSerializer();
+			$serializer = $exporterFactory->newRDFXMLSerializer();
 		}
 
 		header( "Content-type: $mimetype; charset=UTF-8" );
 
-		$this->export_controller = new SMWExportController( $serializer );
+		$this->export_controller = $exporterFactory->newExportController( $serializer );
 	}
 
 	/**
