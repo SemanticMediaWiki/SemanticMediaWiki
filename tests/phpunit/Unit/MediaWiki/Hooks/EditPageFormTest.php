@@ -20,6 +20,9 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $namespaceExaminer;
+	private $permissionExaminer;
+	private $preferenceExaminer;
+	private $messageLocalizer;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -27,13 +30,25 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\EditPageForm',
-			new EditPageForm( $this->namespaceExaminer )
+			EditPageForm::class,
+			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->preferenceExaminer )
 		);
 	}
 
@@ -44,7 +59,9 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$instance = new EditPageForm(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->permissionExaminer,
+			$this->preferenceExaminer
 		);
 
 		$instance->setOptions(
@@ -60,17 +77,28 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDisabledOnUserPreference() {
 
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( true ) );
+
+		$this->preferenceExaminer->expects( $this->at( 0 ) )
+			->method( 'hasPreferenceOf' )
+			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
+			->will( $this->returnValue( true ) );
+
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EditPageForm(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->permissionExaminer,
+			$this->preferenceExaminer
 		);
 
 		$instance->setOptions(
 			[
-				'prefs-disable-editpage' => true
+				'smwgEnabledEditPageHelp' => true
 			]
 		);
 
@@ -88,6 +116,15 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
 
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( true ) );
+
+		$this->preferenceExaminer->expects( $this->at( 0 ) )
+			->method( 'hasPreferenceOf' )
+			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
+			->will( $this->returnValue( false ) );
+
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->with( $this->equalTo( $namespaces ) )
@@ -104,7 +141,13 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 		$editPage->editFormPageTop = '';
 
 		$instance = new EditPageForm(
-			$this->namespaceExaminer
+			$this->namespaceExaminer,
+			$this->permissionExaminer,
+			$this->preferenceExaminer
+		);
+
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->setOptions(

@@ -36,6 +36,7 @@ use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\IndicatorRegistry;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\Services\DataValueServiceFactory;
 use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
@@ -851,6 +852,19 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $dependencyValidator;
+		} );
+
+		/**
+		 * @var PreferenceExaminer
+		 */
+		$containerBuilder->registerCallback( 'PreferenceExaminer', function( $containerBuilder, \User $user ) {
+			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
+
+			$preferenceExaminer = new PreferenceExaminer(
+				$user
+			);
+
+			return $preferenceExaminer;
 		} );
 
 	}

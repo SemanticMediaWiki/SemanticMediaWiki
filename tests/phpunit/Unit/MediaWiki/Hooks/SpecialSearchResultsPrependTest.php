@@ -15,6 +15,20 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
  */
 class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 
+	private $preferenceExaminer;
+	private $messageLocalizer;
+
+	protected function setUp() : void {
+
+		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
 	public function testCanConstruct() {
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
@@ -27,11 +41,16 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			SpecialSearchResultsPrepend::class,
-			new SpecialSearchResultsPrepend( $specialSearch, $outputPage )
+			new SpecialSearchResultsPrepend( $this->preferenceExaminer, $specialSearch, $outputPage )
 		);
 	}
 
 	public function testProcess() {
+
+		$this->preferenceExaminer->expects( $this->at( 1 ) )
+			->method( 'hasPreferenceOf' )
+			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
+			->will( $this->returnValue( true ) );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -57,15 +76,13 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
+			$this->preferenceExaminer,
 			$specialSearch,
 			$outputPage
 		);
 
-		$instance->setOptions(
-			[
-				'prefs-suggester-textinput' => true,
-				'prefs-disable-search-info' => null
-			]
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$this->assertTrue(
@@ -74,6 +91,11 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_DisabledInfo() {
+
+		$this->preferenceExaminer->expects( $this->at( 2 ) )
+			->method( 'hasPreferenceOf' )
+			->with( $this->equalTo( 'smw-prefs-general-options-disable-search-info' ) )
+			->will( $this->returnValue( true ) );
 
 		$search = $this->getMockBuilder( '\SMWSearch' )
 			->disableOriginalConstructor()
@@ -99,15 +121,13 @@ class SpecialSearchResultsPrependTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addHtml' );
 
 		$instance = new SpecialSearchResultsPrepend(
+			$this->preferenceExaminer,
 			$specialSearch,
 			$outputPage
 		);
 
-		$instance->setOptions(
-			[
-				'prefs-suggester-textinput' => true,
-				'prefs-disable-search-info' => true
-			]
+		$instance->setMessageLocalizer(
+			$this->messageLocalizer
 		);
 
 		$instance->process( '' );

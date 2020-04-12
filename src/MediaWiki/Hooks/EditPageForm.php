@@ -9,6 +9,10 @@ use SMW\Message;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
+use SMW\GroupPermissions;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
@@ -20,6 +24,7 @@ use SMW\OptionsAwareTrait;
  */
 class EditPageForm implements HookListener {
 
+	use MessageLocalizerTrait;
 	use OptionsAwareTrait;
 
 	/**
@@ -28,12 +33,26 @@ class EditPageForm implements HookListener {
 	private $namespaceExaminer;
 
 	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
+
+	/**
+	 * @var PreferenceExaminer
+	 */
+	private $preferenceExaminer;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
+	 * @param PermissionExaminer $permissionExaminer
+	 * @param PreferenceExaminer $preferenceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
+	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionExaminer $permissionExaminer, PreferenceExaminer $preferenceExaminer ) {
 		$this->namespaceExaminer = $namespaceExaminer;
+		$this->permissionExaminer = $permissionExaminer;
+		$this->preferenceExaminer = $preferenceExaminer;
 	}
 
 	/**
@@ -45,28 +64,27 @@ class EditPageForm implements HookListener {
 	 */
 	public function process( EditPage $editPage ) {
 
-		if ( !$this->getOption( 'smwgEnabledEditPageHelp', false ) || $this->getOption( 'prefs-disable-editpage', false ) ) {
-			return true;
+		$html = '';
+
+		if (
+			$this->getOption( 'smwgEnabledEditPageHelp', false ) &&
+			$this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_EDITPAGE_INFO ) &&
+			!$this->preferenceExaminer->hasPreferenceOf( GetPreferences::DISABLE_EDITPAGE_INFO ) ) {
+			$html = $this->buildHTML( $editPage->getTitle() );
 		}
 
-		$this->updateEditPage( $editPage );
+		$editPage->editFormPageTop .= $html;
 
 		return true;
 	}
 
-	private function updateEditPage( $editPage ) {
+	private function buildHTML( $title ) {
 
 		$msgKey = $this->getMessageKey(
-			$editPage->getTitle()
+			$title
 		);
 
-		$message = Message::get(
-			$msgKey,
-			Message::PARSE,
-			Message::USER_LANGUAGE
-		);
-
-		$html =	Html::rawElement(
+		return Html::rawElement(
 			'div',
 			[
 				'class' => 'smw-editpage-help'
@@ -76,11 +94,9 @@ class EditPageForm implements HookListener {
 				[
 					'data-msgKey' => $msgKey
 				],
-				$message
+				$this->msg( $msgKey, Message::PARSE )
 			)
 		);
-
-		$editPage->editFormPageTop .= $html;
 	}
 
 	private function getMessageKey( $title ) {

@@ -6,6 +6,7 @@ use SkinTemplate;
 use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\GroupPermissions;
 use SMW\OptionsAwareTrait;
 
@@ -37,16 +38,23 @@ class PersonalUrls implements HookListener {
 	private $permissionExaminer;
 
 	/**
+	 * @var PreferenceExaminer
+	 */
+	private $preferenceExaminer;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param SkinTemplate $skin
 	 * @param JobQueue $jobQueue
 	 * @param PermissionExaminer $permissionExaminer
+	 * @param PreferenceExaminer $preferenceExaminer
 	 */
-	public function __construct( SkinTemplate $skin, JobQueue $jobQueue, PermissionExaminer $permissionExaminer ) {
+	public function __construct( SkinTemplate $skin, JobQueue $jobQueue, PermissionExaminer $permissionExaminer, PreferenceExaminer $preferenceExaminer ) {
 		$this->skin = $skin;
 		$this->jobQueue = $jobQueue;
 		$this->permissionExaminer = $permissionExaminer;
+		$this->preferenceExaminer = $preferenceExaminer;
 	}
 
 	/**
@@ -61,7 +69,7 @@ class PersonalUrls implements HookListener {
 		$watchlist = $this->getOption( 'smwgJobQueueWatchlist', [] );
 
 		if (
-			$this->getOption( 'prefs-jobqueue-watchlist' ) !== null &&
+			$this->preferenceExaminer->hasPreferenceOf( GetPreferences::VIEW_JOBQUEUE_WATCHLIST ) &&
 			$this->permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_JOBQUEUE_WATCHLIST ) &&
 			$watchlist !== [] ) {
 			$personalUrls = $this->getJobQueueWatchlist( $watchlist, $personalUrls );

@@ -18,6 +18,7 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 	private $skinTemplate;
 	private $jobQueue;
 	private $permissionExaminer;
+	private $preferenceExaminer;
 
 	protected function setUp() : void {
 
@@ -32,17 +33,26 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
 			PersonalUrls::class,
-			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer )
+			new PersonalUrls( $this->skinTemplate, $this->jobQueue, $this->permissionExaminer, $this->preferenceExaminer )
 		);
 	}
 
 	public function testProcessOnJobQueueWatchlist() {
+
+		$this->preferenceExaminer->expects( $this->at( 0 ) )
+			->method( 'hasPreferenceOf' )
+			->with( $this->equalTo( 'smw-prefs-general-options-jobqueue-watchlist' ) )
+			->will( $this->returnValue( true ) );
 
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -61,13 +71,13 @@ class PersonalUrlsTest extends \PHPUnit_Framework_TestCase {
 		$instance = new PersonalUrls(
 			$this->skinTemplate,
 			$this->jobQueue,
-			$this->permissionExaminer
+			$this->permissionExaminer,
+			$this->preferenceExaminer
 		);
 
 		$instance->setOptions(
 			[
-				'smwgJobQueueWatchlist' => [ 'Foo' ],
-				'prefs-jobqueue-watchlist' => true
+				'smwgJobQueueWatchlist' => [ 'Foo' ]
 			]
 		);
 
