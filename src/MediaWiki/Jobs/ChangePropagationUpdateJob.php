@@ -23,6 +23,11 @@ use SMW\DIWikiPage;
 class ChangePropagationUpdateJob extends Job {
 
 	/**
+	 * Identifies the job queue command
+	 */
+	const JOB_COMMAND = 'smw.changePropagationUpdate';
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
@@ -31,7 +36,7 @@ class ChangePropagationUpdateJob extends Job {
 	public function __construct( Title $title, $params = [], $jobType = null ) {
 
 		if ( $jobType === null ) {
-			$jobType = 'smw.changePropagationUpdate';
+			$jobType = self::JOB_COMMAND;
 		}
 
 		parent::__construct( $jobType, $title, $params );
