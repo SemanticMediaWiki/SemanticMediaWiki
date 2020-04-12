@@ -16,6 +16,11 @@ use Title;
 class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 
 	/**
+	 * Identifies the job queue command
+	 */
+	const JOB_COMMAND = 'smw.changePropagationClassUpdate';
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param Title $title
@@ -27,7 +32,7 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 			'origin' => 'ChangePropagationClassUpdateJob'
 		];
 
-		parent::__construct( $title, $params, 'smw.changePropagationClassUpdate' );
+		parent::__construct( $title, $params, self::JOB_COMMAND );
 	}
 
 }
