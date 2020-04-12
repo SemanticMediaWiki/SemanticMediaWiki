@@ -31,6 +31,10 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 		$this->compositeIndicatorHtmlBuilder = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() : void {
@@ -49,6 +53,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 
 		$this->assertInstanceOf(
 			'\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider',
+			new EntityExaminerCompositeIndicatorProvider( $this->compositeIndicatorHtmlBuilder, $indicatorProviders )
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\MediaWiki\Permission\PermissionExaminerAware',
 			new EntityExaminerCompositeIndicatorProvider( $this->compositeIndicatorHtmlBuilder, $indicatorProviders )
 		);
 	}
@@ -221,6 +230,65 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			'bool',
 			$instance->hasIndicator( $subject, [] )
 		);
+	}
+
+	public function testNoIndicatorOnFailedPermission() {
+
+		$subject = DIWikiPage::newFromText( __METHOD__ );
+
+		$this->compositeIndicatorHtmlBuilder->expects( $this->never() )
+			->method( 'buildHTML' );
+
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( false ) );
+
+		$indicatorProviders = [
+			$this->newPermissionAwareIndicatorProvider()
+		];
+
+		$instance = new EntityExaminerCompositeIndicatorProvider(
+			$this->compositeIndicatorHtmlBuilder,
+			$indicatorProviders
+		);
+
+		$instance->setPermissionExaminer(
+			$this->permissionExaminer
+		);
+
+		$this->assertInternalType(
+			'bool',
+			$instance->hasIndicator( $subject, [] )
+		);
+	}
+
+	private function newPermissionAwareIndicatorProvider() {
+		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
+
+			public function getName() : string {
+				return '';
+			}
+
+			public function getInlineStyle() {
+				return '';
+			}
+
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+				return false;
+			}
+
+			public function getModules() {
+				return [];
+			}
+
+			public function getIndicators() {
+				return [];
+			}
+
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
+				return $permissionExaminer->hasPermissionOf( 'Foo' );
+			}
+		};
 	}
 
 }

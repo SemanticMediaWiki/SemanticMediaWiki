@@ -4,6 +4,8 @@ namespace SMW\MediaWiki\Api\Tasks;
 
 use SMW\Store;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
 use SMW\Services\ServicesFactory;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 
@@ -13,7 +15,7 @@ use SMW\Indicator\EntityExaminerIndicatorsFactory;
  *
  * @author mwjames
  */
-class EntityExaminerTask extends Task {
+class EntityExaminerTask extends Task implements PermissionExaminerAware {
 
 	/**
 	 * @var Store
@@ -26,6 +28,11 @@ class EntityExaminerTask extends Task {
 	private $entityExaminerIndicatorsFactory;
 
 	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param Store $store
@@ -34,6 +41,16 @@ class EntityExaminerTask extends Task {
 	public function __construct( Store $store, EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory ) {
 		$this->store = $store;
 		$this->entityExaminerIndicatorsFactory = $entityExaminerIndicatorsFactory;
+	}
+
+	/**
+	 * @see PermissionExaminerAware::setPermissionExaminer
+	 * @since 3.2
+	 *
+	 * @param PermissionExaminer $permissionExaminer
+	 */
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
@@ -87,6 +104,12 @@ class EntityExaminerTask extends Task {
 			$this->store
 		);
 
+		if ( $this->permissionExaminer instanceof PermissionExaminer ) {
+			$entityExaminerDeferrableCompositeIndicatorProvider->setPermissionExaminer(
+				$this->permissionExaminer
+			);
+		}
+
 		$entityExaminerDeferrableCompositeIndicatorProvider->setDeferredMode(
 			true
 		);
@@ -103,6 +126,12 @@ class EntityExaminerTask extends Task {
 				$entityExaminerDeferrableCompositeIndicatorProvider
 			]
 		);
+
+		if ( $this->permissionExaminer instanceof PermissionExaminer ) {
+			$entityExaminerCompositeIndicatorProvider->setPermissionExaminer(
+				$this->permissionExaminer
+			);
+		}
 
 		return $entityExaminerCompositeIndicatorProvider;
 	}

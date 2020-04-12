@@ -8,6 +8,9 @@ use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Utils\TemplateEngine;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
+use SMW\MediaWiki\Permission\PermissionAware;
 
 /**
  * @license GNU GPL v2+
@@ -15,7 +18,7 @@ use SMW\Utils\TemplateEngine;
  *
  * @author mwjames
  */
-class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIndicatorProvider, CompositeIndicatorProvider {
+class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIndicatorProvider, CompositeIndicatorProvider, PermissionExaminerAware {
 
 	use MessageLocalizerTrait;
 
@@ -23,6 +26,11 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 * @var []
 	 */
 	private $indicatorProviders = [];
+
+	/**
+	 * @var PermissionExaminer
+	 */
+	private $permissionExaminer;
 
 	/**
 	 * @var []
@@ -46,6 +54,16 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 */
 	public function __construct( array $indicatorProviders ) {
 		$this->indicatorProviders = $indicatorProviders;
+	}
+
+	/**
+	 * @see PermissionExaminerAware::setPermissionExaminer
+	 * @since 3.2
+	 *
+	 * @param PermissionExaminer $permissionExaminer
+	 */
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+		$this->permissionExaminer = $permissionExaminer;
 	}
 
 	/**
@@ -122,6 +140,16 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		$options['warning_count'] = 0;
 
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
+
+			if ( $indicatorProvider instanceof PermissionExaminerAware ) {
+				$indicatorProvider->setPermissionExaminer( $this->permissionExaminer );
+			}
+
+			if (
+				$indicatorProvider instanceof PermissionAware &&
+				!$indicatorProvider->hasPermission( $this->permissionExaminer ) ) {
+				continue;
+			}
 
 			if ( !$indicatorProvider instanceof DeferrableIndicatorProvider ) {
 				continue;

@@ -37,7 +37,6 @@ class EntityExaminerIndicatorsFactory {
 		$servicesFactory = ServicesFactory::getInstance();
 
 		$indicatorProviders = [
-			$this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store ),
 			$this->newEntityExaminerDeferrableCompositeIndicatorProvider( $store )
 		];
 
@@ -114,6 +113,7 @@ class EntityExaminerIndicatorsFactory {
 		);
 
 		$indicatorProviders = [
+			$this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store ),
 			$constraintErrorEntityExaminerIndicatorProvider,
 
 			// Example of how to a add deferreable indicator; the `blank` can

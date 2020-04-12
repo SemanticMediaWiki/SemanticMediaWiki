@@ -99,6 +99,26 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 		$instance->hasIndicator( $title, $this->permissionExaminer, [] );
 	}
 
+	public function testPermissionAwareIndicatorProvider() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->once() )
+			->method( 'getNamespace' )
+			->will( $this->returnValue( NS_MAIN ) );
+
+		$this->permissionExaminer->expects( $this->once() )
+			->method( 'hasPermissionOf' )
+			->will( $this->returnValue( false ) );
+
+		$instance = new IndicatorRegistry();
+		$instance->addIndicatorProvider( $this->newPermissionExaminerAwareIndicatorProvider() );
+
+		$instance->hasIndicator( $title, $this->permissionExaminer, [] );
+	}
+
 	private function newPermissionAwareIndicatorProvider() {
 		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
 
@@ -124,6 +144,36 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
+			}
+		};
+	}
+
+	private function newPermissionExaminerAwareIndicatorProvider() {
+		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionExaminerAware {
+
+			public function getName() : string {
+				return '';
+			}
+
+			public function getInlineStyle() {
+				return '';
+			}
+
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+				return false;
+			}
+
+			public function getModules() {
+				return [];
+			}
+
+			public function getIndicators() {
+				return [];
+			}
+
+			public function setPermissionExaminer( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) {
+				// Just used as an example to check that the setter is run
+				$permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};
 	}

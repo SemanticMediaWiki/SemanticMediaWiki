@@ -1101,6 +1101,7 @@
 	"smw-entity-examiner-deferred-check-awaiting-response": "The \"$1\" examiner is currently awaiting a response from the backend.",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastic",
 	"smw-entity-examiner-deferred-constraint-error": "Constraint",
+	"smw-entity-examiner-associated-revision-mismatch": "Revision",
 	"smw-entity-examiner-deferred-fake": "Fake",
 	"smw-entity-examiner-indicator-suggestions": "As part of the entity examination, the following {{PLURAL:$1|issue was|issues were}} found and it is suggested to carefully review {{PLURAL:$1|the issue|them}} and take appropriate {{PLURAL:$1|action|actions}}.",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constraint|Constraints}}",

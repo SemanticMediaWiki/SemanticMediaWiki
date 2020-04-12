@@ -13,6 +13,7 @@ use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use RuntimeException;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -75,7 +76,7 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type ) {
+	public function newByType( $type, User $user = null ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
@@ -88,7 +89,7 @@ class TaskFactory {
 				return new CheckQueryTask( $applicationFactory->getStore() );
 				break;
 			case 'run-entity-examiner':
-				return $this->newEntityExaminerTask();
+				return $this->newEntityExaminerTask( $user );
 				break;
 			case 'duplicate-lookup':
 				return $this->newDuplicateLookupTask();
@@ -162,13 +163,17 @@ class TaskFactory {
 	 *
 	 * @return EntityExaminerTask
 	 */
-	public function newEntityExaminerTask() : EntityExaminerTask {
+	public function newEntityExaminerTask( User $user = null ) : EntityExaminerTask {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityExaminerTask = new EntityExaminerTask(
 			$applicationFactory->getStore(),
 			new EntityExaminerIndicatorsFactory()
+		);
+
+		$entityExaminerTask->setPermissionExaminer(
+			$applicationFactory->newPermissionExaminer( $user )
 		);
 
 		return $entityExaminerTask;
