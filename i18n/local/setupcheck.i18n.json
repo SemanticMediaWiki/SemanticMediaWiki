@@ -79,7 +79,7 @@
 		"en": "<a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> was installed and enabled but is missing an appropriate <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade_key'>upgrade key</a>."
 	},
 	"smw-setupcheck-reason-for-invalid-upgrade-key": {
-		"en": "Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:<ul><li>Additional fixed properties (requires additional table setup) were added</li><li>Changes to tables or indices making an interception obligatory before accessing the data</li><li>Changes to the storage or query engine</li></ul>"
+		"en": "Semantic MediaWiki's internal database structure has changed and requires some adjustments to be fully functional. There can be several reasons including:<ul><li>Changes to the list of fixed properties and may require additional table(s)</li><li>Changes to the overall table structure or indices requirements</li><li>Changes to the selected storage or query engine</li><li>Changes to the required <a href='https://www.semantic-mediawiki.org/wiki/Entity_collation'>entity collation</a></li></ul>"
 	},
 	"smw-setupcheck-registry-enablesemantics-conflict": {
 		"en": "<code>LocalSettings.php</code> contains both <code>enableSemantics</code> and <code>wfLoadExtension( 'SemanticMediaWiki' )</code> forcing the ExtensionRegistry to abort the registration process."

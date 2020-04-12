@@ -35,7 +35,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => ''
 		];
 
 		$var2 = [
@@ -44,7 +45,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', 'Foo' ],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => ''
 		];
 
 		$this->assertEquals(
@@ -61,7 +63,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Foo', 'Bar' ],
 			'smwgPageSpecialProperties' => [ 'Foo', 'Bar' ],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => ''
 		];
 
 		$var2 = [
@@ -70,7 +73,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [ 'Bar', 'Foo' ],
 			'smwgPageSpecialProperties' => [ 'Bar', '_MDAT' ],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => ''
 		];
 
 		$this->assertNotEquals(
@@ -100,7 +104,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => [],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => ''
 		];
 
 		$instance->finalize( $vars );
@@ -138,7 +143,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledFulltextSearch' => '',
 			'smwgFixedProperties' => [],
 			'smwgPageSpecialProperties' => [],
-			'smwgFieldTypeFeatures' => false
+			'smwgFieldTypeFeatures' => false,
+			'smwgEntityCollation' => 'identity'
 		];
 
 		$instance->setMaintenanceMode( true, $vars );

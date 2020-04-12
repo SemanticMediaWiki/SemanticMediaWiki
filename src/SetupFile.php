@@ -32,6 +32,11 @@ class SetupFile {
 	const DB_REQUIREMENTS = 'db_requirements';
 
 	/**
+	 * Describes the entity collection setting
+	 */
+	const ENTITY_COLLATION = 'entity_collation';
+
+	/**
 	 * Key that describes the date of the last table optimization run.
 	 */
 	const LAST_OPTIMIZATION_RUN = 'last_optimization_run';
@@ -503,6 +508,11 @@ class SetupFile {
 		}
 	}
 
+	/**
+	 * Listed keys will have a "global" impact of how data are stored, formatted,
+	 * or represented in Semantic MediaWiki. In most cases it will require an action
+	 * from an adminstrator when one of those keys are altered.
+	 */
 	private static function makeKey( $vars ) {
 
 		// Only recognize those properties that require a fixed table
@@ -530,6 +540,11 @@ class SetupFile {
 			$vars['smwgEnabledFulltextSearch'],
 			$pageSpecialProperties
 		];
+
+		// Only add the key when it is different from the default setting
+		if ( $vars['smwgEntityCollation'] !== 'identity' ) {
+			$components += [ 'smwgEntityCollation' => $vars['smwgEntityCollation'] ];
+		}
 
 		if ( $vars['smwgFieldTypeFeatures'] !== false ) {
 			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];

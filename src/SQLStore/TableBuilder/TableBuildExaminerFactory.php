@@ -10,6 +10,7 @@ use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
+use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
 
 /**
  * @private
@@ -20,6 +21,32 @@ use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
  * @author mwjames
  */
 class TableBuildExaminerFactory {
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param SQLStore $store
+	 *
+	 * @return EntityCollation
+	 */
+	public function newEntityCollation( SQLStore $store ) : EntityCollation {
+
+		$servicesFactory = ServicesFactory::getInstance();
+
+		$entityCollation = new EntityCollation(
+			$store
+		);
+
+		$entityCollation->setSetupFile(
+			$servicesFactory->singleton( 'SetupFile' )
+		);
+
+		$entityCollation->setEntityCollation(
+			$servicesFactory->getSettings()->get( 'smwgEntityCollation' )
+		);
+
+		return $entityCollation;
+	}
 
 	/**
 	 * @since 3.2
