@@ -952,6 +952,12 @@ class SQLStoreFactory {
 			$propertyChangeListener
 		);
 
+		$protectionValidator = $applicationFactory->singleton( 'ProtectionValidator' );
+
+		$protectionValidator->registerPropertyChangeListener(
+			$propertyChangeListener
+		);
+
 		return $propertyChangeListener;
 	}
 

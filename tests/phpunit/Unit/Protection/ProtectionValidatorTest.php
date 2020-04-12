@@ -26,13 +26,13 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate' ] )
+			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
 			->getMock();
 
 		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
@@ -423,6 +423,105 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$instance->isClassifiedAsImportPerformerProtected( $title, $user )
 		);
+	}
+
+	public function testRegisterPropertyChangeListener() {
+
+		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyChangeListener->expects( $this->at( 0 ) )
+			->method( 'addListenerCallback' )
+			->with(
+				$this->equalTo( $this->dataItemFactory->newDIProperty( '_CHGPRO' ) ),
+				$this->anything() );
+
+		$instance = new ProtectionValidator(
+			$this->store,
+			$this->entityCache,
+			$this->permissionManager
+		);
+
+		$instance->registerPropertyChangeListener( $propertyChangeListener );
+	}
+
+	public function testInvalidateCacheFromChangeRecord() {
+
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdManager->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'delete' )
+			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
+
+		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+			[
+				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 's_id' => 42 ] ] )
+			]
+		);
+
+		$instance = new ProtectionValidator(
+			$store,
+			$this->entityCache,
+			$this->permissionManager
+		);
+
+		$property = $this->dataItemFactory->newDIProperty( '_CHGPRO' );
+
+		$instance->invalidateCache( $property, $changeRecord );
+	}
+
+	public function testCacheStateChangeFromChangeRecord() {
+
+		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$entityIdManager->expects( $this->any() )
+			->method( 'getDataItemById' )
+			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'getObjectIds' )
+			->will( $this->returnValue( $entityIdManager ) );
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'save' )
+			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
+
+		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+			[
+				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 's_id' => 42 ], 'is_insert' => true ] )
+			]
+		);
+
+		$instance = new ProtectionValidator(
+			$store,
+			$this->entityCache,
+			$this->permissionManager
+		);
+
+		$property = $this->dataItemFactory->newDIProperty( '_CHGPRO' );
+
+		$instance->invalidateCache( $property, $changeRecord );
 	}
 
 }

@@ -9,6 +9,8 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMW\EntityCache;
 use SMW\MediaWiki\PermissionManager;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 use User;
 
@@ -73,6 +75,51 @@ class ProtectionValidator {
 		$this->store = $store;
 		$this->entityCache = $entityCache;
 		$this->permissionManager = $permissionManager;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param PropertyChangeListener $propertyChangeListener
+	 */
+	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
+		$propertyChangeListener->addListenerCallback( new DIProperty( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param DIProperty $property
+	 * @param ChangeRecord $changeRecord
+	 */
+	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
+
+		if ( $property->getKey() !== '_CHGPRO' ) {
+			return;
+		}
+
+		foreach ( $changeRecord as $record ) {
+
+			if ( !$record->has( 'row.s_id' ) ) {
+				continue;
+			}
+
+			$subject = $this->store->getObjectIds()->getDataItemById(
+				$record->get( 'row.s_id' )
+			);
+
+			$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash() );
+
+			// If the change is an insert type then the `Change propagation` property
+			// was added hence use this as a short cut to store the state avoiding
+			// an extra lookup query and allow the state to be available as soon
+			// as possible.
+			if ( $record->has( 'is_insert' ) && $record->get( 'is_insert' ) === true ) {
+				$this->entityCache->save( $key, 'yes' );
+			} else {
+				$this->entityCache->delete( $key );
+			}
+		}
 	}
 
 	/**
