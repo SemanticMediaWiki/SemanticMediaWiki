@@ -266,8 +266,6 @@ class SQLStoreUpdater {
 		$changeDiff = $changeOp->newChangeDiff();
 		$changeDiff->save( ApplicationFactory::getInstance()->getCache() );
 
-		$propertyChangeListener->matchAndTriggerChangeListeners();
-
 		$status = new Status(
 			[
 				'delete_list' => $deleteList,
@@ -285,6 +283,8 @@ class SQLStoreUpdater {
 		] );
 
 		$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
+
+		$propertyChangeListener->runChangeListeners();
 
 		return $status;
 	}
