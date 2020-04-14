@@ -268,6 +268,7 @@
 	"restriction-level-smw-pageedit": "gespaart (nëmme berechtegt Benotzer)",
 	"group-smwadministrator": "Administrateuren (Semantic MediaWiki)",
 	"grouppage-smwadministrator": "{{ns:project}}:Administrateuren (Semantic MediaWiki)",
+	"grouppage-smweditor": "{{ns:project}}:Auteuren (Semantic MediaWiki)",
 	"smw-sp-admin-settings-button": "Lëscht vun den Astellunge generéieren",
 	"smw-admin-idlookup-title": "Nosichen",
 	"smw-admin-idlookup-input": "Sichen:",
@@ -369,6 +370,7 @@
 	"smw-legend": "Erklärung",
 	"smw-entity-examiner-deferred-elastic-replication": "Elastesch",
 	"smw-entity-examiner-deferred-constraint-error": "Limitatioun",
+	"smw-entity-examiner-associated-revision-mismatch": "Versioun",
 	"smw-entity-examiner-deferred-fake": "Fälschung",
 	"smw-indicator-revision-mismatch": "Revisioun"
 }

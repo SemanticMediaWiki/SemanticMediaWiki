@@ -394,5 +394,6 @@
 	"smw-loading": "در حال بارگذاری...",
 	"smw-fetching": "پی‌گیری...",
 	"smw-expand": "گسترش",
-	"smw-copy": "رونوشت"
+	"smw-copy": "رونوشت",
+	"smw-entity-examiner-associated-revision-mismatch": "نسخه"
 }

@@ -40,6 +40,7 @@
 			"Luzcaru",
 			"Macofe",
 			"MarcoAurelio",
+			"MartaEgea",
 			"MaxSem",
 			"Nemo bis",
 			"Ohlila",
@@ -528,7 +529,7 @@
 	"smw_concept_header": "Páginas de concepto \"$1\"",
 	"smw_conceptarticlecount": "Mostrando abajo $1 {{PLURAL:$1|página|páginas}}.",
 	"smw-qp-empty-data": "Los datos solicitados podrían no mostrarse, debido a algunos criterios de selección insuficientes.",
-	"right-smw-admin": "Acceder a tareas de administración (Semantic MediaWiki)",
+	"right-smw-admin": "Acceder a tareas de administración (Semántica MediaWiki)",
 	"right-smw-patternedit": "Acceso de edición para mantener expresiones regulares y patrones permitidos (Semantic MediaWiki)",
 	"right-smw-pageedit": "Acceso de edición para páginas con anotación <code>is edit prrotected</code> (MediaWiki Semántica)",
 	"restriction-level-smw-pageedit": "protegido (solamente usuarios elegibles)",
@@ -540,6 +541,8 @@
 	"group-smwcurator": "Curadores (Semantic MediaWiki)",
 	"group-smwcurator-member": "{{GENDER:$1|curador|curadora}} (Semantic MediaWiki)",
 	"grouppage-smwcurator": "{{ns:project}}:Curadores (Semantic MediaWiki)",
+	"group-smweditor-member": "{{GÉNERO:$1|editor (Semántica MediaWiki)}}",
+	"grouppage-smweditor": "{{ns:Proyecto}}:Editores (Semánticos MediaWiki)",
 	"action-smw-admin": "acceder a tareas de administración de Semantic MediaWiki",
 	"action-smw-ruleedit": "editar páginas de regla (Semantic MediaWiki)",
 	"smw-property-predefined-default": "«$1» es una propiedad predefinida.",
@@ -863,5 +866,6 @@
 	"smw-ask-tab-debug": "Depuración",
 	"smw-ask-tab-code": "Código",
 	"smw-pendingtasks-setup-tasks": "Tareas",
-	"smw-legend": "Leyenda"
+	"smw-legend": "Leyenda",
+	"smw-entity-examiner-associated-revision-mismatch": "Revisión"
 }

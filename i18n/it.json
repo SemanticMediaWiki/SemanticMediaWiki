@@ -340,6 +340,9 @@
 	"group-smwcurator": "Curatori (Semantic MediaWiki)",
 	"group-smwcurator-member": "{{GENDER:$1|curatore|curatrice|curatore/trice}} (Semantic MediaWiki)",
 	"grouppage-smwcurator": "{{ns:project}}:Curatori (Semantic MediaWiki)",
+	"group-smweditor": "Editori (Semantic MediaWiki)",
+	"group-smweditor-member": "{{GENDER:$1|editore|editrice|editore/trice}} (Semantic MediaWiki)",
+	"grouppage-smweditor": "{{ns:project}}:Editori (Semantic MediaWiki)",
 	"smw-property-predefined-ask": "\"$1\" è una proprietà predefinita che rappresenta meta informazioni (sotto forma di [https://www.semantic-mediawiki.org/wiki/Subobject sottoggetto]) su singole interrogazioni ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-asksi": "\"$1\" è una proprietà predefinita che contiene il numero delle condizioni usate in una interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-askde": "\"$1\" è una proprietà predefinita che informa sulla profondità di un'interrogazione ed è fornita da [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
@@ -486,5 +489,6 @@
 	"smw-concept-tab-list": "Elenco",
 	"smw-concept-tab-errors": "Errori",
 	"smw-ask-tab-code": "Codice",
-	"smw-legend": "Legenda"
+	"smw-legend": "Legenda",
+	"smw-entity-examiner-associated-revision-mismatch": "Versione"
 }

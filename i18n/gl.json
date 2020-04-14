@@ -94,7 +94,7 @@
 	"smw-paramdesc-sort": "Propiedade a partir da que ordenar a pescuda",
 	"smw-paramdesc-order": "Orde da ordenación da pescuda",
 	"smw-paramdesc-searchlabel": "Texto para continuar a procura",
-	"smw-paramdesc-named_args": "Dea nome aos argumentos que se lle pasan ao modelo",
+	"smw-paramdesc-named_args": "Dalle nome ós argumentos pasados ó modelo",
 	"smw-paramdesc-template-arguments": "Fixa a maneira na que se pasan os argumentos nomeados ó modelo",
 	"smw-paramdesc-import-annotation": "Os datos suplementarios anotados serán copiados durante a análise dun suxeito",
 	"smw-paramdesc-export": "Opción de exportación",
