@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
 use Parser;
 use ParserOptions;
 use SMW\DIWikiPage;
@@ -41,7 +42,7 @@ class ParserFactory {
 		// $wikiPage = new \WikiPage( $title );
 		// $wikiPage->makeParserOptions( $user );
 
-		$parser = new Parser( $GLOBALS['wgParserConf'] );
+		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$parser->setTitle( $title );
 		$parser->setUser( $user );
 		$parser->Options( new ParserOptions( $user ) );

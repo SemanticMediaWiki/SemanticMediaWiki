@@ -7,6 +7,7 @@ use ParserOptions;
 use Revision;
 use Title;
 use User;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\RevisionGuard;
 
 /**
@@ -49,10 +50,6 @@ class ContentParser {
 	private $skipInTextAnnotationParser = false;
 
 	/**
-	 * @note Injecting new Parser() alone will not yield an expected result and
-	 * doing new Parser( $GLOBALS['wgParserConf'] brings no benefits therefore
-	 * we stick to the GLOBAL as fallback if no parser is injected.
-	 *
 	 * @since 1.9
 	 *
 	 * @param Title $title
@@ -63,7 +60,7 @@ class ContentParser {
 		$this->parser = $parser;
 
 		if ( $this->parser === null ) {
-			$this->parser = $GLOBALS['wgParser'];
+			$this->parser = MediaWikiServices::getInstance()->getParser();
 		}
 	}
 
