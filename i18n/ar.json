@@ -13,6 +13,7 @@
 			"NEHAOUA",
 			"OsamaK",
 			"Ouda",
+			"Tala Ali",
 			"Yasser Yousssef",
 			"أحمد",
 			"أحمد غربية Ahmad Gharbeia <ahmad@arabdigitalexpression.org>",
@@ -1009,5 +1010,6 @@
 	"smw-legend": "عنوان تفسيري",
 	"smw-datavalue-constraint-schema-category-invalid-type": "المخطط \"$1\" المشروح غير صالح لتصنيف؛ فهو يتطلب نوع \"$2\".",
 	"smw-datavalue-constraint-schema-property-invalid-type": "المخطط \"$1\" المشروح غير صالح لخاصية؛ فهو يتطلب نوع \"$2\".",
+	"smw-entity-examiner-associated-revision-mismatch": "مراجعة",
 	"smw-entity-examiner-deferred-fake": "مزيف"
 }
