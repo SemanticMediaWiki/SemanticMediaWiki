@@ -362,6 +362,11 @@ EOT;
 
 		$this->reportMessage( "   ... creating new $indexType $columns ..." );
 
+		// https://www.postgresql.org/docs/9.4/indexes-unique.html
+		if ( $indexType === 'PRIMARY KEY' ) {
+			$indexType = 'UNIQUE INDEX';
+		}
+
 		if ( $this->connection->indexInfo( $tableName, $indexName ) === false ) {
 			$this->connection->query( "CREATE $indexType $indexName ON $tableName ($columns)", __METHOD__ );
 		}

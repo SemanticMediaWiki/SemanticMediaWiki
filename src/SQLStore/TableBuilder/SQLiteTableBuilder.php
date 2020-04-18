@@ -345,6 +345,10 @@ class SQLiteTableBuilder extends TableBuilder {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
 
+		if ( $indexType === 'PRIMARY KEY' ) {
+			$indexType = 'UNIQUE INDEX';
+		}
+
 		$tableName = $this->connection->tableName( $tableName );
 		$indexName = "{$tableName}_index{$indexName}";
 
