@@ -41,10 +41,25 @@ class ParserFactory {
 		// $wikiPage = new \WikiPage( $title );
 		// $wikiPage->makeParserOptions( $user );
 
-		$parser = new Parser( $GLOBALS['wgParserConf'] );
+		// https://github.com/wikimedia/mediawiki/commit/a286a59e86d6c0fe4ce31c6137e97c202090402d
+		if (
+			class_exists( \MediaWiki\MediaWikiServices::class ) &&
+			method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getParserFactory' ) ) {
+			$parser = \MediaWiki\MediaWikiServices::getInstance()->getParserFactory()->create();
+		} else {
+			$parser = new Parser( $GLOBALS['wgParserConf'] );
+		}
+
 		$parser->setTitle( $title );
 		$parser->setUser( $user );
-		$parser->Options( new ParserOptions( $user ) );
+
+		// https://github.com/wikimedia/mediawiki/commit/a2cb76937dfa46dd1cbd5b1fcb4e973e39063906#diff-21a73dc63430cc1b180d53f99c0756ee
+		if ( method_exists( $parser, 'setOptions' ) ) {
+			$parser->setOptions( new ParserOptions( $user ) );
+		} else {
+			$parser->Options( new ParserOptions( $user ) );
+		}
+
 		$parser->clearState();
 
 		return $parser;
