@@ -18,6 +18,11 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 class ConfigPreloader {
 
 	/**
+	 * @var []
+	 */
+	private static $config = [];
+
+	/**
 	 * Loading files from the internal `config` directory that provides some
 	 * predeployed default settings.
 	 *
@@ -73,9 +78,11 @@ class ConfigPreloader {
 			throw new ConfigPreloadFileNotReadableException( $file );
 		}
 
-		$config = require $file;
+		if ( ( $config = require_once $file ) !== true ) {
+			self::$config[$file] = $config;
+		}
 
-		foreach ( $config as $key => $value ) {
+		foreach ( self::$config[$file] as $key => $value ) {
 			$GLOBALS[$key] = $value;
 		}
 	}
