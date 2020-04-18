@@ -3,6 +3,7 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Localizer\Message;
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -46,6 +47,11 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 * @var boolean
 	 */
 	private $isDeferredMode = false;
+
+	/**
+	 * @var string
+	 */
+	private $languageCode = '';
 
 	/**
 	 * @since 3.2
@@ -139,6 +145,8 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		$options['error_count'] = 0;
 		$options['warning_count'] = 0;
 
+		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
+
 		foreach ( $this->indicatorProviders as $indicatorProvider ) {
 
 			if ( $indicatorProvider instanceof PermissionExaminerAware ) {
@@ -216,7 +224,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 			}
 
 			$this->indicators[$key] = [
-				'title' => $this->msg( $indicatorProvider->getName() ),
+				'title' => $this->msg( $indicatorProvider->getName(), Message::TEXT, $this->languageCode ),
 				'severity_class' => $severityClass,
 				'error_count' => $options['error_count'],
 				'warning_count' => $options['warning_count'],
@@ -231,11 +239,11 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 			$args += $indicatorProvider->getIndicators();
 			$args['checked'] = $args['count'] == 1 ? 'checked' : '';
 		} else {
-			$args['title'] = $this->msg( $indicatorProvider->getName() );
+			$args['title'] = $this->msg( $indicatorProvider->getName(), Message::TEXT, $this->languageCode );
 
 			$this->templateEngine->compile( 'text_template',
 				[
-					'text' => $this->msg( [ 'smw-entity-examiner-deferred-check-awaiting-response', $args['title'] ] )
+					'text' => $this->msg( [ 'smw-entity-examiner-deferred-check-awaiting-response', $args['title'] ], Message::TEXT, $this->languageCode )
 				]
 			);
 
