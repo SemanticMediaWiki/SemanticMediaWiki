@@ -418,8 +418,12 @@ class ServicesFactory {
 
 	/**
 	 * @since 2.0
+	 *
+	 * @param Title $title
+	 *
+	 * @return ContentParser
 	 */
-	public function newContentParser( Title $title ): ContentParser {
+	public function newContentParser( Title $title ) : ContentParser {
 		return $this->containerBuilder->create( 'ContentParser', $title );
 	}
 

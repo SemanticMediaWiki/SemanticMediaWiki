@@ -70,6 +70,7 @@ class MwHooksHandler {
 		'SMW::RevisionGuard::IsApprovedRevision',
 		'SMW::RevisionGuard::ChangeRevisionID',
 		'SMW::RevisionGuard::ChangeFile',
+		'SMW::RevisionGuard::ChangeRevision',
 
 		'SMWSQLStore3::updateDataBefore',
 		'SMW::SQLStore::BeforeDataUpdateComplete',

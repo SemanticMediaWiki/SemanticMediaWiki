@@ -90,15 +90,19 @@ class RevisionGuard {
 	 * @since 3.1
 	 *
 	 * @param Title $title
-	 * @param Revision $revision
+	 * @param Revision|null $revision
 	 *
-	 * @return integer
+	 * @return Revision|null
 	 */
-	public static function getRevision( Title $title, $revision ) {
+	public function getRevision( Title $title, ?Revision $revision ) : ?Revision {
+
+		if ( $revision === null ) {
+			$revision = Revision::newFromTitle( $title, false, Revision::READ_NORMAL );
+		}
 
 		$origRevision = $revision;
 
-		\Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
+		$this->hookDispatcher->onChangeRevision( $title, $revision );
 
 		if ( $revision instanceof Revision ) {
 			return $revision;

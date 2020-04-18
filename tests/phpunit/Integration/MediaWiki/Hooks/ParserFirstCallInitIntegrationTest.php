@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\ContentParser;
+use SMW\Services\ServicesFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -18,7 +18,6 @@ use Title;
 class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 	private $mwHooksHandler;
-	private $parserFactory;
 	private $testEnvironment;
 	private $store;
 	private $queryResult;
@@ -32,8 +31,6 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
-
-		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -111,11 +108,9 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$title = Title::newFromText( __METHOD__ );
-		$parser = $this->parserFactory->newFromTitle( $title );
-
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', true );
 
-		$instance = new ContentParser( $title, $parser );
+		$instance = ServicesFactory::getInstance()->newContentParser( $title );
 		$instance->parse( $text );
 
 		if ( in_array( $parserName, $expectedNullOutputFor ) ) {
@@ -143,11 +138,9 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$title = Title::newFromText( __METHOD__ );
-		$parser = $this->parserFactory->newFromTitle( $title );
-
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', false );
 
-		$instance = new ContentParser( $title, $parser );
+		$instance = ServicesFactory::getInstance()->newContentParser( $title );
 		$instance->parse( $text );
 
 		if ( in_array( $parserName, $expectedNullOutputFor ) ) {

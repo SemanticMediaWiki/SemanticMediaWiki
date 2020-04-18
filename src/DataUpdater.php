@@ -272,7 +272,7 @@ class DataUpdater {
 		// that the revision reference is the same that lead to an update during
 		// a content parse, the revision for the parsed text and the `smw_rev`
 		// reference field should both point to the same revision
-		$revision = RevisionGuard::getRevision(
+		$revision = $this->revisionGuard->getRevision(
 			$title,
 			$wikiPage->getRevision()
 		);
