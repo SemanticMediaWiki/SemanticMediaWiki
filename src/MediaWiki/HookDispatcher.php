@@ -238,6 +238,20 @@ class HookDispatcher {
 	}
 
 	/**
+	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.revisionguard.changerevision.md
+	 *
+	 * @note This hook is only to be called from the `RevisionGuard` class.
+	 *
+	 * @since 3.2
+	 *
+	 * @param Title $title
+	 * @param Revision|null $revision
+	 */
+	public function onChangeRevision( \Title $title, ?\Revision &$revision ) {
+		Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
+	}
+
+	/**
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.sqlstore.installer.beforecreatetablescomplete.md
 	 * @since 3.2
 	 *

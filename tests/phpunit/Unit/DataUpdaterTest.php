@@ -18,7 +18,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
+class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,6 +30,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	private $changePropagationNotifier;
 	private $eventDispatcher;
 	private $revisionGuard;
+	private $revision;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -41,6 +42,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 		] );
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
+
+		$this->revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
 			->disableOriginalConstructor()
@@ -68,7 +73,7 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues' ] )
+			->setMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues', 'updateData' ] )
 			->getMock();
 
 		$this->store->expects( $this->any() )
@@ -112,6 +117,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 	public function testDoUpdateForDefaultSettings() {
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $this->revision ) );
+
 		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
 			->with( $this->equalTo( \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID ) );
@@ -138,6 +147,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeferredUpdate() {
+
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $this->revision ) );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -210,10 +223,18 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->setEventDispatcher(
@@ -271,6 +292,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( null ) );
+
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
@@ -279,6 +304,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$instance->canCreateUpdateJob(
 			$updateJobStatus
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->setEventDispatcher(
@@ -397,10 +426,18 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
+
 		$instance = new DataUpdater(
 			$store,
 			$semanticData,
 			$this->changePropagationNotifier
+		);
+
+		$instance->setRevisionGuard(
+			$this->revisionGuard
 		);
 
 		$instance->setEventDispatcher(
@@ -452,6 +489,10 @@ class DataUpdaterTest  extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( $revision ) );
 
 		$source = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()

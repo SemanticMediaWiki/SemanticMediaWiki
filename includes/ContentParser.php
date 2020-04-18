@@ -8,6 +8,7 @@ use Revision;
 use Title;
 use User;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
  * Fetches the ParserOutput either by parsing an invoked text component,
@@ -16,12 +17,14 @@ use SMW\MediaWiki\RevisionGuard;
  *
  * @ingroup SMW
  *
- * @licence GNU GPL v2+
+ * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
 class ContentParser {
+
+	use RevisionGuardAwareTrait;
 
 	/** @var Title */
 	protected $title;
@@ -41,30 +44,17 @@ class ContentParser {
 	/**
 	 * @var boolean
 	 */
-	private $enabledToUseContentHandler = true;
-
-	/**
-	 * @var boolean
-	 */
 	private $skipInTextAnnotationParser = false;
 
 	/**
-	 * @note Injecting new Parser() alone will not yield an expected result and
-	 * doing new Parser( $GLOBALS['wgParserConf'] brings no benefits therefore
-	 * we stick to the GLOBAL as fallback if no parser is injected.
-	 *
 	 * @since 1.9
 	 *
 	 * @param Title $title
-	 * @param Parser|null $parser
+	 * @param Parser $parser
 	 */
-	public function __construct( Title $title, Parser $parser = null ) {
+	public function __construct( Title $title, Parser $parser ) {
 		$this->title  = $title;
 		$this->parser = $parser;
-
-		if ( $this->parser === null ) {
-			$this->parser = $GLOBALS['wgParser'];
-		}
 	}
 
 	/**
@@ -84,15 +74,6 @@ class ContentParser {
 	public function setRevision( Revision $revision = null ) {
 		$this->revision = $revision;
 		return $this;
-	}
-
-	/**
-	 * @bug 62856 and #212
-	 *
-	 * @since 2.0
-	 */
-	public function forceToUseParser() {
-		$this->enabledToUseContentHandler = false;
 	}
 
 	/**
@@ -122,6 +103,9 @@ class ContentParser {
 		return $this->errors;
 	}
 
+	/**
+	 * @since 1.9
+	 */
 	public function skipInTextAnnotationParser() {
 		return $this->skipInTextAnnotationParser = true;
 	}
@@ -141,14 +125,10 @@ class ContentParser {
 			return $this->parseText( $text );
 		}
 
-		if ( $this->hasContentHandler() && $this->enabledToUseContentHandler ) {
-			return $this->fetchFromContent();
-		}
-
-		return $this->fetchFromParser();
+		return $this->fetchFromContent();
 	}
 
-	protected function parseText( $text ) {
+	private function parseText( $text ) {
 
 		$this->parserOutput = $this->parser->parse(
 			$text,
@@ -159,29 +139,24 @@ class ContentParser {
 		return $this;
 	}
 
-	/**
-	 * @note Revision ID must be passed to the parser output to
-	 * get revision variables correct
-	 *
-	 * @note If no content is available create an empty object
-	 */
-	protected function fetchFromContent() {
+	private function fetchFromContent() {
 
 		if ( $this->getRevision() === null ) {
 			return $this->msgForNullRevision();
 		}
 
-		$content = $this->getRevision()->getContent( Revision::RAW );
+		$revision = $this->getRevision();
+		$content = $revision->getContent( Revision::RAW );
 
 		if ( !$content ) {
-			$content = $this->getRevision()->getContentHandler()->makeEmptyContent();
+			$content = $revision->getContentHandler()->makeEmptyContent();
 		}
 
 		// Avoid "The content model 'xyz' is not registered on this wiki."
 		try {
 			$this->parserOutput = $content->getParserOutput(
 				$this->getTitle(),
-				$this->getRevision()->getId(),
+				$revision->getId(),
 				null,
 				true
 			);
@@ -192,30 +167,12 @@ class ContentParser {
 		return $this;
 	}
 
-	protected function fetchFromParser() {
-
-		if ( $this->getRevision() === null ) {
-			return $this->msgForNullRevision();
-		}
-
-		$this->parserOutput = $this->parser->parse(
-			$this->getRevision()->getText(),
-			$this->getTitle(),
-			$this->makeParserOptions(),
-			true,
-			true,
-			$this->getRevision()->getID()
-		);
-
-		return $this;
-	}
-
-	protected function msgForNullRevision( $fname = __METHOD__ ) {
+	private function msgForNullRevision( $fname = __METHOD__ ) {
 		$this->errors = [ $fname . " No revision available for {$this->getTitle()->getPrefixedDBkey()}" ];
 		return $this;
 	}
 
-	protected function makeParserOptions() {
+	private function makeParserOptions() {
 
 		$user = null;
 
@@ -232,29 +189,18 @@ class ContentParser {
 		return $parserOptions;
 	}
 
-	protected function getRevision() {
+	private function getRevision() {
 
 		if ( $this->revision instanceof Revision ) {
 			return $this->revision;
 		}
 
-		// Revision::READ_NORMAL is not specified in MW 1.19
-		if ( defined( 'Revision::READ_NORMAL' ) ) {
-			$this->revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
-		} else {
-			$this->revision = Revision::newFromTitle( $this->getTitle() );
-		}
-
-		$this->revision = RevisionGuard::getRevision(
+		$this->revision = $this->revisionGuard->getRevision(
 			$this->getTitle(),
 			$this->revision
 		);
 
 		return $this->revision;
-	}
-
-	protected function hasContentHandler() {
-		return defined( 'CONTENT_MODEL_WIKITEXT' );
 	}
 
 }

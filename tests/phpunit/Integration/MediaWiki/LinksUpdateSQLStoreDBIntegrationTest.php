@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use ParserOutput;
 use Revision;
-use SMW\ContentParser;
+use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\Tests\MwDBaseUnitTestCase;
@@ -186,8 +186,13 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$revision = $revId ? Revision::newFromId( $revId ) : null;
 
-		$contentParser = new ContentParser( $this->title );
-		$parserOutput =	$contentParser->setRevision( $revision )->parse()->getOutput();
+		$contentParser = ServicesFactory::getInstance()->newContentParser(
+			$this->title
+		);
+
+		$contentParser->setRevision( $revision );
+
+		$parserOutput =	$contentParser->parse()->getOutput();
 		$parserOutput->setExtensionData( ParserData::OPT_FORCED_UPDATE, true );
 
 		if ( $parserOutput instanceof ParserOutput ) {

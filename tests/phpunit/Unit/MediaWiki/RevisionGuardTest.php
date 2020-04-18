@@ -106,6 +106,9 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetRevision() {
 
+		$this->hookDispatcher->expects( $this->once() )
+			->method( 'onChangeRevision' );
+
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -114,9 +117,15 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$instance = new RevisionGuard();
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
 		$this->assertInstanceOf(
 			'\Revision',
-			RevisionGuard::getRevision( $title, $revision )
+			$instance->getRevision( $title, $revision )
 		);
 	}
 

@@ -403,6 +403,41 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOnChangeRevision() {
+
+		$hookDispatcher = new HookDispatcher();
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$anotherRevision = $this->getMockBuilder( '\Revision' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$anotherRevision->extraProperty = 'Foo';
+
+		$this->assertNotEquals(
+			$revision,
+			$anotherRevision
+		);
+
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) use ( $anotherRevision ) {
+			$revision = $anotherRevision;
+		} );
+
+		$hookDispatcher->onChangeRevision( $title, $revision );
+
+		$this->assertEquals(
+			$anotherRevision,
+			$revision
+		);
+	}
+
 	public function testOnInstallerBeforeCreateTablesComplete() {
 
 		$hookDispatcher = new HookDispatcher();

@@ -37,9 +37,13 @@ class PageRefresher {
 			throw new RuntimeException( 'Expected a title instance' );
 		}
 
-		$contentParser = new ContentParser( $title );
+		$applicationFactory = ApplicationFactory::getInstance();
 
-		$parserData = ApplicationFactory::getInstance()->newParserData(
+		$contentParser = $applicationFactory->newContentParser(
+			$title
+		);
+
+		$parserData = $applicationFactory->newParserData(
 			$title,
 			$contentParser->parse()->getOutput()
 		);
