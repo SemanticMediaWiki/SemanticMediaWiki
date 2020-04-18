@@ -199,7 +199,7 @@ class TableSchemaManager {
 		$table->addColumn( 'smw_touched', FieldType::TYPE_TIMESTAMP );
 		$table->addDefault( 'smw_touched', $connection->timestamp( '1970-01-01 00:00:00' ) );
 
-		$table->addIndex( 'smw_id' );
+		$table->setPrimaryKey( 'smw_id' );
 		$table->addIndex( 'smw_id,smw_sortkey' );
 		$table->addIndex( 'smw_hash,smw_id' );
 
@@ -245,7 +245,7 @@ class TableSchemaManager {
 
 		// $table->addColumn( 'smw_proptable', FieldType::TYPE_BLOB );
 
-		$table->addIndex( [ 'smw_id', 'UNIQUE INDEX' ] );
+		$table->setPrimaryKey( 'smw_id' );
 
 		return $table;
 	}
