@@ -5,6 +5,7 @@ namespace SMW\Exporter;
 use SMW\Exporter\Serializer\Serializer;
 use SMW\Exporter\Serializer\RDFXMLSerializer;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\Exporter\Controller\Queue;
 use SMWExportController as ExportController;
 use SMWExporter as Exporter;
 use InvalidArgumentException;
@@ -37,6 +38,7 @@ class ExporterFactory {
 
 		$exportController = new ExportController(
 			$serializer,
+			new Queue(),
 			$this->newExpDataFactory( $this->getExporter() )
 		);
 
