@@ -10,6 +10,13 @@ use SMW\OptionsAwareTrait;
 use StripState;
 
 /**
+ * The main task for this hook is to parse and replace the Semantic MediaWiki
+ * specific annotation syntax (e.g. `[[PropertyA::ValueB]]`) with a corresponding
+ * text representation (e.g. wikitext link, reference, URL etc.) of the value
+ * and the defined property. Structured information is gathered from a parsed
+ * text and attached to the `ParserOutput` for further processing after the
+ * parsing has been completed.
+ *
  * Hook: InternalParseBeforeLinks is used to process the expanded wiki
  * code after <nowiki>, HTML-comments, and templates have been treated.
  *
