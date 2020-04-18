@@ -2,6 +2,7 @@
 
 use SMW\Exporter\Serializer\Serializer;
 use SMW\Exporter\ExpDataFactory;
+use SMW\Exporter\Controller\Queue;
 use SMW\ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -27,30 +28,21 @@ use SMW\Site;
  * @ingroup SMW
  */
 class SMWExportController {
-	const MAX_CACHE_SIZE = 5000; // do not let cache arrays get larger than this
-	const CACHE_BACKJUMP = 500;  // kill this many cached entries if limit is reached,
-	                             // avoids too much array copying; <= MAX_CACHE_SIZE!
+
 	/**
 	 * @var Serializer
 	 */
 	protected $serializer;
 
 	/**
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
 	 * @var ExpDataFactory
 	 */
 	private $expDataFactory;
-
-	/**
-	 * An array that keeps track of the elements for which we still need to
-	 * write auxiliary definitions/declarations.
-	 */
-	protected $element_queue;
-
-	/**
-	 * An array that keeps track of the recursion depth with which each object
-	 * has been serialised.
-	 */
-	protected $element_done;
 
 	/**
 	 * Boolean to indicate whether all objects that are exported in full (with
@@ -92,10 +84,12 @@ class SMWExportController {
 	 * @since 1.5.5
 	 *
 	 * @param Serializer $serializer instance used for syntactic serialization
+	 * @param Queue $queue
 	 * @param ExpDataFactory $expDataFactory
 	 */
-	public function __construct( Serializer $serializer, ExpDataFactory $expDataFactory ) {
+	public function __construct( Serializer $serializer, Queue $queue, ExpDataFactory $expDataFactory ) {
 		$this->serializer = $serializer;
+		$this->queue = $queue;
 		$this->expDataFactory = $expDataFactory;
 	}
 
@@ -118,8 +112,8 @@ class SMWExportController {
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
-		$this->element_queue = [];
-		$this->element_done = [];
+		$this->queue->clear();
+
 		if ( $outfilename !== '' ) {
 			$this->outputfile = fopen( $outfilename, 'w' );
 			if ( !$this->outputfile ) { // TODO Rather throw an exception here.
@@ -148,11 +142,11 @@ class SMWExportController {
 	 */
 	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
 
-		if ( $this->isPageDone( $diWikiPage, $recursiondepth ) ) {
+		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
 
-		$this->markPageAsDone( $diWikiPage, $recursiondepth );
+		$this->queue->done( $diWikiPage, $recursiondepth );
 		$semData = $this->getSemanticData( $diWikiPage, ( $recursiondepth == 0 ) );
 
 		// Don't try to serialize an empty page that cause an incomplete exp-data set
@@ -162,13 +156,13 @@ class SMWExportController {
 		}
 
 		$expData = SMWExporter::getInstance()->makeExportData( $semData );
-		$this->serializer->serializeExpData( $expData, $recursiondepth );
+		$this->serializer->serializeExpData( $expData );
 
 		foreach( $semData->getSubSemanticData() as $subSemanticData ) {
 
 			// Mark SubSemanticData subjects as well to ensure that backlinks to
 			// the same subject do not create duplicate XML export entities
-			$this->markPageAsDone(
+			$this->queue->done(
 				$subSemanticData->getSubject(),
 				$recursiondepth
 			);
@@ -208,7 +202,7 @@ class SMWExportController {
 
 			foreach ( $expData->getProperties() as $property ) {
 				if ( $property->getDataItem() instanceof SMWWikiPageValue ) {
-					$this->queuePage( $property->getDataItem(), 0 ); // no real recursion along properties
+					$this->queue->add( $property->getDataItem(), 0 ); // no real recursion along properties
 				}
 				$wikipagevalues = false;
 				foreach ( $expData->getValues( $property ) as $valueExpElement ) {
@@ -218,7 +212,7 @@ class SMWExportController {
 					} elseif ( !$wikipagevalues ) {
 						break;
 					}
-					$this->queuePage( $valueResource->getDataItem(), $subrecdepth );
+					$this->queue->add( $valueResource->getDataItem(), $subrecdepth );
 				}
 			}
 
@@ -237,13 +231,13 @@ class SMWExportController {
 					$propWikiPage = $inprop->getCanonicalDiWikiPage();
 
 					if ( !is_null( $propWikiPage ) ) {
-						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties
+						$this->queue->add( $propWikiPage, 0 ); // no real recursion along properties
 					}
 
 					$inSubs = \SMW\StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
 
 					foreach ( $inSubs as $inSub ) {
-						if ( !$this->isPageDone( $inSub, $subrecdepth ) ) {
+						if ( !$this->queue->isDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
 
 							if ( !$semdata instanceof SMWSemanticData ) {
@@ -252,7 +246,7 @@ class SMWExportController {
 
 							$semdata->addPropertyObjectValue( $inprop, $diWikiPage );
 							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
-							$this->serializer->serializeExpData( $expData, $subrecdepth );
+							$this->serializer->serializeExpData( $expData );
 						}
 					}
 				}
@@ -264,7 +258,7 @@ class SMWExportController {
 					$pinst = new SMW\DIProperty( '_INST' );
 
 					foreach ( $instances as $instance ) {
-						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
+						if ( $this->queue->isNotDone( $instance ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
 
 							if ( !$semdata instanceof SMWSemanticData ) {
@@ -273,7 +267,7 @@ class SMWExportController {
 
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
-							$this->serializer->serializeExpData( $expData, $subrecdepth );
+							$this->serializer->serializeExpData( $expData );
 						}
 					}
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
@@ -294,7 +288,7 @@ class SMWExportController {
 							continue;
 						}
 
-						if ( !array_key_exists( $instance->getHash(), $this->element_done ) ) {
+						if ( $this->queue->isNotDone( $instance ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
 
 							if ( !$semdata instanceof \SMW\SemanticData ) {
@@ -312,62 +306,6 @@ class SMWExportController {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Add a given SMWDIWikiPage to the export queue if needed.
-	 */
-	protected function queuePage( SMWDIWikiPage $diWikiPage, $recursiondepth ) {
-		if ( !$this->isPageDone( $diWikiPage, $recursiondepth ) ) {
-			$diWikiPage->recdepth = $recursiondepth; // add a field
-			$this->element_queue[$diWikiPage->getHash()] = $diWikiPage;
-		}
-	}
-
-	/**
-	 * Mark an article as done while making sure that the cache used for this
-	 * stays reasonably small. Input is given as an SMWDIWikiPage object.
-	 */
-	protected function markPageAsDone( SMWDIWikiPage $di, $recdepth ) {
-		$this->markHashAsDone( $di->getHash(), $recdepth );
-	}
-
-	/**
-	 * Mark a task as done while making sure that the cache used for this
-	 * stays reasonably small.
-	 */
-	protected function markHashAsDone( $hash, $recdepth ) {
-		if ( count( $this->element_done ) >= self::MAX_CACHE_SIZE ) {
-			$this->element_done = array_slice( $this->element_done,
-				self::CACHE_BACKJUMP,
-				self::MAX_CACHE_SIZE - self::CACHE_BACKJUMP,
-				true );
-		}
-		if ( !$this->isHashDone( $hash, $recdepth ) ) {
-			$this->element_done[$hash] = $recdepth; // mark title as done, with given recursion
-		}
-		unset( $this->element_queue[$hash] ); // make sure it is not in the queue
-	}
-
-	/**
-	 * Check if the given object has already been serialised at sufficient
-	 * recursion depth.
-	 * @param SMWDIWikiPage $st specifying the object to check
-	 *
-	 * @return boolean
-	 */
-	protected function isPageDone( SMWDIWikiPage $di, $recdepth ) {
-		return $this->isHashDone( $di->getHash(), $recdepth );
-	}
-
-	/**
-	 * Check if the given task has already been completed at sufficient
-	 * recursion depth.
-	 */
-	protected function isHashDone( $hash, $recdepth ) {
-		return ( ( array_key_exists( $hash, $this->element_done ) ) &&
-		         ( ( $this->element_done[$hash] == -1 ) ||
-		           ( ( $recdepth != -1 ) && ( $this->element_done[$hash] >= $recdepth ) ) ) );
 	}
 
 	/**
@@ -481,7 +419,7 @@ class SMWExportController {
 			}
 
 			$diPage = SMWDIWikiPage::newFromTitle( $title );
-			$this->queuePage( $diPage, ( $recursion==1 ? -1 : 1 ) );
+			$this->queue->add( $diPage, ( $recursion==1 ? -1 : 1 ) );
 		}
 
 		$this->serializer->startSerialization();
@@ -493,15 +431,14 @@ class SMWExportController {
 		}
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( $ontologyuri ) );
 
-		while ( count( $this->element_queue ) > 0 ) {
-			$diPage = reset( $this->element_queue );
+		while ( $this->queue->count() > 0 ) {
+			$diPage = $this->queue->reset();
 			$this->serializePage( $diPage, $diPage->recdepth );
 			$this->flush();
 			$linkCache->clear(); // avoid potential memory leak
 		}
 		$this->serializer->finishSerialization();
 		$this->flush( true );
-
 	}
 
 	/**
@@ -569,20 +506,22 @@ class SMWExportController {
 			$a_count += 1; // DEBUG
 
 			$diPage = SMWDIWikiPage::newFromTitle( $title );
-			$this->queuePage( $diPage, 1 );
+			$this->queue->add( $diPage, 1 );
 
-			while ( count( $this->element_queue ) > 0 ) {
-				$diPage = reset( $this->element_queue );
+			while ( $this->queue->count() > 0 ) {
+				$diPage = $this->queue->reset();
 				$this->serializePage( $diPage, $diPage->recdepth );
 				// resolve dependencies that will otherwise not be printed
-				foreach ( $this->element_queue as $key => $diaux ) {
+				$members = $this->queue->getMembers();
+
+				foreach ( $members as $key => $diaux ) {
 					if ( !$this->isSemanticEnabled( $diaux->getNamespace() ) ||
 					     !self::fitsNsRestriction( $ns_restriction, $diaux->getNamespace() ) ) {
 						// Note: we do not need to check the cache to guess if an element was already
 						// printed. If so, it would not be included in the queue in the first place.
 						$d_count += 1; // DEBUG
 					} else { // don't carry values that you do not want to export (yet)
-						unset( $this->element_queue[$key] );
+						$this->queue->remove( $key );
 					}
 				}
 				// sleep each $delaycount for $delay µs to be nice to the server
