@@ -62,6 +62,11 @@ class SetupCheck {
 	const ERROR_SCHEMA_INVALID_KEY = 'ERROR_SCHEMA_INVALID_KEY';
 
 	/**
+	 * A selected default profile could not be loaded or is unknown.
+	 */
+	const ERROR_CONFIG_PROFILE_UNKNOWN = 'ERROR_CONFIG_PROFILE_UNKNOWN';
+
+	/**
 	 * The system is currently in a maintenance window
 	 */
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
@@ -439,7 +444,7 @@ class SetupCheck {
 	private function createContent( $value, $type ) {
 
 		if ( $value['text'] === 'ERROR_TEXT' ) {
-			$text = $this->errorMessage;
+			$text = str_replace( "\n", '<br>', $this->errorMessage );
 		} elseif ( $value['text'] === 'ERROR_TEXT_MULTIPLE' ) {
 			$errors = explode( "\n", $this->errorMessage );
 			$text = '<ul><li>' . implode( '</li><li>', array_filter( $errors ) ) . '</li></ul>';

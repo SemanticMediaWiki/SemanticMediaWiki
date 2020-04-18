@@ -96,6 +96,9 @@
 	"smw-setupcheck-registry-requires-enablesemantics": {
 		"en": "To use Semantic MediaWiki or functions of it, it is necessary to add <code>enableSemantics</code> to your <code>LocalSettings.php</code> which will ensure required variables and parameters are setup before programs can continue to work and make use of it."
 	},
+	"smw-setupcheck-config-profile": {
+		"en": "Please check the spelling and location of available <a href='https://www.semantic-mediawiki.org/wiki/Config_preloading'>default profiles</a> used as part of the <code>enableSemantics</code> declaration in your <code>LocalSettings.php</code>."
+	},
 	"smw-setupcheck-in-maintenance-mode": {
 		"en": "The system is currently undergoing an <a href='https://www.semantic-mediawiki.org/wiki/Help:Upgrade'>upgrade</a> of the <a href='https://www.semantic-mediawiki.org/'>Semantic MediaWiki</a> extension together with its data repository and we would like to ask you for your patience and allow the maintenance to continue before the wiki can be made accessible again."
 	},

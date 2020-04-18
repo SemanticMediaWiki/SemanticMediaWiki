@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMW\Exception\FileNotReadableException;
+use SMW\Exception\ConfigPreloadFileNotReadableException;
 
 /**
  * @private
@@ -70,7 +70,7 @@ class ConfigPreloader {
 		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
-			throw new FileNotReadableException( $file );
+			throw new ConfigPreloadFileNotReadableException( $file );
 		}
 
 		$config = require $file;

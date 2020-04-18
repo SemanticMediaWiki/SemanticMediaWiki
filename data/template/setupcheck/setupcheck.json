@@ -252,6 +252,28 @@
 				}
 			]
 		},
+		"ERROR_CONFIG_PROFILE_UNKNOWN":{
+			"indicator_title":"smw-setupcheck-error",
+			"indicator_color":"#dd3d31",
+			"output_form":[
+				{
+					"type":"paragraph",
+					"text":"ERROR_TEXT"
+				},
+				{
+					"type":"version",
+					"text":"smw-setupcheck-release"
+				},
+				{
+					"type":"section",
+					"text":"smw-setupcheck-how-to-fix-error"
+				},
+				{
+					"type":"paragraph",
+					"text":"smw-setupcheck-config-profile"
+				}
+			]
+		},
 		"MAINTENANCE_MODE":{
 			"indicator_title":"smw-setupcheck-maintenance",
 			"indicator_color":"#ffc107",
