@@ -68,7 +68,7 @@ class ConfigPreloaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ConfigPreloader();
 
-		$this->expectException( '\SMW\Exception\FileNotReadableException' );
+		$this->expectException( '\SMW\Exception\ConfigPreloadFileNotReadableException' );
 		$instance->loadConfigFrom( 'foo.php' );
 	}
 

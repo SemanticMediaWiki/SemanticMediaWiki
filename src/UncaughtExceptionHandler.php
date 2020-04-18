@@ -3,6 +3,7 @@
 namespace SMW;
 
 use ExtensionDependencyError;
+use SMW\Exception\ConfigPreloadFileNotReadableException;
 
 /**
  * @private
@@ -37,6 +38,10 @@ class UncaughtExceptionHandler {
 
 		$message = $e->getMessage();
 
+		if ( $e instanceof ConfigPreloadFileNotReadableException ) {
+			return $this->reportConfigPreloadError( $e );
+		}
+
 		// There is no better way to fetch the specific info other then comparing
 		// a string because there is no dedicated exception thrown by the
 		// `ExtensionRegistry`.
@@ -55,6 +60,21 @@ class UncaughtExceptionHandler {
 		}
 
 		throw $e;
+	}
+
+	private function reportConfigPreloadError( $e ) {
+
+		$this->setupCheck->setErrorMessage(
+			$e->getMessage()
+		);
+
+		$this->setupCheck->setErrorType(
+			SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN
+		);
+
+		$this->setupCheck->showErrorAndAbort(
+			$this->setupCheck->isCli()
+		);
 	}
 
 	private function reportExtensionRegistryError( $e ) {

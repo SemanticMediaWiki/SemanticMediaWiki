@@ -33,6 +33,26 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testConfigPreloadError() {
+
+		$this->setupCheck->expects( $this->once() )
+			->method( 'showErrorAndAbort' );
+
+		$this->setupCheck->expects( $this->once() )
+			->method( 'setErrorType' )
+			->with( $this->equalTo( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN ) );
+
+		$instance = new UncaughtExceptionHandler(
+			$this->setupCheck
+		);
+
+		$exception = new \SMW\Exception\ConfigPreloadFileNotReadableException(
+			'Foo'
+		);
+
+		$instance->registerHandler( $exception );
+	}
+
 	public function testExtensionRegistryError() {
 
 		$this->setupCheck->expects( $this->once() )
