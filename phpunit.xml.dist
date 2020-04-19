@@ -42,6 +42,9 @@
         <testsuite name="semantic-mediawiki-system">
             <directory>tests/phpunit/Integration/System</directory>
         </testsuite>
+        <testsuite name="semantic-mediawiki-structure">
+            <directory>tests/phpunit/Structure</directory>
+        </testsuite>
         <testsuite name="semantic-mediawiki-benchmark">
             <directory>tests/phpunit/Benchmark</directory>
         </testsuite>
