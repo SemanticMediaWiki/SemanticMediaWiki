@@ -3,10 +3,19 @@
 namespace SMW\Maintenance;
 
 use SMW\Exporter\ExporterFactory;
+use SMW\Utils\CliMsgFormatter;
+use SMW\Maintenance\MaintenanceCheck;
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\CallbackMessageReporter;
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
-
-require_once $basePath . '/maintenance/Maintenance.php';
+/**
+ * Load the required class
+ */
+if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
+	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
+} else {
+	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+}
 
 /**
  * Usage:
@@ -18,7 +27,6 @@ require_once $basePath . '/maintenance/Maintenance.php';
  * --concepts         Export only concepts
  * --classes          Export only concepts and categories
  * --properties       Export only properties
- * --types            Export only types
  * --individuals      Export only pages that are no categories, properties, or types
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
@@ -29,8 +37,6 @@ require_once $basePath . '/maintenance/Maintenance.php';
  *                    https://en.wikipedia.org. This is sometimes necessary because
  *                    server name detection may fail in command line scripts.
  *
- * @ingroup SMWMaintenance
- *
  * @license GNU GPL v2+
  * @since 2.0
  *
@@ -39,18 +45,10 @@ require_once $basePath . '/maintenance/Maintenance.php';
  */
 class dumpRDF extends \Maintenance {
 
-	private $delay = 0;
-	private $delayeach = 0;
-
 	/**
-	 * @var boolean|array
+	 * @var MessageReporter
 	 */
-	private $restrictNamespaceTo = false;
-
-	/**
-	 * @var array
-	 */
-	private $pages = [];
+	private $messageReporter;
 
 	/**
 	 * @since 2.0
@@ -58,18 +56,7 @@ class dumpRDF extends \Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->addDescription( "\n" ."Complete RDF export of existing triples. \n" );
-		$this->addDefaultParams();
-	}
-
-	/**
-	 * @see Maintenance::addDefaultParams
-	 *
-	 * @since 2.0
-	 */
-	protected function addDefaultParams() {
-
-		parent::addDefaultParams();
+		$this->addDescription( "RDF export of existing triples." );
 
 		$this->addOption( 'd', '<delay> Wait for this many milliseconds after processing, useful for limiting server load.', false, true );
 		$this->addOption( 'e', '<each> after how many exported entities should the process take a nap.', false, true );
@@ -79,7 +66,6 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'concepts', 'Export only concepts', false );
 		$this->addOption( 'classes', 'Export only classes', false );
 		$this->addOption( 'properties', 'Export only properties', false );
-		$this->addOption( 'types', 'Export only types', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
 		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
@@ -92,70 +78,107 @@ class dumpRDF extends \Maintenance {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param MessageReporter $messageReporter
+	 */
+	public function setMessageReporter( MessageReporter $messageReporter ) {
+		$this->messageReporter = $messageReporter;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string $message
+	 */
+	public function reportMessage( $message ) {
+
+		if ( $this->messageReporter !== null ) {
+			return $this->messageReporter->reportMessage( $message );
+		}
+
+		$this->output( $message );
+	}
+
+	/**
 	 * @see Maintenance::execute
 	 *
 	 * @since 2.0
 	 */
 	public function execute() {
 
-		if ( !defined( 'SMW_VERSION' ) ) {
-			$this->output( "You need to have SMW enabled in order to use this maintenance script!\n\n" );
-			exit;
+		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
+			exit ( $maintenanceCheck->getMessage() );
 		}
 
-		$this->reportMessage( "\nWriting OWL/RDF dump to " . $this->getOption( 'file' ) . " ...\n" );
-		$this->setParameters()->exportRdfToOutputChannel();
+		$cliMsgFormatter = new CliMsgFormatter();
 
-		return true;
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->head()
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'About' )
+		);
+
+		$text = [
+			"This script is writting OWL/RDF information to the output or a selected file."
+		];
+
+		$this->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$this->reportMessage(
+			$cliMsgFormatter->section( 'Export task(s)' )
+		);
+
+		if (  $this->hasOption( 'file' ) ) {
+			$this->reportMessage(
+				$cliMsgFormatter->twoCols( 'File',  $this->getOption( 'file' )  )
+			);
+		}
+
+		$this->reportMessage( "\n" );
+
+		return $this->runExport();
 	}
 
-	/**
-	 * @see Maintenance::reportMessage
-	 *
-	 * @since 2.0
-	 *
-	 * @param string $message
-	 */
-	public function reportMessage( $message ) {
-		$this->output( $message );
-	}
+	private function runExport() {
 
-	private function setParameters() {
+		$delay = 0;
+		$pages = [];
+		$restrictNamespaceTo = false;
 
 		if ( $this->hasOption( 'd' ) ) {
-			$this->delay = intval( $this->getOption( 'd' ) ) * 1000;
+			$delay = intval( $this->getOption( 'd' ) ) * 1000;
 		}
 
-		$this->delayeach = ( $this->delay === 0 ) ? 0 : 1;
+		$delayeach = ( $delay === 0 ) ? 0 : 1;
 
 		if ( $this->hasOption( 'e' ) ) {
-			$this->delayeach = intval( $this->getOption( 'e' )  );
+			$delayeach = intval( $this->getOption( 'e' )  );
 		}
 
 		if ( $this->hasOption( 'categories' ) ) {
-			$this->restrictNamespaceTo = NS_CATEGORY;
+			$restrictNamespaceTo = NS_CATEGORY;
 		} elseif ( $this->hasOption( 'concepts' ) ) {
-			$this->restrictNamespaceTo = SMW_NS_CONCEPT;
+			$restrictNamespaceTo = SMW_NS_CONCEPT;
 		} elseif ( $this->hasOption( 'classes' ) ) {
-			$this->restrictNamespaceTo = [ NS_CATEGORY, SMW_NS_CONCEPT ];
+			$restrictNamespaceTo = [ NS_CATEGORY, SMW_NS_CONCEPT ];
 		} elseif ( $this->hasOption( 'properties' ) ) {
-			$this->restrictNamespaceTo = SMW_NS_PROPERTY;
+			$restrictNamespaceTo = SMW_NS_PROPERTY;
 		} elseif ( $this->hasOption( 'individuals' ) ) {
-			$this->restrictNamespaceTo = - 1;
+			$restrictNamespaceTo = - 1;
 		}
 
 		if ( $this->hasOption( 'page' ) ) {
-			$this->pages = explode( '|', $this->getOption( 'page' ) );
+			$pages = explode( '|', $this->getOption( 'page' ) );
 		}
 
 		if ( $this->hasOption( 'server' ) ) {
 			$GLOBALS['wgServer'] = $this->getOption( 'server' );
 		}
-
-		return $this;
-	}
-
-	private function exportRdfToOutputChannel() {
 
 		$exporterFactory = new ExporterFactory();
 
@@ -163,29 +186,29 @@ class dumpRDF extends \Maintenance {
 			$exporterFactory->newRDFXMLSerializer()
 		);
 
-		if ( $this->pages !== [] ) {
-			return $exportController->printPages(
-				$this->pages
+		if ( $pages !== [] ) {
+			$exportController->printPages(
+				$pages
 			);
-		}
-
-		if ( $this->hasOption( 'file' ) ) {
-			return $exportController->printAllToFile(
+		} elseif ( $this->hasOption( 'file' ) ) {
+			$exportController->printAllToFile(
 				$this->getOption( 'file' ),
-				$this->restrictNamespaceTo,
-				$this->delay,
-				$this->delayeach
+				$restrictNamespaceTo,
+				$delay,
+				$delayeach
+			);
+		} else {
+			$exportController->printAllToOutput(
+				$restrictNamespaceTo,
+				$delay,
+				$delayeach
 			);
 		}
 
-		$exportController->printAllToOutput(
-			$this->restrictNamespaceTo,
-			$this->delay,
-			$this->delayeach
-		);
+		return true;
 	}
 
 }
 
-$maintClass = 'SMW\Maintenance\dumpRDF';
+$maintClass = dumpRDF::class;
 require_once ( RUN_MAINTENANCE_IF_MAIN );
