@@ -3,6 +3,7 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\Utils\TemplateEngine;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
@@ -23,6 +24,11 @@ class CompositeIndicatorHtmlBuilder {
 	 * @var TemplateEngine
 	 */
 	private $templateEngine;
+
+	/**
+	 * @var string
+	 */
+	private $languageCode = '';
 
 	/**
 	 * @since 3.2
@@ -46,6 +52,8 @@ class CompositeIndicatorHtmlBuilder {
 		if ( !isset( $options['subject'] ) ) {
 			throw new RuntimeException( "Expected a subject reference!" );
 		}
+
+		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$this->templateEngine->load( '/indicator/tabpanel.tab.ms', 'tabpanel_tab_template' );
 		$this->templateEngine->load( '/indicator/tabpanel.tabset.ms', 'tabpanel_tabset_template' );
@@ -147,7 +155,7 @@ class CompositeIndicatorHtmlBuilder {
 		$this->templateEngine->compile(
 			'comment_template',
 			[
-				'comment' => $this->msg( [ 'smw-entity-examiner-indicator-suggestions', $options['count'] ] )
+				'comment' => $this->msg( [ 'smw-entity-examiner-indicator-suggestions', $options['count'] ], Message::PARSE, $this->languageCode )
 			]
 		);
 
@@ -163,7 +171,7 @@ class CompositeIndicatorHtmlBuilder {
 		$this->templateEngine->compile(
 			'highlighter_template',
 			[
-				'title' => $this->msg( [ $options['highlighter_title'], $options['count'] ] ),
+				'title' => $this->msg( [ $options['highlighter_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
 				'content' => htmlspecialchars( $content, ENT_QUOTES ),
 				'top' => htmlspecialchars( $top, ENT_QUOTES ),
 				'bottom' => htmlspecialchars( $bottom, ENT_QUOTES ),
@@ -190,7 +198,7 @@ class CompositeIndicatorHtmlBuilder {
 		$this->templateEngine->compile(
 			'placeholder_template',
 			[
-				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ] ),
+				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
 				'subject' => $options['subject'],
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang']
