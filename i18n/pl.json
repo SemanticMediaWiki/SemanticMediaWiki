@@ -404,6 +404,7 @@
 	"prefs-ask-options": "Wyszukiwanie semantyczne",
 	"smw-prefs-intro-text": "Opcje poniżej są dostarczane przez [https://www.semantic-mediawiki.org/ semantyczną MediaWiki] (lub powiązane rozszerzenia), aby umożliwić indywidualne dostosowanie do wybranych funkcji. Więcej informacji na ten temat można uzyskać w [https://www.semantic-mediawiki.org/wiki/Help:User_preferences sekcji pomocy].",
 	"smw-prefs-ask-options-tooltip-display": "Wyświetlaj opis parametru za pomocą „dymku” z informacją",
+	"smw-prefs-general-options-time-correction": "Włącz korekcję czasu dla stron specjalnych, korzystając z lokalnego przesunięcia czasu w preferencjach",
 	"smw-prefs-general-options-disable-editpage-info": "Wyłącz tekst wprowadzający na stronie edycji",
 	"smw-prefs-general-options-disable-search-info": "Wyłącz informacje dotyczące obsługi składni na standardowej stronie wyszukiwania",
 	"smw-ui-tooltip-title-property": "Właściwość",
