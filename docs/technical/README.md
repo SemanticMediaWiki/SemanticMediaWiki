@@ -5,7 +5,7 @@ This document collects technical resources to help improve the understanding of 
 * [Programmer's guide](https://www.semantic-mediawiki.org/wiki/Programmer%27s_guide)
 * [Architecture guide](https://www.semantic-mediawiki.org/wiki/Architecture_guide)
 * [Developer hub](https://www.semantic-mediawiki.org/wiki/Developer_hub) and [Coding conventions](https://www.semantic-mediawiki.org/wiki/Coding_conventions)
-* [Code snippets](code-snippets/README.md)
+* [Examples (code snippets)](/docs/examples/README.md)
 
 ### Migration guide
 
