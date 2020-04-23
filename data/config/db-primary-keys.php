@@ -90,7 +90,7 @@ class ConfigPreloadPrimaryKeyTableMutator {
 }
 
 /**
- * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/master/docs/technical/code-snippets/hook.sqlstore.installer.beforecreatetablescomplete.md
+ * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  */
 Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function( array $tables, MessageReporter $messageReporter ) {
 
