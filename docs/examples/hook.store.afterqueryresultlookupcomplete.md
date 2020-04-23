@@ -64,7 +64,7 @@ Hooks::register( 'SMW::Store::AfterQueryResultLookupComplete', function( Store $
 
 ## See also
 
-- [query.description.md](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/code-snippets/query.description.md)
+- [query.description.md](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/query.description.md)
 
 [issue-3934]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/3934
 [doc-about]: # (Examples implementing the `SMW::Store::AfterQueryResultLookupComplete`)
