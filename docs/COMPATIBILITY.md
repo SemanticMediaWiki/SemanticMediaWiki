@@ -8,6 +8,10 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 
 ## Platform compatibility and release status
 
+The PHP and MediaWiki version ranges listed have been tested and are expected to work, attempting to use Semantic MediaWiki outside of the mentioned release boundaries is __NOT__ recommended and users who are trying to use different combinations will unlikely receive any support.
+
+Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
+
 <table class="compatibility">
 	<tr>
 		<th>SMW</th>
@@ -90,16 +94,11 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 
 ### Notes
 
-The PHP and MediaWiki version ranges listed are those in which SMW is known to work. It might also work with more recent versions of PHP and MediaWiki, though this is not guaranteed. Increases of minimum requirements are indicated in bold.
+Increases of minimum requirements are indicated in bold.
 
-It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions. See the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for current information on supported versions.
+It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions (see the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for further information).
 
-* For the 1.28 MediaWiki release branch, 1.28.1 or later is recommended due to [T154428](https://phabricator.wikimedia.org/T154428).
-* For the 1.27 MediaWiki release branch, 1.27.4 or later is recommended due to [T100085](https://phabricator.wikimedia.org/T100085).
-* PHP 7.1+ requires at least MediaWiki 1.29 due to [T153505](https://phabricator.wikimedia.org/T153505) and [T143788](https://phabricator.wikimedia.org/T143788) (at the time of this writing). Please also consult the official MediaWiki release documentation.
-
-HHVM 3.3.0 to 3.30.0 which was only needed when not using PHP was supported in varying versions from SMW 2.1.x to 3.0.x
-but since it is no longer tested functionality can no longer be validated and assured.
+HHVM 3.3.0 to 3.30.0 was only supported in varying versions from SMW 2.1.x to 3.0.x but since HHVM is no longer tested functionality can no longer be validated and assured.
 
 ## Database compatibility
 
