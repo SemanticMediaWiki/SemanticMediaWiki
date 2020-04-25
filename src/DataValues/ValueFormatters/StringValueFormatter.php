@@ -65,6 +65,13 @@ class StringValueFormatter extends DataValueFormatter {
 		return $this->doFormat( $dataValue, $type, $linker );
 	}
 
+	/**
+	 * @param \SMW\DataValues\StringValue $dataValue
+	 * @param int $type
+	 * @param mixed $linker
+	 *
+	 * @return string
+	 */
 	protected function doFormat( $dataValue, $type, $linker ) {
 
 		$text = (string)$dataValue->getDataItem()->getString();
