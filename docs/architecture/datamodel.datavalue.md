@@ -3,7 +3,7 @@ A [`DataValue`][datavalue] represents the user perspective on data which include
 The various subclasses of `DataValue` roughly correspond to the [datatypes][datatype] that a value can have, and they implement the specific behaviour of particular values. In the current architecture, `DataValue` subclasses implement all functions that are specific to a particular [datatype][datatype]:
 
 - Interpreting user input (e.g. parsing a string into a calendar date)
-- Encoding values in a format that is suitable for storage (e.g. computing a standardized, language-independent string for representing a date and a floating point number that can be used for sorting dates)
+- Encoding values in a format that is suitable for storage (e.g. computing a standardized, language-independent string for representing a date and a floating-point number that can be used for sorting dates)
 - Generating readable output (e.g. converting the internal representation of a date back into a text that is readable in the current language)
 
 ## Data representation and formatting
@@ -24,7 +24,7 @@ Another challenge is the diversity of desirable output formats. Users typically 
 
 The output methods of `DataValue` reflect some of this diversity, and an additional facility of "output formats" (see `DataValue::setOutputFormat`) is provided for more fine-grained control to user when a specific output during a query request is sought. But obviously there must be limits of what can be achieved without cluttering the architecture, and users are advised to subclass their own datatype implementations for special formatting.
 
-DataValue objects can be created directly via their own methods, but are required to be constucted using the [`DataValueFactory`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/DataValueFactory.php).
+DataValue objects can be created directly via their own methods, but are required to be constructed using the [`DataValueFactory`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/DataValueFactory.php).
 
 See also [`datatype`][datatype] for an explanation of the datatype system.
 

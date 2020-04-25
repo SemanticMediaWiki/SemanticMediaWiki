@@ -9,9 +9,9 @@ Objects of class [DataItem][dataitem] represent a very simple piece of data. A [
 
 - [`Immutable`](https://en.wikipedia.org/wiki/Immutable_object) Once created, a dataitem cannot be changed.
 - '''Context independent:''' The meaning of a dataitem is only based on its content, not on any contextual information (such as the information about the property it is assigned to).
-- '''Limited shape:''' The kinds of datatitems (numbers, URLs, pages, ...) that SMW supports are limited and fixed. Extensions cannot add new kinds of dataitems, and programmers only need to handle a fixed list of possible kinds of datatitems.
+- '''Limited shape:''' The kinds of dataitems (numbers, URLs, pages, ...) that SMW supports are limited and fixed. Extensions cannot add new kinds of dataitems, and programmers only need to handle a fixed list of possible kinds of dataitems.
 
-Being immutable is essential for datatitems to behave like simple values. It imposes a restriction on programmers, but it also simplifies programming a lot since one does not have to be concerned about dataitems being changed by code that happens to have a reference to them.
+Being immutable is essential for dataitems to behave like simple values. It imposes a restriction on programmers, but it also simplifies programming a lot since one does not have to be concerned about dataitems being changed by code that happens to have a reference to them.
 
 ## DataItem types
 
@@ -32,7 +32,7 @@ The available kinds of dataitems correspond to subclasses of [DataItem][dataitem
 
 ### Type restriction
 
-The restriction to these types of dataitem may at first look like a major limitation, since it means that SMW can only represent limited forms of data. For example, there is no dataitem for storing the structure of chemical formulae &ndash; doesn't this mean that SMW can never handle such data? No, because the existing datatitems can be used to keep all required information (for example by representing chemical formulae as strings). The task of interpreting this basic data as a chemical formula has to be handled on higher levels that deal with user input and output using a [DataValue][datavalue].
+The restriction to these types of dataitem may at first look like a major limitation, since it means that SMW can only represent limited forms of data. For example, there is no dataitem for storing the structure of chemical formulae &ndash; doesn't this mean that SMW can never handle such data? No, because the existing dataitems can be used to keep all required information (for example by representing chemical formulae as strings). The task of interpreting this basic data as a chemical formula has to be handled on higher levels that deal with user input and output using a [DataValue][datavalue].
 
 ### Container type
 

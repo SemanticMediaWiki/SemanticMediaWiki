@@ -65,7 +65,7 @@ have a look at the contribution guideline.
 
 ## Tests
 
-This extension provides unit and integration tests and are normally run by a [continues integration platform][travis]
+This extension provides unit and integration tests and are normally run by a [continuous integration platform][travis]
 but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
 
 ## License

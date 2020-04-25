@@ -12,8 +12,8 @@ The ask module supports one parameter, query, which takes the same string you'd 
 The `Askargs API` module aims to take arguments in un-serialized form, so with as little ask-specific syntax as possible. It supports 3 arguments:
 
 * `conditions`: The query conditions, ie the requirements for a subject to be included
-* `printouts`: The query printeouts, ie the properties to show per subject
-* `parameters`: The query parameters, ie all non-condition and non-printeout arguments
+* `printouts`: The query printouts, ie the properties to show per subject
+* `parameters`: The query parameters, ie all non-condition and non-printout arguments
 
 > api.php?action=askargs&conditions=Modification date::%2B&printouts=Modification date&parameters=|sort%3DModification date|order%3Ddesc&format=jsonfm
 
@@ -64,12 +64,12 @@ An interface to access statistical information about the properties, values etc.
 
 > api.php?action=smwinfo&format=json&info=proppagecount|propcount
 
-The following parameters are available and may be concatenate using the "|" character.
+The following parameters are available and can be concatenated using the "|" character.
 * `proppagecount`: The total number of properties registered with a page.
 * `declaredpropcount`: The total number of properties with a datatype assigned.
 * `usedpropcount`: The total number of properties with at least one values assigned.
-* `propcount`: The total number of property values assinged.
-* `errorcount`: The total number of property values invalidly assinged.
+* `propcount`: The total number of property values assigned.
+* `errorcount`: The total number of property values invalidly assigned.
 * `querycount`: The total number of queries.
 * `querysize`: The total size of all queries.
 * `formatcount`: The query formats and their respective total usage count.

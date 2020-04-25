@@ -76,7 +76,7 @@ Tests are commonly divided into [unit][glossary] and [integration tests][glossar
 
 For an introduction on "How to use `PHPUnit`" and "How to write integration tests using `JSONScript`" see the relevant section in this [document](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/README.md).
 
-### Continues integration (CI)
+### Continuous integration (CI)
 
 The project uses [Travis-CI](https://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki) to run its tests on different platforms with different services enabled to provide a wide range of  environments including MySQL, SQLite, and Postgres.
 
@@ -102,9 +102,9 @@ Before creating a pull request it is recommended to:
 - Create a PR with your changes and send it to the `Semantic MediaWiki` repository
 - Observe whether tests are failing or not, and when there are failing identify what caused them to fail
 - In case your PR went green without violating any existing tests, go back to your original PR and add tests that covers the newly introduced behaviour (see the difference for unit and integration tests)
-- Rebase and repost your PR with the newly added tests and verify that they pass on all voting [CI](#testing) jobs
+- Rebase and re-post your PR with the newly added tests and verify that they pass on all voting [CI](#testing) jobs
 
-In an event that you encountered a problem, ask or create a [ticket](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
+In an event that you encountered a problem, ask or create an [issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
 
 ## See also
 

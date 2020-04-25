@@ -40,7 +40,7 @@ tests/
 
 ### Continuous integration
 
-Using Travis-CI is fairly easy to setup and integrable with Semantic MediaWiki, the best approach is to select an existing repository and copy files such as:
+Using Travis-CI is fairly easy to set up and integrable with Semantic MediaWiki, the best approach is to select an existing repository and copy files such as:
 
 - [`.travis.yml`](https://github.com/SemanticMediaWiki/SemanticApprovedRevs/blob/master/.travis.yml)
 - [`tests/travis`](https://github.com/SemanticMediaWiki/SemanticApprovedRevs/tree/master/tests/travis) folder and adapt the necessary references

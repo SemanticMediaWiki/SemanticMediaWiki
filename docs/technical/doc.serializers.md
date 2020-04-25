@@ -3,7 +3,7 @@ This document contains information about Semantic MediaWiki serializers.
 ## Components
 
 ### Serializer and Deserializer
-Interfaces provided by the [Serialization extension][serialization] which describes specific serialize/deserialze public methods.
+Interfaces provided by the [Serialization extension][serialization] which describes specific serialize/deserialize public methods.
 
 ### SerializerFactory
 A factory class that assigns registered serializers to an object and identifies an unserializer based on the invoked array. A serialized record has a reference to the generator (serializer) class which will automatically be used during unserialization. Each record includes a version number to compare the data model used and enable a consistency check before an attempt to unserialize a record.

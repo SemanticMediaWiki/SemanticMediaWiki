@@ -17,5 +17,4 @@ Hooks::register( 'SMW::SQLStore::AfterDataUpdateComplete', function( SQLStore $s
 
 ## See also
 
-
 [PropertyTableDefinitionBuilder.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/SQLStore/PropertyTableDefinitionBuilder.php

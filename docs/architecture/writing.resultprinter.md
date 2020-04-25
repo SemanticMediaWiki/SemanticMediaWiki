@@ -49,7 +49,7 @@ class FooResultPrinter extends ResultPrinter {
 	 * whatever output the format creates. For example, in the list format, it
 	 * goes through all results and constructs an HTML list, which is then
 	 * returned. Looping through the result object is somewhat complex, and
-	 * erquires some understanding of the `QueryResult` class.
+	 * requires some understanding of the `QueryResult` class.
 	 *
 	 * @see ResultPrinter::getResultText
 	 *
@@ -80,7 +80,7 @@ Returns a human readable label for this printer.
 
 Parameters passed to your result printer can be accessed via the `$params`field, which gets set by the base class before `ResultPrinter::getResultText` is called.
 
-Fo example, if you want to retrived the value for parameter foobar, use `$this->params['foobar']`. It is '''not''' needed to check if these parameters are set, if they are of the right type, or adhere to any restrictions you might want to put on them. This will already have happened at this point in the base class.
+For example, if you want to retrieved the value for parameter foobar, use `$this->params['foobar']`. It is '''not''' needed to check if these parameters are set, if they are of the right type, or adhere to any restrictions you might want to put on them. This will already have happened at this point in the base class.
 
 - Invalid and non-set values will have been changed to their default.
 - Invalid or missing required parameters would have caused an abort earlier on, so `ResultPrinter::getResultText` would not get called.

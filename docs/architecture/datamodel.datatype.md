@@ -1,4 +1,4 @@
-Users can pick many datatypes for their data. Yet they do not specify the type for each value they write, but assign one global type to a property. This is slightly different from SMW's internal architecture, where dataypes influence a value's identity, whereas all properties are represented by values of a single type `PropertyValue`. This is not a problem, it simply says that the type information that users provide for each property is interpreted as "management information" that SMW uses to interpret user inputs. The [data model][datamodel] is still as described above, with types being part of the values (which is where they are mainly needed).
+Users can pick many datatypes for their data. Yet they do not specify the type for each value they write, but assign one global type to a property. This is slightly different from SMW's internal architecture, where datatypes influence a value's identity, whereas all properties are represented by values of a single type `PropertyValue`. This is not a problem, it simply says that the type information that users provide for each property is interpreted as "management information" that SMW uses to interpret user inputs. The [data model][datamodel] is still as described above, with types being part of the values (which is where they are mainly needed).
 
 Again, the typing approach in the user interface does not affect the data model but helps SMW to make sense of user input. One could equivalently dispense with the property-related types and require users to write the type for each input value instead. This would simply be cumbersome and would prevent some implementation optimizations that are now possible since we can assume that properties have values of only one type that we know.
 
@@ -6,7 +6,7 @@ Again, the typing approach in the user interface does not affect the data model 
 
 ### Defining a type
 
-Users refer to types by using natural language labels such as datatype `[[Has type::Date]]`. These labels are subject to internationalization. There can also be aliases for some types to allow multiple spellings in one language. To make SMW code independent from the selected language, SMW uses internal [`TYPE_ID`][typesregistry] for referring to datatypes. These are short strings that typically start with `_` to avoid confusion with page titles.
+Users refer to types by using natural language labels such as datatype `[[Has type::Date]]`. These labels are subject to internationalization. There can also be aliases for some types to allow multiple spellings in one language. To make SMW code independent of the selected language, SMW uses internal [`TYPE_ID`][typesregistry] for referring to datatypes. These are short strings that typically start with `_` to avoid confusion with page titles.
 
 For example, `_dat` is the type ID for the `Date` type. Developers should always use the internal type IDs. The correspondence of user labels and internal IDs is defined in language files found in [`i18n/extra`][i18n-extra] folder.
 
@@ -30,7 +30,7 @@ Own datatypes should always use type IDs that start with "___" (three underscore
 
 Finally, there are some datatypes that are internal to SMW. They use IDs starting with two underscores, and are not assigned to any user label. They cannot be accessed in a wiki and are only available to developers.
 
-The purpose of these types is usually to achieve a special handling when storing data. For example, values of `Subproperty of` could be represented by a `_wpg` datatype (aka page type) but it uses a special internal type that ensures that the data can be stored separately and in a form that simplifies its use in query answering.
+The purpose of these types is usually to achieve a special handling when storing data. For example, values of `Subproperty of` could be represented by a `_wpg` datatype (aka page type), but it uses a special internal type that ensures that the data can be stored separately and in a form that simplifies its use in query answering.
 
 A datatype that is added by an extension becomes internal if it is not given any user label. In this case, users cannot create properties with this type, but everything else works normally (in particular, SMW will not know anything special about internal extension types and will just treat them like any other extension type).
 

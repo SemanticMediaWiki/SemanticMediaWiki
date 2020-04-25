@@ -18,14 +18,14 @@ When resolving a query request (i.e. resolving the parser function `{{#ask ... }
 
 ### `src/Query/Language`
 
-Each condition elememt (e.g. `[[Has foo::bar]] || [[!Foo]]`) of a query is representated by a `Description` object allowing to express a query condition as as description [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+Each condition element (e.g. `[[Has foo::bar]] || [[!Foo]]`) of a query is represented by a `Description` object allowing to express a query condition as as description [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 - [`Description.php`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Query/Language/Description.php)
 
 ### `src/Query/Result`
 
 - [`QueryResult.php`] the instance represents the matched subjects of a query request (i.e. rows of a table)
-- [`ResultArray.php`] represents a lazy-object to contain the printouts (see `PrintRequest`) for a particular subject (i.e. as columns for a particulr row)
+- [`ResultArray.php`] represents a lazy-object to contain the printouts (see `PrintRequest`) for a particular subject (i.e. as columns for a particular row)
 
 ### `src/Query/ResultPrinters`
 
