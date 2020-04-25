@@ -64,7 +64,7 @@ An interface to access statistical information about the properties, values etc.
 
 > api.php?action=smwinfo&format=json&info=proppagecount|propcount
 
-The following parameters are available and may be concatenate using the "|" character.
+The following parameters are available and can be concatenated using the "|" character.
 * `proppagecount`: The total number of properties registered with a page.
 * `declaredpropcount`: The total number of properties with a datatype assigned.
 * `usedpropcount`: The total number of properties with at least one values assigned.

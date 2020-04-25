@@ -5,6 +5,6 @@
 
 ## Notes
 
-Due to size and memory consumption requirements by Elasticsearch and Tika, file content ingestion happens exclusively in background via the command line (`waitOnCommandLine`). Only after the job has been executed successfully will the file content and additional annotations be accessible and available as indexed (searchable) content.
+Due to size and memory consumption requirements by Elasticsearch and Tika, file content ingestion happens exclusively in the background via the command line (`waitOnCommandLine`). Only after the job has been executed successfully will the file content and additional annotations be accessible and available as indexed (searchable) content.
 
 [FileIngestJob.php]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/Indexer/Jobs/FileIngestJob.php

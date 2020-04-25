@@ -4,7 +4,7 @@ Semantic MediaWiki and many of its extensions stick to a strict naming conventio
 
 - The project follows the `PSR-4` guideline in naming and using namespaces for classes where `SMW` is the top-vendor identifier,
 - Classes in the `src` folder follow the `PSR-4` layout
-- Due to legacy reasons classes in the `includes` folder have no or very rudimentary test coverage and do not follow `PSR-4`. Once a class meets certain criteria (one of which is sufficient test coverage among others) it is expected to be moved into the `src` folder with the objective to remove `includes` in future
+- Due to legacy reasons classes in the `includes` folder have no or very rudimentary test coverage and do not follow `PSR-4`. Once a class meets certain criteria (one of which is sufficient test coverage among others) it is expected to be moved into the `src` folder with the objective to remove `includes` in the future.
 
 ## Encoding
 
@@ -21,7 +21,7 @@ The `@private` annotation for a class indicates a solely restricted use within t
 
 In general, all names are written using the [CamelCase](https://en.wikipedia.org/wiki/Camel_case) style, although methodNames and variableNames typically start with lower case letters. Private methods are not required to follow the convention.
 
-- `Classes` use a [namespace](http://php.net/manual/en/language.namespaces.php) that starts with with "SMW". Class definitions that are encapsulated in methods do not have a prefix. Another exception are classes for '''Specials''' which should be named after the special, as is common in MediaWiki.
+- `Classes` use a [namespace](http://php.net/manual/en/language.namespaces.php) that starts with "SMW". Class definitions that are encapsulated in methods do not have a prefix. Another exception are classes for '''Specials''' which should be named after the special, as is common in MediaWiki.
 - `Functions` that are accessible globally require the "smwf" prefix
 - `Variables` are prefixed with "smwg" if declared globally. Variables in a class do not have a special prefix. Local variables in functions typically use the camelCase style or `_` if any separation is needed.
 - `Constants` are written ALL_CAPS with underscores as internal separator, and are to be prefixed with "SMW_" when used globally (e.g. in "define('SMW_FOO', 1)"), class constants are free from this convention.

@@ -6,7 +6,7 @@ Again, the typing approach in the user interface does not affect the data model 
 
 ### Defining a type
 
-Users refer to types by using natural language labels such as datatype `[[Has type::Date]]`. These labels are subject to internationalization. There can also be aliases for some types to allow multiple spellings in one language. To make SMW code independent from the selected language, SMW uses internal [`TYPE_ID`][typesregistry] for referring to datatypes. These are short strings that typically start with `_` to avoid confusion with page titles.
+Users refer to types by using natural language labels such as datatype `[[Has type::Date]]`. These labels are subject to internationalization. There can also be aliases for some types to allow multiple spellings in one language. To make SMW code independent of the selected language, SMW uses internal [`TYPE_ID`][typesregistry] for referring to datatypes. These are short strings that typically start with `_` to avoid confusion with page titles.
 
 For example, `_dat` is the type ID for the `Date` type. Developers should always use the internal type IDs. The correspondence of user labels and internal IDs is defined in language files found in [`i18n/extra`][i18n-extra] folder.
 
