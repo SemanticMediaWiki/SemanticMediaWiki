@@ -125,15 +125,6 @@
 				} else {
 					tip.smw.title = mw.msg( 'smw-ui-tooltip-title-info' );
 				}
-
-				// create and dispatch the event
-				var event = new CustomEvent( "smw.tooltip.onshow", {
-				  detail: {
-				    context: tip
-				  }
-				});
-
-				document.dispatchEvent(event);
 			};
 
 			// #260
