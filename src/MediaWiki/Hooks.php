@@ -643,6 +643,11 @@ class Hooks {
 	 */
 	public function onArticleViewHeader( &$page, &$outputDone, &$useParserCache ) {
 
+		// #4741
+		if ( $page instanceof \Article ) {
+			$page = $page->getPage();
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Get the key to distinguish between an anon and logged-in user stored
