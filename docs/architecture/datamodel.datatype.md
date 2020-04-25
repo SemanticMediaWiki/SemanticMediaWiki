@@ -30,7 +30,7 @@ Own datatypes should always use type IDs that start with "___" (three underscore
 
 Finally, there are some datatypes that are internal to SMW. They use IDs starting with two underscores, and are not assigned to any user label. They cannot be accessed in a wiki and are only available to developers.
 
-The purpose of these types is usually to achieve a special handling when storing data. For example, values of `Subproperty of` could be represented by a `_wpg` datatype (aka page type) but it uses a special internal type that ensures that the data can be stored separately and in a form that simplifies its use in query answering.
+The purpose of these types is usually to achieve a special handling when storing data. For example, values of `Subproperty of` could be represented by a `_wpg` datatype (aka page type), but it uses a special internal type that ensures that the data can be stored separately and in a form that simplifies its use in query answering.
 
 A datatype that is added by an extension becomes internal if it is not given any user label. In this case, users cannot create properties with this type, but everything else works normally (in particular, SMW will not know anything special about internal extension types and will just treat them like any other extension type).
 
