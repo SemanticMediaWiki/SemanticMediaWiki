@@ -104,7 +104,7 @@ Before creating a pull request it is recommended to:
 - In case your PR went green without violating any existing tests, go back to your original PR and add tests that covers the newly introduced behaviour (see the difference for unit and integration tests)
 - Rebase and re-post your PR with the newly added tests and verify that they pass on all voting [CI](#testing) jobs
 
-In an event that you encountered a problem, ask or create a [ticket](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
+In an event that you encountered a problem, ask or create an [issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/new).
 
 ## See also
 
