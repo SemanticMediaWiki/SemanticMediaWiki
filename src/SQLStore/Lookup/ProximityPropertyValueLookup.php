@@ -38,7 +38,7 @@ class ProximityPropertyValueLookup {
 	 * @since 3.0
 	 *
 	 * @param DIProperty $property
-	 * @param $search,
+	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
@@ -51,7 +51,7 @@ class ProximityPropertyValueLookup {
 	 * @since 3.0
 	 *
 	 * @param DIProperty $property
-	 * @param $search,
+	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array

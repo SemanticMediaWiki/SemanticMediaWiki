@@ -44,7 +44,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param RedirectTargetFinder $redirectTargetFinder
 	 *
 	 * @return RedirectPropertyAnnotator
@@ -99,7 +99,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param PageInfo $pageInfo
 	 *
 	 * @return PredefinedPropertyAnnotator
@@ -143,7 +143,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param string $sortkey
 	 *
 	 * @return SortKeyPropertyAnnotator
@@ -158,8 +158,8 @@ class AnnotatorFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param SemanticData $semanticData
-	 * @param arrat|null $translation
+	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param array|null $translation
 	 *
 	 * @return TranslationPropertyAnnotator
 	 */
@@ -180,7 +180,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param string|false $displayTitle
 	 * @param string $defaultSort
 	 *
@@ -204,7 +204,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param array $categories
 	 *
 	 * @return CategoryPropertyAnnotator
@@ -240,7 +240,7 @@ class AnnotatorFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SemanticData $semanticData
+	 * @param PropertyAnnotator $propertyAnnotator
 	 *
 	 * @return MandatoryTypePropertyAnnotator
 	 */

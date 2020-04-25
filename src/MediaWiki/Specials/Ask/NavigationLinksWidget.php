@@ -37,7 +37,7 @@ class NavigationLinksWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title,
+	 * @param Title $title
 	 * @param array $visibleLinks
 	 *
 	 * @return string
@@ -148,7 +148,7 @@ class NavigationLinksWidget {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title,
+	 * @param Title $title
 	 * @param UrlArgs $urlArgs
 	 * @param integer $count
 	 * @param boolean $hasFurtherResults
@@ -191,9 +191,7 @@ class NavigationLinksWidget {
 	 * @since 3.0
 	 *
 	 * @param string $navigation
-	 * @param string $infoText
 	 * @param Infolink|null $infoLink
-	 * @param string $editHref
 	 *
 	 * @return string
 	 */

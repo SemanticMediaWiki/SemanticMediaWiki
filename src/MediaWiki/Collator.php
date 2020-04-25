@@ -43,7 +43,7 @@ class Collator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param srtring $collationName
+	 * @param string $collationName
 	 *
 	 * @return Collator
 	 */

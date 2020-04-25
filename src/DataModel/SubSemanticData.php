@@ -129,7 +129,7 @@ class SubSemanticData {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $subobjectName|null
+	 * @param string|null $subobjectName
 	 *
 	 * @return boolean
 	 */

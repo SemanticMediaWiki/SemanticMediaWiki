@@ -136,7 +136,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param QueryResult $result
+	 * @param QueryResult $queryResult
 	 * @param $outputMode
 	 *
 	 * @return array label => value

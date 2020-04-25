@@ -733,6 +733,8 @@ class Database {
 	 * @since 2.3
 	 *
 	 * @param string $fname
+	 *
+	 * @return void
 	 */
 	public function endAtomicTransaction( $fname = __METHOD__ ) {
 

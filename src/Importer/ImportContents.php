@@ -54,7 +54,7 @@ class ImportContents {
 	private $contentType = self::CONTENT_TEXT;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
 	private $errors = [];
 
@@ -235,7 +235,7 @@ class ImportContents {
 	/**
 	 * @since 2.5
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function getErrors() {
 		return $this->errors;

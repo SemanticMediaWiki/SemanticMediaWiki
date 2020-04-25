@@ -64,6 +64,8 @@ class ArticleViewHeader implements HookListener {
 	 * @param Page $page
 	 * @param boolean &$outputDone
 	 * @param boolean &$useParserCache
+	 *
+	 * @return bool
 	 */
 	public function process( Page $page, &$outputDone, &$useParserCache ) {
 

@@ -157,6 +157,12 @@ class ParametersProcessor {
 		return [ $queryString, $parameters, $printouts ];
 	}
 
+	/**
+	 * @param WebRequest $request
+	 * @param array|null $params
+	 *
+	 * @return array
+	 */
 	private static function getParameterList( $request, $params ) {
 
 		// Called from wiki, get all parameters

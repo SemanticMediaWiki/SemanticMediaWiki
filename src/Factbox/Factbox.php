@@ -69,7 +69,7 @@ class Factbox {
 	protected $content = null;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
 	private $attachments = [];
 

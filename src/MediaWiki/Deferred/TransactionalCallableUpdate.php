@@ -68,7 +68,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param callable $callback|null
+	 * @param callable|null $callback
 	 * @param Database|null $connection
 	 */
 	public function __construct( callable $callback = null, Database $connection ) {

@@ -117,6 +117,8 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @param integer $sid
 	 * @param array $dependencyList
+	 *
+	 * @return void
 	 */
 	private function updateDependencyList( $sid, array $dependencyList ) {
 
@@ -199,8 +201,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject, $subobjectName
+	 * @param DIWikiPage $subject
 	 * @param string $subobjectName
+	 *
+	 * @return int
 	 */
 	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
 
@@ -223,7 +227,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject, $subobjectName
+	 * @param DIWikiPage $subject
 	 * @param string $subobjectName
 	 */
 	public function createId( DIWikiPage $subject, $subobjectName = '' ) {

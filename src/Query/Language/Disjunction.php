@@ -21,9 +21,9 @@ class Disjunction extends Description {
 	private $descriptions = [];
 
 	/**
-	 * contains a single class description if any such disjunct was given;
-	 * disjunctive classes are aggregated therei
-	 * n
+	 * Contains a single class description if any such disjunct was given;
+	 * disjunctive classes are aggregated therein.
+	 *
 	 * @var null|ClassDescription
 	 */
 	private $classDescription = null;

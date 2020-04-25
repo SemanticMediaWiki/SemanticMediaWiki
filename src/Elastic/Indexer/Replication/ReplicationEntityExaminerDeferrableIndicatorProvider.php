@@ -163,6 +163,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		return '#mw-indicator-mw-helplink {display:none;}';
 	}
 
+	/**
+	 * @param DIWikiPage $subject
+	 * @param array $options
+	 *
+	 * @return void
+	 */
 	private function checkReplication( $subject, $options ) {
 
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
@@ -186,6 +192,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
+	/**
+	 * @param $subject
+	 * @param $options
+	 *
+	 * @return null
+	 */
 	private function runCheck( $subject, $options ) {
 
 		$html = $this->replicationCheck->checkReplication( $subject, $options );

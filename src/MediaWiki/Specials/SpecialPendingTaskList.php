@@ -10,7 +10,7 @@ use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
 
 /**
- * Displayes pending tasks in connection with Semantic MediaWiki.
+ * Displays pending tasks in connection with Semantic MediaWiki.
  *
  * @license GNU GPL v2+
  *

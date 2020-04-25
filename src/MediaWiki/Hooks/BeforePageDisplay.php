@@ -54,7 +54,7 @@ class BeforePageDisplay implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param OutputPage $outputPage,
+	 * @param OutputPage $outputPage
 	 * @param Skin $skin
 	 *
 	 * @return boolean

@@ -81,8 +81,7 @@ class CallableUpdate implements DeferrableUpdate {
 	/**
 	 * @since 2.4
 	 *
-	 * @param callable $callback|null
-	 * @param Database|null $connection
+	 * @param callable|null $callback
 	 */
 	public function __construct( callable $callback = null ) {
 

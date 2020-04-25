@@ -519,7 +519,7 @@ class EntityIdManager {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @param integer
+	 * @return int
 	 */
 	public function getId( DIWikiPage $subject ) {
 

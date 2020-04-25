@@ -102,8 +102,10 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string $key
+	 * @param string $key
 	 * @param mixed $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ) {
 		$this->options->set( $key, $value );
