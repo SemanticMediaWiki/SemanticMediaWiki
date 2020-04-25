@@ -66,12 +66,16 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resultIterator->expects( $this->once() )
+		$resultIterator->expects( $this->exactly( 2 ) )
 			->method( 'count' )
 			->will( $this->returnValue( 42 ) );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
+			->will( $this->returnValue( $resultIterator ) );
+
+		$this->entityIdDisposerJob->expects( $this->once() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
 			->will( $this->returnValue( $resultIterator ) );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
@@ -85,7 +89,7 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'dispose' );
 
-		$this->iteratorFactory->expects( $this->once() )
+		$this->iteratorFactory->expects( $this->exactly( 2 ) )
 			->method( 'newChunkedIterator' )
 			->will( $this->returnValue( $chunkedIterator ) );
 
@@ -135,6 +139,10 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
+			->will( $this->returnValue( $this->resultIterator ) );
+
+		$this->entityIdDisposerJob->expects( $this->once() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
 			->will( $this->returnValue( $this->resultIterator ) );
 
 		$this->entityIdDisposerJob->expects( $this->once() )
@@ -195,6 +203,10 @@ class OutdatedDisposerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityIdDisposerJob->expects( $this->once() )
 			->method( 'newOutdatedEntitiesResultIterator' )
+			->will( $this->returnValue( $this->resultIterator ) );
+
+		$this->entityIdDisposerJob->expects( $this->once() )
+			->method( 'newByNamespaceInvalidEntitiesResultIterator' )
 			->will( $this->returnValue( $this->resultIterator ) );
 
 		$this->entityIdDisposerJob->expects( $this->once() )

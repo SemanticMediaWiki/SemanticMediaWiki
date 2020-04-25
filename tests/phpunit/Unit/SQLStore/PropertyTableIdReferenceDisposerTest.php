@@ -212,6 +212,34 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
+
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'select' )
+			->will( $this->returnValue( [] ) );
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $connection ) );
+
+		$instance = new PropertyTableIdReferenceDisposer(
+			$this->store
+		);
+
+		$instance->setEventDispatcher(
+			$this->eventDispatcher
+		);
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newByNamespaceInvalidEntitiesResultIterator()
+		);
+	}
+
 	public function testCleanUpTableEntriesByRow() {
 
 		$row = new \stdClass;

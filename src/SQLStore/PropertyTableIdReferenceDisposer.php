@@ -50,6 +50,11 @@ class PropertyTableIdReferenceDisposer {
 	private $fulltextTableUsage = false;
 
 	/**
+	 * @var array
+	 */
+	private $namespacesWithSemanticLinks = [];
+
+	/**
 	 * @since 2.4
 	 *
 	 * @param SQLStore $store
@@ -75,6 +80,15 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
 		$this->fulltextTableUsage = $fulltextTableUsage;
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param array $namespacesWithSemanticLinks
+	 */
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
 	/**
@@ -140,6 +154,37 @@ class PropertyTableIdReferenceDisposer {
 			SQLStore::ID_TABLE,
 			[ 'smw_id' ],
 			[ 'smw_iw' => SMW_SQL3_SMWDELETEIW ],
+			__METHOD__,
+			$options
+		);
+
+		return new ResultIterator( $res );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return ResultIterator
+	 */
+	public function newByNamespaceInvalidEntitiesResultIterator( RequestOptions $requestOptions = null ) {
+
+		$options = [];
+
+		if ( $requestOptions !== null ) {
+			$options = [
+				'LIMIT'  => $requestOptions->getLimit(),
+				'OFFSET' => $requestOptions->getOffset()
+			];
+		}
+
+		$res = $this->connection->select(
+			SQLStore::ID_TABLE,
+			[ 'smw_id' ],
+			[
+				'smw_namespace NOT IN (' . $this->connection->makeList( array_keys( $this->namespacesWithSemanticLinks ) ) . ')'
+			],
 			__METHOD__,
 			$options
 		);

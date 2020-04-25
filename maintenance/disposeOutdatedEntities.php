@@ -96,8 +96,9 @@ class disposeOutdatedEntities extends \Maintenance {
 		);
 
 		$text = [
-			"This script will remove outdated entities and query link entries from",
-			"tables that hold a reference to the ID marked as outdated",
+			"This script will remove outdated entities and entities rendered",
+			"invalid due to redeclared namespace settings. It will also dispose of",
+			"query link entries from tables that no longer hold a valid entity reference",
 			"in Semantic MediaWiki."
 		];
 

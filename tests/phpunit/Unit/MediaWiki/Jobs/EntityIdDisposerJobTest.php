@@ -80,6 +80,20 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
+
+		$title = $this->getMockBuilder( 'Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EntityIdDisposerJob( $title );
+
+		$this->assertInstanceOf(
+			'\SMW\Iterators\ResultIterator',
+			$instance->newByNamespaceInvalidEntitiesResultIterator()
+		);
+	}
+
 	public function testCanConstructOutdatedQueryLinksResultIterator() {
 
 		$title = $this->getMockBuilder( 'Title' )

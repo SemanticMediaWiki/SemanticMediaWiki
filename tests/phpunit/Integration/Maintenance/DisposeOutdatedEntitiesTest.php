@@ -52,7 +52,12 @@ class DisposeOutdatedEntitiesTest extends DatabaseTestCase {
 		);
 
 		$this->assertContains(
-			'Removing outdated entities and query links',
+			'Removing outdated and invalid entities',
+			$this->spyMessageReporter->getMessagesAsString()
+		);
+
+		$this->assertContains(
+			'Removing query links',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
