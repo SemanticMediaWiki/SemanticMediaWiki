@@ -18,27 +18,37 @@ For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as s
 
 ## Running tests
 
-1. Verify that PHUnit is installed and in case it is not, use `composer require phpunit/phpunit:~4.8 --update-with-dependencies` to add the package
+1. Verify that PHUnit is installed and in case it is not, use `composer require phpunit/phpunit:~6.5 --update-with-dependencies` to add the package
 2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
 3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
 <pre>
 $ composer phpunit
 
-Semantic MediaWiki: 2.5.0-alpha (SMWSQLStore3, sqlite)
-MediaWiki:          1.28.0-alpha (Extension vendor autoloader)
-Site language:      en
+Using PHP 7.2.30
 
-Execution time:     2015-01-01 01:00
+Semantic MediaWiki: 3.2.0-alpha, git: abc234b
+                    SMWSQLStore (postgres:9.5.10)
+
+MediaWiki:          1.31.7, git: 42e0b35 (refs/heads/REL1_31)
+                    Extension vendor autoloader
+
+Site language:      en
+Execution time:     2020-04-25 06:53
+
+Debug logs:         Disabled
 Xdebug:             Disabled (or not installed)
 
-PHPUnit 4.8.27 by Sebastian Bergmann and contributors.
+Intl/ICU:           1.1.0 / 52.1
+PCRE:               8.41 2017-07-05
 
-Runtime:        PHP 5.6.8
-Configuration:	/home/travis/build/SemanticMediaWiki/mw/extensions/SemanticMediaWiki/phpunit.xml.dist
+PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
 
-.............................................................   61 / 4069 (  1%)
-.............................................................  122 / 4069 (  2%)
+Runtime:       PHP 7.2.30
+Configuration: /home/travis/build/SemanticMediaWiki/mw/extensions/SemanticMediaWiki/phpunit.xml.dist
+
+.............................................................   61 / 8526 (  0%)
+.............................................................  122 / 8526 (  1%)
 </pre>
 
 Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
