@@ -1027,6 +1027,7 @@ class SQLStoreFactory {
 	public function newPropertyTableIdReferenceDisposer() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
+		$settings = $applicationFactory->getSettings();
 
 		$propertyTableIdReferenceDisposer = new PropertyTableIdReferenceDisposer(
 			$this->store,
@@ -1038,7 +1039,11 @@ class SQLStoreFactory {
 		);
 
 		$propertyTableIdReferenceDisposer->setFulltextTableUsage(
-			$applicationFactory->getSettings()->get( 'smwgEnabledFulltextSearch' )
+			$settings->get( 'smwgEnabledFulltextSearch' )
+		);
+
+		$propertyTableIdReferenceDisposer->setNamespacesWithSemanticLinks(
+			$settings->get( 'smwgNamespacesWithSemanticLinks' )
 		);
 
 		return $propertyTableIdReferenceDisposer;

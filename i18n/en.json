@@ -611,6 +611,8 @@
 	"smw-admin-maintenancealerts-lastoptimizationrun-alert": "The system has found that the last [https://www.semantic-mediawiki.org/wiki/Table_optimization table optimization] was run $2 days ago (record from $1) which exceeds the $3 days maintenance threshold. As mentioned in the documentation, running optimizations will allow the query planner to make better decisions about queries therefore it is suggested to run the table optimization on a regular basis.",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert-title": "Outdated entities",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert": "The system has counted $1 [https://www.semantic-mediawiki.org/wiki/Outdated_entities outdated entities] and reached a critical level of unattended maintenance by exceeding the threshold of $2. It is recommended to run the [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] maintenance script.",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Invalid entities",
+	"smw-admin-maintenancealerts-invalidentities-alert": "The system matched $1 [https://www.semantic-mediawiki.org/wiki/Invalid_entities {{PLURAL:$1|entity|entities}}] to an [https://www.semantic-mediawiki.org/wiki/Unmaintained_namespace unmaintained namespace] and it is recommended to run the [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] or [https://www.semantic-mediawiki.org/wiki/rebuildData.php <code>rebuildData.php</code>] maintenance script.",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
 	"smw-admin-configutation-tab-settings": "Settings",
 	"smw-admin-configutation-tab-namespaces": "Namespaces",

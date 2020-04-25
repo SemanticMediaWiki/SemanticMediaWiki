@@ -18,6 +18,7 @@ use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
 use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
 use SMW\SetupFile;
@@ -271,13 +272,24 @@ class TaskHandlerFactory {
 	 */
 	public function newAlertsTaskHandler( $adminFeatures = 0 ) {
 
+		$settings = ApplicationFactory::getInstance()->getSettings();
+
+		$byNamespaceInvalidEntitiesMaintenanceAlertTaskHandler = new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler(
+			$this->store
+		);
+
+		$byNamespaceInvalidEntitiesMaintenanceAlertTaskHandler->setNamespacesWithSemanticLinks(
+			$settings->get( 'smwgNamespacesWithSemanticLinks' )
+		);
+
 		$maintenanceAlertsTaskHandlers = [
 			new LastOptimizationRunMaintenanceAlertTaskHandler(
 				new SetupFile()
 			),
 			new OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler(
 				$this->store
-			)
+			),
+			$byNamespaceInvalidEntitiesMaintenanceAlertTaskHandler
 		];
 
 		$maintenanceAlertsTaskHandler = new MaintenanceAlertsTaskHandler(

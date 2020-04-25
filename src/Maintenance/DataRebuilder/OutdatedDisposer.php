@@ -53,7 +53,7 @@ class OutdatedDisposer {
 	public function run() {
 
 		$this->messageReporter->reportMessage(
-			"Removing outdated entities and query links ...\n"
+			"Removing outdated and invalid entities ...\n"
 		);
 
 		$this->messageReporter->reportMessage(
@@ -69,6 +69,26 @@ class OutdatedDisposer {
 				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
 			);
 		}
+
+		$this->messageReporter->reportMessage(
+			$this->cliMsgFormatter->firstCol( '   ... checking invalid entities by namespace ...' )
+		);
+
+		$resultIterator = $this->entityIdDisposerJob->newByNamespaceInvalidEntitiesResultIterator();
+
+		if ( ( $count = $resultIterator->count() ) > 0 ) {
+			$this->disposeOutdatedEntities( $resultIterator, $count );
+		} else {
+			$this->messageReporter->reportMessage(
+				$this->cliMsgFormatter->secondCol( CliMsgFormatter::OK )
+			);
+		}
+
+		$this->messageReporter->reportMessage( "   ... done.\n" );
+
+		$this->messageReporter->reportMessage(
+			"\nRemoving query links ...\n"
+		);
 
 		$this->messageReporter->reportMessage(
 			$this->cliMsgFormatter->firstCol( '   ... checking query links (invalid) ...' )
