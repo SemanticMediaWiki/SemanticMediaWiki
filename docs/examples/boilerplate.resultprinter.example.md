@@ -42,7 +42,7 @@ class BoilerplateResultPrinter extends ResultPrinter {
 
 		// Add your parameters here
 
-		// Example of a unit paramter
+		// Example of a unit parameter
 		$definitions['unit'] = [
 			'message' => 'foo-paramdesc-unit',
 			'default' => '',
@@ -244,17 +244,17 @@ class BoilerplateResultPrinter extends ResultPrinter {
 		// Used to set that the output and being treated as HTML (opposed to plain wiki text)
 		$this->isHTML = true;
 
-		// Correct escaping is vital to minimize possibilites of malicious code snippets
-		// and also a coherent string evalution therefore it is recommended
+		// Correct escaping is vital to minimize possibilities of malicious code snippets
+		// and also a coherent string evaluation therefore it is recommended
 		// that data transferred to the JS plugin is JSON encoded
 
-		// Assign the ID to make a data instance readly available and distinguishable
+		// Assign the ID to make a data instance readily available and distinguishable
 		// from other content within the same page
 		$requireHeadItem = [ $id => json_encode( $data ) ];
 		\SMWOutputs::requireHeadItem( $id, \Skin::makeVariablesScript( $requireHeadItem ) );
 
 		// Add two elements a outer wrapper that is assigned a class which the JS plugin
-		// can select and will fetch all instances of the same result printer and an innner
+		// can select and will fetch all instances of the same result printer and an inner
 		// container which is set invisible (display=none) for as long as the JS plugin
 		// holds the content hidden. It is normally the place where the "hard work"
 		// is done hidden from the user until it is ready.
@@ -342,7 +342,7 @@ class BoilerplateResultPrinter extends ResultPrinter {
 				// A clean instance, data from the wiki, and a separate container
 
 				// If you need to see what data you've got from your result printer
-				// it is always helpfull to do
+				// it is always helpful to do
 
 				// console.log( data );
 

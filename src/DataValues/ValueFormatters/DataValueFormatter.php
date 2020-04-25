@@ -15,7 +15,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 
 	/**
 	 * Return the plain wiki version of the value, or FALSE if no such version
-	 * is available. The returned string suffices to reobtain the same DataValue
+	 * is available. The returned string suffices to re-obtain the same DataValue
 	 * when passing it as an input string to DataValue::setUserValue.
 	 */
 	const VALUE = 0;

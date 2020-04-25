@@ -1,4 +1,4 @@
-Semantic MedaiWiki and many of its extensions stick to a strict naming conventions and code styles based on the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions). The guidelines can often be adopted to other extensions by just changing the prefix <tt>SMW</tt>.
+Semantic MediaWiki and many of its extensions stick to a strict naming conventions and code styles based on the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions). The guidelines can often be adopted to other extensions by just changing the prefix <tt>SMW</tt>.
 
 ## Files and folders
 

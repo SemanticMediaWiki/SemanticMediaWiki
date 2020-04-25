@@ -1,6 +1,6 @@
 ## smw.elasticFileIngest
 
-* Description: The job is responsible for sending a file ingest request for a particular file page to the Elasticsearch cluster and once completed retieves `File attachment` annotation information and stores them in Semantic MediaWiki.
+* Description: The job is responsible for sending a file ingest request for a particular file page to the Elasticsearch cluster, and once completed, retrieves `File attachment` annotation information and stores them in Semantic MediaWiki.
 * Reference class: [`FileIngestJob.php`][FileIngestJob.php]
 
 ## Notes

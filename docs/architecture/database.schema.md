@@ -4,7 +4,7 @@ This document provides a short introduction into the database schema and table s
 
 The database schema is defined using the `TableSchemaManager` class and together with the `TableBuilder` is forming the interface to define, create, and remove database and schema related information used by Semantic MediaWiki.
 
-The SPO (subject, predicate, and object) pattern paradigm is reflected in how semantic relations are orginized in Semantic MediaWiki. Three table types are used to store information with table fields normally being identified by its related intent such as `s_` (subject), `p_` (predicate, property), and `o_` (object).
+The SPO (subject, predicate, and object) pattern paradigm is reflected in how semantic relations are organized in Semantic MediaWiki. Three table types are used to store information with table fields normally being identified by its related intent such as `s_` (subject), `p_` (predicate, property), and `o_` (object).
 
 The three table types are:
 
@@ -49,7 +49,7 @@ Available fields include:
 
 ### Property tables (Fixed)
 
-Fixed property table assignments are either defined by [`TypesRegistry.php`][typesregistry] (for predefined properties) or by the `$smwgFixedProperties` setting (for user-defined fixed properties).
+Fixed property table assignments are either defined by [`TypesRegistry.php`][types_registry] (for predefined properties) or by the `$smwgFixedProperties` setting (for user-defined fixed properties).
 
 Available fields include:
 
@@ -60,5 +60,5 @@ Available fields include:
 
 - Working with and [changing the table schema](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/changing.tableschema.md)
 
-[typesregistry]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/TypesRegistry.php
+[types_registry]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/TypesRegistry.php
 [dataitem]:https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/datamodel.dataitem.md
