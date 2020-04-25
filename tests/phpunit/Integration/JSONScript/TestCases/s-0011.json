@@ -51,7 +51,7 @@
 		},
 		{
 			"type": "special",
-			"about": "#1 (parse [[ ... ]] as links in intro/outro)",
+			"about": "#1 (parse [[ ... ]] as links in intro/outro - table format)",
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
@@ -70,7 +70,7 @@
 		},
 		{
 			"type": "special",
-			"about": "#2 (parse URL in intro/outro)",
+			"about": "#2 (parse URL in intro/outro - table format)",
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
@@ -86,10 +86,230 @@
 		},
 		{
 			"type": "special",
-			"about": "#3 (parse template in intro/outro)",
+			"about": "#3 (parse template in intro/outro - table format)",
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=table/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"S0011%intro link",
+					"class=\"new\" title=\"S0011%intro",
+					"\">S0011%intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"S0011%outro link",
+					"class=\"new\" title=\"S0011%outro",
+					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#4 (parse [[ ... ]] as links in intro/outro - list format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=list/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=Intro%25parameter",
+					"class=\"new\" title=\"Intro%parameter",
+					"\">intro%parameter</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"class=\"new\" title=\"Outro%parameter",
+					"\">outro%parameter</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5 (parse URL in intro/outro - list format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=list/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#6 (parse template in intro/outro - list format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=list/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"S0011%intro link",
+					"class=\"new\" title=\"S0011%intro",
+					"\">S0011%intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"S0011%outro link",
+					"class=\"new\" title=\"S0011%outro",
+					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#7 (parse [[ ... ]] as links in intro/outro - plainlist format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=plainlist/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=Intro%25parameter",
+					"class=\"new\" title=\"Intro%parameter",
+					"\">intro%parameter</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"class=\"new\" title=\"Outro%parameter",
+					"\">outro%parameter</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#8 (parse URL in intro/outro - plainlist format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=plainlist/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#9 (parse template in intro/outro - plainlist format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=plainlist/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"S0011%intro link",
+					"class=\"new\" title=\"S0011%intro",
+					"\">S0011%intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"S0011%outro link",
+					"class=\"new\" title=\"S0011%outro",
+					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#10 (parse [[ ... ]] as links in intro/outro - ol format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ol/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=Intro%25parameter",
+					"class=\"new\" title=\"Intro%parameter",
+					"\">intro%parameter</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"class=\"new\" title=\"Outro%parameter",
+					"\">outro%parameter</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#11 (parse URL in intro/outro - ol format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ol/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#12 (parse template in intro/outro - ol format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ol/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"S0011%intro link",
+					"class=\"new\" title=\"S0011%intro",
+					"\">S0011%intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"S0011%outro link",
+					"class=\"new\" title=\"S0011%outro",
+					"\">S0011%outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#13 (parse [[ ... ]] as links in intro/outro - ul format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ul/link=none/intro=-5B-5Bintro-parameter-5D-5D/outro=-5B-5Boutro-parameter-5D-5D",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=Intro%25parameter",
+					"class=\"new\" title=\"Intro%parameter",
+					"\">intro%parameter</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"class=\"new\" title=\"Outro%parameter",
+					"\">outro%parameter</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#14 (parse URL in intro/outro - ul format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ul/link=none/intro=http:-2F-2Fexample.org-2Fintro/outro=http:-2F-2Fexample.org-2Foutro",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#15 (parse template in intro/outro - ul format)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0011-5D-5D/-3FCategory/-3FHas-20text=Text/mainlabel=/limit=100/offset=0/format=ul/link=none/intro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-intro-7D-7D/outro=-7B-7BS0011-2DTemplate-7Ctest%3DS0011-outro-7D-7D",
 				"request-parameters": []
 			},
 			"assert-output": {
