@@ -1,4 +1,4 @@
-This document contains an example for a `ResultPrinter` both for the PHP and JavaScript part and before diving into the details, please make sure you have read ["Writing a result printer"](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/hacking/writing.resultprinter.md).
+This document contains an example for a `ResultPrinter` both for the PHP and JavaScript part and before diving into the details, please make sure you have read ["Writing a result printer"](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/architecture/writing.resultprinter.md).
 
 ## PHP
 
