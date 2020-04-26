@@ -18,9 +18,9 @@ For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as s
 
 ## Running tests
 
-1. Verify that PHUnit is installed and in case it is not, use `composer require phpunit/phpunit:~6.5 --update-with-dependencies` to add the package
+1. Verify that PHUnit is installed in `myMediawikiFolder/vendor/phpunit`. In case it is not installed, use `composer require phpunit/phpunit:~6.5 --update-with-dependencies` to add the package
 2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
-3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
+3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
 <pre>
 $ composer phpunit
