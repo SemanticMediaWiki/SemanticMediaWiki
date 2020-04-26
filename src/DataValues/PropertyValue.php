@@ -112,23 +112,6 @@ class PropertyValue extends DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.0
-	 */
-	static private function makeUserProperty( $propertyLabel ) {
-		return DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyLabel );
-	}
-
-	/**
-	 * @removed since 3.0
-	 */
-	static private function makeProperty( $propertyid ) {
-		$diProperty = new DIProperty( $propertyid );
-		$dvProperty = new SMWPropertyValue( self::TYPE_ID );
-		$dvProperty->setDataItem( $diProperty );
-		return $dvProperty;
-	}
-
-	/**
 	 * We use the internal wikipage object to store some of this objects data.
 	 * Clone it to make sure that data can be modified independently from the
 	 * original object's content.

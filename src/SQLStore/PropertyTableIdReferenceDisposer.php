@@ -329,8 +329,6 @@ class PropertyTableIdReferenceDisposer {
 			}
 		} catch ( \DBError $e ) {
 			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
-		} catch ( \Wikimedia\Rdbms\DBQueryError $e ) {
-			ApplicationFactory::getInstance()->getMediaWikiLogger()->info( __METHOD__ . ' reported: ' . $e->getMessage() );
 		}
 
 		if ( $tableExists ) {

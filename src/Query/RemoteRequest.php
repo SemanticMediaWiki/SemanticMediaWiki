@@ -338,7 +338,6 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		$params['request_type'] = $query->isEmbedded() ? 'embed' : 'special_page';
-		$output = '';
 
 		$options = [
 			CURLOPT_SSL_VERIFYPEER => false,

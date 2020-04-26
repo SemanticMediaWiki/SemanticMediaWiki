@@ -383,11 +383,4 @@ class TimeValueParser implements ValueParser {
 		return false;
 	}
 
-	private function debug( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) {
-		//print "\n\n Results \n\n";
-		//debug_zval_dump( $datecomponents );
-		//print "\ncalendarmodel: $calendarmodel   \ntimezoneoffset: $timezoneoffset  \nera: $era  \nampm: $ampm  \nh: $hours  \nm: $minutes  \ns:$seconds  \ntimeoffset: $timeoffset  \n";
-		//debug_zval_dump( $unclearparts );
-	}
-
 }

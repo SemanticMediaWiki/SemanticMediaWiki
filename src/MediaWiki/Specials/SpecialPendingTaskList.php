@@ -61,7 +61,6 @@ class SpecialPendingTaskList extends SpecialPage {
 
 	private function buildHTML() {
 
-		$html = '';
 		$isEmpty = true;
 
 		$htmlTabs = new HtmlTabs();

@@ -620,45 +620,6 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function newQuery( $propTable, $id, $isSubject, $dataItem ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-		$query = $connection->newQuery();
-
-		$query->type( 'select' );
-		$query->table( $propTable->getName() );
-
-		// Restrict property only
-		if ( !$isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query->condition( $query->eq( 'p_id', $id ) );
-		}
-
-		// Restrict subject, select property
-		if ( $isSubject && $propTable->usesIdSubject() ) {
-			$query->condition( $query->eq( 's_id', $id ) );
-		} elseif ( $isSubject ) {
-			$query->condition( $query->eq( 's_title', $dataItem->getDBkey() ) );
-			$query->condition( $query->eq( 's_namespace', $dataItem->getNamespace() ) );
-		}
-
-		// Select property name
-		// In case of a fixed property, no select needed
-		if ( $isSubject && !$propTable->isFixedPropertyTable() ) {
-			$query->join(
-				'INNER JOIN',
-				[ SQLStore::ID_TABLE => 'p ON p_id=p.smw_id' ]
-			);
-
-			$query->field( 'p.smw_title', 'prop' );
-
-			// Avoid displaying any property that has been marked deleted or outdated
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWIW_OUTDATED ) );
-			$query->condition( $query->neq( "p.smw_iw", SMW_SQL3_SMWDELETEIW ) );
-		}
-
-		return $query;
-	}
-
 	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
 
 		// Select dataItem column(s)

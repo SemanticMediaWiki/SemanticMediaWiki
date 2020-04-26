@@ -182,8 +182,6 @@ class DescriptionProcessor {
 			$dataValue->setOption( 'isCapitalLinks', true );
 		}
 
-		$description = null;
-
 		$description = $dataValue->getQueryDescription( $chunk );
 		$this->addError( $dataValue->getErrors() );
 
