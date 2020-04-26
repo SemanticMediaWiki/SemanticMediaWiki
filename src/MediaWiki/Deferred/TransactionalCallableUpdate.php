@@ -71,7 +71,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param callable|null $callback
 	 * @param Database|null $connection
 	 */
-	public function __construct( callable $callback = null, Database $connection ) {
+	public function __construct( callable $callback = null, Database $connection = null ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
