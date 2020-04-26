@@ -101,7 +101,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 
 		$htmlTabs->content(
 			'indices',
-			$jsonView->create( 'indices' ,$this->outputFormatter->encodeAsJson( $indices ), 3 )
+			$jsonView->create( 'indices', $this->outputFormatter->encodeAsJson( $indices ), 3 )
 		);
 
 		$htmlTabs->tab(

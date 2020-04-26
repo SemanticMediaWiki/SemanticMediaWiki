@@ -72,7 +72,7 @@ class ProcessingErrorMsgHandler {
 			if ( is_array( $message ) ) {
 				foreach ( self::normalizeAndDecodeMessages( $message ) as $msg ) {
 					if ( is_string( $msg ) ) {
-						$normalizedMessages[md5($msg)] = $msg;
+						$normalizedMessages[md5( $msg )] = $msg;
 					} else {
 						$normalizedMessages[] = $msg;
 					}
@@ -92,7 +92,7 @@ class ProcessingErrorMsgHandler {
 			}
 
 			if ( is_string( $message ) ) {
-				$normalizedMessages[md5($message)] = $message;
+				$normalizedMessages[md5( $message )] = $message;
 			} else {
 				$normalizedMessages[] = $message;
 			}

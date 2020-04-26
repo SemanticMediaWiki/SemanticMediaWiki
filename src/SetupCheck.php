@@ -139,7 +139,7 @@ class SetupCheck {
 		$this->localMessageProvider = new LocalMessageProvider( '/local/setupcheck.i18n.json' );
 
 		if ( $this->setupFile === null ) {
-			$this->setupFile =  new SetupFile();
+			$this->setupFile = new SetupFile();
 		}
 	}
 
@@ -503,7 +503,7 @@ class SetupCheck {
 				'value' => $v
 			];
 
-			if( isset( $value['progress_keys'][$key] ) ) {
+			if ( isset( $value['progress_keys'][$key] ) ) {
 				$args['label'] = $this->createCopy( $value['progress_keys'][$key] );
 			}
 

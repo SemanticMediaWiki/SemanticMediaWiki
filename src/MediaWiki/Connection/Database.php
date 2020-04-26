@@ -183,7 +183,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function tablePrefix( $prefix = null  ) {
+	public function tablePrefix( $prefix = null ) {
 
 		$connection = $this->connRef->getConnection( 'read' );
 
@@ -515,11 +515,11 @@ class Database {
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
 
-		$this->transactionHandler->muteTransactionProfiler( true);
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
 
-		$this->transactionHandler->muteTransactionProfiler( false);
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		return $res;
 	}

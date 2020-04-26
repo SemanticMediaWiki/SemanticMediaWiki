@@ -227,7 +227,7 @@ class SQLStore extends Store {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
 
-		return $this->entityLookup->getPropertyValues(	$subject, $property, $requestOptions );
+		return $this->entityLookup->getPropertyValues( $subject, $property, $requestOptions );
 	}
 
 	/**

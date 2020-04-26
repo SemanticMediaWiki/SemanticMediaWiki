@@ -71,7 +71,7 @@ class TableBuildExaminer {
 			DB_MASTER
 		);
 
-		return $connection->getType() . ' (' .$connection->getServerInfo() . ')';
+		return $connection->getType() . ' (' . $connection->getServerInfo() . ')';
 	}
 
 	/**
@@ -121,7 +121,7 @@ class TableBuildExaminer {
 			[
 				// #3314 (3.0-)
 				$idBorder::LEGACY_BOUND => 50,
-				$idBorder::UPPER_BOUND  => SQLStore::FIXED_PROPERTY_ID_UPPERBOUND
+				$idBorder::UPPER_BOUND => SQLStore::FIXED_PROPERTY_ID_UPPERBOUND
 			]
 		);
 

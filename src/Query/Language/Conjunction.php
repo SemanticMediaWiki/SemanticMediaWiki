@@ -65,7 +65,7 @@ class Conjunction extends Description {
 
 		$this->fingerprint = null;
 
-		if ( ! ( $description instanceof ThingDescription ) ) {
+		if ( !( $description instanceof ThingDescription ) ) {
 			if ( $description instanceof Conjunction ) { // absorb sub-conjunctions
 				foreach ( $description->getDescriptions() as $subdesc ) {
 					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;

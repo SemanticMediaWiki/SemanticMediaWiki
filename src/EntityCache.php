@@ -124,7 +124,7 @@ class EntityCache {
 	 * @param mixed $value
 	 */
 	public function save( $key, $value = null, $ttl = 0 ) {
-		 $this->cache->save( $key, $value, $ttl );
+		$this->cache->save( $key, $value, $ttl );
 	}
 
 	/**

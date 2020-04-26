@@ -105,7 +105,7 @@ class DocumentationParserFunction implements HookHandler {
 			[ $this, 'msg' ]
 		);
 
-		if ( ( $parameterTable = $docBuilder->getParameterTable( $formatParameters ) ) !== ''  ) {
+		if ( ( $parameterTable = $docBuilder->getParameterTable( $formatParameters ) ) !== '' ) {
 			return $parameterTable;
 		}
 

@@ -52,7 +52,7 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 		$comparator = SMW_CMP_EQ;
 		$this->prepareValue( $property, $value, $comparator );
 
-		if( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_NLKE ) {
+		if ( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_NLKE ) {
 
 			$this->dataValue->setUserValue( $value );
 
@@ -80,14 +80,14 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 			return $this->descriptionFactory->newThingDescription();
 		}
 
-		if( $comparator === SMW_CMP_LIKE ) {
+		if ( $comparator === SMW_CMP_LIKE ) {
 			$description = $this->descriptionFactory->newConjunction( [
 				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
 				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_LESS )
 			] );
 		}
 
-		if( $comparator === SMW_CMP_NLKE ) {
+		if ( $comparator === SMW_CMP_NLKE ) {
 			$description = $this->descriptionFactory->newDisjunction( [
 				$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_LESS ),
 				$this->descriptionFactory->newValueDescription( $upperLimitDataItem, $property, SMW_CMP_GEQ )
@@ -108,17 +108,17 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 
 		if ( $prec === DITime::PREC_Y ) {
 			$dateTime->add( new DateInterval( 'P1Y' ) );
-		} elseif( $prec === DITime::PREC_YM ) {
+		} elseif ( $prec === DITime::PREC_YM ) {
 			$dateTime->add( new DateInterval( 'P1M' ) );
-		} elseif( $prec === DITime::PREC_YMD ) {
+		} elseif ( $prec === DITime::PREC_YMD ) {
 			$dateTime->add( new DateInterval( 'P1D' ) );
-		} elseif( $prec === DITime::PREC_YMDT ) {
+		} elseif ( $prec === DITime::PREC_YMDT ) {
 
 			if ( $dataItem->getSecond() > 0 ) {
 				$dateTime->add( new DateInterval( 'PT1S' ) );
-			} elseif( $dataItem->getMinute() > 0 ) {
+			} elseif ( $dataItem->getMinute() > 0 ) {
 				$dateTime->add( new DateInterval( 'PT1M' ) );
-			} elseif( $dataItem->getHour() > 0 ) {
+			} elseif ( $dataItem->getHour() > 0 ) {
 				$dateTime->add( new DateInterval( 'PT1H' ) );
 			} else {
 				$dateTime->add( new DateInterval( 'PT24H' ) );

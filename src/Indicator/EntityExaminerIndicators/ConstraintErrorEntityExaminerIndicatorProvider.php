@@ -212,9 +212,9 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 			$this->templateEngine->compile( 'sticky_top_template', [ 'content' => $top ] );
 			$top = $this->templateEngine->code( 'sticky_top_template' );
-			$content = '<div><ul><li>' . implode('</li><li>', $errors ) .  '</li></ul></div>';
+			$content = '<div><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		} else {
-			$content = '<div style="padding-top:10px;"><ul><li>' . implode('</li><li>', $errors ) .  '</li></ul></div>';
+			$content = '<div style="padding-top:10px;"><ul><li>' . implode( '</li><li>', $errors ) . '</li></ul></div>';
 		}
 
 		$bottom = $this->templateEngine->code( 'line_template' );

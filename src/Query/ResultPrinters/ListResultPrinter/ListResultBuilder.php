@@ -101,8 +101,8 @@ class ListResultBuilder {
 
 		$this->configuration->setDefault(
 			array_merge(
-				self::$defaultConfigurations[ '*' ],
-				self::$defaultConfigurations[ $format ],
+				self::$defaultConfigurations['*'],
+				self::$defaultConfigurations[$format],
 				$this->getDefaultsFromI18N() )
 		);
 

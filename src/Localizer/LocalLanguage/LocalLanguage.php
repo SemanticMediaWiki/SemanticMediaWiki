@@ -150,7 +150,7 @@ class LocalLanguage {
 			unset( $namespaces[$key] );
 
 			if ( defined( $key ) ) {
-				$namespaces[constant($key)] = $value;
+				$namespaces[constant( $key )] = $value;
 			}
 		}
 
@@ -536,7 +536,7 @@ class LocalLanguage {
 			$this->months[$languageCode] = $this->languageContents->get( 'date.months', $languageCode );
 		}
 
-		if ( ( ( $number >= 0 ) && ( $number <= 11 ) ) && isset( $this->months[$languageCode][$number]) ) {
+		if ( ( ( $number >= 0 ) && ( $number <= 11 ) ) && isset( $this->months[$languageCode][$number] ) ) {
 			return $this->months[$languageCode][$number][0]; // Long name
 		}
 

@@ -176,7 +176,7 @@ EOT;
 			if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 				$type = 'SERIAL NOT NULL';
 			} elseif ( $row->Null != 'YES' ) {
-					$type .= ' NOT NULL';
+				$type .= ' NOT NULL';
 			}
 
 			$currentFields[$row->Field] = $type;
@@ -240,7 +240,7 @@ EOT;
 			}
 
 			$notnullposold = strpos( $currentFields[$fieldName], ' NOT NULL' );
-			$typeold  = strtoupper( ( $notnullposold > 0 ) ? substr( $currentFields[$fieldName], 0, $notnullposold ) : $currentFields[$fieldName] );
+			$typeold = strtoupper( ( $notnullposold > 0 ) ? substr( $currentFields[$fieldName], 0, $notnullposold ) : $currentFields[$fieldName] );
 
 			// Added USING statement to avoid
 			// "Query: ALTER TABLE "smw_object_ids" ALTER COLUMN "smw_proptable_hash" TYPE BYTEA ...
@@ -248,7 +248,7 @@ EOT;
 			// HINT:  You might need to specify "USING smw_proptable_hash::bytea"."
 
 			if ( $typeold != $fieldType ) {
-				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $fieldName . "\" TYPE " . $fieldType  . " USING \"$fieldName\"::$fieldType";
+				$sql = "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $fieldName . "\" TYPE " . $fieldType . " USING \"$fieldName\"::$fieldType";
 				$this->connection->query( $sql, __METHOD__ );
 			}
 
@@ -306,7 +306,7 @@ EOT;
 		// In case an index has a length restriction indexZ(200), remove it since
 		// Postgres doesn't know such syntax
 		foreach ( $indices as $k => $columns ) {
-			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+			$ix[$k] = preg_replace( "/\([^)]+\)/", "", $columns );
 		}
 
 		$indices = $ix;
@@ -377,7 +377,7 @@ EOT;
 	private function getCumulatedIndexName( $tableName, $columns ) {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
-		return str_replace( '__' , '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
+		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
 	}
 
 	private function getIndexInfo( $tableName ) {
@@ -450,7 +450,7 @@ EOT;
 		);
 
 		// https://www.postgresql.org/docs/9.0/static/sql-analyze.html
-		$this->connection->query( "ANALYZE $tableName" , __METHOD__ );
+		$this->connection->query( "ANALYZE $tableName", __METHOD__ );
 
 		$this->reportMessage(
 			$cliMsgFormatter->positionCol( ", VACUUM]" )

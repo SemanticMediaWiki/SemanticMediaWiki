@@ -76,7 +76,7 @@ class ProximityPropertyValueLookup {
 
 		list( $field, $diType ) = $this->getField( $property );
 
-  		// look ahead +1
+		// look ahead +1
 		$limit = $opts->getLimit() + 1;
 		$offset = $opts->getOffset();
 		$sort = $opts->sort;
@@ -245,7 +245,7 @@ class ProximityPropertyValueLookup {
 			$diType
 		);
 
-	 	return [ $diHandler->getLabelField(), $diType ];
+		return [ $diHandler->getLabelField(), $diType ];
 	}
 
 	private function build_like( $query, $field, $search ) {

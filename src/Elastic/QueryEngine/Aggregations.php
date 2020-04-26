@@ -60,7 +60,7 @@ class Aggregations {
 		$params = $this->params( $this->parameters );
 
 		foreach ( $this->subAggregations as $subAggregation ) {
-			foreach ( $params as $key => $value) {
+			foreach ( $params as $key => $value ) {
 				$params[$key] += $subAggregation->toArray();
 			}
 		}

@@ -87,7 +87,7 @@ class NumberValueFormatter extends DataValueFormatter {
 				$number = $this->dataValue->getLocalizedFormattedNumber( $value );
 				if ( $unit !== '' ) {
 					$tooltip .= $this->dataValue->hasPrefixalUnitPreference( $unit ) ? $unit . '&#160;' . $number : $number . '&#160;' . $unit;
-				} else{
+				} else {
 					$tooltip .= $number;
 				}
 				$tooltip .= ' <br />';

@@ -161,7 +161,7 @@ class ByGroupPropertyValuesLookup {
 		$diType = $propTable->getDiType();
 
 		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-			$fields =  [
+			$fields = [
 				'i.smw_id',
 				'i.smw_title',
 				'i.smw_namespace',

@@ -131,8 +131,10 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * parameter for further parser functions. Use only if required.
 	 */
 	protected $hasTemplates = false;
+
 	/// Incremented while expanding templates inserted during printout; stop expansion at some point
 	private static $mRecursionDepth = 0;
+
 	/// This public variable can be set to higher values to allow more recursion; do this at your own risk!
 	/// This can be set in LocalSettings.php, but only after enableSemantics().
 	public static $maxRecursionDepth = 2;
@@ -356,7 +358,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	protected function handleNonFileResult( $result, QueryResult $results, $outputmode ) {
 
-		 // append errors
+		// append errors
 		$result .= $this->getErrorString( $results );
 
 		// Should not happen, used as fallback which in case the parser state
@@ -508,8 +510,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
 
-		if ( $classAffix !== '' ){
-			$link->setStyle(  'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
+		if ( $classAffix !== '' ) {
+			$link->setStyle( 'smw-' . $this->params['format'] . '-' . Sanitizer::escapeClass( $classAffix ) );
 		}
 
 		if ( isset( $this->params['format'] ) ) {

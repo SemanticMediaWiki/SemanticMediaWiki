@@ -136,11 +136,11 @@ class ArticleLookup extends Lookup {
 		}
 
 		if ( $namespace !== null ) {
-			$conditions = 'page_namespace=' . $this->connection->addQuotes( $namespace ) . ' AND ('. $conditions. ')';
+			$conditions = 'page_namespace=' . $this->connection->addQuotes( $namespace ) . ' AND (' . $conditions . ')';
 		}
 
 		$res = $this->connection->select(
-			[ 'page'],
+			[ 'page' ],
 			$fields,
 			$conditions,
 			__METHOD__,

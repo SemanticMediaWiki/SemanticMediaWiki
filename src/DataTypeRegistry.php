@@ -171,6 +171,7 @@ class DataTypeRegistry {
 	 * SMWDIContainer use SMWDIWikiPage as their DI type. (Since SMW 1.8)
 	 *
 	 * @param $typeId string id string for the given type
+	 *
 	 * @return integer data item ID
 	 */
 	public function getDataItemByType( $typeId ) {
@@ -266,7 +267,7 @@ class DataTypeRegistry {
 	}
 
 	private function addTextToIdLookupMap( $dataTypeId, $text ) {
-		$this->typeByLabelOrAliasLookup[mb_strtolower($text)] = $dataTypeId;
+		$this->typeByLabelOrAliasLookup[mb_strtolower( $text )] = $dataTypeId;
 	}
 
 	/**
@@ -349,7 +350,7 @@ class DataTypeRegistry {
 	public function getFieldType( $type ) {
 
 		if ( isset( $this->typeDataItemIds[$type] ) ) {
-			return $this->defaultDataItemTypeMap[ $this->typeDataItemIds[$type]];
+			return $this->defaultDataItemTypeMap[$this->typeDataItemIds[$type]];
 		}
 
 		return '_wpg';

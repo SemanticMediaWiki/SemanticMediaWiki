@@ -25,17 +25,17 @@ class DataItemHandlerFactory {
 
 	/**
 	 * @var SQLStore
-	*/
+	 */
 	private $store;
 
 	/**
 	 * @var array
-	*/
+	 */
 	private $handlers = [];
 
 	/**
 	 * @var integer
-	*/
+	 */
 	private $fieldTypeFeatures = false;
 
 	/**

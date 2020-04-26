@@ -80,7 +80,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 			}
 		}
 
-		$queryResult =  new QueryResult(
+		$queryResult = new QueryResult(
 			$description->getPrintrequests(),
 			$query,
 			$results,

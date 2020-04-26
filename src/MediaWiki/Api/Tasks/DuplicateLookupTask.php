@@ -63,7 +63,7 @@ class DuplicateLookupTask extends Task {
 
 		// Guard against repeated API calls (or fuzzing)
 		if ( ( $result = $this->cache->fetch( $key ) ) !== false && $cacheTTL !== false ) {
-			return $result + ['isFromCache' => true ];
+			return $result + [ 'isFromCache' => true ];
 		}
 
 		$rows = $this->store->getObjectIds()->findDuplicates();

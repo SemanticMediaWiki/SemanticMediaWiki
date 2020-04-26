@@ -141,7 +141,7 @@ class ExpNsResource extends ExpResource {
 			throw new RuntimeException( "Invalid serialization format, missing a uri element" );
 		}
 
-		if ( substr_count( $serialization['uri'], '|') < 2 ) {
+		if ( substr_count( $serialization['uri'], '|' ) < 2 ) {
 			throw new RuntimeException( "Invalid uri format, expected two '|' dividers" );
 		}
 

@@ -78,7 +78,7 @@ class HashField {
 				$cliMsgFormatter->twoCols( "... found missing rows ...", "(rows) $count", 3 )
 			);
 
-			$this->messageReporter->reportMessage( "   ... skipping the `smw_hash` field population ...\n"  );
+			$this->messageReporter->reportMessage( "   ... skipping the `smw_hash` field population ...\n" );
 
 			$this->populateHashField->setComplete( false );
 		} elseif ( $count != 0 ) {

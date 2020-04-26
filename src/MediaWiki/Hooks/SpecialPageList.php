@@ -46,13 +46,13 @@ class SpecialPageList implements HookListener {
 				'page' => 'SMW\MediaWiki\Specials\SpecialAsk'
 			],
 			'Browse' => [
-				'page' =>  'SMW\MediaWiki\Specials\SpecialBrowse'
+				'page' => 'SMW\MediaWiki\Specials\SpecialBrowse'
 			],
 			'Concepts' => [
 				'page' => 'SMW\SpecialConcepts'
 			],
 			'PageProperty' => [
-				'page' =>  'SMW\MediaWiki\Specials\SpecialPageProperty'
+				'page' => 'SMW\MediaWiki\Specials\SpecialPageProperty'
 			],
 			'SearchByProperty' => [
 				'page' => 'SMW\MediaWiki\Specials\SpecialSearchByProperty'

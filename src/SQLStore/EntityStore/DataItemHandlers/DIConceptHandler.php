@@ -110,7 +110,7 @@ class DIConceptHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 
-		if ( is_array( $dbkeys) && count( $dbkeys ) == 5 ) {
+		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
 			return new DIConcept(
 				$dbkeys[0],
 				smwfXMLContentEncode( $dbkeys[1] ),

@@ -183,7 +183,7 @@ class NavigationLinksWidget {
 			[
 				'id' => 'ask-pagination'
 			],
-			Pager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray() + [ '_target' => '#search' ] , $html )
+			Pager::pagination( $title, $limit, $offset, $count, $urlArgs->toArray() + [ '_target' => '#search' ], $html )
 		);
 	}
 

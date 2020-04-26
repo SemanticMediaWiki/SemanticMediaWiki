@@ -89,7 +89,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param array $dependencyList
+	 * @param array $deleteIdList
 	 */
 	public function deleteDependenciesFromList( array $deleteIdList ) {
 

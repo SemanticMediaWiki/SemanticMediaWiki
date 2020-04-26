@@ -383,7 +383,7 @@ class RedirectUpdater {
 					);
 				} else {
 					$sha1 = $idTable->computeSha1(
-						[ $source->getDBkey(), $source->getNamespace(), SMW_SQL3_SMWREDIIW , '' ]
+						[ $source->getDBkey(), $source->getNamespace(), SMW_SQL3_SMWREDIIW, '' ]
 					);
 
 					$this->tableFieldUpdater->updateIwField(
@@ -427,7 +427,7 @@ class RedirectUpdater {
 			if ( $this->equalitySupport->not( SMW_EQ_NONE ) ) { // mark subject as non-redirect
 
 				$sha1 = $idTable->computeSha1(
-					[ $source->getDBkey(), $source->getNamespace(), '' , '' ]
+					[ $source->getDBkey(), $source->getNamespace(), '', '' ]
 				);
 
 				$this->tableFieldUpdater->updateIwField(
@@ -536,7 +536,7 @@ class RedirectUpdater {
 			''
 		);
 
-		 $idTable->addRedirect(
+		$idTable->addRedirect(
 			$sid,
 			$source->getDBkey(),
 			$source->getNamespace()

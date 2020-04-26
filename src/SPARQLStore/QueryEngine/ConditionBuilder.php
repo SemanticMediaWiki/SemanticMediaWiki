@@ -465,7 +465,7 @@ class ConditionBuilder {
 		}
 
 		$weakConditions = [
-			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
+			$condition->orderByVariable => "?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
 		];
 
 		$condition->weakConditions += $weakConditions;

@@ -66,7 +66,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			$joinVariable
 		);
 
-		 // empty disjunction: always false, no results to order
+		// empty disjunction: always false, no results to order
 		if ( $condition === '' ) {
 			return new FalseCondition();
 		}
@@ -89,7 +89,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		$namespaces = [];
 		$instExpElement = $this->exporter->getSpecialPropertyResource( '_INST' );
 
-		foreach( $categories as $category ) {
+		foreach ( $categories as $category ) {
 
 			$categoryExpElement = $this->exporter->getResourceElementForWikiPage( $category );
 			$categoryExpName = TurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
@@ -102,8 +102,8 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 				$categoryExpName
 			);
 
-			$newcondition   = $classHierarchyPattern === '' ? "{ " : "{\n" . $classHierarchyPattern;
-			$newcondition  .= "?$joinVariable " . $instExpElement->getQName() . " $categoryExpName . }\n";
+			$newcondition = $classHierarchyPattern === '' ? "{ " : "{\n" . $classHierarchyPattern;
+			$newcondition .= "?$joinVariable " . $instExpElement->getQName() . " $categoryExpName . }\n";
 
 			if ( $condition === '' ) {
 				$condition = $newcondition;

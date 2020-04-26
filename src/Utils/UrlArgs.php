@@ -106,7 +106,7 @@ class UrlArgs {
 	 * @see __toString
 	 */
 	public function toArray() {
-		return  $this->args;
+		return $this->args;
 	}
 
 	/**

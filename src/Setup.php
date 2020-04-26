@@ -180,7 +180,7 @@ final class Setup {
 
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include ( $file ) );
+				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
 			}
 		}
 
@@ -233,7 +233,7 @@ final class Setup {
 
 	private function initMessageCallbackHandler() {
 
-		Message::registerCallbackHandler( Message::TEXT, function( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::TEXT, function ( $arguments, $language ) {
 
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
@@ -246,7 +246,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->text();
 		} );
 
-		Message::registerCallbackHandler( Message::ESCAPED, function( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::ESCAPED, function ( $arguments, $language ) {
 
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
@@ -259,7 +259,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->escaped();
 		} );
 
-		Message::registerCallbackHandler( Message::PARSE, function( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::PARSE, function ( $arguments, $language ) {
 
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
@@ -369,7 +369,7 @@ final class Setup {
 			return;
 		}
 
-		if( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
+		if ( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
 			return;
 		}
 

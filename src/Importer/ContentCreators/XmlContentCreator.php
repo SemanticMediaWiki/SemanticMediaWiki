@@ -94,7 +94,7 @@ class XmlContentCreator implements ContentCreator {
 		$importer->setDebug( false );
 		$importer->setPageOutCallback( [ $this, 'reportPage' ] );
 
-		$info = pathinfo( $importContents->getContentsFile(), PATHINFO_BASENAME  );
+		$info = pathinfo( $importContents->getContentsFile(), PATHINFO_BASENAME );
 
 		if ( $importContents->getDescription() !== '' ) {
 			$info .= " (" . $importContents->getDescription() . ')';

@@ -220,7 +220,7 @@ class DocumentCreator {
 					$values["$fieldType"][] = $dataItem->getJD();
 
 					if ( !isset( $values["dat_raw"] ) ) {
-						 $values["dat_raw"] = [];
+						$values["dat_raw"] = [];
 					}
 
 					// Replicate dates in the serialized raw_format to give
@@ -265,7 +265,7 @@ class DocumentCreator {
 					if ( !$document->hasSubDocumentById( $oid ) ) {
 						$document->addSubDocument( $this->newHead( $oid, $dataItem, Document::TYPE_UPSERT ) );
 					}
-				} elseif( $type === DataItem::TYPE_BLOB ) {
+				} elseif ( $type === DataItem::TYPE_BLOB ) {
 
 					// Used for `compatibilityMode`
 					$val = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
@@ -279,7 +279,7 @@ class DocumentCreator {
 					// "SmartSerializer.php: Failed to JSON encode: 5" since JSON requires
 					// valid UTF-8
 					$values["$fieldType"][] = TextSanitizer::removeLinks( mb_convert_encoding( $val, 'UTF-8', 'UTF-8' ) );
-				} elseif( $type === DataItem::TYPE_URI ) {
+				} elseif ( $type === DataItem::TYPE_URI ) {
 
 					// Used for `compatibilityMode`
 					$values["$fieldType"][] = rawurldecode( $dataItem->getSerialization() );

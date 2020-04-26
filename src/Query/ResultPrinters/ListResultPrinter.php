@@ -85,7 +85,7 @@ class ListResultPrinter extends ResultPrinter {
 			'show-headers' => $this->mShowHeaders,
 		] );
 
-		if ( $this->params[ 'template' ] !== '' && isset( $this->fullParams[ 'sep' ] ) && $this->fullParams[ 'sep' ]->wasSetToDefault() === true ) {
+		if ( $this->params['template'] !== '' && isset( $this->fullParams['sep'] ) && $this->fullParams['sep']->wasSetToDefault() === true ) {
 			$builder->set( 'sep', '' );
 		}
 
@@ -96,7 +96,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return bool
 	 */
 	private function hasTemplates() {
-		return $this->params[ 'template' ] !== '' || $this->params[ 'introtemplate' ] !== '' || $this->params[ 'outrotemplate' ] !== '';
+		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 
 
@@ -110,7 +110,7 @@ class ListResultPrinter extends ResultPrinter {
 	 */
 	private function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
 
-		if ( $this->linkFurtherResults( $res) ) {
+		if ( $this->linkFurtherResults( $res ) ) {
 
 			$link = $this->getFurtherResultsLink( $res, $outputMode );
 			return $link->getText( SMW_OUTPUT_WIKI, $this->mLinker );
@@ -190,7 +190,7 @@ class ListResultPrinter extends ResultPrinter {
 
 		if ( $this->mFormat !== 'ul' && $this->mFormat !== 'ol' ) {
 
-			$listFormatDefinitions[ 'sep' ] =
+			$listFormatDefinitions['sep'] =
 				[
 					'message' => 'smw-paramdesc-sep',
 					'default' => ', ',

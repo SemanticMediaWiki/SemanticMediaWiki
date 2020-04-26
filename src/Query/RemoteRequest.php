@@ -166,7 +166,7 @@ class RemoteRequest implements QueryEngine {
 	 * @since 3.0
 	 *
 	 * @param string $result
-	 * @param  array  $options
+	 * @param array $options
 	 *
 	 * @return string
 	 */
@@ -203,7 +203,7 @@ class RemoteRequest implements QueryEngine {
 		$count = 0;
 		$hasFurtherResults = false;
 
-		preg_match_all('/<!--(.*?)-->/', $result, $matches );
+		preg_match_all( '/<!--(.*?)-->/', $result, $matches );
 
 		if ( $matches !== [] ) {
 			foreach ( $matches[1] as $val ) {

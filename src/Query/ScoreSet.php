@@ -108,7 +108,7 @@ class ScoreSet {
 	 */
 	public function usort( $usort ) {
 
-		if ( !$usort|| $this->scores === [] ) {
+		if ( !$usort || $this->scores === [] ) {
 			return;
 		}
 

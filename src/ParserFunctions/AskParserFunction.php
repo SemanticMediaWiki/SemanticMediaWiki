@@ -215,7 +215,7 @@ class AskParserFunction {
 	private function prepareFunctionParameters( array $functionParams ) {
 
 		// Remove parser object from parameters array
-		if( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
+		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );
 		}
 
@@ -340,7 +340,7 @@ class AskParserFunction {
 
 		$params = [];
 
-		foreach ( $this->params as $key => $value) {
+		foreach ( $this->params as $key => $value ) {
 			$params[$key] = $value->getValue();
 		}
 

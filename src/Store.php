@@ -242,7 +242,7 @@ abstract class Store implements QueryEngine {
 		$procTime = Timer::getElapsedTime( __METHOD__, 5 );
 
 		$this->logger->info(
-			[ 'Store', 'Update completed: {hash}', 'rev: {rev}', 'procTime: {procTime}'],
+			[ 'Store', 'Update completed: {hash}', 'rev: {rev}', 'procTime: {procTime}' ],
 			[ 'method' => __METHOD__, 'role' => 'production', 'hash' => $hash, 'rev' => $rev, 'procTime' => $procTime ]
 		);
 

@@ -80,7 +80,7 @@ class SupportListTaskHandler extends TaskHandler {
 	private function supportForm() {
 		$this->htmlFormRenderer
 			->setName( 'support' )
-			->addHeader( 'h3', $this->msg('smw-admin-support' ) )
+			->addHeader( 'h3', $this->msg( 'smw-admin-support' ) )
 			->addParagraph( $this->msg( 'smw-admin-supportdocu' ) )
 			->addParagraph(
 				Html::rawElement( 'ul', [],

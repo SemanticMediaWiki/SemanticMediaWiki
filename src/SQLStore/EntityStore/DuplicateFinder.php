@@ -110,9 +110,9 @@ class DuplicateFinder {
 
 		if ( $table === SQLStore::ID_TABLE ) {
 			$this->id_table( $table, $query );
-		} elseif( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
+		} elseif ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
 			$this->common_table( $table, $query );
-		} elseif( $table === RedirectStore::TABLE_NAME ) {
+		} elseif ( $table === RedirectStore::TABLE_NAME ) {
 			$this->common_table( $table, $query );
 		}
 
@@ -123,10 +123,10 @@ class DuplicateFinder {
 			return [];
 		}
 
-		$callback = function( $row ) use( $connection, $table, $fname ) {
+		$callback = function ( $row ) use ( $connection, $table, $fname ) {
 
 			$map = self::mapRow( $table, $row );
-			$map = [ 'count'=> $row->count ] + $map;
+			$map = [ 'count' => $row->count ] + $map;
 
 			if ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
 				$row = $connection->selectRow(
@@ -138,11 +138,11 @@ class DuplicateFinder {
 
 				$map += [
 					'entity' => [
-						'smw_id'=> $row->smw_id,
-						'smw_title'=> $row->smw_title,
-						'smw_namespace'=> $row->smw_namespace,
-						'smw_iw'=> $row->smw_iw,
-						'smw_subobject'=> $row->smw_subobject,
+						'smw_id' => $row->smw_id,
+						'smw_title' => $row->smw_title,
+						'smw_namespace' => $row->smw_namespace,
+						'smw_iw' => $row->smw_iw,
+						'smw_subobject' => $row->smw_subobject,
 					]
 				];
 			}

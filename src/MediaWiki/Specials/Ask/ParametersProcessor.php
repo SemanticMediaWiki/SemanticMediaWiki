@@ -267,7 +267,7 @@ class ParametersProcessor {
 	}
 
 	private static function hasLink( $value ) {
-		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false ;
+		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 
 	private static function replace( $source, $target, $value ) {

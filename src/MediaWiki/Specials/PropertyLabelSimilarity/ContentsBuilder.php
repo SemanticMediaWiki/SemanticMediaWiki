@@ -76,9 +76,9 @@ class ContentsBuilder {
 		);
 
 		if ( $result !== [] ) {
-			 $html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
+			$html .= '<pre>' . json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</pre>';
 		} else {
-			 $html .= $this->msg( 'smw-property-label-similarity-noresult' );
+			$html .= $this->msg( 'smw-property-label-similarity-noresult' );
 		}
 
 		return $html;
@@ -133,7 +133,7 @@ class ContentsBuilder {
 			->addSubmitButton( $this->msg( 'allpagessubmit' ) )
 			->getForm();
 
-		return Html::rawElement( 'div', [ 'class' => 'plainlinks'], $html ) . Html::element( 'p', [], '' );
+		return Html::rawElement( 'div', [ 'class' => 'plainlinks' ], $html ) . Html::element( 'p', [], '' );
 	}
 
 	private function msg( $parameters, $type = Message::TEXT ) {

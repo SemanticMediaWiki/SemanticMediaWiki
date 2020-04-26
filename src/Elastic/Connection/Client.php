@@ -348,7 +348,7 @@ class Client {
 			$version = 'v2';
 
 			if ( $indices->exists( [ 'index' => "$index-$version" ] ) ) {
-				$indices->delete(  [ 'index' => "$index-$version" ] );
+				$indices->delete( [ 'index' => "$index-$version" ] );
 			}
 		}
 

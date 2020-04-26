@@ -45,7 +45,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 
 		if ( $dispatchContext->has( 'title' ) ) {
 			$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
-		} else{
+		} else {
 			$subject = $dispatchContext->get( 'subject' );
 		}
 

@@ -338,7 +338,7 @@ class TurtleSerializer extends Serializer {
 		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {
 			$lexicalForm = '"' . $lexicalForm . '@' . $expElement->getLang() . '"';
 		} elseif ( $expElement->getLang() !== '' ) {
-			$lexicalForm = '"' . $lexicalForm . '"'. '@' . $expElement->getLang();
+			$lexicalForm = '"' . $lexicalForm . '"' . '@' . $expElement->getLang();
 		} else {
 			$lexicalForm = '"' . $lexicalForm . '"';
 		}

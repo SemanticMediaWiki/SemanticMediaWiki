@@ -17,9 +17,9 @@ class EngineOptions extends Options {
 	 */
 	public function __construct() {
 		parent::__construct( [
-			'smwgIgnoreQueryErrors'   => $GLOBALS['smwgIgnoreQueryErrors'],
-			'smwgQSortFeatures'     => $GLOBALS['smwgQSortFeatures'],
-			'smwgQFilterDuplicates'   => $GLOBALS['smwgQFilterDuplicates']
+			'smwgIgnoreQueryErrors' => $GLOBALS['smwgIgnoreQueryErrors'],
+			'smwgQSortFeatures' => $GLOBALS['smwgQSortFeatures'],
+			'smwgQFilterDuplicates' => $GLOBALS['smwgQFilterDuplicates']
 		] );
 	}
 

@@ -171,7 +171,7 @@ class RedirectStore {
 
 		foreach ( $propertyTables as $proptable ) {
 
-			 // Can be skipped safely
+			// Can be skipped safely
 			if ( $proptable->getName() == self::TABLE_NAME ) {
 				continue;
 			}

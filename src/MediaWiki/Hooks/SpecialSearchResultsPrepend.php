@@ -67,13 +67,13 @@ class SpecialSearchResultsPrepend implements HookListener {
 			return true;
 		}
 
-		$this->outputPage->addModuleStyles( [  'smw.ui.styles', 'smw.special.search.styles' ] );
+		$this->outputPage->addModuleStyles( [ 'smw.ui.styles', 'smw.special.search.styles' ] );
 		$this->outputPage->addModules( [ 'smw.special.search', 'smw.ui' ] );
 
 		$this->outputPage->addModuleStyles( HtmlModal::getModuleStyles() );
 		$this->outputPage->addModules( HtmlModal::getModules() );
 
-		$html =  HtmlModal::link(
+		$html = HtmlModal::link(
 			'<span class="smw-icon-info" style="margin-left: -5px; padding: 10px 12px 12px 12px;"></span>',
 			[
 				'data-id' => 'smw-search-cheat-sheet'

@@ -124,7 +124,7 @@ class ExceptionFileLogger {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .
-			"======== END ======" ."\n";
+			"======== END ======" . "\n";
 
 		$this->file->write( $this->exceptionFile, $text, FILE_APPEND );
 	}

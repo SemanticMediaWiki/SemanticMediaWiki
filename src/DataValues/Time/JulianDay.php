@@ -127,6 +127,7 @@ class JulianDay implements CalendarModel {
 	/**
 	 * Convert a Julian Day number to a date in the given calendar model.
 	 * This calculation assumes that neither calendar has a year 0.
+	 *
 	 * @note The algorithm may fail for some cases, in particular since the
 	 * conversion to Gregorian needs positive JD. If this happens, wrong
 	 * values will be returned. Avoid date conversions before 10000 BCE.
@@ -169,12 +170,12 @@ class JulianDay implements CalendarModel {
 
 			$month = floor( ( $e < 14 ) ? ( $e - 1 ) : ( $e - 13 ) );
 			$year = floor( ( $month > 2 ) ? ( $c - 4716 ) : ( $c - 4715 ) );
-			$day   = ( $b - $d - floor( 30.6001 * $e ) );
+			$day = ( $b - $d - floor( 30.6001 * $e ) );
 		} else {
 			throw new RuntimeException( "Unsupported calendar model ($calendarModel)" );
 		}
 
-		$year  = ( $year < 1 ) ? ( $year - 1 ) : $year; // correct "year 0" to -1 (= 1 BC(E))
+		$year = ( $year < 1 ) ? ( $year - 1 ) : $year; // correct "year 0" to -1 (= 1 BC(E))
 
 		return [ $calendarModel, $year, $month, $day ];
 	}
@@ -184,6 +185,7 @@ class JulianDay implements CalendarModel {
 	 * This conversion is the same for all calendar models.
 	 *
 	 * @param $jdvalue float number of Julian Days
+	 *
 	 * @return array( hours, minutes, seconds )
 	 */
 	public static function JD2Time( $jdvalue ) {

@@ -110,9 +110,9 @@ class TableChangeOp {
 
 		if ( $opType !== null ) {
 			$changeOps = $this->changeOps[$opType];
-		} elseif ( !isset( $this->changeOps[self::OP_DELETE] ) && !isset( $this->changeOps[self::OP_INSERT] ) )  {
+		} elseif ( !isset( $this->changeOps[self::OP_DELETE] ) && !isset( $this->changeOps[self::OP_INSERT] ) ) {
 			$changeOps = $this->changeOps;
-		} else  {
+		} else {
 			return array_merge(
 				$this->getFieldChangeOps( self::OP_DELETE, $filter ),
 				$this->getFieldChangeOps( self::OP_INSERT, $filter )
@@ -124,7 +124,7 @@ class TableChangeOp {
 		foreach ( $changeOps as $changeOp ) {
 
 			// Filter defined as: [ 's_id' => [ 42 => true, 1001 => true ] ]
-			if ( isset( $filter['s_id' ] ) && isset( $changeOp['s_id'] ) && isset( $filter['s_id'][$changeOp['s_id']] ) ) {
+			if ( isset( $filter['s_id'] ) && isset( $changeOp['s_id'] ) && isset( $filter['s_id'][$changeOp['s_id']] ) ) {
 				continue;
 			}
 

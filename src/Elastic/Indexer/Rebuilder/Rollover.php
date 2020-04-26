@@ -105,7 +105,7 @@ class Rollover {
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
 		if ( $indices->exists( [ 'index' => "$index" ] ) && !$indices->existsAlias( [ 'name' => "$index" ] ) ) {
-			$indices->delete(  [ 'index' => "$index" ] );
+			$indices->delete( [ 'index' => "$index" ] );
 		}
 
 		// Check v1/v2 and if both exists (which shouldn't happen but most likely
@@ -114,7 +114,7 @@ class Rollover {
 
 			// Just in case
 			if ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-				$indices->delete(  [ 'index' => "$index-v2" ] );
+				$indices->delete( [ 'index' => "$index-v2" ] );
 			}
 
 			$actions[] = [ 'add' => [ 'index' => "$index-v1", 'alias' => $index ] ];

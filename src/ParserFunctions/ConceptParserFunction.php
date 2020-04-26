@@ -84,7 +84,7 @@ class ConceptParserFunction {
 		}
 
 		// Remove parser object from parameters array
-		if( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
+		if ( isset( $rawParams[0] ) && $rawParams[0] instanceof Parser ) {
 			array_shift( $rawParams );
 		}
 

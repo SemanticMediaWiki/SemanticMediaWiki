@@ -238,7 +238,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string $tableName
 	 * @param array $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, array $tableOptions = null);
+	abstract protected function doCreateTable( $tableName, array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
@@ -265,7 +265,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	// #1978
 	// http://php.net/manual/en/function.array-search.php
 	protected function recursive_array_search( $needle, $haystack ) {
-		foreach( $haystack as $key => $value ) {
+		foreach ( $haystack as $key => $value ) {
 			$current_key = $key;
 
 			if ( $needle === $value or ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {

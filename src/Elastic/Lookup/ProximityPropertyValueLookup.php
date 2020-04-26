@@ -75,7 +75,7 @@ class ProximityPropertyValueLookup {
 			// aggregation has enough objects available to build a selection
 			// list that satisfies the RequestOptions::getLimit
 			$limit = 500;
-		} elseif( $diType === DataItem::TYPE_TIME ) {
+		} elseif ( $diType === DataItem::TYPE_TIME ) {
 			$limit = 500;
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
@@ -87,7 +87,7 @@ class ProximityPropertyValueLookup {
 				'must',
 				$this->fieldMapper->range( "$pid.$field", $dataValue->getDataItem()->getJD(), SMW_CMP_GEQ )
 			);
-		} elseif( $diType === DataItem::TYPE_NUMBER ) {
+		} elseif ( $diType === DataItem::TYPE_NUMBER ) {
 			$limit = 500;
 
 			if ( strpos( $value, '*' ) === false ) {
@@ -154,7 +154,7 @@ class ProximityPropertyValueLookup {
 		if ( $list !== [] ) {
 			$list = array_values( $list );
 
-			if (  $diType === DataItem::TYPE_TIME ) {
+			if ( $diType === DataItem::TYPE_TIME ) {
 				foreach ( $list as $key => $value ) {
 
 					if ( strpos( $value, '/' ) !== false ) {

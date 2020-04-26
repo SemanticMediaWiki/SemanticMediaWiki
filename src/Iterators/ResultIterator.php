@@ -49,7 +49,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 		}
 
 		// @see MediaWiki's ResultWrapper
-		if ( $res instanceof Iterator && method_exists( $res , 'numRows' ) ) {
+		if ( $res instanceof Iterator && method_exists( $res, 'numRows' ) ) {
 			$this->numRows = true;
 		}
 

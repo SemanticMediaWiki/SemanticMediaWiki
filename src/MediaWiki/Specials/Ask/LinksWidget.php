@@ -183,7 +183,7 @@ class LinksWidget {
 		return Html::rawElement(
 			'div',
 			[
-				'id'  => 'inlinequeryembed',
+				'id' => 'inlinequeryembed',
 				'style' => 'display: none;'
 			], Html::rawElement(
 				'div',

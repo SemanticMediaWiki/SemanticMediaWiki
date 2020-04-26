@@ -22,7 +22,7 @@ class ConfigPreloadFileNotReadableException extends RuntimeException {
 		$profile = pathinfo( $file, PATHINFO_BASENAME );
 
 		parent::__construct(
-			"The \"$profile\" profile is unknown, missing, or might contain a misspelling.\n\n".
+			"The \"$profile\" profile is unknown, missing, or might contain a misspelling.\n\n" .
 			"Semantic MediaWiki is currently unable to locate and load the profile from $file."
 		);
 	}

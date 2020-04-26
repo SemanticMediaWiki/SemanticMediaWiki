@@ -188,7 +188,7 @@ class DebugFormatter {
 
 			foreach ( $res as $row ) {
 				foreach ( $row as $key => $value ) {
-					$output .= str_replace( [ ' ', '->' ], [ '&nbsp;', '└── ' ], $value ) .'<br>';
+					$output .= str_replace( [ ' ', '->' ], [ '&nbsp;', '└── ' ], $value ) . '<br>';
 				}
 			}
 
@@ -231,7 +231,7 @@ class DebugFormatter {
 	 */
 	public function prettifySPARQL( $sparql ) {
 
-		$sparql =  str_replace(
+		$sparql = str_replace(
 			[
 				'[',
 				':',
@@ -265,10 +265,10 @@ class DebugFormatter {
 		$matches = [];
 		$i = 0;
 
-		$sql = preg_replace_callback( '/NOT IN .*\)/', function( $m ) use( &$matches, &$i ) {
+		$sql = preg_replace_callback( '/NOT IN .*\)/', function ( $m ) use ( &$matches, &$i ) {
 			$i++;
 
-			$string = str_replace( [ 'AND ((' ] , [ "AND (<br>   (" ], $m[0] );
+			$string = str_replace( [ 'AND ((' ], [ "AND (<br>   (" ], $m[0] );
 
 			$matches["not_int$i"] = $string;
 			return "not_int$i";
@@ -314,7 +314,7 @@ class DebugFormatter {
 			$sql
 		);
 
-		foreach ( $matches as $key => $value) {
+		foreach ( $matches as $key => $value ) {
 			$sql = str_replace( $key, $value, $sql );
 		}
 

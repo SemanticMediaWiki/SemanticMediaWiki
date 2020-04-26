@@ -280,7 +280,7 @@ abstract class Serializer {
 	 * @param ExpData $expData
 	 */
 	protected function recordDeclarationTypes( ExpData $expData ) {
-		foreach ( $expData->getSpecialValues( 'rdf', 'type') as $typeresource ) {
+		foreach ( $expData->getSpecialValues( 'rdf', 'type' ) as $typeresource ) {
 
 			if ( $typeresource instanceof ExpNsResource ) {
 				switch ( $typeresource->getQName() ) {

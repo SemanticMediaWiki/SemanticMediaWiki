@@ -41,7 +41,7 @@ class SpecialPageProperty extends SpecialPage {
 		$request = $this->getRequest();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
-			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+			$query = Infolink::decodeCompactLink( 'cl:' . $request->getText( 'cl' ) );
 		} else {
 			$query = Infolink::decodeCompactLink( $query );
 		}

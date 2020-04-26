@@ -121,7 +121,7 @@ class UnusedPropertyListLookup implements ListLookup {
 			$conditions,
 			__METHOD__,
 			$options,
-			[  SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;

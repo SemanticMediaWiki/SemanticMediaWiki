@@ -22,17 +22,17 @@ abstract class DataItemHandler {
 
 	/**
 	 * @var SQLStore
-	*/
+	 */
 	protected $store;
 
 	/**
 	 * @var integer
-	*/
+	 */
 	protected $fieldTypeFeatures = false;
 
 	/**
 	 * @var null|string
-	*/
+	 */
 	private $dbType;
 
 	/**

@@ -26,7 +26,7 @@ class FormatListWidget {
 	 * @param array $resultFormats
 	 */
 	public static function setResultFormats( array $resultFormats ) {
-		self::$resultFormats =  $resultFormats;
+		self::$resultFormats = $resultFormats;
 	}
 
 	/**

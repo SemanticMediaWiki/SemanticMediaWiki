@@ -118,7 +118,7 @@ class TypesValue extends DataValue {
 	 */
 	public function getShortHTMLText( $linker = null ) {
 
-		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === ''  ) {
+		if ( !$linker || $this->m_outformat === '-' || $this->m_caption === '' ) {
 			return htmlspecialchars( $this->m_caption );
 		}
 

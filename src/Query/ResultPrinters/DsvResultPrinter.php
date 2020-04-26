@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMWQueryResult  as QueryResult;
+use SMWQueryResult as QueryResult;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
@@ -50,10 +50,10 @@ class DsvResultPrinter extends FileExportPrinter {
 		}
 
 		if ( substr( $this->params['filename'], -4 ) === '.dsv' ) {
-			return  str_replace( ' ', '_', $this->params['filename'] );
+			return str_replace( ' ', '_', $this->params['filename'] );
 		}
 
-		return  str_replace( ' ', '_', $this->params['filename'] . '.dsv' );
+		return str_replace( ' ', '_', $this->params['filename'] . '.dsv' );
 	}
 
 	/**

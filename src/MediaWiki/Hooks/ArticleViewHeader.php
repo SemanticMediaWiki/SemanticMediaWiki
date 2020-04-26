@@ -52,7 +52,7 @@ class ArticleViewHeader implements HookListener {
 	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param DependencyValidator $dependencyLinksValidator
 	 */
-	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator  ) {
+	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
 		$this->store = $store;
 		$this->namespaceExaminer = $namespaceExaminer;
 		$this->dependencyValidator = $dependencyValidator;
@@ -146,7 +146,7 @@ class ArticleViewHeader implements HookListener {
 			'div',
 			[
 				'id' => $message[0],
-				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-'. $type : '' )
+				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-' . $type : '' )
 			],
 			Message::get( $message, Message::PARSE, Message::USER_LANGUAGE )
 		);

@@ -139,7 +139,7 @@ class XmlResponseParser implements HttpResponseParser {
 	}
 
 	private function getLastColumnNumber() {
-		return xml_get_current_column_number ( $this->parser );
+		return xml_get_current_column_number( $this->parser );
 	}
 
 	private function handleDefault( $parser, $data ) {

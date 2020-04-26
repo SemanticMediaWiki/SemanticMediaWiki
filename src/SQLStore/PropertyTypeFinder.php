@@ -27,30 +27,30 @@ class PropertyTypeFinder {
 	private $typeTableName = '';
 
 	/**
-	* @since 2.5
-	*
-	* @param Database $connection
-	*/
+	 * @since 2.5
+	 *
+	 * @param Database $connection
+	 */
 	public function __construct( Database $connection ) {
 		$this->connection = $connection;
 	}
 
 	/**
-	* @since 2.5
-	*
-	* @param string $typeTableName
-	*/
+	 * @since 2.5
+	 *
+	 * @param string $typeTableName
+	 */
 	public function setTypeTableName( $typeTableName ) {
 		$this->typeTableName = $typeTableName;
 	}
 
 	/**
-	* @since 3.1
-	*
-	* @param string $type
-	*
-	* @return integer
-	*/
+	 * @since 3.1
+	 *
+	 * @param string $type
+	 *
+	 * @return integer
+	 */
 	public function countByType( $type ) {
 
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
@@ -70,13 +70,13 @@ class PropertyTypeFinder {
 	}
 
 	/**
-	* @since 2.5
-	*
-	* @param DIProperty $property
-	*
-	* @return string
-	* @throws RuntimeException
-	*/
+	 * @since 2.5
+	 *
+	 * @param DIProperty $property
+	 *
+	 * @return string
+	 * @throws RuntimeException
+	 */
 	public function findTypeID( DIProperty $property ) {
 
 		try {

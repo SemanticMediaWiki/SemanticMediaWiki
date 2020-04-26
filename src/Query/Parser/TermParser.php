@@ -88,7 +88,7 @@ class TermParser {
 		$this->normalize_compact_form( 'has', $pattern, $term );
 
 		// Simplify the processing by normalizing expressions
-		$term = str_replace( [ '<q>', '</q>' ],  [ '(', ')' ], $term );
+		$term = str_replace( [ '<q>', '</q>' ], [ '(', ')' ], $term );
 
 		$terms = preg_split(
 			"/(in:)|(phrase:)|(not:)|(has:)|(category:)$pattern|(&&)|(AND)|(OR)|(\|\|)|(\()|(\)|(\[\[))/",
@@ -131,7 +131,7 @@ class TermParser {
 			if ( in_array( $new, $custom_prefix ) ) {
 				$custom = "[[$new";
 				$prefix = $new;
-			} elseif( in_array( $new, $this->standard_prefix ) ) {
+			} elseif ( in_array( $new, $this->standard_prefix ) ) {
 				$term .= "[[$new";
 			} elseif ( $custom !== '' ) {
 				$custom .= $new;
@@ -184,7 +184,7 @@ class TermParser {
 
 		$term = "$custom]]";
 		$custom = '';
-		$terms =  [];
+		$terms = [];
 		$p_map = str_replace( ':', '', $prefix );
 
 		if ( !isset( $this->prefix_map[$p_map] ) ) {
@@ -215,7 +215,7 @@ class TermParser {
 			return;
 		}
 
-		preg_match_all("/$exp:\((.*?)\)/", $term, $matches );
+		preg_match_all( "/$exp:\((.*?)\)/", $term, $matches );
 
 		foreach ( $matches[0] as $match ) {
 			$orig = $match;

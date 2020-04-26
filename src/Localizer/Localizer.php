@@ -349,15 +349,15 @@ class Localizer {
 					'title=' . wfUrlencode( $namespace ) . ':',
 					'title=' . $namespace . ':'
 				],
-				'title=' . $this->getCanonicalNamespaceTextById( $index ) .':',
+				'title=' . $this->getCanonicalNamespaceTextById( $index ) . ':',
 				$url
 			);
 		}
 
 		return str_replace(
 			[
-				wfUrlencode( '/' . $namespace .':' ),
-				'/' . $namespace .':'
+				wfUrlencode( '/' . $namespace . ':' ),
+				'/' . $namespace . ':'
 			],
 			'/' . $this->getCanonicalNamespaceTextById( $index ) . ':',
 			$url

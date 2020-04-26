@@ -17,7 +17,7 @@ class PageCreator {
 	/**
 	 * @since  2.0
 	 *
-	 * @param  Title $title
+	 * @param Title $title
 	 *
 	 * @return WikiPage
 	 */
@@ -28,7 +28,7 @@ class PageCreator {
 	/**
 	 * @since  2.0
 	 *
-	 * @param  Title $title
+	 * @param Title $title
 	 *
 	 * @return WikiFilePage
 	 */

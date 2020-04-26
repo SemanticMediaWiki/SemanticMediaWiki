@@ -666,7 +666,7 @@ class EntityIdManager {
 			$id = (int)$db->insertId();
 
 			// Properties also need to be in the property statistics table
-			if( $namespace === SMW_NS_PROPERTY ) {
+			if ( $namespace === SMW_NS_PROPERTY ) {
 
 				$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore(
 					$db
@@ -762,7 +762,7 @@ class EntityIdManager {
 			$cond = [
 				"smw_hash" => $title->getSha1()
 			];
-		} elseif( is_int( $title ) ) {
+		} elseif ( is_int( $title ) ) {
 			$cond = [
 				"smw_id" => $title
 			];

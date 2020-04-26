@@ -158,7 +158,7 @@ class ConceptPage extends Page {
 		// Improperty values
 		$html = smwfEncodeMessages( $errors );
 
-		$htmlTabs->tab( 'smw-concept-errors', $this->msg( 'smw-concept-tab-errors' ),  [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-concept-errors', $this->msg( 'smw-concept-tab-errors' ), [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-concept-errors', $html );
 
 		$html = $htmlTabs->buildHTML(

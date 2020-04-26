@@ -224,14 +224,14 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 
 		$html .= Html::rawElement(
 			'li', [ 'class' => 'plainlinks' ],
-			$this->msg( [ 'smw-admin-supplementary-elastic-status-recovery-job-count', $jobQueue->getQueueSize( 'smw.elasticIndexerRecovery') ], Message::PARSE )
+			$this->msg( [ 'smw-admin-supplementary-elastic-status-recovery-job-count', $jobQueue->getQueueSize( 'smw.elasticIndexerRecovery' ) ], Message::PARSE )
 		);
 
 		if ( $connection->getConfig()->dotGet( 'indexer.experimental.file.ingest', false ) ) {
 			$html .= Html::rawElement(
 				'li',
 				[ 'class' => 'plainlinks' ],
-				$this->msg( [ 'smw-admin-supplementary-elastic-status-file-ingest-job-count', $jobQueue->getQueueSize( 'smw.elasticFileIngest') ], Message::PARSE )
+				$this->msg( [ 'smw-admin-supplementary-elastic-status-file-ingest-job-count', $jobQueue->getQueueSize( 'smw.elasticFileIngest' ) ], Message::PARSE )
 			);
 		}
 
@@ -267,7 +267,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		);
 
 		$config = $connection->getConfig()->toArray();
-		$endpoints = $config['elastic/endpoints' ];
+		$endpoints = $config['elastic/endpoints'];
 
 		unset( $config['elastic/defaultstore'] );
 		unset( $config['elastic/endpoints'] );

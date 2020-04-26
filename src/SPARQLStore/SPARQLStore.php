@@ -57,7 +57,7 @@ class SPARQLStore extends Store {
 	/**
 	 * @since 1.8
 	 *
-	 * @param  Store $baseStore
+	 * @param Store $baseStore
 	 */
 	public function __construct( Store $baseStore = null ) {
 		$this->factory = new SPARQLStoreFactory( $this );
@@ -83,7 +83,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 */
 	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
-		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions);
+		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions );
 	}
 
 	/**
@@ -202,7 +202,7 @@ class SPARQLStore extends Store {
 
 		$this->doSparqlFlatDataUpdate( $semanticData, $turtleTriplesBuilder );
 
-		foreach( $semanticData->getSubSemanticData() as $subSemanticData ) {
+		foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
 			$subSemanticData = $replicationDataTruncator->doTruncate( $subSemanticData );
 			$this->doSparqlFlatDataUpdate( $subSemanticData, $turtleTriplesBuilder );
 		}
@@ -229,7 +229,7 @@ class SPARQLStore extends Store {
 			$this->doSparqlDataDelete( $semanticData->getSubject() );
 		}
 
-		foreach( $turtleTriplesBuilder->getChunkedTriples() as $chunkedTriples ) {
+		foreach ( $turtleTriplesBuilder->getChunkedTriples() as $chunkedTriples ) {
 			$this->getConnection()->insertData(
 				$chunkedTriples,
 				$turtleTriplesBuilder->getPrefixes()

@@ -186,7 +186,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// Use helper properties in encoding values, refer to this helper property:
 		if ( $this->exporter->hasHelperExpElement( $property ) ) {
 			$propertyExpElement = $this->exporter->getResourceElementForProperty( $nonInverseProperty, true );
-		} elseif( !$property->isUserDefined() ) {
+		} elseif ( !$property->isUserDefined() ) {
 			$propertyExpElement = $this->exporter->getSpecialPropertyResource(
 				$nonInverseProperty->getKey(),
 				SMW_NS_PROPERTY
@@ -261,7 +261,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		$pathOp = $depth > 1 || $depth === null ? '*' : '?';
 
 		$propertyByVariable = '?' . $this->conditionBuilder->getNextVariable( 'sp' );
-		$condition->weakConditions[$propertyName] = "\n". "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n"."";
+		$condition->weakConditions[$propertyName] = "\n" . "$propertyByVariable " . $subPropExpElement->getQName() . "$pathOp $propertyName .\n" . "";
 		$propertyName = $propertyByVariable;
 	}
 

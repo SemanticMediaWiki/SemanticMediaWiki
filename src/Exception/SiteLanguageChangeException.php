@@ -22,7 +22,7 @@ class SiteLanguageChangeException extends RuntimeException {
 		parent::__construct(
 			"A change to the `wgLanguageCode` was detected showing a discrepancy ($old, $new) and " .
 			"is preventing Semantic MediaWiki from modifying related namespace settings.\n\n" .
-			"LocalSettings.php should only contain one `wgLanguageCode` definition and the declaration should ".
+			"LocalSettings.php should only contain one `wgLanguageCode` definition and the declaration should " .
 			"happen before `enableSemantics`."
 		);
 	}

@@ -230,7 +230,7 @@ class PropertyPage extends Page {
 		list( $html, $itemCount ) = $this->makeItemList( 'subproperty', '_SUBP', true );
 		$isFirst = $isFirst && $html === '';
 
-		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ) . $itemCount,  [ 'hide' => $html === '' ] );
+		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ) . $itemCount, [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-subp', $html );
 
 		// Improperty values
@@ -259,7 +259,7 @@ class PropertyPage extends Page {
 		if ( $data !== [] ) {
 			$constraint = ( new JsonView() )->create(
 				'constraint',
-				json_encode( $data,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
+				json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 				2
 			);
 
@@ -283,7 +283,7 @@ class PropertyPage extends Page {
 		if ( $data !== [] ) {
 			$profile = ( new JsonView() )->create(
 				'profile',
-				json_encode( $data,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
+				json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 				2
 			);
 
@@ -293,7 +293,7 @@ class PropertyPage extends Page {
 
 		// ... more
 		if ( isset( $matches[2] ) && $matches[2] !== [] ) {
-			$html = "<div>" . implode('</div><div>', $matches[2] ) . "</div>";
+			$html = "<div>" . implode( '</div><div>', $matches[2] ) . "</div>";
 		} else {
 			$html = '';
 		}
@@ -437,7 +437,7 @@ class PropertyPage extends Page {
 			return Html::rawElement(
 				'span',
 				[
-					'title' =>  $this->msg( 'smw-filter-count' ),
+					'title' => $this->msg( 'smw-filter-count' ),
 					'class' => 'usage-count'
 				],
 				$this->filterCount
@@ -475,7 +475,7 @@ class PropertyPage extends Page {
 			'span',
 			[
 				'title' => $countMsg,
-				'class' => 'usage-count'  . $indicatorClass
+				'class' => 'usage-count' . $indicatorClass
 			],
 			$usageCount
 		);

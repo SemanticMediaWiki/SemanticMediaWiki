@@ -342,7 +342,7 @@ class IntlNumberFormatter {
 		);
 
 		if ( $replacement > 0 ) {
-			 $value .= str_repeat( '0', $replacement );
+			$value .= str_repeat( '0', $replacement );
 		}
 
 		return $value;

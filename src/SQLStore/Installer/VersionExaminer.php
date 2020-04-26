@@ -122,7 +122,7 @@ class VersionExaminer {
 				"doesn't meet the minimum requirement of {$requirements['minimum_version']}",
 				"for Semantic MediaWiki.",
 				"\n\n",
-				 "The installation of Semantic MediaWiki was aborted!"
+				"The installation of Semantic MediaWiki was aborted!"
 			];
 		} else {
 			$text = [

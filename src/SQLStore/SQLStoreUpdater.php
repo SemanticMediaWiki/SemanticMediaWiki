@@ -166,7 +166,7 @@ class SQLStoreUpdater {
 
 		$subject->setId( $id );
 
-		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
+		foreach ( $subobjectListFinder->find( $subject ) as $subobject ) {
 			$extensionList[$subobject->getId()] = true;
 
 			$this->store->getObjectIds()->updateInterwikiField(
@@ -229,7 +229,7 @@ class SQLStoreUpdater {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$isForcedUpdate = $semanticData->getOption( Enum::FORCED_UPDATE, false );
 
-		foreach( $subSemanticData as $subobjectData ) {
+		foreach ( $subSemanticData as $subobjectData ) {
 
 			// Inherit the option from the parent to ensure all associated
 			// entities are going to be updated
@@ -243,8 +243,8 @@ class SQLStoreUpdater {
 		$deleteList = [];
 
 		// Mark subobjects without reference to be deleted
-		foreach( $subobjectListFinder->find( $subject ) as $subobject ) {
-			if( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
+		foreach ( $subobjectListFinder->find( $subject ) as $subobject ) {
+			if ( !$semanticData->hasSubSemanticData( $subobject->getSubobjectName() ) ) {
 
 				$this->doFlatDataUpdate( new SemanticData( $subobject ) );
 				$deleteList[] = $subobject->getId();
@@ -364,13 +364,13 @@ class SQLStoreUpdater {
 			[
 				'insert_rows' => $insertRows,
 				'delete_rows' => $deleteRows,
-				'new_hashes'  => $newHashes
+				'new_hashes' => $newHashes
 			]
 		);
 
 		$this->propertyTableUpdater->update( $sid, $params );
 
-		if ( $redirects === [] && $subject->getSubobjectName() === ''  ) {
+		if ( $redirects === [] && $subject->getSubobjectName() === '' ) {
 
 			$dataItemFromId = $this->store->getObjectIds()->getDataItemById( $sid );
 

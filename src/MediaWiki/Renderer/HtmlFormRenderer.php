@@ -48,7 +48,7 @@ class HtmlFormRenderer {
 	/**
 	 * @var string
 	 */
-	private $name ='';
+	private $name = '';
 
 	/**
 	 * @var string|boolean

@@ -391,7 +391,7 @@ class DataUpdater {
 		// canCreateUpdateJob: if it is not enabled there's not much to do here
 		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
 		// therefore skip
-		if ( !$this->canCreateUpdateJob || $this->isChangeProp  ) {
+		if ( !$this->canCreateUpdateJob || $this->isChangeProp ) {
 			return;
 		}
 

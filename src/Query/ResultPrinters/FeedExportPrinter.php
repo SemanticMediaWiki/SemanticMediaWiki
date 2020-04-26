@@ -171,7 +171,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			return $this->getFeedLink( $res, $outputMode );
 		}
 
-		if ( $res->getCount() == 0 ){
+		if ( $res->getCount() == 0 ) {
 			$res->addErrors( [ $this->msg( 'smw_result_noresults' )->inContentLanguage()->text() ] );
 		}
 
@@ -191,7 +191,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	protected function getFeed( QueryResult $results, $type ) {
 		global $wgFeedClasses;
 
-		if( !isset( $wgFeedClasses[$type] ) ) {
+		if ( !isset( $wgFeedClasses[$type] ) ) {
 			$results->addErrors( [ $this->msg( 'feed-invalid' )->inContentLanguage()->text() ] );
 			return '';
 		}
@@ -260,7 +260,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 */
 	protected function feedURL() {
 
-		if (  $GLOBALS['wgTitle'] instanceof Title ) {
+		if ( $GLOBALS['wgTitle'] instanceof Title ) {
 			return $GLOBALS['wgTitle']->getFullUrl();
 		}
 
@@ -364,13 +364,13 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemDescription( $items, $pageContent  ) {
+	protected function feedItemDescription( $items, $pageContent ) {
 
 		$text = FeedItem::stripComment( implode( '', $items ) ) . FeedItem::stripComment( $pageContent );
 
 		// Abstract of the first 200 chars
 		if ( ( $this->params['page'] ?? '' ) === 'abstract' ) {
-			$text = preg_replace('/\s+?(\S+)?$/', '', substr( $text, 0, 201 ) ) . ' ...';
+			$text = preg_replace( '/\s+?(\S+)?$/', '', substr( $text, 0, 201 ) ) . ' ...';
 		}
 
 		return $text;
@@ -383,14 +383,14 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemComments( ) {
+	protected function feedItemComments() {
 		return '';
 	}
 
 	private function newFeedItem( $title, $rowItems ) {
 		$wikiPage = WikiPage::newFromID( $title->getArticleID() );
 
-		if ( $wikiPage !== null && $wikiPage->exists() ){
+		if ( $wikiPage !== null && $wikiPage->exists() ) {
 
 			// #1741
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -430,7 +430,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		$parserOptions = new ParserOptions();
 
 		// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
-		if ( ! defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
+		if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
 			$parserOptions->setEditSection( false );
 		}
 

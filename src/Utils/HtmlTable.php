@@ -100,11 +100,11 @@ class HtmlTable {
 		$headers = [];
 		$rows = [];
 
-		foreach( $this->headers as $i => $header ) {
+		foreach ( $this->headers as $i => $header ) {
 			$headers[] = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 		}
 
-		foreach( $this->rows as $row ) {
+		foreach ( $this->rows as $row ) {
 			$rows[] = $this->createRow( implode( '', $row['cells'] ), $row['attributes'], count( $rows ) );
 		}
 
@@ -115,11 +115,11 @@ class HtmlTable {
 
 		$rows = [];
 
-		foreach( $this->headers as $hIndex => $header ) {
+		foreach ( $this->headers as $hIndex => $header ) {
 			$cells = [];
 			$headerItem = Html::rawElement( 'th', $header['attributes'], $header['content'] );
 
-			foreach( $this->rows as $rIndex => $row ) {
+			foreach ( $this->rows as $rIndex => $row ) {
 				$cells[] = $this->getTransposedCell( $hIndex, $row );
 			}
 

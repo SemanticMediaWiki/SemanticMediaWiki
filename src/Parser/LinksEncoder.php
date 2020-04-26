@@ -53,7 +53,7 @@ class LinksEncoder {
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
 
-		return str_replace( $from, $to,	$text );
+		return str_replace( $from, $to, $text );
 	}
 
 	/**
@@ -170,7 +170,7 @@ class LinksEncoder {
 		 *   *           # nesting can be many levels deep.
 		 * \]{2}         # finally, expect a balanced closing ']]'
 		 */
-		preg_match_all("/\[{2}(?:[^\[\]]+|(?R))*\]{2}/is", $text, $matches );
+		preg_match_all( "/\[{2}(?:[^\[\]]+|(?R))*\]{2}/is", $text, $matches );
 		$isOffAnnotation = false;
 
 		// At this point we distinguish between a normal [[Foo::bar]] annotation
@@ -231,8 +231,8 @@ class LinksEncoder {
 		// Decode the pipe as part of a hidden marker (`...]]|`) to ensure that
 		// the standard MediaWiki parser can work its magic to hide the part of
 		// the string
-		$replace = str_replace( "&#x005D;&#x005D;&#124;", "&#x005D;&#x005D;|",  $replace );        
-        
+		$replace = str_replace( "&#x005D;&#x005D;&#124;", "&#x005D;&#x005D;|", $replace );
+
 		// Restore the square brackets
 		return '[[' . $replace . ']]';
 	}

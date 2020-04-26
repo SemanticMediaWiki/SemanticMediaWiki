@@ -72,7 +72,7 @@ class ExternalIdentifierValue extends StringValue {
 		if ( $this->getOutputFormat() == 'nowiki' ) {
 			$url = $this->makeNonlinkedWikiText( $uri );
 		} else {
-			$url = '['. $uri . ' '. $this->m_caption . ']';
+			$url = '[' . $uri . ' ' . $this->m_caption . ']';
 		}
 
 		return \Html::rawElement(
@@ -209,7 +209,7 @@ class ExternalIdentifierValue extends StringValue {
 		}
 
 		// [[wp:article::Truid Aagesen{837787373}]]
-		preg_match("/\{([^\]]*)\}/", $value, $matches );
+		preg_match( "/\{([^\]]*)\}/", $value, $matches );
 
 		if ( $matches !== [] ) {
 			// Remove extra parameters from caption

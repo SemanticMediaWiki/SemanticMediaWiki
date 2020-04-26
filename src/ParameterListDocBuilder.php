@@ -46,10 +46,10 @@ class ParameterListDocBuilder {
 		}
 
 		$tableRows = array_merge( [
-			'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
-			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
-			'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
-			'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
+			'!' . $this->msg( 'validator-describe-header-parameter' ) . "\n" .
+			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) . "\n" : '' ) .
+			'!' . $this->msg( 'validator-describe-header-type' ) . "\n" .
+			'!' . $this->msg( 'validator-describe-header-default' ) . "\n" .
 			'!' . $this->msg( 'validator-describe-header-description' )
 		], $tableRows );
 
@@ -94,8 +94,7 @@ class ParameterListDocBuilder {
 		$default = $parameter->isRequired() ? "''" . $this->msg( 'validator-describe-required' ) . "''" : $parameter->getDefault();
 		if ( is_array( $default ) ) {
 			$default = implode( ', ', $default );
-		}
-		elseif ( is_bool( $default ) ) {
+		} elseif ( is_bool( $default ) ) {
 			$default = $default ? 'yes' : 'no';
 		}
 

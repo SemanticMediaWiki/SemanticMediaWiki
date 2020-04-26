@@ -22,7 +22,7 @@ class JSONFileParseException extends JSONParseException {
 
 	private function buildMessage( $file, $errMsg ) {
 
-		if ( $errMsg === ! '' ) {
+		if ( $errMsg === !'' ) {
 			$message = "$errMsg in file $file caused by:";
 		} else {
 			$message = "JSON error in file $file caused by:";

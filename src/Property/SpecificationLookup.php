@@ -117,7 +117,7 @@ class SpecificationLookup {
 
 		if ( $source instanceof DIProperty ) {
 			$subject = $source->getCanonicalDiWikiPage();
-		} elseif( $source instanceof DIWikiPage ) {
+		} elseif ( $source instanceof DIWikiPage ) {
 			$subject = $source;
 		} else {
 			throw new RuntimeException( "Invalid request instance type" );

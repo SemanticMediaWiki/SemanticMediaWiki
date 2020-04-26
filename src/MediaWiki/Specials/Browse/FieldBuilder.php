@@ -58,7 +58,7 @@ class FieldBuilder {
 					'name'  => 'title',
 					'value' => $title->getPrefixedText()
 				],
-				 Message::get( 'smw_browse_article', Message::ESCAPED, $lang )
+				Message::get( 'smw_browse_article', Message::ESCAPED, $lang )
 			) .
 			Html::rawElement(
 				'div',

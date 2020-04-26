@@ -92,7 +92,7 @@ class BrowseBySubject extends ApiBase {
 			if ( method_exists( $this, 'dieWithError' ) ) {
 				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
+				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
 			}
 		}
 

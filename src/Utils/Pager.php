@@ -192,9 +192,9 @@ class Pager {
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 		$target = '';
 
-		if ( isset( $query['_target' ] ) ) {
-			$target = $query['_target' ];
-			unset( $query['_target' ] );
+		if ( isset( $query['_target'] ) ) {
+			$target = $query['_target'];
+			unset( $query['_target'] );
 		}
 
 		return Html::element( 'a',

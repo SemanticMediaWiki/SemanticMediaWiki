@@ -215,7 +215,7 @@ class HtmlColumns {
 		} elseif ( $type === self::INDEXED_LIST ) {
 			$contents = $cnts;
 		} else {
-			throw new InvalidArgumentException( 'Missing a recognized type!');
+			throw new InvalidArgumentException( 'Missing a recognized type!' );
 		}
 
 		$this->contents = $contents;
@@ -261,7 +261,7 @@ class HtmlColumns {
 		foreach ( $this->contents as $key => $items ) {
 
 			if ( $items === [] ) {
-					continue;
+				continue;
 			}
 
 			$result .= $this->makeList(

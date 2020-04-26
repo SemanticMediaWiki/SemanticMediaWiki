@@ -275,7 +275,7 @@ class StubSemanticData extends SemanticData {
 	public function removePropertyObjectValue( DIProperty $property, DataItem $dataItem ) {
 		$this->unstubProperties();
 		$this->getPropertyValues( $property );
-		parent::removePropertyObjectValue($property, $dataItem);
+		parent::removePropertyObjectValue( $property, $dataItem );
 	}
 
 	/**

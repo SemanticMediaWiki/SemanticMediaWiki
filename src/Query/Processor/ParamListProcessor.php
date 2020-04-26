@@ -121,7 +121,7 @@ class ParamListProcessor {
 
 		$serialization['query'] = str_replace(
 			[ '&lt;', '&gt;', '0x003D' ],
-			['<', '>', '=' ],
+			[ '<', '>', '=' ],
 			$serialization['query']
 		);
 
@@ -178,7 +178,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function encodeEq ( $param ) {
+	private function encodeEq( $param ) {
 		// Bug 32955 / #640
 		// Modify (e.g. replace `=`) a condition string only if enclosed by
 		// [[ ... ]]
@@ -207,7 +207,7 @@ class ParamListProcessor {
 
 		$serialization['printouts'][$hash] = [
 			'label' => $param,
-			'params'  => []
+			'params' => []
 		];
 	}
 

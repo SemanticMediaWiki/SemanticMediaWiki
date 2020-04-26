@@ -284,7 +284,7 @@ class PropertyTableRowDiffer {
 	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ) {
 
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
-			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
+			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}
 
 		$contents = [];
@@ -297,7 +297,7 @@ class PropertyTableRowDiffer {
 			__METHOD__
 		);
 
-		foreach( $result as $row ) {
+		foreach ( $result as $row ) {
 			if ( is_object( $row ) ) {
 
 				$resultRow = (array)$row;

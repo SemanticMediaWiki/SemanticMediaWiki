@@ -488,7 +488,7 @@ class SemanticDataLookup {
 			$requestOptions->setOption( 'ORDER BY', false );
 		}
 
- 		// Apply sorting/string matching; only with given property
+		// Apply sorting/string matching; only with given property
 		if ( !$isSubject ) {
 
 			if (
@@ -625,7 +625,7 @@ class SemanticDataLookup {
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
-			 // Get data from ID table
+			// Get data from ID table
 			if ( $fieldType === FieldType::FIELD_ID ) {
 				$query->join(
 					'INNER JOIN',
@@ -749,7 +749,7 @@ class SemanticDataLookup {
 
 			if ( $params['isSubject'] ) {
 				$result = [ $hash, [ $params['propertyKey'], $db_keys ] ];
-			} else{
+			} else {
 				$result = [ $hash, $db_keys ];
 			}
 		}

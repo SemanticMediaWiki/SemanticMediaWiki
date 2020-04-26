@@ -372,7 +372,7 @@ class TermsLookup implements ITermsLookup {
 		$results = $searchResult->getResults();
 		$count = $searchResult->get( 'count' );
 
-		if ( $count >= $parameters->get( 'threshold' )  ) {
+		if ( $count >= $parameters->get( 'threshold' ) ) {
 			$results = $this->terms_index( $parameters->get( 'id' ), $results );
 		}
 

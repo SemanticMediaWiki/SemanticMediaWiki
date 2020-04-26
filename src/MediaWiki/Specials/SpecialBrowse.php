@@ -43,7 +43,7 @@ class SpecialBrowse extends SpecialPage {
 		$articletext = $webRequest->getVal( 'article' );
 
 		if ( $webRequest->getText( 'cl', '' ) !== '' ) {
-			$query = Infolink::decodeCompactLink( 'cl:'. $webRequest->getText( 'cl' ) );
+			$query = Infolink::decodeCompactLink( 'cl:' . $webRequest->getText( 'cl' ) );
 		} else {
 			$query = Infolink::decodeCompactLink( $query );
 		}

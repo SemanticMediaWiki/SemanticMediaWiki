@@ -88,7 +88,7 @@ class NamespaceConstraint implements Constraint {
 			'smw-constraint-violation-allowed-namespace-no-match',
 			$property->getLabel(),
 			$dataValue->getWikiValue(),
-			implode(', ', $namespaces )
+			implode( ', ', $namespaces )
 		];
 
 		$this->reportError( $dataValue, $error );
@@ -102,4 +102,5 @@ class NamespaceConstraint implements Constraint {
 			new ConstraintError( $error )
 		);
 	}
+
 }

@@ -17,7 +17,7 @@ class TitleFactory {
 	/**
 	 * @since  2.0
 	 *
-	 * @param  string $text
+	 * @param string $text
 	 *
 	 * @return Title|null
 	 */

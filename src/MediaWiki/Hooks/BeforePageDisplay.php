@@ -44,9 +44,9 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		$outputPage->prependHTML(
-			'<div class="errorbox" style="display:block;">Semantic MediaWiki '.
+			'<div class="errorbox" style="display:block;">Semantic MediaWiki ' .
 			'was installed but not enabled on this wiki. Please consult the ' .
-			'<a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> for '.
+			'<a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> for ' .
 			'instructions and further assistances.</div>'
 		);
 	}

@@ -148,7 +148,7 @@ class QuerySegmentListProcessor {
 				$op = $subQuery->not ? '!' : '';
 
 				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
-				$t = $this->connection->tableName( $subQuery->joinTable ) ." AS $subQuery->alias";
+				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
 
 				if ( $subQuery->from ) {
 					$t = "($t $subQuery->from)";
@@ -168,7 +168,7 @@ class QuerySegmentListProcessor {
 				} else {
 					foreach ( $subQuery->joinfield as $value ) {
 						$op = $subQuery->not ? '!' : '';
-						$condition .= ( $condition ? ' OR ': '' ) . "$joinField$op=" . $this->connection->addQuotes( $value );
+						$condition .= ( $condition ? ' OR ' : '' ) . "$joinField$op=" . $this->connection->addQuotes( $value );
 					}
 				}
 
@@ -259,7 +259,7 @@ class QuerySegmentListProcessor {
 					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
 				}
 
-				$sql = 'INSERT ' . 'IGNORE ' .  'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
+				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' . $this->connection->tableName( $query->alias ) . " (id) VALUES $values";
 			} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 
 			if ( $sql ) {
@@ -321,8 +321,8 @@ class QuerySegmentListProcessor {
 		$valuecond = '';
 
 		foreach ( $query->joinfield as $value ) {
-			$values .= ( $values ? ',':'' ) . '(' . $this->connection->addQuotes( $value ) . ')';
-			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->connection->addQuotes( $value );
+			$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';
+			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->connection->addQuotes( $value );
 		}
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):

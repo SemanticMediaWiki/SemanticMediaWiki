@@ -214,7 +214,7 @@ class HtmlColumnListRenderer {
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
 			if ( $resultItems === [] ) {
-					continue;
+				continue;
 			}
 
 			$result .= $this->makeList(

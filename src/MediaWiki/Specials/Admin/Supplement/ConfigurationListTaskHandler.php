@@ -169,12 +169,12 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 				$this->cleanPath( $value );
 			}
 
-			if ( is_string( $value ) && strpos( $value , 'SemanticMediaWiki/') !== false ) {
-				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '../SemanticMediaWiki', $value );
+			if ( is_string( $value ) && strpos( $value, 'SemanticMediaWiki/' ) !== false ) {
+				$value = preg_replace( '/[\s\S]+?SemanticMediaWiki/', '../SemanticMediaWiki', $value );
 			}
 
-			if ( is_string( $value ) && strpos( $value , '\\SemanticMediaWiki' ) !== false ) {
-				$value = preg_replace('/[\s\S]+?SemanticMediaWiki/', '..\SemanticMediaWiki', $value );
+			if ( is_string( $value ) && strpos( $value, '\\SemanticMediaWiki' ) !== false ) {
+				$value = preg_replace( '/[\s\S]+?SemanticMediaWiki/', '..\SemanticMediaWiki', $value );
 			}
 		}
 

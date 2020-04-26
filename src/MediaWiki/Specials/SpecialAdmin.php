@@ -62,7 +62,7 @@ class SpecialAdmin extends SpecialPage {
 		$output = $this->getOutput();
 
 		$output->setPageTitle( $this->msg_text( 'smw-title' ) );
-		$output->addHelpLink(  $this->msg_text( 'smw-admin-helplink' ), true );
+		$output->addHelpLink( $this->msg_text( 'smw-admin-helplink' ), true );
 
 		$output->addModuleStyles( 'ext.smw.special.style' );
 		$output->addModules( 'ext.smw.admin' );
@@ -190,8 +190,8 @@ class SpecialAdmin extends SpecialPage {
 		return $html;
 	}
 
-	private function msg_text( $key, $type = Message::TEXT) {
-		return Message::get( $key, $type , Message::USER_LANGUAGE );
+	private function msg_text( $key, $type = Message::TEXT ) {
+		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 
 }

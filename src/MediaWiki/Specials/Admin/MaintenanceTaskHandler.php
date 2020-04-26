@@ -92,7 +92,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 			if ( $key == 0 ) {
 				$html = $taskHandler->getHtml();
 				$tasks .= $this->jobNote();
-			}else {
+			} else {
 				$tasks .= $taskHandler->getHtml();
 			}
 		}
@@ -188,7 +188,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 			$section = '';
 
 			$description = $this->msg(
-				'smw-admin-maintenance-script-description-' . strtolower( str_replace('.php', '', $name ) ),
+				'smw-admin-maintenance-script-description-' . strtolower( str_replace( '.php', '', $name ) ),
 				Message::PARSE
 			);
 

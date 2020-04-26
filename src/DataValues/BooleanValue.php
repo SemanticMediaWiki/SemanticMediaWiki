@@ -21,12 +21,14 @@ class BooleanValue extends DataValue {
 
 	/**
 	 * The text to write for "true" if a custom output format was set.
+	 *
 	 * @var string
 	 */
 	protected $trueCaption;
 
 	/**
 	 * The text to write for "false" if a custom output format was set.
+	 *
 	 * @var string
 	 */
 	protected $falseCaption;
@@ -50,7 +52,7 @@ class BooleanValue extends DataValue {
 		}
 
 		$this->m_dataitem = new DIBoolean(
-			 $this->doParseBoolValue( $value )
+			$this->doParseBoolValue( $value )
 		);
 	}
 
@@ -166,7 +168,9 @@ class BooleanValue extends DataValue {
 	/**
 	 * Get text for displaying the value of this property, or false if not
 	 * valid.
+	 *
 	 * @param $useformat bool, true if the output format should be used, false if the returned text should be parsable
+	 *
 	 * @return string
 	 */
 	protected function getStandardCaption( $useformat ) {

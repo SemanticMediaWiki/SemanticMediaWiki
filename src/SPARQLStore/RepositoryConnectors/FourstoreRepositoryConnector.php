@@ -39,13 +39,13 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 		}
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getQueryEndpoint() );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, ['Accept: application/sparql-results+xml,application/xml;q=0.8' ]);
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Accept: application/sparql-results+xml,application/xml;q=0.8' ] );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1" .
-			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
+			( ( $defaultGraph !== '' ) ? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
 
@@ -121,7 +121,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "data=" . urlencode( $payload ) . '&graph=' .
-			( ( $defaultGraph !== '' )? urlencode( $defaultGraph ) : 'default' ) .
+			( ( $defaultGraph !== '' ) ? urlencode( $defaultGraph ) : 'default' ) .
 			'&mime-type=application/x-turtle';
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
@@ -154,7 +154,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 		$parameterString = "update=" . urlencode( $sparql );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded' ] );
+		$this->httpRequest->setOption( CURLOPT_HTTPHEADER, [ 'Content-Type: application/x-www-form-urlencoded' ] );
 
 		$this->httpRequest->execute();
 

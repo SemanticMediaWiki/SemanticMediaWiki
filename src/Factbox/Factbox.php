@@ -212,9 +212,9 @@ class Factbox {
 
 		$htmlTabs->tab(
 			'facts-list',
-			Message::get( 'smw-factbox-facts' , Message::TEXT, Message::USER_LANGUAGE ),
+			Message::get( 'smw-factbox-facts', Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'title' => Message::get( 'smw-factbox-facts-help' , Message::TEXT, Message::USER_LANGUAGE ),
+				'title' => Message::get( 'smw-factbox-facts-help', Message::TEXT, Message::USER_LANGUAGE ),
 				'hide' => $list === '' ? true : false
 			]
 		);
@@ -226,9 +226,9 @@ class Factbox {
 
 		$htmlTabs->tab(
 			'facts-attachment',
-			Message::get( 'smw-factbox-attachments' , Message::TEXT, Message::USER_LANGUAGE ),
+			Message::get( 'smw-factbox-attachments', Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'title' => Message::get( 'smw-factbox-attachments-help' , Message::TEXT, Message::USER_LANGUAGE ),
+				'title' => Message::get( 'smw-factbox-attachments-help', Message::TEXT, Message::USER_LANGUAGE ),
 				'hide' => $attachment === '' ? true : false
 			]
 		);
@@ -240,7 +240,7 @@ class Factbox {
 
 		$htmlTabs->tab(
 			'facts-derived',
-			Message::get( 'smw-factbox-derived' , Message::TEXT, Message::USER_LANGUAGE ),
+			Message::get( 'smw-factbox-derived', Message::TEXT, Message::USER_LANGUAGE ),
 			[
 				'hide' => $derived === '' ? true : false
 			]

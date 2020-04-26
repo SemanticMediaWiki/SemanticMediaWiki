@@ -39,7 +39,7 @@ class PropertyUsageListLookup implements ListLookup {
 	 *
 	 * @param Store $store
 	 * @param PropertyStatisticsStore $propertyStatisticsStore
-	 * @param RequestOptions $requestOptions|null
+	 * @param RequestOptions|null $requestOptions
 	 */
 	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, RequestOptions $requestOptions = null ) {
 		$this->store = $store;

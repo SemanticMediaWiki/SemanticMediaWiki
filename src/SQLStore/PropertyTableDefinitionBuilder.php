@@ -175,13 +175,13 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $diTypes
 	 */
 	private function addTableDefinitionForDiTypes( array $diTypes ) {
-		foreach( $diTypes as $tableDIType => $tableName ) {
+		foreach ( $diTypes as $tableDIType => $tableName ) {
 			$this->addPropertyTable( $tableDIType, $tableName, false, TableDefinition::TYPE_CORE );
 		}
 	}
 
 	private function addTableDefinitionForFixedProperties( array $properties, array $fixedPropertyTablePrefix = [], $tableType = false ) {
-		foreach( $properties as $propertyKey => $propertyTableSuffix ) {
+		foreach ( $properties as $propertyKey => $propertyTableSuffix ) {
 
 			$tablePrefix = isset( $fixedPropertyTablePrefix[$propertyKey] ) ? $fixedPropertyTablePrefix[$propertyKey] : self::PROPERTY_TABLE_PREFIX;
 
@@ -204,7 +204,7 @@ class PropertyTableDefinitionBuilder {
 		// TODO This should be changed if possible
 		$redirectTableName = $this->makeTableName( '_REDI' );
 
-		if ( isset( $this->propertyTables[$redirectTableName]) ) {
+		if ( isset( $this->propertyTables[$redirectTableName] ) ) {
 			$this->propertyTables[$redirectTableName]->setUsesIdSubject( false );
 		}
 	}
@@ -221,7 +221,7 @@ class PropertyTableDefinitionBuilder {
 			$this->makeTableName( '_TYPE' )
 		);
 
-		foreach( $fixedProperties as $propertyKey ) {
+		foreach ( $fixedProperties as $propertyKey ) {
 
 			// Normalize the key to be independent from a possible MW setting
 			// (has area == Has_area <> Has_Area)

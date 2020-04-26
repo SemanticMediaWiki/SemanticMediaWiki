@@ -77,7 +77,7 @@ class AllowsPatternValue extends StringValue {
 
 		$id = $this->getDataItem()->getString();
 
-		return '[['. Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::REFERENCE_PAGE_ID . '|' . $id .']]';
+		return '[[' . Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::REFERENCE_PAGE_ID . '|' . $id . ']]';
 	}
 
 	/**

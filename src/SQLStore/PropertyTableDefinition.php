@@ -80,15 +80,15 @@ class PropertyTableDefinition {
 	private $tableType = '';
 
 	/**
-	* Factory method to create an instance for a given
-	* DI type and the given table name.
-	*
-	* @since 1.8
-	*
-	* @param integer $DIType constant
-	* @param string $tableName logocal table name (not the DB version)
-	* @param string|false $fixedProperty property key if any
-	*/
+	 * Factory method to create an instance for a given
+	 * DI type and the given table name.
+	 *
+	 * @since 1.8
+	 *
+	 * @param integer $DIType constant
+	 * @param string $tableName logocal table name (not the DB version)
+	 * @param string|false $fixedProperty property key if any
+	 */
 	public function __construct( $DIType, $tableName, $fixedProperty = false ) {
 		$this->name = $tableName;
 		$this->fixedProperty = $fixedProperty;
@@ -96,14 +96,14 @@ class PropertyTableDefinition {
 	}
 
 	/**
-	* Method to return the fields for this table
-	*
-	* @since 1.8
-	*
-	* @param SQLStore $store
-	*
-	* @return array
-	*/
+	 * Method to return the fields for this table
+	 *
+	 * @since 1.8
+	 *
+	 * @param SQLStore $store
+	 *
+	 * @return array
+	 */
 	public function getFields( SQLStore $store ) {
 		$diHandler = $store->getDataItemHandlerForDIType( $this->diType );
 		return $diHandler->getTableFields();

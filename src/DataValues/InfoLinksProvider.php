@@ -39,12 +39,14 @@ class InfoLinksProvider {
 
 	/**
 	 * Used to control the addition of the standard search link.
+	 *
 	 * @var boolean
 	 */
 	private $hasSearchLink;
 
 	/**
 	 * Used to control service link creation.
+	 *
 	 * @var boolean
 	 */
 	private $hasServiceLinks;
@@ -184,7 +186,7 @@ class InfoLinksProvider {
 		$this->infoLinks[] = $infoLink;
 		$this->hasSearchLink = $this->infoLinks !== [];
 
-		 // add further service links
+		// add further service links
 		if ( !$this->hasServiceLinks && $this->enabledServiceLinks ) {
 			$this->addServiceLinks();
 		}
@@ -285,7 +287,7 @@ class InfoLinksProvider {
 			return;
 		}
 
-		 // messages distinguish ' ' from '_'
+		// messages distinguish ' ' from '_'
 		$args[0] = 'smw_service_' . str_replace( ' ', '_', $dataItem->getString() );
 		$text = Message::get( $args, Message::TEXT, Message::CONTENT_LANGUAGE );
 		$links = preg_split( "/[\n][\s]?/u", $text );

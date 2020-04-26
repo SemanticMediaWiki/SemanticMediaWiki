@@ -154,7 +154,7 @@ class ChangePropagationEntityLookup {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$pid = $this->store->getObjectIds()->getSMWPropertyID( $property );
 
-		$dataItemTables =  $this->store->getPropertyTableInfoFetcher()->getDefaultDataItemTables();
+		$dataItemTables = $this->store->getPropertyTableInfoFetcher()->getDefaultDataItemTables();
 		$idList = [];
 
 		// Matches may temporary create duplicates in regrads to

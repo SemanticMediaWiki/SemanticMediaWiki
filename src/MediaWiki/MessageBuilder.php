@@ -95,7 +95,7 @@ class MessageBuilder {
 	 */
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
 		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
-			$prevNext =  new PrevNextNavigationRenderer( \RequestContext::getMain() );
+			$prevNext = new PrevNextNavigationRenderer( \RequestContext::getMain() );
 			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
 		} else {
 			return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );

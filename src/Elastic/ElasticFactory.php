@@ -305,7 +305,7 @@ class ElasticFactory {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $store === null  ) {
+		if ( $store === null ) {
 			$store = $applicationFactory->getStore();
 		}
 
@@ -329,7 +329,7 @@ class ElasticFactory {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $store === null  ) {
+		if ( $store === null ) {
 			$store = $applicationFactory->getStore();
 		}
 
@@ -379,7 +379,7 @@ class ElasticFactory {
 				'ValueDescriptionInterpreter' => [ $this, 'newValueDescriptionInterpreter' ],
 				'ConjunctionInterpreter' => [ $this, 'newConjunctionInterpreter' ],
 				'DisjunctionInterpreter' => [ $this, 'newDisjunctionInterpreter' ],
-				'SomeValueInterpreter'  => [ $this, 'newSomeValueInterpreter' ]
+				'SomeValueInterpreter' => [ $this, 'newSomeValueInterpreter' ]
 			]
 		);
 

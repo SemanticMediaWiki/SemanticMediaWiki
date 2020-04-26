@@ -59,7 +59,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( RepositoryResult $repositoryResult = null , Query $query ) {
+	public function newQueryResult( RepositoryResult $repositoryResult = null, Query $query ) {
 
 		if ( $repositoryResult === null ) {
 			return $this->newEmptyQueryResult( $query );
@@ -107,7 +107,7 @@ class QueryResultFactory {
 		}
 
 		if ( $repositoryResult->numRows() > $query->getLimit() ) {
-			if ( count( $resultDataItems) > 1 ) {
+			if ( count( $resultDataItems ) > 1 ) {
 				array_pop( $resultDataItems );
 			}
 			$hasFurtherResults = true;

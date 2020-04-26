@@ -21,9 +21,11 @@ use SMWExpLiteral as ExpLiteral;
 class RepositoryResult implements Iterator {
 
 	/// Error code: no errors occurred.
-	const ERROR_NOERROR     = 0;
+	const ERROR_NOERROR = 0;
+
 	/// Error code: service unreachable; result will be empty
 	const ERROR_UNREACHABLE = 1;
+
 	/// Error code: results might be incomplete (e.g. due to some resource limit being reached)
 	const ERROR_INCOMPLETE = 2;
 

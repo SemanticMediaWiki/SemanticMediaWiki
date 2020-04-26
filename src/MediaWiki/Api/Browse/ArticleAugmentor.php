@@ -41,17 +41,17 @@ class ArticleAugmentor {
 			return;
 		}
 
-		if ( isset( $parameters['fullText' ] ) || isset( $parameters['fullURL' ] ) ) {
+		if ( isset( $parameters['fullText'] ) || isset( $parameters['fullURL'] ) ) {
 
 			foreach ( $res['query'] as $key => &$value ) {
 
 				$title = $this->titleFactory->newFromID( $value['id'] );
 
-				if ( isset( $parameters['fullText' ] ) ) {
+				if ( isset( $parameters['fullText'] ) ) {
 					$value['fullText'] = $title->getFullText();
 				}
 
-				if ( isset( $parameters['fullURL' ] ) ) {
+				if ( isset( $parameters['fullURL'] ) ) {
 					$value['fullURL'] = $title->getFullURL();
 				}
 			}

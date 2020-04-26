@@ -37,7 +37,7 @@ class RecurringEventsParserFunction extends SubobjectParserFunction {
 	 * @param RecurringEvents $recurringEvents
 	 */
 	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $messageFormatter, RecurringEvents $recurringEvents ) {
-		parent::__construct ( $parserData, $subobject, $messageFormatter );
+		parent::__construct( $parserData, $subobject, $messageFormatter );
 		$this->recurringEvents = $recurringEvents;
 	}
 

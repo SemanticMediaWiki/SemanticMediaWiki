@@ -38,7 +38,7 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) .
-			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' ) . '&output=xml';
+			( ( $defaultGraph !== '' ) ? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' ) . '&output=xml';
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
 

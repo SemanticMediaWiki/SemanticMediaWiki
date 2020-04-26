@@ -129,7 +129,7 @@ class FieldMapper {
 				'query' => $query,
 				"boost" => $boost,
 				"random_score" => new \stdClass(),
-				"boost_mode"=> "multiply"
+				"boost_mode" => "multiply"
 			]
 		];
 	}
@@ -232,7 +232,7 @@ class FieldMapper {
 	 * @return array
 	 */
 	public function geo_bounding_box( $field, $top, $left, $bottom, $right ) {
-		return [ 'geo_bounding_box' => [ $field => [ 'top' => $top , 'left' => $left, 'bottom' => $bottom, 'right' => $right ] ] ];
+		return [ 'geo_bounding_box' => [ $field => [ 'top' => $top, 'left' => $left, 'bottom' => $bottom, 'right' => $right ] ] ];
 	}
 
 	/**
@@ -378,7 +378,7 @@ class FieldMapper {
 		// Use case: TQ0102
 		if ( $this->containsReservedChar( $value ) ) {
 			$value = str_replace(
-				[ '\\', '{', '}', '(', ')', '[', ']', '^', '=', '|', '/' , ':' ],
+				[ '\\', '{', '}', '(', ')', '[', ']', '^', '=', '|', '/', ':' ],
 				[ "\\\\", "\{", "\}", "\(", "\)", "\[", "\]", "\^", "\=", "\|", "\/", "\:" ],
 				$value
 			);
@@ -387,7 +387,7 @@ class FieldMapper {
 		// Intended phrase or a single " char?
 		// Use case: TQ0102#13
 		if ( strpos( $value, '"' ) !== false && substr_count( $value, '"' ) < 2 ) {
-			$value = str_replace( '"' , '\"', $value );
+			$value = str_replace( '"', '\"', $value );
 		} elseif ( substr_count( $value, '"' ) == 2 && strpos( $value, '~' ) !== false ) {
 			// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_fuzziness
 			// [[Has page::phrase:some text~2]] as "some text"~2
@@ -404,7 +404,7 @@ class FieldMapper {
 			// Use case: `[[Has text::~sear*, -elas*]]`
 			// The user added those parameters by themselves
 			// Avoid comma separated strings
-			$value = str_replace( ',' , '', $value );
+			$value = str_replace( ',', '', $value );
 		} elseif ( strpos( $value, ' ' ) !== false ) {
 			// Use case: `[[Has text::~some tex*]]
 			// Intention is to search for `some` AND `tex*`
@@ -417,7 +417,7 @@ class FieldMapper {
 			// AND `0608*`
 			// T:Q0908 `http://example.org/some_title_with_a_value` becomes
 			// `example.org +some +title +with +a +value`
-			$value = str_replace( [ '\/', '/', ' +*', '_' ], [ '/',  ' +', '*',  ' +' ], $value );
+			$value = str_replace( [ '\/', '/', ' +*', '_' ], [ '/', ' +', '*', ' +' ], $value );
 		} else {
 
 			// `_` in MediaWiki represents a space therefore replace it with an
@@ -432,16 +432,16 @@ class FieldMapper {
 
 			// Use case: `[[Has text::~foo bar*]]`
 			if ( strpos( $value, ' ' ) !== false && substr( $value, -1 ) === '*' ) {
-			//	$value = substr( $value, 0, -1 );
+				//	$value = substr( $value, 0, -1 );
 				$wildcard = '*';
-				$params[ 'analyze_wildcard'] = true;
+				$params['analyze_wildcard'] = true;
 			}
 
 			// Use case: `[[Has text::~foo bar*]]
 			// ... ( and ) signifies precedence
 			// ... " wraps a number of tokens to signify a phrase for searching
 			if ( strpos( $value, ' ' ) !== false && strpos( $value, '"' ) === false ) {
-			//	$value = "\"($value)\"$wildcard";
+				//	$value = "\"($value)\"$wildcard";
 			}
 		}
 

@@ -62,7 +62,7 @@ class MagicWordsFinder {
 		// https://github.com/wikimedia/mediawiki/commit/07628545608ec742dd21fd83f47b1552b898d3b4
 		if ( $this->magicWordFactory !== null ) {
 			$mw = $this->magicWordFactory->get( $magicWord );
-		} else{
+		} else {
 			$mw = MagicWord::get( $magicWord );
 		}
 

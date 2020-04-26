@@ -150,7 +150,7 @@ class ParameterInput {
 
 		// #1473
 		if ( $value === [] ) {
-		   $value = '';
+			$value = '';
 		}
 
 		return $value;
@@ -171,7 +171,7 @@ class ParameterInput {
 			'style' => "width: 95%;"
 		];
 
-		if ( $this->attributes !==[] ) {
+		if ( $this->attributes !== [] ) {
 			$attributes = $this->attributes;
 		}
 
@@ -198,7 +198,7 @@ class ParameterInput {
 			'style' => "width: 95%;"
 		];
 
-		if ( $this->attributes !==[] ) {
+		if ( $this->attributes !== [] ) {
 			$attributes = $this->attributes;
 		}
 
@@ -223,7 +223,7 @@ class ParameterInput {
 			'class' => 'parameter-boolean-input'
 		];
 
-		if ( $this->attributes !==[] ) {
+		if ( $this->attributes !== [] ) {
 			$attributes = $this->attributes;
 		}
 
@@ -263,7 +263,7 @@ class ParameterInput {
 			'select',
 			[
 				'name' => $this->inputName,
-				'class'=> 'parameter-select-input'
+				'class' => 'parameter-select-input'
 			],
 			implode( "\n", $options )
 		);

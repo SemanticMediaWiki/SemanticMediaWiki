@@ -38,18 +38,18 @@ class InsertJobTask extends Task {
 	public function process( array $parameters ) {
 
 		if ( $parameters['subject'] === '' ) {
-			return ['done' => false ];
+			return [ 'done' => false ];
 		}
 
 		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
 		$title = $subject->getTitle();
 
 		if ( $title === null ) {
-			return ['done' => false ];
+			return [ 'done' => false ];
 		}
 
 		if ( !isset( $parameters['job'] ) ) {
-			return ['done' => false ];
+			return [ 'done' => false ];
 		}
 
 		$params = [];

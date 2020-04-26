@@ -299,11 +299,11 @@ class Hooks {
 			'UserGroupsChanged' => [ $this, 'onUserGroupsChanged' ],
 			'DeleteAccount' => [ $this, 'onDeleteAccount' ],
 
-			'SMW::SQLStore::AfterDataUpdateComplete' => [ $this, 'onAfterDataUpdateComplete'],
+			'SMW::SQLStore::AfterDataUpdateComplete' => [ $this, 'onAfterDataUpdateComplete' ],
 			'SMW::SQLStore::Installer::AfterCreateTablesComplete' => [ $this, 'onAfterCreateTablesComplete' ],
 
-			'SMW::Store::BeforeQueryResultLookupComplete' => [ $this, 'onBeforeQueryResultLookupComplete'],
-			'SMW::Store::AfterQueryResultLookupComplete'  => [ $this, 'onAfterQueryResultLookupComplete'],
+			'SMW::Store::BeforeQueryResultLookupComplete' => [ $this, 'onBeforeQueryResultLookupComplete' ],
+			'SMW::Store::AfterQueryResultLookupComplete' => [ $this, 'onAfterQueryResultLookupComplete' ],
 
 			'SMW::Browse::AfterIncomingPropertiesLookupComplete' => [ $this, 'onAfterIncomingPropertiesLookupComplete' ],
 			'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate' => [ $this, 'onBeforeIncomingPropertyValuesFurtherLinkCreate' ],
@@ -823,7 +823,7 @@ class Hooks {
 		);
 
 		$linksUpdateConstructed->setRevisionGuard(
-			 $applicationFactory->singleton( 'RevisionGuard' )
+			$applicationFactory->singleton( 'RevisionGuard' )
 		);
 
 		$linksUpdateConstructed->process( $linksUpdate );
@@ -1040,7 +1040,7 @@ class Hooks {
 
 		$extensionTypes = new ExtensionTypes();
 
-		return $extensionTypes->process( $extTypes);
+		return $extensionTypes->process( $extTypes );
 	}
 
 	/**
@@ -1326,7 +1326,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::BeforeQueryResultLookupComplete
 	 */
-	public function onBeforeQueryResultLookupComplete ( $store, $query, &$result, $queryEngine ) {
+	public function onBeforeQueryResultLookupComplete( $store, $query, &$result, $queryEngine ) {
 
 		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
@@ -1348,7 +1348,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 	 */
-	public function onAfterQueryResultLookupComplete ( $store, &$result ) {
+	public function onAfterQueryResultLookupComplete( $store, &$result ) {
 
 		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -1368,7 +1368,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::AfterIncomingPropertiesLookupComplete
 	 */
-	public function onAfterIncomingPropertiesLookupComplete ( $store, $semanticData, $requestOptions ) {
+	public function onAfterIncomingPropertiesLookupComplete( $store, $semanticData, $requestOptions ) {
 
 		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -1387,7 +1387,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
 	 */
-	public function onBeforeIncomingPropertyValuesFurtherLinkCreate ( $property, $subject, &$html, $store ) {
+	public function onBeforeIncomingPropertyValuesFurtherLinkCreate( $property, $subject, &$html, $store ) {
 
 		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -1409,7 +1409,7 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Store::AfterQueryResultLookupComplete
 	 */
-	public function onAfterCreateTablesComplete ( $tableBuilder, $messageReporter, $options ) {
+	public function onAfterCreateTablesComplete( $tableBuilder, $messageReporter, $options ) {
 
 		$messageReporter->reportMessage(
 			( new \SMW\Utils\CliMsgFormatter() )->section( 'Import task(s)', 3, '-', true )

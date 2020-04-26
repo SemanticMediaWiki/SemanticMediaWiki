@@ -60,7 +60,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
-			( ( $defaultGraph !== '' )? " FROM <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? " FROM <{$defaultGraph}> " : '' ) .
 			"{ $deletePattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -83,7 +83,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
-			( ( $defaultGraph !== '' )? " GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? " GRAPH <{$defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -110,7 +110,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 
 		$sparql = self::getPrefixString( $extraNamespaces, true ) .
 			"INSERT DATA " .
-			( ( $defaultGraph !== '' )? "INTO GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "INTO GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples }";
 
 		return $this->doUpdate( $sparql );
@@ -132,7 +132,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA " .
-			( ( $defaultGraph !== '' )? "FROM GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "FROM GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples }";
 
 		return $this->doUpdate( $sparql );

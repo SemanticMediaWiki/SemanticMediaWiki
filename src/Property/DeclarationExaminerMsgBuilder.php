@@ -64,11 +64,11 @@ class DeclarationExaminerMsgBuilder {
 	private function makeHTML( $type, $message ) {
 		$class = '';
 
-		if ( isset( $message['_merge' ] ) ) {
+		if ( isset( $message['_merge'] ) ) {
 			$msg = [];
 			$msgKey = [];
 
-			foreach ( $message['_merge' ] as $m ) {
+			foreach ( $message['_merge'] as $m ) {
 				$msgKey[] = $m[0];
 				$msg[] = $this->msg( $m );
 			}
@@ -102,7 +102,7 @@ class DeclarationExaminerMsgBuilder {
 	}
 
 	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
-		return  Message::get( $msg, Message::PARSE, Message::USER_LANGUAGE );
+		return Message::get( $msg, Message::PARSE, Message::USER_LANGUAGE );
 	}
 
 }

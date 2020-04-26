@@ -250,8 +250,8 @@ class NamespaceManager {
 		 * be defined after SMW_NS_PROPERTY is declared
 		 */
 		$smwNamespacesSettings = [
-			SMW_NS_PROPERTY  => true,
-			SMW_NS_PROPERTY_TALK  => false,
+			SMW_NS_PROPERTY => true,
+			SMW_NS_PROPERTY_TALK => false,
 			SMW_NS_CONCEPT => true,
 			SMW_NS_CONCEPT_TALK => false,
 			SMW_NS_SCHEMA => true,

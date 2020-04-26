@@ -47,7 +47,7 @@ class SpecialSearchByProperty extends SpecialPage {
 		list( $limit, $offset ) = $this->getLimitOffset();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
-			$query = Infolink::decodeCompactLink( 'cl:'. $request->getText( 'cl' ) );
+			$query = Infolink::decodeCompactLink( 'cl:' . $request->getText( 'cl' ) );
 		} else {
 			$query = Infolink::decodeCompactLink( $query );
 		}

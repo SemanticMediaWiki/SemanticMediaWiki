@@ -151,9 +151,9 @@ class HtmlForm {
 			];
 		} else {
 			$params = [
- 				'action' => $GLOBALS['wgScript'],
- 				'name' => 'ask',
- 				'method' => 'get'
+				'action' => $GLOBALS['wgScript'],
+				'name' => 'ask',
+				'method' => 'get'
 			];
 		}
 
@@ -258,7 +258,7 @@ class HtmlForm {
 		$htmlTabs->content(
 			'smw-askt-code',
 			'<div style="margin-top:15px; margin-bottom:15px;">' .
-			LinksWidget::embeddedCodeBlock(	$code, true ) . '</div>'
+			LinksWidget::embeddedCodeBlock( $code, true ) . '</div>'
 		);
 
 		if ( !isset( $this->parameters['source'] ) || $this->parameters['source'] === '' ) {
@@ -268,7 +268,7 @@ class HtmlForm {
 				'smw-askt-debug',
 				$debugLink,
 				[
-					'hide' => $debugLink === '' || !$this->isEditMode ,
+					'hide' => $debugLink === '' || !$this->isEditMode,
 					'class' => 'smw-tab-right'
 				]
 			);

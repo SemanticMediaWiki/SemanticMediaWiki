@@ -157,12 +157,12 @@ class QueryEngine implements QueryEngineInterface {
 			$matchElement = $compoundCondition->matchElement;
 
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
-				$results = [  [ $matchElement ] ];
+				$results = [ [ $matchElement ] ];
 			} else {
 				$condition = $this->conditionBuilder->convertConditionToString( $compoundCondition );
 				$namespaces = $compoundCondition->namespaces;
 				$askQueryResult = $this->connection->ask( $condition, $namespaces );
-				$results = $askQueryResult->isBooleanTrue() ? [  [ $matchElement ] ] : [];
+				$results = $askQueryResult->isBooleanTrue() ? [ [ $matchElement ] ] : [];
 			}
 
 			$repositoryResult = new RepositoryResult( [ self::RESULT_VARIABLE => 0 ], $results );

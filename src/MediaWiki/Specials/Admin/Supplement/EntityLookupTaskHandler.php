@@ -159,7 +159,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		$manualEntryLogger = $applicationFactory->create( 'ManualEntryLogger' );
 		$manualEntryLogger->registerLoggableEventType( 'admin' );
-		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID '. $id );
+		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID ' . $id );
 	}
 
 	private function getForm( $webRequest, $id ) {
@@ -190,7 +190,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$html .= Html::element( 'p', [], '' );
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
-			$result = $this->msg(  ['smw-admin-iddispose-done', $id ] );
+			$result = $this->msg( [ 'smw-admin-iddispose-done', $id ] );
 			$id = null;
 		}
 

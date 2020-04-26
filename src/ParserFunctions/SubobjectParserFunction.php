@@ -243,7 +243,7 @@ class SubobjectParserFunction {
 	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
 
 		$id = $parserParameterProcessor->getFirst();
-		$isAnonymous = in_array( $id, [ null, '' ,'-' ] );
+		$isAnonymous = in_array( $id, [ null, '', '-' ] );
 
 		$useFirst = $this->useFirstElementAsPropertyLabel && !$isAnonymous;
 

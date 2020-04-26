@@ -191,7 +191,7 @@ class SchemaContent extends JsonContent {
 		}
 
 		if ( $schema === null ) {
-			return ;
+			return;
 		}
 
 		$output->setIndicator(
@@ -219,7 +219,7 @@ class SchemaContent extends JsonContent {
 				}
 
 				$parserData->addError(
-					[ ['smw-schema-error-violation', $error['property'], $error['message'] ] ]
+					[ [ 'smw-schema-error-violation', $error['property'], $error['message'] ] ]
 				);
 			} else {
 				$parserData->addError( (array)$error );

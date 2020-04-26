@@ -111,7 +111,7 @@ class ValueFormatter {
 		$isCompactLink = $dataValue->getOption( DataValue::OPT_COMPACT_INFOLINKS, false );
 		$noInfolinks = [ '_INST', '_SKEY' ];
 
-		if ( in_array( $dataValue->getTypeID(), [ '_wpg', '_wpp', '__sob'] ) ) {
+		if ( in_array( $dataValue->getTypeID(), [ '_wpg', '_wpp', '__sob' ] ) ) {
 			$infolink = Infolink::newBrowsingLink( '+', $dataValue->getLongWikiText() );
 			$infolink->setCompactLink( $isCompactLink );
 			$html .= "&#160;" . $infolink->getHTML( $linker );
@@ -200,9 +200,9 @@ class ValueFormatter {
 	public static function addNonBreakingSpace( $text ) {
 
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
-		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
+		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, -1, $count );
 
-		if ( $count > 2) {
+		if ( $count > 2 ) {
 			return preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) );
 		}
 

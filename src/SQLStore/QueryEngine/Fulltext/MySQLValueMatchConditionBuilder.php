@@ -116,7 +116,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param  string &$value
+	 * @param string &$value
 	 *
 	 * @return string
 	 */

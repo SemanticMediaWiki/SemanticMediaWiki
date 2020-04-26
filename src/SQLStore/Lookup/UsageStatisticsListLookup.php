@@ -199,7 +199,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
-			'smw_subobject'  => '',
+			'smw_subobject' => '',
 			'smw_proptable_hash IS NOT NULL'
 		];
 
@@ -256,7 +256,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
-			'smw_subobject'  => ''
+			'smw_subobject' => ''
 		];
 
 		$row = $this->store->getConnection()->selectRow(
@@ -302,7 +302,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		$conditions = [
 			'smw_namespace' => SMW_NS_PROPERTY,
 			'smw_iw' => '',
-			'smw_subobject'  => '',
+			'smw_subobject' => '',
 			'usage_count > 0'
 		];
 

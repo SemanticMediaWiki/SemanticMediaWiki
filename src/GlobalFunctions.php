@@ -118,7 +118,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 		$messages = array_map( 'htmlspecialchars', $messages );
 	}
 
-	if ( count( $messages ) == 1 )  {
+	if ( count( $messages ) == 1 ) {
 		$content = $messages[0];
 	} else {
 		foreach ( $messages as &$message ) {
@@ -137,8 +137,8 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 	$highlighter = Highlighter::factory( $type );
 
 	$highlighter->setContent( [
-		'caption'   => null,
-		'content'   => Highlighter::decode( $content )
+		'caption' => null,
+		'content' => Highlighter::decode( $content )
 	] );
 
 	return $highlighter->getHtml();

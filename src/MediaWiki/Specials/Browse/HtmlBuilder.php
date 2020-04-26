@@ -367,7 +367,7 @@ class HtmlBuilder {
 		);
 
 		if ( $this->getOption( 'printable' ) !== 'yes' && !$this->getOption( 'including' ) ) {
-			$html .= FieldBuilder::createQueryForm( $this->articletext, $this->language ) ;
+			$html .= FieldBuilder::createQueryForm( $this->articletext, $this->language );
 		}
 
 		$html .= Html::element(
@@ -457,7 +457,7 @@ class HtmlBuilder {
 			);
 		}
 
-		if ( !$isLoading  && !$incoming && $showGroup ) {
+		if ( !$isLoading && !$incoming && $showGroup ) {
 			$html .= $this->getGroupMessageClassLinks(
 				$groupFormatter,
 				$semanticData,
@@ -476,14 +476,14 @@ class HtmlBuilder {
 			);
 
 			$lColumn = HtmlDivTable::cell(
-				 Message::get( $isLoading ? 'smw-browse-from-backend' : $noMsgKey, Message::ESCAPED, $this->language ),
+				Message::get( $isLoading ? 'smw-browse-from-backend' : $noMsgKey, Message::ESCAPED, $this->language ),
 				[
 					"class" => 'smwb-cell smwb-propval'
 				]
 			);
 
 			$html .= HtmlDivTable::row(
-				( $left ? ( $rColumn . $lColumn ):( $lColumn . $rColumn ) ),
+				( $left ? ( $rColumn . $lColumn ) : ( $lColumn . $rColumn ) ),
 				[
 					"class" => "{$dirPrefix}propvalue"
 				]
@@ -602,7 +602,7 @@ class HtmlBuilder {
 
 			if ( ( $moreOutgoing || $moreIncoming ) && $last !== '' ) {
 				$value_html .= $comma . $last;
-			} elseif( $list !== [] && $last !== '' ) {
+			} elseif ( $list !== [] && $last !== '' ) {
 				$value_html .= '&nbsp;' . $and . '&nbsp;' . $last;
 			} else {
 				$value_html .= $last;

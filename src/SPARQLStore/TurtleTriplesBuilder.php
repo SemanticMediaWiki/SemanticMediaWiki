@@ -91,7 +91,7 @@ class TurtleTriplesBuilder {
 	public function doBuildTriplesFrom( SemanticData $semanticData ) {
 
 		$this->hasTriplesForUpdate = false;
-		$this->triples  = '';
+		$this->triples = '';
 		$this->prefixes = [];
 
 		$this->doSerialize( $semanticData );
@@ -140,7 +140,7 @@ class TurtleTriplesBuilder {
 			explode( " .", $this->triples ), $this->triplesChunkSize
 		);
 
-		foreach( $triplesArrayChunks as $triplesChunk ) {
+		foreach ( $triplesArrayChunks as $triplesChunk ) {
 			$chunkedTriples[] = implode( " .", $triplesChunk ) . "\n";
 		}
 

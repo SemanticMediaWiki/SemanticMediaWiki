@@ -78,9 +78,9 @@ trait DotSeekableIteratorTrait {
 
 		$seekable = $this->container;
 
-		foreach( \explode( '.', $position ) as $segment ) {
+		foreach ( \explode( '.', $position ) as $segment ) {
 
-			if( !\is_array( $seekable ) || !\array_key_exists( $segment, $seekable ) ) {
+			if ( !\is_array( $seekable ) || !\array_key_exists( $segment, $seekable ) ) {
 				$seekable = null;
 			}
 
