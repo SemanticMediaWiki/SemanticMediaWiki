@@ -215,7 +215,7 @@ class Factbox {
 			Message::get( 'smw-factbox-facts', Message::TEXT, Message::USER_LANGUAGE ),
 			[
 				'title' => Message::get( 'smw-factbox-facts-help', Message::TEXT, Message::USER_LANGUAGE ),
-				'hide' => $list === '' ? true : false
+				'hide' => $list === ''
 			]
 		);
 
@@ -229,7 +229,7 @@ class Factbox {
 			Message::get( 'smw-factbox-attachments', Message::TEXT, Message::USER_LANGUAGE ),
 			[
 				'title' => Message::get( 'smw-factbox-attachments-help', Message::TEXT, Message::USER_LANGUAGE ),
-				'hide' => $attachment === '' ? true : false
+				'hide' => $attachment === ''
 			]
 		);
 
@@ -242,7 +242,7 @@ class Factbox {
 			'facts-derived',
 			Message::get( 'smw-factbox-derived', Message::TEXT, Message::USER_LANGUAGE ),
 			[
-				'hide' => $derived === '' ? true : false
+				'hide' => $derived === ''
 			]
 		);
 

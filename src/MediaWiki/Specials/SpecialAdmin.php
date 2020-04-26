@@ -167,7 +167,7 @@ class SpecialAdmin extends SpecialPage {
 			'alerts',
 			'<span class="smw-icon-alert smw-tab-icon"></span>' . $this->msg_text( 'smw-admin-tab-alerts' ),
 			[
-				'hide'  => $alertsSection === '' ? true : false,
+				'hide'  => $alertsSection === '',
 				'class' => 'smw-tab-warning'
 			]
 		);

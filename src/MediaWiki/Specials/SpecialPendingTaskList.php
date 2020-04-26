@@ -80,7 +80,7 @@ class SpecialPendingTaskList extends SpecialPage {
 				'setup',
 				$this->msg( $pendingTask->getTitle() )->text(),
 				[
-					'hide' => $content === '' ? true : false
+					'hide'  => $content === ''
 				]
 			);
 
