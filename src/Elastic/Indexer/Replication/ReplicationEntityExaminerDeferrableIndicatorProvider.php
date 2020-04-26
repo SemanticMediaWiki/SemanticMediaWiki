@@ -183,7 +183,9 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 		if ( $this->wasChecked( $subject ) ) {
 			return;
-		} else if ( $this->isDeferredMode ) {
+		}
+
+		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
 
