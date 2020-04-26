@@ -98,7 +98,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->checkNamespace();
 		$this->checkReservedName( $propertyName );
 		$this->checkUniqueness( $property );
-		$this->checkErrorMessages( $property );
+		$this->checkErrorMessages();
 		$this->checkTypeDeclaration();
 		$this->checkCommonMessage( $propertyName );
 	}
