@@ -516,7 +516,7 @@ class ConditionBuilder {
 			$propertyChainValue->setUserValue( $propertyKey );
 
 			if ( !$propertyChainValue->isValid() ) {
-				return $description;
+				return null;
 			}
 
 			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();
