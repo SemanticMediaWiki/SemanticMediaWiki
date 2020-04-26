@@ -71,7 +71,7 @@ class TouchedField {
 		$connection->update(
 			SQLStore::ID_TABLE,
 			[
-				'smw_touched' => NULL
+				'smw_touched' => null
 			],
 			[
 				'smw_iw' => SMW_SQL3_SMWBORDERIW
