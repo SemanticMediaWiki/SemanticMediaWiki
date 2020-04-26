@@ -517,7 +517,7 @@ class SpecialAsk extends SpecialPage {
 
 			if ( $table !== '' ) {
 				$result .= '<h2>Score set</h2>' . $table;
-			};
+			}
 		}
 
 		if ( $native_result !== '' ) {

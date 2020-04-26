@@ -194,7 +194,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 			if ( $hiddenCategory->getText() === $catName ) {
 				return true;
-			};
+			}
 
 		}
 

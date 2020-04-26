@@ -193,7 +193,7 @@ class NamespaceManager {
 		foreach ( $instance->buildNamespaceIndex( $vars['smwgNamespaceIndex'] ) as $ns => $index ) {
 			if ( !$instance->isDefinedConstant( $ns ) ) {
 				define( $ns, $index );
-			};
+			}
 		}
 
 		$localLanguage = $instance->getLocalLanguage(

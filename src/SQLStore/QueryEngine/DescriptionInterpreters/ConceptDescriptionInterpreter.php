@@ -118,7 +118,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			// TODO: announce an error here? (maybe not, since the query processor can check for
 			// non-existing concept pages which is probably the main reason for finding nothing here)
 			return $query;
-		};
+		}
 
 		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 

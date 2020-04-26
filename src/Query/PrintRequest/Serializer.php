@@ -32,7 +32,7 @@ class Serializer {
 			// display but is not part of the original request
 			if ( $printRequest->getParameter( 'lang' ) ) {
 				$printRequest->removeParameter( 'index' );
-			};
+			}
 
 			foreach ( $printRequest->getParameters() as $key => $value ) {
 				$parameters .= "|+" . $key . "=" . $value;

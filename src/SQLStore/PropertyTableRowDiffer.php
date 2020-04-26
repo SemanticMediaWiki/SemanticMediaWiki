@@ -364,7 +364,7 @@ class PropertyTableRowDiffer {
 					unset( $oldValues[$oldKey] );
 				}
 			}
-		};
+		}
 
 		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array

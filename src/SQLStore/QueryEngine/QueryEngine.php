@@ -489,7 +489,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		if ( $count > $query->getLimit() || ( $count + $missedCount ) > $query->getLimit() ) {
 			$hasFurtherResults = true;
-		};
+		}
 
 		$connection->freeResult( $res );
 

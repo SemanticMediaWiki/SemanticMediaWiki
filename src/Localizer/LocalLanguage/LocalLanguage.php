@@ -406,11 +406,11 @@ class LocalLanguage {
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode]['label'][$label] ) ) {
 			return $this->propertyIdByLabelMap[$this->languageCode]['label'][$label];
-		};
+		}
 
 		if ( isset( $this->propertyIdByLabelMap[$this->languageCode]['alias'][$label] ) ) {
 			return $this->propertyIdByLabelMap[$this->languageCode]['alias'][$label];
-		};
+		}
 
 		return null;
 	}
