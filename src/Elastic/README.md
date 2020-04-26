@@ -16,7 +16,7 @@ The objective is to provide an interface to Elasticsearch to:
 - Semantic MediaWiki: 3.0+
 - [`elasticsearch/elasticsearch`][packagist:es] (PHP ^7.0 `~6.0` or PHP ^5.6.6 `~5.3`)
 
-The `ElasticStore` relies on the [elasticsearch php-api][es:php-api] to communicate with Elasticsearch directly and is therefore independent from any other vendor or MediaWiki extension that may use Elasticsearch as search backend (e.g. `CirrusSearch`).
+The `ElasticStore` relies on the [elasticsearch php-api][es:php-api] to communicate with Elasticsearch directly and is therefore independent of any other vendor or MediaWiki extension that may use Elasticsearch as search backend (e.g. `CirrusSearch`).
 
 It is recommended to:
 

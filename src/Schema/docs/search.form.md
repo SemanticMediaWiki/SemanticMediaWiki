@@ -28,7 +28,7 @@ The `SEARCH_FORM_SCHEMA` schema type defines forms used in the extended `Special
 - `forms` defines a collection of forms
   - `Books and journals` as title of a form
     - `Has title` is a simple input field without any constraints
-    - `Publication type` is a input field with additional attributes
+    - `Publication type` is an input field with additional attributes
 
 <pre>
 {
@@ -99,7 +99,7 @@ The `term_parser` prefix can be used to shorten the input cycle and summarize fr
 }
 </pre>
 
-Prefixes are only applicable (and usable as means the shorten the search term) from within the extended search form.
+Prefixes are only applicable (and usable as means to shorten the search term) from within the extended search form.
 
 #### Namespaces
 

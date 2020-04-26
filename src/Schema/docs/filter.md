@@ -2,7 +2,7 @@ Semantic MediaWiki provides a `SchemaFilter` to help developers define specific 
 
 ## Format
 
-The following examples show the expected format for how to define a condition which is tested and hereby permits the code to decide whether it is a true statement or not for those tested values. Aside from the `if` + `keyword` notation, some statements allow the clarify the requirements when more than one value is given or required by using the following expressions `oneOf`, `anyOf`, and `allOf` (borrowing the semantics from  [swagger.io][swagger.io] and [json-schema.org][json-schema.org]).
+The following examples show the expected format for how to define a condition which is tested and hereby permits the code to decide whether it is a true statement or not for those tested values. Aside from the `if` + `keyword` notation, some statements allow to clarify the requirements when more than one value is given or required by using the following expressions `oneOf`, `anyOf`, and `allOf` (borrowing the semantics from  [swagger.io][swagger.io] and [json-schema.org][json-schema.org]).
 
 ```
 {
@@ -57,7 +57,7 @@ While expressing a composite filter should follow:
 }
 ```
 
-It should be noted that it is possible to define a schema without a specific "rule_name_x" but it will create a disadvantage when trying to identify which rule was applied later in a production system when there are dozen of possible rules to be filtered.
+It should be noted that it is possible to define a schema without a specific "rule_name_x" but it will create a disadvantage when trying to identify which rule was applied later in a production system when there are many possible rules to be filtered.
 
 Some conditionals (category, namespace, property) can clarify their intention for testing a condition by using extra attributes such as `oneOf`, `anyOf`, `allOf`. For an understanding of the semantics, please consult the [swagger.io][swagger.io] and [json-schema.org][json-schema.org].
 
