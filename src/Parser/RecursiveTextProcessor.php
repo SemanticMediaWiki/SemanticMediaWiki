@@ -65,9 +65,9 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Parser $parser|null
+	 * @param Parser|null $parser
 	 */
-	public function __construct( Parser $parser = null ) {
+	public function __construct( ?Parser $parser = null ) {
 		$this->parser = $parser;
 
 		if ( $this->parser === null ) {
