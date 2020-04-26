@@ -678,6 +678,7 @@ class Database {
 	 * @since 3.1
 	 *
 	 * @param string $fname
+	 *
 	 * @throws RuntimeException
 	 */
 	public function beginSectionTransaction( $fname = __METHOD__ ) {
@@ -706,7 +707,8 @@ class Database {
 	/**
 	 * @since 3.1
 	 *
-	 * @param  string $fname
+	 * @param string $fname
+	 *
 	 * @return boolean
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {

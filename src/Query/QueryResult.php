@@ -44,6 +44,7 @@ class QueryResult {
 
 	/**
 	 * Array of DIWikiPage objects that are the basis for this result
+	 *
 	 * @var DIWikiPage[]
 	 */
 	protected $mResults;
@@ -57,6 +58,7 @@ class QueryResult {
 
 	/**
 	 * Are there more results than the ones given?
+	 *
 	 * @var boolean
 	 */
 	protected $mFurtherResults;
@@ -64,18 +66,21 @@ class QueryResult {
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
+	 *
 	 * @var Query
 	 */
 	protected $mQuery;
 
 	/**
 	 * The Store object used to retrieve further data on demand.
+	 *
 	 * @var Store
 	 */
 	protected $mStore;
 
 	/**
 	 * Holds a value that belongs to a count query result
+	 *
 	 * @var integer|null
 	 */
 	private $countValue;

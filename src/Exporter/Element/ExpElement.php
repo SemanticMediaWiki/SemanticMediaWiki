@@ -13,6 +13,7 @@ use SMWDataItem as DataItem;
  * A single element for export, e.g. a data literal, instance name, or blank
  * node. This abstract base class declares the basic common functionality of
  * export elements (which is not much, really).
+ *
  * @note This class should not be instantiated directly.
  *
  * @license GNU GPL v2+

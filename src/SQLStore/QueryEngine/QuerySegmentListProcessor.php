@@ -99,6 +99,7 @@ class QuerySegmentListProcessor {
 	 * the actual result.
 	 *
 	 * @param integer $id
+	 *
 	 * @throws RuntimeException
 	 */
 	public function process( $id ) {
@@ -360,6 +361,7 @@ class QuerySegmentListProcessor {
 
 	/**
 	 * After querying, make sure no temporary database tables are left.
+	 *
 	 * @todo I might be better to keep the tables and possibly reuse them later
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */

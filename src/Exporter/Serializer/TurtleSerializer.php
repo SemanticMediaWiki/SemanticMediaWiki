@@ -36,12 +36,14 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * If true, do not serialize namespace declarations and record them in
 	 * $sparql_namespaces instead for later retrieval.
+	 *
 	 * @var boolean
 	 */
 	protected $sparqlmode;
 
 	/**
 	 * Array of retrieved namespaces (abbreviation => URI) for later use.
+	 *
 	 * @var array of string
 	 */
 	protected $sparql_namespaces;
@@ -304,6 +306,7 @@ class TurtleSerializer extends Serializer {
 	 * parameter must be an ExpResource or ExpLiteral, no ExpData.
 	 *
 	 * @param $expElement ExpElement being ExpLiteral or ExpResource
+	 *
 	 * @return string
 	 */
 	public static function getTurtleNameForExpElement( ExpElement $expElement ) {

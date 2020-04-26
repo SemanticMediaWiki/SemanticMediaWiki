@@ -20,18 +20,21 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Local part of the abbreviated URI
+	 *
 	 * @var string
 	 */
 	private $localName;
 
 	/**
 	 * Namespace URI prefix of the abbreviated URI
+	 *
 	 * @var string
 	 */
 	private $namespace;
 
 	/**
 	 * Namespace abbreviation of the abbreviated URI
+	 *
 	 * @var string
 	 */
 	private $namespaceId;

@@ -318,6 +318,7 @@ class RDFXMLSerializer extends Serializer {
 	 * to be replaced.
 	 *
 	 * @param $string string to be escaped
+	 *
 	 * @return string
 	 */
 	protected function makeValueEntityString( $string ) {
@@ -328,6 +329,7 @@ class RDFXMLSerializer extends Serializer {
 	 * Escape a string as required for using it in XML attribute values.
 	 *
 	 * @param $string string to be escaped
+	 *
 	 * @return string
 	 */
 	protected function makeAttributeValueString( $string ) {

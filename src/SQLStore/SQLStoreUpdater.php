@@ -84,6 +84,7 @@ class SQLStoreUpdater {
 	 * @see SMWStore::deleteSubject
 	 *
 	 * @since 1.8
+	 *
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
@@ -181,6 +182,7 @@ class SQLStoreUpdater {
 	 * @see SMWStore::doDataUpdate
 	 *
 	 * @since 1.8
+	 *
 	 * @param SemanticData $data
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
@@ -294,6 +296,7 @@ class SQLStoreUpdater {
 	 * subobject data into account.
 	 *
 	 * @since 1.8
+	 *
 	 * @param SemanticData $data
 	 */
 	protected function doFlatDataUpdate( SemanticData $data ) {

@@ -311,6 +311,7 @@ class StubSemanticData extends SemanticData {
 	 * only one valuekey, a single string can be used.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $propertyKey
 	 * @param array|string $valueKeys
 	 */

@@ -277,8 +277,10 @@ class PropertyTableRowDiffer {
 	 * hopefully vanish soon anyway.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $sid
 	 * @param TableDefinition $tableDeclaration
+	 *
 	 * @return array
 	 */
 	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ) {

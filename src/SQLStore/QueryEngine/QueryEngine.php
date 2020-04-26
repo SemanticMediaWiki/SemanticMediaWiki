@@ -373,6 +373,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid,
 	 * compute the proper result instance output for the given query.
+	 *
 	 * @todo The SQL standard requires us to select all fields by which we sort, leading
 	 * to wrong results regarding the given limit: the user expects limit to be applied to
 	 * the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if

@@ -18,6 +18,7 @@ class FilterCondition extends Condition {
 	/**
 	 * Additional filter condition, i.e. a string that could be placed in
 	 * "FILTER( ... )".
+	 *
 	 * @var string
 	 */
 	public $filter;

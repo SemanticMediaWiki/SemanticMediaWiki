@@ -83,6 +83,7 @@ class Query {
 	 * @since 3.0
 	 *
 	 * @param string $type
+	 *
 	 * @throws InvalidArgumentException
 	 */
 	public function type( $type ) {

@@ -89,6 +89,7 @@ class InfoParserFunction implements HookHandler {
 
 	/**
 	 * @param ProcessingError[] $errors
+	 *
 	 * @return string
 	 */
 	private function getOutputForErrors( $errors ) {

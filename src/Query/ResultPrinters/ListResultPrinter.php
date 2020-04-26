@@ -104,8 +104,10 @@ class ListResultPrinter extends ResultPrinter {
 	 * Get text for further results link. Used only during getResultText().
 	 *
 	 * @since 1.9
+	 *
 	 * @param SMWQueryResult $res
 	 * @param integer $outputMode
+	 *
 	 * @return string
 	 */
 	private function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {

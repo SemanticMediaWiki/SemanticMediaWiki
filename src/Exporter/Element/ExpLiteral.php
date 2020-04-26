@@ -20,12 +20,14 @@ class ExpLiteral extends ExpElement {
 
 	/**
 	 * Lexical form of the literal.
+	 *
 	 * @var string
 	 */
 	private $lexicalForm;
 
 	/**
 	 * Datatype URI for the literal.
+	 *
 	 * @var string
 	 */
 	private $datatype;

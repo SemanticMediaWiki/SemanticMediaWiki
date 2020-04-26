@@ -66,18 +66,21 @@ class ConditionBuilder {
 
 	/**
 	 * Counter used to generate globally fresh variables.
+	 *
 	 * @var integer
 	 */
 	private $variableCounter = 0;
 
 	/**
 	 * sortKeys that are being used while building the query conditions
+	 *
 	 * @var array
 	 */
 	private $sortKeys = [];
 
 	/**
 	 * The name of the SPARQL variable that represents the query result
+	 *
 	 * @var string
 	 */
 	private $resultVariable = 'result';

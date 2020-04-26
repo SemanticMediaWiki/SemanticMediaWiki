@@ -101,6 +101,7 @@ class RedirectUpdater {
 	 * architecturally; it should be redesigned.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $source
 	 * @param integer $oldnamespace
 	 * @param string $target
@@ -279,10 +280,12 @@ class RedirectUpdater {
 	 * @todo Clean up this code.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $subject_t
 	 * @param integer $subject_ns
 	 * @param string $curtarget_t
 	 * @param integer $curtarget_ns
+	 *
 	 * @return integer the new canonical ID of the subject
 	 */
 	public function updateRedirects( DIWikiPage $source, DIWikiPage $target = null ) {

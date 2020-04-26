@@ -58,7 +58,9 @@ class ConceptCache {
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @since 1.8
+	 *
 	 * @param $concept Title
+	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {

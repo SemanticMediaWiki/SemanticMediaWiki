@@ -149,6 +149,7 @@ class EntityIdManager {
 
 	/**
 	 * @since 1.8
+	 *
 	 * @param SQLStore $store
 	 */
 	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
@@ -314,6 +315,7 @@ class EntityIdManager {
 	 * to avoid extra work (even if only a little) to fill it.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
@@ -321,6 +323,7 @@ class EntityIdManager {
 	 * @param string $sortkey call-by-ref will be set to sortkey
 	 * @param boolean $canonical should redirects be resolved?
 	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 *
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
@@ -341,6 +344,7 @@ class EntityIdManager {
 	 * method works just like getSMWPageIDandSort().
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
@@ -348,6 +352,7 @@ class EntityIdManager {
 	 * @param string $sortkey call-by-ref will be set to sortkey
 	 * @param boolean $canonical should redirects be resolved?
 	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 *
 	 * @return integer SMW id or 0 if there is none
 	 */
 	protected function getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes ) {
@@ -559,12 +564,14 @@ class EntityIdManager {
 	 * specifying a sortkey (if not asked for).
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 * @param boolean $canonical should redirects be resolved?
 	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 *
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
@@ -585,6 +592,7 @@ class EntityIdManager {
 	 * But it is of no relevance if the title does not have an id yet.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
@@ -592,6 +600,7 @@ class EntityIdManager {
 	 * @param boolean $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
 	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 *
 	 * @return integer SMW id or 0 if there is none
 	 */
 	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
@@ -613,6 +622,7 @@ class EntityIdManager {
 	 * a new ID is created and returned.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
@@ -620,6 +630,7 @@ class EntityIdManager {
 	 * @param boolean $canonical should redirects be resolved?
 	 * @param string $sortkey call-by-ref will be set to sortkey
 	 * @param boolean $fetchHashes should the property hashes be obtained and cached?
+	 *
 	 * @return integer SMW id or 0 if there is none
 	 */
 	protected function makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes ) {
@@ -705,7 +716,9 @@ class EntityIdManager {
 	 * the code.
 	 *
 	 * @since 1.8
+	 *
 	 * @param DIProperty $property
+	 *
 	 * @return string
 	 */
 	public function getPropertyInterwiki( DIProperty $property ) {
@@ -805,6 +818,7 @@ class EntityIdManager {
 	 * properties here. A property and its inverse have the same ID in SMW.
 	 *
 	 * @param DIProperty $property
+	 *
 	 * @return integer
 	 */
 	public function getSMWPropertyID( DIProperty $property ) {
@@ -833,7 +847,9 @@ class EntityIdManager {
 	 * an DIProperty object.
 	 *
 	 * @see getSMWPropertyID
+	 *
 	 * @param DIProperty $property
+	 *
 	 * @return integer
 	 */
 	public function makeSMWPropertyID( DIProperty $property ) {
@@ -870,11 +886,13 @@ class EntityIdManager {
 	 * and makeSMWPropertyID must then also be adjusted to do the same.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title DB key
 	 * @param integer $namespace namespace
 	 * @param string $iw interwiki prefix
 	 * @param string $subobjectName
 	 * @param string $sortkey
+	 *
 	 * @return integer predefined id or 0 if none
 	 */
 	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ) {
@@ -965,6 +983,7 @@ class EntityIdManager {
 	 * cached data is $id and $sortkey.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title
 	 * @param integer $namespace
 	 * @param string $interwiki
@@ -1012,6 +1031,7 @@ class EntityIdManager {
 	 * cached data is $id and $sortkey.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $title
 	 * @param integer $namespace
 	 * @param string $interwiki
@@ -1083,6 +1103,7 @@ class EntityIdManager {
 	 * Update the proptable_hash for a given page.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */

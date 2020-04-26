@@ -24,6 +24,7 @@ class XmlResponseParser implements HttpResponseParser {
 
 	/**
 	 * Associative array mapping SPARQL variable names to column indices.
+	 *
 	 * @var array of integer
 	 */
 	private $header;
@@ -32,6 +33,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 * List of result rows. Individual entries can be null if a cell in the
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
+	 *
 	 * @var array of array of (SMWExpElement or null)
 	 */
 	private $data;
@@ -39,24 +41,28 @@ class XmlResponseParser implements HttpResponseParser {
 	/**
 	 * List of comment strings found in the XML file (without surrounding
 	 * markup, i.e. the actual string only).
+	 *
 	 * @var array of string
 	 */
 	private $comments;
 
 	/**
 	 * Stack of open XML tags during parsing.
+	 *
 	 * @var array of string
 	 */
 	private $xmlOpenTags;
 
 	/**
 	 * Integer index of the column that the current result binding fills.
+	 *
 	 * @var integer
 	 */
 	private $xmlBindIndex;
 
 	/**
 	 * Datatype URI for the current literal, or empty if none.
+	 *
 	 * @var string
 	 */
 	private $currentDataType;

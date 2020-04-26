@@ -53,6 +53,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
@@ -76,6 +77,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
@@ -97,6 +99,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $triples string of triples to insert
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
@@ -124,6 +127,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $triples string of triples to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
@@ -146,6 +150,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * parameter (rather than "update").
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
+	 *
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {

@@ -208,7 +208,9 @@ class PropertyValue extends DataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
+	 *
 	 * @param $dataitem DataItem
+	 *
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {

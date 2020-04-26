@@ -292,6 +292,7 @@ class TurtleTriplesBuilder {
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
+	 *
 	 * @param ExpData $expData object containing the update data
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject

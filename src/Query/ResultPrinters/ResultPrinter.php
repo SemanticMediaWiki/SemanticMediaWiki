@@ -117,6 +117,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
 	 * This setting is used only after the result text was generated.
+	 *
 	 * @note HTML query results cannot be used as parameters for other templates or in any other way
 	 * in combination with other wiki text. The result will be inserted on the page literally.
 	 */
@@ -127,6 +128,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * processed if they occur in the result. Clearly, this is only relevant if the output is not HTML, i.e.
 	 * it is ignored if SMWResultPrinter::$is_HTML is true. This setting is used only after the result
 	 * text was generated.
+	 *
 	 * @note This requires extra processing and may make the result less useful for being used as a
 	 * parameter for further parser functions. Use only if required.
 	 */
@@ -485,6 +487,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
 	 * @param boolean $firstcol True of this is the first result column (having special linkage settings).
+	 *
 	 * @return Linker|null
 	 */
 	protected function getLinker( $firstcol = false ) {

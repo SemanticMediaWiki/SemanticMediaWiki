@@ -30,6 +30,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * limit settings of your 4Store server.
 	 *
 	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	 *
 	 * @return RepositoryResult
 	 */
 	public function doQuery( $sparql ) {
@@ -78,6 +79,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $propertyName string Turtle name of marking property
 	 * @param $objectName string Turtle name of marking object/value
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {

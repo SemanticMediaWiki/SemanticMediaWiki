@@ -13,6 +13,7 @@ use SMW\ConfigPreloader;
  * belong to some particular sub-function of SMW. Most functions here are used
  * in diverse contexts so that they do not have fonud a place in any such class
  * yet.
+ *
  * @ingroup SMW
  */
 

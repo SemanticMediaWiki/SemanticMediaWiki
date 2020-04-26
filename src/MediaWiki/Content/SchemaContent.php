@@ -352,6 +352,7 @@ class SchemaContent extends JsonContent {
 	 * @see TextContent::normalizeLineEndings (MW 1.28+)
 	 *
 	 * @param $text
+	 *
 	 * @return string
 	 */
 	public static function normalizeLineEndings( $text ) {

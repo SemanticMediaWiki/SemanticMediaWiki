@@ -19,6 +19,7 @@ abstract class Condition {
 	 * If results could be ordered by the things that this condition
 	 * matches, then this is the name of the variable to use in ORDER BY.
 	 * Otherwise it is ''.
+	 *
 	 * @note SPARQL variable names do not include the initial "?" or "$".
 	 * @var string
 	 */
@@ -28,6 +29,7 @@ abstract class Condition {
 	 * Array that relates sortkeys (given by the users, i.e. property
 	 * names) to variable names in the generated SPARQL query.
 	 * Format sortkey => variable name
+	 *
 	 * @var array
 	 */
 	public $orderVariables = [];
@@ -40,6 +42,7 @@ abstract class Condition {
 	 * name of the (main) selected variable, e.g. "v42sortkey" to allow
 	 * elimination of duplicate weak conditions that aim to introduce this
 	 * variable.
+	 *
 	 * @var array of format "condition identifier" => "condition"
 	 */
 	public $weakConditions = [];
@@ -55,6 +58,7 @@ abstract class Condition {
 	/**
 	 * Associative array of additional namespaces that this condition
 	 * requires to be declared
+	 *
 	 * @var array of format "shortName" => "namespace URI"
 	 */
 	public $namespaces = [];

@@ -84,7 +84,8 @@ class TransactionHandler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param  string $fname
+	 * @param string $fname
+	 *
 	 * @return boolean
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
@@ -115,6 +116,7 @@ class TransactionHandler {
 	 * @since 3.1
 	 *
 	 * @param string $fname
+	 *
 	 * @throws RuntimeException
 	 */
 	public function markSectionTransaction( $fname = __METHOD__ ) {
