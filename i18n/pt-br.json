@@ -632,6 +632,8 @@
 	"smw-admin-maintenancealerts-lastoptimizationrun-alert": "O sistema descobriu que a [https://www.semantic-mediawiki.org/wiki/Table_optimization otimização de tabelas] foi executada $2 dias atrás (recorde de $1) o que excede os $3 dias do limite de manutenção. Como mencionado na documentação, a execução de otimizações permitirá que o planejador de consultas tome decisões melhores sobre consultas. Assim, sugere-se executar a otimização de tabelas de modo regular.",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert-title": "Entidades desatualizadas",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert": "O sistema encontrou $1 [https://www.semantic-mediawiki.org/wiki/Outdated_entities entidades desatualizadas] e alcançou um nível crítico de manutenções não atendidas, excedendo o limite de $2. É recomendado executar o script de manutenção [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>].",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Entidades inválidas",
+	"smw-admin-maintenancealerts-invalidentities-alert": "O sistema encontrou $1 [https://www.semantic-mediawiki.org/wiki/Invalid_entities {{PLURAL:$1|entidade|entidades}}] para um [https://www.semantic-mediawiki.org/wiki/Unmaintained_namespace domínio descontinuado], é recomendado executar o script de manutenção [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] or [https://www.semantic-mediawiki.org/wiki/rebuildData.php <code>rebuildData.php</code>].",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
 	"smw-admin-configutation-tab-settings": "Configurações",
 	"smw-admin-configutation-tab-namespaces": "Espaços nominais",

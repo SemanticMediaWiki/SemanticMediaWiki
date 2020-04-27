@@ -634,6 +634,8 @@
 	"smw-admin-maintenancealerts-lastoptimizationrun-alert": "系統找出上一次[https://www.semantic-mediawiki.org/wiki/Table_optimization 表格最佳化]是在 $2 天前執行（來自$1的紀錄），這已超出 $3 天維護的臨界值。如文件所述，執行最佳化能使得查詢規劃對於查詢作出更好的決策，因此建議定期執行表格最佳化。",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert-title": "過時實體",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert": "系統計算出有 $1 個[https://www.semantic-mediawiki.org/wiki/Outdated_entities 過時實體]，且超出$2臨界值達到未被注意維護的危急等級。建議執行 [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] 維護手稿。",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "無效實體",
+	"smw-admin-maintenancealerts-invalidentities-alert": "系統相配了 $1 個[https://www.semantic-mediawiki.org/wiki/Invalid_entities {{PLURAL:$1|實體}}]到一個[https://www.semantic-mediawiki.org/wiki/Unmaintained_namespace 未維護命名空間]，並建議執行 [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] 或是 [https://www.semantic-mediawiki.org/wiki/rebuildData.php <code>rebuildData.php</code>] 維護手稿。",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
 	"smw-admin-configutation-tab-settings": "設定",
 	"smw-admin-configutation-tab-namespaces": "命名空間",

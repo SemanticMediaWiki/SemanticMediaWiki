@@ -610,6 +610,8 @@
 	"smw-admin-maintenancealerts-lastoptimizationrun-alert": "Sistem, son [https://www.semantic-mediawiki.org/wiki/Table_optimization tablo optimizasyonu]n $2 gün önce ($1 üzerinden başlayan) $3 günlük bakım eşiğini aştığını tespit etti. Belgelerde belirtildiği gibi, optimizasyonların çalıştırılması, sorgu planlayıcının sorgular hakkında daha iyi kararlar vermesini sağlayacaktır, bu nedenle tablo optimizasyonunun düzenli olarak çalıştırılması önerilir.",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert-title": "Eski varlıklar",
 	"smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert": "Sistem $1 saydığı [https://www.semantic-mediawiki.org/wiki/Outdated_entities eski varlıklar] ve $2 eşiğini aşarak kritik bir katılımsız bakım düzeyine ulaştı. [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] bakım betiğini çalıştırmanız önerilir.",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Geçersiz varlıklar",
+	"smw-admin-maintenancealerts-invalidentities-alert": "Sistem $1 [https://www.semantic-mediawiki.org/wiki/Invalid_entities varlık] ile bir [https://www.semantic-mediawiki.org/wiki/Unmaintained_namespace saklanmamış ad alanı] ile eşleşti ve [https://www.semantic-mediawiki.org/wiki/disposeOutdatedEntities.php <code>disposeOutdatedEntities.php</code>] veya [https://www.semantic-mediawiki.org/wiki/rebuildData.php <code>rebuildData.php</code>] bakım betiği.",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
 	"smw-admin-configutation-tab-settings": "Ayarlar",
 	"smw-admin-configutation-tab-namespaces": "Ad alanları",

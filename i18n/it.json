@@ -351,6 +351,7 @@
 	"smw-admin-iddispose-docu": "Da notare che l'operazione di smaltimento non ha restrizioni e rimuove l'entità dal motore di archiviazione insieme a tutti i suoi riferimenti nelle tabelle, se confermata. Avvia questa attività con '''cautela''' e solo dopo aver consultato la [https://www.semantic-mediawiki.org/wiki/Help:Object_ID_disposal documentazione].",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-tab-maintenance": "Manutenzione",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Entità non valide",
 	"smw-admin-configutation-tab-settings": "Impostazioni",
 	"smw-admin-configutation-tab-namespaces": "Namespace",
 	"smw-admin-configutation-tab-schematypes": "Tipi schema",

@@ -288,7 +288,7 @@
 	"smw_result_noresults": "該当結果はありません。",
 	"smwadmin": "ダッシュボード (Semantic MediaWiki)",
 	"smw-admin-statistics-job-title": "ジョブ統計",
-	"smw-admin-statistics-job-docu": "ジョブ統計は、まだ実行されていないスケジュールされた Semantic MeidaWiki ジョブについての情報を表示します。ジョブ数はわずかに不正確である可能性があり、また失敗した試行が含まれます。さらなる詳細については、[https://www.mediawiki.org/wiki/Manual:Job_queue マニュアル]を参照してください。",
+	"smw-admin-statistics-job-docu": "ジョブ統計は、まだ実行されていないスケジュールされた Semantic MeidaWiki ジョブについての情報を表示します。ジョブ数はわずかに不正確である可能性があり、また失敗した試行が含まれます。さらなる詳細については、[https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue マニュアル]を参照してください。",
 	"smw-admin-statistics-querycache-title": "クエリキャッシュ",
 	"smw-admin-statistics-querycache-disabled": "このウィキでは[https://www.semantic-mediawiki.org/wiki/QueryCache クエリキャッシュ]が有効化されていないため、統計は利用できません。",
 	"smw-admin-statistics-querycache-legend": "キャッシュ統計には暫定的な累積データと以下の派生データが含まれます：\n* 「misses」は、達成不可能という応答だった、キャッシュからのデータ検索の合計試行回数です。この応答により、直接のリポジトリ（DB、triple-store など）検索が強いられます。\n* 「deletes」は、キャッシュ追い出し操作の総量です（パージあるいはクエリの依存関係によります）\n* 「hits」には、埋め込まれた（ウィキページ内から呼ばれたクエリ）ソースあるいは埋め込まれていない（有効化されていれば、特別:問い合わせのようなページまたは API からリクエストされた）ソースからのキャッシュ検索量が含まれます\n* 「medianRetrievalResponseTime」は、収集プロセスの期間にわたる、キャッシュされた検索リクエストおよびキャッシュされていない検索リクエストの応答時間（秒単位）の中央値です\n* 「noCache」は、結果をキャッシュから検索しようとしないリクエスト（limit=0 クエリ、'no-cache' オプションなど）の量を示します",
