@@ -3,6 +3,7 @@
 		"authors": [
 			"Abijeet Patro",
 			"Als-Holder",
+			"Bjarncraft",
 			"DaSch",
 			"Das Schäfchen",
 			"Denny",
@@ -608,6 +609,7 @@
 	"smw-admin-tab-maintenance": "Wartung",
 	"smw-admin-tab-supplement": "Zusätzliche Funktionen",
 	"smw-admin-tab-registry": "Wikiregistrierung",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Ungültige entitäten",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
 	"smw-admin-configutation-tab-settings": "Konfigurationseinstellungen",
 	"smw-admin-configutation-tab-namespaces": "Namensräume",

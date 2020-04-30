@@ -601,6 +601,7 @@
 	"smw-admin-tab-maintenance": "Manutenção",
 	"smw-admin-tab-supplement": "Funções suplementares",
 	"smw-admin-tab-registry": "Registo",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Entidades inválidas",
 	"smw-admin-deprecation-notice-section": "MediaWiki Semântico",
 	"smw-admin-configutation-tab-settings": "Configurações",
 	"smw-admin-configutation-tab-namespaces": "Espaços nominais",
