@@ -2,6 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use MediaWiki\MediaWikiServices;
+
 use SMWQueryResult as QueryResult;
 use Title;
 use SMW\DataValueFactory;
@@ -98,10 +100,11 @@ class EmbeddedResultPrinter extends ResultPrinter {
 
 		// REMOVE the parser reference
 		// Use $queryResult->getQuery()->getContextPage()
-		global $wgParser;
 		// No page should embed itself, find out who we are:
-		if ( $wgParser->getTitle() instanceof Title ) {
-			$title = $wgParser->getTitle()->getPrefixedText();
+		$parser = MediaWikiServices::getInstance()->getParser();
+		if ( $parser->getTitle() instanceof Title ) {
+			// NOTE: this will always be true on MW >= 1.35
+			$title = $parser->getTitle()->getPrefixedText();
 		} else { // this is likely to be in vain -- this case is typical if we run on special pages
 			global $wgTitle;
 			$title = $wgTitle->getPrefixedText();
