@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Filters\CategoryFilter;
+use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Filters\CompositeFilter;
 use SMW\DIWikiPage;
 
@@ -46,6 +47,17 @@ class SchemaFilterFactory {
 	 */
 	public function newCategoryFilter( $categories ) : CategoryFilter {
 		return new CategoryFilter( $categories );
+	}
+
+	/**
+	 * @since 3.2
+	 *
+	 * @param string|array|callable $properties
+	 *
+	 * @return PropertyFilter
+	 */
+	public function newPropertyFilter( $properties ) : PropertyFilter {
+		return new PropertyFilter( $properties );
 	}
 
 }

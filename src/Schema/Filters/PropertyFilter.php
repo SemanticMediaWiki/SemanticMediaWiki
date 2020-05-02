@@ -8,6 +8,7 @@ use SMW\Schema\ChainableFilter;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
+use SMW\DIProperty;
 use RuntimeException;
 
 /**
@@ -16,14 +17,14 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class CategoryFilter implements SchemaFilter, ChainableFilter {
+class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 	use FilterTrait;
 
 	/**
 	 * @var []
 	 */
-	private $categories = [];
+	private $properties = [];
 
 	/**
 	 * @var bool
@@ -33,10 +34,10 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array|callable $categories
+	 * @param string|array|callable $properties
 	 */
-	public function __construct( $categories = '' ) {
-		$this->categories = $categories;
+	public function __construct( $properties = '' ) {
+		$this->properties = $properties;
 	}
 
 	/**
@@ -45,16 +46,16 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	 * {@inheritDoc}
 	 */
 	public function getName() : string {
-		return 'category';
+		return 'property';
 	}
 
 	private function match( Compartment $compartment ) {
 
 		if ( $this->isLoaded === false ) {
-			$this->loadCategories();
+			$this->loadProperties();
 		}
 
-		$conditions = $compartment->get( 'if.category' );
+		$conditions = $compartment->get( 'if.property' );
 
 		// In case the filter was marked as elective, allow sets to remain in
 		// the match pool.
@@ -62,24 +63,24 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			return $this->matches[] = $compartment;
 		}
 
-		// No restriction and no `category` filter was defined hence allow the
-		// rule to remain in the pool of matches.
-		if ( $this->categories === [] && $conditions === null ) {
+		// No condition to test means it is allowed to remain in the pool
+		// of matches
+		if ( $this->properties === [] && $conditions === null ) {
 			return $this->matches[] = $compartment;
 		}
 
 		$matchedCondition = false;
 
-		if ( is_string( $conditions ) || ( is_array( $conditions ) && isset( $conditions[0] ) ) ) {
+		if ( is_string( $conditions ) ) {
 			$matchedCondition = $this->matchOneOf( (array)$conditions );
 		} elseif ( isset( $conditions['oneOf'] ) ) {
 			/**
-			 * `oneOf` matches against only one category
+			 * `oneOf` matches against only one property
 			 *
 			 *```
 			 * {
 			 *	"if": {
-			 *		"category": { "oneOf": [ "Foo", "Bar" ] }
+			 *		"property": { "oneOf": [ "Foo", "Bar" ] }
 			 *	},
 			 *	"then": {
 			 *		...
@@ -90,12 +91,12 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = $this->matchOneOf( (array)$conditions['oneOf'] );
 		} elseif ( isset( $conditions['anyOf'] ) ) {
 			/**
-			 * `anyOf` matches against any (one or more) category
+			 * `anyOf` matches against any (one or more) property
 			 *
 			 *```
 			 * {
 			 *	"if": {
-			 *		"category": { "anyOf": [ "Foo", "Bar" ] }
+			 *		"property": { "anyOf": [ "Foo", "Bar" ] }
 			 *	},
 			 *	"then": {
 			 *		...
@@ -106,12 +107,12 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = $this->matchAnyOf( (array)$conditions['anyOf'] );
 		} elseif ( isset( $conditions['allOf'] ) ) {
 			/**
-			 * `allOf` matches against all categories
+			 * `allOf` matches against all properties
 			 *
 			 *```
 			 * {
 			 *	"if": {
-			 *		"category": { "allOf": [ "Foo", "Bar" ] }
+			 *		"property": { "allOf": [ "Foo", "Bar" ] }
 			 *	},
 			 *	"then": {
 			 *		...
@@ -122,13 +123,13 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = $this->matchAllOf( (array)$conditions['allOf'] );
 		} elseif ( isset( $conditions['not'] ) ) {
 			/**
-			 * `not` on multiple categories means if "any of" them is validated then
+			 * `not` on multiple properties means if "any of" them is validated then
 			 * the condition is fullfilled.
 			 *
 			 *```
 			 * {
 			 *	"if": {
-			 *		"category": { "not": [ "Foo", "Bar" ] }
+			 *		"property": { "not": [ "Foo", "Bar" ] }
 			 *	},
 			 *	"then": {
 			 *		...
@@ -145,7 +146,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *```
 			 * {
 			 *	"if": {
-			 *		"category": { "not": [ "Foobar" ], "oneOf": [ "Foo", "Bar" ] }
+			 *		"property": { "not": [ "Foobar" ], "oneOf": [ "Foo", "Bar" ] }
 			 *	},
 			 *	"then": {
 			 *		...
@@ -165,69 +166,77 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		}
 	}
 
-	private function loadCategories() {
+	private function loadProperties() {
 
-		// Allow categories to be lazy loaded when for example those are
+		// Allow properties to be lazy loaded when for example those are
 		// fetched from the DB
-		if ( is_callable( $this->categories ) ) {
-			$this->categories = ( $this->categories )();
+		if ( is_callable( $this->properties ) ) {
+			$this->properties = ( $this->properties )();
 		}
 
-		if ( is_array( $this->categories ) || is_string( $this->categories ) ) {
-			$this->categories = str_replace( ' ', '_', (array)$this->categories );
+		if ( is_array( $this->properties ) || is_string( $this->properties ) ) {
+			$this->properties = str_replace( ' ', '_', (array)$this->properties );
 		} else {
 			throw new RuntimeException(
-				"Requires a string, array, or callable for the `categories` parameter!"
+				"Requires a string, array, or callable for the `properties` parameter!"
 			);
 		}
 
-		// Always ensure we have an associative array for an index access
-		if (
-			\array_key_exists( 0, $this->categories ) &&
-			array_keys( $this->categories ) === range( 0, count( $this->categories ) - 1 ) ) {
-			$this->categories = array_flip( $this->categories );
+		foreach ( $this->properties as $key => $property ) {
+
+			if ( $property === '' || $property instanceof DIProperty ) {
+				continue;
+			}
+
+			$this->properties[$key] = DIProperty::newFromUserLabel( $property );
 		}
 
 		$this->isLoaded = true;
 	}
 
-	private function matchAllOf( array $categories ) : bool {
-
-		$count = count( $categories );
-
-		foreach ( $categories as $category ) {
-			$category = str_replace( ' ', '_', $category );
-
-			if ( isset( $this->categories[$category] ) ) {
-				$count--;
-			}
-		}
-
-		return $count == 0;
-	}
-
-	private function matchOneOf( array $categories ) : bool {
+	private function matchOneOf( array $properties ) : bool {
 
 		$count = 0;
 
-		foreach ( $categories as $category ) {
-			$category = str_replace( ' ', '_', $category );
+		foreach ( $properties as $prop ) {
+			$prop = DIProperty::newFromUserLabel( $prop );
 
-			if ( isset( $this->categories[$category] ) ) {
-				$count++;
+			foreach ( $this->properties as $property ) {
+				if ( $property->equals( $prop ) ) {
+					$count++;
+				}
 			}
 		}
 
 		return $count == 1;
 	}
 
-	private function matchAnyOf( array $categories ) : bool {
+	private function matchAllOf( array $properties ) : bool {
 
-		foreach ( $categories as $category ) {
-			$category = str_replace( ' ', '_', $category );
+		$count = count( $properties );
 
-			if ( isset( $this->categories[$category] ) ) {
-				return true;
+		foreach ( $properties as $prop ) {
+			$prop = DIProperty::newFromUserLabel( $prop );
+
+			foreach ( $this->properties as $property ) {
+				if ( $property->equals( $prop ) ) {
+					$count--;
+				}
+			}
+		}
+
+		return $count == 0;
+	}
+
+	private function matchAnyOf( array $properties ) : bool {
+
+		foreach ( $properties as $prop ) {
+			$prop = DIProperty::newFromUserLabel( $prop );
+
+			foreach ( $this->properties as $property ) {
+				if ( $property->equals( $prop ) ) {
+					return true;
+				}
 			}
 		}
 

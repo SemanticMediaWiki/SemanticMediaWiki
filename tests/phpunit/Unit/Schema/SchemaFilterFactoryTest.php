@@ -47,4 +47,14 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCanConstructPropertyFilter() {
+
+		$instance = new SchemaFilterFactory();
+
+		$this->assertInstanceof(
+			'\SMW\Schema\Filters\PropertyFilter',
+			$instance->newPropertyFilter( 'Foo' )
+		);
+	}
+
 }

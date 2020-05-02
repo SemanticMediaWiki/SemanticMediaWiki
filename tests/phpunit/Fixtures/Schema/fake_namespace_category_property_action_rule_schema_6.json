@@ -1,0 +1,45 @@
+{
+	"type": "FAKE_TYPE",
+	"filter_rules": {
+		"rule_6_1": {
+			"if": {
+				"action": [ "edit", "view" ],
+				"property": "property-6-a",
+				"namespace": "NS_HELP",
+				"category": [ "category-6-a", "category-6-b" ]
+			},
+			"then": {
+				"action": "6_1"
+			}
+		},
+		"rule_6_2": {
+			"if": {
+				"action": [ "edit" ],
+				"property": { "allOf" : [ "property-6-a", "property-6-b" ] },
+				"namespace": [ "NS_MAIN", "NS_HELP" ],
+				"category": { "oneOf" : [ "category-6-a", "category-6-b" ] }
+			},
+			"then": {
+				"action": "6_2"
+			}
+		},
+		"rule_6_3": {
+			"if": {
+				"action": [ "view", "delete" ],
+				"property": "property-6-a"
+			},
+			"then": {
+				"action": "6_3"
+			}
+		},
+		"rule_6_4": {
+			"if": {
+				"action": "delete",
+				"property": "property-6-a"
+			},
+			"then": {
+				"action": "6_4"
+			}
+		}
+	}
+}
