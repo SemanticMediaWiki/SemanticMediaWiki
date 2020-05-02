@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use Revision;
 use SMW\PageInfo;
+use Title;
 use User;
 use WikiPage;
 
@@ -66,7 +67,15 @@ class PageInfoProvider implements PageInfo {
 	 * @return integer
 	 */
 	public function getCreationDate() {
-		return $this->wikiPage->getTitle()->getFirstRevision()->getTimestamp();
+		// MW 1.34+
+		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
+		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
+			$flag = Title::READ_LATEST;
+		} else {
+			$flag = Title::GAID_FOR_UPDATE;
+		}
+
+		return $this->wikiPage->getTitle()->getFirstRevision( $flag )->getTimestamp();
 	}
 
 	/**
