@@ -131,6 +131,28 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testIgnoreRecordType_MonolingualText() {
+
+		$dataItemFactory = new DataItemFactory();
+
+		$instance = new UserdefinedPropertyExaminer(
+			$this->declarationExaminer,
+			$this->store
+		);
+
+		$property = $dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyValueType( '_mlt_rec' );
+
+		$instance->check(
+			$property
+		);
+
+		$this->assertNotContains(
+			'smw-property-req-violation-missing-fields',
+			$instance->getMessagesAsString()
+		);
+	}
+
 	/**
 	 * @dataProvider recordTypeProvider
 	 */
