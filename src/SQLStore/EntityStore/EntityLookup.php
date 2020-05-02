@@ -275,7 +275,7 @@ class EntityLookup implements IEntityLookup {
 					$property
 				);
 
-				$proptables =  $this->store->getPropertyTables();
+				$proptables = $this->store->getPropertyTables();
 
 				if ( !isset( $proptables[$propTableId] ) ) {
 					return [];
@@ -306,13 +306,13 @@ class EntityLookup implements IEntityLookup {
 			}
 		} else { // no subject given, get all values for the given property
 			$pid = $idTable->getSMWPropertyID( $property );
-			$tableid =  $this->store->findPropertyTableID( $property );
+			$tableid = $this->store->findPropertyTableID( $property );
 
 			if ( ( $pid == 0 ) || ( $tableid === '' ) ) {
 				return [];
 			}
 
-			$proptables =  $this->store->getPropertyTables();
+			$proptables = $this->store->getPropertyTables();
 			$data = $this->semanticDataLookup->fetchSemanticDataFromTable(
 				$pid,
 				$property,
@@ -382,7 +382,7 @@ class EntityLookup implements IEntityLookup {
 			return [];
 		}
 
-		$proptables =  $this->store->getPropertyTables();
+		$proptables = $this->store->getPropertyTables();
 		$proptable = $proptables[$tableid];
 
 		$result = $this->propertySubjectsLookup->fetchFromTable(
@@ -411,7 +411,7 @@ class EntityLookup implements IEntityLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null  ) {
+	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null ) {
 		return $this->getPropertySubjects( $property, null, $requestOptions );
 	}
 

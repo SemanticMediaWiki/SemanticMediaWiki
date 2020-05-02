@@ -189,10 +189,10 @@ class TitleLookup {
 			$ns = NS_CATEGORY;
 			$title = $row->cat_title;
 		} elseif ( isset( $row->rd_namespace ) ) {
-			$ns =  $row->rd_namespace;
+			$ns = $row->rd_namespace;
 			$title = $row->rd_title;
 		} else {
-			$ns =  $row->page_namespace;
+			$ns = $row->page_namespace;
 			$title = $row->page_title;
 		}
 

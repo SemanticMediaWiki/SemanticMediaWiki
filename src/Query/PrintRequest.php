@@ -263,8 +263,7 @@ class PrintRequest {
 
 		if ( $this->m_data instanceof Title ) {
 			$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-		}
-		elseif ( $this->m_data instanceof SMWDataValue ) {
+		} elseif ( $this->m_data instanceof SMWDataValue ) {
 			$this->m_hash .= $this->m_data->getHash() . ':';
 		}
 

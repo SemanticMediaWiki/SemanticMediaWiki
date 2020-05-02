@@ -78,7 +78,7 @@ class BrowseByProperty extends ApiBase {
 		// any other data field can
 		// https://www.mediawiki.org/wiki/API:JSON_version_2
 		// " ... can indicate that a property beginning with an underscore is not metadata using"
-		if ( method_exists( $this->getResult(), 'setPreserveKeysList') ) {
+		if ( method_exists( $this->getResult(), 'setPreserveKeysList' ) ) {
 			$this->getResult()->setPreserveKeysList(
 				$data,
 				array_keys( $data )

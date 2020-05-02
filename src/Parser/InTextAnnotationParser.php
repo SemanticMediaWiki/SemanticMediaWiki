@@ -84,6 +84,7 @@ class InTextAnnotationParser {
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
+	 *
 	 * @var boolean
 	 */
 	protected $isAnnotation = true;

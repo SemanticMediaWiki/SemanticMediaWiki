@@ -299,7 +299,7 @@ class ElasticStore extends SQLStore {
 		// but that should be acceptable to avoid blocking any online transaction.
 		if ( $config->dotGet( 'indexer.experimental.file.ingest', false ) ) {
 			FileIngestJob::pushIngestJob( $subject->getTitle() );
- 		}
+		}
 
 		return $status;
 	}

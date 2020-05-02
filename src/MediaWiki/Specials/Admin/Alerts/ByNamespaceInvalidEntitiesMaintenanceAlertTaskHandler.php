@@ -93,7 +93,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 			) .	Html::rawElement(
 				'p',
 				[],
-				$this->msg( ['smw-admin-maintenancealerts-invalidentities-alert', $count ], Message::PARSE )
+				$this->msg( [ 'smw-admin-maintenancealerts-invalidentities-alert', $count ], Message::PARSE )
 			)
 		);
 

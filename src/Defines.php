@@ -10,23 +10,23 @@
  */
 
 /**@{
-  * Constants for the search type
-  */
+ * Constants for the search type
+ */
 define( 'SMW_SPECIAL_SEARCHTYPE', 'SMWSearch' );
 /**@}*/
 
 /**@{
-  * Constants for the exporter/OWL serializer
-  */
+ * Constants for the exporter/OWL serializer
+ */
 define( 'SMW_SERIALIZER_DECL_CLASS', 1 );
 define( 'SMW_SERIALIZER_DECL_OPROP', 2 );
 define( 'SMW_SERIALIZER_DECL_APROP', 4 );
 /**@}*/
 
 /**@{
-  * Constants to indicate that the installer is called from the `ExtensionSchemaUpdates`
-  * hook.
-  */
+ * Constants to indicate that the installer is called from the `ExtensionSchemaUpdates`
+ * hook.
+ */
 define( 'SMW_EXTENSION_SCHEMA_UPDATER', 'smw/extension/schema/updater' );
 /**@}*/
 
@@ -181,16 +181,16 @@ define( 'SMW_SPARQL_CONNECTION_PING', 2 ); // ping connection before update
 /**@}*/
 
 /**@{
-  * Deprecated since 3.0, remove options after complete removal in 3.1
-  */
+ * Deprecated since 3.0, remove options after complete removal in 3.1
+ */
 define( 'SMW_HTTP_DEFERRED_ASYNC', true );
 define( 'SMW_HTTP_DEFERRED_SYNC_JOB', 4 );
 define( 'SMW_HTTP_DEFERRED_LAZY_JOB', 8 );
 /**@}*/
 
 /**@{
-  * Constants DV features
-  */
+ * Constants DV features
+ */
 define( 'SMW_DV_NONE', 0 );
 define( 'SMW_DV_PROV_REDI', 2 );  // PropertyValue to follow a property redirect target
 define( 'SMW_DV_MLTV_LCODE', 4 );  // MonolingualTextValue requires language code
@@ -206,8 +206,8 @@ define( 'SMW_DV_WPV_PIPETRICK', 2048 );  // Have WikiPageValue use a full pipe t
 /**@}*/
 
 /**@{
-  * Constants for Fulltext types
-  */
+ * Constants for Fulltext types
+ */
 define( 'SMW_FT_NONE', 0 );
 define( 'SMW_FT_BLOB', 2 ); // DataItem::TYPE_BLOB
 define( 'SMW_FT_URI', 4 ); // DataItem::TYPE_URI
@@ -215,8 +215,8 @@ define( 'SMW_FT_WIKIPAGE', 8 ); // DataItem::TYPE_WIKIPAGE
 /**@}*/
 
 /**@{
-  * Constants for admin features
-  */
+ * Constants for admin features
+ */
 define( 'SMW_ADM_NONE', 0 );
 define( 'SMW_ADM_REFRESH', 2 ); // RefreshStore
 define( 'SMW_ADM_DISPOSAL', 4 ); // IDDisposal
@@ -227,38 +227,38 @@ define( 'SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN', 2048 ); // Table optimization ale
 /**@}*/
 
 /**@{
-  * Constants for ResultPrinter
-  */
+ * Constants for ResultPrinter
+ */
 define( 'SMW_RF_NONE', 0 );
 define( 'SMW_RF_TEMPLATE_OUTSEP', 2 ); // #2022 Enable 2.5 behaviour for template handling
 /**@}*/
 
 /**@{
-  * Constants for $smwgExperimentalFeatures
-  */
+ * Constants for $smwgExperimentalFeatures
+ */
 define( 'SMW_QUERYRESULT_PREFETCH', 2 );
 define( 'SMW_SHOWPARSER_USE_CURTAILMENT', 4 );
 /**@}*/
 
 /**@{
-  * Constants for $smwgFieldTypeFeatures
-  */
+ * Constants for $smwgFieldTypeFeatures
+ */
 define( 'SMW_FIELDT_NONE', 0 );
 define( 'SMW_FIELDT_CHAR_NOCASE', 2 ); // Using FieldType::TYPE_CHAR_NOCASE
 define( 'SMW_FIELDT_CHAR_LONG', 4 ); // Using FieldType::TYPE_CHAR_LONG
 /**@}*/
 
 /**@{
-  * Constants for $smwgQueryProfiler
-  */
+ * Constants for $smwgQueryProfiler
+ */
 define( 'SMW_QPRFL_NONE', 0 );
 define( 'SMW_QPRFL_PARAMS', 2 ); // Support for Query parameters
 define( 'SMW_QPRFL_DUR', 4 ); // Support for Query duration
 /**@}*/
 
 /**@{
-  * Constants for $smwgBrowseFeatures
-  */
+ * Constants for $smwgBrowseFeatures
+ */
 define( 'SMW_BROWSE_NONE', 0 );
 define( 'SMW_BROWSE_TLINK', 2 ); // Support for the toolbox link
 define( 'SMW_BROWSE_SHOW_INVERSE', 4 ); // Support inverse direction
@@ -269,8 +269,8 @@ define( 'SMW_BROWSE_USE_API', 64 ); // Support for using the API as request back
 /**@}*/
 
 /**@{
-  * Constants for $smwgParserFeatures
-  */
+ * Constants for $smwgParserFeatures
+ */
 define( 'SMW_PARSER_NONE', 0 );
 define( 'SMW_PARSER_STRICT', 2 ); // Support for strict mode
 define( 'SMW_PARSER_UNSTRIP', 4 ); // Support for using the StripMarkerDecoder
@@ -281,15 +281,15 @@ define( 'SMW_PARSER_LINKS_IN_VALUES', 32 ); // Support for links in value
 /**@}*/
 
 /**@{
-  * Constants for LinksInValue features
-  */
+ * Constants for LinksInValue features
+ */
 define( 'SMW_LINV_PCRE', 2 ); // Using the PCRE approach
 define( 'SMW_LINV_OBFU', 4 ); // Using the Obfuscator approach
 /**@}*/
 
 /**@{
-  * Constants for $smwgCategoryFeatures
-  */
+ * Constants for $smwgCategoryFeatures
+ */
 define( 'SMW_CAT_NONE', 0 );
 define( 'SMW_CAT_REDIRECT', 2 ); // Support resolving category redirects
 define( 'SMW_CAT_INSTANCE', 4 ); // Support using a category as instantiatable object
@@ -297,8 +297,8 @@ define( 'SMW_CAT_HIERARCHY', 8 ); // Support for category hierarchies
 /**@}*/
 
 /**@{
-  * Constants for $smwgQSortFeatures
-  */
+ * Constants for $smwgQSortFeatures
+ */
 define( 'SMW_QSORT_NONE', 0 );
 define( 'SMW_QSORT', 2 ); // General sort support
 define( 'SMW_QSORT_RANDOM', 4 ); // Random sort support
@@ -306,15 +306,15 @@ define( 'SMW_QSORT_UNCONDITIONAL', 8 ); // Unconditional sort support
 /**@}*/
 
 /**@{
-  * Constants for $smwgRemoteReqFeatures
-  */
+ * Constants for $smwgRemoteReqFeatures
+ */
 define( 'SMW_REMOTE_REQ_SEND_RESPONSE', 2 ); // Remote responses are enabled
 define( 'SMW_REMOTE_REQ_SHOW_NOTE', 4 ); // Shows a note
 /**@}*/
 
 /**@{
-  * Constants for Schema groups
-  */
+ * Constants for Schema groups
+ */
 define( 'SMW_SCHEMA_GROUP_FORMAT', 'schema/group/format' );
 define( 'SMW_SCHEMA_GROUP_SEARCH', 'schema/group/search' );
 define( 'SMW_SCHEMA_GROUP_PROPERTY', 'schema/group/property' );
@@ -322,23 +322,23 @@ define( 'SMW_SCHEMA_GROUP_CONSTRAINT', 'schema/group/constraint' );
 define( 'SMW_SCHEMA_GROUP_PROFILE', 'schema/group/profile' );
 
 /**@{
-  * Constants for Special:Ask submit method
-  */
+ * Constants for Special:Ask submit method
+ */
 define( 'SMW_SASK_SUBMIT_GET', 'get' );
 define( 'SMW_SASK_SUBMIT_GET_REDIRECT', 'get.redirect' );
 define( 'SMW_SASK_SUBMIT_POST', 'post' );
 /**@}*/
 
 /**@{
-  * Constants for constraint error check
-  */
+ * Constants for constraint error check
+ */
 define( 'SMW_CONSTRAINT_ERR_CHECK_NONE', false );
 define( 'SMW_CONSTRAINT_ERR_CHECK_MAIN', 'check/main' );
 define( 'SMW_CONSTRAINT_ERR_CHECK_ALL', 'check/all' );
 /**@}*/
 
 /**@{
-  * Constants for content types
-  */
+ * Constants for content types
+ */
 define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );
 /**@}*/

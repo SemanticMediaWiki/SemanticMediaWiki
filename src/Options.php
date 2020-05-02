@@ -42,7 +42,7 @@ class Options {
 	 * @param string $key
 	 */
 	public function delete( $key ) {
-		unset( $this->options[ $key ] );
+		unset( $this->options[$key] );
 	}
 
 	/**

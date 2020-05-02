@@ -62,7 +62,7 @@ class DataItemMatchFinder {
 		if ( strpos( $uri, $this->wikiNamespace ) !== false ) {
 			$dataItem = $this->matchToWikiNamespaceUri( $uri );
 		} else {
-			 // Not in wikiNamespace therefore most likely an imported URI
+			// Not in wikiNamespace therefore most likely an imported URI
 			$dataItem = $this->matchToUnknownWikiNamespaceUri( $uri );
 		}
 

@@ -235,7 +235,7 @@ class ValueDescriptionInterpreter {
 			$text = mb_substr( $text, 1 );
 		}
 
-		if ( mb_substr( $text , -1 ) === '*' ) {
+		if ( mb_substr( $text, -1 ) === '*' ) {
 			$text = mb_substr( $text, 0, -1 );
 		}
 

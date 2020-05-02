@@ -118,7 +118,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 				}
 
 				if ( $taskHandler instanceof TaskHandler ) {
-					$taskHandler->setStore( $this->getStore());
+					$taskHandler->setStore( $this->getStore() );
 				}
 
 				return $taskHandler->handleRequest( $webRequest );
@@ -141,7 +141,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 
 	private function outputBody() {
 
-		$html = Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) ) ;
+		$html = Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) );
 
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'operational-statistics' );

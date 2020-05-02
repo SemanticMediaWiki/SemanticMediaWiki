@@ -76,7 +76,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 			);
 
 			if ( $description !== null ) {
-				 $subdescriptions[] = $description;
+				$subdescriptions[] = $description;
 			}
 
 			++$propertyIndex;

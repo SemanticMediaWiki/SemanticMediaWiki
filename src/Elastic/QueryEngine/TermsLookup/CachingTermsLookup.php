@@ -128,7 +128,7 @@ class CachingTermsLookup extends TermsLookup {
 			$info = [
 				'cached_concept_lookup' => $parameters->get( 'query.string' ),
 				'count' => $count,
-				'isFromCache' => ['id' => $id ]
+				'isFromCache' => [ 'id' => $id ]
 			];
 
 			$parameters->set( 'query.info', $info );

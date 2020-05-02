@@ -34,8 +34,7 @@ class HtmlDivTable {
 	public static function open( array $attributes = [] ) {
 		return Html::openElement(
 			'div',
-			self::mergeAttributes( 'smw-table', $attributes ),
-			''
+			self::mergeAttributes( 'smw-table', $attributes )
 		);
 	}
 

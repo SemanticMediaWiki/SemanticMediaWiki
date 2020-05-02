@@ -277,14 +277,16 @@ class PropertyTableRowDiffer {
 	 * hopefully vanish soon anyway.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $sid
 	 * @param TableDefinition $tableDeclaration
+	 *
 	 * @return array
 	 */
 	private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ) {
 
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
-			throw new InvalidArgumentException('Operation not supported for tables without subject IDs.');
+			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}
 
 		$contents = [];
@@ -297,7 +299,7 @@ class PropertyTableRowDiffer {
 			__METHOD__
 		);
 
-		foreach( $result as $row ) {
+		foreach ( $result as $row ) {
 			if ( is_object( $row ) ) {
 
 				$resultRow = (array)$row;
@@ -362,7 +364,7 @@ class PropertyTableRowDiffer {
 					unset( $oldValues[$oldKey] );
 				}
 			}
-		};
+		}
 
 		// Arrays have to be renumbered because database functions expect an
 		// element with index 0 to be present in the array

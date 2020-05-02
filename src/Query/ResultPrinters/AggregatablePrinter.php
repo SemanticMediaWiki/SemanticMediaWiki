@@ -136,7 +136,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param QueryResult $result
+	 * @param QueryResult $queryResult
 	 * @param $outputMode
 	 *
 	 * @return array label => value
@@ -171,8 +171,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 					// Get the HTML for the tag content. Pages are linked, other stuff is just plaintext.
 					if ( $dataValue->getTypeID() == '_wpg' ) {
 						$value = $dataValue->getTitle()->getText();
-					}
-					else {
+					} else {
 						$value = $dataValue->getShortText( $outputMode, $this->getLinker( false ) );
 					}
 
@@ -225,8 +224,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 						// ( $subject[0] == $field ) contains a possible value
 						// and has to be collected as well
 						if ( ( $subject[0] == $field ) && $dataValue->getDataItem()->getDIType() === DataItem::TYPE_NUMBER ) {
-							$value = $dataValue->getDataItem( )->getNumber();
-							$values[$name] = isset( $values[$name] ) ?  $values[$name] + $value : $value;
+							$value = $dataValue->getDataItem()->getNumber();
+							$values[$name] = isset( $values[$name] ) ? $values[$name] + $value : $value;
 						}
 					}
 

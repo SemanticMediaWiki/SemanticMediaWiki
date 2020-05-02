@@ -175,7 +175,7 @@ class EntityUniquenessLookup {
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
-			$tableid =  $this->store->findPropertyTableID( $property );
+			$tableid = $this->store->findPropertyTableID( $property );
 			$subproptable = $proptables[$tableid];
 
 			foreach ( $semanticData->getPropertyValues( $property ) as $subvalue ) {

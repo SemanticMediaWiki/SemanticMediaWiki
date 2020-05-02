@@ -53,6 +53,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
@@ -60,7 +61,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
-			( ( $defaultGraph !== '' )? " FROM <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? " FROM <{$defaultGraph}> " : '' ) .
 			"{ $deletePattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -76,6 +77,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
@@ -83,7 +85,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
-			( ( $defaultGraph !== '' )? " GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? " GRAPH <{$defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -97,6 +99,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $triples string of triples to insert
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
@@ -110,7 +113,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 
 		$sparql = self::getPrefixString( $extraNamespaces, true ) .
 			"INSERT DATA " .
-			( ( $defaultGraph !== '' )? "INTO GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "INTO GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples }";
 
 		return $this->doUpdate( $sparql );
@@ -124,6 +127,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $triples string of triples to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 *
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
@@ -132,7 +136,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA " .
-			( ( $defaultGraph !== '' )? "FROM GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "FROM GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples }";
 
 		return $this->doUpdate( $sparql );
@@ -146,6 +150,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * parameter (rather than "update").
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
+	 *
 	 * @return boolean
 	 */
 	public function doUpdate( $sparql ) {

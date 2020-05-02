@@ -105,7 +105,7 @@ class DependencyValidator {
 	 * @return boolean
 	 */
 	public static function hasLikelyOutdatedDependencies( Title $title ) {
-		return isset( $title->smwLikelyOutdatedDependencies) && $title->smwLikelyOutdatedDependencies;
+		return isset( $title->smwLikelyOutdatedDependencies ) && $title->smwLikelyOutdatedDependencies;
 	}
 
 	/**

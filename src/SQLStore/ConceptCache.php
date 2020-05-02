@@ -58,7 +58,9 @@ class ConceptCache {
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @since 1.8
+	 *
 	 * @param $concept Title
+	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
@@ -144,7 +146,7 @@ class ConceptCache {
 			" SELECT DISTINCT {$querySegment->joinfield} AS s_id, $cid AS o_id FROM " .
 			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
 			$querySegment->from .
-			( $where ? ' WHERE ' : '' ) . $where . " LIMIT ". $this->upperLimit,
+			( $where ? ' WHERE ' : '' ) . $where . " LIMIT " . $this->upperLimit,
 			__METHOD__
 		);
 

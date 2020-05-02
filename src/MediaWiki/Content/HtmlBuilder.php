@@ -87,7 +87,8 @@ class HtmlBuilder {
 			'schema-usage',
 			$params['usage-title'] . $usage_count,
 			[
-				'hide' => $params['usage'] === '', 'class' => 'usage-label'
+				'hide' => $params['usage'] === '',
+				'class' => 'usage-label'
 			]
 		);
 
@@ -335,7 +336,7 @@ class HtmlBuilder {
 							'href' => $params['href_tag']
 						],
 						$params['msg_tag']
-					) . ':' . '<ul><li>' . implode( '</li><li>',  $params['tags'] ) . '</li></ul>'
+					) . ':' . '<ul><li>' . implode( '</li><li>', $params['tags'] ) . '</li></ul>'
 				)
 			);
 		}

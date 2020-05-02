@@ -705,7 +705,7 @@ class SQLStoreFactory {
 	public function newSequenceMapFinder( IdCacheManager $idCacheManager ) {
 
 		$sequenceMapFinder = new SequenceMapFinder(
-			$this->store->getConnection( 'mw.db'),
+			$this->store->getConnection( 'mw.db' ),
 			$idCacheManager
 		);
 

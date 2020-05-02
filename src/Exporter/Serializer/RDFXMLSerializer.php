@@ -65,7 +65,7 @@ class RDFXMLSerializer extends Serializer {
 			// would be illegal to start e.g. with a number. In this case, one can
 			// always use wiki:... followed by "_" and possibly some namespace,
 			// since _ is legal as a first character.
-			"\t<!ENTITY wiki "  . $this->makeValueEntityString( $exporter->expandURI( '&wiki;' ) ) . ">\n" .
+			"\t<!ENTITY wiki " . $this->makeValueEntityString( $exporter->expandURI( '&wiki;' ) ) . ">\n" .
 			"\t<!ENTITY category " . $this->makeValueEntityString( $exporter->expandURI( '&category;' ) ) . ">\n" .
 			"\t<!ENTITY property " . $this->makeValueEntityString( $exporter->expandURI( '&property;' ) ) . ">\n" .
 			"\t<!ENTITY wikiurl " . $this->makeValueEntityString( $exporter->expandURI( '&wikiurl;' ) ) . ">\n" .
@@ -170,7 +170,7 @@ class RDFXMLSerializer extends Serializer {
 			$this->post_ns_buffer .= "\t$indent<$type";
 		}
 
-		 // else: blank node, no "rdf:about"
+		// else: blank node, no "rdf:about"
 		if (
 			$expData->getSubject() instanceof ExpResource &&
 		    !$expData->getSubject()->isBlankNode() ) {
@@ -318,6 +318,7 @@ class RDFXMLSerializer extends Serializer {
 	 * to be replaced.
 	 *
 	 * @param $string string to be escaped
+	 *
 	 * @return string
 	 */
 	protected function makeValueEntityString( $string ) {
@@ -328,6 +329,7 @@ class RDFXMLSerializer extends Serializer {
 	 * Escape a string as required for using it in XML attribute values.
 	 *
 	 * @param $string string to be escaped
+	 *
 	 * @return string
 	 */
 	protected function makeAttributeValueString( $string ) {

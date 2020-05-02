@@ -101,6 +101,7 @@ class RedirectUpdater {
 	 * architecturally; it should be redesigned.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $source
 	 * @param integer $oldnamespace
 	 * @param string $target
@@ -279,10 +280,12 @@ class RedirectUpdater {
 	 * @todo Clean up this code.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $subject_t
 	 * @param integer $subject_ns
 	 * @param string $curtarget_t
 	 * @param integer $curtarget_ns
+	 *
 	 * @return integer the new canonical ID of the subject
 	 */
 	public function updateRedirects( DIWikiPage $source, DIWikiPage $target = null ) {
@@ -383,7 +386,7 @@ class RedirectUpdater {
 					);
 				} else {
 					$sha1 = $idTable->computeSha1(
-						[ $source->getDBkey(), $source->getNamespace(), SMW_SQL3_SMWREDIIW , '' ]
+						[ $source->getDBkey(), $source->getNamespace(), SMW_SQL3_SMWREDIIW, '' ]
 					);
 
 					$this->tableFieldUpdater->updateIwField(
@@ -427,7 +430,7 @@ class RedirectUpdater {
 			if ( $this->equalitySupport->not( SMW_EQ_NONE ) ) { // mark subject as non-redirect
 
 				$sha1 = $idTable->computeSha1(
-					[ $source->getDBkey(), $source->getNamespace(), '' , '' ]
+					[ $source->getDBkey(), $source->getNamespace(), '', '' ]
 				);
 
 				$this->tableFieldUpdater->updateIwField(
@@ -536,7 +539,7 @@ class RedirectUpdater {
 			''
 		);
 
-		 $idTable->addRedirect(
+		$idTable->addRedirect(
 			$sid,
 			$source->getDBkey(),
 			$source->getNamespace()

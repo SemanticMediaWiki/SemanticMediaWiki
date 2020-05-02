@@ -155,7 +155,7 @@ class ParserAfterTidy implements HookListener {
 		// through the annotation and update process as part of a programtic
 		// purge request.
 		// @see SemanticApprovedRevs#2
-		if( $this->cache->fetch( $key ) !== false ) {
+		if ( $this->cache->fetch( $key ) !== false ) {
 			return true;
 		}
 
@@ -260,7 +260,7 @@ class ParserAfterTidy implements HookListener {
 
 		$key = smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, $title->getArticleID() );
 
-		if( $this->cache->contains( $key ) && $this->cache->fetch( $key ) ) {
+		if ( $this->cache->contains( $key ) && $this->cache->fetch( $key ) ) {
 			$this->cache->delete( $key );
 			$this->cache->delete( smwfCacheKey( self::CACHE_NAMESPACE, $title->getPrefixedDBKey() ) );
 

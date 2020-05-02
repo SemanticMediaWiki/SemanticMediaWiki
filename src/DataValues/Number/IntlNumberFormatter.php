@@ -102,8 +102,10 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string $key
+	 * @param string $key
 	 * @param mixed $value
+	 *
+	 * @return void
 	 */
 	public function setOption( $key, $value ) {
 		$this->options->set( $key, $value );
@@ -340,7 +342,7 @@ class IntlNumberFormatter {
 		);
 
 		if ( $replacement > 0 ) {
-			 $value .= str_repeat( '0', $replacement );
+			$value .= str_repeat( '0', $replacement );
 		}
 
 		return $value;

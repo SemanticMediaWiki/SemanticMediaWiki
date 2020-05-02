@@ -58,7 +58,7 @@ class SomeValueInterpreter {
 	 */
 	public function interpretDescription( ValueDescription $description, array &$options ) {
 
-		if ( !isset( $options['property'] ) || !$options['property'] instanceof DIProperty  ) {
+		if ( !isset( $options['property'] ) || !$options['property'] instanceof DIProperty ) {
 			throw new RuntimeException( "Missing a property" );
 		}
 
@@ -166,7 +166,7 @@ class SomeValueInterpreter {
 					$value = substr( $value, 1 );
 				}
 
-				if ( substr( $value , -1 ) === '*' ) {
+				if ( substr( $value, -1 ) === '*' ) {
 					$value = substr( $value, 0, -1 );
 				}
 
@@ -196,7 +196,7 @@ class SomeValueInterpreter {
 					$value = mb_substr( $value, 1 );
 				}
 
-				if ( mb_substr( $value , -1 ) === '*' ) {
+				if ( mb_substr( $value, -1 ) === '*' ) {
 					$value = mb_substr( $value, 0, -1 );
 				}
 
@@ -503,7 +503,7 @@ class SomeValueInterpreter {
 			);
 
 			$params = $termsLookup->lookup( 'inverse', $parameters );
-			$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		} else {
 
 			$field = $options['field'];
@@ -525,7 +525,7 @@ class SomeValueInterpreter {
 
 			$p = $termsLookup->lookup( 'predef', $parameters );
 
-			$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 
 			$p = $this->fieldMapper->field_filter( $f, $p );
 
@@ -533,7 +533,7 @@ class SomeValueInterpreter {
 			$parameters->set( 'params', $p );
 
 			$params = $termsLookup->lookup( 'inverse', $parameters );
-			$this->conditionBuilder->addQueryInfo( $parameters->get('query.info' ) );
+			$this->conditionBuilder->addQueryInfo( $parameters->get( 'query.info' ) );
 		}
 
 		return $params;

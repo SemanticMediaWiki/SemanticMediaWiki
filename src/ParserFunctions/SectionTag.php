@@ -51,7 +51,7 @@ class SectionTag {
 			return false;
 		}
 
-		$parser->setHook( 'section', function( $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'section', function ( $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 
@@ -71,7 +71,7 @@ class SectionTag {
 		$attributes = [];
 		$title = $this->parser->getTitle();
 
-		foreach( $args as $name => $value ) {
+		foreach ( $args as $name => $value ) {
 			$value = htmlspecialchars( $value );
 
 			if ( $name === 'class' ) {

@@ -97,15 +97,15 @@ class SortWidget {
 
 		foreach ( $orders as $i => $order ) {
 
-			if ( in_array( $order, [ 'ASC', 'asc', 'ascending' ] )) {
+			if ( in_array( $order, [ 'ASC', 'asc', 'ascending' ] ) ) {
 				$order = 'asc';
 			}
 
-			if ( in_array( $order, [ 'DESC', 'desc', 'descending' ] )) {
+			if ( in_array( $order, [ 'DESC', 'desc', 'descending' ] ) ) {
 				$order = 'desc';
 			}
 
-			if ( in_array( $order, [ 'RAND', 'rand', 'random' ] )) {
+			if ( in_array( $order, [ 'RAND', 'rand', 'random' ] ) ) {
 				$order = 'rand';
 			}
 
@@ -130,13 +130,13 @@ class SortWidget {
 				$html .= 'selected="selected" ';
 			}
 
-			$html .=  'value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . '</option><option ';
+			$html .= 'value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . '</option><option ';
 
 			if ( $order == 'desc' ) {
 				$html .= 'selected="selected" ';
 			}
 
-			$html .=  'value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>";
+			$html .= 'value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>";
 
 			if ( self::$randSortingSupport ) {
 				$html .= '<option ';
@@ -154,7 +154,7 @@ class SortWidget {
 			$result .= Html::rawElement( 'div', [ 'id' => "sort_div_$i", 'class' => "smw-ask-sort-input" ], $html );
 		}
 
-		$result .=  '<div id="sorting_starter" style="display: none"><input type="text" name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" />';
+		$result .= '<div id="sorting_starter" style="display: none"><input type="text" name="sort_num[]" size="35" class="smw-property-input autocomplete-arrow" />';
 		$result .= '<select name="order_num[]">' . "\n";
 		$result .= '	<option value="asc">' . Message::get( 'smw_ask_ascorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";
 		$result .= '	<option value="desc">' . Message::get( 'smw_ask_descorder', Message::TEXT, Message::USER_LANGUAGE ) . "</option>\n";

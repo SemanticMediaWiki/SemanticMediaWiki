@@ -29,11 +29,11 @@ class PropertyTableHashes {
 	private $idCacheManager;
 
 	/**
-	* @since 3.1
-	*
-	* @param Database $connection
-	* @param IdCacheManager $idCacheManager
-	*/
+	 * @since 3.1
+	 *
+	 * @param Database $connection
+	 * @param IdCacheManager $idCacheManager
+	 */
 	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
 		$this->connection = $connection;
 		$this->idCacheManager = $idCacheManager;
@@ -46,7 +46,7 @@ class PropertyTableHashes {
 	 *
 	 * @param integer $id ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
-	*/
+	 */
 	public function setPropertyTableHashes( $id, $hash = null ) {
 
 		$update = [];
@@ -56,7 +56,7 @@ class PropertyTableHashes {
 		} elseif ( is_array( $hash ) ) {
 			$update = [ 'smw_proptable_hash' => serialize( $hash ) ];
 		} else {
-			throw new RuntimeException( "Expected a null or an array as value!");
+			throw new RuntimeException( "Expected a null or an array as value!" );
 		}
 
 		$this->connection->update(

@@ -180,7 +180,7 @@ class ProfileForm {
 		);
 
 		// Set active form
-		$this->specialSearch->setExtraParam( 'smw-form', $request->getVal( 'smw-form' )	);
+		$this->specialSearch->setExtraParam( 'smw-form', $request->getVal( 'smw-form' ) );
 
 		$searchEngine = $this->specialSearch->getSearchEngine();
 
@@ -412,7 +412,7 @@ class ProfileForm {
 			$syntax
 		);
 
-		$text .= Html::rawElement( 'p', [] ,
+		$text .= Html::rawElement( 'p', [],
 			$this->msg( 'smw-search-profile-extended-help-search-syntax-note' )
 		);
 

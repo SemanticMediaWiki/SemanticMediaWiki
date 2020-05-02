@@ -226,7 +226,7 @@ class ValueListBuilder {
 				'class' => 'smw-page-nav-container'
 			],
 			Html::rawElement(
-				'div' ,
+				'div',
 				[
 					'class' => 'smw-page-nav-left'
 				],
@@ -449,7 +449,7 @@ class ValueListBuilder {
 		// Sort on the spot via PHP, which should be enough for the search
 		// and match functionality
 		ksort( $sort );
-		$this->filterCount =  $res->getCount() + $options->offset;
+		$this->filterCount = $res->getCount() + $options->offset;
 
 		if ( $res->hasFurtherResults() ) {
 			$this->filterCount = ( $this->filterCount - 1 ) . '+';

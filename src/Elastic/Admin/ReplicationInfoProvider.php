@@ -183,7 +183,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 			}
 
 			if ( isset( $response['error'] ) ) {
-				foreach ( $response['error'] as $key => $value) {
+				foreach ( $response['error'] as $key => $value ) {
 					if ( $key === 'root_cause' ) {
 						$response = json_encode( $value );
 					}
@@ -193,7 +193,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 			}
 
 			if ( $response !== '' ) {
-				$response =  $this->error( $response );
+				$response = $this->error( $response );
 			}
 		}
 

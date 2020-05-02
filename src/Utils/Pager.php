@@ -114,6 +114,7 @@ class Pager {
 	 * @param int $limit
 	 * @param integer $count
 	 * @param array $query Optional URL query parameter string
+	 *
 	 * @return string
 	 */
 	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
@@ -184,6 +185,7 @@ class Pager {
 	 * @param string $link Text to use for the link; will be escaped
 	 * @param string $tooltipMsg Name of the message to use as tooltip
 	 * @param string $class Value of the "class" attribute of the link
+	 *
 	 * @return string HTML fragment
 	 */
 	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $class, $disabled, $language, $active = false ) {
@@ -192,9 +194,9 @@ class Pager {
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();
 		$target = '';
 
-		if ( isset( $query['_target' ] ) ) {
-			$target = $query['_target' ];
-			unset( $query['_target' ] );
+		if ( isset( $query['_target'] ) ) {
+			$target = $query['_target'];
+			unset( $query['_target'] );
 		}
 
 		return Html::element( 'a',

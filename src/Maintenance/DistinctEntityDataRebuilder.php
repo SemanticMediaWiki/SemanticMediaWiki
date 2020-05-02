@@ -154,7 +154,7 @@ class DistinctEntityDataRebuilder {
 		foreach ( $pages as $key => $page ) {
 
 			$this->rebuildCount++;
-			$progress = $cliMsgFormatter->progressCompact(  $this->rebuildCount, $total );
+			$progress = $cliMsgFormatter->progressCompact( $this->rebuildCount, $total );
 
 			if ( !$this->options->has( 'v' ) ) {
 				$this->reportMessage(

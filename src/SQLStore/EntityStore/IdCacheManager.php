@@ -36,23 +36,23 @@ class IdCacheManager {
 		$this->caches = $caches;
 
 		if ( !isset( $this->caches['entity.id'] ) ) {
-			throw new RuntimeException( "Missing 'entity.id' instance.");
+			throw new RuntimeException( "Missing 'entity.id' instance." );
 		}
 
 		if ( !isset( $this->caches['entity.sort'] ) ) {
-			throw new RuntimeException( "Missing 'entity.sort' instance.");
+			throw new RuntimeException( "Missing 'entity.sort' instance." );
 		}
 
 		if ( !isset( $this->caches['entity.lookup'] ) ) {
-			throw new RuntimeException( "Missing 'entity.lookup' instance.");
+			throw new RuntimeException( "Missing 'entity.lookup' instance." );
 		}
 
 		if ( !isset( $this->caches['propertytable.hash'] ) ) {
-			throw new RuntimeException( "Missing 'propertytable.hash' instance.");
+			throw new RuntimeException( "Missing 'propertytable.hash' instance." );
 		}
 	}
 
- 	/**
+	/**
 	 * @since 3.0
 	 *
 	 * @param string|array $args
@@ -73,7 +73,7 @@ class IdCacheManager {
 	public function get( $key ) {
 
 		if ( !isset( $this->caches[$key] ) ) {
-			throw new RuntimeException( "$key is unknown");
+			throw new RuntimeException( "$key is unknown" );
 		}
 
 		return $this->caches[$key];
@@ -112,7 +112,7 @@ class IdCacheManager {
 		}
 
 		if ( strpos( $title, ' ' ) !== false ) {
-			throw new RuntimeException( "Somebody tried to use spaces in a cache title! ($title)");
+			throw new RuntimeException( "Somebody tried to use spaces in a cache title! ($title)" );
 		}
 
 		$hash = $this->computeSha1(

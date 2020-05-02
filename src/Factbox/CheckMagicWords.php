@@ -43,7 +43,7 @@ class CheckMagicWords {
 		$mws = [];
 
 		if ( $smwMagicWords !== null ) {
-			$mws =$smwMagicWords;
+			$mws = $smwMagicWords;
 		}
 
 		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {

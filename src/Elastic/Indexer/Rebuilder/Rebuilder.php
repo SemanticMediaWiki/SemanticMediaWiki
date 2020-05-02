@@ -75,7 +75,7 @@ class Rebuilder {
 	 * @param DocumentCreator $documentCreator
 	 * @param Installer $installer
 	 */
-	public function __construct( ElasticClient $client, Indexer $indexer,  FileIndexer $fileIndexer, DocumentCreator $documentCreator, Installer $installer ) {
+	public function __construct( ElasticClient $client, Indexer $indexer, FileIndexer $fileIndexer, DocumentCreator $documentCreator, Installer $installer ) {
 		$this->client = $client;
 		$this->indexer = $indexer;
 		$this->fileIndexer = $fileIndexer;
@@ -357,7 +357,7 @@ class Rebuilder {
 
 		if (
 			!$config->dotGet( 'indexer.raw.text', false ) ||
-			$dataItem->getSubobjectName() !== ''  ) {
+			$dataItem->getSubobjectName() !== '' ) {
 			return '';
 		}
 
@@ -376,7 +376,7 @@ class Rebuilder {
 			$index = "$index-" . $this->versions[$type];
 		}
 
-	 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-indexing-speed.html
+		// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-indexing-speed.html
 		$params = [
 			'index' => $index,
 			'body' => [

@@ -78,6 +78,7 @@ class PropertyValue extends DataValue {
 	/**
 	 * Cache for wiki page value object associated to this property, or
 	 * null if no such page exists. Use getWikiPageValue() to get the data.
+	 *
 	 * @var SMWWikiPageValue
 	 */
 	protected $m_wikipage = null;
@@ -112,23 +113,6 @@ class PropertyValue extends DataValue {
 	}
 
 	/**
-	 * @deprecated since 3.0
-	 */
-	static private function makeUserProperty( $propertyLabel ) {
-		return DataValueFactory::getInstance()->newPropertyValueByLabel( $propertyLabel );
-	}
-
-	/**
-	 * @removed since 3.0
-	 */
-	static private function makeProperty( $propertyid ) {
-		$diProperty = new DIProperty( $propertyid );
-		$dvProperty = new SMWPropertyValue( self::TYPE_ID );
-		$dvProperty->setDataItem( $diProperty );
-		return $dvProperty;
-	}
-
-	/**
 	 * We use the internal wikipage object to store some of this objects data.
 	 * Clone it to make sure that data can be modified independently from the
 	 * original object's content.
@@ -155,6 +139,7 @@ class PropertyValue extends DataValue {
 	/**
 	 * Extended parsing function to first check whether value refers to pre-defined
 	 * property, resolve aliases, and set internal property id accordingly.
+	 *
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue( $value ) {
@@ -223,7 +208,9 @@ class PropertyValue extends DataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
+	 *
 	 * @param $dataitem DataItem
+	 *
 	 * @return boolean
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
@@ -297,6 +284,7 @@ class PropertyValue extends DataValue {
 	 * Return a wiki page value that can be used for displaying this
 	 * property, or null if no such wiki page exists (for predefined
 	 * properties without any label).
+	 *
 	 * @return SMWWikiPageValue or null
 	 */
 	public function getWikiPageValue() {
@@ -323,6 +311,7 @@ class PropertyValue extends DataValue {
 	/**
 	 * Return TRUE if this is a property that can be displayed, and not a pre-defined
 	 * property that is used only internally and does not even have a user-readable name.
+	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
 	public function isVisible() {

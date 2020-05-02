@@ -161,7 +161,7 @@ class HierarchyTempTableBuilder {
 
 		for ( $i = 0; $i < $depth; $i++ ) {
 			$db->query(
-				"INSERT " . 'IGNORE ' .  "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
+				"INSERT " . 'IGNORE ' . "INTO $tmpres (id) SELECT s_id" . '@INT' . " FROM $smwtable, $tmpnew WHERE o_id=id",
 				__METHOD__
 			);
 

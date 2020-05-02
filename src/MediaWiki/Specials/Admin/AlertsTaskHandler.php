@@ -86,7 +86,7 @@ class AlertsTaskHandler extends TaskHandler {
 				$name,
 				$this->msg( "smw-admin-alerts-tab-$name" ),
 				[
-					'hide'  => $content === '' ? true : false,
+					'hide'  => $content === '',
 					'class' => 'smw-tab-notice'
 				]
 			);

@@ -322,7 +322,7 @@ class ConditionBuilder {
 		foreach ( $this->querySegmentList as $querySegment ) {
 			if ( $querySegment->fingerprint === $fingerprint ) {
 				return $querySegment->queryNumber;
-			};
+			}
 		}
 
 		return false;

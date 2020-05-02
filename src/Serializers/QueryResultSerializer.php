@@ -195,7 +195,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 		 */
 		foreach ( $queryResult->getResults() as $diWikiPage ) {
 
-			if ( $diWikiPage === null || !($diWikiPage->getTitle() instanceof Title ) ) {
+			if ( $diWikiPage === null || !( $diWikiPage->getTitle() instanceof Title ) ) {
 				continue;
 			}
 
@@ -231,7 +231,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			 */
 			if ( self::$version >= 3 ) {
 				$results[] = [ $id => $result ];
-			} else{
+			} else {
 				$results[$id] = $result;
 			}
 		}

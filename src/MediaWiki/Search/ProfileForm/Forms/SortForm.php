@@ -114,7 +114,7 @@ class SortForm {
 				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE )
 			];
 
-		} else{
+		} else {
 			$list = [
 				'title'  => Message::get( 'smw-search-profile-sort-title', Message::TEXT, Message::USER_LANGUAGE ),
 				'recent' => Message::get( 'smw-search-profile-sort-recent', Message::TEXT, Message::USER_LANGUAGE )

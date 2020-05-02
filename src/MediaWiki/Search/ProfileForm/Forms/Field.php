@@ -31,7 +31,7 @@ class Field {
 
 		if ( isset( $attributes['tooltip'] ) ) {
 			$attributes['tooltip'] = $this->tooltip( $attributes );
-			$attributes['class']  .= " smw-$type-tooltip";
+			$attributes['class'] .= " smw-$type-tooltip";
 		}
 
 		if ( $type === 'input' ) {
@@ -104,7 +104,7 @@ class Field {
 
 			if ( is_array( $value ) ) {
 				$val = $value[0];
-				$opt =  ' ' . $value[1];
+				$opt = ' ' . $value[1];
 			}
 
 			if ( $selected === $key ) {
@@ -197,7 +197,7 @@ class Field {
 		}
 
 		if ( isset( $attributes['required'] ) ) {
-			$required = (bool) $attributes['required'];
+			$required = (bool)$attributes['required'];
 			unset( $attributes['required'] );
 		}
 

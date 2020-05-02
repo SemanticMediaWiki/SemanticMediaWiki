@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use Linker;
 use SMW\Localizer;
 
 /**
@@ -58,7 +59,9 @@ class AllowsListValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
 
@@ -68,13 +71,15 @@ class AllowsListValue extends StringValue {
 
 		$id = $this->getDataItem()->getString();
 
-		return '[['. Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::LIST_PREFIX . $id . '|' . $id .']]';
+		return '[[' . Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::LIST_PREFIX . $id . '|' . $id . ']]';
 	}
 
 	/**
 	 * @see DataValue::getLongHtmlText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getLongHtmlText( $linker = null ) {
 		return $this->getShortHtmlText( $linker );
@@ -83,7 +88,9 @@ class AllowsListValue extends StringValue {
 	/**
 	 * @see DataValue::getShortHtmlText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getShortHtmlText( $linker = null ) {
 

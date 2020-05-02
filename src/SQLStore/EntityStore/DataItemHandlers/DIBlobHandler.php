@@ -176,19 +176,20 @@ class DIBlobHandler extends DataItemHandler {
 	}
 
 	/**
-	* Method to make a hashed representation for strings of length greater
-	* than DIBlobHandler::getMaxLength to be used for selecting and sorting.
-	*
-	* @since 1.8
-	* @param $string string
-	*
-	* @return string
-	*/
+	 * Method to make a hashed representation for strings of length greater
+	 * than DIBlobHandler::getMaxLength to be used for selecting and sorting.
+	 *
+	 * @since 1.8
+	 *
+	 * @param $string string
+	 *
+	 * @return string
+	 */
 	private function makeHash( $string ) {
 
 		$length = $this->getMaxLength();
 
-		if( mb_strlen( $string ) <= $length ) {
+		if ( mb_strlen( $string ) <= $length ) {
 			return $string;
 		}
 

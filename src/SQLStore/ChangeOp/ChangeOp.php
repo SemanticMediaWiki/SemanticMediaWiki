@@ -316,15 +316,15 @@ class ChangeOp implements IteratorAggregate {
 
 		foreach ( $this->getOrderedDiffByTable() as $diff ) {
 
-			if ( ( $type === 'insert' || $type === null ) && isset( $diff['insert'] )  ) {
+			if ( ( $type === 'insert' || $type === null ) && isset( $diff['insert'] ) ) {
 				$this->addToIdList( $changedEntities, $diff['insert'] );
 			}
 
-			if ( ( $type === 'delete' || $type === null ) && isset( $diff['delete'] )  ) {
+			if ( ( $type === 'delete' || $type === null ) && isset( $diff['delete'] ) ) {
 				$this->addToIdList( $changedEntities, $diff['delete'] );
 			}
 
-			if ( $type === null && isset( $diff['property'] )  ) {
+			if ( $type === null && isset( $diff['property'] ) ) {
 				$changedEntities[$diff['property']['p_id']] = true;
 			}
 		}

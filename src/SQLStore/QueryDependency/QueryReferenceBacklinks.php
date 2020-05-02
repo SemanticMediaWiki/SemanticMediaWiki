@@ -98,8 +98,8 @@ class QueryReferenceBacklinks {
 
 		$localURL = \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
 			[
-				 'property' => $property->getLabel(),
-				 'value'    => $subject->getTitle()->getPrefixedText()
+				'property' => $property->getLabel(),
+				'value' => $subject->getTitle()->getPrefixedText()
 			]
 		);
 

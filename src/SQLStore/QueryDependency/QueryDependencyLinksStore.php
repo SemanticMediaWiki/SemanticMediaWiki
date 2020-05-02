@@ -163,7 +163,7 @@ class QueryDependencyLinksStore {
 		$context = [
 			'method' => __METHOD__,
 			'role' => 'developer',
-			'origin' =>  $hash,
+			'origin' => $hash,
 			'procTime' => Timer::getElapsedTime( __METHOD__, 7 )
 		];
 
@@ -317,7 +317,7 @@ class QueryDependencyLinksStore {
 		$poolRequestOptions = new RequestOptions();
 
 		$poolRequestOptions->addExtraCondition(
-			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND '.
+			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWREDIIW ) . ' AND ' .
 			'smw_iw !=' . $connection->addQuotes( SMW_SQL3_SMWDELETEIW )
 		);
 

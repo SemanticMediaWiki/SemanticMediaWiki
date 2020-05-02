@@ -209,7 +209,7 @@ class DocumentReplicationExaminer {
 			return false;
 		}
 
-		if (  $subject->getNamespace() !== NS_FILE ) {
+		if ( $subject->getNamespace() !== NS_FILE ) {
 			return false;
 		}
 

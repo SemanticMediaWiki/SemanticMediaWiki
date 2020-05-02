@@ -62,15 +62,15 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * @param string $file
 	 * @param boolean $parseHeader
-	 * @param string  $delimiter
+	 * @param string $delimiter
 	 * @param integer $length
 	 */
 	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
 
 		try {
-			$this->file = new SplFileObject( $file , 'r' );
+			$this->file = new SplFileObject( $file, 'r' );
 		} catch ( RuntimeException $e ) {
-			throw new FileNotFoundException( 'File "'. $file . '" is not accessible.' );
+			throw new FileNotFoundException( 'File "' . $file . '" is not accessible.' );
 		}
 
 		$this->parseHeader = $parseHeader;
@@ -84,6 +84,7 @@ class CsvFileIterator implements Iterator, Countable {
 	public function __destruct() {
 		$this->handle = null;
 	}
+
 	/**
 	 * @see Countable::count
 	 * @since 2.5
@@ -97,7 +98,7 @@ class CsvFileIterator implements Iterator, Countable {
 		}
 
 		// https://stackoverflow.com/questions/21447329/how-can-i-get-the-total-number-of-rows-in-a-csv-file-with-php
-		$this->file->seek(PHP_INT_MAX);
+		$this->file->seek( PHP_INT_MAX );
 		$this->count = $this->file->key() + 1;
 		$this->file->rewind();
 
@@ -139,7 +140,7 @@ class CsvFileIterator implements Iterator, Countable {
 			$this->header = $this->file->fgetcsv( $this->delimiter );
 		}
 
-		$currentElement =  $this->file->fgetcsv( $this->delimiter );
+		$currentElement = $this->file->fgetcsv( $this->delimiter );
 		$this->key++;
 
 		return $currentElement;

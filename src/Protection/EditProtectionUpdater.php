@@ -121,7 +121,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return $this->doUpdateRestrictions( $isEditProtected );
 		}
 
-		if ( $isEditProtected && $title->isProtected( 'edit' ) || !$isEditProtected && !$title->isProtected( 'edit' ) ) {
+		if ( (bool)$isEditProtected === (bool)$title->isProtected( 'edit' ) ) {
 			return $this->log( __METHOD__ . ' Status already set, no update required' );
 		}
 

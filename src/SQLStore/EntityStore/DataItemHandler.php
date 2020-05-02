@@ -22,17 +22,17 @@ abstract class DataItemHandler {
 
 	/**
 	 * @var SQLStore
-	*/
+	 */
 	protected $store;
 
 	/**
 	 * @var integer
-	*/
+	 */
 	protected $fieldTypeFeatures = false;
 
 	/**
 	 * @var null|string
-	*/
+	 */
 	private $dbType;
 
 	/**
@@ -146,7 +146,9 @@ abstract class DataItemHandler {
 	 * an item for search.
 	 *
 	 * @since 1.8
+	 *
 	 * @param DataItem $dataItem
+	 *
 	 * @return array
 	 */
 	abstract public function getWhereConds( DataItem $dataItem );
@@ -158,7 +160,9 @@ abstract class DataItemHandler {
 	 * insert operations into the DB.
 	 *
 	 * @since 1.8
+	 *
 	 * @param DataItem $dataItem
+	 *
 	 * @return array
 	 */
 	abstract public function getInsertValues( DataItem $dataItem );
@@ -207,7 +211,9 @@ abstract class DataItemHandler {
 	 * and string inputs.
 	 *
 	 * @since 1.8
+	 *
 	 * @param array|string $dbkeys
+	 *
 	 * @throws DataItemException
 	 * @return DataItem
 	 */

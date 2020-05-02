@@ -305,7 +305,7 @@ class TableSchemaManager {
 
 		$table->addOption(
 			'fulltextSearchTableOptions',
-			 $this->getOption( 'smwgFulltextSearchTableOptions', [] )
+			$this->getOption( 'smwgFulltextSearchTableOptions', [] )
 		);
 
 		return $table;

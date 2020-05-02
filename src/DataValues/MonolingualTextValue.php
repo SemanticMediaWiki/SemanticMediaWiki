@@ -247,7 +247,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 			return self::$properties;
 		}
 
-		foreach ( [ '_TEXT', '_LCODE' ] as  $id ) {
+		foreach ( [ '_TEXT', '_LCODE' ] as $id ) {
 			self::$properties[] = new DIProperty( $id );
 		}
 
@@ -306,14 +306,14 @@ class MonolingualTextValue extends AbstractMultiValue {
 		$semanticData = $this->getDataItem()->getSemanticData();
 
 		$list = [
-			'_TEXT'  => '',
+			'_TEXT' => '',
 			'_LCODE' => ''
 		];
 
 		$dataItems = $semanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
 		$dataItem = reset( $dataItems );
 
-		if ( $dataItem !== false  ) {
+		if ( $dataItem !== false ) {
 			$list['_TEXT'] = $dataItem->getString();
 		}
 

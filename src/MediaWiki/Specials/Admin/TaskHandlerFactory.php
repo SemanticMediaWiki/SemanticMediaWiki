@@ -126,7 +126,7 @@ class TaskHandlerFactory {
 	 *
 	 * @return SupplementTaskHandler
 	 */
-	public function newSupplementTaskHandler( $adminFeatures = 0 , $user = null ) {
+	public function newSupplementTaskHandler( $adminFeatures = 0, $user = null ) {
 
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
@@ -307,6 +307,7 @@ class TaskHandlerFactory {
 
 		return new AlertsTaskHandler( $this->outputFormatter, $taskHandlers );
 	}
+
 	/**
 	 * @since 3.0
 	 *

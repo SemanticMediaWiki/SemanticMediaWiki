@@ -84,7 +84,7 @@ class SortBuilder {
 		$this->isScoreSort = $query->getOption( Query::SCORE_SORT );
 
 		if ( $query->getOption( Query::SCORE_SORT ) ) {
-			return [ [ '_score' => [ 'order' => $query->getOption( Query::SCORE_SORT ) ] ], [], false, false];
+			return [ [ '_score' => [ 'order' => $query->getOption( Query::SCORE_SORT ) ] ], [], false, false ];
 		}
 
 		return $this->getFields( $query->getSortKeys() );

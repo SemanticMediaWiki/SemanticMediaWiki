@@ -48,7 +48,7 @@ class HtmlFormRenderer {
 	/**
 	 * @var string
 	 */
-	private $name ='';
+	private $name = '';
 
 	/**
 	 * @var string|boolean
@@ -285,7 +285,7 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function closeElement( $element = 'div', array $attributes = [] ) {
-		$this->content[] = Html::closeElement( $element, $attributes );
+		$this->content[] = Html::closeElement( $element );
 		return $this;
 	}
 

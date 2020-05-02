@@ -179,7 +179,7 @@ class PropertySubjectsLookup {
 
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
-		} else{
+		} else {
 			// Clone a `RequestOptions` instance so that it can be modified freely
 			// for the current request without a possible interference on an
 			// upcoming request (as in case where it is called from within a loop
@@ -280,7 +280,7 @@ class PropertySubjectsLookup {
 			$group = false;
 		}
 
-		if ( $group && $connection->isType( 'postgres') ) {
+		if ( $group && $connection->isType( 'postgres' ) ) {
 			// Avoid a "... 42803 ERROR:  column "s....smw_title" must appear in
 			// the GROUP BY clause or be used in an aggregate function ..."
 			// https://stackoverflow.com/questions/1769361/postgresql-group-by-different-from-mysql
@@ -383,7 +383,7 @@ class PropertySubjectsLookup {
 		$conds = '';
 
 		if ( $dataItem instanceof \SMWDIContainer ) {
-			throw new RuntimeException( 'SMWDIContainer support is missing!');
+			throw new RuntimeException( 'SMWDIContainer support is missing!' );
 		}
 
 		if ( $dataItem !== null ) {

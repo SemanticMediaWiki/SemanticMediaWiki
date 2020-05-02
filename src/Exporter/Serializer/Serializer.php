@@ -36,12 +36,14 @@ abstract class Serializer {
 	 * that one can append additional namespace declarations to $pre_ns_buffer
 	 * so that they affect all current elements. The buffers are flushed during
 	 * output in order to achieve "streaming" RDF export for larger files.
+	 *
 	 * @var string
 	 */
 	protected $pre_ns_buffer;
 
 	/**
 	 * See documentation for $pre_ns_buffer.
+	 *
 	 * @var string
 	 */
 	protected $post_ns_buffer;
@@ -51,6 +53,7 @@ abstract class Serializer {
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP,
 	 * SMW_SERIALIZER_DECL_APROP.
+	 *
 	 * @var array of integer
 	 */
 	protected $decl_todo;
@@ -60,6 +63,7 @@ abstract class Serializer {
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP,
 	 * SMW_SERIALIZER_DECL_APROP.
+	 *
 	 * @var array of integer
 	 */
 	protected $decl_done;
@@ -72,6 +76,7 @@ abstract class Serializer {
 	 * the client already. But we wait with printing the current block so that
 	 * extra namespaces from this array can still be printed (note that one
 	 * never know which extra namespaces you encounter during export).
+	 *
 	 * @var array of string
 	 */
 	protected $extra_namespaces;
@@ -80,6 +85,7 @@ abstract class Serializer {
 	 * Array of namespaces that have been declared globally already. Contains
 	 * entries of format 'namespace abbreviation' => true, assuming that the
 	 * same abbreviation always refers to the same URI.
+	 *
 	 * @var array of string
 	 */
 	protected $global_namespaces;
@@ -170,6 +176,7 @@ abstract class Serializer {
 	/**
 	 * Serialize a single declaration for the given $uri (expanded) and type
 	 * (given as a QName).
+	 *
 	 * @param $uri string URI of the thing to declare
 	 * @param $typename string one of owl:Class, owl:ObjectProperty, and
 	 * owl:datatypeProperty
@@ -280,7 +287,7 @@ abstract class Serializer {
 	 * @param ExpData $expData
 	 */
 	protected function recordDeclarationTypes( ExpData $expData ) {
-		foreach ( $expData->getSpecialValues( 'rdf', 'type') as $typeresource ) {
+		foreach ( $expData->getSpecialValues( 'rdf', 'type' ) as $typeresource ) {
 
 			if ( $typeresource instanceof ExpNsResource ) {
 				switch ( $typeresource->getQName() ) {

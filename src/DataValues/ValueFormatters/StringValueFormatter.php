@@ -65,6 +65,13 @@ class StringValueFormatter extends DataValueFormatter {
 		return $this->doFormat( $dataValue, $type, $linker );
 	}
 
+	/**
+	 * @param \SMW\DataValues\StringValue $dataValue
+	 * @param int $type
+	 * @param mixed $linker
+	 *
+	 * @return string
+	 */
 	protected function doFormat( $dataValue, $type, $linker ) {
 
 		$text = (string)$dataValue->getDataItem()->getString();
@@ -105,7 +112,7 @@ class StringValueFormatter extends DataValueFormatter {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {
 			$highlighter = Highlighter::factory( Highlighter::TYPE_TEXT );
-			$highlighter->setContent(  [
+			$highlighter->setContent( [
 				'caption' => ' … ',
 				'content' => $text
 			] );
@@ -117,11 +124,11 @@ class StringValueFormatter extends DataValueFormatter {
 		$endOff = 42;
 
 		// Avoid breaking a link (i.e. [[ ... ]])
-		if ( ( $pos = stripos ( $text, '[[' ) ) && $pos < 42 ) {
-			$startOff = stripos ( $text, ']]' ) + 2;
+		if ( ( $pos = stripos( $text, '[[' ) ) && $pos < 42 ) {
+			$startOff = stripos( $text, ']]' ) + 2;
 		}
 
-		if ( ( $pos = strrpos ( $text, ']]' ) ) && $pos > $length - $endOff ) {
+		if ( ( $pos = strrpos( $text, ']]' ) ) && $pos > $length - $endOff ) {
 			$endOff = $length - strrpos( $text, '[[' );
 		}
 

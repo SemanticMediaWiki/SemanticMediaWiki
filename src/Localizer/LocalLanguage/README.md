@@ -17,7 +17,7 @@ The location of the content files is determined by the [`$smwgExtraneousLanguage
   - `labels` namespace names
   - `aliases` namespace aliases
 - `date`
-  - `format` to a define a rule set of how to resolve preferred date formats for dates with 1, 2, and 3 components. It is defined as an array where the constants define the order of the interpretation.
+  - `format` to define a rule set of how to resolve preferred date formats for dates with 1, 2, and 3 components. It is defined as an array where the constants define the order of the interpretation.
     - `SMW_MDY` Month-Day-Year
     - `SMW_DMY` Day-Month-Year
     - `SMW_YMD` Year-Month-Day

@@ -10,7 +10,7 @@ use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
 
 /**
- * Displayes pending tasks in connection with Semantic MediaWiki.
+ * Displays pending tasks in connection with Semantic MediaWiki.
  *
  * @license GNU GPL v2+
  *
@@ -61,7 +61,6 @@ class SpecialPendingTaskList extends SpecialPage {
 
 	private function buildHTML() {
 
-		$html = '';
 		$isEmpty = true;
 
 		$htmlTabs = new HtmlTabs();
@@ -81,7 +80,7 @@ class SpecialPendingTaskList extends SpecialPage {
 				'setup',
 				$this->msg( $pendingTask->getTitle() )->text(),
 				[
-					'hide'  => $content === '' ? true : false
+					'hide'  => $content === ''
 				]
 			);
 

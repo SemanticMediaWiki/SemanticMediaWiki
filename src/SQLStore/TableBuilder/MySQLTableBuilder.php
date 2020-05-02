@@ -79,7 +79,7 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		// @see $wgDBname
-		$dbName = isset( $this->config['wgDBname'] ) ? "`". $this->config['wgDBname'] . "`." : '';
+		$dbName = isset( $this->config['wgDBname'] ) ? "`" . $this->config['wgDBname'] . "`." : '';
 
 		$sql .= 'CREATE TABLE ' . $dbName . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
 		$sql .= $this->sql_from( $attributes );
@@ -302,7 +302,7 @@ class MySQLTableBuilder extends TableBuilder {
 				unset( $indices[$k] );
 			}
 
-			$idx[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+			$idx[$k] = preg_replace( "/\([^)]+\)/", "", $columns );
 		}
 
 		foreach ( $currentIndices as $indexName => $indexColumn ) {

@@ -65,9 +65,9 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Parser $parser|null
+	 * @param Parser|null $parser
 	 */
-	public function __construct( Parser $parser = null ) {
+	public function __construct( ?Parser $parser = null ) {
 		$this->parser = $parser;
 
 		if ( $this->parser === null ) {
@@ -236,7 +236,7 @@ class RecursiveTextProcessor {
 
 		// restrict recursion
 		if ( $this->recursionDepth <= $this->maxRecursionDepth && $this->recursiveAnnotation ) {
-			$text =  $this->parser->recursivePreprocess( $text );
+			$text = $this->parser->recursivePreprocess( $text );
 		} elseif ( $this->recursionDepth <= $this->maxRecursionDepth ) {
 			$text = '[[SMW::off]]' . $this->parser->replaceVariables( $text ) . '[[SMW::on]]';
 		} else {
@@ -272,7 +272,7 @@ class RecursiveTextProcessor {
 		$isValid = $this->parser->getOptions() instanceof ParserOptions && $this->parser->getTitle() instanceof Title;
 
 		if ( $this->recursionDepth <= $this->maxRecursionDepth && $isValid ) {
-				$text = $this->parser->recursiveTagParse( $text );
+			$text = $this->parser->recursiveTagParse( $text );
 		} elseif ( $this->recursionDepth <= $this->maxRecursionDepth ) {
 			$title = $GLOBALS['wgTitle'];
 
@@ -283,7 +283,7 @@ class RecursiveTextProcessor {
 			$popt = new ParserOptions();
 
 			// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
-			if ( ! defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
+			if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
 				$popt->setEditSection( false );
 			}
 			$parserOutput = $this->parser->parse( $text . '__NOTOC__', $title, $popt );

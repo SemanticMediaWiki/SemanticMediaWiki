@@ -22,7 +22,7 @@ class HelpWidget {
 	 */
 	public static function html() {
 
-		$format = 'broadtable' ;
+		$format = 'broadtable';
 		$text = Message::get( 'smw-ask-help', Message::PARSE, Message::USER_LANGUAGE );
 
 		$text .= Html::rawElement(

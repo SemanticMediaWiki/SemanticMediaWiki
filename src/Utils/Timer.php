@@ -81,7 +81,7 @@ class Timer {
 
 		$time = microtime( true ) - self::$start[$name];
 
-		if ( $round === null  ) {
+		if ( $round === null ) {
 			return $time;
 		}
 
@@ -97,7 +97,7 @@ class Timer {
 	 * @return string
 	 */
 	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ) {
-		return $name . ' (procTime in sec: '. self::getElapsedTime( $name, $round ) . ')';
+		return $name . ' (procTime in sec: ' . self::getElapsedTime( $name, $round ) . ')';
 	}
 
 }

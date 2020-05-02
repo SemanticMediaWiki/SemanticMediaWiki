@@ -104,7 +104,7 @@ class TableResultPrinter extends ResultPrinter {
 			$this->params['sep'] = '<br>';
 		}
 
-		 // building headers
+		// building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
 			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
@@ -283,7 +283,7 @@ class TableResultPrinter extends ResultPrinter {
 			);
 
 			if ( $width ) {
-				$attributes['style'] = ( isset( $attributes['style'] ) ?  $attributes['style'] . ' ' : '' ) . "width:$width;";
+				$attributes['style'] = ( isset( $attributes['style'] ) ? $attributes['style'] . ' ' : '' ) . "width:$width;";
 			}
 
 			$content = $this->getCellContent(

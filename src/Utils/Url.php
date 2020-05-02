@@ -63,10 +63,10 @@ class Url {
 		$host = isset( $this->info['host'] ) ? $this->info['host'] : '';
 		$port = isset( $this->info['port'] ) ? ':' . $this->info['port'] : '';
 		$user = isset( $this->info['user'] ) ? $this->info['user'] : '';
-		$pass = isset( $this->info['pass'] ) ? ':' . $this->info['pass']  : '';
+		$pass = isset( $this->info['pass'] ) ? ':' . $this->info['pass'] : '';
 		$pass = ( $user || $pass ) ? "$pass@" : '';
-		$path     = isset( $this->info['path'] ) ? $this->info['path'] : '';
-		$query    = isset( $this->info['query'] ) ? '?' . $this->info['query'] : '';
+		$path = isset( $this->info['path'] ) ? $this->info['path'] : '';
+		$query = isset( $this->info['query'] ) ? '?' . $this->info['query'] : '';
 		$fragment = isset( $this->info['fragment'] ) ? '#' . $this->info['fragment'] : '';
 
 		if ( $this->is( PHP_URL_SCHEME ) ) {

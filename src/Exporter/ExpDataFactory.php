@@ -99,7 +99,7 @@ class ExpDataFactory {
 	public function newDefinedExpData() : ExpData {
 
 		// link to list of existing pages:
-		 // check whether we have title as a first parameter or in URL
+		// check whether we have title as a first parameter or in URL
 		if ( strpos( $this->exporter->expandURI( '&wikiurl;' ), '?' ) === false ) {
 			$nexturl = $this->exporter->expandURI( '&export;?offset=0' );
 		} else {

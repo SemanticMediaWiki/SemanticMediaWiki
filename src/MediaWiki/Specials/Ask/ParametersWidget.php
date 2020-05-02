@@ -116,7 +116,7 @@ class ParametersWidget {
 				'legend',
 				[],
 				Message::get( 'smw-ask-options', Message::TEXT, Message::USER_LANGUAGE )
-			). FormatListWidget::selectList(
+			) . FormatListWidget::selectList(
 				$title,
 				$parameters
 			) . $options . SortWidget::sortSection( $parameters )
@@ -154,7 +154,7 @@ class ParametersWidget {
 		$resultHtml = '';
 
 		// Top info text for a collapsed option box
-		if ( self::$isTooltipDisplay === true ){
+		if ( self::$isTooltipDisplay === true ) {
 			$resultHtml .= Html::element(
 				'div',
 				[
@@ -176,7 +176,7 @@ class ParametersWidget {
 			$i++;
 
 			// Collect elements for a row
-			$rowHtml .=  $option;
+			$rowHtml .= $option;
 
 			// Create table row
 			if ( $i % 3 == 0 ) {
@@ -267,7 +267,7 @@ class ParametersWidget {
 			$class = 'smw-ask-info';
 		}
 
-		if ( $definition->getMessage() !== null  ) {
+		if ( $definition->getMessage() !== null ) {
 			$info = Message::get( $definition->getMessage(), Message::TEXT, Message::USER_LANGUAGE );
 		}
 
@@ -338,7 +338,7 @@ class ParametersWidget {
 				$info = Message::get( $definition->getMessage(), Message::PARSE, Message::USER_LANGUAGE );
 			}
 
-			$description =  Html::rawElement(
+			$description = Html::rawElement(
 				'span',
 				[
 					'class' => 'smw-ask-parameter-description'

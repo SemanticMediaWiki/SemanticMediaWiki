@@ -125,7 +125,7 @@ class MaintenanceFactory {
 	 *
 	 * @return DuplicateEntitiesDisposer
 	 */
-	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null  ) {
+	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null ) {
 
 		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
 			$store,
@@ -157,7 +157,7 @@ class MaintenanceFactory {
 	/**
 	 * @since 3.0
 	 */
-	public function newMessageReporter( $reporterCallback = null ): MessageReporter {
+	public function newMessageReporter( $reporterCallback = null ) : MessageReporter {
 
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( $reporterCallback );
@@ -168,7 +168,7 @@ class MaintenanceFactory {
 	/**
 	 * @since 3.1
 	 */
-	public function newAutoRecovery( string $identifier ): AutoRecovery {
+	public function newAutoRecovery( string $identifier ) : AutoRecovery {
 		return new AutoRecovery( $identifier );
 	}
 

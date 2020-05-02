@@ -38,7 +38,7 @@ class ServicesContainer {
 
 		if ( !isset( $this->services[$key] ) ) {
 			throw new ServiceNotFoundException( "$key is an unknown service!" );
-		};
+		}
 
 		$type = null;
 		$service = $this->services[$key];
@@ -50,7 +50,7 @@ class ServicesContainer {
 
 		if ( !is_callable( $service ) ) {
 			throw new RuntimeException( "$key is not a callable service!" );
-		};
+		}
 
 		$instance = $service( ...$args );
 

@@ -114,7 +114,7 @@ class StringResult extends QueryResult {
 
 		$result = $this->result;
 
-		if ( is_callable( $this->preOutputCallback )  ) {
+		if ( is_callable( $this->preOutputCallback ) ) {
 			$result = call_user_func_array( $this->preOutputCallback, [ $result, $this->options ] );
 		}
 

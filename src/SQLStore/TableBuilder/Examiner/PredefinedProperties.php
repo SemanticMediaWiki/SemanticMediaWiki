@@ -65,7 +65,7 @@ class PredefinedProperties {
 
 		foreach ( $this->predefinedPropertyList as $prop => $id ) {
 
-			try{
+			try {
 				$property = new DIProperty( $prop );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				$property = null;
@@ -146,7 +146,7 @@ class PredefinedProperties {
 				'smw_id' => $id,
 				'smw_title' => $property->getKey(),
 				'smw_namespace' => SMW_NS_PROPERTY,
-				'smw_iw' =>  $iw,
+				'smw_iw' => $iw,
 				'smw_subobject' => '',
 				'smw_sortkey' => $label,
 				'smw_sort' => Collator::singleton()->getSortKey( $label ),

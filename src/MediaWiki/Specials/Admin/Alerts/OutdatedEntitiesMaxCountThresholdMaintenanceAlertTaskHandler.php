@@ -85,7 +85,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 			) .	Html::rawElement(
 				'p',
 				[],
-				$this->msg( ['smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert', $count, self::MAXCOUNT_THRESHOLD ], Message::PARSE )
+				$this->msg( [ 'smw-admin-maintenancealerts-outdatedentitiesmaxcount-alert', $count, self::MAXCOUNT_THRESHOLD ], Message::PARSE )
 			)
 		);
 

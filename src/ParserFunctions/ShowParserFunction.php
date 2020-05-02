@@ -47,6 +47,7 @@ class ShowParserFunction {
 
 	/**
 	 * Returns a message about inline queries being disabled
+	 *
 	 * @see $smwgQEnabled
 	 *
 	 * @since 1.9

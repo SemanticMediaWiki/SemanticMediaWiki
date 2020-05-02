@@ -91,7 +91,7 @@ class FixedProperties {
 		$target_id = (int)$this->fixedProperties[$prop];
 
 		$connection = $this->store->getConnection( DB_MASTER );
-		$this->messageReporter->reportMessage( "   ... reading `$prop` ...\n"  );
+		$this->messageReporter->reportMessage( "   ... reading `$prop` ...\n" );
 
 		$row = $connection->selectRow(
 			SQLStore::ID_TABLE,
@@ -107,12 +107,12 @@ class FixedProperties {
 		);
 
 		if ( $row === false || (int)$row->smw_id == $target_id ) {
-			return $this->messageReporter->reportMessage( "   ... done.\n"  );
+			return $this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
 		$current_id = (int)$row->smw_id;
 
-		$this->messageReporter->reportMessage( "   ... moving from $current_id to $target_id ...\n"  );
+		$this->messageReporter->reportMessage( "   ... moving from $current_id to $target_id ...\n" );
 
 		// Avoid "Error: 1062 Duplicate entry '52' for key 'PRIMARY' ..." before moving
 		$connection->delete(

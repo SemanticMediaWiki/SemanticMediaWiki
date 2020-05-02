@@ -104,7 +104,7 @@ class ParserFunctionFactory {
 	 */
 	public function newAskParserFunction( Parser $parser ) {
 
-		$applicationFactory =  ApplicationFactory::getInstance();
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
 		$circularReferenceGuard->setMaxRecursionDepth( 2 );
@@ -396,7 +396,7 @@ class ParserFunctionFactory {
 			);
 
 			if ( !$settings->get( 'smwgQEnabled' ) ) {
-				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $askParserFunction->isQueryDisabled(): '';
+				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $askParserFunction->isQueryDisabled() : '';
 			}
 
 			return $askParserFunction->parse( func_get_args() );
@@ -422,7 +422,7 @@ class ParserFunctionFactory {
 			);
 
 			if ( !$settings->get( 'smwgQEnabled' ) ) {
-				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $showParserFunction->isQueryDisabled(): '';
+				return $settings->isFlagSet( 'smwgParserFeatures', SMW_PARSER_INL_ERROR ) ? $showParserFunction->isQueryDisabled() : '';
 			}
 
 			return $showParserFunction->parse( func_get_args() );

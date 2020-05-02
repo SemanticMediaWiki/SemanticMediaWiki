@@ -23,6 +23,11 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	}
 
 	/**
+	 * @param \SMW\DataValues\StringValue $dataValue
+	 * @param int $type
+	 * @param mixed $linker
+	 *
+	 * @return string
 	 * @see StringValueFormatter::doFormat
 	 */
 	protected function doFormat( $dataValue, $type, $linker ) {

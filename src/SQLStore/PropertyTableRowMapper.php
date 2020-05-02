@@ -271,6 +271,7 @@ class PropertyTableRowMapper {
 	 * handling. So not point in optimizing this much now.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $sid
 	 * @param &array $insertData
 	 */

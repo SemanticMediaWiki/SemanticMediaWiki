@@ -280,8 +280,4 @@ class KeywordValue extends StringValue {
 		return $infolink;
 	}
 
-	private function makeNonlinkedWikiText( $url ) {
-		return str_replace( ':', '&#58;', $url );
-	}
-
 }

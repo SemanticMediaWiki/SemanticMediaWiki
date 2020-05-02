@@ -99,7 +99,7 @@ class TextContentCreator implements ContentCreator {
 
 		if ( $importContents->getOption( 'canReplace' ) ) {
 			$replaceable = $importContents->getOption( 'canReplace' );
-		} elseif( $importContents->getOption( 'replaceable' ) ) {
+		} elseif ( $importContents->getOption( 'replaceable' ) ) {
 			$replaceable = $importContents->getOption( 'replaceable' );
 		}
 
@@ -111,14 +111,14 @@ class TextContentCreator implements ContentCreator {
 			return $this->messageReporter->reportMessage(
 				$this->cliMsgFormatter->twoCols( "... $prefixedText ...", '[EXISTS,SKIP]', 3 )
 			);
-		} elseif( $title->exists() && $replaceable ) {
+		} elseif ( $title->exists() && $replaceable ) {
 			$action = 'EXISTS,REPLACE';
 			$len = $this->cliMsgFormatter->getLen( $action ) + 3;
 
 			$this->messageReporter->reportMessage(
 				$this->cliMsgFormatter->firstCol( "... $prefixedText ...", 3, $len )
 			);
-		} elseif( $title->exists() ) {
+		} elseif ( $title->exists() ) {
 			$action = 'EXISTS,REPLACE';
 			$len = $this->cliMsgFormatter->getLen( $action ) + 3;
 

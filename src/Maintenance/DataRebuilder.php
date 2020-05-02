@@ -146,7 +146,7 @@ class DataRebuilder {
 			$this->start = max( 1, intval( $options->get( 's' ) ) );
 		} elseif ( $options->has( 'startidfile' ) ) {
 
-			$this->canWriteToIdFile = $this->is_writable( $options->get( 'startidfile' )  );
+			$this->canWriteToIdFile = $this->is_writable( $options->get( 'startidfile' ) );
 			$this->startIdFile = $options->get( 'startidfile' );
 
 			if ( is_readable( $options->get( 'startidfile' ) ) ) {
@@ -194,7 +194,7 @@ class DataRebuilder {
 		];
 
 		$this->reportMessage(
-			"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
+			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		if ( $this->options->has( 'f' ) ) {
@@ -277,8 +277,8 @@ class DataRebuilder {
 			);
 
 			$this->reportMessage( "\nException log ..." );
-			$this->reportMessage( "\n   ... counted $count exceptions"	);
-			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename']	);
+			$this->reportMessage( "\n   ... counted $count exceptions" );
+			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename'] );
 			$this->reportMessage( "\n   ... done.\n" );
 
 			$this->exceptionCount += $count;
@@ -325,7 +325,7 @@ class DataRebuilder {
 		if ( $this->autoRecovery !== null && $this->autoRecovery->has( self::AUTO_RECOVERY_ID ) ) {
 			$this->start = $this->autoRecovery->get( self::AUTO_RECOVERY_ID );
 
-			$this->reportMessage( "Detecting an incomplete rebuild run ...\n"  );
+			$this->reportMessage( "Detecting an incomplete rebuild run ...\n" );
 
 			if ( ( $last_start = $this->autoRecovery->get( self::AUTO_RECOVERY_LAST_START ) ) ) {
 				$this->reportMessage(
@@ -369,9 +369,9 @@ class DataRebuilder {
 		$estimatedProgress = 0;
 		$skipped_update = 0;
 		$current_id = 0;
-		$max = ( $this->end ? "$this->end" : $maxId ) ;
+		$max = ( $this->end ? "$this->end" : $maxId );
 
-		while ( ( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 ) ) {
+		while (( ( !$this->end ) || ( $id <= $this->end ) ) && ( $id > 0 )) {
 
 			if ( $this->autoRecovery !== null ) {
 				$this->autoRecovery->set( self::AUTO_RECOVERY_ID, (int)$id );
@@ -422,7 +422,7 @@ class DataRebuilder {
 			$this->reportMessage( "\n" );
 		}
 
-		if (  $this->autoRecovery !== null ) {
+		if ( $this->autoRecovery !== null ) {
 			$this->autoRecovery->set( self::AUTO_RECOVERY_ID, false );
 			$this->autoRecovery->set( self::AUTO_RECOVERY_LAST_START, false );
 		}
@@ -452,8 +452,8 @@ class DataRebuilder {
 			);
 
 			$this->reportMessage( "\nReport exceptions ..." );
-			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions"	);
-			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename']	);
+			$this->reportMessage( "\n   ... counted $this->exceptionCount exceptions" );
+			$this->reportMessage( "\n   ... written to ... " . $path_parts['basename'] );
 			$this->reportMessage( "\n   ... done.\n" );
 		}
 
@@ -487,7 +487,7 @@ class DataRebuilder {
 	private function getHumanReadableTextFrom( $id, array $entities ) {
 
 		if ( !$this->options->has( 'v' ) ) {
-			return [ '', ''];
+			return [ '', '' ];
 		}
 
 		// Indicates whether this is a MW page (*) or SMW's object table
@@ -497,11 +497,11 @@ class DataRebuilder {
 		$entity = end( $entities );
 
 		if ( $entity instanceof \Title ) {
-			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() .']' ];
+			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() . ']' ];
 		}
 
 		if ( $entity instanceof DIWikiPage ) {
-			return [ $text, "[$prefix " . $entity->getHash() .']' ];
+			return [ $text, "[$prefix " . $entity->getHash() . ']' ];
 		}
 
 		return [ $text, "[$prefix " . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
@@ -525,7 +525,7 @@ class DataRebuilder {
 		];
 
 		$this->reportMessage(
-			"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
+			"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 		);
 
 		if ( $this->options->has( 's' ) || $this->options->has( 'e' ) ) {
@@ -536,7 +536,7 @@ class DataRebuilder {
 			];
 
 			$this->reportMessage(
-				"\n". $this->cliMsgFormatter->wordwrap( $text ) . "\n"
+				"\n" . $this->cliMsgFormatter->wordwrap( $text ) . "\n"
 			);
 		}
 

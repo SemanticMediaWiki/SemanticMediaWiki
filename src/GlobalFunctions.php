@@ -13,6 +13,7 @@ use SMW\ConfigPreloader;
  * belong to some particular sub-function of SMW. Most functions here are used
  * in diverse contexts so that they do not have fonud a place in any such class
  * yet.
+ *
  * @ingroup SMW
  */
 
@@ -118,7 +119,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 		$messages = array_map( 'htmlspecialchars', $messages );
 	}
 
-	if ( count( $messages ) == 1 )  {
+	if ( count( $messages ) == 1 ) {
 		$content = $messages[0];
 	} else {
 		foreach ( $messages as &$message ) {
@@ -137,8 +138,8 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 	$highlighter = Highlighter::factory( $type );
 
 	$highlighter->setContent( [
-		'caption'   => null,
-		'content'   => Highlighter::decode( $content )
+		'caption' => null,
+		'content' => Highlighter::decode( $content )
 	] );
 
 	return $highlighter->getHtml();

@@ -289,7 +289,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$sortfields = implode( ',', $qobj->sortfields );
 		$sortfields = $sortfields ? ', ' . $sortfields : '';
 
-		$sql = "SELECT DISTINCT ".
+		$sql = "SELECT DISTINCT " .
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
 			"$qobj->alias.smw_namespace AS ns," .
@@ -299,7 +299,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			"$sortfields " .
 			"FROM " .
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from .
-			( $qobj->where === '' ? '':' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex ".
+			( $qobj->where === '' ? '' : ' WHERE ' ) . $qobj->where . "$tailOpts $startOpts $useIndex " .
 			"LIMIT " . $sqlOptions['LIMIT'] . ' ' .
 			"OFFSET " . $sqlOptions['OFFSET'];
 
@@ -310,7 +310,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$query = "EXPLAIN $format $sql";
 		}
 
-		$res = $connection->query( $query , __METHOD__ );
+		$res = $connection->query( $query, __METHOD__ );
 
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
 		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );
@@ -373,6 +373,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid,
 	 * compute the proper result instance output for the given query.
+	 *
 	 * @todo The SQL standard requires us to select all fields by which we sort, leading
 	 * to wrong results regarding the given limit: the user expects limit to be applied to
 	 * the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if
@@ -411,7 +412,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		$res = $connection->select(
 			$connection->tableName( $qobj->joinTable ) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT ".
+			"DISTINCT " .
 			"$qobj->alias.smw_id AS id," .
 			"$qobj->alias.smw_title AS t," .
 			"$qobj->alias.smw_namespace AS ns," .
@@ -430,8 +431,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$logToTable = [];
 		$hasFurtherResults = false;
 
-		 // Number of fetched results ( != number of valid results in
-		 // array $results)
+		// Number of fetched results ( != number of valid results in
+		// array $results)
 		$count = 0;
 		$missedCount = 0;
 
@@ -488,7 +489,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 		if ( $count > $query->getLimit() || ( $count + $missedCount ) > $query->getLimit() ) {
 			$hasFurtherResults = true;
-		};
+		}
 
 		$connection->freeResult( $res );
 

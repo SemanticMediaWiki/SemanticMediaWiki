@@ -132,7 +132,7 @@ class FormsBuilder {
 
 		$activeForm = self::toLowerCase( $activeForm );
 
-		if ( isset( $this->preselectNsList[$activeForm] )) {
+		if ( isset( $this->preselectNsList[$activeForm] ) ) {
 			return $this->preselectNsList[$activeForm];
 		}
 
@@ -212,7 +212,7 @@ class FormsBuilder {
 
 		$divider = "<div class='divider' style='display:none;'></div>";
 
-		if ( $activeForm !== null && $activeForm !== ''  ) {
+		if ( $activeForm !== null && $activeForm !== '' ) {
 			$divider = "<div class='divider'></div>";
 		}
 
@@ -341,7 +341,7 @@ class FormsBuilder {
 		// Simple text, or is it message-key?
 		if ( Message::exists( $descriptions[$name] ) ) {
 			$description = Message::get( $descriptions[$name], Message::PARSE, Message::USER_LANGUAGE );
-		} else{
+		} else {
 			$description = $descriptions[$name];
 		}
 

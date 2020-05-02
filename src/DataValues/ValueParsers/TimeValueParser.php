@@ -74,20 +74,20 @@ class TimeValueParser implements ValueParser {
 		$datecomponents = [];
 		$calendarmodel = $era = $hours = $minutes = $seconds = $microseconds = $timeoffset = $timezone = false;
 
- 		$status = $this->parseDateString(
- 			$userValue,
- 			$datecomponents,
- 			$calendarmodel,
- 			$era,
- 			$hours,
- 			$minutes,
- 			$seconds,
- 			$microseconds,
- 			$timeoffset,
- 			$timezone
- 		);
+		$status = $this->parseDateString(
+			$userValue,
+			$datecomponents,
+			$calendarmodel,
+			$era,
+			$hours,
+			$minutes,
+			$seconds,
+			$microseconds,
+			$timeoffset,
+			$timezone
+		);
 
-		 // Default to JD input if a single number was given as the date
+		// Default to JD input if a single number was given as the date
 		if ( ( $calendarmodel === false ) && ( $era === false ) && ( count( $datecomponents ) == 1 || count( $datecomponents ) == 2 ) && ( intval( end( $datecomponents ) ) >= 100000 ) ) {
 			$calendarmodel = 'JD';
 		}
@@ -178,8 +178,8 @@ class TimeValueParser implements ValueParser {
 		$datecomponents = [];
 		$unclearparts = [];
 
-		 // Used for looking back; numbers are days/months/years by default but
-		 // may be re-interpreted if certain further symbols are found
+		// Used for looking back; numbers are days/months/years by default but
+		// may be re-interpreted if certain further symbols are found
 		$matchisnumber = false;
 
 		// Used for ensuring that date parts are in one block
@@ -187,7 +187,7 @@ class TimeValueParser implements ValueParser {
 
 		foreach ( $matches as $match ) {
 			$prevmatchwasnumber = $matchisnumber;
-			$prevmatchwasdate   = $matchisdate;
+			$prevmatchwasdate = $matchisdate;
 			$matchisnumber = $matchisdate = false;
 
 			if ( $match == ' ' ) {
@@ -204,7 +204,7 @@ class TimeValueParser implements ValueParser {
 				$era = '+';
 			} elseif ( $era === false && in_array( $match, [ 'BC', 'BCE' ] ) ) {
 				$era = '-';
-			} elseif ( $calendarmodel === false && in_array( $match, [ 'Gr', 'GR' , 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ] ) ) {
+			} elseif ( $calendarmodel === false && in_array( $match, [ 'Gr', 'GR', 'He', 'Jl', 'JL', 'MJD', 'JD', 'OS' ] ) ) {
 				$calendarmodel = $match;
 			} elseif ( $ampm === false && ( strtolower( $match ) === 'am' || strtolower( $match ) === 'pm' ) ) {
 				$ampm = strtolower( $match );
@@ -381,13 +381,6 @@ class TimeValueParser implements ValueParser {
 		}
 
 		return false;
-	}
-
-	private function debug( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $microseconds, $timeoffset, $timezone ) {
-		//print "\n\n Results \n\n";
-		//debug_zval_dump( $datecomponents );
-		//print "\ncalendarmodel: $calendarmodel   \ntimezoneoffset: $timezoneoffset  \nera: $era  \nampm: $ampm  \nh: $hours  \nm: $minutes  \ns:$seconds  \ntimeoffset: $timeoffset  \n";
-		//debug_zval_dump( $unclearparts );
 	}
 
 }

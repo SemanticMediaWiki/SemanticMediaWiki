@@ -93,7 +93,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$error = [
 			'smw-constraint-violation-class-mandatory-properties-constraint',
 			$dataValue->getWikiValue(),
-			implode(', ', array_keys( $properties ) )
+			implode( ', ', array_keys( $properties ) )
 		];
 
 		$dataValue->addError(

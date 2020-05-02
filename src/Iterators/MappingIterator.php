@@ -34,7 +34,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 * @since 2.5
 	 *
 	 * @param Iterator|array $iterable
-	 * @param callable  $callback
+	 * @param callable $callback
 	 */
 	public function __construct( $iterable, callable $callback ) {
 

@@ -55,7 +55,7 @@ class XsdValueMapper {
 	}
 
 	private static function mapNumber( DINumber $dataItem ) {
-		return[
+		return [
 			'http://www.w3.org/2001/XMLSchema#double',
 			strval( $dataItem->getNumber() )
 		];
@@ -68,7 +68,7 @@ class XsdValueMapper {
 		];
 	}
 
-	private static function mapGregorianCalendarModelTime( DITime $dataItem  ) {
+	private static function mapGregorianCalendarModelTime( DITime $dataItem ) {
 
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
@@ -88,7 +88,7 @@ class XsdValueMapper {
 					$xsdtype = 'http://www.w3.org/2001/XMLSchema#dateTime';
 					$xsdvalue .= 'T' .
 						sprintf( "%02d", $dataItem->getHour() ) . ':' .
-						sprintf( "%02d", $dataItem->getMinute()) . ':' .
+						sprintf( "%02d", $dataItem->getMinute() ) . ':' .
 						sprintf( "%02d", $dataItem->getSecond() );
 				}
 

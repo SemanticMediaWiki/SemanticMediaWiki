@@ -169,7 +169,7 @@ class ParserParameterProcessor {
 	 * @param string $value
 	 */
 	public function addParameter( $key, $value ) {
-		if( $key !== '' && $value !== '' ) {
+		if ( $key !== '' && $value !== '' ) {
 			$this->parameters[$key][] = $value;
 		}
 	}
@@ -222,12 +222,12 @@ class ParserParameterProcessor {
 			$values = [];
 
 			// Only strings are allowed for processing
-			if( !is_string( current ( $params ) ) ) {
+			if ( !is_string( current( $params ) ) ) {
 				next( $params );
 			}
 
 			// Get the current element and divide it into parts
-			$currentElement = explode( '=', trim( current ( $params ) ), 2 );
+			$currentElement = explode( '=', trim( current( $params ) ), 2 );
 
 			// Looking to the next element for comparison
 			$separator = $this->lookAheadOnNextElement( $params, $pipe );
@@ -274,7 +274,7 @@ class ParserParameterProcessor {
 
 		$separator = '';
 
-		if( !next( $params ) ) {
+		if ( !next( $params ) ) {
 			return $separator;
 		}
 

@@ -217,7 +217,7 @@ class CachingSemanticDataLookup {
 			$hash .= $dataItem->getSerialization();
 		}
 
-		if (  $requestOptions !== null ) {
+		if ( $requestOptions !== null ) {
 			$hash .= $requestOptions->getHash();
 		}
 

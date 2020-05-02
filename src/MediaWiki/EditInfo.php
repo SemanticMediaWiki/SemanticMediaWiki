@@ -78,7 +78,7 @@ class EditInfo {
 	/**
 	 * @since 2.0
 	 */
-	public function fetchEditInfo(): self {
+	public function fetchEditInfo() : self {
 
 		if ( $this->page !== null && $this->revision === null ) {
 			$this->revision = $this->page->getRevision();

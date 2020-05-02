@@ -45,7 +45,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 
 		$this->prepareValue( $property, $value, $comparator );
 
-		if( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_PRIM_LIKE ) {
+		if ( $comparator !== SMW_CMP_LIKE && $comparator !== SMW_CMP_PRIM_LIKE ) {
 
 			$this->dataValue->setUserValue( $value );
 
@@ -89,7 +89,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 			$description = $this->descriptionFactory->newConjunction(
 				[
 					$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
-					$this->descriptionFactory->newValueDescription( new DINumber( 0 ), $property,SMW_CMP_LEQ  )
+					$this->descriptionFactory->newValueDescription( new DINumber( 0 ), $property, SMW_CMP_LEQ )
 				]
 			);
 		}

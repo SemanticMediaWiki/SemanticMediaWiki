@@ -117,7 +117,7 @@ class SpecificationLookup {
 
 		if ( $source instanceof DIProperty ) {
 			$subject = $source->getCanonicalDiWikiPage();
-		} elseif( $source instanceof DIWikiPage ) {
+		} elseif ( $source instanceof DIWikiPage ) {
 			$subject = $source;
 		} else {
 			throw new RuntimeException( "Invalid request instance type" );
@@ -193,42 +193,6 @@ class SpecificationLookup {
 		$this->entityCache->associate( $subject, $key );
 
 		return $text;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @param string $displayTitle
-	 *
-	 * @return DIProperty|false
-	 */
-	private function getPropertyFromDisplayTitle( $displayTitle ) {
-
-		$descriptionFactory = new DescriptionFactory();
-
-		$description = $descriptionFactory->newSomeProperty(
-			new DIProperty( '_DTITLE' ),
-			$descriptionFactory->newValueDescription( new DIBlob( $displayTitle ) )
-		);
-
-		$query = new Query( $description );
-		$query->setLimit( 1 );
-		$query->setOption( Query::PROC_CONTEXT, 'PropertySpecificationLookup' );
-
-		$dataItems = $this->cachedPropertyValuesPrefetcher->queryPropertyValuesFor(
-			$query
-		);
-
-		if ( is_array( $dataItems ) && $dataItems !== [] ) {
-			$dataItem = end( $dataItems );
-
-			// Cache results as a linked list attached to
-			// the property so that it can be purged all together
-
-			return new DIProperty( $dataItem->getDBKey() );
-		}
-
-		return false;
 	}
 
 	/**

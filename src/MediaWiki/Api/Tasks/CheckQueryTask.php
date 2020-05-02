@@ -56,7 +56,7 @@ class CheckQueryTask extends Task {
 			$printouts = [];
 			$parameters = $raw_query['parameters'];
 
-			if ( isset( $parameters['sortkeys']  ) ) {
+			if ( isset( $parameters['sortkeys'] ) ) {
 				$order = [];
 				$sort = [];
 

@@ -338,7 +338,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-			( ( $defaultGraph !== '' )? "WITH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "WITH <{$defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -392,7 +392,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
-			( ( $defaultGraph !== '' )? "WITH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "WITH <{$defaultGraph}> " : '' ) .
 			"DELETE { $deletePattern } INSERT { $insertPattern } WHERE { $where }";
 
 		return $this->doUpdate( $sparql );
@@ -420,9 +420,9 @@ class GenericRepositoryConnector implements RepositoryConnection {
 
 		$sparql = self::getPrefixString( $extraNamespaces, true ) .
 			"INSERT DATA  " .
-			( ( $defaultGraph !== '' )? " { GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? " { GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples } " .
-			( ( $defaultGraph !== '' )? " } " : '' );
+			( ( $defaultGraph !== '' ) ? " } " : '' );
 
 		return $this->doUpdate( $sparql );
 	}
@@ -444,7 +444,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 			"DELETE DATA { " .
-			( ( $defaultGraph !== '' )? "GRAPH <{$defaultGraph}> " : '' ) .
+			( ( $defaultGraph !== '' ) ? "GRAPH <{$defaultGraph}> " : '' ) .
 			"{ $triples } }";
 
 		return $this->doUpdate( $sparql );
@@ -483,7 +483,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$parameterString = "query=" . urlencode( $sparql ) .
-			( ( $defaultGraph !== '' )? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
+			( ( $defaultGraph !== '' ) ? '&default-graph-uri=' . urlencode( $defaultGraph ) : '' );
 
 		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
 
@@ -571,7 +571,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getDataEndpoint() .
-			( ( $defaultGraph !== '' )? '?graph=' . urlencode( $defaultGraph ) : '?default' ) );
+			( ( $defaultGraph !== '' ) ? '?graph=' . urlencode( $defaultGraph ) : '?default' ) );
 		$this->httpRequest->setOption( CURLOPT_POST, true );
 
 		// POST as file (fails in 4Store)

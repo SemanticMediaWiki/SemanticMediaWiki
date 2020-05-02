@@ -178,7 +178,7 @@ class SearchTableRebuilder {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
-			$cliMsgFormatter->section( 'optimization', 3 , '-', true )
+			$cliMsgFormatter->section( 'optimization', 3, '-', true )
 		);
 
 		$text = [
@@ -264,7 +264,7 @@ class SearchTableRebuilder {
 
 		foreach ( $this->skippedTables as $tableName => $reason ) {
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( "... $tableName",  $reason, 3, '.' ),
+				$cliMsgFormatter->twoCols( "... $tableName", $reason, 3, '.' ),
 				$this->reportVerbose
 			);
 		}
@@ -385,7 +385,7 @@ class SearchTableRebuilder {
 			$indexableText = $row->o_blob;
 		} elseif ( isset( $row->o_hash ) ) {
 			$indexableText = $row->o_hash;
- 		}
+		}
 
 		return trim( $indexableText );
 	}

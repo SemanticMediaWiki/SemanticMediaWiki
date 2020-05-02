@@ -118,7 +118,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 			// TODO: announce an error here? (maybe not, since the query processor can check for
 			// non-existing concept pages which is probably the main reason for finding nothing here)
 			return $query;
-		};
+		}
 
 		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 
@@ -146,7 +146,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 					$description
 				);
 
-				if ($qid != -1) {
+				if ( $qid != -1 ) {
 					$query = $this->conditionBuilder->findQuerySegment( $qid );
 				} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
 					$this->conditionBuilder->addError( 'smw_emptysubquery' ); // not the right message, but this case is very rare; let us not make detailed messages for this

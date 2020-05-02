@@ -17,8 +17,8 @@ class Restrictions {
 	/**
 	 * @since 3.1
 	 *
-	 * @param  PrintRequest $printRequest
-	 * @param  DataItem[] $content
+	 * @param PrintRequest $printRequest
+	 * @param DataItem[] $content
 	 *
 	 * @return []
 	 */
@@ -71,8 +71,8 @@ class Restrictions {
 	/**
 	 * @since 3.1
 	 *
-	 * @param  PrintRequest $printRequest
-	 * @param  DataItem[] $content
+	 * @param PrintRequest $printRequest
+	 * @param DataItem[] $content
 	 *
 	 * @return []
 	 */

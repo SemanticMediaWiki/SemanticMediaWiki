@@ -206,7 +206,7 @@ class CachedFactbox {
 		if ( !$isPreview && $this->hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) ) {
 
 			$this->logger->info(
-				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}','{lang}', 'procTime: {procTime}' ],
+				[ 'Factbox', 'Using cached factbox', 'rev_id: {rev_id}', '{lang}', 'procTime: {procTime}' ],
 				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 			);
 

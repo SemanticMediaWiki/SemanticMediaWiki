@@ -2,7 +2,7 @@
 
 ### Why Elasticsearch?
 
-- It it is relatively easy to install and run an ES instance (also on not recommended hardware).
+- It is relatively easy to install and run an ES instance (also on not recommended hardware).
 - ES allows to scale its cluster horizontally without requiring changes to Semantic MediaWiki or its query engine.
 - It is more likely that a user in a MediaWiki environment can provided access to an ES instance than to a `SPARQL` triple store (or a SORL/Lucence backend).
 

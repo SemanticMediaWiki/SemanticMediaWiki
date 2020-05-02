@@ -260,9 +260,9 @@ trait ConfigLegacyTrait {
 				'smwgQSortingSupport' => '3.1.0',
 				'smwgQRandSortingSupport' => '3.1.0',
 				'smwgLinksInValues' => '3.1.0',
-				'smwgTypePagingLimit'  => '3.1.0',
-				'smwgConceptPagingLimit'  => '3.1.0',
-				'smwgPropertyPagingLimit'  => '3.1.0',
+				'smwgTypePagingLimit' => '3.1.0',
+				'smwgConceptPagingLimit' => '3.1.0',
+				'smwgPropertyPagingLimit' => '3.1.0',
 				'smwgSparqlQueryEndpoint' => '3.1.0',
 				'smwgSparqlUpdateEndpoint' => '3.1.0',
 				'smwgSparqlDataEndpoint' => '3.1.0',
@@ -275,7 +275,7 @@ trait ConfigLegacyTrait {
 
 				// Identifies options of settings planned to be removed
 				'options' => [
-					'smwgCacheUsage' =>  [
+					'smwgCacheUsage' => [
 						'smwgStatisticsCache' => '3.1.0',
 						'smwgStatisticsCacheExpiry' => '3.1.0',
 						'smwgPropertiesCache' => '3.1.0',
@@ -285,7 +285,7 @@ trait ConfigLegacyTrait {
 						'smwgWantedPropertiesCache' => '3.1.0',
 						'smwgWantedPropertiesCacheExpiry' => '3.1.0',
 					],
-					'smwgQueryProfiler' =>  [
+					'smwgQueryProfiler' => [
 						'smwgQueryDurationEnabled' => '3.1.0',
 						'smwgQueryParametersEnabled' => '3.1.0'
 					]
@@ -315,9 +315,9 @@ trait ConfigLegacyTrait {
 				'smwgQSortingSupport' => 'smwgQSortFeatures',
 				'smwgQRandSortingSupport' => 'smwgQSortFeatures',
 				'smwgImportFileDir' => 'smwgImportFileDirs',
-				'smwgTypePagingLimit'  => 'smwgPagingLimit',
-				'smwgConceptPagingLimit'  => 'smwgPagingLimit',
-				'smwgPropertyPagingLimit'  => 'smwgPagingLimit',
+				'smwgTypePagingLimit' => 'smwgPagingLimit',
+				'smwgConceptPagingLimit' => 'smwgPagingLimit',
+				'smwgPropertyPagingLimit' => 'smwgPagingLimit',
 				'smwgSparqlQueryEndpoint' => 'smwgSparqlEndpoint',
 				'smwgSparqlUpdateEndpoint' => 'smwgSparqlEndpoint',
 				'smwgSparqlDataEndpoint' => 'smwgSparqlEndpoint',

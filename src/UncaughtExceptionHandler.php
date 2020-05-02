@@ -21,19 +21,19 @@ class UncaughtExceptionHandler {
 	private $setupCheck;
 
 	/**
-	* @since 3.2
-	*
-	* @param SetupCheck $setupCheck
-	*/
+	 * @since 3.2
+	 *
+	 * @param SetupCheck $setupCheck
+	 */
 	public function __construct( SetupCheck $setupCheck ) {
 		$this->setupCheck = $setupCheck;
 	}
 
 	/**
-	* @since 3.2
-	*
-	* @param Throwable $e
-	*/
+	 * @since 3.2
+	 *
+	 * @param Throwable $e
+	 */
 	public function registerHandler( $e ) {
 
 		$message = $e->getMessage();

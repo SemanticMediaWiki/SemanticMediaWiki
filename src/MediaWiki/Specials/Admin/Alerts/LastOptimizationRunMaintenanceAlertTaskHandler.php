@@ -80,7 +80,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 			) .	Html::rawElement(
 				'p',
 				[],
-				$this->msg( ['smw-admin-maintenancealerts-lastoptimizationrun-alert', $lastRun, $daysDiff, self::DAYS_THRESHOLD ], Message::PARSE )
+				$this->msg( [ 'smw-admin-maintenancealerts-lastoptimizationrun-alert', $lastRun, $daysDiff, self::DAYS_THRESHOLD ], Message::PARSE )
 			)
 		);
 

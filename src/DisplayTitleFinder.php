@@ -59,7 +59,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param array $dataItems
 	 */
-	public function prefetchFromList ( $dataItems ) {
+	public function prefetchFromList( $dataItems ) {
 
 		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
 			return;

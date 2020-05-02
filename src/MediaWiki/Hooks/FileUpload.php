@@ -48,7 +48,7 @@ class FileUpload implements HookListener {
 	 */
 	public function process( File $file, $reUploadStatus = false ) {
 
-		 if ( $this->canProcess( $file->getTitle() ) ) {
+		if ( $this->canProcess( $file->getTitle() ) ) {
 			$this->doProcess( $file, $reUploadStatus );
 		}
 

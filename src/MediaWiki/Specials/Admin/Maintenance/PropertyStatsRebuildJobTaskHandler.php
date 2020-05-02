@@ -108,7 +108,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 						'data-job' => 'smw.propertyStatisticsRebuild',
 						'data-subject' => $subject->getHash()
 					]
-				 );
+				);
 		} elseif ( $this->hasFeature( SMW_ADM_PSTATS ) ) {
 			$this->htmlFormRenderer->addParagraph(
 					Html::element(

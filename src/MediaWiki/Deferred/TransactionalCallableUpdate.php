@@ -68,10 +68,10 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param callable $callback|null
+	 * @param callable|null $callback
 	 * @param Database|null $connection
 	 */
-	public function __construct( callable $callback = null, Database $connection ) {
+	public function __construct( callable $callback = null, Database $connection = null ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
@@ -95,7 +95,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		$this->autoCommit = true;
 	}
 
- 	/**
+	/**
 	 * It tries to fetch a transactionTicket to assert whether transaction writes
 	 * are active or not and if available will process Database::commitAndWaitForReplication
 	 * during DeferredCallableUpdate::doUpdate to safely post commits to the

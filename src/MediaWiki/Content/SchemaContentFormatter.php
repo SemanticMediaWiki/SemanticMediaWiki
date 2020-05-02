@@ -178,7 +178,7 @@ class SchemaContentFormatter {
 		$usage_lookup = (array)$this->type['usage_lookup'];
 
 		$subject = new DIWikiPage(
-			str_replace(' ', '_', $schema->getName() ),
+			str_replace( ' ', '_', $schema->getName() ),
 			SMW_NS_SCHEMA
 		);
 
@@ -344,7 +344,7 @@ class SchemaContentFormatter {
 			if ( isset( $error['property'] ) ) {
 				$list[$error['property']] = $error['message'];
 			} elseif ( is_array( $error ) ) {
-				$list[ $this->msg( [ 'smw-schema-error-miscellaneous', $error[0] ?? 'n/a' ])] = $this->msg( $error );
+				$list[$this->msg( [ 'smw-schema-error-miscellaneous', $error[0] ?? 'n/a' ] )] = $this->msg( $error );
 			}
 		}
 
@@ -357,7 +357,7 @@ class SchemaContentFormatter {
 
 	private function unknown_type( $type ) {
 
-		if (  $type === '' || $type === null ) {
+		if ( $type === '' || $type === null ) {
 			$key = 'smw-schema-error-type-missing';
 		} else {
 			$key = [ 'smw-schema-error-type-unknown', $type ];

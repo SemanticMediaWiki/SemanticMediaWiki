@@ -48,7 +48,7 @@ class Settings extends Options {
 		// or whom!
 		if ( $this->isLoaded ) {
 			throw new SettingsAlreadyLoadedException(
-				'Some function (or program) tried to reload the settings while '.
+				'Some function (or program) tried to reload the settings while ' .
 				'already being initialized!'
 			);
 		}
@@ -99,7 +99,7 @@ class Settings extends Options {
 			'smwgDefaultNumRecurringEvents' => $GLOBALS['smwgDefaultNumRecurringEvents'],
 			'smwgMaxNumRecurringEvents' => $GLOBALS['smwgMaxNumRecurringEvents'],
 			'smwgSearchByPropertyFuzzy' => $GLOBALS['smwgSearchByPropertyFuzzy'],
-			'smwgPagingLimit'  => $GLOBALS['smwgPagingLimit'],
+			'smwgPagingLimit' => $GLOBALS['smwgPagingLimit'],
 			'smwgPropertyListLimit' => $GLOBALS['smwgPropertyListLimit'],
 			'smwgQEnabled' => $GLOBALS['smwgQEnabled'],
 			'smwgQMaxLimit' => $GLOBALS['smwgQMaxLimit'],

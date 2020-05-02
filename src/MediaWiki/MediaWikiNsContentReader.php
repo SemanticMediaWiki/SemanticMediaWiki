@@ -68,7 +68,7 @@ class MediaWikiNsContentReader {
 			return $revision->getContent()->getNativeData();
 		}
 
-		if ( method_exists( $revision, 'getContent') ) {
+		if ( method_exists( $revision, 'getContent' ) ) {
 			return $revision->getContent( Revision::RAW );
 		}
 

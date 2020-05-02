@@ -11,7 +11,7 @@ namespace SMW\MediaWiki;
 class Pipetrick {
 
 	/**
- 	 * Apply the pipe trick to a page name (not a complete link).
+	 * Apply the pipe trick to a page name (not a complete link).
 	 *
 	 * See MediaWiki includes/parser/Parser.php pstPass2() for details. Removed
 	 * the opening/closing of links ([[A|b]]), instead it considers the start

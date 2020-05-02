@@ -104,7 +104,7 @@ class CircularReferenceGuard {
 	 * @param string $namespace
 	 */
 	public function reset( $namespace ) {
-		self::$circularRefGuard[$namespace] =  [];
+		self::$circularRefGuard[$namespace] = [];
 	}
 
 }

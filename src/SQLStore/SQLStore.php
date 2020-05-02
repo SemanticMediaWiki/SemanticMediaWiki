@@ -186,6 +186,7 @@ class SQLStore extends Store {
 	 * Get an object of the dataitem handler from the dataitem provided.
 	 *
 	 * @since 1.8
+	 *
 	 * @param integer $diType
 	 *
 	 * @return DataItemHandler
@@ -227,7 +228,7 @@ class SQLStore extends Store {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
 
-		return $this->entityLookup->getPropertyValues(	$subject, $property, $requestOptions );
+		return $this->entityLookup->getPropertyValues( $subject, $property, $requestOptions );
 	}
 
 	/**
@@ -361,7 +362,9 @@ class SQLStore extends Store {
 	 * @see SMWStore::fetchQueryResult
 	 *
 	 * @since 1.8
+	 *
 	 * @param Query $query
+	 *
 	 * @return QueryResult|string|integer depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
@@ -484,7 +487,9 @@ class SQLStore extends Store {
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @since 1.8
+	 *
 	 * @param Title $concept
+	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
 	public function refreshConceptCache( Title $concept ) {
@@ -495,6 +500,7 @@ class SQLStore extends Store {
 	 * Delete the concept cache for the given concept.
 	 *
 	 * @since 1.8
+	 *
 	 * @param Title $concept
 	 */
 	public function deleteConceptCache( $concept ) {
@@ -510,6 +516,7 @@ class SQLStore extends Store {
 	 * cache), 'count' (number of results in cache).
 	 *
 	 * @since 1.8
+	 *
 	 * @param Title|SMWWikiPageValue $concept
 	 *
 	 * @return DIConcept|null

@@ -166,7 +166,7 @@ class LanguageContents {
 			return $this->contents[$languageCode][$keys[0]][$keys[1]][$keys[2]];
 		}
 
-		throw new RuntimeException( "Unknown or invalid `{$id}` id for `{$languageCode}`"  );
+		throw new RuntimeException( "Unknown or invalid `{$id}` id for `{$languageCode}`" );
 	}
 
 }

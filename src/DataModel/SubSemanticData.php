@@ -129,7 +129,7 @@ class SubSemanticData {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string $subobjectName|null
+	 * @param string|null $subobjectName
 	 *
 	 * @return boolean
 	 */
@@ -194,16 +194,16 @@ class SubSemanticData {
 	}
 
 	/**
-	* Remove data about a subobject
-	*
-	* If the removed data is not about a subobject of this object,
-	* it will silently be ignored (nothing to remove). Likewise,
-	* removing data that is not present does not change anything.
-	*
-	* @since 2.5
-	*
-	* @param SemanticData $semanticData
-	*/
+	 * Remove data about a subobject
+	 *
+	 * If the removed data is not about a subobject of this object,
+	 * it will silently be ignored (nothing to remove). Likewise,
+	 * removing data that is not present does not change anything.
+	 *
+	 * @since 2.5
+	 *
+	 * @param SemanticData $semanticData
+	 */
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 
 		if ( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
@@ -230,7 +230,7 @@ class SubSemanticData {
 	 */
 	public function removeProperty( DIProperty $property ) {
 
-		 // Inverse properties cannot be used for an annotation
+		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() ) {
 			return;
 		}

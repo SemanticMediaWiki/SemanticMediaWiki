@@ -21,14 +21,17 @@ use SMWExpLiteral as ExpLiteral;
 class RepositoryResult implements Iterator {
 
 	/// Error code: no errors occurred.
-	const ERROR_NOERROR     = 0;
+	const ERROR_NOERROR = 0;
+
 	/// Error code: service unreachable; result will be empty
 	const ERROR_UNREACHABLE = 1;
+
 	/// Error code: results might be incomplete (e.g. due to some resource limit being reached)
 	const ERROR_INCOMPLETE = 2;
 
 	/**
 	 * Associative array mapping SPARQL variable names to column indices.
+	 *
 	 * @var array of integer
 	 */
 	protected $header;
@@ -37,6 +40,7 @@ class RepositoryResult implements Iterator {
 	 * List of result rows. Individual entries can be null if a cell in the
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
+	 *
 	 * @var array of array of (SMWExpElement or null)
 	 */
 	protected $data;
@@ -44,12 +48,14 @@ class RepositoryResult implements Iterator {
 	/**
 	 * List of comment strings found in the XML file (without surrounding
 	 * markup, i.e. the actual string only).
+	 *
 	 * @var array of string
 	 */
 	protected $comments;
 
 	/**
 	 * Error code.
+	 *
 	 * @var integer
 	 */
 	protected $errorCode;

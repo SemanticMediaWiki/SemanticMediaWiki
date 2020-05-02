@@ -66,18 +66,21 @@ class ConditionBuilder {
 
 	/**
 	 * Counter used to generate globally fresh variables.
+	 *
 	 * @var integer
 	 */
 	private $variableCounter = 0;
 
 	/**
 	 * sortKeys that are being used while building the query conditions
+	 *
 	 * @var array
 	 */
 	private $sortKeys = [];
 
 	/**
 	 * The name of the SPARQL variable that represents the query result
+	 *
 	 * @var string
 	 */
 	private $resultVariable = 'result';
@@ -465,7 +468,7 @@ class ConditionBuilder {
 		}
 
 		$weakConditions = [
-			$condition->orderByVariable =>"?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
+			$condition->orderByVariable => "?$mainVariable " . $skeyExpElement->getQName() . " ?{$condition->orderByVariable} .\n"
 		];
 
 		$condition->weakConditions += $weakConditions;
@@ -513,7 +516,7 @@ class ConditionBuilder {
 			$propertyChainValue->setUserValue( $propertyKey );
 
 			if ( !$propertyChainValue->isValid() ) {
-				return $description;
+				return null;
 			}
 
 			$lastDataItem = $propertyChainValue->getLastPropertyChainValue()->getDataItem();

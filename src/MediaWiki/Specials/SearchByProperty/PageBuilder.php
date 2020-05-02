@@ -332,7 +332,7 @@ class PageBuilder {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 
-	private function canShowSearchByPropertyLink ( DataValue $dataValue ) {
+	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
 
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()

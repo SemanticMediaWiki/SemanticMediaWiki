@@ -95,7 +95,7 @@ class ExpensiveFuncExecutionWatcher {
 	 */
 	public function incrementExpensiveCount( Query $query ) {
 
-		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold  ) {
+		if ( $this->expensiveExecutionLimit === false || $query->getLimit() == 0 || $query->getOption( Query::PROC_QUERY_TIME ) < $this->expensiveThreshold ) {
 			return;
 		}
 

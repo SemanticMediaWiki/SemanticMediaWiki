@@ -244,7 +244,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param  DITime|null $dataItem
+	 * @param DITime|null $dataItem
 	 *
 	 * @return string
 	 */
@@ -259,7 +259,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		if (
 			$dataItem !== null &&
 			$dataItem->getYear() > DITime::PREHISTORY &&
-			preg_match("/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
+			preg_match( "/\[([^\]]*)\]/", $this->dataValue->getOutputFormat(), $matches ) ) {
 			$intlTimeFormatter = new IntlTimeFormatter( $dataItem, $language );
 
 			if ( ( $caption = $intlTimeFormatter->format( $matches[1] ) ) !== false ) {
@@ -280,7 +280,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @since 2.4
 	 *
-	 * @param  DITime|null $dataItem
+	 * @param DITime|null $dataItem
 	 *
 	 * @return string
 	 */

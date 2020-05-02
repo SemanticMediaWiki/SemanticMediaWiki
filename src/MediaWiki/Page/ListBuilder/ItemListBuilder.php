@@ -141,7 +141,7 @@ class ItemListBuilder {
 	 */
 	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
 
-		$subjectList =  $this->store->getPropertySubjects(
+		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,
 			$requestOptions
@@ -183,7 +183,7 @@ class ItemListBuilder {
 		$message = $this->msg( [ 'smw-propertylist-count', $this->itemCount ] );
 
 		if ( $more ) {
-			$message = $this->msg( ['smw-propertylist-count-more-available', $this->itemCount ] );
+			$message = $this->msg( [ 'smw-propertylist-count-more-available', $this->itemCount ] );
 			$colsListBuilder->setLastItemFormatter( $this->getLastItemFormatter( $property, $dataItem ) );
 		}
 

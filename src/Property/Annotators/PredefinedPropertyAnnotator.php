@@ -103,7 +103,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 				// @codingStandardsIgnoreEnd
 				break;
 			case DIProperty::TYPE_MIME : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMimeType() !== '' && $this->pageInfo->getMimeType() !== null  ? new DIBlob( $this->pageInfo->getMimeType() ) : null;
+				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMimeType() !== '' && $this->pageInfo->getMimeType() !== null ? new DIBlob( $this->pageInfo->getMimeType() ) : null;
 				// @codingStandardsIgnoreEnd
 				break;
 		}

@@ -40,10 +40,10 @@ class Browse extends ApiBase {
 			$error = new JSONParseException( $params['params'] );
 
 			// 1.29+
-			if ( method_exists($this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: '. $error->getMessage() ] );
+			if ( method_exists( $this, 'dieWithError' ) ) {
+				$this->dieWithError( [ 'smw-api-invalid-parameters', 'JSON: ' . $error->getMessage() ] );
 			} else {
-				$this->dieUsage( 'JSON: '. $error->getMessage(), 'smw-api-invalid-parameters' );
+				$this->dieUsage( 'JSON: ' . $error->getMessage(), 'smw-api-invalid-parameters' );
 			}
 		}
 
@@ -114,7 +114,7 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore') ) {
+		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
 			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 		}
 
@@ -158,7 +158,7 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore') ) {
+		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
 			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 		}
 
@@ -199,7 +199,7 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore') ) {
+		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
 			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
 		}
 
@@ -271,14 +271,14 @@ class Browse extends ApiBase {
 			if ( method_exists( $this, 'dieWithError' ) ) {
 				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable'  );
+				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
 			}
 		} catch ( ParameterNotFoundException $e ) {
 			// 1.29+
 			if ( method_exists( $this, 'dieWithError' ) ) {
 				$this->dieWithError( [ 'smw-parameter-missing', $e->getName() ] );
 			} else {
-				$this->dieUsage( $e->getName(), 'smw-parameter-missing'  );
+				$this->dieUsage( $e->getName(), 'smw-parameter-missing' );
 			}
 		}
 

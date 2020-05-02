@@ -275,7 +275,7 @@ class StubSemanticData extends SemanticData {
 	public function removePropertyObjectValue( DIProperty $property, DataItem $dataItem ) {
 		$this->unstubProperties();
 		$this->getPropertyValues( $property );
-		parent::removePropertyObjectValue($property, $dataItem);
+		parent::removePropertyObjectValue( $property, $dataItem );
 	}
 
 	/**
@@ -311,6 +311,7 @@ class StubSemanticData extends SemanticData {
 	 * only one valuekey, a single string can be used.
 	 *
 	 * @since 1.8
+	 *
 	 * @param string $propertyKey
 	 * @param array|string $valueKeys
 	 */

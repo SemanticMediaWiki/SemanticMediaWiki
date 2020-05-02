@@ -54,7 +54,7 @@ class JsonResultPrinter extends FileExportPrinter {
 		}
 
 		if ( substr( $this->params['filename'], -5 ) === '.json' ) {
-			return str_replace( ' ', '_', $this->params['filename'] ) ;
+			return str_replace( ' ', '_', $this->params['filename'] );
 		}
 
 		return str_replace( ' ', '_', $this->params['filename'] . '.json' );
@@ -113,7 +113,7 @@ class JsonResultPrinter extends FileExportPrinter {
 		}
 
 		// No results, just bailout
-		if ( $res->getCount() == 0 ){
+		if ( $res->getCount() == 0 ) {
 			return $this->params['default'] !== '' ? $this->params['default'] : '';
 		}
 

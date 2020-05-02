@@ -41,7 +41,7 @@ class InfoParserFunction implements HookHandler {
 		 * Non-escaping is safe bacause a user's message is passed through parser, which will
 		 * handle unsafe HTM elements.
 		 */
-		$message = $parameters[ 'message' ]->getValue();
+		$message = $parameters['message']->getValue();
 
 		if ( $parser->mStripState ) {
 			$message = $parser->mStripState->unstripBoth( $message );
@@ -89,6 +89,7 @@ class InfoParserFunction implements HookHandler {
 
 	/**
 	 * @param ProcessingError[] $errors
+	 *
 	 * @return string
 	 */
 	private function getOutputForErrors( $errors ) {

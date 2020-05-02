@@ -291,13 +291,13 @@ class Indexer {
 
 		if ( $id == 0 ) {
 			return '';
-		};
+		}
 
 		$revision = Revision::newFromId( $id );
 
 		if ( $revision == null ) {
 			return '';
-		};
+		}
 
 		$content = $revision->getContent( Revision::RAW );
 

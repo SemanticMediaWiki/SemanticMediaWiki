@@ -234,11 +234,11 @@ class HtmlTableRenderer {
 		$this->tableHeaders = [];
 		$this->tableRows = [];
 
-		foreach( $this->rawHeaders as $i => $header ) {
+		foreach ( $this->rawHeaders as $i => $header ) {
 			$this->tableHeaders[] = $this->createHeader( $header['content'], $header['attributes'] );
 		}
 
-		foreach( $this->rawRows as $row ) {
+		foreach ( $this->rawRows as $row ) {
 			$this->tableRows[] = $this->createRow( implode( '', $row['cells'] ), $row['attributes'] );
 		}
 
@@ -272,11 +272,11 @@ class HtmlTableRenderer {
 	private function buildTransposedTable() {
 		$this->tableRows = [];
 
-		foreach( $this->rawHeaders as $hIndex => $header ) {
+		foreach ( $this->rawHeaders as $hIndex => $header ) {
 			$cells = [];
-			$headerItem =  $this->createHeader( $header['content'], $header['attributes'] );
+			$headerItem = $this->createHeader( $header['content'], $header['attributes'] );
 
-			foreach( $this->rawRows as $rIndex => $row ) {
+			foreach ( $this->rawRows as $rIndex => $row ) {
 				$cells[] = $this->getTransposedCell( $hIndex, $row );
 			}
 

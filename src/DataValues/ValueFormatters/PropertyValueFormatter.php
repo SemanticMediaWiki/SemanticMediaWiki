@@ -97,7 +97,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		}
 
 		if ( $type === self::WIKI_LONG ) {
-			$text =  $this->doHighlightText( $wikiPageValue->getLongWikiText( $linker ) );
+			$text = $this->doHighlightText( $wikiPageValue->getLongWikiText( $linker ) );
 		}
 
 		if ( $type === self::HTML_LONG ) {
@@ -138,7 +138,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		// Display title goes before a translated label (but not preferred)
 		if ( $preferredLabel === '' && $displayTitle !== '' ) {
 			$label = $displayTitle;
-		//	$canonicalLabel = $displayTitle;
+			//	$canonicalLabel = $displayTitle;
 		}
 
 		// Internal format only used by PropertyValue
@@ -167,7 +167,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 		if ( $canonicalLabel !== $label ) {
 			$canonicalLabel = \Html::rawElement(
 				'span', [ 'style' => 'font-size:small;' ], '(' . $canonicalLabel . ')' );
-			$output = $output . '&nbsp;'.  $canonicalLabel;
+			$output = $output . '&nbsp;' . $canonicalLabel;
 		}
 
 		return $output;

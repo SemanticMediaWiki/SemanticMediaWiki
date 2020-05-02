@@ -104,9 +104,9 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 
 		if ( $mode === '' ) {
-			$sql = 'CREATE TABLE ' . $tableName .'(' . implode( ',', $fieldSql ) . ') ';
+			$sql = 'CREATE TABLE ' . $tableName . '(' . implode( ',', $fieldSql ) . ') ';
 		} else {
-			$sql = 'CREATE VIRTUAL TABLE ' . $tableName . ' USING ' . strtolower( $mode ) .'(' . implode( ',', $fieldSql ) . $option . ') ';
+			$sql = 'CREATE VIRTUAL TABLE ' . $tableName . ' USING ' . strtolower( $mode ) . '(' . implode( ',', $fieldSql ) . $option . ') ';
 		}
 
 		$this->connection->query( $sql, __METHOD__ );
@@ -246,7 +246,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "   ... field $fieldName is obsolete ...\n" );
 		$this->reportMessage( "       ... creating a temporary table ...\n" );
 		$this->connection->query( 'DROP TABLE IF EXISTS ' . $temp_table, __METHOD__ );
-		$this->connection->query( 'CREATE TABLE ' . $temp_table .' (' . implode( ',', $field_def ) . ') ', __METHOD__ );
+		$this->connection->query( 'CREATE TABLE ' . $temp_table . ' (' . implode( ',', $field_def ) . ') ', __METHOD__ );
 		$this->reportMessage( "       ... copying table contents ...\n" );
 		$this->connection->query( 'INSERT INTO ' . $temp_table . ' SELECT ' . implode( ',', $field_list ) . ' FROM ' . $tableName, __METHOD__ );
 		$this->reportMessage( "       ... dropping table with obsolete field definitions ...\n" );
@@ -271,7 +271,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		// In case an index has a length restriction indexZ(200), remove it since
 		// SQLite doesn't know such syntax
 		foreach ( $indices as $k => $columns ) {
-			$ix[$k] = preg_replace("/\([^)]+\)/", "", $columns );
+			$ix[$k] = preg_replace( "/\([^)]+\)/", "", $columns );
 		}
 
 		$indices = $ix;

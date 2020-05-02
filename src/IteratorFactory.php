@@ -65,7 +65,7 @@ class IteratorFactory {
 	 *
 	 * @param string $file
 	 * @param boolean $parseHeader
-	 * @param string  $delimiter
+	 * @param string $delimiter
 	 * @param integer $length
 	 *
 	 * @return CsvFileIterator

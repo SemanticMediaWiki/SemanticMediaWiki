@@ -48,7 +48,7 @@ class UpdateTask extends Task {
 		$log = [];
 
 		if ( $title === null ) {
-			return ['done' => false ];
+			return [ 'done' => false ];
 		}
 
 		// Each single update is required to allow for a cascading computation

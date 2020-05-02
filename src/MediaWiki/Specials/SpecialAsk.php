@@ -153,7 +153,7 @@ class SpecialAsk extends SpecialPage {
 
 			if ( $this->isBorrowedMode ) {
 				$visibleLinks = [];
-			} elseif( $request->getVal( 'eq', '' ) === 'no' || $p !== null || $request->getVal( 'x' ) || $request->getVal( 'cl' ) ) {
+			} elseif ( $request->getVal( 'eq', '' ) === 'no' || $p !== null || $request->getVal( 'x' ) || $request->getVal( 'cl' ) ) {
 				$visibleLinks = [ 'search', 'empty' ];
 			} else {
 				$visibleLinks = [ 'options', 'search', 'help', 'empty' ];
@@ -517,7 +517,7 @@ class SpecialAsk extends SpecialPage {
 
 			if ( $table !== '' ) {
 				$result .= '<h2>Score set</h2>' . $table;
-			};
+			}
 		}
 
 		if ( $native_result !== '' ) {
@@ -696,7 +696,7 @@ class SpecialAsk extends SpecialPage {
 
 		$qp = [];
 
-		foreach ( $params as $key => $value) {
+		foreach ( $params as $key => $value ) {
 			$qp[$key] = $value->getValue();
 		}
 

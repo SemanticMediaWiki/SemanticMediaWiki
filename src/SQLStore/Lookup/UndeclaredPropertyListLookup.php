@@ -39,9 +39,9 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @param Store $store
 	 * @param string $defaultPropertyType
-	 * @param RequestOptions $requestOptions|null
+	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, $defaultPropertyType, RequestOptions $requestOptions = null ) {
+	public function __construct( Store $store, $defaultPropertyType, ?RequestOptions $requestOptions = null ) {
 		$this->store = $store;
 		$this->defaultPropertyType = $defaultPropertyType;
 		$this->requestOptions = $requestOptions;

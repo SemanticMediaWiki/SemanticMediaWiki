@@ -228,7 +228,7 @@ class Rebuilder {
 		$this->matchAsSubject( $id, $emptyRange );
 
 		// Deprecated since 2.3, use 'SMW::SQLStore::BeforeDataRebuildJobInsert'
-		\Hooks::run('smwRefreshDataJobs', [ &$this->updateJobs ] );
+		\Hooks::run( 'smwRefreshDataJobs', [ &$this->updateJobs ] );
 
 		Hooks::run( 'SMW::SQLStore::BeforeDataRebuildJobInsert', [ $this->store, &$this->updateJobs ] );
 
@@ -483,7 +483,7 @@ class Rebuilder {
 	}
 
 	private function addDispatchRecord( $key, $row ) {
-		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' .$row->smw_subobject ];
+		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' . $row->smw_subobject ];
 	}
 
 	private function addJob( $title, $row = false ) {

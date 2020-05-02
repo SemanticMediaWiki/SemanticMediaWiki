@@ -183,9 +183,9 @@ class GroupFormatter {
 		// `smw-category-group` message to point to a group
 		if ( $property->getKey() === '_INST' && Message::exists( 'smw-category-group' ) ) {
 			$group = Message::get( 'smw-category-group' );
-		} elseif( ( $dataItem = $this->propertySpecificationLookup->getPropertyGroup( $property ) ) instanceof DataItem ) {
+		} elseif ( ( $dataItem = $this->propertySpecificationLookup->getPropertyGroup( $property ) ) instanceof DataItem ) {
 			$group = str_replace( '_', ' ', $dataItem->getDBKey() );
-		} elseif( $list !== [] ) {
+		} elseif ( $list !== [] ) {
 			$group = $this->findGroupFromList( $list, $property, $dataItem, $msg_key );
 		}
 
@@ -267,7 +267,7 @@ class GroupFormatter {
 					continue;
 				}
 
-				if( isset( $data['message_key'] ) ) {
+				if ( isset( $data['message_key'] ) ) {
 					$message_key = $data['message_key'];
 				}
 
@@ -275,7 +275,7 @@ class GroupFormatter {
 					$group = $data['canonical_name'];
 				} elseif ( isset( $data['group_name'] ) ) {
 					$group = $data['group_name'];
-				} elseif( $message_key === '' ) {
+				} elseif ( $message_key === '' ) {
 					continue;
 				}
 

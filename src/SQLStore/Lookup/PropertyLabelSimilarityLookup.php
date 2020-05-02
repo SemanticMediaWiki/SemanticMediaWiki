@@ -196,8 +196,8 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param  DIProperty $first
-	 * @param  DIProperty $second
+	 * @param DIProperty $first
+	 * @param DIProperty $second
 	 *
 	 * @return boolean
 	 */

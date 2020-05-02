@@ -113,7 +113,7 @@ class TaskFactory {
 			return $service;
 		}
 
-		throw new RuntimeException( "$type is an unknown task type!");
+		throw new RuntimeException( "$type is an unknown task type!" );
 	}
 
 	/**

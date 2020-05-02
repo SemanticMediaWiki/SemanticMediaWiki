@@ -58,15 +58,15 @@ class ListAugmentor {
 			$lang = [ $lang ];
 		}
 
-		if ( $type === 'property' && isset( $parameters['description' ] ) ) {
+		if ( $type === 'property' && isset( $parameters['description'] ) ) {
 			$this->addPropertyDescription( $res, $lang );
 		}
 
-		if ( $type === 'property' && isset( $parameters['prefLabel' ] ) ) {
+		if ( $type === 'property' && isset( $parameters['prefLabel'] ) ) {
 			$this->addPreferredPropertyLabel( $res, $lang );
 		}
 
-		if ( $type === 'property' && isset( $parameters['usageCount' ] ) ) {
+		if ( $type === 'property' && isset( $parameters['usageCount'] ) ) {
 			$this->addUsageCount( $res );
 		}
 

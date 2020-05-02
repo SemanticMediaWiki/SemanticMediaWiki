@@ -232,7 +232,7 @@ class LegacyParser implements Parser {
 	 */
 	public function createCondition( $property, $value ) {
 
-		if ( $property instanceOf DIProperty ) {
+		if ( $property instanceof DIProperty ) {
 			$property = $property->getLabel();
 		}
 
@@ -255,7 +255,7 @@ class LegacyParser implements Parser {
 				'smw-query-condition-empty'
 			);
 
-			return  $this->descriptionFactory->newThingDescription();
+			return $this->descriptionFactory->newThingDescription();
 		}
 
 		$this->descriptionProcessor->clear();
@@ -443,7 +443,7 @@ class LegacyParser implements Parser {
 			}
 		}
 
-		 // Fixed article/namespace restriction. $sep should be ]] or ||
+		// Fixed article/namespace restriction. $sep should be ]] or ||
 		return $this->getArticleDescription( trim( $chunk ), $setNS );
 	}
 
@@ -695,7 +695,7 @@ class LegacyParser implements Parser {
 
 		while ( $continue ) {
 
-			 // No subqueries of the form [[<q>...</q>]] (not needed)
+			// No subqueries of the form [[<q>...</q>]] (not needed)
 			if ( $chunk == '<q>' ) {
 				$this->descriptionProcessor->addErrorWithMsgKey( 'smw_misplacedsubquery' );
 				return null;
@@ -749,7 +749,7 @@ class LegacyParser implements Parser {
 
 		if ( is_null( $description ) ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
-		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace  ) ) {
+		} elseif ( !$hasNamespaces && $setNS && !is_null( $this->defaultNamespace ) ) {
 			$description = $this->descriptionProcessor->asAnd( $description, $this->defaultNamespace );
 			$hasNamespaces = true;
 		}
@@ -766,7 +766,7 @@ class LegacyParser implements Parser {
 			if ( strpos( $chunk, '+depth=' ) !== false ) {
 				list( $k, $depth ) = explode( '=', $chunk, 2 );
 
-				if ( $description instanceOf ClassDescription || $description instanceOf SomeProperty || $description instanceOf Disjunction ) {
+				if ( $description instanceof ClassDescription || $description instanceof SomeProperty || $description instanceof Disjunction ) {
 					$description->setHierarchyDepth( $depth );
 				}
 

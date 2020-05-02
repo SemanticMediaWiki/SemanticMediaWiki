@@ -74,7 +74,7 @@ class AttachmentFormatter {
 		$propertyRegistry = PropertyRegistry::getInstance();
 
 		$mime = $dataValueFactory->newDataValueByItem(
-			 ( new DIProperty( '_MIME' ) )->getDiWikiPage()
+			( new DIProperty( '_MIME' ) )->getDiWikiPage()
 		);
 
 		$mime->setOption( $mime::SHORT_FORM, true );
@@ -88,7 +88,7 @@ class AttachmentFormatter {
 		);
 
 		$mdat = $dataValueFactory->newDataValueByItem(
-			( new DIProperty( '_MDAT' )  )->getDiWikiPage()
+			( new DIProperty( '_MDAT' ) )->getDiWikiPage()
 		);
 
 		$mdat->setOption( $mime::SHORT_FORM, true );
@@ -115,10 +115,10 @@ class AttachmentFormatter {
 			],
 			$this->header . HtmlDivTable::table(
 				HtmlDivTable::header(
-					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:50%;'] ) .
-					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
-					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;'] ) .
-					HtmlDivTable::cell( $isLocalMsg, [ 'style' => 'width:10%;text-align:center'] )
+					HtmlDivTable::cell( '&nbsp;', [ 'style' => 'width:50%;' ] ) .
+					HtmlDivTable::cell( $mime->getShortWikiText(), [ 'style' => 'width:20%;' ] ) .
+					HtmlDivTable::cell( $mdat->getShortWikiText(), [ 'style' => 'width:20%;' ] ) .
+					HtmlDivTable::cell( $isLocalMsg, [ 'style' => 'width:10%;text-align:center' ] )
 				) . HtmlDivTable::body( $rows ),
 				[
 					// ID is used for the sorting JS!
@@ -179,7 +179,7 @@ class AttachmentFormatter {
 			$isLocal = '✗';
 		}
 
-		$row .= HtmlDivTable::cell( $isLocal, [ 'style' => 'text-align:center'] );
+		$row .= HtmlDivTable::cell( $isLocal, [ 'style' => 'text-align:center' ] );
 
 		return $row;
 	}

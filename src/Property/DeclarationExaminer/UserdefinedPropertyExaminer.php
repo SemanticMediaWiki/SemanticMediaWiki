@@ -125,7 +125,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 	private function checkGeoType( $type, $property ) {
 
 		if ( $type !== '_geo' ) {
-			return ;
+			return;
 		}
 
 		if ( defined( 'SM_VERSION' ) ) {

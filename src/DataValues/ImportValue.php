@@ -225,7 +225,7 @@ class ImportValue extends DataValue {
 	}
 
 	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
-		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " .  Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::PARSE );
+		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::PARSE );
 	}
 
 }

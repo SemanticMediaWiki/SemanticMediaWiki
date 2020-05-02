@@ -188,7 +188,7 @@ abstract class Job extends MediaWikiJob {
 			return;
 		}
 
-		$this->params[ 'jobReleaseTimestamp' ] = $newTime;
+		$this->params['jobReleaseTimestamp'] = $newTime;
 	}
 
 	/**

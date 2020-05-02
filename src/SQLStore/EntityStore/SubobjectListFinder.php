@@ -139,7 +139,7 @@ class SubobjectListFinder {
 				'smw_subobject',
 				'smw_sortkey'
 			],
-			implode( ' AND ' , $conditions ),
+			implode( ' AND ', $conditions ),
 			__METHOD__
 		);
 

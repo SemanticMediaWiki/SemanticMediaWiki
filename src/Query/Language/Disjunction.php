@@ -21,9 +21,9 @@ class Disjunction extends Description {
 	private $descriptions = [];
 
 	/**
-	 * contains a single class description if any such disjunct was given;
-	 * disjunctive classes are aggregated therei
-	 * n
+	 * Contains a single class description if any such disjunct was given;
+	 * disjunctive classes are aggregated therein.
+	 *
 	 * @var null|ClassDescription
 	 */
 	private $classDescription = null;
@@ -101,7 +101,7 @@ class Disjunction extends Description {
 		}
 
 		if ( !$this->isTrue ) {
-			 // Combine class descriptions only when those describe the same state
+			// Combine class descriptions only when those describe the same state
 			if ( $description instanceof ClassDescription ) {
 				if ( is_null( $this->classDescription ) ) { // first class description
 					$this->classDescription = $description;
@@ -115,8 +115,8 @@ class Disjunction extends Description {
 				foreach ( $description->getDescriptions() as $subdesc ) {
 					$this->descriptions[$subdesc->getFingerprint()] = $subdesc;
 				}
-			// } elseif ($description instanceof SMWSomeProperty) {
-			   ///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
+				// } elseif ($description instanceof SMWSomeProperty) {
+				///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
 			} else {
 				$this->descriptions[$fingerprint] = $description;
 			}
@@ -135,7 +135,7 @@ class Disjunction extends Description {
 		}
 
 		$result = '';
-		$sep = $asValue ? '||':' OR ';
+		$sep = $asValue ? '||' : ' OR ';
 
 		foreach ( $this->descriptions as $desc ) {
 			$subdesc = $desc->getQueryString( $asValue );
@@ -148,7 +148,7 @@ class Disjunction extends Description {
 				}
 			}
 
-			$result .= ( $result ? $sep:'' ) . $subdesc;
+			$result .= ( $result ? $sep : '' ) . $subdesc;
 		}
 
 		if ( $asValue ) {

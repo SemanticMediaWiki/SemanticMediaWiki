@@ -58,7 +58,7 @@ class Deferred {
 			$element,
 			[
 				'class' => 'smw-deferred-query' . ( isset( $params['class'] ) ? ' ' . $params['class'] : '' ),
-				'data-query'  => json_encode(
+				'data-query' => json_encode(
 					[
 						'query'  => trim( $query->getOption( self::QUERY_PARAMETERS ) ),
 						'params' => $params,

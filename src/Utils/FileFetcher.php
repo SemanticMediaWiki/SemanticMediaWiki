@@ -112,6 +112,10 @@ class FileFetcher {
 				$matches
 			);
 
+			/**
+			 * @uses sort_asc
+			 * @uses sort_desc
+			 */
 			usort( $matches, [ $this, "sort_$this->sort" ] );
 		}
 

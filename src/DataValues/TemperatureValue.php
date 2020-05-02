@@ -91,7 +91,7 @@ class TemperatureValue extends NumberValue {
 			$printUnit = $this->m_unitin;
 		}
 
-		$value =$this->convertToUnit(
+		$value = $this->convertToUnit(
 			$this->m_dataitem->getNumber(),
 			$this->m_unitin
 		);
@@ -104,7 +104,7 @@ class TemperatureValue extends NumberValue {
 			$this->m_caption .= '&#160;';
 		} else {
 			$this->m_caption = $this->getNormalizedFormattedNumber( $value );
-			$this->m_caption .=  ' ';
+			$this->m_caption .= ' ';
 		}
 
 		// -n is the format for displaying the number only

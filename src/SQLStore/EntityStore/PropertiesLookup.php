@@ -92,7 +92,7 @@ class PropertiesLookup {
 			'smw_sortkey'
 		) );
 
-		$opt =  $this->store->getSQLOptions(
+		$opt = $this->store->getSQLOptions(
 			$requestOptions,
 			'smw_sortkey'
 		);

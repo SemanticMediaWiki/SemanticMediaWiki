@@ -547,6 +547,8 @@ class SMWInfolink {
 	 *
 	 * @param string $titleParam
 	 * @param boolean $allParams
+	 *
+	 * @return array
 	 */
 	static public function decodeParameters( $titleParam = '', $allParams = false ) {
 		global $wgRequest;

@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use Linker;
 use SMW\Localizer;
 use SMW\Message;
 
@@ -64,7 +65,9 @@ class AllowsPatternValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
 
@@ -74,13 +77,15 @@ class AllowsPatternValue extends StringValue {
 
 		$id = $this->getDataItem()->getString();
 
-		return '[['. Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::REFERENCE_PAGE_ID . '|' . $id .']]';
+		return '[[' . Localizer::getInstance()->getNsText( NS_MEDIAWIKI ) . ':' . self::REFERENCE_PAGE_ID . '|' . $id . ']]';
 	}
 
 	/**
 	 * @see DataValue::getLongHtmlText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getLongHtmlText( $linker = null ) {
 		return $this->getShortHtmlText( $linker );
@@ -89,7 +94,9 @@ class AllowsPatternValue extends StringValue {
 	/**
 	 * @see DataValue::getShortHtmlText
 	 *
-	 * @param string $value
+	 * @param Linker|null $linker
+	 *
+	 * @return string
 	 */
 	public function getShortHtmlText( $linker = null ) {
 

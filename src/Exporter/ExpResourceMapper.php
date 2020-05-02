@@ -187,7 +187,7 @@ class ExpResourceMapper {
 
 	private function newExpNsResource( $diWikiPage, $modifier ) {
 
-		 $importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
+		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
 			list( $localName, $namespace, $namespaceId ) = $this->defineElementsForImportDataItem( $importDataItem );
@@ -261,9 +261,9 @@ class ExpResourceMapper {
 		}
 
 		// "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
-	 	// occurring in MW titles).
+		// occurring in MW titles).
 		if ( $modifier !== '' ) {
-			$localName .=  '-23' . Escaper::encodeUri( $modifier );
+			$localName .= '-23' . Escaper::encodeUri( $modifier );
 		}
 
 		return [

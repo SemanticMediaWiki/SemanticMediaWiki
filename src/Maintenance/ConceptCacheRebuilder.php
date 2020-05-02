@@ -126,15 +126,15 @@ class ConceptCacheRebuilder {
 			);
 
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( '... smwgQMaxDepth' , $this->settings->get( 'smwgQMaxDepth' ), 3, '.' )
+				$cliMsgFormatter->twoCols( '... smwgQMaxDepth', $this->settings->get( 'smwgQMaxDepth' ), 3, '.' )
 			);
 
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( '... smwgQMaxSize' , $this->settings->get( 'smwgQMaxSize' ), 3, '.' )
+				$cliMsgFormatter->twoCols( '... smwgQMaxSize', $this->settings->get( 'smwgQMaxSize' ), 3, '.' )
 			);
 
 			$this->reportMessage(
-				$cliMsgFormatter->twoCols( '... smwgQFeatures' , $this->settings->get( 'smwgQFeatures' ), 3, '.' )
+				$cliMsgFormatter->twoCols( '... smwgQFeatures', $this->settings->get( 'smwgQFeatures' ), 3, '.' )
 			);
 
 			$this->reportMessage(
@@ -147,7 +147,7 @@ class ConceptCacheRebuilder {
 				$this->reportMessage( "\nCache status information ...\n" );
 				break;
 			case 'create':
-				$this->reportMessage(  "\nCreating (or updating) concept caches ...\n" );
+				$this->reportMessage( "\nCreating (or updating) concept caches ...\n" );
 				break;
 			case 'delete':
 				$delay = 5;
@@ -220,7 +220,7 @@ class ConceptCacheRebuilder {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		if ( $this->action ===  'create' ) {
+		if ( $this->action === 'create' ) {
 
 			$this->store->refreshConceptCache( $title );
 

@@ -88,7 +88,7 @@ class QuerySourceFactory {
 		}
 
 		if ( !$source instanceof QueryEngine && !$source instanceof Store ) {
-			throw new RuntimeException(  get_class( $source ) . " does not match the expected QueryEngine interface." );
+			throw new RuntimeException( get_class( $source ) . " does not match the expected QueryEngine interface." );
 		}
 
 		if ( $source instanceof StoreAware ) {

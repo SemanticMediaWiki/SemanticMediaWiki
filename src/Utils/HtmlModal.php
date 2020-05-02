@@ -124,7 +124,7 @@ class HtmlModal {
 					],
 					'&#215;'
 				) . $title
-			). Html::rawElement(
+			) . Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-modal-body'

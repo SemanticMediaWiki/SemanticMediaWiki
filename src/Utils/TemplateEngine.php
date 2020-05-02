@@ -152,7 +152,7 @@ class TemplateEngine {
 		}
 
 		if ( ( self::HTML_TIDY & $flag ) == $flag ) {
-			return preg_replace('/(\>)\s*(\<)/m', '$1$2', $this->compiled[$target] );
+			return preg_replace( '/(\>)\s*(\<)/m', '$1$2', $this->compiled[$target] );
 		}
 
 		return $this->compiled[$target];

@@ -27,11 +27,11 @@ class SortLetter {
 	public $collator;
 
 	/**
-	* @since 3.1
-	*
-	* @param Store $store
-	* @param Collator $collator
-	*/
+	 * @since 3.1
+	 *
+	 * @param Store $store
+	 * @param Collator $collator
+	 */
 	public function __construct( Store $store, Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
@@ -42,12 +42,12 @@ class SortLetter {
 	}
 
 	/**
-	* @since 3.1
-	*
-	* @param DataItem $dataItem
-	*
-	* @return string
-	*/
+	 * @since 3.1
+	 *
+	 * @param DataItem $dataItem
+	 *
+	 * @return string
+	 */
 	public function getFirstLetter( DataItem $dataItem ) {
 
 		$sortKey = $dataItem->getSortKey();

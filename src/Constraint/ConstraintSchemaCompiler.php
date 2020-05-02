@@ -48,7 +48,7 @@ class ConstraintSchemaCompiler {
 			return '';
 		}
 
-		return str_replace( [ '\\\\' ], [ '\\' ], json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |JSON_UNESCAPED_UNICODE ) );
+		return str_replace( [ '\\\\' ], [ '\\' ], json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) );
 	}
 
 	/**
@@ -165,14 +165,6 @@ class ConstraintSchemaCompiler {
 			return;
 		}
 
-		if ( !isset( $constraintSchema['constraints'] ) ) {
-			$constraintSchema['constraints'] = [];
-		}
-
-		if ( !isset( $constraintSchema['constraints']['allowed_pattern'] ) ) {
-			$constraintSchema['constraints']['allowed_pattern'] = [];
-		}
-
 		$constraintSchema['constraints']['allowed_pattern'] = [ $allowed_pattern => $pattern ];
 	}
 
@@ -184,14 +176,6 @@ class ConstraintSchemaCompiler {
 
 		if ( $unique_value_constraint === false || $unique_value_constraint === null ) {
 			return;
-		}
-
-		if ( !isset( $constraintSchema['constraints'] ) ) {
-			$constraintSchema['constraints'] = [];
-		}
-
-		if ( !isset( $constraintSchema['constraints']['unique_value_constraint'] ) ) {
-			$constraintSchema['constraints']['unique_value_constraint'] = [];
 		}
 
 		$constraintSchema['constraints']['unique_value_constraint'] = $unique_value_constraint;

@@ -141,7 +141,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		}
 
 		if ( $matchedCondition && isset( $conditions['not'] ) ) {
-			 /**
+			/**
 			 *```
 			 * {
 			 *	"if": {

@@ -441,7 +441,7 @@ class PropertyRegistry {
 	/**
 	 * @since 2.1
 	 *
-	 * @param  string $id
+	 * @param string $id
 	 *
 	 * @return boolean
 	 */
@@ -452,7 +452,7 @@ class PropertyRegistry {
 	/**
 	 * @since 2.1
 	 *
-	 * @param  string $id
+	 * @param string $id
 	 *
 	 * @return boolean
 	 */

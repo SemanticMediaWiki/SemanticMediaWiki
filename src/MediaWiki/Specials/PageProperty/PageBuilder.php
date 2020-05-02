@@ -135,7 +135,7 @@ class PageBuilder {
 		return Html::rawElement(
 			'ul',
 			[],
-			'<li>' . implode('</li><li>', $list ) . '</li>'
+			'<li>' . implode( '</li><li>', $list ) . '</li>'
 		);
 	}
 

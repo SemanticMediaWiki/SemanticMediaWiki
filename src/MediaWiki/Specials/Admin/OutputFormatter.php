@@ -164,7 +164,7 @@ class OutputFormatter {
 	}
 
 	/**
-	 *@note JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, and
+	 * @note JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, and
 	 * JSON_UNESCAPED_UNICOD were only added with 5.4
 	 *
 	 * @since 2.5
@@ -193,7 +193,7 @@ class OutputFormatter {
 			) .
 			Html::rawElement(
 				'a',
-				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin')->getFullURL( $query ) ],
+				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ],
 				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
 		) );
 	}

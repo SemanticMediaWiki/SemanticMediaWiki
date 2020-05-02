@@ -92,7 +92,7 @@ class DuplicateEntitiesDisposer {
 				$this->id_table( $table, $duplicate, $logs );
 			} elseif ( $table === PropertyTableInfoFetcher::findTableIdForDataItemTypeId( DataItem::TYPE_WIKIPAGE ) ) {
 				$this->wikipage_table( $table, $duplicate, $logs );
-			} elseif( $table === RedirectStore::TABLE_NAME ) {
+			} elseif ( $table === RedirectStore::TABLE_NAME ) {
 				$this->redi_table( $table, $duplicate, $logs );
 			}
 
@@ -123,7 +123,7 @@ class DuplicateEntitiesDisposer {
 
 			if ( is_string( $log ) ) {
 				$this->messageReporter->reportMessage( $log . "\n" );
-			} elseif( is_array( $log ) ) {
+			} elseif ( is_array( $log ) ) {
 				foreach ( $log as $key => $value ) {
 					$this->messageReporter->reportMessage(
 						$cliMsgFormatter->twoCols( "- $value", "[$key]", 7 )
@@ -161,7 +161,7 @@ class DuplicateEntitiesDisposer {
 			}
 
 			$this->messageReporter->reportMessage( '.' );
-			$log[] = ['DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
+			$log[] = [ 'DELETE' => $duplicate['s_id'] . ", " . $duplicate['p_id'] . ', ' . $duplicate['o_id'] ];
 
 			$connection->delete(
 				$table,
@@ -257,10 +257,10 @@ class DuplicateEntitiesDisposer {
 					'smw_id',
 				],
 				[
-					'smw_title'=> $duplicate['smw_title'],
-					'smw_namespace'=> $duplicate['smw_namespace'],
-					'smw_iw'=> $duplicate['smw_iw'],
-					'smw_subobject'=> $duplicate['smw_subobject']
+					'smw_title' => $duplicate['smw_title'],
+					'smw_namespace' => $duplicate['smw_namespace'],
+					'smw_iw' => $duplicate['smw_iw'],
+					'smw_subobject' => $duplicate['smw_subobject']
 				],
 				__METHOD__
 			);

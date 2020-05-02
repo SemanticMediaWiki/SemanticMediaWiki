@@ -169,7 +169,7 @@ class Deserializer {
 
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
-		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function( $matches ) {
+		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", function ( $matches ) {
 			foreach ( $matches as $match ) {
 				return str_replace( [ '=' ], [ '-3D' ], $match );
 			}

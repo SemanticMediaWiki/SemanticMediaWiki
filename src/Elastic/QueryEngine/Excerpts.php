@@ -52,7 +52,7 @@ class Excerpts extends \SMW\Query\Excerpts {
 
 		if ( is_array( $v ) ) {
 			foreach ( $v as $key => $value ) {
-				$text .= implode( ' ', $value ) ;
+				$text .= implode( ' ', $value );
 			}
 		} else {
 			$text = $v;

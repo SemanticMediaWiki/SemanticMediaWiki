@@ -164,7 +164,7 @@ class ChangeDiff {
 
 			foreach ( $this->propertyList as $key => $value ) {
 				if ( is_array( $value ) ) {
-					$list[$value['_id']] = [ '_key' => $key, '_type'=> $value['_type'] ];
+					$list[$value['_id']] = [ '_key' => $key, '_type' => $value['_type'] ];
 				}
 			}
 

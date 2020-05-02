@@ -57,7 +57,7 @@ class QueryToken {
 	 *
 	 * @param array $tokens
 	 */
-	public function __construct( array $tokens =  [] ) {
+	public function __construct( array $tokens = [] ) {
 		$this->tokens = $tokens;
 	}
 

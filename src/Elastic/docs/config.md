@@ -8,7 +8,7 @@ Accessing an Elasticsearch cluster from within Semantic MediaWiki requires to al
 
 ## Connection to Elasticsearch
 
-`smwgElasticsearchEndpoints` is a __required__ setting and contains a list of available endpoints to establish a connection with a Elasticsearch cluster.
+`smwgElasticsearchEndpoints` is a __required__ setting and contains a list of available endpoints to establish a connection with an Elasticsearch cluster.
 
 <pre>
 $GLOBALS['smwgElasticsearchEndpoints'] = [

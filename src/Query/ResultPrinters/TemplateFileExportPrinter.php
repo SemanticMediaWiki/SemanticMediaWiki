@@ -85,7 +85,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			'message' => 'smw-paramdesc-template',
 		];
 
-		$params['named args'] =  [
+		$params['named args'] = [
 			'type' => 'boolean',
 			'message' => 'smw-paramdesc-named_args',
 			'default' => false,

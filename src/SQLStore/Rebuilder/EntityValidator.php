@@ -308,7 +308,7 @@ class EntityValidator {
 
 		if ( $row !== false ) {
 			return $latestRevID == $row->smw_rev;
-		};
+		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 

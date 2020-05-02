@@ -227,7 +227,7 @@ class OrderCondition {
 			$conditionBuilder->getLastQuerySegmentId()
 		);
 
-		 // ... so just re-wire its dependencies
+		// ... so just re-wire its dependencies
 		foreach ( $newQuerySegment->components as $cid => $field ) {
 			$querySegment->components[$cid] = $querySegment->joinfield;
 

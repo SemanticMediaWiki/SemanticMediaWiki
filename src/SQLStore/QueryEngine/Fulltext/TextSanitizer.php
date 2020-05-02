@@ -50,12 +50,12 @@ class TextSanitizer {
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
-			$languageDetector = 'TextCatLanguageDetector (' . implode(', ', $this->languageDetection['TextCatLanguageDetector'] ) . ')';
+			$languageDetector = 'TextCatLanguageDetector (' . implode( ', ', $this->languageDetection['TextCatLanguageDetector'] ) . ')';
 		}
 
 		return [
 			'ICU (Intl) PHP-extension' => ( extension_loaded( 'intl' ) ? INTL_ICU_VERSION : '(Disabled)' ),
-			'Tesa::Sanitizer'  => Sanitizer::VERSION,
+			'Tesa::Sanitizer' => Sanitizer::VERSION,
 			'Tesa::Transliterator' => Transliterator::VERSION,
 			'Tesa::LanguageDetector' => $languageDetector
 		];
@@ -140,7 +140,7 @@ class TextSanitizer {
 		// Remove possible spaces added by the tokenizer
 		$text = str_replace(
 			[ ' *', '* ', ' "', '" ', '+ ', '- ', '@ ', '~ ', '*+', '*-', '*~' ],
-			[ '*', '*', '"', '"', '+', '-', '@', '~' ,'* +', '* -', '* ~' ],
+			[ '*', '*', '"', '"', '+', '-', '@', '~', '* +', '* -', '* ~' ],
 			$text
 		);
 

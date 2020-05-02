@@ -20,12 +20,14 @@ class ExpLiteral extends ExpElement {
 
 	/**
 	 * Lexical form of the literal.
+	 *
 	 * @var string
 	 */
 	private $lexicalForm;
 
 	/**
 	 * Datatype URI for the literal.
+	 *
 	 * @var string
 	 */
 	private $datatype;
@@ -57,7 +59,7 @@ class ExpLiteral extends ExpElement {
 			throw new InvalidArgumentException( '$datatype needs to be a string' );
 		}
 
-		if ( !is_string( $lang )  ) {
+		if ( !is_string( $lang ) ) {
 			throw new InvalidArgumentException( '$lang needs to be a string and $datatype has to be of langString type' );
 		}
 

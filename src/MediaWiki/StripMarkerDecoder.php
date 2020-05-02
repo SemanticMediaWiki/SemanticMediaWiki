@@ -109,7 +109,7 @@ class StripMarkerDecoder {
 			return $value;
 		}
 
-	    return $this->doUnstrip( $value );
+		return $this->doUnstrip( $value );
 	}
 
 	private function addNoWikiToUnstripValue( $text ) {

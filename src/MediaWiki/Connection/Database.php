@@ -183,7 +183,7 @@ class Database {
 	 *
 	 * @return string
 	 */
-	public function tablePrefix( $prefix = null  ) {
+	public function tablePrefix( $prefix = null ) {
 
 		$connection = $this->connRef->getConnection( 'read' );
 
@@ -515,11 +515,11 @@ class Database {
 	 */
 	public function insert( $table, $rows, $fname = __METHOD__, $options = [] ) {
 
-		$this->transactionHandler->muteTransactionProfiler( true);
+		$this->transactionHandler->muteTransactionProfiler( true );
 
 		$res = $this->connRef->getConnection( 'write' )->insert( $table, $rows, $fname, $options );
 
-		$this->transactionHandler->muteTransactionProfiler( false);
+		$this->transactionHandler->muteTransactionProfiler( false );
 
 		return $res;
 	}
@@ -678,6 +678,7 @@ class Database {
 	 * @since 3.1
 	 *
 	 * @param string $fname
+	 *
 	 * @throws RuntimeException
 	 */
 	public function beginSectionTransaction( $fname = __METHOD__ ) {
@@ -706,7 +707,8 @@ class Database {
 	/**
 	 * @since 3.1
 	 *
-	 * @param  string $fname
+	 * @param string $fname
+	 *
 	 * @return boolean
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
@@ -733,6 +735,8 @@ class Database {
 	 * @since 2.3
 	 *
 	 * @param string $fname
+	 *
+	 * @return void
 	 */
 	public function endAtomicTransaction( $fname = __METHOD__ ) {
 

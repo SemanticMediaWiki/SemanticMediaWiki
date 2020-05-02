@@ -40,9 +40,9 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @param Store $store
 	 * @param PropertyStatisticsStore $propertyStatisticsStore
-	 * @param RequestOptions $requestOptions|null
+	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, RequestOptions $requestOptions = null ) {
+	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, ?RequestOptions $requestOptions = null ) {
 		$this->store = $store;
 		$this->propertyStatisticsStore = $propertyStatisticsStore;
 		$this->requestOptions = $requestOptions;
@@ -121,7 +121,7 @@ class UnusedPropertyListLookup implements ListLookup {
 			$conditions,
 			__METHOD__,
 			$options,
-			[  SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;

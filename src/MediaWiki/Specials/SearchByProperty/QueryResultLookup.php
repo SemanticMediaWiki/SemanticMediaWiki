@@ -76,7 +76,7 @@ class QueryResultLookup {
 	/**
 	 * @since 2.1
 	 *
-	 * @param  QueryOptions $pageRequestOptions
+	 * @param QueryOptions $pageRequestOptions
 	 *
 	 * @return array of array(SMWWikiPageValue, SMWDataValue) with the
 	 * first being the entity, and the second the value
