@@ -153,7 +153,11 @@ class Hooks {
 
 			$beforePageDisplay->setOptions(
 				[
-					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
+					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' ),
+
+					// We might run out of the Semantic MediaWiki context hence
+					// rely on $GLOBALS to fetch the latest value
+					'smwgIgnoreExtensionRegistrationCheck' => $GLOBALS['smwgIgnoreExtensionRegistrationCheck']
 				]
 			);
 

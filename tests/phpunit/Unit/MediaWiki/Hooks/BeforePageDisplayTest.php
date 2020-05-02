@@ -84,6 +84,23 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 		$instance->informAboutExtensionAvailability( $this->outputPage );
 	}
 
+	public function testIgnoreInformAboutExtensionAvailability() {
+
+		$this->outputPage->expects( $this->never() )
+			->method( 'prependHTML' );
+
+		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => false,
+				'smwgIgnoreExtensionRegistrationCheck' => true
+			]
+		);
+
+		$instance->informAboutExtensionAvailability( $this->outputPage );
+	}
+
 	public function testModules() {
 
 		$user = $this->getMockBuilder( '\User' )
