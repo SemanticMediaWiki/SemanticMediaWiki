@@ -385,7 +385,7 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		// Apply intro parameter
 		if ( ( $this->mIntro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
+			if ( $outputmode == SMW_OUTPUT_HTML && $this->isHTML ) {
 				$result = Message::get( [ 'smw-parse', $this->mIntro ], Message::PARSE ) . $result;
 			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $this->mIntro . $result;
@@ -394,7 +394,7 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		// Apply outro parameter
 		if ( ( $this->mOutro ) && ( $results->getCount() > 0 ) ) {
-			if ( $outputmode == SMW_OUTPUT_HTML ) {
+			if ( $outputmode == SMW_OUTPUT_HTML && $this->isHTML ) {
 				$result = $result . Message::get( [ 'smw-parse', $this->mOutro ], Message::PARSE );
 			} elseif ( $outputmode !== SMW_OUTPUT_RAW ) {
 				$result = $result . $this->mOutro;
