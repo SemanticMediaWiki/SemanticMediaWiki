@@ -643,11 +643,6 @@ class Hooks {
 	 */
 	public function onArticleViewHeader( &$page, &$outputDone, &$useParserCache ) {
 
-		// #4741
-		if ( $page instanceof \Article ) {
-			$page = $page->getPage();
-		}
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Get the key to distinguish between an anon and logged-in user stored
@@ -656,8 +651,11 @@ class Hooks {
 
 		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
 
+		// #4741
+		$wikiPage = $page->getPage();
+
 		$dependencyValidator->setETag(
-			$parserCache->getETag( $page, $page->makeParserOptions( 'canonical' ) )
+			$parserCache->getETag( $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
 		);
 
 		$dependencyValidator->setCacheTTL(
