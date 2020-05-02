@@ -795,6 +795,18 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
+		$article = $this->getMockBuilder( '\Article' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$article->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $this->title ) );
+
+		$article->expects( $this->any() )
+			->method( 'getPage' )
+			->will( $this->returnValue( $page ) );
+
 		$outputDone = '';
 		$useParserCache = '';
 
@@ -804,7 +816,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ &$page, &$outputDone, &$useParserCache ]
+			[ &$article, &$outputDone, &$useParserCache ]
 		);
 
 		return $handler;
