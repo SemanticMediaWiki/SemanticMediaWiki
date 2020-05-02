@@ -19,7 +19,16 @@ class CompartmentTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceof(
 			Compartment::class,
-			new Compartment( )
+			new Compartment()
+		);
+	}
+
+	public function testIsEmpty() {
+
+		$instance = new Compartment();
+
+		$this->assertTrue(
+			$instance->isEmpty()
 		);
 	}
 
