@@ -6,6 +6,7 @@ use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\DataTypeRegistry;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
+use SMW\DataValues\MonolingualTextValue;
 use SMWDataItem as DataItem;
 use SMW\Store;
 use SMW\Message;
@@ -75,8 +76,14 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 			return;
 		}
 
+		$type = $property->findPropertyTypeID();
+
+		if ( $type === MonolingualTextValue::TYPE_ID ) {
+			return;
+		}
+
 		$semanticData = $this->getSemanticData();
-		$prop = new DIProperty( $property->findPropertyTypeID() );
+		$prop = new DIProperty( $type );
 		$pv = $semanticData->getPropertyValues( new DIProperty( '_LIST' ) );
 
 		// #3522
