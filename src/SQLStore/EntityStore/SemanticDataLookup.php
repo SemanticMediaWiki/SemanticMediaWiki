@@ -55,7 +55,7 @@ class SemanticDataLookup {
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, RequestOptions $requestOptions = null ) {
 
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
-			return null;
+			return $requestOptions;
 		}
 
 		$ropts = new RequestOptions();
@@ -63,6 +63,7 @@ class SemanticDataLookup {
 
 		$ropts->setLimit( $requestOptions->getLimit() );
 		$ropts->setOffset( $requestOptions->getOffset() );
+		$ropts->setCaller( $requestOptions->getCaller() );
 
 		if ( $propertyTableDef->isFixedPropertyTable() ) {
 			return $ropts;
