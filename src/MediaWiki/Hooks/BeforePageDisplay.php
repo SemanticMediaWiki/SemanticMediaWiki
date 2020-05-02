@@ -33,7 +33,9 @@ class BeforePageDisplay implements HookListener {
 	 */
 	public function informAboutExtensionAvailability( OutputPage $outputPage ) {
 
-		if ( $this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
+		if (
+			$this->getOption( 'SMW_EXTENSION_LOADED' ) ||
+			$this->getOption( 'smwgIgnoreExtensionRegistrationCheck' ) ) {
 			return;
 		}
 
