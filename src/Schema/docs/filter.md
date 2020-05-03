@@ -35,6 +35,7 @@ Building compsite filters is possible as well by combining different condition s
 
 - The `category` conditional is implemented in `CategoryFilter`
 - The `namespace` conditional is implemented in `NamespaceFilter`
+- The `property` conditional is implemented in `PropertyFilter`
 
 To be able to use above filters without modifications the following format is expected from a schema that relies on those conditionals. A single filter should be declared with something like:
 

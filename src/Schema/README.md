@@ -38,7 +38,6 @@ In the example above, `FOO_SCHEMA` refers to the type name and any attributes as
 - [`CLASS_CONSTRAINT_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/class.constraint.md)
 - [`PROPERTY_PROFILE_SCHEMA`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Schema/docs/property.profile.md)
 
-
 ## Technical notes
 
 <pre>
@@ -55,6 +54,7 @@ In the example above, `FOO_SCHEMA` refers to the type name and any attributes as
 │		/src/Schema/Filters (SMW\Schema\Filters)
 │		├─ CategoryFilter
 │		├─ NamespaceFilter
+│		├─ PropertyFilter
 │
 /src/MediaWiki (SMW\MediaWiki)
 	└─ Content

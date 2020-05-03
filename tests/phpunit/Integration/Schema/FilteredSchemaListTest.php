@@ -35,7 +35,8 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 			'fake_namespace_category_rule_schema_1',
 			'fake_namespace_category_rule_schema_2',
 			'fake_namespace_category_unnamed_rule_schema_3',
-			'fake_namespace_category_action_rule_schema_4'
+			'fake_namespace_category_action_rule_schema_4',
+			'fake_namespace_category_property_action_rule_schema_6'
 
 		];
 
@@ -179,6 +180,73 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 			[ 'rule_5_2', 'rule_5_3' ],
 			$sections
 		);
+	}
+
+	/**
+	 * @dataProvider namespaceCategoryPropertyFilterProvider
+	 */
+	public function testNamespaceCategoryPropertyFilterProvider( $ns, $categories, $properties, $expected ) {
+
+		$compartments = $this->schemaList->newCompartmentIteratorByKey(
+			'filter_rules'
+		);
+
+		$schemaFilterFactory = new SchemaFilterFactory();
+
+		$namespaceFilter = $schemaFilterFactory->newNamespaceFilter(
+			$ns
+		);
+
+		$categoryFilter = $schemaFilterFactory->newCategoryFilter(
+			$categories
+		);
+
+		$propertyFilter = $schemaFilterFactory->newPropertyFilter(
+			$properties
+		);
+
+		$compositeFilter = $schemaFilterFactory->newCompositeFilter(
+			[
+				$namespaceFilter,
+				$categoryFilter,
+				$propertyFilter,
+			]
+		);
+
+		$compositeFilter->filter( $compartments );
+		$compositeFilter->sortMatches( CompositeFilter::SORT_FILTER_SCORE );
+
+		$sections = [];
+
+		foreach ( $compositeFilter->getMatches() as $compartment ) {
+			$sections[] = $compartment->get( Compartment::ASSOCIATED_SECTION );
+		}
+
+		$this->assertEquals(
+			$expected,
+			$sections
+		);
+	}
+
+	public function namespaceCategoryPropertyFilterProvider() {
+
+		yield "'property-6-a', NS_MAIN" => [
+			NS_MAIN,
+			[],
+			[ new DIProperty( 'property-6-a' ) ],
+			[]
+		];
+
+		yield "'property-6-a', 'property-6-b' NS_MAIN" => [
+			NS_MAIN,
+			function() {
+				return [ 'category-6-a' ];
+			},
+			function(){
+				return [ new DIProperty( 'property-6-a' ), new DIProperty( 'property-6-b' ) ];
+			},
+			[ 'rule_6_2' ]
+		];
 	}
 
 	public function testCategoryFilter() {
