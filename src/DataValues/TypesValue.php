@@ -98,7 +98,7 @@ class TypesValue extends DataValue {
 			return $this->m_caption;
 		}
 
-		$titleText = $this->makeSpecialPageTitleText();
+		$titleText = $this->getSpecialPageTitleText();
 
 		$contentLanguage = Localizer::getInstance()->getLanguage(
 			$this->getOption( self::OPT_CONTENT_LANGUAGE )
@@ -124,7 +124,7 @@ class TypesValue extends DataValue {
 
 		$title = Title::makeTitle(
 			NS_SPECIAL,
-			$this->makeSpecialPageTitleText()
+			$this->getSpecialPageTitleText()
 		);
 
 		return $linker->link( $title, htmlspecialchars( $this->m_caption ) );
@@ -141,7 +141,7 @@ class TypesValue extends DataValue {
 			return $this->typeLabel;
 		}
 
-		$titleText = $this->makeSpecialPageTitleText();
+		$titleText = $this->getSpecialPageTitleText();
 
 		$contentLanguage = Localizer::getInstance()->getLanguage(
 			$this->getOption( self::OPT_CONTENT_LANGUAGE )
@@ -167,7 +167,7 @@ class TypesValue extends DataValue {
 
 		$title = Title::makeTitle(
 			NS_SPECIAL,
-			$this->makeSpecialPageTitleText()
+			$this->getSpecialPageTitleText()
 		);
 
 		return $linker->link( $title, htmlspecialchars( $this->typeLabel ) );
@@ -242,8 +242,8 @@ class TypesValue extends DataValue {
 		return false;
 	}
 
-	protected function makeSpecialPageTitleText() {
-		return SpecialPageFactory::getLocalNameFor( 'Types', $this->typeLabel );
+	private function getSpecialPageTitleText() {
+		return "Types/$this->typeLabel";
 	}
 
 }
