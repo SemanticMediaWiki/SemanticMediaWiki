@@ -135,7 +135,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider propertyFilterProvider
 	 */
-	public function testHasMatches_Rule( $properties, $compartment, $expected ) {
+	public function testHasMatches_Rule( $properties, $compartment, $expected, $score ) {
 
 		$instance = new PropertyFilter(
 			$properties
@@ -153,7 +153,7 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$expected ? 1 : 0,
+			$score,
 			$rule->filterScore
 		);
 	}
@@ -186,7 +186,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => 'Foo'
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'oneOf.2: single one_of, underscore condition' => [
@@ -196,7 +197,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => 'Foo_bar'
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'oneOf.3: single one_of, underscore validation value' => [
@@ -206,7 +208,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => 'Foo bar'
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'oneOf.4: empty properties' => [
@@ -216,7 +219,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => 'Foo'
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'oneOf.5: single no_match' => [
@@ -226,7 +230,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => 'no_match'
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'oneOf.6: one_of matches' => [
@@ -236,7 +241,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'oneOf' => [ 'Foo', 'Foobar' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'oneOf.7: one_of fails because more than one matches' => [
@@ -246,7 +252,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'oneOf' => [ 'Foo', 'Bar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'oneOf.8: one_of fails because both match (only one is allowed to match)' => [
@@ -256,7 +263,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'oneOf' => [ 'Foo', 'Bar', 'Foobar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		// anyOf
@@ -268,7 +276,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'anyOf' => [ 'Foo', 'Bar', 'Foobar' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		// allOf
@@ -280,7 +289,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'allOf' => [ 'Foo', 'Bar' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'allOf.2: all_of failed' => [
@@ -290,7 +300,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'allOf' => [ 'Foo', 'Foobar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		// not
@@ -302,7 +313,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => [ 'Foo1', 'Foo2' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'not.2: not multiple, matches `not` condition' => [
@@ -312,7 +324,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => [ 'Foo1', 'Foo2' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'not.3: not single, matches `not` condition' => [
@@ -322,7 +335,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => [ 'Foo1' ] ]
 				]
 			],
-			true
+			true,
+			1
 		];
 
 		yield 'not.4: not multiple, fails because `not` matches one' => [
@@ -332,7 +346,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => [ 'Foo1', 'Bar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.5: not multiple, fails because `not` matches both' => [
@@ -342,7 +357,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => [ 'Foo', 'Bar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.6: not single, fails because `not` matches one' => [
@@ -352,7 +368,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foo' ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		// combined
@@ -364,7 +381,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo', 'Bar' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.oneOf.2: not, oneOf combined, false because `oneOf` does not match' => [
@@ -374,7 +392,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo_1', 'Bar_2' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.oneOf.3: not, oneOf combined, false because `oneOf` does not match' => [
@@ -384,7 +403,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo_1', 'Bar_2' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.oneOf.4: not, oneOf combined, truthy because `oneOf` matches one and is not `Foobar`' => [
@@ -394,7 +414,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo', 'Bar_2' ] ]
 				]
 			],
-			true
+			true,
+			2
 		];
 
 		yield 'not.oneOf.5: not, oneOf combined, truthy because `oneOf` matches one and is not `Foobar`' => [
@@ -404,7 +425,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'oneOf' => [ 'Foo', 'Bar_2' ], 'not' => 'Foobar' ]
 				]
 			],
-			true
+			true,
+			2
 		];
 
 		yield 'not.allOf.1: not, allOf combined, false because `allOf` fails' => [
@@ -414,7 +436,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar', 'allOf' => [ 'Foo', 'Bar_2' ] ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.allOf.2: not, allOf combined, false because `allOf` fails' => [
@@ -424,7 +447,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'allOf' => [ 'Foo', 'Bar_2' ], 'not' => 'Foobar' ]
 				]
 			],
-			false
+			false,
+			0
 		];
 
 		yield 'not.allOf.3: not, allOf combined, true' => [
@@ -434,7 +458,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'allOf' => [ 'Foo', 'Bar', 'Foobar_1' ], 'not' => 'Foobar' ]
 				]
 			],
-			true
+			true,
+			2
 		];
 
 		yield 'not.anyOf.1: not, oneOf combined, truthy because `not` is not matched' => [
@@ -444,7 +469,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'not' => 'Foobar_1', 'anyOf' => [ 'Foo', 'Bar' ] ]
 				]
 			],
-			true
+			true,
+			2
 		];
 
 		yield 'not.anyOf.2: not, oneOf combined, truthy because `not` is not matched' => [
@@ -454,7 +480,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'anyOf' => [ 'Foo', 'Bar' ], 'not' => 'Foobar_1' ]
 				]
 			],
-			true
+			true,
+			2
 		];
 
 		yield 'not.anyOf.3: not, oneOf combined, fails because `not` is not matched' => [
@@ -464,7 +491,8 @@ class PropertyFilterTest extends \PHPUnit_Framework_TestCase {
 					'property' => [ 'anyOf' => [ 'Foo', 'Bar' ], 'not' => 'Foobar' ]
 				]
 			],
-			false
+			false,
+			1
 		];
 	}
 

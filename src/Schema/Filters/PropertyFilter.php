@@ -141,6 +141,10 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			unset( $conditions['not'] );
 		}
 
+		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+			$compartment->incrFilterScore();
+		}
+
 		if ( $matchedCondition && isset( $conditions['not'] ) ) {
 			/**
 			 *```
@@ -155,10 +159,11 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			 *```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
-		}
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
-			$compartment->incrFilterScore();
+			// Increasing the score in case an extra `not` condition was applied
+			if ( $matchedCondition === true && $compartment instanceof Rule ) {
+				$compartment->incrFilterScore();
+			}
 		}
 
 		if ( $matchedCondition === true ) {
