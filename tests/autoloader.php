@@ -84,14 +84,14 @@ $autoloader->addClassMap( [
 
 	// Reference needed for SRF as it inherits from this class (or better its alias)!!
 	// TODO: make sure to use `JSONScriptServicesTestCaseRunner`
-	'SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest'    => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php'
+	'SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php',
+	'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php'
 ] );
 
 // 3.2
 class_alias( '\SMW\Tests\JSONScriptTestCaseRunner', 'SMW\Tests\JsonTestCaseScriptRunner' );
 class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\LightweightJsonTestCaseScriptRunner' );
 class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\ExtendedJsonTestCaseScriptRunner' );
-class_alias( '\SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest', 'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' );
 
 // 3.1
 class_alias( '\SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler', 'SMW\Tests\JsonTestCaseFileHandler' );
