@@ -188,7 +188,7 @@ class JsonTestCaseFileHandler {
 			}
 
 			if ( version_compare( $version, $versionToSkip, $compare ) ) {
-				$this->reasonToSkip = "$version version is not supported ({$reason})";
+				$this->reasonToSkip = "Version $version is not supported ({$reason})";
 				return true;
 			}
 		}
@@ -225,7 +225,7 @@ class JsonTestCaseFileHandler {
 		$meta = $this->getFileContentsFor( 'meta' );
 
 		if ( version_compare( $version, $meta['version'], 'ne' ) ) {
-			$this->reasonToSkip = $meta['version'] . " is not supported due to a required {$version} test case version.";
+			$this->reasonToSkip = 'The test case file version `' . $meta['version'] . "` is not supported due to `{$version}` being required as version.";
 		}
 
 		return $this->reasonToSkip !== '';
