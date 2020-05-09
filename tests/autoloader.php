@@ -6,7 +6,8 @@
  * Third-party users that require SMW as integration platform should
  * add the following to the bootstrap.php
  *
- * require __DIR__ . '/../../SemanticMediaWiki/tests/autoloader.php'
+ * $autoLoader = require SMW_PHPUNIT_AUTOLOADER_FILE;
+ * $autoloader->addPsr4( ... );
  */
 if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 	die( 'Not an entry point' );
@@ -80,6 +81,10 @@ $autoloader->addClassMap( [
 	'SMW\Test\QueryPrinterTestCase'                 => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase'         => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
+
+	// Reference needed for SRF as it inherits from this class (or better its alias)!!
+	// TODO: make sure to use `JSONScriptServicesTestCaseRunner`
+	'SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest'    => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php'
 ] );
 
 // 3.2
