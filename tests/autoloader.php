@@ -75,13 +75,18 @@ $autoloader->addClassMap( [
 	'SMW\Tests\TestConfig'                          => __DIR__ . '/phpunit/TestConfig.php',
 	'SMW\Tests\PHPUnitCompat'                       => __DIR__ . '/phpunit/PHPUnitCompat.php',
 	'SMW\Tests\DatabaseTestCase'                    => __DIR__ . '/phpunit/DatabaseTestCase.php',
-	'SMW\Tests\JsonTestCaseScriptRunner'            => __DIR__ . '/phpunit/JsonTestCaseScriptRunner.php',
-	'SMW\Tests\LightweightJsonTestCaseScriptRunner' => __DIR__ . '/phpunit/LightweightJsonTestCaseScriptRunner.php',
-	'SMW\Tests\ExtendedJsonTestCaseScriptRunner'    => __DIR__ . '/phpunit/ExtendedJsonTestCaseScriptRunner.php',
+	'SMW\Tests\JSONScriptTestCaseRunner'            => __DIR__ . '/phpunit/JSONScriptTestCaseRunner.php',
+	'SMW\Tests\JSONScriptServicesTestCaseRunner'    => __DIR__ . '/phpunit/JSONScriptServicesTestCaseRunner.php',
 	'SMW\Test\QueryPrinterTestCase'                 => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
 	'SMW\Test\QueryPrinterRegistryTestCase'         => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
 ] );
+
+// 3.2
+class_alias( '\SMW\Tests\JSONScriptTestCaseRunner', 'SMW\Tests\JsonTestCaseScriptRunner' );
+class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\LightweightJsonTestCaseScriptRunner' );
+class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\ExtendedJsonTestCaseScriptRunner' );
+class_alias( '\SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest', 'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' );
 
 // 3.1
 class_alias( '\SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler', 'SMW\Tests\JsonTestCaseFileHandler' );

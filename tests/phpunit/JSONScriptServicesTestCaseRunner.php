@@ -9,12 +9,13 @@ use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
+use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\ApiTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 
 /**
- * This `JsonTestCaseScriptRunner` is provided as simple test case runner for
- * the JSONScript that covers the base `parser`, `parser-html`, and
- * `semantic-data` type assertions.
- *
  * It is provided for external extensions that seek a simple way of creating tests
  * with (or without) Semantic MediaWiki integration in mind.
  *
@@ -26,7 +27,7 @@ use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
  *
  * @author mwjames
  */
-abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRunner {
+abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner {
 
 	/**
 	 * @var ValidatorFactory
@@ -39,9 +40,23 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 	protected $runnerFactory;
 
 	/**
-	 * @see JsonTestCaseScriptRunner::$deletePagesOnTearDown
+	 * @var ApiFactory
+	 */
+	private $apiFactory;
+
+	/**
+	 * @see JSONScriptTestCaseRunner::$deletePagesOnTearDown
 	 */
 	protected $deletePagesOnTearDown = true;
+
+	/**
+	 * Defines set of assertation services to be available by the runner
+	 */
+	protected $defaultAssertionTypes = [
+		'parser',
+		'parser-html',
+		'special'
+	];
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -50,6 +65,7 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 
 		$this->runnerFactory = $utilityFactory->newRunnerFactory();
 		$this->validatorFactory = $utilityFactory->newValidatorFactory();
+		$this->apiFactory = $utilityFactory->newMwApiFactory();
 
 		// This ensures that if content is created in the NS_MEDIAWIKI namespace
 		// and an object relies on the MediaWikiNsContentReader then it uses the DB
@@ -91,7 +107,16 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 	}
 
 	/**
-	 * @see BaseJsonTestCaseScriptRunner::runTestCaseFile
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	protected function runTestAssertionForType( string $type ) : bool {
+		return in_array( $type, $this->defaultAssertionTypes );
+	}
+
+	/**
+	 * @see JSONScriptTestCaseRunner::runTestCaseFile
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
@@ -114,13 +139,33 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 		$eventDispatcher->dispatch( 'query.comparator.reset' );
 
 		// Run test cases
-		$this->doRunParserTests( $jsonTestCaseFileHandler );
-		$this->doRunParserHtmlTests( $jsonTestCaseFileHandler );
-		$this->doRunSpecialTests( $jsonTestCaseFileHandler );
+		if ( $this->runTestAssertionForType( 'parser' ) ) {
+			$this->doRunParserTests( $jsonTestCaseFileHandler );
+		}
+
+		if ( $this->runTestAssertionForType( 'parser-html' ) ) {
+			$this->doRunParserHtmlTests( $jsonTestCaseFileHandler );
+		}
+
+		if ( $this->runTestAssertionForType( 'special' ) ) {
+			$this->doRunSpecialTests( $jsonTestCaseFileHandler );
+		}
+
+		if ( $this->runTestAssertionForType( 'rdf' ) ) {
+			$this->doRunRdfTests( $jsonTestCaseFileHandler );
+		}
+
+		if ( $this->runTestAssertionForType( 'query' ) ) {
+			$this->doRunQueryStackTests( $jsonTestCaseFileHandler );
+		}
+
+		if ( $this->runTestAssertionForType( 'api' ) ) {
+			$this->doRunApiTests( $jsonTestCaseFileHandler );
+		}
 	}
 
 	/**
-	 * @see BaseJsonTestCaseScriptRunner::getPermittedSettings
+	 * @see JSONScriptTestCaseRunner::getPermittedSettings
 	 */
 	protected function getPermittedSettings() {
 		parent::getPermittedSettings();
@@ -365,6 +410,175 @@ abstract class LightweightJsonTestCaseScriptRunner extends JsonTestCaseScriptRun
 			}
 
 			$specialPageTestCaseProcessor->process( $case );
+		}
+	}
+
+	private function doRunRdfTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'rdf' );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		$rdfTestCaseProcessor = new RdfTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newStringValidator(),
+			$this->runnerFactory
+		);
+
+		$rdfTestCaseProcessor->setDebugMode(
+			$jsonTestCaseFileHandler->getDebugMode()
+		);
+
+		foreach ( $testCases as $case ) {
+			$rdfTestCaseProcessor->process( $case );
+		}
+	}
+
+	private function doRunQueryStackTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		// Set query parser late to ensure that expected settings are adjusted
+		// (language etc.) because the __construct relies on the context language
+		$queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
+
+		$i = 0;
+		$count = 0;
+
+		$this->doRunQueryTests( $jsonTestCaseFileHandler, $queryParser, $i, $count );
+		$this->doRunConceptTests( $jsonTestCaseFileHandler, $queryParser, $i, $count );
+		$this->doRunFormatTests( $jsonTestCaseFileHandler, $queryParser, $i, $count );
+
+		// Avoid tests being marked as risky when all cases were skipped
+		if ( $i == 0 && $count > 0 ) {
+			$this->markTestSkipped( 'Skipped all assertions for: ' . $this->getName() );
+		}
+	}
+
+	private function doRunQueryTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'query' );
+		$count += count( $testCases );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		$queryTestCaseProcessor = new QueryTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newQueryResultValidator(),
+			$this->validatorFactory->newStringValidator(),
+			$this->validatorFactory->newNumberValidator()
+		);
+
+		$queryTestCaseProcessor->setQueryParser(
+			$queryParser
+		);
+
+		$queryTestCaseProcessor->setDebugMode(
+			$jsonTestCaseFileHandler->getDebugMode()
+		);
+
+		foreach ( $testCases as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$queryTestCaseProcessor->processQueryCase( new QueryTestCaseInterpreter( $case ) );
+			$i++;
+		}
+	}
+
+	private function doRunConceptTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'concept' );
+		$count += count( $testCases );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		$queryTestCaseProcessor = new QueryTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newQueryResultValidator(),
+			$this->validatorFactory->newStringValidator(),
+			$this->validatorFactory->newNumberValidator()
+		);
+
+		$queryTestCaseProcessor->setQueryParser(
+			$queryParser
+		);
+
+		$queryTestCaseProcessor->setDebugMode(
+			$jsonTestCaseFileHandler->getDebugMode()
+		);
+
+		foreach ( $testCases as $case ) {
+			$queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $case ) );
+			$i++;
+		}
+	}
+
+	private function doRunFormatTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'format' );
+		$count += count( $testCases );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		$queryTestCaseProcessor = new QueryTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newQueryResultValidator(),
+			$this->validatorFactory->newStringValidator(),
+			$this->validatorFactory->newNumberValidator()
+		);
+
+		$queryTestCaseProcessor->setQueryParser(
+			$queryParser
+		);
+
+		$queryTestCaseProcessor->setDebugMode(
+			$jsonTestCaseFileHandler->getDebugMode()
+		);
+
+		foreach ( $testCases as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
+			$i++;
+		}
+	}
+
+	private function doRunApiTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+
+		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'api' );
+
+		if ( $testCases === [] ) {
+			return;
+		}
+
+		$apiTestCaseProcessor = new ApiTestCaseProcessor(
+			$this->apiFactory,
+			$this->validatorFactory->newStringValidator()
+		);
+
+		$apiTestCaseProcessor->setTestCaseLocation(
+			$this->getTestCaseLocation()
+		);
+
+		foreach ( $testCases as $case ) {
+
+			if ( $jsonTestCaseFileHandler->requiredToSkipFor( $case, $this->connectorId ) ) {
+				continue;
+			}
+
+			$apiTestCaseProcessor->process( $case );
 		}
 	}
 

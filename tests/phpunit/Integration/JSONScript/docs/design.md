@@ -58,8 +58,7 @@ The [bootstrap.json][bootstrap.json] contains an example and can be used as star
 ]
 </pre>
 
-* The `type` provides specialized assertion methods with some of them requiring an extra setup to yield a comparable output but in most cases the `parser` type
-should suffice to create test assertions for common test scenarios. Available types are:
+* The `type` provides specialized assertion methods with some of them requiring an extra setup to yield a comparable output but in most cases the `parser` type should suffice to create test assertions for common test scenarios. Available types are:
   * `query`, `concept`, and `format`
   * `parser`
   * `parser-html`
@@ -172,11 +171,11 @@ It can happen that an output is mixed with language dependent content (site vs. 
 }
 </pre>
 
-By default not all settings parameter are enabled in `JsonTestCaseScriptRunner::prepareTest` and may require an extension in case a specific test case depends on additional customization.
+By default not all settings parameter are enabled in `JSONScriptTestCaseRunner::prepareTest` and may require an extension in case a specific test case depends on additional customization.
 
 Each `json` file expects a `meta` section with:
 
-- `version` to correspond to the    `JsonTestCaseScriptRunner::getRequiredJsonTestCaseMinVersion` and controls the JSON script definition that the runner is expected to support.
+- `version` to correspond to the `JSONScriptTestCaseRunner::getRequiredJsonTestCaseMinVersion` and controls the JSON script definition that the runner is expected to support.
 - `is-incomplete` removes the file from the test plan if set `true`
 - `debug` as flag for support of intermediary debugging that may output internal object state information.
 
@@ -205,7 +204,7 @@ Some test scenarios may require an extension or another component and to check t
 
 <pre>
 /**
- * @see JsonTestCaseScriptRunner::getDependencyDefinitions
+ * @see JSONScriptTestCaseRunner::getDependencyDefinitions
  */
 protected function getDependencyDefinitions() {
 	return [
