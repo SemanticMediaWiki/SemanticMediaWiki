@@ -26,6 +26,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	private $testEnvironment;
+	private $displayTitleFinder;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -37,6 +38,10 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$this->displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() : void {
@@ -99,10 +104,6 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$checkMagicWords = new CheckMagicWords(
 			[
 				'preview' => isset( $expected['preview'] ) && $expected['preview'],
@@ -114,7 +115,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Factbox(
 			$store,
 			new ParserData( $title, $parserOutput ),
-			$messageBuilder
+			$this->displayTitleFinder
 		);
 
 		$instance->setCheckMagicWords(

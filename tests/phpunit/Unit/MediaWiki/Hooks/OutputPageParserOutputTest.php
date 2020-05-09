@@ -183,6 +183,10 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->method( 'hasVisibleProperties' )
 			->will( $this->returnValue( true ) );
 
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [] ) );
+
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
 			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );

@@ -85,7 +85,8 @@ class FactboxFactory {
 
 		$factbox = new Factbox(
 			$applicationFactory->getStore(),
-			$applicationFactory->newParserData( $title, $parserOutput )
+			$applicationFactory->newParserData( $title, $parserOutput ),
+			$applicationFactory->singleton( 'DisplayTitleFinder' )
 		);
 
 		$factbox->setFeatureSet(

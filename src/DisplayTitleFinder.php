@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMWDataItem as DataItem;
+
 /**
  * @license GNU GPL v2+
  * @since 3.1
@@ -55,6 +57,58 @@ class DisplayTitleFinder {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param SemanticData $semanticData
+	 */
+	public function prefetchFromSemanticData( SemanticData $semanticData ) {
+
+		if ( $this->canUse === false ) {
+			return;
+		}
+
+		$dataItems = [];
+		$dataItems[] = $semanticData->getSubject();
+
+		foreach ( $semanticData->getProperties() as $property ) {
+			$type = DataTypeRegistry::getInstance()->getDataItemByType(
+				$property->findPropertyValueType()
+			);
+
+			if ( $type !== DataItem::TYPE_WIKIPAGE ) {
+				continue;
+			}
+
+			$dataItems = array_merge(
+				$dataItems,
+				$semanticData->getPropertyValues( $property )
+			);
+		}
+
+		foreach ( $semanticData->getSubSemanticData() as $subSemanticData ) {
+
+			$dataItems[] = $subSemanticData->getSubject();
+
+			foreach ( $subSemanticData->getProperties() as $property ) {
+				$type = DataTypeRegistry::getInstance()->getDataItemByType(
+					$property->findPropertyValueType()
+				);
+
+				if ( $type !== DataItem::TYPE_WIKIPAGE ) {
+					continue;
+				}
+
+				$dataItems = array_merge(
+					$dataItems,
+					$subSemanticData->getPropertyValues( $property )
+				);
+			}
+		}
+
+		$this->prefetchFromList( $dataItems );
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param array $dataItems
@@ -94,7 +148,11 @@ class DisplayTitleFinder {
 			return;
 		}
 
-		$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
+		try {
+			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
+		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+			return;
+		}
 
 		$prefetch = $displayTitleLookup->prefetchFromList(
 			$unCachedList
@@ -164,13 +222,17 @@ class DisplayTitleFinder {
 
 	private function findDisplayTitleFor( $subject ) {
 
+		$requestOptions = new RequestOptions();
+		$requestOptions->setCaller( __METHOD__ );
+
 		// Avoid issues in case of `false` or empty to store
 		// a space
 		$displayTitle = ' ';
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_DTITLE' )
+			new DIProperty( '_DTITLE' ),
+			$requestOptions
 		);
 
 		if ( $dataItems !== null && $dataItems !== [] ) {

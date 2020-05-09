@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -158,6 +159,68 @@ class DisplayTitleFinderTest extends \PHPUnit_Framework_TestCase {
 			'',
 			$instance->findDisplayTitle( $subject )
 		);
+	}
+
+	public function testPrefetchFromSemanticData() {
+
+		$subSemanticData =  $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subSemanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( DIWikiPage::doUnserialize( 'Foo#0##123' ) ) );
+
+		$subSemanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [ new DIProperty( 'SubFoo' ) ] ) );
+
+		$subSemanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ DIWikiPage::newFromText( 'SubFoo' ) ] ) );
+
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$semanticData->expects( $this->atLeastOnce() )
+			->method( 'getSubject' )
+			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_MAIN ) ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [ new DIProperty( 'Foo' ) ] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Foo' ) ] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [ $subSemanticData ] ) );
+
+		$prefetchList = [
+			DIWikiPage::newFromText( 'Bar' ),
+			DIWikiPage::newFromText( 'Foo' ),
+			DIWikiPage::doUnserialize( 'Foo#0##123' ),
+			DIWikiPage::newFromText( 'SubFoo' )
+		];
+
+ 		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+ 			->setConstructorArgs(
+ 				[
+					$this->store,
+					$this->entityCache
+ 				]
+ 			)
+ 			->setMethods( [ 'prefetchFromList' ] )
+ 			->getMock();
+
+		$instance->expects( $this->any() )
+			->method( 'prefetchFromList' )
+			->with( $this->equalTo( $prefetchList ) );
+
+		$instance->prefetchFromSemanticData( $semanticData );
 	}
 
 	public function testPrefetchFromList() {
