@@ -191,6 +191,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 				);
 			} else {
 				$monolingualTextLookup = ApplicationFactory::getInstance()->getStore()->service( 'MonolingualTextLookup' );
+				$monolingualTextLookup->setCaller( __METHOD__ );
 				$this->m_dataitem = $monolingualTextLookup->newDIContainer( $dataItem, $this->getProperty() );
 			}
 
