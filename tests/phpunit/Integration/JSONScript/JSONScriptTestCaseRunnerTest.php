@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
-use SMW\Tests\ExtendedJsonTestCaseScriptRunner;
+use SMW\Tests\JSONScriptServicesTestCaseRunner;
 
 /**
  * @group semantic-mediawiki
@@ -13,24 +13,41 @@ use SMW\Tests\ExtendedJsonTestCaseScriptRunner;
  *
  * @author mwjames
  */
-class JsonTestCaseScriptRunnerTest extends ExtendedJsonTestCaseScriptRunner {
+class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptServicesTestCaseRunner::runTestAssertionForType
+	 */
+	protected function runTestAssertionForType( string $type ) : bool {
+
+		$expectedAssertionTypes = [
+			'parser',
+			'parser-html',
+			'special',
+			'rdf',
+			'query',
+			'api'
+		];
+
+		return in_array( $type, $expectedAssertionTypes );
+	}
+
+	/**
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
 		return __DIR__ . '/TestCases';
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getRequiredJsonTestCaseMinVersion() {
 		return '2';
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getDependencyDefinitions
+	 * @see JSONScriptTestCaseRunner::getDependencyDefinitions
 	 */
 	protected function getDependencyDefinitions() {
 		return [

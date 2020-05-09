@@ -8,7 +8,7 @@ use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
- * The `JsonTestCaseScriptRunner` is a convenience provider for `Json` formatted
+ * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
  * integration tests to allow writing tests quicker without the need to setup
  * or tear down specific data structures.
  *
@@ -24,7 +24,7 @@ use Title;
  *
  * @author mwjames
  */
-abstract class JsonTestCaseScriptRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 
 	/**
 	 * @var FileReader

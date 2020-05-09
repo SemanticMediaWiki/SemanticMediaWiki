@@ -3,7 +3,7 @@
 Extensions that want to create their own `JSONScript` integration tests and have them run against MediaWiki and Semantic MediaWiki can take advantage of the existing SMW test infrastructure for integration tests (script interpreter, assertions validators etc.) by:
 
 - Extending the PHPUnit `bootstrap.php`
-- Create a [test case][testcase] that extends from `LightweightJsonTestCaseScriptRunner`
+- Create a [test case][testcase] runner that extends from `JSONScriptServicesTestCaseRunner`
 
 ### Extending the bootstrap
 
@@ -28,26 +28,25 @@ $autoloader->addPsr4( ... );
 
 Semantic MediaWiki provides two script runners that can be used by extensions:
 
-- `LightweightJsonTestCaseScriptRunner` allows to use the `parser`, `parser-html`, `special`, and `semantic-data` type assertions
-- `ExtendedJsonTestCaseScriptRunner` provides additional assertion methods
-- `JsonTestCaseScriptRunner` is the base runner that provides all methods necessary to run test cases, it also includes version checks as well as to validate custom defined dependencies
+- `JSONScriptServicesTestCaseRunner` allows to use the `parser`, `parser-html`, `special`, and `semantic-data` type assertions
+- `JSONScriptTestCaseRunner` is the base runner that provides all methods necessary to run test cases, it also includes version checks as well as to validate custom defined dependencies
 
-The `LightweightJsonTestCaseScriptRunner` was introduced to help users to quickly create a custom script runner (e.g. `CustomJsonScriptTest`) that iterates over the selected test location without much modification to the test itself besides adding the location of the test case folder.
+The `JSONScriptServicesTestCaseRunner` was introduced to help users to quickly create a custom script runner (e.g. `CustomJsonScriptTest`) that iterates over the selected test location without much modification to the test itself besides adding the location of the test case folder.
 
 #### Example
 
 ```php
 namespace Foo\Tests\Integration;
 
-use SMW\Tests\LightweightJsonTestCaseScriptRunner;
+use SMW\Tests\JSONScriptServicesTestCaseRunner;
 
 /**
  * @since ...
  */
-class CustomJsonScriptTest extends LightweightJsonTestCaseScriptRunner {
+class CustomJsonScriptTest extends JSONScriptServicesTestCaseRunner {
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
 		return __DIR__ . '/TestCases';
@@ -98,22 +97,22 @@ In some cases the selected `JSON` style may vary or contains information that re
 ```php
 namespace Foo\Tests\Integration;
 
-use SMW\Tests\LightweightJsonTestCaseScriptRunner;
+use SMW\Tests\JSONScriptServicesTestCaseRunner;
 
 /**
  * @since ...
  */
-class CustomJsonScriptTest extends LightweightJsonTestCaseScriptRunner {
+class CustomJsonScriptTest extends JSONScriptServicesTestCaseRunner {
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
 		return __DIR__ . '/TestCases';
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::runTestCaseFile
+	 * @see JSONScriptTestCaseRunner::runTestCaseFile
 	 */
 	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
 

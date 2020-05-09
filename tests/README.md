@@ -60,21 +60,23 @@ Writing meaningful tests isn't difficult but requires some diligence on how to s
 For a short introduction on "How to write a test for Semantic MediaWiki", have a look at [this](https://www.youtube.com/watch?v=v6JRfk5ZmsI) video.
 
 <pre>
-/tests/phpunit
-├─ Benchmark
-├─ Fixtures
-├─ Integration
-│	├─ ...
-│	└─ JSONScript
-├─ Structure
-└─ Unit
-	└─ ...
+/tests
+├─ /phpunit
+│	├─ Benchmark
+│	├─ Fixtures
+│	├─ Integration
+│	│	├─ ...
+│	│	└─ JSONScript
+│	├─ Structure
+│	└─ Unit
+│
+└─ /qunit
 </pre>
 
 - `Benchmark` contains collections of tests running benchmarks
 - `Fixtures` contains fixed data and schemata
 - `Integration` contains tests classified as testing the integration with MediaWiki, rely on an active DB connection, or connect to any other external service
-- `Structure` tests considered to verify files, structures, or some other non Semantic MediaWiki specific context
+- `Structure` contains tests that verify some structural components, or not directly test a specific integration with Semantic MediaWiki or MediaWiki
 - `Unit` contains unit tests (those tests should not rely on an enabled MediaWiki or DB connection)
 
 ### Unit tests
