@@ -59,58 +59,57 @@ Writing meaningful tests isn't difficult but requires some diligence on how to s
 
 For a short introduction on "How to write a test for Semantic MediaWiki", have a look at [this](https://www.youtube.com/watch?v=v6JRfk5ZmsI) video.
 
-### Test cases
+<pre>
+/tests/phpunit
+├─ Benchmark
+├─ Fixtures
+├─ Integration
+│	├─ ...
+│	└─ JSONScript
+├─ Structure
+└─ Unit
+	└─ ...
+</pre>
 
-The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test
-environment to MediaWiki) and it is best to rely on `PHPUnit_Framework_TestCase`
-and where a MW database connection is required, use the `MwDBaseUnitTestCase`
-instead.
+- `Benchmark` contains collections of tests running benchmarks
+- `Fixtures` contains fixed data and schemata
+- `Integration` contains tests classified as testing the integration with MediaWiki, rely on an active DB connection, or connect to any other external service
+- `Structure` tests considered to verify files, structures, or some other non Semantic MediaWiki specific context
+- `Unit` contains unit tests (those tests should not rely on an enabled MediaWiki or DB connection)
+
+### Unit tests
+
+The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test environment to MediaWiki) and it is best to rely on `PHPUnit_Framework_TestCase` and where a MW database connection is required, use the `MwDBaseUnitTestCase` instead.
 
 * `QueryPrinterTestCase` base class for all query and result printers
 * `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
 
-## Integration tests
+### Integration tests
 
-Integration tests are vital to confirm the behaviour of a component from an
-integrative perspective that occurs through an interplay with its surroundings.
+Integration tests are vital to confirm the behaviour of a component from an integrative perspective that occurs through an interplay with its surroundings.
 
-Those tests don't replace unit tests, they complement them to verify that
-an expected outcome does actually occur in combination with MediaWiki and
-other services.
+Those tests don't replace unit tests, they complement them to verify that an expected outcome does actually occur in combination with MediaWiki and other services.
 
-Integration tests can help reduce the recurrence of regressions or bugs, given
-that a developers follows a simple process:
+Integration tests can help reduce the recurrence of regressions or bugs, given that a developers follows a simple process:
 
 - Make a conjecture or hypothesis about the cause of the bug or regression
-- Find a minimal test case (using wiki text at this point should make it much
-easier to replicate a deviated behaviour)
+- Find a minimal test case (using wiki text at this point should make it much easier to replicate a deviated behaviour)
 - Write a `JSON` test and have it __fail__
 - Apply a fix
-- Run the test again and then run all other integration tests to ensure nothing
-else was altered by accidentally introducing another regression not directly
-related to the one that has been fixed
+- Run the test again and then run all other integration tests to ensure nothing else was altered by accidentally introducing another regression not directly related to the one that has been fixed
 
-`SMW\Tests\Integration\` hosts most of the tests that target the validation of
-reciprocity with MediaWiki and/or other services such as:
+The `Integration` directory is expected to host tests that target the validation of reciprocity with MediaWiki and/or other services such as:
 
 - Triple-stores (necessary for the `SPARQLStore`)
 - Extensions (`SESP`, `SBL` etc.)
 
 Some details about the integration test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/travis/README.md).
 
-### JSONScript integration tests
+#### JSONScript
 
-One best practice approach in Semantic MediaWiki is to write integration tests as
-pseudo `JSONScript` to allow non-developers to review and understand the setup and
-requirements of its test scenarios.
+One best practice in Semantic MediaWiki is to write integration tests as pseudo [`JSONScript`][JSONScript] to allow non-developers to review and understand the setup and requirements of its test scenarios.
 
-The `JSON` format was introduced as abstraction layer to lower the barrier of
-understanding of what is being tested by using the wikitext markup to help design
-test cases quicker without the need to learn how `PHPUnit` or internal `MediaWiki`
-objects work.
-
-A detailed description of the `JSONScript` together with a list of available test
-files can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md).
+The `JSON` format was introduced as abstraction layer to lower the barrier of understanding of what is being tested by using the wikitext markup to help design test cases quicker without the need to learn how `PHPUnit` or internal `MediaWiki` objects work.
 
 ## Benchmark tests
 
@@ -134,3 +133,4 @@ executed on Travis (see [#136][issue-136]).
 [issue-136]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/136
 [phpunit-fixtures]: http://phpunit.de/manual/current/en/fixtures.html
 [aaa]: http://c2.com/cgi/wiki?ArrangeActAssert
+[JSONScript]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md

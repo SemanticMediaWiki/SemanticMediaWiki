@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\System;
+namespace SMW\Tests\Structure;
 
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;

@@ -1,16 +1,12 @@
 <?php
 
-namespace SMW\Tests\System;
+namespace SMW\Tests\Structure;
 
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @group SMW
- * @group SMWExtension
- *
  * @group semantic-mediawiki-system
- * @group mediawiki-databaseless
  *
  * @license GNU GPL v2+
  * @since 1.9.1
