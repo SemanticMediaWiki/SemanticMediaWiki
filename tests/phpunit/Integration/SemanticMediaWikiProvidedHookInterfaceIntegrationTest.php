@@ -226,7 +226,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData->expects( $this->once() )
+		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
 			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_MAIN ) ) );
 
@@ -234,10 +234,22 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit_Fra
 			->method( 'hasVisibleProperties' )
 			->will( $this->returnValue( true ) );
 
+		$semanticData->expects( $this->any() )
+			->method( 'getProperties' )
+			->will( $this->returnValue( [] ) );
+
+		$semanticData->expects( $this->any() )
+			->method( 'getSubSemanticData' )
+			->will( $this->returnValue( [] ) );
+
 		$store = $this->getMockBuilder( $storeClass )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getSemanticData', 'getConnection' ] )
+			->setMethods( [ 'getSemanticData', 'getConnection', 'service' ] )
 			->getMock();
+
+		$store->expects( $this->any() )
+			->method( 'service' )
+			->will($this->throwException(new \SMW\Services\Exception\ServiceNotFoundException( 'foo' ) ));
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )

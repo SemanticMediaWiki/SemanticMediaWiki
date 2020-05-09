@@ -30,6 +30,7 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $stringValidator;
 	private $testEnvironment;
+	private $displayTitleFinder;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -38,6 +39,10 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
 		$this->testEnvironment->addConfiguration( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
+
+		$this->displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	protected function tearDown() : void {
@@ -65,7 +70,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox(
 			$store,
-			$parserData
+			$parserData,
+			$this->displayTitleFinder
 		);
 
 		$instance->setCheckMagicWords(
@@ -111,7 +117,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox(
 			$store,
-			$parserData
+			$parserData,
+			$this->displayTitleFinder
 		);
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
@@ -182,7 +189,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
 			->setConstructorArgs( [
 				$store,
-				$parserData
+				$parserData,
+				$this->displayTitleFinder
 			] )
 			->setMethods( [ 'createTable' ] )
 			->getMock();
@@ -307,7 +315,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox(
 			$store,
-			$parserData
+			$parserData,
+			$this->displayTitleFinder
 		);
 
 		$instance->setCheckMagicWords(
@@ -382,7 +391,8 @@ class FactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Factbox(
 			$store,
-			$parserData
+			$parserData,
+			$this->displayTitleFinder
 		);
 
 		$instance->setCheckMagicWords(

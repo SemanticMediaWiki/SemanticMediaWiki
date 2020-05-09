@@ -5,8 +5,8 @@ namespace SMW\Factbox;
 use Html;
 use Sanitizer;
 use Title;
-use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\DisplayTitleFinder;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer;
@@ -44,9 +44,9 @@ class Factbox {
 	private $parserData;
 
 	/**
-	 * @var ApplicationFactory
+	 * @var DisplayTitleFinder
 	 */
-	private $applicationFactory;
+	private $displayTitleFinder;
 
 	/**
 	 * @var DataValueFactory
@@ -83,11 +83,12 @@ class Factbox {
 	 *
 	 * @param Store $store
 	 * @param ParserData $parserData
+	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function __construct( Store $store, ParserData $parserData ) {
+	public function __construct( Store $store, ParserData $parserData, DisplayTitleFinder $displayTitleFinder ) {
 		$this->store = $store;
 		$this->parserData = $parserData;
-		$this->applicationFactory = ApplicationFactory::getInstance();
+		$this->displayTitleFinder = $displayTitleFinder;
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->attachmentFormatter = new AttachmentFormatter( $store );
 	}
@@ -339,6 +340,8 @@ class Factbox {
 	protected function createTable( SemanticData $semanticData ) {
 
 		$html = '';
+
+		$this->displayTitleFinder->prefetchFromSemanticData( $semanticData );
 
 		// Hook deprecated with SMW 1.9 and will vanish with SMW 1.11
 		\Hooks::run( 'smwShowFactbox', [ &$html, $semanticData ] );
