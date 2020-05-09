@@ -22,12 +22,21 @@ class ContentsReader {
 	public static function readContentsFrom( $file ) {
 
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $file );
+		$extension = pathinfo( $file, PATHINFO_EXTENSION );
 
 		if ( !is_readable( $file ) ) {
 			throw new RuntimeException( "Could not open or read: $file" );
 		}
 
 		$contents = file_get_contents( $file );
+
+		if ( $extension === 'json' ) {
+			$decode = json_decode( $contents );
+
+			if ( json_last_error() == JSON_ERROR_NONE ) {
+				$contents = json_encode( $decode, JSON_UNESCAPED_SLASHES );
+			}
+		}
 
 		// http://php.net/manual/en/function.file-get-contents.php
 		$contents = mb_convert_encoding(

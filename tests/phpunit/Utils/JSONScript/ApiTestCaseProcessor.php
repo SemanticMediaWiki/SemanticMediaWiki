@@ -76,7 +76,7 @@ class ApiTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			$parameters
 		);
 
-		$this->assertOutputForCase( $case, json_encode( $res ) );
+		$this->assertOutputForCase( $case, json_encode( $res, JSON_UNESCAPED_SLASHES ) );
 	}
 
 	private function assertOutputForCase( $case, $text ) {
