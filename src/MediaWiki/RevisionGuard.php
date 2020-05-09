@@ -27,6 +27,23 @@ class RevisionGuard {
 	use HookDispatcherAwareTrait;
 
 	/**
+	 * @var RevisionLookup
+	 */
+	private $revisionLookup;
+
+	/**
+	 * @since 3.2
+	 *
+	 * !! Cannot use a type hint because the NS changed between releases
+	 * MediaWiki\Storage\RevisionLookup vs. MediaWiki\Revision\RevisionLookup
+	 *
+	 * @param $revisionLookup
+	 */
+	public function __construct( $revisionLookup = null ) {
+		$this->revisionLookup = $revisionLookup;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Title $title
@@ -87,6 +104,40 @@ class RevisionGuard {
 	}
 
 	/**
+	 * @since 3.2
+	 *
+	 * @param Title $title
+	 * @param $revId
+	 * @param $flags
+	 *
+	 * @return Revision|null
+	 */
+	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ) : ?Revision {
+
+		if ( $this->revisionLookup === null ) {
+			return Revision::newFromTitle( $title, $revId, $flags );
+		}
+
+		// https://github.com/wikimedia/mediawiki/commit/0f826d1f7380a546921fc5c09e31577de412445e
+		if (
+			// MW 1.31
+			$this->revisionLookup instanceof \MediaWiki\Storage\RevisionLookup ||
+			// MW 1.32
+			$this->revisionLookup instanceof \MediaWiki\Revision\RevisionLookup ) {
+
+			$revisionRecord = $this->revisionLookup->getRevisionByTitle(
+				$title,
+				$revId,
+				$flags
+			);
+
+			return $revisionRecord ? new Revision( $revisionRecord, $flags ) : null;
+		}
+
+		return null;
+	}
+
+	/**
 	 * @since 3.1
 	 *
 	 * @param Title $title
@@ -97,7 +148,7 @@ class RevisionGuard {
 	public function getRevision( Title $title, ?Revision $revision ) : ?Revision {
 
 		if ( $revision === null ) {
-			$revision = Revision::newFromTitle( $title, false, Revision::READ_NORMAL );
+			$revision = $this->newRevisionFromTitle( $title, false, Revision::READ_NORMAL );
 		}
 
 		$origRevision = $revision;

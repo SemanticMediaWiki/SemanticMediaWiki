@@ -47,8 +47,14 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testSkipMessageCache() {
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new MediaWikiNsContentReader();
 		$instance->skipMessageCache();
+
+		$instance->setRevisionGuard( $revisionGuard );
 
 		$this->assertInternalType(
 			'string',

@@ -86,6 +86,12 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 10001 ) );
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'newRevisionFromTitle' )
+			->will( $this->returnValue( null ) );
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
+
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']

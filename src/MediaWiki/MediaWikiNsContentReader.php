@@ -13,6 +13,8 @@ use Title;
  */
 class MediaWikiNsContentReader {
 
+	use RevisionGuardAwareTrait;
+
 	/**
 	 * @var boolean
 	 */
@@ -55,10 +57,7 @@ class MediaWikiNsContentReader {
 			return '';
 		}
 
-		// Revision::READ_LATEST is not specified in MW 1.19
-		$revisionReadFlag = defined( 'Revision::READ_LATEST' ) ? Revision::READ_LATEST : 0;
-
-		$revision = Revision::newFromTitle( $title, false, $revisionReadFlag );
+		$revision = $this->revisionGuard->newRevisionFromTitle( $title, false, Revision::READ_LATEST );
 
 		if ( $revision === null ) {
 			return '';

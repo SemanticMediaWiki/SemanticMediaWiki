@@ -104,6 +104,28 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewRevisionFromTitle() {
+
+		$title = $this->getMockBuilder( '\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Storage\RevisionLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionLookup->expects( $this->once() )
+			->method( 'getRevisionByTitle' );
+
+		$instance = new RevisionGuard( $revisionLookup );
+
+		$instance->setHookDispatcher(
+			$this->hookDispatcher
+		);
+
+		$instance->newRevisionFromTitle( $title );
+	}
+
 	public function testGetRevision() {
 
 		$this->hookDispatcher->expects( $this->once() )
