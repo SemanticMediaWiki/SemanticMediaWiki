@@ -41,7 +41,7 @@ class Ask extends Query {
 		}
 
 		if ( isset( $params['api_version'] ) ) {
-			$queryResult->setSerializerVersion( $params['api_version'] );
+			$queryResult->setSerializerVersion( (int)$params['api_version'] );
 		}
 
 		$this->addQueryResult( $queryResult, $outputFormat );
@@ -60,8 +60,8 @@ class Ask extends Query {
 				ApiBase::PARAM_REQUIRED => true,
 			],
 			'api_version' => [
-				ApiBase::PARAM_TYPE => [ 2, 3 ],
-				ApiBase::PARAM_DFLT => 2,
+				ApiBase::PARAM_TYPE => [ '2', '3' ],
+				ApiBase::PARAM_DFLT => '2',
 				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
 			],
 		];
