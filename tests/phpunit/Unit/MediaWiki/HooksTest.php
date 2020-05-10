@@ -722,16 +722,22 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$wikiPage->expects( $this->any() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
-
-		$wikiPage->expects( $this->any() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $this->title ) );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionGuard->expects( $this->any() )
+			->method( 'newRevisionFromPage' )
+			->will( $this->returnValue( $revision ) );
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
 		$protections = [];
 		$reason = '';

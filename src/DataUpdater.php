@@ -274,7 +274,7 @@ class DataUpdater {
 		// reference field should both point to the same revision
 		$revision = $this->revisionGuard->getRevision(
 			$title,
-			$wikiPage->getRevision()
+			$this->revisionGuard->newRevisionFromPage( $wikiPage )
 		);
 
 		if ( $revision instanceof Revision ) {

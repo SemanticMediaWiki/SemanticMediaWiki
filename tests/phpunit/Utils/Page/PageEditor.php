@@ -7,6 +7,7 @@ use RuntimeException;
 use Title;
 use WikiPage;
 use SMW\MediaWiki\EditInfo;
+use SMW\Services\ServicesFactory;
 
 /**
  * @group SMW
@@ -74,7 +75,7 @@ class PageEditor {
 	 */
 	public function getEditInfo() {
 
-		$editInfo = new EditInfo(
+		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()
 		);
 

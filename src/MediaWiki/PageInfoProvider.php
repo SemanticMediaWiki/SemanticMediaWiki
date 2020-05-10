@@ -21,6 +21,8 @@ use WikiPage;
  */
 class PageInfoProvider implements PageInfo {
 
+	use RevisionGuardAwareTrait;
+
 	/**
 	 * @var WikiPage
 	 */
@@ -95,7 +97,11 @@ class PageInfoProvider implements PageInfo {
 			return $this->revision->getParentId() === null;
 		}
 
-		return $this->wikiPage->getRevision()->getParentId() === null;
+		$revision = $this->revisionGuard->newRevisionFromPage(
+			$this->wikiPage
+		);
+
+		return $revision->getParentId() === null;
 	}
 
 	/**

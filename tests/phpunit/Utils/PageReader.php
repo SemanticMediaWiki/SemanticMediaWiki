@@ -7,6 +7,7 @@ use TextContent;
 use Title;
 use UnexpectedValueException;
 use SMW\MediaWiki\EditInfo;
+use SMW\Services\ServicesFactory;
 
 /**
  * @license GNU GPL v2+
@@ -58,7 +59,7 @@ class PageReader {
 
 		$this->page = new \WikiPage( $title );
 
-		$editInfo = new EditInfo(
+		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()
 		);
 

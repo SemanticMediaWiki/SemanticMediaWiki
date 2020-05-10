@@ -32,9 +32,12 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 	private $mwHooksHandler;
 	private $semanticDataValidator;
 	private $pageDeleter;
+	private $revisionGuard;
 
 	protected function setUp() : void {
 		parent::setUp();
+
+		$this->revisionGuard = ServicesFactory::getInstance()->singleton( 'RevisionGuard' );
 
 		$this->testEnvironment->addConfiguration(
 			'smwgPageSpecialProperties',
@@ -107,7 +110,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		return $pageCreator->getPage()->getRevision()->getId();
+		return $this->revisionGuard->newRevisionFromPage( $pageCreator->getPage() )->getId();
 	}
 
 	protected function alterPageContentToCreateNewRevisionWithoutAnnotations() {
@@ -116,13 +119,13 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		return $pageCreator->getPage()->getRevision()->getId();
+		return $this->revisionGuard->newRevisionFromPage( $pageCreator->getPage() )->getId();
 	}
 
 	protected function assertSemanticDataBeforeContentAlteration() {
 
 		$wikiPage = WikiPage::factory( $this->title );
-		$revision = $wikiPage->getRevision();
+		$revision = $this->revisionGuard->newRevisionFromPage( $wikiPage );
 
 		$parserData = $this->retrieveAndLoadData();
 		$this->assertCount( 3, $parserData->getSemanticData()->getProperties() );

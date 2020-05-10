@@ -209,10 +209,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContent' )
 			->will( $this->returnValue( $content ) );
 
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
-
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -222,6 +218,10 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $wikiPage ) );
 
 		$this->testEnvironment->registerObject( 'PageCreator', $pageCreator );
+
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'newRevisionFromPage' )
+			->will( $this->returnValue( $revision ) );
 
 		$this->revisionGuard->expects( $this->any() )
 			->method( 'getRevision' )
@@ -412,10 +412,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContent' )
 			->will( $this->returnValue( $content ) );
 
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
-
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -470,10 +466,6 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$wikiPage->expects( $this->atLeastOnce() )
 			->method( 'getContent' )
 			->will( $this->returnValue( $content ) );
-
-		$wikiPage->expects( $this->atLeastOnce() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( $revision ) );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()

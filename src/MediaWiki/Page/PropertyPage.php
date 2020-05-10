@@ -320,13 +320,8 @@ class PropertyPage extends Page {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		if ( $this->getPage()->getRevision() === null ) {
-			return null;
-		}
-
 		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
-			$this->getPage(),
-			$this->getPage()->getRevision()
+			$this->getPage()
 		);
 
 		return $editInfo->fetchSemanticData();

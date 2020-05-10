@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils;
 use ParserOutput;
 use SMW\ParserData;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory;
 use SMW\Store;
 use Title;
 use UnexpectedValueException;
@@ -105,7 +106,8 @@ class ByPageSemanticDataFinder {
 	protected function makeOutputFromPageRevision() {
 
 		$wikiPage = $this->getPage();
-		$revision = $wikiPage->getRevision();
+		$revisionGuard = ServicesFactory::getInstance()->singleton( 'RevisionGuard' );
+		$revision = $revisionGuard->newRevisionFromPage( $wikiPage );
 
 		if ( $revision === null ) {
 			throw new UnexpectedValueException( 'Expected a valid Revision' );

@@ -17,6 +17,8 @@ use WikiPage;
  */
 class EditInfo {
 
+	use RevisionGuardAwareTrait;
+
 	/**
 	 * @var WikiPage
 	 */
@@ -81,7 +83,7 @@ class EditInfo {
 	public function fetchEditInfo() : self {
 
 		if ( $this->page !== null && $this->revision === null ) {
-			$this->revision = $this->page->getRevision();
+			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}
 
 		if ( !$this->revision instanceof Revision ) {
