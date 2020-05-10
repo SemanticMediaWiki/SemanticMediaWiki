@@ -26,6 +26,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 	private $semanticDataValidator;
 	private $pageDeleter;
 	private $pageCreator;
+	private $revisionGuard;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -42,6 +43,8 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
 		$this->title = Title::newFromText( __METHOD__ );
+
+		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
 	public function tearDown() : void {
@@ -140,7 +143,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 			$semanticData
 		);
 
-		return $this->pageCreator->getPage()->getRevision();
+		return $this->revisionGuard->newRevisionFromPage( $this->pageCreator->getPage() );
 	}
 
 	/**
@@ -154,7 +157,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 
 		$this->assertNotSame(
 			$firstRunRevision,
-			$this->pageCreator->getPage()->getRevision()
+			$this->revisionGuard->newRevisionFromPage( $this->pageCreator->getPage() )
 		);
 
 		$contentParser = $this->applicationFactory->newContentParser( $this->title );

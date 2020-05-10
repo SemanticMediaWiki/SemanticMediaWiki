@@ -106,6 +106,24 @@ class RevisionGuard {
 	/**
 	 * @since 3.2
 	 *
+	 * @param WikiPage $page
+	 *
+	 * @return Revision|null
+	 */
+	public function newRevisionFromPage( WikiPage $page ) : ?Revision {
+
+		// https://github.com/wikimedia/mediawiki/commit/4721717527f9f7ff6c68488529a7bb0463bd5744
+		if ( method_exists( $page, 'getRevisionRecord' ) ) {
+			$revisionRecord = $page->getRevisionRecord();
+			return $revisionRecord ? new Revision( $revisionRecord ) : null;
+		}
+
+		return $page->getRevision();
+	}
+
+	/**
+	 * @since 3.2
+	 *
 	 * @param Title $title
 	 * @param $revId
 	 * @param $flags

@@ -614,9 +614,11 @@ class Hooks {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
+		$revisionGuard = $applicationFactory->singleton( 'RevisionGuard' );
+
 		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
 			$wikiPage,
-			$wikiPage->getRevision(),
+			$revisionGuard->newRevisionFromPage( $wikiPage ),
 			$user
 		);
 

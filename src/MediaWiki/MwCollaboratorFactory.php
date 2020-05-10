@@ -167,7 +167,13 @@ class MwCollaboratorFactory {
 	 * @return PageInfoProvider
 	 */
 	public function newPageInfoProvider( WikiPage $wkiPage, Revision $revision = null, User $user = null ) {
-		return new PageInfoProvider( $wkiPage, $revision, $user );
+		$pageInfoProvider = new PageInfoProvider( $wkiPage, $revision, $user );
+
+		$pageInfoProvider->setRevisionGuard(
+			$this->applicationFactory->singleton( 'RevisionGuard' )
+		);
+
+		return $pageInfoProvider;
 	}
 
 	/**
@@ -193,8 +199,15 @@ class MwCollaboratorFactory {
 	 *
 	 * @return EditInfo
 	 */
-	public function newEditInfo( WikiPage $wkiPage, Revision $revision, User $user = null ) {
-		return new EditInfo( $wkiPage, $revision, $user );
+	public function newEditInfo( WikiPage $wkiPage, Revision $revision = null, User $user = null ) {
+
+		$editInfo = new EditInfo( $wkiPage, $revision, $user );
+
+		$editInfo->setRevisionGuard(
+			$this->applicationFactory->singleton( 'RevisionGuard' )
+		);
+
+		return $editInfo;
 	}
 
 	/**

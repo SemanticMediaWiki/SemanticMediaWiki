@@ -97,12 +97,24 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 			->method(  'getParentId' )
 			->will( $this->returnValue( $parentId ) );
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionGuard->expects( $this->any() )
+			->method(  'newRevisionFromPage' )
+			->will( $this->returnValue( $revision ) );
+
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getRevision' => $revision ],
 				'revision' => [ ],
 				'user'     => [],
 			]
+		);
+
+		$instance->setRevisionGuard(
+			$revisionGuard
 		);
 
 		$this->assertEquals( $expected, $instance->isNewPage() );

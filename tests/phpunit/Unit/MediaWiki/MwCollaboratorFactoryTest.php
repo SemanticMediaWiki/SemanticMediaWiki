@@ -190,6 +190,15 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'singleton' )
+			->with( $this->equalTo( 'RevisionGuard' ) )
+			->will( $this->returnValue( $revisionGuard ) );
+
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
@@ -209,6 +218,15 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'singleton' )
+			->with( $this->equalTo( 'RevisionGuard' ) )
+			->will( $this->returnValue( $revisionGuard ) );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory

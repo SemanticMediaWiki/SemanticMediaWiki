@@ -29,6 +29,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 	private $namespaceExaminer;
 	private $hookDispatcher;
 	private $cache;
+	private $revisionGuard;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -69,6 +70,12 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
 	protected function tearDown() : void {
@@ -170,13 +177,13 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $parameters['store'] );
 
+		$this->revisionGuard->expects( $this->any() )
+			->method( 'getRevision' )
+			->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$wikiPage->expects( $this->any() )
-			->method( 'getRevision' )
-			->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getTitle' )

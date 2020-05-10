@@ -8,6 +8,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use UnexpectedValueException;
 use SMW\MediaWiki\EditInfo;
+use SMW\Services\ServicesFactory;
 
 /**
  * @license GNU GPL v2+
@@ -143,7 +144,7 @@ class PageCreator {
 	 */
 	public function getEditInfo() {
 
-		$editInfo = new EditInfo(
+		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()
 		);
 

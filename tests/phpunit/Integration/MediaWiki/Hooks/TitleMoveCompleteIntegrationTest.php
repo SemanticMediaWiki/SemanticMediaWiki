@@ -29,6 +29,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 	private $applicationFactory;
 	private $toBeDeleted = [];
 	private $pageCreator;
+	private $revisionGuard;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -52,6 +53,8 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 			'smwgEnabledDeferredUpdate',
 			false
 		);
+
+		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
 
 	protected function tearDown() : void {
@@ -71,7 +74,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
 
 		$this->assertNull(
-			WikiPage::factory( $expectedNewTitle )->getRevision()
+			$this->newRevisionFromTitle( $expectedNewTitle )
 		);
 
 		$this->pageCreator->createPage( $oldTitle );
@@ -80,11 +83,11 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$this->assertTrue( $result );
 
 		$this->assertNotNull(
-			WikiPage::factory( $oldTitle )->getRevision()
+			$this->newRevisionFromTitle( $oldTitle )
 		);
 
 		$this->assertNotNull(
-			WikiPage::factory( $expectedNewTitle )->getRevision()
+			$this->newRevisionFromTitle( $expectedNewTitle )
 		);
 
 		$this->toBeDeleted = [
@@ -110,7 +113,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$expectedNewTitle = Title::newFromText( __METHOD__ . '-new' );
 
 		$this->assertNull(
-			WikiPage::factory( $expectedNewTitle )->getRevision()
+			$this->newRevisionFromTitle( $expectedNewTitle )
 		);
 
 		$this->pageCreator
@@ -122,11 +125,11 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->assertNull(
-			WikiPage::factory( $title )->getRevision()
+			$this->newRevisionFromTitle( $title )
 		);
 
 		$this->assertNotNull(
-			WikiPage::factory( $expectedNewTitle )->getRevision()
+			$this->newRevisionFromTitle( $expectedNewTitle )
 		);
 
 		/**
@@ -178,13 +181,13 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$this->pageCreator->doMoveTo( $expectedNewTitle, true );
 
 		$this->assertNotNull(
-			WikiPage::factory( $title )->getRevision()
+			$this->newRevisionFromTitle( $title )
 		);
 
 		// Required due to how MoveTo/Title uses the `TitleIsMovable` hook
 		if ( version_compare(MW_VERSION, '1.34', '>=' ) ) {
 			$this->assertNull(
-				WikiPage::factory( $expectedNewTitle )->getRevision()
+				$this->newRevisionFromTitle( $expectedNewTitle )
 			);
 		}
 
@@ -194,4 +197,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		];
 	}
 
+	private function newRevisionFromTitle( $title ) {
+		return $this->revisionGuard->newRevisionFromPage( WikiPage::factory( $title ) );
+	}
 }
