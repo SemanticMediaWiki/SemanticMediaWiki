@@ -301,6 +301,20 @@ return [
 	},
 
 	/**
+	 * RevisionLookup
+	 *
+	 * @return callable
+	 */
+	'RevisionLookup' => function( $containerBuilder ) {
+
+		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getRevisionLookup' ) ) {
+			return MediaWikiServices::getInstance()->getRevisionLookup();
+		}
+
+		return null;
+	},
+
+	/**
 	 * ParserCache
 	 *
 	 * @return callable

@@ -85,6 +85,12 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$revisionGuard->expects( $this->any() )
+			->method( 'newRevisionFromTitle' )
+			->will( $this->returnValue( $revisionGuard ) );
+
+		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
+
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( $parameters['smwgNamespacesWithSemanticLinks'] ) );

@@ -226,7 +226,14 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$containerBuilder->registerCallback( 'MediaWikiNsContentReader', function() use ( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'MediaWikiNsContentReader', '\SMW\MediaWiki\MediaWikiNsContentReader' );
-			return new MediaWikiNsContentReader();
+
+			$mediaWikiNsContentReader = new MediaWikiNsContentReader();
+
+			$mediaWikiNsContentReader->setRevisionGuard(
+				$containerBuilder->singleton( 'RevisionGuard' )
+			);
+
+			return $mediaWikiNsContentReader;
 		} );
 
 		$containerBuilder->registerCallback( 'PageCreator', function( $containerBuilder ) {
@@ -278,7 +285,10 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$containerBuilder->registerCallback( 'RevisionGuard', function( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'RevisionGuard', RevisionGuard::class );
-			$revisionGuard = new RevisionGuard();
+
+			$revisionGuard = new RevisionGuard(
+				$containerBuilder->create( 'RevisionLookup' )
+			);
 
 			$revisionGuard->setHookDispatcher(
 				$containerBuilder->singleton( 'HookDispatcher' )

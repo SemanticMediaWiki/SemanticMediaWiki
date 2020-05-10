@@ -4,7 +4,7 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use RuntimeException;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Services\ServicesFactory;
 use SMW\SerializerFactory;
 use SMW\Store;
 use SMW\Tests\Utils\PageReader;
@@ -232,7 +232,7 @@ class ParserTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 			return;
 		}
 
-		$mediaWikiNsContentReader = new MediaWikiNsContentReader();
+		$mediaWikiNsContentReader = ServicesFactory::getInstance()->create( 'MediaWikiNsContentReader' );
 		$mediaWikiNsContentReader->skipMessageCache();
 
 		$text = $mediaWikiNsContentReader->read( $case['subject'] );
