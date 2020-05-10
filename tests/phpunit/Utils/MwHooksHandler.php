@@ -96,7 +96,7 @@ class MwHooksHandler {
 
 			// MW 1.19
 			if ( method_exists( 'Hooks', 'clear' ) ) {
-				\Hooks::clear( $hook );
+				$this->getHookRegistry()->clear( $hook );
 			}
 
 			if ( !isset( $GLOBALS['wgHooks'][$hook] ) ) {
