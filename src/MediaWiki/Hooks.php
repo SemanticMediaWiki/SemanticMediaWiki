@@ -100,10 +100,31 @@ class Hooks {
 
 	/**
 	 * @since 2.3
+	 *
+	 * @param string $name
 	 */
-	public function clear() {
-		foreach ( $this->getHandlerList() as $name ) {
-			\Hooks::clear( $name );
+	public function clear( string $name = '' ) {
+
+		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+			return;
+		}
+
+		if ( $name !== [] ) {
+			$handlers = [ $name ];
+		} else {
+			$handlers = $this->getHandlerList();
+		}
+
+		foreach ( $handlers as $name ) {
+
+			// #4779
+			if (
+				!class_exists( '\MediaWiki\MediaWikiServices' ) ||
+				!method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getHookContainer' ) ) {
+				\Hooks::clear( $name );
+			} else {
+				\MediaWiki\MediaWikiServices::getInstance()->getHookContainer()->clear( $name );
+			}
 		}
 	}
 
