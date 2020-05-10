@@ -98,3 +98,5 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 	}
 
 }
+
+class_alias( JSONScriptTestCaseRunnerTest::class, 'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' );
