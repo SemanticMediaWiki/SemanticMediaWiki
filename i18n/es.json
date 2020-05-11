@@ -577,6 +577,7 @@
 	"smw-admin-alerts-tab-deprecationnotices": "Avisos de obsolescencia",
 	"smw-admin-alerts-tab-maintenancealerts": "Alertas de mantenimiento",
 	"smw-admin-maintenancealerts-lastoptimizationrun-alert-title": "Optimización de tablas",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Entidades no válidas",
 	"smw-livepreview-loading": "Cargando…",
 	"smw-sp-searchbyproperty-description": "Esta página proporciona una [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces interfaz de exploración] simple para encontrar entidades descritas por una propiedad y un valor con nombre. Otras interfaces de búsqueda disponibles incluyen la  [[Special:PageProperty|búsqueda de propiedades de página]] y el [[Special:Ask|constructor de consultas]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultados",
