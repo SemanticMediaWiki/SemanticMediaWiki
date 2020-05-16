@@ -272,6 +272,15 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			$this->applicationFactory
 		);
 
+		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->applicationFactory->expects( $this->atLeastOnce() )
+			->method( 'create' )
+			->with( $this->equalTo( 'MediaWikiNsContentReader' ) )
+			->will( $this->returnValue( $mediaWikiNsContentReader ) );
+
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MediaWikiNsContentReader',
 			$instance->newMediaWikiNsContentReader()

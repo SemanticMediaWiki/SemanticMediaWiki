@@ -239,7 +239,7 @@ class MwCollaboratorFactory {
 	 * @return MediaWikiNsContentReader
 	 */
 	public function newMediaWikiNsContentReader() {
-		return new MediaWikiNsContentReader();
+		return $this->applicationFactory->create( 'MediaWikiNsContentReader' );
 	}
 
 	/**
