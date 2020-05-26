@@ -3,6 +3,7 @@
 		"authors": [
 			"Abijeet Patro",
 			"Albamhandae",
+			"Codenstory",
 			"Ellif",
 			"HDNua",
 			"Hwangjy9",
@@ -476,6 +477,7 @@
 	"smw-admin-tab-notices": "구식 알림",
 	"smw-admin-tab-maintenance": "유지보수",
 	"smw-admin-tab-supplement": "추가 기능",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "잘못된 엔티티",
 	"smw-admin-deprecation-notice-section": "시맨틱 미디어위키",
 	"smw-admin-configutation-tab-settings": "설정",
 	"smw-admin-configutation-tab-namespaces": "이름공간",
