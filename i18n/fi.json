@@ -288,7 +288,7 @@
 	"prefs-general-options": "Yleiset asetukset",
 	"prefs-ask-options": "Special:Hakuvalinnat",
 	"smw-prefs-ask-options-tooltip-display": "Näytä parametri työkaluvihjeenä",
-	"smw-prefs-general-options-time-correction": "Ota käyttöön aikakorjaus toimintosivuille käyttämällä paikallista [[Special:Preferences#mw-prefsection-rendering|aikaero]] asetusta",
+	"smw-prefs-general-options-time-correction": "Ota käyttöön aikakorjaus toimintosivuille käyttämällä paikallista [[Special:Preferences#mw-prefsection-rendering|aikaero]]asetusta",
 	"smw-prefs-general-options-disable-editpage-info": "Poista johdantoteksti käytöstä muokkaussivulla",
 	"smw-ui-tooltip-title-property": "Ominaisuus",
 	"smw-ui-tooltip-title-quantity": "Yksikkömuunnos",
