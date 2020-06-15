@@ -712,7 +712,7 @@
 	"smw-datavalue-restricted-use": "Der Datenwert „$1“ ist nicht uneingeschränkt nutzbar und kann daher nicht gespeichert werden.",
 	"smw-datavalue-invalid-number": "„$1“ ist keine gültige Zahl.",
 	"smw-query-condition-circular": "In Vorlage „$1“ wurde ein möglicher Zirkelbezug festgestellt.",
-	"smw-query-condition-empty": "Die Abfrage enthält hat eine leere Bedingung.",
+	"smw-query-condition-empty": "Die Abfrage enthält eine leere Bedingung.",
 	"smw-types-list": "Liste der Datentypen",
 	"smw-types-default": "„$1“ ist ein softwareseitig fest definierter Datentyp.",
 	"smw-types-help": "Weitere Informationen sowie Beispiele sind auf der zugehörigen [https://www.semantic-mediawiki.org/wiki/Help:Type_$1 Hilfeseite] vorhanden.",
