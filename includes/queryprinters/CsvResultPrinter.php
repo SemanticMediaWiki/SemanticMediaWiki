@@ -87,7 +87,7 @@ class CsvResultPrinter extends FileExportPrinter {
 					$growing = array();
 
 					while ( ( $object = $field->getNextDataValue() ) !== false ) {
-						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+						$growing[] = addcslashes( Sanitizer::decodeCharReferences( $object->getWikiValue() ), ',' );
 					}
 
 					$row_items[] = implode( ',', $growing );
