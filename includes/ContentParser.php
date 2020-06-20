@@ -4,10 +4,10 @@ namespace SMW;
 
 use Parser;
 use ParserOptions;
+use ParserOutput;
 use Revision;
 use Title;
 use User;
-use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
@@ -146,9 +146,11 @@ class ContentParser {
 		}
 
 		$revision = $this->getRevision();
-		$content = $revision->getContent( Revision::RAW );
+		$revisionRecord = $revision->getRevisionRecord();
+		$content = $revisionRecord === null ? null : $revisionRecord->getContent( 'main' );
 
-		if ( !$content ) {
+		if ( $content === null ) {
+			// FIXME: hard deprecated in MW 1.35
 			$content = $revision->getContentHandler()->makeEmptyContent();
 		}
 
