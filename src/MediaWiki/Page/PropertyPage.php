@@ -401,7 +401,7 @@ class PropertyPage extends Page {
 		);
 
 		$valueListBuilder->applyLocalTimeOffset(
-			Localizer::getInstance()->hasLocalTimeOffsetPreference( $this->getUser() )
+			Localizer::getInstance()->hasLocalTimeOffsetPreference( $this->getPage()->getUser() )
 		);
 
 		$html = $valueListBuilder->createHtml(
