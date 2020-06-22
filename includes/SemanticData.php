@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\DataModel\SubSemanticData;
 use SMW\DataModel\SequenceMap;
+use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\Exception\SemanticDataImportException;
 use SMWContainerSemanticData;
@@ -158,12 +159,12 @@ class SemanticData {
 	protected $extensionData = [];
 
 	/**
-	 * @var array
+	 * @var array[]
 	 */
 	protected $sequenceMap = [];
 
 	/**
-	 * @var array
+	 * @var array of int|array
 	 */
 	protected $countMap = [];
 
@@ -230,7 +231,7 @@ class SemanticData {
 	 *
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return array[]
 	 */
 	public function getSequenceMap() {
 		return $this->sequenceMap;
@@ -241,7 +242,7 @@ class SemanticData {
 	 *
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return array
 	 */
 	public function getCountMap() {
 		return $this->countMap;
@@ -250,7 +251,7 @@ class SemanticData {
 	/**
 	 * Get the array of all properties that have stored values.
 	 *
-	 * @return array of DIProperty objects
+	 * @return DIProperty[]
 	 */
 	public function getProperties() {
 		ksort( $this->mProperties, SORT_STRING );
@@ -363,8 +364,6 @@ class SemanticData {
 	 * Adds an error array
 	 *
 	 * @since  1.9
-	 *
-	 * @return array|string
 	 */
 	public function addError( $error ) {
 		$this->errors = array_merge( $this->errors, (array)$error );
@@ -397,7 +396,7 @@ class SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return ContainerSemanticData[]
+	 * @return SemanticData[]
 	 */
 	public function getSubSemanticData() {
 
@@ -590,7 +589,8 @@ class SemanticData {
 				$processingErrorMsgHandler->newErrorContainerFromDataValue( $dataValue )
 			);
 
-			return $this->addError( $dataValue->getErrors() );
+			$this->addError( $dataValue->getErrors() );
+			return;
 		}
 
 		$this->addPropertyObjectValue(
