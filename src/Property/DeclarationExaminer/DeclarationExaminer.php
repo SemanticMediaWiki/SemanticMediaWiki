@@ -19,7 +19,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	protected $declarationExaminer;
 
 	/**
-	 * @var []
+	 * @var array[]
 	 */
 	protected $messages = [];
 
