@@ -197,7 +197,7 @@ class Localizer {
 	 *
 	 * @param Language|string $languageCode
 	 *
-	 * @return Lang
+	 * @return LocalLanguage
 	 */
 	public function getLang( $language = '' ) {
 
