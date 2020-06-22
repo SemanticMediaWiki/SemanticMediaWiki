@@ -15,10 +15,10 @@ use SMW\PropertyRegistry;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
+use SMWDataValue;
 use Title;
 use SMW\Utils\HtmlTabs;
 use SMW\Property\DeclarationExaminerFactory;
-use SMW\Property\Constraint\ConstraintSchemaCompiler;
 use SMW\Utils\JsonView;
 
 /**
@@ -45,7 +45,7 @@ class PropertyPage extends Page {
 	private $property;
 
 	/**
-	 * @var DataValue
+	 * @var SMWDataValue
 	 */
 	private $propertyValue;
 
@@ -170,7 +170,6 @@ class PropertyPage extends Page {
 		$context = $this->getContext();
 		$language = $context->getLanguage();
 
-		$html = '';
 		$matches = [];
 
 		$context->getOutput()->addModuleStyles( [ 'ext.smw.style', 'ext.smw.page.styles' ] );
@@ -204,8 +203,6 @@ class PropertyPage extends Page {
 			);
 		}
 
-		$isFirst = true;
-
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'property' );
 
@@ -220,21 +217,21 @@ class PropertyPage extends Page {
 		$htmlTabs->content( 'smw-property-value', $html );
 
 		// Redirects
-		list( $html, $itemCount ) = $this->makeItemList( 'redirect', '_REDI', true );
+		[ $html, $itemCount ] = $this->makeItemList( 'redirect', '_REDI', true );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-redi', $this->msg( 'smw-property-tab-redirects' ) . $itemCount, [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-redi', $html );
 
 		// Subproperties
-		list( $html, $itemCount ) = $this->makeItemList( 'subproperty', '_SUBP', true );
+		[ $html, $itemCount ] = $this->makeItemList( 'subproperty', '_SUBP', true );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-subp', $this->msg( 'smw-property-tab-subproperties' ) . $itemCount, [ 'hide' => $html === '' ] );
 		$htmlTabs->content( 'smw-property-subp', $html );
 
 		// Improperty values
-		list( $html, $itemCount ) = $this->makeItemList( 'error', '_ERRP', false );
+		[ $html, $itemCount ] = $this->makeItemList( 'error', '_ERRP', false );
 		$isFirst = $isFirst && $html === '';
 
 		$htmlTabs->tab( 'smw-property-errp', $this->msg( 'smw-property-tab-errors' ) . $itemCount, [
