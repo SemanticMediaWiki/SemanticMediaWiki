@@ -3,6 +3,7 @@
 namespace SMW\Property;
 
 use SMW\DIProperty;
+use SMW\SemanticData;
 
 /**
  * @license GNU GPL v2+
@@ -22,7 +23,7 @@ interface DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return array[]
 	 */
 	public function getMessages();
 
