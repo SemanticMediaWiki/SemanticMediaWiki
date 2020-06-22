@@ -6,8 +6,8 @@ use InvalidArgumentException;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
+use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Utils\Timer;
-use SMW\Options;
 use SMWDataItem as DataItem;
 use SMWQuery;
 use SMWQueryResult;
@@ -329,7 +329,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array of array( DIProperty|SMWDIError, integer )
+	 * @return ListLookup
 	 */
 	public abstract function getPropertiesSpecial( $requestoptions = null );
 

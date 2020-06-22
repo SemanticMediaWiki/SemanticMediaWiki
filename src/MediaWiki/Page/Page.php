@@ -229,7 +229,7 @@ abstract class Page extends Article {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDIWikiPage
+	 * @return DIWikiPage
 	 */
 	protected function getDataItem() {
 		return DIWikiPage::newFromTitle( $this->getTitle() );
