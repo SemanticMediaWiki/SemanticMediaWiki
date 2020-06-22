@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use Onoi\Cache\Cache;
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\EventDispatcher\EventDispatcher;

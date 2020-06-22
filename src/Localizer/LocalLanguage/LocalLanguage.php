@@ -112,7 +112,7 @@ class LocalLanguage {
 	/**
 	 * @since 2.4
 	 *
-	 * @return string
+	 * @return self
 	 */
 	public function fetch( $languageCode ) {
 
