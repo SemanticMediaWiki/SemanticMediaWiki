@@ -4,6 +4,7 @@ namespace SMW\Test;
 
 use FauxRequest;
 use Language;
+use MediaWiki\MediaWikiServices;
 use RequestContext;
 use SpecialPage;
 use SpecialPageFactory;
@@ -132,7 +133,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 
 		foreach ( $specialPages as $special ) {
 
-			$specialPage = SpecialPageFactory::getPage(
+			$specialPage = MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage(
 				$special
 			);
 
