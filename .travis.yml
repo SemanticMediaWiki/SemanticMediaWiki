@@ -43,6 +43,7 @@ jobs:
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; TYPE=benchmark
     # Currently broken for unknown reason
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; BLAZEGRAPH=1.5.2
+    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; VIRTUOSO=6.1
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
