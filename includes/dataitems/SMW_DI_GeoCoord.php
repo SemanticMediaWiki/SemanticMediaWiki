@@ -24,6 +24,13 @@ class SMWDIGeoCoord extends SMWDataItem {
 	private $altitude = null;
 
 	/**
+	 * @since 3.2
+	 */
+	public static function newFromLatLong( float $latitude, float $longitude ): self {
+		return new self( $latitude, $longitude );
+	}
+
+	/**
 	 * Takes a latitude and longitude, and optionally an altitude. These can be provided in 2 forms:
 	 * * An associative array with lat, lon and alt keys
 	 * * Lat, lon and alt arguments
