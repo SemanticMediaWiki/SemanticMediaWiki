@@ -137,10 +137,7 @@ class SpecialsTest extends SemanticMediaWikiTestCase {
 				$special
 			);
 
-			// Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-			$title = method_exists( $specialPage, 'getPageTitle') ? $specialPage->getPageTitle() : $specialPage->getTitle();
-
-			$context = RequestContext::newExtraneousContext( $title );
+			$context = RequestContext::newExtraneousContext( $specialPage->getPageTitle() );
 			$context->setRequest( $request );
 
 			$specialPage->setContext( clone $context );
