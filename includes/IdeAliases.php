@@ -35,10 +35,10 @@ class SMWDIProperty extends SMW\DIProperty {
 class SMWDISerializer extends SMW\Serializers\QueryResultSerializer {
 }
 
-class SMWUpdateJob extends SMW\UpdateJob {
+class SMWUpdateJob extends \SMW\MediaWiki\Jobs\UpdateJob {
 }
 
-class SMWRefreshJob extends SMW\RefreshJob {
+class SMWRefreshJob extends \SMW\MediaWiki\Jobs\RefreshJob {
 }
 
 abstract class SMWResultPrinter extends SMW\ResultPrinter {
@@ -47,13 +47,13 @@ abstract class SMWResultPrinter extends SMW\ResultPrinter {
 class SMWCategoryResultPrinter extends SMW\Query\ResultPrinters\CategoryResultPrinter {
 }
 
-class SMWDSVResultPrinter extends SMW\DsvResultPrinter {
+class SMWDSVResultPrinter extends \SMW\Query\ResultPrinters\DsvResultPrinter {
 }
 
-class SMWEmbeddedResultPrinter extends SMW\EmbeddedResultPrinter {
+class SMWEmbeddedResultPrinter extends \SMW\Query\ResultPrinters\EmbeddedResultPrinter {
 }
 
-class SMWRDFResultPrinter extends SMW\RdfResultPrinter {
+class SMWRDFResultPrinter extends \SMW\Query\ResultPrinters\RdfResultPrinter {
 }
 
 class SMWListResultPrinter extends SMW\Query\ResultPrinters\ListResultPrinter {
@@ -62,14 +62,5 @@ class SMWListResultPrinter extends SMW\Query\ResultPrinters\ListResultPrinter {
 interface SMWIResultPrinter extends SMW\QueryResultPrinter {
 }
 
-class SMWSparqlDatabase4Store extends SMW\SPARQLStore\FourstoreHttpDatabaseConnector {
-}
-
-class SMWSparqlDatabaseVirtuoso extends SMW\SPARQLStore\VirtuosoHttpDatabaseConnector {
-}
-
 class SMWSparqlStore extends SMW\SPARQLStore\SPARQLStore {
-}
-
-class SMWSparqlDatabase extends SMW\SPARQLStore\GenericHttpDatabaseConnector {
 }
