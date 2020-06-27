@@ -42,7 +42,7 @@
 		"psr/log": "~1.0",
 		"mediawiki/parser-hooks": "~1.4",
 		"param-processor/param-processor": "~1.2",
-		"serialization/serialization": "~3.2",
+		"serialization/serialization": "~4.0",
 		"onoi/message-reporter": "~1.0",
 		"onoi/cache": "~1.2",
 		"onoi/event-dispatcher": "~1.0",
