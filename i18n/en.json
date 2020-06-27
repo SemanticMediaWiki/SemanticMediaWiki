@@ -574,7 +574,7 @@
 	"action-smw-admin": "access Semantic MediaWiki administration tasks",
 	"action-smw-ruleedit": "edit rule pages (Semantic MediaWiki)",
 	"smw-property-namespace-disabled": "The property [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks namespace] is disabled, attempting to declare a type or other property specific characteristics for this property is not possible.",
-	"smw-property-predefined-default": "\"$1\" is a predefined property.",
+	"smw-property-predefined-default": "\"$1\" is a predefined property of type $2.",
 	"smw-property-predefined-common": "This property is pre-deployed (also known as [https://www.semantic-mediawiki.org/wiki/Help:Special_properties special property]) and comes with additional administrative privileges but can be used just like any other [https://www.semantic-mediawiki.org/wiki/Property user-defined property].",
 	"smw-property-predefined-ask": "\"$1\" is a predefined property that represents meta information (in form of a [https://www.semantic-mediawiki.org/wiki/Subobject subobject]) about individual queries and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-asksi": "\"$1\" is a predefined property that collects the number of conditions used in a query and is provided by [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
