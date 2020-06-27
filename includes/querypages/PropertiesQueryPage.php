@@ -3,10 +3,14 @@
 namespace SMW;
 
 use Html;
+use Skin;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
+use SMWRequestOptions;
 use SMWTypesValue;
+use Title;
 
 /**
  * Query class that provides content for the Special:Properties page
@@ -97,7 +101,7 @@ class PropertiesQueryPage extends QueryPage {
 	 */
 	function formatResult( $skin, $result ) {
 
-		list ( $dataItem, $useCount ) = $result;
+		[ $dataItem, $useCount ] = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
 			return $this->formatPropertyItem( $dataItem, $useCount );
@@ -143,7 +147,7 @@ class PropertiesQueryPage extends QueryPage {
 					->addFromArray( [ 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) ] )
 					->addFromKey( 'smw_notitle', $proplink );
 			} else {
-				list( $typestring, $proplink ) = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
+				[ $typestring, $proplink ] = $this->getUserDefinedPropertyInfo( $title, $property, $useCount );
 			}
 
 			$infoLink = '';
@@ -157,7 +161,7 @@ class PropertiesQueryPage extends QueryPage {
 			$proplink .= $infoLink;
 
 		} else {
-			list( $typestring, $proplink ) = $this->getPredefinedPropertyInfo( $property );
+			[ $typestring, $proplink ] = $this->getPredefinedPropertyInfo( $property );
 		}
 
 		if ( $typestring === '' ) { // Built-ins have no type
@@ -256,7 +260,7 @@ class PropertiesQueryPage extends QueryPage {
 		);
 
 		return [
-			SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() )->getLongHTMLText( $this->getLinker() ),
+			SMWTypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText( $this->getLinker() ),
 			$label
 		];
 	}
