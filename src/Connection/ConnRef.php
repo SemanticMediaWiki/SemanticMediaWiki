@@ -2,6 +2,7 @@
 
 namespace SMW\Connection;
 
+use IDatabase;
 use RuntimeException;
 
 /**
@@ -13,19 +14,19 @@ use RuntimeException;
 class ConnRef {
 
 	/**
-	 * @var array
+	 * @var ConnectionProvider[]
 	 */
 	private $connectionProviders = [];
 
 	/**
-	 * @var array
+	 * @var IDatabase[]
 	 */
 	private $connections = [];
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $connectionProviders
+	 * @param ConnectionProvider[] $connectionProviders
 	 */
 	public function __construct( array $connectionProviders ) {
 		$this->connectionProviders = $connectionProviders;
@@ -38,7 +39,7 @@ class ConnRef {
 	 *
 	 * @return boolean
 	 */
-	public function hasConnection( $key ) {
+	public function hasConnection( string $key ): bool {
 		return isset( $this->connectionProviders[$key] );
 	}
 
@@ -47,10 +48,10 @@ class ConnRef {
 	 *
 	 * @param string $key
 	 *
-	 * @return ConnectionProvider
+	 * @return IDatabase
 	 * @throws RuntimeException
 	 */
-	public function getConnection( $key ) {
+	public function getConnection( string $key ): IDatabase {
 
 		if ( isset( $this->connections[$key] ) ) {
 			return $this->connections[$key];
