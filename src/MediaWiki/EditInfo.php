@@ -86,11 +86,11 @@ class EditInfo {
 			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}
 
-		if ( !$this->revision instanceof Revision ) {
+		if ( !$this->revision instanceof Revision || $this->revision->getRevisionRecord() === null ) {
 			return $this;
 		}
 
-		$content = $this->revision->getContent();
+		$content = $this->revision->getRevisionRecord()->getContent( 'main' );
 
 		$prepareEdit = $this->page->prepareContentForEdit(
 			$content,
