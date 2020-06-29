@@ -8,6 +8,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 use SMW\Message;
+use SMWTypesValue;
 
 /**
  * @license GNU GPL v2+
@@ -72,7 +73,11 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		if ( Message::exists( $messageKey ) ) {
 			$messages[] = [ $messageKey, $propertyName ];
 		} else {
-			$messages[] = [ 'smw-property-predefined-default', $propertyName ];
+			$messages[] = [
+				'smw-property-predefined-default',
+				$propertyName,
+				SMWTypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText()
+			];
 		}
 
 		if ( Message::exists( $messageKeyLong ) ) {
@@ -97,7 +102,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		);
 
 		if ( $typeValues !== [] ) {
-			list( $url, $type ) = explode( "#", end( $typeValues )->getSerialization() );
+			[ $url, $type ] = explode( "#", end( $typeValues )->getSerialization() );
 		}
 
 		if ( DataTypeRegistry::getInstance()->isEqualByType( $type, $property->findPropertyTypeID() ) ) {
