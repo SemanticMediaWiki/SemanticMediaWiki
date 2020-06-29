@@ -580,7 +580,7 @@
 	"grouppage-smwcurator": "{{doc-group|smwcurator|page}}",
 	"action-smw-admin": "{{doc-action|smw-admin}}",
 	"action-smw-ruleedit": "{{Doc-action}}",
-	"smw-property-predefined-default": "This message is the default introductory text for [https://semantic-mediawiki.org/wiki/Help:Special_properties special (predefined) properties].\n\nParameter:\n* $1 - Name of the invoked predefined property",
+	"smw-property-predefined-default": "This message is the default introductory text for [https://semantic-mediawiki.org/wiki/Help:Special_properties special (predefined) properties].\n\nParameter:\n* $1 - Name of the invoked predefined property\n* $2 - Name of the datatype of predefined property",
 	"smw-property-predefined-common": "This informatory message explains what [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] is.",
 	"smw-property-predefined-ask": "This informatory message describes a [https://semantic-mediawiki.org/wiki/Help:Special_properties special property].\n\nParameter:\n* $1 - name of predefined property",
 	"smw-property-predefined-asksi": "This informatory message describes the [https://semantic-mediawiki.org/wiki/Help:Special_properties special property] holding the [https://semantic-mediawiki.org/wiki/Help:Special_property_Query_size size] of a query.\n\nParameter:\n* $1 - name of predefined property",
