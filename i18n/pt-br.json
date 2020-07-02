@@ -595,7 +595,7 @@
 	"action-smw-admin": "acessar as tarefas de administração do Semantic MediaWiki",
 	"action-smw-ruleedit": "editar páginas de regras (Semantic MediaWiki)",
 	"smw-property-namespace-disabled": "O [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks domínio] Propriedade está desabilitado, declarar um tipo de dado ou outras características específicas de propriedade para esta propriedade não é possível.",
-	"smw-property-predefined-default": "\"$1\" é uma propriedade predefinida.",
+	"smw-property-predefined-default": "\"$1\" é uma propriedade predefinida do tipo $2.",
 	"smw-property-predefined-common": "Esta propriedade é predefinida (também chamada de [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) e vem com privilégios administrativos adicionais, mas pode ser usada como qualquer outra [https://www.semantic-mediawiki.org/wiki/Property propriedade definida pelo usuário].",
 	"smw-property-predefined-ask": "\"$1\" é uma propriedade predefinida que representa metadados (na forma de um [https://www.semantic-mediawiki.org/wiki/Subobject subobjeto]) sobre consultas individuais, é fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-asksi": "\"$1\" é uma propriedade predefinida (também conhecida como [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriedade especial]) que coleta o número de condições utilizadas em uma consulta, é fornecida pelo [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

@@ -614,7 +614,7 @@
 	"action-smw-admin": "tâches d’administration des accès à MediaWiki Sémantique",
 	"action-smw-ruleedit": "modifier les pages de règle (MediaWiki Sémantique)",
 	"smw-property-namespace-disabled": "La propriété [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks namespace] est désactivée, et tenter de déclarer un type ou d’autres caractéristiques spécifiques de propriété pour cette propriété n’est pas possible.",
-	"smw-property-predefined-default": "« $1 » est une propriété prédéfinie.",
+	"smw-property-predefined-default": "« $1 » est une propriété prédéfinie de type $2.",
 	"smw-property-predefined-common": "Cette propriété est pré-déployée (appelée aussi [https://www.semantic-mediawiki.org/wiki/Help:Special_properties propriété spéciale]) et est accompagnée de droits d’administration supplémentaires, mais peut être utilisée exactement comme une autre [https://www.semantic-mediawiki.org/wiki/Property propriété définie par l’utilisateur].",
 	"smw-property-predefined-ask": "« $1 » est une propriété prédéfinie qui représente les méta-informations (sous la forme d'un [https://www.semantic-mediawiki.org/wiki/Subobject sous-objet]) des requêtes individuelles et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Sémantique].",
 	"smw-property-predefined-asksi": "« $1 » est une propriété prédéfinie qui recueille le nombre de conditions utilisées dans une requête et est fournie par [https://www.semantic-mediawiki.org/wiki/Help:Special_properties MediaWiki Sémantique].",

@@ -597,7 +597,7 @@
 	"action-smw-admin": "存取 Semantic MediaWiki 的管理工作項目",
 	"action-smw-ruleedit": "編輯規則頁面（Semantic MediaWiki）",
 	"smw-property-namespace-disabled": "屬性[https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks 命名空間]已停用，無法嘗試對此屬性聲明類型或是其它屬性指定特徵。",
-	"smw-property-predefined-default": "「$1」是預先定義的屬性。",
+	"smw-property-predefined-default": "「$1」是$2類型的預先定義屬性。",
 	"smw-property-predefined-common": "此屬性為預先部署（即為[https://www.semantic-mediawiki.org/wiki/Help:Special_properties 特殊屬性]）且帶有額外管理權限，但可以像其它[https://www.semantic-mediawiki.org/wiki/Property 使用者定義屬性]般地使用。",
 	"smw-property-predefined-ask": "「$1」是代表出有關各查詢的詮釋資訊（在[https://www.semantic-mediawiki.org/wiki/Subobject 子物件]的形式），且由 [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] 所提供的預先定義屬性。",
 	"smw-property-predefined-asksi": "「$1」是由 [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] 提供，收集使用在查詢的條件數量之預先定義屬性。",
