@@ -573,7 +573,7 @@
 	"action-smw-admin": "Semantic MediaWiki yönetim görevlerine erişim",
 	"action-smw-ruleedit": "kural sayfalarını düzenle (Semantic MediaWiki)",
 	"smw-property-namespace-disabled": "[https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks Ad alanı] özelliği devre dışı bırakıldı, bu mülk için bir tür veya mülke özgü özellikler bildirmeye çalışmak mümkün değil.",
-	"smw-property-predefined-default": "\"$1\" önceden tanımlanmış bir özelliktir.",
+	"smw-property-predefined-default": "\"$1\", $2 türünün önceden tanımlanmış bir özelliğidir.",
 	"smw-property-predefined-common": "Bu özellik önceden konuşlandırılmıştır ([https://www.semantic-mediawiki.org/wiki/Help:Special_properties özel mülkü] olarak da bilinir) ve ek yönetici ayrıcalıklarıyla birlikte gelir ancak diğer tüm yetkiler [https://www.semantic-mediawiki.org/wiki/Property kullanıcı tanımlı mülk] gibi kullanılabilir.",
 	"smw-property-predefined-ask": "\"$1\", tek tek sorgular hakkında meta bilgileri ([https://www.semantic-mediawiki.org/wiki/Subobject alt nesnesi şeklinde]) temsil eden ve [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] biçiminde temsil eden önceden tanımlanmış bir özelliktir.",
 	"smw-property-predefined-asksi": "\"$1\", bir sorguda kullanılan koşulların sayısını toplayan ve [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki] tarafından sağlanan önceden tanımlanmış bir özelliktir.",

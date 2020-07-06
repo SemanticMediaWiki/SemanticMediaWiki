@@ -385,7 +385,7 @@
 	"group-smwcurator-member": "{{GENDER:$1|אוצר|אוצרת}} (מדיה־ויקי סמנטית)",
 	"grouppage-smwcurator": "{{ns:project}}:אוצרים (מדיה־ויקי סמנטית)",
 	"action-smw-admin": "לגשת למשימות ניהול של מדיה־ויקי סמנטית",
-	"smw-property-predefined-default": "\"$1\" הוא מאפיין מוגדר מראש.",
+	"smw-property-predefined-default": "\"$1\" הוא מאפיין מוגדר מראש מסוג $2.",
 	"smw-property-predefined-common": "המאפיין הזה מותקן מראש (ידוע גם בתור [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מאפיין מיוחד]) ומבא עם הרשאות ניהול נוספות, אבל יכול לשמש כמו כל [https://www.semantic-mediawiki.org/wiki/Property מפאיין שמוגדר על־ידי משתמש].",
 	"smw-property-predefined-ask": "$1 הוא מאפיין מוגדר מראש שמייצג מטא־מידע (בצורת [https://www.semantic-mediawiki.org/wiki/Subobject תת־עצם]) על שאילתות פרטניות והוא מסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties מדיה־ויקי סמנטית].",
 	"smw-property-predefined-asksi": "\"$1\" הוא מאפיין מוגדר מראש שאוסף את מספר התנאים שמשמשים בשאילתה ומסופק על־ידי [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
