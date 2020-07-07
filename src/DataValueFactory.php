@@ -171,11 +171,11 @@ class DataValueFactory {
 	 * Create a value from a type id. If no $value is given, an empty
 	 * container is created, the value of which can be set later on.
 	 *
-	 * @param $typeId string id string for the given type
-	 * @param $valueString mixed user value string, or false if unknown
-	 * @param $caption mixed user-defined caption, or false if none given
-	 * @param $property SMWDIProperty property object for which this value is made, or null
-	 * @param $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null
+	 * @param string $typeId id string for the given type
+	 * @param string|false $valueString user value string, or false if unknown
+	 * @param string|false $caption user-defined caption, or false if none given
+	 * @param DIProperty|null $property property object for which this value is made, or null
+	 * @param DIWikiPage|null $contextPage that provides a context for parsing the value string, or null
 	 *
 	 * @return DataValue
 	 */
