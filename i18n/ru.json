@@ -889,7 +889,7 @@
 	"smw-ask-tab-extra": "Дополнительно",
 	"smw-ask-tab-debug": "Отладка",
 	"smw-ask-tab-code": "Код",
-	"smw-install-incomplete-intro": "Имеется 2$ неполных или [[Special:PendingTaskList|в ожидании]] {{PLURAL:$2|задача|задач}} для завершения {{PLURAL:$1|установки|обновления}} [https://www.semantic-mediawiki.org Semantic MediaWiki]. Администратор или пользователь с достаточными правами может завершить {{PLURAL:$2|данную задачу|данные задачи}}. Это следует сделать перед добавлением новых данных, чтобы избежать несоответствий.",
+	"smw-install-incomplete-intro": "Имеется $2 неполных или [[Special:PendingTaskList|в ожидании]] {{PLURAL:$2|задача|задач}} для завершения {{PLURAL:$1|установки|обновления}} [https://www.semantic-mediawiki.org Semantic MediaWiki]. Администратор или пользователь с достаточными правами может завершить {{PLURAL:$2|данную задачу|данные задачи}}. Это следует сделать перед добавлением новых данных, чтобы избежать несоответствий.",
 	"smw-pendingtasks-tab-setup": "Настройка",
 	"smw-report": "Отчет",
 	"smw-legend": "Легенда",

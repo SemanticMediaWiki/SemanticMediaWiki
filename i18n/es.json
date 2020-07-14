@@ -543,7 +543,7 @@
 	"group-smwcurator-member": "{{GENDER:$1|curador|curadora}} (Semantic MediaWiki)",
 	"grouppage-smwcurator": "{{ns:project}}:Curadores (Semantic MediaWiki)",
 	"group-smweditor": "Editores (Semantic MediaWiki)",
-	"group-smweditor-member": "{{GENDER:$1|editor (Semántica MediaWiki)}}",
+	"group-smweditor-member": "{{GENDER:$1|editor|editora}} (Semantic MediaWiki)",
 	"grouppage-smweditor": "{{ns:Proyecto}}:Editores (Semánticos MediaWiki)",
 	"action-smw-admin": "acceder a tareas de administración de Semantic MediaWiki",
 	"action-smw-ruleedit": "editar páginas de regla (Semantic MediaWiki)",
