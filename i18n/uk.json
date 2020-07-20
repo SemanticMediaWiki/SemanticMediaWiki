@@ -579,7 +579,7 @@
 	"action-smw-admin": "доступ до завдань адміністрування Семантичної MediaWiki",
 	"action-smw-ruleedit": "редагувати сторінки правил (Семантична MediaWiki)",
 	"smw-property-namespace-disabled": "[https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks Простір назв] цієї властивості зараз вимкнений, тому неможливо задекларувати тип, чи інші специфічні характеристики цієї властивості.",
-	"smw-property-predefined-default": "«$1» — попередньо визначена властивість.",
+	"smw-property-predefined-default": "«$1» — попередньо визначена властивість типу $2.",
 	"smw-property-predefined-common": "Це властивість є попередньо розгорнутою (також відома як [https://www.semantic-mediawiki.org/wiki/Help:Special_properties спеціальна властивість]) і несе додаткові адміністративні привілеї, але може використовуватися, як будь-яка інша [https://www.semantic-mediawiki.org/wiki/Property визначена користувачем властивість].",
 	"smw-property-predefined-ask": "«$1» — попередньо визначена властивість, яка представляє метаінформацію (у вигляді [https://www.semantic-mediawiki.org/wiki/Subobject підоб'єкта]) про індивідуальні запити, і забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-property-predefined-asksi": "«$1» — попередньо визначена властивість, яка збирає ряд умов, використаних у запиті, і забезпечується [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",

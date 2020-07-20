@@ -490,7 +490,7 @@
 	"smw-admin-supplementary-elastic-mappings-docu-extra": "This is an informatory message on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-elastic-mappings-summary": "This is a section header on special page \"SemanticMediaWiki\".\n\n{{Identical|Summary}}",
 	"smw-admin-supplementary-elastic-mappings-fields": "This is a section header on special page \"SemanticMediaWiki\".",
-	"smw-admin-supplementary-elastic-nodes-title": "This is the label of a link on special page \"SemanticMediaWiki\".\n\n{{Identical|Nodes}}",
+	"smw-admin-supplementary-elastic-nodes-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-elastic-nodes-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-nodes-title}}",
 	"smw-admin-supplementary-elastic-indices-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-elastic-indices-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-indices-title}}",
