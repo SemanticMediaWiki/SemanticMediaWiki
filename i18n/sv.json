@@ -50,7 +50,7 @@
 	"smw_isspecprop": "Den här egenskapen är en specialegenskap på den här wikin.",
 	"smw-concept-cache-header": "Cacheanvändning",
 	"smw-concept-cache-count": "[https://www.semantic-mediawiki.org/wiki/Help:Concept_cache_count Konceptcachen] innehåller {{PLURAL:$1|'''en''' entitet|'''$1''' entiteter}} ($2).",
-	"smw-concept-no-cache": "Inget tillgängligt mellanlager.",
+	"smw-concept-no-cache": "Ingen tillgänglig cache.",
 	"smw_concept_description": "Beskrivning av konceptet ”$1”",
 	"smw_no_concept_namespace": "Koncept kan endast defineras på sidor i namnrymden Concept:",
 	"smw_multiple_concepts": "Varje konceptsida kan endast ha en konceptdefinition.",
