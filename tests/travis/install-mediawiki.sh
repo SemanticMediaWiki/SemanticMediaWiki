@@ -45,8 +45,8 @@ then
   sleep 3
 
   psql -c 'create database its_a_mw;' -U postgres
-  php maintenance/install.php --dbtype $DB --dbuser postgres --dbname its_a_mw --pass nyan TravisWiki admin --scriptpath /TravisWiki
+  php maintenance/install.php --dbtype $DB --dbuser postgres --dbname its_a_mw --pass AdminPassword TravisWiki admin --scriptpath /TravisWiki
 else
   mysql -e 'create database its_a_mw;'
-  php maintenance/install.php --dbtype $DB --dbuser root --dbname its_a_mw --dbpath $(pwd) --pass nyan TravisWiki admin --scriptpath /TravisWiki
+  php maintenance/install.php --dbtype $DB --dbuser root --dbname its_a_mw --dbpath $(pwd) --pass AdminPassword TravisWiki admin --scriptpath /TravisWiki
 fi
