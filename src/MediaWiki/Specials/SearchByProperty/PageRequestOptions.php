@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
 use SMWNumberValue as NumberValue;
@@ -46,7 +47,7 @@ class PageRequestOptions {
 	public $valueString;
 
 	/**
-	 * @var DataValue
+	 * @var \SMWDataValue
 	 */
 	public $value;
 
