@@ -326,7 +326,6 @@
 	"smw-missingredirects-noresult": "No missing redirect annotations found.",
 	"smw_sbv_docu": "Search for all pages that have a given property and value.",
 	"smw_sbv_novalue": "Enter a valid value for the property, or view all property values for \"$1\".",
-	"smw_sbv_displayresult": "A list of all pages that have property \"$1\" with value \"$2\"",
 	"smw_sbv_displayresultfuzzy": "A list of all pages that have property \"$1\" with value \"$2\".\nSince there have been only a few results, also nearby values are displayed.",
 	"smw_sbv_property": "Property:",
 	"smw_sbv_value": "Value:",

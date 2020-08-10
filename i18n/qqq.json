@@ -344,7 +344,6 @@
 	"smw-missingredirects-noresult": "This is an informatory message on special page \"MissingRedirectAnnotations\".",
 	"smw_sbv_docu": "This is the information message shown on [[Special:SearchByProperty]] in case no property and no property value were not yet provided to search for.",
 	"smw_sbv_novalue": "This is an information message shown on [[Special:SearchByProperty]] in case no property value was provided.\n\nParameters:\n* $1 - the name of the property",
-	"smw_sbv_displayresult": "This is an information message shown on [[Special:SearchByProperty]] in case more than 20 results were found.\n\nParameters:\n* $1 - the name of the property\n* $2 - the value of the property one searched for",
 	"smw_sbv_displayresultfuzzy": "This is an information message shown on [[Special:SearchByProperty]] in case less than 20 results were found.\n\nParameters:\n* $1 - the name of the property\n* $2 - the value of the property one searched for",
 	"smw_sbv_property": "This is the text describing a textbox on [[Special:SearchByProperty]] where the name of a property is expected to be typed in.\n\n{{Identical|Property}}",
 	"smw_sbv_value": "This is the text describing a textbox on [[Special:SearchByProperty]] where the value of a property is expected to be typed in.\n\n{{Identical|Value}}",
