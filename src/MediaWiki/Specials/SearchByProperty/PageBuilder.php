@@ -230,7 +230,7 @@ class PageBuilder {
 		$resultMessage = $this->messageBuilder->getMessage(
 			'smw_sbv_displayresultfuzzy',
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
-			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
+			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->escaped();
 
 		$resultList .= $this->makeResultList( $smallerResults, $smallerCount, false );
 
