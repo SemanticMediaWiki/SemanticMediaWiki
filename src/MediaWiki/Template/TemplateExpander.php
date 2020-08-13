@@ -72,7 +72,6 @@ class TemplateExpander {
 		if ( !$options instanceof ParserOptions ) {
 			$options = new ParserOptions();
 			$options->setRemoveComments( true );
-			$options->setTidy( true );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
 		}
 
