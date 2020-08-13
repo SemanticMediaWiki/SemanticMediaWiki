@@ -284,7 +284,6 @@
 	"smw-constrainterrorlist-helplink": "https://www.semantic-mediawiki.org/wiki/Help:Constraint_errors",
 	"smw_sbv_docu": "주어진 속성과 값을 가지고 모든 문서를 검색합니다.",
 	"smw_sbv_novalue": "속성에 대한 올바른 값을 입력하거나 \"$1\"에 대한 모든 속성 값을 보세요.",
-	"smw_sbv_displayresult": "\"$2\" 값으로 \"$1\" 속성을 가진 모든 문서의 목록입니다",
 	"smw_sbv_displayresultfuzzy": "\"$2\" 값의 \"$1\" 속성을 가진 모든 문서의 목록입니다.\n결과가 얼마 안 되기 때문에 주변의 값을 표시합니다.",
 	"smw_sbv_property": "속성:",
 	"smw_sbv_value": "값:",

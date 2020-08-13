@@ -260,7 +260,6 @@
 	"smw-processingerrorlist-intro": "La llista siguiente ufre una güeyada de los [https://www.semantic-mediawiki.org/wiki/Processing_errors errores de procesamientu] qu'apaecieron venceyaos con [https://www.semantic-mediawiki.org/ Semantic MediaWiki]. Recoméndase vixilar esta llista de manera regular y correxir les anotaciones de valor inválidu.",
 	"smw_sbv_docu": "Buscar toles páxines que tienen una propiedá y valor daos.",
 	"smw_sbv_novalue": "Escribi un valor válidu pa la propiedá, o mira tolos valores de la propiedá pa «$1».",
-	"smw_sbv_displayresult": "Una llista de toles páxines que tienen la propiedá \"$1\" col valor \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Llista de toles páxines que tienen la propiedá \"$1\" con valor \"$2\".\nComo namái hebo unos pocos resultaos, tamién s'amuesen los valores aproximaos.",
 	"smw_sbv_property": "Propiedá:",
 	"smw_sbv_value": "Valor:",

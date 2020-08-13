@@ -270,7 +270,6 @@
 	"processingerrorlist": "Chyba při zpracovávání seznamu",
 	"smw_sbv_docu": "Hledat na wiki článek, který má vlastnost s jistou hodnotou.",
 	"smw_sbv_novalue": "Nebyla uvedena hodnota. Prosím, vložte ji ve formuláři nebo zobrazte všechny atributy typu $1",
-	"smw_sbv_displayresult": "Seznam všech článků, které mají vlastnost $1 s hodnotou $2.",
 	"smw_sbv_displayresultfuzzy": "Seznam všech stránek, jejichž vlastnost „$1“ má hodnotu „$2“. Jelikož bylo výsledků málo, jsou zobrazeny i blízké hodnoty.",
 	"smw_sbv_property": "Vlastnost:",
 	"smw_sbv_value": "Hodnota:",

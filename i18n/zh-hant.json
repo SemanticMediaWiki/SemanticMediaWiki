@@ -350,7 +350,6 @@
 	"smw-missingredirects-noresult": "沒有找出缺少重新導向註解。",
 	"smw_sbv_docu": "搜尋所有已設定屬性和值的頁面。",
 	"smw_sbv_novalue": "為此屬性輸入一個有效值，或者顯示所有 \"$1\" 的屬性值。",
-	"smw_sbv_displayresult": "有值為 \"$2\" 的屬性 \"$1\" 的所有頁面清單",
 	"smw_sbv_displayresultfuzzy": "有值為 \"$2\" 的屬性 \"$1\" 的所有頁面清單。\n由於精確相符的頁面不多，同時列出了部分有相似值的頁面。",
 	"smw_sbv_property": "屬性：",
 	"smw_sbv_value": "值：",

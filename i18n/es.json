@@ -336,7 +336,6 @@
 	"smw-processingerrorlist-intro": "La siguiente lista proporciona una descripción general de los errores de procesamiento que aparecieron con [https://www.semantic-mediawiki.org/ Semantic MediaWiki]. Se recomienda monitorear esta lista de forma regular y corregir las anotaciones de valores no válidos.",
 	"smw_sbv_docu": "Buscar todas las páginas que tienen una propiedad y un valor determinados.",
 	"smw_sbv_novalue": "Escribe un valor válido para la propiedad, o ve todos los valores de propiedad para \"$1\".",
-	"smw_sbv_displayresult": "Una lista de todas las páginas que tienen una propiedad \"$1\" con el valor \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Lista de todas las páginas que tienen la propiedad \"$1\" con valor \"$2\".\nComo hay pocos resultados, también se muestran los valores aproximados.",
 	"smw_sbv_property": "Propiedad:",
 	"smw_sbv_value": "Valor:",

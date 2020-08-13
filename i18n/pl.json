@@ -272,7 +272,6 @@
 	"smw-missingredirects-list": "Strony z brakującymi adnotacjami",
 	"smw_sbv_docu": "Wyszukiwanie wszystkich stron, które mają dany atrybut i wartość.",
 	"smw_sbv_novalue": "Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.",
-	"smw_sbv_displayresult": "Lista wszystkich stron, które mają atrybut $1 z wartością $2.",
 	"smw_sbv_displayresultfuzzy": "Lista wszystkich stron, które posiadają właściwość „$1” o wartości „$2”.\nPonieważ znaleziono tylko kilka wyników, pokazano również wyniki podobne.",
 	"smw_sbv_property": "Atrybut",
 	"smw_sbv_value": "Wartość:",

@@ -260,7 +260,6 @@
 	"smw-processingerrorlist-intro": "以下の一覧は[https://www.semantic-mediawiki.org/ Semantic MediaWiki] に関連して発生した[https://www.semantic-mediawiki.org/wiki/Processing_errors 処理エラー]の概要を提供します。この一覧は定期的に監視し、無効な値の注記を訂正することをお勧めします。",
 	"smw_sbv_docu": "指定したプロパティと値を持つすべてのページを検索します。",
 	"smw_sbv_novalue": "そのプロパティに対して有効な値を入力するか、「$1」のすべてのプロパティ値を確認してください。",
-	"smw_sbv_displayresult": "プロパティ「$1」の値が「$2」であるすべてのページの一覧",
 	"smw_sbv_displayresultfuzzy": "プロパティ「$1」の値が「$2」であるすべてのページの一覧。\n結果がごく少数だったため、近い値も表示しています。",
 	"smw_sbv_property": "プロパティ:",
 	"smw_sbv_value": "値:",

@@ -340,7 +340,6 @@
 	"smw-missingredirects-noresult": "Não foi encontrada nenhuma anotação de redirecionamento em falta.",
 	"smw_sbv_docu": "Procurar todas as páginas que têm uma determinada propriedade e valor.",
 	"smw_sbv_novalue": "Introduza um valor válido para a propriedade, ou veja todos os valores válidos da propriedade “$1”.",
-	"smw_sbv_displayresult": "Segue-se uma lista de todas as páginas que têm a propriedade “$1” com o valor “$2”",
 	"smw_sbv_displayresultfuzzy": "Uma lista de todas as páginas que têm a propriedade \"$1\" com o valor \"$2\".\nComo houve poucos resultados, também são apresentados valores próximos.",
 	"smw_sbv_property": "Propriedade:",
 	"smw_sbv_value": "Valor:",

@@ -223,7 +223,6 @@
 	"searchbyproperty": "Cercar per proprietate",
 	"smw_sbv_docu": "Cercar tote le paginas que ha un proprietate e valor date.",
 	"smw_sbv_novalue": "Entra un valor valide pro le proprietate, o vide tote le valores possibile del proprietate \"$1\".",
-	"smw_sbv_displayresult": "Un lista de tote le paginas que ha le proprietate \"$1\" con valor \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Un lista de tote le paginas que ha le proprietate \"$1\" con valor \"$2\".\nPost que il ha pauc resultatos, le valores proxime es equalmente monstrate.",
 	"smw_sbv_property": "Proprietate:",
 	"smw_sbv_value": "Valor:",

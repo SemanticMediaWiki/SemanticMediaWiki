@@ -327,7 +327,6 @@
 	"smw-missingredirects-noresult": "Eksik yönlendirme ek açıklaması bulunamadı.",
 	"smw_sbv_docu": "Belirtilen özellik ve değere sahip tüm sayfaları ara.",
 	"smw_sbv_novalue": "Özellik için geçerli bir değer girin ya da \"$1\" için tüm özellik değerlerini görün.",
-	"smw_sbv_displayresult": "\"$2\" değeri ile \"$1\" özelliğine sahip tüm sayfaların bir listesi",
 	"smw_sbv_displayresultfuzzy": "\"$1\" özelliğine sahip \"$2\" özelliğine sahip tüm sayfaların listesi.\nÇok az sonuç olduğu için yakındaki değerler de görüntülenir.",
 	"smw_sbv_property": "Özellik:",
 	"smw_sbv_value": "Değer:",

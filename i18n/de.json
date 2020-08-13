@@ -345,7 +345,6 @@
 	"smw-missingredirects-noresult": "Es wurden keine fehlenden Weiterleitungsannotationen gefunden.",
 	"smw_sbv_docu": "Diese Spezialseite ermittelt alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.",
 	"smw_sbv_novalue": "Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.",
-	"smw_sbv_displayresult": "Eine Liste aller Seiten, die ein Attribut $1 mit dem Wert $2 haben.",
 	"smw_sbv_displayresultfuzzy": "Eine Liste aller Seiten, die das Attribut „$1“ mit dem Wert „$2“ haben.\nWeil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelistet.",
 	"smw_sbv_property": "Attribut:",
 	"smw_sbv_value": "Wert:",

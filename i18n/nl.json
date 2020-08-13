@@ -285,7 +285,6 @@
 	"smw-missingredirects-noresult": "Kan geen ontbrekende omleidaantekeningen vinden.",
 	"smw_sbv_docu": "Alle pagina's zoeken die een bepaalde eigenschap en waarde hebben.",
 	"smw_sbv_novalue": "Voer een geldige waarde in voor de eigenschap, of bekijk alle waarden voor eigenschap \"$1.\"",
-	"smw_sbv_displayresult": "Een lijst met alle pagina's waarop eigenschap \"$1\" de waarde \"$2\" heeft",
 	"smw_sbv_displayresultfuzzy": "Een lijst van alle pagina's met de eigenschap \"$1\" met waarde \"$2\".\nOmdat er een beperkt aantal resultaten is, worden ook nabije waarden weergegeven.",
 	"smw_sbv_property": "Eigenschap:",
 	"smw_sbv_value": "Waarde:",

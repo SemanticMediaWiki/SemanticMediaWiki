@@ -330,7 +330,6 @@
 	"smw-missingredirects-noresult": "Ingen manglende omdirigeringsannotasjoner funnet.",
 	"smw_sbv_docu": "Søk etter alle sider som har en gitt egenskap og verdi.",
 	"smw_sbv_novalue": "Skriv inn en gyldig verdi for egenskapen, eller vis alle egenskapsverdier for «$1».",
-	"smw_sbv_displayresult": "En liste over alle sider som har egenskapen «$1» med verdien «$2»",
 	"smw_sbv_displayresultfuzzy": "En liste over alle sider som har egenskapen «$1» med verdien «$2».\nSiden det bare ble noen få resultater, vises også nære verdier.",
 	"smw_sbv_property": "Egenskap:",
 	"smw_sbv_value": "Verdi:",

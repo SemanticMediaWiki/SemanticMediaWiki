@@ -310,7 +310,6 @@
 	"smw-processingerrorlist-intro": "以下列表提供有关出现在连接[https://www.semantic-mediawiki.org/ 语义MediaWiki]时的处理错误的概览。建议定期监视此列表，并修正无效的值注释。",
 	"smw_sbv_docu": "搜索所有已设定属性和值的页面。",
 	"smw_sbv_novalue": "为此属性输入一个有效值，或者显示所有\"$1\"的属性值。",
-	"smw_sbv_displayresult": "有值为“$2”的属性“$1”的所有页面的列表",
 	"smw_sbv_displayresultfuzzy": "有值为\"$2\"的属性\"$1\"的所有页面列表。由于精确相符的页面不多，同时列出了部分有相似值的页面。",
 	"smw_sbv_property": "属性：",
 	"smw_sbv_value": "值：",

@@ -273,7 +273,6 @@
 	"smw-processingerrorlist-intro": "A lista seguinte proporciona unha visión dos erros de tratamento que apareceron en relación con [https://www.semantic-mediawiki.org/ MediaWiki Semántica]. Recoméndase vixiar esta lista de forma regular e correxir as anotacións de valor incorrecto.",
 	"smw_sbv_docu": "Procurar todas as páxinas que teñen a propiedade e o valor dados.",
 	"smw_sbv_novalue": "Por favor, insira un valor válido para a propiedade ou vexa todos os valores das propiedades para \"$1\".",
-	"smw_sbv_displayresult": "Unha lista de todas as páxinas que teñen a propiedade \"$1\" co valor \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Unha lista con todas as páxinas que teñen a propiedade \"$1\" co valor \"$2\".\nComo houbo só uns poucos resultados, móstranse tamén os resultados próximos.",
 	"smw_sbv_property": "Propiedade:",
 	"smw_sbv_value": "Valor:",

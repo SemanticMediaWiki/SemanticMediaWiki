@@ -318,7 +318,6 @@
 	"smw-missingredirects-noresult": "No s'han trobat anotacions de redirecció que hi manquessin.",
 	"smw_sbv_docu": "Cerca totes les pàgines que tenen una propietat i valor donats.",
 	"smw_sbv_novalue": "Introduïu un valor vàlid per a la propietat, o vegeu tots els valors de la propietat «$1».",
-	"smw_sbv_displayresult": "Una llista de totes les pàgines que tenen la propietat «$1» amb el valor «$2»",
 	"smw_sbv_displayresultfuzzy": "Una llista de totes les pàgines que tenen la propietat «$1» amb el valor «$2».\nCom hi ha hagut només uns pocs resultats, també es mostren valors propers.",
 	"smw_sbv_property": "Propietat:",
 	"smw_sbv_value": "Valor:",

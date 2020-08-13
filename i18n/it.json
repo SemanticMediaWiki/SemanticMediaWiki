@@ -230,7 +230,6 @@
 	"smw-missingredirects-list": "Pagine con annotazioni mancanti",
 	"smw_sbv_docu": "Cerca tutte le pagine che hanno proprietà e valore specificati.",
 	"smw_sbv_novalue": "Inserire un valore valido per la proprietà, o visualizzare tutti i valori di proprietà per \"$1\".",
-	"smw_sbv_displayresult": "Lista di tutte le pagine che hanno proprietà \"$1\" con valore \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Una lista di tutte le pagine che hanno la proprietà \"$1\" col valore \"$2\".\nSiccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.",
 	"smw_sbv_property": "Proprietà:",
 	"smw_sbv_value": "Valore:",
