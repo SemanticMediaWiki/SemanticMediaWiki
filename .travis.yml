@@ -38,7 +38,7 @@ jobs:
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
       php: 7.2
     - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*
-      php: 7.4
+      php: 7.3
     - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*
       php: 7.4
     - env: DB=sqlite; MW=REL1_31; TYPE=composer; PHPUNIT=6.5.*
@@ -58,7 +58,7 @@ jobs:
     - env: DB=mysql; MW=REL1_33; ES=5.6.6; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
     - env: DB=mysql; MW=REL1_31; BLAZEGRAPH=1.5.2; PHPUNIT=6.5.*
-    - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*
+    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*
     - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
