@@ -8,12 +8,13 @@ technical documentation.
 
 ## Release notes
 
-* [Latest release notes](RELEASE-NOTES.md)
-* [Other release notes](releasenotes/README.md)
+* [SMW 3.1.0](releasenotes/RELEASE-NOTES-3.1.0.md)
+* [SMW 3.1.6](releasenotes/RELEASE-NOTES-3.1.6.md)
+* [Older release notes](releasenotes/README.md)
 
 ## Technical documentation
 
-* [Hacking Semantic MediaWiki](architecture/README.md)
+* [Developing Semantic MediaWiki](architecture/README.md)
 * [Technical documentation](technical/README.md)
 
 ## Repository documentation
