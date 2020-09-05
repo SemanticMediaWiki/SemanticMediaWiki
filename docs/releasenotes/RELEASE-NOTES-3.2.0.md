@@ -2,7 +2,7 @@
 
 Released on September xx, 2020.
 
-This release comes without a detailed list of changes. We will bring back the list for next release.
+This release comes without a detailed list of changes. We will bring back the list in the next release.
 
 ## Compatibility
 
