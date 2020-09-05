@@ -8,8 +8,9 @@ technical documentation.
 
 ## Release notes
 
-* [SMW 3.1.0](releasenotes/RELEASE-NOTES-3.1.0.md)
+* [SMW 3.2.0](releasenotes/RELEASE-NOTES-3.2.0.md)
 * [SMW 3.1.6](releasenotes/RELEASE-NOTES-3.1.6.md)
+* [SMW 3.1.0](releasenotes/RELEASE-NOTES-3.1.0.md)
 * [Older release notes](releasenotes/README.md)
 
 ## Technical documentation
