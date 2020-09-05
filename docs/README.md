@@ -16,9 +16,3 @@ technical documentation.
 
 * [Developing Semantic MediaWiki](architecture/README.md)
 * [Technical documentation](technical/README.md)
-
-## Repository documentation
-
-* [Contributing](CONTRIBUTING.md)
-* [Issue template](ISSUE_TEMPLATE.md)
-* [Pull request template](PULL_REQUEST_TEMPLATE.md)
