@@ -2,13 +2,17 @@
 
 namespace SMW\DataValues;
 
+use Linker;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\DataValues\ValueFormatters\ValueFormatter;
 use SMW\DIProperty;
 use SMW\Exception\DataItemException;
 use SMW\Message;
 use SMWDataItem as DataItem;
+use SMWDataValue;
 use SMWDataValue as DataValue;
+use SMWWikiPageValue;
 
 /**
  * Objects of this class represent properties in SMW.
@@ -38,7 +42,7 @@ use SMWDataValue as DataValue;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class PropertyValue extends DataValue {
+class PropertyValue extends SMWDataValue {
 
 	/**
 	 * DV identifier
@@ -159,7 +163,7 @@ class PropertyValue extends DataValue {
 			$reqCapitalizedFirstChar
 		);
 
-		list( $propertyName, $capitalizedName, $inverse ) = $propertyValueParser->parse( $value );
+		[ $propertyName, $capitalizedName, $inverse ] = $propertyValueParser->parse( $value );
 
 		foreach ( $propertyValueParser->getErrors() as $error ) {
 			return $this->addErrorMsg( $error, Message::PARSE );
