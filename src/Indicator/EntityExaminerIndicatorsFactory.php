@@ -101,9 +101,9 @@ class EntityExaminerIndicatorsFactory {
 	public function newEntityExaminerDeferrableCompositeIndicatorProvider( Store $store ) : EntityExaminerDeferrableCompositeIndicatorProvider {
 		$indicatorProviders = [];
 
-		//if ( $this->getServicesFactory()->getSettings()->get( 'smwgTODO' ) ) {
-		$indicatorProviders[] = $this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store );
-		//}
+		if ( $this->getServicesFactory()->getSettings()->get( 'smwgDetectOutdatedData' ) ) {
+			$indicatorProviders[] = $this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store );
+		}
 
 		$indicatorProviders[] = $this->newConstraintErrorProvider( $store );
 
