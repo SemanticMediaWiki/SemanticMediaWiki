@@ -182,7 +182,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function settingsProvider() {
 		return [ [ [
-			'foo' => 'bar',
 			'baz' => 'BAH',
 			'bar' => [ '9001' ],
 			'foo' => [ '9001', [ 9001, 4.2 ] ],
@@ -192,11 +191,8 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Provides and collects individual smwg* settings
-	 *
-	 * @return array
 	 */
 	public function globalsSettingsProvider() {
-
 		$settings = array_intersect_key( $GLOBALS,
 			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
 		);
