@@ -17,9 +17,9 @@ For more detailed information, see the [compatibility matrix](https://github.com
 ## Contributors
 
 - 301 - James Hong Kong
-- 118 - Jeroen De Dauw
+- 118 - Jeroen De Dauw ([sponsor Jeroen](https://github.com/sponsors/JeroenDeDauw))
 -  70 - The translator community translatewiki.net
--  52 - Karsten Hoffmeyer
+-  52 - Karsten Hoffmeyer ([sponsor Karsten](https://github.com/sponsors/kghbln))
 -   4 - Jaider Andrade Ferreira
 -   2 - Fonata
 -   2 - Stephan
