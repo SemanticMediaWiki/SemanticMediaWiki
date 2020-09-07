@@ -5,12 +5,12 @@ The documentation for **Semantic MediaWiki** (SMW) can primarily be found on the
  Some core documentation is included together with the source code, and can mostly be found in the
 `docs/` directory.
 
-* [Installation guide](INSTALL.md)
-* [Compatibility matrix](COMPATIBILITY.md)
+* [Installation guide](INSTALL.md#installation-guide-brief)
+* [Compatibility matrix](COMPATIBILITY.md#compatibility)
 
 ## Release notes / version history
 
-Releases are made according to our [release policy](RELEASE-POLICY.md).
+Releases are made according to our [release policy](RELEASE-POLICY.md#release-policy).
 
 Most recent releases:
 
