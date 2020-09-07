@@ -1,6 +1,6 @@
 # Semantic MediaWiki 3.2.0
 
-Released on September xx, 2020.
+Released on September 7, 2020.
 
 This release comes without a detailed list of changes. We will bring back the list in the next release.
 
@@ -9,12 +9,15 @@ This release comes without a detailed list of changes. We will bring back the li
 This release supports MediaWiki 1.31.x up to 1.35.x and PHP 7.1.x up to PHP 7.4.x. Compared to Semantic MediaWiki 3.1.x,
 support for PHP 7.0 has been dropped and support for MediaWiki 1.34 and 1.35 was added.
 
+You might encounter deprecation warnings on MediaWiki 1.35 if you have these warnings turned on (they are off by default).
+We are working on these and will create follow up releases as we fix them.
+
 For more detailed information, see the [compatibility matrix](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/COMPATIBILITY.md).
 
 ## Contributors
 
 - 301 - James Hong Kong
-- 108 - Jeroen De Dauw
+- 118 - Jeroen De Dauw
 -  70 - The translator community translatewiki.net
 -  52 - Karsten Hoffmeyer
 -   4 - Jaider Andrade Ferreira
