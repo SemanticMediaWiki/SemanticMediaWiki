@@ -1316,7 +1316,7 @@ return [
 	#
 	# @since 2.1
 	##
-	'smwgEnabledEditPageHelp' => true,
+	'smwgEnabledEditPageHelp' => false,
 	##
 
 	###
