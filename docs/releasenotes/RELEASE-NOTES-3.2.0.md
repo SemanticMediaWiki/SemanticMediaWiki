@@ -12,7 +12,7 @@ support for PHP 7.0 has been dropped and support for MediaWiki 1.34 and 1.35 was
 You might encounter deprecation warnings on MediaWiki 1.35 if you have these warnings turned on (they are off by default).
 We are working on these and will create follow up releases as we fix them.
 
-For more detailed information, see the [compatibility matrix](COMPATIBILITY.md#compatibility).
+For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Contributors
 
