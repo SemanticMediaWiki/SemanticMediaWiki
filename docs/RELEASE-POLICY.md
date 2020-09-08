@@ -24,6 +24,6 @@ Semantic MediaWiki fixes and features, as long as you have the major version pin
 
 ### See also
 
-* [Release notes](releasenotes/README.md)
-* [Compatibility matrix](COMPATIBILITY.md)
-* [Installation guide](INSTALL.md)
+* [Release notes](releasenotes/README.md#release-notes)
+* [Compatibility matrix](COMPATIBILITY.md#compatibility)
+* [Installation guide](INSTALL.md#installation-guide-brief)
