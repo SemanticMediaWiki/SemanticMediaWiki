@@ -68,7 +68,11 @@ class MessageBuilder {
 	 * @return string
 	 */
 	public function formatNumberToText( $number, $useForSpecialNumbers = false ) {
-		return $this->getLanguage()->formatNum( $number, $useForSpecialNumbers );
+		if ( $useForSpecialNumbers ) {
+			return $this->getLanguage()->formatNumNoSeparators( $number );
+		} else {
+			return $this->getLanguage()->formatNum( $number );
+		}
 	}
 
 	/**

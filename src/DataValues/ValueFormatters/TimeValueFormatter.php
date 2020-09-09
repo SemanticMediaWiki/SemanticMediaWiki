@@ -135,7 +135,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		$year = str_pad( $year, 4, "0", STR_PAD_LEFT );
 
 		if ( $precision <= DITime::PREC_Y ) {
-			return $language->formatNum( $year, true );
+			return $language->formatNumNoSeparators( $year );
 		}
 
 		$month = str_pad( $dataItem->getMonth(), 2, "0", STR_PAD_LEFT );
