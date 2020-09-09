@@ -21,18 +21,25 @@ Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki,
 		<th>Status</th>
 	</tr>
 	<tr>
-		<th>3.2.x</th>
-		<td><strong>7.1.0</strong> - 7.4.x</td>
-		<td>1.31.0 - 1.35.x</td>
-		<td>Q2.2020</td>
-		<td>Future</td>
+		<th>3.3.x</th>
+		<td>7.1.0 - 7.4.x</td>
+		<td>TBD - 1.35.x</td>
+		<td>-</td>
+		<td>In development</td>
 	</tr>
 	<tr>
-		<th><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/milestone/23">3.1.x</a></th>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
+		<td><strong>7.1.0</strong> - 7.4.x</td>
+		<td>1.31.0 - 1.35.x</td>
+		<td>2020-09-07</td>
+		<td><strong>Stable release</strong></td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
 		<td><strong>7.0.0</strong> - 7.3.x</td>
 		<td><strong>1.31.0</strong> - 1.34.x</td>
 		<td>2019-09-23</td>
-		<td>Current</td>
+		<td>Obsolete</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>

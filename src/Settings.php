@@ -206,6 +206,7 @@ class Settings extends Options {
 			'smwgCheckForRemnantEntities' => $GLOBALS['smwgCheckForRemnantEntities'],
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
+			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
 		];
 
 		$this->isLoaded = true;

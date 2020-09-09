@@ -10,7 +10,7 @@
 			"Shirayuki"
 		]
 	},
-	"smw_printername_ul": "Itemisation",
+	"smw_printername_ul": "Bulleted list",
 	"smw_noboolean": "\"$1\" is not recognised as a Boolean (true/false) value.",
 	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
 	"browse": "Browse wiki",

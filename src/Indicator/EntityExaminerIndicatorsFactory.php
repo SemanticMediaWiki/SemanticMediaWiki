@@ -99,9 +99,29 @@ class EntityExaminerIndicatorsFactory {
 	 * @return EntityExaminerDeferrableCompositeIndicatorProvider
 	 */
 	public function newEntityExaminerDeferrableCompositeIndicatorProvider( Store $store ) : EntityExaminerDeferrableCompositeIndicatorProvider {
+		$indicatorProviders = [];
 
-		$servicesFactory = ServicesFactory::getInstance();
-		$settings = $servicesFactory->getSettings();
+		if ( $this->getServicesFactory()->getSettings()->get( 'smwgDetectOutdatedData' ) ) {
+			$indicatorProviders[] = $this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store );
+		}
+
+		$indicatorProviders[] = $this->newConstraintErrorProvider( $store );
+
+		// Example of how to a add deferreable indicator; the `blank` can
+		// be used as model for how to add other types of examinations
+		// $indicatorProviders[] = new BlankEntityExaminerDeferrableIndicatorProvider()
+
+		if ( $this->hookDispatcher === null ) {
+			$this->hookDispatcher = $this->getServicesFactory()->getHookDispatcher();
+		}
+
+		$this->hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
+
+		return new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders );
+	}
+
+	private function newConstraintErrorProvider( Store $store ): ConstraintErrorEntityExaminerIndicatorProvider {
+		$servicesFactory = $this->getServicesFactory();
 
 		$constraintErrorEntityExaminerIndicatorProvider = $this->newConstraintErrorEntityExaminerIndicatorProvider(
 			$store,
@@ -109,25 +129,14 @@ class EntityExaminerIndicatorsFactory {
 		);
 
 		$constraintErrorEntityExaminerIndicatorProvider->setConstraintErrorCheck(
-			$settings->get( 'smwgCheckForConstraintErrors' )
+			$servicesFactory->getSettings()->get( 'smwgCheckForConstraintErrors' )
 		);
 
-		$indicatorProviders = [
-			$this->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $store ),
-			$constraintErrorEntityExaminerIndicatorProvider,
+		return $constraintErrorEntityExaminerIndicatorProvider;
+	}
 
-			// Example of how to a add deferreable indicator; the `blank` can
-			// be used as model for how to add other types of examinations
-			// new BlankEntityExaminerDeferrableIndicatorProvider()
-		];
-
-		if ( $this->hookDispatcher === null ) {
-			$this->hookDispatcher = $servicesFactory->getHookDispatcher();
-		}
-
-		$this->hookDispatcher->onRegisterEntityExaminerDeferrableIndicatorProviders( $store, $indicatorProviders );
-
-		return new EntityExaminerDeferrableCompositeIndicatorProvider( $indicatorProviders );
+	private function getServicesFactory(): ServicesFactory {
+		return ServicesFactory::getInstance();
 	}
 
 	/**

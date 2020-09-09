@@ -1316,7 +1316,7 @@ return [
 	#
 	# @since 2.1
 	##
-	'smwgEnabledEditPageHelp' => true,
+	'smwgEnabledEditPageHelp' => false,
 	##
 
 	###
@@ -2482,6 +2482,16 @@ return [
 		// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http' ],
 		// [ 'host' => '127.0.0.1', 'port' => 9200, 'scheme' => 'http', 'user' => 'username', 'pass' => 'password!#$?*abc' ]
 		// 'localhost:9200'
-	]
+	],
+
+	/**
+	 * If SMW should verify that the semantic data is up to date with the latest revision of a page whenever
+	 * this page is loaded. If the semantic data is out of date this will be shown in the "entity issue panel".
+	 * This panel is only shown when there is something to display, so setting this setting to true increases
+	 * the frequency the panel is shown on pages.
+	 *
+	 * @since 3.2
+	 */
+	'smwgDetectOutdatedData' => false
 
 ];

@@ -347,7 +347,7 @@
 	"smw-copy-clipboard-title": "Копира садржај у оставу",
 	"smw-jsonview-expand-title": "Шири JSON приказ",
 	"smw-jsonview-collapse-title": "Скупља JSON приказ",
-	"smw-types-title": "Тип: $1",
+	"smw-types-title": "Врста: $1",
 	"smw-schema-error-title": "Провера {{PLURAL:$1|грешке|грешака}}",
 	"smw-schema-error-violation": "[„$1”, „$2”]",
 	"smw-schema-title": "Шема",
