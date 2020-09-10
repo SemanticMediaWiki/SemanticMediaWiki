@@ -1,7 +1,7 @@
 {
     "type": "PROPERTY_GROUP_SCHEMA",
     "groups": {
-        "adminstrative_group": {
+        "administrative_group": {
             "canonical_name": "Adminstrative properties",
             "message_key": "smw-property-group-label-adminstrative-properties",
             "property_keys": [
