@@ -3,7 +3,7 @@
     "groups": {
         "administrative_group": {
             "canonical_name": "Adminstrative properties",
-            "message_key": "smw-property-group-label-adminstrative-properties",
+            "message_key": "smw-property-group-label-administrative-properties",
             "property_keys": [
                 "_MDAT",
                 "_CDAT",
