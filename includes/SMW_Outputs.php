@@ -142,8 +142,8 @@ class SMWOutputs {
 		self::$headItems = array_merge( (array)self::$headItems, $parserOutputHeadItems );
 
 		/// TODO Is the following needed?
-		if ( isset( $parserOutput->mModules ) ) {
-			foreach ( $parserOutput->mModules as $module ) {
+		if ( $parserOutput->getModules() ) {
+			foreach ( $parserOutput->getModules() as $module ) {
 				self::$resourceModules[$module] = $module;
 			}
 		}

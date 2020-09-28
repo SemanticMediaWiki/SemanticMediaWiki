@@ -97,9 +97,6 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getExtensionData' )
 			->will( $this->returnValue( $expected['magicWords'] ) );
 
-		// MW 1.19, 1.20
-		$parserOutput->mSMWMagicWords = $expected['magicWords'];
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -198,12 +195,7 @@ class FactboxMagicWordsTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	protected function getMagicwords( $parserOutput ) {
-
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			return $parserOutput->getExtensionData( 'smwmagicwords' );
-		}
-
-		return $parserOutput->mSMWMagicWords;
+		return $parserOutput->getExtensionData( 'smwmagicwords' );
 	}
 
 }
