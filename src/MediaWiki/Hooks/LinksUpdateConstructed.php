@@ -156,11 +156,7 @@ class LinksUpdateConstructed implements HookListener {
 			return null;
 		}
 
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			return $parserOutput->getExtensionData( 'smwdata' );
-		}
-
-		return $parserOutput->mSMWData;
+		return $parserOutput->getExtensionData( 'smwdata' );
 	}
 
 	private function doAbort() {

@@ -208,12 +208,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function findSemanticataFromOutput( $parserOutput ) {
-
-		if ( method_exists( $parserOutput, 'getExtensionData' ) ) {
-			return $parserOutput->getExtensionData( 'smwdata' );
-		}
-
-		return isset( $parserOutput->mSMWData ) ? $parserOutput->mSMWData : null;
+		return $parserOutput->getExtensionData( 'smwdata' );
 	}
 
 }

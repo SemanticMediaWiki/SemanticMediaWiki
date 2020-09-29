@@ -550,15 +550,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function makeParserOutput( $semanticData ) {
-
 		$parserOutput = new ParserOutput();
-
-		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
-			$parserOutput->setExtensionData( 'smwdata', $semanticData );
-		} else {
-			$parserOutput->mSMWData = $semanticData;
-		}
-
+		$parserOutput->setExtensionData( 'smwdata', $semanticData );
 		return $parserOutput;
 
 	}

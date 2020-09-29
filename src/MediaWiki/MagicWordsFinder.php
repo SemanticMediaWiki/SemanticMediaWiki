@@ -84,12 +84,9 @@ class MagicWordsFinder {
 
 		// Filter empty lines
 		$words = array_values( array_filter( $words ) );
-
-		if ( $this->hasExtensionData() && $words !== [] ) {
+		if ( $words !== [] ) {
 			return $this->parserOutput->setExtensionData( 'smwmagicwords', $words );
 		}
-
-		return $this->parserOutput->mSMWMagicWords = $words;
 	}
 
 	/**
@@ -98,23 +95,6 @@ class MagicWordsFinder {
 	 * @return array
 	 */
 	public function getMagicWords() {
-
-		if ( $this->hasExtensionData() ) {
-			return $this->parserOutput->getExtensionData( 'smwmagicwords' );
-		}
-
-		if ( isset( $this->parserOutput->mSMWMagicWords ) ) {
-			return $this->parserOutput->mSMWMagicWords;
-		}
-
-		return [];
+		return $this->parserOutput->getExtensionData( 'smwmagicwords' );
 	}
-
-	/**
-	 * FIXME Remove when MW 1.21 becomes mandatory
-	 */
-	protected function hasExtensionData() {
-		return method_exists( $this->parserOutput, 'getExtensionData' );
-	}
-
 }

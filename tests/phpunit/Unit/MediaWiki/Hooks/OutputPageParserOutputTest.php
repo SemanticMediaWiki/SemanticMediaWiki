@@ -393,15 +393,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function makeParserOutput( $data ) {
-
 		$parserOutput = new ParserOutput();
-
-		if ( method_exists( $parserOutput, 'setExtensionData' ) ) {
-			$parserOutput->setExtensionData( 'smwdata', $data );
-		} else {
-			$parserOutput->mSMWData = $data;
-		}
-
+		$parserOutput->setExtensionData( 'smwdata', $data );
 		return $parserOutput;
 	}
 
