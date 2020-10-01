@@ -43,7 +43,7 @@ class GroupPermissions {
 		foreach ( $groups as $group => $rights ) {
 
 			// Rights
-			foreach ( $rights as $right ) {
+			foreach ( array_keys( $rights ) as $right ) {
 				$vars['wgAvailableRights'][] = $right;
 			}
 
