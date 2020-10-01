@@ -30,7 +30,7 @@ Documenting the software is an important part of the work to make the software u
 ### Provide translations
 
 * You may help us by providing software translations via [translatewiki.net][twn]. See their [progress-statistics][twn-smw] to find out if there is still work to do for your language.
-* You may also help up provide translations for important pages on the Semantic MediaWiki homepage. See the [info page][smw-trans] for furhter information
+* You may also help up provide translations for important pages on the Semantic MediaWiki homepage. See the [info page][smw-trans] for further information
 
 ### Provide patches
 
