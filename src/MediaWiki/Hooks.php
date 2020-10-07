@@ -43,6 +43,7 @@ use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
+use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
@@ -310,6 +311,7 @@ class Hooks {
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
 			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
 			'SkinTemplateNavigation' => [ $this, 'onSkinTemplateNavigation' ],
+			'SidebarBeforeOutput' => [ $this, 'onSidebarBeforeOutput' ],
 			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
 
 			'ExtensionTypes' => [ $this, 'onExtensionTypes' ],
@@ -406,6 +408,29 @@ class Hooks {
 		);
 
 		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
+	}
+	
+	/**
+	 * Hook: Called by Skin when building the toolbox array and
+	 * returning it for the skin to output.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
+	 */
+	public function onSidebarBeforeOutput( $skin, &$sidebar ) {
+
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$sidebarBeforeOutput = new SidebarBeforeOutput(
+			$applicationFactory->getNamespaceExaminer()
+		);
+
+		$sidebarBeforeOutput->setOptions(
+			[
+				'smwgBrowseFeatures' => $applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
+			]
+		);
+
+		return $sidebarBeforeOutput->process( $skin, $sidebar );
 	}
 
 	/**
