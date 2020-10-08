@@ -67,6 +67,10 @@ class SidebarBeforeOutput implements HookListener {
 		if ( !$this->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) || $wgOut->isArticle()) {
 			return false;
 		}
+		
+		if ( version_compare( MW_VERSION, '1.35', '<' ) ) {
+			return false;
+		}
 
 		return true;
 	}
