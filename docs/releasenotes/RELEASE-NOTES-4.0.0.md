@@ -13,6 +13,7 @@ Not released yet - under development
 ## Enhancements
 
 * Improved support for recent MediaWiki versions
+    * Fixed display of links to Special:Browse when Vector on MediaWiki 1.35+ (thanks @StarHeartHunt)
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
