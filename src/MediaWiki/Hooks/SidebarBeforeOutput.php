@@ -15,7 +15,6 @@ use SMW\OptionsAwareTrait;
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
  *
  * @license GNU GPL v2+
- * @since 3.2
  *
  * @author StarHeartHunt
  */
@@ -29,7 +28,6 @@ class SidebarBeforeOutput implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 * @since 1.9
 	 *
 	 * @param NamespaceExaminer $namespaceExaminer
 	 */
@@ -38,7 +36,6 @@ class SidebarBeforeOutput implements HookListener {
 	}
 
 	/**
-	 * @since 1.9
 	 *
 	 * @param $skin
 	 * @param &$sidebar
