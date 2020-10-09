@@ -57,18 +57,12 @@ class SidebarBeforeOutput implements HookListener {
 	}
 
 	private function canProcess( Title $title, $skin ) {
-	    global $wgOut;
-
 		if ( $title->isSpecialPage() || !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}
 		
 		# || !$skin->data['isarticle'] 
-		if ( !$this->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK ) || $wgOut->isArticle()) {
-			return false;
-		}
-		
-		if ( version_compare( MW_VERSION, '1.35', '<' ) ) {
+		if ( !$this->isFlagSet( 'smwgBrowseFeatures', SMW_BROWSE_TLINK )) {
 			return false;
 		}
 
