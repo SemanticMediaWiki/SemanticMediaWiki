@@ -1,5 +1,6 @@
 # Semantic MediaWiki
 
+
 [![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.svg?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
 [![Code Coverage](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/coverage.png?s=f3501ede0bcc98824aa51501eb3647ecf71218c0)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/quality-score.png?s=d9aac7e68e6554f95b0a89608cbc36985429d819)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
