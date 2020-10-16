@@ -706,9 +706,21 @@ class Hooks {
 		// #4741
 		$wikiPage = $page->getPage();
 
-		$dependencyValidator->setETag(
-			$parserCache->getETag( $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
-		);
+		if ( method_exists( $parserCache, 'makeParserOutputKey' ) ) {
+			// 1.36+
+			$dependencyValidator->setETag(
+				'W/"' .
+				$parserCache->makeParserOutputKey(
+					$wikiPage,
+					$wikiPage->makeParserOptions( 'canonical' )
+				) .
+				"--" . $wikiPage->getTouched() . '"'
+			);
+		} else {
+			$dependencyValidator->setETag(
+				$parserCache->getETag( $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
+			);
+		}
 
 		$dependencyValidator->setCacheTTL(
 			Site::getCacheExpireTime( 'parser' )
