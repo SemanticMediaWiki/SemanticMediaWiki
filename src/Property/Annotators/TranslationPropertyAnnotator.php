@@ -64,11 +64,22 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 			);
 		}
 
-		if ( isset( $this->translation['sourcepagetitle'] ) && $this->translation['sourcepagetitle'] instanceof Title ) {
+		if ( isset( $this->translation['sourcepagetitle'] ) ) {
+			if ( $this->translation['sourcepagetitle'] instanceof Title ) {
+				// Backwards-compatibility.
+				// After 2020-07-20 stores array [ dbkey, namespace ] in sourcepagetitle property
+				$title = $this->translation['sourcepagetitle'];
+			} else {
+				$title = Title::makeTitle(
+					$this->translation['sourcepagetitle']['namespace'],
+					$this->translation['sourcepagetitle']['dbkey']
+				);
+			}
+
 			// Translation.Translation source
 			$containerSemanticData->addPropertyObjectValue(
 				$this->dataItemFactory->newDIProperty( '_TRANS_SOURCE' ),
-				$this->dataItemFactory->newDIWikiPage( $this->translation['sourcepagetitle'] )
+				$this->dataItemFactory->newDIWikiPage( $title )
 			);
 		}
 
