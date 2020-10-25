@@ -6,10 +6,14 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 
 cd $MW_INSTALL_PATH
 
-# Namespace related settings
+
+echo '$wgDeprecationReleaseLimit = "1.35.0";' >> LocalSettings.php
+
 echo 'define("SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB", true);' >> LocalSettings.php
 echo 'define("NS_TRAVIS", 998);' >> LocalSettings.php
 echo 'define("NS_TRAVIS_TALK", 999);' >> LocalSettings.php
+
+# Namespace related settings
 echo '$wgExtraNamespaces[NS_TRAVIS] = "Travis";' >> LocalSettings.php
 echo '$wgExtraNamespaces[NS_TRAVIS_TALK] = "Travis_talk";' >> LocalSettings.php
 echo '$wgNamespacesWithSubpages[NS_TRAVIS] = true;' >> LocalSettings.php

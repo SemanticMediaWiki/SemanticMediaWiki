@@ -4,7 +4,8 @@ Not released yet - under development
 
 ## Breaking changes
 
-* Dropped support for MediaWiki 1.31
+* Dropped support for MediaWiki older than 1.35
+* Dropped support for PHP older than 7.4
 
 ## New features
 
