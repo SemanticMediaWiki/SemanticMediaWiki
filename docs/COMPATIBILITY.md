@@ -23,7 +23,7 @@ Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki,
 	<tr>
 		<th>4.0.x</th>
 		<td>7.1.0 - 7.4.x</td>
-		<td>1.32.0+</td>
+		<td>1.36.0+</td>
 		<td>-</td>
 		<td>In development</td>
 	</tr>
