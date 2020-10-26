@@ -208,6 +208,54 @@ class SemanticData {
 		];
 	}
 
+	public function getSerialization() {
+		$out = [];
+		$out['mSubject'] = $this->mSubject->getSerialization();
+		$out['mPropVals'] = [];
+		foreach ( $this->mPropVals as $propertyValue ) {
+			$item = [];
+			$item['type'] = $propertyValue->getDIType();
+			$item['serialization'] = $propertyValue->getSerialization();
+			$out['mPropVals'][] = $item;
+		}
+		$out['mProperties'] = [];
+		foreach ( $this->getProperties() as $property ) {
+			$out['mProperties'][] = $property->getSerialization();
+		}
+		$out['mHasVisibleProps'] = $this->mHasVisibleProps;
+		$out['mHasVisibleSpecs'] = $this->mHasVisibleSpecs;
+		if ( isset( $this->options ) && ( $this->options instanceof Options ) ) {
+			$out['options'] = $this->options->toArray();
+		} else {
+			$out['options'] = [];
+		}
+		$out['extensionData'] = $this->extensionData;
+		$out['sequenceMap'] = $this->getSequenceMap();
+		$out['countMap'] = $this->getCountMap();
+		return $out;
+	}
+
+	public static function newFromArray( $in ) {
+		$subject = $in['mSubject']->doUnserialize();
+		$obj = new self( $subject );
+		$obj->mPropVals = [];
+		foreach ( $in['mPropVals'] as $propertyValue ) {
+			$obj->mPropVals[] =
+				SMWDataItem::newFromSerialization( $propertyValue['type'],
+					$propertyValue['serialization'] );
+		}
+		$obj->mProperties = [];
+		foreach ( $in['mProperties'] as $property ) {
+			$obj->mProperties[] = $property->doUnserialize( $property );
+		}
+		$obj->mHasVisibleSpecs = $in['mHasVisibleProperties'];
+		$obj->mHasVisibleSpecs = $in['mHasVisibleSpecs'];
+		$obj->options = new Options( $in['options'] );
+		$obj->extensionData = $in['extensionData'];
+		$obj->sequenceMap = $in['sequenceMap'];
+		$obj->countMap = $in['countMap'];
+	}
+
 	/**
 	 * @since 3.2
 	 *
