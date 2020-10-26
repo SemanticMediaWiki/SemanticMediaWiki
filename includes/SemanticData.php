@@ -235,14 +235,15 @@ class SemanticData {
 		return $out;
 	}
 
-	public static function newFromArray( $in ) {
+	public static function newFromArray( $in ) : SemanticData {
 		$subject = $in['mSubject']->doUnserialize();
 		$obj = new self( $subject );
 		$obj->mPropVals = [];
 		foreach ( $in['mPropVals'] as $propertyValue ) {
-			$obj->mPropVals[] =
-				SMWDataItem::newFromSerialization( $propertyValue['type'],
-					$propertyValue['serialization'] );
+			$obj->mPropVals[] = SMWDataItem::newFromSerialization(
+				$propertyValue['type'],
+				$propertyValue['serialization']
+			);
 		}
 		$obj->mProperties = [];
 		foreach ( $in['mProperties'] as $property ) {
@@ -254,6 +255,7 @@ class SemanticData {
 		$obj->extensionData = $in['extensionData'];
 		$obj->sequenceMap = $in['sequenceMap'];
 		$obj->countMap = $in['countMap'];
+		return $obj;
 	}
 
 	/**

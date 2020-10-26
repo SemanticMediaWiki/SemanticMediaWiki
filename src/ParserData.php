@@ -310,6 +310,9 @@ class ParserData {
 		}
 
 		$semanticData = $parserOutput->getExtensionData( self::DATA_ID );
+		if ( is_array( $semanticData ) ) {
+			$semanticData = SemanticData::newFromArray( $semanticData );
+		}
 
 		// Only import data that is known to be different
 		if ( $semanticData !== null &&
@@ -338,7 +341,8 @@ class ParserData {
 		}
 
 		$this->markParserOutput();
-		$this->parserOutput->setExtensionData( self::DATA_ID, $this->semanticData );
+		$this->parserOutput->setExtensionData( self::DATA_ID,
+			$this->semanticData->getSerialization() );
 	}
 
 	/**
@@ -473,10 +477,11 @@ class ParserData {
 	 * if not available create an empty container
 	 */
 	private function initSemanticData() {
-
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
-
-		if ( !( $this->semanticData instanceof SemanticData ) ) {
+		if ( is_array( $this->semanticData ) ) {
+			$this->semanticData = SemanticData::newFromArray( $this->semanticData );
+		}
+		elseif ( !( $this->semanticData instanceof SemanticData ) ) {
 			$this->setEmptySemanticData();
 		}
 	}
