@@ -643,7 +643,7 @@
 	"smw-admin-maintenance-no-description": "Sem descrição.",
 	"smw-admin-maintenance-script-section-title": "Lista de scripts de manutenção disponíveis",
 	"smw-admin-maintenance-script-section-intro": "Os scripts de manutenção a seguir requerem um administrador e acesso à linha de comando para poder executar scripts listados.",
-	"smw-admin-maintenance-script-description-dumprdf": "Exportação RDF de triplos existentes.",
+	"smw-admin-maintenance-script-description-dumprdf": "Exportação RDF de triplas existentes.",
 	"smw-admin-maintenance-script-description-rebuildconceptcache": "Este script é usado para gerenciar as ''caches'' de conceitos do Semantic MediaWiki, sendo ele que pode criar, remover e atualizar ''caches'' selecionadas.",
 	"smw-admin-maintenance-script-description-rebuilddata": "Recria todos os dados semânticos na base de dados, percorrendo todas as páginas que possam ter dados semânticos.",
 	"smw-admin-maintenance-script-description-rebuildelasticindex": "Reconstrói o índice Elasticsearch (só nas instalações que usam o <code>ElasticStore</code>), percorrendo todas as entidades que têm dados semânticos.",
