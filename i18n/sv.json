@@ -325,7 +325,7 @@
 	"smw-admin-permissionswarn": "Om operationen misslyckas och visar SQL-fel så har din användare för databasen (kolla inställningarna i filen \"LocalSettings.php\") förmodligen inte tillräckliga rättigheter.\nDet finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i \"LocalSettings.php\", eller använd underhålls-scriptet <code>setupStore.php</code>, vilken kan använda rättigheterna för en administratör.",
 	"smw-admin-dbbutton": "Initialisera eller uppgradera tabeller",
 	"smw-admin-announce": "Meddela att din wiki finns",
-	"smw-admin-announce-text": "Om din wiki är offentligt kan du registrera den på <a href=\"https://wikiapiary.com\">WikiApiary</a>, wikin som listar upp wikis.",
+	"smw-admin-announce-text": "Om din wiki är offentligt kan du registrera den på <a href=\"https://wikiapiary.com\">WikiApiary</a>, wikin som listar upp wikier.",
 	"smw-admin-deprecation-notice-config-notice-option": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> kommer ta bort eller ersätta följande {{PLURAL:$2|val}}:",
 	"smw-admin-deprecation-notice-config-notice-option-list": "<code>$1</code> rekommenderas inte och kommer tas bort i $2",
 	"smw-admin-deprecation-notice-config-replacement-other": "<code>[https://www.semantic-mediawiki.org/wiki/Help:$1 $1]</code> ersattes av <code>$2</code>",
