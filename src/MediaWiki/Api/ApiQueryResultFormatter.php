@@ -34,12 +34,6 @@ class ApiQueryResultFormatter {
 	protected $isRawMode = false;
 
 	/**
-	 *
-	 * @var SMWQueryResult
-	 */
-	protected $queryResult = null;
-
-	/**
 	 * @since 1.9
 	 *
 	 * @param SMWQueryResult $queryResult
@@ -92,11 +86,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	public function getResult() {
-		$queryCountValue = $this->queryResult->getCountValue();
-		if ( $queryCountValue !== null ) {
-			return [ $queryCountValue ];
-		}
-
 		return $this->result;
 	}
 
