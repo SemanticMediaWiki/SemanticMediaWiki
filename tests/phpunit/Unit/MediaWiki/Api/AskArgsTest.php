@@ -267,25 +267,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 					]
 				]
 			],
-
-			// #6 Query producing a count result
-			[
-				[
-					'conditions' => 'Modification date::+',
-					'printouts'  => null,
-					'parameters' => 'format=count'
-				],
-				[
-					[
-						'label'=> '',
-						'typeid' => '_wpg',
-						'mode' => 2,
-						'format' => false,
-						'key' => '',
-						'redi' => ''
-					]
-				]
-			],
 		];
 	}
 }

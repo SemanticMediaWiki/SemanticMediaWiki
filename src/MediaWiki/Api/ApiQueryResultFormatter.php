@@ -92,11 +92,6 @@ class ApiQueryResultFormatter {
 	 * @return array
 	 */
 	public function getResult() {
-		$queryCountValue = $this->queryResult->getCountValue();
-		if ( $queryCountValue !== null ) {
-			$this->result['results'] = $queryCountValue;
-		}
-
 		return $this->result;
 	}
 
