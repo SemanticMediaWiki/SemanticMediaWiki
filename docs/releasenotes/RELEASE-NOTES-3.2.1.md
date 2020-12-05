@@ -6,8 +6,8 @@ Released on November 21, 2020.
 
 * [#4833](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4833): Fixes the "Refresh" option in the page menu from no longer being functional
 * [#4831](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4831): Fixes the "Browse properties" link in the tools menu from no longer being shown
-* [#4670](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4870): Makes `ask` and `askargs` API return a value for `format=count`
 * [#4851](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4851): Fixes user rights registration
+* [#4858](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4858): Makes `ask` and `askargs` API return a value for `format=count`
 * Internal code improvements
 * Localisation updates from the translatewiki.net community of translators
 
