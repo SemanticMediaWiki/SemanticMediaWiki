@@ -4,7 +4,7 @@ Not released yet - under development
 
 ## Breaking changes
 
-* Dropped support for MediaWiki 1.31
+* Dropped support for MediaWiki 1.31.x to 1.34.x
 
 ## New features
 
@@ -12,10 +12,4 @@ Not released yet - under development
 
 ## Enhancements
 
-* Improved support for recent MediaWiki versions
-    * Fixed display of links to Special:Browse when Vector on MediaWiki 1.35+ (thanks @StarHeartHunt)
-    * Fixed PHP notice related to permission registration (thanks @Nikerabbit)
-
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
-
-
