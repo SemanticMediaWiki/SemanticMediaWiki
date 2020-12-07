@@ -992,7 +992,7 @@
 	"apihelp-browsebysubject-summary": "Module d’API pour récupérer les informations concernant un sujet.",
 	"apihelp-smwtask-summary": "Module d’API pour exécuter les tâches relatives à Semantic MediaWiki (pour un usage interne uniquement, pas pour un usage public).",
 	"apihelp-smwbrowse-summary": "Module API pour supporter l'analyse des activités pour différents types d'entités de Semantic MediaWiki.",
-	"apihelp-ask-parameter-api-version": "Format de sortie :\n;2:Format rétro-compatible utilisant {} pour la liste des résultats.\n;3:Format expérimental utilisant [] pour la liste des résultats.",
+	"apihelp-ask-parameter-api-version": "Format de sortie :\n;2:Format rétro-compatible utilisant {} pour la liste des résultats.\n;3:Format expérimental utilisant [] pour la liste des résultats.",
 	"apihelp-smwtask-param-task": "Définit le type de tâche",
 	"apihelp-smwtask-param-params": "Paramètres encodés en JSON qui correspondent à l’exigence de type de tâche sélectionnée",
 	"smw-apihelp-smwtask-example-update": "Exemple d’exécution d’une tâche de mise à jour pour un sujet particulier :",

@@ -40,7 +40,7 @@
 	"smw-extensionload-error-why-title": "Bu sayfayı neden görüyorum?",
 	"smw-extensionload-error-why-explain": "Uzantı <code>enableSemantics</code> kullanılarak <b>yüklenmedi</b> ve bunun yerine doğrudan <code>wfLoadExtension('SemanticMediaWiki')</code> kullanımı gibi başka yollarla etkinleştirildi.",
 	"smw-extensionload-error-how-title": "Bu hatayı nasıl düzeltirim?",
-	"smw-extensionload-error-how-explain": "Uzantıyı etkinleştirmek ve ad alanı bildirimleri ve bekleyen yapılandırmalarla ilgili sorunları önlemek için, uzantıyı <code>ExtensionRegistry</code> aracılığıyla yüklemeden önce gerekli değişkenlerin ayarlanmasını sağlayacak <code>enableSemantics</code> kullanılması gerekir.\n\nDaha fazla yardım için lütfen [https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics] yardım sayfasına bakın.",
+	"smw-extensionload-error-how-explain": "Uzantıyı etkinleştirmek ve ad alanı bildirimleri ve bekleyen yapılandırmalarla ilgili sorunları önlemek için, uzantıyı <code>ExtensionRegistry</code> aracılığıyla yüklemeden önce gerekli değişkenlerin ayarlanmasını sağlayacak <code>enableSemantics</code> kullanılması gerekir.\n\nDaha fazla yardım için lütfen [https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics/tr enableSemantics] yardım sayfasına bakın.",
 	"smw-upgrade-maintenance-title": "Bakım » Semantic MediaWiki",
 	"smw-upgrade-maintenance-why-title": "Bu sayfayı neden görüyorum?",
 	"smw-upgrade-maintenance-note": "Sistem şu anda veri deposu ile birlikte [https://www.semantic-mediawiki.org/ Semantic MediaWiki] uzantısının [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/tr yükseltmesi] geçiriyor ve sizden sabrınızı istemek ve vikinin tekrar erişilebilir hale getirilmesinden önce bakımın devam etmesini sağlamak istiyoruz.",
