@@ -2,8 +2,6 @@
 
 Released on September 7, 2020.
 
-This release comes without a detailed list of changes. We will bring back the list in the next release.
-
 ## Compatibility
 
 This release supports MediaWiki 1.31.x up to 1.35.x and PHP 7.1.x up to PHP 7.4.x. Compared to Semantic MediaWiki 3.1.x,
