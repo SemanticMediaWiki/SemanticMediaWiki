@@ -383,7 +383,7 @@
 	"smw_result_next": "Próximo",
 	"smw_result_results": "Resultados",
 	"smw_result_noresults": "Sem resultados.",
-	"smwadmin": "Painel de controle (Semantic MediaWiki)",
+	"smwadmin": "Painel de controle do Semantic MediaWiki",
 	"smw-admin-statistics-job-title": "Estatísticas da fila de execução",
 	"smw-admin-statistics-job-docu": "As estatísticas de tarefas apresentam informação sobre tarefas agendadas do Semantic MediaWiki que ainda não foram executadas. O número de tarefas pode ter ligeiras imprecisões ou conter tentativas falhadas; consulte o [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue manual] para mais informações.",
 	"smw-admin-statistics-querycache-title": "Cache de consultas",

@@ -401,7 +401,7 @@
 	"smw_result_next": "Suivant",
 	"smw_result_results": "Résultats",
 	"smw_result_noresults": "Désolé, aucun résultat.",
-	"smwadmin": "Tableau de bord (MediaWiki Sémantique)",
+	"smwadmin": "Tableau de bord de MediaWiki Sémantique",
 	"smw-admin-statistics-job-title": "Statistiques des travaux",
 	"smw-admin-statistics-job-docu": "Les statistiques des travaux affichent des informations sur les tâches de MediaWiki Sémantique programmées et qui n’ont pas encore été exécutées. Le nombre de tâches peut être un peu inexact ou contenir des tentatives en échec ; veuillez consulter le [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue manuel] pour plus d’information.",
 	"smw-admin-statistics-querycache-title": "Cache des requêtes",

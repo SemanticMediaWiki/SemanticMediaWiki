@@ -303,7 +303,7 @@
 	"smw_result_next": "Następne",
 	"smw_result_results": "Wyniki",
 	"smw_result_noresults": "Niestety, brak wyników.",
-	"smwadmin": "Funkcje administracyjne i konserwacyjne",
+	"smwadmin": "Panel Semantycznej MediaWiki",
 	"smw-admin-statistics-job-title": "Statystyki zadań",
 	"smw-admin-statistics-job-docu": "Statystyka zadań wyświetla informacje o zaplanowanych zadaniach Semantic MediaWiki, które nie zostały jeszcze wykonane. Liczba zadań może być trochę niedokładna lub zawierać nieudane próby. Więcej informacji można znaleźć na stronie [Manual:Job_queue/pl podręcznika].",
 	"smw-admin-statistics-querycache-title": "Pamięć podręczna zapytań",

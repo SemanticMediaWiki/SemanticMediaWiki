@@ -258,7 +258,7 @@
 	"smw_result_next": "Successivo",
 	"smw_result_results": "Risultati",
 	"smw_result_noresults": "Nessun risultato.",
-	"smwadmin": "Cruscotto (Semantic MediaWiki)",
+	"smwadmin": "Cruscotto Semantic MediaWiki",
 	"smw-admin-permission-missing": "L'accesso a questa pagina è stato bloccato a causa di autorizzazioni mancanti, consulta la pagina di aiuto sulle [https://www.semantic-mediawiki.org/wiki/Help:Permissions autorizzazioni] per i dettagli sulle impostazioni necessarie.",
 	"smw-admin-setupsuccess": "Il motore di storage è stato installato.",
 	"smw_smwadmin_return": "Torna a $1",
