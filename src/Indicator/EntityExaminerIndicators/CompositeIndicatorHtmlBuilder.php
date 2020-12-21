@@ -119,7 +119,7 @@ class CompositeIndicatorHtmlBuilder {
 				$indicator = $indicatorProvider->getIndicators();
 				$indicator['tab_id'] = "itab" . ( $indicator['id'] ?? 'unkown' );
 
-				$indicator['subject'] = $options['subject'];
+				$indicator['subject'] = htmlspecialchars( $options['subject'], ENT_QUOTES );
 				$indicator['dir'] = $options['dir'];
 				$indicator['checked'] = $content === '' ? 'checked' : '';
 				$indicator['severity_class'] = $severityClass;
@@ -176,7 +176,7 @@ class CompositeIndicatorHtmlBuilder {
 				'top' => htmlspecialchars( $top, ENT_QUOTES ),
 				'bottom' => htmlspecialchars( $bottom, ENT_QUOTES ),
 				'has_deferred' => $options['has_deferred'] ? 'yes' : 'no',
-				'subject' => $options['subject'],
+				'subject' => htmlspecialchars( $options['subject'], ENT_QUOTES ),
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang'],
 				'count' => $options['count'],
@@ -199,7 +199,7 @@ class CompositeIndicatorHtmlBuilder {
 			'placeholder_template',
 			[
 				'title' => $this->msg( [ $options['placeholder_title'], $options['count'] ], Message::PARSE, $this->languageCode ),
-				'subject' => $options['subject'],
+				'subject' => htmlspecialchars( $options['subject'], ENT_QUOTES ),
 				'dir' => $options['dir'],
 				'uselang' => $options['uselang']
 			]
