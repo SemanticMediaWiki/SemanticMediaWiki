@@ -236,7 +236,7 @@
 	"smw_result_next": "Seuraava",
 	"smw_result_results": "Tulokset",
 	"smw_result_noresults": "Ei hakutuloksia.",
-	"smwadmin": "Kojelauta (Semantic MediaWiki)",
+	"smwadmin": "Semantic MediaWikin kojelauta",
 	"smw-admin-statistics-job-title": "Työtilastot",
 	"smw-admin-permission-missing": "Pääsy tälle sivulle on estetty puuttuvien käyttöoikeuksien vuoksi, kysy neuvoa [https://www.semantic-mediawiki.org/wiki/Help:Permissions oikeuksien] apusivulta saadaksesi lisätietoja tarvittavista asetuksista.",
 	"smw_smwadmin_return": "Palaa kohteeseen $1",
