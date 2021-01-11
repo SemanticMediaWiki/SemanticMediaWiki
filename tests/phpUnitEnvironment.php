@@ -46,7 +46,7 @@ class PHPUnitEnvironment {
 	 */
 	public function getXdebugInfo() {
 
-		if ( extension_loaded( 'xdebug' ) && xdebug_is_enabled() ) {
+		if ( extension_loaded( 'xdebug' ) && (function_exists('xdebug_is_enabled') || function_exists('xdebug_info') ) {
 			return phpversion( 'xdebug' );
 		}
 
