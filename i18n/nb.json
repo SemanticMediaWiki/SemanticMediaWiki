@@ -364,7 +364,7 @@
 	"smw_result_next": "Neste",
 	"smw_result_results": "Resultater",
 	"smw_result_noresults": "Beklager, ingen resultater funnet",
-	"smwadmin": "Kontrollpanel (Semantic MediaWiki)",
+	"smwadmin": "Kontrollpanel for Semantic MediaWiki",
 	"smw-admin-statistics-job-title": "Jobbstatistikk",
 	"smw-admin-statistics-job-docu": "Jobb-statistikken viser informasjon om planlagte Semantic MediaWiki-jobber som enda ikke har blitt kjørt. Antall jobber kan være unøyaktig angitt eller inneholde mislykkede forsøk, se [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue manual] for mer informasjon.",
 	"smw-admin-statistics-querycache-title": "Spørringsmellomlager",
