@@ -1,6 +1,8 @@
 {
     "@metadata": {
-        "authors": []
+        "authors": [
+            "Ostrzyciel"
+        ]
     },
     "fallback_language": "en",
     "namespace": {
@@ -25,12 +27,12 @@
             "_ema": "Email",
             "_uri": "URL",
             "_anu": "URI adnotacji",
-            "_tel": "Telephone number",
-            "_rec": "Record",
-            "_qty": "Quantity",
-            "_mlt_rec": "Monolingual text",
-            "_eid": "External identifier",
-            "_ref_rec": "Reference"
+            "_tel": "Numer telefonu",
+            "_rec": "Rekord",
+            "_qty": "Wielkość",
+            "_mlt_rec": "Tekst z tagiem języka",
+            "_eid": "Identyfikator zewnętrzny",
+            "_ref_rec": "Przypis"
         },
         "aliases": {
             "URI": "_uri",
@@ -87,87 +89,99 @@
         "months": [
             [
                 "styczeń",
-                "sty"
+                "sty",
+                "stycznia"
             ],
             [
                 "luty",
-                "lut"
+                "lut",
+                "lutego"
             ],
             [
-                "marsz",
-                "mar"
+                "marzec",
+                "mar",
+                "marca"
             ],
             [
                 "kwiecień",
-                "kwi"
+                "kwi",
+                "kwietnia"
             ],
             [
                 "maj",
-                "maj"
+                "maj",
+                "maja"
             ],
             [
                 "czerwiec",
-                "cze"
+                "cze",
+                "czerwca"
             ],
             [
                 "lipiec",
-                "lip"
+                "lip",
+                "lipca"
             ],
             [
                 "sierpień",
-                "sie"
+                "sie",
+                "sierpnia"
             ],
             [
                 "wrzesień",
-                "wrz"
+                "wrz",
+                "września"
             ],
             [
                 "październik",
-                "paź"
+                "paź",
+                "października"
             ],
             [
                 "listopad",
-                "lis"
+                "lis",
+                "listopada"
             ],
             [
                 "grudzień",
-                "gru"
+                "gru",
+                "grudnia"
             ]
         ],
         "days": [
             [
-                "Monday",
-                "Mon"
+                "poniedziałek",
+                "pon."
             ],
             [
-                "Tuesday",
-                "Tue"
+                "wtorek",
+                "wt."
             ],
             [
-                "Wednesday",
-                "Wed"
+                "środa",
+                "śr."
             ],
             [
-                "Thursday",
-                "Thu"
+                "czwartek",
+                "czw."
             ],
             [
-                "Friday",
-                "Fri"
+                "piątek",
+                "pt."
             ],
             [
-                "Saturday",
-                "Sat"
+                "sobota",
+                "sob."
             ],
             [
-                "Sunday",
-                "Sun"
+                "niedziela",
+                "niedz."
             ]
         ],
         "precision": {
             "SMW_PREC_Y": "Y",
             "SMW_PREC_YM": "F Y",
-            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMD": "j F Y",
             "SMW_PREC_YMDT": "H:i:s, j F Y"
         },
         "format": [
@@ -179,9 +193,9 @@
                 "SMW_YM"
             ],
             [
-                "SMW_MDY",
                 "SMW_DMY",
                 "SMW_YMD",
+                "SMW_MDY",
                 "SMW_YDM"
             ]
         ]
