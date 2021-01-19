@@ -101,12 +101,12 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			'Bar&nbsp;<span title="Foo.Bar">⠉</span>',
+			'Bar&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>',
 			$instance->getShortWikiText()
 		);
 
 		$this->assertEquals(
-			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>' ),
 			$instance->getShortWikiText( 'linker' )
 		);
 	}
@@ -118,12 +118,12 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>' ),
 			$instance->getLongWikiText()
 		);
 
 		$this->assertEquals(
-			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, '[[:Property:Bar|Bar]]&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>' ),
 			$instance->getLongWikiText( 'linker' )
 		);
 	}
@@ -135,7 +135,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			'Bar&nbsp;<span title="Foo.Bar">⠉</span>',
+			'Bar&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>',
 			$instance->getShortHTMLText()
 		);
 	}
@@ -147,7 +147,7 @@ class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar">⠉</span>' ),
+			$this->testEnvironment->replaceNamespaceWithLocalizedText( SMW_NS_PROPERTY, 'Property:Bar&nbsp;<span title="Foo.Bar" class="smw-chain-marker">⠉</span>' ),
 			$instance->getLongHTMLText()
 		);
 	}
