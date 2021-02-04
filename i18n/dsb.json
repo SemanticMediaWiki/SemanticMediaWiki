@@ -2,9 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Derbeth",
+			"Matěj Suchánek",
 			"Michawiki",
-			"아라",
-			"Matěj Suchánek"
+			"아라"
 		]
 	},
 	"smw-desc": "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi\n([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
@@ -182,7 +182,6 @@
 	"searchbyproperty": "Pó kakosći pytaś",
 	"smw_sbv_docu": "Wšykne boki pytaś, kótarež maju wěstu kakosć a gódnotu.",
 	"smw_sbv_novalue": "Zapódaj płaśiwu gódnotu za kakosć abo woglědaj se wšykne gódnoty za kakosć \"$1\".",
-	"smw_sbv_displayresult": "Lisćina wšych bokow, kótarež maju kakosć \"$1\" z gódnotu \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Lisćina wšych bokow, kótarež maju kakosć \"$1\" z gódnotu \"$2\".\nDokulaž jo jano mało wuslědkow było, zwobraznjuju se pódobne gódnoty.",
 	"smw_sbv_property": "Kakosć:",
 	"smw_sbv_value": "Gódnota:",

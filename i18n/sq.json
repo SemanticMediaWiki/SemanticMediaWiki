@@ -1,13 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"Arianit",
+			"Edlira",
 			"GretaDoci",
-			"Liridon",
-			"Edlira"
+			"Liridon"
 		]
 	},
 	"smw_finallistconjunct": "dhe",
-	"smw_factbox_head": "Fakte rreth \"$1\"",
 	"smw_isspecprop": "Ky tipar është një tipar i veçantë në këtë wiki.",
 	"smw_concept_description": "Përshkrim i konceptit \"$1\"",
 	"smw_no_concept_namespace": "Konceptet mund të përcaktohen vetëm në faqet në namespace Concept:",
@@ -18,6 +18,6 @@
 	"smw_printername_csv": "Eksport CSV",
 	"smw_printername_dsv": "Eksport DSV",
 	"browse": "Shfletoni wiki",
-	"smw_smwadmin_mediazilla": "Bugs mund të raportohet për të <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/çështjet\">GitHub</a>.",
+	"smw-admin-bugsreport": "Bugs mund të raportohen në<a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-livepreview-loading": "Duke punuar…"
 }

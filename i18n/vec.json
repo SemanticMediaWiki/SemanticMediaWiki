@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Candalua"
+			"Candalua",
+			"Fierodelveneto"
 		]
 	},
-	"browse": "Nàvega la wiki",
-	"smw-livepreview-loading": "Caricamento in corso…"
+	"browse": "Nàvega ła wiki",
+	"smw-ui-tooltip-title-legend": "Lejenda",
+	"smw-livepreview-loading": "Caricamento in corso…",
+	"smw-legend": "Lejenda"
 }

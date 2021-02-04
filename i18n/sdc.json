@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Jun Misugi"
+		]
+	},
+	"browse": "Nabiggà vichi",
 	"smw-livepreview-loading": "Carrigghendi…"
 }

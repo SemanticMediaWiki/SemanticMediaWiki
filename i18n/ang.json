@@ -1,8 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gott wisst"
+			"Gott wisst",
+			"Heahwrita",
+			"Hogweard"
 		]
 	},
-	"browse": "Sēcan geond wiki"
+	"browse": "Sec geond wiki",
+	"smw-loading": "Hladende...",
+	"smw-fetching": "Feccend...",
+	"smw-preparing": "Dæftend...",
+	"smw-expand": "Brǣde",
+	"smw-copy": "Biwrītan",
+	"smw-jsonview-expand-title": "Aþenaþ þe JSON ansyn",
+	"smw-jsonview-collapse-title": "Tofealleþ þa JSON ansyn"
 }

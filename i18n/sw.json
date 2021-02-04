@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kwisha"
+			"Kwisha",
+			"Rance"
 		]
 	},
 	"smw-ui-tooltip-title-legend": "Simulizi",
-	"smw-livepreview-loading": "Inapakizwa..."
+	"smw-livepreview-loading": "Inapakizwa...",
+	"smw-filter": "Chuja",
+	"smw-property-tab-usage": "Matumizi"
 }

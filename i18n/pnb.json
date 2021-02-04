@@ -1,9 +1,26 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abbas dhothar",
 			"Khalid Mahmood"
 		]
 	},
+	"smw-special-wantedproperties-filter-none": "کوئی نئیں",
+	"smw-ask-query-search-info": "The query <code><nowiki>$1</nowiki></code> was answered by the {{PLURAL:$3|1=<code>$2</code> (from cache)|<code>$2</code> (from cache)|<code>$2</code>}} in $4 {{PLURAL:$4|سکنٹ}}.",
 	"browse": "وکی پھرولو",
-	"smw-livepreview-loading": "لوڈنگ"
+	"smw-browse-hide-group": "گروہ لُکاؤ",
+	"smw_pp_from": "صفحے توں:",
+	"smw-admin-deprecation-notice-section-legend": "کُنجی",
+	"smw-admin-statistics": "آنکڑے",
+	"smw_adminlinks_datastructure": "ڈیٹا ساخت",
+	"smw-ui-tooltip-title-legend": "کُنجی",
+	"smw-livepreview-loading": "لوڈنگ",
+	"smw-search-profile-extended-section-sort": "چُنن ترتیب",
+	"smw-search-hide": "لُکاؤ",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|سکنٹ}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|سکنٹ}}",
+	"smw-no-data-available": "کوئی ڈیٹا دستیاب نئیں",
+	"smw-format-datatable-emptytable": "جدول وچ کوئی ڈیٹا دستیاب نئیں",
+	"smw-property-tab-specification": "... ہور",
+	"smw-legend": "کُنجی"
 }

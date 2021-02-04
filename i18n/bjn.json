@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Ezagren"
+		]
+	},
+	"browse": "Jalajahi wiki",
 	"smw-livepreview-loading": "Ma'unggah..."
 }

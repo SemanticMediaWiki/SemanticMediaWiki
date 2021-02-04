@@ -1,5 +1,7 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": []
+	},
 	"smw-createproperty-isproperty": "In jak viƶagī az nav'i $1 ast.",
 	"smw-livepreview-loading": "Dar holi bor şudan…"
 }

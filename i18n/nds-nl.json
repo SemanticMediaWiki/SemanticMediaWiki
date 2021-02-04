@@ -4,8 +4,11 @@
 			"Servien"
 		]
 	},
+	"smw_purge": "Vernyen",
 	"smw_ask_descorder": "Aoflopend",
-	"browse": "Wiki bekieken",
-	"smw_browselink": "Eigenschappen bekieken",
-	"smw-livepreview-loading": "An t laojen…"
+	"browse": "Wiki bekyken",
+	"smw_browselink": "Eigenskappen bekyken",
+	"smw-ui-tooltip-title-reference": "Referensy",
+	"smw-livepreview-loading": "An t laojen…",
+	"smw-expand": "Uutklappen"
 }
