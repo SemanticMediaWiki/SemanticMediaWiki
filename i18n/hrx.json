@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Iohanen"
+		]
+	},
+	"browse": "Semantisches Browse",
 	"smw-livepreview-loading": "Am loode …"
 }

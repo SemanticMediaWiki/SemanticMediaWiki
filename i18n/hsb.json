@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"J budissin",
 			"Michawiki",
 			"아라"
 		]
@@ -183,7 +184,6 @@
 	"searchbyproperty": "Po atribuće pytać",
 	"smw_sbv_docu": "Wšě strrony pytać, kotrež maja wěstu kajkosć a hódnotu.",
 	"smw_sbv_novalue": "Zapodaj płaćiwu hódnotu za kajkosć abo wobhladaj sej wšě hódnoty kajkosće za \"$1\".",
-	"smw_sbv_displayresult": "Lisćina wšěch stronow, kotrež maja kajkosć \"$1\" z hódnotu \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Lisćina wšěch stronow, kotrež maja kajkosć \"$1\" z hódnotu \"$2\".\nDokelž je jenož mało wuslědkow, so tež podobne hódnoty nalistuja.",
 	"smw_sbv_property": "Kajkosć:",
 	"smw_sbv_value": "Hódnota:",
@@ -232,6 +232,7 @@
 	"smw-admin-smwhomepage": "Kompletna wužiwarska dokumentacija za Semantic MediaWiki je na <b><a href=\"http://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Zmylki móžeš w systemje <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a> zdźělić.",
 	"smw-admin-questions": "Jeli maš dalše prašenja abo namjety, wobdźěl so na diskusiji na <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">wužiwarskim forumje Semantic MediaWiki</a>.",
+	"smw-admin-supplementary-elastic-replication-pages": "Strony",
 	"smw_adminlinks_datastructure": "Struktura datow",
 	"smw_adminlinks_displayingdata": "Zwobraznjenje datow",
 	"smw_adminlinks_inlinequerieshelp": "Pomoc za rjadowe wotprašowanja",

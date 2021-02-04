@@ -1,12 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"ElangoRamanujam",
 			"Karthi.dr",
 			"Logicwiki",
+			"Nisha",
 			"Shanmugamp7",
 			"TRYPPN"
 		]
 	},
+	"smw-upgrade-error-title": "பிழை",
+	"smw-upgrade-maintenance-title": "மேம்படுத்தல் மற்றும் பராமரிப்பு",
 	"smw_finallistconjunct": ", மற்றும்",
 	"smw_printername_count": "எண்ணிக்கை முடிவுகள்",
 	"smw_printername_csv": "CSV ஏற்றுமதி",
@@ -42,10 +46,13 @@
 	"smw_result_next": "அடுத்து",
 	"smw_result_results": "முடிவுகள்",
 	"smw_result_noresults": "முடிவுகள் ஏதுமில்லை.",
+	"smw-admin-statistics-job-title": "பணிப் புள்ளிவிவரங்கள்",
 	"smw_smwadmin_datarefreshbutton": "தரவுகளை புதுப்பிக்க ஆரம்பிக்கவும்",
 	"smw_smwadmin_datarefreshstop": "இந்த புதுப்பித்தலை நிறுத்தவும்",
 	"smw_smwadmin_datarefreshstopconfirm": "ஆம், நான் உறுதியாக உள்ளேன்.",
-	"smw_smwadmin_support": "ஆதரவு பெறுதல்",
+	"smw-admin-support": "ஆதரவு பெறுதல்",
+	"smw-admin-supplementary-duplookup-title": "நகல் உள்ளீடுகளை தேடு/பார்",
+	"smw-admin-supplementary-duplookup-docu": "பட்டியலிடப்பட்ட தேர்ந்தெடுக்கப்பட்ட அட்டவணையில் இருந்து இந்த பக்கம் உள்ளீடுகளை, கீழ்க்கண்டவாறு பட்டியலிடுகிறது [https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities duplicates]. நகல் உள்ளீடுகள் (அனைத்து சந்தர்ப்பங்கள் என்றால் மட்டுமே) ஏற்படும் தருணம், நிறுத்தப்பட்ட புதுப்பிப்பு அல்லது தோல்வியுற்ற பின்வாங்கல் பரிவர்த்தனை போன்ற அரிய சந்தர்ப்பங்களில் நிகழும் தன்மை உடையதாக மட்டுமே உள்ளது.",
 	"smw-ui-tooltip-title-property": "உடமை",
 	"smw-ui-tooltip-title-quantity": "அளவு",
 	"smw-ui-tooltip-title-info": "தகவல்",
@@ -55,5 +62,7 @@
 	"smw-ui-tooltip-title-event": "நிகழ்ச்சி",
 	"smw-ui-tooltip-title-note": "குறிப்பு",
 	"smw_unknowntype": "இந்த உடமையின் வகை செல்லாதது",
-	"smw-livepreview-loading": "ஏற்றப்படுகிறது…"
+	"smw-livepreview-loading": "ஏற்றப்படுகிறது…",
+	"smw-no-data-available": "தரவேதும் கிடைக்கப்பெறவில்லை",
+	"smw-property-req-violation-missing-fields": "விடுபட்ட சொத்து \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields <code>Has fields</code>] இந்த \"$2\" வகைக்கான அறிவிப்பு தேவைப்படுகிறது."
 }

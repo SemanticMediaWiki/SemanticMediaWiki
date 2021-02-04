@@ -1,9 +1,20 @@
 {
 	"@metadata": {
 		"authors": [
-			"Alfredie"
+			"Alfredie",
+			"Uzdil"
 		]
 	},
+	"smw-special-property-searchform-options": "تاللانما",
+	"smw-special-wantedproperties-filter-label": "سۈزگۈچ:",
+	"smw-special-wantedproperties-filter-none": "يوق",
+	"smw-special-wantedproperties-filter-unapproved": "ئېتراپ قىلماسلىق",
+	"smw_ask_queryhead": "شەرت",
+	"smw_ask_printhead": "پېرىنتلاش سەپلىمىسى",
+	"smw-ask-result": "نەتىجە",
+	"smw-ask-empty": "بوش",
+	"smw-ask-format": "فورمات",
+	"browse": "ۋىكىنى زىيارەت قىلىش",
 	"smw_browse_go": "كۆچۈش",
 	"smw-livepreview-loading": "يۈكلەۋاتىدۇ…"
 }

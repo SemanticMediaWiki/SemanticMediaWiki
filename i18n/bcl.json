@@ -1,9 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Geopoet"
+			"Brazal.dang",
+			"Geopoet",
+			"ShimunUfesoj"
 		]
 	},
+	"smw-upgrade-error-why-title": "Tano ko nahihiling an pahinang ini?",
+	"smw-upgrade-error-how-title": "Pano ko papakarayon ang nasala?",
+	"smw-extensionload-error-why-title": "Tano ko nahihiling an pahina na ni?",
+	"smw-extensionload-error-how-title": "Pano ko papakarayon ang nasala?",
+	"smw-upgrade-maintenance-why-title": "Tano ko nahihiling an pahina na ni?",
 	"smw-paramdesc-table-transpose": "Ipahiling an mga pamayuhan kan lamesa sa paaging patindog asin an mga resulta sa paaging pahigda",
+	"browse": "Browse wiki",
 	"smw-livepreview-loading": "Pigkakarga…"
 }

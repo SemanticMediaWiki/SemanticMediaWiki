@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Chrisportelli",
+			"Leli Forte",
 			"Roderick Mallia",
-			"පසිඳු කාවින්ද",
-			"Leli Forte"
+			"ToniSant",
+			"පසිඳු කාවින්ද"
 		]
 	},
 	"smw_exportrdf_submit": "Esporta",
@@ -12,6 +13,8 @@
 	"browse": "Esplora l-wiki",
 	"smw_browse_go": "Mur",
 	"smw_result_prev": "Ta' qabel",
+	"smw-admin-statistics": "Statistika",
 	"smw-livepreview-loading": "Tniżżil fil-progress…",
-	"smw-sp-searchbyproperty-resultlist-header": "Lista ta' riżultati"
+	"smw-sp-searchbyproperty-resultlist-header": "Lista ta' riżultati",
+	"logeventslist-smw-log": "Semantic MediaWiki"
 }

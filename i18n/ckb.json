@@ -1,11 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Asoxor"
+			"Asoxor",
+			"Sarchia",
+			"Épine",
+			"ئارام بکر"
 		]
 	},
 	"smw_finallistconjunct": "، و",
-	"smw_factbox_head": "ڕاستییەکان سەبارەت بە «$1»",
 	"smw_concept_description": "وەسفی چەمکی «$1»",
 	"smw_printername_count": "ئاکامەکان بژمێرە",
 	"smw_printername_csv": "ھەناردەکردنی CSV",
@@ -25,19 +27,24 @@
 	"smw_properties_docu": "تایبەتمەندییەکانی خوارەوە لەم ویکیەدا بە کار ھاتوون.",
 	"smw_propertylackspage": "ھەموو تایبەتمەندییەک دەبێت بە پەڕەیەک وەسف بکرێت!",
 	"types": "جۆرەکان",
-	"smw-ask-delete": "[بیسڕەوە]",
+	"smw_ask_defaultformat": "بنچینەیی",
+	"smw-ask-delete": "لابردن",
 	"smw-ask-sorting": "بەڕیزکردن",
+	"smw-ask-search": "گەڕان",
 	"browse": "بگەڕێ بە ویکیدا",
 	"smw_browse_go": "بڕۆ",
 	"smw_inverse_label_default": "$1 لە",
 	"smw_result_next": "دواتر",
 	"smw_result_results": "ئاکامەکان",
 	"smw_result_noresults": "هیچ ئاکامێک نییە.",
-	"smwadmin": "کردەوە بەڕێوەبەرییانەکانی Semantic MediaWiki",
+	"smwadmin": "کردەوە بەڕێوەبەرییەکان (میدیاویکیی واتایی)",
 	"smw_smwadmin_return": "بگەڕێوە بۆ $1.",
 	"smw_smwadmin_datarefreshstopconfirm": "بەڵێ، من {{GENDER:$1|دڵنیام}}.",
-	"smw-ui-tooltip-title-warning": "ھەڵە",
+	"smw-ui-tooltip-title-info": "زانیاری",
+	"smw-ui-tooltip-title-warning": "ھۆشدار",
 	"smw-ui-tooltip-title-event": "ڕووداو",
 	"smw-ui-tooltip-title-note": "تێبینی",
-	"smw-livepreview-loading": "باركردن‌..."
+	"smw-livepreview-loading": "باركردن‌...",
+	"smw-patternedit-protection": "ئەم پەڕەیە پارێزراوە و تەنھا دەتوانرێت دەستکاریان بکرێت لەلایەن بەکارھێنەرانی <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
+	"smw-jsonview-search-label": "گەڕان:"
 }

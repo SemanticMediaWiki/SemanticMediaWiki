@@ -2,12 +2,18 @@
 	"@metadata": {
 		"authors": [
 			"AnakngAraw",
-			"아라",
+			"Brazal.dang",
 			"Emem.calist",
-			"Sky Harbor"
+			"Sky Harbor",
+			"아라"
 		]
 	},
 	"smw-desc": "Ginagawang mas napupuntahan ang wiki mo - para sa ([https://www.semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
+	"smw-upgrade-error-why-title": "Bakit ko nakikita ang pahinang ito?",
+	"smw-upgrade-error-how-title": "Paano ko aayusin ang mali dito?",
+	"smw-extensionload-error-why-title": "Bakit ko nakikita ang pahinang ito?",
+	"smw-extensionload-error-how-title": "Paano ko aayusin ang mali dito?",
+	"smw-upgrade-maintenance-why-title": "Bakit ko nakikita ang pahinang ito?",
 	"smw_viewasrdf": "Pasubo/pakaing RDF",
 	"smw_finallistconjunct": ", at",
 	"smw-factbox-facts": "Mga katunayan",
@@ -162,7 +168,6 @@
 	"searchbyproperty": "Maghanap ayon sa pag-aari",
 	"smw_sbv_docu": "Hanapin ang lahat ng mga pahinang may isang ibinigay na pag-aari at halaga.",
 	"smw_sbv_novalue": "Maglagay/magpasok ng isang tanggap na halaga para sa pag-aari, o tingnan ang lahat ng mga halaga ng ari-arian para sa \"$1\".",
-	"smw_sbv_displayresult": "Isang talaan ng lahat ng mga pahinang may pag-aaring \"$1\" na may halagang \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Isang talaan ng lahat ng mga pahinang may pag-aaring \"$1\" na may halagang \"$2\".\nDahil mayroong mangilan-ngilang mga kinalabasan lamang, ipinakikita rin ang kalapit na mga halaga.",
 	"smw_sbv_property": "Pag-aari:",
 	"smw_sbv_value": "Halaga:",
@@ -227,7 +232,6 @@
 	"prefs-smw": "Semantikong MediaWiki",
 	"prefs-ask-options": "Mga mapagpipilian ng semantikong paghahanap",
 	"smw-prefs-ask-options-tooltip-display": "Ipakita ang teksto ng parametro bilang pangkabatiran na payo sa kasangkapan",
-	"smw-prefs-ask-options-collapsed-default": "Paganahin ang kahon ng mapagpipilian na paguguhuin ayon sa likas na katakdaan",
 	"smw_unknowntype": "Hindi katanggap-tanggap ang uri ng pag-aaring ito",
 	"smw_concept_header": "Mga pahina ng diwang \"$1\"",
 	"smw_conceptarticlecount": "Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.",

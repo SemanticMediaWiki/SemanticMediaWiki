@@ -1,9 +1,38 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kandar"
+			"Dipusparaga",
+			"Kandar",
+			"Uchup19"
 		]
 	},
+	"smw_true_words": "bener,t,nya,y",
+	"smw-special-property-searchform": "Témbongkeun properti anu ngandung:",
+	"smw-special-property-searchform-options": "Pilihan",
+	"smw-special-wantedproperties-filter-label": "Saringan:",
+	"smw-special-wantedproperties-filter-none": "Taya",
+	"smw-special-wantedproperties-filter-unapproved": "Teu disatujuan",
+	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|make}})",
+	"smw-ask-order-rand": "Acak",
+	"smw-ask-sort-add-action": "Tambah kondisi susun",
+	"smw_ask_queryhead": "Kondisi",
+	"smw-ask-delete": "Pupus",
+	"smw-ask-options": "Pilihan",
+	"smw-ask-options-sort": "Pilihan susun",
+	"smw-ask-debug": "Debug",
+	"smw-ask-result": "Hasil",
+	"smw-ask-empty": "Kosong",
+	"smw-ask-format": "Format",
 	"browse": "Sungsi wiki",
-	"smw-livepreview-loading": "Ngamuat…"
+	"smw-admin-deprecation-notice-title-notice": "Ilikan",
+	"smw-admin-deprecation-notice-title-replacement": "Gagantian",
+	"smw-admin-deprecation-notice-title-removal": "Alihan",
+	"smw_smwadmin_datarefreshstopconfirm": "Nya, kuring {{GENDER:$1|yakin}}",
+	"smw-livepreview-loading": "Ngamuat…",
+	"smw-format-datatable-emptytable": "Euweuh data dina tabel",
+	"smw-format-datatable-loadingrecords": "Ngamuat…",
+	"smw-format-datatable-search": "Paluruh",
+	"smw-format-datatable-first": "mimiti",
+	"smw-format-datatable-last": "Pamungkas",
+	"smw-format-datatable-next": "Saterusna"
 }

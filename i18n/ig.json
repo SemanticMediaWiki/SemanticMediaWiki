@@ -1,15 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ukabia"
+			"Ukabia",
+			"Uzoma Ozurumba"
 		]
 	},
 	"smw_viewasrdf": "ntá RDF",
 	"smw_finallistconjunct": ", na",
-	"smw_factbox_head": "Ómárí maka $1",
 	"smw_printername_count": "güó ihe futárá",
 	"smw_printername_list": "Ndetu",
 	"smw_printername_table": "Agada",
 	"smw_printername_template": "Àtụ",
-	"smw-livepreview-loading": "Ọ biágó..."
+	"smw_printername_category": "Ụdàkọ",
+	"smw-ask-search": "Tùwe",
+	"browse": "Ngaghari na wiki",
+	"smw-admin-idlookup-input": "Tùwe:",
+	"smw-livepreview-loading": "Ọ biágó...",
+	"smw-format-datatable-search": "Tùwe:",
+	"smw-property-reserved-category": "Ụdàkọ",
+	"smw-category": "Ụdàkọ"
 }

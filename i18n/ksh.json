@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kghbln",
 			"Purodha",
-			"아라",
-			"Kghbln"
+			"아라"
 		]
 	},
 	"smw-desc": "Määt Ding Wikki bäßer ze bruche - för Minsche un Maschihne. ([https://www.semantic-mediawiki.org/wiki/Help:User_manual Handbohch])",
@@ -148,7 +148,6 @@
 	"searchbyproperty": "Övver de Eijeschaffte söke",
 	"smw_sbv_docu": "Donn noh all dä Sigge söhke, di en beschtemmpte Eijeschaff han, un medd_ennem beschtemmpte Wäät för se.",
 	"smw_sbv_novalue": "Donn ene jöltijje Wäät för di Eijeschavv aanjävve, udder donn Der all de müjjelesche Wääte för „$1“ aanlohre.",
-	"smw_sbv_displayresult": "Leß met alle Sigge met dä Eijeschaff „$1“, di do dä Wäät „$2“ hät.",
 	"smw_sbv_displayresultfuzzy": "Leß met alle Sigge met dä Eijeschaff „$1“, di doh dä Wäät „$2“ hät.<br />\n(Weil nur winnisch dovun do sin, dom_mer de ähnlesche Wääte metzeije)",
 	"smw_sbv_property": "Eijeschaff:",
 	"smw_sbv_value": "Wäät:",

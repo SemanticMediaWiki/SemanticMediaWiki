@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Nrowe"
+		]
+	},
+	"browse": "Peuri an wiki",
 	"smw-livepreview-loading": "Ow karga..."
 }

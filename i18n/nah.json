@@ -1,15 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
+			"Akapochtli",
 			"Fluence"
 		]
 	},
 	"smw_finallistconjunct": " īhuān",
 	"smw_nofloat": "\"$1\" ahmo tlapōhualli.",
 	"smw_purge": "Ticyancuīyāz",
-	"smw_browse_go": "Yāuh",
+	"smw-ask-search": "Tlatemoliztli",
+	"smw_browse_go": "Yaliztica",
 	"smw_result_prev": "Achtopa",
 	"smw_result_next": "Niman",
 	"smw_smwadmin_return": "Titocuepāz īhuīc $1",
-	"smw-livepreview-loading": "Tēmohua..."
+	"smw-admin-idlookup-input": "Tlatemoliztli",
+	"smw-livepreview-loading": "Tēmohua...",
+	"smw-format-datatable-search": "Tlatemoliztli:"
 }

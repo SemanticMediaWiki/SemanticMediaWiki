@@ -1,8 +1,43 @@
 {
 	"@metadata": {
 		"authors": [
+			"BHARATHESHA ALASANDEMAJALU",
+			"Kiranpoojary",
+			"Ravi Mundkur",
 			"VASANTH S.N."
 		]
 	},
-	"browse": "ವಿಕಿನ್ ನಾಡ್‍ಲೆ"
+	"smw_finallistconjunct": ", ಬೊಕ್ಕ",
+	"smw_printername_list": "ಪಟ್ಟಿ",
+	"smw_printername_table": "ಪಟ್ಟಿ",
+	"smw_printername_template": "ಟೆಂಪ್ಲೆಟ್",
+	"smw_printername_category": "ವರ್ಗೊ",
+	"validator-type-class-SMWParamSource": "ಪಟ್ಯೊ",
+	"smw-propertylist-redirect-header": "ಸಮಾನೋ ಅರ್ಥೋ",
+	"smw_exportrdf_submit": "ರಫ್ತು ಮಲ್ಪುಲೆ",
+	"unusedproperties": "ಗಲಸಂದಿನ ಗುಣಲಕ್ಷಣಲು",
+	"wantedproperties": "ಬೋಡಾಯಿನ ಗುಣಲಕ್ಷಣಲು",
+	"smw-statistics-property-total-info": "ನೋಂದಾಯಿನ ಗುಣಲಕ್ಷಣೊಲೆನ ಒಟ್ಟು ಸಂಖ್ಯೆ",
+	"smw-ask-delete": "[ಮಾಜಾಲೆ]",
+	"smw-ask-search": "ನಾಡ್‍ಲೆ",
+	"smw_sbv_value": "ಮೌಲ್ಯ:",
+	"browse": "ವಿಕಿನ್ ನಾಡ್‍ಲೆ",
+	"smw_browse_go": "ಪೋಲೆ",
+	"smw_result_prev": "ದುಂಬುತಾ",
+	"smw_result_next": "ನನತಾ",
+	"smw-admin-supplementary-elastic-mappings-docu": "ಈ ಪುಟೊಡು ಚಾಲ್ತಿ ವಿಷಯಸೂಚಿ ಉಪಯೋಗಿಸಾವುನ ಕ್ಷೇತ್ರ ನಕ್ಷಿಕರಣ ವಿವರೊಲು ಉಂಡು.ನಕ್ಷಿಕರಣೊನು   <code>index.mapping.total_fields.limit</code> ಅಂಕೇತದ ಒಟ್ಟುಗು ಉಂದೆನ್ ಪರಿವೀಕ್ಷಿಸಾವೊಡುಂದು  ಶಿಫಾರಸು  ಮಲ್ದ್ಂಡ್.(ಒಂಜಿ ವಿಷಯಸೂಚಿಡ್ ಸಮ್ಮತವಾಯಿನ ಗರಿಷ್ಟ  ಕ್ಷೇತ್ರೊಲೆನ ಸಂಖ್ಯೆ ತೆರಿಪಾವುಂಡು).",
+	"smw-ui-tooltip-title-info": "ಮಾಹಿತಿ",
+	"smw-ui-tooltip-title-warning": "ದೋಷ",
+	"smw-ui-tooltip-title-note": "ಟಿಪ್ಪಣಿ",
+	"smw-livepreview-loading": "ದಿಂಜಾವೊಂದುಂಡು......",
+	"smw-processing": "ಪ್ರಕ್ರಿಯೆ ಆವೊಂದುಂಡು..",
+	"smw-loading": "ದಿಂಜಾವೊಂದುಂಡು...",
+	"smw-fetching": "ಗೆತೊಣೊಂದುಂಡು..",
+	"smw-preparing": "ತಯಾರೊಂದುಂಡು..",
+	"smw-expand": "ವಿಸ್ತಾರ ಮಲ್ಪುಲೆ",
+	"smw-collapse": "ಕುಸಿತ",
+	"smw-copy": "ನಕಲ್ ಮಲ್ಪುಲೆ",
+	"smw-copy-clipboard-title": "ವಿಷಯಾಂಶೊನು ಪತಿಪಲಯಿಗ್ ನಕಲುಂಡು",
+	"smw-jsonview-expand-title": "JSON ನೋಟನು ವಿಸ್ತಾರ ಮಲ್ಪುಂಡು.",
+	"smw-jsonview-collapse-title": "JSON ನೋಟನು ಪತನ ಮಲ್ಪುಂಡು"
 }
