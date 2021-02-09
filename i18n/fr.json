@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Abijeet Patro",
 			"Boniface",
 			"Brunoperel",
 			"Crochet.david",
@@ -9,6 +8,7 @@
 			"Derugon",
 			"Dinoxel",
 			"Eduardo Addad de Oliveira",
+			"Eduardoaddad",
 			"Eneelk",
 			"Epok",
 			"Eric.LEWIN",
@@ -349,7 +349,7 @@
 	"smw-ask-format-change-info": "Le format a été modifié et la requête doit être réexécutée pour correspondre aux nouveaux paramètres et aux options de visualisation.",
 	"smw-ask-format-export-info": "Le format sélectionné est un format d’exportation qui n’a pas de représentation visuelle, donc les résultats ne sont fournis qu’en téléchargement.",
 	"smw-ask-query-search-info": "La requête <code><nowiki>$1</nowiki></code> a reçu une réponse de {{PLURAL:$3|1=<code>$2</code> (depuis le cache) |<code>$2</code> (depuis le cache)|<code>$2</code>}} en $4 {{PLURAL:$4|seconde|secondes}}.",
-	"smw-ask-extra-query-log": "Demander le journal",
+	"smw-ask-extra-query-log": "Journal de requête",
 	"smw-ask-extra-other": "Autre",
 	"searchbyproperty": "Recherche par propriété",
 	"processingerrorlist": "Traitement de la liste des erreurs",
