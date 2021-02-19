@@ -43,8 +43,8 @@ class InfoParserFunction implements HookHandler {
 		 */
 		$message = $parameters['message']->getValue();
 
-		if ( $parser->mStripState ) {
-			$message = $parser->mStripState->unstripBoth( $message );
+		if ( $parser->getStripState() ) {
+			$message = $parser->getStripState()->unstripBoth( $message );
 		}
 
 		// If the message contains another highlighter (caused by recursive
