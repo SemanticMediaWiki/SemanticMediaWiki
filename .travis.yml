@@ -13,24 +13,34 @@ addons:
 jobs:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*
+    # 1) SQLITE, MW min. supported version
+    - env: DB=sqlite; MW=REL1_32; PHPUNIT=6.5.*
       php: 7.1
-    - env: DB=sqlite; MW=REL1_33; PHPUNIT=6.5.* SITELANG=ja;
+    # 2) POSTGRES, current MW non-LTS stable, SITELANG=ja
+    - env: DB=postgres; MW=REL1_34; PHPUNIT=6.5.*; SITELANG=ja;
       php: 7.2
-    - env: DB=postgres; MW=REL1_34; PHPUNIT=6.5.*
+    # 3) MYSQL, current MW LTS stable, COVERAGE
+    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; TYPE=coverage
       php: 7.3
+    # 4) mysql, MW master
     - env: DB=mysql; MW=master; PHPUNIT=8.5.*
       php: 7.4
+    # 5) BLAZEGRAPH
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; BLAZEGRAPH=1.5.2
       php: 7.1
+    # 6) FUSEKI
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; FUSEKI=2.4.0
       php: 7.1
+    # 7) VIRTUOSO
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; VIRTUOSO=6.1
       php: 7.1
+    # 8) SESAME
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; SESAME=2.8.7
       php: 7.1
+    # 9) ES
     - env: DB=mysql; MW=REL1_33; PHPUNIT=6.5.*; ES=5.6.6
       php: 7.1
+    # 10) Benchmark
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; TYPE=benchmark
       php: 7.2
   allow_failures:
