@@ -19,8 +19,11 @@ jobs:
     # 2) POSTGRES, current MW non-LTS stable, SITELANG=ja
     - env: DB=postgres; MW=REL1_34; PHPUNIT=6.5.*; SITELANG=ja;
       php: 7.2
-    # 3) MYSQL, current MW LTS stable, COVERAGE
+    # 3a) MYSQL, current MW LTS stable, COVERAGE
     - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; TYPE=coverage
+      php: 7.3
+    # 3b) temp. stay with MW 1.34 for coverage
+    - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*; TYPE=coverage
       php: 7.3
     # 4) mysql, MW master
     - env: DB=mysql; MW=master; PHPUNIT=8.5.*
