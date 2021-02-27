@@ -4,12 +4,12 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use FauxRequest;
 use Language;
+use MediaWiki\MediaWikiServices;
 use OutputPage;
 use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
-use SpecialPageFactory;
 
 /**
  * @group semantic-mediawiki
@@ -85,7 +85,7 @@ class SpecialPageTestCaseProcessor extends \PHPUnit_Framework_TestCase {
 		}
 
 		$text = $this->getTextForRequestBy(
-			SpecialPageFactory::getPage( $case['special-page']['page'] ),
+			MediaWikiServices::getInstance()->getSpecialPageFactory()->getPage( $case['special-page']['page'] ),
 			new FauxRequest( $case['special-page']['request-parameters'] ),
 			$queryParameters
 		);
