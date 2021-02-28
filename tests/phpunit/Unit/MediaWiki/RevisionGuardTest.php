@@ -110,7 +110,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Storage\RevisionLookup' )
+		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +146,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Revision',
+			'\MediaWiki\Revision\RevisionRecord',
 			$instance->getRevision( $title, $revision )
 		);
 	}

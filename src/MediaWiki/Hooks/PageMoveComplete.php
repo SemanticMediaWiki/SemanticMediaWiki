@@ -8,20 +8,20 @@ use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
 
 /**
- * TitleMoveComplete occurs whenever a request to move an article
+ * PageMoveComplete occurs whenever a request to move an article
  * is completed
  *
  * This method will be called whenever an article is moved so that
  * semantic properties are moved accordingly.
  *
- * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageMoveComplete
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class TitleMoveComplete implements HookListener {
+class PageMoveComplete implements HookListener {
 
 	use EventDispatcherAwareTrait;
 
@@ -62,7 +62,7 @@ class TitleMoveComplete implements HookListener {
 		}
 
 		$context = [
-			'context' => 'TitleMoveComplete'
+			'context' => 'PageMoveComplete'
 		];
 
 		foreach ( [ 'InvalidateResultCache', 'InvalidateEntityCache' ] as $event ) {

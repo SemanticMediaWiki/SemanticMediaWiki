@@ -110,11 +110,13 @@ class ByPageSemanticDataFinder {
 		$revision = $revisionGuard->newRevisionFromPage( $wikiPage );
 
 		if ( $revision === null ) {
-			throw new UnexpectedValueException( 'Expected a valid Revision' );
+			throw new UnexpectedValueException( 'Expected a valid MediaWiki\Revision\RevisionRecord' );
 		}
 
+		$identity = $revision->getUser();
+		$user = $identity ? User::newFromIdentity( $identity ) : null;
 		$parserOutput = $wikiPage->getParserOutput(
-			$wikiPage->makeParserOptions( User::newFromId( $revision->getUser() ) ),
+			$wikiPage->makeParserOptions( $user ),
 			$revision->getId()
 		);
 

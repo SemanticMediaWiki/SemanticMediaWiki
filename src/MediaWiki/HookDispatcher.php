@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use Hooks;
 use User;
+use MediaWiki\Revision\RevisionRecord;
 use SMW\Store;
 use SMW\SQLStore\TableBuilder;
 use SMW\Options;
@@ -245,9 +246,9 @@ class HookDispatcher {
 	 * @since 3.2
 	 *
 	 * @param Title $title
-	 * @param Revision|null $revision
+	 * @param RevisionRecord|null $revision
 	 */
-	public function onChangeRevision( \Title $title, ?\Revision &$revision ) {
+	public function onChangeRevision( \Title $title, ?RevisionRecord &$revision ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 	}
 

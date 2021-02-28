@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
 use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use Title;
@@ -100,7 +102,7 @@ class ParserCachePurgeJob extends Job {
 		$enableParserCache = true;
 
 		$popts = $page->makeParserOptions( 'canonical' );
-		$content = $page->getContent( \Revision::RAW );
+		$content = $page->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
 
 		if ( $content ) {
 			$p_result = $content->getParserOutput(

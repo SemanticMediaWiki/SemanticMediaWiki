@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use MediaWiki\Revision\SlotRecord;
+use IDBAccessObject;
 use Title;
 
 /**
@@ -57,21 +58,14 @@ class MediaWikiNsContentReader {
 			return '';
 		}
 
-		$revision = $this->revisionGuard->newRevisionFromTitle( $title, false, Revision::READ_LATEST );
+		$revision = $this->revisionGuard->newRevisionFromTitle( $title, false, IDBAccessObject::READ_LATEST );
 
 		if ( $revision === null ) {
 			return '';
 		}
 
-		if ( class_exists( 'WikitextContent' ) ) {
-			return $revision->getContent()->getNativeData();
-		}
-
-		if ( method_exists( $revision, 'getContent' ) ) {
-			return $revision->getContent( Revision::RAW );
-		}
-
-		return $revision->getRawText();
+		// MW 1.33+ use getText() instead
+		return $revision->getContent( SlotRecord::MAIN )->getNativeData();
 	}
 
 }

@@ -22,7 +22,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
+class PageMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 	private $mwHooksHandler;
 	private $queryResultValidator;
@@ -43,8 +43,8 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->mwHooksHandler->register(
-			'TitleMoveComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleMoveComplete' )
+			'PageMoveComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'PageMoveComplete' )
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();

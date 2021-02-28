@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use LinksUpdate;
 use ParserOutput;
-use Revision;
 use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
@@ -187,7 +186,9 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected function retrieveAndLoadData( $revId = null ) {
 
-		$revision = $revId ? Revision::newFromId( $revId ) : null;
+		// TODO MCR use RevisionGuard ?
+		$revisionLookup = \MediaWiki\MediaWikiServices::getInstance()->getRevisionLookup();
+		$revision = $revId ? $revisionLookup->getRevisionById( $revId ) : null;
 
 		$contentParser = ServicesFactory::getInstance()->newContentParser(
 			$this->title

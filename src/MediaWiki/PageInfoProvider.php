@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
 use Title;
 use User;
@@ -29,7 +29,7 @@ class PageInfoProvider implements PageInfo {
 	private $wikiPage = null;
 
 	/**
-	 * @var Revision
+	 * @var RevisionRecord
 	 */
 	private $revision = null;
 
@@ -42,10 +42,10 @@ class PageInfoProvider implements PageInfo {
 	 * @since 1.9
 	 *
 	 * @param WikiPage $wikiPage
-	 * @param Revision|null $revision
+	 * @param RevisionRecord|null $revision
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, Revision $revision = null, User $user = null ) {
+	public function __construct( WikiPage $wikiPage, RevisionRecord $revision = null, User $user = null ) {
 		$this->wikiPage = $wikiPage;
 		$this->revision = $revision;
 		$this->user = $user;

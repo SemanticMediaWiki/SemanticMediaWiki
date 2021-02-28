@@ -5,6 +5,7 @@ namespace SMW\Parser;
 use Parser;
 use ParserOptions;
 use RuntimeException;
+use SMW\ApplicationFactory;
 use SMW\Localizer;
 use SMW\ParserData;
 use SMW\MediaWiki\Template\TemplateExpander;
@@ -71,7 +72,7 @@ class RecursiveTextProcessor {
 		$this->parser = $parser;
 
 		if ( $this->parser === null ) {
-			$this->parser = $GLOBALS['wgParser'];
+			$this->parser = ApplicationFactory::getInstance()->create( 'Parser' );
 		}
 	}
 

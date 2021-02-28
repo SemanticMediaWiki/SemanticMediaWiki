@@ -16,7 +16,7 @@ use SMW\Property\AnnotatorFactory as PropertyAnnotatorFactory;
 use SMW\Schema\SchemaFactory;
 
 /**
- * Hook: NewRevisionFromEditComplete called when a revision was inserted
+ * Hook: RevisionFromEditComplete called when a revision was inserted
  * due to an edit
  *
  * Fetch additional information that is related to the saving that has just happened,
@@ -25,14 +25,14 @@ use SMW\Schema\SchemaFactory;
  *
  * Called from LocalFile.php, SpecialImport.php, Article.php, Title.php
  *
- * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
  *
  * @license GNU GPL v2+
  * @since 1.9
  *
  * @author mwjames
  */
-class NewRevisionFromEditComplete implements HookListener {
+class RevisionFromEditComplete implements HookListener {
 
 	use OptionsAwareTrait;
 	use EventDispatcherAwareTrait;
@@ -102,7 +102,7 @@ class NewRevisionFromEditComplete implements HookListener {
 		);
 
 		$context = [
-			'context' => NewRevisionFromEditComplete::class,
+			'context' => RevisionFromEditComplete::class,
 			'title' => $title
 		];
 

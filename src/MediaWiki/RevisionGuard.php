@@ -2,7 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use IDBAccessObject;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\RevisionLookup;
 use Title;
 use File;
 use User;
@@ -13,9 +15,9 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  * @private
  *
  * This class provides a single point of entry for changes that relates to the
- * MediaWiki concept of `Revision` hereby allowing an external extension to modify
- * data related to a revision in a consistent manner and lessen the potential
- * breakage during an update.
+ * MediaWiki concept of `RevisionRecord` hereby allowing an external extension
+ * to modify data related to a revision in a consistent manner and lessen the
+ * potential breakage during an update.
  *
  * @license GNU GPL v2+
  * @since 3.1
@@ -34,12 +36,9 @@ class RevisionGuard {
 	/**
 	 * @since 3.2
 	 *
-	 * !! Cannot use a type hint because the NS changed between releases
-	 * MediaWiki\Storage\RevisionLookup vs. MediaWiki\Revision\RevisionLookup
-	 *
-	 * @param $revisionLookup
+	 * @param RevisionLookup|null $revisionLookup
 	 */
-	public function __construct( $revisionLookup = null ) {
+	public function __construct( RevisionLookup $revisionLookup = null ) {
 		$this->revisionLookup = $revisionLookup;
 	}
 
@@ -108,17 +107,11 @@ class RevisionGuard {
 	 *
 	 * @param WikiPage $page
 	 *
-	 * @return Revision|null
+	 * @return RevisionRecord|null
 	 */
-	public function newRevisionFromPage( WikiPage $page ) : ?Revision {
+	public function newRevisionFromPage( WikiPage $page ) : ?RevisionRecord {
 
-		// https://github.com/wikimedia/mediawiki/commit/4721717527f9f7ff6c68488529a7bb0463bd5744
-		if ( method_exists( $page, 'getRevisionRecord' ) ) {
-			$revisionRecord = $page->getRevisionRecord();
-			return $revisionRecord ? new Revision( $revisionRecord ) : null;
-		}
-
-		return $page->getRevision();
+		return $page->getRevisionRecord();
 	}
 
 	/**
@@ -128,52 +121,42 @@ class RevisionGuard {
 	 * @param $revId
 	 * @param $flags
 	 *
-	 * @return Revision|null
+	 * @return RevisionRecord|null
 	 */
-	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ) : ?Revision {
+	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ) : ?RevisionRecord {
 
 		if ( $this->revisionLookup === null ) {
-			return Revision::newFromTitle( $title, $revId, $flags );
+			// TODO could it happen?
+			throw \LogicException();
 		}
 
-		// https://github.com/wikimedia/mediawiki/commit/0f826d1f7380a546921fc5c09e31577de412445e
-		if (
-			// MW 1.31
-			$this->revisionLookup instanceof \MediaWiki\Storage\RevisionLookup ||
-			// MW 1.32
-			$this->revisionLookup instanceof \MediaWiki\Revision\RevisionLookup ) {
-
-			$revisionRecord = $this->revisionLookup->getRevisionByTitle(
-				$title,
-				$revId,
-				$flags
-			);
-
-			return $revisionRecord ? new Revision( $revisionRecord, $flags ) : null;
-		}
-
-		return null;
+		return $this->revisionLookup->getRevisionByTitle(
+			$title,
+			$revId,
+			$flags
+		);
 	}
 
 	/**
 	 * @since 3.1
 	 *
 	 * @param Title $title
-	 * @param Revision|null $revision
+	 * @param RevisionRecord|null $revision
 	 *
-	 * @return Revision|null
+	 * @return RevisionRecord|null
 	 */
-	public function getRevision( Title $title, ?Revision $revision ) : ?Revision {
+	public function getRevision( Title $title, ?RevisionRecord $revision ) : ?RevisionRecord {
 
 		if ( $revision === null ) {
-			$revision = $this->newRevisionFromTitle( $title, false, Revision::READ_NORMAL );
+			$revision = $this->newRevisionFromTitle( $title, false, IDBAccessObject::READ_NORMAL );
 		}
 
 		$origRevision = $revision;
 
+		// TODO this is a modified SMW hook, from Revision to \MediaWiki\Revision\RevisionRecord
 		$this->hookDispatcher->onChangeRevision( $title, $revision );
 
-		if ( $revision instanceof Revision ) {
+		if ( $revision instanceof RevisionRecord ) {
 			return $revision;
 		}
 

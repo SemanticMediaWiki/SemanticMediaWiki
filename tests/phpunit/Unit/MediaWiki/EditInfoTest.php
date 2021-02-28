@@ -22,7 +22,7 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,9 +196,9 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	private function newRevisionStub() {
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRawText', 'getContent' ] )
+			->setMethods( [ 'getRawText', 'getContent', 'getSize', 'getSha1' ] )
 			->getMock();
 
 		$revision->expects( $this->any() )
@@ -208,9 +208,17 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
 			->will( $this->returnValueMap( [
-				[ \Revision::RAW, null, 'Foo' ],
-				[ \Revision::FOR_PUBLIC, null, $this->newContentStub() ],
+				[ \MediaWiki\Revision\SlotRecord::MAIN, \MediaWiki\Revision\RevisionRecord::RAW, null, 'Foo' ],
+				[ \MediaWiki\Revision\SlotRecord::MAIN, \MediaWiki\Revision\RevisionRecord::FOR_PUBLIC, null, $this->newContentStub() ],
 			] ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getSize' )
+			->will( $this->returnValue( strlen( 'Foo' ) ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getSha1' )
+			->will( $this->returnValue( \Wikimedia\base_convert( sha1( 'Foo' ), 16, 36 ) ) );
 
 		return $revision;
 	}

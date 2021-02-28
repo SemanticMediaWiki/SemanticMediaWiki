@@ -222,9 +222,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
 	}
 
-    /**
-     * @depends testRegister
-     */
+	/**
+	 * @depends testRegister
+	 */
 	public function testCheckOnMissingHandlers() {
 
 		$disabled = [
@@ -273,8 +273,8 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSpecialSearchProfiles' ],
 			[ 'callSpecialSearchProfileForm' ],
 			[ 'callInternalParseBeforeLinks' ],
-			[ 'callNewRevisionFromEditComplete' ],
-			[ 'callTitleMoveComplete' ],
+			[ 'callRevisionFromEditComplete' ],
+			[ 'callPageMoveComplete' ],
 			[ 'callArticleProtectComplete' ],
 			[ 'callArticleViewHeader' ],
 			[ 'callArticlePurge' ],
@@ -615,9 +615,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		return $handler;
 	}
 
-	public function callNewRevisionFromEditComplete( $instance ) {
+	public function callRevisionFromEditComplete( $instance ) {
 
-		$handler = 'NewRevisionFromEditComplete';
+		$handler = 'RevisionFromEditComplete';
 
 		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
 			->disableOriginalConstructor()
@@ -643,7 +643,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -661,17 +661,19 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			$instance->isRegistered( $handler )
 		);
 
+		$tags = [];
+
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $wikiPage, $revision, $baseId, $user ]
+			[ $wikiPage, $revision, $baseId, $user, &$tags ]
 		);
 
 		return $handler;
 	}
 
-	public function callTitleMoveComplete( $instance ) {
+	public function callPageMoveComplete( $instance ) {
 
-		$handler = 'TitleMoveComplete';
+		$handler = 'PageMoveComplete';
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -736,7 +738,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContentHandler' )
 			->will( $this->returnValue( $contentHandler ) );
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 

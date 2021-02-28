@@ -2,6 +2,8 @@
 
 namespace SMW\Elastic\Indexer;
 
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesContainer;
@@ -19,7 +21,6 @@ use SMW\MediaWiki\Collator;
 use SMW\Utils\Timer;
 use SMWDIBlob as DIBlob;
 use Title;
-use Revision;
 
 /**
  * @license GNU GPL v2+
@@ -293,13 +294,15 @@ class Indexer {
 			return '';
 		}
 
-		$revision = Revision::newFromId( $id );
+		// TODO MCR use RevisionGuard ?
+		$revisionLookup = \MediaWiki\MediaWikiServices::getInstance()->getRevisionLookup();
+		$revision = $revisionLookup->getRevisionById( $id );
 
 		if ( $revision == null ) {
 			return '';
 		}
 
-		$content = $revision->getContent( Revision::RAW );
+		$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
 
 		return $content->getNativeData();
 	}

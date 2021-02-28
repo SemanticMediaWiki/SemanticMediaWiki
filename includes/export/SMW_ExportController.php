@@ -412,7 +412,9 @@ class SMWExportController {
 				continue; // invalid title name given
 			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date
-				$rev = Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
+				$revisionStore = \MediaWiki\MediaWikiServices::getInstance()->getRevisionStore();
+				# b/c The title can be dropped for 1.34+
+				$rev = $revisionStore->getTimestampFromId( $title, $title->getLatestRevID() );
 				if ( $rev < $revisiondate ) {
 					continue;
 				}

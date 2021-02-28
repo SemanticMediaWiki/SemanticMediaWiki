@@ -55,7 +55,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	 */
 	private function runTemplateTransclusion( Title $title, $text, $return ) {
 
-		$parser  = new \Parser;
+		$parser  = $this->applicationFactory->create( 'Parser' );
 		$options = new \ParserOptions;
 		$options->setTemplateCallback( function ( $title, $parser = false ) use ( $return ) {
 
