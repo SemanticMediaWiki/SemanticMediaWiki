@@ -29,7 +29,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $memoryCache;
-	private $revisionGuard;
 	private $entityCache;
 	private $spyLogger;
 
@@ -47,10 +46,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
-
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
-			->disableOriginalConstructor()
-			->getMock();
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -82,16 +77,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetch' )
 			->will( $this->returnValue( false ) );
 
-		$this->revisionGuard->expects( $this->any() )
-			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 10001 ) );
-
-		$this->revisionGuard->expects( $this->any() )
-			->method( 'newRevisionFromTitle' )
-			->will( $this->returnValue( null ) );
-
-		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
-
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
 			$parameters['smwgNamespacesWithSemanticLinks']
@@ -108,10 +93,6 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new CachedFactbox(
 			new EntityCache( $this->memoryCache )
-		);
-
-		$instance->setRevisionGuard(
-			$this->revisionGuard
 		);
 
 		$instance->isEnabled( true );
@@ -288,6 +269,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 10001 ) );
+
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
@@ -332,6 +317,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 9001 ) );
 
 		$context = new \RequestContext( );
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
@@ -428,6 +417,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 10004 ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
