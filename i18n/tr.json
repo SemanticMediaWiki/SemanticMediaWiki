@@ -658,7 +658,7 @@
 	"smw-search-help-ask": "Aşağıdaki bağlantılar, <code>#ask</code> sözdiziminin nasıl kullanılacağını açıklar.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Sayfa seçimi] seçilen sayfaların nasıl oluşturulacağını ve koşulların nasıl oluşturulacağını açıklar\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Arama operatörleri], aralık ve joker karakter sorguları da dahil olmak üzere mevcut arama operatörlerini listeler",
 	"smw-search-input": "Giriş ve arama",
 	"smw-search-help-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance/tr Giriş yardımı], giriş alanı için sağlanmıştır ve aşağıdaki öneklerden birini kullanmasını gerektirir:\n\n* özellik önerilerini etkinleştirmek için <code>p:</code> (ör. <code><nowiki>[[p:Has...</nowiki></code>)\n\n* kategori önerilerini etkinleştirmek için <code>c:</code>\n\n* kavram önerilerini etkinleştirmek için <code>con:</code>",
-	"smw-search-syntax": "Sözdizimi",
+	"smw-search-syntax": "Sözdizim",
 	"smw-search-profile": "Genişletilmiş",
 	"smw-search-profile-tooltip": "Semantic MediaWiki ile bağlantılı işlevleri ara",
 	"smw-search-profile-sort-best": "En iyi eşleşme",
