@@ -191,7 +191,7 @@
 	"smw_smwadmin_return": "Zréck op $1",
 	"smw_smwadmin_updatenotstarted": "Et ass schonn een Aktualiséiereungs-Prozess amgaang.\nEt ka keen neien ugefaang ginn.",
 	"smw_smwadmin_updatestopped": "All Aktualisatiouns-Prozesser goufe gestoppt.",
-	"smw-admin-docu": "Dës Spezialsäit hëlleft Iech während der Installatioun, der Aktualiséierung, der Maintenance an dem Gebrauch vu <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> an erméiglecht Iech weider administrativ Funktiounen an Aufgaben, geneesou wéi Statistiken.\nDenkt drun fir wichteg Donnéeën ze späicheren ier Dir administrativ Funktiounen ausféiert.",
+	"smw-admin-docu": "Dës Spezialsäit hëlleft Iech wärend der Installatioun, der Aktualiséierung, der Maintenance an dem Gebrauch vu <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> an erméiglecht Iech weider administrativ Funktiounen an Aufgaben, geneesou wéi Statistiken.\nDenkt drun fir wichteg Donnéeën ze späicheren ier Dir administrativ Funktiounen ausféiert.",
 	"smw-admin-db": "Datebank-installatioun an -aktualiséierung",
 	"smw-admin-dbbutton": "Tabellen initialiséieren oder aktualiséieren",
 	"smw-admin-announce": "Är Wiki ukënnegen",
