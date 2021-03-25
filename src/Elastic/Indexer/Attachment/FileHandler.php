@@ -2,7 +2,10 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
+use ConfigException;
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
+use RequestContext;
 use SMW\MediaWiki\FileRepoFinder;
 use Title;
 use RuntimeException;
@@ -80,7 +83,7 @@ class FileHandler {
 		$contents = '';
 
 		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
-		$file_headers = @get_headers( $url );
+		$file_headers = @get_headers( $this->protocolizeUrl( $url ) );
 
 		if (
 			$file_headers !== false &&
@@ -114,4 +117,41 @@ class FileHandler {
 		return $contents;
 	}
 
+	/**
+	 * Tries to add a scheme to the url, if a relative url was passed
+	 *
+	 * @since 4.0.0-alpha
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+    private function protocolizeUrl( string $url ): string {
+        $parsed = parse_url( $url );
+
+        if ( $parsed !== false && isset( $parsed['scheme'] ) ) {
+            return $url;
+        }
+
+        try {
+            $canonical = MediaWikiServices::getInstance()->getMainConfig()->get( 'CanonicalServer' );
+            $parsed = parse_url( $canonical );
+
+            if ( $parsed !== false && isset( $parsed['scheme'] ) ) {
+                return $canonical;
+            }
+        } catch ( ConfigException $e ) {
+            // Pass through
+        }
+
+        $mainContext = RequestContext::getMain();
+
+        // Default scheme if RequestContext is null, in hope that it gets redirect if https is required
+        $scheme = 'http';
+        if ( $mainContext !== null && $mainContext->getRequest()->getProtocol() !== null ) {
+            $scheme = $mainContext->getRequest()->getProtocol();
+        }
+
+        return sprintf( '%s://%s', $scheme, trim( $url, '/' ) );
+    }
 }
