@@ -343,6 +343,9 @@ class SetupCheck {
 			$this->header( 'Content-Length: ' . strlen( $content ) );
 			$this->header( 'Cache-control: none' );
 			$this->header( 'Pragma: no-cache' );
+			$this->header( 'HTTP/1.1 503 Service Temporarily Unavailable' );
+			$this->header( 'Status: 503 Service Temporarily Unavailable' );
+			$this->header( 'Retry-After: 10' ); // 10 seconds
 		} else {
 			$content = $error['title'] . "\n\n" . $error['content'];
 			$content = str_replace(
