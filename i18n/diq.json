@@ -59,6 +59,8 @@
 	"types": "Babeti",
 	"smw-statistics": "İstatistikê semantiki",
 	"smw-statistics-entities-total": "Dezgehi (pêro piya)",
+	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|Pers|Persi}}",
+	"smw-statistics-query-inline": "[[Mılk:Persê xo esto|{PLURAL:$1|Pers|Persi}}]] (cakerde, pêro piya)",
 	"smw-statistics-query-format": "Format „<code>$1</code>“",
 	"ask": "Fahmyayış cı geyrayış",
 	"smw_ask_ascorder": "zeydıyen",
