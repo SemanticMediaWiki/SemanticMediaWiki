@@ -76,6 +76,9 @@ Test suites provide a way of grouping tests. Semantic MediaWiki defines a couple
 
 To run a single testsuite, use `--testsuite`, e.g `composer phpunit -- --testsuite semantic-mediawiki-unit`
 
+### Running a single test
+To run a single testsuite, use `--filter`, e.g `composer phpunit -- --filter ParserAfterTidyTest`
+
 ## Writing tests
 
 Writing meaningful tests isn't difficult but requires some diligence on how to setup a test and its environment. One simple rule is to avoid the use of hidden expectations or inheritance as remedy for the "less code is good code" aesthetics. Allow the code to be readable and if possible follow the [arrange, act, assert][aaa] pattern.
