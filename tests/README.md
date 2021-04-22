@@ -20,8 +20,16 @@ Information about PHPUnit in connection with MediaWiki can be found at [smw.org]
 
 ## Running tests
 
-1. Verify that PHUnit is installed in `myMediawikiFolder/vendor/phpunit`. In case it is not installed, use `composer require phpunit/phpunit:~6.5 --update-with-dependencies` to add the package
-2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
+Verify that PHPUnit is installed
+<pre>
+> cd myMediawikiFolder
+> composer show phpunit/phpunit | grep versions
+versions : * 6.5.14
+</pre>
+
+In case PHPUnit is not installed, run `composer install --dev`
+
+Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
 
 ### Running all tests
 Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
