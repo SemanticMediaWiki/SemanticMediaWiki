@@ -411,6 +411,8 @@
 	"smw-prefs-general-options-time-correction": "Włącz korekcję czasu dla stron specjalnych, korzystając z lokalnego przesunięcia czasu w preferencjach",
 	"smw-prefs-general-options-disable-editpage-info": "Wyłącz tekst wprowadzający na stronie edycji",
 	"smw-prefs-general-options-disable-search-info": "Wyłącz informacje dotyczące obsługi składni na standardowej stronie wyszukiwania",
+	"smw-prefs-general-options-suggester-textinput": "Włącz wspomaganie wprowadzania dla encji semantycznych",
+	"smw-prefs-help-general-options-suggester-textinput": "Włączenie tej opcji umożliwia użycie [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance pomocy wejściowej] w celu znalezienia właściwości, pojęć i kategorii z kontekstu wejściowego.",
 	"smw-ui-tooltip-title-property": "Właściwość",
 	"smw-ui-tooltip-title-quantity": "Konwersja jednostek",
 	"smw-ui-tooltip-title-info": "Informacja",
