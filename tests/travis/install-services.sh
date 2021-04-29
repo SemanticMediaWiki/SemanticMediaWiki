@@ -213,7 +213,7 @@ then
 
 	if [[ "$ES" == "5."* ]]
 	then
-		Travis Bionic comes with preinstalled openjdk11
+		# Travis Bionic comes with preinstalled openjdk11
 		sudo java -version
 
 		wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES}.tar.gz
