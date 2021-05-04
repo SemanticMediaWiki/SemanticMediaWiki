@@ -5,10 +5,11 @@ os:
   - linux
 
 # https://docs.travis-ci.com/user/trusty-ci-environment/
-dist: trusty
+dist: bionic
 
-addons:
-  postgresql: "9.5"
+services:
+  - mysql
+  - postgresql
 
 jobs:
   fast_finish: true
@@ -21,7 +22,7 @@ jobs:
       php: 7.2
     # 3a) MYSQL, current MW LTS stable, COVERAGE
     - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; TYPE=coverage
-      php: 7.3
+      php: 7.4.9
     # 3b) temp. stay with MW 1.34 for coverage
     - env: DB=mysql; MW=REL1_34; PHPUNIT=6.5.*; TYPE=coverage
       php: 7.3
@@ -37,11 +38,11 @@ jobs:
     # 7) VIRTUOSO
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; VIRTUOSO=6.1
       php: 7.1
-    # 8) SESAME
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; SESAME=2.8.7
+    # 8) RDF4J (SESAME)
+    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; SESAME=3.6.3
       php: 7.1
     # 9) ES
-    - env: DB=mysql; MW=REL1_33; PHPUNIT=6.5.*; ES=5.6.6
+    - env: DB=mysql; MW=REL1_33; PHPUNIT=6.5.*; ES=5.6.16
       php: 7.1
     # 10) Benchmark
     - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; TYPE=benchmark
@@ -78,11 +79,13 @@ before_install:
   - cat /etc/hosts # optionally check the content *before*
   # MW is not yet compatible with Composer 2.x, see https://phabricator.wikimedia.org/T266417
   - composer self-update --1
+  - wget https://raw.githubusercontent.com/SemanticMediaWiki/CIScripts/main/travis/install-mediawiki.sh
+  - wget https://raw.githubusercontent.com/SemanticMediaWiki/CIScripts/main/travis/install-phpunit.sh
 
 install:
-  - travis_retry composer self-update
+  - bash ./install-mediawiki.sh
+  - bash ./install-phpunit.sh
   - bash ./tests/travis/install-services.sh
-  - bash ./tests/travis/install-mediawiki.sh
   - bash ./tests/travis/install-semantic-mediawiki.sh
 
 before_script:

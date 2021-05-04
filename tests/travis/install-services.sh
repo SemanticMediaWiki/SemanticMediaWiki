@@ -48,7 +48,7 @@ fi
 
 if [ "$SESAME" != "" ]
 then
-	TOMCAT_VERSION=tomcat6
+	TOMCAT_VERSION=tomcat8
 	sudo java -version
 
 	sudo apt-get install $TOMCAT_VERSION
@@ -59,40 +59,32 @@ then
 	sudo chown $USER -R $CATALINA_BASE/
 	sudo chmod g+rw -R $CATALINA_BASE/
 
-	sudo mkdir -p $CATALINA_HOME/.aduna
-	sudo chown -R $TOMCAT_VERSION:$TOMCAT_VERSION $CATALINA_HOME
+	## RDF4J SESAME 3
+	wget "https://www.eclipse.org/downloads/download.php?file=/rdf4j/eclipse-rdf4j-$SESAME-sdk.zip&r=1" -O eclipse-rdf4j-$SESAME-sdk.zip
 
-	# One method to get the war files
-	# wget http://search.maven.org/remotecontent?filepath=org/openrdf/sesame/sesame-http-server/$SESAME/sesame-http-server-$SESAME.war -O openrdf-sesame.war
-	# wget http://search.maven.org/remotecontent?filepath=org/openrdf/sesame/sesame-http-workbench/$SESAME/sesame-http-workbench-$SESAME.war -O openrdf-workbench.war
-	# cp *.war /var/lib/tomcat6/webapps/
+	unzip -q eclipse-rdf4j-$SESAME-sdk.zip
+	sudo cp eclipse-rdf4j-$SESAME/war/*.war $CATALINA_BASE/webapps/
 
-	# http://sourceforge.net/projects/sesame/
-	# Unreliable sourceforge.net download
-	# wget http://downloads.sourceforge.net/project/sesame/Sesame%202/$SESAME/openrdf-sesame-$SESAME-sdk.zip
-	wget https://github.com/mwjames/travis-support/raw/master/sesame/$SESAME/openrdf-sesame-$SESAME-sdk.zip
-
-	# tar caused a lone zero block, using zip instead
-	unzip -q openrdf-sesame-$SESAME-sdk.zip
-	cp openrdf-sesame-$SESAME/war/*.war $CATALINA_BASE/webapps/
+	sudo mkdir -p $CATALINA_BASE/.RDF4J
+	sudo chown -R $TOMCAT_VERSION:$TOMCAT_VERSION $CATALINA_BASE
 
 	sudo service $TOMCAT_VERSION restart
 	ps -ef | grep tomcat
 
 	sleep 5
 
-	if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame"
-	#if curl --output /dev/null --silent --head --fail "http://localhost:8080/openrdf-sesame/home/overview.view"
+	if curl --output /dev/null --silent --head --fail "http://localhost:8080/rdf4j-server"
+
 	then
-		echo "openrdf-sesame service url is reachable"
+		echo "RDF4J service url is reachable"
 	else
-		echo "openrdf-sesame service url is not reachable"
+		echo "RDF4J service url is not reachable"
 		sudo cat $CATALINA_BASE/logs/*.log &
 		sudo cat $CATALINA_BASE/logs/catalina.out &
 		exit $E_UNREACHABLE
 	fi
 
-	./openrdf-sesame-$SESAME/bin/console.sh < $BASE_PATH/tests/travis/openrdf-sesame-memory-repository.txt
+	cat $BASE_PATH/tests/travis/openrdf-sesame-memory-repository.txt | ./eclipse-rdf4j-$SESAME/bin/console.sh -e
 fi
 
 # Version 1.1.4-1 is available but has a problem
@@ -221,12 +213,8 @@ then
 
 	if [[ "$ES" == "5."* ]]
 	then
-
-		sudo apt-get install oracle-java8-installer
-
-		export JAVA_HOME="/usr/lib/jvm/java-8-oracle";
-		export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin";
-		export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
+		# Travis Bionic comes with preinstalled openjdk11
+		sudo java -version
 
 		wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES}.tar.gz
 
