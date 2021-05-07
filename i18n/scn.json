@@ -1,11 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Gmelfi",
 			"Sarvaturi"
 		]
 	},
+	"smw-error": "Erruri",
+	"smw_finallistconjunct": ", e",
+	"smw-propertylist-redirect-header": "sinònimi",
+	"smw-ask-extra-other": "Àutru",
 	"browse": "Esplora lu situ",
 	"smw_browselink": "Prupità",
+	"smw-admin-statistics": "Statìstichi",
 	"smw-livepreview-loading": "Carricamentu 'n cursu..."
 }
