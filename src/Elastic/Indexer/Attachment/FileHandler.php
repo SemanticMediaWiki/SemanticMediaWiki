@@ -82,14 +82,15 @@ class FileHandler {
 
 		$contents = '';
 
+		$protocolizedUrl = $this->protocolizeUrl( $url );
 		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
-		$file_headers = @get_headers( $this->protocolizeUrl( $url ) );
+		$file_headers = @get_headers( $protocolizedUrl );
 
 		if (
 			$file_headers !== false &&
 			$file_headers[0] !== 'HTTP/1.1 404 Not Found' &&
 			$file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
-			return file_get_contents( $url );
+			return file_get_contents( $protocolizedUrl );
 		}
 
 		$this->logger->info(
@@ -129,16 +130,16 @@ class FileHandler {
     private function protocolizeUrl( string $url ): string {
         $parsed = parse_url( $url );
 
-        if ( $parsed !== false && isset( $parsed['scheme'] ) ) {
+        if ( $parsed !== false && isset( $parsed[ 'scheme' ] ) ) {
             return $url;
         }
 
         try {
             $canonical = MediaWikiServices::getInstance()->getMainConfig()->get( 'CanonicalServer' );
-            $parsed = parse_url( $canonical );
+            $parsedCanonical = parse_url( $canonical );
 
-            if ( $parsed !== false && isset( $parsed['scheme'] ) ) {
-                return $canonical;
+            if ( $parsedCanonical !== false && isset( $parsedCanonical[ 'scheme' ] ) ) {
+				return sprintf( '%s://%s', $parsedCanonical[ 'scheme' ], ltrim( $url, '/' ) );
             }
         } catch ( ConfigException $e ) {
             // Pass through
@@ -152,6 +153,6 @@ class FileHandler {
             $scheme = $mainContext->getRequest()->getProtocol();
         }
 
-        return sprintf( '%s://%s', $scheme, trim( $url, '/' ) );
+        return sprintf( '%s://%s', $scheme, ltrim( $url, '/' ) );
     }
 }

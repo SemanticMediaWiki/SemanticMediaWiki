@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
+use ReflectionClass;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 
 /**
@@ -93,6 +94,35 @@ class FileHandlerTest extends \PHPUnit_Framework_TestCase {
 			base64_encode( 'Foo' ),
 			$instance->format( 'Foo', FileHandler::FORMAT_BASE64 )
 		);
+	}
+
+	public function testProtocolizeUrl() {
+		$instance = new FileHandler(
+			$this->fileRepoFinder
+		);
+
+		$reflection = new ReflectionClass( $instance );
+		$method = $reflection->getMethod( 'protocolizeUrl' );
+		$method->setAccessible( true );
+
+		$GLOBALS['wgCanonicalServer'] = 'http://localhost';
+
+		// Array of Input => expected
+		$tests = [
+			'http://localhost' => 'http://localhost',
+			'//localhost?query=value' => 'http://localhost?query=value',
+			'https://semantic-mediawiki.org/wiki/Help%3ASorting#What_if_there_are_multiple_property_values_per_page.3F' => 'https://semantic-mediawiki.org/wiki/Help%3ASorting#What_if_there_are_multiple_property_values_per_page.3F',
+			'semantic-mediawiki.org/wiki/Help%3ASorting#What_if_there_are_multiple_property_values_per_page.3F' => 'http://semantic-mediawiki.org/wiki/Help%3ASorting#What_if_there_are_multiple_property_values_per_page.3F',
+		];
+
+		foreach ( $tests as $input => $expected ) {
+			$actual = $method->invokeArgs( $instance, [ $input ] );
+
+			self::assertEquals(
+				$expected,
+				$actual
+			);
+		}
 	}
 
 }
