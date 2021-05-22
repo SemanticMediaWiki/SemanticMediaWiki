@@ -25,15 +25,22 @@ use User;
  * @codeCoverageIgnore
  */
 class MockSuperUser extends User {
-	public function getId() {
+	# The signature is "getId()" in MW 1.35-
+	# and "getId( $wikiId = self::LOCAL ) : int" in MW 1.36
+	# TODO: when SMW will only support MW 1.36+, the new signature can be fixed
+	public function getId( $wikiId = false ) : int {
 		return 666;
 	}
 
-	public function getName() {
+	public function getName() : string {
 		return 'SuperUser';
 	}
 
-	public function isAllowed( $right = '' ) {
+	# The signature is "isAllowed( $action = '' )" in MW 1.35-
+	# and "isAllowed( string $permission ) : bool" in MW 1.36
+	# The following signature does not emit warnings in any cases
+	# TODO: when SMW will only support MW 1.36+, the new signature can be fixed
+	public function isAllowed( $permission = '' ) : bool {
 		return true;
 	}
 }
