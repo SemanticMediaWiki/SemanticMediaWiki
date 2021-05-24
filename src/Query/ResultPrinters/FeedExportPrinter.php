@@ -5,6 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use FeedItem;
 use ParserOptions;
 use Sanitizer;
+use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
@@ -434,7 +435,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			$parserOptions->setEditSection( false );
 		}
 
-		return $GLOBALS['wgParser']->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
+		$parser = ApplicationFactory::getInstance()->create( 'Parser' );
+		return $parser->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
 	}
 
 	private function getFeedLink( QueryResult $res, $outputMode ) {
