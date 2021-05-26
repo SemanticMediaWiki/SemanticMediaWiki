@@ -13,6 +13,12 @@ use Collation;
 class Collator {
 
 	/**
+	 * Used for armoring.
+	 */
+	const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+	const base64hex = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz{}';
+
+	/**
 	 * @var Collator
 	 */
 	private static $instance = [];
@@ -59,13 +65,13 @@ class Collator {
 	}
 
 	/**
-	 * For any uca-* generated sortkey armor any invalid or unrecognized UTF-8
-	 * characters to prevent an invalid XML/UTF output.
+	 * For any uca-* generated sortkey armor the string by converting it
+	 * to base64 string to prevent invalid XML/UTF output.
 	 *
-	 * Characters that cannot be expressed are replaced by ? which is surely
-	 * inaccurate in comparison to the original uca-* sortkey but it allows to
-	 * replicate a near surrogate string to a back-end that requires XML
-	 * compliance (triple store).
+	 * Compared to classical base64, the characters are here translated in
+	 * order to preserve bitwise sort order: comparing armored sort keys
+	 * bit-per-bit will give the same result as comparing original sort keys
+	 * bit-per-bit.
 	 *
 	 * @since 3.0
 	 *
@@ -79,23 +85,13 @@ class Collator {
 			return $text;
 		}
 
-		//	$text = mb_convert_encoding( $text, 'UTF-8' );
-
-		// https://magp.ie/2011/01/06/remove-non-utf8-characters-from-string-with-php/
-		// Remove all none utf-8 symbols
-		$text = str_replace( '�', '', htmlspecialchars( $text, ENT_SUBSTITUTE, 'UTF-8' ) );
-
-		// remove non-breaking spaces and other non-standard spaces
-		$text = preg_replace( '~\s+~u', '?', $text );
-
-		// replace controls symbols with "?"
-		$text = preg_replace( '~\p{C}+~u', '?', $text );
-
-		return $text;
+		return rtrim( strtr( base64_encode( $text ), self::base64, self::base64hex ), '=' );
 	}
 
 	/**
 	 * @since 3.0
+	 *
+	 * The output could be a binary string, it can be armored with the method `armor`.
 	 *
 	 * @param string $text
 	 *
