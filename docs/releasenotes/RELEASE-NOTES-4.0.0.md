@@ -20,4 +20,3 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Bug fixes
 
 * [#4997](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4997) Fixed the collation key for triplestores with the SPARQL feature `SMW_SPARQL_QF_COLLATION` in the case of an UCA collation
-
