@@ -20,7 +20,7 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-- PHP 7.0 to PHP 7.4
+- PHP 7.1 to PHP 7.4
 - MediaWiki 1.31 to 1.35
 - MySQL 5+, SQLite 3+ or PostgreSQL 9.x
 
