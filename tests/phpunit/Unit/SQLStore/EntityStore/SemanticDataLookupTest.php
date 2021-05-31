@@ -211,7 +211,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( 'Foo' ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
@@ -275,7 +275,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
@@ -336,7 +336,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
@@ -388,7 +388,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
@@ -498,7 +498,7 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnCallback( function( $value ) { return "'$value'"; } ) );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
@@ -570,6 +570,10 @@ class SemanticDataLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
+			->will( $this->returnValue( [ $row ] ) );
+
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'readQuery' )
 			->will( $this->returnValue( [ $row ] ) );
 
 		$this->connection->expects( $this->any() )
