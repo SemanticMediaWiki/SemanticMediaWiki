@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\Tests\PHPUnitCompat;
 use SMW\MediaWiki\Connection\Database;
+use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Database
@@ -624,6 +628,38 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setFlag( Database::AUTO_COMMIT );
 		$instance->query( 'foo', __METHOD__, false );
+	}
+
+	public function testReadQueryUsesReadConnection() {
+		$database = $this->createMock( IDatabase::class );
+		$database->expects( $this->any() )
+			->method( 'query' )
+			->willReturn( new FakeResultWrapper( [] ) );
+
+		$readConnectionProvider = $this->createMock(ConnectionProvider::class );
+
+		$readConnectionProvider->expects( $this->atLeastOnce() )
+			->method( 'getConnection' )
+			->will( $this->returnValue( $database ) );
+
+		$writeConnectionProvider = $this->createMock( ConnectionProvider::class );
+
+		$writeConnectionProvider->expects( $this->never() )
+			->method( 'getConnection' );
+
+		$instance = new Database(
+			new ConnRef(
+				[
+					'read'  => $readConnectionProvider,
+					'write' => $writeConnectionProvider
+				]
+			),
+			$this->transactionHandler
+		);
+
+		$res = $instance->readQuery( 'foo', __METHOD__ );
+
+		$this->assertInstanceOf( IResultWrapper::class, $res );
 	}
 
 	/**
