@@ -1,0 +1,4 @@
+[00:00:00] Build started
+[00:00:00] git clone -q --branch=master https://github.com/atom/language-git.git C:\projects\language-git
+[00:00:01] git checkout -qf 8881d249938ef8457e372bcbd6d86586ab12c2d5
+[00:00:01] The build phase is set to "MSBuild" mode (default), but no Visual Studio project or solution files were found in the root directory. If you are not building Visual Studio project switch build mode to "Script" and provide your custom build command.
