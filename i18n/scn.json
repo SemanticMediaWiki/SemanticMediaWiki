@@ -8,10 +8,13 @@
 	},
 	"smw-error": "Erruri",
 	"smw_finallistconjunct": ", e",
+	"smw_printername_category": "Catigurìa",
 	"smw-propertylist-redirect-header": "sinònimi",
 	"smw-ask-extra-other": "Àutru",
 	"browse": "Esplora lu situ",
 	"smw_browselink": "Prupità",
 	"smw-admin-statistics": "Statìstichi",
-	"smw-livepreview-loading": "Carricamentu 'n cursu..."
+	"smw-livepreview-loading": "Carricamentu 'n cursu...",
+	"smw-property-reserved-category": "Catigurìa",
+	"smw-category": "Catigurìa"
 }
