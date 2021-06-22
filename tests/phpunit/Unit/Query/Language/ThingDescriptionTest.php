@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Language;
+namespace SMW\Tests\Unit\Query\Language;
 
 use SMW\Query\Language\ThingDescription;
 

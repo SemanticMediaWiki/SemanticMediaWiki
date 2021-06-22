@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use SMW\EntityCache;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\EntityCache

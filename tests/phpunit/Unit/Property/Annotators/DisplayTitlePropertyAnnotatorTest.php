@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Property\Annotators;
+namespace SMW\Tests\Unit\Property\Annotators;
 
 use SMW\DIWikiPage;
 use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;

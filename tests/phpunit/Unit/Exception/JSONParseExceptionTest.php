@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Exception;
+namespace SMW\Tests\Unit\Exception;
 
 use SMW\Exception\JSONParseException;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exception\JSONParseException

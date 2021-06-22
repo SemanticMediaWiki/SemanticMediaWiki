@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\TableBuilder;
+namespace SMW\Tests\Unit\SQLStore\TableBuilder;
 
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;

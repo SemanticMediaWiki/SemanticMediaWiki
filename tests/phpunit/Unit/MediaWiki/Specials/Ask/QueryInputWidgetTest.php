@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Ask;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\Tests\TestEnvironment;

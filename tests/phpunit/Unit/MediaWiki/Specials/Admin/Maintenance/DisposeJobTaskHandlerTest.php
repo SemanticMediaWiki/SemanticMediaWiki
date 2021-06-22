@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin\Maintenance;
 
 use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
 use SMW\Tests\TestEnvironment;

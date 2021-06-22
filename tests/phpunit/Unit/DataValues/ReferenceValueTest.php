@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\Unit\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ReferenceValue

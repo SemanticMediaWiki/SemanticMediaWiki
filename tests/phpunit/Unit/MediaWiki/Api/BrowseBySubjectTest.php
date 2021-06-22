@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api;
+namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use Title;
 
 /**

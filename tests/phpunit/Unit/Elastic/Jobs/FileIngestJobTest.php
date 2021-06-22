@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Elastic\Jobs;
+namespace SMW\Tests\Unit\Elastic\Jobs;
 
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**

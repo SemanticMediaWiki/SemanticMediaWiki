@@ -7,7 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\SemanticData;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  *

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerFactory

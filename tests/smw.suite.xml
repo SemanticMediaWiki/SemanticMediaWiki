@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- colors don't work on Windows! -->
+<phpunit bootstrap="bootstrap.php"
+		 colors="true"
+		 backupGlobals="false"
+		 convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true"
+		 stopOnFailure="false"
+		 timeoutForSmallTests="2"
+		 timeoutForMediumTests="10"
+		 timeoutForLargeTests="60"
+		 verbose="true">
+	<testsuites>
+		<testsuite name="SemanticMediaWiki">
+			<directory suffix="Test.php">.</directory>
+		</testsuite>
+	</testsuites>
+    <!-- Ignore vendor folder for code coverage -->
+    <filter>
+    </filter>
+</phpunit>

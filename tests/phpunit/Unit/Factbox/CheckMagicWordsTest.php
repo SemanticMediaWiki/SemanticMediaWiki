@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Factbox;
+namespace SMW\Tests\Unit\Factbox;
 
 use SMW\Factbox\CheckMagicWords;
 

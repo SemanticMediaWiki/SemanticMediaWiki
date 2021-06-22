@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * Tests for the MessageFormatter class

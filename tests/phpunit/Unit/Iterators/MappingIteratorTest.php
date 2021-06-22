@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Iterators;
+namespace SMW\Tests\Unit\Iterators;
 
 use ArrayIterator;
 use SMW\Iterators\MappingIterator;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\MappingIterator

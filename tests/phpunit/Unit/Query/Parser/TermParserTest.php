@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Parser;
+namespace SMW\Tests\Unit\Query\Parser;
 
 use SMW\Query\Parser\TermParser;
 

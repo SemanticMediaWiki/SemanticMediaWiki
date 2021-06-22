@@ -6,7 +6,7 @@ use SMW\NamespaceManager;
 use SMW\ApplicationFactory;
 use SMW\Settings;
 use SMW\Tests\Utils\MwHooksHandler;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

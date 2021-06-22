@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use Title;

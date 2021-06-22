@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Unit\Query;
 
 use SMW\Query\RemoteRequest;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\RemoteRequest

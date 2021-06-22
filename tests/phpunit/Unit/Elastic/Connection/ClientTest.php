@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Elastic\Connection;
+namespace SMW\Tests\Unit\Elastic\Connection;
 
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Config;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\Client

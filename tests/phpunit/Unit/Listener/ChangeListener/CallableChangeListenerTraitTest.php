@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Listener\ChangeListener;
+namespace SMW\Tests\Unit\Listener\ChangeListener;
 
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 

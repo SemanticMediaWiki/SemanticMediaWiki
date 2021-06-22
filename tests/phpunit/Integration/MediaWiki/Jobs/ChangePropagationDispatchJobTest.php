@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use Title;
 
 /**

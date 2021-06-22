@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Elastic;
+namespace SMW\Tests\Unit\Elastic;
 
 use SMW\Elastic\ElasticStore;
 use SMw\Elastic\Config;
 use SMW\Options;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
 

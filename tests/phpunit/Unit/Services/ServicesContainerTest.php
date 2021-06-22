@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Services;
+namespace SMW\Tests\Unit\Services;
 
 use SMW\Services\ServicesContainer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Services\ServicesContainer

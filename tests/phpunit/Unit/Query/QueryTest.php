@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMWQuery

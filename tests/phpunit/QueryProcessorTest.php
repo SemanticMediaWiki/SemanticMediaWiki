@@ -4,11 +4,11 @@
  * @since 1.8
  */
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMWQueryProcessor;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * Tests for the SMWQueryProcessor class.

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Deferred;
+namespace SMW\Tests\Unit\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\TransactionalCallableUpdate

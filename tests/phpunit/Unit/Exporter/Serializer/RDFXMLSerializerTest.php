@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Exporter\Serializer;
+namespace SMW\Tests\Unit\Exporter\Serializer;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\RDFXMLSerializer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMWExpData as ExpData;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpLiteral;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\DescriptionBuilders;
+namespace SMW\Tests\Unit\Query\DescriptionBuilders;
 
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 

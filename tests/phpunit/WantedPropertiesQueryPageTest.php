@@ -1,15 +1,14 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\DataItemFactory;
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
-use SMW\UnusedPropertiesQueryPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\WantedPropertiesQueryPage;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
- * @covers \SMW\UnusedPropertiesQueryPage
+ * @covers \SMW\WantedPropertiesQueryPage
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+class WantedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,12 +24,9 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	private $skin;
 	private $settings;
 	private $dataItemFactory;
-	private $testEnvironment;
 
 	protected function setUp() : void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -45,15 +41,11 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() : void {
-		$this->testEnvironment->tearDown();
-	}
-
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\UnusedPropertiesQueryPage',
-			new UnusedPropertiesQueryPage( $this->store, $this->settings )
+			'\SMW\WantedPropertiesQueryPage',
+			new WantedPropertiesQueryPage( $this->store, $this->settings )
 		);
 	}
 
@@ -61,14 +53,14 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$error = $this->dataItemFactory->newDIError( 'Foo');
 
-		$instance = new UnusedPropertiesQueryPage(
+		$instance = new WantedPropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
 		$result = $instance->formatResult(
 			$this->skin,
-			$error
+			[ $error, null ]
 		);
 
 		$this->assertInternalType(
@@ -76,35 +68,23 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			$result
 		);
 
-		$this->assertContains(
-			'Foo',
+		$this->assertEmpty(
 			$result
 		);
-	}
-
-	public function testInvalidResultThrowsException() {
-
-		$instance = new UnusedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
-
-		$this->expectException( '\SMW\Exception\PropertyNotFoundException' );
-		$instance->formatResult( $this->skin, null );
 	}
 
 	public function testFormatPropertyItemOnUserDefinedProperty() {
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$instance = new UnusedPropertiesQueryPage(
+		$instance = new WantedPropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
 		$result = $instance->formatResult(
 			$this->skin,
-			$property
+			[ $property, 42 ]
 		);
 
 		$this->assertContains(
@@ -117,18 +97,17 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
-		$instance = new UnusedPropertiesQueryPage(
+		$instance = new WantedPropertiesQueryPage(
 			$this->store,
 			$this->settings
 		);
 
 		$result = $instance->formatResult(
 			$this->skin,
-			$property
+			[ $property, 42 ]
 		);
 
-		$this->assertContains(
-			'Help:Special_properties',
+		$this->assertEmpty(
 			$result
 		);
 	}

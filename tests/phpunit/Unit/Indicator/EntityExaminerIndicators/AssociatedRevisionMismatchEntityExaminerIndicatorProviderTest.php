@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\IndicatorEntityExaminerIndicators;
+namespace SMW\Tests\Unit\IndicatorEntityExaminerIndicators;
 
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider

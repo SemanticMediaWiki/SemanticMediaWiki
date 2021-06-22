@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueValidators;
+namespace SMW\Tests\Unit\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**

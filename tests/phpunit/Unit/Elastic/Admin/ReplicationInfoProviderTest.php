@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Elastic\Admin;
+namespace SMW\Tests\Unit\Elastic\Admin;
 
 use SMW\Elastic\Admin\ReplicationInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Admin\ReplicationInfoProvider

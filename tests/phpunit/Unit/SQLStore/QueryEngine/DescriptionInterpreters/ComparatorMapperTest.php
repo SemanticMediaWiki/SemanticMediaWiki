@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper

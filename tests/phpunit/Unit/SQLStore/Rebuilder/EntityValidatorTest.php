@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Rebuilder;
+namespace SMW\Tests\Unit\SQLStore\Rebuilder;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\Rebuilder\EntityValidator;

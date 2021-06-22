@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use SMW\ParserFunctions\SectionTag;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SectionTag

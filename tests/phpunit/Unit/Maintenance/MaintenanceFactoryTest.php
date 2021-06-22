@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Maintenance\Jobs;
+namespace SMW\Tests\Unit\Maintenance\Jobs;
 
 use SMW\Maintenance\MaintenanceFactory;
 

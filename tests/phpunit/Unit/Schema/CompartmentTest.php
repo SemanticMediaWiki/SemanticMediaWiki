@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Schema;
+namespace SMW\Tests\Unit\Schema;
 
 use SMW\Schema\Compartment;
 

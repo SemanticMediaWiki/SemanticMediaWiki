@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;

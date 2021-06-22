@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ChangeOp;
+namespace SMW\Tests\Unit\SQLStore\ChangeOp;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeOp;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeOp

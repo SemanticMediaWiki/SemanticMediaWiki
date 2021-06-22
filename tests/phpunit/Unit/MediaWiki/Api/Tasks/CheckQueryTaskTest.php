@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api\Tasks;
+namespace SMW\Tests\Unit\MediaWiki\Api\Tasks;
 
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
 use SMW\Tests\TestEnvironment;

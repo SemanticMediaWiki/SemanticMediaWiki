@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Serializers;
+namespace SMW\Tests\Unit\Serializers;
 
 use SMW\DataItemFactory;
 use SMW\Serializers\QueryResultSerializer;
@@ -9,7 +9,7 @@ use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer

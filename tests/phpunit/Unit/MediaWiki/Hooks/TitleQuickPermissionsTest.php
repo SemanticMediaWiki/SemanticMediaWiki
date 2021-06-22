@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Hooks;
+namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api;
+namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\PropertyListByApiRequest;

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\SQLStore\EntityStore\IdCacheManager;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdCacheManager

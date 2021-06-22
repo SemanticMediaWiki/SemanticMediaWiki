@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Exception;
+namespace SMW\Tests\Unit\Query\Exception;
 
 use SMW\Query\Exception\ResultFormatNotFoundException;
 

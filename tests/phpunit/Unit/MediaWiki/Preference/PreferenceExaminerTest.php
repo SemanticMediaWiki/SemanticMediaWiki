@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Preference;
+namespace SMW\Tests\Unit\MediaWiki\Preference;
 
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Preference\PreferenceExaminer

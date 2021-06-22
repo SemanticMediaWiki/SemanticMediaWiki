@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\PendingTasks;
+namespace SMW\Tests\Unit\MediaWiki\Specials\PendingTasks;
 
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks

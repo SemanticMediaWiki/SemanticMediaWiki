@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Lookup;
+namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup

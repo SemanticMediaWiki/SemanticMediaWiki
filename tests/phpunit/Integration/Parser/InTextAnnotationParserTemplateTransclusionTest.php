@@ -6,7 +6,7 @@ use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 

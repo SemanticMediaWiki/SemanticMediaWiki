@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Constraint\Constraints;
+namespace SMW\Tests\Unit\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\DeferrableConstraint;
 use SMW\Tests\TestEnvironment;

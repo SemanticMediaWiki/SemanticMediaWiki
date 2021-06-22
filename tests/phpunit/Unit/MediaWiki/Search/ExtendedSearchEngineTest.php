@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search;
+namespace SMW\Tests\Unit\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMWQuery;
 
 /**

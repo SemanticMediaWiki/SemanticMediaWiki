@@ -6,6 +6,7 @@ use SMW\QueryPrinterFactory;
 use SMW\QueryResultPrinter;
 use SMW\TableResultPrinter;
 use SMWListResultPrinter;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPrinterFactory

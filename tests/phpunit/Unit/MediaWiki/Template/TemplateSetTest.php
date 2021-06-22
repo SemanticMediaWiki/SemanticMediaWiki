@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Template;
+namespace SMW\Tests\Unit\MediaWiki\Template;
 
 use SMW\MediaWiki\Template\TemplateSet;
 use SMW\MediaWiki\Template\Template;

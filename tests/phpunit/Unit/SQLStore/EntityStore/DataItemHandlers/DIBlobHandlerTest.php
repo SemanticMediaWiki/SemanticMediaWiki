@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
+namespace SMW\Tests\Unit\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDIBlob as DIBlob;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler

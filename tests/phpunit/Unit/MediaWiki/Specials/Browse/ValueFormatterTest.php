@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Browse;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\ValueFormatter

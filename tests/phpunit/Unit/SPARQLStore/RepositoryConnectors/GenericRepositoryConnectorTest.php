@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
+namespace SMW\Tests\Unit\SPARQLStore\RepositoryConnectors;
 
 use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\RepositoryClient;

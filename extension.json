@@ -24,6 +24,9 @@
 	"ExtensionFunctions": [
 		"SemanticMediaWiki::onExtensionFunction"
 	],
+	"AutoloadNamespaces": {
+		"SMW\\Tests\\": "tests/phpunit/"
+	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1
 }

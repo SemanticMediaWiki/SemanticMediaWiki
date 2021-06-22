@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Schema;
+namespace SMW\Tests\Unit\Schema;
 
 use SMW\Schema\CompartmentIterator;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\CompartmentIterator

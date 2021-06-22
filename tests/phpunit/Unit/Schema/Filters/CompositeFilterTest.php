@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Schema\Filters;
+namespace SMW\Tests\Unit\Schema\Filters;
 
 use SMW\Schema\Filters\CompositeFilter;
 use SMW\Schema\Compartment;

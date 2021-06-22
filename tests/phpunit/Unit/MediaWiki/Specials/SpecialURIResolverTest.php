@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials;
+namespace SMW\Tests\Unit\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver

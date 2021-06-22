@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\Utils\HmacSerializer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\AuxiliaryFields

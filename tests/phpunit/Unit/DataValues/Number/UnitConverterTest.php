@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues\Number;
+namespace SMW\Tests\Unit\DataValues\Number;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\Number\UnitConverter;

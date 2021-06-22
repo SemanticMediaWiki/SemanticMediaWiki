@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test\MediaWiki\Renderer;
+namespace SMW\Tests\MediaWiki\Renderer;
 
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\Tests\Utils\UtilityFactory;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Indicator;
+namespace SMW\Tests\Unit\Indicator;
 
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\Tests\TestEnvironment;

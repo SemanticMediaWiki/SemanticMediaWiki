@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Exporter\ResourceBuilders;
+namespace SMW\Tests\Unit\Exporter\ResourceBuilders;
 
 use SMW\DataItemFactory;
 use SMW\Exporter\ResourceBuilder;

@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Property;
+namespace SMW\Tests\Unit\Property;
 
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\SpecificationLookup

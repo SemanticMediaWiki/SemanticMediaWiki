@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Processor;
+namespace SMW\Tests\Unit\Query\Processor;
 
 use SMWQueryProcessor as QueryProcessor;
 

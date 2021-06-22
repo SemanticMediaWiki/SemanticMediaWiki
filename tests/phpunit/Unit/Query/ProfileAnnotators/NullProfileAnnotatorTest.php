@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\ProfileAnnotators;
+namespace SMW\Tests\Unit\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;

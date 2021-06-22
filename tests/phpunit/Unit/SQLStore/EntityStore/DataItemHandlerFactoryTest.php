@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlerFactory

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Connection;
+namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\MediaWiki\Connection\Database;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;

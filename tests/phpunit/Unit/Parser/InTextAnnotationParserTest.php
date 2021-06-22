@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Parser;
+namespace SMW\Tests\Unit\Parser;
 
 use ParserOutput;
 use ReflectionClass;

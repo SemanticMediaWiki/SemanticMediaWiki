@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueFormatters;
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter

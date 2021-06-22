@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Permission;
+namespace SMW\Tests\Unit\MediaWiki\Permission;
 
 use SMW\MediaWiki\Permission\TitlePermissions;
 use Title;

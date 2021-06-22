@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use Title;

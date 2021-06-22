@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\Language\NamespaceDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;

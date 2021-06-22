@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine\Condition;
 
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 

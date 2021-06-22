@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Constraint\Constraints;
+namespace SMW\Tests\Unit\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\SingleValueConstraint;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\DataItemFactory;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer;
+namespace SMW\Tests\Unit\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Services\ServicesContainer;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\Exception;
+namespace SMW\Tests\Unit\SPARQLStore\Exception;
 
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 

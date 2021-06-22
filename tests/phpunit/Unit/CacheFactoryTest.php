@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;

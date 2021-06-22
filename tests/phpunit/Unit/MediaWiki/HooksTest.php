@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\Unit\MediaWiki;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks

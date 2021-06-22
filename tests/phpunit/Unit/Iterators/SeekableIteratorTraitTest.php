@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Iterators;
+namespace SMW\Tests\Unit\Iterators;
 
 use SMW\Iterators\SeekableIteratorTrait;
 use SMW\Iterators\DotSeekableIteratorTrait;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\SeekableIteratorTrait

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Importer\ContentCreators;
+namespace SMW\Tests\Unit\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\DispatchingContentCreator;
 use SMW\Importer\ImportContents;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\ContentCreators\DispatchingContentCreator

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\HashBuilder

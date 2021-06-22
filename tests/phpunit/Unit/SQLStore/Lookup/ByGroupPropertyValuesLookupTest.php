@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Lookup;
+namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\MediaWiki\Connection\Query;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup

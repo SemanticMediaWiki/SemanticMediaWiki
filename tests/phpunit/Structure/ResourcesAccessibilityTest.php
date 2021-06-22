@@ -6,7 +6,7 @@ use SMW\ApplicationFactory;
 use ResourceLoader;
 use ResourceLoaderContext;
 use ResourceLoaderModule;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

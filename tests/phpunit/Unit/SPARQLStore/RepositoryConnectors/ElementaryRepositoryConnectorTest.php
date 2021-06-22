@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
+namespace SMW\Tests\Unit\SPARQLStore\RepositoryConnectors;
 
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;

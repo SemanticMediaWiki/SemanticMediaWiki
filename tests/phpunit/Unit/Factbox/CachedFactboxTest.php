@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Factbox;
+namespace SMW\Tests\Unit\Factbox;
 
 use Language;
 use ParserOutput;
@@ -11,7 +11,7 @@ use SMW\Factbox\CachedFactbox;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\EntityCache;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\CachedFactbox

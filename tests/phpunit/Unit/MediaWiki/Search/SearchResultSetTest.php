@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search;
+namespace SMW\Tests\Unit\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResultSet;
 use SMW\DIWikiPage;

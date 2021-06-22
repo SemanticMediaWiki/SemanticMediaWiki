@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Constraint\Constraints;
+namespace SMW\Tests\Unit\Constraint\Constraints;
 
 use SMW\DataItemFactory;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\ConstraintError;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\UniqueValueConstraint

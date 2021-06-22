@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\DataValues\Number;
+namespace SMW\Tests\Unit\DataValues\Number;
 
 use Language;
 use SMW\DataValues\Number\IntlNumberFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Number\IntlNumberFormatter

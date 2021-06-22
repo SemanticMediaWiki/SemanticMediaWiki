@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\DataModel;
+namespace SMW\Tests\Unit\DataModel;
 
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataModel\SubSemanticData;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataModel\SubSemanticData

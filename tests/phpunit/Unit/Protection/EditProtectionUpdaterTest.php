@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Protection;
+namespace SMW\Tests\Unit\Protection;
 
 use SMW\DataItemFactory;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Protection\EditProtectionUpdater

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
+namespace SMW\Tests\Unit\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm

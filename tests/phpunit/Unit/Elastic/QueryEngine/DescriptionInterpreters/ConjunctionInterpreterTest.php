@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\DIWikiPage;

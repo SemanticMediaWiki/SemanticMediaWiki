@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Schema\Exception;
+namespace SMW\Tests\Unit\Schema\Exception;
 
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 

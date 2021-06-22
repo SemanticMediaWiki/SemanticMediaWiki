@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
+namespace SMW\Tests\Unit\Listener\ChangeListener\ChangeListeners;
 
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener

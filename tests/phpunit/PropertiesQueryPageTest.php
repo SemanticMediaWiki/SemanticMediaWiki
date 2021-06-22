@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\ArrayAccessor;
 use SMW\DataItemFactory;
 use SMW\PropertiesQueryPage;
 use SMW\Settings;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertiesQueryPage

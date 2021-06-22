@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\Query\DescriptionFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Query\DescriptionBuilders;
+namespace SMW\Tests\Unit\Query\DescriptionBuilders;
 
 use SMW\ApplicationFactory;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder

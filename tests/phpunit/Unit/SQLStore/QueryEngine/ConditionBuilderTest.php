@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine;
 
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
@@ -10,7 +10,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConditionBuilder

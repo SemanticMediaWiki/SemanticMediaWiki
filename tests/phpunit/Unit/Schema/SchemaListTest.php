@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Schema;
+namespace SMW\Tests\Unit\Schema;
 
 use SMW\DIWikiPage;
 use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList

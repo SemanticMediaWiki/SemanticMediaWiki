@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Listener\ChangeListener;
+namespace SMW\Tests\Unit\Listener\ChangeListener;
 
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeRecord

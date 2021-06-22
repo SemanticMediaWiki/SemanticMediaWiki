@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 /**
  * @group semantic-mediawiki

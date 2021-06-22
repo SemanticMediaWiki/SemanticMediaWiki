@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\TemplateEngine;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\TemplateEngine

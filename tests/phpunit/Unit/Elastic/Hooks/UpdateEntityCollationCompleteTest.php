@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Elastic\Hooks;
+namespace SMW\Tests\Unit\Elastic\Hooks;
 
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use FakeResultWrapper;
 

@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\ConfigPreloader;
 use SMW\Utils\FileFetcher;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ConfigPreloader

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Lookup;
+namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\SingleEntityQueryLookup

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryEngine

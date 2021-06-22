@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Protection;
+namespace SMW\Tests\Unit\Protection;
 
 use SMW\DataItemFactory;
 use SMW\Protection\ProtectionValidator;

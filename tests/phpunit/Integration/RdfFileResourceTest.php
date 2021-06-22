@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Exporter\ExporterFactory;
 use Title;
 

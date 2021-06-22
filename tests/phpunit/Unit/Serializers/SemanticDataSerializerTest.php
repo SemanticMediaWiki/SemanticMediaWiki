@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Serializers;
+namespace SMW\Tests\Unit\Serializers;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
@@ -8,7 +8,7 @@ use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer

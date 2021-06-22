@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Ask;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\SortWidget

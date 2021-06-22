@@ -3,8 +3,8 @@
 namespace SMW\Tests\Benchmark;
 
 use SMW\ApplicationFactory;
-use SMW\Tests\JsonTestCaseFileHandler;
-use SMW\Tests\JsonTestCaseScriptRunner;
+use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\JSONScriptTestCaseRunner as JsonTestCaseScriptRunner;
 
 /**
  * @group semantic-mediawiki-benchmark

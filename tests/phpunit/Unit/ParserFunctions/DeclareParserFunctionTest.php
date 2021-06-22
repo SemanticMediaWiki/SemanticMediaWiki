@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DeclareParserFunction

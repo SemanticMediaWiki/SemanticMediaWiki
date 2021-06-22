@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMWDITime as DITime;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMWDITime

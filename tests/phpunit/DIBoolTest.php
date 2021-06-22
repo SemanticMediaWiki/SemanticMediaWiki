@@ -17,7 +17,7 @@ namespace SMW\Tests;
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIBooleanTest extends DataItemTest {
+class DIBoolTest extends DataItemTest {
 
 	/**
 	 * @see DataItemTest::getClass

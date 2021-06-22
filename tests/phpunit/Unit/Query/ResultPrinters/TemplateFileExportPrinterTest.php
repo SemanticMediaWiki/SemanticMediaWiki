@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Query\ResultPrinters;
+namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\TemplateFileExportPrinter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\TemplateFileExportPrinter

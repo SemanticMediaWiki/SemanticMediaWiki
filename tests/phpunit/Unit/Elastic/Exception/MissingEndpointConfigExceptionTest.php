@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\Exception;
+namespace SMW\Tests\Unit\Elastic\Exception;
 
 use SMW\Elastic\Exception\MissingEndpointConfigException;
 use RuntimeException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use ParserOutput;
 use SMW\ApplicationFactory;
@@ -9,7 +9,7 @@ use SMW\ParameterFormatterFactory;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction

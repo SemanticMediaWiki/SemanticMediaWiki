@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\Unit\MediaWiki;
 
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Tests\Utils\Mock\MockTitle;

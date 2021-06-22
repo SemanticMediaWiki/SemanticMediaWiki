@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Lookup;
+namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\MediaWiki\Connection\Query;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Exporter\Element;
+namespace SMW\Tests\Unit\Exporter\Element;
 
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;

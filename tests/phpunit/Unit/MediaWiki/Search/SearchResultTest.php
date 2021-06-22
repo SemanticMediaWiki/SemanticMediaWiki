@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search;
+namespace SMW\Tests\Unit\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchResult;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResult

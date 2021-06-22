@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\Unit\SQLStore;
 
 use SMW\ApplicationFactory;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\SQLStore

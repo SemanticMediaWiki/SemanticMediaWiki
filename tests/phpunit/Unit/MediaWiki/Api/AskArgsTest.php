@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api;
+namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Api\AskArgs;
 use SMW\Tests\Utils\MwApiFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\AskArgs

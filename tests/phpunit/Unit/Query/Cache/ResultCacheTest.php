@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Query\Cache;
+namespace SMW\Tests\Unit\Query\Cache;
 
 use SMW\Query\Cache\ResultCache;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Query\Cache\CacheStats;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;

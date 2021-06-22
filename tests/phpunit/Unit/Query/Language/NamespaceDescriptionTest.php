@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Language;
+namespace SMW\Tests\Unit\Query\Language;
 
 use SMW\Localizer;
 use SMW\Query\Language\NamespaceDescription;

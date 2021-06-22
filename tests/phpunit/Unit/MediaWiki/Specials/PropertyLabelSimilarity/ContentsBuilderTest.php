@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
+namespace SMW\Tests\Unit\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder

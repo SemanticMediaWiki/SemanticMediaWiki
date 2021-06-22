@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
+namespace SMW\Tests\Unit\SPARQLStore\RepositoryConnectors;
 
 use SMW\SPARQLStore\RepositoryClient;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector

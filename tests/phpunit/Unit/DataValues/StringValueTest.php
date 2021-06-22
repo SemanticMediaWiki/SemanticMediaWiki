@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\Unit\DataValues;
 
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;

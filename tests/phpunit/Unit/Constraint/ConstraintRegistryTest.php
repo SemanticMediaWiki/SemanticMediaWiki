@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Constraint;
+namespace SMW\Tests\Unit\Constraint;
 
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry

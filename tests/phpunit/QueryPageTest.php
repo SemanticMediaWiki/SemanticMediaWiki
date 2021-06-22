@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPage

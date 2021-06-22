@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Exporter\Element;
+namespace SMW\Tests\Unit\Exporter\Element;
 
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\Element\ExpNsResource

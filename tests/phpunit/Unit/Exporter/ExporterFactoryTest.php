@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Exporter;
+namespace SMW\Tests\Unit\Exporter;
 
 use SMW\DataItemFactory;
 use SMW\Exporter\ExporterFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\ExporterFactory

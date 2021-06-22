@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\DataValues\Time;
+namespace SMW\Tests\Unit\DataValues\Time;
 
 use DateTime;
 use SMW\DataValues\Time\Timezone;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Time\Timezone

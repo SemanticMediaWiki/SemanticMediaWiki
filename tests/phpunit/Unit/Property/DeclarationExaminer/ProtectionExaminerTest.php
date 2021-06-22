@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Property\DeclarationExaminer;
+namespace SMW\Tests\Unit\Property\DeclarationExaminer;
 
 use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ProtectionExaminer

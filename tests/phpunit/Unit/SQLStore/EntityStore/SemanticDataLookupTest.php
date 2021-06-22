@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWDIBlob as DIBlob;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup

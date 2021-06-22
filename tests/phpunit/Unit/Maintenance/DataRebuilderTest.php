@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Maintenance;
+namespace SMW\Tests\Unit\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**

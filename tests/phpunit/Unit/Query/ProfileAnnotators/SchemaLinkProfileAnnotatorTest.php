@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\ProfileAnnotators;
+namespace SMW\Tests\Unit\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
@@ -8,7 +8,7 @@ use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Tests\TestEnvironment;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Constraint;
+namespace SMW\Tests\Unit\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\DataItemFactory;

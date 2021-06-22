@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Lookup;
+namespace SMW\Tests\Unit\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup

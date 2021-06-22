@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Constraint;
+namespace SMW\Tests\Unit\Constraint;
 
 use SMW\Constraint\ConstraintCheckRunner;
 use SMW\Constraint\Constraint;

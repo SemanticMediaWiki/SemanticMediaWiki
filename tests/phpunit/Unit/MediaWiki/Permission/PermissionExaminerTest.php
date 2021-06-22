@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Permission;
+namespace SMW\Tests\Unit\MediaWiki\Permission;
 
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Permission\PermissionExaminer

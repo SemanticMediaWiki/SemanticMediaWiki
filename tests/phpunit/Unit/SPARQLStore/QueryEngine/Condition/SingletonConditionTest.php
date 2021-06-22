@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine\Condition;
 
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition

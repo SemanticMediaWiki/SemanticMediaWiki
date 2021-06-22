@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PropertyRegistry;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DIProperty

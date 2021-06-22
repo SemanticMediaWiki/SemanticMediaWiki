@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Exporter;
+namespace SMW\Tests\Unit\Exporter;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

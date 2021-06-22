@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ChangeOp;
+namespace SMW\Tests\Unit\SQLStore\ChangeOp;
 
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\FieldChangeOp

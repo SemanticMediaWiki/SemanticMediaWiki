@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Unit\Query;
 
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\QueryResult

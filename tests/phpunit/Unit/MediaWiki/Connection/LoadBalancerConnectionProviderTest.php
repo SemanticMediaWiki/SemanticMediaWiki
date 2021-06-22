@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Connection;
+namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use DatabaseBase;
 use ReflectionClass;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\Tests\TestEnvironment;
 

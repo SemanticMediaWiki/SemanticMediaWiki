@@ -6,7 +6,7 @@ use RequestContext;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;

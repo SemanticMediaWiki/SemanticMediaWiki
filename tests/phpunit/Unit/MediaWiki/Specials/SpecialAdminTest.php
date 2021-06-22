@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials;
+namespace SMW\Tests\Unit\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialAdmin;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 

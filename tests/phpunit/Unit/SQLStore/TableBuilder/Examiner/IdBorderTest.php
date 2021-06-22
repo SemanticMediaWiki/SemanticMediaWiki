@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
+namespace SMW\Tests\Unit\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\IdBorder

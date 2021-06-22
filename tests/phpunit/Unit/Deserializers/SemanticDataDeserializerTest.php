@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Deserializers;
+namespace SMW\Tests\Unit\Deserializers;
 
 use SMW\Deserializers\SemanticDataDeserializer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer

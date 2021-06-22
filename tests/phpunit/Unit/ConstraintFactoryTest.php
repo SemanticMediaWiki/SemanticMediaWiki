@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use SMW\ConstraintFactory;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Fixtures\PlainClass;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ConstraintFactory

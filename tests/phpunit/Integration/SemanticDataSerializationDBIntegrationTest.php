@@ -7,7 +7,7 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use Title;
 
 /**

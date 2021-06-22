@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Exception;
+namespace SMW\Tests\Unit\SQLStore\Exception;
 
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
 

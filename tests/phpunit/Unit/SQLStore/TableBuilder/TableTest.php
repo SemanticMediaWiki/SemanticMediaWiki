@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\SQLStore\TableBuilder;
+namespace SMW\Tests\Unit\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\Table;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Table

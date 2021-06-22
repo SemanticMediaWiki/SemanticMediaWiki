@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api\Browse;
+namespace SMW\Tests\Unit\MediaWiki\Api\Browse;
 
 use SMW\MediaWiki\Api\Browse\ListLookup;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Template;
+namespace SMW\Tests\Unit\MediaWiki\Template;
 
 use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\MediaWiki\Template\Template;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Template\TemplateExpander

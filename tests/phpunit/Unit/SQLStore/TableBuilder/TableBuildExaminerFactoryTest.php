@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\TableBuildExaminerFactory;
+namespace SMW\Tests\Unit\SQLStore\TableBuildExaminerFactory;
 
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 

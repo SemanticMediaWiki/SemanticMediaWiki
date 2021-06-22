@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
