@@ -109,31 +109,66 @@ class SetupFile {
 	 * @return boolean
 	 */
 	public static function isGoodSchema( $isCli = false ) {
+		// get the schema State as a  human readable description
+		$schemaState=SetupFile::getSchemaState($isCli);
+		// check that it starts with "ok:" and not "error:"
+		$result=SetupFile::strStartsWith($schemaState,"ok:");
+		return $result;
+	}
 
+	/**
+	 * @since 3.1.7
+	 *
+	 * see https://stackoverflow.com/a/6513929/1497139
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 *
+	 * return boolean
+	 */
+	public static function strStartsWith($haystack, $needle) {
+           return (strpos($haystack, $needle) === 0);
+  }
+
+	/**
+	 * @since 3.1.7
+	 *
+	 * @param boolean $isCli
+	 *
+	 * @return string 
+	 */
+	public static function getSchemaState( $isCli = false ) {
+          
 		if ( $isCli && defined( 'MW_PHPUNIT_TEST' ) ) {
-			return true;
+			return "ok: CLI with PHP Unit Test active";
 		}
 
 		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
-			return true;
+			return "ok: isCli is true and PHP_SAPI cli/phpdbg=".PHP_SAPI;
 		}
 
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$id = Site::id();
 
-		if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
-			return false;
+    if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
+      global $smwgConfigFileDir;
+			return "error: smw.json for ".$id." upgrade key missing - you might want to check \$smwgConfigFileDir:".$smwgConfigFileDir;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+		$upgradeKey = self::makeUpgradeKey( $GLOBALS );
+		$expected   =$GLOBALS['smw.json'][$id]['upgrade_key'];
+		if ( $upgradeKey === $expected ) 
+			$schemaState= "ok: found upgradeKey.".$upgradeKey;
+		else
+			$schemaState= "error: expected upgradeKey ".$expected." for ".$id." but found ".$upgradeKey;
 
 		if (
 			isset( $GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] ) &&
 			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] !== false ) {
-			$isGoodSchema = false;
+			$schemaState= "error: upgradeKey ".$upgradeKey." is ok but maintainance is active";
 		}
 
-		return $isGoodSchema;
+		return $schemaState;
 	}
 
 	/**
@@ -479,9 +514,9 @@ class SetupFile {
 		}
 
 		// Log the base elements used for computing the key
-		// $vars['smw.json'][$id]['upgrade_key_base'] = self::makeKey(
-		//	$vars
-		// );
+		$vars['smw.json'][$id]['upgrade_key_base'] = self::makeKey(
+			$vars
+		);
 
 		// Remove legacy
 		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
@@ -513,7 +548,7 @@ class SetupFile {
 	 * or represented in Semantic MediaWiki. In most cases it will require an action
 	 * from an adminstrator when one of those keys are altered.
 	 */
-	private static function makeKey( $vars ) {
+	public static function makeKey( $vars ) {
 
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(

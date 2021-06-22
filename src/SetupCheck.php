@@ -378,13 +378,32 @@ class SetupCheck {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}
-	}
+  }
+
+  private function schemaError() {
+ 	  // get trace
+		// https://stackoverflow.com/a/7039409/1497139
+		//
+		$e = new \Exception;
+		$content ='<pre>'.$e->getTraceAsString().'</pre>';
+		$content .='PHP_SAPI: '.PHP_SAPI."<br>";
+		$isCli=$this->isCli();
+		$schemaState=SetupFile::getSchemaState($isCli);
+		$content.='Schema state: '.$schemaState."<br>";
+		$upgradeKeyBase=SetupFile::makeKey($GLOBALS);
+    $content.='upgrade key base: '.$upgradeKeyBase;
+    return $content;
+  }
 
 	private function createErrorContent( $type ) {
 
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];
-		$content = '';
+    $content = '';
+
+    if ($type==self::ERROR_SCHEMA_INVALID_KEY) {
+      $content.=$this->schemaError($this->isCli());
+    }
 
 		/**
 		 * Actual output form
