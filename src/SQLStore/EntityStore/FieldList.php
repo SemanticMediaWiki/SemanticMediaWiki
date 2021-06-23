@@ -83,8 +83,10 @@ class FieldList {
 
 	private function makeList( $map, &$list ) {
 		foreach ( $map as $id => $values ) {
-			foreach ( $values as $key => $counts ) {
-				$this->matchKeyByHash( $key, $counts, $list );
+			if ( is_iterable( $values ) ) {
+				foreach ( $values as $key => $counts ) {
+					$this->matchKeyByHash( $key, $counts, $list );
+				}
 			}
 		}
 	}
