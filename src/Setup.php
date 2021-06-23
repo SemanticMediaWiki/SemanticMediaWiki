@@ -89,13 +89,6 @@ final class Setup {
 	 */
 	public static function initExtension( &$vars ) {
 		Hooks::registerEarly( $vars );
-
-		// Register connection providers early to ensure the invocation of SMW
-		// related extensions such as `wfLoadExtension( 'SemanticCite' );` can
-		// happen before or after `enableSemantics` so that the check by the
-		// `ConnectionManager` (#4170) doesn't throw an error when an extension
-		// access the `Store` during `onExtensionFunction`
-		self::initConnectionProviders();
 	}
 
 	/**
@@ -147,6 +140,7 @@ final class Setup {
 			$setupCheck->showErrorAndAbort( $setupCheck->isCli() );
 		}
 
+		$this->initConnectionProviders();
 		$this->initMessageCallbackHandler();
 		$this->addDefaultConfigurations( $vars, $rootDir );
 
@@ -197,7 +191,7 @@ final class Setup {
 		}
 	}
 
-	private static function initConnectionProviders() {
+	private function initConnectionProviders() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
