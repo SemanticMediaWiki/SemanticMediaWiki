@@ -307,7 +307,6 @@ class Hooks {
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
-			'ResourceLoaderTestModules' => [ $this, 'onResourceLoaderTestModules' ],
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
 			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
 			'SkinTemplateNavigation' => [ $this, 'onSkinTemplateNavigation' ],
@@ -342,6 +341,10 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
+
+		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
+			$this->handlers['ResourceLoaderTestModules'] = [ $this, 'onResourceLoaderTestModules' ];
+		}
 	}
 
 	/**
