@@ -707,7 +707,7 @@ class Hooks {
 		$wikiPage = $page->getPage();
 
 		$dependencyValidator->setETag(
-			$parserCache->getETag( $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
+			$this->getETag( $parserCache, $wikiPage, $wikiPage->makeParserOptions( 'canonical' ) )
 		);
 
 		$dependencyValidator->setCacheTTL(
@@ -738,6 +738,16 @@ class Hooks {
 		return true;
 	}
 
+	private function getETag( $parserCache, $page, $pOpts) {
+		if ( method_exists( $parserCache, 'makeParserOutputKey' ) ) {
+			// 1.36+
+			return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
+				"--" . $page->getTouched() . '"';
+		} else {
+			return $parserCache->getETag( $page, $pOpts );
+		}
+	}
+
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
 	 */
@@ -750,10 +760,7 @@ class Hooks {
 		$parserCache = $applicationFactory->create( 'ParserCache' );
 
 		$dependencyValidator = $applicationFactory->create( 'DependencyValidator' );
-
-		$dependencyValidator->setETag(
-			$parserCache->getETag( $page, $popts )
-		);
+		$dependencyValidator->setETag( $this->getETag( $parserCache, $page, $popts ) );
 
 		$dependencyValidator->setCacheTTL(
 			Site::getCacheExpireTime( 'parser' )
