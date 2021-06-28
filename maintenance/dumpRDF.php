@@ -28,6 +28,8 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --classes          Export only concepts and categories
  * --properties       Export only properties
  * --individuals      Export only pages that are no categories, properties, or types
+ * --namespace <list> Export only namespaces included in <list>
+ *                    Example: --namespaces 3000|3002 with | being used as separator.
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
  * -d <delay>         Slows down the export in order to stress the server less,
@@ -67,6 +69,9 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'classes', 'Export only classes', false );
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
+
+		$this->addOption('namespace','Export only namespaced included in the <namespaceList> with | being used as a separator. ' ,
+                                'Example: --namespace "3000|3002|3004"',false, true);
 
 		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
 								'Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
@@ -148,6 +153,7 @@ class dumpRDF extends \Maintenance {
 
 		$delay = 0;
 		$pages = [];
+		$namespaces = [];
 		$restrictNamespaceTo = false;
 
 		if ( $this->hasOption( 'd' ) ) {
@@ -176,15 +182,24 @@ class dumpRDF extends \Maintenance {
 			$pages = explode( '|', $this->getOption( 'page' ) );
 		}
 
+        if ( $this->hasOption( 'namespace' ) ) {
+            $namespaces = explode( '|', $this->getOption( 'namespace' ) );
+        }
+
 		if ( $this->hasOption( 'server' ) ) {
 			$GLOBALS['wgServer'] = $this->getOption( 'server' );
 		}
+
 
 		$exporterFactory = new ExporterFactory();
 
 		$exportController = $exporterFactory->newExportController(
 			$exporterFactory->newRDFXMLSerializer()
 		);
+
+        if ( $namespaces !== [] ) {
+            $restrictNamespaceTo = $namespaces;
+        }
 
 		if ( $pages !== [] ) {
 			$exportController->printPages(
