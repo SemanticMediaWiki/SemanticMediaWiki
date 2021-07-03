@@ -425,7 +425,7 @@ EOT;
 	protected function doDropTable( $tableName ) {
 		// Function: SMW\SQLStore\TableBuilder\PostgresTableBuilder::doDropTable
 		// Error: 2BP01 ERROR:  cannot drop table smw_object_ids because other objects depend on it
-		// DETAIL:  default for table sunittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
+		// DETAIL:  default for table unittest_smw_object_ids column smw_id depends on sequence smw_object_ids_smw_id_seq
 		// HINT:  Use DROP ... CASCADE to drop the dependent objects too.
 		$this->connection->query( 'DROP TABLE IF EXISTS ' . $this->connection->tableName( $tableName ) . ' CASCADE', __METHOD__ );
 	}

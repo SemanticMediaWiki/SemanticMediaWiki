@@ -254,7 +254,7 @@ class QuerySegmentListProcessor {
 
 				// This produces an error on postgres with
 				// pg_query(): Query failed: ERROR:  duplicate key value violates
-				// unique constraint "sunittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
+				// unique constraint "unittest_t3_pkey" DETAIL:  Key (id)=(274) already exists.
 
 				foreach ( $subQuery->joinfield as $value ) {
 					$values .= ( $values ? ',' : '' ) . '(' . $this->connection->addQuotes( $value ) . ')';

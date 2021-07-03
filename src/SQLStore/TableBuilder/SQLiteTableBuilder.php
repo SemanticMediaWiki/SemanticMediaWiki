@@ -206,7 +206,7 @@ class SQLiteTableBuilder extends TableBuilder {
 			$default = "DEFAULT NULL";
 
 			// Add DEFAULT '' to avoid
-			// Query: ALTER TABLE sunittest_rdbms_test ADD `t_num` INT(8) NOT NULL
+			// Query: ALTER TABLE unittest_rdbms_test ADD `t_num` INT(8) NOT NULL
 			// Function: SMW\SQLStore\TableBuilder\SQLiteTableBuilder::doCreateField
 			// Error: 1 Cannot add a NOT NULL column with default value NULL
 			if ( strpos( $fieldType, 'NOT NULL' ) !== false ) {
