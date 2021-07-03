@@ -45,6 +45,9 @@
 		"smwgFulltextDeferredUpdate": false
 	},
 	"meta": {
+		"skip-on": {
+			"sqlite": "Fulltext not supported by SQLite."
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

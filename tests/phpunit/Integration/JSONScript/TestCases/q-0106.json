@@ -81,6 +81,7 @@
 	},
 	"meta": {
 		"skip-on": {
+			"sqlite": "Fulltext not supported by SQLite.",
 			"postgres": "Fulltext not supported by PostgreSQL.",
 			"sesame": "Fulltext not supported by SPARQLStore (Sesame).",
 			"virtuoso": "Fulltext not supported by SPARQLStore (Virtuoso).",
