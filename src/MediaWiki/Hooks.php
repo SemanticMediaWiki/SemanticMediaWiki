@@ -300,7 +300,6 @@ class Hooks {
 			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
-			'NewRevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
@@ -343,8 +342,10 @@ class Hooks {
 		];
 		if ( version_compare( MW_VERSION, '1.35', '<' ) ) {
 			$this->handlers['TitleMoveComplete'] = [ $this, 'onTitleMoveComplete' ];
+			$this->handlers['NewRevisionFromEditComplete'] = [ $this, 'onNewRevisionFromEditComplete' ];
 		} else {
 			$this->handlers['PageMoveComplete'] = [ $this, 'onTitleMoveComplete' ];
+			$this->handlers['RevisionFromEditComplete'] = [ $this, 'onNewRevisionFromEditComplete' ];
 		}
 	}
 
