@@ -46,7 +46,7 @@ class EditInfo {
 	 * @param Revision $revision
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $page, Revision $revision = null, User $user = null ) {
+	public function __construct( WikiPage $page, $revision = null, User $user = null ) {
 		$this->page = $page;
 		$this->revision = $revision;
 		$this->user = $user;

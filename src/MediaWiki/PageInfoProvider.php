@@ -45,7 +45,7 @@ class PageInfoProvider implements PageInfo {
 	 * @param Revision|null $revision
 	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, Revision $revision = null, User $user = null ) {
+	public function __construct( WikiPage $wikiPage, $revision = null, User $user = null ) {
 		$this->wikiPage = $wikiPage;
 		$this->revision = $revision;
 		$this->user = $user;

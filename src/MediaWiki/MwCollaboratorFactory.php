@@ -166,7 +166,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return PageInfoProvider
 	 */
-	public function newPageInfoProvider( WikiPage $wkiPage, Revision $revision = null, User $user = null ) {
+	public function newPageInfoProvider( WikiPage $wkiPage, $revision = null, User $user = null ) {
 		$pageInfoProvider = new PageInfoProvider( $wkiPage, $revision, $user );
 
 		$pageInfoProvider->setRevisionGuard(
@@ -199,7 +199,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return EditInfo
 	 */
-	public function newEditInfo( WikiPage $wkiPage, Revision $revision = null, User $user = null ) {
+	public function newEditInfo( WikiPage $wkiPage, $revision = null, User $user = null ) {
 
 		$editInfo = new EditInfo( $wkiPage, $revision, $user );
 
