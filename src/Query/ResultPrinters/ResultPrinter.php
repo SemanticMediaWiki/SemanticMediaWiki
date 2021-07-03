@@ -224,8 +224,6 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	public function copyParser() {
 
-		// Should not happen, used as fallback which in case the parser state
-		// relies on the $GLOBALS['wgParser']
 		if ( $this->recursiveTextProcessor === null ) {
 			$this->recursiveTextProcessor = new RecursiveTextProcessor();
 		}
@@ -363,8 +361,6 @@ abstract class ResultPrinter implements IResultPrinter {
 		// append errors
 		$result .= $this->getErrorString( $results );
 
-		// Should not happen, used as fallback which in case the parser state
-		// relies on the $GLOBALS['wgParser']
 		if ( $this->recursiveTextProcessor === null ) {
 			$this->recursiveTextProcessor = new RecursiveTextProcessor();
 		}

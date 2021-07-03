@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use FeedItem;
+use MediaWiki\MediaWikiServices;
 use ParserOptions;
 use Sanitizer;
-use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
@@ -435,8 +435,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			$parserOptions->setEditSection( false );
 		}
 
-		$parser = ApplicationFactory::getInstance()->create( 'Parser' );
-		return $parser->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
+		return MediaWikiServices::getInstance()
+			->getParser()->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
 	}
 
 	private function getFeedLink( QueryResult $res, $outputMode ) {
