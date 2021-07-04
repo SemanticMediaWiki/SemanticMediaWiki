@@ -25,7 +25,9 @@
 		"SemanticMediaWiki::onExtensionFunction"
 	],
 	"AutoloadNamespaces": {
-		"SMW\\Tests\\": "tests/phpunit/"
+		"SMW\\Tests\\": "tests/phpunit/",
+		"SMW\\Maintenance\\": "maintenance/",
+		"SMW\\": "src/"
 	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1
