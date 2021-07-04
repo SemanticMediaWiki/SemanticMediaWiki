@@ -22,7 +22,7 @@ class LogoTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'data:image/png;base64',
-			Logo::get( '100x90' )
+			Logo::get( '100x89' )
 		);
 
 		$this->assertContains(
