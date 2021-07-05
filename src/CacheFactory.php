@@ -8,6 +8,7 @@ use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 use Title;
+use WikiMap;
 
 /**
  * @license GNU GPL v2+
@@ -50,7 +51,13 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getCachePrefix() {
-		return $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+		if ( class_exists( '\WikiMap' ) && method_exists( '\WikiMap', 'getCurrentWikiId' ) ) {
+			$wikiId = WikiMap::getCurrentWikiId();
+		} else {
+			$wikiId = wfWikiID();
+		}
+
+		return $GLOBALS['wgCachePrefix'] === false ? $wikiId : $GLOBALS['wgCachePrefix'];
 	}
 
 	/**
