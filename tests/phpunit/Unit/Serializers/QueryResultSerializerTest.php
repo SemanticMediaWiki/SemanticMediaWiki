@@ -202,7 +202,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			[
 				'queryResult' => $this->buildMockQueryResult( $setup )
-			],
+				],
 			[
 				'printrequests' => [
 					[ 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ],
@@ -237,9 +237,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			] );
 
 			$printRequests[] = $printRequest;
-			# TODO: Should be the following line, but the environment of the test should be adapted
-			# $getResults[] = \SMW\DIWikiPage::newFromTitle( \Title::makeTitle( NS_MAIN, $value['printRequest'] ) );
-			$getResults[] = \SMW\DIWikiPage::newFromTitle( \Title::makeTitle( NS_MAIN, '' ) );
+			$getResults[] = \SMW\DIWikiPage::newFromTitle( Title::newFromText( $value['printRequest'], NS_MAIN ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,
