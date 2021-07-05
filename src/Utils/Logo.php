@@ -21,7 +21,7 @@ class Logo {
 	 */
 	public static function get( $key ) {
 
-		if ( $key === 'small' || $key === '100x89' ) {
+		if ( $key === 'small' || $key === '100x90' ) {
 			return self::small();
 		}
 
