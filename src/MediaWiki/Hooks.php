@@ -409,7 +409,7 @@ class Hooks {
 
 		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 	}
-	
+
 	/**
 	 * Hook: Called by Skin when building the toolbox array and
 	 * returning it for the skin to output.
