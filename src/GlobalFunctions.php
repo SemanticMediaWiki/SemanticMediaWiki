@@ -164,8 +164,13 @@ function &smwfGetStore() {
  * @return string
  */
 function smwfCacheKey( $namespace, $key ) {
+	if ( class_exists( '\WikiMap' ) && method_exists( '\WikiMap', 'getCurrentWikiId' ) ) {
+		$wikiId = WikiMap::getCurrentWikiId();
+	} else {
+		$wikiId = wfWikiID();
+	}
 
-	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? $wikiId : $GLOBALS['wgCachePrefix'];
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
