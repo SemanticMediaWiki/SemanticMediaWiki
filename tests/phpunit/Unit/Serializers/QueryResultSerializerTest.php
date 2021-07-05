@@ -10,6 +10,7 @@ use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
@@ -237,7 +238,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 			] );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = \SMW\DIWikiPage::newFromTitle( new \Title( NS_MAIN, $value['printRequest'] ) );
+			$getResults[] = \SMW\DIWikiPage::newFromTitle( Title::newFromText( $value['printRequest'], NS_MAIN ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,
