@@ -4,7 +4,7 @@ namespace SMW;
 
 use Parser;
 use ParserOptions;
-use Revision;
+use MediaWiki\Revision\RevisionRecord as Revision;
 use Title;
 use User;
 use SMW\MediaWiki\RevisionGuard;

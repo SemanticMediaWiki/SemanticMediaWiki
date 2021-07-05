@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use MediaWiki\Revision\RevisionRecord as Revision;
 use Title;
 use File;
 use User;
@@ -114,8 +114,7 @@ class RevisionGuard {
 
 		// https://github.com/wikimedia/mediawiki/commit/4721717527f9f7ff6c68488529a7bb0463bd5744
 		if ( method_exists( $page, 'getRevisionRecord' ) ) {
-			$revisionRecord = $page->getRevisionRecord();
-			return $revisionRecord ? new Revision( $revisionRecord ) : null;
+			return $page->getRevisionRecord();
 		}
 
 		return $page->getRevision();
@@ -143,13 +142,11 @@ class RevisionGuard {
 			// MW 1.32
 			$this->revisionLookup instanceof \MediaWiki\Revision\RevisionLookup ) {
 
-			$revisionRecord = $this->revisionLookup->getRevisionByTitle(
+			return $this->revisionLookup->getRevisionByTitle(
 				$title,
 				$revId,
 				$flags
 			);
-
-			return $revisionRecord ? new Revision( $revisionRecord, $flags ) : null;
 		}
 
 		return null;
@@ -166,7 +163,7 @@ class RevisionGuard {
 	public function getRevision( Title $title, ?Revision $revision ) : ?Revision {
 
 		if ( $revision === null ) {
-			$revision = $this->newRevisionFromTitle( $title, false, Revision::READ_NORMAL );
+			$revision = $this->newRevisionFromTitle( $title, false, \IDBAccessObject::READ_NORMAL );
 		}
 
 		$origRevision = $revision;

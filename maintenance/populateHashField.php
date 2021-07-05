@@ -36,7 +36,7 @@ class populateHashField extends \Maintenance {
 	 * This postpones the execution to after `setupStore.php`/`update.php` in
 	 * order to help minimize the time required for the initial setup/upgrade.
 	 */
-	const COUNT_SCRIPT_EXECUTION_THRESHOLD = 200000;
+	public const COUNT_SCRIPT_EXECUTION_THRESHOLD = 200000;
 
 	/**
 	 * @var Store

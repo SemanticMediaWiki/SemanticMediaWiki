@@ -3,18 +3,19 @@
 namespace SMW\MediaWiki;
 
 use Hooks;
-use User;
-use SMW\Store;
-use SMW\SQLStore\TableBuilder;
-use SMW\Options;
-use SMW\Parser\AnnotationProcessor;
-use SMW\Property\Annotator as PropertyAnnotator;
+use MediaWiki\Revision\RevisionRecord as Revision;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Schema\SchemaTypes;
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Options;
+use SMW\Parser\AnnotationProcessor;
+use SMW\Property\Annotator as PropertyAnnotator;
+use SMW\Schema\SchemaTypes;
+use SMW\Store;
+use SMW\SQLStore\TableBuilder;
+use User;
 
 /**
  * @private
@@ -247,7 +248,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param Revision|null $revision
 	 */
-	public function onChangeRevision( \Title $title, ?\Revision &$revision ) {
+	public function onChangeRevision( \Title $title, Revision &$revision ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 	}
 

@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
+use SMW\DataItem;
+use SMW\DataValue;
 use SMWDIBlob as DIBlob;
 
 /**
