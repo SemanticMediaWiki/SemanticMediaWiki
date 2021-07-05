@@ -4,6 +4,7 @@ namespace SMW\Elastic\Indexer;
 
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesContainer;
@@ -294,9 +295,7 @@ class Indexer {
 			return '';
 		}
 
-		// TODO MCR use RevisionGuard ?
-		$revisionLookup = \MediaWiki\MediaWikiServices::getInstance()->getRevisionLookup();
-		$revision = $revisionLookup->getRevisionById( $id );
+		$revision = MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById( $id );
 
 		if ( $revision == null ) {
 			return '';

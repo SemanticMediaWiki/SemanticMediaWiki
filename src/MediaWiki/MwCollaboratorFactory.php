@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use MediaWiki\Revision\RevisionRecord;
 use Language;
+use MediaWiki\Revision\RevisionRecord;
 use Parser;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
@@ -166,7 +166,11 @@ class MwCollaboratorFactory {
 	 *
 	 * @return PageInfoProvider
 	 */
-	public function newPageInfoProvider( WikiPage $wikiPage, RevisionRecord $revision = null, User $user = null ) {
+	public function newPageInfoProvider(
+		WikiPage $wikiPage,
+		?RevisionRecord $revision = null,
+		?User $user = null
+	) {
 		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user );
 
 		$pageInfoProvider->setRevisionGuard(
@@ -186,7 +190,11 @@ class MwCollaboratorFactory {
 	 *
 	 * @return EditInfo
 	 */
-	public function newEditInfoProvider( WikiPage $wikiPage, RevisionRecord $revision, User $user = null ) {
+	public function newEditInfoProvider(
+		WikiPage $wikiPage,
+		RevisionRecord $revision,
+		?User $user = null
+	) {
 		return $this->newEditInfo( $wikiPage, $revision, $user );
 	}
 
@@ -199,7 +207,11 @@ class MwCollaboratorFactory {
 	 *
 	 * @return EditInfo
 	 */
-	public function newEditInfo( WikiPage $wikiPage, RevisionRecord $revision = null, User $user = null ) {
+	public function newEditInfo(
+		WikiPage $wikiPage,
+		?RevisionRecord $revision = null,
+		?User $user = null
+	) {
 
 		$editInfo = new EditInfo( $wikiPage, $revision, $user );
 

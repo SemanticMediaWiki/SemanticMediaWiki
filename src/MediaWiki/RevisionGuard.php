@@ -153,7 +153,6 @@ class RevisionGuard {
 
 		$origRevision = $revision;
 
-		// TODO this is a modified SMW hook, from Revision to \MediaWiki\Revision\RevisionRecord
 		$this->hookDispatcher->onChangeRevision( $title, $revision );
 
 		if ( $revision instanceof RevisionRecord ) {

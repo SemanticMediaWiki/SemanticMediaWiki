@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use Hooks;
-use User;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\Store;
 use SMW\SQLStore\TableBuilder;
@@ -16,6 +15,8 @@ use SMW\Constraint\ConstraintRegistry;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use Title;
+use User;
 
 /**
  * @private
@@ -206,7 +207,7 @@ class HookDispatcher {
 	 *
 	 * @return bool
 	 */
-	public function onIsApprovedRevision( \Title $title, int $latestRevID ) : bool {
+	public function onIsApprovedRevision( Title $title, int $latestRevID ) : bool {
 		return Hooks::run( 'SMW::RevisionGuard::IsApprovedRevision', [ $title, $latestRevID ] );
 	}
 
@@ -220,7 +221,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param int &$latestRevID
 	 */
-	public function onChangeRevisionID( \Title $title, int &$latestRevID ) {
+	public function onChangeRevisionID( Title $title, int &$latestRevID ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
 	}
 
@@ -234,7 +235,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param File|null $file
 	 */
-	public function onChangeFile( \Title $title, &$file ) {
+	public function onChangeFile( Title $title, &$file ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 	}
 
@@ -248,7 +249,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param RevisionRecord|null $revision
 	 */
-	public function onChangeRevision( \Title $title, ?RevisionRecord &$revision ) {
+	public function onChangeRevision( Title $title, ?RevisionRecord &$revision ) {
 		Hooks::run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 	}
 
