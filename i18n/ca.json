@@ -17,6 +17,7 @@
 			"Sociologist",
 			"Solde",
 			"Toniher",
+			"Vfc",
 			"아라"
 		]
 	},
@@ -323,7 +324,7 @@
 	"smw_sbv_property": "Propietat:",
 	"smw_sbv_value": "Valor:",
 	"smw_sbv_submit": "Troba els resultats",
-	"browse": "Explora el wiki",
+	"browse": "Explora la wiki",
 	"smw_browselink": "Explora les propietats",
 	"smw_browse_article": "Introduïu el nom de la pàgina des d'on començar a navegar.",
 	"smw_browse_go": "Vés-hi",
