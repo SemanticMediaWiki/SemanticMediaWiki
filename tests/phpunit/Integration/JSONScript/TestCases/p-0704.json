@@ -26,7 +26,7 @@
 			"subject": "Example/P0704/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:Has text\">Some &lt;div onmouseover=\"alert('&lt;?php echo htmlspecialchars($xss) ?&gt;')\"&gt;"
+					"title=\"Property:Has text\">Some &lt;div onmouseover=\"alert('&lt;?php echo htmlspecialchars($xss)&#160;?&gt;')\"&gt;"
 				]
 			}
 		},
@@ -36,7 +36,7 @@
 			"subject": "Example/P0704/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Property:Has text\">Some &lt;a href=\"javascript:alert('&lt;?php echo htmlspecialchars($xss) ?&gt;')\"&gt;"
+					"title=\"Property:Has text\">Some &lt;a href=\"javascript:alert('&lt;?php echo htmlspecialchars($xss)&#160;?&gt;')\"&gt;"
 				]
 			}
 		}

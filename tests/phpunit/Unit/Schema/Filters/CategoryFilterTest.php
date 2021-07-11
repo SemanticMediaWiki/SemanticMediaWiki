@@ -180,10 +180,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 	public function categoryFilterProvider() {
 
 		yield 'oneOf.1: single one_of' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => 'Foo'
+					'category' => 'NotFoo'
 				]
 			],
 			true,
@@ -191,10 +191,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.1: single one_of, flipped' => [
-			[ 'Foo' => true, 'Bar' => true ],
+			[ 'NotFoo' => true, 'Bar' => true ],
 			[
 				'if' => [
-					'category' => 'Foo'
+					'category' => 'NotFoo'
 				]
 			],
 			true,
@@ -202,10 +202,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.2: single one_of, underscore condition' => [
-			[ 'Foo bar', 'Bar' ],
+			[ 'NotFoo bar', 'Bar' ],
 			[
 				'if' => [
-					'category' => 'Foo_bar'
+					'category' => 'NotFoo_bar'
 				]
 			],
 			true,
@@ -213,10 +213,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.3: single one_of, underscore validation value' => [
-			[ 'Foo_bar', 'Bar' ],
+			[ 'NotFoo_bar', 'Bar' ],
 			[
 				'if' => [
-					'category' => 'Foo bar'
+					'category' => 'NotFoo bar'
 				]
 			],
 			true,
@@ -227,7 +227,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 			[],
 			[
 				'if' => [
-					'category' => 'Foo'
+					'category' => 'NotFoo'
 				]
 			],
 			false,
@@ -235,7 +235,7 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.5: single no_match' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
 					'category' => 'no_match'
@@ -246,10 +246,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.6: one_of matches' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'oneOf' => [ 'Foo', 'Foobar' ] ]
+					'category' => [ 'oneOf' => [ 'NotFoo', 'NotFoobar' ] ]
 				]
 			],
 			true,
@@ -257,10 +257,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.7: one_of fails because more than one matches' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'oneOf' => [ 'Foo', 'Bar' ] ]
+					'category' => [ 'oneOf' => [ 'NotFoo', 'Bar' ] ]
 				]
 			],
 			false,
@@ -268,10 +268,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'oneOf.8: one_of fails because both match (onyl one is allowed to match)' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'oneOf' => [ 'Foo', 'Bar', 'Foobar' ] ]
+					'category' => [ 'oneOf' => [ 'NotFoo', 'Bar', 'NotFoobar' ] ]
 				]
 			],
 			false,
@@ -281,10 +281,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		// anyOf
 
 		yield 'anyOf.1: anyOf does match because one or more match' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'anyOf' => [ 'Foo', 'Bar', 'Foobar' ] ]
+					'category' => [ 'anyOf' => [ 'NotFoo', 'Bar', 'NotFoobar' ] ]
 				]
 			],
 			true,
@@ -294,10 +294,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		// allOf
 
 		yield 'allOf.1: all_of matched' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'allOf' => [ 'Foo', 'Bar' ] ]
+					'category' => [ 'allOf' => [ 'NotFoo', 'Bar' ] ]
 				]
 			],
 			true,
@@ -305,10 +305,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'allOf.2: all_of failed' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'allOf' => [ 'Foo', 'Foobar' ] ]
+					'category' => [ 'allOf' => [ 'NotFoo', 'NotFoobar' ] ]
 				]
 			],
 			false,
@@ -318,10 +318,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		// not
 
 		yield 'not.1: not single, matches `not` condition' => [
-			[ 'Foo' ],
+			[ 'NotFoo' ],
 			[
 				'if' => [
-					'category' => [ 'not' => [ 'Foo1', 'Foo2' ] ]
+					'category' => [ 'not' => [ 'NotFoo1', 'NotFoo2' ] ]
 				]
 			],
 			true,
@@ -329,10 +329,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.2: not multiple, matches `not` condition' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => [ 'Foo1', 'Foo2' ] ]
+					'category' => [ 'not' => [ 'NotFoo1', 'NotFoo2' ] ]
 				]
 			],
 			true,
@@ -340,10 +340,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.3: not single, matches `not` condition' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => [ 'Foo1' ] ]
+					'category' => [ 'not' => [ 'NotFoo1' ] ]
 				]
 			],
 			true,
@@ -351,10 +351,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.4: not multiple, fails because `not` matches one' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => [ 'Foo1', 'Bar' ] ]
+					'category' => [ 'not' => [ 'NotFoo1', 'Bar' ] ]
 				]
 			],
 			false,
@@ -362,10 +362,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.5: not multiple, fails because `not` matches both' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => [ 'Foo', 'Bar' ] ]
+					'category' => [ 'not' => [ 'NotFoo', 'Bar' ] ]
 				]
 			],
 			false,
@@ -373,10 +373,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.6: not single, fails because `not` matches one' => [
-			[ 'Foo', 'Bar' ],
+			[ 'NotFoo', 'Bar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foo' ]
+					'category' => [ 'not' => 'NotFoo' ]
 				]
 			],
 			false,
@@ -386,10 +386,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		// combined
 
 		yield 'not.oneOf.1: not, oneOf combined, false because `not` is matched' => [
-			[ 'Foo', 'Bar', 'Foobar' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo', 'Bar' ] ]
+					'category' => [ 'not' => 'NotFoobar', 'oneOf' => [ 'NotFoo', 'Bar' ] ]
 				]
 			],
 			false,
@@ -397,10 +397,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.oneOf.2: not, oneOf combined, false because `oneOf` does not match' => [
-			[ 'Foo', 'Bar', 'Foobar' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo_1', 'Bar_2' ] ]
+					'category' => [ 'not' => 'NotFoobar', 'oneOf' => [ 'NotFoo_1', 'Bar_2' ] ]
 				]
 			],
 			false,
@@ -408,32 +408,32 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.oneOf.3: not, oneOf combined, false because `oneOf` does not match' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo_1', 'Bar_2' ] ]
+					'category' => [ 'not' => 'NotFoobar', 'oneOf' => [ 'NotFoo_1', 'Bar_2' ] ]
 				]
 			],
 			false,
 			0
 		];
 
-		yield 'not.oneOf.4: not, oneOf combined, truthy because `oneOf` matches one and is not `Foobar`' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+		yield 'not.oneOf.4: not, oneOf combined, truthy because `oneOf` matches one and is not `NotFoobar`' => [
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar', 'oneOf' => [ 'Foo', 'Bar_2' ] ]
+					'category' => [ 'not' => 'NotFoobar', 'oneOf' => [ 'NotFoo', 'Bar_2' ] ]
 				]
 			],
 			true,
 			2
 		];
 
-		yield 'not.oneOf.5: not, oneOf combined, truthy because `oneOf` matches one and is not `Foobar`' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+		yield 'not.oneOf.5: not, oneOf combined, truthy because `oneOf` matches one and is not `NotFoobar`' => [
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'oneOf' => [ 'Foo', 'Bar_2' ], 'not' => 'Foobar' ]
+					'category' => [ 'oneOf' => [ 'NotFoo', 'Bar_2' ], 'not' => 'NotFoobar' ]
 				]
 			],
 			true,
@@ -441,10 +441,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.allOf.1: not, allOf combined, false because `allOf` fails' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar', 'allOf' => [ 'Foo', 'Bar_2' ] ]
+					'category' => [ 'not' => 'NotFoobar', 'allOf' => [ 'NotFoo', 'Bar_2' ] ]
 				]
 			],
 			false,
@@ -452,10 +452,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.allOf.2: not, allOf combined, false because `allOf` fails' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'allOf' => [ 'Foo', 'Bar_2' ], 'not' => 'Foobar' ]
+					'category' => [ 'allOf' => [ 'NotFoo', 'Bar_2' ], 'not' => 'NotFoobar' ]
 				]
 			],
 			false,
@@ -463,10 +463,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.allOf.3: not, allOf combined, true' => [
-			[ 'Foo', 'Bar', 'Foobar_1' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar_1' ],
 			[
 				'if' => [
-					'category' => [ 'allOf' => [ 'Foo', 'Bar', 'Foobar_1' ], 'not' => 'Foobar' ]
+					'category' => [ 'allOf' => [ 'NotFoo', 'Bar', 'NotFoobar_1' ], 'not' => 'NotFoobar' ]
 				]
 			],
 			true,
@@ -474,10 +474,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.anyOf.1: not, oneOf combined, truthy because `not` is not matched' => [
-			[ 'Foo', 'Bar', 'Foobar' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar' ],
 			[
 				'if' => [
-					'category' => [ 'not' => 'Foobar_1', 'anyOf' => [ 'Foo', 'Bar' ] ]
+					'category' => [ 'not' => 'NotFoobar_1', 'anyOf' => [ 'NotFoo', 'Bar' ] ]
 				]
 			],
 			true,
@@ -485,10 +485,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.anyOf.2: not, oneOf combined, truthy because `not` is not matched' => [
-			[ 'Foo', 'Bar', 'Foobar' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar' ],
 			[
 				'if' => [
-					'category' => [ 'anyOf' => [ 'Foo', 'Bar' ], 'not' => 'Foobar_1' ]
+					'category' => [ 'anyOf' => [ 'NotFoo', 'Bar' ], 'not' => 'NotFoobar_1' ]
 				]
 			],
 			true,
@@ -496,10 +496,10 @@ class CategoryFilterTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		yield 'not.anyOf.3: not, oneOf combined, fails because `not` is not matched' => [
-			[ 'Foo', 'Bar', 'Foobar' ],
+			[ 'NotFoo', 'Bar', 'NotFoobar' ],
 			[
 				'if' => [
-					'category' => [ 'anyOf' => [ 'Foo', 'Bar' ], 'not' => 'Foobar' ]
+					'category' => [ 'anyOf' => [ 'NotFoo', 'Bar' ], 'not' => 'NotFoobar' ]
 				]
 			],
 			false,

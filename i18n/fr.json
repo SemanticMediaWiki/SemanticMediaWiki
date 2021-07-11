@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Boniface",
 			"Brunoperel",
 			"Crochet.david",
@@ -231,7 +232,7 @@
 	"smw-propertylist-count": "Affichage {{PLURAL:$1|de l'entité associée|des $1 entités associées}}.",
 	"smw-propertylist-count-with-restricted-note": "Afficher $1 {{PLURAL:$1|entité associée|entités associées}} (davantage sont disponibles, mais l’affichage est limité à « $2 »).",
 	"smw-propertylist-count-more-available": "Afficher $1 {{PLURAL:$1|entité associée|entités associées}} (davantage sont disponibles).",
-	"specialpages-group-smw_group": "MediaWiki sémantique",
+	"specialpages-group-smw_group": "MediaWiki Sémantique",
 	"specialpages-group-smw_group-maintenance": "Maintenance",
 	"specialpages-group-smw_group-properties-concepts-types": "Propriétés, concepts et types",
 	"specialpages-group-smw_group-search": "Naviguer et rechercher",
@@ -449,7 +450,7 @@
 	"smw-smwadmin-refresh-title": "Réparation de données et mise à jour",
 	"smw_smwadmin_datarefresh": "Reconstruction des données",
 	"smw_smwadmin_datarefreshdocu": "Il est possible de restaurer toutes les données Semantic MediaWiki à partir du contenu courant de ce wiki.\nCeci peut être utile pour réparer des données corrompues ou pour rafraîchir les données si le format interne a changé lors des mises à niveau.\nLa mise à jour est exécutée page par page et se sera pas achevée immédiatement.\nLa page suivante spécifie si une mise à jour est en cours d’exécution et vous permet de commencer ou d’arrêter celle-ci (à moins que cette fonctionnalité n’ait été désactivée par l’administrateur du site).",
-	"smw_smwadmin_datarefreshprogress": "<strong>Une mise à jour est déja en cours d’exécution.</strong>\nIl est normal qu’une mise à jour progresse lentement parce qu’elle ne rafraîchit les données que par petits tronçons, au fur et à mesure qu’un utilisateur accède au wiki.\nPour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script d’entretien Mediawiki <code>runJobs.php</code> (utilisez l’option <code>--maxjobs 1000</code> pour restreindre le nombre de mises à jour par script lancé).\nProgression estimée de la mise à jour actuelle :",
+	"smw_smwadmin_datarefreshprogress": "<strong>Une mise à jour est déjà en cours d’exécution.</strong>\nIl est normal qu’une mise à jour progresse lentement parce qu’elle ne rafraîchit les données que par petits tronçons, au fur et à mesure qu’un utilisateur accède au wiki.\nPour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script d’entretien Mediawiki <code>runJobs.php</code> (utilisez l’option <code>--maxjobs 1000</code> pour restreindre le nombre de mises à jour par script lancé).\nProgression estimée de la mise à jour actuelle :",
 	"smw_smwadmin_datarefreshbutton": "Planifier la reconstruction des données",
 	"smw_smwadmin_datarefreshstop": "Arrêter cette mise à jour",
 	"smw_smwadmin_datarefreshstopconfirm": "Oui, j’en suis {{GENDER:$1|sûr|sûre}}.",
@@ -613,7 +614,7 @@
 	"grouppage-smwcurator": "{{ns:project}}:Curators (Semantic MediaWiki)",
 	"group-smweditor": "Éditeurs (MediaWiki Sémantique)",
 	"group-smweditor-member": "{{GENDER:$1|éditeur (MediaWiki Sémantique)}}",
-	"grouppage-smweditor": "{{ns:project}}:Editeur (Semantic MediaWiki)",
+	"grouppage-smweditor": "{{ns:project}}:Rédacteurs (Semantic MediaWiki)",
 	"action-smw-admin": "tâches d’administration des accès à MediaWiki Sémantique",
 	"action-smw-ruleedit": "modifier les pages de règle (MediaWiki Sémantique)",
 	"smw-property-namespace-disabled": "La propriété [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks namespace] est désactivée, et tenter de déclarer un type ou d’autres caractéristiques spécifiques de propriété pour cette propriété n’est pas possible.",

@@ -9,7 +9,8 @@
 			"Macofe",
 			"Maria zaos",
 			"Nemo bis",
-			"Toliño"
+			"Toliño",
+			"Xabier Cid"
 		]
 	},
 	"smw-desc": "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
@@ -743,7 +744,7 @@
 	"smw-ask-format-help-link": "Formato [https://www.semantic-mediawiki.org/wiki/Help:$1_format $1]",
 	"smw-help": "Axuda",
 	"smw-cheat-sheet": "Folla de referencia",
-	"smw-personal-jobqueue-watchlist": "Lista de vixilancia (cola de tarefas)",
+	"smw-personal-jobqueue-watchlist": "Tarefas pendentes da lista de vixilancia",
 	"smw-property-predefined-label-skey": "Chave de ordenación",
 	"smw-processing": "Procesando ...",
 	"smw-loading": "Cargando...",

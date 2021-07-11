@@ -1,6 +1,9 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"WikiiiTranslator"
+		]
 	},
+	"browse": "Eksplorar viki",
 	"smw-livepreview-loading": "Cargando..."
 }
