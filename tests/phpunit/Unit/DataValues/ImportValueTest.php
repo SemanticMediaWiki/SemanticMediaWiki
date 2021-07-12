@@ -40,12 +40,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\DataValues\ImportValue',
 			new ImportValue()
 		);
-
-		// FIXME Legacy naming remove in 3.x
-		$this->assertInstanceOf(
-			'\SMWImportValue',
-			new ImportValue()
-		);
 	}
 
 	public function testErrorForInvalidUserValue() {
