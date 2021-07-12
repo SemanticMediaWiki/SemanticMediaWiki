@@ -20,8 +20,8 @@ jobs:
       php: 7.3
     - env: DB=postgres; MW=REL1_35; PHPUNIT=8.5.*; FUSEKI=2.4.0
       php: 7.4
-    - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; SESAME=2.8.7
-      php: 7.4
+    #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; SESAME=2.8.7
+    #  php: 7.4
     #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; BLAZEGRAPH=1.5.2
     #  php: 7.4
     #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; VIRTUOSO=6.1
