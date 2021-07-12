@@ -23,11 +23,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 			new TypesValue()
 		);
 
-		// FIXME Legacy naming remove in 3.1.x
-		$this->assertInstanceOf(
-			'\SMWTypesValue',
-			new TypesValue()
-		);
 	}
 
 	public function testNewFromTypeId() {

@@ -4,12 +4,12 @@ namespace SMW;
 
 use Html;
 use Skin;
+use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
 use SMWRequestOptions;
-use SMWTypesValue;
 use Title;
 
 /**
@@ -203,7 +203,7 @@ class PropertiesQueryPage extends QueryPage {
 		}
 
 		// User defined types default to Page
-		$typestring = SMWTypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $this->getLinker() );
+		$typestring = TypesValue::newFromTypeId( $this->settings->get( 'smwgPDefaultType' ) )->getLongHTMLText( $this->getLinker() );
 
 		$label = htmlspecialchars( $property->getLabel() );
 		$linkAttributes = [];
@@ -251,7 +251,8 @@ class PropertiesQueryPage extends QueryPage {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
 		$dataValue->setLinkAttributes( [
-			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' ) . ' (' . $property->getKey() . ')'
+			'title' => 'ID: ' . ( isset( $property->id ) ? $property->id : 'N/A' )
+					. ' (' . $property->getKey() . ')'
 		] );
 
 		$label = $dataValue->getFormattedLabel(
@@ -260,7 +261,7 @@ class PropertiesQueryPage extends QueryPage {
 		);
 
 		return [
-			SMWTypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText( $this->getLinker() ),
+			TypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText( $this->getLinker() ),
 			$label
 		];
 	}
