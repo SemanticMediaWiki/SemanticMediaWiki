@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;

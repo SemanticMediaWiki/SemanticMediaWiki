@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-integration

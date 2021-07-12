@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\Unit\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
@@ -9,7 +9,7 @@ use SMW\DataValues\StringValue;
 use SMW\Message;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider

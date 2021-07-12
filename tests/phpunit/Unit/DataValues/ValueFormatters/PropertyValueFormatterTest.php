@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueFormatters;
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\DataValues\PropertyValue;
 
 /**

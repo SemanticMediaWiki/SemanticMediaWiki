@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Factbox;
+namespace SMW\Tests\Unit\Factbox;
 
 use SMW\Factbox\AttachmentFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\AttachmentFormatter

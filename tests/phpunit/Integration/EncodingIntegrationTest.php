@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox

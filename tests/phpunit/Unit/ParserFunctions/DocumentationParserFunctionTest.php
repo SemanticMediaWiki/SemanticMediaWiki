@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingResult;
 use SMW\ParserFunctions\DocumentationParserFunction;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DocumentationParserFunction

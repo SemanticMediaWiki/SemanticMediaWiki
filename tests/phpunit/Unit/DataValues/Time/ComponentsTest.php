@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\DataValues\Time;
+namespace SMW\Tests\Unit\DataValues\Time;
 
 use SMW\DataValues\Time\Components;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Time\Components

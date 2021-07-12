@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Renderer;
+namespace SMW\Tests\Unit\MediaWiki\Renderer;
 
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 

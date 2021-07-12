@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Connection;
+namespace SMW\Tests\Unit\Connection;
 
 use SMW\Connection\ConnectionManager;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Connection\ConnectionManager

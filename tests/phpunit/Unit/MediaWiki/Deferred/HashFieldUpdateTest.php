@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Deferred;
+namespace SMW\Tests\Unit\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;

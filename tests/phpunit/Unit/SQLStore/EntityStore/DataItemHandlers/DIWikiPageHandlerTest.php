@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
+namespace SMW\Tests\Unit\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler

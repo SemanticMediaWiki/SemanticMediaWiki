@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueFormatters;
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter

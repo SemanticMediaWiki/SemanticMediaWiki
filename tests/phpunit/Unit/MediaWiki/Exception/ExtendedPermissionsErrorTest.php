@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Exception;
+namespace SMW\Tests\Unit\MediaWiki\Exception;
 
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 

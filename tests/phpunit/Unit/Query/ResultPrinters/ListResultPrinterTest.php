@@ -1,5 +1,5 @@
 <?php
-namespace SMW\Tests\Query\ResultPrinters;
+namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use SMW\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter;

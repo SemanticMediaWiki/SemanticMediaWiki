@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api\Browse;
+namespace SMW\Tests\Unit\MediaWiki\Api\Browse;
 
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
 use SMW\Services\ServicesContainer;
 use FakeResultWrapper;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup

@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Iterators;
+namespace SMW\Tests\Unit\Iterators;
 
 use SMW\Iterators\CsvFileIterator;
 use SMW\Utils\TempFile;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\CsvFileIterator

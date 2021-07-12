@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Serializers;
+namespace SMW\Tests\Unit\Serializers;
 
 use SMW\DataItemFactory;
 use SMW\Serializers\QueryResultSerializer;

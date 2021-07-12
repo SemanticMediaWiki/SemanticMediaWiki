@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Exporter\Controller;
+namespace SMW\Tests\Unit\Exporter\Controller;
 
 use SMW\DIWikiPage;
 use SMW\Exporter\Controller\Queue;

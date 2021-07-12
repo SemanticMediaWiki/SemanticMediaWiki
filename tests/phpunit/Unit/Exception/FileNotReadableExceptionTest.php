@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Exception;
+namespace SMW\Tests\Unit\Exception;
 
 use SMW\Exception\FileNotReadableException;
 

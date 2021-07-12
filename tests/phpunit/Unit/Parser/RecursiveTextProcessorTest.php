@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Parser;
+namespace SMW\Tests\Unit\Parser;
 
 use SMW\Parser\RecursiveTextProcessor;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Parser\RecursiveTextProcessor

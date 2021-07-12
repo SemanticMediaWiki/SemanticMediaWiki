@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Hooks;
+namespace SMW\Tests\Unit\MediaWiki\Hooks;
 
 use Language;
 use ParserOutput;
@@ -10,7 +10,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\OutputPageParserOutput

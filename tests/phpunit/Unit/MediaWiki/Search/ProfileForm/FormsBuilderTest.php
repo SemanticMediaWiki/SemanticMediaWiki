@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\ProfileForm;
+namespace SMW\Tests\Unit\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\FormsBuilder

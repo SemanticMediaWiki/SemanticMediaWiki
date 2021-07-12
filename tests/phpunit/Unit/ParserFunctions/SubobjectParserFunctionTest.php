@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use ParserOutput;
 use SMW\DIProperty;
@@ -11,7 +11,7 @@ use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterFormatter;
 use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use Title;
 
 /**

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\Unit\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer

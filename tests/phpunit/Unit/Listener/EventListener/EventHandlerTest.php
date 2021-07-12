@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Listener\EventListener;
+namespace SMW\Tests\Unit\Listener\EventListener;
 
 use SMW\Listener\EventListener\EventHandler;
 

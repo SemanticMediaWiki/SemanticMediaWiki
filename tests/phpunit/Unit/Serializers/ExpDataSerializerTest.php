@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Serializers;
+namespace SMW\Tests\Unit\Serializers;
 
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer

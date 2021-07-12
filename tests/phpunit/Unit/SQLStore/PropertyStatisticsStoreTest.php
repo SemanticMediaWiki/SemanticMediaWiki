@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\Unit\SQLStore;
 
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\MwDBaseUnitTestCase;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\DatabaseTestCase as MwDBaseUnitTestCase;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsStore

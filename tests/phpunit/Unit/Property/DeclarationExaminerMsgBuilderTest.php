@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Property;
+namespace SMW\Tests\Unit\Property;
 
 use SMW\Property\DeclarationExaminerMsgBuilder;
 use SMW\DataItemFactory;

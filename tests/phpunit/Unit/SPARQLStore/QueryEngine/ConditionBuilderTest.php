@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -18,7 +18,7 @@ use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder

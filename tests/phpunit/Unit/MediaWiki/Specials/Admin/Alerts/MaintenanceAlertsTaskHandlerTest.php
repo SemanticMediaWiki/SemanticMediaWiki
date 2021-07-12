@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler

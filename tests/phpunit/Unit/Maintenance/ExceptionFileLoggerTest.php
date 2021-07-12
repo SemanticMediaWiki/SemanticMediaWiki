@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Maintenance\Jobs;
+namespace SMW\Tests\Unit\Maintenance\Jobs;
 
 use SMW\Maintenance\ExceptionFileLogger;
 use SMW\Options;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\ExceptionFileLogger

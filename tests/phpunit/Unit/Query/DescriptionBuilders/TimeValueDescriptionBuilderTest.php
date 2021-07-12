@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Query\DescriptionBuilders;
+namespace SMW\Tests\Unit\Query\DescriptionBuilders;
 
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder

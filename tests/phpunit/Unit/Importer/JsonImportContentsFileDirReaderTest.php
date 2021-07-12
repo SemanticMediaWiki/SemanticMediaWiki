@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Importer;
+namespace SMW\Tests\Unit\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Utils\FileFetcher;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\JsonImportContentsFileDirReader

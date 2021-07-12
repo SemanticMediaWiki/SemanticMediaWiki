@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Iterators;
+namespace SMW\Tests\Unit\Iterators;
 
 use SMW\Iterators\AppendIterator;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\AppendIterator

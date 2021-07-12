@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMWQueryProcessor;
 
 /**

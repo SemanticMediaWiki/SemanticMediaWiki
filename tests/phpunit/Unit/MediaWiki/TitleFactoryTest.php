@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\Unit\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\TitleFactory

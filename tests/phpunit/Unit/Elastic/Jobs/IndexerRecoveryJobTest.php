@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\Jobs;
+namespace SMW\Tests\Unit\Elastic\Jobs;
 
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Tests\TestEnvironment;

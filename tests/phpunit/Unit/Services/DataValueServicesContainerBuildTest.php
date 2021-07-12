@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Services;
+namespace SMW\Tests\Unit\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use SMW\DataValues\AllowsListValue;

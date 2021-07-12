@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueValidators;
+namespace SMW\Tests\Unit\DataValues\ValueValidators;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;

@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\Installer;
+namespace SMW\Tests\Unit\SQLStore\Installer;
 
 use SMW\MediaWiki\Database;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\VersionExaminer

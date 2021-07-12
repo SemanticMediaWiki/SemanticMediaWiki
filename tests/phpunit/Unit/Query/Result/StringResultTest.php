@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Result;
+namespace SMW\Tests\Unit\Query\Result;
 
 use SMW\Query\Result\StringResult;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Maintenance;
+namespace SMW\Tests\Unit\Maintenance;
 
 use SMW\Maintenance\AutoRecovery;
 use FakeResultWrapper;

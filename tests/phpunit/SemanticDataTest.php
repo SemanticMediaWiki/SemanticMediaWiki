@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\SemanticData;
 use SMW\Subobject;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMWDITime as DITime;
 use Title;
 

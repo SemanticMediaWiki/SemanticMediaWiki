@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 use SMWExpLiteral as ExpLiteral;
 use SMWExpResource as ExpResource;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser

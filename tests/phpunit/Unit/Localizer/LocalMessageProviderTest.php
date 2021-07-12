@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Localizer;
+namespace SMW\Tests\Unit\Localizer;
 
 use SMW\Localizer\LocalMessageProvider;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Localizer\LocalMessageProvider

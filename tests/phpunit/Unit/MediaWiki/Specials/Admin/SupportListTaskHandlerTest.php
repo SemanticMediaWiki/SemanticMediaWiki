@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\Admin;
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\SupportListTaskHandler;
 use SMW\Tests\TestEnvironment;

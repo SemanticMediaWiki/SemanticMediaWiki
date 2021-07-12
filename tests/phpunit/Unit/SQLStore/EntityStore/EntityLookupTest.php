@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

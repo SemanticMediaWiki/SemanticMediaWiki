@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\Cache;
+namespace SMW\Tests\Unit\Query\Cache;
 
 use SMW\DIWikiPage;
 use SMW\DIProperty;

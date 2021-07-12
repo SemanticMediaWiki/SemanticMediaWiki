@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\Unit\SPARQLStore;
 
 use SMW\DIProperty;
 use SMW\SPARQLStore\ReplicationDataTruncator;

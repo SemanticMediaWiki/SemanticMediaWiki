@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\Exception;
+namespace SMW\Tests\Unit\MediaWiki\Search\Exception;
 
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 

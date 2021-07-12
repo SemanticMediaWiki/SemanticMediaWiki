@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials;
+namespace SMW\Tests\Unit\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations;
 use SMW\Tests\TestEnvironment;

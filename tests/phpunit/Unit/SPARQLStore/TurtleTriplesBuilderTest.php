@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\Unit\SPARQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Importer;
+namespace SMW\Tests\Unit\Importer;
 
 use SMW\Importer\ContentIterator;
 use SMW\Importer\ImportContents;
@@ -8,7 +8,7 @@ use SMW\Importer\Importer;
 use SMW\Importer\JsoncontentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\Importer

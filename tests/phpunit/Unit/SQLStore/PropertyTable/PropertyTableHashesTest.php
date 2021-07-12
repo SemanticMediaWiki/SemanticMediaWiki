@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\PropertyTable;
+namespace SMW\Tests\Unit\SQLStore\PropertyTable;
 
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\StoreFactory;
 use SMWDataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTable\PropertyTableHashes

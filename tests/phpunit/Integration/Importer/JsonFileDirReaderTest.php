@@ -6,7 +6,7 @@ use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\File;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

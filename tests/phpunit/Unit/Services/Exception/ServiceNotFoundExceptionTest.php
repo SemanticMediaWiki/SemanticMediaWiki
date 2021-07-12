@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Services\Exception;
+namespace SMW\Tests\Unit\Services\Exception;
 
 use SMW\Services\Exception\ServiceNotFoundException;
 

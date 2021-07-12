@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Page\ListBuilder;
+namespace SMW\Tests\Unit\MediaWiki\Page\ListBuilder;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

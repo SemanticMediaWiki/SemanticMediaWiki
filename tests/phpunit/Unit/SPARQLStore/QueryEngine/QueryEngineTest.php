@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine;
 
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine

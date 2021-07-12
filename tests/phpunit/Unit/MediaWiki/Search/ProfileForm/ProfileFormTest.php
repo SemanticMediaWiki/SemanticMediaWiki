@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Search\ProfileForm;
+namespace SMW\Tests\Unit\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Tests\TestEnvironment;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueFormatters;
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;

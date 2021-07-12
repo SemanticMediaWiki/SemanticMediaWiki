@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlTabs;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\HtmlTabs

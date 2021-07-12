@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\PrintRequest;
+namespace SMW\Tests\Unit\Query\PrintRequest;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;

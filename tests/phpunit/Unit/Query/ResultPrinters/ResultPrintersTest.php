@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Query\ResultPrinters;
+namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\ResultPrinters\ResultPrinter;
 use SMWQueryProcessor as QueryProcessor;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ResultPrinters\ResultPrinter

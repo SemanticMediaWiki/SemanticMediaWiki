@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\Unit\DataValues;
 
 use SMW\DataValues\BooleanValue;
 use SMW\Localizer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\BooleanValue

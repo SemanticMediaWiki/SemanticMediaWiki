@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\SPARQLStore;
+namespace SMW\Tests\Unit\SPARQLStore;
 
 use SMW\SPARQLStore\RepositoryConnectionProvider;
 use SMW\Tests\Utils\GlobalsProvider;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectionProvider

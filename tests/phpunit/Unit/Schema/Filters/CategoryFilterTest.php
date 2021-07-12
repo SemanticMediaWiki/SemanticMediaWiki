@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Schema\Filters;
+namespace SMW\Tests\Unit\Schema\Filters;
 
 use SMW\Schema\Filters\CategoryFilter;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\CategoryFilter

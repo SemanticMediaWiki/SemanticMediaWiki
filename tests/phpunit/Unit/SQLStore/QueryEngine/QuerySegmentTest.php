@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\QuerySegment;
 

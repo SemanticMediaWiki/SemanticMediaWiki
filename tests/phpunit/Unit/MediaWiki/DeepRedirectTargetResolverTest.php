@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\Unit\MediaWiki;
 
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\Tests\Utils\Mock\MockTitle;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\DeepRedirectTargetResolver

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\CliMsgFormatter;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\CliMsgFormatter

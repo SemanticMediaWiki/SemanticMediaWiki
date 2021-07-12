@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer\Replication;
+namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMWDITime as DITime;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\Fulltext;
 
 use SMW\DataItemFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;

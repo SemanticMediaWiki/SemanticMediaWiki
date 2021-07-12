@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer\Rebuilder;
+namespace SMW\Tests\Unit\Elastic\Indexer\Rebuilder;
 
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder

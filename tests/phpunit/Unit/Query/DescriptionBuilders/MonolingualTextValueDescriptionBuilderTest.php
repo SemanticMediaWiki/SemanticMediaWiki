@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Query\DescriptionBuilders;
+namespace SMW\Tests\Unit\Query\DescriptionBuilders;
 
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder

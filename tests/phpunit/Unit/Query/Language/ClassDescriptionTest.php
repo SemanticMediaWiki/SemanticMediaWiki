@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Query\Language;
+namespace SMW\Tests\Unit\Query\Language;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ThingDescription;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Language\ClassDescription

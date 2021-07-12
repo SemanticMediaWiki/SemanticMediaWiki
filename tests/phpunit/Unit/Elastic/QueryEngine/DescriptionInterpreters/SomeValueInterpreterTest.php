@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
+namespace SMW\Tests\Unit\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter

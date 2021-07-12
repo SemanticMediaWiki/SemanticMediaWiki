@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Localizer\LocalLanguage;
+namespace SMW\Tests\Unit\Localizer\LocalLanguage;
 
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Localizer\LocalLanguage\LanguageContents;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage\LanguageContents

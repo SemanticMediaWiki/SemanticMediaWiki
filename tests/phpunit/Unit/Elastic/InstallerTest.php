@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Elastic;
+namespace SMW\Tests\Unit\Elastic;
 
 use SMW\Elastic\Installer;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Installer

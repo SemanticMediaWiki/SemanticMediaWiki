@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests\DataValues;
+namespace SMW\Tests\Unit\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
 use SMW\PropertySpecificationLookup;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\KeywordValue

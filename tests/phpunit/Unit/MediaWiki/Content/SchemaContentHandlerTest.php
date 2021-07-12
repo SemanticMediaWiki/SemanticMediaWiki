@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Content;
+namespace SMW\Tests\Unit\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\SchemaContentHandler;
 

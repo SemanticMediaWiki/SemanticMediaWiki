@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Test\Utils;
+namespace SMW\Tests\Utils;
 
 use SMW\Utils\HtmlColumns;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\HtmlColumns

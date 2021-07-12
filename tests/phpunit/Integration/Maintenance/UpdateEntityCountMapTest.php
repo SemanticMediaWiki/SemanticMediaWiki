@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\Maintenance;
 
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

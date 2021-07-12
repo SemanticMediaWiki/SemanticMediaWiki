@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
+namespace SMW\Tests\Unit\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder

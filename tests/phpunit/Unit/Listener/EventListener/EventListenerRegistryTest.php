@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Listener\EventListener;
+namespace SMW\Tests\Unit\Listener\EventListener;
 
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;

@@ -1,9 +1,9 @@
 <?php
 
-namespace SMW\Tests\Elastic\Lookup;
+namespace SMW\Tests\Unit\Elastic\Lookup;
 
 use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 

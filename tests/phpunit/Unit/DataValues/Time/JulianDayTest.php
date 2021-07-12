@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues\Time;
+namespace SMW\Tests\Unit\DataValues\Time;
 
 use SMW\DataValues\Time\JulianDay;
 

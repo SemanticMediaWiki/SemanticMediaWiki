@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Unit\Query;
 
 use SMW\DIProperty;
 use SMW\Query\PrintRequest as PrintRequest;

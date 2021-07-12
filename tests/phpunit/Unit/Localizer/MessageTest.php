@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Localizer;
+namespace SMW\Tests\Unit\Localizer;
 
 use SMW\Localizer\Message;
 use SMW\Tests\TestEnvironment;

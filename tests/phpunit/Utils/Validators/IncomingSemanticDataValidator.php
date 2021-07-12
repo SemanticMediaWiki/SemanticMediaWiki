@@ -4,7 +4,7 @@ namespace SMW\Tests\Utils\Validators;
 
 use SMW\DIWikiPage;
 use SMW\Store;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki

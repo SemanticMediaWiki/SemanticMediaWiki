@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use SMW\Utils\Logo;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Utils\Logo

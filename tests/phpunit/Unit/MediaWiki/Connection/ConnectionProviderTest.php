@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Connection;
+namespace SMW\Tests\Unit\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Connection\ConnectionProvider

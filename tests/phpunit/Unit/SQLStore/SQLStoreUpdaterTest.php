@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\Unit\SQLStore;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStoreUpdater;

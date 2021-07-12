@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Api;
+namespace SMW\Tests\Unit\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\TaskFactory;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Api\TaskFactory

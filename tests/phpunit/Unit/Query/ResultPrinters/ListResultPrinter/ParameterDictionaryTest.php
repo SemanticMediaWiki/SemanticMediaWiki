@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\ResultPrinters\ListResultPrinter;
+namespace SMW\Tests\Unit\Query\ResultPrinters\ListResultPrinter;
 
 use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\QueryDependency;
+namespace SMW\Tests\Unit\SQLStore\QueryDependency;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;

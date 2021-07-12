@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\EntityStore;
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\SQLStore\EntityStore\CacheWarmer;

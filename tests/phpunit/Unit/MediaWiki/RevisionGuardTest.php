@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\MediaWiki;
+namespace SMW\Tests\Unit\MediaWiki;
 
 use SMW\MediaWiki\RevisionGuard;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\RevisionGuard

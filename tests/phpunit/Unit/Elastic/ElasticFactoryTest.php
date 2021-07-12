@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic;
+namespace SMW\Tests\Unit\Elastic;
 
 use SMW\Elastic\ElasticFactory;
 use SMW\Tests\TestEnvironment;

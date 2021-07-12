@@ -3,7 +3,7 @@
 namespace SMW\Tests\Structure;
 
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-system

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore\ChangeOp;
+namespace SMW\Tests\Unit\SQLStore\ChangeOp;
 
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeDiff;

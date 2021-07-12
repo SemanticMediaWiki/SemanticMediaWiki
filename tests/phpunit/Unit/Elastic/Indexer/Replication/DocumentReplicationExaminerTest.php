@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer\Replication;
+namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDITime as DITime;

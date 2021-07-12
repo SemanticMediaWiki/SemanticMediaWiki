@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueFormatters;
+namespace SMW\Tests\Unit\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueParsers\TimeValueParser;
 use SMWTimeValue as TimeValue;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\TimeValueFormatter

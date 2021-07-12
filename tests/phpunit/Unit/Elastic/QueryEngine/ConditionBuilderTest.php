@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\QueryEngine;
+namespace SMW\Tests\Unit\Elastic\QueryEngine;
 
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\QueryResult;

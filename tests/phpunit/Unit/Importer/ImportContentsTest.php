@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Importer;
+namespace SMW\Tests\Unit\Importer;
 
 use SMW\Importer\ImportContents;
 

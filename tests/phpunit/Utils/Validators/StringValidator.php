@@ -1,7 +1,7 @@
 <?php
 
 namespace SMW\Tests\Utils\Validators;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @license GNU GPL v2+

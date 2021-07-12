@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Listener\EventListener\EventListeners;
+namespace SMW\Tests\Unit\Listener\EventListener\EventListeners;
 
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;

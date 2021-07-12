@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\SQLStore;
+namespace SMW\Tests\Unit\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
 use SMW\SQLStore\TableDefinition;

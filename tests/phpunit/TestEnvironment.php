@@ -6,6 +6,7 @@ use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DeferredCallableUpdate;
 use SMW\Localizer;
+use SMW\Tests\TestConfig;
 use SMW\Tests\Utils\Mock\ConfigurableStub;
 use SMW\Tests\Utils\UtilityFactory;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer\Attachment;
+namespace SMW\Tests\Unit\Elastic\Indexer\Attachment;
 
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 

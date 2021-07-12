@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer\Attachment;
+namespace SMW\Tests\Unit\Elastic\Indexer\Attachment;
 
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileAttachment

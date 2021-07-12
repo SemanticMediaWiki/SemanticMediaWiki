@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\ParserFunctions;
+namespace SMW\Tests\Unit\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
@@ -9,7 +9,7 @@ use SMW\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\AskParserFunction

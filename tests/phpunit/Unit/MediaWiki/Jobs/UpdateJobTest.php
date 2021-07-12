@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Jobs;
+namespace SMW\Tests\Unit\MediaWiki\Jobs;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;

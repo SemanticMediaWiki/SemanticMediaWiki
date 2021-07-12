@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Property;
+namespace SMW\Tests\Unit\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;

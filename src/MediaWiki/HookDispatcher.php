@@ -4,17 +4,17 @@ namespace SMW\MediaWiki;
 
 use Hooks;
 use MediaWiki\Revision\RevisionRecord;
-use SMW\Store;
-use SMW\SQLStore\TableBuilder;
-use SMW\Options;
-use SMW\Parser\AnnotationProcessor;
-use SMW\Property\Annotator as PropertyAnnotator;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Schema\SchemaTypes;
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Options;
+use SMW\Parser\AnnotationProcessor;
+use SMW\Property\Annotator as PropertyAnnotator;
+use SMW\SQLStore\TableBuilder;
+use SMW\Schema\SchemaTypes;
+use SMW\Store;
 use Title;
 use User;
 

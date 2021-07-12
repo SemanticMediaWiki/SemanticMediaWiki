@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Unit;
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\PropertyAliasFinder;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\PropertyRegistry

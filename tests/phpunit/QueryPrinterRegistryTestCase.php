@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 /**
  * Base class for SMW\ResultPrinter tests.

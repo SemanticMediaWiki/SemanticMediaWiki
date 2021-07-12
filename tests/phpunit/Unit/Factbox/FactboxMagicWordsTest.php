@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Factbox;
+namespace SMW\Tests\Unit\Factbox;
 
 use ParserOutput;
 use ReflectionClass;
@@ -10,7 +10,7 @@ use SMW\Factbox\CheckMagicWords;
 use SMW\ParserData;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\Factbox

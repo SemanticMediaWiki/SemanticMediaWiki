@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use ReflectionClass;
 use SMW\ResultPrinter;

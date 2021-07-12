@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Elastic\Indexer;
+namespace SMW\Tests\Unit\Elastic\Indexer;
 
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**

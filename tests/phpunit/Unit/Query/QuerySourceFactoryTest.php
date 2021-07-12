@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query;
+namespace SMW\Tests\Unit\Query;
 
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
@@ -8,7 +8,7 @@ use SMW\Store;
 use SMW\StoreAware;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QuerySourceFactory

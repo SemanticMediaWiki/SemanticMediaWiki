@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
+namespace SMW\Tests\Unit\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;

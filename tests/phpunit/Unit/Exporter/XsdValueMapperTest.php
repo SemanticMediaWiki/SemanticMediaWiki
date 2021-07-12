@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Exporter;
+namespace SMW\Tests\Unit\Exporter;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\XsdValueMapper

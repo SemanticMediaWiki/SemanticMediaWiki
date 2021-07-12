@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Query\ResultPrinters;
+namespace SMW\Tests\Unit\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\DsvResultPrinter;
 use SMW\Tests\TestEnvironment;

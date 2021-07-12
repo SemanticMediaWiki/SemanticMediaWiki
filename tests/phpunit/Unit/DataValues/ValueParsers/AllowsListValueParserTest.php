@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataValues\ValueParsers;
+namespace SMW\Tests\Unit\DataValues\ValueParsers;
 
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 

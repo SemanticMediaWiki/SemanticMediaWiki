@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\DataModel;
+namespace SMW\Tests\Unit\DataModel;
 
 use SMW\DataModel\SequenceMap;
 use SMW\Tests\TestEnvironment;

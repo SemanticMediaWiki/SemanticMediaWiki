@@ -1,11 +1,11 @@
 <?php
 
-namespace SMW\Tests\Maintenance;
+namespace SMW\Tests\Unit\Maintenance;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\DisposeOutdatedEntities;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Unit\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\DisposeOutdatedEntities
