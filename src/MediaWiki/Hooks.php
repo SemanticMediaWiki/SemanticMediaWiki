@@ -289,7 +289,7 @@ class Hooks {
 			'BeforeDisplayNoArticleText' => [ $this, 'onBeforeDisplayNoArticleText' ],
 			'EditPage::showEditForm:initial' => [ $this, 'onEditPageShowEditFormInitial' ],
 
-			'TitleMoveComplete' => [ $this, 'onTitleMoveComplete' ],
+			'PageMoveComplete' => [ $this, 'onTitleMoveComplete' ],
 			'TitleIsAlwaysKnown' => [ $this, 'onTitleIsAlwaysKnown' ],
 			'TitleQuickPermissions' => [ $this, 'onTitleQuickPermissions' ],
 			'TitleIsMovable' => [ $this, 'onTitleIsMovable' ],
@@ -301,7 +301,7 @@ class Hooks {
 			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
-			'NewRevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
+			'RevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
@@ -409,7 +409,7 @@ class Hooks {
 
 		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 	}
-	
+
 	/**
 	 * Hook: Called by Skin when building the toolbox array and
 	 * returning it for the skin to output.

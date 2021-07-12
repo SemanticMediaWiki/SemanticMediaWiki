@@ -214,7 +214,7 @@ class PropertyChainValue extends StringValue {
 	}
 
 	private function doHintPropertyChainMembers() {
-		return '&nbsp;' . \Html::rawElement( 'span', [ 'title' => $this->m_dataitem ], '⠉' );
+		return \Html::rawElement( 'span', [ 'title' => $this->m_dataitem, 'class' => 'smw-chain-marker' ], '⠉' );
 	}
 
 }

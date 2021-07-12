@@ -11,11 +11,17 @@
 	"smw-paramdesc-table-transpose": "ווײַזן טאבעלע קעפלעך ווערטיקאל און רעזולטאטן האריזאנט",
 	"smw_nodatetime": "די דאַטע \"$1\" איז נישט פֿארשטענדלעך.",
 	"smw_exportrdf_submit": "עקספארטירן",
+	"smw-ask-parameters": "פאַראַמעטערס",
 	"smw_sbv_value": "ווערט:",
 	"browse": "בלעטערן וויקי",
 	"smw_browse_go": "גיין",
+	"smw_pp_from": "פֿון בלאט:",
 	"smw_result_prev": "פֿריערדיקער",
 	"smw_result_results": "רעזולטאט",
 	"smw_smwadmin_datarefreshstopconfirm": "יא, כ'בין {{GENDER:$1|זיכער}}.",
-	"smw-livepreview-loading": "לאדנדיג…"
+	"prefs-general-options": "אַלגעמיינע ברירות",
+	"smw-ui-tooltip-title-parameter": "פאַראַמעטער",
+	"smw-ui-tooltip-title-reference": "רעפערענץ",
+	"smw-livepreview-loading": "לאדנדיג…",
+	"smw-search-syntax": "סינטאקס"
 }

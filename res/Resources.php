@@ -273,6 +273,9 @@ return [
 			'smw-purge-update-dependencies'
 		],
 		'position' => 'top',
+		'dependencies' => array_merge( [
+			'mediawiki.api',
+		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -372,6 +375,9 @@ return [
 		'messages' => [
 			'smw-postproc-queryref'
 		],
+		'dependencies' => array_merge( [
+			'mediawiki.api',
+		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
 		'targets' => [
 			'mobile',
 			'desktop'

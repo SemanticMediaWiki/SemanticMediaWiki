@@ -1,14 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"John Reid",
-			"AmaryllisGardener"
+			"AmaryllisGardener",
+			"John Reid"
 		]
 	},
+	"smw_attribute_header": "Pages uisin the property \"$1\"",
 	"browse": "Brouse wiki",
-	"smw_smwadmin_mediazilla": "Bugs can be reported til <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
-	"smw-sp-admin-idlookup-title": "ObjectId luikup",
-	"smw-sp-admin-idlookup-docu": "Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
-	"smw-sp-admin-idlookup-objectid": "The Object Id:",
+	"smw-admin-bugsreport": "Bugs can be reported til <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
+	"smw-admin-idlookup-title": "Object ID leukup",
+	"smw-admin-idlookup-docu": "Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
+	"smw-admin-objectid": "The Object Id:",
 	"smw-livepreview-loading": "Laidin..."
 }

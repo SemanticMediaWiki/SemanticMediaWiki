@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bfpage",
 			"Boukman",
 			"Jvm",
 			"Masterches"
@@ -8,7 +9,6 @@
 	},
 	"smw_viewasrdf": "Wè tankou fòma RDF",
 	"smw_finallistconjunct": ", epi",
-	"smw_factbox_head": "Bagay an relasyon ak $1",
 	"smw_isspecprop": "Pwopryete sa espesyal toutbon nan wiki sa",
 	"smw_baduri": "Eskize nou, URIs yo pou domèn \"$1\" pa otorize, oubyen li pa disponib nan plas isit la.",
 	"smw_iq_disabled": "Eskize nou. Rechèch nan atik wiki sa a pa otorize oubyen nou dezaktive l.",
@@ -23,5 +23,6 @@
 	"smw_false_words": "fo,f,non,n",
 	"smw_nofloat": "\"$1\" pa yon nimewo.",
 	"smw_infinite": "Nimewo ki gwo tankou \"$1\" pa sipòte.",
+	"browse": "Pran yon gade nan wiki sa a",
 	"smw_unknowntype": "Tip done \"$1\" yo ki pa sipòte retounen nan atribi a."
 }

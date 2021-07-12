@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Babanwalia"
+			"Babanwalia",
+			"ਗੁਰਪ੍ਰੀਤ ਹੁੰਦਲ"
 		]
 	},
 	"browse": "ਵਿਕੀ ਫਰੋਲੋ",
 	"smw-livepreview-loading": "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
-	"smw-sp-searchbyproperty-resultlist-header": "ਨਤੀਜਿਆਂ ਦੀ ਸੂਚੀ"
+	"smw-sp-searchbyproperty-resultlist-header": "ਨਤੀਜਿਆਂ ਦੀ ਸੂਚੀ",
+	"smw-copy": "ਰੀਸ ਕਰੋ"
 }

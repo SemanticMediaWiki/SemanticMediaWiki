@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Abijeet Patro",
 			"Agripinoduarte",
 			"Amgauna",
 			"Athena in Wonderland",
@@ -9,6 +8,7 @@
 			"Dr03ramos",
 			"Eduardo Addad de Oliveira",
 			"Eduardo.mps",
+			"Eduardoaddad",
 			"Felipe L. Ewald",
 			"Fitoschido",
 			"GKnedo",
@@ -383,7 +383,7 @@
 	"smw_result_next": "Próximo",
 	"smw_result_results": "Resultados",
 	"smw_result_noresults": "Sem resultados.",
-	"smwadmin": "Painel de controle (Semantic MediaWiki)",
+	"smwadmin": "Painel de controle do Semantic MediaWiki",
 	"smw-admin-statistics-job-title": "Estatísticas da fila de execução",
 	"smw-admin-statistics-job-docu": "As estatísticas de tarefas apresentam informação sobre tarefas agendadas do Semantic MediaWiki que ainda não foram executadas. O número de tarefas pode ter ligeiras imprecisões ou conter tentativas falhadas; consulte o [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue manual] para mais informações.",
 	"smw-admin-statistics-querycache-title": "Cache de consultas",
@@ -643,7 +643,7 @@
 	"smw-admin-maintenance-no-description": "Sem descrição.",
 	"smw-admin-maintenance-script-section-title": "Lista de scripts de manutenção disponíveis",
 	"smw-admin-maintenance-script-section-intro": "Os scripts de manutenção a seguir requerem um administrador e acesso à linha de comando para poder executar scripts listados.",
-	"smw-admin-maintenance-script-description-dumprdf": "Exportação RDF de triplos existentes.",
+	"smw-admin-maintenance-script-description-dumprdf": "Exportação RDF de triplas existentes.",
 	"smw-admin-maintenance-script-description-rebuildconceptcache": "Este script é usado para gerenciar as ''caches'' de conceitos do Semantic MediaWiki, sendo ele que pode criar, remover e atualizar ''caches'' selecionadas.",
 	"smw-admin-maintenance-script-description-rebuilddata": "Recria todos os dados semânticos na base de dados, percorrendo todas as páginas que possam ter dados semânticos.",
 	"smw-admin-maintenance-script-description-rebuildelasticindex": "Reconstrói o índice Elasticsearch (só nas instalações que usam o <code>ElasticStore</code>), percorrendo todas as entidades que têm dados semânticos.",
@@ -1116,7 +1116,7 @@
 	"smw-entity-examiner-check": "Executando {{PLURAL:$1|um examinador|examinadores}} em segundo plano",
 	"smw-entity-examiner-indicator": "Painel de problema da entidade",
 	"smw-entity-examiner-deferred-check-awaiting-response": "O examinador \"$1\" está aguardando uma resposta do back-end.",
-	"smw-entity-examiner-deferred-elastic-replication": "Elástico",
+	"smw-entity-examiner-deferred-elastic-replication": "Elastic",
 	"smw-entity-examiner-deferred-constraint-error": "Restrição",
 	"smw-entity-examiner-associated-revision-mismatch": "Revisão",
 	"smw-entity-examiner-deferred-fake": "Falso",

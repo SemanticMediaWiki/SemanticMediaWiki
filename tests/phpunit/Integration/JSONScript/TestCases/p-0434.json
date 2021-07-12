@@ -135,7 +135,7 @@
 			"subject": "Example/P0434/Q3.2",
 			"assert-output": {
 				"to-contain": [
-					"SomeOtherText</a>&#160;<span title=\"Located in.-Located in.-Located in.Capital of\">⠉</span>",
+					"SomeOtherText</a><span title=\"Located in.-Located in.-Located in.Capital of\" class=\"smw-chain-marker\">⠉</span>",
 					"<td class=\"SomeOtherText smwtype_wpg\">Example/P0434/1</td>"
 				]
 			}
@@ -146,7 +146,7 @@
 			"subject": "Example/P0434/Q3.3",
 			"assert-output": {
 				"to-contain": [
-					"<span title=\"Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number\">⠉</span>",
+					"<span title=\"Located in.-Located in.-Located in.Capital of.Has subobject.Has population.Number\" class=\"smw-chain-marker\">⠉</span>",
 					"<td class=\"smwtype_wpg\">Example/P0434/3</td><td class=\"Number smwtype_num\" data-sort-value=\"456\">456</td>"
 				]
 			}

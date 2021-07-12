@@ -1,13 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
+			"Arianit",
+			"Besnik b",
+			"Edlira",
 			"GretaDoci",
-			"Liridon",
-			"Edlira"
+			"Liridon"
 		]
 	},
 	"smw_finallistconjunct": "dhe",
-	"smw_factbox_head": "Fakte rreth \"$1\"",
 	"smw_isspecprop": "Ky tipar është një tipar i veçantë në këtë wiki.",
 	"smw_concept_description": "Përshkrim i konceptit \"$1\"",
 	"smw_no_concept_namespace": "Konceptet mund të përcaktohen vetëm në faqet në namespace Concept:",
@@ -18,6 +19,6 @@
 	"smw_printername_csv": "Eksport CSV",
 	"smw_printername_dsv": "Eksport DSV",
 	"browse": "Shfletoni wiki",
-	"smw_smwadmin_mediazilla": "Bugs mund të raportohet për të <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/çështjet\">GitHub</a>.",
+	"smw-admin-bugsreport": "Të metat mund të njoftohen te <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">ndjekësi i problemeve</a>, faqja <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">e njoftimit të të metave</a> jep ca ndihmë mbi se si të shkruhet një raport efikas të mete.",
 	"smw-livepreview-loading": "Duke punuar…"
 }

@@ -16,11 +16,23 @@ For the automated approach, Semantic MediaWiki relies on [PHPUnit][phpunit] as s
 - Integration test (or functional test) normally combines multiple components into a single process and verifies the results in a semi-production like environment (including DB access, sample data etc.)
 - System test (and its individual modules) is treated as "black-box" to observe behaviour as a whole rather than its units
 
+Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
+
 ## Running tests
 
-1. Verify that PHUnit is installed in `myMediawikiFolder/vendor/phpunit`. In case it is not installed, use `composer require phpunit/phpunit:~6.5 --update-with-dependencies` to add the package
-2. Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
-3. Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
+Verify that PHPUnit is installed
+<pre>
+> cd myMediawikiFolder
+> composer show phpunit/phpunit | grep versions
+versions : * 6.5.14
+</pre>
+
+In case PHPUnit is not installed, run `composer install --dev`
+
+Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
+
+### Running all tests
+Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
 <pre>
 $ composer phpunit
@@ -51,7 +63,21 @@ Configuration: /home/travis/build/SemanticMediaWiki/mw/extensions/SemanticMediaW
 .............................................................  122 / 8526 (  1%)
 </pre>
 
-Information about PHPUnit in connection with MediaWiki can be found at [smw.org][smw] and [mediawiki.org][mw-phpunit-testing].
+Note that running all tests may take a while.
+
+### Running a single testsuite
+Test suites provide a way of grouping tests. Semantic MediaWiki defines a couple of testsuites in <code>phpunit.xml.dist</code>:
+* semantic-mediawiki-check
+* semantic-mediawiki-unit
+* semantic-mediawiki-integration
+* semantic-mediawiki-import
+* semantic-mediawiki-structure
+* semantic-mediawiki-benchmark
+
+To run a single testsuite, use `--testsuite`, e.g `composer phpunit -- --testsuite semantic-mediawiki-unit`
+
+### Running a single test
+To run a single testsuite, use `--filter`, e.g `composer phpunit -- --filter ParserAfterTidyTest`
 
 ## Writing tests
 

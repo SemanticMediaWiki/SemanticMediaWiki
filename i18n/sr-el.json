@@ -1,15 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"Acamicamacaraca",
+			"Kghbln",
+			"Kizule",
 			"Liangent",
 			"Michaello",
 			"Milicevic01",
+			"Obsuser",
 			"Rancher",
 			"Slaven Kosanovic",
 			"Sociologist",
-			"Kghbln",
-			"Acamicamacaraca",
-			"Obsuser",
 			"Zoranzoki21"
 		]
 	},
@@ -145,7 +146,6 @@
 	"searchbyproperty": "Pretraga po osobinama",
 	"smw_sbv_docu": "Pretraži sve stranice koje poseduju datu osobinu i vrednost.",
 	"smw_sbv_novalue": "Unesite valjanu vrednost za ovu osobinu, ili pogledajte sve vrednosti osobine za \"$1\".",
-	"smw_sbv_displayresult": "Spisak svih stranica koje sadrže osobinu \"$1\" sa vrednošću \"$2\"",
 	"smw_sbv_displayresultfuzzy": "Spisak svih stranica koje sadrže svojstvo „$1” sa vrednošću „$2”.\nPošto je pronađeno samo nekoliko rezultata, takođe su prikazane približne vrednosti.",
 	"smw_sbv_property": "Osobina:",
 	"smw_sbv_value": "Vrednost:",
@@ -247,7 +247,7 @@
 	"smw-format-datatable-previous": "Prethodni",
 	"smw-format-datatable-sortascending": ": aktiviraj za rastuće sortiranje kolone",
 	"smw-format-datatable-sortdescending": ": aktiviraj za opadajuće sortiranje kolone",
-	"smw-schema-error": "Greška prilikom provere valjanosti",
+	"smw-schema-error-title": "Greška prilikom provere valjanosti",
 	"smw-schema-error-violation": "Kršenje („$1”, „$2”)",
 	"smw-schema-title": "Šema",
 	"smw-schema-type": "Tip",

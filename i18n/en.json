@@ -361,7 +361,7 @@
 	"smw_result_next": "Next",
 	"smw_result_results": "Results",
 	"smw_result_noresults": "No results.",
-	"smwadmin": "Dashboard (Semantic MediaWiki)",
+	"smwadmin": "Semantic MediaWiki Dashboard",
 	"smw-admin-statistics-job-title": "Job statistics",
 	"smw-admin-statistics-job-docu": "The job statistics displays information about scheduled Semantic MediaWiki jobs that have not yet been executed. The number of jobs may be slightly inaccurate or contains failed attempts, please consult the [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue manual] for further information.",
 	"smw-admin-statistics-querycache-title": "Query cache",

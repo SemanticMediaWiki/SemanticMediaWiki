@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Abijeet Patro",
 			"Ahonc",
 			"Andrew J.Kurbiko",
 			"Andriykopanytsia",
@@ -9,6 +8,7 @@
 			"Base",
 			"Bunyk",
 			"Eduardo Addad de Oliveira",
+			"Eduardoaddad",
 			"KHMELNYTSKYIA",
 			"Movses",
 			"Nemo bis",
@@ -366,7 +366,7 @@
 	"smw_result_next": "Наступна",
 	"smw_result_results": "Результати",
 	"smw_result_noresults": "Немає результатів.",
-	"smwadmin": "Панель інструментів (Семантична MediaWiki)",
+	"smwadmin": "Панель інструментів Семантичної MediaWiki",
 	"smw-admin-statistics-job-title": "Статистика завдань",
 	"smw-admin-statistics-job-docu": "Статистика завдань показує інформацію про заплановані завдання Семантичної MediaWiki, які ще не було виконано. Кількість завдань може бути дещо неточною або містити невдалі спроби. Будь ласка, перегляньте [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue посібник], щоб дізнатися подробиці.",
 	"smw-admin-statistics-querycache-title": "Запит на кеш",

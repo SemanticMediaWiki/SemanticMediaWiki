@@ -1,11 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ebrahimi-amir",
-			"Amir a57"
+			"Alp Er Tunqa",
+			"Amir a57",
+			"Ebrahimi-amir"
 		]
 	},
 	"browse": "ویکی یه باخیش",
 	"smw_browselink": "اوزللیکلری گؤزدن کئچیر",
+	"smw_browse_go": "گئت",
 	"smw-livepreview-loading": "یوکلنیر..."
 }

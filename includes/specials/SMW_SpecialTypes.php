@@ -421,22 +421,21 @@ class SMWSpecialTypes extends SpecialPage {
 			$typeValue = TypesValue::newFromTypeId( $typeId );
 			$msgKey = 'smw-type' . str_replace( '_', '-', strtolower( $typeId ) );
 
-			$text = $typeValue->getLongHTMLText( $linker );
-
 			if ( Message::exists( $msgKey ) ) {
-				$msg = Message::get( [ $msgKey, '' ], Message::PARSE, Message::USER_LANGUAGE );
-				$text .= Html::rawElement(
-					'span' ,
-					[
-						'class' => 'plainlinks',
-						'style' => 'font-size:85%'
-					],
-
-					// Remove the first two chars which are a localized
-					// diacritical, quotation mark
-					str_replace( mb_substr( $msg, 0, 2 ), '', $msg )
-				);
+				$text = $typeValue->getLongWikiText( $linker );
+				$text = Message::get( [ $msgKey, $text ], Message::PARSE, Message::USER_LANGUAGE );
+			} else {
+				$text = $typeValue->getLongHTMLText( $linker );
 			}
+
+			$text = Html::rawElement(
+				'span' ,
+				[
+					'class' => 'plainlinks',
+					'style' => 'font-size:85%'
+				],
+				$text
+			);
 
 			foreach ( $groups as $group => $types ) {
 

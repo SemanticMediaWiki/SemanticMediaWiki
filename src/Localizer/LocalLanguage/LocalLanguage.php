@@ -503,8 +503,10 @@ class LocalLanguage {
 		}
 
 		foreach ( $this->months[$languageCode] as $key => $value ) {
-			if ( strcasecmp( $value[0], $label ) == 0 || strcasecmp( $value[1], $label ) == 0 ) {
-				return $key + 1; // array starts with 0
+			foreach ( $value as $variant ) {
+				if ( strcasecmp( $variant, $label ) == 0 ) {
+					return $key + 1; // array starts with 0
+				}
 			}
 		}
 

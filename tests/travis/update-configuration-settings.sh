@@ -43,8 +43,8 @@ elif [ "$SESAME" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
 	echo '$smwgSparqlRepositoryConnector = "Sesame";' >> LocalSettings.php
-	echo '$smwgSparqlEndpoint["query"] = "http://127.0.0.1:8080/openrdf-sesame/repositories/test-smw";' >> LocalSettings.php
-	echo '$smwgSparqlEndpoint["update"] = "http://127.0.0.1:8080/openrdf-sesame/repositories/test-smw/statements";' >> LocalSettings.php
+	echo '$smwgSparqlEndpoint["query"] = "http://127.0.0.1:8080/rdf4j-server/repositories/test-smw";' >> LocalSettings.php
+	echo '$smwgSparqlEndpoint["update"] = "http://127.0.0.1:8080/rdf4j-server/repositories/test-smw/statements";' >> LocalSettings.php
 	echo '$smwgSparqlEndpoint["data"] = "";' >> LocalSettings.php
 elif [ "$BLAZEGRAPH" != "" ]
 then

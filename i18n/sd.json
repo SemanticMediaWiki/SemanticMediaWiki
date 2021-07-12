@@ -2,9 +2,35 @@
 	"@metadata": {
 		"authors": [
 			"Aursani",
-			"Mehtab ahmed"
+			"Indus Asia",
+			"Mehtab ahmed",
+			"Tweety"
 		]
 	},
+	"smw_printername_list": "فھرست",
+	"smw-special-wantedproperties-filter-none": "ڪوبہ نہ",
+	"smw_ask_defaultformat": "ڏنل",
+	"smw-ask-delete": "ھٽايو",
 	"browse": "وڪي جھانگيو",
-	"smw-limitreport-intext-parsertime-value": "$1 سيڪنڊ"
+	"smw_result_prev": "پويون",
+	"smw_result_next": "اڳيون",
+	"smw_result_noresults": "نتيجا ناھن.",
+	"smw_smwadmin_return": "$1 ڏانھن واپس ٿيو",
+	"smw-admin-deprecation-notice-title-notice": "ايندڙ تبديليون",
+	"smw-admin-deprecation-notice-title-removal": "ترتيبون ھٽايو",
+	"smw-admin-statistics": "انگ-اکر",
+	"smw-admin-supplementary-elastic-statistics-title": "انگ-اکر",
+	"smw-ui-tooltip-title-warning": "چتاءُ",
+	"smw-ui-tooltip-title-error": "چُڪَ",
+	"smw-ui-tooltip-title-reference": "حوالو",
+	"smw-search-profile-sort-title": "عنوان",
+	"smw-search-profile-extended-help-query": "<code><nowiki>$1</nowiki></code> پڇا طور استعمال ٿيل.",
+	"smw-search-profile-extended-section-namespace": "نانءُپولار",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|سيڪنڊُ|سيڪنڊَ}}",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-query-reference-link-label": "پڇا حوالو",
+	"smw-format-datatable-next": "اڳيون",
+	"smw-format-datatable-previous": "پويون",
+	"smw-filter": "ڇاڻي",
+	"smw-concept-tab-list": "فھرست"
 }

@@ -1,12 +1,28 @@
 {
 	"@metadata": {
 		"authors": [
-			"Joachim Mos"
+			"Joachim Mos",
+			"Slomox"
 		]
 	},
+	"smw_finallistconjunct": "un",
+	"smw_printername_list": "List",
+	"smw_printername_table": "Tabell",
 	"smw_printername_template": "Vörlaag",
 	"smw_printername_category": "Kategorie",
+	"validator-type-class-SMWParamSource": "Text",
 	"smw_ask_defaultformat": "default",
+	"smw-ask-search": "Söök",
+	"smw_sbv_value": "Weert:",
+	"smw_browse_go": "Gah",
+	"smw_inverse_label_default": "$1 vun",
 	"smw_pp_type": "Egenschop",
-	"smw-livepreview-loading": "Läädt…"
+	"smw_result_next": "Tokamen",
+	"smw_result_results": "Resultaten",
+	"smw_result_noresults": "Keen Resultaten.",
+	"smw-ui-tooltip-title-warning": "Fähler",
+	"smw-livepreview-loading": "Läädt…",
+	"smw-sp-searchbyproperty-resultlist-header": "List vun Resultaten",
+	"smw-datavalue-reference-outputformat": "$1: $2",
+	"smw-help": "Hülp"
 }

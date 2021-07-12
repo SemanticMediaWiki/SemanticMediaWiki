@@ -2,12 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Cedric31",
-			"아라",
+			"Guilhelma",
 			"Kghbln",
-			"Nicolas Eynaud",
 			"Nemo bis",
+			"Nicolas Eynaud",
 			"Unuaiga",
-			"Guilhelma"
+			"아라"
 		]
 	},
 	"smw-desc": "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([https://www.semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
@@ -132,7 +132,6 @@
 	"searchbyproperty": "Recercar per atribut",
 	"smw_sbv_docu": "Recercar totas las paginas qu'an un atribut donat amb una cèrta valor.",
 	"smw_sbv_novalue": "Picatz una valor o consultatz totas las valors dels atributs per $1.",
-	"smw_sbv_displayresult": "Lista de totas las paginas qu'an un atribut $1 amb la valor $2.",
 	"smw_sbv_displayresultfuzzy": "Una lista de totas las paginas que son la proprietat « $1 » amb la valor « $2 ». Perque i a pas que qualques resultats, las valors pròchas tanben son afichadas.",
 	"smw_sbv_property": "Proprietat :",
 	"smw_sbv_value": "Valor :",
@@ -214,7 +213,6 @@
 	"smw-sp-properties-header-label": "Lista de las proprietats",
 	"smw-sp-admin-settings-button": "Generar la lista dels paramètres",
 	"smw-admin-objectid": "Id de l’objècte :",
-	"smw-admin-tab-rebuild": "Actualizacion e reconstruccion de las donadas",
 	"smw-livepreview-loading": "Cargament…",
 	"smw-sp-searchbyproperty-resultlist-header": "Lista de resultats",
 	"smw-datavalue-number-nullnotallowed": "\"$1\" tornat amb \"NULL\" qu'es pas una valor numerica autorizada.",

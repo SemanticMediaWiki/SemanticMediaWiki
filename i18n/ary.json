@@ -1,4 +1,15 @@
 {
-	"@metadata": [],
-	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ...."
+	"@metadata": {
+		"authors": [
+			"Abdeaitali",
+			"Reda Benkhadra",
+			"SADIQUI"
+		]
+	},
+	"smw-ask-order-rand": "صفحة كيما كانت",
+	"browse": "تصفّح الويكي",
+	"smw-admin-supplementary-elastic-version-info": "نسخة",
+	"smw-admin-supplementary-elastic-config": "ريكلاج",
+	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ....",
+	"smw-search-hide": "خبي"
 }

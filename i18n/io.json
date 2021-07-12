@@ -1,10 +1,39 @@
 {
 	"@metadata": {
 		"authors": [
+			"Joao Xavier",
 			"Malafaya"
 		]
 	},
+	"smw_finallistconjunct": ", e",
+	"smw-factbox-head": "... pluse pri \"$1\"",
+	"smw-factbox-facts": "Fakti",
 	"smw_printername_template": "Shablono",
+	"smw_exportrdf_submit": "Exportacar",
+	"smw-special-wantedproperties-filter-none": "Nula",
+	"smw_purge": "Rinovigar",
+	"smw-ask-search": "Serchez",
+	"smw-ask-extra-other": "Altra",
+	"browse": "Serchez en la Wiki",
+	"smw_browselink": "Vidar singularaji",
+	"smw_browse_go": "Irez",
+	"smw_inverse_label_property": "Etiketo di la proprajo inversa",
 	"smw_result_next": "Sequanta",
-	"smw-livepreview-loading": "Ol kargesas…"
+	"smw_result_results": "Rezulti",
+	"smw-admin-deprecation-notice-section-legend": "Surskriburo",
+	"smw-admin-supplementary-elastic-replication-pages": "Pagini",
+	"smw-ui-tooltip-title-legend": "Surskriburo",
+	"smw-ui-tooltip-title-reference": "Refero",
+	"smw-admin-tab-alerts": "Avizi",
+	"smw-livepreview-loading": "Ol kargesas…",
+	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|sekundo|sekundi}}",
+	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|sekundo|sekundi}}",
+	"smw-change-propagation-protection": "Ca pagino esas tempale blokusata por preventar modifiki, samatempe kam l'aktualigo di la [https://www.semantic-mediawiki.org/wiki/Change_propagation programo aktualigar la modifikuri la propago] facesas. Ca procedo povas durar kelka tempo ante ke la pagino esos desblokusota, nam ol dependas de la serio di [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue job modifikuri bezonata].",
+	"smw-format-datatable-loadingrecords": "Karganta...",
+	"smw-format-datatable-toolbar-export": "Exportacar",
+	"smw-loading": "Ol kargesas…",
+	"smw-fetching": "Surveyanta…",
+	"smw-preparing": "Kreado ...",
+	"smw-expand": "Montrar la listo",
+	"smw-copy": "Kopiar"
 }

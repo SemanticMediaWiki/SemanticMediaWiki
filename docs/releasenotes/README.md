@@ -5,7 +5,10 @@
 * [SMW 4.0.0 release notes](RELEASE-NOTES-4.0.0.md) (development version)
 
 ### Semantic MediaWiki 3.2.x
-* **[SMW 3.2.0 release notes](RELEASE-NOTES-3.2.0.md)** (current version)
+* [SMW 3.2.3 release notes](RELEASE-NOTES-3.2.3.md) (current version)
+* [SMW 3.2.2 release notes](RELEASE-NOTES-3.2.2.md)
+* [SMW 3.2.1 release notes](RELEASE-NOTES-3.2.1.md)
+* **[SMW 3.2.0 release notes](RELEASE-NOTES-3.2.0.md)**
 
 ### Semantic MediaWiki 3.1.x
 * [SMW 3.1.6 release notes](RELEASE-NOTES-3.1.6.md)
@@ -43,22 +46,22 @@
 
 ### Semantic MediaWiki 2.3.x
 * [SMW 2.3.1 release notes](RELEASE-NOTES-2.3.1.md)
-* [SMW 2.3.0 release notes](RELEASE-NOTES-2.3.0.md)
+* **[SMW 2.3.0 release notes](RELEASE-NOTES-2.3.0.md)**
 
 ### Semantic MediaWiki 2.2.x
 * [SMW 2.2.3 release notes](RELEASE-NOTES-2.2.3.md)
 * [SMW 2.2.2 release notes](RELEASE-NOTES-2.2.2.md)
 * [SMW 2.2.1 release notes](RELEASE-NOTES-2.2.1.md)
-* [SMW 2.2.0 release notes](RELEASE-NOTES-2.2.0.md)
+* **[SMW 2.2.0 release notes](RELEASE-NOTES-2.2.0.md)**
 
 ### Semantic MediaWiki 2.1.x
 * [SMW 2.1.3 release notes](RELEASE-NOTES-2.1.3.md)
 * [SMW 2.1.2 release notes](RELEASE-NOTES-2.1.2.md)
 * [SMW 2.1.1 release notes](RELEASE-NOTES-2.1.1.md)
-* [SMW 2.1.0 release notes](RELEASE-NOTES-2.1.0.md)
+* **[SMW 2.1.0 release notes](RELEASE-NOTES-2.1.0.md)**
 
 ### Semantic MediaWiki 2.0.x
-* [SMW 2.0.0 release notes](RELEASE-NOTES-2.0.md)
+* **[SMW 2.0.0 release notes](RELEASE-NOTES-2.0.md)**
 
 ### Semantic MediaWiki 1.9.x
 * [SMW 1.9.2 release notes](RELEASE-NOTES-1.9.2.md)
@@ -66,7 +69,7 @@
 * [SMW 1.9.1 release notes](RELEASE-NOTES-1.9.1.md)
 * [SMW 1.9.0.1 release notes](RELEASE-NOTES-1.9.0.1.md)
 * [SMW 1.9.0.2 release notes](RELEASE-NOTES-1.9.0.2.md)
-* [SMW 1.9.0 release notes](RELEASE-NOTES-1.9.md)
+* **[SMW 1.9.0 release notes](RELEASE-NOTES-1.9.md)**
 
 ### Semantic MediaWiki 1.8.x and earlier
 * [SMW 1.8.x release notes](RELEASE-NOTES-1.8.md)

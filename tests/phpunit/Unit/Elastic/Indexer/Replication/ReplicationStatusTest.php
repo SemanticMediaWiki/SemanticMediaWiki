@@ -142,7 +142,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 			'index' => 'FOO',
 			'type' => 'data',
 			'id' => 42,
-			'_source_include' => [ 'subject.rev_id' ]
+			'_source_includes' => [ 'subject.rev_id' ]
 		];
 
 		$this->connection->expects( $this->once() )
@@ -214,7 +214,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 			'index' => 'FOO',
 			'type' => 'data',
 			'id' => 42,
-			'_source_include' => [ 'subject.rev_id' ]
+			'_source_includes' => [ 'subject.rev_id' ]
 		];
 
 		$this->connection->expects( $this->once() )
@@ -257,7 +257,7 @@ class ReplicationStatusTest extends \PHPUnit_Framework_TestCase {
 			'index' => 'FOO',
 			'type' => 'data',
 			'id' => 42,
-			'_source_include' => [ 'P:29.datField', 'subject.rev_id' ]
+			'_source_includes' => [ 'P:29.datField', 'subject.rev_id' ]
 		];
 
 		$this->connection->expects( $this->once() )

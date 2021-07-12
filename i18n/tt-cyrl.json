@@ -1,34 +1,36 @@
 {
 	"@metadata": {
 		"authors": [
+			"Macofe",
 			"Ерней",
-			"Ильнар",
-			"Macofe"
+			"Ильнар"
 		]
 	},
 	"smw_viewasrdf": "RDF чыганак",
 	"smw_finallistconjunct": "һәм",
-	"smw_factbox_head": "Фактлар: $1",
 	"smw_printername_csv": "CSV экспортлау",
 	"smw_printername_dsv": "DSV экспортлау",
 	"smw_printername_json": "JSON экспортлау",
 	"smw_printername_list": "Исемлек",
 	"smw_printername_ol": "Санау",
 	"smw_printername_ul": "Исемлек",
-	"smw_printername_table": "Табын",
-	"smw_printername_broadtable": "Киң табын",
+	"smw_printername_table": "Җәдвәл",
+	"smw_printername_broadtable": "Киң җәдвәл",
 	"smw_printername_template": "Калып",
 	"smw_printername_rdf": "RDF-экспорт",
 	"smw_printername_category": "Төркем",
 	"validator-type-class-SMWParamSource": "текст",
-	"smw_ask_defaultformat": "килешү буенча",
+	"smw-special-wantedproperties-filter-label": "Сөзгеч:",
+	"smw_purge": "Яңарту",
+	"smw_ask_defaultformat": "гадәттәге",
 	"smw_sbv_property": "Халәте:",
 	"smw_sbv_value": "Аңлатмасы:",
-	"smw_sbv_submit": "Эзләү",
-	"browse": "Сәхифәне карау",
-	"smw_browselink": "Үзенчәлекләрен карау",
-	"group-smwadministrator": "Semantic MediaWiki идәрәчеләре",
+	"smw_sbv_submit": "Табу",
+	"browse": "Викины карап чыгу",
+	"smw_browselink": "Үзенчәлекләрне карап чыгу",
+	"smw-ui-tooltip-title-legend": "Аңлатма",
+	"group-smwadministrator": "Идарәчеләр (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (Semantic MediaWiki)}}",
-	"grouppage-smwadministrator": "{{ns:project}}:SMW_идәрәчеләре",
-	"smw-livepreview-loading": "Йөкләү..."
+	"grouppage-smwadministrator": "{{ns:project}}:Идарәчеләр (Semantic MediaWiki)",
+	"smw-livepreview-loading": "Төяү бара…"
 }
