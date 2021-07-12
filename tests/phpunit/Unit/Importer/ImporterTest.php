@@ -5,7 +5,7 @@ namespace SMW\Tests\Importer;
 use SMW\Importer\ContentIterator;
 use SMW\Importer\ImportContents;
 use SMW\Importer\Importer;
-use SMW\Importer\JsoncontentIterator;
+use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
@@ -61,7 +61,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 	public function testDisabled() {
 
 		$instance = new Importer(
-			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
 		);
 
@@ -99,7 +99,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'create' );
 
 		$instance = new Importer(
-			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
 		);
 
@@ -128,7 +128,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'create' );
 
 		$instance = new Importer(
-			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
 		);
 
@@ -161,7 +161,7 @@ class ImporterTest extends \PHPUnit_Framework_TestCase {
 			) );
 
 		$instance = new Importer(
-			new JsoncontentIterator( $this->jsonImportContentsFileDirReader ),
+			new JsonContentIterator( $this->jsonImportContentsFileDirReader ),
 			$this->contentCreator
 		);
 

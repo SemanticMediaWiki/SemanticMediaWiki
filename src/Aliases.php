@@ -40,7 +40,6 @@ class_alias( \SMW\Query\ResultPrinters\ListResultPrinter::class, 'SMW\ListResult
 class_alias( \SMW\Query\Parser::class, 'SMWQueryParser' );
 class_alias( \SMW\SQLStore\ChangeOp\ChangeOp::class, 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 class_alias( \SMW\Connection\ConnectionProvider::class, 'SMW\DBConnectionProvider' );
-class_alias( \SMW\DataValues\TypesValue::class, 'SMWTypesValue' );
 class_alias( \SMW\DataValues\PropertyValue::class, 'SMWPropertyValue' );
 class_alias( \SMW\DataValues\StringValue::class, 'SMWStringValue' );
 class_alias( \SMW\MediaWiki\Connection\Database::class, '\SMW\MediaWiki\Database' );
@@ -94,7 +93,6 @@ class_alias( \SMW\Exporter\Element\ExpElement::class, 'SMWExpElement' );
 class_alias( \SMW\Exporter\Element\ExpResource::class, 'SMWExpResource' );
 class_alias( \SMW\Exporter\Element\ExpNsResource::class, 'SMWExpNsResource' );
 class_alias( \SMW\Exporter\Element\ExpLiteral::class, 'SMWExpLiteral' );
-class_alias( \SMW\DataValues\ImportValue::class, 'SMWImportValue' );
 class_alias( \SMW\SQLStore\QueryEngine\QueryEngine::class, 'SMWSQLStore3QueryEngine' );
 
 // 2.3

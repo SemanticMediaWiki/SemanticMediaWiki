@@ -3,9 +3,9 @@
 namespace SMW;
 
 use Html;
+use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
 use SMWDIError;
-use SMWTypesValue;
 
 /**
  * Query page that provides content to Special:UnusedProperties
@@ -77,7 +77,10 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	public function getCacheInfo() {
 
 		if ( $this->listLookup->isFromCache() ) {
-			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
+			return $this->msg(
+				'smw-sp-properties-cache-info',
+				$this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() )
+			)->parse();
 		}
 
 		return '';
@@ -123,7 +126,9 @@ class UnusedPropertiesQueryPage extends QueryPage {
 				->getHtml();
 		}
 
-		throw new PropertyNotFoundException( 'UnusedPropertiesQueryPage expects results that are properties or errors.' );
+		throw new PropertyNotFoundException(
+			'UnusedPropertiesQueryPage expects results that are properties or errors.'
+		);
 	}
 
 	/**
@@ -155,22 +160,29 @@ class UnusedPropertiesQueryPage extends QueryPage {
 				$property->getLabel()
 			);
 
-			$types = $this->store->getPropertyValues( $property->getDiWikiPage(), new DIProperty( '_TYPE' ) );
+			$types = $this->store->getPropertyValues(
+				$property->getDiWikiPage(), new DIProperty( '_TYPE' )
+			);
 
 			if ( is_array( $types ) && count( $types ) >= 1 ) {
-				$typeDataValue = DataValueFactory::getInstance()->newDataValueByItem( current( $types ), new DIProperty( '_TYPE' ) );
+				$typeDataValue = DataValueFactory::getInstance()
+							   ->newDataValueByItem( current( $types ), new DIProperty( '_TYPE' ) );
 			} else {
-				$typeDataValue = SMWTypesValue::newFromTypeId( '_wpg' );
-				$this->getMessageFormatter()->addFromKey( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() );
+				$typeDataValue = TypesValue::newFromTypeId( '_wpg' );
+				$this->getMessageFormatter()
+					 ->addFromKey( 'smw_propertylackstype', $typeDataValue->getLongHTMLText() );
 			}
 
 		} else {
-			$typeDataValue = SMWTypesValue::newFromTypeId( $property->findPropertyTypeID() );
-			$propertyLink  = DataValueFactory::getInstance()->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
+			$typeDataValue = TypesValue::newFromTypeId( $property->findPropertyTypeID() );
+			$propertyLink  = DataValueFactory::getInstance()
+						   ->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
 		}
 
-		return $this->msg( 'smw-unusedproperty-template', $propertyLink, $typeDataValue->getLongHTMLText( $this->getLinker() )	)->text() . ' ' .
-			$this->getMessageFormatter()->getHtml();
+		return $this->msg(
+			'smw-unusedproperty-template', $propertyLink,
+			$typeDataValue->getLongHTMLText( $this->getLinker() )
+		)->text() . ' ' . $this->getMessageFormatter()->getHtml();
 	}
 
 	/**

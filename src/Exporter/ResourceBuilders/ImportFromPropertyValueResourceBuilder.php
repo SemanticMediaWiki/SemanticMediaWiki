@@ -3,11 +3,11 @@
 namespace SMW\Exporter\ResourceBuilders;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\ImportValue;
 use SMW\DIProperty;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMWImportValue as ImportValue;
 
 /**
  * @private
