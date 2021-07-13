@@ -411,11 +411,11 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$anotherRevision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$anotherRevision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
