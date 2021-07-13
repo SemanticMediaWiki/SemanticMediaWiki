@@ -22,7 +22,7 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +40,7 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfo( $parameters, $expected ) {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
+
 		$instance = new EditInfo(
 			$parameters['wikiPage'],
 			$parameters['revision']
@@ -53,7 +53,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticData() {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -86,7 +85,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
 			->setConstructorArgs( [
@@ -198,20 +196,10 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	private function newRevisionStub() {
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRawText', 'getContent', 'getSize', 'getSha1' ] )
+			->setMethods( [ 'getRawText', 'getContent' ] )
 			->getMock();
-
-		// Needed for the abstract class
-		$revision->expects( $this->any() )
-			->method( 'getSize' )
-			->will( $this->returnValue( 0 ) );
-
-		// Needed for the abstract class
-		$revision->expects( $this->any() )
-			->method( 'getSha1' )
-			->will( $this->returnValue( 0 ) );
 
 		$revision->expects( $this->any() )
 			->method( 'getRawText' )

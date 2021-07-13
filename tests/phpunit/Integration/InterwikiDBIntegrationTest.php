@@ -102,7 +102,7 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 	}
 
 	public function testQueryForInterwikiAnnotation() {
-		$this->markTestSkipped( "FIXME" );
+
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 
@@ -133,14 +133,14 @@ class InterwikiDBIntegrationTest extends MwDBaseUnitTestCase {
 		$query->setLimit( 10 );
 
 		// Expects only one result with an interwiki being used as differentiator
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-2' ) );
+		$this->subjects[] = DIWikiPage::newFromTitle(Title::newFromText( __METHOD__ . '-2' ) );
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,
 			$this->getStore()->getQueryResult( $query )
 		);
 
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-1' ) );
+		$this->subjects[] = DIWikiPage::newFromTitle(Title::newFromText( __METHOD__ . '-1' ) );
 	}
 
 	private function fetchSerializedRdfOutputFor( array $pages ) {

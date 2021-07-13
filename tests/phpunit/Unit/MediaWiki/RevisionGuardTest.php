@@ -135,7 +135,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +146,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\MediaWiki\Revision\RevisionRecord',
+			'\Revision',
 			$instance->getRevision( $title, $revision )
 		);
 	}

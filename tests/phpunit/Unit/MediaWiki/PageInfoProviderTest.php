@@ -43,7 +43,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testWikiPage_TYPE_CREATION_DATE() {
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +89,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testWikiPage_TYPE_NEW_PAGE( $parentId, $expected ) {
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -161,7 +161,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $returnValue ) );
 		}
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( '\Revision' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -409,9 +409,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function callSidebarBeforeOutput( $instance ) {
-
-		$handler = 'SidebarBeforeOutput';
 		
+		$handler = 'SidebarBeforeOutput';
+
 		$this->title->expects( $this->any() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );

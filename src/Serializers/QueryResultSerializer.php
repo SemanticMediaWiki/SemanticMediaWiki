@@ -206,10 +206,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
-					$di = array_shift( $dataItems );
-					if ( $di ) {
-						$result += self::getSerialization( $di, $printRequest );
-					}
+					$result += self::getSerialization( array_shift( $dataItems ), $printRequest );
 				} elseif ( $resultArray->getContent() !== [] ) {
 					$values = [];
 
