@@ -107,9 +107,9 @@ class RevisionGuard {
 	 *
 	 * @param WikiPage $page
 	 *
-	 * @return RevisionRecord
+	 * @return ?RevisionRecord
 	 */
-	public function newRevisionFromPage( WikiPage $page ) : RevisionRecord {
+	public function newRevisionFromPage( WikiPage $page ) : ?RevisionRecord {
 
 		return $page->getRevisionRecord();
 	}
@@ -121,9 +121,9 @@ class RevisionGuard {
 	 * @param $revId
 	 * @param $flags
 	 *
-	 * @return RevisionRecord
+	 * @return ?RevisionRecord
 	 */
-	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ) : RevisionRecord {
+	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ): ?RevisionRecord {
 
 		return $this->revisionLookup->getRevisionByTitle(
 			$title,

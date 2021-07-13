@@ -446,7 +446,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'updateData' );
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 

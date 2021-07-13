@@ -95,7 +95,7 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $this->parserOutput ) );
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 

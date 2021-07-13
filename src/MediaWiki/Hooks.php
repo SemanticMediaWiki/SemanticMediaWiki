@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use IContextSource;
+use MediaWiki\Revision\SlotRecord;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
@@ -326,17 +327,31 @@ class Hooks {
 			'DeleteAccount' => [ $this, 'onDeleteAccount' ],
 
 			'SMW::SQLStore::AfterDataUpdateComplete' => [ $this, 'onAfterDataUpdateComplete' ],
-			'SMW::SQLStore::Installer::AfterCreateTablesComplete' => [ $this, 'onAfterCreateTablesComplete' ],
+			'SMW::SQLStore::Installer::AfterCreateTablesComplete' => [
+				$this, 'onAfterCreateTablesComplete'
+			],
 
-			'SMW::Store::BeforeQueryResultLookupComplete' => [ $this, 'onBeforeQueryResultLookupComplete' ],
-			'SMW::Store::AfterQueryResultLookupComplete' => [ $this, 'onAfterQueryResultLookupComplete' ],
+			'SMW::Store::BeforeQueryResultLookupComplete' => [
+				$this, 'onBeforeQueryResultLookupComplete'
+			],
+			'SMW::Store::AfterQueryResultLookupComplete' => [
+				$this, 'onAfterQueryResultLookupComplete'
+			],
 
-			'SMW::Browse::AfterIncomingPropertiesLookupComplete' => [ $this, 'onAfterIncomingPropertiesLookupComplete' ],
-			'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate' => [ $this, 'onBeforeIncomingPropertyValuesFurtherLinkCreate' ],
+			'SMW::Browse::AfterIncomingPropertiesLookupComplete' => [
+				$this, 'onAfterIncomingPropertiesLookupComplete'
+			],
+			'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate' => [
+				$this, 'onBeforeIncomingPropertyValuesFurtherLinkCreate'
+			],
 
-			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [ $elasticFactory, 'onEntityReferenceCleanUpComplete' ],
+			'SMW::SQLStore::EntityReferenceCleanUpComplete' => [
+				$elasticFactory, 'onEntityReferenceCleanUpComplete'
+			],
 			'SMW::Event::RegisterEventListeners' => [ $elasticFactory, 'onRegisterEventListeners' ],
-			'SMW::Maintenance::AfterUpdateEntityCollationComplete' => [ $elasticFactory, 'onAfterUpdateEntityCollationComplete' ],
+			'SMW::Maintenance::AfterUpdateEntityCollationComplete' => [
+				$elasticFactory, 'onAfterUpdateEntityCollationComplete'
+			],
 
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
@@ -608,7 +623,8 @@ class Hooks {
 
 		$internalParseBeforeLinks->setOptions(
 			[
-				'smwgEnabledSpecialPage' => $applicationFactory->getSettings()->get( 'smwgEnabledSpecialPage' )
+				'smwgEnabledSpecialPage' => $applicationFactory->getSettings()
+															  ->get( 'smwgEnabledSpecialPage' )
 			]
 		);
 
@@ -678,7 +694,8 @@ class Hooks {
 
 		$articleProtectComplete->setOptions(
 			[
-				'smwgEditProtectionRight' => $applicationFactory->getSettings()->get( 'smwgEditProtectionRight' )
+				'smwgEditProtectionRight' => $applicationFactory->getSettings()
+															   ->get( 'smwgEditProtectionRight' )
 			]
 		);
 
@@ -830,7 +847,9 @@ class Hooks {
 		$articlePurge->setOptions(
 			[
 				'smwgAutoRefreshOnPurge' => $settings->get( 'smwgAutoRefreshOnPurge' ),
-				'smwgQueryResultCacheRefreshOnPurge' => $settings->get( 'smwgQueryResultCacheRefreshOnPurge' )
+				'smwgQueryResultCacheRefreshOnPurge' => $settings->get(
+					'smwgQueryResultCacheRefreshOnPurge'
+				)
 			]
 		);
 
@@ -1040,7 +1059,8 @@ class Hooks {
 
 		$personalUrls->setOptions(
 			[
-				'smwgJobQueueWatchlist' => $applicationFactory->getSettings()->get( 'smwgJobQueueWatchlist' )
+				'smwgJobQueueWatchlist' => $applicationFactory->getSettings()
+															 ->get( 'smwgJobQueueWatchlist' )
 			]
 		);
 
@@ -1178,7 +1198,8 @@ class Hooks {
 
 		$editPageForm->setOptions(
 			[
-				'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()->get( 'smwgEnabledEditPageHelp' )
+				'smwgEnabledEditPageHelp' => $applicationFactory->getSettings()
+															   ->get( 'smwgEnabledEditPageHelp' )
 			]
 		);
 
@@ -1358,7 +1379,8 @@ class Hooks {
 		// without having to wait on the job queue
 		$isPrimaryUpdate = $semanticData->getOption( SemanticData::PROC_DELETE, false );
 
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
+										  ->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$store
@@ -1410,7 +1432,8 @@ class Hooks {
 	 */
 	public function onAfterQueryResultLookupComplete( $store, &$result ) {
 
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
+										  ->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$queryDependencyLinksStore = $queryDependencyLinksStoreFactory->newQueryDependencyLinksStore(
 			$store
@@ -1430,7 +1453,8 @@ class Hooks {
 	 */
 	public function onAfterIncomingPropertiesLookupComplete( $store, $semanticData, $requestOptions ) {
 
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
+										  ->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
 			$store
@@ -1447,9 +1471,15 @@ class Hooks {
 	/**
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks/Browse::BeforeIncomingPropertyValuesFurtherLinkCreate
 	 */
-	public function onBeforeIncomingPropertyValuesFurtherLinkCreate( $property, $subject, &$html, $store ) {
+	public function onBeforeIncomingPropertyValuesFurtherLinkCreate(
+		$property,
+		$subject,
+		&$html,
+		$store
+	) {
 
-		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()->singleton( 'QueryDependencyLinksStoreFactory' );
+		$queryDependencyLinksStoreFactory = ApplicationFactory::getInstance()
+										  ->singleton( 'QueryDependencyLinksStoreFactory' );
 
 		$queryReferenceBacklinks = $queryDependencyLinksStoreFactory->newQueryReferenceBacklinks(
 			$store

@@ -33,7 +33,7 @@ class TitleMoveCompleteIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
-
+		$this->markTestSkipped( "deprecated hook" );
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
