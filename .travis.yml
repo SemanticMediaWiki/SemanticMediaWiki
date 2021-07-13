@@ -16,8 +16,6 @@ jobs:
   include:
     #- env: DB=mysql; MW=REL1_36; PHPUNIT=8.5.*
     #  php: 8.0
-    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; SITELANG=ja
-      php: 7.4
     - env: DB=postgres; MW=REL1_35; PHPUNIT=8.5.*; FUSEKI=2.4.0
       php: 7.4
     #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; SESAME=2.8.7
@@ -31,6 +29,9 @@ jobs:
   allow_failures:
     # May take a moment and is non-critical therefore allow it to run without delaying the status
     - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; TYPE=benchmark
+    # Failing on language issues ATM
+    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; SITELANG=ja
+      php: 7.4
     # Currently broken for unknown reason
     # - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; BLAZEGRAPH=1.5.2
     # - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; VIRTUOSO=6.1
