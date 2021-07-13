@@ -84,6 +84,9 @@
 			"type": "format",
 			"about": "#0 (asc sort, expected by DEFAULTSORT: 3 (T1.1), 2 (T1.2), 1 (T1.3), B (T1.10), A (T1.11))",
 			"subject": "F0309/Q.1",
+			"skip-on":{
+				"postgres": "DEFAULTSORT problems on pg?"
+			},
 			"assert-output": {
 				"to-contain": [
 					"<ul><li>F0309/3 </li><li>F0309/2 </li><li>F0309/1 </li><li>F0309/B </li><li>F0309/A </li></ul>"
