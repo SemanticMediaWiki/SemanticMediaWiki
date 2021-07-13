@@ -123,7 +123,7 @@ class RevisionGuard {
 	 *
 	 * @return RevisionRecord|null
 	 */
-	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ) : ?RevisionRecord {
+	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ): ?RevisionRecord {
 
 		if ( $this->revisionLookup === null ) {
 			// TODO could it happen?

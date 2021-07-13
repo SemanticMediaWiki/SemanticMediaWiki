@@ -407,7 +407,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		return $handler;
 	}
-	
+
 	public function callSidebarBeforeOutput( $instance ) {
 
 		$handler = 'SidebarBeforeOutput';
@@ -662,7 +662,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$tags = [];
-
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $wikiPage, $revision, $baseId, $user, &$tags ]

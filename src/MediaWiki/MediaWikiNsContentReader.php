@@ -64,8 +64,7 @@ class MediaWikiNsContentReader {
 			return '';
 		}
 
-		// MW 1.33+ use getText() instead
-		return $revision->getContent( SlotRecord::MAIN )->getNativeData();
+		return $revision->getContent( SlotRecord::MAIN )->getText();
 	}
 
 }
