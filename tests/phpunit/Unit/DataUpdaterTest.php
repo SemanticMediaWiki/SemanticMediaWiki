@@ -43,7 +43,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->revision = $this->getMockBuilder( '\Revision' )
+		$this->revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -193,7 +193,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'updateData' );
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -396,7 +396,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -451,7 +451,7 @@ class DataUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testForYetUnknownRedirectTarget() {
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 

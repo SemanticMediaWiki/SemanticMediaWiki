@@ -66,7 +66,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider numberDataProvider
 	 */
 	public function testQueryResultSerializerOnMock( $setup, $expected ) {
-		$this->markTestSkipped( "FIXME" );
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $setup['queryResult'] );
 

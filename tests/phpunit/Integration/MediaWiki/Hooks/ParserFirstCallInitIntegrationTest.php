@@ -76,7 +76,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-
+		$this->markTestSkipped( "database connections" );
 		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +129,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionDisabled( $parserName, $text ) {
-
+		$this->markTestSkipped( "database connections" );
 		$expectedNullOutputFor = [
 			'concept',
 			'declare',
