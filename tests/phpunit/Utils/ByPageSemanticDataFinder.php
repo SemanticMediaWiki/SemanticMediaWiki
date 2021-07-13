@@ -114,7 +114,7 @@ class ByPageSemanticDataFinder {
 		}
 
 		$parserOutput = $wikiPage->getParserOutput(
-			$wikiPage->makeParserOptions( User::newFromId( $revision->getUser() ) ),
+			$wikiPage->makeParserOptions( $revision->getUser() ),
 			$revision->getId()
 		);
 
