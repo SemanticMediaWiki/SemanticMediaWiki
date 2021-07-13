@@ -16,7 +16,7 @@ jobs:
   include:
     #- env: DB=mysql; MW=REL1_36; PHPUNIT=8.5.*
     #  php: 8.0
-    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*; SITELANG=ja
+    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*;  # SITELANG=ja
       php: 7.4
     - env: DB=postgres; MW=REL1_35; PHPUNIT=8.5.*; FUSEKI=2.4.0
       php: 7.4
