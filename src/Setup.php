@@ -149,7 +149,7 @@ final class Setup {
 
 		$this->registerParamDefinitions( $vars );
 		$this->registerFooterIcon( $vars, $rootDir );
-		$this->registerHooks( $vars, $rootDir );
+		$this->registerHooks( $vars );
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 	}
@@ -381,8 +381,8 @@ final class Setup {
 	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
 	 */
-	private function registerHooks( &$vars, $localDirectory ) {
-		$hooks = new Hooks( $localDirectory );
+	private function registerHooks( &$vars ) {
+		$hooks = new Hooks();
 		$hooks->register( $vars );
 	}
 

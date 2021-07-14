@@ -141,7 +141,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Hooks::class,
-			new Hooks( 'foo' )
+			new Hooks()
 		);
 	}
 
@@ -216,7 +216,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledDeferredUpdate' => false
 		];
 
-		$instance = new Hooks( 'foo' );
+		$instance = new Hooks();
 		$instance->register( $vars );
 
 		self::$handlers[] = call_user_func_array( [ $this, $method ], [ $instance ] );
@@ -242,7 +242,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			'smwgEnabledDeferredUpdate' => false
 		];
 
-		$instance = new Hooks( 'foo' );
+		$instance = new Hooks();
 		$instance->register( $vars );
 
 		$handlerList = $instance->getHandlerList();
@@ -288,7 +288,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callPersonalUrls' ],
 			[ 'callSkinTemplateNavigation' ],
 			[ 'callLoadExtensionSchemaUpdates' ],
-			[ 'callResourceLoaderTestModules' ],
 			[ 'callExtensionTypes' ],
 			[ 'callTitleIsAlwaysKnown' ],
 			[ 'callBeforeDisplayNoArticleText' ],
@@ -411,7 +410,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	public function callSidebarBeforeOutput( $instance ) {
 
 		$handler = 'SidebarBeforeOutput';
-		
+
 		$this->title->expects( $this->any() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
@@ -1178,28 +1177,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ $databaseUpdater ]
-		);
-
-		return $handler;
-	}
-
-	public function callResourceLoaderTestModules( $instance ) {
-
-		$handler = 'ResourceLoaderTestModules';
-
-		$resourceLoader = $this->getMockBuilder( '\ResourceLoader' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$testModules = [];
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ &$testModules, &$resourceLoader ]
 		);
 
 		return $handler;
