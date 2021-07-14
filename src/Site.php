@@ -142,13 +142,7 @@ class Site {
 			$affix = ':' . $affix;
 		}
 
-		if ( class_exists( '\WikiMap' ) && method_exists( '\WikiMap', 'getCurrentWikiId' ) ) {
-			$wikiId = WikiMap::getCurrentWikiId();
-		} else {
-			$wikiId = wfWikiID();
-		}
-
-		return $wikiId . $affix;
+		return WikiMap::getCurrentWikiId() . $affix;
 	}
 
 	/**
