@@ -51,13 +51,8 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getCachePrefix() {
-		if ( class_exists( '\WikiMap' ) && method_exists( '\WikiMap', 'getCurrentWikiId' ) ) {
-			$wikiId = WikiMap::getCurrentWikiId();
-		} else {
-			$wikiId = wfWikiID();
-		}
-
-		return $GLOBALS['wgCachePrefix'] === false ? $wikiId : $GLOBALS['wgCachePrefix'];
+		return $GLOBALS['wgCachePrefix'] === false ?
+			WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 	}
 
 	/**
