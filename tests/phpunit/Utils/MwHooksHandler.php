@@ -169,7 +169,7 @@ class MwHooksHandler {
 	public function getHookRegistry() {
 
 		if ( $this->hookRegistry === null ) {
-			 $this->hookRegistry = new Hooks( '' );
+			 $this->hookRegistry = new Hooks();
 		}
 
 		return $this->hookRegistry;
