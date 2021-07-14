@@ -43,7 +43,6 @@ use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\PersonalUrls;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
-use SMW\MediaWiki\Hooks\ResourceLoaderTestModules;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
@@ -74,17 +73,9 @@ class Hooks {
 	private $handlers = [];
 
 	/**
-	 * @var string
-	 */
-	private $localDirectory;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param string $localDirectory
 	 */
-	public function __construct( $localDirectory = '' ) {
-		$this->localDirectory = $localDirectory;
+	public function __construct() {
 		$this->registerHandlers();
 	}
 
@@ -356,10 +347,6 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
-
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			$this->handlers['ResourceLoaderTestModules'] = [ $this, 'onResourceLoaderTestModules' ];
-		}
 	}
 
 	/**
@@ -1098,19 +1085,6 @@ class Hooks {
 		);
 
 		return true;
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
-	 */
-	public function onResourceLoaderTestModules( &$testModules, &$resourceLoader ) {
-
-		$resourceLoaderTestModules = new ResourceLoaderTestModules(
-			$resourceLoader,
-			$this->localDirectory
-		);
-
-		return $resourceLoaderTestModules->process( $testModules );
 	}
 
 	/**
