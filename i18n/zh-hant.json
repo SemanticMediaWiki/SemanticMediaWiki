@@ -85,7 +85,7 @@
 	"smw_multiple_concepts": "每頁概念頁面只能擁有一個概念定義。",
 	"smw_concept_cache_miss": "因為維基設定需要概念 \"$1\" 在離線時計算，此概念現在無法使用。\n如果這個問題在一段時間後仍未解決，請向網站管理員請求令該概念可用。",
 	"smw_noinvannot": "不能為逆屬性指定值。",
-	"version-semantic": "語意擴充套件",
+	"version-semantic": "語意擴充功能",
 	"smw_baduri": "不允許 \"$1\" 形式的 URI。",
 	"smw_dsv_link": "DSV",
 	"smw_printername_count": "計算結果",
