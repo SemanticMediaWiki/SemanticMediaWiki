@@ -171,5 +171,6 @@
 	"smw_unknowntype": "Typen «$1» som er definert for eigenskapen er ikkje støtta.",
 	"smw_concept_header": "Sider av konseptet «$1»",
 	"smw_conceptarticlecount": "Syner nedanfor {{PLURAL:$1|éi side|$1 sider}}",
-	"smw-livepreview-loading": "Lastar inn&nbsp;…"
+	"smw-livepreview-loading": "Lastar inn&nbsp;…",
+	"smw-type-tab-properties": "Eigenskapar"
 }
