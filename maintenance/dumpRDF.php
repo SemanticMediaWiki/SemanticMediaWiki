@@ -30,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --individuals      Export only pages that are no categories, properties, or types
  * --namespace <namespacelist>
  *                    Export only namespaces included in <namespacelist>
- *                    Example: --namespaces NS_Example1|NS_Example3|SMW_CONCEPT with | being used as separator.
+ *                    Example: --namespace "NS_Example1|NS_Example3|SMW_CONCEPT" with | being used as separator.
  *                    Uses constant namespace names.
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
