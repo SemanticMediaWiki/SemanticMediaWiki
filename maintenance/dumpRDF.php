@@ -185,8 +185,7 @@ class dumpRDF extends \Maintenance {
 		}
 
         if ( $this->hasOption( 'namespace' ) ) {
-            $namespaces = array_map('constant', explode( '|', $this->getOption( 'namespace' ) ) );
-            $restrictNamespaceTo = $namespaces;
+            $restrictNamespaceTo = array_map('constant', explode( '|', $this->getOption( 'namespace' ) ) );
         }
 
         if ( $this->hasOption( 'server' ) ) {
