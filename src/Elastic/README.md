@@ -22,6 +22,7 @@ It is recommended to:
 
 - Use Elasticsearch 6+ due to improvements to its [sparse field][es:6] handling
 - Consult the official hardware [guide][es:hardware] on specific Elasticsearch requirements
+  If Elasticsearch has not enough resources, it could defeat this whole feature ElasticStore; check Elasticsearch logs and other Elasticsearch mechanisms in case of issue, and add resources if needed.
 
 ## Features
 
