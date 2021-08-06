@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Content;
 
+use Content;
+use MediaWiki\Content\Transform\PreSaveTransformParams;
 use JsonContentHandler;
 
 /**
@@ -71,4 +73,15 @@ class SchemaContentHandler extends JsonContentHandler {
 		return false;
 	}
 
+	/**
+	 *
+	 * {@inheritDoc}
+	 */
+	public function preSaveTransform( Content $content, PreSaveTransformParams $pstParams ) {
+		return $content->preSaveTransform(
+			$pstParams->getPage(),
+			$pstParams->getUser(),
+			$pstParams->getParserOptions()
+		);
+	}
 }
