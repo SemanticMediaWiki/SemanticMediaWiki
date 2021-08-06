@@ -74,7 +74,8 @@
 	"autoload": {
 		"psr-4": {
 			"SMW\\": "src/",
-			"SMW\\Maintenance\\": "maintenance/"
+			"SMW\\Maintenance\\": "maintenance/",
+			"SMW\\Tests\\": "tests/phpunit/"
 		},
 		"files" : [
 			"SemanticMediaWiki.php"
