@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use ParserOutput;
 use SMW\DIWikiPage;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 

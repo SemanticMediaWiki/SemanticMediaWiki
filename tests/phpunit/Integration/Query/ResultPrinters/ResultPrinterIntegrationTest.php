@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 use SMW\Tests\PHPUnitCompat;

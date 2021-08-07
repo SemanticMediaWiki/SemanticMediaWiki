@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\ContentParser;
 use SMW\Tests\PHPUnitCompat;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Highlighter;
 use SMW\Tests\PHPUnitCompat;

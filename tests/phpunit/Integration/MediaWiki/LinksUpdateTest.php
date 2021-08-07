@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use Title;
 
 /**

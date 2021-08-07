@@ -8,7 +8,7 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest as PrintRequest;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWExporter as Exporter;
 use SMWPropertyValue as PropertyValue;

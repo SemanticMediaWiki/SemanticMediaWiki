@@ -4,9 +4,9 @@
  * @since 1.8
  */
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMWQueryProcessor;
 use SMW\Tests\PHPUnitCompat;
 

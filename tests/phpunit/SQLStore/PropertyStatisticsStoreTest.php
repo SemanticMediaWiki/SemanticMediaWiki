@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\PHPUnitCompat;
 
 /**

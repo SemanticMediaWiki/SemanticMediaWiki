@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Importer;
 
 use SMW\ApplicationFactory;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 
 /**
  * @group semantic-mediawiki

@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

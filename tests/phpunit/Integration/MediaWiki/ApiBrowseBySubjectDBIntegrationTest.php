@@ -6,7 +6,7 @@ use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\PHPUnitCompat;

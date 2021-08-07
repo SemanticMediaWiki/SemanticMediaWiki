@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMWTestsDatabaseTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMwConjunction as Conjunction;
 use SMWDIBlob as DIBlob;
