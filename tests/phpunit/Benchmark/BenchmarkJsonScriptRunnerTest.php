@@ -4,6 +4,7 @@ namespace SMW\Tests\Benchmark;
 
 use SMW\ApplicationFactory;
 use SMW\Tests\JsonTestCaseFileHandler;
+use SMW\Tests\JSONScript\JsonTestCaseRunner;
 use SMW\Tests\JSONScriptTestCaseRunner;
 
 /**
