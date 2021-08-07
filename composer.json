@@ -75,7 +75,7 @@
 		"psr-4": {
 			"SMW\\": "src/",
 			"SMW\\Maintenance\\": "maintenance/",
-			"SMW\\Tests\\": [ "tests/phpunit/", "tests/phpunit/includes" ]
+			"SMW\\Tests\\": [ "tests/phpunit/", "tests/phpunit/includes/" ]
 		},
 		"files" : [
 			"SemanticMediaWiki.php"
