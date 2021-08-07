@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -29,7 +29,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
+class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
 

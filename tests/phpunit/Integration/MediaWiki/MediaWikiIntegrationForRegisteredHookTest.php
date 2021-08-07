@@ -6,7 +6,7 @@ use RequestContext;
 use SMW\ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
@@ -22,7 +22,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class MediaWikiIntegrationForRegisteredHookTest extends MwDBaseUnitTestCase {
+class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 
 	private $title;
 	private $semanticDataValidator;

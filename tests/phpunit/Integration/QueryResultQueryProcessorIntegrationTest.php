@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -23,7 +23,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @author mwjames
  */
-class QueryResultQueryProcessorIntegrationTest extends MwDBaseUnitTestCase {
+class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 
 	private $subjects = [];
 	private $semanticDataFactory;

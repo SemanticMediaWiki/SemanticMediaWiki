@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class SetupStoreMaintenanceTest extends MwDBaseUnitTestCase {
+class SetupStoreMaintenanceTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

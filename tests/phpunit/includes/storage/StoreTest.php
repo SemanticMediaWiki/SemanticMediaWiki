@@ -6,7 +6,7 @@ use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMWRequestOptions;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -23,7 +23,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends MwDBaseUnitTestCase {
+class StoreTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

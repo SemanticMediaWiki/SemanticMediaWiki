@@ -9,7 +9,7 @@ use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -27,7 +27,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class DisjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
+class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
