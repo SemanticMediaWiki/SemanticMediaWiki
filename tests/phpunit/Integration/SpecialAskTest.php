@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration;
 use DOMDocument;
 use SMW\MediaWiki\Specials\SpecialAsk;
 use SMW\Tests\TestEnvironment;
+use SMW\SPARQLStore\RepositoryConnectionProvider;
 
 /**
  * @group semantic-mediawiki
@@ -38,8 +39,20 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider provideTestData
 	 * @param $params
+	 * @param $skipFUSEKI
 	 */
-	public function testProducesWellformedHtml( $params ) {
+	public function testProducesWellformedHtml( $params, $skipFUSEKI ) {
+
+		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
+		$this->assertInstanceOf(
+			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',
+			$instance->getConnection()
+		);
+		$hasFUSEKI = ( $instance->getConnection()->getVersion() !== "n/a" );
+
+		if ( $hasFUSEKI === true && $skipFUSEKI === true ) {
+			$this->markTestSkipped( "FIXME for FUSEKI" );
+		}
 
 		$this->setupGlobals( $params );
 
@@ -72,8 +85,8 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function provideTestData() {
 		return [
-			[ [ 'eq' => 'yes', 'q' => '' ] ],
-			[ [ 'eq' => 'no', 'q' => '[[]]' ] ],
+			[ [ [ 'eq' => 'yes', 'q' => '' ] ], false ],
+			[ [ [ 'eq' => 'no', 'q' => '[[]]' ] ], true ],
 		];
 	}
 
