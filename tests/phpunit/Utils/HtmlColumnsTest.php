@@ -1,45 +1,62 @@
 <?php
 
-namespace SMW\Test\MediaWiki\Renderer;
+namespace SMW\Tests\Utils;
 
-use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
+use SMW\Utils\HtmlColumns;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer
+ * @covers \SMW\Utils\HtmlColumns
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
- * @since   2.1
+ * @since 3.0
  *
  * @author mwjames
  */
 class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
+	use PHPUnitCompat;
+
 	private $stringValidator;
 
 	protected function setUp() : void {
 		parent::setUp();
-
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
-			new HtmlColumnListRenderer()
+			HtmlColumns::class,
+			new HtmlColumns()
+		);
+	}
+
+	public function testUnknownTypeThrowsException() {
+
+		$instance = new HtmlColumns();
+
+		$this->expectException( 'InvalidArgumentException' );
+
+		$instance->addContents(
+			[ 'Foo' ],
+			'bar'
 		);
 	}
 
 	public function testDefaultColumnUnorderedList() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance->addContentsByIndex( [
-			'a' => [ 'Foo', 'Bar' ],
-			'B' => [ 'Ichi', 'Ni' ]
-		] );
+		$instance->addContents(
+			[
+				'a' => [ 'Foo', 'Bar' ],
+				'B' => [ 'Ichi', 'Ni' ]
+			],
+			HtmlColumns::INDEXED_LIST
+		);
 
 		$expected = [
 			'<div class="smw-columnlist-container" dir="ltr">',
@@ -56,16 +73,19 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnUnorderedList() {
 
-		$instance = new HtmlColumnListRenderer();
+		$listContinuesAbbrev = '...';
+		$instance = new HtmlColumns();
 
-		$instance->setNumberOfColumns( 2 );
+		$instance->addContents(
+			[
+				'a' => [ 'Foo', 'Bar' ],
+				'B' => [ 'Baz', 'Fom', 'Fin', 'Fum' ]
+			],
+			HtmlColumns::INDEXED_LIST
+		);
 
-		$instance->addContentsByIndex( [
-			'a' => [ 'Foo', 'Bar' ],
-			'B' => [ 'Baz', 'Fom', 'Fin', 'Fum' ]
-		] );
-
-		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
+		$instance->setColumns( 2 );
+		$instance->setContinueAbbrev( $listContinuesAbbrev );
 
 		$expected = [
 			'<div class="smw-columnlist-container" dir="ltr">',
@@ -87,14 +107,17 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testThreeColumnUnorderedList() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance->setNumberOfColumns( 3 );
+		$instance->addContents(
+			[
+				'a' => [ 'Foo', 'Bar' ],
+				'B' => [ 'Ichi', 'Ni' ]
+			],
+			HtmlColumns::INDEXED_LIST
+		);
 
-		$instance->addContentsByIndex( [
-			'a' => [ 'Foo', 'Bar' ],
-			'B' => [ 'Ichi', 'Ni' ]
-		] );
+		$instance->setColumns( 3 );
 
 		$expected = [
 			'<div class="smw-columnlist-container" dir="ltr">',
@@ -112,16 +135,18 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnOrderedList() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance
-			->setNumberOfColumns( 2 )
-			->setListType( 'ol' );
+		$instance->addContents(
+			[
+				'a' => [ 'Foo', 'Bar' ],
+				'B' => [ 'Ichi', 'Ni' ]
+			],
+			HtmlColumns::INDEXED_LIST
+		);
 
-		$instance->addContentsByIndex( [
-			'a' => [ 'Foo', 'Bar' ],
-			'B' => [ 'Ichi', 'Ni' ]
-		] );
+		$instance->setColumns( 2 );
+		$instance->setListType( 'ol' );
 
 		$expected = [
 			'<div class="smw-columnlist-container" dir="ltr">',
@@ -139,17 +164,19 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTwoColumnOrderedListNoHeader() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance
-			->setNumberOfColumns( 2 )
-			->setColumnListClass( 'foo-class' )
-			->setColumnClass( 'bar-class' )
-			->setListType( 'ul' );
-
-		$instance->addContentsByNoIndex(
-			[ 'Foo', 'Baz', 'Bar' ]
+		$instance->addContents(
+			[
+				'Foo', 'Baz', 'Bar'
+			],
+			HtmlColumns::PLAIN_LIST
 		);
+
+		$instance->setColumns( 2 );
+		$instance->setColumnListClass( 'foo-class' );
+		$instance->setColumnClass( 'bar-class' );
+		$instance->setListType( 'ul' );
 
 		$expected = [
 			'<div class="foo-class" dir="ltr">',
@@ -167,20 +194,53 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testResponsiveColumnsToBeDeterminedByBrowser() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance->setColumnListClass( 'foo-class' )
-			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
-			->setColumnClass( 'bar-responsive' )
-			->setColumnRTLDirectionalityState( true )
-			->setListType( 'ul' );
-
-		$instance->addContentsByNoIndex(
-			[ 'Foo', 'Baz', 'Bar' ]
+		$instance->addContents(
+			[
+				'Foo', 'Baz', 'Bar'
+			],
+			HtmlColumns::PLAIN_LIST
 		);
 
+		$instance->setColumns( 2 );
+		$instance->setColumnListClass( 'foo-class' );
+		$instance->setResponsiveCols();
+		$instance->setResponsiveColsThreshold( 1 );
+		$instance->setListType( 'ul' );
+		$instance->isRTL( true );
+
 		$expected = [
-			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<div class="foo-class" dir="rtl"><div class="smw-column-responsive" style="width:100%;columns:2 20em;" dir="rtl">',
+			'<ul start=1><li>Foo</li><li>Baz</li><li>Bar</li></ul></div> <!-- end column -->'
+		];
+
+		$this->stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
+	public function testResponsiveColumnsOnResponsiveColsThreshold() {
+
+		$instance = new HtmlColumns();
+
+		$instance->addContents(
+			[
+				'Foo', 'Baz', 'Bar'
+			],
+			HtmlColumns::PLAIN_LIST
+		);
+
+		$instance->setColumns( 2 );
+		$instance->setColumnListClass( 'foo-class' );
+		$instance->setResponsiveCols();
+		$instance->setResponsiveColsThreshold( 4 );
+		$instance->setListType( 'ul' );
+		$instance->isRTL( true );
+
+		$expected = [
+			'<div class="foo-class" dir="rtl"><div class="smw-column-responsive" style="width:100%;columns:1 20em;" dir="rtl">',
 			'<ul start=1><li>Foo</li><li>Baz</li><li>Bar</li></ul></div> <!-- end column -->'
 		];
 
@@ -192,17 +252,21 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testItemListWithAttributes() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance->setColumnListClass( 'foo-class' )
-			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
-			->setColumnClass( 'bar-responsive' )
-			->setColumnRTLDirectionalityState( true )
-			->setListType( 'ul' );
-
-		$instance->addContentsByNoIndex(
-			[ 'Foo', 'Baz', 'Bar' ]
+		$instance->addContents(
+			[
+				'Foo', 'Baz', 'Bar'
+			],
+			HtmlColumns::PLAIN_LIST
 		);
+
+		$instance->setColumns( 2 );
+		$instance->setColumnListClass( 'foo-class' );
+		$instance->setResponsiveCols();
+		$instance->setResponsiveColsThreshold( 1 );
+		$instance->setListType( 'ul' );
+		$instance->isRTL( true );
 
 		$instance->setItemAttributes(
 			[
@@ -214,7 +278,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = [
-			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<div class="foo-class" dir="rtl"><div class="smw-column-responsive" style="width:100%;columns:2 20em;" dir="rtl">',
 			'<ul start=1><li id="123">Foo</li><li>Baz</li><li 0="456">Bar</li></ul></div> <!-- end column -->'
 		];
 
@@ -226,17 +290,21 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testOListWithAttributes() {
 
-		$instance = new HtmlColumnListRenderer();
+		$instance = new HtmlColumns();
 
-		$instance->setColumnListClass( 'foo-class' )
-			->setNumberOfColumns( 2 ) // being set to 1 when it is responsive
-			->setColumnClass( 'bar-responsive' )
-			->setColumnRTLDirectionalityState( true )
-			->setListType( 'ol', 'i' );
-
-		$instance->addContentsByNoIndex(
-			[ 'Foo', 'Baz', 'Bar' ]
+		$instance->addContents(
+			[
+				'Foo', 'Baz', 'Bar'
+			],
+			HtmlColumns::PLAIN_LIST
 		);
+
+		$instance->setColumns( 2 );
+		$instance->setColumnListClass( 'foo-class' );
+		$instance->setResponsiveCols();
+		$instance->setResponsiveColsThreshold( 1 );
+		$instance->setListType( 'ol', 'i' );
+		$instance->isRTL( true );
 
 		$instance->setItemAttributes(
 			[
@@ -248,7 +316,7 @@ class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expected = [
-			'<div class="foo-class" dir="rtl"><div class="bar-responsive" style="width:100%;" dir="rtl">',
+			'<div class="foo-class" dir="rtl"><div class="smw-column-responsive" style="width:100%;columns:2 20em;" dir="rtl">',
 			'<ol type=i start=1><li id="123">Foo</li><li>Baz</li><li 0="456">Bar</li></ol></div> <!-- end column -->'
 		];
 

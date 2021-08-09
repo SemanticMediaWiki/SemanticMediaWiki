@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -18,7 +18,7 @@ use Title;
  *
  * @author mwjames
  */
-class RebuildConceptCacheMaintenanceTest extends MwDBaseUnitTestCase {
+class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

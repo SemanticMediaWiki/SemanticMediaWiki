@@ -14,7 +14,7 @@ use SMWDataItem;
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class DataItemTest extends MwDBaseUnitTestCase {
+abstract class DataItemTest extends DatabaseTestCase {
 
 	/**
 	 * Returns the name of the \SMW\DataItem deriving class this test tests.

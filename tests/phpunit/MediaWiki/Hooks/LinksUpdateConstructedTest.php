@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test\MediaWiki\Hooks;
+namespace SMW\Tests\MediaWiki\Hooks;
 
 use LinksUpdate;
 use ParserOutput;

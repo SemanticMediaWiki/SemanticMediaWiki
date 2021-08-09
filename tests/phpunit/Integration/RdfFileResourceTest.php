@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Exporter\ExporterFactory;
 use Title;
 
@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class RdfFileResourceTest extends MwDBaseUnitTestCase {
+class RdfFileResourceTest extends DatabaseTestCase {
 
 	private $fixturesFileProvider;
 	private $stringValidator;

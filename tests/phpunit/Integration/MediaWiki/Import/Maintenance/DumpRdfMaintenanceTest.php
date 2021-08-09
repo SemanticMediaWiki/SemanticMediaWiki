@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -19,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
+class DumpRdfMaintenanceTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Tests\TestEnvironment;
 use SMWInfolink as Infolink;

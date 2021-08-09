@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Importer\Integration;
+namespace SMW\Tests\Integration\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
