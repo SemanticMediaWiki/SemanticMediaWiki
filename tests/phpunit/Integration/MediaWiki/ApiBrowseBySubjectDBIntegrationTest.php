@@ -6,7 +6,7 @@ use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\PHPUnitCompat;
@@ -20,7 +20,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ApiBrowseBySubjectDBIntegrationTest extends MwDBaseUnitTestCase {
+class ApiBrowseBySubjectDBIntegrationTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

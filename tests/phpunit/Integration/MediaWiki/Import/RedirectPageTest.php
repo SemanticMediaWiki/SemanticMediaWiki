@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -21,7 +21,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RedirectPageTest extends MwDBaseUnitTestCase {
+class RedirectPageTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use SMW\ApplicationFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use Title;
 
 /**
@@ -15,7 +15,7 @@ use Title;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends MwDBaseUnitTestCase {
+class ChangePropagationDispatchJob extends DatabaseTestCase {
 
 	private $job = null;
 	private $pages = [];

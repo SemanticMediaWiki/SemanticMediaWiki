@@ -8,7 +8,7 @@ use ParserOutput;
 use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
@@ -24,7 +24,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
+class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesBeforeRun = true;
 

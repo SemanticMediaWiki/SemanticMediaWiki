@@ -7,7 +7,7 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Subobject;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use Title;
 
 /**
@@ -19,7 +19,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataSerializationDBIntegrationTest extends MwDBaseUnitTestCase {
+class SemanticDataSerializationDBIntegrationTest extends DatabaseTestCase {
 
 	public function testRoundtripOfSerializedSemanticDataAfterStoreUpdate() {
 
