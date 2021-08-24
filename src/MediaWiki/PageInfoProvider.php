@@ -31,7 +31,7 @@ class PageInfoProvider implements PageInfo {
 	private $wikiPage = null;
 
 	/**
-	 * @var Revision
+	 * @var RevisionRecord
 	 */
 	private $revision = null;
 

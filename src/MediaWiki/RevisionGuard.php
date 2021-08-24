@@ -36,7 +36,7 @@ class RevisionGuard {
 	/**
 	 * @since 3.2
 	 *
-	 * @param RevisionLookup $revisionLookup
+	 * @param RevisionLookup|null $revisionLookup
 	 */
 	public function __construct( RevisionLookup $revisionLookup = null ) {
 		$this->revisionLookup = $revisionLookup;
@@ -124,6 +124,11 @@ class RevisionGuard {
 	 * @return ?RevisionRecord
 	 */
 	public function newRevisionFromTitle( Title $title, $revId = 0, $flags = 0 ): ?RevisionRecord {
+
+		if ( $this->revisionLookup === null ) {
+			// TODO could it happen?
+			throw \LogicException();
+		}
 
 		return $this->revisionLookup->getRevisionByTitle(
 			$title,

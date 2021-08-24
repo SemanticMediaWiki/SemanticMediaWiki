@@ -110,7 +110,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Storage\RevisionLookup' )
+		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

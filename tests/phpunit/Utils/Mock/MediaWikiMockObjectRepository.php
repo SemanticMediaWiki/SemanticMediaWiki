@@ -154,11 +154,11 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 	/**
 	 * @since 1.9
 	 *
-	 * @return Revision
+	 * @return \MediaWiki\Revision\RevisionRecord
 	 */
-	public function Revision() {
+	public function RevisionRecord() {
 
-		$revision = $this->getMockBuilder( 'Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 

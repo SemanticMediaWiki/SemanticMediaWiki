@@ -150,6 +150,7 @@ class ContentParser {
 		$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
 
 		if ( !$content ) {
+			// TODO must be replaced by appropriate function for MCR (main slot)
 			$content = $revision->getContentHandler()->makeEmptyContent();
 		}
 

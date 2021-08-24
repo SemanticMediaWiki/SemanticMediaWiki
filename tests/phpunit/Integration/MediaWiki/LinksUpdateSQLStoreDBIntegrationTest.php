@@ -5,7 +5,6 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use Revision;
 use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;

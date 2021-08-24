@@ -22,7 +22,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class TitleMoveCompleteIntegrationTest extends DatabaseTestCase {
+class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 
 	private $mwHooksHandler;
 	private $queryResultValidator;
@@ -33,7 +33,7 @@ class TitleMoveCompleteIntegrationTest extends DatabaseTestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
-		$this->markTestSkipped( "deprecated hook" );
+
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -43,8 +43,8 @@ class TitleMoveCompleteIntegrationTest extends DatabaseTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$this->mwHooksHandler->register(
-			'TitleMoveComplete',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'TitleMoveComplete' )
+			'PageMoveComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'PageMoveComplete' )
 		);
 
 		$this->pageCreator = $utilityFactory->newPageCreator();

@@ -202,7 +202,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			[
 				'queryResult' => $this->buildMockQueryResult( $setup )
-				],
+			],
 			[
 				'printrequests' => [
 					[ 'label' => 'Foo-1', 'typeid' => '_num', 'mode' => 2, 'format' => false, 'key' => '', 'redi' => '' ],

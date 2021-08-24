@@ -295,7 +295,7 @@ class Indexer {
 			return '';
 		}
 
-		$revision = MediaWikiServices::getInstance()->getRevisionLookup->getRevisionById( $id );
+		$revision = MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById( $id );
 
 		if ( $revision == null ) {
 			return '';

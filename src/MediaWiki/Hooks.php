@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use IContextSource;
-use MediaWiki\Revision\SlotRecord;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
@@ -37,7 +36,7 @@ use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
-use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\PersonalUrls;
@@ -50,7 +49,7 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
-use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\Hooks\DeleteAccount;
@@ -281,7 +280,7 @@ class Hooks {
 			'BeforeDisplayNoArticleText' => [ $this, 'onBeforeDisplayNoArticleText' ],
 			'EditPage::showEditForm:initial' => [ $this, 'onEditPageShowEditFormInitial' ],
 
-			'PageMoveComplete' => [ $this, 'onTitleMoveComplete' ],
+			'PageMoveComplete' => [ $this, 'onPageMoveComplete' ],
 			'TitleIsAlwaysKnown' => [ $this, 'onTitleIsAlwaysKnown' ],
 			'TitleQuickPermissions' => [ $this, 'onTitleQuickPermissions' ],
 			'TitleIsMovable' => [ $this, 'onTitleIsMovable' ],
@@ -293,7 +292,7 @@ class Hooks {
 			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
-			'RevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
+			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
@@ -619,12 +618,12 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+	 * Hook: RevisionFromEditComplete called when a revision was inserted
 	 * due to an edit
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
 	 */
-	public function onNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
+	public function onRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user, &$tags ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -641,18 +640,18 @@ class Hooks {
 			$user
 		);
 
-		$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+		$revisionFromEditComplete = new RevisionFromEditComplete(
 			$editInfo,
 			$pageInfoProvider,
 			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$applicationFactory->singleton( 'SchemaFactory' )
 		);
 
-		$newRevisionFromEditComplete->setEventDispatcher(
+		$revisionFromEditComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		$newRevisionFromEditComplete->process( $wikiPage->getTitle() );
+		$revisionFromEditComplete->process( $wikiPage->getTitle() );
 
 		return true;
 	}
@@ -793,16 +792,16 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: TitleMoveComplete occurs whenever a request to move an article
+	 * Hook: PageMoveComplete occurs whenever a request to move an article
 	 * is completed
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageMoveComplete
 	 */
-	public function onTitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
+	public function onPageMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$titleMoveComplete = new TitleMoveComplete(
+		$titleMoveComplete = new PageMoveComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 

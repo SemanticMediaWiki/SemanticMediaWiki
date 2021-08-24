@@ -333,10 +333,11 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsClassifiedAsImportPerformerProtected_CreatorAndCurrentUserDontMatch() {
 		$this->markTestSkipped( "FIXME later" );
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		# TODO 1.35 adapt to code in WikiPage::factory()->getCreator
 		$revision->expects( $this->any() )
 			->method( 'getUserText' )
 			->will( $this->returnValue( 'FooImporter' ) );
@@ -378,10 +379,11 @@ class ProtectionValidatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function testIsClassifiedAsNotImportPerformerProtected_CreatorAndCurrentUserDoMatch() {
 
-		$revision = $this->getMockBuilder( '\Revision' )
+		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		# TODO 1.35 adapt to code in WikiPage::factory()->getCreator
 		$revision->expects( $this->any() )
 			->method( 'getUserText' )
 			->will( $this->returnValue( 'FooImporter' ) );
