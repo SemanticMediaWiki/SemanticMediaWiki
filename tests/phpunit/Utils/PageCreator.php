@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use Revision;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;

@@ -5,7 +5,6 @@ namespace SMW\MediaWiki;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use ParserOutput;
-use Revision;
 use SMW\ParserData;
 use SMW\SemanticData;
 use User;
@@ -27,7 +26,7 @@ class EditInfo {
 	private $page;
 
 	/**
-	 * @var Revision
+	 * @var RevisionRecord|null
 	 */
 	private $revision;
 
