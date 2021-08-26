@@ -588,7 +588,7 @@
 	"grouppage-smwcurator": "{{ns:project}}:SMW-Kuratoren",
 	"group-smweditor": "SMW-Editoren",
 	"group-smweditor-member": "{{GENDER:$1|SMW-Editor|SMW-Editorin}}",
-	"grouppage-smweditor": "{{ns:project}}:SMW-Editoren (Semantic MediaWiki)",
+	"grouppage-smweditor": "{{ns:project}}:SMW-Editoren",
 	"action-smw-admin": "Semantic MediaWiki zu administrieren",
 	"action-smw-ruleedit": "Regeln zu erstellen und zu bearbeiten",
 	"smw-property-namespace-disabled": "Der [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks Namensraum „Attribut“] ist inaktiv. Es ist nicht möglich, einen Datentyp oder andere Eigenschaften zu einem Attribut festzulegen.",
