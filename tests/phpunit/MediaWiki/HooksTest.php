@@ -273,7 +273,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSpecialSearchProfiles' ],
 			[ 'callSpecialSearchProfileForm' ],
 			[ 'callInternalParseBeforeLinks' ],
-			[ 'callNewRevisionFromEditComplete' ],
 			[ 'callRevisionFromEditComplete' ],
 			[ 'callTitleMoveComplete' ],
 			[ 'callPageMoveComplete' ],
@@ -610,61 +609,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$parser, &$text, &$stripState ]
-		);
-
-		return $handler;
-	}
-
-	public function callNewRevisionFromEditComplete( $instance ) {
-		$this->markTestSkipped( "Deprecated hook for 1.35" );
-
-		$handler = 'NewRevisionFromEditComplete';
-
-		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$content = $this->getMockBuilder( '\Content' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$content->expects( $this->any() )
-			->method( 'getContentHandler' )
-			->will( $this->returnValue( $contentHandler ) );
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$wikiPage->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
-
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$revision->expects( $this->any() )
-			->method( 'getContent' )
-			->will( $this->returnValue( $content ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$baseId = '';
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ $wikiPage, $revision, $baseId, $user ]
 		);
 
 		return $handler;
