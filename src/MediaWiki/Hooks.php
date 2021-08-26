@@ -37,7 +37,7 @@ use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
-use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\MediaWiki\Hooks\PersonalUrls;
@@ -293,7 +293,7 @@ class Hooks {
 			'ArticleViewHeader' => [ $this, 'onArticleViewHeader' ],
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
-			'RevisionFromEditComplete' => [ $this, 'onNewRevisionFromEditComplete' ],
+			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
 			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
@@ -619,12 +619,12 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: NewRevisionFromEditComplete called when a revision was inserted
+	 * Hook: RevisionFromEditComplete called when a revision was inserted
 	 * due to an edit
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/NewRevisionFromEditComplete
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
 	 */
-	public function onNewRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
+	public function onRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -641,18 +641,18 @@ class Hooks {
 			$user
 		);
 
-		$newRevisionFromEditComplete = new NewRevisionFromEditComplete(
+		$revisionFromEditComplete = new RevisionFromEditComplete(
 			$editInfo,
 			$pageInfoProvider,
 			$applicationFactory->singleton( 'PropertyAnnotatorFactory' ),
 			$applicationFactory->singleton( 'SchemaFactory' )
 		);
 
-		$newRevisionFromEditComplete->setEventDispatcher(
+		$revisionFromEditComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		$newRevisionFromEditComplete->process( $wikiPage->getTitle() );
+		$revisionFromEditComplete->process( $wikiPage->getTitle() );
 
 		return true;
 	}

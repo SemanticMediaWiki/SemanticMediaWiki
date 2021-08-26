@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\MediaWiki\Hooks\NewRevisionFromEditComplete;
+use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\NewRevisionFromEditComplete
+ * @covers \SMW\MediaWiki\Hooks\RevisionFromEditComplete
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -14,7 +14,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
+class RevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -81,8 +81,8 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			NewRevisionFromEditComplete::class,
-			new NewRevisionFromEditComplete( $this->editInfo, $pageInfoProvider, $this->propertyAnnotatorFactory, $this->schemaFactory )
+			RevisionFromEditComplete::class,
+			new RevisionFromEditComplete( $this->editInfo, $pageInfoProvider, $this->propertyAnnotatorFactory, $this->schemaFactory )
 		);
 	}
 
@@ -106,7 +106,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 		$this->eventDispatcher->expects( $this->never() )
 			->method( 'dispatch' );
 
-		$instance = new NewRevisionFromEditComplete(
+		$instance = new RevisionFromEditComplete(
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
@@ -155,7 +155,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
-		$instance = new NewRevisionFromEditComplete(
+		$instance = new RevisionFromEditComplete(
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
@@ -205,7 +205,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
-		$instance = new NewRevisionFromEditComplete(
+		$instance = new RevisionFromEditComplete(
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
@@ -263,7 +263,7 @@ class NewRevisionFromEditCompleteTest extends \PHPUnit_Framework_TestCase {
 				[ $this->equalTo( 'InvalidateResultCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
-		$instance = new NewRevisionFromEditComplete(
+		$instance = new RevisionFromEditComplete(
 			$this->editInfo,
 			$pageInfoProvider,
 			$this->propertyAnnotatorFactory,
