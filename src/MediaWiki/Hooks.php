@@ -3,7 +3,9 @@
 namespace SMW\MediaWiki;
 
 use IContextSource;
+use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\User\UserIdentity;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
@@ -50,7 +52,7 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
-use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\MediaWiki\Hooks\UserChange;
 use SMW\MediaWiki\Hooks\DeleteAccount;
@@ -281,7 +283,7 @@ class Hooks {
 			'BeforeDisplayNoArticleText' => [ $this, 'onBeforeDisplayNoArticleText' ],
 			'EditPage::showEditForm:initial' => [ $this, 'onEditPageShowEditFormInitial' ],
 
-			'PageMoveComplete' => [ $this, 'onTitleMoveComplete' ],
+			'PageMoveComplete' => [ $this, 'onPageMoveComplete' ],
 			'TitleIsAlwaysKnown' => [ $this, 'onTitleIsAlwaysKnown' ],
 			'TitleQuickPermissions' => [ $this, 'onTitleQuickPermissions' ],
 			'TitleIsMovable' => [ $this, 'onTitleIsMovable' ],
@@ -793,24 +795,30 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: TitleMoveComplete occurs whenever a request to move an article
+	 * Hook: PageMoveComplete occurs whenever a request to move an article
 	 * is completed
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleMoveComplete
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageMoveComplete
 	 */
-	public function onTitleMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
+	public function onPageMoveComplete(
+		LinkTarget $oldTitle,
+		LinkTarget $newTitle,
+		UserIdentity $user,
+		int $oldId,
+		int $newId
+	) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$titleMoveComplete = new TitleMoveComplete(
+		$pageMoveComplete = new PageMoveComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 
-		$titleMoveComplete->setEventDispatcher(
+		$pageMoveComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		$titleMoveComplete->process( $oldTitle, $newTitle, $user, $oldId, $newId );
+		$pageMoveComplete->process( $oldTitle, $newTitle, $user, $oldId, $newId );
 
 		return true;
 	}

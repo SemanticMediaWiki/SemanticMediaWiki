@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\MediaWiki\Hooks\TitleMoveComplete;
+use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\TitleMoveComplete
+ * @covers \SMW\MediaWiki\Hooks\PageMoveComplete
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -16,7 +16,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
+class PageMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $user;
 	private $testEnvironment;
@@ -56,8 +56,8 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			TitleMoveComplete::class,
-			new TitleMoveComplete( $this->namespaceExaminer )
+			PageMoveComplete::class,
+			new PageMoveComplete( $this->namespaceExaminer )
 		);
 	}
 
@@ -83,7 +83,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new TitleMoveComplete(
+		$instance = new PageMoveComplete(
 			$this->namespaceExaminer
 		);
 
@@ -119,7 +119,7 @@ class TitleMoveCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new TitleMoveComplete(
+		$instance = new PageMoveComplete(
 			$this->namespaceExaminer
 		);
 

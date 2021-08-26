@@ -27,7 +27,7 @@ Extend the display with content from the Factbox.
 #### OutputPageParserOutput
 Rendering the Factbox and updating the FactboxCache.
 
-#### TitleMoveComplete
+#### PageMoveComplete
 Update the Store after an article has been deleted.
 
 #### ResourceLoaderGetConfigVars
