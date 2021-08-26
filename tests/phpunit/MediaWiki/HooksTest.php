@@ -274,7 +274,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callSpecialSearchProfileForm' ],
 			[ 'callInternalParseBeforeLinks' ],
 			[ 'callRevisionFromEditComplete' ],
-			[ 'callTitleMoveComplete' ],
 			[ 'callPageMoveComplete' ],
 			[ 'callArticleProtectComplete' ],
 			[ 'callArticleViewHeader' ],
@@ -665,58 +664,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ $wikiPage, $revision, $baseId, $user ]
 		);
 
-		return $handler;
-	}
-
-	public function callTitleMoveComplete( $instance ) {
-		$this->markTestSkipped( "Deprecated hook for 1.35" );
-
-		$handler = 'TitleMoveComplete';
-
-		$store = $this->getMockBuilder( '\SM\WSQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'deleteSubject' ] )
-			->getMock();
-
-		$this->testEnvironment->registerObject( 'Store', $store );
-
-		$oldTitle = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$oldTitle->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
-
-		$oldTitle->expects( $this->any() )
-			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
-
-		$newTitle = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$newTitle->expects( $this->any() )
-			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
-
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$oldId = 42;
-		$newId = 0;
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ &$oldTitle, &$newTitle, &$user, $oldId, $newId ]
-		);
-
-		$this->testEnvironment->registerObject( 'Store', $this->store );
 		return $handler;
 	}
 
