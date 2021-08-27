@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
-use IDBAccessObject;
 use Title;
 
 /**
@@ -58,7 +58,9 @@ class MediaWikiNsContentReader {
 			return '';
 		}
 
-		$revision = $this->revisionGuard->newRevisionFromTitle( $title, false, IDBAccessObject::READ_LATEST );
+		$revision = $this->revisionGuard->newRevisionFromTitle(
+			$title, false, RevisionStore::READ_LATEST
+		);
 
 		if ( $revision === null ) {
 			return '';
