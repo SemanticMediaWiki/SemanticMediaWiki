@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
-use TextContent;
 use Title;
 use UnexpectedValueException;
-use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 
 /**

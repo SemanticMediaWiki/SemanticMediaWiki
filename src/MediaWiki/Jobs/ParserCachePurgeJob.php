@@ -2,8 +2,6 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\SlotRecord;
 use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use Title;
@@ -56,18 +54,12 @@ class ParserCachePurgeJob extends Job {
 
 		$title = $page->getTitle();
 
-		// MW 1.32+
-		// @see ApiPurge
-		if ( method_exists( $page, 'updateParserCache' ) ) {
-			$page->updateParserCache(
-				[
-					'causeAction' => $causeAction,
-					'causeAgent' => $causeAgent
-				]
-			);
-		} else {
-			$this->runLegacyUpdateParserCache( $page );
-		}
+		$page->updateParserCache(
+			[
+				'causeAction' => $causeAction,
+				'causeAgent' => $causeAgent
+			]
+		);
 
 		$logger->info(
 			[ 'ParserCache', 'Forced update for: {title}', 'causeAction: {causeAction}' ],
@@ -92,31 +84,4 @@ class ParserCachePurgeJob extends Job {
 	protected function newWikiPage( $title ) {
 		return WikiPage::factory( $title );
 	}
-
-	/**
-	 * Only for MW 1.31
-	 */
-	private function runLegacyUpdateParserCache( $page ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-		$enableParserCache = true;
-
-		$popts = $page->makeParserOptions( 'canonical' );
-		$content = $page->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
-
-		if ( $content ) {
-			$p_result = $content->getParserOutput(
-				$page->getTitle(),
-				$page->getLatest(),
-				$popts,
-				$enableParserCache
-			);
-
-			if ( $enableParserCache ) {
-				$parserCache = $applicationFactory->singleton( 'ParserCache' );
-				$parserCache->save( $p_result, $page, $popts );
-			}
-		}
-	}
-
 }

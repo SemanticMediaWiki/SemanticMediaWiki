@@ -12,7 +12,6 @@ use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
-use User;
 use WikiPage;
 
 /**

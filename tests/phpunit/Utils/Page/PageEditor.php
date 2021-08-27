@@ -5,7 +5,6 @@ namespace SMW\Tests\Utils\Page;
 use RuntimeException;
 use Title;
 use WikiPage;
-use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 
 /**
