@@ -70,7 +70,7 @@
 		"en": "Please contact your local administrator to get more information about the progress."
 	},
 	"smw-setupcheck-install-assistance":{
-		"en": "You may also consult the following pages for further assistance:<ul><li><a href='www.semantic-mediawiki.org/wiki/Help:Installation'>Installation</a> instructions</li><li><a href='www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting'>Troubleshooting</a> help page</li></ul>"
+		"en": "You may also consult the following pages for further assistance:<ul><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation'>Installation</a> instructions</li><li><a href='https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting'>Troubleshooting</a> help page</li></ul>"
 	},
 	"smw-setupcheck-requires-software-update": {
 		"en": "The issue can only be resolved by updating the software (or environment) to match the requirement."
