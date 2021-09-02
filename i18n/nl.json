@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Arent",
+			"Danieldegroot2",
 			"DengroWikibase",
 			"Ecthelion3",
 			"Elroy",
@@ -397,7 +398,7 @@
 	"prefs-general-options": "Algemene opties",
 	"prefs-ask-options": "Semantisch zoeken",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] en bijbehorende extensies bieden individuele voorkeuren voor een groep geselecteerde eigenschappen en functies. Een lijst met individuele instellingen met hun beschrijving en kenmerken is beschikbaar op [https://www.semantic-mediawiki.org/wiki/Help:User_preferences deze hulppagina].",
-	"smw-prefs-ask-options-tooltip-display": "Parametertekst weergeven als info-tooltip op de speciale pagina #ask [[Special:Ask|query builder]].",
+	"smw-prefs-ask-options-tooltip-display": "Parametertekst weergeven als info-tooltip op de speciale pagina #ask [[Special:Ask|zoekopdrachtbouwer]].",
 	"smw-ui-tooltip-title-property": "Eigenschap",
 	"smw-ui-tooltip-title-quantity": "Eenheidomzetting",
 	"smw-ui-tooltip-title-info": "Gegevens",
@@ -450,7 +451,7 @@
 	"smw-admin-tab-maintenance": "Onderhoud",
 	"smw-admin-tab-registry": "Register",
 	"smw-livepreview-loading": "Bezig met laden…",
-	"smw-sp-searchbyproperty-description": "Deze pagina biedt een eenvoudige [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces bladerinteractie] voor het vinden van entiteiten met een eigenschap met een bepaalde waarde. Andere beschikbare zoekinteracties zijn de [[Special:PageProperty|zoekpagina voor pagina-eigenschappen]] en de [[Special:Ask|querybouwer]].",
+	"smw-sp-searchbyproperty-description": "Deze pagina biedt een eenvoudige [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces bladerinteractie] voor het vinden van entiteiten met een eigenschap met een bepaalde waarde. Andere beschikbare zoekinteracties zijn de [[Special:PageProperty|zoekpagina voor pagina-eigenschappen]] en de [[Special:Ask|zoekopdrachtbouwer]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Lijst van resultaten",
 	"smw-sp-searchbyproperty-nonvaluequery": "Een lijst van waarden die aan de eigenschap \"$1\" zijn toegekend.",
 	"smw-sp-searchbyproperty-valuequery": "Een lijst van pagina's waarop de eigenschap ''$1'' de waarde ''$2'' heeft.",
