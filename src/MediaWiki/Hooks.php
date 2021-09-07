@@ -3,7 +3,9 @@
 namespace SMW\MediaWiki;
 
 use IContextSource;
+use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\UserIdentity;
 use Onoi\HttpRequest\HttpRequestFactory;
@@ -74,10 +76,14 @@ class Hooks {
 	 */
 	private $handlers = [];
 
+	/** @var HookContainer */
+	private $hookContainer;
+
 	/**
 	 * @since 2.1
 	 */
 	public function __construct() {
+		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		$this->registerHandlers();
 	}
 
@@ -111,15 +117,7 @@ class Hooks {
 		}
 
 		foreach ( $handlers as $name ) {
-
-			// #4779
-			if (
-				!class_exists( '\MediaWiki\MediaWikiServices' ) ||
-				!method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getHookContainer' ) ) {
-				\Hooks::clear( $name );
-			} else {
-				\MediaWiki\MediaWikiServices::getInstance()->getHookContainer()->clear( $name );
-			}
+			$this->hookContainer->clear( $name );
 		}
 	}
 
@@ -146,10 +144,10 @@ class Hooks {
 	/**
 	 * @since 2.1
 	 */
-	public function register( &$vars ) {
+	public function register() {
 		foreach ( $this->handlers as $name => $callback ) {
 			//\Hooks::register( $name, $callback );
-			$vars['wgHooks'][$name][] = $callback;
+			$this->hookContainer->register( $name, $callback );
 		}
 	}
 

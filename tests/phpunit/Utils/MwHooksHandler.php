@@ -149,12 +149,17 @@ class MwHooksHandler {
 		return $this;
 	}
 
+	public function invokeHooksFromRegistry() {
+		$this->getHookRegistry()->register();
+		return $this;
+	}
+
 	/**
 	 * @since  2.1
 	 *
-	 * @return HookRegistry
+	 * @return Hooks
 	 */
-	public function getHookRegistry() {
+	public function getHookRegistry(): Hooks {
 
 		if ( $this->hookRegistry === null ) {
 			 $this->hookRegistry = new Hooks();
