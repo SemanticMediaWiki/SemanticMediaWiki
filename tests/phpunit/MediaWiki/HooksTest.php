@@ -264,7 +264,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		return [
 			[ 'callParserAfterTidy' ],
-			[ 'callBaseTemplateToolbox' ],
 			[ 'callSkinAfterContent' ],
 			[ 'callSidebarBeforeOutput' ],
 			[ 'callOutputPageParserOutput' ],
@@ -342,40 +341,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
 			[ &$this->parser, &$text ]
-		);
-
-		return $handler;
-	}
-
-	public function callBaseTemplateToolbox( $instance ) {
-
-		$handler = 'BaseTemplateToolbox';
-
-		$this->title->expects( $this->any() )
-			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
-
-		$this->skin->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
-
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skinTemplate->expects( $this->any() )
-			->method( 'getSkin' )
-			->will( $this->returnValue( $this->skin ) );
-
-		$toolbox = '';
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ $skinTemplate, &$toolbox ]
 		);
 
 		return $handler;
