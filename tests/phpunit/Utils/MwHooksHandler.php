@@ -103,6 +103,12 @@ class MwHooksHandler {
 			if ( $this->hookContainer->isRegistered( $hook ) ) {
 				$this->hookContainer->clear( $hook );
 			}
+
+			$globalHook = $GLOBALS['wgHooks'][$hook] ?? null;
+			if ( $globalHook ) {
+				$this->wgHooks[$hook] = $globalHook;
+				$GLOBALS['wgHooks'][$hook] = [];
+			}
 		}
 
 		return $this;
