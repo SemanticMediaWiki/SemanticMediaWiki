@@ -89,7 +89,7 @@
 		} else {
 			for( var prop in this.messages ) {
 				if ( prop !== key && this.messages.hasOwnProperty( prop ) ) {
-					informAbout = prop
+					informAbout = prop;
 				}
 			}
 		}
@@ -347,7 +347,7 @@
 			} else if ( isEmpty === false && options['format'] !== $this.val() ) {
 				chg.add( 'format', 'smw-ask-format-change-info', 'warning' );
 			} else {
-				chg.delete( 'format' )
+				chg.delete( 'format' );
 			}
 
 			chg.informAbout( 'format' );
