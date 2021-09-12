@@ -117,9 +117,7 @@ class AuxiliaryFields {
 		$this->connection->upsert(
 			SQLStore::ID_AUXILIARY_TABLE,
 			$rows,
-			[
-				'smw_id'
-			],
+			'smw_id',
 			$rows,
 			__METHOD__
 		);
