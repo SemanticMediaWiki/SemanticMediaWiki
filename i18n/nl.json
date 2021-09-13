@@ -329,7 +329,7 @@
 	"smw_smwadmin_updatenotstarted": "Er loopt al een bijwerkproces.\nEr wordt geen nieuw proces gestart.",
 	"smw_smwadmin_updatestopped": "Alle lopende bijwerkprocessen zijn afgebroken.",
 	"smw_smwadmin_updatenotstopped": "Om de lopende processen te stoppen, moet u het vinkje inschakelen om aan te geven dat u het zeker weet.",
-	"smw-admin-docu": "Deze speciale pagina assisteert u tijdens de installatie en het bijwerken van <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a> en biedt ook verdere administratieve functies en taken, alsook statistieken.\nDenk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershandelingen uitvoert.",
+	"smw-admin-docu": "Deze speciale pagina helpt u tijdens de installatie en het bijwerken van <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a> en voorziet in verdere administratieve functies en taken, alsook statistieken.\nDenk eraan een reservekopie te maken van uw waardevolle gegevens voordat u beheerhandelingen verricht.",
 	"smw-admin-environment": "Software omgeving",
 	"smw-admin-db": "Database instellen",
 	"smw-admin-dbdocu": "Semantic MediaWiki vereist zijn eigen databasestructuur (en is onafhankelijk van MediaWiki en heeft dus geen invloed op de rest van de MediaWiki-installatie) om de semantische gegevens op te slaan.\nDeze instellingsfunctie kan meerdere keren worden uitgevoerd zonder schade aan te richten, maar is slechts één keer nodig bij installatie of upgrade.",
