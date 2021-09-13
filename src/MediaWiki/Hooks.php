@@ -31,7 +31,6 @@ use SMW\MediaWiki\Hooks\ArticleFromTitle;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
-use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\MediaWiki\Hooks\EditPageForm;
@@ -273,7 +272,6 @@ class Hooks {
 			'InternalParseBeforeLinks' => [ $this, 'onInternalParseBeforeLinks' ],
 			'RejectParserCacheValue' => [ $this, 'onRejectParserCacheValue' ],
 
-			'BaseTemplateToolbox' => [ $this, 'onBaseTemplateToolbox' ],
 			'SkinAfterContent' => [ $this, 'onSkinAfterContent' ],
 			'OutputPageParserOutput' => [ $this, 'onOutputPageParserOutput' ],
 			'OutputPageCheckLastModified' => [ $this, 'onOutputPageCheckLastModified' ],
@@ -390,29 +388,6 @@ class Hooks {
 		$parserAfterTidy->process( $text );
 
 		return true;
-	}
-
-	/**
-	 * Hook: Called by BaseTemplate when building the toolbox array and
-	 * returning it for the skin to output.
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
-	 */
-	public function onBaseTemplateToolbox( $skinTemplate, &$toolbox ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$baseTemplateToolbox = new BaseTemplateToolbox(
-			$applicationFactory->getNamespaceExaminer()
-		);
-
-		$baseTemplateToolbox->setOptions(
-			[
-				'smwgBrowseFeatures' => $applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
-			]
-		);
-
-		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 	}
 
 	/**
