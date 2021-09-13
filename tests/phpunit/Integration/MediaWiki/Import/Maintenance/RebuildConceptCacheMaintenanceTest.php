@@ -30,9 +30,14 @@ class RebuildConceptCacheMaintenanceTest extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
-		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
-		$this->pageCreator = UtilityFactory::getInstance()->newPageCreator();
+		$utilityFactory = UtilityFactory::getInstance();
+		$this->runnerFactory  = $utilityFactory->newRunnerFactory();
+		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
+		$this->pageCreator = $utilityFactory->newPageCreator();
+
+		$utilityFactory->newMwHooksHandler()
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'

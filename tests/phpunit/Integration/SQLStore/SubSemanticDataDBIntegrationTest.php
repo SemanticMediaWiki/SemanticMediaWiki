@@ -7,6 +7,7 @@ use SMW\DIWikiPage;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
+use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use Title;
 
@@ -26,6 +27,16 @@ use Title;
 class SubSemanticDataDBIntegrationTest extends DatabaseTestCase {
 
 	private $title;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+
+		$utilityFactory = UtilityFactory::getInstance();
+		$utilityFactory->newMwHooksHandler()
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+	}
 
 	protected function tearDown() : void {
 		$pageDeleter= new PageDeleter();
