@@ -41,6 +41,10 @@ class InterwikiDBIntegrationTest extends DatabaseTestCase {
 		$this->queryResultValidator = $utilityFactory->newValidatorFactory()->newQueryResultValidator();
 		$this->queryParser = ApplicationFactory::getInstance()->newQueryParser();
 
+		$utilityFactory->newMwHooksHandler()
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
+
 		// Manipulate the interwiki prefix on-the-fly
 		$GLOBALS['wgHooks']['InterwikiLoadPrefix'][] = function( $prefix, &$interwiki ) {
 
