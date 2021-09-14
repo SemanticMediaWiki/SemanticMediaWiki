@@ -28,7 +28,7 @@ class BulkFileProvider {
 	 *
 	 * @param string $path
 	 */
-	public function __construct( $path ) {
+	public function __construct( string $path ) {
 		$this->path = $path;
 	}
 
@@ -47,7 +47,6 @@ class BulkFileProvider {
 	 * @return array
 	 */
 	public function getFiles() {
-
 		$fileFetcher = new FileFetcher( $this->path );
 		$iterator = $fileFetcher->findByExtension( $this->extension );
 

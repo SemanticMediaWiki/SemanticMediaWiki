@@ -98,7 +98,7 @@ class ReplicationStatus {
 		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
-		$doc = $this->connection->get( $params + [ '_source_include' => [ "$pid.$field", "subject.rev_id" ] ] );
+		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field", "subject.rev_id" ] ] );
 
 		if ( isset( $doc['_source'][$pid][$field] ) ) {
 			$date = end( $doc['_source'][$pid][$field] );
@@ -139,7 +139,7 @@ class ReplicationStatus {
 		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
-		$doc = $this->connection->get( $params + [ '_source_include' => [ "$pid.$field" ] ] );
+		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field" ] ] );
 
 		if ( !isset( $doc['_source'][$pid][$field] ) ) {
 			return false;
@@ -173,7 +173,7 @@ class ReplicationStatus {
 			return 0;
 		}
 
-		$doc = $this->connection->get( $params + [ '_source_include' => [ "subject.rev_id" ] ] );
+		$doc = $this->connection->get( $params + [ '_source_includes' => [ "subject.rev_id" ] ] );
 
 		if ( !isset( $doc['_source']['subject']['rev_id'] ) ) {
 			return 0;

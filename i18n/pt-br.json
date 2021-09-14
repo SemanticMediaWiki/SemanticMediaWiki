@@ -1116,7 +1116,7 @@
 	"smw-entity-examiner-check": "Executando {{PLURAL:$1|um examinador|examinadores}} em segundo plano",
 	"smw-entity-examiner-indicator": "Painel de problema da entidade",
 	"smw-entity-examiner-deferred-check-awaiting-response": "O examinador \"$1\" está aguardando uma resposta do back-end.",
-	"smw-entity-examiner-deferred-elastic-replication": "Elástico",
+	"smw-entity-examiner-deferred-elastic-replication": "Elastic",
 	"smw-entity-examiner-deferred-constraint-error": "Restrição",
 	"smw-entity-examiner-associated-revision-mismatch": "Revisão",
 	"smw-entity-examiner-deferred-fake": "Falso",

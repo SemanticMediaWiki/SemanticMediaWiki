@@ -64,10 +64,6 @@ class FactboxFactory {
 			$applicationFactory->getMediaWikiLogger()
 		);
 
-		$cachedFactbox->setRevisionGuard(
-			$applicationFactory->singleton( 'RevisionGuard' )
-		);
-
 		return $cachedFactbox;
 	}
 

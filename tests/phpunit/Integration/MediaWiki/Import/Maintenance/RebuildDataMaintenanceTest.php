@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use SMW\DIProperty;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -20,7 +20,7 @@ use Title;
  *
  * @author mwjames
  */
-class RebuildDataMaintenanceTest extends MwDBaseUnitTestCase {
+class RebuildDataMaintenanceTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

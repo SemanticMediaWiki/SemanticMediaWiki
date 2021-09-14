@@ -5,42 +5,36 @@ os:
   - linux
 
 # https://docs.travis-ci.com/user/trusty-ci-environment/
-dist: trusty
+dist: bionic
 
-addons:
-  postgresql: "9.5"
+services:
+  - mysql
+  - postgresql
 
 jobs:
   fast_finish: true
   include:
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*
-      php: 7.1
-    - env: DB=sqlite; MW=REL1_33; PHPUNIT=6.5.* SITELANG=ja;
-      php: 7.2
-    - env: DB=postgres; MW=REL1_34; PHPUNIT=6.5.*
-      php: 7.3
-    - env: DB=mysql; MW=master; PHPUNIT=8.5.*
+    #- env: DB=mysql; MW=REL1_36; PHPUNIT=8.5.*
+    #  php: 8.0
+    - env: DB=mysql; MW=REL1_35; PHPUNIT=8.5.*;  # SITELANG=ja
       php: 7.4
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; BLAZEGRAPH=1.5.2
-      php: 7.1
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; FUSEKI=2.4.0
-      php: 7.1
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; VIRTUOSO=6.1
-      php: 7.1
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; SESAME=2.8.7
-      php: 7.1
-    - env: DB=mysql; MW=REL1_33; PHPUNIT=6.5.*; ES=5.6.6
-      php: 7.1
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; TYPE=benchmark
-      php: 7.2
+    - env: DB=postgres; MW=REL1_35; PHPUNIT=8.5.*; FUSEKI=2.4.0
+      php: 7.4
+    #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; SESAME=2.8.7
+    #  php: 7.4
+    - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; BLAZEGRAPH=1.5.2
+      php: 7.4
+    #- env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; VIRTUOSO=6.1
+    #  php: 7.4
+    - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; TYPE=benchmark
+      php: 7.4
   allow_failures:
-    # This is MW master, you never know what WMF developers have put in for easter eggs, same for PHP conversely
-    - env: DB=mysql; MW=master; PHPUNIT=8.5.*
     # May take a moment and is non-critical therefore allow it to run without delaying the status
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; TYPE=benchmark
+    - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; TYPE=benchmark
     # Currently broken for unknown reason
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; BLAZEGRAPH=1.5.2
-    - env: DB=mysql; MW=REL1_32; PHPUNIT=6.5.*; VIRTUOSO=6.1
+    # - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; BLAZEGRAPH=1.5.2
+    # - env: DB=sqlite; MW=REL1_35; PHPUNIT=8.5.*; VIRTUOSO=6.1
+    # - env: env: DB=mysql; MW=REL1_36; PHPUNIT=8.5.*
 
 # Dec 16, 2015 (GCE switch): Travis support wrote (Tomcat + Java):
 # bug in the JDK: http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7089443.
@@ -60,11 +54,13 @@ before_install:
   - cat /etc/hosts # optionally check the content *before*
   # MW is not yet compatible with Composer 2.x, see https://phabricator.wikimedia.org/T266417
   - composer self-update --1
+  - wget https://raw.githubusercontent.com/SemanticMediaWiki/CIScripts/main/travis/install-mediawiki.sh
+  - wget https://raw.githubusercontent.com/SemanticMediaWiki/CIScripts/main/travis/install-phpunit.sh
 
 install:
-  - travis_retry composer self-update
+  - bash ./install-mediawiki.sh
+  - bash ./install-phpunit.sh
   - bash ./tests/travis/install-services.sh
-  - bash ./tests/travis/install-mediawiki.sh
   - bash ./tests/travis/install-semantic-mediawiki.sh
 
 before_script:

@@ -164,8 +164,8 @@ function &smwfGetStore() {
  * @return string
  */
 function smwfCacheKey( $namespace, $key ) {
-
-	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ? wfWikiID() : $GLOBALS['wgCachePrefix'];
+	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
+		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;

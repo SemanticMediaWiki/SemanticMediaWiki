@@ -175,7 +175,7 @@ class UtilityFactory {
 	 *
 	 * @return BulkFileProvider
 	 */
-	public function newBulkFileProvider( $path ) {
+	public function newBulkFileProvider( string $path ) {
 		return new BulkFileProvider( $path );
 	}
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\StoreFactory;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMWTestsDatabaseTestCase;
 use SMWRequestOptions;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -23,7 +23,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends MwDBaseUnitTestCase {
+class StoreTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 
@@ -195,6 +195,26 @@ class StoreTest extends MwDBaseUnitTestCase {
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Database',
 			$store->getConnection( 'mw.db' )
+		);
+	}
+
+	public function testGetRedirectTarget() {
+
+		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
+		$expected = new DIWikiPage( 'Bar', NS_MAIN );
+
+		$instance = $this->getMockBuilder( '\SMW\Store' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getPropertyValues' ] )
+			->getMockForAbstractClass();
+
+		$instance->expects( $this->once() )
+			->method( 'getPropertyValues' )
+			->will( $this->returnValue( [ $expected ] ) );
+
+		$this->assertEquals(
+			$expected,
+			$instance->getRedirectTarget( $wikipage )
 		);
 	}
 

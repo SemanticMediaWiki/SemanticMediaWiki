@@ -12,8 +12,8 @@ InternalParseBeforeLinks is used to process and expand text content, and in case
 #### LinksUpdateConstructed
 LinksUpdateConstructed is called at the end of LinksUpdate and is being used to initiate a store update for data that were held by the ParserOutput object.
 
-#### NewRevisionFromEditComplete
-NewRevisionFromEditComplete called when a new revision was inserted due to an edit and used to update the ParserOuput with the latests special property annotation.
+#### RevisionFromEditComplete
+RevisionFromEditComplete called when a new revision was inserted due to an edit and used to update the ParserOuput with the latests special property annotation.
 
 #### ParserAfterTidy
 ParserAfterTidy is used to re-introduce content, update base annotations (e.g. special properties, categories etc.) and in case of a manual article purge initiates a store update (LinksUpdateConstructed wouldn't work because it acts only on link changes and therefore would not trigger a LinksUpdateConstructed event).
@@ -27,7 +27,7 @@ Extend the display with content from the Factbox.
 #### OutputPageParserOutput
 Rendering the Factbox and updating the FactboxCache.
 
-#### TitleMoveComplete
+#### PageMoveComplete
 Update the Store after an article has been deleted.
 
 #### ResourceLoaderGetConfigVars

@@ -6,10 +6,14 @@ MW_INSTALL_PATH=$BASE_PATH/../mw
 
 cd $MW_INSTALL_PATH
 
-# Namespace related settings
+
+echo '$wgDeprecationReleaseLimit = "1.35.0";' >> LocalSettings.php
+
 echo 'define("SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB", true);' >> LocalSettings.php
 echo 'define("NS_TRAVIS", 998);' >> LocalSettings.php
 echo 'define("NS_TRAVIS_TALK", 999);' >> LocalSettings.php
+
+# Namespace related settings
 echo '$wgExtraNamespaces[NS_TRAVIS] = "Travis";' >> LocalSettings.php
 echo '$wgExtraNamespaces[NS_TRAVIS_TALK] = "Travis_talk";' >> LocalSettings.php
 echo '$wgNamespacesWithSubpages[NS_TRAVIS] = true;' >> LocalSettings.php
@@ -39,8 +43,8 @@ elif [ "$SESAME" != "" ]
 then
 	echo '$smwgDefaultStore = "SMWSparqlStore";' >> LocalSettings.php
 	echo '$smwgSparqlRepositoryConnector = "Sesame";' >> LocalSettings.php
-	echo '$smwgSparqlEndpoint["query"] = "http://127.0.0.1:8080/openrdf-sesame/repositories/test-smw";' >> LocalSettings.php
-	echo '$smwgSparqlEndpoint["update"] = "http://127.0.0.1:8080/openrdf-sesame/repositories/test-smw/statements";' >> LocalSettings.php
+	echo '$smwgSparqlEndpoint["query"] = "http://127.0.0.1:8080/rdf4j-server/repositories/test-smw";' >> LocalSettings.php
+	echo '$smwgSparqlEndpoint["update"] = "http://127.0.0.1:8080/rdf4j-server/repositories/test-smw/statements";' >> LocalSettings.php
 	echo '$smwgSparqlEndpoint["data"] = "";' >> LocalSettings.php
 elif [ "$BLAZEGRAPH" != "" ]
 then

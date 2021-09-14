@@ -196,6 +196,7 @@
 	"smw_ask_sortby": "Ordina per colonna (opzionale)",
 	"smw_ask_ascorder": "Crescente",
 	"smw_ask_descorder": "Decrescente",
+	"smw-ask-order-rand": "Casuale",
 	"smw_ask_submit": "Trova risultati",
 	"smw_ask_editquery": "Modifica query",
 	"smw_add_sortcondition": "[Aggiungi condizione di ordinamento]",

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 
 /**
  * @group semantic-mediawiki
@@ -13,7 +13,7 @@ use SMW\Tests\MwDBaseUnitTestCase;
  *
  * @author mwjames
  */
-class RebuildFulltextSearchTableTest extends MwDBaseUnitTestCase {
+class RebuildFulltextSearchTableTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

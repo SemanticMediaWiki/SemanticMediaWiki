@@ -3,16 +3,15 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use LinksUpdate;
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use Revision;
 use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
-use User;
 use WikiPage;
 
 /**
@@ -24,7 +23,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
+class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesBeforeRun = true;
 
@@ -187,7 +186,9 @@ class LinksUpdateSQLStoreDBIntegrationTest extends MwDBaseUnitTestCase {
 
 	protected function retrieveAndLoadData( $revId = null ) {
 
-		$revision = $revId ? Revision::newFromId( $revId ) : null;
+		$revision = $revId !== null
+				  ? MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById( $revId )
+				  : null;
 
 		$contentParser = ServicesFactory::getInstance()->newContentParser(
 			$this->title

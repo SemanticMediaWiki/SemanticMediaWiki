@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 use SMW\Tests\PHPUnitCompat;
@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class ResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
+class ResultPrinterIntegrationTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

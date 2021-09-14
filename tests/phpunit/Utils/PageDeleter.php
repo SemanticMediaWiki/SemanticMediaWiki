@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils;
 
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 use WikiPage;
 
@@ -35,7 +36,7 @@ class PageDeleter {
 		$page = new WikiPage( $title );
 
 		try {
-			$page->doDeleteArticle( 'SMW system test: delete page' );
+			$page->doDeleteArticleReal( 'SMW system test: delete page', new MockSuperUser() );
 		} catch( \Exception $e ) {
 			//
 		}

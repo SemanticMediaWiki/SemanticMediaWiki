@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\MediaWiki\Hooks;
 
@@ -17,6 +18,7 @@ class MwHooksHandler {
 	 * @var HookRegistry
 	 */
 	private $hookRegistry = null;
+	private $hookContainer = null;
 
 	private $wgHooks = [];
 	private $inTestRegisteredHooks = [];
@@ -80,6 +82,11 @@ class MwHooksHandler {
 		'SMW::SQLStore::Installer::AfterDropTablesComplete'
 	];
 
+
+	public function __construct() {
+		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+	}
+
 	/**
 	 * @since  2.0
 	 *
@@ -93,18 +100,9 @@ class MwHooksHandler {
 		);
 
 		foreach ( $listOfHooks as $hook ) {
-
-			// MW 1.19
-			if ( method_exists( 'Hooks', 'clear' ) ) {
-				$this->getHookRegistry()->clear( $hook );
+			if ( $this->hookContainer->isRegistered( $hook ) ) {
+				$this->hookContainer->clear( $hook );
 			}
-
-			if ( !isset( $GLOBALS['wgHooks'][$hook] ) ) {
-				continue;
-			}
-
-			$this->wgHooks[$hook] = $GLOBALS['wgHooks'][$hook];
-			$GLOBALS['wgHooks'][$hook] = [];
 		}
 
 		return $this;
@@ -118,11 +116,11 @@ class MwHooksHandler {
 	public function restoreListedHooks() {
 
 		foreach ( $this->inTestRegisteredHooks as $hook ) {
-			unset( $GLOBALS['wgHooks'][$hook] );
+			$this->hookContainer->clear( $hook );
 		}
 
 		foreach ( $this->wgHooks as $hook => $definition ) {
-			$GLOBALS['wgHooks'][$hook] = $definition;
+			$this->hookContainer->register( $hook, $definition );
 			unset( $this->wgHooks[$hook] );
 		}
 
@@ -146,30 +144,25 @@ class MwHooksHandler {
 		}
 
 		$this->inTestRegisteredHooks[] = $name;
-		$GLOBALS['wgHooks'][$name][] = $callback;
+		$this->hookContainer->register( $name, $callback );
 
 		return $this;
 	}
 
-	/**
-	 * @since  2.1
-	 *
-	 * @return MwHooksHandler
-	 */
 	public function invokeHooksFromRegistry() {
-		$this->getHookRegistry()->register( $GLOBALS );
+		$this->getHookRegistry()->register();
 		return $this;
 	}
 
 	/**
 	 * @since  2.1
 	 *
-	 * @return HookRegistry
+	 * @return Hooks
 	 */
-	public function getHookRegistry() {
+	public function getHookRegistry(): Hooks {
 
 		if ( $this->hookRegistry === null ) {
-			 $this->hookRegistry = new Hooks( '' );
+			 $this->hookRegistry = new Hooks();
 		}
 
 		return $this->hookRegistry;

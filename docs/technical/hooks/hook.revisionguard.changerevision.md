@@ -12,7 +12,8 @@ use Hooks;
 Hooks::register( 'SMW::RevisionGuard::ChangeRevision', function( $title, &$revision ) {
 
 	// Set a revision
-	// $revision = \Revision::newFromId( $id );
+	// $revisionLookup = \MediaWiki\MediaWikiServices::getInstance()->getRevisionLookup();
+	// $revision = $revisionLookup->getRevisionById( $id );
 
 	return true;
 } );

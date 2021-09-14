@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\Query;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
@@ -20,7 +20,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class RandomQueryResultOrderIntegrationTest extends MwDBaseUnitTestCase {
+class RandomQueryResultOrderIntegrationTest extends DatabaseTestCase {
 
 	private $fixturesProvider;
 

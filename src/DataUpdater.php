@@ -2,15 +2,14 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
 use Title;
-use User;
 use WikiPage;
 use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
-use Revision;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\MediaWiki\RevisionGuard;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 
 /**
@@ -277,8 +276,12 @@ class DataUpdater {
 			$this->revisionGuard->newRevisionFromPage( $wikiPage )
 		);
 
-		if ( $revision instanceof Revision ) {
-			$user = User::newFromId( $revision->getUser() );
+		if ( $revision instanceof RevisionRecord ) {
+			$identity = $revision->getUser();
+			if ( $identity ) {
+				$userFactory = MediaWikiServices::getInstance()->getUserFactory();
+				$user = $userFactory->newFromUserIdentity( $identity );
+			}
 		}
 
 		$this->addAnnotations( $title, $wikiPage, $revision, $user );

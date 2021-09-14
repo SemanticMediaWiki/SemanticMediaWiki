@@ -9,6 +9,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -308,6 +309,8 @@ class Database {
 	}
 
 	/**
+	 * Execute a given SQL query on the primary DB.
+	 *
 	 * @see DatabaseBase::query
 	 *
 	 * @since 1.9
@@ -320,10 +323,52 @@ class Database {
 	 * @throws RuntimeException
 	 */
 	public function query( $sql, $fname = __METHOD__, $ignoreException = false ) {
-
-		$connection = $this->connRef->getConnection( 'write' );
 		$this->transactionHandler->muteTransactionProfiler( true );
 
+		$results = $this->executeQuery(
+			$this->connRef->getConnection( 'write' ),
+			$sql,
+			$fname,
+			$ignoreException
+		);
+
+		$this->transactionHandler->muteTransactionProfiler( false );
+
+		return $results;
+	}
+
+	/**
+	 * Execute a given SQL query on a read-only replica DB.
+	 *
+	 * @see IDatabase::query()
+	 * @since 4.0.0
+	 *
+	 * @param Query|string $sql
+	 * @param string $fname
+	 * @param false $ignoreException
+	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @throws Exception
+	 */
+	public function readQuery( $sql, $fname = __METHOD__, $ignoreException = false ) {
+		return $this->executeQuery(
+			$this->connRef->getConnection( 'read' ),
+			$sql,
+			$fname,
+			$ignoreException
+		);
+	}
+
+	/**
+	 * Execute a SQL query using the given DB connection handle.
+	 *
+	 * @param IDatabase $connection
+	 * @param Query|string $sql
+	 * @param $fname
+	 * @param $ignoreException
+	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @throws Exception
+	 */
+	private function executeQuery( IDatabase $connection, $sql, $fname, $ignoreException ) {
 		if ( $sql instanceof Query ) {
 			$sql = $sql->build();
 		}

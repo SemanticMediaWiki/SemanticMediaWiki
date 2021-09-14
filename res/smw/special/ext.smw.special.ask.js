@@ -61,7 +61,7 @@
 	 */
 	change.prototype.add = function( key, message, type ) {
 		this.messages[key] = [ message, type ];
-	}
+	};
 
 	/**
 	 * @since 3.0
@@ -71,7 +71,7 @@
 	 */
 	change.prototype.delete = function( key ) {
 		delete this.messages[key];
-	}
+	};
 
 	/**
 	 * @since 3.0
@@ -89,7 +89,7 @@
 		} else {
 			for( var prop in this.messages ) {
 				if ( prop !== key && this.messages.hasOwnProperty( prop ) ) {
-					informAbout = prop
+					informAbout = prop;
 				}
 			}
 		}
@@ -99,7 +99,7 @@
 		} else {
 			this.hide();
 		}
-	}
+	};
 
 	/**
 	 * @since 3.0
@@ -124,7 +124,7 @@
 
 		$( '#status-format-change' ).remove();
 		$( '#ask-change-info' ).append( html );
-	}
+	};
 
 	/**
 	 * @since 3.0
@@ -137,7 +137,7 @@
 
 		$( '#inlinequeryembed, #embed_hide' ).hide();
 		$( '#embed_show' ).show();
-	}
+	};
 
 	/**
 	 * Support and helper methods
@@ -347,7 +347,7 @@
 			} else if ( isEmpty === false && options['format'] !== $this.val() ) {
 				chg.add( 'format', 'smw-ask-format-change-info', 'warning' );
 			} else {
-				chg.delete( 'format' )
+				chg.delete( 'format' );
 			}
 
 			chg.informAbout( 'format' );
