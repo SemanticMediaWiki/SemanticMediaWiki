@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
 use ParserOutput;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
@@ -46,7 +47,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfo( $parameters, $expected ) {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
 		$instance = new EditInfo(
 			$parameters['wikiPage'],
 			$parameters['revision']
@@ -59,8 +59,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchSemanticData() {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
-
 		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -92,8 +90,6 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider wikiPageDataProvider
 	 */
 	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
-		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
-
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
 			->setConstructorArgs( [
 				$parameters['wikiPage'],
@@ -210,35 +206,29 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'getRawText', 'getContent', 'getSize', 'getSha1' ] )
 			->getMock();
 
 		// Needed for the abstract class
 		$revision->expects( $this->any() )
 			->method( 'getSize' )
-			->will( $this->returnValue( 0 ) );
+			->will( $this->returnValue( strlen( 'Foo' ) ) );
 
 		// Needed for the abstract class
 		$revision->expects( $this->any() )
 			->method( 'getSha1' )
-			->will( $this->returnValue( 0 ) );
-
-		$revision->expects( $this->any() )
-			->method( 'getRawText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->will( $this->returnValue( \Wikimedia\base_convert( sha1( 'Foo' ), 16, 36 ) ) );
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )
 			->will( $this->returnValueMap( [
-				[ \Revision::RAW, null, 'Foo' ],
-				[ \Revision::FOR_PUBLIC, null, $this->newContentStub() ],
+				[ SlotRecord::MAIN, RevisionRecord::RAW, null, 'Foo' ],
+				[ SlotRecord::MAIN, RevisionRecord::FOR_PUBLIC, null, $this->newContentStub() ],
 			] ) );
 
 		return $revision;
 	}
 
 	private function newContentStub() {
-
 		if ( !class_exists( 'ContentHandler' ) ) {
 			return null;
 		}
