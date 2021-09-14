@@ -14,11 +14,6 @@ use JsonContentHandler;
  */
 class SchemaContentHandler extends JsonContentHandler {
 
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
 	public function __construct() {
 		parent::__construct( CONTENT_MODEL_SMW_SCHEMA, [ CONTENT_FORMAT_JSON ] );
 	}
