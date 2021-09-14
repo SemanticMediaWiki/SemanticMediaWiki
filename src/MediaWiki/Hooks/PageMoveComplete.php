@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\User\UserIdentity;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\ApplicationFactory;
 use SMW\NamespaceExaminer;
@@ -41,16 +43,14 @@ class PageMoveComplete implements HookListener {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param $oldTitle
-	 * @param $newTitle
-	 * @param $user
-	 * @param $oldId
-	 * @param $newId
-	 *
-	 * @return true
 	 */
-	public function process( $oldTitle, $newTitle, $user, $oldId, $newId ) {
+	public function process(
+		LinkTarget $oldTitle,
+		LinkTarget $newTitle,
+		UserIdentity $user,
+		int $oldId,
+		int $newId
+	): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

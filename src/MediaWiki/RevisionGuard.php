@@ -7,7 +7,6 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionLookup;
 use Title;
 use File;
-use User;
 use WikiPage;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 
@@ -38,7 +37,7 @@ class RevisionGuard {
 	 *
 	 * @param RevisionLookup|null $revisionLookup
 	 */
-	public function __construct( RevisionLookup $revisionLookup = null ) {
+	public function __construct( RevisionLookup $revisionLookup ) {
 		$this->revisionLookup = $revisionLookup;
 	}
 

@@ -33,7 +33,6 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 
 	protected function setUp() : void {
 		parent::setUp();
-
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();

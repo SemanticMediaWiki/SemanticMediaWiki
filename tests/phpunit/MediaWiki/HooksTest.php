@@ -264,7 +264,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		return [
 			[ 'callParserAfterTidy' ],
-			[ 'callBaseTemplateToolbox' ],
 			[ 'callSkinAfterContent' ],
 			[ 'callSidebarBeforeOutput' ],
 			[ 'callOutputPageParserOutput' ],
@@ -347,40 +346,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		return $handler;
 	}
 
-	public function callBaseTemplateToolbox( $instance ) {
-
-		$handler = 'BaseTemplateToolbox';
-
-		$this->title->expects( $this->any() )
-			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
-
-		$this->skin->expects( $this->any() )
-			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
-
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$skinTemplate->expects( $this->any() )
-			->method( 'getSkin' )
-			->will( $this->returnValue( $this->skin ) );
-
-		$toolbox = '';
-
-		$this->assertTrue(
-			$instance->isRegistered( $handler )
-		);
-
-		$this->assertThatHookIsExcutable(
-			$instance->getHandlerFor( $handler ),
-			[ $skinTemplate, &$toolbox ]
-		);
-
-		return $handler;
-	}
-
 	public function callSkinAfterContent( $instance ) {
 
 		$handler = 'SkinAfterContent';
@@ -408,9 +373,8 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function callSidebarBeforeOutput( $instance ) {
-
 		$handler = 'SidebarBeforeOutput';
-		
+
 		$this->title->expects( $this->any() )
 			->method( 'isSpecialPage' )
 			->will( $this->returnValue( true ) );
@@ -660,11 +624,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			$instance->isRegistered( $handler )
 		);
 
-		$tags = [];
-
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $wikiPage, $revision, $baseId, $user, &$tags ]
+			[ $wikiPage, $revision, $baseId, $user ]
 		);
 
 		return $handler;

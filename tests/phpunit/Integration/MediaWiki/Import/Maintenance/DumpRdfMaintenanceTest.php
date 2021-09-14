@@ -31,12 +31,17 @@ class DumpRdfMaintenanceTest extends DatabaseTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
-		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$utilityFactory = UtilityFactory::getInstance();
+		$this->runnerFactory  = $utilityFactory->newRunnerFactory();
+		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
+		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgExportBCAuxiliaryUse', true );
 		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
+
+		$utilityFactory->newMwHooksHandler()
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'

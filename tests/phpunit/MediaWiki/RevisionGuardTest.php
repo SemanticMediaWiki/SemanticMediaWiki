@@ -33,7 +33,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			RevisionGuard::class,
-			 new RevisionGuard()
+			 new RevisionGuard( $this->getRevisionLookupMock() )
 		);
 	}
 
@@ -47,7 +47,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 42 ) );
 
-		$instance = new RevisionGuard();
+		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -70,7 +70,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 
 		$latestRevID = 1001;
 
-		$instance = new RevisionGuard();
+		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -92,7 +92,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( 1001 ) );
 
-		$instance = new RevisionGuard();
+		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -110,18 +110,13 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
-			->disableOriginalConstructor()
-			->getMock();
-
+		$revisionLookup =  $this->getRevisionLookupMock();
 		$revisionLookup->expects( $this->once() )
 			->method( 'getRevisionByTitle' );
 
 		$instance = new RevisionGuard( $revisionLookup );
 
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
+		$instance->setHookDispatcher( $this->hookDispatcher );
 
 		$instance->newRevisionFromTitle( $title );
 	}
@@ -139,7 +134,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new RevisionGuard();
+		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -167,7 +162,7 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( $title ),
 				$this->equalTo( $file ) );
 
-		$instance = new RevisionGuard();
+		$instance = new RevisionGuard( $this->getRevisionLookupMock() );
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -177,6 +172,12 @@ class RevisionGuardTest extends \PHPUnit_Framework_TestCase {
 			'\File',
 			$instance->getFile( $title, $file )
 		);
+	}
+
+	private function getRevisionLookupMock() {
+		return $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 }

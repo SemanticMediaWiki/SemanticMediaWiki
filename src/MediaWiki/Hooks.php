@@ -3,6 +3,11 @@
 namespace SMW\MediaWiki;
 
 use IContextSource;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\User\UserIdentity;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
 use SMW\ApplicationFactory;
@@ -26,7 +31,6 @@ use SMW\MediaWiki\Hooks\ArticleFromTitle;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
-use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\MediaWiki\Hooks\EditPageForm;
@@ -71,10 +75,14 @@ class Hooks {
 	 */
 	private $handlers = [];
 
+	/** @var HookContainer */
+	private $hookContainer;
+
 	/**
 	 * @since 2.1
 	 */
 	public function __construct() {
+		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		$this->registerHandlers();
 	}
 
@@ -108,15 +116,7 @@ class Hooks {
 		}
 
 		foreach ( $handlers as $name ) {
-
-			// #4779
-			if (
-				!class_exists( '\MediaWiki\MediaWikiServices' ) ||
-				!method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getHookContainer' ) ) {
-				\Hooks::clear( $name );
-			} else {
-				\MediaWiki\MediaWikiServices::getInstance()->getHookContainer()->clear( $name );
-			}
+			$this->hookContainer->clear( $name );
 		}
 	}
 
@@ -143,10 +143,10 @@ class Hooks {
 	/**
 	 * @since 2.1
 	 */
-	public function register( &$vars ) {
+	public function register() {
 		foreach ( $this->handlers as $name => $callback ) {
 			//\Hooks::register( $name, $callback );
-			$vars['wgHooks'][$name][] = $callback;
+			$this->hookContainer->register( $name, $callback );
 		}
 	}
 
@@ -272,7 +272,6 @@ class Hooks {
 			'InternalParseBeforeLinks' => [ $this, 'onInternalParseBeforeLinks' ],
 			'RejectParserCacheValue' => [ $this, 'onRejectParserCacheValue' ],
 
-			'BaseTemplateToolbox' => [ $this, 'onBaseTemplateToolbox' ],
 			'SkinAfterContent' => [ $this, 'onSkinAfterContent' ],
 			'OutputPageParserOutput' => [ $this, 'onOutputPageParserOutput' ],
 			'OutputPageCheckLastModified' => [ $this, 'onOutputPageCheckLastModified' ],
@@ -389,29 +388,6 @@ class Hooks {
 		$parserAfterTidy->process( $text );
 
 		return true;
-	}
-
-	/**
-	 * Hook: Called by BaseTemplate when building the toolbox array and
-	 * returning it for the skin to output.
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BaseTemplateToolbox
-	 */
-	public function onBaseTemplateToolbox( $skinTemplate, &$toolbox ) {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$baseTemplateToolbox = new BaseTemplateToolbox(
-			$applicationFactory->getNamespaceExaminer()
-		);
-
-		$baseTemplateToolbox->setOptions(
-			[
-				'smwgBrowseFeatures' => $applicationFactory->getSettings()->get( 'smwgBrowseFeatures' )
-			]
-		);
-
-		return $baseTemplateToolbox->process( $skinTemplate, $toolbox );
 	}
 
 	/**
@@ -623,7 +599,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
 	 */
-	public function onRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user, &$tags ) {
+	public function onRevisionFromEditComplete( $wikiPage, $revision, $baseId, $user ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
@@ -797,19 +773,25 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageMoveComplete
 	 */
-	public function onPageMoveComplete( $oldTitle, $newTitle, $user, $oldId, $newId ) {
+	public function onPageMoveComplete(
+		LinkTarget $oldTitle,
+		LinkTarget $newTitle,
+		UserIdentity $user,
+		int $oldId,
+		int $newId
+	) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$titleMoveComplete = new PageMoveComplete(
+		$pageMoveComplete = new PageMoveComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 
-		$titleMoveComplete->setEventDispatcher(
+		$pageMoveComplete->setEventDispatcher(
 			$applicationFactory->getEventDispatcher()
 		);
 
-		$titleMoveComplete->process( $oldTitle, $newTitle, $user, $oldId, $newId );
+		$pageMoveComplete->process( $oldTitle, $newTitle, $user, $oldId, $newId );
 
 		return true;
 	}

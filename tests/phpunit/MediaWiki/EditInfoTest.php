@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Revision\RevisionRecord;
 use ParserOutput;
 use SMW\MediaWiki\EditInfo;
+use SMW\ParserData;
+use SMW\SemanticData;
+use Title;
+use User;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\EditInfo
@@ -18,21 +24,21 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\EditInfo',
-			 new EditInfo( $wikiPage, $revision, $user )
+			EditInfo::class,
+			new EditInfo( $wikiPage, $revision, $user )
 		);
 	}
 
@@ -55,15 +61,15 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	public function testFetchSemanticData() {
 		$this->markTestSkipped( "FIXME -- Error: Call to a member function getContentHandler() on null" );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$editInfo = (object)[];
 		$editInfo->output = new ParserOutput();
-		$editInfo->output->setExtensionData( \SMW\ParserData::DATA_ID, $semanticData );
+		$editInfo->output->setExtensionData( ParserData::DATA_ID, $semanticData );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,9 +115,13 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 	public function wikiPageDataProvider() {
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$title->expects( $this->any() )
+			  ->method( 'canExist' )
+			  ->will( $this->returnValue( true ) );
 
 		#0 No parserOutput object
 		$editInfo = (object)[];
