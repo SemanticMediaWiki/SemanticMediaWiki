@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use MediaWiki\Json\JsonUnserializable;
+use MediaWiki\Json\JsonUnserializer;
 use SMW\DataModel\SubSemanticData;
 use SMW\DataModel\SequenceMap;
 use SMW\Exception\SubSemanticDataException;
@@ -30,7 +32,7 @@ use SMWDIContainer;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SemanticData {
+class SemanticData implements JsonUnserializable {
 
 	/**
 	 * Returns the last modified timestamp the data were stored to the Store or
@@ -74,7 +76,7 @@ class SemanticData {
 	 * Array mapping property keys (string) to arrays of SMWDataItem
 	 * objects.
 	 *
-	 * @var SMWDataItem[]
+	 * @var SMWDataItem[][]
 	 */
 	protected $mPropVals = [];
 
@@ -886,6 +888,69 @@ class SemanticData {
 	public function removeSubSemanticData( SemanticData $semanticData ) {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );
+	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$json = [
+			'stubObject' => $this->stubObject,
+			'mPropVals' => array_map( function( $x ) {
+					return array_map( function( $y ) {
+						return $y->jsonSerialize();
+					}, $x );
+				}, $this->mPropVals ),
+			'mProperties' => array_map( function( $x ) {
+					return $x->jsonSerialize();
+				}, $this->mProperties ),
+			'mHasVisibleProps' => $this->mHasVisibleProps,
+			'mHasVisibleSpecs' => $this->mHasVisibleSpecs,
+			'mNoDuplicates' => $this->mNoDuplicates,
+			'mSubject' => $this->mSubject ? $this->mSubject->jsonSerialize() : null,
+			'subSemanticData' => $this->subSemanticData ? $this->subSemanticData->jsonSerialize() : null,
+			'errors' => $this->errors,
+			'hash' => $this->hash,
+			'options' => $this->options ? $this->options->jsonSerialize() : null,
+			'extensionData' => $this->extensionData,
+			'sequenceMap' => $this->sequenceMap,
+			'countMap' => $this->countMap,
+			'_type_' => get_class( $this ),
+		];
+		return $json;
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = new self( $unserializer->unserialize( $json['mSubject'] ), $json['mNoDuplicates'] );
+		$obj->stubObject = $json['stubObject'];
+		$obj->mPropVals = array_map( function( $x ) use( $unserializer ) {
+				return $unserializer->unserializeArray( $x );
+			}, $json['mPropVals'] );
+		$obj->mProperties = $unserializer->unserializeArray( $json['mProperties'] );
+		$obj->mHasVisibleProps = $json['mHasVisibleProps'];
+		$obj->mHasVisibleSpecs = $json['mHasVisibleSpecs'];
+		$obj->subSemanticData = $json['subSemanticData'] ? $unserializer->unserialize( $json['subSemanticData'] ) : null;
+		$obj->errors = $json['errors'];
+		$obj->hash = $json['hash'];
+		$obj->options = $json['options'] ? $unserializer->unserialize( $json['options'] ) : null;
+		$obj->extensionData = $json['extensionData'];
+		$obj->sequenceMap = $json['sequenceMap'];
+		$obj->countMap = $json['countMap'];
+		return $obj;
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\Json\JsonUnserializer;
 use SMWDataItem;
 
 /**
@@ -195,6 +196,39 @@ class DIConcept extends \SMWDataItem {
 			return false;
 		}
 		return $di->getSerialization() === $this->getSerialization();
+	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$json = parent::jsonSerialize();
+		$json['cacheStatus'] = $this->cacheStatus;
+		$json['cacheDate'] = $this->cacheDate;
+		$json['cacheCount'] = $this->cacheCount;
+		return $json;
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $unserializer, $json );
+		$obj->cacheStatus = $json['cacheStatus'];
+		$obj->cacheDate = $json['cacheDate'];
+		$obj->cacheCount = $json['cacheCount'];
+		return $obj;
 	}
 
 }
