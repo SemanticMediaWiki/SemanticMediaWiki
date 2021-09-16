@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use Job;
 use JobQueueGroup;
+use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Connection\TestDatabaseConnectionProvider;
@@ -22,6 +23,7 @@ class JobQueueRunner {
 	protected $type = null;
 	protected $status = [];
 	protected $connectionProvider = null;
+	private $lbFactory;
 
 	/**
 	 * @var TestEnvironment
@@ -37,6 +39,7 @@ class JobQueueRunner {
 	public function __construct( $type = null, ConnectionProvider $connectionProvider = null ) {
 		$this->type = $type;
 		$this->connectionProvider = $connectionProvider;
+		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		if ( $this->connectionProvider === null ) {
 			$this->connectionProvider = new TestDatabaseConnectionProvider();
@@ -89,7 +92,7 @@ class JobQueueRunner {
 				break;
 			}
 
-			wfWaitForSlaves();
+			$this->lbFactory->waitForReplication();
 
 			$this->status[] = [
 				'type'   => $job->command,
