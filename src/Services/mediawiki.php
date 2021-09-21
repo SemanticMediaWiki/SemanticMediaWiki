@@ -136,15 +136,7 @@ return [
 	 * @return callable
 	 */
 	'PermissionManager' => function( $containerBuilder ) {
-
-		$permissionManager = null;
-
-		// > MW 1.33
-		if ( class_exists( '\MediaWiki\MediaWikiServices' ) && method_exists( '\MediaWiki\MediaWikiServices', 'getPermissionManager' ) ) {
-			$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-		}
-
-		return new PermissionManager( $permissionManager );
+		return new PermissionManager( MediaWikiServices::getInstance()->getPermissionManager() );
 	},
 
 	/**
