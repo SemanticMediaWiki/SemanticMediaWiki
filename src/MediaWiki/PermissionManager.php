@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use RequestContext;
 use Title;
 use User;
 
@@ -40,7 +41,7 @@ class PermissionManager {
 
 		// @see Title::userCan
 		if ( !$user instanceof User ) {
-			$user = $GLOBALS['wgUser'];
+			$user = RequestContext::getMain()->getUser();
 		}
 
 		if ( $this->permissionManager !== null ) {
