@@ -376,6 +376,7 @@ class PropertyPage extends Page {
 
 		$request = $this->getContext()->getRequest();
 		$language = $this->getContext()->getLanguage();
+		$user = $this->getContext()->getUser();
 
 		$valueListBuilder = new ValueListBuilder(
 			$this->store
@@ -398,7 +399,7 @@ class PropertyPage extends Page {
 		);
 
 		$valueListBuilder->applyLocalTimeOffset(
-			Localizer::getInstance()->hasLocalTimeOffsetPreference( $this->getPage()->getUser() )
+			Localizer::getInstance()->hasLocalTimeOffsetPreference( $user )
 		);
 
 		$html = $valueListBuilder->createHtml(
