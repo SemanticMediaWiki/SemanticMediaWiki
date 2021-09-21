@@ -155,13 +155,26 @@ class TextContentCreator implements ContentCreator {
 			$user = User::newSystemUser( $importContents->getImportPerformer(), [ 'steal' => true ] );
 		}
 
-		$status = $page->doEditContent(
-			$content,
-			$importContents->getDescription(),
-			EDIT_FORCE_BOT,
-			false,
-			$user
-		);
+		if ( method_exists( $page, 'doUserEditContent' ) ) {
+			// MW 1.36+
+			$status = $page->doUserEditContent(
+				$content,
+				$user,
+				$importContents->getDescription(),
+				EDIT_FORCE_BOT				
+			);
+		} else {
+			// <= MW 1.35
+			$status = $page->doEditContent(
+				$content,
+				$importContents->getDescription(),
+				EDIT_FORCE_BOT,
+				false,
+				$user
+			);
+		}
+
+		
 
 		if ( !$status->isOk() ) {
 			$action = 'FAILED';
