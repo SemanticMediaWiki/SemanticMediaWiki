@@ -1,6 +1,9 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Nērtiks Jōrgesuns"
+		]
 	},
+	"browse": "Lasāis artīkelins",
 	"smw-livepreview-loading": "Krausnā..."
 }
