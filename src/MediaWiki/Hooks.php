@@ -61,6 +61,8 @@ use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\SpecialPageList;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
 use SMW\Maintenance\RunImport;
+use StubGlobalUser;
+use User;
 
 /**
  * @license GNU GPL v2+
@@ -1471,8 +1473,16 @@ class Hooks {
 			$contentIterator
 		);
 
+		if ( defined( 'User::MAINTENANCE_SCRIPT_USER' ) ) {
+			$maintenanceUser = User::MAINTENANCE_SCRIPT_USER;
+		} else {
+			// MW < 1.37
+			$maintenanceUser = 'Maintenance script';
+		}
+
 		$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::RUN_IMPORT, false ) );
 		$importer->setMessageReporter( $messageReporter );
+		$importer->setImporter( $maintenanceUser );
 		$importer->runImport();
 
 		return true;

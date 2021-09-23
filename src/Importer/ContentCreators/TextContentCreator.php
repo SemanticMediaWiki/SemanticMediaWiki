@@ -161,7 +161,7 @@ class TextContentCreator implements ContentCreator {
 				$content,
 				$user,
 				$importContents->getDescription(),
-				EDIT_FORCE_BOT				
+				EDIT_FORCE_BOT
 			);
 		} else {
 			// <= MW 1.35
@@ -174,7 +174,7 @@ class TextContentCreator implements ContentCreator {
 			);
 		}
 
-		
+
 
 		if ( !$status->isOk() ) {
 			$action = 'FAILED';
