@@ -72,7 +72,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function preSaveTransform( Content $content, PreSaveTransformParams $pstParams ) {
+	public function preSaveTransform( Content $content, PreSaveTransformParams $pstParams ): Content {
 		return $content->preSaveTransform(
 			$pstParams->getPage(),
 			$pstParams->getUser(),
