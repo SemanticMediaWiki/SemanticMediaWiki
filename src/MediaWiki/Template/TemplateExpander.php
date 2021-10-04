@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Template;
 
 use Parser;
 use ParserOptions;
+use RequestContext;
 use Title;
 use RuntimeException;
 
@@ -70,7 +71,8 @@ class TemplateExpander {
 		$options = $this->parser->getOptions();
 
 		if ( !$options instanceof ParserOptions ) {
-			$options = new ParserOptions();
+			$user = RequestContext::getMain()->getUser();
+			$options = new ParserOptions( $user );
 			$options->setRemoveComments( true );
 			$options->setTidy( true );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
