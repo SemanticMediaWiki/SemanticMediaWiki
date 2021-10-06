@@ -403,6 +403,7 @@ class SMWExportController {
 	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
 		$mwServices = MediaWikiServices::getInstance();
 		$linkCache = $mwServices->getLinkCache();
+		$revisionStore = $mwServices->getRevisionStore();
 
 		$this->prepareSerialization();
 		$this->delay_flush = 10; // flush only after (fully) printing 11 objects
@@ -414,8 +415,7 @@ class SMWExportController {
 				continue; // invalid title name given
 			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date
-				$rev = $mwServices->getRevisionStore()
-					 ->getTimeStampFromID( $title, $title->getLatestRevID() );
+				$rev = $revisionStore->getTimeStampFromID( $title, $title->getLatestRevID() );
 				if ( $rev < $revisiondate ) {
 					continue;
 				}
