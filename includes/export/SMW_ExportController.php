@@ -401,8 +401,9 @@ class SMWExportController {
 	 * functionality. Is anybody using this?
 	 */
 	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
+		$mwServices = MediaWikiServices::getInstance();
+		$linkCache = $mwServices->getLinkCache();
 
-		$linkCache = LinkCache::singleton();
 		$this->prepareSerialization();
 		$this->delay_flush = 10; // flush only after (fully) printing 11 objects
 
@@ -413,7 +414,7 @@ class SMWExportController {
 				continue; // invalid title name given
 			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date
-				$rev = MediaWikiServices::getInstance()->getRevisionStore()
+				$rev = $mwServices->getRevisionStore()
 					 ->getTimeStampFromID( $title, $title->getLatestRevID() );
 				if ( $rev < $revisiondate ) {
 					continue;
