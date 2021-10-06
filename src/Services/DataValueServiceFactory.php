@@ -3,6 +3,7 @@
 namespace SMW\Services;
 
 use Onoi\CallbackContainer\ContainerBuilder;
+use RequestContext;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;
@@ -181,16 +182,11 @@ class DataValueServiceFactory {
 	 * @return PropertyRestrictionExaminer
 	 */
 	public function getPropertyRestrictionExaminer() {
-
 		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );
-
-		$propertyRestrictionExaminer->setUser(
-			$GLOBALS['wgUser']
-		);
+		$propertyRestrictionExaminer->setUser( RequestContext::getMain()->getUser() );
 
 		return $propertyRestrictionExaminer;
 	}
-
 
 	/**
 	 * @since 3.1
