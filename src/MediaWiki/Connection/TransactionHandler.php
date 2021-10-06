@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
+use Wikimedia\Rdbms\ILBFactory;
 
 /**
  * @license GNU GPL v2+
@@ -13,7 +14,7 @@ use RuntimeException;
 class TransactionHandler {
 
 	/**
-	 * @var LBFactory
+	 * @var ILBFactory
 	 */
 	private $loadBalancerFactory;
 
@@ -29,17 +30,8 @@ class TransactionHandler {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ILBFactory|LBFactory $loadBalancerFactory
 	 */
-	public function __construct( $loadBalancerFactory ) {
-
-		if (
-			!$loadBalancerFactory instanceof \LBFactory &&
-			!$loadBalancerFactory instanceof \Wikimedia\Rdbms\ILBFactory ) {
-			throw new RuntimeException( "Expected a LBFactory instance!" );
-		}
-
+	public function __construct( ILBFactory $loadBalancerFactory ) {
 		$this->loadBalancerFactory = $loadBalancerFactory;
 	}
 
@@ -159,14 +151,11 @@ class TransactionHandler {
 
 		$ticket = null;
 
-		if ( !method_exists( $this->loadBalancerFactory, 'getEmptyTransactionTicket' ) ) {
-			return $ticket;
-		}
-
 		// @see LBFactory::getEmptyTransactionTicket
 		// We don't try very hard at this point and will continue without a ticket
 		// if the check fails and hereby avoid a "... does not have outer scope" error
-		if ( !$this->loadBalancerFactory->hasMasterChanges() ) {
+
+		if ( !$this->primaryDbHasChanges() ) {
 			$ticket = $this->loadBalancerFactory->getEmptyTransactionTicket( $fname );
 		}
 
@@ -193,6 +182,14 @@ class TransactionHandler {
 		}
 
 		return $this->loadBalancerFactory->commitAndWaitForReplication( $fname, $ticket, $opts );
+	}
+
+	private function primaryDbHasChanges(): bool {
+		if ( method_exists( $this->loadBalancerFactory, 'hasPrimaryChanges' ) ) {
+			return $this->loadBalancerFactory->hasPrimaryChanges();
+		} else {
+			return $this->loadBalancerFactory->hasMasterChanges();
+		}
 	}
 
 }
