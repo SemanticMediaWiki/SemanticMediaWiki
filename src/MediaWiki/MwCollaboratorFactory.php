@@ -5,6 +5,7 @@ namespace SMW\MediaWiki;
 use Language;
 use MediaWiki\Revision\RevisionRecord;
 use Parser;
+use RequestContext;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
@@ -212,6 +213,9 @@ class MwCollaboratorFactory {
 		?RevisionRecord $revision = null,
 		?User $user = null
 	) {
+		if ( $user === null ) {
+			$user = RequestContext::getMain()->getUser();
+		}
 
 		$editInfo = new EditInfo( $wikiPage, $revision, $user );
 

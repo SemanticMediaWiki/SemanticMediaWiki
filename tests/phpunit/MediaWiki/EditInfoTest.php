@@ -49,7 +49,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	public function testFetchContentInfo( $parameters, $expected ) {
 		$instance = new EditInfo(
 			$parameters['wikiPage'],
-			$parameters['revision']
+			$parameters['revision'],
+			$parameters['user']
 		);
 
 		$this->assertEquals(
@@ -75,9 +76,14 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			->method( 'prepareContentForEdit' )
 			->will( $this->returnValue( $editInfo ) );
 
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$instance = new EditInfo(
 			$wikiPage,
-			$this->newRevisionStub()
+			$this->newRevisionStub(),
+			$user
 		);
 
 		$this->assertInstanceOf(
@@ -94,7 +100,7 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			->setConstructorArgs( [
 				$parameters['wikiPage'],
 				$parameters['revision'],
-				null
+				$parameters['user']
 			] )
 			->setMethods( [ 'hasContentForEditMethod' ] )
 			->getMock();
@@ -110,6 +116,9 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function wikiPageDataProvider() {
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
 
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
@@ -135,7 +144,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub()
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
 			],
 			null
 		];
@@ -153,7 +163,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			[
 				'editInfo' => false,
 				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub()
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
 			],
 			null
 		];
@@ -174,7 +185,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub()
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
 			],
 			$editInfo->output
 		];
@@ -194,7 +206,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 			[
 				'editInfo' => $editInfo,
 				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub()
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
 			],
 			null
 		];
