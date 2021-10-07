@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 use SMW\ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
@@ -73,6 +74,9 @@ class SMWExporter {
 	 */
 	private static $dataItemMatchFinder = null;
 
+	/** @var RepoGroup */
+	private static $mwRepoGroup = null;
+
 	/**
 	 * @var DispatchingResourceBuilder
 	 */
@@ -121,6 +125,8 @@ class SMWExporter {
 				$applicationFactory->getStore(),
 				self::$m_ent_wiki
 			);
+
+			self::$mwRepoGroup = MediaWikiServices::getInstance()->getRepoGroup();
 		}
 
 		return self::$instance;
@@ -363,7 +369,7 @@ class SMWExporter {
 				if ( $subject->getNamespace() === NS_FILE ) {
 
 					$title = Title::makeTitle( $subject->getNamespace(), $subject->getDBkey() );
-					$file = wfFindFile( $title );
+					$file = self::$mwRepoGroup->findFile( $title );
 
 					if ( $file !== false ) {
 						$expData->addPropertyObjectValue(
