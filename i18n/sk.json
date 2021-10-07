@@ -5,6 +5,7 @@
 			"Kghbln",
 			"Luky001",
 			"TomášPolonec",
+			"Yardom78",
 			"아라"
 		]
 	},
@@ -75,6 +76,7 @@
 	"smw_typearticlecount": "{{PLURAL:$1|Zobrazuje sa $1 vlastnosť|Zobrazujú sa $1 vlastnosti|Zobrazuje sa $1 vlastností}} tohto typu.",
 	"smw_attribute_header": "Stránky používajúce vlastnosť „$1“",
 	"smw_attributearticlecount": "Zobrazuje sa $1 {{PLURAL:$1|stránka|stránky|stránok}}, ktoré používajú túto vlastnosť.",
+	"specialpages-group-smw_group-search": "Prehliadať a hľadať",
 	"exportrdf": "Exportovať stránky do RDF",
 	"smw_exportrdf_docu": "Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.",
 	"smw_exportrdf_recursive": "Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!",
