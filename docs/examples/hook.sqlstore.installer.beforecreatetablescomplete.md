@@ -16,13 +16,15 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 		'smw_di_bool'     => 'p_id,s_id,o_value',
 		'smw_di_uri'      => 'p_id,s_id,o_serialized',
 		'smw_di_coords'   => 'p_id,s_id,o_serialized',
-		'smw_di_wikipage' => 'p_id,s_id,o_id',
+		'smw_di_wikipage' => [ 'addColumn', 'id', 'id_primary' ],
 		'smw_di_number'   => 'p_id,s_id,o_serialized',
 
 		// smw_fpt ...
 
 		'smw_prop_stats'  => 'p_id',
-		'smw_query_links' => 's_id,o_id'
+		'smw_query_links' => 's_id,o_id',
+		'smw_prop_stats'  => 'p_id',
+		'smw_ft_search'   => 's_id,p_id,o_sort'
 	];
 
 	/**
@@ -34,8 +36,12 @@ Hooks::register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', functio
 	 * @var \SMW\SQLStore\TableBuilder\Table[]
 	 */
 	foreach ( $tables as $table ) {
-		if ( isset( $primaryKeys[$table->getName()] ) ) {
+		$key = $primaryKeys[$table->getName()] ?? false;
+		if ( is_string( $key ) ) {
 			$table->setPrimaryKey( $primaryKeys[$table->getName()] );
+		} elseif ( is_array( $key ) && is_callable( [ $table, $key[0] ] ) ) {
+			$method = array_shift( $key );
+			$table->$method( ...$key );
 		}
 	}
 
