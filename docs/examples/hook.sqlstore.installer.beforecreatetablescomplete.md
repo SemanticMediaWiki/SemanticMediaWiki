@@ -14,7 +14,7 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::
 		'smw_di_bool'     => 'p_id,s_id,o_value',
 		'smw_di_uri'      => 'p_id,s_id,o_serialized',
 		'smw_di_coords'   => 'p_id,s_id,o_serialized',
-		'smw_di_wikipage' => [ 'addColumn', 'id', 'id_primary' ],
+		'smw_di_wikipage' => [ 'addPrimaryID', 'id' ],
 		'smw_di_number'   => 'p_id,s_id,o_serialized',
 
 		// smw_fpt ...
@@ -37,9 +37,8 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::
 		$key = $primaryKeys[$table->getName()] ?? false;
 		if ( is_string( $key ) ) {
 			$table->setPrimaryKey( $primaryKeys[$table->getName()] );
-		} elseif ( is_array( $key ) && is_callable( [ $table, $key[0] ] ) ) {
-			$method = array_shift( $key );
-			$table->$method( ...$key );
+		} elseif ( is_array( $key ) && $key[0] === "addPrimaryID" && is_string( $key[1] ?? false ) ) {
+			$table->addColumn( $key[1], 'id_primary' );
 		}
 	}
 
