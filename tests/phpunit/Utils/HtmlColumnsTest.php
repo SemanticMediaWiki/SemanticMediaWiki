@@ -15,7 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class HtmlColumnListFormatterTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnsTest extends \PHPUnit_Framework_TestCase {
 
 	use PHPUnitCompat;
 
