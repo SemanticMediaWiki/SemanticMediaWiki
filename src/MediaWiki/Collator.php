@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use Collation;
+use MediaWiki\MediaWikiServices;
 
 /**
  * @license GNU GPL v2+
@@ -58,7 +59,15 @@ class Collator {
 		$collationName = $collationName === '' ? $GLOBALS['smwgEntityCollation'] : $collationName;
 
 		if ( !isset( self::$instance[$collationName] ) ) {
-			self::$instance[$collationName] = new self( Collation::factory( $collationName ), $collationName );
+			$services = MediaWikiServices::getInstance();
+			// BC for MW <= 1.36
+			if ( method_exists( $services, 'getCollationFactory' ) ) {
+				$collation = $services->getCollationFactory()->makeCollation( $collationName );
+			} else {
+				$collation = Collation::factory( $collationName );
+			}
+
+			self::$instance[$collationName] = new self( $collation, $collationName );
 		}
 
 		return self::$instance[$collationName];
