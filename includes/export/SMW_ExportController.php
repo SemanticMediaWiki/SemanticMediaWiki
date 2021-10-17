@@ -485,7 +485,7 @@ class SMWExportController {
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
-		$linkCache = LinkCache::singleton();
+		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
 		$db = wfGetDB( DB_REPLICA );
 
 		$this->delay_flush = 10;
@@ -556,7 +556,7 @@ class SMWExportController {
 		$db = wfGetDB( DB_REPLICA );
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
-		$linkCache = LinkCache::singleton();
+		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
