@@ -212,7 +212,7 @@ class ParserFunctionFactory {
 		$mediaWikiCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
 		$stripMarkerDecoder = $mediaWikiCollaboratorFactory->newStripMarkerDecoder(
-			$parser->mStripState
+			$parser->getStripState()
 		);
 
 		$setParserFunction = new SetParserFunction(
@@ -297,7 +297,7 @@ class ParserFunctionFactory {
 		);
 
 		$stripMarkerDecoder = $applicationFactory->newMwCollaboratorFactory()->newStripMarkerDecoder(
-			$parser->mStripState
+			$parser->getStripState()
 		);
 
 		$subobjectParserFunction->setStripMarkerDecoder(
