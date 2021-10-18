@@ -494,7 +494,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "„$1“ е неважечка URL-адреса.",
 	"smw-datavalue-parse-error": "Дадената вредност „$1“ не беше разбрана.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Копирај врска во меѓускладот",
 	"smw-no-data-available": "Нема податоци на располагање.",
 	"smw-format-datatable-emptytable": "Нема расположиви податоци во табелата",

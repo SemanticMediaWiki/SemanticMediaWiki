@@ -227,7 +227,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "Roll an disoc'hoù",
 	"smw-search-syntax": "Ereadur",
 	"smw-datavalue-external-formatter-invalid-uri": "Un URL direizh eo \"$1\".",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopiañ al liamm er pouez paper",
 	"smw-category-change-propagation-pending": "War c'hortoz emañ hizivadennoù ar [https://www.semantic-mediawiki.org/wiki/Change_propagation skignañ kemmoù] ($1 [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue {{PLURAL:$1|drevell|trevell}}] brasjedet) hag erbedet eo gortoz evit kemmoù ur rummad ma vo echuet tretiñ anezho kuit na vije troc'hoù kreiz pe urzhioù kontroll.",
 	"smw-format-datatable-infothousands": ",",

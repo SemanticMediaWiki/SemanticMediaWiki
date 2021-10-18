@@ -488,7 +488,6 @@
 	"smw-datavalue-propertylist-invalid-property-key": "プロパティリスト「$1」は無効なプロパティキー「$2」を含んでいました。",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-data-lookup-with-wait": "要求は処理中です。しばらく時間がかかることがあります。",
 	"smw-no-data-available": "利用できるデータがありません。",
 	"smw-edit-protection": "このページは意図しないデータの変更を防止するため[[Property:Is edit protected|保護]]されており、適切な編集権限（「$1」）を持っているか適切な利用者グループに所属している利用者のみ編集できます。",

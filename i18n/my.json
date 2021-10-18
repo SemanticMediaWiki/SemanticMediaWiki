@@ -94,7 +94,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-format-datatable-loadingrecords": "ဝန်ဆွဲတင်နေသည်...",
 	"smw-format-datatable-processing": "လုပ်ဆောင်နေသည်...",
 	"smw-format-datatable-search": "ရှာဖွေရန်:",

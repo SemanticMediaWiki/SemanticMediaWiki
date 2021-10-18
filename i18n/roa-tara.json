@@ -217,7 +217,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|seconde}}",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copie 'u collegamende jndr'à l'appunde",
 	"smw-no-data-available": "Nisciune date disponibbile.",
 	"smw-format-datatable-infothousands": ",",

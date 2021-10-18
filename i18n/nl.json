@@ -501,7 +501,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" is een ongeldige URL.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Verwijzing naar het klembord kopiëren",
 	"smw-data-lookup": "Gegevens ophalen ...",
 	"smw-no-data-available": "Geen gegevens beschikbaar",

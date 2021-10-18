@@ -934,7 +934,6 @@
 	"smw-parser-invalid-json-format": "L’analyseur JSON a renvoyé un « $1 ».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "« $1 » ne peut pas être utilisé comme libellé préféré parce que libellé « $3 » est déjà indiqué pour la langue « $2 ».",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copier le lien dans le presse-papiers",
 	"smw-property-userdefined-fixedtable": "« $1 » a été configuré comme [https://www.semantic-mediawiki.org/wiki/Fixed_properties propriété fixe] et toute modification de la [https://www.semantic-mediawiki.org/wiki/Type_declaration déclacration de son type] a besoin soit d'exécuter <code>setupStore.php</code> soit de terminer la tâche spéciale [[Special:SemanticMediaWiki|\"Installation et de mise à niveau de la base de données\"]].",
 	"smw-data-lookup": "Récupération des données…",

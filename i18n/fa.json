@@ -371,7 +371,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» نشانی اینترنتی نامعتبر است.",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "کپی پیوند در کلیپ‌بورد",
 	"smw-data-lookup": "در حال دریافت داده‌ها ...",
 	"smw-no-data-available": "هیچ داده‌ای در دسترس نیست.",

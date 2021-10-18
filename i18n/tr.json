@@ -887,7 +887,6 @@
 	"smw-datavalue-reference-invalid-fields-definition": "[[Special:Types/Kaynakça|Kaynakça]] türü, [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Has alanları] özelliği kullanılarak bildirilecek özelliklerin bir listesini bekliyor",
 	"smw-parser-invalid-json-format": "JSON ayrıştırıcısı \"$1\" ile döndü.",
 	"smw-property-preferred-label-language-combination-exists": "\"$2\" dili \"$3\" etiketine zaten atanmış olduğundan, \"$1\" tercih edilen etiket olarak kullanılamaz.",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Bağlantıyı panoya kopyala",
 	"smw-property-userdefined-fixedtable": "\"$1\", [https://www.semantic-mediawiki.org/wiki/Fixed_properties Düzenlenmiş özellik] olarak yapılandırıldı ve [https://www.semantic-mediawiki.org/wiki/Type_declaration tip bildirimi] de herhangi bir değişiklik yapılması gerekiyor <code> setupStore.php</code> çalıştırmak veya özel [[Special:SemanticMediaWiki|\"Veritabanı yükleme ve yükseltme\"]] görevini tamamlamak için.",
 	"smw-data-lookup": "Veri işleniyor ...",

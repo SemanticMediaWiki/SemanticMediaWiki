@@ -312,7 +312,6 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert.",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
 	"smw-data-lookup-with-wait": "D'Ufro gëtt verschafft an et kann een Ament daueren.",

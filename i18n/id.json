@@ -218,6 +218,5 @@
 	"smw_concept_header": "Halaman berkonsep \"$1\"",
 	"smw_conceptarticlecount": "Menampilkan $1 {{PLURAL:$1|halaman|halaman}} yang termasuk konsep ini.",
 	"smw-livepreview-loading": "Mengunggah...",
-	"smw-datavalue-number-nullnotallowed": "\"$1\" kembali dengan sebuah \"NULL\" yang tidak mengizinkan sebagai nomor.",
-	"smw-parse": "$1"
+	"smw-datavalue-number-nullnotallowed": "\"$1\" kembali dengan sebuah \"NULL\" yang tidak mengizinkan sebagai nomor."
 }

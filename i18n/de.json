@@ -907,7 +907,6 @@
 	"smw-parser-invalid-json-format": "Der JSON-Parser hat den Fehler „$1“ ausgegeben.",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "„$1“ kann nicht als bevorzugte Bezeichnung verwendet werden, da der Sprache „$2“ bereits die Bezeichnung „$3“ zugewiesen wurde.",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Link in die Zwischenablage kopieren",
 	"smw-property-userdefined-fixedtable": "„$1“ wurde als [https://www.semantic-mediawiki.org/wiki/Fixed_properties fest definiertes Attribut] erstellt und konfiguriert. Jede Änderung des zugewiesenen [https://www.semantic-mediawiki.org/wiki/Type_declaration Datentyps] erfordert zwingend entweder die Ausführung des Wartungsskripts \"setupStore.php\" oder die Durchführung der Spezialaufgabe [[Special:SemanticMediaWiki|„Daten neu erstellen“]].",
 	"smw-data-lookup": "Rufe Daten ab ...",

@@ -595,7 +595,6 @@
 	"smw-parser-invalid-json-format": "L'analizador JSON devolvió «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "Nun puede utilizase «$1» como etiqueta preferida porque la llingua «$2» yá se venceyó a la etiqueta «$3».",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copiar l'enllaz al cartafueyu",
 	"smw-data-lookup": "Recuperando los datos...",
 	"smw-data-lookup-with-wait": "La solicitú ta procesándose y puede tardar un momentu.",

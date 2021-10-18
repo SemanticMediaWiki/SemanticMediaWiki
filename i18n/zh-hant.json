@@ -910,7 +910,6 @@
 	"smw-parser-invalid-json-format": "JSON 解析器回傳了「$1」。",
 	"smw-property-preferred-title-format": "$1（$2）",
 	"smw-property-preferred-label-language-combination-exists": "「$1」不能用於首選標籤，因為語言「$2」已分配給標籤「$3」。",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "複製連結到剪貼簿",
 	"smw-property-userdefined-fixedtable": "「$1」被設置為[https://www.semantic-mediawiki.org/wiki/Fixed_properties 固定屬性]，並且任何對其[https://www.semantic-mediawiki.org/wiki/Type_declaration 類型宣告]的變更需要運作 <code>setupStore.php</code> 或是完成特殊[[Special:SemanticMediaWiki|「資料庫與安裝與更新」]]任務。",
 	"smw-data-lookup": "索取資料中...",
