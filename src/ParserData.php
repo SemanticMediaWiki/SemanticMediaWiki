@@ -355,10 +355,18 @@ class ParserData {
 
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
-		$this->parserOutput->setProperty(
-			'smw-semanticdata-status',
-			$this->semanticData->getProperties() !== []
-		);
+		if ( method_exists( $this->parserOutput, 'setPageProperty' ) ) {
+			$this->parserOutput->setPageProperty(
+				'smw-semanticdata-status',
+				$this->semanticData->getProperties() !== []
+			);
+		} else {
+			// MW < 1.38
+			$this->parserOutput->setProperty(
+				'smw-semanticdata-status',
+				$this->semanticData->getProperties() !== []
+			);
+		}
 	}
 
 	/**
@@ -376,7 +384,13 @@ class ParserData {
 	 * @return boolean
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
-		return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );
+		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
+			return (bool)$parserOutput->getPageProperty( 'smw-semanticdata-status' );
+		} else {
+			// MW < 1.38
+			return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );
+		}
+
 	}
 
 	/**
