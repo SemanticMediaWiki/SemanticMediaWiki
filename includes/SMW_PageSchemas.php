@@ -9,6 +9,8 @@
  * @ingroup SMW
  */
 
+use MediaWiki\MediaWikiServices;
+
 class SMWPageSchemas extends PSExtensionHandler {
 
 	public static function getDisplayColor() {
@@ -325,7 +327,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $GLOBALS['wgContLang']->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
+			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', MediaWikiServices::getInstance()->getContentLanguage()->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
 			foreach ( $allowedValues as $value ) {
 				$prop_labels = $smwgContLang->getPropertyLabels();
