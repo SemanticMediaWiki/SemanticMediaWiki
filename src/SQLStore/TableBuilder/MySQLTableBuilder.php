@@ -2,8 +2,6 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use SMW\Utils\CliMsgFormatter;
-
 /**
  * @license GNU GPL v2+
  * @since 2.5
@@ -28,7 +26,7 @@ class MySQLTableBuilder extends TableBuilder {
 			 // like page_id in MW page table
 			'id'         => 'INT(11) UNSIGNED',
 			 // like page_id in MW page table
-			'id_primary' => 'INT(11) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
+			'id_primary' => 'INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 
 			 // (see postgres on the difference)
 			'id_unsigned' => 'INT(11) UNSIGNED',
@@ -79,7 +77,7 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		// @see $wgDBname
-		$dbName = isset( $this->config['wgDBname'] ) ? "`" . $this->config['wgDBname'] . "`." : '';
+		$dbName = isset( $this->config['wgDBname'] ) ? "`". $this->config['wgDBname'] . "`." : '';
 
 		$sql .= 'CREATE TABLE ' . $dbName . $tableName . ' (' . implode( ',', $fieldSql ) . ') ';
 		$sql .= $this->sql_from( $attributes );
@@ -227,7 +225,7 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 
 		// To avoid Error: 1068 Multiple primary key defined when a PRIMARY is involved
-		if ( strpos( $newFieldType, 'AUTO_INCREMENT' ) !== false ) {
+		if ( strpos( $newFieldType, 'AUTO_INCREMENT' ) !== false && strpos( $oldFieldType, 'AUTO_INCREMENT' ) === false) {
 			$this->connection->query( "ALTER TABLE $tableName DROP PRIMARY KEY", __METHOD__ );
 		}
 
@@ -302,7 +300,7 @@ class MySQLTableBuilder extends TableBuilder {
 				unset( $indices[$k] );
 			}
 
-			$idx[$k] = preg_replace( "/\([^)]+\)/", "", $columns );
+			$idx[$k] = preg_replace("/\([^)]+\)/", "", $columns );
 		}
 
 		foreach ( $currentIndices as $indexName => $indexColumn ) {
@@ -401,33 +399,21 @@ class MySQLTableBuilder extends TableBuilder {
 	 */
 	protected function doOptimize( $tableName ) {
 
-		$cliMsgFormatter = new CliMsgFormatter();
-
-		$this->reportMessage(
-			$cliMsgFormatter->firstCol( "... $tableName ...", 3 )
-		);
-
-		$tableName = $this->connection->tableName( $tableName );
+		$this->reportMessage( "Checking table $tableName ...\n" );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/analyze-table.html
 		// Performs a key distribution analysis and stores the distribution for
 		// the named table or tables
-		$this->reportMessage(
-			$cliMsgFormatter->positionCol( "[ANALYZE", 56 )
-		);
-
-		$this->connection->query( "ANALYZE TABLE $tableName", __METHOD__ );
+		$this->reportMessage( "   ... analyze" );
+		$this->connection->query( 'ANALYZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
 
 		// https://dev.mysql.com/doc/refman/5.7/en/optimize-table.html
 		// Reorganizes the physical storage of table data and associated index data,
 		// to reduce storage space and improve I/O efficiency
-		$this->reportMessage(
-			$cliMsgFormatter->positionCol( ", OPTIMIZE]" )
-		);
+		$this->reportMessage( ", optimize " );
+		$this->connection->query( 'OPTIMIZE TABLE ' . $this->connection->tableName( $tableName ), __METHOD__ );
 
-		$this->connection->query( "OPTIMIZE TABLE $tableName", __METHOD__ );
-
-		$this->reportMessage( "\n" );
+		$this->reportMessage( "done.\n" );
 	}
 
 }
