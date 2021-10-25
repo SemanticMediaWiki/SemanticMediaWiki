@@ -37,7 +37,7 @@ jobs:
 
       - name: MediaWiki Composer Update
         run: |
-          composer update --working-dir ${{ env.MW_INST_PATH }}--working-dir ${{ env.MW_INST_PATH }}
+          composer update --working-dir ${{ env.MW_INST_PATH }}
 
       - name: MediaWiki Install
         run: >
