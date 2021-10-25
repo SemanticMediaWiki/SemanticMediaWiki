@@ -1,0 +1,84 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        mediawiki_version: [1.35, 1.36]
+    container: mediawiki:${{ matrix.mediawiki_version }}
+
+    env:
+      EXT_NAME: SemanticMediaWiki
+      COMPOSER_VERSION: 1
+      MW_INST_PATH: /var/www/html
+      MW_DB_PATH: /var/www/data
+      MW_EXT_PATH: /var/www/html/extensions
+
+    steps:
+      # https://getcomposer.org/download/
+      - name: Get Composer
+        run: |
+          apt update
+          apt install -y unzip
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+          php composer-setup.php --${{ env.COMPOSER_VERSION }}
+          php -r "unlink('composer-setup.php');"
+          mv composer.phar /usr/local/bin/composer
+
+      - name: MediaWiki Composer Update
+        run: |
+          composer update --working-dir ${{ env.MW_INST_PATH }}
+
+      - name: MediaWiki Install
+        run: >
+          php ${{ env.MW_INST_PATH }}/maintenance/install.php
+          --dbtype=sqlite
+          --dbname=wiki
+          --pass=Password123456
+          --scriptpath=""
+          --dbpath=${{ env.MW_DB_PATH }}
+          --server="http://localhost:8000"
+          ${{ env.EXT_NAME }}-test WikiSysop
+
+      - name: Enable Debug Output
+        run: |
+          echo 'error_reporting(E_ALL| E_STRICT);' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo 'ini_set("display_errors", 1);' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo '$wgShowExceptionDetails = true;' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          echo '$wgDevelopmentWarnings = true;' >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+
+      - name: Checkout Extension
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.EXT_NAME }}
+
+      # Setting actions/checkout@v2 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
+      # See also open PR https://github.com/actions/checkout/pull/388
+      - name: Move Extension
+        run: |
+          mkdir -p ${{ env.MW_EXT_PATH }}
+          mv ${{ env.EXT_NAME }} ${{ env.MW_EXT_PATH }}
+
+      - name: Install SemanticMediaWiki
+        run: |
+          COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki
+          composer update --no-dev
+          echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
+          tail -n5 ${{ env.MW_INST_PATH }}/LocalSettings.php
+          php ${{ env.MW_INST_PATH }}/maintenance/update.php --quick
+
+      - name: Run Tests
+        run: >
+          php ${{ env.MW_INST_PATH }}/tests/phpunit/phpunit.php
+          --group semantic-mediawiki
+          --testdox
