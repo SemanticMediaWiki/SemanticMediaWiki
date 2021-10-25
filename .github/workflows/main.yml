@@ -37,7 +37,7 @@ jobs:
 
       - name: MediaWiki Composer Update
         run: |
-          composer update --working-dir ${{ env.MW_INST_PATH }}
+          composer update --working-dir ${{ env.MW_INST_PATH }}--working-dir ${{ env.MW_INST_PATH }}
 
       - name: MediaWiki Install
         run: >
@@ -71,7 +71,7 @@ jobs:
 
       - name: Install SemanticMediaWiki
         run: |
-          COMPOSER=composer.local.json composer require --no-update mediawiki/semantic-media-wiki
+          COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INST_PATH }} mediawiki/semantic-media-wiki
           composer update --no-dev
           echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
           tail -n5 ${{ env.MW_INST_PATH }}/LocalSettings.php
