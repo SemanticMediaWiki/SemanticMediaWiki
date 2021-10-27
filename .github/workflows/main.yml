@@ -44,6 +44,7 @@ jobs:
           php ${{ env.MW_INST_PATH }}/maintenance/install.php
           --dbtype=sqlite
           --dbname=wiki
+          --dbprefix=sunittest_
           --pass=Password123456
           --scriptpath=""
           --dbpath=${{ env.MW_DB_PATH }}
