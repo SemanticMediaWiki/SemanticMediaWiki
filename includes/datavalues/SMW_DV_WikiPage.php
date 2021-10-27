@@ -476,7 +476,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			$text = $this->getText();
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
 			$text = $this->getPrefixedText();
-		} elseif ( in_array( $this->getTypeID(), [ '_wpp', '_wps', '_wpu' ] ) || $this->m_fixNamespace == NS_MAIN ) {
+		} elseif (
+			in_array( $this->getTypeID(), [ '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con' ] ) ||
+			$this->m_fixNamespace === NS_MAIN
+		) {
 			$text = $this->getPrefixedText();
 		} else {
 			$text = $this->getText();
