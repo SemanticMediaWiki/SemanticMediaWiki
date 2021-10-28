@@ -14,14 +14,31 @@ jobs:
     strategy:
       matrix:
         mediawiki_version: [1.35]
-    container: mediawiki:${{ matrix.mediawiki_version }}
+        database_type: [mysql]
+
+    container:
+      image: mediawiki:${{ matrix.mediawiki_version }}
+      options: --link some-${{ matrix.database_type }}:${{ matrix.database_type }}
 
     env:
       EXT_NAME: SemanticMediaWiki
       COMPOSER_VERSION: 1
       MW_INST_PATH: /var/www/html
-      MW_DB_PATH: /var/www/data
       MW_EXT_PATH: /var/www/html/extensions
+      DB_ROOT_USER: root
+      DB_ROOT_PWD: database
+      MW_DB_TYPE: ${{ matrix.database_type }}
+      MW_DB_SERVER: ${{ matrix.database_type }}
+      MW_DB_PATH: /var/www/data
+      MW_DB_USER: wiki
+      MW_DB_PWD: wiki
+      MW_DB_NAME: wiki
+
+    services:
+      some-mysql:
+        image: mariadb:latest
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
 
     steps:
       # https://getcomposer.org/download/
@@ -42,12 +59,17 @@ jobs:
       - name: MediaWiki Install
         run: >
           php ${{ env.MW_INST_PATH }}/maintenance/install.php
-          --dbtype=sqlite
-          --dbname=wiki-sunittest_
           --pass=Password123456
-          --scriptpath=""
-          --dbpath=${{ env.MW_DB_PATH }}
           --server="http://localhost:8000"
+          --scriptpath=""
+          --dbtype=${{ env.MW_DB_TYPE }}
+          --dbserver=${{ env.MW_DB_SERVER }}
+          --installdbuser=${{ env.DB_ROOT_USER }}
+          --installdbpass=${{ env.DB_ROOT_PWD }}
+          --dbname=${{ env.MW_DB_NAME }}
+          --dbuser=${{ env.MW_DB_USER }}
+          --dbpass=${{ env.MW_DB_PWD }}
+          --dbpath=${{ env.MW_DB_PATH }}
           ${{ env.EXT_NAME }}-test WikiSysop
 
       - name: Enable Debug Output
@@ -60,6 +82,7 @@ jobs:
       - name: Checkout Extension
         uses: actions/checkout@v2
         with:
+          repository: SemanticMediaWiki/${{ env.EXT_NAME }}
           path: ${{ env.EXT_NAME }}
 
       # Setting actions/checkout@v2 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
