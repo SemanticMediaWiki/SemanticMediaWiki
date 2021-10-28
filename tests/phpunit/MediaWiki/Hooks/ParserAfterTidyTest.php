@@ -206,16 +206,18 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$parser = $this->parserFactory->newFromTitle( $parameters['title'] );
+		$parserOutput = $parser->getOutput();
 
-		$parser->getOutput()->setProperty(
-			'smw-semanticdata-status',
-			$parameters['data-status']
-		);
+		$displayTitle = isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false;
 
-		$parser->getOutput()->setProperty(
-			'displaytitle',
-			isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false
-		);
+		if ( method_exists( $parserOutput, 'setPageProperty' ) ) {
+			$parserOutput->setPageProperty( 'smw-semanticdata-status', $parameters['data-status'] );
+			$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
+		} else {
+			// MW < 1.38
+			$parserOutput->setProperty( 'smw-semanticdata-status', $parameters['data-status'] );
+			$parserOutput->setProperty( 'displaytitle', $displayTitle );
+		}
 
 		$text   = '';
 
@@ -308,10 +310,17 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$title  = Title::newFromText( __METHOD__ );
 
 		$parser = $this->parserFactory->newFromTitle( $title );
+		$parserOutput = $parser->getOutput();
 
-		$parser->getOutput()->addCategory( 'Foo', 'Foo' );
-		$parser->getOutput()->addCategory( 'Bar', 'Bar' );
-		$parser->getOutput()->setProperty( 'smw-semanticdata-status', true );
+		$parserOutput->addCategory( 'Foo', 'Foo' );
+		$parserOutput->addCategory( 'Bar', 'Bar' );
+		if ( method_exists( $parserOutput, 'setPageProperty' ) ) {
+			$parserOutput->setPageProperty( 'smw-semanticdata-status', true );
+		} else {
+			// MW < 1.38
+			$parserOutput->setProperty( 'smw-semanticdata-status', true );
+		}
+
 
 		$instance = new ParserAfterTidy(
 			$parser,
