@@ -103,6 +103,5 @@ jobs:
 
       - name: Run Tests
         run: >
-          php ${{ env.MW_INST_PATH }}/tests/phpunit/phpunit.php
-          --group semantic-mediawiki
-          --testdox
+          composer phpunit
+          --working-dir ${{ env.MW_INST_PATH }}/extensions/SemanticMediaWiki
