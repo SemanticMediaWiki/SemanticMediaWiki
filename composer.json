@@ -52,7 +52,7 @@
 		"onoi/tesa": "~0.1",
 		"onoi/shared-resources": "~0.3",
 		"symfony/css-selector": "^3.3",
-		"elasticsearch/elasticsearch": "^5.3|^6.0",
+		"elasticsearch/elasticsearch": "^5.3|~6.7.2",
 		"seld/jsonlint": "^1.7",
 		"justinrainbow/json-schema": "~5.2"
 	},
