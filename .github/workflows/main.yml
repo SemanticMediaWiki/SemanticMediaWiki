@@ -10,12 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    # Temporarily until we make the tests faster, and get them to pass
-    continue-on-error: true
+    continue-on-error: ${{ matrix.experimental }}
+    
     strategy:
       matrix:
-        mediawiki_version: [1.35, 1.36]
-        database_type: [mysql]
+        include:
+          - mediawiki_version: 1.35
+            database_type: mysql
+            experimental: false
+          - mediawiki_version: 1.36
+            database_type: mysql
+            experimental: true
+          - mediawiki_version: 1.38
+            database_type: mysql
+            experimental: true
 
     container:
       image: mediawiki:${{ matrix.mediawiki_version }}
