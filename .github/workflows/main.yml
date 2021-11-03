@@ -21,9 +21,6 @@ jobs:
           - mediawiki_version: 1.36
             database_type: mysql
             experimental: true
-          - mediawiki_version: 1.38
-            database_type: mysql
-            experimental: true
 
     container:
       image: mediawiki:${{ matrix.mediawiki_version }}
