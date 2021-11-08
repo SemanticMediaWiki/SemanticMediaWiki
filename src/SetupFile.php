@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Elastic\ElasticStore;
 use SMW\Exception\FileNotWritableException;
 use SMW\Utils\File;
 use SMW\SQLStore\Installer;
@@ -57,31 +58,13 @@ class SetupFile {
 	const LATEST_VERSION = 'latest_version';
 	const PREVIOUS_VERSION = 'previous_version';
 
-	/**
-	 * @var File
-	 */
-	private $file;
+	private File $file;
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param File|null $file
-	 */
 	public function __construct( File $file = null ) {
-		$this->file = $file;
-
-		if ( $this->file === null ) {
-			$this->file = new File();
-		}
+		$this->file = $file ?? new File();
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function loadSchema( &$vars = [] ) {
-
+	public function loadSchema( array &$vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -101,15 +84,7 @@ class SetupFile {
 		}
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param boolean $isCli
-	 *
-	 * @return boolean
-	 */
-	public static function isGoodSchema( $isCli = false ) {
-
+	public static function isGoodSchema( bool $isCli = false ): bool {
 		if ( $isCli && defined( 'MW_PHPUNIT_TEST' ) ) {
 			return true;
 		}
@@ -136,26 +111,11 @@ class SetupFile {
 		return $isGoodSchema;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return string
-	 */
-	public static function makeUpgradeKey( $vars ) {
+	public static function makeUpgradeKey( array $vars ): string {
 		return sha1( self::makeKey( $vars ) );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return boolean
-	 */
-	public function inMaintenanceMode( $vars = [] ) {
-
+	public function inMaintenanceMode( array $vars = [] ): bool {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return false;
 		}
@@ -173,15 +133,7 @@ class SetupFile {
 		return $vars['smw.json'][$id][self::MAINTENANCE_MODE] !== false;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return []
-	 */
-	public function getMaintenanceMode( $vars = [] ) {
-
+	public function getMaintenanceMode( array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -197,14 +149,9 @@ class SetupFile {
 
 	/**
 	 * Tracking the latest and previous version, which allows us to decide whether
-	 * current activties relate to an install (new) or upgrade.
-	 *
-	 * @since 3.2
-	 *
-	 * @param int $version
+	 * current activities relate to an install (new) or upgrade.
 	 */
-	public function setLatestVersion( $version ) {
-
+	public function setLatestVersion( int $version ): void {
 		$latest = $this->get( SetupFile::LATEST_VERSION );
 		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
 
@@ -224,13 +171,7 @@ class SetupFile {
 		}
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param string $key
-	 * @param array $args
-	 */
-	public function addIncompleteTask( string $key, array $args = [] ) {
+	public function addIncompleteTask( string $key, array $args = [] ): void {
 
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
@@ -243,13 +184,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param string $key
-	 */
-	public function removeIncompleteTask( string $key ) {
-
+	public function removeIncompleteTask( string $key ): void {
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
 		if ( $incomplete_tasks === null ) {
@@ -261,15 +196,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param array $vars
-	 *
-	 * @return boolean
-	 */
 	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -286,15 +213,7 @@ class SetupFile {
 		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return []
-	 */
-	public function findIncompleteTasks( $vars = [] ) {
-
+	public function findIncompleteTasks( array $vars = [] ): array {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -304,8 +223,8 @@ class SetupFile {
 
 		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
 		$checks = [
-			\SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
-			\SMW\Elastic\ElasticStore::REBUILD_INDEX_RUN_COMPLETE => [ false, 'smw-install-incomplete-elasticstore-indexrebuild' ]
+			Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
+			ElasticStore::REBUILD_INDEX_RUN_COMPLETE => [ false, 'smw-install-incomplete-elasticstore-indexrebuild' ]
 		];
 
 		foreach ( $checks as $key => $value ) {
@@ -333,12 +252,9 @@ class SetupFile {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param mixed $maintenanceMode
+	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, $vars = [] ) {
-
+	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -352,12 +268,7 @@ class SetupFile {
 		);
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function finalize( $vars = [] ) {
+	public function finalize( array $vars = [] ): void {
 
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
@@ -371,7 +282,7 @@ class SetupFile {
 			isset( $vars['smw.json'][$id][self::UPGRADE_KEY] ) &&
 			$key === $vars['smw.json'][$id][self::UPGRADE_KEY] &&
 			$vars['smw.json'][$id][self::MAINTENANCE_MODE] === false ) {
-			return false;
+			return;
 		}
 
 		$this->write(
@@ -383,13 +294,7 @@ class SetupFile {
 		);
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function reset( $vars = [] ) {
-
+	public function reset( array $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -406,13 +311,7 @@ class SetupFile {
 		$this->write( [], $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $args
-	 */
-	public function set( array $args, $vars = [] ) {
-
+	public function set( array $args, $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -420,13 +319,7 @@ class SetupFile {
 		$this->write( $args, $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $args
-	 */
-	public function get( $key, $vars = [] ) {
-
+	public function get( string $key, array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -440,12 +333,7 @@ class SetupFile {
 		return null;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 */
-	public function remove( $key, $vars = [] ) {
+	public function remove( string $key, $vars = [] ): void {
 
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
@@ -454,14 +342,7 @@ class SetupFile {
 		$this->write( [ $key => null ], $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 * @param array $args
-	 */
-	public function write( array $args, array $vars ) {
-
+	public function write( array $args, array $vars ): void {
 		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
 
@@ -511,10 +392,9 @@ class SetupFile {
 	/**
 	 * Listed keys will have a "global" impact of how data are stored, formatted,
 	 * or represented in Semantic MediaWiki. In most cases it will require an action
-	 * from an adminstrator when one of those keys are altered.
+	 * from an administrator when one of those keys are altered.
 	 */
-	private static function makeKey( $vars ) {
-
+	private static function makeKey( array $vars ): string {
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
 			// Special properties enabled?
