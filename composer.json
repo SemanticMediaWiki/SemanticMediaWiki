@@ -54,7 +54,8 @@
 		"symfony/css-selector": "^3.3",
 		"elasticsearch/elasticsearch": "^5.3|~6.7.2",
 		"seld/jsonlint": "^1.7",
-		"justinrainbow/json-schema": "~5.2"
+		"justinrainbow/json-schema": "~5.2",
+		"jeroen/file-fetcher": "^6|^5|^4.4"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~3.5",
