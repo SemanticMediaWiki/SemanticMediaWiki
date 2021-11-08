@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use FileFetcher\FileFetcher;
+use FileFetcher\SimpleFileFetcher;
 use SMW\Elastic\ElasticStore;
 use SMW\Exception\FileNotWritableException;
 use SMW\Utils\File;
@@ -45,7 +47,7 @@ class SetupFile {
 	/**
 	 * Describes the file name
 	 */
-	const FILE_NAME = '.smw.json';
+	public const FILE_NAME = '.smw.json';
 
 	/**
 	 * Describes incomplete tasks
@@ -60,10 +62,13 @@ class SetupFile {
 
 	private const SMW_JSON = 'smw.json';
 
-	private File $file;
+	private SetupFileRepo $repo;
 
-	public function __construct( File $file = null ) {
-		$this->file = $file ?? new File();
+	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
+		$this->repo = new SetupFileRepo(
+			$fileFetcher ?? new SimpleFileFetcher(),
+			$file ?? new File()
+		);
 	}
 
 	public function loadSchema( array &$vars = [] ): void {
@@ -75,14 +80,10 @@ class SetupFile {
 			return;
 		}
 
-		// @see #3506
-		$file = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
+		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
 
-		// Doesn't exist? The `Setup::init` will take care of it by trying to create
-		// a new file and if it fails or unable to do so wail raise an exception
-		// as we expect to have access to it.
-		if ( is_readable( $file ) ) {
-			$vars[self::SMW_JSON] = json_decode( file_get_contents( $file ), true );
+		if ( $smwJson !== null ) {
+			$vars[self::SMW_JSON] = $smwJson;
 		}
 	}
 
@@ -345,7 +346,6 @@ class SetupFile {
 	}
 
 	public function write( array $args, array $vars ): void {
-		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
 
 		if ( !isset( $vars[self::SMW_JSON] ) ) {
@@ -375,10 +375,7 @@ class SetupFile {
 		}
 
 		try {
-			$this->file->write(
-				$configFile,
-				json_encode( $vars[self::SMW_JSON], JSON_PRETTY_PRINT )
-			);
+			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
 		} catch( FileNotWritableException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
