@@ -63,20 +63,14 @@ class SetupFile {
 
 	private const SMW_JSON = 'smw.json';
 
-	private FileSystemSmwJsonRepo $repo;
+	private SmwJsonRepo $repo;
 
 	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
-		$repo = new FileSystemSmwJsonRepo(
-			$fileFetcher ?? new SimpleFileFetcher(),
-			$file ?? new File()
-		);
-
-		MediaWikiServices::getInstance()->getHookContainer()->run(
-			'SMW::Setup::BuildSmwJsonRepo',
-			[ &$repo ]
-		);
-
-		$this->repo = $repo;
+		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
+			new FileSystemSmwJsonRepo(
+				$fileFetcher ?? new SimpleFileFetcher(),
+				$file ?? new File()
+			);
 	}
 
 	public function loadSchema( array &$vars = [] ): void {
