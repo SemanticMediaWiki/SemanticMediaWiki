@@ -20,11 +20,13 @@
 	"smw_smwadmin_return": "$1 ڏانھن واپس ٿيو",
 	"smw-admin-deprecation-notice-title-notice": "ايندڙ تبديليون",
 	"smw-admin-deprecation-notice-title-removal": "ترتيبون ھٽايو",
+	"smw-admin-deprecation-notice-section-legend": "ڪنجي",
 	"smw-admin-statistics": "انگ-اکر",
 	"smw-admin-supplementary-elastic-statistics-title": "انگ-اکر",
 	"smw-admin-supplementary-elastic-replication-files": "فائيلَ",
 	"smw-ui-tooltip-title-warning": "چتاءُ",
 	"smw-ui-tooltip-title-error": "چُڪَ",
+	"smw-ui-tooltip-title-legend": "ڪنجي",
 	"smw-ui-tooltip-title-reference": "حوالو",
 	"smw-search-profile-sort-title": "عنوان",
 	"smw-search-profile-extended-help-query": "<code><nowiki>$1</nowiki></code> پڇا طور استعمال ٿيل.",
@@ -36,5 +38,6 @@
 	"smw-format-datatable-next": "اڳيون",
 	"smw-format-datatable-previous": "پويون",
 	"smw-filter": "ڇاڻي",
-	"smw-concept-tab-list": "فھرست"
+	"smw-concept-tab-list": "فھرست",
+	"smw-legend": "ڪنجي"
 }
