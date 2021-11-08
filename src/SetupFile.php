@@ -4,10 +4,10 @@ namespace SMW;
 
 use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
+use RuntimeException;
 use SMW\Elastic\ElasticStore;
-use SMW\Exception\FileNotWritableException;
-use SMW\Utils\File;
 use SMW\SQLStore\Installer;
+use SMW\Utils\File;
 
 /**
  * @private
@@ -62,10 +62,10 @@ class SetupFile {
 
 	private const SMW_JSON = 'smw.json';
 
-	private SetupFileRepo $repo;
+	private FileSystemSmwJsonRepo $repo;
 
 	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
-		$this->repo = new SetupFileRepo(
+		$this->repo = new FileSystemSmwJsonRepo(
 			$fileFetcher ?? new SimpleFileFetcher(),
 			$file ?? new File()
 		);
@@ -154,7 +154,7 @@ class SetupFile {
 	 * Tracking the latest and previous version, which allows us to decide whether
 	 * current activities relate to an install (new) or upgrade.
 	 */
-	public function setLatestVersion( int $version ): void {
+	public function setLatestVersion( $version ): void {
 		$latest = $this->get( SetupFile::LATEST_VERSION );
 		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
 
@@ -376,7 +376,7 @@ class SetupFile {
 
 		try {
 			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
-		} catch( FileNotWritableException $e ) {
+		} catch( RuntimeException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
 			// and die

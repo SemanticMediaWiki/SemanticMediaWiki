@@ -6,10 +6,12 @@ namespace SMW;
 
 use FileFetcher\FileFetcher;
 use FileFetcher\FileFetchingException;
-use SMW\Exception\FileNotWritableException;
 use SMW\Utils\File;
 
-class SetupFileRepo {
+/**
+ * @private
+ */
+class FileSystemSmwJsonRepo implements SmwJsonRepo {
 
 	private FileFetcher $fileFetcher;
 	private File $file;
@@ -36,9 +38,6 @@ class SetupFileRepo {
 		return File::dir( $configDirectory . '/' . SetupFile::FILE_NAME );
 	}
 
-	/**
-	 * @throws FileNotWritableException
-	 */
 	public function saveSmwJson( string $configDirectory, array $smwJson ): void {
 		$filePath = $this->getFilePath( $configDirectory );
 		$jsonString = json_encode( $smwJson, JSON_PRETTY_PRINT );
