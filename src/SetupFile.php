@@ -58,6 +58,8 @@ class SetupFile {
 	const LATEST_VERSION = 'latest_version';
 	const PREVIOUS_VERSION = 'previous_version';
 
+	private const SMW_JSON = 'smw.json';
+
 	private File $file;
 
 	public function __construct( File $file = null ) {
@@ -69,7 +71,7 @@ class SetupFile {
 			$vars = $GLOBALS;
 		}
 
-		if ( isset( $vars['smw.json'] ) ) {
+		if ( isset( $vars[self::SMW_JSON] ) ) {
 			return;
 		}
 
@@ -80,7 +82,7 @@ class SetupFile {
 		// a new file and if it fails or unable to do so wail raise an exception
 		// as we expect to have access to it.
 		if ( is_readable( $file ) ) {
-			$vars['smw.json'] = json_decode( file_get_contents( $file ), true );
+			$vars[self::SMW_JSON] = json_decode( file_get_contents( $file ), true );
 		}
 	}
 
@@ -96,15 +98,15 @@ class SetupFile {
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$id = Site::id();
 
-		if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id]['upgrade_key'] ) ) {
 			return false;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
 
 		if (
-			isset( $GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] ) &&
-			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] !== false ) {
+			isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) &&
+			$GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false ) {
 			$isGoodSchema = false;
 		}
 
@@ -126,11 +128,11 @@ class SetupFile {
 
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return false;
 		}
 
-		return $vars['smw.json'][$id][self::MAINTENANCE_MODE] !== false;
+		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false;
 	}
 
 	public function getMaintenanceMode( array $vars = [] ) {
@@ -140,11 +142,11 @@ class SetupFile {
 
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return [];
 		}
 
-		return $vars['smw.json'][$id][self::MAINTENANCE_MODE];
+		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE];
 	}
 
 	/**
@@ -204,11 +206,11 @@ class SetupFile {
 		$id = Site::id();
 
 		// No record means, no issues!
-		if ( !isset( $vars['smw.json'][$id][self::DB_REQUIREMENTS] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS] ) ) {
 			return true;
 		}
 
-		$requirements = $vars['smw.json'][$id][self::DB_REQUIREMENTS];
+		$requirements = $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS];
 
 		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
 	}
@@ -229,17 +231,17 @@ class SetupFile {
 
 		foreach ( $checks as $key => $value ) {
 
-			if ( !isset( $vars['smw.json'][$id][$key] ) ) {
+			if ( !isset( $vars[self::SMW_JSON][$id][$key] ) ) {
 				continue;
 			}
 
-			if ( $vars['smw.json'][$id][$key] === $value[0] ) {
+			if ( $vars[self::SMW_JSON][$id][$key] === $value[0] ) {
 				$tasks[] = $value[1];
 			}
 		}
 
-		if ( isset( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] ) ) {
-			foreach ( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
+		if ( isset( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] ) ) {
+			foreach ( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
 				if ( $args === true ) {
 					$tasks[] = $key;
 				} else {
@@ -279,9 +281,9 @@ class SetupFile {
 		$id = Site::id();
 
 		if (
-			isset( $vars['smw.json'][$id][self::UPGRADE_KEY] ) &&
-			$key === $vars['smw.json'][$id][self::UPGRADE_KEY] &&
-			$vars['smw.json'][$id][self::MAINTENANCE_MODE] === false ) {
+			isset( $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] ) &&
+			$key === $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] &&
+			$vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] === false ) {
 			return;
 		}
 
@@ -302,11 +304,11 @@ class SetupFile {
 		$id = Site::id();
 		$args = [];
 
-		if ( !isset( $vars['smw.json'][$id] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id] ) ) {
 			return;
 		}
 
-		$vars['smw.json'][$id] = [];
+		$vars[self::SMW_JSON][$id] = [];
 
 		$this->write( [], $vars );
 	}
@@ -326,8 +328,8 @@ class SetupFile {
 
 		$id = Site::id();
 
-		if ( isset( $vars['smw.json'][$id][$key] ) ) {
-			return $vars['smw.json'][$id][$key];
+		if ( isset( $vars[self::SMW_JSON][$id][$key] ) ) {
+			return $vars[self::SMW_JSON][$id][$key];
 		}
 
 		return null;
@@ -346,16 +348,16 @@ class SetupFile {
 		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'] ) ) {
-			$vars['smw.json'] = [];
+		if ( !isset( $vars[self::SMW_JSON] ) ) {
+			$vars[self::SMW_JSON] = [];
 		}
 
 		foreach ( $args as $key => $value ) {
 			// NULL means that the key key is removed
 			if ( $value === null ) {
-				unset( $vars['smw.json'][$id][$key] );
+				unset( $vars[self::SMW_JSON][$id][$key] );
 			} else {
-				$vars['smw.json'][$id][$key] = $value;
+				$vars[self::SMW_JSON][$id][$key] = $value;
 			}
 		}
 
@@ -365,17 +367,17 @@ class SetupFile {
 		// );
 
 		// Remove legacy
-		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
-			unset( $vars['smw.json']['upgradeKey'] );
+		if ( isset( $vars[self::SMW_JSON]['upgradeKey'] ) ) {
+			unset( $vars[self::SMW_JSON]['upgradeKey'] );
 		}
-		if ( isset( $vars['smw.json'][$id]['in.maintenance_mode'] ) ) {
-			unset( $vars['smw.json'][$id]['in.maintenance_mode'] );
+		if ( isset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] ) ) {
+			unset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] );
 		}
 
 		try {
 			$this->file->write(
 				$configFile,
-				json_encode( $vars['smw.json'], JSON_PRETTY_PRINT )
+				json_encode( $vars[self::SMW_JSON], JSON_PRETTY_PRINT )
 			);
 		} catch( FileNotWritableException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
