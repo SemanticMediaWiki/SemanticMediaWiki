@@ -4,6 +4,7 @@ namespace SMW;
 
 use FileFetcher\FileFetcher;
 use FileFetcher\SimpleFileFetcher;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Elastic\ElasticStore;
 use SMW\SQLStore\Installer;
@@ -65,10 +66,17 @@ class SetupFile {
 	private FileSystemSmwJsonRepo $repo;
 
 	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
-		$this->repo = new FileSystemSmwJsonRepo(
+		$repo = new FileSystemSmwJsonRepo(
 			$fileFetcher ?? new SimpleFileFetcher(),
 			$file ?? new File()
 		);
+
+		MediaWikiServices::getInstance()->getHookContainer()->run(
+			'SMW::Setup::BuildSmwJsonRepo',
+			[ &$repo ]
+		);
+
+		$this->repo = $repo;
 	}
 
 	public function loadSchema( array &$vars = [] ): void {
