@@ -3,8 +3,11 @@
 namespace SMW\MediaWiki\Content;
 
 use Content;
+use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Content\Transform\PreSaveTransformParams;
 use JsonContentHandler;
+use Title;
+use ParserOutput;
 
 /**
  * @license GNU GPL v2+
@@ -77,6 +80,25 @@ class SchemaContentHandler extends JsonContentHandler {
 			$pstParams->getPage(),
 			$pstParams->getUser(),
 			$pstParams->getParserOptions()
+		);
+	}
+
+	/**
+	 *
+	 * {@inheritDoc}
+	 */
+	protected function fillParserOutput(
+		Content $content,
+		ContentParseParams $cpoParams,
+		ParserOutput &$output
+	) {
+		$title = Title::castFromPageReference( $cpoParams->getPage() );
+		$content->fillParserOutput(
+			$title,
+			$cpoParams->getRevId(),
+			$cpoParams->getParserOptions(),
+			$cpoParams->getGenerateHtml(),
+			$output
 		);
 	}
 }
