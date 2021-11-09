@@ -28,7 +28,7 @@ jobs:
 
     env:
       EXT_NAME: SemanticMediaWiki
-      COMPOSER_VERSION: 1
+      COMPOSER_VERSION: 2
       MW_INST_PATH: /var/www/html
       MW_EXT_PATH: /var/www/html/extensions
       DB_ROOT_USER: root
