@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Alexmar983",
 			"Beta16",
 			"Candalua",
@@ -121,7 +122,7 @@
 	"smw_noboolean": "“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).",
 	"smw_true_words": "vero,v,si,s,true,t,yes,y",
 	"smw_false_words": "falso,f,no,n,false",
-	"smw_nofloat": "“$1” non &egrave; un numero.",
+	"smw_nofloat": "“$1” non è un numero.",
 	"smw_infinite": "I numeri grandi come \"$1\" non sono supportati.",
 	"smw_novalues": "Nessun valore specificato",
 	"smw_nodatetime": "Non &egrave; stato possibile comprendere la data “$1”.",
