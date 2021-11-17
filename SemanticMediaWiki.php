@@ -61,6 +61,12 @@ class SemanticMediaWiki {
 		}
 
 		/**
+		 * These globals are specified too early and will be overridden by normal MediaWiki
+		 * setup. They will be initialized again from extension.json.
+		 *
+		 * They are here so that SetupCheck is capable of finding messages to show setup errors
+		 * to the user.
+		 * 
 		 * @see https://www.mediawiki.org/wiki/Localisation#Localising_namespaces_and_special_page_aliases
 		 */
 		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = __DIR__ . '/i18n';
