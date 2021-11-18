@@ -25,8 +25,8 @@
 		"SemanticMediaWiki::onExtensionFunction"
 	],
 	"ExtensionMessagesFiles": {
-		"SemanticMediaWikiAlias": "/i18n/extra/SemanticMediaWiki.alias.php",
-		"SemanticMediaWikiMagic": "/i18n/extra/SemanticMediaWiki.magic.php"
+		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
+		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
 	},
 	"QUnitTestModule": {
 		"ext.smw.tests": {
