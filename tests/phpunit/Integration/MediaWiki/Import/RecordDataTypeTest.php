@@ -76,9 +76,9 @@ class RecordDataTypeTest extends DatabaseTestCase {
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
 			'propertyValues' => [
-				'Regression test',
-				'Data type regression test',
-				'Record type regression test'
+				'Category:Regression test',
+				'Category:Data type regression test',
+				'Category:Record type regression test'
 			]
 		];
 
