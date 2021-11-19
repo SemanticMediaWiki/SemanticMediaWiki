@@ -93,7 +93,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 		$expected = [
 			'propertyCount'  => 2,
 			'propertyKeys'   => [ '_SKEY', '_INST' ],
-			'propertyValues' => [ 'SortForFoo', 'SingleCategory' ],
+			'propertyValues' => [ 'SortForFoo', 'Category:SingleCategory' ],
 		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
