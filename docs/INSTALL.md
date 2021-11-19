@@ -108,7 +108,7 @@ to activate the [automatic data update](https://www.semantic-mediawiki.org/wiki/
 If you would like to install a development version or release candidate then replace the lines as stated in step 3 of the
 "Installation with Composer" section with the following line
 
-* master: `"mediawiki/semantic-media-wiki": "@dev"`
+* master: `"mediawiki/semantic-media-wiki": "dev-master"`
 * legacy branch: `"mediawiki/semantic-media-wiki": "~3.2.0@dev"`
 * release candidate: `"mediawiki/semantic-media-wiki": "~3.2@rc"`
 
