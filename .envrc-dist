@@ -1,0 +1,11 @@
+export mwExtensionUnderTest=SemanticMediaWiki
+export mwTestGroup=semantic-mediawiki
+export mwDotComposer=$HOME/.cache/composer
+export mwVer=1.35
+export PHP=php
+export PHAN_DISABLE_XDEBUG_WARN=1
+export PHAN_ALLOW_XDEBUG=0
+export installExtensions=''
+export composerVer=2
+export packagistUnderTest=mediawiki/semantic-media-wiki
+export phpunitOptions="--configuration=extensions/SemanticMediaWiki/phpunit.xml.dist"
