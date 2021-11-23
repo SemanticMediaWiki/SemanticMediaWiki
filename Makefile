@@ -449,5 +449,5 @@ testInContainer: verifyInContainerEnvVar
 	tar -C ${mwCiPath} -xzf ${mwCiPath}/build.tar.gz
 	${make} linksInContainer
 	${make} linkInContainer target=${MW_INSTALL_PATH}/LocalSettings.php src=${mwCiPath}/LocalSettings.php
-	php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php ${phpunitOptions}								\
+	php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist ${phpunitOptions}			\
 		$(if ${mwTestGroup},--group ${mwTestGroup}) $(if ${mwTestFilter},--filter ${mwTestFilter})
