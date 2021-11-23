@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.experimental }}
-    
+
     strategy:
       matrix:
         include:
@@ -103,6 +103,7 @@ jobs:
           COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INST_PATH }} mediawiki/semantic-media-wiki @dev
           COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INST_PATH }}
           composer update --working-dir ${{ env.MW_INST_PATH }}
+          echo "wfLoadExtension( 'SemanticMediaWiki' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
           echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
           tail -n5 ${{ env.MW_INST_PATH }}/LocalSettings.php
           php ${{ env.MW_INST_PATH }}/maintenance/update.php --quick

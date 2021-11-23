@@ -46,7 +46,7 @@ class JsonContentsFileReader {
 	 * @param Cache|null $cache
 	 * @param string $languageFileDir
 	 */
-	public function __construct( Cache $cache = null, $languageFileDir = '' ) {
+	public function __construct( Cache $cache = null, string $languageFileDir = '' ) {
 		$this->cache = $cache;
 		$this->languageFileDir = $languageFileDir;
 
@@ -173,7 +173,9 @@ class JsonContentsFileReader {
 
 	private function getLanguageFile( $languageCode ) {
 
-		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
+		$file = str_replace(
+			[ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json'
+		);
 
 		if ( is_readable( $file ) ) {
 			return $file;

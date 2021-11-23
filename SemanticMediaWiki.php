@@ -39,14 +39,14 @@ class SemanticMediaWiki {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
-		// If the function is called more than once then this will fail on
-		// purpose
-		foreach ( include __DIR__ . '/DefaultSettings.php' as $key => $value ) {
-			if ( !isset( $GLOBALS[$key] ) ) {
-				$GLOBALS[$key] = $value;
+		$defaultSettings = include_once __DIR__ . '/DefaultSettings.php';
+		if ( is_array( $defaultSettings ) ) {
+			foreach ( $defaultSettings as $key => $value ) {
+				if ( !isset( $GLOBALS[$key] ) ) {
+					$GLOBALS[$key] = $value;
+				}
 			}
 		}
-
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
 	}

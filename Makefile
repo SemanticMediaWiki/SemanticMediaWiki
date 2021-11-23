@@ -226,6 +226,8 @@ ${lsPath}: ${phpIni} MW_VENDOR MW_EXTENSIONS MW_DB_PATH
 					--extensions=${mwExtensionUnderTest},${installExtensions}						\
 					 ${MW_SITE_NAME} ${MW_WIKI_USER}"									&&			\
 			${dockerCli} cp $${cid}:LocalSettings.php $@								&&			\
+			echo "wfLoadExtension( 'SemanticMediaWiki' );" >> $@						&&			\
+			echo "enableSemantics( 'localhost' );" >> $@								&&			\
 			$(call rmContainer,$${cid})													)		)
 	${miniSudo} chown -R ${mwWebUser} ${mwDbPath}
 
