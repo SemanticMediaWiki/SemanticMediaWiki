@@ -153,7 +153,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaFinder
 	 */
-	public function newSchemaFinder( Store $store = null ) {
+	public function newSchemaFinder( Store $store = null ): SchemaFinder {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

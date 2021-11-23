@@ -87,7 +87,7 @@ class ConstraintSchemaCompiler {
 			$property
 		);
 
-		if ( $schemaList !== null ) {
+		if ( $schemaList->toArray() !== [] ) {
 			$constraintSchema = $schemaList->merge( $schemaList );
 		}
 	}

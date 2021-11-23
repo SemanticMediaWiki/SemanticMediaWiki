@@ -58,7 +58,7 @@ class ConstraintCheckRunner {
 	 *
 	 * @return boolean
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

@@ -22,6 +22,6 @@ interface ConstraintValueValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasConstraintViolation();
+	public function hasConstraintViolation(): bool;
 
 }

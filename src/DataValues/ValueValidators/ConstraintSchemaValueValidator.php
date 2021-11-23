@@ -80,8 +80,8 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
-		return $this->hasConstraintViolation;
+	public function hasConstraintViolation(): bool {
+		return $this->hasConstraintViolation !== null && $this->hasConstraintViolation !== false;
 	}
 
 	/**
