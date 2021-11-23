@@ -39,10 +39,6 @@ class SemanticMediaWiki {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
-		include_once __DIR__ . '/src/Aliases.php';
-		include_once __DIR__ . '/src/Defines.php';
-		include_once __DIR__ . '/src/GlobalFunctions.php';
-
 		// If the function is called more than once then this will fail on
 		// purpose
 		foreach ( include __DIR__ . '/DefaultSettings.php' as $key => $value ) {
