@@ -37,7 +37,7 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'calledFromCallable' );
 
 		$memoryLimitBefore = ini_get( 'memory_limit' );
-		$memoryLimit = '1M';
+		$memoryLimit = '1000M';
 
 		// Establish that the limits are different
 		$this->assertNotEquals(
