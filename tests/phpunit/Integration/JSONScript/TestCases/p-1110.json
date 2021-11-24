@@ -94,7 +94,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"P1110\",\"Mandatory 2\"]" }
+						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"Category:P1110\",\"Mandatory 2\"]" }
 					]
 				}
 			}
@@ -113,7 +113,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"P1110\",\"Mandatory 1, Mandatory 2\"]" }
+						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"Category:P1110\",\"Mandatory 1, Mandatory 2\"]" }
 					]
 				}
 			}
