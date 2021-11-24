@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     continue-on-error: ${{ matrix.experimental }}
-    
+
     strategy:
       matrix:
         include:
@@ -52,10 +52,11 @@ jobs:
         run: |
           apt update
           apt install -y unzip
-          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-          php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-          php composer-setup.php --${{ env.COMPOSER_VERSION }}
-          php -r "unlink('composer-setup.php');"
+          php -r "copy('https://getcomposer.org/installer', 'installer');"
+          php -r "copy('https://composer.github.io/installer.sig', 'expected');"
+          echo `cat expected` " installer" | sha384sum -c -
+          php installer --${{ env.COMPOSER_VERSION }}
+          rm -f installer expected
           mv composer.phar /usr/local/bin/composer
 
       - name: MediaWiki Composer Update
@@ -103,6 +104,7 @@ jobs:
           COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INST_PATH }} mediawiki/semantic-media-wiki @dev
           COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INST_PATH }}
           composer update --working-dir ${{ env.MW_INST_PATH }}
+          echo "wfLoadExtension( 'SemanticMediaWiki' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
           echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INST_PATH }}/LocalSettings.php
           tail -n5 ${{ env.MW_INST_PATH }}/LocalSettings.php
           php ${{ env.MW_INST_PATH }}/maintenance/update.php --quick

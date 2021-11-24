@@ -77,8 +77,13 @@
 			"SMW\\Maintenance\\": "maintenance/",
 			"SMW\\Tests\\": "tests/phpunit/"
 		},
-		"files" : [
-			"SemanticMediaWiki.php"
+		"psr-0": {
+			"SemanticMediaWiki": "SemanticMediaWiki.php"
+		},
+		"files": [
+			"src/Aliases.php",
+			"src/Defines.php",
+			"src/GlobalFunctions.php"
 		],
 		"classmap" : [
 			"includes/",
