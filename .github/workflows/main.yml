@@ -59,10 +59,6 @@ jobs:
           rm -f installer expected
           mv composer.phar /usr/local/bin/composer
 
-      - name: MediaWiki Composer Update
-        run: |
-          composer update --working-dir ${{ env.MW_INSTALL_PATH }}
-
       - name: Checkout Extension
         uses: actions/checkout@v2
         with:
@@ -75,6 +71,12 @@ jobs:
         run: |
           mkdir -p ${{ env.MW_EXT_PATH }}
           mv ${{ env.EXT_NAME }} ${{ env.MW_EXT_PATH }}
+
+      - name: MediaWiki Composer Update
+        run: |
+          COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INSTALL_PATH }} mediawiki/semantic-media-wiki @dev
+          COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INSTALL_PATH }}
+          composer update --working-dir ${{ env.MW_INSTALL_PATH }}
 
       - name: MediaWiki Install
         run: >
@@ -102,10 +104,6 @@ jobs:
 
       - name: Install SemanticMediaWiki
         run: |
-          COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INSTALL_PATH }} mediawiki/semantic-media-wiki @dev
-          COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INSTALL_PATH }}
-          composer update --working-dir ${{ env.MW_INSTALL_PATH }}
-          echo "wfLoadExtension( 'SemanticMediaWiki' );" >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
           echo "enableSemantics( 'localhost' );" >> ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
           tail -n5 ${{ env.MW_INSTALL_PATH }}/LocalSettings.php
           php ${{ env.MW_INSTALL_PATH }}/maintenance/update.php --quick
