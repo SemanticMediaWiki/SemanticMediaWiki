@@ -20,10 +20,6 @@
 			"i18n"
 		]
 	},
-	"ExtensionMessagesFiles": {
-		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
-		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
-	},
 	"AutoloadNamespaces": {
 		"SMW\\": "src/"
 	},
