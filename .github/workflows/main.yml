@@ -70,6 +70,7 @@ jobs:
       # See also open PR https://github.com/actions/checkout/pull/388
       - name: Move Extension
         run: |
+          tail -5 ${{ env.EXT_NAME }}/.git/logs/HEAD
           mkdir -p ${{ env.MW_EXT_PATH }}
           mv ${{ env.EXT_NAME }} ${{ env.MW_EXT_PATH }}
 
