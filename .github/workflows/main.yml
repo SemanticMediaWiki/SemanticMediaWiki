@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: SemanticMediaWiki/${{ env.EXT_NAME }}
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: 8814e7ace3f56295b7c61abbe95125862407465f
           path: ${{ env.EXT_NAME }}
 
       # Setting actions/checkout@v2 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
