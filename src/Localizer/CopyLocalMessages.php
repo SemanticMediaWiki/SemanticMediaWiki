@@ -4,6 +4,7 @@ namespace SMW\Localizer;
 
 use RuntimeException;
 use SMW\Exception\JSONFileParseException;
+use SMW\Localizer\LocalMessageProvider;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -31,10 +32,7 @@ class CopyLocalMessages {
 	 */
 	public function __construct( string $file, string $languageFileDir = null ) {
 		$this->file = $file;
-		$this->languageFileDir = $languageFileDir
-							  ?? ( !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
-								   ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
-								   : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0] );
+		$this->languageFileDir = $languageFileDir ?? LocalMessageProvider::getI18nDir();
 	}
 
 	/**

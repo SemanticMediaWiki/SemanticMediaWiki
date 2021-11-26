@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use SMW\Localizer\LocalMessageProvider;
 use SMW\TypesRegistry;
 
 /**
@@ -22,10 +23,9 @@ class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit_Framework_TestCa
 	 */
 	public function testCheckPredefinedPropertyDesriptionKey( $key ) {
 
-		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
-				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
-				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
-		$contents = json_decode( file_get_contents( $i18nDir . '/en.json' ), true );
+		$contents = json_decode(
+			file_get_contents( LocalMessageProvider::getI18nDir() . '/en.json' ), true
+		);
 
 		$msgKey = self::MSG_KEY_PREFIX . (
 			str_replace( '_', '-', strtolower( $key ) )

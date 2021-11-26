@@ -26,6 +26,7 @@ use SMW\ParserFunctions\SectionTag;
 use SMW\SetupFile;
 use SMW\Store;
 use SMW\Options;
+use SMW\Localizer\LocalMessageProvider;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
@@ -197,6 +198,9 @@ class Hooks {
 		}
 
 		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\MediaWiki\Content\SchemaContentHandler';
+
+		LocalMessageProvider::setI18nDir( $vars['wgMessagesDirs']['SemanticMediaWiki'] );
+		LocalMessageProvider::setSMWExtraI18nDir( $vars['smwgExtraneousLanguageFileDir'] );
 
 		/**
 		 * CanonicalNamespaces initialization
