@@ -475,7 +475,5 @@ testInContainer: buildInContainer verifyInContainerEnvVar
 	${make} linksInContainer
 	${make} linkInContainer target=${MW_INSTALL_PATH}/LocalSettings.php 							\
 							src=${mwCiPath}/LocalSettings.php
-	cd ${MW_INSTALL_PATH}																		&&	\
-		php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php ${phpunitOptions}							\
-		$(if ${mwTestGroup},--group ${mwTestGroup}) $(if ${mwTestFilter},--filter ${mwTestFilter})	\
-		${mwTestPath}
+	cd ${MW_INSTALL_PATH}/extensions/${mwExtensionUnderTest}									&&	\
+		php ${composerPhar} test --working-dir=${MW_INSTALL_PATH}/extensions/${mwExtensionUnderTest}
