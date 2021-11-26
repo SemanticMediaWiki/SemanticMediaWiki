@@ -78,7 +78,7 @@
 			"SMW\\Tests\\": "tests/phpunit/"
 		},
 		"files" : [
-			"SemanticMediaWiki.php"
+			"ComposerLoad.php"
 		],
 		"classmap" : [
 			"includes/",
