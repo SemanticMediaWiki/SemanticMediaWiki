@@ -18,11 +18,13 @@ mwExtensionUnderTest ?= Set-mwExtensionUnderTest
 mwExtGitBranchUnderTest ?= $(shell git branch --show-current)
 # PHPUnit will look for this string and filter by it
 mwTestFilter ?=
-# PHPUnit will only excute tests in this group
-mwTestGroup ?= ${mwExtensionUnderTest}
+# PHPUnit will only execute tests in this group
+mwTestGroup ?=
+# PHPUnit will only execute tests in this path (relative to MW_INSTALL_PATH)
+mwTestPath ?=
 
 #
-packagistUnderTest ?= $(shell test ! -f composer.json || ( jq -Mr .name < composer.json ) )
+getPackagistUnderTest=test ! -f composer.json || ( jq -Mr .name < composer.json )
 packagistVersion ?= dev-${mwExtGitBranchUnderTest}
 
 # Image name
@@ -54,8 +56,9 @@ MW_WIKI_USER ?= WikiSysop
 MW_SCRIPTPATH ?= ""
 
 #
-phpIni ?= ${mwCiPath}/php-settings.ini
 mwCiPath ?= ${PWD}/conf
+composerPhar ?= ${mwCiPath}/composer.phar
+phpIni ?= ${mwCiPath}/php-settings.ini
 mwBranch ?= $(shell echo ${mwVer} | (echo -n REL; tr . _))
 dockerCli ?= podman
 miniSudo ?= podman unshare
@@ -226,8 +229,6 @@ ${lsPath}: ${phpIni} MW_VENDOR MW_EXTENSIONS MW_DB_PATH
 					--extensions=${mwExtensionUnderTest},${installExtensions}						\
 					 ${MW_SITE_NAME} ${MW_WIKI_USER}"									&&			\
 			${dockerCli} cp $${cid}:LocalSettings.php $@								&&			\
-			echo "wfLoadExtension( 'SemanticMediaWiki' );" >> $@						&&			\
-			echo "enableSemantics( 'localhost' );" >> $@								&&			\
 			$(call rmContainer,$${cid})													)		)
 	${miniSudo} chown -R ${mwWebUser} ${mwDbPath}
 
@@ -330,9 +331,10 @@ copyThisExtension: composer
 	)
 	test ! -f ${thisRepoCopy}/composer.json														||	\
 			$(call updateComposerLocal,extensions/${mwExtensionUnderTest}/composer.json)
-	test -z "${packagistUnderTest}"															||	(	\
+	export pkgUnderTest=`$(call getPackagistUnderTest)`											&&	\
+	test -z "$$pkgUnderTest"																||	(	\
 		COMPOSER=${mwCompLocal} ${php}																\
-			composer require --no-update ${packagistUnderTest}:${packagistVersion}				)
+			composer require --no-update $$pkgUnderTest:${packagistVersion}						)
 
 PHONY: MW_EXTENSIONS
 MW_EXTENSIONS:
@@ -382,10 +384,11 @@ inContainer:
 		echo "See <http://hexm.de/glcivar>"; exit 10											)
 	mkdir -p ${mwVendor}
 	${dockerCli} run --rm -w /target -v "${PWD}:/target" ${containerID}								\
-		make ${target} VERBOSE=${VERBOSE} phpunitOptions="${phpunitOptions}"						\
+		make ${target} VERBOSE=${VERBOSE} phpunitOptions="${phpunitOptions}" 						\
 			mwExtensionUnderTest="${mwExtensionUnderTest}" mwTestGroup="${mwTestGroup}"				\
-			mwTestFilter="${mwTestFilter}" MW_INSTALL_PATH="${MW_INSTALL_PATH}"						\
-			WEB_ROOT="${WEB_ROOT}" WEB_USER="${WEB_USER}" WEB_GROUP="${WEB_GROUP}"
+			mwTestFilter="${mwTestFilter}" mwTestPath="${mwTestPath}" WEB_GROUP="${WEB_GROUP}"		\
+			MW_INSTALL_PATH="${MW_INSTALL_PATH}" WEB_ROOT="${WEB_ROOT}" WEB_USER="${WEB_USER}"
+
 
 linkInContainer:
 	test -L ${target}																		||	(	\
@@ -403,18 +406,23 @@ linkInContainer:
 	)
 
 composerBinaryInContainer:
+	${make} pkgInContainer bin=unzip
 	echo "${indent}Getting composer..."
-	apt update
-	apt install -y unzip jq
-	curl -o installer "https://getcomposer.org/installer"
-	curl -o expected "https://composer.github.io/installer.sig"
-	echo `cat expected` " installer" | sha384sum -c -
-	php installer
+	test -x ${composerPhar}																	||	(	\
+		cd ${mwCiPath}																			&&	\
+		curl -o installer "https://getcomposer.org/installer"									&&	\
+		curl -o expected "https://composer.github.io/installer.sig"								&&	\
+		echo `cat expected` " installer" | sha384sum -c -										&&	\
+		php installer																			)
 
 ${mwCompLocal}:
-	echo {}																						|	\
-		jq '.require."${packagistUnderTest}" = "dev-${mwExtGitBranchUnderTest}"'				|	\
-		jq '. += { repositories: [{"type":"vcs","url":"${PWD}"}]}' > $@
+	${make} pkgInContainer bin=jq
+	export packagistUnderTest=`$(call getPackagistUnderTest)`									&&	\
+	test -z "$$packagistUnderTest"													&&	(			\
+		echo {} > $@																	)	||	(	\
+		echo {}																					|	\
+		jq ".require.\"$$packagistUnderTest\" = \"dev-${mwExtGitBranchUnderTest}\""				|	\
+		jq '. += { repositories: [{"type":"vcs","url":"${PWD}"}]}' > $@							)
 
 linksInContainer: ${mwCompLocal}
 	echo "${indent}Setting up symlinks for container"
@@ -424,11 +432,18 @@ linksInContainer: ${mwCompLocal}
 	${make} linkInContainer target=${MW_INSTALL_PATH}/composer.lock       src=${mwCiPath}/composer.lock
 	${make} linkInContainer target=${MW_INSTALL_PATH}/composer.json       src=${mwCiPath}/composer.json
 
-runComposerInContainer:
-	echo "${indent}Running composer..."
-	php composer.phar update --working-dir ${MW_INSTALL_PATH}
+pkgInContainer: verifyInContainerEnvVar
+	type ${bin} > /dev/null 2>&1 															||	(	\
+		echo "${indent}Installing $(if ${pkg},${pkg},${bin})..."								&&	\
+		apt update																				&&	\
+		apt install -y $(if ${pkg},${pkg},${bin})												)
 
-installExtensionInContainer:
+runComposerInContainer: verifyInContainerEnvVar
+	${make} pkgInContainer bin=unzip
+	echo "${indent}Running composer..."
+	php ${composerPhar} update --working-dir ${MW_INSTALL_PATH}
+
+installExtensionInContainer: verifyInContainerEnvVar
 	echo "${indent}Installing MediaWiki for ${mwExtensionUnderTest}..."
 	mkdir -p ${mwCiPath}/data
 	php ${MW_INSTALL_PATH}/maintenance/install.php --dbtype=sqlite --dbname=mywiki					\
@@ -436,6 +451,11 @@ installExtensionInContainer:
 			  --server="http://localhost:8000" --extensions=${mwExtensionUnderTest}					\
 			  ${mwExtensionUnderTest}-test WikiSysop
 	${make} linkInContainer target=${MW_INSTALL_PATH}/LocalSettings.php src=${mwCiPath}/LocalSettings.php
+	echo 'error_reporting(E_ALL| E_STRICT);' >> ${mwCiPath}/LocalSettings.php
+	echo 'ini_set("display_errors", 1);' >> ${mwCiPath}/LocalSettings.php
+	echo '$$wgShowExceptionDetails = true;' >> ${mwCiPath}/LocalSettings.php
+	echo '$$wgDevelopmentWarnings = true;' >> ${mwCiPath}/LocalSettings.php
+	echo "enableSemantics( 'localhost' );" >> ${mwCiPath}/LocalSettings.php
 	php ${MW_INSTALL_PATH}/maintenance/update.php --quick
 	chown -R "${WEB_USER}:${WEB_GROUP}" ${mwCiPath}/data
 
@@ -453,6 +473,9 @@ buildInContainer: verifyInContainerEnvVar
 testInContainer: buildInContainer verifyInContainerEnvVar
 	tar -C ${mwCiPath} -xzf ${mwCiPath}/build.tar.gz
 	${make} linksInContainer
-	${make} linkInContainer target=${MW_INSTALL_PATH}/LocalSettings.php src=${mwCiPath}/LocalSettings.php
-	php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist ${phpunitOptions}			\
-		$(if ${mwTestGroup},--group ${mwTestGroup}) $(if ${mwTestFilter},--filter ${mwTestFilter})
+	${make} linkInContainer target=${MW_INSTALL_PATH}/LocalSettings.php 							\
+							src=${mwCiPath}/LocalSettings.php
+	cd ${MW_INSTALL_PATH}																		&&	\
+		php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php ${phpunitOptions}							\
+		$(if ${mwTestGroup},--group ${mwTestGroup}) $(if ${mwTestFilter},--filter ${mwTestFilter})	\
+		${mwTestPath}
