@@ -94,16 +94,16 @@
 		"process-timeout": 0
 	},
 	"scripts": {
-		"test": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpunit": "php ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
-		"phpdbg": "phpdbg -qrr ../../tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"test": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpunit": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"unit": [
 			"composer dump-autoload",
 			"composer phpunit -- --testsuite=semantic-mediawiki-unit"
 		],
 		"integration": "composer phpunit -- --testsuite=semantic-mediawiki-integration",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ../../tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
+		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark",
 		"cs-standalone": [
 			"composer validate --no-interaction",
 			"vendor/bin/phpcs src/* includes/* tests/* --standard=phpcs.xml --extensions=php -sp"

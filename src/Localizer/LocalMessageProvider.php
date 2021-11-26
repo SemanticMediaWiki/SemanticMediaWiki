@@ -16,38 +16,40 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @var string
 	 */
-	private $file = '';
+	private string $file = '';
 
 	/**
 	 * @var string
 	 */
-	private $languageCode;
+	private ?string $languageCode;
 
 	/**
 	 * @var string
 	 */
-	private $languageFileDir = '';
+	private string $languageFileDir = '';
 
 	/**
 	 * @var string
 	 */
-	private $fallbackLanguageCode = 'en';
+	private string $fallbackLanguageCode = 'en';
 
 	/**
 	 * @var array
 	 */
-	private $contents = [];
+	private array $contents = [];
 
 	/**
 	 * @since 3.2
 	 *
 	 * @param string $file
-	 * @param string|null $languageCode
+	 * @param ?string $languageCode
 	 */
 	public function __construct( string $file, ?string $languageCode = null ) {
 		$this->file = $file;
 		$this->languageCode = $languageCode;
-		$this->languageFileDir = $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'];
+		$this->languageFileDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+							  ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+							  : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
 	}
 
 	/**
