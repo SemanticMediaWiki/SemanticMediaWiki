@@ -860,7 +860,7 @@
 	"smw-remote-source-disabled": "El origen '''$1''' ha desactivado las solicitudes remotas.",
 	"smw-remote-source-unmatched-id": "La fuente '''$1''' no concuerda con la versión de MediaWiki Semántica que soporta solicitudes remotas.",
 	"smw-remote-request-note": "El resultado se recupera a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en la wiki actual.",
-	"smw-remote-request-note-cached": "El resultado se '''almacena temporalmente''' a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en el wiki actual.",
+	"smw-remote-request-note-cached": "El resultado se '''almacena temporalmente''' a partir del origen remoto '''$1'''. Es probable que el contenido generado contenga información no disponible en la wiki actual.",
 	"smw-parameter-missing": "Falta el parámetro \"$1\".",
 	"smw-property-tab-usage": "Uso",
 	"smw-property-tab-redirects": "Sinónimos",
