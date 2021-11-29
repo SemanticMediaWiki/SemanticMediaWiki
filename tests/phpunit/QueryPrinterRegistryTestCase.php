@@ -92,4 +92,3 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
  * @deprecated since SMW 1.9
  */
 class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Tests\ResultPrinterTestCase' );
-class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Test\QueryResultPrinter' );
