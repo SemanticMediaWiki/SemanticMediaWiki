@@ -180,8 +180,6 @@ class PageInfoProvider implements PageInfo {
 
 	/**
 	 * @since 4.0
-	 *
-	 * @param RevisionLookup $revisionLookup
 	 */
 	public function setRevisionLookup( RevisionLookup $revisionLookup ) {
 		$this->revisionLookup = $revisionLookup;
