@@ -221,12 +221,6 @@ class MediaWikiMockObjectRepository extends \PHPUnit_Framework_TestCase implemen
 			->method( 'getLatestRevID' )
 			->will( $this->returnValue( $this->builder->setValue( 'getLatestRevID', rand( 10, 5000 ) ) ) );
 
-		if ( method_exists( '\Title', 'getFirstRevision' ) ) {
-			$title->expects( $this->any() )
-				->method( 'getFirstRevision' )
-				->will( $this->returnValue( $this->builder->setValue( 'getFirstRevision' ) ) );
-		}
-
 		$title->expects( $this->any() )
 			->method( 'getText' )
 			->will( $this->returnValue( $this->builder->setValue( 'getText' ) ) );

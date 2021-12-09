@@ -53,12 +53,6 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$title = MockTitle::buildMock( 'Lula' );
 
-		if ( method_exists( '\Title', 'getFirstRevision' ) ) {
-			$title->expects( $this->any() )
-				->method( 'getFirstRevision' )
-				->will( $this->returnValue( $revision ) );
-		}
-
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getTitle' => $title ],

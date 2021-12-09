@@ -477,12 +477,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$title = MockTitle::buildMock( __METHOD__ );
 
-		if ( method_exists( '\Title', 'getFirstRevision' ) ) {
-			$title->expects( $this->any() )
-				->method( 'getFirstRevision' )
-				->will( $this->returnValue( $revision ) );
-		}
-
 		$title->expects( $this->any() )
 			->method( 'getRestrictions' )
 			->will( $this->returnValue( [] ) );
