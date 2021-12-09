@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use IDBAccessObject;
+use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
 use SMW\Schema\Content\Content;
@@ -41,6 +43,11 @@ class PageInfoProvider implements PageInfo {
 	private $user = null;
 
 	/**
+	 * @var RevisionLookup
+	 */
+	private $revisionLookup;
+
+	/**
 	 * @since 1.9
 	 *
 	 * @param WikiPage $wikiPage
@@ -75,15 +82,10 @@ class PageInfoProvider implements PageInfo {
 	 * @return integer
 	 */
 	public function getCreationDate() {
-		// MW 1.34+
-		// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
-		if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
-			$flag = Title::READ_LATEST;
-		} else {
-			$flag = Title::GAID_FOR_UPDATE;
-		}
-
-		return $this->wikiPage->getTitle()->getFirstRevision( $flag )->getTimestamp();
+		return $this->revisionLookup->getFirstRevision(
+			$this->wikiPage->getTitle(),
+			IDBAccessObject::READ_LATEST
+		)->getTimestamp();
 	}
 
 	/**
@@ -174,6 +176,13 @@ class PageInfoProvider implements PageInfo {
 		}
 
 		return $this->wikiPage->getFile()->getMimeType();
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public function setRevisionLookup( RevisionLookup $revisionLookup ) {
+		$this->revisionLookup = $revisionLookup;
 	}
 
 }

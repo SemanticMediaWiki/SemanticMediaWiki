@@ -53,16 +53,24 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$title = MockTitle::buildMock( 'Lula' );
 
-		$title->expects( $this->any() )
-			->method(  'getFirstRevision' )
-			->will( $this->returnValue( $revision ) );
-
 		$instance = $this->constructPageInfoProviderInstance(
 			[
 				'wikiPage' => [ 'getTitle' => $title ],
 				'revision' => [],
 				'user'     => [],
 			]
+		);
+
+		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revisionLookup->expects( $this->any() )
+			->method( 'getFirstRevision' )
+			->will( $this->returnValue( $revision ) );
+
+		$instance->setRevisionLookup(
+			$revisionLookup
 		);
 
 		$this->assertEquals( 1272508903, $instance->getCreationDate() );
@@ -107,7 +115,7 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = $this->constructPageInfoProviderInstance(
 			[
-				'wikiPage' => [ 'getRevision' => $revision ],
+				'wikiPage' => [ 'getRevisionRecord' => $revision ],
 				'revision' => [ ],
 				'user'     => [],
 			]
@@ -181,11 +189,27 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 				->will( $this->returnValue( $returnValue ) );
 		}
 
-		return new PageInfoProvider(
+		$pageInfoProvider = new PageInfoProvider(
 			$wikiPage,
 			( $parameters['revision'] !== [] ? $revision : null ),
 			( $parameters['user'] !== [] ? $user : null )
 		);
+
+		if ( $parameters['revision'] != [] ) {
+			$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$revisionLookup->expects( $this->any() )
+				->method( 'getFirstRevision' )
+				->will( $this->returnValue( $revision ) );
+
+			$pageInfoProvider->setRevisionLookup(
+				$revisionLookup
+			);
+		}
+
+		return $pageInfoProvider;
 	}
 
 	/**

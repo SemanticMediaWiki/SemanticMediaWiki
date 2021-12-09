@@ -181,6 +181,18 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRevision' )
 			->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
 
+		$this->testEnvironment->redefineMediaWikiService( 'RevisionLookup', function () use ( $parameters ) {
+			$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$revisionLookup->expects( $this->any() )
+				->method( 'getFirstRevision' )
+				->will( $this->returnValue( isset( $parameters['revision'] ) ? $parameters['revision'] : null ) );
+
+			return $revisionLookup;
+		} );
+
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -248,6 +260,10 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getCategoryLinks' )
+			->will( $this->returnValue( [] ) );
+
+		$parserOutput->expects( $this->any() )
+			->method( 'getCategories' )
 			->will( $this->returnValue( [] ) );
 
 		$parserOutput->expects( $this->any() )
@@ -339,7 +355,7 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'propertyCount'  => 2,
 			'propertyKeys'   => [ '_INST', '_SKEY' ],
-			'propertyValues' => [ 'Foo', 'Bar', $title->getText() ],
+			'propertyValues' => [ 'Category:Foo', 'Category:Bar', $title->getText() ],
 		];
 
 		$parserData = $this->applicationFactory->newParserData(
@@ -460,10 +476,6 @@ class ParserAfterTidyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$title = MockTitle::buildMock( __METHOD__ );
-
-		$title->expects( $this->any() )
-			->method( 'getFirstRevision' )
-			->will( $this->returnValue( $revision ) );
 
 		$title->expects( $this->any() )
 			->method( 'getRestrictions' )
