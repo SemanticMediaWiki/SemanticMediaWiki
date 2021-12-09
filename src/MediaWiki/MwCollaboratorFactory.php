@@ -178,6 +178,10 @@ class MwCollaboratorFactory {
 			$this->applicationFactory->singleton( 'RevisionGuard' )
 		);
 
+		$pageInfoProvider->setRevisionLookup(
+			$this->applicationFactory->singleton( 'RevisionLookup' )
+		);
+
 		return $pageInfoProvider;
 	}
 
