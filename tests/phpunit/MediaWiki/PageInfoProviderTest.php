@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageInfoProvider;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
