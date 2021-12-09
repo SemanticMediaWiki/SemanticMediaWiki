@@ -245,7 +245,7 @@ class FileIndexer {
 		// Do we have any existing data? The ingest pipeline will override the
 		// entire document, so rescue any data before starting the ingest.
 		if ( $connection->exists( $params ) ) {
-			$doc = $connection->get( $params + [ '_source_include' => [ 'file_sha1', 'subject', 'text_raw', 'text_copy', 'P*' ] ] );
+			$doc = $connection->get( $params + [ '_source_includes' => [ 'file_sha1', 'subject', 'text_raw', 'text_copy', 'P*' ] ] );
 		}
 
 		// Is the sha1 the same? Don't do anything since the content is expected

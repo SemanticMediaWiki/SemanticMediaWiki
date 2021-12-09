@@ -118,7 +118,8 @@
 			"type": "api",
 			"skip-on": {
 				"postgres": "Skipping, because I have no idea why this returning empty on Travis!",
-				"sqlite": "Skipping, because I have no idea why this returning empty on Travis!"
+				"sqlite": "Skipping, because I have no idea why this returning empty on Travis!",
+				"blazegraph": "Skipping: the current Travis configuration does test Blazegraph with SQLite, it fails because of SQLite and works with MySQL."
 			},
 			"about": "#3 `smwbrowse` page search",
 			"api": {

@@ -1,17 +1,45 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bikarhêner",
 			"George Animal",
-			"Bikarhêner"
+			"Ghybu",
+			"Guherto"
 		]
 	},
 	"smw_finallistconjunct": ", û",
+	"smw_printername_count": "Encaman bijimêre",
 	"smw_printername_list": "Lîste",
+	"smw_printername_table": "Tablo",
+	"smw_printername_template": "Şablon",
 	"smw_printername_category": "Kategorî",
+	"validator-type-class-SMWParamSource": "nivîs",
 	"smw_true_words": "rast, r, erê, e",
 	"smw_false_words": "nerast, n, na, n",
+	"smw_nofloat": "\"$1\" ne hejmarek e.",
 	"smw_purge": "Nû bike",
-	"browse": "Li wîkîye binêre",
+	"types": "Cure",
+	"smw-ask-delete": "Rake",
+	"smw-ask-parameters": "Parametre",
+	"smw-ask-search": "Lêgerîn",
+	"smw_sbv_submit": "Encaman bibîne",
+	"browse": "Li wîkiye binêre",
 	"smw_browselink": "Li taybetmendiyan binêre",
-	"smw-livepreview-loading": "Tê…"
+	"smw_browse_go": "Here",
+	"smw_pp_type": "Taybetmendî:",
+	"smw_pp_submit": "Encaman bibîne",
+	"smw_result_next": "Pêşve",
+	"smw_result_results": "Encam",
+	"smw_result_noresults": "Encam tune ne.",
+	"smw_smwadmin_return": "Vegere $1",
+	"smw-ui-tooltip-title-info": "Agahî",
+	"smw-ui-tooltip-title-warning": "Hişyarî",
+	"smw-ui-tooltip-title-error": "Çewtî",
+	"smw-ui-tooltip-title-parameter": "Parametre",
+	"smw-ui-tooltip-title-event": "Bûyer",
+	"smw-livepreview-loading": "Tê…",
+	"smw-sp-searchbyproperty-resultlist-header": "Lîsteya encaman",
+	"smw-search-syntax": "Sentaks",
+	"smw-types-list": "Lîsteya cureyên daneyan",
+	"smw-format-datatable-next": "Pêşve"
 }

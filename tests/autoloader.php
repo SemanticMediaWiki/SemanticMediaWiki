@@ -78,8 +78,8 @@ $autoloader->addClassMap( [
 	'SMW\Tests\DatabaseTestCase'                    => __DIR__ . '/phpunit/DatabaseTestCase.php',
 	'SMW\Tests\JSONScriptTestCaseRunner'            => __DIR__ . '/phpunit/JSONScriptTestCaseRunner.php',
 	'SMW\Tests\JSONScriptServicesTestCaseRunner'    => __DIR__ . '/phpunit/JSONScriptServicesTestCaseRunner.php',
-	'SMW\Test\QueryPrinterTestCase'                 => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
-	'SMW\Test\QueryPrinterRegistryTestCase'         => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
+	'SMW\Tests\QueryPrinterTestCase'                => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
+	'SMW\Tests\QueryPrinterRegistryTestCase'        => __DIR__ . '/phpunit/QueryPrinterRegistryTestCase.php',
 	'SMW\Tests\SPARQLStore\RepositoryConnectors\ElementaryRepositoryConnectorTest' => __DIR__ . '/phpunit/Unit/SPARQLStore/RepositoryConnectors/ElementaryRepositoryConnectorTest.php',
 
 	// Reference needed for SRF as it inherits from this class (or better its alias)!!
@@ -87,6 +87,9 @@ $autoloader->addClassMap( [
 	'SMW\Tests\Integration\JSONScript\JSONScriptTestCaseRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php',
 	'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php'
 ] );
+
+// 4.0
+class_alias( '\SMW\Tests\QueryPrinterRegistryTestCase', '\SMW\Test\QueryPrinterRegistryTestCase' );
 
 // 3.2
 class_alias( '\SMW\Tests\JSONScriptTestCaseRunner', 'SMW\Tests\JsonTestCaseScriptRunner' );

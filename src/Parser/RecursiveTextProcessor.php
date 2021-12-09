@@ -2,8 +2,10 @@
 
 namespace SMW\Parser;
 
+use MediaWiki\MediaWikiServices;
 use Parser;
 use ParserOptions;
+use RequestContext;
 use RuntimeException;
 use SMW\Localizer;
 use SMW\ParserData;
@@ -71,7 +73,7 @@ class RecursiveTextProcessor {
 		$this->parser = $parser;
 
 		if ( $this->parser === null ) {
-			$this->parser = $GLOBALS['wgParser'];
+			$this->parser = MediaWikiServices::getInstance()->getParser();
 		}
 	}
 
@@ -280,7 +282,8 @@ class RecursiveTextProcessor {
 				$title = Title::newFromText( 'UNKNOWN_TITLE' );
 			}
 
-			$popt = new ParserOptions();
+			$user = RequestContext::getMain()->getUser();
+			$popt = new ParserOptions( $user );
 
 			// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
 			if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {

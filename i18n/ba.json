@@ -1,14 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
+			"Lizalizaufa",
 			"Roustammr",
-			"Рустам Нурыев",
-			"Айсар"
+			"Айсар",
+			"Ансар",
+			"Рустам Нурыев"
 		]
 	},
+	"smw-paramdesc-source": "Һорауҙың икенсе сығанағы",
 	"smw_ask_editquery": "Һорауҙы мөхәррирләү",
 	"browse": "Вики күҙәтеү",
 	"smw_browselink": "Үҙенсәлектәрҙе ҡарарға",
-	"smw_smwadmin_setupsuccess": "Һаҡлау системаһы уңышлы ҡуйылды",
-	"smw-livepreview-loading": "Сығарыу..."
+	"smw-admin-setupsuccess": "Һаҡлау системаһы уңышлы ҡуйылды",
+	"smw-livepreview-loading": "Сығарыу...",
+	"smw-format-datatable-toolbar-export": "Экспорт"
 }

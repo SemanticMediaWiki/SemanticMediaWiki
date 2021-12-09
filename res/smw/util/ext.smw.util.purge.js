@@ -46,23 +46,19 @@
 		} );
 	}
 
-	mw.loader.using( [ 'mediawiki.api', 'mediawiki.notify' ] ).then( function () {
+	// JS is loaded, now remove the "soft" disabled functionality
+	$( "#ca-purge" ).removeClass( 'is-disabled' );
 
-		// JS is loaded, now remove the "soft" disabled functionality
-		$( "#ca-purge" ).removeClass( 'is-disabled' );
+	// Observed on the chameleon skin
+	$( "#ca-purge a" ).removeClass( 'is-disabled' );
 
-		// Observed on the chameleon skin
-		$( "#ca-purge a" ).removeClass( 'is-disabled' );
+	$( "#ca-purge a, .purge" ).on( 'click', function ( e ) {
+		purge( $( this ) );
+		e.preventDefault();
+	} );
 
-		$( "#ca-purge a, .purge" ).on( 'click', function ( e ) {
-			purge( $( this ) );
-			e.preventDefault();
-		} );
-
-		$( ".page-purge" ).each( function () {
-			purge( $( this ) );
-		} );
-
+	$( ".page-purge" ).each( function () {
+		purge( $( this ) );
 	} );
 
 }( jQuery, mediaWiki ) );

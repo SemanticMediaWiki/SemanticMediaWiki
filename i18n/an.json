@@ -1,10 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Juanpabl"
+			"Fitoschido",
+			"Juanpabl",
+			"Willtron"
 		]
 	},
 	"smw_printername_template": "Plantilla",
 	"smw_nodatetime": "No s'ha entendito a calendata \"$1\".",
-	"smw-livepreview-loading": "Cargando…"
+	"browse": "Explorar o wiki",
+	"smw-livepreview-loading": "Cargando…",
+	"smw-help": "Aduya"
 }

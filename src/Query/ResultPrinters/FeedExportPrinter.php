@@ -3,7 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use FeedItem;
+use MediaWiki\MediaWikiServices;
 use ParserOptions;
+use RequestContext;
 use Sanitizer;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
@@ -427,14 +429,16 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			return $text;
 		}
 
-		$parserOptions = new ParserOptions();
+		$user = RequestContext::getMain()->getUser();
+		$parserOptions = new ParserOptions( $user );
 
 		// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
 		if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
 			$parserOptions->setEditSection( false );
 		}
 
-		return $GLOBALS['wgParser']->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
+		return MediaWikiServices::getInstance()
+			->getParser()->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
 	}
 
 	private function getFeedLink( QueryResult $res, $outputMode ) {

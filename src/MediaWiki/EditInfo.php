@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
 use ParserOutput;
-use Revision;
 use SMW\ParserData;
 use SMW\SemanticData;
 use User;
@@ -25,7 +26,7 @@ class EditInfo {
 	private $page;
 
 	/**
-	 * @var Revision
+	 * @var RevisionRecord|null
 	 */
 	private $revision;
 
@@ -43,10 +44,10 @@ class EditInfo {
 	 * @since 1.9
 	 *
 	 * @param WikiPage $page
-	 * @param Revision $revision
-	 * @param User|null $user
+	 * @param ?RevisionRecord $revision
+	 * @param ?User $user
 	 */
-	public function __construct( WikiPage $page, Revision $revision = null, User $user = null ) {
+	public function __construct( WikiPage $page, ?RevisionRecord $revision = null, User $user ) {
 		$this->page = $page;
 		$this->revision = $revision;
 		$this->user = $user;
@@ -86,11 +87,11 @@ class EditInfo {
 			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}
 
-		if ( !$this->revision instanceof Revision ) {
+		if ( !$this->revision instanceof RevisionRecord ) {
 			return $this;
 		}
 
-		$content = $this->revision->getContent();
+		$content = $this->revision->getContent( SlotRecord::MAIN );
 
 		$prepareEdit = $this->page->prepareContentForEdit(
 			$content,

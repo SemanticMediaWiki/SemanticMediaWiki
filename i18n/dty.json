@@ -1,8 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
+			"Nirajan pant",
 			"रमेश सिंह बोहरा"
 		]
 	},
-	"browse": "ब्राउज विकि"
+	"browse": "ब्राउज विकि",
+	"smw-ui-tooltip-title-reference": "सन्दर्भ",
+	"smw-search-input": "आगत रे खोजि",
+	"smw-search-profile": "विस्तारित",
+	"smw-datavalue-time-invalid-jd": "\"$2\"को रिपोर्टिङ साथमा इनपुट मान \"$1\" लाई मान्य JD (जुलियन दिन) अङ्कामी इन्टरप्रेट अद्दाइ असफल।",
+	"smw-datavalue-stripmarker-parse-error": "दियीया: मान \"$1\" मी [https://en.wikipedia.org/wiki/Help:Strip_markers strip markers] रे तबै पर्याप्त व्याख्या अद्द नाइ सकिनो।",
+	"smw-datavalue-parse-error": "दियिया: मान \"$1\" समझमी आएन।",
+	"smw-datavalue-type-invalid-typeuri": "\"$1\" किसमलाई मान्य URI निरूपणमी बदेल्ल नाइ सकिनो।",
+	"smw-format-datatable-loadingrecords": "लोड हुन्नाछ़....",
+	"smw-format-datatable-search": "खोजऽ:",
+	"smw-format-datatable-first": "पैल्लो",
+	"smw-format-datatable-last": "छाड्डीबारको",
+	"smw-format-datatable-next": "अघबटाको",
+	"smw-format-datatable-previous": "पछबटाको"
 }

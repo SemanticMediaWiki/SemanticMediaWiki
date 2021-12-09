@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SiteStats;
+use WikiMap;
 
 /**
  * @license GNU GPL v2+
@@ -141,7 +142,7 @@ class Site {
 			$affix = ':' . $affix;
 		}
 
-		return wfWikiID() . $affix;
+		return WikiMap::getCurrentWikiId() . $affix;
 	}
 
 	/**

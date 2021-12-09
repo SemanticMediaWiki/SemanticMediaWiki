@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Dishual",
 			"Fohanno",
 			"Fulup",
 			"Gwendal",
-			"Y-M D",
-			"Dishual"
+			"Y-M D"
 		]
 	},
 	"smw-desc": "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([https://www.semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
@@ -147,7 +147,6 @@
 	"searchbyproperty": "Klask dre berzh",
 	"smw_sbv_docu": "Klask an holl bajennoù dezho ur perzh hag un dalvoudenn roet.",
 	"smw_sbv_novalue": "Merkañ un talvoud evit ar perzh, pe gwelet holl dalvoudoù ar perzhioù evit \"$1\".",
-	"smw_sbv_displayresult": "Roll eus an holl bajennoù gant ar perzh « $1 » gant an talvoud « $2 ».",
 	"smw_sbv_property": "Perzh :",
 	"smw_sbv_value": "Talvoud :",
 	"smw_sbv_submit": "Kavout disoc'hoù",
@@ -211,15 +210,25 @@
 	"smw_unknowntype": "Ar seurt roadennoù \"$1\" nann skoret a zo distroet d'an doareenn",
 	"smw_concept_header": "Pajennoù ar meizad « $1 »",
 	"smw_conceptarticlecount": "Diskouez {{PLURAL:$1|ar bajenn|ar $1 pajenn}} diazezet war ar meizad-se",
+	"right-smw-admin": "Gwelet an trevelloù merañ (MediaWiki semantek)",
+	"right-smw-schemaedit": "Kemmañ [https://www.semantic-mediawiki.org/wiki/Help:Schema ar pajennoù chema] (MediaWiki Semantek)",
+	"right-smw-viewjobqueuewatchlist": "Gelet roll trevelloù an arc'hwel [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist roll evezhiañ] (MediaWiki semantek)",
+	"right-smw-viewentityassociatedrevisionmismatch": "Gwelet an titouroù diwar-benn ur stumm direizh stag ouzh un entite (MediaWiki Semantek)",
+	"right-smw-vieweditpageinfo": "Gwelet [https://www.semantic-mediawiki.org/wiki/Help:Edit_help skoazell evit kemmañ] (MediaWiki semantek)",
 	"restriction-level-smw-pageedit": "gwarezet (implijerien dilennus nemetken)",
+	"group-smweditor": "Aozerien (MediaWiki semantek)",
+	"group-smweditor-member": "{{GENDER:$1|aozer|aozerez}} (MediaWiki semantek)",
+	"grouppage-smweditor": "{{ns:project}}:Aozerien(MediaWiki semantek)",
+	"smw-property-namespace-disabled": "Diweredekaet eo ar perzh [https://www.semantic-mediawiki.org/wiki/Help:$smwgNamespacesWithSemanticLinks namespace]. Ne c'haller ket klask disklêriañ ur seurt pe dezverkoù perc'henniezh dibar evit ar perzh-mañ.",
 	"smw-admin-idlookup-input": "Klask :",
 	"smw-admin-tab-registry": "Marilh",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "Entiteoù direizh",
 	"smw-livepreview-loading": "O kargañ...",
 	"smw-sp-searchbyproperty-resultlist-header": "Roll an disoc'hoù",
 	"smw-search-syntax": "Ereadur",
 	"smw-datavalue-external-formatter-invalid-uri": "Un URL direizh eo \"$1\".",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopiañ al liamm er pouez paper",
+	"smw-category-change-propagation-pending": "War c'hortoz emañ hizivadennoù ar [https://www.semantic-mediawiki.org/wiki/Change_propagation skignañ kemmoù] ($1 [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue {{PLURAL:$1|drevell|trevell}}] brasjedet) hag erbedet eo gortoz evit kemmoù ur rummad ma vo echuet tretiñ anezho kuit na vije troc'hoù kreiz pe urzhioù kontroll.",
 	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-loadingrecords": "O kargañ...",
 	"smw-format-datatable-processing": "O plediñ...",
@@ -236,7 +245,6 @@
 	"smw-help": "Skoazell",
 	"smw-processing": "O tretañ...",
 	"smw-types-title": "Doare: $1",
-	"smw-rule-page-definition": "Termenadur",
-	"smw-rule-page-description": "Deskrivadur :",
-	"smw-rule-page-type": "Seurt :"
+	"smw-updateentitycollation-incomplete": "NEvez zo eo bet kemmet an arventenn <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation $smwgEntityCollation]</code> ha rekis eo erounit ar skript <code>[https://www.semantic-mediawiki.org/wiki/Help:updateEntityCollation.php updateEntityCollation.php]</code> evit ma c'hallfe an entiteoù bezañ hizivaet ha bezañ enno talvoudoù dilenn reizh.",
+	"smw-entity-examiner-associated-revision-mismatch": "Adweladenn"
 }

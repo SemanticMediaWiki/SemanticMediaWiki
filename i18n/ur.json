@@ -1,14 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
-			"පසිඳු කාවින්ද",
+			"Abdulq",
+			"Muhammad Shuaib",
+			"Obaid Raza",
+			"Zainab Meher",
 			"عرفان ارشد",
-			"محبوب عالم"
+			"محبوب عالم",
+			"පසිඳු කාවින්ද"
 		]
 	},
+	"smw_finallistconjunct": " اور",
 	"smw_printername_list": "فہرست",
 	"smw_printername_table": "ٹیبل",
+	"smw_printername_template": "سانچہ",
 	"smw_printername_category": "زمرہ",
+	"validator-type-class-SMWParamSource": "متن",
+	"smw-paramdesc-csv-sep": "کالم الگ کرنےکی تصریح کرتاھے",
+	"smw-paramdesc-csv-valuesep": "قدر الگ کرنے کی تصریح کرتاہے۔",
 	"smw_exportrdf_submit": "برآمد",
 	"properties": "کی خصوصیات",
 	"smw_purge": "تازہ کرو",
@@ -16,20 +25,26 @@
 	"smw_ask_queryhead": "استفہام",
 	"smw_ask_defaultformat": "پہلے سے طے شدہ",
 	"smw_ask_otheroptions": "دوسرے اختیارات",
-	"smw-ask-delete": "[حذف کریں]",
+	"smw-ask-delete": "حذف کریں",
+	"smw-ask-search": "تلاش",
+	"smw-ask-result": "نتیجہ",
+	"smw-ask-empty": "خالی",
 	"smw_sbv_property": "جائداد:",
 	"smw_sbv_value": "قیمت:",
 	"smw_sbv_submit": "نتائج تلاش کریں",
-	"browse": "ویکی میں براؤز کریں",
-	"smw_browselink": "کی خصوصیات کو براؤز کریں",
+	"browse": "ویکی کا مطالعہ کریں",
+	"smw_browselink": "خصوصیات دیکھیں",
 	"smw_browse_go": "جانا",
 	"smw_pp_from": "صفحہ سے",
-	"smw_pp_type": "پراپرٹی",
+	"smw_pp_type": "جائداد:",
 	"smw_pp_submit": "نتائج تلاش کریں",
 	"smw_result_prev": "پچھلے",
 	"smw_result_next": "اگلے",
 	"smw_result_results": "نتائج",
 	"smw_result_noresults": "کوئی نتائج.",
-	"smw_smwadmin_datarefreshstopconfirm": "جی ہاں, میں اس بات کا یقین ہوں.",
-	"smw_smwadmin_support": "ہو رہی ہے کی حمایت"
+	"smw_smwadmin_datarefreshstopconfirm": "ہاں {{GENDER:$1|بلا شبہ}} یہ میں ہی ہوں ۔",
+	"smw-admin-support": "ہو رہی ہے کی حمایت",
+	"smw-admin-other-functions": "دیگر کردار",
+	"smw-property-reserved-category": "زمرہ",
+	"smw-datavalue-uri-invalid-scheme": "$1کوواجب URI سکیم میں ذیرِفہرست نہیں رکھا گیا۔"
 }

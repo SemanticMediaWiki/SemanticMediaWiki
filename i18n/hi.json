@@ -1,21 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kaustubh",
-			"Wikiuser13",
-			"రహ్మానుద్దీన్",
-			"Phoenix303",
-			"जनक राज भट्ट",
-			"Upendradutt93",
+			"Bhatakati aatma",
 			"Jayprakash12345",
+			"Kaustubh",
+			"Nitin1485",
+			"Phoenix303",
 			"Rajatkatiyar10",
 			"Sachinkatiyar",
 			"Sfic",
 			"Shypoetess",
-			"चक्रपाणी",
-			"Bhatakati aatma",
 			"Swapnil.Karambelkar",
-			"Nitin1485"
+			"Upendradutt93",
+			"Wikiuser13",
+			"गोपाल",
+			"चक्रपाणी",
+			"जनक राज भट्ट",
+			"రహ్మానుద్దీన్"
 		]
 	},
 	"smw-semantics-not-enabled": "सिमेंटिक मीडियाविकि की विशेषता इस विकि में सक्रिय नहीं की गई है।",
@@ -163,7 +164,6 @@
 	"smw-admin-supplementary-duplookup-docu": "यह पृष्ठ [https://www.semantic-mediawiki.org/wiki/Help:Entity_table इकाई तालिका] से प्रविष्टियों को सूचीबद्ध करता है जिन्हें डुप्लिकेट के रूप में वर्गीकृत किया गया है। प्रतिरूप प्रविष्टियां (यदि सभी में हों) केवल एक दुर्लभ अवसरों पर होती हैं जो संभावित रूप से एक डेटाबेस अद्यतन या एक असफल रोलबैक लेनदेन के दौरान समाप्त प्रक्रिया के कारण होती हैं।",
 	"smw-admin-supplementary-duplookup-helplink": "https://www.semantic-mediawiki.org/wiki/Help:प्रतिरूप_प्रविष्टियां",
 	"smw-list-count": "सूची में $1 {{PLURAL:$1|प्रविष्टि|प्रविष्टियां}} शामिल हैं|",
-	"smw-list-count-from-cache": "सूची में $1 {{PLURAL:$1|प्रविष्टि|प्रविष्टियां}} शामिल हैं और द्रुतिका (यूटीसी: $2) से पुनर्प्राप्त की गई थी।",
 	"smw_adminlinks_displayingdata": "डाटा डिस्प्ले",
 	"smw-createproperty-isproperty": "यह $1 प्रकार का गुणधर्म हैं।",
 	"smw-info-par-message": "दिखाने हेतु संदेश",
@@ -183,7 +183,7 @@
 	"smw-sp-properties-header-label": "गुणों की सूची",
 	"smw-admin-idlookup-title": "वस्तु आईडी देखें",
 	"smw-admin-objectid": "वस्तु आईडी:",
-	"smw-admin-tab-rebuild": "अपग्रेड और डेटा पुनर्निर्माण",
+	"smw-admin-maintenancealerts-invalidentities-alert-title": "अमान्य संस्थाएँ",
 	"smw-livepreview-loading": "लोड हो रहा है...",
 	"smw-sp-searchbyproperty-resultlist-header": "परिणामों की सूची",
 	"smw-search-input-assistance": "उपलब्ध संपत्तियों और श्रेणियों के पूर्व चयन को सरल करने के लिए [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistant] भी सक्षम है।",
@@ -199,7 +199,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "\"$1\" अमान्य पता है।",
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-data-lookup-with-wait": "अनुरोध को संसाधित किया जा रहा है और कुछ समय लग सकता है।",
 	"smw-no-data-available": "कोई डाटा उपलब्ध नहीं है।",
 	"smw-edit-protection": "यह प्रष्ठ [[Property:Is edit protected|protected]] आकस्मिक डेटा संशोधन को रोकने के लिए है और उपयुक्त संपादन अधिकार वाले उपयोगकर्ताओं द्वारा ही संपादित किया जा सकता है (\"$1\") या [https://www.semantic-mediawiki.org/wiki/Help:User_rights_and_user_groups user group]।",
@@ -213,9 +212,5 @@
 	"smw-format-datatable-previous": "पिछला",
 	"smw-section-expand": "अंश का विस्तार करें",
 	"smw-section-collapse": "अंश को संक्षिप्त करें",
-	"smw-types-title": "प्रकार: $1",
-	"smw-rule-page-definition": "परिभाषा",
-	"smw-rule-page-description": "विवरण:",
-	"smw-rule-page-type": "प्रकार:",
-	"smw-rule-page-tag": "टैग:"
+	"smw-types-title": "प्रकार: $1"
 }

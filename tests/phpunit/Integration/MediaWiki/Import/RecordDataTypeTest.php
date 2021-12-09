@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class RecordDataTypeTest extends MwDBaseUnitTestCase {
+class RecordDataTypeTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
@@ -76,9 +76,9 @@ class RecordDataTypeTest extends MwDBaseUnitTestCase {
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
 			'propertyValues' => [
-				'Regression test',
-				'Data type regression test',
-				'Record type regression test'
+				'Category:Regression test',
+				'Category:Data type regression test',
+				'Category:Record type regression test'
 			]
 		];
 

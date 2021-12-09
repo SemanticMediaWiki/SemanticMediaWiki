@@ -1,6 +1,9 @@
 {
     "@metadata": {
-        "authors": []
+        "authors": [
+            "Ostrzyciel",
+            "UnknownSkyrimPasserby"
+        ]
     },
     "fallback_language": "en",
     "namespace": {
@@ -8,7 +11,9 @@
             "SMW_NS_PROPERTY": "Atrybut",
             "SMW_NS_PROPERTY_TALK": "Dyskusja_atrybutu",
             "SMW_NS_CONCEPT": "Pojęcie",
-            "SMW_NS_CONCEPT_TALK": "Dyskusja pojęcia"
+            "SMW_NS_CONCEPT_TALK": "Dyskusja pojęcia",
+            "SMW_NS_SCHEMA": "Semantyczny Schemat",
+            "SMW_NS_SCHEMA_TALK": "Dyskusja semantycznego schematu"
         },
         "aliases": []
     },
@@ -25,12 +30,13 @@
             "_ema": "Email",
             "_uri": "URL",
             "_anu": "URI adnotacji",
-            "_tel": "Telephone number",
-            "_rec": "Record",
-            "_qty": "Quantity",
-            "_mlt_rec": "Monolingual text",
-            "_eid": "External identifier",
-            "_ref_rec": "Reference"
+            "_tel": "Numer telefonu",
+            "_rec": "Rekord",
+            "_qty": "Wielkość",
+            "_mlt_rec": "Tekst z tagiem języka",
+            "_eid": "Identyfikator zewnętrzny",
+            "_keyw": "Słowo kluczowe",
+            "_ref_rec": "Przypis"
         },
         "aliases": {
             "URI": "_uri",
@@ -45,39 +51,67 @@
             "_TYPE": "Ma typ",
             "_URI": "Równoważne URI",
             "_SUBP": "Jest podwłasnością",
-            "_SUBC": "Subcategory of",
+            "_SUBC": "Podkategoria",
             "_UNIT": "Wyświetlane jednostki",
             "_IMPO": "Zaimportowane z",
             "_CONV": "Odpowiada",
             "_SERV": "Zapewnia usługę",
             "_PVAL": "Dopuszcza wartość",
-            "_MDAT": "Modification date",
-            "_CDAT": "Creation date",
-            "_NEWP": "Is a new page",
-            "_LEDT": "Last editor is",
-            "_ERRP": "Has improper value for",
-            "_LIST": "Has fields",
-            "_SOBJ": "Has subobject",
-            "_ASK": "Has query",
-            "_ASKST": "Query string",
-            "_ASKFO": "Query format",
-            "_ASKSI": "Query size",
-            "_ASKDE": "Query depth",
-            "_ASKDU": "Query duration",
-            "_MEDIA": "Media type",
-            "_MIME": "Mime type",
-            "_ERRC": "Has processing error",
-            "_ERRT": "Has processing error text",
-            "_PREC": "Display precision of",
-            "_LCODE": "Language code",
-            "_TEXT": "Text",
-            "_PDESC": "Has property description",
-            "_PVAP": "Allows pattern",
-            "_DTITLE": "Display title of",
-            "_PVUC": "Has uniqueness constraint",
-            "_PEID": "External identifier",
-            "_PEFU": "External formatter uri",
-            "_ASKSC": "Query source"
+            "_MDAT": "Data modyfikacji",
+            "_CDAT": "Data utworzenia",
+            "_NEWP": "Jest nową stroną",
+            "_LEDT": "Ostatni redaktor to",
+            "_ERRP": "Ma niewłaściwą wartość",
+            "_LIST": "Ma pola",
+            "_SOBJ": "Ma podobiekt",
+            "_ASK": "Zawiera zapytanie",
+            "_ASKST": "Ciąg zapytania",
+            "_ASKFO": "Format zapytania",
+            "_ASKSI": "Rozmiar zapytania",
+            "_ASKDE": "Głębokość zapytania",
+            "_ASKDU": "Czas trwania zapytania",
+            "_ASKSC": "Źródło zapytania",
+            "_ASKPA": "Parametry zapytania",
+            "_ASKCO": "Status zapytania",
+            "_MEDIA": "Typ mediów",
+            "_MIME": "Typ Mime",
+            "_ERRC": "Ma błąd przetwarzania",
+            "_ERRT": "Ma błąd przetwarzania tekst",
+            "_ERR_TYPE": "Typ błędu przetwarzania",
+            "_PREC": "Wyświetl precyzję",
+            "_LCODE": "Kod języka",
+            "_TEXT": "Tekst",
+            "_PDESC": "Ma opis właściwości",
+            "_PVAP": "Zezwala na wzorzec",
+            "_PVALI": "Lista dopuszczalnych wartości",
+            "_DTITLE": "Wyświetla tytuł",
+            "_PVUC": "Ma unikalne ograniczenie",
+            "_PEID": "Identyfikator zewnętrzny",
+            "_PEFU": "Zewnętrzny formatyzator uri",
+            "_PPLB": "Preferowana etykieta właściwości",
+            "_EDIP": "Jest chroniony przed edycją",
+            "_CHGPRO": "Zmień propagację",
+            "_PPGR": "Jest grupą właściwości",
+            "_SCHEMA_DESC": "Opis schematu",
+            "_SCHEMA_TAG": "Tag schematu",
+            "_SCHEMA_TYPE": "Typ schematu",
+            "_SCHEMA_DEF": "Definicja schematu",
+            "_SCHEMA_LINK": "Link do schematu",
+            "_FORMAT_SCHEMA": "Schemat formatyzera",
+            "_CONSTRAINT_SCHEMA": "Schemat ograniczeń",
+            "_PROFILE_SCHEMA": "Schemat profilu",
+            "_ATTCH_LINK": "Link do załącznika",
+            "_FILE_ATTCH": "Załącznik",
+            "_CONT_TYPE": "Typ zawartości",
+            "_CONT_AUTHOR": "Autor zawartości",
+            "_CONT_LEN": "Długość zawartości",
+            "_CONT_LANG": "Język zawartości",
+            "_CONT_TITLE": "Tytuł zawartości",
+            "_CONT_DATE": "Data zawartości",
+            "_CONT_KEYW": "Słowo kluczowe zawartości",
+            "_TRANS": "Tłumaczenie",
+            "_TRANS_SOURCE": "Źródło tłumaczenia",
+            "_TRANS_GROUP": "Grupa tłumacząca"
         },
         "aliases": {
             "Wyświetlana jednostka": "_UNIT"
@@ -87,87 +121,99 @@
         "months": [
             [
                 "styczeń",
-                "sty"
+                "sty",
+                "stycznia"
             ],
             [
                 "luty",
-                "lut"
+                "lut",
+                "lutego"
             ],
             [
-                "marsz",
-                "mar"
+                "marzec",
+                "mar",
+                "marca"
             ],
             [
                 "kwiecień",
-                "kwi"
+                "kwi",
+                "kwietnia"
             ],
             [
                 "maj",
-                "maj"
+                "maj",
+                "maja"
             ],
             [
                 "czerwiec",
-                "cze"
+                "cze",
+                "czerwca"
             ],
             [
                 "lipiec",
-                "lip"
+                "lip",
+                "lipca"
             ],
             [
                 "sierpień",
-                "sie"
+                "sie",
+                "sierpnia"
             ],
             [
                 "wrzesień",
-                "wrz"
+                "wrz",
+                "września"
             ],
             [
                 "październik",
-                "paź"
+                "paź",
+                "października"
             ],
             [
                 "listopad",
-                "lis"
+                "lis",
+                "listopada"
             ],
             [
                 "grudzień",
-                "gru"
+                "gru",
+                "grudnia"
             ]
         ],
         "days": [
             [
-                "Monday",
-                "Mon"
+                "poniedziałek",
+                "pon."
             ],
             [
-                "Tuesday",
-                "Tue"
+                "wtorek",
+                "wt."
             ],
             [
-                "Wednesday",
-                "Wed"
+                "środa",
+                "śr."
             ],
             [
-                "Thursday",
-                "Thu"
+                "czwartek",
+                "czw."
             ],
             [
-                "Friday",
-                "Fri"
+                "piątek",
+                "pt."
             ],
             [
-                "Saturday",
-                "Sat"
+                "sobota",
+                "sob."
             ],
             [
-                "Sunday",
-                "Sun"
+                "niedziela",
+                "niedz."
             ]
         ],
         "precision": {
             "SMW_PREC_Y": "Y",
             "SMW_PREC_YM": "F Y",
-            "SMW_PREC_YMD": "F j, Y",
+            "SMW_PREC_YMD": "j F Y",
             "SMW_PREC_YMDT": "H:i:s, j F Y"
         },
         "format": [
@@ -179,9 +225,9 @@
                 "SMW_YM"
             ],
             [
-                "SMW_MDY",
                 "SMW_DMY",
                 "SMW_YMD",
+                "SMW_MDY",
                 "SMW_YDM"
             ]
         ]

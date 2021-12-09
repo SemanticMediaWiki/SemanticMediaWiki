@@ -4,6 +4,21 @@
 			"Sveinn í Felli"
 		]
 	},
+	"specialpages-group-smw_group-properties-concepts-types": "Eiginleikar, hugtök og tegundir",
+	"properties": "Eiginleikar",
+	"concepts": "Hugtök",
+	"unusedproperties": "Ónotaðir eiginleikar",
+	"wantedproperties": "Eiginleikar sem vantar",
+	"types": "Tegundir",
+	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Hugtak|Hugtök}}",
+	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Hugtak|Hugtök}}]]",
 	"browse": "Skoða wiki",
-	"smw-livepreview-loading": "Framkalla…"
+	"smw_browselink": "Skoða eiginleika",
+	"smw-admin-support": "Að fá aðstoð",
+	"smw-admin-supplementary-elastic-functions": "Tiltæk virkni",
+	"smw-admin-supplementary-elastic-settings-title": "Stillingar",
+	"smw-admin-supplementary-elastic-statistics-title": "Tölfræði",
+	"smw-livepreview-loading": "Framkalla…",
+	"log-name-smw": "Aðgerðaskrá yfir málskipan MediaWiki",
+	"smw-type-tab-types": "Tegundir"
 }

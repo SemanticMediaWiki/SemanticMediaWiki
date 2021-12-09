@@ -135,10 +135,17 @@ class ParserAfterTidy implements HookListener {
 
 		$parserOutput = $this->parser->getOutput();
 
-		if ( $parserOutput->getProperty( 'displaytitle' ) ||
+		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' );
+		} else {
+			// MW < 1.38
+			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+		}
+
+		if ( $displayTitle ||
 			$parserOutput->getImages() !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
-			$parserOutput->getCategoryLinks() ) {
+			$parserOutput->getCategories() ) {
 			return true;
 		}
 
@@ -199,7 +206,7 @@ class ParserAfterTidy implements HookListener {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
-			$parserOutput->getCategoryLinks()
+			array_keys( $parserOutput->getCategories() )
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
@@ -216,9 +223,16 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
+		if ( method_exists( $parserOutput, 'getPageProperty') ) {
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' );
+		} else {
+			// MW < 1.38
+			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+		}
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
-			$parserOutput->getProperty( 'displaytitle' ),
+			$displayTitle,
 			$this->parser->getDefaultSort()
 		);
 

@@ -2,11 +2,9 @@
 
 namespace SMW\Tests\Utils\Page;
 
-use Revision;
 use RuntimeException;
 use Title;
 use WikiPage;
-use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 
 /**

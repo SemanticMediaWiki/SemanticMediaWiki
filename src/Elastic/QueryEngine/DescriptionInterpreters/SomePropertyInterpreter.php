@@ -61,7 +61,7 @@ class SomePropertyInterpreter {
 	 *
 	 * @param SomeProperty $description
 	 *
-	 * @return array
+	 * @return Condition|array
 	 */
 	public function interpretDescription( SomeProperty $description, $isConjunction = false, $isChain = false ) {
 
@@ -406,6 +406,9 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $property->isInverse() ) {
+			if ( $p instanceof Condition ) {
+				$p = $p->toArray();
+			}
 			$parameters = $this->termsLookup->newParameters(
 				[
 					'query.string' => $desc->getQueryString(),

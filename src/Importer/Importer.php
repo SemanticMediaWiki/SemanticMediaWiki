@@ -40,6 +40,11 @@ class Importer implements MessageReporterAware {
 	private $reqVersion = false;
 
 	/**
+	 * @var ?string
+	 */
+	private $importer;
+
+	/**
 	 * @since 2.5
 	 *
 	 * @param ContentIterator $contentIterator
@@ -80,6 +85,13 @@ class Importer implements MessageReporterAware {
 	}
 
 	/**
+	 * @since 4.0
+	 */
+	public function setImporter( string $importer ) {
+		$this->importer = $importer;
+	}
+
+	/**
 	 * @since 2.5
 	 */
 	public function runImport() {
@@ -96,6 +108,9 @@ class Importer implements MessageReporterAware {
 			$this->messageReporter->reportMessage( "\nImporting from $key ...\n" );
 
 			foreach ( $contents as $importContents ) {
+				if ( $this->importer ) {
+					$importContents->setImportPerformer( $this->importer );
+				}
 
 				if ( $importContents->getVersion() !== $this->reqVersion ) {
 					$this->messageReporter->reportMessage( "   ... version mismatch, abort import for $key\n" );

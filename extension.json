@@ -13,17 +13,56 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.32"
+		"MediaWiki": ">= 1.35"
 	},
 	"MessagesDirs": {
 		"SemanticMediaWiki": [
 			"i18n"
 		]
 	},
+	"AutoloadNamespaces": {
+		"SMW\\": "src/"
+	},
+	"AutoloadClasses": {
+		"SemanticMediaWiki": "SemanticMediaWiki.php"
+	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
 		"SemanticMediaWiki::onExtensionFunction"
 	],
+	"ExtensionMessagesFiles": {
+		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
+		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
+	},
+	"QUnitTestModule": {
+		"ext.smw.tests": {
+			"scripts": [
+				"tests/qunit/smw/ext.smw.test.js",
+				"tests/qunit/smw/util/ext.smw.util.tooltip.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.property.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.unknown.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.number.test.js",
+				"tests/qunit/smw/data/ext.smw.dataItem.text.test.js",
+				"tests/qunit/smw/data/ext.smw.dataValue.quantity.test.js",
+				"tests/qunit/smw/data/ext.smw.data.test.js",
+				"tests/qunit/smw/api/ext.smw.api.test.js",
+				"tests/qunit/smw/query/ext.smw.query.test.js"
+			],
+			"dependencies": [
+				"ext.smw",
+				"ext.smw.tooltip",
+				"ext.smw.query",
+				"ext.smw.data",
+				"ext.smw.api"
+			],
+			"position": "top",
+			"localBasePath": "",
+			"remoteExtPath": "SemanticMediaWiki"
+		}
+	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1
 }

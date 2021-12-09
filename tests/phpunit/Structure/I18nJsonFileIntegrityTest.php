@@ -20,7 +20,10 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 	public function testPrettifyCanonicalMediaWikiI18NJson() {
 
-		$target = $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] . '/en.json';
+		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
+		$target = $i18nDir . '/en.json';
 		$contents = file_get_contents( $target );
 
 		$json = json_encode(
@@ -108,11 +111,19 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function mediawikiI18nFileProvider() {
-		return $this->findFilesIn( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] );
+		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
+
+		return $this->findFilesIn( $i18nDir );
 	}
 
 	public function semanticMediaWikiI18nFileProvider() {
-		return $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] );
+		$i18nDir = ( !is_array( $GLOBALS['smwgExtraneousLanguageFileDir'] )
+					 ? $GLOBALS['smwgExtraneousLanguageFileDir']
+					 : $GLOBALS['smwgExtraneousLanguageFileDir'][0] );
+
+		return $this->findFilesIn( $i18nDir );
 	}
 
 	private function findFilesIn( $location ) {

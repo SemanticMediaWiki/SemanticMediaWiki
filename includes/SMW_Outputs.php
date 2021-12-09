@@ -161,12 +161,7 @@ class SMWOutputs {
 	 * @param Parser $parser
 	 */
 	static public function commitToParser( Parser $parser ) {
-		/// TODO find out and document when this b/c code can go away
-		if ( method_exists( $parser, 'getOutput' ) ) {
-			$po = $parser->getOutput();
-		} else {
-			$po = $parser->mOutput;
-		}
+		$po = $parser->getOutput();
 
 		if ( isset( $po ) ) {
 			self::commitToParserOutput( $po );

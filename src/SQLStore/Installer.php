@@ -266,7 +266,7 @@ class Installer implements MessageReporter {
 
 		$text = [
 			'Task(s) registered via the hook depend on the functionality implemented',
-			'and may take a comment to complete.'
+			'and may take a moment to complete.'
 		];
 
 		$this->messageReporter->reportMessage(

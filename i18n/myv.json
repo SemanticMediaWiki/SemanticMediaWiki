@@ -1,11 +1,31 @@
 {
 	"@metadata": {
 		"authors": [
-			"Botuzhaleny-sodamo"
+			"Botuzhaleny-sodamo",
+			"Rueter"
 		]
 	},
+	"smw_printername_table": "Таблица",
+	"smw_printername_broadtable": "Келей таблица",
+	"smw_printername_template": "Лопапарцун",
+	"smw_printername_templatefile": "Лопапарцунокс файла",
+	"smw_printername_rdf": "RDF-экспорт",
+	"smw_printername_category": "Явовкс",
+	"validator-type-class-SMWParamSource": "текст",
+	"smw_nofloat": "«$1» аволь числа.",
+	"smw-special-property-searchform-options": "Мезде кочкамс",
+	"smw-special-wantedproperties-filter-label": "Сувтемесь:",
+	"smw-special-wantedproperties-filter-none": "Арась мезе невтемс",
+	"smw-special-wantedproperties-filter-unapproved": "Апак кемекста",
+	"smw-ask-order-rand": "Кодамо-понгсь",
+	"smw-ask-delete": "Нардамс",
 	"smw_sbv_property": "Уликсчись:",
+	"browse": "Лопа-лопа ланга ютамо",
 	"smw_browse_go": "Адя",
 	"smw_pp_type": "Уликсчи",
+	"smw-ui-tooltip-title-info": "Информация",
+	"smw-ui-tooltip-title-error": "Ильведевкс",
+	"smw-ui-tooltip-title-parameter": "Параметра",
+	"smw-ui-tooltip-title-legend": "Легенда",
 	"smw-livepreview-loading": "Йоракшны…"
 }

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -17,7 +17,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class RebuildPropertyStatisticsMaintenanceTest extends MwDBaseUnitTestCase {
+class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 

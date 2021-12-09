@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Arystanbek"
+			"Arystanbek",
+			"Mirgulkali"
 		]
 	},
+	"smw-paramdesc-json-unescape": "Нәтижеде құтылмаған қиғаш сызықтармен көп байттылы Unicode белгілер болу керек.",
 	"smw_purge": "Жаңарту",
 	"browse": "Уикиді шолу",
 	"smw-livepreview-loading": "Жүктеуде…"

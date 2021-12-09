@@ -120,7 +120,7 @@ class FileAttachment {
 		// Available properties
 		// @see https://www.elastic.co/guide/en/elasticsearch/plugins/master/using-ingest-attachment.html
 		$params = $params + [
-			'_source_include' => [
+			'_source_includes' => [
 				'file_sha1',
 				'attachment.date',
 				'attachment.content_type',

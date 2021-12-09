@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
+use RequestContext;
 use Title;
 use User;
 
@@ -14,16 +16,16 @@ use User;
 class PermissionManager {
 
 	/**
-	 * @var PermissionManager|null
+	 * @var MwPermissionManager
 	 */
 	private $permissionManager;
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param PermissionManager|null $permissionManager
+	 * @param MwPermissionManager $permissionManager
 	 */
-	public function __construct( \MediaWiki\Permissions\PermissionManager $permissionManager = null ) {
+	public function __construct( MwPermissionManager $permissionManager ) {
 		$this->permissionManager = $permissionManager;
 	}
 
@@ -37,17 +39,11 @@ class PermissionManager {
 	 * @return bool
 	 */
 	public function userCan( string $action, User $user = null, Title $title ) : bool {
-
-		// @see Title::userCan
 		if ( !$user instanceof User ) {
-			$user = $GLOBALS['wgUser'];
+			$user = RequestContext::getMain()->getUser();			
 		}
 
-		if ( $this->permissionManager !== null ) {
-			return $this->permissionManager->userCan( $action, $user, $title );
-		}
-
-		return $title->userCan( $action, $user );
+		return $this->permissionManager->userCan( $action, $user, $title );
 	}
 
 	/**
@@ -59,12 +55,7 @@ class PermissionManager {
 	 * @return bool
 	 */
 	public function userHasRight( User $user, string $action = '' ) : bool {
-
-		if ( $this->permissionManager !== null && method_exists( $this->permissionManager, 'userHasRight' ) ) {
-			return $this->permissionManager->userHasRight( $user, $action );
-		}
-
-		return $user->isAllowed( $action );
+		return $this->permissionManager->userHasRight( $user, $action );
 	}
 
 }

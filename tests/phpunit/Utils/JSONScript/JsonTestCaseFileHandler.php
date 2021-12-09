@@ -108,6 +108,14 @@ class JsonTestCaseFileHandler {
 		$skipOn = isset( $case['skip-on'] ) ? $case['skip-on'] : [];
 		$identifier = strtolower( $identifier );
 
+		if ( is_bool( $skipOn ) ) {
+			return $skipOn;
+		}
+
+		if ( !is_array( $skipOn ) ) {
+			throw new RuntimeException( "skip-on should be an array or boolean value" );
+		}
+
 		// Transform for convenience `skip-except` meaning skip all
 		// except for ...
 		if ( isset( $case['skip-except'] ) ) {

@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Äberlausitzer"
+		]
+	},
+	"browse": "Semantisches Browsen",
 	"smw-livepreview-loading": "Loada…"
 }

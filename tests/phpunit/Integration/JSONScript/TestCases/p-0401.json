@@ -68,7 +68,7 @@
 					],
 					"propertyValues": [
 						"Single-category",
-						"Foo"
+						"Category:Foo"
 					]
 				}
 			}
@@ -110,7 +110,7 @@
 					],
 					"propertyValues": [
 						"Boolean",
-						"Foo"
+						"Category:Foo"
 					]
 				}
 			}

@@ -275,15 +275,7 @@ return [
 	# - SMW_SPARQL_QF_SUBC to resolve subcategories
 	#
 	# - SMW_SPARQL_QF_COLLATION allows to add support for the sorting collation as
-	#   maintained in $smwgEntityCollation. It is not enabled by default as the
-	#   `uca-*` collation generates a UTF-8 string that contains unrecognized
-	#   UTF codepoints that may not be understood by the back-end hence the
-	#   Collator prevents and armors those unrecognized characters by replacing
-	#   them with a ? to avoid a cURL communication failure but of course this
-	#   means that not all elements of the sort string can be transfered to the
-	#   back-end and can therefore cause a sorting distortion for close matches
-	#   as in case of for example "Ennis, Ennis Hill, Ennis Jones, Ennis-Hill,
-	#   Ennis-London"
+	#   maintained in $smwgEntityCollation.
 	#
 	# - SMW_SPARQL_QF_NOCASE to support case insensitive pattern matches
 	#

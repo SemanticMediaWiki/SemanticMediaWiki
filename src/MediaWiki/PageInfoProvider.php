@@ -2,10 +2,12 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
+use SMW\Schema\Content\Content;
 use Title;
 use User;
+use WikiFilePage;
 use WikiPage;
 
 /**
@@ -29,7 +31,7 @@ class PageInfoProvider implements PageInfo {
 	private $wikiPage = null;
 
 	/**
-	 * @var Revision
+	 * @var RevisionRecord
 	 */
 	private $revision = null;
 
@@ -42,10 +44,14 @@ class PageInfoProvider implements PageInfo {
 	 * @since 1.9
 	 *
 	 * @param WikiPage $wikiPage
-	 * @param Revision|null $revision
-	 * @param User|null $user
+	 * @param ?RevisionRecord $revision
+	 * @param ?User $user
 	 */
-	public function __construct( WikiPage $wikiPage, Revision $revision = null, User $user = null ) {
+	public function __construct(
+		WikiPage $wikiPage,
+		?RevisionRecord $revision = null,
+		?User $user = null
+	) {
 		$this->wikiPage = $wikiPage;
 		$this->revision = $revision;
 		$this->user = $user;
@@ -119,7 +125,7 @@ class PageInfoProvider implements PageInfo {
 	 * @return boolean
 	 */
 	public function isFilePage() {
-		return $this->wikiPage instanceof \WikiFilePage;
+		return $this->wikiPage instanceof WikiFilePage;
 	}
 
 	/**
@@ -135,7 +141,7 @@ class PageInfoProvider implements PageInfo {
 
 		$content = $this->wikiPage->getContent();
 
-		if ( $content instanceof \SMW\Schema\Content\Content ) {
+		if ( $content instanceof Content ) {
 			return $content->toJson();
 		}
 

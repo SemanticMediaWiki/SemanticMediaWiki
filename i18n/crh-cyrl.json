@@ -1,4 +1,9 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": [
+			"Don Alessandro"
+		]
+	},
+	"smw_purge": "Янъарт",
 	"smw-livepreview-loading": "Юкленмекте…"
 }

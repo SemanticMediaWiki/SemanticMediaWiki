@@ -10,7 +10,6 @@ use SMW\Parser\InTextAnnotationParser;
 use Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Utils\HmacSerializer;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
  * Factbox output caching
@@ -26,7 +25,6 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
 class CachedFactbox {
 
 	use LoggerAwareTrait;
-	use RevisionGuardAwareTrait;
 
 	/**
 	 * @var EntityCache
@@ -192,7 +190,7 @@ class CachedFactbox {
 		$outputPage->addModules( Factbox::getModules() );
 		$title = $outputPage->getTitle();
 
-		$rev_id = $this->findRevId( $title, $request );
+		$rev_id = $outputPage->getRevisionId();
 		$lang = $context->getLanguage()->getCode();
 		$content = '';
 
@@ -288,9 +286,7 @@ class CachedFactbox {
 			$context = $outputPage->getContext();
 			$lang = $context->getLanguage()->getCode();
 
-			$rev_id = $this->findRevId(
-				$title, $context->getRequest()
-			);
+			$rev_id = $outputPage->getRevisionId();
 
 			$sub = $this->makeSubCacheKey( $rev_id, $lang, $this->featureSet );
 
@@ -309,23 +305,6 @@ class CachedFactbox {
 		}
 
 		return $text;
-	}
-
-	/**
-	 * Return a revisionId either from the WebRequest object (display an old
-	 * revision or permalink etc.) or from the title object
-	 */
-	private function findRevId( Title $title, $request ) {
-
-		if ( $request->getInt( 'diff' ) > 0 ) {
-			return $request->getInt( 'diff' );
-		}
-
-		if ( $request->getInt( 'oldid' ) > 0 ) {
-			return $request->getInt( 'oldid' );
-		}
-
-		return $this->revisionGuard->getLatestRevID( $title );
 	}
 
 	/**

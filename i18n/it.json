@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"Abijeet Patro",
+			"Ajeje Brazorf",
 			"Alexmar983",
 			"Beta16",
 			"Candalua",
@@ -122,7 +122,7 @@
 	"smw_noboolean": "“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).",
 	"smw_true_words": "vero,v,si,s,true,t,yes,y",
 	"smw_false_words": "falso,f,no,n,false",
-	"smw_nofloat": "“$1” non &egrave; un numero.",
+	"smw_nofloat": "“$1” non è un numero.",
 	"smw_infinite": "I numeri grandi come \"$1\" non sono supportati.",
 	"smw_novalues": "Nessun valore specificato",
 	"smw_nodatetime": "Non &egrave; stato possibile comprendere la data “$1”.",
@@ -197,6 +197,7 @@
 	"smw_ask_sortby": "Ordina per colonna (opzionale)",
 	"smw_ask_ascorder": "Crescente",
 	"smw_ask_descorder": "Decrescente",
+	"smw-ask-order-rand": "Casuale",
 	"smw_ask_submit": "Trova risultati",
 	"smw_ask_editquery": "Modifica query",
 	"smw_add_sortcondition": "[Aggiungi condizione di ordinamento]",
@@ -258,7 +259,7 @@
 	"smw_result_next": "Successivo",
 	"smw_result_results": "Risultati",
 	"smw_result_noresults": "Nessun risultato.",
-	"smwadmin": "Cruscotto (Semantic MediaWiki)",
+	"smwadmin": "Cruscotto Semantic MediaWiki",
 	"smw-admin-permission-missing": "L'accesso a questa pagina è stato bloccato a causa di autorizzazioni mancanti, consulta la pagina di aiuto sulle [https://www.semantic-mediawiki.org/wiki/Help:Permissions autorizzazioni] per i dettagli sulle impostazioni necessarie.",
 	"smw-admin-setupsuccess": "Il motore di storage è stato installato.",
 	"smw_smwadmin_return": "Torna a $1",

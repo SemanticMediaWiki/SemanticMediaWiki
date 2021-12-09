@@ -2,9 +2,13 @@
 
 namespace SMW;
 
-use SMW\Exception\FileNotWritableException;
-use SMW\Utils\File;
+use FileFetcher\FileFetcher;
+use FileFetcher\SimpleFileFetcher;
+use MediaWiki\MediaWikiServices;
+use RuntimeException;
+use SMW\Elastic\ElasticStore;
 use SMW\SQLStore\Installer;
+use SMW\Utils\File;
 
 /**
  * @private
@@ -44,7 +48,7 @@ class SetupFile {
 	/**
 	 * Describes the file name
 	 */
-	const FILE_NAME = '.smw.json';
+	public const FILE_NAME = '.smw.json';
 
 	/**
 	 * Describes incomplete tasks
@@ -57,59 +61,35 @@ class SetupFile {
 	const LATEST_VERSION = 'latest_version';
 	const PREVIOUS_VERSION = 'previous_version';
 
-	/**
-	 * @var File
-	 */
-	private $file;
+	private const SMW_JSON = 'smw.json';
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param File|null $file
-	 */
-	public function __construct( File $file = null ) {
-		$this->file = $file;
+	private SmwJsonRepo $repo;
 
-		if ( $this->file === null ) {
-			$this->file = new File();
-		}
+	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
+		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
+			new FileSystemSmwJsonRepo(
+				$fileFetcher ?? new SimpleFileFetcher(),
+				$file ?? new File()
+			);
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function loadSchema( &$vars = [] ) {
-
+	public function loadSchema( array &$vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
 
-		if ( isset( $vars['smw.json'] ) ) {
+		if ( isset( $vars[self::SMW_JSON] ) ) {
 			return;
 		}
 
-		// @see #3506
-		$file = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
+		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
 
-		// Doesn't exist? The `Setup::init` will take care of it by trying to create
-		// a new file and if it fails or unable to do so wail raise an exception
-		// as we expect to have access to it.
-		if ( is_readable( $file ) ) {
-			$vars['smw.json'] = json_decode( file_get_contents( $file ), true );
+		if ( $smwJson !== null ) {
+			$vars[self::SMW_JSON] = $smwJson;
 		}
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param boolean $isCli
-	 *
-	 * @return boolean
-	 */
-	public static function isGoodSchema( $isCli = false ) {
-
+	public static function isGoodSchema( bool $isCli = false ): bool {
 		if ( $isCli && defined( 'MW_PHPUNIT_TEST' ) ) {
 			return true;
 		}
@@ -121,41 +101,26 @@ class SetupFile {
 		// #3563, Use the specific wiki-id as identifier for the instance in use
 		$id = Site::id();
 
-		if ( !isset( $GLOBALS['smw.json'][$id]['upgrade_key'] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id]['upgrade_key'] ) ) {
 			return false;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS['smw.json'][$id]['upgrade_key'];
+		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
 
 		if (
-			isset( $GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] ) &&
-			$GLOBALS['smw.json'][$id][self::MAINTENANCE_MODE] !== false ) {
+			isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) &&
+			$GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false ) {
 			$isGoodSchema = false;
 		}
 
 		return $isGoodSchema;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return string
-	 */
-	public static function makeUpgradeKey( $vars ) {
+	public static function makeUpgradeKey( array $vars ): string {
 		return sha1( self::makeKey( $vars ) );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return boolean
-	 */
-	public function inMaintenanceMode( $vars = [] ) {
-
+	public function inMaintenanceMode( array $vars = [] ): bool {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return false;
 		}
@@ -166,45 +131,32 @@ class SetupFile {
 
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return false;
 		}
 
-		return $vars['smw.json'][$id][self::MAINTENANCE_MODE] !== false;
+		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return []
-	 */
-	public function getMaintenanceMode( $vars = [] ) {
-
+	public function getMaintenanceMode( array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
 
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return [];
 		}
 
-		return $vars['smw.json'][$id][self::MAINTENANCE_MODE];
+		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE];
 	}
 
 	/**
 	 * Tracking the latest and previous version, which allows us to decide whether
-	 * current activties relate to an install (new) or upgrade.
-	 *
-	 * @since 3.2
-	 *
-	 * @param int $version
+	 * current activities relate to an install (new) or upgrade.
 	 */
-	public function setLatestVersion( $version ) {
-
+	public function setLatestVersion( $version ): void {
 		$latest = $this->get( SetupFile::LATEST_VERSION );
 		$previous = $this->get( SetupFile::PREVIOUS_VERSION );
 
@@ -224,13 +176,7 @@ class SetupFile {
 		}
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param string $key
-	 * @param array $args
-	 */
-	public function addIncompleteTask( string $key, array $args = [] ) {
+	public function addIncompleteTask( string $key, array $args = [] ): void {
 
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
@@ -243,13 +189,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param string $key
-	 */
-	public function removeIncompleteTask( string $key ) {
-
+	public function removeIncompleteTask( string $key ): void {
 		$incomplete_tasks = $this->get( self::INCOMPLETE_TASKS );
 
 		if ( $incomplete_tasks === null ) {
@@ -261,15 +201,7 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	/**
-	 * @since 3.2
-	 *
-	 * @param array $vars
-	 *
-	 * @return boolean
-	 */
 	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
-
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -277,24 +209,16 @@ class SetupFile {
 		$id = Site::id();
 
 		// No record means, no issues!
-		if ( !isset( $vars['smw.json'][$id][self::DB_REQUIREMENTS] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS] ) ) {
 			return true;
 		}
 
-		$requirements = $vars['smw.json'][$id][self::DB_REQUIREMENTS];
+		$requirements = $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS];
 
 		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 *
-	 * @return []
-	 */
-	public function findIncompleteTasks( $vars = [] ) {
-
+	public function findIncompleteTasks( array $vars = [] ): array {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -304,23 +228,23 @@ class SetupFile {
 
 		// Key field => [ value that constitutes the `INCOMPLETE` state, error msg ]
 		$checks = [
-			\SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
-			\SMW\Elastic\ElasticStore::REBUILD_INDEX_RUN_COMPLETE => [ false, 'smw-install-incomplete-elasticstore-indexrebuild' ]
+			Installer::POPULATE_HASH_FIELD_COMPLETE => [ false, 'smw-install-incomplete-populate-hash-field' ],
+			ElasticStore::REBUILD_INDEX_RUN_COMPLETE => [ false, 'smw-install-incomplete-elasticstore-indexrebuild' ]
 		];
 
 		foreach ( $checks as $key => $value ) {
 
-			if ( !isset( $vars['smw.json'][$id][$key] ) ) {
+			if ( !isset( $vars[self::SMW_JSON][$id][$key] ) ) {
 				continue;
 			}
 
-			if ( $vars['smw.json'][$id][$key] === $value[0] ) {
+			if ( $vars[self::SMW_JSON][$id][$key] === $value[0] ) {
 				$tasks[] = $value[1];
 			}
 		}
 
-		if ( isset( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] ) ) {
-			foreach ( $vars['smw.json'][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
+		if ( isset( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] ) ) {
+			foreach ( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
 				if ( $args === true ) {
 					$tasks[] = $key;
 				} else {
@@ -333,12 +257,9 @@ class SetupFile {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param mixed $maintenanceMode
+	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, $vars = [] ) {
-
+	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -352,12 +273,7 @@ class SetupFile {
 		);
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function finalize( $vars = [] ) {
+	public function finalize( array $vars = [] ): void {
 
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
@@ -368,10 +284,10 @@ class SetupFile {
 		$id = Site::id();
 
 		if (
-			isset( $vars['smw.json'][$id][self::UPGRADE_KEY] ) &&
-			$key === $vars['smw.json'][$id][self::UPGRADE_KEY] &&
-			$vars['smw.json'][$id][self::MAINTENANCE_MODE] === false ) {
-			return false;
+			isset( $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] ) &&
+			$key === $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] &&
+			$vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] === false ) {
+			return;
 		}
 
 		$this->write(
@@ -383,13 +299,7 @@ class SetupFile {
 		);
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 */
-	public function reset( $vars = [] ) {
-
+	public function reset( array $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -397,22 +307,16 @@ class SetupFile {
 		$id = Site::id();
 		$args = [];
 
-		if ( !isset( $vars['smw.json'][$id] ) ) {
+		if ( !isset( $vars[self::SMW_JSON][$id] ) ) {
 			return;
 		}
 
-		$vars['smw.json'][$id] = [];
+		$vars[self::SMW_JSON][$id] = [];
 
 		$this->write( [], $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $args
-	 */
-	public function set( array $args, $vars = [] ) {
-
+	public function set( array $args, $vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
@@ -420,32 +324,21 @@ class SetupFile {
 		$this->write( $args, $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $args
-	 */
-	public function get( $key, $vars = [] ) {
-
+	public function get( string $key, array $vars = [] ) {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
 
 		$id = Site::id();
 
-		if ( isset( $vars['smw.json'][$id][$key] ) ) {
-			return $vars['smw.json'][$id][$key];
+		if ( isset( $vars[self::SMW_JSON][$id][$key] ) ) {
+			return $vars[self::SMW_JSON][$id][$key];
 		}
 
 		return null;
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param string $key
-	 */
-	public function remove( $key, $vars = [] ) {
+	public function remove( string $key, $vars = [] ): void {
 
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
@@ -454,27 +347,19 @@ class SetupFile {
 		$this->write( [ $key => null ], $vars );
 	}
 
-	/**
-	 * @since 3.1
-	 *
-	 * @param array $vars
-	 * @param array $args
-	 */
-	public function write( array $args, array $vars ) {
-
-		$configFile = File::dir( $vars['smwgConfigFileDir'] . '/' . self::FILE_NAME );
+	public function write( array $args, array $vars ): void {
 		$id = Site::id();
 
-		if ( !isset( $vars['smw.json'] ) ) {
-			$vars['smw.json'] = [];
+		if ( !isset( $vars[self::SMW_JSON] ) ) {
+			$vars[self::SMW_JSON] = [];
 		}
 
 		foreach ( $args as $key => $value ) {
 			// NULL means that the key key is removed
 			if ( $value === null ) {
-				unset( $vars['smw.json'][$id][$key] );
+				unset( $vars[self::SMW_JSON][$id][$key] );
 			} else {
-				$vars['smw.json'][$id][$key] = $value;
+				$vars[self::SMW_JSON][$id][$key] = $value;
 			}
 		}
 
@@ -484,19 +369,16 @@ class SetupFile {
 		// );
 
 		// Remove legacy
-		if ( isset( $vars['smw.json']['upgradeKey'] ) ) {
-			unset( $vars['smw.json']['upgradeKey'] );
+		if ( isset( $vars[self::SMW_JSON]['upgradeKey'] ) ) {
+			unset( $vars[self::SMW_JSON]['upgradeKey'] );
 		}
-		if ( isset( $vars['smw.json'][$id]['in.maintenance_mode'] ) ) {
-			unset( $vars['smw.json'][$id]['in.maintenance_mode'] );
+		if ( isset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] ) ) {
+			unset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] );
 		}
 
 		try {
-			$this->file->write(
-				$configFile,
-				json_encode( $vars['smw.json'], JSON_PRETTY_PRINT )
-			);
-		} catch( FileNotWritableException $e ) {
+			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
+		} catch( RuntimeException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
 			// and die
@@ -511,10 +393,9 @@ class SetupFile {
 	/**
 	 * Listed keys will have a "global" impact of how data are stored, formatted,
 	 * or represented in Semantic MediaWiki. In most cases it will require an action
-	 * from an adminstrator when one of those keys are altered.
+	 * from an administrator when one of those keys are altered.
 	 */
-	private static function makeKey( $vars ) {
-
+	private static function makeKey( array $vars ): string {
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
 			// Special properties enabled?

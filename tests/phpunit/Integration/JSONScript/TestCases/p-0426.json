@@ -122,7 +122,8 @@
 			"type": "parser",
 			"about": "#4",
 			"skip-on": {
-				"sqlite": "Does not store the minus for a 0.000 values"
+				"sqlite": "Does not store the minus for a 0.000 values",
+				"blazegraph": "Skipping: the current Travis configuration does test Blazegraph with SQLite, it fails because of SQLite and works with MySQL."
 			},
 			"subject": "P0426/Q4.1",
 			"assert-output": {

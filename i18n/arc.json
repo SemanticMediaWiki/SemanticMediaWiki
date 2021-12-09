@@ -20,11 +20,10 @@
 	"smw_properties_docu": "ܕ̈ܝܠܝܬܐ ܕܐܬܝܢ ܡܬܦܠܚܝܢ ܒܘܝܩܝ",
 	"smw_property_template": "$1 ܡܢ ܐܕܫܐ ܕ $2 ($3 {{PLURAL:$3|ܦܘܠܚܐ|ܦܘܠܚ̈ܐ}})",
 	"unusedproperties": "ܕ̈ܝܠܝܬܐ ܠܐ ܦܠܝܚܬ̈ܐ",
-	"smw_unusedproperty_template": "$1 ܡܢ ܐܕܫܐ ܕ $2",
+	"smw-unusedproperty-template": "$1 ܡܢ ܐܕܫܐ ܕ $2",
 	"wantedproperties": "ܕ̈ܝܠܝܬܐ ܣܢܝܩܬ̈ܐ",
 	"smw_purge": "ܦܪܓܝ",
 	"types": "ܐܕܫ̈ܐ",
-
 	"ask": "ܒܨܝܐ ܕܣܝܡܐܢܛܝܩ (ܣܘ̈ܟܠܐ)",
 	"smw_ask_ascorder": "ܡܣܩܐܝܬ",
 	"smw_ask_descorder": "ܡܚܬܐܝܬ",

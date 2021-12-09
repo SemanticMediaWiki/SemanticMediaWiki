@@ -791,7 +791,7 @@
 	"smw-datavalue-constraint-violation-non-negative-integer": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the data value assigned to the property",
 	"smw-datavalue-constraint-violation-must-exists": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the data value assigned to the property",
 	"smw-datavalue-constraint-violation-single-value": "This is an error message.\n\nParameters:\n* $1 holds the name of the property\n* $2 holds the data value assigned to the property",
-	"smw-constraint-violation-class-mandatory-properties-constraint": "This is an error message.\n\nParameter:\n* $1 - Holds the name of the category.\n* $2 - Holds the name of the property",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "This is an error message.\n\nParameter:\n* $1 - Holds the prefixed name of the category.\n* $2 - Holds the name of the property",
 	"smw-property-predefined-boo": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-property-predefined-num": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",
 	"smw-property-predefined-dat": "This informatory message describes a [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes datatype].\n\nParameter:\n* $1 holds the name of the datatype.",

@@ -10,14 +10,8 @@
 			"Shirayuki"
 		]
 	},
-	"smw_printername_ul": "Bulleted list",
 	"smw_noboolean": "\"$1\" is not recognised as a Boolean (true/false) value.",
-	"smw_types_docu": "List of [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available datatypes] with each [https://www.semantic-mediawiki.org/wiki/Help:Datatype type] representing a unique set of attributes to describe a value in terms of storage and display characteristics that are hereditary to an assigned property.",
-	"browse": "Browse wiki",
-	"smw-admin-permissionswarn": "If the operation fails with SQL errors, the database user employed by your wiki (check your \"LocalSettings.php\" file) probably does not have sufficient permissions.\nEither grant this user additional permissions to create and delete tables, temporarily enter the login of your database root in the \"LocalSettings.php\" file, or use the maintenance script <code>setupStore.php</code>, which can use the credentials of an administrator.",
 	"smw-admin-dbbutton": "Initialise or upgrade tables",
-	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] and associated extensions provide individual preferences for a group of selected features and functions. A list of individual settings with their description and characteristics is available on the following [https://www.semantic-mediawiki.org/wiki/Help:User_preferences help page].",
 	"smw-admin-settings-docu": "Displays a list of all default and localised settings that are relevant to the Semantic MediaWiki environment. For details on individual settings, please consult the [https://www.semantic-mediawiki.org/wiki/Help:Configuration configuration] help page.",
-	"smw-populatehashfield-incomplete": "The <code>smw_hash</code> field population was skipped during the setup, the <code>[https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] </code>script is required to be executed.",
 	"smw-install-incomplete-populate-hash-field": "The <code>smw_hash</code> field population was skipped during the setup, the <code>[https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php]</code> script is required to be executed.<code></code>"
 }

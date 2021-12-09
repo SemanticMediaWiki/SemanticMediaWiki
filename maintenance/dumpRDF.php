@@ -28,6 +28,10 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * --classes          Export only concepts and categories
  * --properties       Export only properties
  * --individuals      Export only pages that are no categories, properties, or types
+ * --namespace <namespacelist>
+ *                    Export only namespaces included in <namespacelist>
+ *                    Example: --namespace "NS_Example1|NS_Example3|SMW_CONCEPT" with | being used as separator.
+ *                    Uses constant namespace names.
  * --page <pagelist>  Export only pages included in the <pagelist> with | being used as a separator.
  *                    Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.
  * -d <delay>         Slows down the export in order to stress the server less,
@@ -68,7 +72,11 @@ class dumpRDF extends \Maintenance {
 		$this->addOption( 'properties', 'Export only properties', false );
 		$this->addOption( 'individuals', 'Export only individuals', false );
 
-		$this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
+        $this->addOption('namespace','Export only namespaced included in the <namespacelist> with | being used as a separator. ' .
+            'Example: --namespace "NS_NS1|NS_NS2|NS_NS3"',false,true);
+
+
+        $this->addOption( 'page', 'Export only pages included in the <pagelist> with | being used as a separator. ' .
 								'Example: --page "Page 1|Page 2", -e, -file, -d are ignored if --page is given.', false, true );
 
 		$this->addOption( 'server', '<server> The protocol and server name to as base URLs, e.g. http://en.wikipedia.org. ' .
@@ -176,9 +184,14 @@ class dumpRDF extends \Maintenance {
 			$pages = explode( '|', $this->getOption( 'page' ) );
 		}
 
-		if ( $this->hasOption( 'server' ) ) {
+        if ( $this->hasOption( 'namespace' ) ) {
+            $restrictNamespaceTo = array_map('constant', explode( '|', $this->getOption( 'namespace' ) ) );
+        }
+
+        if ( $this->hasOption( 'server' ) ) {
 			$GLOBALS['wgServer'] = $this->getOption( 'server' );
 		}
+
 
 		$exporterFactory = new ExporterFactory();
 

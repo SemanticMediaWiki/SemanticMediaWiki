@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Test;
+namespace SMW\Tests;
 
 /**
  * Base class for SMW\ResultPrinter tests.
@@ -91,4 +91,4 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
  *
  * @deprecated since SMW 1.9
  */
-class_alias( 'SMW\Test\QueryPrinterRegistryTestCase', 'SMW\Test\ResultPrinterTestCase' );
+class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Tests\ResultPrinterTestCase' );
