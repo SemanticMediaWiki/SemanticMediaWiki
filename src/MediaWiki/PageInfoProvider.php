@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use IDBAccessObject;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
