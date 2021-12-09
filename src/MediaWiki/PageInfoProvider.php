@@ -82,24 +82,10 @@ class PageInfoProvider implements PageInfo {
 	 * @return integer
 	 */
 	public function getCreationDate() {
-		$title = $this->wikiPage->getTitle();
-		if ( method_exists( 'MediaWiki\Revision\RevisionLookup', 'getFirstRevision' ) ) {
-			// MW >= 1.35
-			$firstRevision = $this->revisionLookup->getFirstRevision(
-				$title,
-				IDBAccessObject::READ_LATEST
-			);
-		} else {
-			if ( defined( 'Title::READ_LATEST' ) && Title::GAID_FOR_UPDATE == 512 ) {
-				// MW 1.34
-				// https://github.com/wikimedia/mediawiki/commit/b65e77a385c7423ce03a4d21c141d96c28291a60
-				$flag = Title::READ_LATEST;
-			} else {
-				$flag = Title::GAID_FOR_UPDATE;
-			}
-			$firstRevision = $title->getFirstRevision( $flag );
-		}
-		return $firstRevision->getTimestamp();
+		return $this->revisionLookup->getFirstRevision(
+			$this->wikiPage->getTitle(),
+			IDBAccessObject::READ_LATEST
+		)->getTimestamp();
 	}
 
 	/**
