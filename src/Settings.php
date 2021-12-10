@@ -207,6 +207,7 @@ class Settings extends Options {
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
+			'smwgExtraSlotsWithSemanticLinks' => $GLOBALS['smwgExtraSlotsWithSemanticLinks'],
 		];
 
 		$this->isLoaded = true;

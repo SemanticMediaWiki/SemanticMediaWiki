@@ -47,15 +47,20 @@ class ContentParser {
 	 */
 	private $skipInTextAnnotationParser = false;
 
+	/** @var array */
+	private $extraSemanticSlots;
+
 	/**
 	 * @since 1.9
 	 *
 	 * @param Title $title
 	 * @param Parser $parser
+	 * @param array $extraSemanticSlots
 	 */
-	public function __construct( Title $title, Parser $parser ) {
+	public function __construct( Title $title, Parser $parser, array $extraSemanticSlots = [] ) {
 		$this->title  = $title;
 		$this->parser = $parser;
+		$this->extraSemanticSlots = $extraSemanticSlots;
 	}
 
 	/**
@@ -173,8 +178,10 @@ class ContentParser {
 				);
 			}
 		} catch( \MWUnknownContentModelException $e ) {
-			$this->parserOutput = null;
+			return $this;
 		}
+
+		$this->combineSlotOutput();
 
 		return $this;
 	}
@@ -216,6 +223,54 @@ class ContentParser {
 		);
 
 		return $this->revision;
+	}
+
+	private function combineSlotOutput() {
+
+		$services = MediaWikiServices::getInstance();
+		$revision = $this->getRevision();
+
+		foreach ( $this->extraSemanticSlots as $semanticSlot ) {
+			if ( !$revision->hasSlot( $semanticSlot ) || $semanticSlot === SlotRecord::MAIN ) {
+				continue;
+			}
+
+			$content = $this->revision->getContent( $semanticSlot );
+
+			if ( $content === null ) {
+				continue;
+			}
+
+			try {
+				if ( method_exists( $services, 'getContentRenderer' ) ) {
+					$contentRenderer = $services->getContentRenderer();
+					$parserOutput = $contentRenderer->getParserOutput(
+						$content,
+						$this->getTitle(),
+						$revision->getId()
+					);
+				} else {
+					$parserOutput = $content->getParserOutput(
+						$this->getTitle(),
+						$revision->getId()
+					);
+				}
+			} catch ( \MWUnknownContentModelException $e ) {
+				continue;
+			}
+
+			$slotSemanticData = $parserOutput->getExtensionData( ParserData::DATA_ID );
+
+			if ( $slotSemanticData !== null ) {
+				$semanticData = $this->parserOutput->getExtensionData( ParserData::DATA_ID );
+
+				if ( $semanticData === null ) {
+					$this->parserOutput->setExtensionData( ParserData::DATA_ID, $slotSemanticData );
+				} else {
+					$semanticData->importDataFrom( $slotSemanticData );
+				}
+			}
+		}
 	}
 
 }

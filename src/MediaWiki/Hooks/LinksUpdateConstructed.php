@@ -6,6 +6,7 @@ use LinksUpdate;
 use SMW\ApplicationFactory;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
+use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\MediaWiki\HookListener;
 use Psr\Log\LoggerAwareTrait;
@@ -83,6 +84,17 @@ class LinksUpdateConstructed implements HookListener {
 		if ( $this->revisionGuard->isSkippableUpdate( $title ) ) {
 			return true;
 		}
+
+		if ( $linksUpdate->getParserOutput()->getExtensionData( ParserData::DATA_ID ) !== null ) {
+		    $additionalSemanticData = $this->reparseAndFetchSemanticData( $title );
+
+		    if ( $additionalSemanticData !== null ) {
+                $linksUpdate
+                    ->getParserOutput()
+                    ->getExtensionData( ParserData::DATA_ID )
+                    ->importDataFrom( $additionalSemanticData );
+            }
+        }
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,

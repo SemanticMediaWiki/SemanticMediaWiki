@@ -300,9 +300,12 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'ContentParser', function( $containerBuilder, \Title $title ) {
 			$containerBuilder->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
 
+			$settings = $containerBuilder->singleton( 'Settings' );
+
 			$contentParser = new ContentParser(
 				$title,
-				$containerBuilder->create( 'Parser' )
+				$containerBuilder->create( 'Parser' ),
+				$settings->get( 'smwgExtraSlotsWithSemanticLinks' )
 			);
 
 			$contentParser->setRevisionGuard(
