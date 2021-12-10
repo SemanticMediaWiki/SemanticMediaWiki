@@ -86,15 +86,14 @@ class LinksUpdateConstructed implements HookListener {
 		}
 
 		if ( $linksUpdate->getParserOutput()->getExtensionData( ParserData::DATA_ID ) !== null ) {
-		    $additionalSemanticData = $this->reparseAndFetchSemanticData( $title );
+			$additionalSemanticData = $this->reparseAndFetchSemanticData( $title );
 
-		    if ( $additionalSemanticData !== null ) {
-                $linksUpdate
-                    ->getParserOutput()
-                    ->getExtensionData( ParserData::DATA_ID )
-                    ->importDataFrom( $additionalSemanticData );
-            }
-        }
+			if ( $additionalSemanticData !== null ) {
+				$linksUpdate->getParserOutput()
+					->getExtensionData( ParserData::DATA_ID )
+					->importDataFrom( $additionalSemanticData );
+			}
+		}
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$title,
