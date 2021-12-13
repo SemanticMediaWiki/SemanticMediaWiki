@@ -22,6 +22,7 @@
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Cuncettu|Cuncetti}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Cuncettu|Cuncetti}}]]",
 	"smw_ask_queryhead": "Cunnizzioni",
+	"smw_ask_defaultformat": "pridifinutu",
 	"smw_ask_otheroptions": "Àutri opzioni",
 	"smw-ask-delete": "Leva",
 	"smw-ask-options": "Opzioni",
