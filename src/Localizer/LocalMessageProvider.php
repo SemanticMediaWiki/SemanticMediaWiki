@@ -16,6 +16,16 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @var string
 	 */
+	private static string $i18nDir = __DIR__ . '/../../i18n';
+
+	/**
+	 * @var string
+	 */
+	private static string $smwExtraI18nDir = __DIR__ . '/../../i18n/extra';
+
+	/**
+	 * @var string
+	 */
 	private string $file = '';
 
 	/**
@@ -47,9 +57,35 @@ class LocalMessageProvider implements MessageLocalizer {
 	public function __construct( string $file, ?string $languageCode = null ) {
 		$this->file = $file;
 		$this->languageCode = $languageCode;
-		$this->languageFileDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
-							  ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
-							  : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
+		$this->languageFileDir = self::$i18nDir;
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public static function setI18nDir( $dir ): void {
+		self::$i18nDir = !is_array( $dir ) ? $dir : $dir[0];
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public static function getI18nDir(): string {
+		return self::$i18nDir;
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public static function setSMWExtraI18nDir( $dir ): void {
+		self::$smwExtraI18nDir = !is_array( $dir ) ? $dir : $dir[0];
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public static function getSMWExtraI18nDir(): string {
+		return self::$smwExtraI18nDir;
 	}
 
 	/**

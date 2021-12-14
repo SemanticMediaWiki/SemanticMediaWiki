@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use SMW\Localizer\LocalMessageProvider;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -63,10 +64,7 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function mediawikiI18nFileProvider() {
-		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
-				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
-				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
-		return $this->findFilesIn( $i18nDir );
+		return $this->findFilesIn( LocalMessageProvider::getI18nDir() );
 	}
 
 	private function findFilesIn( $location ) {
