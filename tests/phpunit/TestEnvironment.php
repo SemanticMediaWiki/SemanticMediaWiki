@@ -4,9 +4,8 @@ namespace SMW\Tests;
 
 use SMW\ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\DeferredCallableUpdate;
 use SMW\Localizer;
-use SMW\Tests\Utils\Mock\ConfigurableStub;
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -49,7 +48,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public static function executePendingDeferredUpdates() {
-		DeferredCallableUpdate::releasePendingUpdates();
+		CallableUpdate::releasePendingUpdates();
 		\DeferredUpdates::doUpdates();
 	}
 
@@ -57,7 +56,7 @@ class TestEnvironment {
 	 * @since 2.4
 	 */
 	public static function clearPendingDeferredUpdates() {
-		DeferredCallableUpdate::releasePendingUpdates();
+		CallableUpdate::releasePendingUpdates();
 		\DeferredUpdates::clearPendingUpdates();
 	}
 
