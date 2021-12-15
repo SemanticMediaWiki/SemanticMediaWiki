@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Options;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\Tests\TestEnvironment;
@@ -199,7 +200,7 @@ class SQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new SQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'SMW\DeferredCallableUpdate',
+			CallableUpdate::class,
 			$instance->newDeferredCallableCachedListLookupUpdate()
 		);
 	}

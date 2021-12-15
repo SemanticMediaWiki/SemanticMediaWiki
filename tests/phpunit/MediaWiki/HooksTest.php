@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
 use SMW\Tests\TestEnvironment;
 use Title;
@@ -110,7 +111,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			->method( 'parse' )
 			->will( $this->returnValue( $this->parser ) );
 
-		$deferredCallableUpdate = $this->getMockBuilder( '\SMW\DeferredCallableUpdate' )
+		$deferredCallableUpdate = $this->getMockBuilder( CallableUpdate::class )
 			->disableOriginalConstructor()
 			->getMock();
 
