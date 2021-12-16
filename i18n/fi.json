@@ -15,6 +15,7 @@
 			"Str4nd",
 			"Surjection",
 			"Valtlait",
+			"Veikk0.ma",
 			"VezonThunder"
 		]
 	},
@@ -289,7 +290,7 @@
 	"prefs-smw": "Semantic MediaWiki",
 	"prefs-general-options": "Yleiset asetukset",
 	"prefs-ask-options": "Semanttinen haku",
-	"smw-prefs-ask-options-tooltip-display": "Näytä parametri työkaluvihjeenä #ask [Special:Ask|kyselynrakentajan]] toimintosivulla.",
+	"smw-prefs-ask-options-tooltip-display": "Näytä parametri työkaluvihjeenä #ask [[Special:Ask|kyselynrakentajan]] toimintosivulla.",
 	"smw-prefs-general-options-time-correction": "Ota käyttöön aikakorjaus toimintosivuille käyttämällä paikallista [[Special:Preferences#mw-prefsection-rendering|aikaero]]asetusta",
 	"smw-prefs-general-options-disable-editpage-info": "Poista johdantoteksti käytöstä muokkaussivulla",
 	"smw-ui-tooltip-title-property": "Ominaisuus",
