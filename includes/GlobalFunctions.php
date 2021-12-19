@@ -243,7 +243,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	// If the function is called more than once then this will fail on
 	// purpose
-	foreach ( include dirname( __DIR__ ) . '/DefaultSettings.php' as $key => $value ) {
+	foreach ( include dirname( __DIR__ ) . '/includes/DefaultSettings.php' as $key => $value ) {
 		if ( !isset( $GLOBALS[$key] ) ) {
 			$GLOBALS[$key] = $value;
 		}

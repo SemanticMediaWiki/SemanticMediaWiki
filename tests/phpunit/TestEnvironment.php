@@ -67,7 +67,7 @@ class TestEnvironment {
 	 */
 	public static function loadDefaultSettings( array $defaultSettingKeys = [] ) {
 
-		$settings = require $GLOBALS['smwgIP'] . 'DefaultSettings.php';
+		$settings = require $GLOBALS['smwgIP'] . '/includes/DefaultSettings.php';
 
 		if ( $defaultSettingKeys !== [] ) {
 			$copy = [];

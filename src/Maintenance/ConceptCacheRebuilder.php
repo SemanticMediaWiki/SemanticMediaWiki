@@ -154,7 +154,7 @@ class ConceptCacheRebuilder {
 				$this->reportMessage( "\nAbort with CTRL-C in the next $delay seconds ... " );
 
 				if ( !$this->hasOption( 'quiet' ) ) {
-					swfCountDown( $delay );
+					$this->countDown( $delay );
 				}
 
 				$this->reportMessage( "\nDeleting concept caches ...\n" );
@@ -299,6 +299,26 @@ class ConceptCacheRebuilder {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
+	}
+
+
+	/**
+	 * Copied from wfCountDown as it became deprecated in 1.31
+	 *
+	 * @since 4.0
+	 */
+	private function countDown( $seconds ) {
+		for ( $i = $seconds; $i >= 0; $i-- ) {
+			if ( $i != $seconds ) {
+				echo str_repeat( "\x08", strlen( $i + 1 ) );
+			}
+			echo $i;
+			flush();
+			if ( $i ) {
+				sleep( 1 );
+			}
+		}
+		echo "\n";
 	}
 
 	private function getCacheDateInfo( $date ) {
