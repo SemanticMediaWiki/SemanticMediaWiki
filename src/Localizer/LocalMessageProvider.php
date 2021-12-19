@@ -13,30 +13,11 @@ use SMW\Exception\JSONFileParseException;
  */
 class LocalMessageProvider implements MessageLocalizer {
 
-	/**
-	 * @var string
-	 */
-	private string $file = '';
-
-	/**
-	 * @var string
-	 */
-	private ?string $languageCode;
-
-	/**
-	 * @var string
-	 */
-	private string $languageFileDir = '';
-
-	/**
-	 * @var string
-	 */
-	private string $fallbackLanguageCode = 'en';
-
-	/**
-	 * @var array
-	 */
-	private array $contents = [];
+	private /* string */ $file = '';
+	private /* ?string */ $languageCode;
+	private /* string */ $languageFileDir = '';
+	private /* string */ $fallbackLanguageCode = 'en';
+	private /* array */ $contents = [];
 
 	/**
 	 * @since 3.2
