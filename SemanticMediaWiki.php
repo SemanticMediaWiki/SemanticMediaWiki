@@ -39,6 +39,8 @@ class SemanticMediaWiki {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
+		include_once __DIR__ . '/src/Aliases.php';
+
 		$defaultSettings = include_once __DIR__ . '/DefaultSettings.php';
 		if ( is_array( $defaultSettings ) ) {
 			foreach ( $defaultSettings as $key => $value ) {
