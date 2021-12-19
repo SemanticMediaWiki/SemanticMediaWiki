@@ -1,9 +1,9 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.0.0-alpha",
+	"version": "4.0.0-rc1",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
-		"[https://www.entropywins.wtf/mediawiki Jeroen De Dauw]",
+		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
 		"James Hong Kong",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
