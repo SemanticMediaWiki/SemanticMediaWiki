@@ -63,7 +63,7 @@ class SetupFile {
 
 	private const SMW_JSON = 'smw.json';
 
-	private SmwJsonRepo $repo;
+	private /* SmwJsonRepo */ $repo;
 
 	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
