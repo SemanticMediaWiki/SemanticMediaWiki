@@ -81,7 +81,6 @@
 			"SemanticMediaWiki": "SemanticMediaWiki.php"
 		},
 		"files": [
-			"src/Aliases.php",
 			"src/Defines.php",
 			"src/GlobalFunctions.php"
 		],
