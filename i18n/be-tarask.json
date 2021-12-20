@@ -423,7 +423,7 @@
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|сэкунда|сэкундаў}}",
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|сэкунда|сэкундаў}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|сэкунда|сэкунды|сэкундаў}}",
-	"smw-constraint-violation-class-mandatory-properties-constraint": "Абмежаваньне <code>mandatory_properties</code> зьвязанае з катэгорыяй «[[:Category:$1|$1]]» і патрабуе такіх абавязковых уласьцівасьцяў: $2",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "Абмежаваньне <code>mandatory_properties</code> зьвязанае з катэгорыяй «[[:$1]]» і патрабуе такіх абавязковых уласьцівасьцяў: $2",
 	"smw-datavalue-time-invalid-date-components-empty": "«$1» зьмяшчае некаторыя пустыя кампанэнты.",
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» зьяўляецца няправільным URL-адрасам.",
 	"smw-datavalue-parse-error": "Дадзенае значэньне «$1» не было распазнанае.",
