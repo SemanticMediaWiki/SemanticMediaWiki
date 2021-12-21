@@ -1270,7 +1270,12 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
-		$userChange->process( $block->getTargetUserIdentity() );
+		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
+			// MW 1.37+
+			$userChange->process( $block->getTargetUserIdentity() );
+		} else {
+			$userChange->process( $block->getTarget() );
+		}
 
 		return true;
 	}
@@ -1289,7 +1294,12 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
-		$userChange->process( $block->getTargetUserIdentity() );
+		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
+			// MW 1.37+
+			$userChange->process( $block->getTargetUserIdentity() );
+		} else {
+			$userChange->process( $block->getTarget() );
+		}
 
 		return true;
 	}
