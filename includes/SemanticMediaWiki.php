@@ -85,7 +85,7 @@ class SemanticMediaWiki {
 	 *
 	 * @since 4.0
 	 */
-	protected static function setupAliases(): void {
+	public static function setupAliases(): void {
 
 		$alias = [
 			// 3.2
