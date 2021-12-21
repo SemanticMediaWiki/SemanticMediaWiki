@@ -1270,7 +1270,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
-		$userChange->process( $block->getTarget() );
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}
@@ -1289,7 +1289,7 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
-		$userChange->process( $block->getTarget() );
+		$userChange->process( $block->getTargetUserIdentity() );
 
 		return true;
 	}
