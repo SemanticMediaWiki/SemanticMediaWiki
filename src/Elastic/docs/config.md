@@ -45,7 +45,7 @@ $GLOBALS['smwgElasticsearchConfig'] = [
 
 ### Changing a setting
 
-A detailed list of settings and their explanations is available in the `DefaultSettings.php`. Please make sure that after changing any setting, `php rebuildElasticIndex.php --update-settings` is executed.
+A detailed list of settings and their explanations is available in the `includes/DefaultSettings.php`. Please make sure that after changing any setting, `php rebuildElasticIndex.php --update-settings` is executed.
 
 When modifying a particular setting, use an appropriate key to change the value of a parameter otherwise it is possible that the entire configuration is replaced.
 

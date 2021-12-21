@@ -28,6 +28,8 @@ class SemanticMediaWiki {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupAliases();
 			self::setupDefines();
+			self::setupGlobals();
+			require_once ( dirname( __DIR__ ) . "/includes/GlobalFunctions.php" );
 		}
 
 		// https://phabricator.wikimedia.org/T212738
@@ -41,16 +43,6 @@ class SemanticMediaWiki {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
-		require_once ( dirname( __DIR__ ) . "/includes/GlobalFunctions.php" );
-
-		$defaultSettings = include_once dirname( __DIR__ ) . '/includes/DefaultSettings.php';
-		if ( is_array( $defaultSettings ) ) {
-			foreach ( $defaultSettings as $key => $value ) {
-				if ( !isset( $GLOBALS[$key] ) ) {
-					$GLOBALS[$key] = $value;
-				}
-			}
-		}
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
 	}
@@ -649,5 +641,35 @@ class SemanticMediaWiki {
 		 */
 		define( 'CONTENT_MODEL_SMW_SCHEMA', 'smw/schema' );
 		/**@}*/
+	}
+
+	/**
+	 * Get the array that DefaultSettings.php is supposed to return.  We did not put it inline here
+	 * as we did with Aliases.php and Defines.php because there are references to that file online
+	 * for documentation.
+	 */
+	public static function getDefaultSettings(): array {
+		static $settings = null;
+		if ( $settings === null ) {
+			$settings = include dirname( __DIR__ ) . '/includes/DefaultSettings.php';
+			if ( !is_array( $settings ) ) {
+				throw new Exception( "Including DefaultSettings.php did not return an array." );
+			}
+		}
+		return $settings;
+	}
+
+	/**
+	 * Set up $GLOBALS according to what is found in DefaultSettings.php
+	 */
+	public static function setupGlobals(): void {
+		$defaultSettings = self::getDefaultSettings();
+		if ( is_array( $defaultSettings ) ) {
+			foreach ( $defaultSettings as $key => $value ) {
+				if ( !isset( $GLOBALS[$key] ) ) {
+					$GLOBALS[$key] = $value;
+				}
+			}
+		}
 	}
 }
