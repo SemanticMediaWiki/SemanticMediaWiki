@@ -31,7 +31,7 @@ jobs:
 
     env:
       EXT_NAME: SemanticMediaWiki
-      COMPOSER_VERSION: 2
+      COMPOSER_VERSION: 2.1.14
       MW_INSTALL_PATH: /var/www/html
       MW_EXT_PATH: /var/www/html/extensions
       DB_ROOT_USER: root
@@ -58,7 +58,7 @@ jobs:
           php -r "copy('https://getcomposer.org/installer', 'installer');"
           php -r "copy('https://composer.github.io/installer.sig', 'expected');"
           echo `cat expected` " installer" | sha384sum -c -
-          php installer --${{ env.COMPOSER_VERSION }}
+          php installer --version=${{ env.COMPOSER_VERSION }}
           rm -f installer expected
           mv composer.phar /usr/local/bin/composer
 
