@@ -41,21 +41,29 @@ to the version of the code it comes bundled with. The most important files are l
 * [Technical documentation](docs/technical/README.md)
 * [Hacking Semantic MediaWiki](docs/architecture/README.md)
 
-## Contribution and support
+## Support
 
-[![Twitter](https://www.semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
-[![Facebook](https://www.semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Twitter](https://www.semantic-mediawiki.org/w/thumb.php?f=Twitter-square.svg&width=35)](https://twitter.com/#!/semanticmw)
+[![Facebook](https://www.semantic-mediawiki.org/w/thumb.php?f=Facebook-square.svg&width=35)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Chatroom](https://www.semantic-mediawiki.org/w/thumb.php?f=Comment-alt-solid.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom)
+[![YouTube](https://www.semantic-mediawiki.org/w/thumb.php?f=Youtube-square.svg&width=35)](https://www.youtube.com/c/semanticmediawiki)
+[![Mailing lists](https://www.semantic-mediawiki.org/w/thumb.php?f=Envelope-square.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_mailing_lists)
+
+Primary support channels:
+
+* [User mailing list](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user) - for questions
+* [SMW chat room](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom) - for questions
+* [Issue tracker](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues) - for bug reports
+
+## Contributing
 
 Many people have contributed to SMW. A list of people who have made contributions in the past can
 be found [here][contributors] or on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
-If you have remarks, questions, or suggestions, please send them to <semediawiki-users@lists.sourceforge.net>.
-You can subscribe to this list [here](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user).
-
 If you want to contribute work to the project please subscribe to the developers mailing list and
-have a look at the contribution guideline.
+have a look at the contribution guidelines.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
