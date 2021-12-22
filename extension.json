@@ -24,7 +24,7 @@
 		"SMW\\": "src/"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "SemanticMediaWiki.php"
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

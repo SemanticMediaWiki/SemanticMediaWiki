@@ -78,12 +78,10 @@
 			"SMW\\Tests\\": "tests/phpunit/"
 		},
 		"psr-0": {
-			"SemanticMediaWiki": "SemanticMediaWiki.php"
+			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 		},
 		"files": [
-			"src/Aliases.php",
-			"src/Defines.php",
-			"src/GlobalFunctions.php"
+			"includes/GlobalFunctions.php"
 		],
 		"classmap" : [
 			"includes/",

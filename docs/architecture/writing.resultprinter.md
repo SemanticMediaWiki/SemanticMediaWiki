@@ -232,7 +232,7 @@ To register new format you need to add your format name to [`$smwgResultFormats`
 $GLOBALS['smwgResultFormats']['foo-format'] = \SMW\Query\ResultPrinters\FooResultPrinter::class;
 </pre>
 
-For SRF use the [`$srfgFormats`](https://github.com/SemanticMediaWiki/SemanticResultFormats/blob/master/DefaultSettings.php) setting:
+For SRF use the [`$srfgFormats`](https://github.com/SemanticMediaWiki/SemanticResultFormats/blob/master/includes/DefaultSettings.php) setting:
 
 <pre>
 $GLOBALS['srfgFormats'][] = 'my-format';
