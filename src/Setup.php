@@ -159,9 +159,8 @@ final class Setup {
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
 		if ( !defined( 'SMW_PHPUNIT_AUTOLOADER_FILE' ) ) {
-			define(
-				'SMW_PHPUNIT_AUTOLOADER_FILE', getenv( "MW_INSTALL_PATH" ) . "/vendor/autoload.php"
-			);
+			$smwDir = dirname( $rootDir );
+			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
 		$vars['wgLogTypes'][] = 'smw';
