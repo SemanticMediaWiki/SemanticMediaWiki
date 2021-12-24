@@ -2187,9 +2187,9 @@ return (function() {
 		##
 		'smwgElasticsearchConfig' => [
 			'index_def' => [
-				// The complete name will be auto-generated from "smw-...-" + wfWikiID()
-				// to avoid indicies among different wikis being corrupted when sharing
-				// an ES instance.
+				// The complete name will be auto-generated from
+				// "smw-...-" + WikiMap::getCurrentWikiId() to avoid indicies among
+				// different wikis being corrupted when sharing an ES instance.
 				'data' => $smwgIP . '/data/elastic/smw-data-standard.json',
 				'lookup' => $smwgIP . '/data/elastic/smw-lookup.json'
 			],
