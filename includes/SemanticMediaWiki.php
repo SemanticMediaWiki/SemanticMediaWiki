@@ -39,7 +39,7 @@ class SemanticMediaWiki {
 
 		// Only allow to set the loading state while being part of the test
 		// environment
-		if ( defined( 'MW_PHPUNIT_TEST' )  && !defined( 'SMW_EXTENSION_LOADED' ) ) {
+		if ( defined( 'MW_PHPUNIT_TEST' ) && !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
@@ -73,131 +73,131 @@ class SemanticMediaWiki {
 	}
 
 	/**
+	 * Get an where the key is the old class name and the value is the new
+	 * name.
+	 */
+	public static function getClassAliasMap(): array {
+		return [
+			// 3.2
+			'\SMW\Localizer' => \SMW\Localizer\Localizer::class,
+			'\SMW\Message' => \SMW\Localizer\Message::class,
+			'\SMW\Lang\Lang' => \SMW\Localizer\LocalLanguage\LocalLanguage::class,
+			'\SMWSerializer' => \SMW\Exporter\Serializer\Serializer::class,
+			'\SMWTurtleSerializer' => \SMW\Exporter\Serializer\TurtleSerializer::class,
+			'\SMWRDFXMLSerializer' => \SMW\Exporter\Serializer\RDFXMLSerializer::class,
+
+			// 3.1
+			'SMWRDFResultPrinter' => \SMW\Query\ResultPrinters\RdfResultPrinter::class,
+			'SMWEmbeddedResultPrinter' => \SMW\Query\ResultPrinters\EmbeddedResultPrinter::class,
+			'SMWDSVResultPrinter' => \SMW\Query\ResultPrinters\DsvResultPrinter::class,
+			'SMWAggregatablePrinter' => \SMW\Query\ResultPrinters\AggregatablePrinter::class,
+			'SMW\PropertyAnnotator' => \SMW\Property\Annotator::class,
+			'SMW\PropertySpecificationLookup' => \SMW\Property\SpecificationLookup::class,
+			'SMW\PropertyRestrictionExaminer' => \SMW\Property\RestrictionExaminer::class,
+			'SMWResultArray' => \SMW\Query\Result\ResultArray::class,
+			'SMWQueryResult' => \SMW\Query\QueryResult::class,
+			'\SMW\ApplicationFactory' => \SMW\Services\ServicesFactory::class,
+			'\SMWSql3SmwIds' => \SMW\SQLStore\EntityStore\EntityIdManager::class,
+
+			// 3.0
+			'SMW\DeferredCallableUpdate' => \SMW\MediaWiki\Deferred\CallableUpdate::class,
+			'SMW\DeferredTransactionalCallableUpdate' => \SMW\MediaWiki\Deferred\TransactionalCallableUpdate::class,
+			'SMW\InTextAnnotationParser' => \SMW\Parser\InTextAnnotationParser::class,
+			'SMW\UrlEncoder' => \SMW\Encoder::class,
+			'SMW\QueryResultPrinter' => \SMW\Query\ResultPrinter::class,
+			'SMWIResultPrinter' => \SMW\Query\ResultPrinter::class,
+			'SMW\ExportPrinter' => \SMW\Query\ExportPrinter::class,
+			'SMW\ResultPrinter' => \SMW\Query\ResultPrinters\ResultPrinter::class,
+			'SMWResultPrinter' => \SMW\Query\ResultPrinters\ResultPrinter::class,
+			'SMW\FileExportPrinter' => \SMW\Query\ResultPrinters\FileExportPrinter::class,
+			'SMW\ListResultPrinter' => \SMW\Query\ResultPrinters\ListResultPrinter::class,
+			'SMWQueryParser' => \SMW\Query\Parser::class,
+			'SMW\SQLStore\CompositePropertyTableDiffIterator' => \SMW\SQLStore\ChangeOp\ChangeOp::class,
+			'SMW\DBConnectionProvider' => \SMW\Connection\ConnectionProvider::class,
+			'SMWPropertyValue' => \SMW\DataValues\PropertyValue::class,
+			'SMWStringValue' => \SMW\DataValues\StringValue::class,
+			'\SMW\MediaWiki\Database' => \SMW\MediaWiki\Connection\Database::class,
+			'SMWDIString' => \SMWDIBlob::class,
+
+			// 1.9.
+			'SMWStore' => \SMW\Store::class,
+			'SMWUpdateJob' => \SMW\MediaWiki\Jobs\UpdateJob::class,
+			'SMWRefreshJob' => \SMW\MediaWiki\Jobs\RefreshJob::class,
+			'SMWSemanticData' => \SMW\SemanticData::class,
+			'SMWDIWikiPage' => \SMW\DIWikiPage::class,
+			'SMWDIProperty' => \SMW\DIProperty::class,
+			'SMWDISerializer' => \SMW\Serializers\QueryResultSerializer::class,
+			'SMWDataValueFactory' => \SMW\DataValueFactory::class,
+			'SMWDataItemException' => \SMW\Exception\DataItemException::class,
+			'SMWSQLStore3Table' => \SMW\SQLStore\PropertyTableDefinition::class,
+			'SMWDIConcept' => \SMW\DIConcept::class,
+			'SMWTableResultPrinter' => \SMW\Query\ResultPrinters\TableResultPrinter::class,
+
+			// 2.0
+			'SMWExportPrinter' => \SMW\Query\ResultPrinters\FileExportPrinter::class,
+			'SMWCategoryResultPrinter' => \SMW\Query\ResultPrinters\CategoryResultPrinter::class,
+			'SMWListResultPrinter' => \SMW\Query\ResultPrinters\ListResultPrinter::class,
+
+			// 2.0
+			'SMWSparqlStore' => \SMW\SPARQLStore\SPARQLStore::class,
+			'SMWSparqlDatabase4Store' => \SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector::class,
+			'SMWSparqlDatabaseVirtuoso' => \SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector::class,
+			'SMWSparqlDatabase' => \SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector::class,
+
+			// 2.1
+			'SMWSQLStore3' => \SMW\SQLStore\SQLStore::class,
+			'SMWDescription' => \SMW\Query\Language\Description::class,
+			'SMWThingDescription' => \SMW\Query\Language\ThingDescription::class,
+			'SMWClassDescription' => \SMW\Query\Language\ClassDescription::class,
+			'SMWConceptDescription' => \SMW\Query\Language\ConceptDescription::class,
+			'SMWNamespaceDescription' => \SMW\Query\Language\NamespaceDescription::class,
+			'SMWValueDescription' => \SMW\Query\Language\ValueDescription::class,
+			'SMWConjunction' => \SMW\Query\Language\Conjunction::class,
+			'SMWDisjunction' => \SMW\Query\Language\Disjunction::class,
+			'SMWSomeProperty' => \SMW\Query\Language\SomeProperty::class,
+			'SMWPrintRequest' => \SMW\Query\PrintRequest::class,
+			'SMWSearch' => \SMW\MediaWiki\Search\ExtendedSearchEngine::class,
+
+			// 2.2
+			// Some weird SF dependency needs to be removed as quick as possible
+			'SMW\SQLStore\PropertiesCollector' => \SMW\SQLStore\Lookup\ListLookup::class,
+			'SMW\SQLStore\UnusedPropertiesCollector' => \SMW\SQLStore\Lookup\ListLookup::class,
+
+			'SMWExpElement' => \SMW\Exporter\Element\ExpElement::class,
+			'SMWExpResource' => \SMW\Exporter\Element\ExpResource::class,
+			'SMWExpNsResource' => \SMW\Exporter\Element\ExpNsResource::class,
+			'SMWExpLiteral' => \SMW\Exporter\Element\ExpLiteral::class,
+			'SMWSQLStore3QueryEngine' => \SMW\SQLStore\QueryEngine\QueryEngine::class,
+
+			// 2.3
+			'SMW\ParserParameterFormatter' => \SMW\ParserParameterProcessor::class,
+			'SMW\ParameterFormatterFactory' => \SMW\ParameterProcessorFactory::class,
+
+			// 2.4
+			'SMWRequestOptions' => \SMW\RequestOptions::class,
+			'SMWStringCondition' => \SMW\StringCondition::class,
+			'SMW\Hash' => \SMW\HashBuilder::class,
+			'SMWBoolValue' => \SMW\DataValues\BooleanValue::class,
+
+			// 2.5
+			'SMW\FormatFactory' => \SMW\QueryPrinterFactory::class,
+			'SMW\SubobjectParserFunction' => \SMW\ParserFunctions\SubobjectParserFunction::class,
+			'SMW\RecurringEventsParserFunction' => \SMW\ParserFunctions\RecurringEventsParserFunction::class,
+			'SMW\SQLStore\TableDefinition' => \SMW\SQLStore\PropertyTableDefinition::class,
+			'SMWContainerSemanticData' => \SMW\DataModel\ContainerSemanticData::class,
+
+			// 3.0 (late alias definition)
+			'SMWElasticStore' => \SMW\Elastic\ElasticStore::class,
+		];
+	}
+
+	/**
 	 * SemanticMediaWiki compatibility aliases for classes that got moved into the SMW namespace
 	 *
 	 * @since 4.0
 	 */
 	public static function setupAliases(): void {
-
-		$alias = [
-			// 3.2
-			\SMW\Localizer\Localizer::class => '\SMW\Localizer',
-			\SMW\Localizer\Message::class => '\SMW\Message',
-			\SMW\Localizer\LocalLanguage\LocalLanguage::class => '\SMW\Lang\Lang',
-			\SMW\Exporter\Serializer\Serializer::class => '\SMWSerializer',
-			\SMW\Exporter\Serializer\TurtleSerializer::class => '\SMWTurtleSerializer',
-			\SMW\Exporter\Serializer\RDFXMLSerializer::class => '\SMWRDFXMLSerializer',
-
-			// 3.1
-			\SMW\Query\ResultPrinters\RdfResultPrinter::class => 'SMWRDFResultPrinter',
-			\SMW\Query\ResultPrinters\EmbeddedResultPrinter::class => 'SMWEmbeddedResultPrinter',
-			\SMW\Query\ResultPrinters\DsvResultPrinter::class => 'SMWDSVResultPrinter',
-			\SMW\Query\ResultPrinters\AggregatablePrinter::class => 'SMWAggregatablePrinter',
-			\SMW\Property\Annotator::class => 'SMW\PropertyAnnotator',
-			\SMW\Property\SpecificationLookup::class => 'SMW\PropertySpecificationLookup',
-			\SMW\Property\RestrictionExaminer::class => 'SMW\PropertyRestrictionExaminer',
-			\SMW\Query\Result\ResultArray::class => 'SMWResultArray',
-			\SMW\Query\QueryResult::class => 'SMWQueryResult',
-			\SMW\Services\ServicesFactory::class => '\SMW\ApplicationFactory',
-			\SMW\SQLStore\EntityStore\EntityIdManager::class => '\SMWSql3SmwIds',
-
-			// 3.0
-			\SMW\MediaWiki\Deferred\CallableUpdate::class => 'SMW\DeferredCallableUpdate',
-			\SMW\MediaWiki\Deferred\TransactionalCallableUpdate::class
-			=> 'SMW\DeferredTransactionalCallableUpdate',
-			\SMW\Parser\InTextAnnotationParser::class => 'SMW\InTextAnnotationParser',
-			\SMW\Encoder::class => 'SMW\UrlEncoder',
-			\SMW\Query\ResultPrinter::class => 'SMW\QueryResultPrinter',
-			\SMW\Query\ResultPrinter::class => 'SMWIResultPrinter',
-			\SMW\Query\ExportPrinter::class => 'SMW\ExportPrinter',
-			\SMW\Query\ResultPrinters\ResultPrinter::class => 'SMW\ResultPrinter',
-			\SMW\Query\ResultPrinters\ResultPrinter::class => 'SMWResultPrinter',
-			\SMW\Query\ResultPrinters\FileExportPrinter::class => 'SMW\FileExportPrinter',
-			\SMW\Query\ResultPrinters\ListResultPrinter::class => 'SMW\ListResultPrinter',
-			\SMW\Query\Parser::class => 'SMWQueryParser',
-			\SMW\SQLStore\ChangeOp\ChangeOp::class => 'SMW\SQLStore\CompositePropertyTableDiffIterator',
-			\SMW\Connection\ConnectionProvider::class => 'SMW\DBConnectionProvider',
-			\SMW\DataValues\PropertyValue::class => 'SMWPropertyValue',
-			\SMW\DataValues\StringValue::class => 'SMWStringValue',
-			\SMW\MediaWiki\Connection\Database::class => '\SMW\MediaWiki\Database',
-			\SMWDIBlob::class => 'SMWDIString',
-
-			// 1.9.
-			\SMW\Store::class => 'SMWStore',
-			\SMW\MediaWiki\Jobs\UpdateJob::class => 'SMWUpdateJob',
-			\SMW\MediaWiki\Jobs\RefreshJob::class => 'SMWRefreshJob',
-			\SMW\SemanticData::class => 'SMWSemanticData',
-			\SMW\DIWikiPage::class => 'SMWDIWikiPage',
-			\SMW\DIProperty::class => 'SMWDIProperty',
-			\SMW\Serializers\QueryResultSerializer::class => 'SMWDISerializer',
-			\SMW\DataValueFactory::class => 'SMWDataValueFactory',
-			\SMW\Exception\DataItemException::class => 'SMWDataItemException',
-			\SMW\SQLStore\PropertyTableDefinition::class => 'SMWSQLStore3Table',
-			\SMW\DIConcept::class => 'SMWDIConcept',
-			\SMW\Query\ResultPrinters\TableResultPrinter::class => 'SMWTableResultPrinter',
-
-			// 2.0
-			\SMW\Query\ResultPrinters\FileExportPrinter::class => 'SMWExportPrinter',
-			\SMW\Query\ResultPrinters\CategoryResultPrinter::class => 'SMWCategoryResultPrinter',
-			\SMW\ListResultPrinter::class => 'SMWListResultPrinter',
-
-			// 2.0
-			\SMW\SPARQLStore\SPARQLStore::class => 'SMWSparqlStore',
-			\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector::class
-			=> 'SMWSparqlDatabase4Store',
-			\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector::class
-			=> 'SMWSparqlDatabaseVirtuoso',
-			\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector::class
-			=> 'SMWSparqlDatabase',
-
-			// 2.1
-			\SMW\SQLStore\SQLStore::class => 'SMWSQLStore3',
-			\SMW\Query\Language\Description::class => 'SMWDescription',
-			\SMW\Query\Language\ThingDescription::class => 'SMWThingDescription',
-			\SMW\Query\Language\ClassDescription::class => 'SMWClassDescription',
-			\SMW\Query\Language\ConceptDescription::class => 'SMWConceptDescription',
-			\SMW\Query\Language\NamespaceDescription::class => 'SMWNamespaceDescription',
-			\SMW\Query\Language\ValueDescription::class => 'SMWValueDescription',
-			\SMW\Query\Language\Conjunction::class => 'SMWConjunction',
-			\SMW\Query\Language\Disjunction::class => 'SMWDisjunction',
-			\SMW\Query\Language\SomeProperty::class => 'SMWSomeProperty',
-			\SMW\Query\PrintRequest::class => 'SMWPrintRequest',
-			\SMW\MediaWiki\Search\ExtendedSearchEngine::class => 'SMWSearch',
-
-			// 2.2
-			// Some weird SF dependency needs to be removed as quick as possible
-			\SMW\SQLStore\Lookup\ListLookup::class => 'SMW\SQLStore\PropertiesCollector',
-			\SMW\SQLStore\Lookup\ListLookup::class => 'SMW\SQLStore\UnusedPropertiesCollector',
-
-			\SMW\Exporter\Element\ExpElement::class => 'SMWExpElement',
-			\SMW\Exporter\Element\ExpResource::class => 'SMWExpResource',
-			\SMW\Exporter\Element\ExpNsResource::class => 'SMWExpNsResource',
-			\SMW\Exporter\Element\ExpLiteral::class => 'SMWExpLiteral',
-			\SMW\SQLStore\QueryEngine\QueryEngine::class => 'SMWSQLStore3QueryEngine',
-
-			// 2.3
-			\SMW\ParserParameterProcessor::class => 'SMW\ParserParameterFormatter',
-			\SMW\ParameterProcessorFactory::class => 'SMW\ParameterFormatterFactory',
-
-			// 2.4
-			\SMW\RequestOptions::class => 'SMWRequestOptions',
-			\SMW\StringCondition::class => 'SMWStringCondition',
-			\SMW\HashBuilder::class => 'SMW\Hash',
-			\SMW\DataValues\BooleanValue::class => 'SMWBoolValue',
-
-			// 2.5
-			\SMW\QueryPrinterFactory::class => 'SMW\FormatFactory',
-			\SMW\ParserFunctions\SubobjectParserFunction::class => 'SMW\SubobjectParserFunction',
-			\SMW\ParserFunctions\RecurringEventsParserFunction::class
-			=> 'SMW\RecurringEventsParserFunction',
-			\SMW\SQLStore\PropertyTableDefinition::class => 'SMW\SQLStore\TableDefinition',
-			\SMW\DataModel\ContainerSemanticData::class => 'SMWContainerSemanticData',
-
-			// 3.0 (late alias definition)
-			\SMW\Elastic\ElasticStore::class => 'SMWElasticStore',
-		];
-
-		foreach( $alias as $canon => $class ) {
+		foreach( self::getClassAliasMap() as $class => $canon ) {
 			class_alias( $canon, $class );
 		}
 	}
