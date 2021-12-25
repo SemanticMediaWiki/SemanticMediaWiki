@@ -261,14 +261,12 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * passed-in Page Schemas XML object.
 	 */
 	public static function generatePages( $pageSchemaObj, $selectedPages ) {
-		global $wgUser;
-
 		$datatypeLabels = smwfContLang()->getDatatypeLabels();
 		$pageTypeLabel = $datatypeLabels['_wpg'];
 
 		$jobs = [];
 		$jobParams = [];
-		$jobParams['user_id'] = $wgUser->getId();
+		$jobParams['user_id'] = \RequestContext::getMain()->getUser()->getId();
 
 		// First, create jobs for all "connecting properties".
 		$psTemplates = $pageSchemaObj->getTemplates();

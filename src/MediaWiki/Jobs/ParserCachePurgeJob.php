@@ -45,7 +45,7 @@ class ParserCachePurgeJob extends Job {
 		if ( $this->hasParameter( 'user' ) ) {
 			$causeAgent = $this->getParameter( 'user' );
 		} else {
-			$causeAgent = $GLOBALS['wgUser']->getName();
+			$causeAgent = \RequestContext::getMain()->getUser()->getName;
 		}
 
 		if ( $page === null ) {
