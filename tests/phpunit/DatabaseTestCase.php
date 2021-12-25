@@ -12,6 +12,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use HashBagOStuff;
 use ObjectCache;
+use RequestContext;
 
 /**
  * @group semantic-mediawiki
@@ -112,7 +113,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
 		// @todo Should we start setting $wgUser to something nondeterministic
 		//  to encourage tests to be updated to not depend on it?
-		$user = \RequestContext::getMain()->getUser();
+		$user = RequestContext::getMain()->getUser();
 		$user->clearInstanceCache( $user->mFrom );
 
 		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();

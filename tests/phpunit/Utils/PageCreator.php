@@ -6,6 +6,7 @@ use CommentStoreComment;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
+use RequestContext;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
@@ -101,7 +102,7 @@ class PageCreator {
 		);
 
 		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
-		$performer = \RequestContext::getMain()->getUser();
+		$performer = RequestContext::getMain()->getUser();
 		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
 
 		$slotsUpdate = new RevisionSlotsUpdate();
