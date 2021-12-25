@@ -266,7 +266,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 		$jobs = [];
 		$jobParams = [];
-		$jobParams['user_id'] = \RequestContext::getMain()->getUser()->getId();
+		$jobParams['user_id'] = RequestContext::getMain()->getUser()->getId();
 
 		// First, create jobs for all "connecting properties".
 		$psTemplates = $pageSchemaObj->getTemplates();

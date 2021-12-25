@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use RequestContext;
 use SMW\MediaWiki\Job;
 use SMW\ApplicationFactory;
 use Title;
@@ -45,7 +46,7 @@ class ParserCachePurgeJob extends Job {
 		if ( $this->hasParameter( 'user' ) ) {
 			$causeAgent = $this->getParameter( 'user' );
 		} else {
-			$causeAgent = \RequestContext::getMain()->getUser()->getName;
+			$causeAgent = RequestContext::getMain()->getUser()->getName;
 		}
 
 		if ( $page === null ) {
