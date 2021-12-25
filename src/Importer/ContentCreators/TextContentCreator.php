@@ -157,6 +157,8 @@ class TextContentCreator implements ContentCreator {
 
 		if ( method_exists( $page, 'doUserEditContent' ) ) {
 			// MW 1.36+
+			// Use the global user if necessary (same as doEditContent())
+			$user = $user ?? \RequestContext::getMain()->getUser();
 			$status = $page->doUserEditContent(
 				$content,
 				$user,
