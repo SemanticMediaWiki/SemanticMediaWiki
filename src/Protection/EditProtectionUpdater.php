@@ -56,7 +56,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		$this->user = $user;
 
 		if ( $this->user === null ) {
-			$this->user = $GLOBALS['wgUser'];
+			$this->user = \RequestContext::getMain()->getUser();
 		}
 	}
 
