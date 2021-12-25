@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils;
 
 use CommentStoreComment;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
 use SMW\Tests\TestEnvironment;
@@ -128,13 +129,8 @@ class PageCreator {
 		$reason = "integration test";
 		$source = $this->getPage()->getTitle();
 
-		if ( class_exists( '\MovePage' ) ) {
-			$mp = new \MovePage( $source, $target );
-			$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
-		} else {
-			// deprecated since 1.25, use the MovePage class instead
-			$status = $source->moveTo( $target, false, $reason, $isRedirect );
-		}
+		$mp = MediaWikiServices::getInstance()->getMovePageFactory()->newMovePage( $source, $target );
+		$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
 
 		TestEnvironment::executePendingDeferredUpdates();
 
