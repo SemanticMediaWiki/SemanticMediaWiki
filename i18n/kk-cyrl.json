@@ -8,5 +8,6 @@
 	"smw-paramdesc-json-unescape": "Нәтижеде құтылмаған қиғаш сызықтармен көп байттылы Unicode белгілер болу керек.",
 	"smw_purge": "Жаңарту",
 	"browse": "Уикиді шолу",
-	"smw-livepreview-loading": "Жүктеуде…"
+	"smw-livepreview-loading": "Жүктеуде…",
+	"smw-listingcontinuesabbrev": "(жалғ.)"
 }

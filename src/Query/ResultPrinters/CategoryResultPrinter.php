@@ -157,7 +157,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		$language = Localizer::getInstance()->getUserLanguage();
 
-		$this->htmlColumns->setContinueAbbrev( wfMessage( 'listingcontinuesabbrev' )->text() );
+		$this->htmlColumns->setContinueAbbrev( wfMessage( 'smw-listingcontinuesabbrev' )->text() );
 		$this->htmlColumns->setColumns( $this->numColumns );
 		$this->htmlColumns->isRTL( $language->isRTL() );
 

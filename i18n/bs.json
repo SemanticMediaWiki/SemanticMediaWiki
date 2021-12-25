@@ -74,5 +74,6 @@
 	"smw-clipboard-copy-link": "Kopiraj link u međuspremnik",
 	"smw-data-lookup": "Dobavljam podatke...",
 	"smw-format-datatable-loadingrecords": "Učitavam...",
-	"smw-format-datatable-processing": "Obrađujem..."
+	"smw-format-datatable-processing": "Obrađujem...",
+	"smw-listingcontinuesabbrev": "nast."
 }

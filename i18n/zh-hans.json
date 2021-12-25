@@ -953,5 +953,6 @@
 	"smw-entity-examiner-associated-revision-mismatch": "版本",
 	"smw-entity-examiner-deferred-fake": "假的",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|约束}}",
-	"smw-indicator-revision-mismatch": "版本"
+	"smw-indicator-revision-mismatch": "版本",
+	"smw-listingcontinuesabbrev": "续"
 }

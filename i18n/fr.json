@@ -1147,5 +1147,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Contrainte|Contraintes}}",
 	"smw-indicator-revision-mismatch": "Révision",
 	"smw-indicator-revision-mismatch-error": "La vérification de la [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner révision associée] a mis en évidence une différence entre la révision référencée dans MediaWiki et celle associée dans Semantic MediaWiki pour cette entité.",
-	"smw-indicator-revision-mismatch-comment": "Une désynchronisation indique en général qu’un certain processus a interrompu l’opération de stockage dans MediaWiki Sémantique. Il est recommandé de vérifier les journaux du serveur et de rechercher les exceptions ou autres échecs."
+	"smw-indicator-revision-mismatch-comment": "Une désynchronisation indique en général qu’un certain processus a interrompu l’opération de stockage dans MediaWiki Sémantique. Il est recommandé de vérifier les journaux du serveur et de rechercher les exceptions ou autres échecs.",
+	"smw-listingcontinuesabbrev": "(suite)"
 }

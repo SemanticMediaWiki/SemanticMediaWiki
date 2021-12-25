@@ -34,5 +34,6 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|saniyə|saniyə}}",
 	"smw-help": "Kömək",
 	"smw-processing": "İşləyir ...",
-	"smw-redirect-target-unresolvable": "Hədəf \"$1\" səbəbindən həll olunmayacaq"
+	"smw-redirect-target-unresolvable": "Hədəf \"$1\" səbəbindən həll olunmayacaq",
+	"smw-listingcontinuesabbrev": "(davam)"
 }

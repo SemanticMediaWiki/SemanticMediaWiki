@@ -875,5 +875,6 @@
 	"smw-entity-examiner-associated-revision-mismatch": "Revisió",
 	"smw-entity-examiner-deferred-fake": "Simulació",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constricció|Constriccions}}",
-	"smw-indicator-revision-mismatch": "Revisió"
+	"smw-indicator-revision-mismatch": "Revisió",
+	"smw-listingcontinuesabbrev": " cont."
 }

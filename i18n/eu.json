@@ -324,5 +324,6 @@
 	"smw-section-collapse": "Atala kolapsatu",
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] formatua",
 	"smw-help": "Laguntza",
-	"smw-processing": "Prozesatzen..."
+	"smw-processing": "Prozesatzen...",
+	"smw-listingcontinuesabbrev": "jarr."
 }

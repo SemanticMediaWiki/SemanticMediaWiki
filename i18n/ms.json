@@ -51,5 +51,6 @@
 	"smw_result_noresults": "Tiada hasil.",
 	"smwadmin": "Fungsi penyelia untuk Semantic MediaWiki",
 	"smw-concept-cache-text": "Konsep ini mempunyai sejumlah $1 laman, dan kali terakhir dikemaskinikan pada $3, $2.",
-	"smw-livepreview-loading": "Memuatkan..."
+	"smw-livepreview-loading": "Memuatkan...",
+	"smw-listingcontinuesabbrev": "samb."
 }

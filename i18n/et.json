@@ -47,5 +47,6 @@
 	"smw-ui-tooltip-title-event": "Sündmus",
 	"smw_unknowntype": "Selle omaduse tüüp \"$1\" on vigane.",
 	"smw-property-predefined-default": "\"$1\" on eelmääratletud omadus tüübiga $2.",
-	"smw-livepreview-loading": "Laadimine..."
+	"smw-livepreview-loading": "Laadimine...",
+	"smw-listingcontinuesabbrev": "jätk"
 }

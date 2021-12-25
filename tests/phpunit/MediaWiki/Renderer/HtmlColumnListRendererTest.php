@@ -65,7 +65,7 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 			'B' => [ 'Baz', 'Fom', 'Fin', 'Fum' ]
 		] );
 
-		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
+		$listContinuesAbbrev = wfMessage( 'smw-listingcontinuesabbrev' )->text();
 
 		$expected = [
 			'<div class="smw-columnlist-container" dir="ltr">',

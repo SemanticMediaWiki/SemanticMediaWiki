@@ -601,5 +601,6 @@
 	"smw-property-tab-specification": "... więcej",
 	"smw-concept-tab-errors": "Błędy",
 	"smw-ask-tab-result": "Wynik",
-	"smw-ask-tab-code": "Kod"
+	"smw-ask-tab-code": "Kod",
+	"smw-listingcontinuesabbrev": "cd."
 }

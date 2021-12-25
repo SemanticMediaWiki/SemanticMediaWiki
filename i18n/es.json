@@ -879,5 +879,6 @@
 	"smw-legend": "Leyenda",
 	"smw-entity-examiner-deferred-constraint-error": "Restricción",
 	"smw-entity-examiner-associated-revision-mismatch": "Revisión",
-	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restricción|Restricciones}}"
+	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restricción|Restricciones}}",
+	"smw-listingcontinuesabbrev": "cont."
 }

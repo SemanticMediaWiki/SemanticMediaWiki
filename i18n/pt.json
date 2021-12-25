@@ -1001,5 +1001,6 @@
 	"smw-report": "Relatório",
 	"smw-legend": "Legenda",
 	"smw-datavalue-constraint-schema-category-invalid-type": "O esquema anotado \"$1\" é inválido para uma categoria; requer um tipo \"$2\".",
-	"smw-datavalue-constraint-schema-property-invalid-type": "O esquema anotado \"$1\" é inválido para uma propriedade; requer um tipo \"$2\"."
+	"smw-datavalue-constraint-schema-property-invalid-type": "O esquema anotado \"$1\" é inválido para uma propriedade; requer um tipo \"$2\".",
+	"smw-listingcontinuesabbrev": "cont."
 }

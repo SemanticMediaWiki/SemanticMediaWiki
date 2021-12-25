@@ -64,5 +64,6 @@
 	"smw_unknowntype": "இந்த உடமையின் வகை செல்லாதது",
 	"smw-livepreview-loading": "ஏற்றப்படுகிறது…",
 	"smw-no-data-available": "தரவேதும் கிடைக்கப்பெறவில்லை",
-	"smw-property-req-violation-missing-fields": "விடுபட்ட சொத்து \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields <code>Has fields</code>] இந்த \"$2\" வகைக்கான அறிவிப்பு தேவைப்படுகிறது."
+	"smw-property-req-violation-missing-fields": "விடுபட்ட சொத்து \"$1\" [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields <code>Has fields</code>] இந்த \"$2\" வகைக்கான அறிவிப்பு தேவைப்படுகிறது.",
+	"smw-listingcontinuesabbrev": "தொடரும்."
 }
