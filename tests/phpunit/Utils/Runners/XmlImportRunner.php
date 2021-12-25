@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use ImportReporter;
 use ImportStreamSource;
+use MediaWiki\MediaWikiServices;
 use RequestContext;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
@@ -83,7 +84,24 @@ class XmlImportRunner {
 			$config = \ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
 		}
 
-		$importer = new WikiImporter( $source->value, $config );
+		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
+			$importer = new WikiImporter( $source->value, $config );
+		} else {
+			$services = MediaWikiServices::getInstance();
+			$importer = new WikiImporter(
+				$source->value,
+				$config,
+				$services->getHookContainer(),
+				$services->getContentLanguage(),
+				$services->getNamespaceInfo(),
+				$services->getTitleFactory(),
+				$services->getWikiPageFactory(),
+				$services->getWikiRevisionUploadImporter(),
+				$services->getPermissionManager(),
+				$services->getContentHandlerFactory(),
+				$services->getSlotRoleRegistry()
+			);
+		}
 		$importer->setDebug( $this->verbose );
 
 		$reporter = new ImportReporter(
