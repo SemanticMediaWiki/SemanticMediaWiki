@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
+use CommentStoreComment;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Storage\RevisionSlotsUpdate;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
@@ -25,7 +28,7 @@ class PageCreator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return WikiPage
+	 * @return \WikiPage
 	 */
 	public function setPage( \WikiPage $page ) {
 		$this->page = $page;
@@ -34,7 +37,7 @@ class PageCreator {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return WikiPage
+	 * @return \WikiPage
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
@@ -96,10 +99,16 @@ class PageCreator {
 			$this->getPage()->getTitle()
 		);
 
-		$this->getPage()->doEditContent(
-			$content,
-			$editMessage
-		);
+		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
+		$performer = \RequestContext::getMain()->getUser();
+		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
+
+		$slotsUpdate = new RevisionSlotsUpdate();
+		$slotsUpdate->modifyContent( SlotRecord::MAIN, $content );
+
+		$this->getPage()->newPageUpdater( $performer, $slotsUpdate )
+			->setContent( SlotRecord::MAIN, $content )
+			->saveRevision( $summary );
 
 		TestEnvironment::executePendingDeferredUpdates();
 
