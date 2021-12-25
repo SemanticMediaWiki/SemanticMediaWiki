@@ -106,9 +106,9 @@ class PageCreator {
 		$slotsUpdate = new RevisionSlotsUpdate();
 		$slotsUpdate->modifyContent( SlotRecord::MAIN, $content );
 
-		$this->getPage()->newPageUpdater( $performer, $slotsUpdate )
-			->setContent( SlotRecord::MAIN, $content )
-			->saveRevision( $summary );
+		$updater = $this->getPage()->newPageUpdater( $performer, $slotsUpdate );
+		$updater->setContent( SlotRecord::MAIN, $content );
+		$updater->saveRevision( $summary );
 
 		TestEnvironment::executePendingDeferredUpdates();
 
