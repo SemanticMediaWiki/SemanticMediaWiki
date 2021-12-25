@@ -50,7 +50,7 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 
 	public function defaultSettingsProvider() {
 
-		$defaultSettings = SemanticMediaWiki::getDefaultSettings();
+		$defaultSettings = \SemanticMediaWiki::getDefaultSettings();
 
 		foreach ( $defaultSettings['smwgElasticsearchConfig'] as $key => $configs ) {
 
