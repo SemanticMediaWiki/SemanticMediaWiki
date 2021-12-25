@@ -212,5 +212,6 @@
 	"smw-format-datatable-previous": "पिछला",
 	"smw-section-expand": "अंश का विस्तार करें",
 	"smw-section-collapse": "अंश को संक्षिप्त करें",
-	"smw-types-title": "प्रकार: $1"
+	"smw-types-title": "प्रकार: $1",
+	"smw-listingcontinuesabbrev": "जारी"
 }

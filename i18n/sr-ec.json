@@ -362,5 +362,6 @@
 	"smw-ask-tab-extra": "Додатно",
 	"smw-ask-tab-code": "Кôд",
 	"smw-pendingtasks-setup-tasks": "Задаци",
-	"smw-es-replication-error-divergent-date-short": "Следеће информације о датуму коришћене су ради поређења:"
+	"smw-es-replication-error-divergent-date-short": "Следеће информације о датуму коришћене су ради поређења:",
+	"smw-listingcontinuesabbrev": "наст."
 }

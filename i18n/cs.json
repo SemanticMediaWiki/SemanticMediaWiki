@@ -377,5 +377,6 @@
 	"smw-property-tab-usage": "Použití",
 	"smw-property-tab-redirects": "Synonyma",
 	"smw-concept-tab-list": "Seznam",
-	"smw-concept-tab-errors": "Chyby"
+	"smw-concept-tab-errors": "Chyby",
+	"smw-listingcontinuesabbrev": "pokrač."
 }

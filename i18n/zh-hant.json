@@ -1123,5 +1123,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|限制}}",
 	"smw-indicator-revision-mismatch": "修訂",
 	"smw-indicator-revision-mismatch-error": "[https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner 相關修訂]檢查發現在 MediaWiki 引用的修訂之間內容不符合，且關聯到用於此實體的 Semantic MediaWiki。",
-	"smw-indicator-revision-mismatch-comment": "不符合通常表示某些程序中斷了在 Semantic MediaWiki 的儲存操作。建議檢視伺服器日誌並查看例外或其它錯誤。"
+	"smw-indicator-revision-mismatch-comment": "不符合通常表示某些程序中斷了在 Semantic MediaWiki 的儲存操作。建議檢視伺服器日誌並查看例外或其它錯誤。",
+	"smw-listingcontinuesabbrev": "續"
 }

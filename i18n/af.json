@@ -118,5 +118,6 @@
 	"smw-populatehashfield-incomplete": "Die <code> smw_hash </code> -populasie is tydens die opstelling oorgeslaan; die [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] -skrif is nodig om uitgevoer te word.",
 	"smw-elastic-rebuildelasticindex-run-incomplete": "Die <code> ElasticStore </code> is gekies as [https://www.semantic-mediawiki.org/wiki/Help:smwgDefaultStore standaardwinkel], maar die uitbreiding kon nog geen rekord vind dat die [https: / /www.semantic-mediawiki.org/wiki/Help:rebuildElasticIndex.php buildElasticIndex.php] script is uitgevoer, voer asseblief die script uit soos voorgeskryf.",
 	"smw-pendingtasks-setup-intro": "Die {{PLURAL:$1|installasie|opgradering}} van <b> Semantic MediaWiki </b> het die volgende take geklassifiseer as [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/Incomplete_upgrade onvolledig] en daar word van 'n administrateur (of gebruiker met voldoende regte) verwag om hierdie take op te los voordat gebruikers voortgaan om inhoud te skep of te verander. Die {{PLURAL:$1|installasie|opgradering}} van <b> Semantic MediaWiki </b> het die die volgende take te volg as [https://www.semantic-mediawiki.org/wiki/Help:Upgrade/Incomplete_upgrade onvolledig] en daar word van 'n administrateur (of gebruiker met voldoende regte) verwag om hierdie take op te los voordat gebruikers voortgaan om inhoud te skep of te verander.",
-	"smw-pendingtasks-setup-tasks": "take"
+	"smw-pendingtasks-setup-tasks": "take",
+	"smw-listingcontinuesabbrev": "vervolg"
 }

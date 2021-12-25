@@ -230,5 +230,6 @@
 	"smw-limitreport-intext-parsertime": "[SMW] De Zigg di der Paaser för et Annotehre jebruch hät",
 	"smw-limitreport-intext-parsertime-value": "{{PLURAL:$1|eijn Sekond|$1 Sekonde|keijn Sekond}}",
 	"smw-limitreport-pagepurge-storeupdatetime": "[SMW] De Duur för et Ändere fum Zwescheschpeijscher beim Fottschmiiße",
-	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|eijn Sekond|$1 Sekond|keijn Sekond}}"
+	"smw-limitreport-pagepurge-storeupdatetime-value": "{{PLURAL:$1|eijn Sekond|$1 Sekond|keijn Sekond}}",
+	"smw-listingcontinuesabbrev": "… (wigger)"
 }

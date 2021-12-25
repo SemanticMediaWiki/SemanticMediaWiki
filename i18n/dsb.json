@@ -263,5 +263,6 @@
 	"action-smw-admin": "administraciske nadawki Semantic MediaWiki",
 	"smw-sp-properties-header-label": "Lisćina kakosćow",
 	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś",
-	"smw-livepreview-loading": "Lodowanje …"
+	"smw-livepreview-loading": "Lodowanje …",
+	"smw-listingcontinuesabbrev": "dalej"
 }

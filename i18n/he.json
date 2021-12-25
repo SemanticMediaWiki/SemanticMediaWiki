@@ -551,5 +551,6 @@
 	"smw-remote-request-note-cached": "התוצאה '''מוטמנת''' מהמקור החיצוני '''$1''', והתוכן המיוצר עלול להכיל מידע שאינו זמין מתוך אתר הוויקי הנוכחי.",
 	"smw-es-replication-check": "בדיקת שכפול (Elasticsearch)",
 	"smw-es-replication-error-missing-id": "ניטור שכפול מצא שהערך \"$1\" (מזהה: $2) חסר משרת Elasticsearch.",
-	"smw-es-replication-error-divergent-revision": "ניטור שכפול מצא שעבור הערך \"$1\" (מזהה: $2) <b>הגרסה המשויכת</b>מציגה חוסר־עקביות."
+	"smw-es-replication-error-divergent-revision": "ניטור שכפול מצא שעבור הערך \"$1\" (מזהה: $2) <b>הגרסה המשויכת</b>מציגה חוסר־עקביות.",
+	"smw-listingcontinuesabbrev": "(המשך)"
 }

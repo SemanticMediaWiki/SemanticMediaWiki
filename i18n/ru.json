@@ -897,5 +897,6 @@
 	"smw-entity-examiner-deferred-constraint-error": "Ограничение",
 	"smw-entity-examiner-deferred-fake": "Не настоящие",
 	"smw-indicator-revision-mismatch": "Редакция",
-	"smw-indicator-revision-mismatch-error": "Проверка [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner связанной ревизии] обнаружила несоответствие между ревизией, на которую ссылается MediaWiki, и ревизией, ассоциированной в Semantic MediaWiki для этой сущности."
+	"smw-indicator-revision-mismatch-error": "Проверка [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner связанной ревизии] обнаружила несоответствие между ревизией, на которую ссылается MediaWiki, и ревизией, ассоциированной в Semantic MediaWiki для этой сущности.",
+	"smw-listingcontinuesabbrev": "(продолжение)"
 }

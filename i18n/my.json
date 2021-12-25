@@ -123,5 +123,6 @@
 	"smw-pendingtasks-setup-tasks": "တာဝန်များ",
 	"smw-es-replication-error-divergent-date-short": "အောက်ပါ ရက်စွဲအချက်အလက်များကို နှိုင်းယှဉ်ခြင်းအတွက် အသုံးပြုပါသည်:",
 	"smw-report": "အစီရင်ခံရန်",
-	"smw-legend": "အညွှန်း"
+	"smw-legend": "အညွှန်း",
+	"smw-listingcontinuesabbrev": "ပံ့ပိုး"
 }

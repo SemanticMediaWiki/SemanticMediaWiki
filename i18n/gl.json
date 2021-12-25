@@ -778,5 +778,6 @@
 	"smw-ask-tab-result": "Resultado",
 	"smw-ask-tab-extra": "Extras",
 	"smw-ask-tab-debug": "Depuración",
-	"smw-ask-tab-code": "Código"
+	"smw-ask-tab-code": "Código",
+	"smw-listingcontinuesabbrev": "cont."
 }

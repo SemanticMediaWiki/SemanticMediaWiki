@@ -8,5 +8,6 @@
 	"browse": "ვიკიშ ძირაფა",
 	"smw-limitreport-intext-parsertime-value": "$1 მერქა",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 მერქა",
-	"smw-jsonview-search-label": "გორუა:"
+	"smw-jsonview-search-label": "გორუა:",
+	"smw-listingcontinuesabbrev": "გჷნძარ."
 }

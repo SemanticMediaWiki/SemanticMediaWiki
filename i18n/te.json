@@ -131,5 +131,6 @@
 	"smw-category": "వర్గం",
 	"smw-help": "సహాయం",
 	"smw-types-title": "రకం: $1",
-	"smw-schema-error-violation": "[\"$1\", \"$2\"]"
+	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
+	"smw-listingcontinuesabbrev": "(కొనసాగింపు)"
 }

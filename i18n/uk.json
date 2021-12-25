@@ -1118,5 +1118,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Обмеження}}",
 	"smw-indicator-revision-mismatch": "Версія",
 	"smw-indicator-revision-mismatch-error": "Перевірка [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner пов'язаної версії] виявила невідповідність між версією, на яку посилається MediaWiki, та тією, з якою здійснюється пов'язування в Семантичній MediaWiki для цієї сутності.",
-	"smw-indicator-revision-mismatch-comment": "Невідповідність зазвичай свідчить про те, що якийсь процес перервав операцію зі зберігання в Семантичній MediaWiki. Рекомендується переглянути журнали сервера та пошукати винятків чи інших невдач."
+	"smw-indicator-revision-mismatch-comment": "Невідповідність зазвичай свідчить про те, що якийсь процес перервав операцію зі зберігання в Семантичній MediaWiki. Рекомендується переглянути журнали сервера та пошукати винятків чи інших невдач.",
+	"smw-listingcontinuesabbrev": "(прод.)"
 }

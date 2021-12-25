@@ -1123,5 +1123,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restrição|Restrições}}",
 	"smw-indicator-revision-mismatch": "Revisão",
 	"smw-indicator-revision-mismatch-error": "A verificação da [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner revisão associada] encontrou uma incompatibilidade entre a revisão mencionada no MediaWiki e a que está sendo associada no Semantic MediaWiki para esta entidade.",
-	"smw-indicator-revision-mismatch-comment": "Uma incompatibilidade normalmente indica que algum processo interrompeu a operação de armazenamento do Semantic MediaWiki. É recomendado revisar os logs do servidor e procurar por erros ou outras falhas."
+	"smw-indicator-revision-mismatch-comment": "Uma incompatibilidade normalmente indica que algum processo interrompeu a operação de armazenamento do Semantic MediaWiki. É recomendado revisar os logs do servidor e procurar por erros ou outras falhas.",
+	"smw-listingcontinuesabbrev": "cont."
 }

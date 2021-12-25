@@ -428,5 +428,6 @@
 	"smw-datavalue-external-formatter-invalid-uri": "«$1» зьяўляецца няправільным URL-адрасам.",
 	"smw-datavalue-parse-error": "Дадзенае значэньне «$1» не было распазнанае.",
 	"smw-no-data-available": "Няма даступных зьвестак.",
-	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch."
+	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
+	"smw-listingcontinuesabbrev": " (працяг)"
 }

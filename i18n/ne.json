@@ -51,5 +51,6 @@
 	"smw-entity-examiner-deferred-elastic-replication": "लचकता",
 	"smw-entity-examiner-deferred-fake": "नक्कली",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|बाधा|बाधाहरू}}",
-	"smw-indicator-revision-mismatch": "पुनरावलोकन"
+	"smw-indicator-revision-mismatch": "पुनरावलोकन",
+	"smw-listingcontinuesabbrev": "निरन्तरता..."
 }

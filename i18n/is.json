@@ -20,5 +20,6 @@
 	"smw-admin-supplementary-elastic-statistics-title": "Tölfræði",
 	"smw-livepreview-loading": "Framkalla…",
 	"log-name-smw": "Aðgerðaskrá yfir málskipan MediaWiki",
-	"smw-type-tab-types": "Tegundir"
+	"smw-type-tab-types": "Tegundir",
+	"smw-listingcontinuesabbrev": "frh."
 }

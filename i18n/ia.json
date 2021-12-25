@@ -315,5 +315,6 @@
 	"smw-es-replication-error-no-connection": "Le surveliantia de replication non pote exequer verificationes perque illo non pote establir un connexion al racemo Elasticsearch.",
 	"smw-es-replication-error-suggestions-no-connection": "Es suggerite contactar le administrator del wiki pro signalar le problema \"nulle connexion\".",
 	"smw-datavalue-constraint-schema-category-invalid-type": "Le schema annotate \"$1\" es invalide pro un categoria; illo require un typo \"$2\".",
-	"smw-datavalue-constraint-schema-property-invalid-type": "Le schema annotate \"$1\" es invalide pro un proprietate; illo require un typo \"$2\"."
+	"smw-datavalue-constraint-schema-property-invalid-type": "Le schema annotate \"$1\" es invalide pro un proprietate; illo require un typo \"$2\".",
+	"smw-listingcontinuesabbrev": "cont."
 }

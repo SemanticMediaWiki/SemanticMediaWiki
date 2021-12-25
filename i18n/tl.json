@@ -247,5 +247,6 @@
 	"smw-format-datatable-last": "Dulo",
 	"smw-filter": "Pansala",
 	"smw-help": "Makatulong",
-	"smw-remote-source-unavailable": "Hindi mai-'connect' sa 'remote \"$1\" target'."
+	"smw-remote-source-unavailable": "Hindi mai-'connect' sa 'remote \"$1\" target'.",
+	"smw-listingcontinuesabbrev": "karugtong"
 }

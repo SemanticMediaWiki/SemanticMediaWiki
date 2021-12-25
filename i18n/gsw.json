@@ -184,5 +184,6 @@
 	"smw_unknowntype": "Imn dr Eigeschaft isch dr nit bekannt Datetyp „$1“ zuegwise wore.",
 	"smw_concept_header": "Syte vum Konzäpt „$1“",
 	"smw_conceptarticlecount": "S {{PLURAL:$1|wird ei Syten|wäre $1 Syten}} aazeigt, wu zue däm Konzäpt {{PLURAL:$1|ghert|ghere}}:",
-	"smw-livepreview-loading": "Am Lade …"
+	"smw-livepreview-loading": "Am Lade …",
+	"smw-listingcontinuesabbrev": "(Forts.)"
 }

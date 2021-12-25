@@ -144,5 +144,6 @@
 	"smw-concept-tab-list": "Listă",
 	"smw-concept-tab-errors": "Erori",
 	"smw-install-incomplete-intro": "Instalarea (sau actualizarea) aplicației <b>Semantic MediaWiki</b> nu a fost finalizată și un administrator ar trebui să execute următoarele activități pentru a preveni inconsecvențele de date înainte ca utilizatorii să continue să creeze sau să modifice conținut.",
-	"smw-install-incomplete-populate-hash-field": "Populația de câmp <code>smw_hash</code> a fost omisă în timpul configurării, este necesar să fie executat scriptul [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php]."
+	"smw-install-incomplete-populate-hash-field": "Populația de câmp <code>smw_hash</code> a fost omisă în timpul configurării, este necesar să fie executat scriptul [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php].",
+	"smw-listingcontinuesabbrev": "cont."
 }

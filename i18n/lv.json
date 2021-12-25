@@ -55,5 +55,6 @@
 	"smw-schema-error-json": "JSON kļūme:\"$1\"",
 	"smw-schema-summary-title": "Kopsavilkums",
 	"smw-schema-tag": "{{PLURAL:$1|Iezīmes|Iezīme|Iezīmes}}",
-	"smw-indicator-revision-mismatch": "Versija"
+	"smw-indicator-revision-mismatch": "Versija",
+	"smw-listingcontinuesabbrev": " (turpinājums)"
 }

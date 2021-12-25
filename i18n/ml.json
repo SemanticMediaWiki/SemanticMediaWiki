@@ -35,5 +35,6 @@
 	"smw_result_noresults": "ക്ഷമിക്കുക, ഫലങ്ങൾ ഒന്നുമില്ല",
 	"smw-livepreview-loading": "ശേഖരിക്കുന്നു...",
 	"smw-data-lookup": "വിവരം ലഭ്യമാക്കുന്നു ...",
-	"smw-no-data-available": "വിവരങ്ങളൊന്നും ലഭ്യമല്ല."
+	"smw-no-data-available": "വിവരങ്ങളൊന്നും ലഭ്യമല്ല.",
+	"smw-listingcontinuesabbrev": "തുടർച്ച."
 }

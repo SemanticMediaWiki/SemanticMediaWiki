@@ -24,5 +24,6 @@
 	"smw_nofloat": "\"$1\" pa yon nimewo.",
 	"smw_infinite": "Nimewo ki gwo tankou \"$1\" pa sipòte.",
 	"browse": "Pran yon gade nan wiki sa a",
-	"smw_unknowntype": "Tip done \"$1\" yo ki pa sipòte retounen nan atribi a."
+	"smw_unknowntype": "Tip done \"$1\" yo ki pa sipòte retounen nan atribi a.",
+	"smw-listingcontinuesabbrev": "(kontinye)"
 }

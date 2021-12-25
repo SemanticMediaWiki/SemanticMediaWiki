@@ -662,5 +662,6 @@
 	"smw-es-replication-error-divergent-revision-short": "다음의 관련 판 데이터는 비교를 위해 사용되었습니다:",
 	"smw-report": "보고서",
 	"smw-legend": "범례",
-	"smw-entity-examiner-associated-revision-mismatch": "판"
+	"smw-entity-examiner-associated-revision-mismatch": "판",
+	"smw-listingcontinuesabbrev": "(계속)"
 }

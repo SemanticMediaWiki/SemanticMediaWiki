@@ -28,5 +28,6 @@
 	"smw-admin-installfile": "Калі ў Вас узнікнуць праблемы з усталяваннем, пачніце з рэкамендацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файле INSTALL</a>.",
 	"smw-ui-tooltip-title-property": "Уласцівасць",
 	"smw-livepreview-loading": "Счытваем…",
-	"smw-help": "Даведка"
+	"smw-help": "Даведка",
+	"smw-listingcontinuesabbrev": "працяг"
 }

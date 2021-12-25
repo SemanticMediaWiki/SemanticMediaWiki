@@ -209,7 +209,7 @@ class HtmlColumnListRenderer {
 		}
 
 		$this->rowsPerColumn = ceil( $this->numberOfResults / $this->numberOfColumns );
-		$listContinuesAbbrev = wfMessage( 'listingcontinuesabbrev' )->text();
+		$listContinuesAbbrev = wfMessage( 'smw-listingcontinuesabbrev' )->text();
 
 		foreach ( $this->contentsByIndex as $key => $resultItems ) {
 
