@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Utils\Page;
 
+use CommentStoreComment;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Storage\RevisionSlotsUpdate;
 use RuntimeException;
 use Title;
 use WikiPage;
@@ -60,10 +63,16 @@ class PageEditor {
 
 		$content = new \WikitextContent( $pageContent );
 
-		$this->getPage()->doEditContent(
-			$content,
-			$editMessage
-		);
+		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
+		$performer = \RequestContext::getMain()->getUser();
+		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
+
+		$slotsUpdate = new RevisionSlotsUpdate();
+		$slotsUpdate->modifyContent( SlotRecord::MAIN, $content );
+
+		$this->getPage()->newPageUpdater( $performer, $slotsUpdate )
+			->setContent( SlotRecord::MAIN, $content )
+			->saveRevision( $summary );
 
 		return $this;
 	}
