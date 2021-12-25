@@ -7,6 +7,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use Parser;
 use ParserOptions;
+use RequestContext;
 use Title;
 use User;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
@@ -195,6 +196,7 @@ class ContentParser {
 			}
 		}
 
+		$user = $user ?? RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
 
 		// Use the InterfaceMessage marker to skip InTextAnnotationParser
