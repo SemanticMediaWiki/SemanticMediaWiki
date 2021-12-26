@@ -1,4 +1,4 @@
-http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]
+http://xmlns.com/foaf/0.1/|[http://xmlns.com/foaf/spec/ Friend Of A Friend]
  name|Type:Text
  homepage|Type:URL
  mbox|Type:Email
