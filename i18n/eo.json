@@ -177,5 +177,6 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|sekundo|sekundoj}}",
 	"smw-property-predefined-pvuc": "\"$1\" estas predifinita eco, provizita de [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantika Mediavikio] por restrikti valorajn atribuojn por ke ĉiu ekzemplero estas unika (aŭ maksimume ekzemplerigita unufoje).",
 	"smw-datavalue-parse-error": "La donita valoro \"$1\" ne estis komprenita.",
-	"smw-format-datatable-next": "Sekva"
+	"smw-format-datatable-next": "Sekva",
+	"smw-listingcontinuesabbrev": "daŭrigo"
 }

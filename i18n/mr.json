@@ -129,5 +129,6 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-ask-title-keyword-type": "मुख्यशब्दचा शोध",
-	"smw-ask-message-keyword-type": "ह्या शोधातून <code><nowiki>$1</nowiki></code> ही अट जुळली आहे"
+	"smw-ask-message-keyword-type": "ह्या शोधातून <code><nowiki>$1</nowiki></code> ही अट जुळली आहे",
+	"smw-listingcontinuesabbrev": "पुढे चला"
 }

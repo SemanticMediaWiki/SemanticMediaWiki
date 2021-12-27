@@ -165,5 +165,6 @@
 	"smw-format-datatable-processing": "Обработка...",
 	"smw-format-datatable-search": "Търсене:",
 	"smw-format-datatable-next": "Следваща",
-	"smw-help": "Помощ"
+	"smw-help": "Помощ",
+	"smw-listingcontinuesabbrev": "продълж."
 }

@@ -89,5 +89,6 @@
 	"smw-limitreport-intext-postproctime-value": "$1 {{PLURAL:$1|секунд}}",
 	"smw-format-datatable-previous": "Хьалхара",
 	"smw-category": "Категори",
-	"smw-help": "ГӀо"
+	"smw-help": "ГӀо",
+	"smw-listingcontinuesabbrev": "(кхин дlа)"
 }

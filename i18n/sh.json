@@ -15,5 +15,6 @@
 	"action-smw-pageedit": "uređujete stranice s anotacijom <code>Is edit protected</code> (Semantic MediaWiki)",
 	"action-smw-admin": "pristupanje administratorskima zadacima Semantički MediaWiki",
 	"action-smw-ruleedit": "uređivanje odredbenih stranica (Semantički MediaWiki)",
-	"smw-livepreview-loading": "Učitavanje..."
+	"smw-livepreview-loading": "Učitavanje...",
+	"smw-listingcontinuesabbrev": "nast."
 }

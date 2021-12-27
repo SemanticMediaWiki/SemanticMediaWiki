@@ -1098,5 +1098,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Kısıtlama|Kısıtlama}}",
 	"smw-indicator-revision-mismatch": "Revizyon",
 	"smw-indicator-revision-mismatch-error": "[https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner İlişkilendirilmiş düzeltme] denetimi, MediaWiki'de başvurulan düzeltme ile bu varlık için Semantic MediaWiki'de ilişkilendirilen düzeltme arasında bir uyumsuzluk buldu.",
-	"smw-indicator-revision-mismatch-comment": "Uyumsuzluk normalde bazı işlemlerin Semantic MediaWiki'deki depolama işlemini kesintiye uğrattığını gösterir. Sunucu günlüklerini incelemeniz ve özel durumlar veya diğer hatalar olup olmadığına bakmanız önerilir."
+	"smw-indicator-revision-mismatch-comment": "Uyumsuzluk normalde bazı işlemlerin Semantic MediaWiki'deki depolama işlemini kesintiye uğrattığını gösterir. Sunucu günlüklerini incelemeniz ve özel durumlar veya diğer hatalar olup olmadığına bakmanız önerilir.",
+	"smw-listingcontinuesabbrev": "devam"
 }

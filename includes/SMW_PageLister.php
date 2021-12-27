@@ -254,7 +254,7 @@ class SMWPageLister {
 					}
 
 					if ( $startChar == $prevStartChar ) {
-						$cont_msg = ' ' . wfMessage( 'listingcontinuesabbrev' )->escaped();
+						$cont_msg = ' ' . wfMessage( 'smw-listingcontinuesabbrev' )->escaped();
 					} else {
 						$cont_msg = '';
 					}

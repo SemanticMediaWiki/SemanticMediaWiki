@@ -1028,5 +1028,6 @@
 	"smw-entity-examiner-deferred-elastic-replication": "This is a label. Translate as noun. Elastic as Elasticsearch.",
 	"smw-entity-examiner-deferred-constraint-error": "This is a label.",
 	"smw-entity-examiner-deferred-fake": "This is a label.",
-	"smw-indicator-revision-mismatch": "This is a label."
+	"smw-indicator-revision-mismatch": "This is a label.",
+	"smw-listingcontinuesabbrev": "Shown in continuation of each first letter group. This message follows the first letter.\n\nThis is an abbreviation of the English word \"continued\". If the word is short in your language, the full stop in the end is not necessary."
 }

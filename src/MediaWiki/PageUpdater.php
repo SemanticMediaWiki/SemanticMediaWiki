@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use DeferrableUpdate;
 use DeferredpendingUpdates;
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Utils\Timer;
@@ -171,7 +172,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * @return boolean
 	 */
 	public function canUpdate() {
-		return !wfReadOnly();
+		return !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
 	}
 
 	/**

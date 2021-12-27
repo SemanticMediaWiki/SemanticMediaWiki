@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SiteStats;
 use WikiMap;
 
@@ -25,7 +26,7 @@ class Site {
 		// MediaWiki\Services\ServiceDisabledException from line 340 of
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
-			$isReadOnly = wfReadOnly();
+			$isReadOnly = MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
 		} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
 			$isReadOnly = true;
 		}

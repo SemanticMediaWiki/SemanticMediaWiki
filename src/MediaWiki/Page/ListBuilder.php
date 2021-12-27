@@ -153,7 +153,7 @@ class ListBuilder {
 		$htmlColumns->isRTL( $this->isRTL );
 
 		$htmlColumns->setContinueAbbrev(
-			Message::get( 'listingcontinuesabbrev', Message::PARSE, Message::USER_LANGUAGE )
+			Message::get( 'smw-listingcontinuesabbrev', Message::PARSE, Message::USER_LANGUAGE )
 		);
 
 		$htmlColumns->setContents(

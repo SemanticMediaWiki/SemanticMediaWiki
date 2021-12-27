@@ -1112,5 +1112,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constraint|Constraints}}",
 	"smw-indicator-revision-mismatch": "Revision",
 	"smw-indicator-revision-mismatch-error": "The [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner associated revision] check found a mismatch between the revision referenced in MediaWiki and the one being associated in Semantic MediaWiki for this entity.",
-	"smw-indicator-revision-mismatch-comment": "A mismatch normally indicates that some process interrupted the storage operation in Semantic MediaWiki. It is recommended to review the server logs and look for exceptions or other failures."
+	"smw-indicator-revision-mismatch-comment": "A mismatch normally indicates that some process interrupted the storage operation in Semantic MediaWiki. It is recommended to review the server logs and look for exceptions or other failures.",
+	"smw-listingcontinuesabbrev": "cont."
 }

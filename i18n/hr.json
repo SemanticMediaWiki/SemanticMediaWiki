@@ -228,5 +228,6 @@
 	"smw-type-tab-errors": "Pogreške",
 	"smw-type-primitive": "Temeljno",
 	"smw-install-incomplete-intro-note": "Ova će se poruka prestati prikazivati nakon što svi značajni zadaci budu riješeni.",
-	"smw-pendingtasks-setup-tasks": "Zadaci"
+	"smw-pendingtasks-setup-tasks": "Zadaci",
+	"smw-listingcontinuesabbrev": "nast."
 }

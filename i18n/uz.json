@@ -12,5 +12,6 @@
 	"prefs-smw": "Semantik MediaWiki",
 	"prefs-ask-options": "Maʼnoviy qidiruv moslamalari",
 	"smw-prefs-ask-options-tooltip-display": "«Matn» koʻrsatkichini paydo boʻladigan yordamchi sifatida aks ettirish",
-	"smw_unknowntype": "Ushbu xossaning tipi noto'g'ri"
+	"smw_unknowntype": "Ushbu xossaning tipi noto'g'ri",
+	"smw-listingcontinuesabbrev": "davomi"
 }

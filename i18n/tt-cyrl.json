@@ -32,5 +32,6 @@
 	"group-smwadministrator": "Идарәчеләр (Semantic MediaWiki)",
 	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Идарәчеләр (Semantic MediaWiki)",
-	"smw-livepreview-loading": "Төяү бара…"
+	"smw-livepreview-loading": "Төяү бара…",
+	"smw-listingcontinuesabbrev": "дәвамы"
 }

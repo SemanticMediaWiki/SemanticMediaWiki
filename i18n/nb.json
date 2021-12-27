@@ -1102,5 +1102,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Begrensning|Begrensninger}}",
 	"smw-indicator-revision-mismatch": "Revisjon",
 	"smw-indicator-revision-mismatch-error": "Sjekken for [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner assosiert revisjon] fant manglende samsvar mellom revisjonen som refereres til i MediaWiki og den som er assosiert med Semantic MediaWiki for denne entiteten.",
-	"smw-indicator-revision-mismatch-comment": "Manglende samsvar indikerer vanligvis at en prosess forstyrret lagringsoperasjonen i Semantic MediaWiki. Det anbefales å gå gjennom tjenerloggene og se etter unntak eller andre feil."
+	"smw-indicator-revision-mismatch-comment": "Manglende samsvar indikerer vanligvis at en prosess forstyrret lagringsoperasjonen i Semantic MediaWiki. Det anbefales å gå gjennom tjenerloggene og se etter unntak eller andre feil.",
+	"smw-listingcontinuesabbrev": "forts."
 }

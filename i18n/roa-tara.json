@@ -248,5 +248,6 @@
 	"smw-property-tab-errors": "Assegnazziune sbagliate",
 	"smw-property-tab-constraint-schema-title": "Vingole d'u scheme combilate",
 	"smw-concept-tab-list": "Elenghe",
-	"smw-concept-tab-errors": "Errore"
+	"smw-concept-tab-errors": "Errore",
+	"smw-listingcontinuesabbrev": "cond."
 }

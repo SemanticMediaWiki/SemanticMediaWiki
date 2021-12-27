@@ -46,5 +46,6 @@
 	"smw-ui-tooltip-title-note": "تێبینی",
 	"smw-livepreview-loading": "باركردن‌...",
 	"smw-patternedit-protection": "ئەم پەڕەیە پارێزراوە و تەنھا دەتوانرێت دەستکاریان بکرێت لەلایەن بەکارھێنەرانی <code>smw-patternedit</code> [https://www.semantic-mediawiki.org/wiki/Help:Permissions permission].",
-	"smw-jsonview-search-label": "گەڕان:"
+	"smw-jsonview-search-label": "گەڕان:",
+	"smw-listingcontinuesabbrev": "(درێژە)"
 }

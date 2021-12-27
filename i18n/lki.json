@@ -11,5 +11,6 @@
 	"smw-special-concept-docu": "[https://www.semantic-mediawiki.org/wiki/Help:Concepts concept] می‌تواند  به عنوان \"دسته پویا\" مشاهده شوند، یعنی به عنوان مجموعه‌ای از صفحاتی که به طور دستی ایجاد نمی‌شوند، اما آنهایی که توسط مدیاویکی معنایی از یک توصیف داده شده پرس‌وجو، محاسبه می‌شوند.",
 	"smw-ask-format-selection-help": "برای شرح مفصل، لطفاً صفحه راهنما $1 را مشاهده کنید.",
 	"browse": "مرور ویکی",
-	"smw-ui-tooltip-title-note": "ویرنۆیسة-یادداشت"
+	"smw-ui-tooltip-title-note": "ویرنۆیسة-یادداشت",
+	"smw-listingcontinuesabbrev": "(ادامه)"
 }

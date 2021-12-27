@@ -491,5 +491,6 @@
 	"smw-concept-tab-errors": "Errori",
 	"smw-ask-tab-code": "Codice",
 	"smw-legend": "Legenda",
-	"smw-entity-examiner-associated-revision-mismatch": "Versione"
+	"smw-entity-examiner-associated-revision-mismatch": "Versione",
+	"smw-listingcontinuesabbrev": "cont."
 }

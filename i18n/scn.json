@@ -31,6 +31,8 @@
 	"smw_sbv_property": "Prupità:",
 	"browse": "Esplora lu situ",
 	"smw_browselink": "Prupità",
+	"smw-browse-show-group": "Ammustra gruppi",
+	"smw-browse-hide-group": "Ammuccia gruppi",
 	"smw_inverse_label_default": "$1 di",
 	"smw_pp_type": "Prupità:",
 	"smw-admin-statistics": "Statìstichi",
@@ -66,5 +68,6 @@
 	"smw-concept-tab-list": "Elencu",
 	"smw-concept-tab-errors": "Errura",
 	"smw-ask-tab-result": "Risurtatu",
-	"smw-ask-tab-code": "Còdici"
+	"smw-ask-tab-code": "Còdici",
+	"smw-listingcontinuesabbrev": "cunt."
 }

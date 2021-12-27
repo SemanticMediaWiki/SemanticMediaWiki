@@ -6,5 +6,6 @@
 	},
 	"smw-paramdesc-table-transpose": "Fà vedé 'e cap' 'e tabella n verticale e li risultate n orizzontale",
 	"browse": "Ascìa wiki",
-	"smw_smwadmin_datarefreshstopconfirm": "Si, so' {{GENDER:$1|sicuro|sicura}}."
+	"smw_smwadmin_datarefreshstopconfirm": "Si, so' {{GENDER:$1|sicuro|sicura}}.",
+	"smw-listingcontinuesabbrev": "cont."
 }

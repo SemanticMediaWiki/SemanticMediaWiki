@@ -144,5 +144,6 @@
 	"smw-format-datatable-processing": "Obdelovanje ...",
 	"smw-format-datatable-search": "Iskanje:",
 	"smw-format-datatable-next": "Naprej",
-	"smw-format-datatable-toolbar-export": "Izvoz"
+	"smw-format-datatable-toolbar-export": "Izvoz",
+	"smw-listingcontinuesabbrev": "nadalj."
 }

@@ -46,5 +46,6 @@
 	"smw-admin-support": "ہو رہی ہے کی حمایت",
 	"smw-admin-other-functions": "دیگر کردار",
 	"smw-property-reserved-category": "زمرہ",
-	"smw-datavalue-uri-invalid-scheme": "$1کوواجب URI سکیم میں ذیرِفہرست نہیں رکھا گیا۔"
+	"smw-datavalue-uri-invalid-scheme": "$1کوواجب URI سکیم میں ذیرِفہرست نہیں رکھا گیا۔",
+	"smw-listingcontinuesabbrev": "جاری۔"
 }

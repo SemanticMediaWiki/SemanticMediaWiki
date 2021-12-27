@@ -371,5 +371,6 @@
 	"smw-entity-examiner-deferred-constraint-error": "Limitatioun",
 	"smw-entity-examiner-associated-revision-mismatch": "Versioun",
 	"smw-entity-examiner-deferred-fake": "Fälschung",
-	"smw-indicator-revision-mismatch": "Revisioun"
+	"smw-indicator-revision-mismatch": "Revisioun",
+	"smw-listingcontinuesabbrev": "(Fortsetzung)"
 }

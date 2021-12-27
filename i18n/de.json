@@ -1120,5 +1120,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Einschränkung|Einschränkungen}}",
 	"smw-indicator-revision-mismatch": "Revision",
 	"smw-indicator-revision-mismatch-error": "Der [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner Seitenversionsprüfung] hat beim Vergleich eine Abweichung der Seitenversionen zwischen den Datenbanken von MediaWiki und Semantic MediaWiki festgestellt.",
-	"smw-indicator-revision-mismatch-comment": "Eine Abweichung deutet normalerweise darauf hin, daß eine Softwareaufgabe zur Aktualisierung der Seitenversion, in der Datenbank von Semantic MediaWiki, unterbrochen wurde. Daher sollten die entsprechenden Logdateien des Servers auf Informationen zu möglichen Fehlern geprüft werden."
+	"smw-indicator-revision-mismatch-comment": "Eine Abweichung deutet normalerweise darauf hin, daß eine Softwareaufgabe zur Aktualisierung der Seitenversion, in der Datenbank von Semantic MediaWiki, unterbrochen wurde. Daher sollten die entsprechenden Logdateien des Servers auf Informationen zu möglichen Fehlern geprüft werden.",
+	"smw-listingcontinuesabbrev": "(Fortsetzung)"
 }
