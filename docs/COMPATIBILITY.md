@@ -33,7 +33,7 @@ Increases of minimum requirements are indicated in bold.
 		<td><strong>7.3.0</strong> - 7.4.x</td>
 		<td><strong>1.35.0</strong> - 1.37.x</td>
 		<td>-</td>
-		<td>Will be released soon</td>
+		<td>Will be released January 2022</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
