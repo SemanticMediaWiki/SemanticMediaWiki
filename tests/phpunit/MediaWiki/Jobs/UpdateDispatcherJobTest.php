@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;

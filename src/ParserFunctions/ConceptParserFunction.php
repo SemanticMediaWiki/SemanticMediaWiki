@@ -4,7 +4,7 @@ namespace SMW\ParserFunctions;
 
 use Html;
 use Parser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;

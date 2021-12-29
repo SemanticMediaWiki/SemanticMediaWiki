@@ -4,7 +4,7 @@ use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\Processor;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;

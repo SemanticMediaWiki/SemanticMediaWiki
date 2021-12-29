@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;

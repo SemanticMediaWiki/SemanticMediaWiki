@@ -9,7 +9,7 @@ use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\Store;
 use SMW\SemanticData;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GNU GPL v2+

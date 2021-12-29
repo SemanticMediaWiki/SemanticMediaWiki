@@ -3,7 +3,7 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterFormatterFactory;
 use SMW\ParserFunctions\SetParserFunction;

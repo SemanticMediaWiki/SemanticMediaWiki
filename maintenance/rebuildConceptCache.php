@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
 

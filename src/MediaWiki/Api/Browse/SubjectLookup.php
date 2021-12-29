@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Store;

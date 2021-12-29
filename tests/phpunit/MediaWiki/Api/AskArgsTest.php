@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Api\AskArgs;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\PHPUnitCompat;

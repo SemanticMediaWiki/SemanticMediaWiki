@@ -6,7 +6,7 @@ use DBError;
 use Exception;
 use ResultWrapper;
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\IDatabase;

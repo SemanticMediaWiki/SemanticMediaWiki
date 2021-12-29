@@ -3,7 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use Parser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;

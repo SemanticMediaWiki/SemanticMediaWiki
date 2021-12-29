@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 use SMW\Schema\Exception\SchemaParameterTypeMismatchException;

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use Title;
 use SMW\Tests\PHPUnitCompat;

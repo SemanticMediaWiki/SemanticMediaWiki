@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use RequestContext;
 use SMW\MediaWiki\Job;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiPage;
 

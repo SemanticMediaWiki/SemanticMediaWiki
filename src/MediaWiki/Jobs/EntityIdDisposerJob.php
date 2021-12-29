@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
 use Hooks;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
 use Title;

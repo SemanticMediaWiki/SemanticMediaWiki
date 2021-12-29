@@ -7,7 +7,7 @@ use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Parser as QueryParser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Options;

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * RefreshJob iterates over all page ids of the wiki, to perform an update

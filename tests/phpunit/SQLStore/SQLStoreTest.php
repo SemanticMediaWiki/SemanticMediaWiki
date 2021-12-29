@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\PHPUnitCompat;
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;

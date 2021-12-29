@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use Language;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;

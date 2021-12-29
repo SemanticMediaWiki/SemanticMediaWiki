@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\HookListener;

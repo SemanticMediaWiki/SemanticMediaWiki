@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;

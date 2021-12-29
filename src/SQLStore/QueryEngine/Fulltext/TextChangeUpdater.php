@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;

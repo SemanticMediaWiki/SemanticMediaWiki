@@ -6,7 +6,7 @@ use ParserOutput;
 use ParserOptions;
 use MediaWiki\MediaWikiServices;
 use RequestContext;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
 use SMW\Tests\PHPUnitCompat;

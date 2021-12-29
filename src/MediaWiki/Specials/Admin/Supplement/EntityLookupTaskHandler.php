@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Message;
 use SMW\SQLStore\SQLStore;

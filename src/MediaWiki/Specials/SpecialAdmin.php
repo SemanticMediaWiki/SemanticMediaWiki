@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;

@@ -5,7 +5,7 @@ namespace SMW\Maintenance;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;

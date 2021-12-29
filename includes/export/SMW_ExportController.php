@@ -4,7 +4,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\Exporter\Serializer\Serializer;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Controller\Queue;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Escaper;

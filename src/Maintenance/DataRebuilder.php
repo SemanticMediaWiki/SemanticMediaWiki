@@ -6,7 +6,7 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;

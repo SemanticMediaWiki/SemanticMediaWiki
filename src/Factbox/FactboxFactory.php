@@ -4,7 +4,7 @@ namespace SMW\Factbox;
 
 use IContextSource;
 use OutputPage;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use ParserOutput;
 

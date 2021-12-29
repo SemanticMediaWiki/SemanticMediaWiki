@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use LinksUpdate;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;

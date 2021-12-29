@@ -1,6 +1,6 @@
 <?php
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;

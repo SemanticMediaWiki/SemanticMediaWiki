@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Settings;
 use SMW\Tests\Utils\Mock\MockTitle;

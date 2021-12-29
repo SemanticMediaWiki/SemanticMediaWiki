@@ -6,7 +6,7 @@ use SMW\Store;
 use SMW\StoreFactory;
 use Onoi\MessageReporter\MessageReporterFactory;
 use Onoi\MessageReporter\MessageReporter;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Installer;
 use SMW\Setup;
 use SMW\Options;

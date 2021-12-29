@@ -2,7 +2,7 @@
 
 namespace SMW\Query\DescriptionBuilders;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataItemFactory;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
