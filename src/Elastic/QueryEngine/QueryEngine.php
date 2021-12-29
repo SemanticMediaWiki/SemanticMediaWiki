@@ -3,7 +3,7 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Options;

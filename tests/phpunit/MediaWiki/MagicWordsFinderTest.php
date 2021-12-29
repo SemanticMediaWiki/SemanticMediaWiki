@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki;
 
 use ParserOutput;
 use SMW\MediaWiki\MagicWordsFinder;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**

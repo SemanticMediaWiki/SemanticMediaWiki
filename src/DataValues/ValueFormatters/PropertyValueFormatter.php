@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Highlighter;
 use SMW\Localizer;
 use SMW\Message;

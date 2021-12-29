@@ -8,7 +8,7 @@ use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\StringCondition;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 
 /**

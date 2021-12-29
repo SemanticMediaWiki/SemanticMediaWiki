@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use ReflectionClass;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;

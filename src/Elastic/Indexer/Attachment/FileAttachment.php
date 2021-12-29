@@ -5,7 +5,7 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;

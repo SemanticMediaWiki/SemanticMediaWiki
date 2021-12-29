@@ -7,7 +7,7 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use WebRequest;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer\Localizer;
 
 /**

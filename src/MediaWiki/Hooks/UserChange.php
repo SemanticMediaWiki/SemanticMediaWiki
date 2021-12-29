@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\User\UserIdentity;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;

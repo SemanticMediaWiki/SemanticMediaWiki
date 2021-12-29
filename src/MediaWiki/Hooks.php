@@ -10,7 +10,7 @@ use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\UserIdentity;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\NamespaceManager;
 use SMW\SemanticData;

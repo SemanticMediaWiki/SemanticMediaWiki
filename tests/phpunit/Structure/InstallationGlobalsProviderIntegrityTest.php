@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\GlobalsProvider;
 
 /**

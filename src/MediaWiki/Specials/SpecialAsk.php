@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use Html;
 use ParamProcessor\Param;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Constraint;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Constraint\ConstraintRegistry;
 
 /**

@@ -6,7 +6,7 @@ use DomainException;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Running maintenance scripts via phpunit is not really possible but instead

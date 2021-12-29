@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\ParserData;

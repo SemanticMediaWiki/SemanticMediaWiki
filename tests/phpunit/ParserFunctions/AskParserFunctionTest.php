@@ -4,7 +4,7 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\Tests\TestEnvironment;

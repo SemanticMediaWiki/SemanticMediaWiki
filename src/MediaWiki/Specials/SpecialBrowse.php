@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Encoder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;

@@ -1,7 +1,7 @@
 Examples listed in this document require SMW 2.5.
 
 ```php
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 $applicationFactory = ApplicationFactory::getInstance();
 $queryFactory = $applicationFactory->getQueryFactory();

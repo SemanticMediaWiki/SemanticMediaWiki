@@ -6,7 +6,7 @@ use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 use SMWQueryResult as QueryResult;
 use SMW\Utils\HtmlColumns;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 
 /**

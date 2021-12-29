@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\Maintenance;
 
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**

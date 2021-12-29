@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;

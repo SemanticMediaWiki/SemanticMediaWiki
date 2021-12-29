@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWQueryResult as QueryResult;
 use SMW\MediaWiki\Template\Template;
 use SMW\MediaWiki\Template\TemplateSet;

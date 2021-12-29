@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use OutputPage;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;

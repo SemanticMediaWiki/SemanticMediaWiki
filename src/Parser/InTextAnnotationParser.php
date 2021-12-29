@@ -3,7 +3,7 @@
 namespace SMW\Parser;
 
 use Hooks;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Localizer;
 use SMW\SemanticData;

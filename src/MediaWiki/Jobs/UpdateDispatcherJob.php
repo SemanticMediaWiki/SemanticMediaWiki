@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use Hooks;
 use SMW\MediaWiki\Job;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\DataTypeRegistry;

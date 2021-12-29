@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 use Onoi\Cache\Cache;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Collect statistics in a provisional schema-free storage that depends on the

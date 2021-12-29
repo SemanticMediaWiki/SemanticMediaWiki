@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;

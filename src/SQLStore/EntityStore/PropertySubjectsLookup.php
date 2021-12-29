@@ -9,7 +9,7 @@ use SMW\DIContainer;
 use SMW\RequestOptions;
 use SMW\Options;
 use SMW\MediaWiki\DatabaseHelper;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\RequestOptionsProc;
 use RuntimeException;
 

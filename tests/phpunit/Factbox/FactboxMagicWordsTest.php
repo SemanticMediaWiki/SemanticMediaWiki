@@ -4,7 +4,7 @@ namespace SMW\Tests\Factbox;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Factbox\Factbox;
 use SMW\Factbox\CheckMagicWords;
 use SMW\ParserData;

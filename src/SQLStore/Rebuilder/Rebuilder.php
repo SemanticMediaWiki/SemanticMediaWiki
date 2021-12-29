@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Rebuilder;
 
 use Hooks;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\PropertyRegistry;
 use SMW\SemanticData;

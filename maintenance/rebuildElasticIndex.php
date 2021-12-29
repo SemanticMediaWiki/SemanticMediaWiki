@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\ElasticStore;
