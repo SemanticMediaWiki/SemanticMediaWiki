@@ -37,14 +37,18 @@ class SemanticMediaWiki {
 			define( 'MW_VERSION', $GLOBALS['wgVersion'] );
 		}
 
-		// Only allow to set the loading state while being part of the test
-		// environment
-		if ( defined( 'MW_PHPUNIT_TEST' ) && !defined( 'SMW_EXTENSION_LOADED' ) ) {
+		// We're moving away from enableSemantics, so set this here.
+		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}
 
 		// Registration point for required early registration
 		Setup::initExtension( $GLOBALS );
+
+		// Apparently this is required (1.28+) as the earliest possible execution
+		// point in order for settings that refer to the SMW_NS_PROPERTY namespace
+		// to be available in LocalSettings
+		NamespaceManager::initCustomNamespace( $GLOBALS );
 	}
 
 	/**

@@ -183,6 +183,26 @@ class Hooks {
 	}
 
 	/**
+	 * To add to or remove pages from the special page list. This array has
+	 * the same structure as $wgSpecialPages.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
+	 *
+	 * @since 4.0
+	 * #2813
+	 */
+	public static function onInitSpecialPages( array &$specialPages ): void {
+		$specialPageList = new SpecialPageList();
+		$specialPageList->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => true
+			]
+		);
+
+		$specialPageList->process( $specialPages );
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
@@ -214,28 +234,6 @@ class Hooks {
 			NamespaceManager::initCanonicalNamespaces(
 				$namespaces
 			);
-
-			return true;
-		};
-
-		/**
-		 * To add to or remove pages from the special page list. This array has
-		 * the same structure as $wgSpecialPages.
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
-		 *
-		 * #2813
-		 */
-		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
-
-			$specialPageList = new SpecialPageList();
-			$specialPageList->setOptions(
-				[
-					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
-				]
-			);
-
-			$specialPageList->process( $specialPages );
 
 			return true;
 		};
