@@ -23,6 +23,9 @@
 	"AutoloadNamespaces": {
 		"SMW\\": "src/"
 	},
+	"Hooks": {
+		"SpecialPage_initList": "SMW\\MediaWiki\\Hooks::onInitSpecialPages"
+	},
 	"AutoloadClasses": {
 		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 	},
