@@ -72,7 +72,7 @@ class OutputPageParserOutput implements HookListener {
 
 		$title = $outputPage->getTitle();
 
-		if ( $title->isSpecialPage() || $title->isRedirect() ) {
+		if ( $title === null || $title->isSpecialPage() || $title->isRedirect() ) {
 			return true;
 		}
 
