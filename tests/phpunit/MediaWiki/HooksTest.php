@@ -165,43 +165,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testInitExtension() {
-
-		$vars = [];
-
-		Hooks::registerEarly( $vars );
-
-		// CanonicalNamespaces
-		$callback = end( $vars['wgHooks']['CanonicalNamespaces'] );
-		$namespaces = [];
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ &$namespaces ]
-		);
-
-		// SpecialPage_initList
-		$callback = end( $vars['wgHooks']['SpecialPage_initList'] );
-		$specialPages = [];
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ &$specialPages ]
-		);
-
-		// ApiMain::moduleManager
-		$callback = end( $vars['wgHooks']['ApiMain::moduleManager'] );
-
-		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->assertThatHookIsExcutable(
-			$callback,
-			[ $apiModuleManager ]
-		);
-	}
-
 	/**
 	 * @dataProvider callMethodProvider
 	 */
