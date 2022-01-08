@@ -89,7 +89,7 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExecute() {
 
-		$memoryLimitBefore = ini_get( 'memory_limit' );
+		$memoryLimitBefore = $originalMemoryLimitBefore = ini_get( 'memory_limit' );
 		$converter = new ScopeMemoryLimiter();
 
 		if ( $memoryLimitBefore === "-1" ) {
@@ -123,6 +123,8 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 			$instance->getMemoryLimit(),
 			"Limit was reset successsfully."
 		);
+
+		ini_set( 'memory_limit', $originalMemoryLimitBefore );
 	}
 
 }
