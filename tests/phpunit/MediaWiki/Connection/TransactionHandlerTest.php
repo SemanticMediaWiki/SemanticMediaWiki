@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use RuntimeException;
 use SMW\MediaWiki\Connection\TransactionHandler;
 use SMW\Tests\PHPUnitCompat;
+use stdClass;
+use TypeError;
+use Wikimedia\Rdbms\ILBFactory;
 
 /**
  * @covers \SMW\MediaWiki\Connection\TransactionHandler
@@ -23,18 +27,18 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 
-		if ( interface_exists( '\Wikimedia\Rdbms\ILBFactory' ) ) {
-			$this->loadBalancerFactory = $this->getMockBuilder( '\Wikimedia\Rdbms\ILBFactory' )
+		if ( interface_exists( ILBFactory::class ) ) {
+			$this->loadBalancerFactory = $this->getMockBuilder( ILBFactory::class )
 				->disableOriginalConstructor()
 				->getMock();
 		} else {
-			$this->loadBalancerFactory = $this->getMockBuilder( '\stdClass' )
+			$this->loadBalancerFactory = $this->getMockBuilder( stdClass::class )
 				->disableOriginalConstructor()
 				->setMethods( [ 'getEmptyTransactionTicket', 'hasMasterChanges', 'commitAndWaitForReplication' ] )
 				->getMock();
 		}
 
-		$this->transactionProfiler = $this->getMockBuilder( '\stdClass' )
+		$this->transactionProfiler = $this->getMockBuilder( stdClass::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setSilenced' ] )
 			->getMock();
@@ -50,7 +54,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct_ThrowsException() {
 
-		$this->expectException( '\RuntimeException' );
+		$this->expectException( TypeError::class );
 		new TransactionHandler( 'Foo' );
 	}
 
@@ -148,7 +152,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->markSectionTransaction( __METHOD__ );
 
-		$this->expectException( '\RuntimeException' );
+		$this->expectException( RuntimeException::class );
 		$instance->markSectionTransaction( 'Foo' );
 	}
 
@@ -158,7 +162,7 @@ class TransactionHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->loadBalancerFactory
 		);
 
-		$this->expectException( '\RuntimeException' );
+		$this->expectException( RunTimeException::class );
 		$instance->detachSectionTransaction( __METHOD__ );
 	}
 

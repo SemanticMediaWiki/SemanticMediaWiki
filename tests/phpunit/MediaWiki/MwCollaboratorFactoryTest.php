@@ -2,8 +2,32 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Language;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use Parser;
+use Psr\Log\LoggerInterface;
+use SMW\MediaWiki\Connection\ConnectionProvider;
+use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
+use SMW\MediaWiki\DeepRedirectTargetResolver;
+use SMW\MediaWiki\EditInfo;
+use SMW\MediaWiki\MagicWordsFinder;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Renderer\HtmlTableRenderer;
+use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Settings;
+use Title;
+use WikiPage;
 
 /**
  * @covers \SMW\MediaWiki\MwCollaboratorFactory
@@ -21,7 +45,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+		$this->applicationFactory = $this->getMockBuilder( ApplicationFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -29,7 +53,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MwCollaboratorFactory',
+			MwCollaboratorFactory::class,
 			new MwCollaboratorFactory( $this->applicationFactory )
 		);
 	}
@@ -41,16 +65,16 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MessageBuilder',
+			MessageBuilder::class,
 			$instance->newMessageBuilder()
 		);
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MessageBuilder',
+			MessageBuilder::class,
 			$instance->newMessageBuilder( $language )
 		);
 	}
@@ -62,7 +86,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordsFinder',
+			MagicWordsFinder::class,
 			$instance->newMagicWordsFinder()
 		);
 	}
@@ -74,14 +98,14 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\RedirectTargetFinder',
+			RedirectTargetFinder::class,
 			$instance->newRedirectTargetFinder()
 		);
 	}
 
 	public function testCanConstructDeepRedirectTargetResolver() {
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +118,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DeepRedirectTargetResolver',
+			DeepRedirectTargetResolver::class,
 			$instance->newDeepRedirectTargetResolver()
 		);
 	}
@@ -103,21 +127,21 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			HtmlFormRenderer::class,
 			$instance->newHtmlFormRenderer( $title )
 		);
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			HtmlFormRenderer::class,
 			$instance->newHtmlFormRenderer( $title, $language )
 		);
 	}
@@ -127,7 +151,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlTableRenderer',
+			HtmlTableRenderer::class,
 			$instance->newHtmlTableRenderer()
 		);
 	}
@@ -137,7 +161,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
+			HtmlColumnListRenderer::class,
 			$instance->newHtmlColumnListRenderer()
 		);
 	}
@@ -147,18 +171,18 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\LoadBalancerConnectionProvider',
+			LoadBalancerConnectionProvider::class,
 			$instance->newLoadBalancerConnectionProvider( DB_REPLICA )
 		);
 	}
 
 	public function testCanConstructConnectionProvider() {
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
+		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,47 +203,54 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\ConnectionProvider',
+			ConnectionProvider::class,
 			$instance->newConnectionProvider()
 		);
 	}
 
 	public function testCanConstructPageInfoProvider() {
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->applicationFactory->expects( $this->atLeastOnce() )
+		$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->applicationFactory->expects( $this->exactly( 2 ) )
 			->method( 'singleton' )
-			->with( $this->equalTo( 'RevisionGuard' ) )
-			->will( $this->returnValue( $revisionGuard ) );
+			->withConsecutive(
+				[ $this->equalTo( 'RevisionGuard' ) ],
+				[ $this->equalTo( 'RevisionLookup' ) ],
+			)
+			->will( $this->onConsecutiveCalls( $revisionGuard, $revisionLookup ) );
 
 		$instance = new MwCollaboratorFactory(
 			$this->applicationFactory
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageInfoProvider',
+			PageInfoProvider::class,
 			$instance->newPageInfoProvider( $wikiPage )
 		);
 	}
 
 	public function testCanConstructEditInfo() {
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -233,7 +264,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\EditInfo',
+			EditInfo::class,
 			$instance->newEditInfo( $wikiPage, $revision )
 		);
 	}
@@ -245,14 +276,14 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\WikitextTemplateRenderer',
+			WikitextTemplateRenderer::class,
 			$instance->newWikitextTemplateRenderer()
 		);
 	}
 
 	public function testCanConstructHtmlTemplateRenderer() {
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -261,7 +292,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlTemplateRenderer',
+			HtmlTemplateRenderer::class,
 			$instance->newHtmlTemplateRenderer( $parser )
 		);
 	}
@@ -272,7 +303,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			$this->applicationFactory
 		);
 
-		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -282,7 +313,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( $mediaWikiNsContentReader ) );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MediaWikiNsContentReader',
+			MediaWikiNsContentReader::class,
 			$instance->newMediaWikiNsContentReader()
 		);
 	}
