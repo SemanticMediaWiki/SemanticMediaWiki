@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use FakeResultWrapper;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\PHPUnitCompat;
+use SMW\MediaWiki\Database;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\TableDefinition;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UsageStatisticsListLookup
@@ -25,11 +31,11 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() : void {
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -37,7 +43,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\UsageStatisticsListLookup',
+			UsageStatisticsListLookup::class,
 			new UsageStatisticsListLookup( $this->store, $this->propertyStatisticsStore )
 		);
 	}
@@ -66,13 +72,13 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testfetchListForInvalidTableThrowsException() {
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [] ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( [] ) ) );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
@@ -100,23 +106,23 @@ class UsageStatisticsListLookupTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testfetchList( $segment, $type ) {
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_hash = 42;
 		$row->count = 1001;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [ $row ] ) ) );
+			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( TableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$objectIdFetcher = $this->getMockBuilder( '\stdClass' )
+		$objectIdFetcher = $this->getMockBuilder( stdClass::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
