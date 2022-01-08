@@ -26,45 +26,6 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testExecute() {
-
-		$this->testCaller = $this->getMockBuilder( '\stdClass' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'calledFromCallable' ] )
-			->getMock();
-
-		$this->testCaller->expects( $this->once() )
-			->method( 'calledFromCallable' );
-
-		$memoryLimitBefore = ini_get( 'memory_limit' );
-		$memoryLimit = '1M';
-
-		// Establish that the limits are different
-		$this->assertNotEquals(
-			$memoryLimitBefore,
-			$memoryLimit
-		);
-
-		$instance = new ScopeMemoryLimiter(
-			$memoryLimit
-		);
-
-		$instance->execute( [ $this, 'runCallable' ] );
-
-		// Establish that the limit is equal to what we have expected
-		// to be set
-		$this->assertEquals(
-			$memoryLimit,
-			$this->memoryLimitFromCallable
-		);
-
-		// Establish that the initial limit has been reset
-		$this->assertEquals(
-			$memoryLimitBefore,
-			$instance->getMemoryLimit()
-		);
-	}
-
 	public function runCallable() {
 		$this->memoryLimitFromCallable = ini_get( 'memory_limit' );
 		$this->testCaller->calledFromCallable();
@@ -124,6 +85,44 @@ class ScopeMemoryLimiterTest extends \PHPUnit_Framework_TestCase {
 			'1g',
 			1024 * 1024 * 1024
 		];
+	}
+
+	public function testExecute() {
+
+		$memoryLimitBefore = ini_get( 'memory_limit' );
+		$converter = new ScopeMemoryLimiter();
+
+		if ( $memoryLimitBefore === "-1" ) {
+			$memoryLimitBefore = memory_get_usage() + $converter->toInt( '10M' );
+			ini_set( 'memory_limit', $memoryLimitBefore );
+		}
+		$this->testCaller = $this->getMockBuilder( '\stdClass' )
+			->disableOriginalConstructor()
+			->setMethods( [ 'calledFromCallable' ] )
+			->getMock();
+
+		$this->testCaller->expects( $this->once() )
+			->method( 'calledFromCallable' );
+
+		$memoryLimit = $memoryLimitBefore + $converter->toInt( '1M' );
+
+		$instance = new ScopeMemoryLimiter(
+			$memoryLimit
+		);
+
+		$instance->execute( [ $this, 'runCallable' ] );
+
+		$this->assertEquals(
+			$memoryLimit,
+			$this->memoryLimitFromCallable,
+			"Limit we expected got set."
+		);
+
+		$this->assertEquals(
+			$memoryLimitBefore,
+			$instance->getMemoryLimit(),
+			"Limit was reset successsfully."
+		);
 	}
 
 }
