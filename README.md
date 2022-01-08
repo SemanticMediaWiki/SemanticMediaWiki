@@ -18,9 +18,11 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-- PHP 7.1 or above
-- MediaWiki 1.31 or above
-- MySQL 5+, SQLite 3+ or PostgreSQL 9.x
+Semantic MediaWiki 4.0.x requires
+
+- PHP 7.3 or above
+- MediaWiki 1.35 or above
+- MySQL 5+, SQLite 3+ or PostgreSQL 9+
 
 A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
 release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).

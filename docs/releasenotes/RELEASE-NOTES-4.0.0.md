@@ -11,17 +11,17 @@ above is not supported.
 
 ## Compatibility
 
-* Dropped support for MediaWiki older than 1.35
-* Dropped support for PHP older than 7.4
-* Improved support for MediaWiki 1.35
 * Added support for MediaWiki 1.36 and MediaWiki 1.37
 * Improved compatibility with MediaWiki 1.38, though this version still has many issues
+* Improved support for MediaWiki 1.35
+* Dropped support for MediaWiki older than 1.35
+* Dropped support for PHP older than 7.4
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Upgrading
 
-Calling `wfLoadExtension` is now required in `LocalSettings.php`. Example:
+**Calling `wfLoadExtension` is now required in `LocalSettings.php`**. Example:
 
 ```php
 wfLoadExtension( 'SemanticMediaWiki' );
