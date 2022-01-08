@@ -4,6 +4,8 @@ namespace SMW\Tests\Localizer;
 
 use Language;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\NamespaceInfo;
+use RequestContext;
 
 /**
  * @covers \SMW\Localizer\Localizer
@@ -18,15 +20,20 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	private $language;
 	private $namespaceInfo;
+	private $context;
 
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->language = $this->getMockBuilder( '\Language' )
+		$this->language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( NamespaceInfo::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->context = $this->getMockBuilder( RequestContext::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -39,7 +46,7 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			Localizer::class,
-			new Localizer( $this->language, $this->namespaceInfo )
+			new Localizer( $this->language, $this->namespaceInfo, $this->context )
 		);
 
 		$this->assertInstanceOf(
@@ -52,7 +59,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertSame(
@@ -65,7 +73,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			Language::factory( 'en' ),
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -78,7 +87,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			Language::factory( 'en'),
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -194,7 +204,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$pageLanguage = $this->getMockBuilder( '\Language' )
@@ -219,7 +230,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -273,7 +285,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			Language::factory( 'en'),
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -290,7 +303,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -311,7 +325,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -338,7 +353,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertEquals(
@@ -365,7 +381,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertTrue(
@@ -385,7 +402,8 @@ class LocalizerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new Localizer(
 			$this->language,
-			$this->namespaceInfo
+			$this->namespaceInfo,
+			$this->context
 		);
 
 		$this->assertInstanceOf(

@@ -42,6 +42,7 @@ class Localizer {
 	 *
 	 * @param Language $contentLanguage
 	 * @param NamespaceInfo $namespaceInfo
+	 * @param IContextSource $context
 	 */
 	public function __construct(
 		Language $contentLanguage,
