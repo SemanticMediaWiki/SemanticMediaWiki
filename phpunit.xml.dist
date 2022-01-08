@@ -27,11 +27,48 @@
         <testsuite name="semantic-mediawiki-check">
             <file>tests/phpunit/Structure/PHPUnitCheckRunnerTest.php</file>
         </testsuite>
+        <testsuite name="semantic-mediawiki-misc">
+            <directory>tests/phpunit/Misc</directory>
+        </testsuite>
+        <testsuite name="semantic-mediawiki-other">
+            <directory>tests/phpunit/Connection</directory>
+            <directory>tests/phpunit/Constraint</directory>
+            <directory>tests/phpunit/DataModel</directory>
+            <directory>tests/phpunit/DataValues</directory>
+            <directory>tests/phpunit/Deserializers</directory>
+            <directory>tests/phpunit/Elastic</directory>
+            <directory>tests/phpunit/Exception</directory>
+            <directory>tests/phpunit/Exporter</directory>
+            <directory>tests/phpunit/Factbox</directory>
+            <directory>tests/phpunit/Importer</directory>
+            <directory>tests/phpunit/Indicator</directory>
+            <directory>tests/phpunit/IndicatorEntityExaminerIndicators</directory>
+            <directory>tests/phpunit/Iterators</directory>
+            <directory>tests/phpunit/Listener</directory>
+            <directory>tests/phpunit/Localizer</directory>
+            <directory>tests/phpunit/Maintenance</directory>
+            <exclude>tests/phpunit/Maintenance/DataRebuilderTest.php</exclude>
+            <directory>tests/phpunit/Parser</directory>
+            <directory>tests/phpunit/ParserFunctions</directory>
+            <directory>tests/phpunit/Property</directory>
+            <directory>tests/phpunit/Protection</directory>
+            <directory>tests/phpunit/Query</directory>
+            <directory>tests/phpunit/Schema</directory>
+            <directory>tests/phpunit/Serializers</directory>
+            <directory>tests/phpunit/Services</directory>
+            <directory>tests/phpunit/SPARQLStore</directory>
+            <directory>tests/phpunit/Updater</directory>
+            <directory>tests/phpunit/Utils</directory>
+        </testsuite>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
+            <exclude>tests/phpunit/includes/QueryProcessorTest.php</exclude>
+            <exclude>tests/phpunit/includes/dataitems</exclude>
+            <exclude>tests/phpunit/includes/storage</exclude>
             <directory>tests/phpunit/Unit</directory>
         </testsuite>
         <testsuite name="semantic-mediawiki-integration">
+            <directory>tests/phpunit/MediaWiki</directory>
             <directory>tests/phpunit/Integration</directory>
             <exclude>tests/phpunit/Integration/MediaWiki/Import</exclude>
         </testsuite>
@@ -45,10 +82,17 @@
         <testsuite name="semantic-mediawiki-benchmark">
             <directory>tests/phpunit/Benchmark</directory>
         </testsuite>
+        <testsuite name="semantic-mediawiki-slow">
+            <directory>tests/phpunit/SQLStore</directory>
+            <file>tests/phpunit/includes/QueryProcessorTest.php</file>
+            <file>tests/phpunit/includes/dataitems</file>
+            <file>tests/phpunit/includes/storage</file>
+        </testsuite>
     </testsuites>
     <groups>
       <exclude>
         <group>semantic-mediawiki-benchmark</group>
+        <group>semantic-mediawiki-slow</group>
       </exclude>
     </groups>
     <filter>
