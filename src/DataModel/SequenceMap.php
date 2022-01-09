@@ -52,7 +52,7 @@ class SequenceMap {
 			new DIProperty( '_PROFILE_SCHEMA' )
 		);
 
-		if ( $schemaList === [] ) {
+		if ( $schemaList === null ) {
 			return self::$canMap[$key] = false;
 		}
 

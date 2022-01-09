@@ -156,7 +156,7 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			[],
+			null,
 			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
 	}

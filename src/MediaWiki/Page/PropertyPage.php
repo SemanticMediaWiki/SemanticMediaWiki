@@ -275,7 +275,10 @@ class PropertyPage extends Page {
 			new DIProperty( '_PROFILE_SCHEMA' )
 		);
 
-		$data = $schemaList->toArray();
+		$data = [];
+		if ( $schemaList !== null ) {
+			$data = $schemaList->toArray();
+		}
 
 		if ( $data !== [] ) {
 			$profile = ( new JsonView() )->create(
