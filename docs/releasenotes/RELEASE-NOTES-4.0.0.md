@@ -1,6 +1,6 @@
 # Semantic MediaWiki 4.0.0
 
-Not released yet - under development
+Released on January 18, 2022.
 
 ## Summary
 

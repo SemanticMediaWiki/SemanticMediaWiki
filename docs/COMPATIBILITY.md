@@ -33,14 +33,14 @@ Increases of minimum requirements are indicated in bold.
 		<td><strong>7.3.0</strong> - 7.4.x</td>
 		<td><strong>1.35.0</strong> - 1.37.x</td>
 		<td>-</td>
-		<td>Will be released January 2022</td>
+		<td><strong>Stable release</strong></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
 		<td><strong>7.1.0</strong> - 7.4.x</td>
 		<td>1.31.0 - 1.35.x</td>
 		<td>2020-09-07</td>
-		<td><strong>Stable release</strong></td>
+		<td>Obsolete</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
@@ -117,6 +117,12 @@ Increases of minimum requirements are indicated in bold.
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+	</tr>
+	<tr>
+		<th>4.x</th>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.5.0+)</td>
 	</tr>
 	<tr>
 		<th>3.2.x</th>
