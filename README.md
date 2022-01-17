@@ -13,19 +13,20 @@ knowledge management system. All data created within SMW can easily be
 published via the [Semantic Web](https://www.semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
-For a better understanding of how Semantic MediaWiki works, have a look at [deployed in 5 min](https://vimeo.com/82255034) and the [Sesame](https://vimeo.com/126392433), [Fuseki ](https://vimeo.com/118614078) triplestore video, or
+For a better understanding of how Semantic MediaWiki works, have a look at [deployed in 5 min](https://vimeo.com/82255034)
+and the [Sesame](https://vimeo.com/126392433), [Fuseki ](https://vimeo.com/118614078) triplestore video, or
 browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
 
 ## Requirements
 
-Semantic MediaWiki 4.0.x requires
+A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
+release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
+
+Semantic MediaWiki 4.0.x requires:
 
 - PHP 7.3 or above
 - MediaWiki 1.35 or above
 - MySQL 5+, SQLite 3+ or PostgreSQL 9+
-
-A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
-release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 
@@ -34,9 +35,9 @@ The recommended way to install Semantic MediaWiki is by using [Composer][compose
 
 ## Documentation
 
-Most of the documentation can be found on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org).
+Most of the documentation can be found on the [Semantic MediaWiki wiki](https://www.semantic-mediawiki.org).
 A small core of documentation also comes bundled with the software itself. This documentation is minimalistic
-and less explanatory then what can be found on the SMW wiki. It is however always kept up to date, and applies
+and less explanatory than what can be found on the SMW wiki. It is however always kept up to date, and applies
 to the version of the code it comes bundled with. The most important files are linked below.
 
 * [User documentation](docs/README.md)
@@ -74,7 +75,8 @@ have a look at the contribution guidelines.
 ## Tests
 
 This extension provides unit and integration tests and are normally run by a [continuous integration platform][travis]
-but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
+but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more
+comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
 
 ## License
 
