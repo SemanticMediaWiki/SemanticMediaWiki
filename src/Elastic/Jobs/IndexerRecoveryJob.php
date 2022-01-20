@@ -4,15 +4,12 @@ namespace SMW\Elastic\Jobs;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Elastic\Connection\Client;
-use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\ElasticStore;
 use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\Elastic\Indexer\Document;
-use SMW\Store;
 use SMW\Utils\HmacSerializer;
 use Title;
 
