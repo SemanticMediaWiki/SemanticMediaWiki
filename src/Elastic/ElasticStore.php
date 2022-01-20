@@ -76,6 +76,13 @@ class ElasticStore extends SQLStore {
 	}
 
 	/**
+	 * @return ElasticFactory
+	 */
+	public function getElasticFactory() {
+		return $this->elasticFactory;
+	}
+
+	/**
 	 * @see Store::service
 	 *
 	 * {@inheritDoc}
