@@ -33,6 +33,7 @@
 	"smw-change-propagation-protection": "Ca pagino esas tempale blokusata por preventar modifiki, samatempe kam l'aktualigo di la [https://www.semantic-mediawiki.org/wiki/Change_propagation programo aktualigar la modifikuri la propago] facesas. Ca procedo povas durar kelka tempo ante ke la pagino esos desblokusota, nam ol dependas de la serio di [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue job modifikuri bezonata].",
 	"smw-format-datatable-loadingrecords": "Karganta...",
 	"smw-format-datatable-toolbar-export": "Exportacar",
+	"smw-property-reserved-category": "Kategorio",
 	"smw-loading": "Ol kargesas…",
 	"smw-fetching": "Surveyanta…",
 	"smw-preparing": "Kreado ...",

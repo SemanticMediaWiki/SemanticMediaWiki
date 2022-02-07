@@ -19,7 +19,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "Gjør wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-desc": "Gjør wikien din mer tilgjengelig – for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	"smw-error": "Feil",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] ble installert og slått på, men mangler en [https://www.semantic-mediawiki.org/wiki/Help:Upgrade oppgraderingsnøkkel].",
 	"smw-upgrade-release": "Utgave",
