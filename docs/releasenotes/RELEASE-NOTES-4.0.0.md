@@ -21,17 +21,19 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Upgrading
 
-**Calling `wfLoadExtension` is now required in `LocalSettings.php`**. Example:
+**Calling `wfLoadExtension` is now required in the "LocalSettings.php" file**. Example:
 
-```php
+```
 wfLoadExtension( 'SemanticMediaWiki' );
+```
+```
 enableSemantics( 'example.org' );
 ```
 
-There is no need to run `update.php` or any of the rebuild data scripts.
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts.
 
-When a triplestore is used with the SPARQL feature `SMW_SPARQL_QF_COLLATION`, the script
-`maintenance/updateEntityCollation.php` must be run (the collation sort key algorithm was changed).
+When a triplestore is used with the SPARQL feature `SMW_SPARQL_QF_COLLATION`, the "updateEntityCollation.php"
+maintenance script must be run (the collation sort key algorithm was changed).
 
 ## New features
 
