@@ -89,7 +89,6 @@ class SchemaContentFormatter {
 			'mediawiki.content.json',
 			'ext.smw.style',
 			'ext.smw.table.styles',
-			'smw.factbox',
 		], SummaryTable::getModuleStyles() );
 	}
 
@@ -99,7 +98,7 @@ class SchemaContentFormatter {
 	 * @return []
 	 */
 	public function getModules() {
-		return [ 'smw.content.schemaview' ];
+		return [ 'smw.content.schemaview', 'smw.factbox' ];
 	}
 
 	/**
