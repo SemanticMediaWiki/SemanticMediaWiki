@@ -101,7 +101,7 @@
 	"smw_concept_cache_miss": "Le concept « $1 » ne peut être utilisé en ce moment, car la configuration du wiki exige qu’il soit lancé hors-ligne.\nSi le problème persiste, demandez à l’administrateur de votre site de rendre ce concept disponible.",
 	"smw_noinvannot": "Les valeurs ne peuvent pas être allouées pour inverser des propriétés.",
 	"version-semantic": "Extensions sémantiques",
-	"smw_baduri": "Les URIs de la forme « $1 » ne sont pas autorisées.",
+	"smw_baduri": "Les URI de la forme « $1 » ne sont pas autorisées.",
 	"smw_csv_link": "CSV",
 	"smw_dsv_link": "DSV",
 	"smw_json_link": "JSON",
