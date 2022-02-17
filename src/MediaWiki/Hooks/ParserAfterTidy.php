@@ -136,7 +136,8 @@ class ParserAfterTidy implements HookListener {
 		$parserOutput = $this->parser->getOutput();
 
 		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' );
+			// T301915
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
@@ -224,7 +225,8 @@ class ParserAfterTidy implements HookListener {
 		);
 
 		if ( method_exists( $parserOutput, 'getPageProperty') ) {
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' );
+			// T301915
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
