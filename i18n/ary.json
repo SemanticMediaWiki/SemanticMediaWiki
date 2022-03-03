@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Abdeaitali",
+			"Ideophagous",
 			"Reda Benkhadra",
 			"SADIQUI"
 		]
@@ -12,5 +13,6 @@
 	"smw-admin-supplementary-elastic-config": "ريكلاج",
 	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ....",
 	"smw-search-hide": "خبي",
+	"smw-help": "معاونة",
 	"smw-listingcontinuesabbrev": "لكمالة"
 }
