@@ -21,13 +21,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup PHP
-          if: matrix.coverage
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: ${{ matrix.php }}
-            extensions: mbstring
-            tools: composer, cs2pr
-            coverage: pcov
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          tools: composer, cs2pr
+          coverage: pcov
 
       - name: Cache Composer cache
         uses: actions/cache@v2
