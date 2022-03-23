@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\JaTinySegmenterTokenizer;
  *
  * @author mwjames
  */
-class JaTinySegmenterTokenizerTest extends \PHPUnit_Framework_TestCase {
+class JaTinySegmenterTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
 

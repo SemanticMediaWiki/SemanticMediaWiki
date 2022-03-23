@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests\LanguageDetector;
 
 use Onoi\Tesa\LanguageDetector\NullLanguageDetector;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\LanguageDetector\NullLanguageDetector
@@ -13,7 +14,7 @@ use Onoi\Tesa\LanguageDetector\NullLanguageDetector;
  *
  * @author mwjames
  */
-class NullLanguageDetectorTest extends \PHPUnit_Framework_TestCase {
+class NullLanguageDetectorTest extends TestCase {
 
 	public function testCanConstruct() {
 

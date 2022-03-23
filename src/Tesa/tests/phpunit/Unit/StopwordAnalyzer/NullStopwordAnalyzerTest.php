@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests\StopwordAnalyzer;
 
 use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer
@@ -13,7 +14,7 @@ use Onoi\Tesa\StopwordAnalyzer\NullStopwordAnalyzer;
  *
  * @author mwjames
  */
-class NullStopwordAnalyzerTest extends \PHPUnit_Framework_TestCase {
+class NullStopwordAnalyzerTest extends TestCase {
 
 	public function testCanConstruct() {
 

@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests\LanguageDetector;
 
 use Onoi\Tesa\LanguageDetector\TextCatLanguageDetector;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\LanguageDetector\TextCatLanguageDetector
@@ -13,7 +14,7 @@ use Onoi\Tesa\LanguageDetector\TextCatLanguageDetector;
  *
  * @author mwjames
  */
-class TextCatLanguageDetectorTest extends \PHPUnit_Framework_TestCase {
+class TextCatLanguageDetectorTest extends TestCase {
 
 	public function testCanConstruct() {
 

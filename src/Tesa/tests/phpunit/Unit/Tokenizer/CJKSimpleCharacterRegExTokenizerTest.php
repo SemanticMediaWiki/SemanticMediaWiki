@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\CJKSimpleCharacterRegExTokenizer;
  *
  * @author mwjames
  */
-class CJKSimpleCharacterRegExTokenizerTest extends \PHPUnit_Framework_TestCase {
+class CJKSimpleCharacterRegExTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
 

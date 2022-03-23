@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Transliterator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Transliterator
@@ -13,7 +14,7 @@ use Onoi\Tesa\Transliterator;
  *
  * @author mwjames
  */
-class TransliteratorTest extends \PHPUnit_Framework_TestCase {
+class TransliteratorTest extends TestCase {
 
 	/**
 	 * @dataProvider characterProvider

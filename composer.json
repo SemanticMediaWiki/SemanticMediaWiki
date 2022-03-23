@@ -49,12 +49,13 @@
 		"onoi/blob-store": "~1.2",
 		"onoi/http-request": "~1.1",
 		"onoi/callback-container": "~2.0",
-		"onoi/tesa": "~0.1",
 		"onoi/shared-resources": "~0.3",
 		"symfony/css-selector": "^5|^4|^3.3",
 		"seld/jsonlint": "^1.7",
 		"justinrainbow/json-schema": "~5.2",
-		"jeroen/file-fetcher": "^6|^5|^4.4"
+		"jeroen/file-fetcher": "^6|^5|^4.4",
+		"wikimedia/cdb": "^2|^1",
+		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "~3.5",
@@ -75,7 +76,8 @@
 		"psr-4": {
 			"SMW\\": "src/",
 			"SMW\\Maintenance\\": "maintenance/",
-			"SMW\\Tests\\": "tests/phpunit/"
+			"SMW\\Tests\\": "tests/phpunit/",
+			"Onoi\\Tesa\\": "src/Tesa/src/"
 		},
 		"psr-0": {
 			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"

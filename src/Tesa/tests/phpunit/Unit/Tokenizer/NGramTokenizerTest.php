@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\NGramTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\NGramTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\NGramTokenizer;
  *
  * @author mwjames
  */
-class NGramTokenizerTest extends \PHPUnit_Framework_TestCase {
+class NGramTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
 

@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Normalizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Normalizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Normalizer;
  *
  * @author mwjames
  */
-class NormalizerTest extends \PHPUnit_Framework_TestCase {
+class NormalizerTest extends TestCase {
 
 	public function testTransliteration() {
 

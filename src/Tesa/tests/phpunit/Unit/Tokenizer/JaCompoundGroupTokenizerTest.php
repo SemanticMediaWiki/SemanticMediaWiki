@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\JaCompoundGroupTokenizer;
  *
  * @author mwjames
  */
-class JaCompoundGroupTokenizerTest extends \PHPUnit_Framework_TestCase {
+class JaCompoundGroupTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
 

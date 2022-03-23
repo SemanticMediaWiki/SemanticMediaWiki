@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests\Synonymizer;
 
 use Onoi\Tesa\Synonymizer\NullSynonymizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Synonymizer\NullSynonymizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Synonymizer\NullSynonymizer;
  *
  * @author mwjames
  */
-class NullSynonymizerTest extends \PHPUnit_Framework_TestCase {
+class NullSynonymizerTest extends TestCase {
 
 	public function testCanConstruct() {
 

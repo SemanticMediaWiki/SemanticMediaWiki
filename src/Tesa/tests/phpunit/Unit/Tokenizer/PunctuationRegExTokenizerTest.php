@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\PunctuationRegExTokenizer;
  *
  * @author mwjames
  */
-class PunctuationRegExTokenizerTest extends \PHPUnit_Framework_TestCase {
+class PunctuationRegExTokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
 

@@ -268,6 +268,7 @@ class Transliterator {
 	 * @return string
 	 */
 	public static function transliterate( $string, $flag = self::DIACRITICS ) {
+		$flag = (int)$flag;
 
 		if ( $flag === ( $flag | self::NONE ) ) {
 			return $string;

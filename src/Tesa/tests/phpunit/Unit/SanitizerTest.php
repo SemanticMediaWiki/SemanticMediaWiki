@@ -4,6 +4,7 @@ namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Sanitizer;
 use Onoi\Tesa\SanitizerFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Sanitizer
@@ -14,11 +15,11 @@ use Onoi\Tesa\SanitizerFactory;
  *
  * @author mwjames
  */
-class SanitizerTest extends \PHPUnit_Framework_TestCase {
+class SanitizerTest extends TestCase {
 
 	private $sanitizerFactory;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->sanitizerFactory = new SanitizerFactory();
 	}
 

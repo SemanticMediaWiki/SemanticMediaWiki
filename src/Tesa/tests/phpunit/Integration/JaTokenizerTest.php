@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests\Integration;
 
 use Onoi\Tesa\SanitizerFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group onoi-tesa
@@ -12,7 +13,7 @@ use Onoi\Tesa\SanitizerFactory;
  *
  * @author mwjames
  */
-class JaTokenizerTest extends \PHPUnit_Framework_TestCase {
+class JaTokenizerTest extends TestCase {
 
 	/**
 	 * @dataProvider icuTextProvider

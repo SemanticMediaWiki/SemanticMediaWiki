@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer
@@ -13,9 +14,9 @@ use Onoi\Tesa\Tokenizer\IcuWordBoundaryTokenizer;
  *
  * @author mwjames
  */
-class IcuWordBoundaryTokenizerTest extends \PHPUnit_Framework_TestCase {
+class IcuWordBoundaryTokenizerTest extends TestCase {
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$instance = new IcuWordBoundaryTokenizer();
 
 		if ( !$instance->isAvailable() || INTL_ICU_VERSION != '54.1' ) {

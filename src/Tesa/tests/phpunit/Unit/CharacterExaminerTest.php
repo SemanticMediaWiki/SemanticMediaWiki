@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\CharacterExaminer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\CharacterExaminer
@@ -13,7 +14,7 @@ use Onoi\Tesa\CharacterExaminer;
  *
  * @author mwjames
  */
-class CharacterExaminerTest extends \PHPUnit_Framework_TestCase {
+class CharacterExaminerTest extends TestCase {
 
 	public function testToContainKoreanCharacters() {
 		$this->assertTrue(

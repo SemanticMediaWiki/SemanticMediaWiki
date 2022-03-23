@@ -4,6 +4,7 @@ namespace Onoi\Tesa\Tests\Integration;
 
 use Onoi\Tesa\SanitizerFactory;
 use Onoi\Tesa\Tokenizer\NGramTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group onoi-tesa
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\NGramTokenizer;
  *
  * @author mwjames
  */
-class CombinedNGramTokenizerTest extends \PHPUnit_Framework_TestCase {
+class CombinedNGramTokenizerTest extends TestCase {
 
 	/**
 	 * @dataProvider textProvider

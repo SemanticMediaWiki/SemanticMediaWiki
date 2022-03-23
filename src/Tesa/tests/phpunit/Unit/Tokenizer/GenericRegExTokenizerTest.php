@@ -3,6 +3,7 @@
 namespace Onoi\Tesa\Tests;
 
 use Onoi\Tesa\Tokenizer\GenericRegExTokenizer;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Onoi\Tesa\Tokenizer\GenericRegExTokenizer
@@ -13,7 +14,7 @@ use Onoi\Tesa\Tokenizer\GenericRegExTokenizer;
  *
  * @author mwjames
  */
-class GenericRegExTokenizerTest extends \PHPUnit_Framework_TestCase {
+class GenericRegExTokenizerTest extends TestCase {
 
 	public function testUnknownOption() {
 
