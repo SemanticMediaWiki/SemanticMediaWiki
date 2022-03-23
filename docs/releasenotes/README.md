@@ -1,8 +1,9 @@
 ## Release notes
 
 
-### Semantic MediaWiki 4.0.x
-* [SMW 4.0.0 release notes](RELEASE-NOTES-4.0.0.md) (current version)
+### Semantic MediaWiki 4.x
+* [SMW 4.0.1 release notes](RELEASE-NOTES-4.0.1.md) (current version)
+* **[SMW 4.0.0 release notes](RELEASE-NOTES-4.0.0.md)**
 
 ### Semantic MediaWiki 3.2.x
 * [SMW 3.2.3 release notes](RELEASE-NOTES-3.2.3.md)
