@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionManager;
 use SMW\MediaWiki\Hooks;
 use SMW\Utils\Logo;
@@ -224,6 +225,19 @@ final class Setup {
 			'elastic',
 			$applicationFactory->singleton( 'ElasticFactory' )->newConnectionProvider()
 		);
+
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$connectionManager->registerConnectionProvider(
+			'mw.db.source',
+			$mwCollaboratorFactory->newConnectionProvider( 'mw.db' )
+		);
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		$hookContainer->run( 'SMW::RegisterConnections', [ $connectionManager ] );
+		/** Fandom change - end */
 	}
 
 	private function initMessageCallbackHandler() {

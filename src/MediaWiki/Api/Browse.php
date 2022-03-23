@@ -235,7 +235,13 @@ class Browse extends ApiBase {
 			$cacheTTL = $cacheUsage['api.browse'];
 		}
 
-		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$connection = $applicationFactory->getStore()->getConnection( 'mw.db.source' );
+		/** Fandom change - end */
 
 		$articleLookup = new ArticleLookup(
 			$connection,

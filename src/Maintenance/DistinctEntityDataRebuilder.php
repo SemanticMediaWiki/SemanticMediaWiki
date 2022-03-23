@@ -254,8 +254,13 @@ class DistinctEntityDataRebuilder {
 		if ( !$this->hasFilters() ) {
 			return $pages;
 		}
-
-		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db.source' ) );
+		/** Fandom change - end */
 
 		foreach ( $this->filters as $namespace ) {
 			$pages = array_merge( $pages, $titleLookup->setNamespace( $namespace )->selectAll() );
@@ -270,9 +275,13 @@ class DistinctEntityDataRebuilder {
 			return [];
 		}
 
-		$titleLookup = new TitleLookup(
-			$this->store->getConnection( 'mw.db' )
-		);
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db.source' ) );
+		/** Fandom change - end */
 
 		return $titleLookup->getRedirectPages();
 	}

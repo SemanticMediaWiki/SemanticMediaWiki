@@ -84,8 +84,15 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		if ( !is_a( $instance, static::class ) ) {
 			throw new RuntimeException( get_class( $instance ) . " instance doesn't match " . static::class );
 		}
-
-		$instance->setConfig( 'wgDBname', $GLOBALS['wgDBname'] );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * In our dedicated cluster our Database name has name different then Wiki DB name
+		 * therefore we should allow to override that when configuring connections.
+		 */
+		$dbName = $GLOBALS['wgSMWDbName'] ?? $GLOBALS['wgDBname'] ?? '';
+		$instance->setConfig( 'wgDBname', $dbName );
+		/** Fandom change - end */
 		$instance->setConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
 		return $instance;

@@ -274,8 +274,13 @@ class ConceptCacheRebuilder {
 	}
 
 	private function createMultipleConcepts() {
-
-		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db.source' ) );
+		/** Fandom change - end */
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 
 		if ( $this->endId == 0 && $this->startId == 0 ) {
