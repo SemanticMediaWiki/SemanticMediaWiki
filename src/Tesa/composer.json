@@ -1,0 +1,33 @@
+{
+	"name": "onoi/tesa",
+	"type": "library",
+	"description": "A simple library to sanitize text elements",
+	"keywords": [
+		"transliteration"
+	],
+	"homepage": "https://github.com/onoi/tesa",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "James Hong Kong",
+			"homepage": "https://github.com/mwjames"
+		}
+	],
+	"require": {
+		"php": ">=5.3.2",
+		"ext-mbstring": "*",
+		"wikimedia/cdb": "~1.0",
+		"wikimedia/textcat": "~1.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Onoi\\Tesa\\": "src/"
+		}
+	},
+	"config": {
+		"process-timeout": 0
+	},
+	"scripts":{
+		"phpunit": "phpunit -c phpunit.xml.dist"
+	}
+}

@@ -1,0 +1,18 @@
+filter:
+    excluded_paths:
+        - 'vendor/*'
+
+tools:
+    php_mess_detector:
+        config:
+            controversial_rules: { superglobals: false }
+    php_cpd: true
+    php_pdepend: true
+    php_code_coverage: false
+    php_code_sniffer: true
+    php_cs_fixer: true
+    php_loc: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
+    external_code_coverage:
+        timeout: 600
