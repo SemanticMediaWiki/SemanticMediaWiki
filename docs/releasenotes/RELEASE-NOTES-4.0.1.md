@@ -20,9 +20,6 @@ Users of MediaWiki 1.36 and later are encouraged to upgrade.
 * Fixed warning occurring on MediaWiki 1.36 and above during serialization. By [Sébastien Beyou](https://github.com/Seb35)
 * Fixed HTML table creation issue, where closing tags would be added to empty tables. By ["miriamschlindwein"](https://github.com/miriamschlindwein).
 
-For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
-
 ## Upgrading
 
 Just get the new version. No need to run update.php or any other migration scripts.
-
