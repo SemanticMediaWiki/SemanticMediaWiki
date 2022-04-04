@@ -325,7 +325,7 @@
 	"smw-ask-format": "格式",
 	"smw-ask-format-selection-help": "有關選定格式的幫助：$1",
 	"smw-ask-condition-change-info": "條件已改變，搜尋引擎需要重新運行査詢來產生匹配新要求的結果。",
-	"smw-ask-input-assistance": "輸入幫助",
+	"smw-ask-input-assistance": "輸入說明",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 輸入幫助]提供於列印輸出、排序、條件欄位方面。條件欄位需要以下字首之一：",
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> 檢索屬性建議（例如：<code>[[p:Has ...</code>）",
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> 來索取分類建議",
