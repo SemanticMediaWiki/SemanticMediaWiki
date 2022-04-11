@@ -269,6 +269,7 @@
 	"smw-ask-empty": "Διαγραφή όλων των καταχωρίσεων",
 	"smw-ask-format": "Μορφοποίηση",
 	"smw-ask-format-selection-help": "Βοήθεια για την επιλεγμένη μορφή: $1",
+	"smw-ask-condition-change-info": "Η συνθήκη άλλαξε και η μηχανή αναζήτησης απαιτεί να εκτελέσει ξανά το ερώτημα για να παραγάγει αποτελέσματα που ταιριάζουν με τις νέες απαιτήσεις.",
 	"smw-ask-input-assistance": "Βοήθεια κατά την εισαγωγή",
 	"smw-ask-condition-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Βοήθεια εισαγωγής] παρέχεται για τα πεδία εκτύπωσης, ταξινόμησης και συνθήκης. Το πεδίο συνθήκης απαιτεί τη χρήση ενός από τα ακόλουθα προθέματα:",
 	"smw-ask-condition-input-assistance-property": "<code>p:</code> για λήψη υποδείξεων για ιδιότητες  (π.χ. <code>[[p:Έχει ...</code>)",
