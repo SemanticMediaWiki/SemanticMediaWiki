@@ -15,6 +15,7 @@
 			"Jeeputer",
 			"Mahdy Saffar",
 			"Mjbmr",
+			"Mohammad ebz",
 			"Momeni",
 			"Obzord",
 			"Ommmmid",
@@ -438,6 +439,7 @@
 	"smw-schema-title": "طرحواره",
 	"smw-schema-type": "نوع طرحواره",
 	"smw-schema-description": "توضیحات طرحواره",
+	"smw-concept-tab-list": "فهرست",
 	"smw-entity-examiner-associated-revision-mismatch": "نسخه",
 	"smw-listingcontinuesabbrev": "(ادامه)"
 }
