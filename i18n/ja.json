@@ -294,7 +294,7 @@
 	"smw-browse-intro": "このページは主題もしくは実態のインスタンスの詳細を述べており、検査対象のオブジェクト名を入力してください。",
 	"smw-browse-show-group": "グループを表示する",
 	"smw-browse-hide-group": "グループを隠す",
-	"smw-noscript": "このページもしくは操作の実行には Javascript が必要なため、ご利用のブラウザで Javascript を有効にするかリクエスト通りにこの機能が提供され利用できるブラウザに換えて実行してください。詳細情報は、[https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript] ヘルプページをご参照ください。",
+	"smw-noscript": "このページもしくは操作の実行には Javascript が必要なため、ご利用のブラウザーで Javascript を有効にするかリクエスト通りにこの機能が提供され利用できるブラウザーに換えて実行してください。詳細情報は、[https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript] ヘルプページをご参照ください。",
 	"smw_inverse_label_default": "$1である",
 	"smw_inverse_label_property": "逆プロパティのラベル",
 	"pageproperty": "ページのプロパティの検索",
