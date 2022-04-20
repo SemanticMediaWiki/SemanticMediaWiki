@@ -406,7 +406,7 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $property->isInverse() ) {
-			if ( $p instanceof Condition ) {
+			if ( !is_array($p) ) {
 				$p = $p->toArray();
 			}
 			$parameters = $this->termsLookup->newParameters(
@@ -414,7 +414,7 @@ class SomePropertyInterpreter {
 					'query.string' => $desc->getQueryString(),
 					'property.key' => $property->getKey(),
 					'field' => "$pid.wpgID",
-					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $p->toArray() )
+					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $p )
 				]
 			);
 
