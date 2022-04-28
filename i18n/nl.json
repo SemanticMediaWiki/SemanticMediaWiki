@@ -303,7 +303,7 @@
 	"smw-browse-intro": "Deze pagina bevat informatie over een subject of instantie van een entiteit. Voer de naam in van een te inspecteren object.",
 	"smw-browse-invalid-subject": "De onderwerpvalidatie gaf een \"$1\"-fout terug.",
 	"smw-browse-api-subject-serialization-invalid": "Het onderwerp heeft een ongeldige serialisatie-formaat.",
-	"smw-browse-js-disabled": "Het vermoeden bestaat dat Javascript is uitgeschakeld of niet beschikbaar is. We raden aan gebruik te maken van een browser die JavaScript ondersteunt. Andere mogelijkheden worden besproken op de [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>]-configuratieparameterpagina.",
+	"smw-browse-js-disabled": "Het vermoeden bestaat dat JavaScript is uitgeschakeld of niet beschikbaar is. We raden aan gebruik te maken van een browser die JavaScript ondersteunt. Andere mogelijkheden worden besproken op de hulppagina over de configuratieparameter [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>].",
 	"smw-browse-show-group": "Toon groepen",
 	"smw-browse-hide-group": "Verberg groepen",
 	"smw_inverse_label_default": "$1 van",

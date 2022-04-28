@@ -32,6 +32,8 @@
 	"smw-ui-tooltip-title-error": "چُڪَ",
 	"smw-ui-tooltip-title-legend": "ڪنجي",
 	"smw-ui-tooltip-title-reference": "حوالو",
+	"smw-admin-objectid": "آئڊي:",
+	"smw-admin-maintenance-tab-tasks": "ڪم",
 	"smw-search-profile-sort-title": "عنوان",
 	"smw-search-profile-extended-help-query": "<code><nowiki>$1</nowiki></code> پڇا طور استعمال ٿيل.",
 	"smw-search-profile-extended-section-namespace": "نانءُپولار",
@@ -43,7 +45,10 @@
 	"smw-format-datatable-previous": "پويون",
 	"smw-property-page-list-count": "$1 {{PLURAL:$1|صفحو|صفحا}} ڏيکاريندي جيڪي ھي خصوصيت استعمال ڪري ٿو/ڪن ٿا.",
 	"smw-filter": "ڇاڻي",
+	"smw-expand": "پکيڙيو",
 	"smw-concept-tab-list": "فھرست",
+	"smw-pendingtasks-setup-tasks": "ڪم",
 	"smw-legend": "ڪنجي",
+	"smw-indicator-revision-mismatch": "ورجاءُ",
 	"smw-listingcontinuesabbrev": "جاري."
 }
