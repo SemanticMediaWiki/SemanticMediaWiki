@@ -7,6 +7,9 @@ on:
       - src/Tesa/**
       - composer.json
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: "PHPUnit PHP ${{ matrix.php }}"
