@@ -321,6 +321,18 @@ class ParserData {
 	}
 
 	/**
+	 * Whether the title used during inception is the same as reference found
+	 * in the parser output or not.
+	 *
+	 * @since 3.0
+	 *
+	 * @param boolean
+	 */
+	public function isConsistent() {
+		return $this->getSubject()->equals( DIWikiPage::newFromTitle( $this->title ) );
+	}
+
+	/**
 	 * @since 3.0
 	 */
 	public function copyToParserOutput() {

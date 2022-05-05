@@ -90,6 +90,17 @@ class LinksUpdateConstructed implements HookListener {
 		);
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
+
+			// #3395
+			// https://github.com/wikimedia/mediawiki/commit/a3357744c34d6f5b8e39114e64c6937800698069
+			// Introduced a regression which is reproducible on the move of pages with
+			// the ParserOutput holding an outdated reference to an extension
+			// data which is inconsistent with the Title object used in the LinksUpdate
+			// request.
+			if ( !$parserData->isConsistent() ) {
+				$this->updateSemanticData( $parserData, $title, 'inconsistent title' );
+			}
+
 			// #347 showed that an external process (e.g. RefreshLinksJob) can inject a
 			// ParserOutput without/cleared SemanticData which forces the Store updater
 			// to create an empty container that will clear all existing data.
