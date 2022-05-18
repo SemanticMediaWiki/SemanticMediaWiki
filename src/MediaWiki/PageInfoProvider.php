@@ -96,20 +96,14 @@ class PageInfoProvider implements PageInfo {
 	 * @return boolean
 	 */
 	public function isNewPage() {
-
-		if ( $this->isFilePage() ) {
+		 if ( $this->isFilePage() ) {
 			return isset( $this->wikiPage->smwFileReUploadStatus ) ? !$this->wikiPage->smwFileReUploadStatus : false;
 		}
 
-		if ( $this->revision ) {
-			return $this->revision->getParentId() === null;
-		}
+		$revision = $this->revision ??
+			$this->revisionGuard->newRevisionFromPage( $this->wikiPage );
 
-		$revision = $this->revisionGuard->newRevisionFromPage(
-			$this->wikiPage
-		);
-
-		return $revision->getParentId() === null;
+		return $revision->getParentId() === 0;
 	}
 
 	/**
