@@ -422,7 +422,7 @@
 	"smw-concept-cache-text": "このコンセプトについては合計 $1 {{PLURAL:$1|件のページ}}があり、最終更新は $2 $3です。",
 	"smw_concept_header": "コンセプト「$1」のページ",
 	"smw_conceptarticlecount": "以下に $1 {{PLURAL:$1|件のページ}}を表示しています。",
-	"right-smw-admin": "アクセス管理作業 (Semantic MediaWiki)",
+	"right-smw-admin": "管理作業にアクセス (Semantic MediaWiki)",
 	"right-smw-patternedit": "許可された正規表現およびパターンの維持のための編集アクセス (Semantic MediaWiki)",
 	"right-smw-pageedit": "<code>Is edit protected</code> が付与されたページに対する編集アクセス (Semantic MediaWiki)",
 	"action-smw-pageedit": "<code>Is edit protected</code> が付与されたページの編集 (Semantic MediaWiki)",
