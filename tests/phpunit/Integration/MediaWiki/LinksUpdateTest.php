@@ -113,7 +113,7 @@ class LinksUpdateTest extends DatabaseTestCase {
 		);
 
 		/**
-		 * See #347 and LinksUpdateConstructed
+		 * See #347 and LinksUpdateComplete
 		 */
 		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();

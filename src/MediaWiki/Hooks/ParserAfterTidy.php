@@ -266,7 +266,7 @@ class ParserAfterTidy implements HookListener {
 
 	/**
 	 * @note Article purge: In case an article was manually purged/moved
-	 * the store is updated as well; for all other cases LinksUpdateConstructed
+	 * the store is updated as well; for all other cases LinksUpdateComplete
 	 * will handle the store update
 	 *
 	 * @note The purge action is isolated from any other request therefore using

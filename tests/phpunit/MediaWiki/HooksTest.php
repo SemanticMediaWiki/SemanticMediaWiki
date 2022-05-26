@@ -279,7 +279,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 			[ 'callArticleViewHeader' ],
 			[ 'callArticlePurge' ],
 			[ 'callArticleDelete' ],
-			[ 'callLinksUpdateConstructed' ],
+			[ 'callLinksUpdateComplete' ],
 			[ 'callSpecialStatsAddExtra' ],
 			[ 'callFileUpload' ],
 			[ 'callMaintenanceUpdateAddParams' ],
@@ -902,9 +902,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		return $handler;
 	}
 
-	public function callLinksUpdateConstructed( $instance ) {
+	public function callLinksUpdateComplete( $instance ) {
 
-		$handler = 'LinksUpdateConstructed';
+		$handler = 'LinksUpdateComplete';
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
