@@ -104,8 +104,8 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 		);
 
 		$this->mwHooksHandler->register(
-			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
+			'LinksUpdateComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$title = Title::newFromText( __METHOD__ . '-old' );

@@ -39,7 +39,7 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
@@ -270,7 +270,7 @@ class Hooks {
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
 			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
-			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
+			'LinksUpdateComplete' => [ $this, 'onLinksUpdateComplete' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
 
@@ -824,15 +824,15 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+	 * Hook: LinksUpdateComplete called at the end of LinksUpdate() construction
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateComplete
 	 */
-	public function onLinksUpdateConstructed( $linksUpdate ) {
+	public function onLinksUpdateComplete( $linksUpdate ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$linksUpdateConstructed = new LinksUpdateConstructed(
+		$linksUpdateConstructed = new LinksUpdateComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 

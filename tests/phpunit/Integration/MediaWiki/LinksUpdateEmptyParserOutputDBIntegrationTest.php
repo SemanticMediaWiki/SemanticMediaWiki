@@ -33,7 +33,7 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
 
 		$pageCreator
 			->createPage( $title )
-			->doEdit( '[[Has some property::LinksUpdateConstructedOnEmptyParserOutput]]' );
+			->doEdit( '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
 
 		$propertiesCountBeforeUpdate = count( $this->getStore()->getSemanticData( $subject )->getProperties() );
 
