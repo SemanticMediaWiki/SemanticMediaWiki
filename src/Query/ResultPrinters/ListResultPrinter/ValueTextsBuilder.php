@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
+use Sanitizer;
 use SMWDataValue;
 use SMWResultArray;
 
@@ -113,7 +114,15 @@ class ValueTextsBuilder {
 			return $text;
 		}
 
-		return \Sanitizer::removeHTMLtags( $text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] );
+		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
+			return Sanitizer::removeSomeTags(
+				$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
+			);
+		} else {
+			return Sanitizer::removeHTMLtags(
+				$text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ]
+			);
+		}
 	}
 
 	/**
