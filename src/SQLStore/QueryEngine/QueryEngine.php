@@ -315,7 +315,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		$entries['SQL Explain'] = $debugFormatter->prettifyExplain( new ResultIterator( $res ) );
 		$entries['SQL Query'] = $debugFormatter->prettifySQL( $sql, $qobj->alias );
 
-		$connection->freeResult( $res );
+		$res->free();
 	}
 
 	/**
@@ -356,14 +356,14 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$sql_options
 		);
 
-		$row = $connection->fetchObject( $res );
+		$row = $res->fetchObject();
 		$count = 0;
 
 		if ( $row !== false ) {
 			$count = $row->count;
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 
 		$queryResult->setCountValue( $count );
 
@@ -440,7 +440,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			DataItem::TYPE_WIKIPAGE
 		);
 
-		while ( ( $count < $query->getLimit() ) && ( $row = $connection->fetchObject( $res ) ) ) {
+		while ( ( $count < $query->getLimit() ) && ( $row = $res->fetchObject() ) ) {
 			if ( $row->iw === '' || $row->iw[0] != ':' )  {
 
 				// Catch exception for non-existing predefined properties that
@@ -479,7 +479,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			}
 		}
 
-		if ( $connection->fetchObject( $res ) ) {
+		if ( $res->fetchObject() ) {
 			$count++;
 		}
 
@@ -491,7 +491,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			$hasFurtherResults = true;
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 
 		$queryResult = $this->queryFactory->newQueryResult(
 			$this->store,

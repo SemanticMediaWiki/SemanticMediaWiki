@@ -603,7 +603,7 @@ class SemanticDataLookup {
 			}
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 
 		// Sorting via PHP for an explicit disabled `ORDER BY` to ensure that
 		// the result set has at least a lexical order for range of
