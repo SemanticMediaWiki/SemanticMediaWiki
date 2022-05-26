@@ -138,9 +138,11 @@ class ParserAfterTidy implements HookListener {
 		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
 		}
 
 		if ( $displayTitle ||
@@ -152,7 +154,7 @@ class ParserAfterTidy implements HookListener {
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
 			$title->isProtected( 'edit' ) ||
-			$this->parser->getDefaultSort() ) {
+			$parserDefaultSort ) {
 			return true;
 		}
 
@@ -227,20 +229,22 @@ class ParserAfterTidy implements HookListener {
 		if ( method_exists( $parserOutput, 'getPageProperty') ) {
 			// T301915
 			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
 		} else {
 			// MW < 1.38
 			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
 		}
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
 			$displayTitle,
-			$this->parser->getDefaultSort()
+			$parserDefaultSort
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getDefaultSort()
+			$parserDefaultSort
 		);
 
 		// #2300
