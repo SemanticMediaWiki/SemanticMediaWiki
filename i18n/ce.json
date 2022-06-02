@@ -90,5 +90,6 @@
 	"smw-format-datatable-previous": "Хьалхара",
 	"smw-category": "Категори",
 	"smw-help": "ГӀо",
+	"smw-schema-error-json": "JSON гӀалат: \"$1\"",
 	"smw-listingcontinuesabbrev": "(кхин дlа)"
 }

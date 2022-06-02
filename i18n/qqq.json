@@ -22,6 +22,7 @@
 			"Shirayuki",
 			"Siebrand",
 			"Umherirrender",
+			"Verdy p",
 			"Vlad5250",
 			"Zoranzoki21"
 		]
@@ -492,7 +493,7 @@
 	"smw-admin-supplementary-elastic-mappings-fields": "This is a section header on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-elastic-nodes-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
 	"smw-admin-supplementary-elastic-nodes-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-nodes-title}}",
-	"smw-admin-supplementary-elastic-indices-title": "This is the label of a link on special page \"SemanticMediaWiki\".",
+	"smw-admin-supplementary-elastic-indices-title": "This is the label of a link on special page \"SemanticMediaWiki\".\n\n{{Identical/Index}}",
 	"smw-admin-supplementary-elastic-indices-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-indices-title}}",
 	"smw-admin-supplementary-elastic-statistics-title": "This is the label of a link on special page \"SemanticMediaWiki\".\n\n{{Identical|Statistics}}",
 	"smw-admin-supplementary-elastic-statistics-intro": "This is an informatory message that describes the link accessible via $1.\n\nParameters:\n* $1 - holds the name specified in {{Msg-mw|Smw-admin-supplementary-elastic-statistics-title}}",
