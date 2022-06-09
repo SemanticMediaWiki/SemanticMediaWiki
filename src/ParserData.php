@@ -385,7 +385,8 @@ class ParserData {
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
 		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			return (bool)$parserOutput->getPageProperty( 'smw-semanticdata-status' );
+			// T301915
+			return (bool)( $parserOutput->getPageProperty( 'smw-semanticdata-status' ) ?? false );
 		} else {
 			// MW < 1.38
 			return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );

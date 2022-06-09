@@ -434,7 +434,7 @@
 	"smw-search-profile-sort-title": "כותרת",
 	"smw-search-profile-extended-help-query-link": "לפרטים נוספים, יש להשתמש ב$1",
 	"smw-search-profile-extended-help-find-forms": "מסמכים זמינים",
-	"smw-search-profile-extended-section-sort": "מיין על פי",
+	"smw-search-profile-extended-section-sort": "מיון לפי",
 	"smw-search-profile-extended-section-form": "טפסים",
 	"smw-search-profile-extended-section-search-syntax": "קלט לחיפוש",
 	"smw-search-profile-extended-section-namespace": "מרחב שם",
@@ -552,5 +552,5 @@
 	"smw-es-replication-check": "בדיקת שכפול (Elasticsearch)",
 	"smw-es-replication-error-missing-id": "ניטור שכפול מצא שהערך \"$1\" (מזהה: $2) חסר משרת Elasticsearch.",
 	"smw-es-replication-error-divergent-revision": "ניטור שכפול מצא שעבור הערך \"$1\" (מזהה: $2) <b>הגרסה המשויכת</b>מציגה חוסר־עקביות.",
-	"smw-listingcontinuesabbrev": "(המשך)"
+	"smw-listingcontinuesabbrev": "המשך"
 }

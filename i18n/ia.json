@@ -276,7 +276,7 @@
 	"smw-admin-questions": "Si tu ha altere questiones o suggestiones, participa al <a href=\"https://sourceforge.net/p/semediawiki/mailman/semediawiki-user/\">lista de discussion</a> pro le usatores de Semantic MediaWiki.",
 	"smw_adminlinks_datastructure": "Structura de datos",
 	"smw_adminlinks_displayingdata": "Monstrar datos",
-	"smw_adminlinks_inlinequerieshelp": "Adjuta super consultas incorporate",
+	"smw_adminlinks_inlinequerieshelp": "Adjuta sur consultas incorporate",
 	"smw-createproperty-isproperty": "Es un proprietate del typo $1.",
 	"smw-createproperty-allowedvals": "Le {{PLURAL:$1|valor|valores}} permittite pro iste proprietate es:",
 	"smw-paramdesc-category-delim": "Le delimitator",

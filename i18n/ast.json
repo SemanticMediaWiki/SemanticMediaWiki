@@ -278,7 +278,7 @@
 	"smw-browse-api-subject-serialization-invalid": "L'asuntu tien un formatu de serialización inválidu.",
 	"smw-browse-js-disabled": "Albídrase que Javascript ta desactiváu o nun ta disponible, y recomendamos usar un navegador con encontu pal mesmu. Otres opciones discútense na páxina del parámetru de configuración [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>].",
 	"smw-browse-show-group": "Amosar grupos",
-	"smw-browse-hide-group": "Tapecer grupos",
+	"smw-browse-hide-group": "Anubrir los grupos",
 	"smw-noscript": "Esta páxina o aición rique Javascript pa funcionar. Activa Javascript nel navegador, o utiliza un navegador con encontu, pa que pueda sirvise y proporcionase esta carauterística como se solicitó. Pa más información, consulta la páxina d'ayuda [https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript].",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Etiqueta de propiedá inversa",
