@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hanberke"
+			"Hanberke",
+			"TayfunEt."
 		]
 	},
+	"browse": "Wiki göz aýlaň",
 	"smw_browse_go": "Git",
 	"smw_result_prev": "Öňki",
 	"smw-livepreview-loading": "Ýüklenýär...",

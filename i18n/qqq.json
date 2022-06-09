@@ -611,7 +611,7 @@
 	"smw-admin-tab-registry": "This is the label of a tab.\n\n{{Identical|Registry}}",
 	"smw-admin-deprecation-notice-section": "This is a section header on special page \"Semantic MediaWiki\". This is the name of the extension. Usually it is not being translated.",
 	"smw-admin-configutation-tab-settings": "This is the name of a tab on special page \"SemanticMediaWiki\". Translate in a sense of configuration settings.\n\n{{Identical|Settings}}",
-	"smw-admin-configutation-tab-namespaces": "This is the name of a tab on special page \"SemanticMediaWiki\".",
+	"smw-admin-configutation-tab-namespaces": "This is the name of a tab on special page \"SemanticMediaWiki\".\n{{Identical|Namespace}}",
 	"smw-admin-maintenance-tab-tasks": "This is the name of a tab on special page \"SemanticMediaWiki\". Translate in a sense of maintenance tasks.",
 	"smw-admin-maintenance-tab-scripts": "This is the name of a tab on special page \"SemanticMediaWiki\".",
 	"smw-admin-maintenance-no-description": "This is an informatory message.",
