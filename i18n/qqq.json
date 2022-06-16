@@ -686,7 +686,7 @@
 	"smw-search-hide": "This is the label of a button on special page \"Search\" / section \"Extended\"\n\n{{Identical|Hide}}",
 	"log-name-smw": "A name for the [[Special:Log]] Semantic MediaWiki entry.",
 	"log-show-hide-smw": "This is the name for an entry added by Semantic MediaWiki to special page \"[[Special:Log]]\".\nParameters:\n* $1 - one of {{msg-mw|Show}} or {{msg-mw|Hide}}\n{{Related|Log-show-hide}}",
-	"logeventslist-smw-log": "Semantic Mediawiki log option label on [[Special:Log]]",
+	"logeventslist-smw-log": "Semantic MediaWiki log option label on [[Special:Log]]",
 	"log-description-smw": "A description for Semantic MediaWiki entries displayed in [[Special:Log]].",
 	"logentry-smw-maintenance": "This is the message for an entry added by Semantic MediaWiki to special page \"[[Special:Log]]\".",
 	"smw-datavalue-import-unknown-namespace": "This is an error message.\n\nParameter:\n* $1 holds the name of the namespace.",
