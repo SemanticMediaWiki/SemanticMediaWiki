@@ -137,11 +137,12 @@ class JobQueueRunner {
 	private function pop() {
 		$offset = 0;
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
+		} else {
 			return JobQueueGroup::singleton()->pop();
 		}
-
-		return Job::pop( $offset );
 	}
 
 	/**
@@ -149,11 +150,12 @@ class JobQueueRunner {
 	 */
 	public function pop_type( $type ) {
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup()->get( $type )->pop();
+		} else {
 			return JobQueueGroup::singleton()->get( $type )->pop();
 		}
-
-		return Job::pop_type( $type );
 	}
 
 }

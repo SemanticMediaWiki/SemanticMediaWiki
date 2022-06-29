@@ -67,7 +67,8 @@ abstract class Job extends MediaWikiJob {
 
 	/**
 	 * @note Job::batchInsert was deprecated in MW 1.21
-	 * JobQueueGroup::singleton()->push( $job );
+	 * JobQueueGroup::singleton()->push( $job ) was deprecated in MW 1.37;
+	 * MediaWikiServices::getInstance()->getJobQueueGroup()
 	 *
 	 * @since 1.9
 	 */

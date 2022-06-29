@@ -274,7 +274,12 @@ return [
 
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
-		return JobQueueGroup::singleton();
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup();
+		} else {
+			return JobQueueGroup::singleton();
+		}
 	},
 
 	/**
