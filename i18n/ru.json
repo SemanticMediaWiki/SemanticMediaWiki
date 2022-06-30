@@ -878,7 +878,7 @@
 	"smw-property-predefined-schema-def": "«$1» — это предварительно определенное свойство, которое описывает содержимое схемы, и обеспечивается [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-ask-title-keyword-type": "Поиск по ключевым словам",
 	"smw-remote-source-unavailable": "\nНевозможно подключиться к удаленной цели «$1».",
-	"smw-remote-source-disabled": "Источник '' '$1' '' отключил поддержку удаленного запроса!",
+	"smw-remote-source-disabled": "Источник '''$1''' отключил поддержку удалённого запроса!",
 	"smw-parameter-missing": "Параметр «$1» отсутствует.",
 	"smw-property-tab-usage": "Использование",
 	"smw-property-tab-redirects": "Синонимы",
