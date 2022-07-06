@@ -1098,7 +1098,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 	public function callSkinTemplateNavigation( $instance ) {
 
-		$handler = 'SkinTemplateNavigation';
+		$handler = 'SkinTemplateNavigationUniversal';
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()

@@ -34,6 +34,6 @@ Update the Store after an article has been deleted.
 
 #### GetPreferences
 
-#### SkinTemplateNavigation
+#### SkinTemplateNavigation::Universal
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"
