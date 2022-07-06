@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\SkinTemplateNavigation
+ * @covers \SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -24,8 +24,8 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 		$links = [];
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\SkinTemplateNavigation',
-			new SkinTemplateNavigation( $skinTemplate, $links )
+			'\SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal',
+			new SkinTemplateNavigationUniversal( $skinTemplate, $links )
 		);
 	}
 
@@ -46,7 +46,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 		$user->expects( $this->atLeastOnce() )
 			->method( 'isAllowed' )
 			->will( $this->returnValue( true ) );
-		
+
 		$output = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -58,7 +58,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->will( $this->returnValue( $output ) );
-			
+
 		$skinTemplate->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
 			->will( $this->returnValue( $user ) );
@@ -73,7 +73,7 @@ class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
 
 		$links = [];
 
-		$instance = new SkinTemplateNavigation( $skinTemplate, $links );
+		$instance = new SkinTemplateNavigationUniversal( $skinTemplate, $links );
 		$instance->process();
 
 		$this->assertArrayHasKey( 'purge', $links['actions'] );

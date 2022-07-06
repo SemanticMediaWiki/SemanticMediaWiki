@@ -8,14 +8,14 @@ use SMW\MediaWiki\HookListener;
 /**
  * Alter the structured navigation links in SkinTemplates.
  *
- * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+ * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
  *
  * @license GNU GPL v2+
  * @since 2.0
  *
  * @author mwjames
  */
-class SkinTemplateNavigation implements HookListener {
+class SkinTemplateNavigationUniversal implements HookListener {
 
 	/**
 	 * @var SkinTemplate
