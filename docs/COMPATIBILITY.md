@@ -23,7 +23,7 @@ Increases of minimum requirements are indicated in bold.
 	</tr>
 	<tr>
 		<th>4.1.x</th>
-		<td><strong>7.4.0</strong> - 7.4.x</td>
+		<td><strong>7.4.0</strong> - 8.0.x</td>
 		<td>1.35.0 - 1.37.x</td>
 		<td>-</td>
 		<td>In development</td>
