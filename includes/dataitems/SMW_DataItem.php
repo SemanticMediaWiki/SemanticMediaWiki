@@ -252,6 +252,8 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @return array
 	 */
 	public function jsonSerialize() {
+		# T312589 explicitly calling jsonSerialize() will be unnecessary
+		# in the future.
 		return [
 			'options' => $this->options ? $this->options->jsonSerialize() : null,
 			'value' => $this->getSerialization(),
@@ -271,7 +273,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? $unserializer->unserialize( $json['options'] ) : null;
+		$obj->options = $json['options'] ? SemanticData::maybeUnserialize($unserializer, $json['options'] ) : null;
 		return $obj;
 	}
 

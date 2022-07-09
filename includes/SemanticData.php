@@ -898,16 +898,18 @@ class SemanticData implements JsonUnserializable {
 	 * @return array
 	 */
 	public function jsonSerialize() {
+		# T312589 explicitly calling jsonSerialize() will be unnecessary
+		# in the future.
 		$json = [
 			'stubObject' => $this->stubObject,
 			'mPropVals' => array_map( function( $x ) {
 					return array_map( function( $y ) {
 						return $y->jsonSerialize();
 					}, $x );
-				}, $this->mPropVals ),
+			}, $this->mPropVals ),
 			'mProperties' => array_map( function( $x ) {
 					return $x->jsonSerialize();
-				}, $this->mProperties ),
+			}, $this->mProperties ),
 			'mHasVisibleProps' => $this->mHasVisibleProps,
 			'mHasVisibleSpecs' => $this->mHasVisibleSpecs,
 			'mNoDuplicates' => $this->mNoDuplicates,
@@ -924,6 +926,21 @@ class SemanticData implements JsonUnserializable {
 		return $json;
 	}
 
+	public static function maybeUnserialize( $unserializer, $value ) {
+		# Compatibility thunk for MW versions with T312589 fixed/unfixed
+		return is_object($value) ? $value :
+			$unserializer->unserialize( $value );
+	}
+
+	public static function maybeUnserializeArray( $unserializer, array $value ) {
+		# Compatibility thunk for MW versions with T312589 fixed/unfixed
+		$result = [];
+		foreach ($value as $k=>$v) {
+			$result[$k] = self::maybeUnserialize($unserializer, $v);
+		}
+		return $result;
+	}
+
 	/**
 	 * Implements JsonUnserializable.
 	 * 
@@ -935,18 +952,23 @@ class SemanticData implements JsonUnserializable {
 	 * @return self
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
-		$obj = new self( $unserializer->unserialize( $json['mSubject'] ), $json['mNoDuplicates'] );
+		# T312589: In the future JsonCodec will take care of unserializing
+		# the values in the $json array itself.
+		$obj = new self(
+			self::maybeUnserialize($unserializer, $json['mSubject']),
+			$json['mNoDuplicates']
+		);
 		$obj->stubObject = $json['stubObject'];
-		$obj->mPropVals = array_map( function( $x ) use( $unserializer ) {
-				return $unserializer->unserializeArray( $x );
-			}, $json['mPropVals'] );
-		$obj->mProperties = $unserializer->unserializeArray( $json['mProperties'] );
+		$obj->mPropVals = array_map( static function( $x ) use( $unserializer ) {
+			return self::maybeUnserializeArray( $unserializer, $x );
+		}, $json['mPropVals'] );
+		$obj->mProperties = self::maybeUnserializeArray($unserializer, $json['mProperties'] );
 		$obj->mHasVisibleProps = $json['mHasVisibleProps'];
 		$obj->mHasVisibleSpecs = $json['mHasVisibleSpecs'];
-		$obj->subSemanticData = $json['subSemanticData'] ? $unserializer->unserialize( $json['subSemanticData'] ) : null;
+		$obj->subSemanticData = $json['subSemanticData'] ? self::maybeUnserialize($unserializer, $json['subSemanticData'] ) : null;
 		$obj->errors = $json['errors'];
 		$obj->hash = $json['hash'];
-		$obj->options = $json['options'] ? $unserializer->unserialize( $json['options'] ) : null;
+		$obj->options = $json['options'] ? self::maybeUnserialize($unserializer, $json['options'] ) : null;
 		$obj->extensionData = $json['extensionData'];
 		$obj->sequenceMap = $json['sequenceMap'];
 		$obj->countMap = $json['countMap'];
