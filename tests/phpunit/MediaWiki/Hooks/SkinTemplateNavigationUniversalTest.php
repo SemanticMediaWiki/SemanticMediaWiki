@@ -13,7 +13,7 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
  *
  * @author mwjames
  */
-class SkinTemplateNavigationTest extends \PHPUnit_Framework_TestCase {
+class SkinTemplateNavigationUniversalTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
