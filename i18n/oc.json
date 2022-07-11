@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"COMISSIONTOPOC",
 			"Cedric31",
 			"Guilhelma",
 			"Kghbln",
@@ -170,7 +171,7 @@
 	"smw-admin-announce": "Anonciar vòstre wiki",
 	"smw_smwadmin_datarefresh": "Reconstruccion de las donadas",
 	"smw_smwadmin_datarefreshdocu": "Es possible de restablir totas las donadas Semantic MediaWiki basadas suls contenguts corrents d'aqueste wiki.\nAquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrne a cambiat al moment de las remesas a nivèl.\nLa mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.\nLa pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del site).",
-	"smw_smwadmin_datarefreshprogress": "<strong>Una mesa a jorn es en cors d’execucion.</strong>\nEs normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.\nPer acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença MediaWiki <code>runJobs.php</code> (utilizatz l’opcion <code>--maxjobs 1000</code> per restrénher lo nombre de las mesas a jorn per escript aviat).\nProgression estimada de la mesa a jorn actuala :",
+	"smw_smwadmin_datarefreshprogress": "<strong>Una mesa a jorn es a s’executar.</strong>\nEs normal qu’una mesa a jorn progresse lentament dempuèi que refresque unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.\nPer acabar aquesta actualizacion pus rapidament, podètz invocar l'escript de mantenença MediaWiki <code>runJobs.php</code> (utilizatz l’opcion <code>--maxjobs 1000</code> per restrénher lo nombre de las mesas a jorn per escript aviat).\nProgression estimada de l’actualizacion actuala :",
 	"smw_smwadmin_datarefreshbutton": "Planificar la reconstruccion de las donadas",
 	"smw_smwadmin_datarefreshstop": "Arrestar aquesta mesa a jorn",
 	"smw_smwadmin_datarefreshstopconfirm": "Òc, ne soi {{GENDER:$1|segur|segura}}.",
