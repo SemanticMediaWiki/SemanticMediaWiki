@@ -545,7 +545,7 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		return [
-			'query_string' => $this->queryString,
+			'query_string' => htmlspecialchars( $this->queryString ),
 			'query_source' => str_replace( '"', '', $querySource ),
 			'query_time' => $duration,
 			'from_cache' => $isFromCache
