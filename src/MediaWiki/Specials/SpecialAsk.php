@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials;
 
 use Html;
 use ParamProcessor\Param;
+use SMW\Query\QuerySourceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
@@ -12,11 +13,9 @@ use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
-use SMW\MediaWiki\Specials\Ask\QueryInputWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\Query\PrintRequest;
-use SMW\Query\QueryLinker;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
@@ -25,11 +24,9 @@ use SMWInfolink as Infolink;
 use SMWOutputs;
 use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 use SpecialPage;
 use SMW\Utils\UrlArgs;
-use SMW\Utils\HtmlTabs;
-use SMW\Message;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -280,7 +277,7 @@ class SpecialAsk extends SpecialPage {
 			$p = Infolink::decodeCompactLink( $p );
 		}
 
-		list( $this->queryString, $this->parameters, $this->printouts ) = ParametersProcessor::process(
+		[ $this->queryString, $this->parameters, $this->printouts ] = ParametersProcessor::process(
 			$request,
 			$p
 		);
@@ -311,7 +308,7 @@ class SpecialAsk extends SpecialPage {
 		$printer = null;
 
 		if ( $this->queryString !== '' ) {
-			list( $result, $res, $duration ) = $this->fetchResults(
+			[ $result, $res, $duration ] = $this->fetchResults(
 				$printer,
 				$queryobj,
 				$urlArgs
@@ -447,7 +444,7 @@ class SpecialAsk extends SpecialPage {
 			return [ $printer->getDependencyError(), null, 0 ];
 		}
 
-		list( $res, $debug, $duration, $queryobj, $native_result ) = $this->fetchQueryResult(
+		[ $res, $debug, $duration, $queryobj, $native_result ] = $this->fetchQueryResult(
 			$params
 		);
 
