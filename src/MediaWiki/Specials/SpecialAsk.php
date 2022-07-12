@@ -524,9 +524,7 @@ class SpecialAsk extends SpecialPage {
 		return [ $result, $res, $duration ];
 	}
 
-	private function getQueryLog( $duration, $isFromCache = false ) {
-
-		$infoText = '';
+	private function getQueryLog( $duration, $isFromCache = false ): array {
 		$source = null;
 
 		if ( isset( $this->parameters['source'] ) ) {
