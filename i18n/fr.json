@@ -415,7 +415,7 @@
 	"smw-admin-statistics-section-explain": "La section fournit des statistiques supplémentaires pour les administrateurs.",
 	"smw-admin-statistics-semanticdata-overview": "Vue d’ensemble",
 	"smw-admin-permission-missing": "L’accès à cette page a été bloqué par manque d’autorisation ; veuillez consulter la page d’aide sur les [https://www.semantic-mediawiki.org/wiki/Help:Permissions autorisations] pour plus de détails sur les réglages nécessaires.",
-	"smw-admin-setupsuccess": "Le moteur de stockage a bien été démarré.",
+	"smw-admin-setupsuccess": "Le moteur de stockage a été mis en place.",
 	"smw_smwadmin_return": "Revenir à $1",
 	"smw_smwadmin_updatestarted": "Un nouveau processus de rafraîchissement des données sémantiques a commencé.\nToutes les données stockées seront reconstruites, voire réparées si nécessaire.\nVous pouvez suivre la progression de la mise à jour sur cette page spéciale.",
 	"smw_smwadmin_updatenotstarted": "Un processus de mise à jour est déjà en cours d’exécution.\nPas besoin d’en créer un autre.",

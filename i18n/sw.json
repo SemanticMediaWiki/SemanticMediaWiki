@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hussein m mmbaga",
 			"Kwisha",
 			"Rance"
 		]
 	},
+	"browse": "vinjari na wiki",
 	"smw-ui-tooltip-title-legend": "Simulizi",
 	"smw-livepreview-loading": "Inapakizwa...",
 	"smw-filter": "Chuja",
