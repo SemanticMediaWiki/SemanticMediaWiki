@@ -6,7 +6,9 @@ Released on July 21, 2022.
 
 This is a [patch release](../RELEASE-POLICY.md), meaning that it contains only fixes and no breaking changes.
 
-TBD
+This release improves compatibility with MediaWiki 1.37 and 1.38. It also brings a fix for a security issue.
+
+Users of MediaWiki 1.37 and later and Semantic MediaWiki 4.0.1 and earlier are encouraged to upgrade.
 
 ## Upgrading
 
