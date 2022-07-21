@@ -46,6 +46,7 @@ maintenance script must be run (the collation sort key algorithm was changed).
 * [Improved performance on multi-database setups](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5002)
 * [Improved support for recent ElasticSearch versions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4976)
 * [Updated the logo](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5013)
+* Localisation updates from the translatewiki.net community of translators
 
 ## Bug fixes
 
