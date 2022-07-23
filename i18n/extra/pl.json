@@ -11,9 +11,9 @@
             "SMW_NS_PROPERTY": "Atrybut",
             "SMW_NS_PROPERTY_TALK": "Dyskusja_atrybutu",
             "SMW_NS_CONCEPT": "Pojęcie",
-            "SMW_NS_CONCEPT_TALK": "Dyskusja pojęcia",
-            "SMW_NS_SCHEMA": "Semantyczny Schemat",
-            "SMW_NS_SCHEMA_TALK": "Dyskusja semantycznego schematu"
+            "SMW_NS_CONCEPT_TALK": "Dyskusja_pojęcia",
+            "SMW_NS_SCHEMA": "Semantyczny_Schemat",
+            "SMW_NS_SCHEMA_TALK": "Dyskusja_semantycznego_schematu"
         },
         "aliases": []
     },
