@@ -15,7 +15,7 @@ above is not supported.
 * Improved compatibility with MediaWiki 1.38, though this version still has many issues
 * Improved support for MediaWiki 1.35
 * Dropped support for MediaWiki older than 1.35
-* Dropped support for PHP older than 7.4
+* Dropped support for PHP older than 7.3
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
