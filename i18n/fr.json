@@ -564,7 +564,7 @@
 	"smw-paramdesc-category-template": "Un modèle pour mettre en forme les éléments",
 	"smw-paramdesc-category-userparam": "Un paramètre à passer au modèle",
 	"smw-info-par-message": "Message à afficher.",
-	"smw-info-par-icon": "Icône à afficher, soit « info » ou « attention ».",
+	"smw-info-par-icon": "Icône à afficher : soit « info », soit « attention ».",
 	"prefs-smw": "MediaWiki Sémantique",
 	"prefs-general-options": "Options générales",
 	"prefs-extended-search-options": "Recherche étendue",
