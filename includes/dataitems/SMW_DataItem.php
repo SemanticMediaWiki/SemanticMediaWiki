@@ -3,6 +3,7 @@
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Options;
+use SMW\SemanticData;
 
 /**
  * This group contains all parts of SMW that relate to the processing of dataitems
@@ -263,7 +264,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer
