@@ -100,10 +100,9 @@ class HookDispatcher {
 	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hookshook.setup.afterinitializationcomplete.md
 	 * @since 3.2
 	 *
-	 * @param array &$vars
 	 */
-	public function onSetupAfterInitializationComplete( array &$vars ) {
-		Hooks::run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
+	public function onSetupAfterInitializationComplete(  ) {
+		Hooks::run( 'SMW::Setup::AfterInitializationComplete', [] );
 	}
 
 	/**

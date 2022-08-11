@@ -73,19 +73,15 @@ class SetupFile {
 			);
 	}
 
-	public function loadSchema( array &$vars = [] ): void {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
-		if ( isset( $vars[self::SMW_JSON] ) ) {
+	public function loadSchema(): void {
+		if ( isset( $GLOBALS[self::SMW_JSON] ) ) {
 			return;
 		}
 
-		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
+		$smwJson = $this->repo->loadSmwJson( $GLOBALS['smwgConfigFileDir'] );
 
 		if ( $smwJson !== null ) {
-			$vars[self::SMW_JSON] = $smwJson;
+			$GLOBALS[self::SMW_JSON] = $smwJson;
 		}
 	}
 
@@ -116,40 +112,32 @@ class SetupFile {
 		return $isGoodSchema;
 	}
 
-	public static function makeUpgradeKey( array $vars ): string {
-		return sha1( self::makeKey( $vars ) );
+	public static function makeUpgradeKey(): string {
+		return sha1( self::makeKey() );
 	}
 
-	public function inMaintenanceMode( array $vars = [] ): bool {
+	public function inMaintenanceMode(): bool {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return false;
 		}
 
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
 		$id = Site::id();
 
-		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return false;
 		}
 
-		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false;
+		return $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] !== false;
 	}
 
-	public function getMaintenanceMode( array $vars = [] ) {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function getMaintenanceMode() {
 		$id = Site::id();
 
-		if ( !isset( $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) ) {
 			return [];
 		}
 
-		return $vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE];
+		return $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE];
 	}
 
 	/**
@@ -201,28 +189,20 @@ class SetupFile {
 		$this->set( [ self::INCOMPLETE_TASKS => $incomplete_tasks ] );
 	}
 
-	public function hasDatabaseMinRequirement( array $vars = [] ) : bool {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function hasDatabaseMinRequirement() : bool {
 		$id = Site::id();
 
 		// No record means, no issues!
-		if ( !isset( $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id][self::DB_REQUIREMENTS] ) ) {
 			return true;
 		}
 
-		$requirements = $vars[self::SMW_JSON][$id][self::DB_REQUIREMENTS];
+		$requirements = $GLOBALS[self::SMW_JSON][$id][self::DB_REQUIREMENTS];
 
 		return version_compare( $requirements['latest_version'], $requirements['minimum_version'], 'ge' );
 	}
 
-	public function findIncompleteTasks( array $vars = [] ): array {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function findIncompleteTasks(): array {
 		$id = Site::id();
 		$tasks = [];
 
@@ -234,17 +214,17 @@ class SetupFile {
 
 		foreach ( $checks as $key => $value ) {
 
-			if ( !isset( $vars[self::SMW_JSON][$id][$key] ) ) {
+			if ( !isset( $GLOBALS[self::SMW_JSON][$id][$key] ) ) {
 				continue;
 			}
 
-			if ( $vars[self::SMW_JSON][$id][$key] === $value[0] ) {
+			if ( $GLOBALS[self::SMW_JSON][$id][$key] === $value[0] ) {
 				$tasks[] = $value[1];
 			}
 		}
 
-		if ( isset( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] ) ) {
-			foreach ( $vars[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
+		if ( isset( $GLOBALS[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] ) ) {
+			foreach ( $GLOBALS[self::SMW_JSON][$id][self::INCOMPLETE_TASKS] as $key => $args ) {
 				if ( $args === true ) {
 					$tasks[] = $key;
 				} else {
@@ -259,34 +239,25 @@ class SetupFile {
 	/**
 	 * FIXME: a bunch of callers are calling with a single array argument. These are likely broken.
 	 */
-	public function setMaintenanceMode( $maintenanceMode, array $vars = [] ) {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function setMaintenanceMode( $maintenanceMode ) {
 		$this->write(
 			[
-				self::UPGRADE_KEY => self::makeUpgradeKey( $vars ),
+				self::UPGRADE_KEY => self::makeUpgradeKey(),
 				self::MAINTENANCE_MODE => $maintenanceMode
 			],
-			$vars
+			$GLOBALS
 		);
 	}
 
-	public function finalize( array $vars = [] ): void {
-
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function finalize( ): void {
 		// #3563, Use the specific wiki-id as identifier for the instance in use
-		$key = self::makeUpgradeKey( $vars );
+		$key = self::makeUpgradeKey();
 		$id = Site::id();
 
 		if (
-			isset( $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] ) &&
-			$key === $vars[self::SMW_JSON][$id][self::UPGRADE_KEY] &&
-			$vars[self::SMW_JSON][$id][self::MAINTENANCE_MODE] === false ) {
+			isset( $GLOBALS[self::SMW_JSON][$id][self::UPGRADE_KEY] ) &&
+			$key === $GLOBALS[self::SMW_JSON][$id][self::UPGRADE_KEY] &&
+			$GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] === false ) {
 			return;
 		}
 
@@ -295,89 +266,72 @@ class SetupFile {
 				self::UPGRADE_KEY => $key,
 				self::MAINTENANCE_MODE => false
 			],
-			$vars
+			$GLOBALS
 		);
 	}
 
-	public function reset( array $vars = [] ): void {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function reset(): void {
 		$id = Site::id();
 		$args = [];
 
-		if ( !isset( $vars[self::SMW_JSON][$id] ) ) {
+		if ( !isset( $GLOBALS[self::SMW_JSON][$id] ) ) {
 			return;
 		}
 
-		$vars[self::SMW_JSON][$id] = [];
+		$GLOBALS[self::SMW_JSON][$id] = [];
 
-		$this->write( [], $vars );
+		$this->write( [], $GLOBALS );
 	}
 
-	public function set( array $args, $vars = [] ): void {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
-		$this->write( $args, $vars );
+	public function set( array $args ): void {
+		$this->write( $args, $GLOBALS );
 	}
 
-	public function get( string $key, array $vars = [] ) {
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
+	public function get( string $key ) {
 		$id = Site::id();
 
-		if ( isset( $vars[self::SMW_JSON][$id][$key] ) ) {
-			return $vars[self::SMW_JSON][$id][$key];
+		if ( isset( $GLOBALS[self::SMW_JSON][$id][$key] ) ) {
+			return $GLOBALS[self::SMW_JSON][$id][$key];
 		}
 
 		return null;
 	}
 
-	public function remove( string $key, $vars = [] ): void {
-
-		if ( $vars === [] ) {
-			$vars = $GLOBALS;
-		}
-
-		$this->write( [ $key => null ], $vars );
+	public function remove( string $key ): void {
+		$this->write( [ $key => null ], $GLOBALS );
 	}
 
-	public function write( array $args, array $vars ): void {
+	public function write( array $args ): void {
 		$id = Site::id();
 
-		if ( !isset( $vars[self::SMW_JSON] ) ) {
-			$vars[self::SMW_JSON] = [];
+		if ( !isset( $GLOBALS[self::SMW_JSON] ) ) {
+			$GLOBALS[self::SMW_JSON] = [];
 		}
 
 		foreach ( $args as $key => $value ) {
 			// NULL means that the key key is removed
 			if ( $value === null ) {
-				unset( $vars[self::SMW_JSON][$id][$key] );
+				unset( $GLOBALS[self::SMW_JSON][$id][$key] );
 			} else {
-				$vars[self::SMW_JSON][$id][$key] = $value;
+				$GLOBALS[self::SMW_JSON][$id][$key] = $value;
 			}
 		}
 
 		// Log the base elements used for computing the key
-		// $vars['smw.json'][$id]['upgrade_key_base'] = self::makeKey(
-		//	$vars
+		// $GLOBALS['smw.json'][$id]['upgrade_key_base'] = self::makeKey(
+		//	$GLOBALS
 		// );
 
 		// Remove legacy
-		if ( isset( $vars[self::SMW_JSON]['upgradeKey'] ) ) {
-			unset( $vars[self::SMW_JSON]['upgradeKey'] );
+		if ( isset( $GLOBALS[self::SMW_JSON]['upgradeKey'] ) ) {
+			unset( $GLOBALS[self::SMW_JSON]['upgradeKey'] );
 		}
-		if ( isset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] ) ) {
-			unset( $vars[self::SMW_JSON][$id]['in.maintenance_mode'] );
+		if ( isset( $GLOBALS[self::SMW_JSON][$id]['in.maintenance_mode'] ) ) {
+			unset( $GLOBALS[self::SMW_JSON][$id]['in.maintenance_mode'] );
 		}
 
 		try {
-			$this->repo->saveSmwJson( $vars['smwgConfigFileDir'], $vars[self::SMW_JSON] );
+			$this->repo->saveSmwJson( $GLOBALS['smwgConfigFileDir'], $GLOBALS[self::SMW_JSON] );
 		} catch( RuntimeException $e ) {
 			// Users may not have `wgShowExceptionDetails` enabled and would
 			// therefore not see the exception error message hence we fail hard
@@ -395,11 +349,11 @@ class SetupFile {
 	 * or represented in Semantic MediaWiki. In most cases it will require an action
 	 * from an administrator when one of those keys are altered.
 	 */
-	private static function makeKey( array $vars ): string {
+	private static function makeKey(): string {
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
 			// Special properties enabled?
-			$vars['smwgPageSpecialProperties'],
+			$GLOBALS['smwgPageSpecialProperties'],
 
 			// Any custom fixed properties require their own table?
 			TypesRegistry::getFixedProperties( 'custom_fixed' )
@@ -408,27 +362,27 @@ class SetupFile {
 		$pageSpecialProperties = array_unique( $pageSpecialProperties );
 
 		// Sort to ensure the key contains the same order
-		sort( $vars['smwgFixedProperties'] );
+		sort( $GLOBALS['smwgFixedProperties'] );
 		sort( $pageSpecialProperties );
 
 		// The following settings influence the "shape" of the tables required
 		// therefore use the content to compute a key that reflects any
 		// changes to them
 		$components = [
-			$vars['smwgUpgradeKey'],
-			$vars['smwgDefaultStore'],
-			$vars['smwgFixedProperties'],
-			$vars['smwgEnabledFulltextSearch'],
+			$GLOBALS['smwgUpgradeKey'],
+			$GLOBALS['smwgDefaultStore'],
+			$GLOBALS['smwgFixedProperties'],
+			$GLOBALS['smwgEnabledFulltextSearch'],
 			$pageSpecialProperties
 		];
 
 		// Only add the key when it is different from the default setting
-		if ( $vars['smwgEntityCollation'] !== 'identity' ) {
-			$components += [ 'smwgEntityCollation' => $vars['smwgEntityCollation'] ];
+		if ( $GLOBALS['smwgEntityCollation'] !== 'identity' ) {
+			$components += [ 'smwgEntityCollation' => $GLOBALS['smwgEntityCollation'] ];
 		}
 
-		if ( $vars['smwgFieldTypeFeatures'] !== false ) {
-			$components += [ 'smwgFieldTypeFeatures' => $vars['smwgFieldTypeFeatures'] ];
+		if ( $GLOBALS['smwgFieldTypeFeatures'] !== false ) {
+			$components += [ 'smwgFieldTypeFeatures' => $GLOBALS['smwgFieldTypeFeatures'] ];
 		}
 
 		// Recognize when the version requirements change and force

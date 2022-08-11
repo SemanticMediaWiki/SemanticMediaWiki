@@ -43,12 +43,12 @@ class SemanticMediaWiki {
 		}
 
 		// Registration point for required early registration
-		Setup::initExtension( $GLOBALS );
+		Setup::initExtension();
 
 		// Apparently this is required (1.28+) as the earliest possible execution
 		// point in order for settings that refer to the SMW_NS_PROPERTY namespace
 		// to be available in LocalSettings
-		NamespaceManager::initCustomNamespace( $GLOBALS );
+		NamespaceManager::initCustomNamespace();
 	}
 
 	/**
@@ -65,7 +65,7 @@ class SemanticMediaWiki {
 	public static function onExtensionFunction() {
 
 		$namespace = new NamespaceManager();
-		$namespace->init( $GLOBALS );
+		$namespace->init();
 
 		$setup = new Setup();
 
@@ -73,7 +73,7 @@ class SemanticMediaWiki {
 			ServicesFactory::getInstance()->getHookDispatcher()
 		);
 
-		$setup->init( $GLOBALS, __DIR__ );
+		$setup->init( __DIR__ );
 	}
 
 	/**
