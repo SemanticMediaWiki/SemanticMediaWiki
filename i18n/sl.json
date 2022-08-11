@@ -145,5 +145,6 @@
 	"smw-format-datatable-search": "Iskanje:",
 	"smw-format-datatable-next": "Naprej",
 	"smw-format-datatable-toolbar-export": "Izvoz",
+	"smw-types-title": "Vrsta: $1",
 	"smw-listingcontinuesabbrev": "nadalj."
 }
