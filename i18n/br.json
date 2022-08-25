@@ -68,7 +68,7 @@
 	"smw_wrong_namespace": "N'eo aotreet amañ nemet ar pajennoù eus an esaouenn \"$1\".",
 	"smw_manytypes": "Ouzhpenn ur seurt zo bet termenet evit ar perzh.",
 	"smw_emptystring": "Ne zegemerer ket an neudennadoù goullo.",
-	"smw_notinenum": "« $1 » n'emañ ket er roll talvoudoù posupl ($2) evit ar perzh-mañ.",
+	"smw_notinenum": "N’emañ ket \"$1\" e roll ($2) an [[Property:Allows value|talvoudoù aotreet]] evit ar perzh \"$3\".",
 	"smw_noboolean": "N'eo ket anavezet \"$1\" evel un talvoudenn Boolean (gwir/gaou).",
 	"smw_true_words": "gwir,g,ya,true",
 	"smw_false_words": "gaou,g,nann,n,false",
