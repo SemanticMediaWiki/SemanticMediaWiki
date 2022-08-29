@@ -736,7 +736,7 @@
 	"smw-search-show": "Afficher",
 	"smw-search-hide": "Masquer",
 	"log-name-smw": "Journal de MediaWiki Sémantique",
-	"log-show-hide-smw": "Journal de MediaWiki Sémantique $1",
+	"log-show-hide-smw": "$1 le journal de MediaWiki Sémantique",
 	"logeventslist-smw-log": "Journal de MediaWiki Sémantique",
 	"log-description-smw": "Activités pour [https://www.semantic-mediawiki.org/wiki/Help:Logging les types d’événement activés] qui ont été signalés par MediaWiki Sémantique et ses composants.",
 	"logentry-smw-maintenance": "Événements relatifs à la maintenance émis par MediaWiki Sémantique",
