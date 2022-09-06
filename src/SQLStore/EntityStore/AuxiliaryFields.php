@@ -108,17 +108,18 @@ class AuxiliaryFields {
 			$countmap = null;
 		}
 
-		$rows = [
-			'smw_id' => $sid,
-			'smw_seqmap' => $seqmap,
-			'smw_countmap' => $countmap
-		];
-
 		$this->connection->upsert(
 			SQLStore::ID_AUXILIARY_TABLE,
-			$rows,
+			[
+				'smw_id' => $sid,
+				'smw_seqmap' => $seqmap,
+				'smw_countmap' => $countmap
+			],
 			'smw_id',
-			$rows,
+			[
+				'smw_seqmap' => $seqmap,
+				'smw_countmap' => $countmap
+			],
 			__METHOD__
 		);
 
