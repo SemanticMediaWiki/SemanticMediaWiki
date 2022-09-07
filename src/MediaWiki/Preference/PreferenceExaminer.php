@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Preference;
 
+use LogicException;
 use MediaWiki\User\UserOptionsLookup;
 use User;
 
@@ -19,7 +20,7 @@ class PreferenceExaminer {
 	private $user;
 
 	/**
-	 * @var UserOptionsLookup
+	 * @var ?UserOptionsLookup
 	 */
 	private $userOptionsLookup;
 
@@ -28,7 +29,7 @@ class PreferenceExaminer {
 	 *
 	 * @param User|null $user
 	 */
-	public function __construct( User $user = null, UserOptionsLookup $userOptionsLookup ) {
+	public function __construct( User $user = null, UserOptionsLookup $userOptionsLookup = null ) {
 		$this->user = $user;
 		$this->userOptionsLookup = $userOptionsLookup;
 	}
@@ -55,7 +56,11 @@ class PreferenceExaminer {
 			return false;
 		}
 
-		return $this->userOptionsLookup->getOption( $this->user, $key, false );
+		if ( $this->userOptionsLookup === null ) {
+			return $this->user->getOption( $key, false );
+		} else {
+			return $this->userOptionsLookup->getOption( $this->user, $key, false );
+		}
 	}
 
 }
