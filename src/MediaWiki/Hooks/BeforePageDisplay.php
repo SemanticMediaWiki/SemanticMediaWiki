@@ -8,6 +8,7 @@ use SpecialPage;
 use Title;
 use SMW\Message;
 use Html;
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 
@@ -83,7 +84,8 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		// #2726
-		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 
