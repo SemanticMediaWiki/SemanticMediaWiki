@@ -3,6 +3,7 @@
 namespace SMW\Services;
 
 use JsonSchema\Validator as SchemaValidator;
+use MediaWiki\MediaWikiServices;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
@@ -881,7 +882,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
 
 			$preferenceExaminer = new PreferenceExaminer(
-				$user
+				$user,
+				MediaWikiServices::getInstance()->getUserOptionsLookup()
 			);
 
 			return $preferenceExaminer;
