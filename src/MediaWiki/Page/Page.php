@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Page;
 
 use Article;
-use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Services\ServicesFactory;
