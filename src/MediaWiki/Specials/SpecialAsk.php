@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use MediaWiki\MediaWikiServices;
 use ParamProcessor\Param;
 use SMW\Query\QuerySourceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
