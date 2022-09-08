@@ -40,13 +40,13 @@ class LocalTime {
 	 * @since 3.0
 	 *
 	 * @param DateTime $dateTime
-	 * @param User|null $user
+	 * @param string|null $user
 	 *
 	 * @return DateTime
 	 */
-	public static function getLocalizedTime( DateTime $dateTime, User $user = null ) {
+	public static function getLocalizedTime( DateTime $dateTime, string $timeCorrection = null ) {
 
-		$tz = $user instanceof User ? $user->getOption( 'timecorrection' ) : false;
+		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 
 		// DateTime is mutable, keep track of possible changes

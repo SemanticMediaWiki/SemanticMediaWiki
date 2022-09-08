@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
+use MediaWiki\MediaWikiServices;
 use ParamProcessor\Param;
 use SMW\Query\QuerySourceFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -235,8 +236,9 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
 		ParametersWidget::setTooltipDisplay(
-			$this->getUser()->getOption( 'smw-prefs-ask-options-tooltip-display' )
+			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
 		);
 
 		ParametersWidget::setDefaultLimit(
