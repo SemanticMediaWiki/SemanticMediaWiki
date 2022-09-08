@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Preference;
 
-use LogicException;
 use MediaWiki\User\UserOptionsLookup;
 use User;
 
