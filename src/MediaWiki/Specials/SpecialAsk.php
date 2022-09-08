@@ -28,6 +28,7 @@ use SMWQueryProcessor as QueryProcessor;
 use SMW\Query\QueryResult;
 use SpecialPage;
 use SMW\Utils\UrlArgs;
+use SMW\Services\ServicesFactory;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -236,7 +237,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
-		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		ParametersWidget::setTooltipDisplay(
 			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
 		);

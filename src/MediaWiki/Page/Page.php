@@ -6,6 +6,7 @@ use Article;
 use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\Options;
+use SMW\Services\ServicesFactory;
 use SMWOutputs as Outputs;
 
 /**
@@ -82,7 +83,7 @@ abstract class Page extends Article {
 		$request = $this->getContext()->getRequest();
 
 		$diff = $request->getVal( 'diff' );
-		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( !isset( $diff ) || !$diffOnly ) {
