@@ -77,6 +77,46 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ) {
+		return $this->_getISO8601Date( $mindefault ? 'minimize' : 'maximize' );
+	}
+
+	/**
+	 * @private
+	 *
+	 * Compute a string representation as getISO8601Date but also cut off month and day
+	 * if missing
+	 *
+	 * @return string
+	 */
+	public function getPartialISO8601Date() {
+		return $this->_getISO8601Date( 'cut' );
+	}
+
+	/**
+	 * @private
+	 *
+	 * Compute a string representation that largely follows the ISO8601 standard
+	 * of representing dates. Large year numbers may have more than 4 digits,
+	 * which is not strictly conforming to the standard. The date includes year,
+	 * month, and day regardless of the input precision, but will only include
+	 * time when specified.
+	 *
+	 * Conforming to the 2000 version of ISO8601, year 1 BC(E) is represented
+	 * as "0000", year 2 BC(E) as "-0001" and so on.
+	 *
+	 * @since 2.4
+	 *
+	 * @param string $belowPrecisionHandling determining how to handle values below the
+	 * precision of our input:
+	 * * 'cut': omit the remaining part (allowing '2022' and '2022-11' as result)
+	 * * 'minimize': complete the value with minimal conceivable value
+	 * * 'maximize': complete the value with maximal conceivable value
+	 * @return string
+	 */
+	private function _getISO8601Date( $belowPrecisionHandling ) {
+		$cut = $belowPrecisionHandling === 'cut';
+		$minimize = $belowPrecisionHandling === 'minimize';
+
 		/**
 		 * @var DITime $dataItem
 		 */
@@ -86,19 +126,26 @@ class TimeValueFormatter extends DataValueFormatter {
 		$result = $dataItem->getYear() > 0 ? '' : '-';
 		$result .= str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 
-		$monthnum = $precision >= DITime::PREC_YM ? $dataItem->getMonth() : ( $mindefault ? 1 : 12 );
+		$monthnum = $dataItem->getMonth();
+		if ( $precision < DITime::PREC_YM ) {
+			if ( $cut ) {
+				return $result;
+			}
+			$monthnum = $minimize ? 1 : 12;
+		}
 		$result .= '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
 
 		$day = $dataItem->getDay();
-
-		if ( !$mindefault && $precision < DITime::PREC_YMD ) {
-			$day = DITime::getDayNumberForMonth( $monthnum, $dataItem->getYear(), DITime::CM_GREGORIAN );
+		if ( $precision < DITime::PREC_YMD ) {
+			if ( $cut ) {
+				return $result;
+			}
+			$day = $minimize ? 1 : DITime::getDayNumberForMonth( $monthnum, $dataItem->getYear(), DITime::CM_GREGORIAN );
 		}
-
 		$result .= '-' . str_pad( $day, 2, "0", STR_PAD_LEFT );
 
 		if ( $precision === DITime::PREC_YMDT ) {
-			$result .= 'T' . $this->getTimeString( ( $mindefault ? '00:00:00' : '23:59:59' ) );
+			$result .= 'T' . $this->getTimeString();
 		}
 
 		return $result;
@@ -352,6 +399,8 @@ class TimeValueFormatter extends DataValueFormatter {
 
 		if ( $format == 'ISO' || $this->dataValue->getOutputFormat() == '-' ) {
 			return $this->getISO8601Date();
+		} elseif ( $format == 'ISO-P' ) {
+			return $this->getPartialISO8601Date();
 		} elseif ( $format == 'MEDIAWIKI' ) {
 			return $this->getMediaWikiDate();
 		} elseif ( $format == 'SORTKEY' ) {

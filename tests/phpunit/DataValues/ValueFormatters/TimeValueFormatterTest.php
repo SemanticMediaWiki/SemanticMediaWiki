@@ -124,66 +124,47 @@ class TimeValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetISO8601DateForMinDefault() {
-
+	/**
+	 * @testdox getISO8601Date($mindefault): $userValue -> $expected
+	 * @testWith [true, "2000", "2000-01-01"]
+	 *           [true, "2000-02-23 12:02", "2000-02-23T12:02:00"]
+	 *           [true, "2000-02", "2000-02-01"]
+	 *           [false, "2000", "2000-12-31"]
+	 *           [false, "2000-02-23 12:02", "2000-02-23T12:02:00"]
+	 *           [false, "2000-02", "2000-02-29"]
+	 *           [false, "1900-02", "1900-02-28"]
+	 */
+	public function testGetISO8601Date( $mindefault, $userValue, $expected ) {
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
 		);
-
-		$timeValue->setUserValue( '2000' );
-
+		$timeValue->setUserValue( $userValue );
 		$instance = new TimeValueFormatter( $timeValue );
 
-		$this->assertEquals(
-			'2000-01-01',
-			$instance->getISO8601Date( true )
-		);
+		$result = $instance->getISO8601Date( $mindefault );
 
-		$timeValue = new TimeValue( '_dat' );
-		$timeValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
-
-		$timeValue->setUserValue( '2000-02-23 12:02' );
-
-		$instance = new TimeValueFormatter( $timeValue );
-
-		$this->assertEquals(
-			'2000-02-23T12:02:00',
-			$instance->getISO8601Date( true )
-		);
+		$this->assertEquals( $expected, $result );
 	}
 
-	public function testGetISO8601DateForMaxDefault() {
-
+	/**
+	 * @testdox getPartialISO8601Date(): $userValue -> $expected
+	 * @testWith ["2000-02-23 12:02", "2000-02-23T12:02:00"]
+	 *           ["2000-02-23", "2000-02-23"]
+	 *           ["2000-02", "2000-02"]
+	 *           ["2000", "2000"]
+	 */
+	public function testPartialGetISO8601Date( $userValue, $expected ) {
 		$timeValue = new TimeValue( '_dat' );
 		$timeValue->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
 		);
-
-		$timeValue->setUserValue( '2000' );
-
+		$timeValue->setUserValue( $userValue );
 		$instance = new TimeValueFormatter( $timeValue );
 
-		$this->assertEquals(
-			'2000-12-31',
-			$instance->getISO8601Date( false )
-		);
+		$result = $instance->getPartialISO8601Date();
 
-		$timeValue = new TimeValue( '_dat' );
-		$timeValue->setDataValueServiceFactory(
-			$this->dataValueServiceFactory
-		);
-
-		$timeValue->setUserValue( '2000-02-23 12:02' );
-
-		$instance = new TimeValueFormatter( $timeValue );
-
-		$this->assertEquals(
-			'2000-02-23T12:02:00',
-			$instance->getISO8601Date( false )
-		);
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testGetCaptionFromDataItemForPositiveYearWithEraMarker() {
