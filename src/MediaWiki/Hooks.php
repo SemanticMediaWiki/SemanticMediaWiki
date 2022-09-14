@@ -19,6 +19,7 @@ use SMW\Site;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
+use SkinTemplate;
 use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
@@ -276,7 +277,6 @@ class Hooks {
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
-			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
 			'SkinTemplateNavigation::Universal' => [ $this, 'onSkinTemplateNavigationUniversal' ],
 			'SidebarBeforeOutput' => [ $this, 'onSidebarBeforeOutput' ],
 			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
@@ -323,6 +323,12 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
+
+		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
+			$this->handlers += [
+				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
+			];
+		}
 	}
 
 	/**
@@ -984,7 +990,6 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
 	 */
 	public function onPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $skinTemplate->getUser();
 
@@ -1019,12 +1024,39 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
 	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ) {
+		if ( isset( $links['user-interface-preferences'] ) ) {
+			$applicationFactory = ApplicationFactory::getInstance();
+			$user = $skinTemplate->getUser();
+
+			$permissionExaminer = $applicationFactory->newPermissionExaminer(
+				$user
+			);
+
+			$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+				$user
+			);
+
+			$personalUrls = new PersonalUrls(
+				$skinTemplate,
+				$applicationFactory->getJobQueue(),
+				$permissionExaminer,
+				$preferenceExaminer
+			);
+
+			$personalUrls->setOptions(
+				[
+					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()
+																 ->get( 'smwgJobQueueWatchlist' )
+				]
+			);
+
+			$personalUrls->process( $links['user-interface-preferences'] );
+		}
 
 		$skinTemplateNavigationUniversal = new SkinTemplateNavigationUniversal(
 			$skinTemplate,
 			$links
 		);
-
 		return $skinTemplateNavigationUniversal->process();
 	}
 
