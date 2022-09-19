@@ -39,7 +39,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>2022-07-21</td>
 		<td><strong>7.3.0</strong> - 8.0.x</td>
 		<td><strong>1.35.0</strong> - 1.37.x</td>
-		<td>Confirmed to not work with PHP 8.1</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
 	</tr>
 </table>
 	
