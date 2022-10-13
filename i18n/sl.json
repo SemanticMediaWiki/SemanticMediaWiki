@@ -175,7 +175,7 @@
 	"right-smw-vieweditpageinfo": "Dostop do [https://www.semantic-mediawiki.org/wiki/Help:Edit_help pomoči za urejanje] (Semantični MediaWiki)",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-configutation-tab-settings": "Nastavitve",
-	"smw-admin-maintenance-script-description-rebuilddata": "Ponovno ustvari vse semantične podatke v podatkovni zbirki tako, da preleti vse strani, ki bi lahko vsebovale semantične podatke.",
+	"smw-admin-maintenance-script-description-rebuilddata": "Znova ustvari vse semantične podatke v podatkovni zbirki tako, da preleti vse strani, ki bi lahko vsebovale semantične podatke.",
 	"smw-livepreview-loading": "Nalaganje ...",
 	"smw-sp-searchbyproperty-description": "Ta stran vsebuje preprost [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces brskalni vmesnik] za iskanje entitet, ki jih opisujeta lastnost in poimenovana vrednost. Drugi razpoložljivi iskalni vmesniki vključujejo [[Special:PageProperty|iskanje v lastnostih strani]] in [[Special:Ask|gradilnik poizvedb Semantično iskanje]].",
 	"smw-sp-searchbyproperty-resultlist-header": "Seznam zadetkov",
