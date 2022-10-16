@@ -107,6 +107,11 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->resetMediaWikiService( 'LocalServerObjectCache' );
 		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
 
+		// HACK: clear ActorStore cache to avoid failures in tests
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5199
+		$this->testEnvironment->resetMediaWikiService( 'ActorStore' );
+		$this->testEnvironment->resetMediaWikiService( 'ActorStoreFactory' );
+
 		$this->testEnvironment->clearPendingDeferredUpdates();
 
 		// #3916
