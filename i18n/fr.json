@@ -1039,7 +1039,7 @@
 	"smw-schema-namespace-editcontentmodel-disallowed": "La modification du modèle de contenu d'une [https://www.semantic-mediawiki.org/wiki/Help:Schema page de schéma] n'est pas autorisée.",
 	"smw-schema-namespace-edit-protection": "Cette page est protégée et ne peut être modifiée que par des utilisateurs ayant le [https://www.semantic-mediawiki.org/wiki/Help:Permissions droit] <code>smw-schemaedit</code> approprié.",
 	"smw-schema-namespace-edit-protection-by-import-performer": "Cette page a été importée par un [https://www.semantic-mediawiki.org/wiki/Import_performer utilisateur importateur] référencé ce qui signifie que la modification du contenu de cette page est réservée à ces utilisateurs référencés.",
-	"smw-schema-error-title": "{{PLURAL:$1|Erreur|Erreurs}} de validation",
+	"smw-schema-error-title": "Erreur{{PLURAL:$1||s}} de validation",
 	"smw-schema-error-schema": "Le schéma de validation '''$1''' a trouvé les incohérences suivantes :",
 	"smw-schema-error-miscellaneous": "Erreur diverse ($1)",
 	"smw-schema-error-validation-json-validator-inaccessible": "Le validateur JSON « <b>$1</b> » n’est pas accessible (ou installé) c’est pourquoi le fichier « $2 » n’a pas pu être examiné, ce qui empêche la page actuelle d’être enregistrée ou modifiée.",
