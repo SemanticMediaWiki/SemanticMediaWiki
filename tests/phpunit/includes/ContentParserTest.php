@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Content\Renderer\ContentRenderer;
 use SMW\ContentParser;
 use SMW\Tests\PHPUnitCompat;
 
@@ -95,6 +97,21 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $this->parserOutput ) );
 
+		if ( method_exists( '\MediaWiki\MediaWikiServices', 'getContentRenderer' ) ) {
+			MediaWikiServices::getInstance()->resetServiceForTesting( 'ContentRenderer' );
+			MediaWikiServices::getInstance()->redefineService( 'ContentRenderer', function () {
+				$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+					->disableOriginalConstructor()
+					->getMock();
+
+				$contentRenderer->expects( $this->any() )
+					->method( 'getParserOutput' )
+					->will( $this->returnValue( $this->parserOutput ) );
+
+				return $contentRenderer;
+			} );
+		}
+
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,6 +139,15 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			'\ParserOutput',
 			$instance->getOutput()
 		);
+
+		# HACK: this redefines the service ContentRenderer to its original value as currently define in [MediaWiki]/includes/ServiceWiring.php
+		# but it could evolve in the future, a better general mechanism should be used in SemanticMediaWiki for MW service mocking.
+		if ( method_exists( '\MediaWiki\MediaWikiServices', 'getContentRenderer' ) ) {
+			MediaWikiServices::getInstance()->resetServiceForTesting( 'ContentRenderer' );
+			MediaWikiServices::getInstance()->redefineService( 'ContentRenderer', static function ( MediaWikiServices $services ): ContentRenderer {
+				return new ContentRenderer( $services->getContentHandlerFactory() );
+			} );
+		}
 	}
 
 }
