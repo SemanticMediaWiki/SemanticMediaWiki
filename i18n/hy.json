@@ -3,7 +3,8 @@
 		"authors": [
 			"GrigorGB",
 			"Kareyac",
-			"Xelgen"
+			"Xelgen",
+			"Սերգեյ Սաֆարյան"
 		]
 	},
 	"smw-error": "Սխալ",
@@ -34,8 +35,10 @@
 	"smw-ui-tooltip-title-error": "Սխալ",
 	"smw-livepreview-loading": "Բեռնվում է…",
 	"smw-format-datatable-infothousands": ",",
+	"smw-format-datatable-loadingrecords": "Բեռնվում է...",
 	"smw-format-datatable-search": "Որոնել.",
 	"smw-format-datatable-last": "Վերջին",
 	"smw-help": "Օգնություն",
+	"smw-loading": "Բեռնում ...",
 	"smw-listingcontinuesabbrev": "շարունակելի"
 }
