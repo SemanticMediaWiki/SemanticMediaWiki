@@ -29,7 +29,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>-</td>
 		<td>-</td>
 		<td><strong>7.4.0</strong> - 8.0.x</td>
-		<td>1.35.0 - 1.37.x</td>
+		<td>1.35.0 - 1.38.x</td>
 		<td></td>
 	</tr>
 	<tr>
