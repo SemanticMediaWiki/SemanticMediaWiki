@@ -30,7 +30,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>-</td>
 		<td><strong>7.4.0</strong> - 8.0.x</td>
 		<td>1.35.0 - 1.38.x</td>
-		<td></td>
+		<td>Not fully compatible with MW 1.39 yet</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
