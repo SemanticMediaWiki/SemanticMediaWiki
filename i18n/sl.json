@@ -163,6 +163,7 @@
 	"smw_adminlinks_displayingdata": "Prikaz podatkov",
 	"prefs-smw": "Semantični MediaWiki",
 	"prefs-general-options": "Splošne možnosti",
+	"smw-ui-tooltip-title-info": "Informacije",
 	"smw-ui-tooltip-title-warning": "Opozorilo",
 	"smw-ui-tooltip-title-parameter": "Parameter",
 	"smw-ui-tooltip-title-event": "Dogodek",
