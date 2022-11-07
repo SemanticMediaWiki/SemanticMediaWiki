@@ -442,7 +442,7 @@ class QueryResult {
 	}
 
 	/**
-	 * @see DISerializer::getSerializedQueryResult
+	 * @see SMW\Serializers\QueryResultSerializer::getSerializedQueryResult
 	 * @since 1.7
 	 * @return array
 	 */
@@ -504,9 +504,15 @@ class QueryResult {
 	public function getTotalCount() {
 		$query = $this->mQuery;
 		$query->querymode = \SMWQuery::MODE_COUNT; //change query format to count
-		$queryRes = $this->getStore()->getQueryResult( $query );
-		$count = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : null;
-		return $count;
+		$store = $this->getStore();
+		try {
+			echo $store->getQueryResult( $query );
+		} catch (\Exception|\Throwable $e) {
+			return null;
+		}
+		$queryRes = $store->getQueryResult( $query );
+		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : null;
+		return $total;
 	}
 
 	/**
