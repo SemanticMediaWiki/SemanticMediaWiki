@@ -1047,7 +1047,7 @@
 	"smw-schema-error-violation": "[« $1 », « $2 »]",
 	"smw-schema-error-type-missing": "Il manque un  type au contenu  pour qu’il soit reconnu et utilisable dans l’[https://www.semantic-mediawiki.org/wiki/Help:Schema espace de noms du schéma].",
 	"smw-schema-error-type-unknown": "Le type « $1 » n’est pas enregistré et ne peut donc pas être utilisé pour du contenu dans l’espace de noms de [https://www.semantic-mediawiki.org/wiki/Help:Schema smw/schema].",
-	"smw-schema-error-json": "Erreur JSON : « $1 »",
+	"smw-schema-error-json": "Erreur JSON : « $1 »",
 	"smw-schema-error-input": "La validation de la saisie a trouvé les problèmes suivants, ils doivent être corrigés avant que le contenu puisse être enregistré. La  [https://www.semantic-mediawiki.org/wiki/Help:Schema/Error_handling page d’aide du schéma] peut fournir des conseils sur la manière de supprimer les incohérences ou résoudre les problèmes avec le format des entrées.",
 	"smw-schema-error-input-schema": "Le schéma de validation '''$1''' a trouvé les incohérences suivantes, qui doivent être corrigées avant que le contenu puisse être enregistré. La [https://www.semantic-mediawiki.org/wiki/Help:Schema/Error_handling page d’aide du schéma] peut fournir des conseils sur la manière de résoudre ces problèmes.",
 	"smw-schema-error-title-prefix": "Ce type de schéma nécessite que le titre du schéma commence par le préfixe « $1 » .",
