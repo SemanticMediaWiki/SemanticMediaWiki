@@ -247,7 +247,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -278,4 +278,5 @@ abstract class SMWDataItem implements JsonUnserializable {
 		return $obj;
 	}
 
+	abstract public static function doUnserialize($serialization);
 }
