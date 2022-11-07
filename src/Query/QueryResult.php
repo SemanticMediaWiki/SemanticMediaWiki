@@ -485,12 +485,28 @@ class QueryResult {
 			'meta'=> [
 				'hash'   => md5( json_encode( $serializeArray ) ),
 				'count'  => $this->getCount(),
+				'total'  => $this->getTotalCount(),
 				'offset' => $this->mQuery->getOffset(),
 				'source' => $this->mQuery->getQuerySource(),
 				'time'   => number_format( ( microtime( true ) - $time ), 6, '.', '' )
 				]
 			]
 		);
+	}
+	
+	/**
+	 * Returns the total number of query results regardless of maximum to retrieval
+	 * 
+	 * @since ...
+	 *
+	 * @return integer|null
+	 */
+	public function getTotalCount() {
+		$query = $this->mQuery;
+		$query->querymode = \SMWQuery::MODE_COUNT; //change query format to count
+		$queryRes = $this->getStore()->getQueryResult( $query );
+		$count = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : null;
+		return $count;
 	}
 
 	/**
