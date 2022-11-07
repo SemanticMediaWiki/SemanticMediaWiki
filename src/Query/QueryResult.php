@@ -506,7 +506,7 @@ class QueryResult {
 		$query->querymode = \SMWQuery::MODE_COUNT; //change query format to count
 		$store = $this->getStore();
 		try {
-			echo $store->getQueryResult( $query );
+			$test = $store->getQueryResult( $query );
 		} catch (\Exception|\Throwable $e) {
 			return null;
 		}
