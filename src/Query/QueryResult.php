@@ -509,7 +509,7 @@ class QueryResult {
 		$countQuery = \SMWQueryProcessor::createQuery( $queryStr, $processedParams, \SMWQueryProcessor::INLINE_QUERY, 'count' );
 		$queryRes = $store->getQueryResult( $countQuery );
 		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : 0;
-		return $total ? $total : 0;
+		return $total ?? 0;
 	}
 
 	/**
