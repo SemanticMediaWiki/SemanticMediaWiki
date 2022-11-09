@@ -16,6 +16,7 @@ use SMW\SerializerFactory;
 use SMW\Store;
 use SMWInfolink;
 use SMWQuery as Query;
+use SMWQueryProcessor;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -501,18 +502,14 @@ class QueryResult {
 	 *
 	 * @return integer|null
 	 */
-	public function getTotalCount() {
-		$query = $this->mQuery;
-		$query->querymode = \SMWQuery::MODE_COUNT; //change query format to count
-		$store = $this->getStore();
-		try {
-			$test = $store->getQueryResult( $query );
-		} catch (\Exception|\Throwable $e) {
-			return null;
-		}
-		$queryRes = $store->getQueryResult( $query );
-		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : null;
-		return $total;
+	public function getTotalCount(): int {
+		$store = $this->mStore;
+		$queryStr = self::getQueryString();
+		$processedParams = \SMWQueryProcessor::getProcessedParams( [] );
+		$countQuery = \SMWQueryProcessor::createQuery( $queryStr, $processedParams, \SMWQueryProcessor::INLINE_QUERY, 'count' );
+		$queryRes = $store->getQueryResult( $countQuery );
+		$total = $queryRes instanceof \SMWQueryResult ? $queryRes->getCountValue() : 0;
+		return $total ? $total : 0;
 	}
 
 	/**
