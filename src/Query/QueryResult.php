@@ -497,10 +497,8 @@ class QueryResult {
 	
 	/**
 	 * Returns the total number of query results regardless of maximum to retrieval
-	 * 
-	 * @since ...
 	 *
-	 * @return integer|null
+	 * @return integer
 	 */
 	public function getTotalCount(): int {
 		$store = $this->mStore;
