@@ -188,6 +188,7 @@
 	"smw-search-show": "Prikaži",
 	"smw-search-hide": "Skrij",
 	"smw-special-pageproperty-description": "Ta stran vsebuje brskalni vmesnik za pridobitev vseh vrednosti lastnosti in dane strani. Drugi razpoložljivi iskalni vmesniki vključujejo [[Special:SearchByProperty|iskanje lastnosti]] in [[Special:Ask|gradilnik poizvedb Semantično iskanje]].",
+	"smw-property-predefined-long-file-attch": "Uporablja se v povezavi z [https://www.semantic-mediawiki.org/ElasticStore ElasticStore] (in [https://www.semantic-mediawiki.org/Attachment_processor obdelovalnikom priponk]) za zbiranje vseh vsebinsko specifičnih informacij, ki jih je mogoče pridobiti iz obdelovane datoteke (če je navedena).",
 	"smw-format-datatable-loadingrecords": "Nalaganje ...",
 	"smw-format-datatable-processing": "Obdelovanje ...",
 	"smw-format-datatable-search": "Iskanje:",
