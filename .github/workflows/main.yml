@@ -24,6 +24,9 @@ jobs:
           - mediawiki_version: 1.37
             database_type: mysql
             experimental: true
+          - mediawiki_version: 1.38
+            database_type: mysql
+            experimental: true
 
     container:
       image: mediawiki:${{ matrix.mediawiki_version }}
@@ -79,6 +82,19 @@ jobs:
           COMPOSER=composer.local.json composer require --no-update --working-dir ${{ env.MW_INSTALL_PATH }} mediawiki/semantic-media-wiki @dev
           COMPOSER=composer.local.json composer config repositories.semantic-media-wiki '{"type": "path", "url": "extensions/SemanticMediaWiki"}' --working-dir ${{ env.MW_INSTALL_PATH }}
           composer update --working-dir ${{ env.MW_INSTALL_PATH }}
+
+      # Issue #5199
+      # The following patch disable the cache (size = 0) and disable the "set"/"setField"/"add" functions in MapCacheLRU and ActorCache when the size of the cache is 0, to make the cache ineffective
+      # Other said, it virtually disables MediaWiki commit fd71596f97e / Phabricator task T273974 and its follow-ups
+      - name: Patch MediaWiki for issue 5199 (disable ActorStore cache)
+        run: |
+          sed -i 's/const LOCAL_CACHE_SIZE = 5;/const LOCAL_CACHE_SIZE = 0;/' ${{ env.MW_INSTALL_PATH }}/includes/user/ActorStore.php || true
+          sed -i 's/const LOCAL_CACHE_SIZE = 100;/const LOCAL_CACHE_SIZE = 0;/' ${{ env.MW_INSTALL_PATH }}/includes/user/ActorStore.php || true
+          sed -i 's/Assert::parameter( $maxKeys > 0/#\0/' ${{ env.MW_INSTALL_PATH }}/includes/libs/MapCacheLRU.php || true
+          sed -i 's/public function set( $key, $value, $rank = self::RANK_TOP ) {/\0\n\t\tif ( $this->maxCacheKeys === 0 ) {\n\t\t\treturn;\n\t\t}/' ${{ env.MW_INSTALL_PATH }}/includes/libs/MapCacheLRU.php || true
+          sed -i 's/public function setField( $key, $field, $value, $initRank = self::RANK_TOP ) {/\0\n\t\tif ( $this->maxCacheKeys === 0 ) {\n\t\t\treturn;\n\t\t}/' ${{ env.MW_INSTALL_PATH }}/includes/libs/MapCacheLRU.php || true
+          sed -i 's/if ( $maxKeys <= 0 ) {/if ( $maxKeys < 0 ) {/' ${{ env.MW_INSTALL_PATH }}/includes/libs/MapCacheLRU.php || true
+          sed -i 's/public function add( int $actorId, UserIdentity $actor ) {/\0\n\t\tif ( $this->maxSize === 0 ) {\n\t\t\treturn;\n\t\t}/' ${{ env.MW_INSTALL_PATH }}/includes/user/ActorCache.php || true
 
       - name: MediaWiki Install
         run: >

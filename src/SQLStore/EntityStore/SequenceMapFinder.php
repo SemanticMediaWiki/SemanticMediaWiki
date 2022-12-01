@@ -62,16 +62,16 @@ class SequenceMapFinder {
 			$map = null;
 		}
 
-		$rows = [
-			'smw_id' => $sid,
-			'smw_seqmap' => $map
-		];
-
 		$this->connection->upsert(
 			SQLStore::ID_AUXILIARY_TABLE,
-			$rows,
+			[
+				'smw_id' => $sid,
+				'smw_seqmap' => $map
+			],
 			'smw_id',
-			$rows,
+			[
+				'smw_seqmap' => $map
+			],
 			__METHOD__
 		);
 	}

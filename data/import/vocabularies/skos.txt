@@ -1,35 +1,36 @@
-http://www.w3.org/2004/02/skos/core#|[http://www.w3.org/TR/skos-reference/skos.rdf Simple Knowledge Organization System (SKOS)]
+http://www.w3.org/TR/skos-reference | [http://www.w3.org/TR/skos-reference Simple Knowledge Organization System (SKOS)]
  altLabel|Type:Monolingual text
  broader|Type:Annotation URI
  broaderTransitive|Type:Annotation URI
  broadMatch|Type:Annotation URI
- changeNote|Type:Text
+ changeNote|Type:Monolingual text
  closeMatch|Type:Annotation URI
- Collection|Class
- Concept|Class
- ConceptScheme|Class
- definition|Type:Text
- editorialNote|Type:Text
+ definition|Type:Monolingual text
+ editorialNote|Type:Monolingual text
  exactMatch|Type:Annotation URI
- example|Type:Text
+ example|Type:Monolingual text
  hasTopConcept|Type:Page
- hiddenLabel|Type:String
- historyNote|Type:Text
+ hiddenLabel|Type:Monolingual text
+ historyNote|Type:Monolingual text
  inScheme|Type:Page
- mappingRelation|Type:Page
+ mappingRelation|Type:Annotation URI
  member|Type:Page
  memberList|Type:Page
  narrower|Type:Annotation URI
  narrowerTransitive|Type:Annotation URI
  narrowMatch|Type:Annotation URI
  notation|Type:Text
- note|Type:Text
- OrderedCollection|Class
- prefLabel|Type:String
+ note|Type:Monolingual text
+ prefLabel|Type:Monolingual text
  related|Type:Annotation URI
  relatedMatch|Type:Annotation URI
- scopeNote|Type:Text
- semanticRelation|Type:Page
+ scopeNote|Type:Monolingual text
+ semanticRelation|Type:Annotation URI
  topConceptOf|Type:Page
 
-[[Category:Imported vocabulary]]
+ Collection|Category
+ Concept|Category
+ ConceptScheme|Category
+ OrderedCollection|Category
+
+[[Category:Imported_vocabulary]]

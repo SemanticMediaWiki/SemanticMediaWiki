@@ -61,9 +61,6 @@
 		"squizlabs/php_codesniffer": "~3.5",
 		"phpmd/phpmd": "~2.1"
 	},
-	"replace": {
-		"mediawiki/semantic-mediawiki": "*"
-	},
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
 	},

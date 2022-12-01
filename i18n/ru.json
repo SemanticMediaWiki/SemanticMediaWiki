@@ -805,7 +805,7 @@
 	"smw-format-datatable-infofiltered": "(отфильтровано из _MAX_ записей)",
 	"smw-format-datatable-infothousands": "&nbsp;",
 	"smw-format-datatable-lengthmenu": "Показать _MENU_ записей",
-	"smw-format-datatable-loadingrecords": "Загрузка…",
+	"smw-format-datatable-loadingrecords": "Загружается…",
 	"smw-format-datatable-processing": "Обрабатывается…",
 	"smw-format-datatable-search": "Поиск:",
 	"smw-format-datatable-zerorecords": "Соответствующие записи не найдены",

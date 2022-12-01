@@ -16,24 +16,40 @@ Increases of minimum requirements are indicated in bold.
 <table class="compatibility">
 	<tr>
 		<th>SMW</th>
+		<th>Status</th>
+		<th>First release</th>
+		<th>Latest release</th>
+		<th>PHP</th>
+		<th>MediaWiki</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<th>4.1.x</th>
+		<td>In development</td>
+		<td>-</td>
+		<td>-</td>
+		<td><strong>7.4.0</strong> - 8.0.x</td>
+		<td>1.35.0 - 1.38.x</td>
+		<td>Not fully compatible with MW 1.39 yet</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
+		<td><strong>Stable release</strong></td>
+		<td>2022-01-18</td>
+		<td>2022-07-21</td>
+		<td><strong>7.3.0</strong> - 8.0.x</td>
+		<td><strong>1.35.0</strong> - 1.37.x</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
+	</tr>
+</table>
+	
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
 		<th>PHP</th>
 		<th>MediaWiki</th>
 		<th>Released</th>
 		<th>Status</th>
-	</tr>
-	<tr>
-		<th>4.1.x</th>
-		<td><strong>7.4.0</strong> - 8.0.x</td>
-		<td>1.35.0 - 1.37.x</td>
-		<td>-</td>
-		<td>In development</td>
-	</tr>
-	<tr>
-		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
-		<td><strong>7.3.0</strong> - 7.4.x</td>
-		<td><strong>1.35.0</strong> - 1.37.x</td>
-		<td>2022-01-18</td>
-		<td><strong>Stable release</strong></td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>

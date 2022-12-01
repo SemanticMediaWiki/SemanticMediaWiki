@@ -881,7 +881,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
 
 			$preferenceExaminer = new PreferenceExaminer(
-				$user
+				$user,
+				ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' )
 			);
 
 			return $preferenceExaminer;

@@ -5,6 +5,7 @@ namespace SMW\Localizer;
 use DateTime;
 use IContextSource;
 use Language;
+use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
@@ -37,6 +38,9 @@ class Localizer {
 	/** @var IContextSource */
 	private $context = null;
 
+	/** @var UserOptionsLookup */
+	private $userOptionsLookup = null;
+
 	/**
 	 * @since 2.1
 	 *
@@ -46,10 +50,12 @@ class Localizer {
 	public function __construct(
 		Language $contentLanguage,
 		NamespaceInfo $namespaceInfo,
+		UserOptionsLookup $userOptionsLookup,
 		IContextSource $context
 	) {
 		$this->contentLanguage = $contentLanguage;
 		$this->namespaceInfo = $namespaceInfo;
+		$this->userOptionsLookup = $userOptionsLookup;
 		$this->context = $context;
 	}
 
@@ -69,6 +75,7 @@ class Localizer {
 		self::$instance = new self(
 			$servicesFactory->singleton( 'ContentLanguage' ),
 			$servicesFactory->singleton( 'NamespaceInfo' ),
+			$servicesFactory->singleton( 'UserOptionsLookup' ),
 			RequestContext::getMain()
 		);
 
@@ -113,7 +120,7 @@ class Localizer {
 			$user = $this->context->getUser();
 		}
 
-		return $user->getOption( 'smw-prefs-general-options-time-correction' );
+		return $this->userOptionsLookup->getOption( $user, 'smw-prefs-general-options-time-correction' );
 	}
 
 	/**
@@ -134,7 +141,8 @@ class Localizer {
 			$GLOBALS['wgLocalTZoffset']
 		);
 
-		return LocalTime::getLocalizedTime( $dateTime, $user );
+		$timeCorrection = $this->userOptionsLookup->getOption( $user, 'timecorrection' );
+		return LocalTime::getLocalizedTime( $dateTime, $timeCorrection );
 	}
 
 	/**

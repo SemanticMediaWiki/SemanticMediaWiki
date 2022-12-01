@@ -8,6 +8,7 @@ use JobQueueGroup;
 use LBFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserOptionsLookup;
 use Psr\Log\NullLogger;
 use SMW\Utils\Logger;
 use SMW\MediaWiki\NamespaceInfo;
@@ -336,5 +337,9 @@ return [
 	'ParserCache' => function( $containerBuilder ) {
 		return MediaWikiServices::getInstance()->getParserCache();
 	},
+
+	'UserOptionsLookup' => function( $containerBuilder ): UserOptionsLookup {
+		return MediaWikiServices::getInstance()->getUserOptionsLookup();
+	}
 
 ];
