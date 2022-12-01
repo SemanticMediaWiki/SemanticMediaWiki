@@ -1,0 +1,85 @@
+{
+	"description": "Test output of the `ISO-P` formatter with `#show` (#5309)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/5309/1/data",
+			"contents": "[[Has date::2020]]"
+		},
+		{
+			"page": "Example/5309/2/data",
+			"contents": "[[Has date::Feb 2020]]"
+		},
+		{
+			"page": "Example/5309/3/data",
+			"contents": "[[Has date::Feb 29 2020]]"
+		},
+		{
+			"page": "Example/5309/4/data",
+			"contents": "[[Has date::Feb 29 2020 16:00 CET]]"
+		},
+		{
+			"page": "Example/5309/1/query",
+			"contents": "_{{#show: Example/5309/1/data |?Has date#ISO-P }}_"
+		},
+		{
+			"page": "Example/5309/2/query",
+			"contents": "_{{#show: Example/5309/2/data |?Has date#ISO-P }}_"
+		},
+		{
+			"page": "Example/5309/3/query",
+			"contents": "_{{#show: Example/5309/3/data |?Has date#ISO-P }}_"
+		},
+		{
+			"page": "Example/5309/4/query",
+			"contents": "_{{#show: Example/5309/4/data |?Has date#ISO-P }}_"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#1 query with `#show` for year in 'ISO-P' format",
+			"subject": "Example/5309/1/query",
+			"assert-output": {
+				"to-contain": "_2020_"
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 query with `#show` for year-month in 'ISO-P' format",
+			"subject": "Example/5309/2/query",
+			"assert-output": {
+				"to-contain": "_2020-02_"
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 query with `#show` for year-month-day in 'ISO-P' format",
+			"subject": "Example/5309/3/query",
+			"assert-output": {
+				"to-contain": "_2020-02-29_"
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 query with `#show` for year-month-day-zone in 'ISO-P' format",
+			"subject": "Example/5309/4/query",
+			"assert-output": {
+				"to-contain": "_2020-02-29T15:00:00_"
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "de",
+		"wgLocaltimezone": "Europe/Berlin"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

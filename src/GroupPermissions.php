@@ -24,8 +24,12 @@ class GroupPermissions {
 	/**
 	 * @since 3.2
 	 *
+	 * @param array $vars
+	 *
+	 * @return array $newVars
 	 */
-	public function initPermissions() {
+	public function initPermissions( $vars ) {
+		$newVars = [];
 
 		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
@@ -43,15 +47,19 @@ class GroupPermissions {
 
 			// Rights
 			foreach ( array_keys( $rights ) as $right ) {
-				$GLOBALS['wgAvailableRights'][] = $right;
+				$newVars['wgAvailableRights'][] = $right;
 			}
 
-			if ( !isset( $GLOBALS['wgGroupPermissions'][$group] ) ) {
-				$GLOBALS['wgGroupPermissions'][$group] = [];
+			if ( !isset( $vars['wgGroupPermissions'][$group] ) ) {
+				$newVars['wgGroupPermissions'][$group] = [];
 			}
 
-			$GLOBALS['wgGroupPermissions'][$group] = array_merge( $rights, $GLOBALS['wgGroupPermissions'][$group] );
+			$newVars['wgGroupPermissions'][$group] = array_merge( $rights, $vars['wgGroupPermissions'][$group] );
 		}
+
+		Globals::replace( $newVars );
+
+		return $newVars;
 	}
 
 	private function forAdminRole() {

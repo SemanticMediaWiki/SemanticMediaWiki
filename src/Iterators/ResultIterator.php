@@ -108,8 +108,8 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 * {@inheritDoc}
 	 */
 	public function next() {
-		$row = $this->res->next();
-		$this->setCurrent( $row );
+		$this->res->next();
+		$this->setCurrent( $this->res->current() );
 		$this->position++;
 	}
 
@@ -130,7 +130,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 * {@inheritDoc}
 	 */
 	public function valid() {
-		return $this->current !== false;
+		return $this->current !== false && $this->position < $this->count();
 	}
 
 	protected function setCurrent( $row ) {

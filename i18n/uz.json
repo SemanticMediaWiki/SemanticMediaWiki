@@ -2,11 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"CoderSI",
-			"Sociologist"
+			"Sociologist",
+			"Zafar Shamsiddinov"
 		]
 	},
 	"specialpages-group-smw_group": "Semantic MediaWiki",
 	"smw_purge": "Yangilash",
+	"browse": "Vikini koʻrib chiqish",
 	"smw_browselink": "Xossalarni koʻrish",
 	"smw-info-par-message": "Tasvirlash uchun xabar",
 	"prefs-smw": "Semantik MediaWiki",

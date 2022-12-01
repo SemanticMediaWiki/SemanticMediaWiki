@@ -74,10 +74,10 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$newVars = $instance->init( $vars );
 
 		$this->assertNotEmpty(
-			$vars
+			$newVars
 		);
 	}
 
@@ -138,13 +138,13 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		NamespaceManager::initCustomNamespace( $vars );
+		$newVars = NamespaceManager::initCustomNamespace( $vars );
 
-		$this->assertNotEmpty( $vars );
+		$this->assertNotEmpty( $newVars );
 
 		$this->assertEquals(
 			100,
-			$vars['smwgNamespaceIndex']
+			$newVars['smwgNamespaceIndex']
 		);
 	}
 
@@ -213,18 +213,18 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$newVars = $instance->init( $vars );
 
 		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
+			$newVars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
 		);
 
 		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
+			$newVars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
 		);
 
 		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
+			$newVars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
 		);
 	}
 
@@ -240,14 +240,14 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$newVars = $instance->init( $vars );
 
 		$this->assertFalse(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
+			$newVars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
 		);
 
 		$this->assertTrue(
-			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
+			$newVars['smwgNamespacesWithSemanticLinks'][SMW_NS_CONCEPT]
 		);
 	}
 
@@ -274,14 +274,14 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgNamespaceAliases' => '',
 		];
 
-		$instance = NamespaceManager::initCustomNamespace(
+		$newVars = NamespaceManager::initCustomNamespace(
 			$vars,
 			$localLanguage
 		);
 
 		$this->assertArrayHasKey(
 			'Foo',
-			$vars['wgNamespaceAliases']
+			$newVars['wgNamespaceAliases']
 		);
 	}
 
@@ -300,18 +300,18 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		] + $this->default;
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$newVars = $instance->init( $vars );
 
 		$this->assertFalse(
-			$vars['wgNamespacesWithSubpages'][SMW_NS_PROPERTY]
+			$newVars['wgNamespacesWithSubpages'][SMW_NS_PROPERTY]
 		);
 
 		$this->assertFalse(
-			$vars['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY]
+			$newVars['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY]
 		);
 
 		$this->assertFalse(
-			$vars['wgContentNamespaces'][SMW_NS_PROPERTY]
+			$newVars['wgContentNamespaces'][SMW_NS_PROPERTY]
 		);
 	}
 
@@ -320,11 +320,11 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$vars = $this->default;
 
 		$instance = new NamespaceManager( $this->localLanguage );
-		$instance->init( $vars );
+		$newVars = $instance->init( $vars );
 
 		$this->assertEquals(
 			CONTENT_MODEL_SMW_SCHEMA,
-			$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA]
+			$newVars['wgNamespaceContentModels'][SMW_NS_SCHEMA]
 		);
 	}
 

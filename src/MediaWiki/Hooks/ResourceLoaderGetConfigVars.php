@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use SMW\Globals;
 use SMW\Localizer;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\HookListener;
@@ -48,12 +49,14 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	/**
 	 * @since 1.9
 	 *
+	 * @param array $vars
 	 *
-	 * @return boolean
+	 * @return array $newVars
 	 */
-	public function process() {
+	public function process( array $vars ) {
+		$newVars = [];
 
-		$GLOBALS['smw-config'] = [
+		$newVars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],
 			'settings' => [
@@ -67,16 +70,18 @@ class ResourceLoaderGetConfigVars implements HookListener {
 		// Available semantic namespaces
 		foreach ( array_keys( $this->getOption( 'smwgNamespacesWithSemanticLinks' ) ) as $ns ) {
 			$name = $this->namespaceInfo->getCanonicalName( $ns );
-			$GLOBALS['smw-config']['settings']['namespace'][$name] = $ns;
-			$GLOBALS['smw-config']['namespaces']['canonicalName'][$ns] = $name;
-			$GLOBALS['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
+			$newVars['smw-config']['settings']['namespace'][$name] = $ns;
+			$newVars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
+			$newVars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
 		}
 
 		foreach ( array_keys( $this->getOption( 'smwgResultFormats' ) ) as $format ) {
-			$GLOBALS['smw-config']['formats'][$format] = htmlspecialchars( $format );
+			$newVars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
 
-		return true;
+		Globals::replace( $newVars );
+
+		return $newVars;
 	}
 
 }

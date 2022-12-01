@@ -129,7 +129,7 @@ class SetupCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param array $GLOBALS
+	 * @param array $vars
 	 * @param SetupFile|null $setupFile
 	 */
 	public function __construct( array $options, SetupFile $setupFile = null ) {

@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"BadDog",
 			"OC Ripper",
 			"Vlad5250"
 		]
 	},
-	"browse": "Pretražuj wiki",
+	"browse": "Pregled vikija",
 	"smw_result_prev": "Prethodna",
 	"right-smw-admin": "Pristupanje administratorskim zadacima (Semantički MediaWiki)",
 	"right-smw-patternedit": "Pristup uređivanja za udržavanje dozvolenih regularnih izraza i uzora (Semantički MediaWiki)",

@@ -84,22 +84,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgIgnoreExtensionRegistrationCheck' => true
 		];
 
-		Setup::registerExtensionCheck( $vars );
+		$newVars = Setup::registerExtensionCheck( $vars );
 
 		$this->assertCount(
 			1,
-			$vars
+			$newVars
 		);
 
 		$vars = [
 			'smwgIgnoreExtensionRegistrationCheck' => false
 		];
 
-		Setup::registerExtensionCheck( $vars );
+		$newVars = Setup::registerExtensionCheck( $vars );
 
 		$this->assertCount(
 			2,
-			$vars
+			$newVars
 		);
 	}
 
@@ -113,10 +113,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, '' );
+		$newVars = $instance->init( $config, '' );
 
 		$this->assertNotEmpty(
-			$config['wgResourceModules']
+			$newVars['wgResourceModules']
 		);
 	}
 
@@ -153,22 +153,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$newVars = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$config['wgAvailableRights']
+			$newVars['wgAvailableRights']
 		);
 
 		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-patternedit']
+			$newVars['wgGroupPermissions']['smwcurator']['smw-patternedit']
 		);
 
 		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
+			$newVars['wgGroupPermissions']['smwcurator']['smw-pageedit']
 		);
 
 		$this->assertTrue(
-			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
+			$newVars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 	}
 
@@ -189,14 +189,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $localConfig, 'Foo' );
+		$newVars = $instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
+			$newVars['wgGroupPermissions']['sysop']['smw-admin']
 		);
 
 		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
+			$newVars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 
 	}
@@ -217,10 +217,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$newVars = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$config['wgParamDefinitions']['smwformat']
+			$newVars['wgParamDefinitions']['smwformat']
 		);
 	}
 
@@ -236,10 +236,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$newVars = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
+			$newVars['wgFooterIcons']['poweredby']['semanticmediawiki']
 		);
 	}
 
@@ -296,9 +296,9 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$instance->init( $config, 'Foo' );
+		$newVars = $instance->init( $config, 'Foo' );
 
-		$this->assertNotEmpty( $config[$target][$entry] );
+		$this->assertNotEmpty( $newVars[$target][$entry] );
 
 		switch ( $type ) {
 			case 'class':

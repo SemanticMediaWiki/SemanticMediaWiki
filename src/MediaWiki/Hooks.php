@@ -19,7 +19,9 @@ use SMW\Site;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
+use SkinTemplate;
 use SMW\DataTypeRegistry;
+use SMW\Globals;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
@@ -158,10 +160,14 @@ class Hooks {
 	 *
 	 * @since 3.1
 	 *
+	 * @param array $vars
+	 *
+	 * @return array $newVars
 	 */
-	public static function registerExtensionCheck() {
+	public static function registerExtensionCheck( array $vars ) {
+		$newVars = [];
 
-		$GLOBALS['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function( $outputPage ) {
+		$newVars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function( $outputPage ) {
 
 			$beforePageDisplay = new BeforePageDisplay();
 
@@ -179,6 +185,10 @@ class Hooks {
 
 			return true;
 		};
+
+		Globals::replace( $newVars );
+
+		return $newVars;
 	}
 
 	/**
@@ -224,8 +234,9 @@ class Hooks {
 	/**
 	 * @since 3.0
 	 *
+	 * @param array $vars
 	 */
-	public static function registerEarly() {
+	public static function registerEarly( array $vars ) {
 
 		// Remove the hook registered via `Hook::registerExtensionCheck` given
 		// that at this point we know the extension was loaded and hereby is
@@ -274,7 +285,6 @@ class Hooks {
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
-			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
 			'SkinTemplateNavigation::Universal' => [ $this, 'onSkinTemplateNavigationUniversal' ],
 			'SidebarBeforeOutput' => [ $this, 'onSidebarBeforeOutput' ],
 			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
@@ -321,6 +331,12 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
+
+		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
+			$this->handlers += [
+				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
+			];
+		}
 	}
 
 	/**
@@ -929,7 +945,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 */
-	public function onResourceLoaderGetConfigVars() {
+	public function onResourceLoaderGetConfigVars( $vars ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -942,7 +958,11 @@ class Hooks {
 			$settings->filter( ResourceLoaderGetConfigVars::OPTION_KEYS )
 		);
 
-		return $resourceLoaderGetConfigVars->process();
+		if ( $resourceLoaderGetConfigVars->process( $vars ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -982,7 +1002,6 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
 	 */
 	public function onPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $skinTemplate->getUser();
 
@@ -1017,12 +1036,39 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
 	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ) {
+		if ( isset( $links['user-interface-preferences'] ) ) {
+			$applicationFactory = ApplicationFactory::getInstance();
+			$user = $skinTemplate->getUser();
+
+			$permissionExaminer = $applicationFactory->newPermissionExaminer(
+				$user
+			);
+
+			$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+				$user
+			);
+
+			$personalUrls = new PersonalUrls(
+				$skinTemplate,
+				$applicationFactory->getJobQueue(),
+				$permissionExaminer,
+				$preferenceExaminer
+			);
+
+			$personalUrls->setOptions(
+				[
+					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()
+																 ->get( 'smwgJobQueueWatchlist' )
+				]
+			);
+
+			$personalUrls->process( $links['user-interface-preferences'] );
+		}
 
 		$skinTemplateNavigationUniversal = new SkinTemplateNavigationUniversal(
 			$skinTemplate,
 			$links
 		);
-
 		return $skinTemplateNavigationUniversal->process();
 	}
 

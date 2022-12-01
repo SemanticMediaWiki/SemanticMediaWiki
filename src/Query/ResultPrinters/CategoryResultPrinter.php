@@ -229,7 +229,8 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$contents[$last_letter][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+			$index = isset( $last_letter ) ? $last_letter : $first_letter;
+			$contents[$index][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
 		return $contents;

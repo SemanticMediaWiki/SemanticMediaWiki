@@ -28,7 +28,7 @@ class DefaultParamDefinition {
 	 * @return ParamDefinition[]
 	 */
 	public static function getParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ) {
-		return self::buildParamDefinitions( $context, $resultPrinter );
+		return self::buildParamDefinitions( $GLOBALS, $context, $resultPrinter );
 	}
 
 	/**
@@ -49,12 +49,12 @@ class DefaultParamDefinition {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function buildParamDefinitions( $context = null, ResultPrinter $resultPrinter = null ) {
+	public static function buildParamDefinitions( $vars, $context = null, ResultPrinter $resultPrinter = null ) {
 		$params = [];
 
-		$allowedFormats = $GLOBALS['smwgResultFormats'];
+		$allowedFormats = $vars['smwgResultFormats'];
 
-		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
+		foreach ( $vars['smwgResultAliases'] as $aliases ) {
 			$allowedFormats += $aliases;
 		}
 
@@ -69,11 +69,11 @@ class DefaultParamDefinition {
 		// TODO $params['format']->setToLower( true );
 		// TODO $allowedFormats
 
-		$params['source'] = self::getSourceParam( $GLOBALS );
+		$params['source'] = self::getSourceParam( $vars );
 
 		$params['limit'] = [
 			'type' => 'integer',
-			'default' => $GLOBALS['smwgQDefaultLimit'],
+			'default' => $vars['smwgQDefaultLimit'],
 			'lowerbound' => 0,
 		];
 
@@ -81,7 +81,7 @@ class DefaultParamDefinition {
 			'type' => 'integer',
 			'default' => 0,
 			'lowerbound' => 0,
-			'upperbound' => $GLOBALS['smwgQUpperbound'],
+			'upperbound' => $vars['smwgQUpperbound'],
 		];
 
 		$params['link'] = [
@@ -150,8 +150,8 @@ class DefaultParamDefinition {
 		return ParamDefinition::getCleanDefinitions( $params );
 	}
 
-	private static function getSourceParam() {
-		$sourceValues = is_array( $GLOBALS['smwgQuerySources'] ) ? array_keys( $GLOBALS['smwgQuerySources'] ) : [];
+	private static function getSourceParam( $vars ) {
+		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [
 			'default' => array_key_exists( 'default', $sourceValues ) ? 'default' : '',
