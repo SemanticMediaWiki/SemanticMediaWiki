@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;

@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use Onoi\Tesa\SanitizerFactory;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;

@@ -1,13 +1,50 @@
-http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]
- name|Type:Text
+http://xmlns.com/foaf/0.1/ | [https://en.wikipedia.org/wiki/FOAF_(ontology) Friend Of A Friend]
+ aimChatID|Type:External identifier
+ currentProject|Type:Page
+ depiction|Type:Page
+ depicts|Type:Page
+ dnaChecksum|Type:Text
+ family_name|Type:Text
+ firstName|Type:Text
+ fundedBy|Type:Page
+ geekcode|Type:Text
+ givenname|Type:Text
  homepage|Type:URL
+ iChatID|Type:External identifier
+ img|Type:Page
+ interest|Type:Page
+ jabberID|Type:External identifier
+ knows|Type:Page
+ linkedWith|Type:Page
+ logo|Type:Page
+ made|Type:Page
  mbox|Type:Email
  mbox_sha1sum|Type:Text
- depiction|Type:URL
- phone|Type:Text
- Person|Category
+ msnChatID|Type:External identifier
+ myersBriggs|Type:Text
+ name|Type:Text
+ nick|Type:Text
+ page|Type:Page
+ pastProject|Type:Page
+ phone|Type:Telephone number
+ plan|Type:Text
+ publications|Type:Page
+ schoolHomepage|Type:URL
+ sha1|Type:Text
+ surname|Type:Text
+ theme|Type:Page
+ thumbnail|Type:URL
+ title|Type:Text
+ topic|Type:Page
+ topic_interest|Type:Page
+ weblog|Type:Page
+ workInfoHomepage|Type:URL
+ workplaceHomepage|Type:URL
+
+ Document|Category
+ Image|Category
  Organization|Category
- knows|Type:Page
- member|Type:Page
+ Person|Category
+ Project |Category
 
 [[Category:Imported vocabulary]]

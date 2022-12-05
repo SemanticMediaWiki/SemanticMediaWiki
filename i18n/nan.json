@@ -8,5 +8,6 @@
 	},
 	"browse": "Khoàⁿ wiki",
 	"smw-constraint-violation-class-mandatory-properties-constraint": "<code>mandatory_properties</code>hān-chè hō͘ hun-phuè kàu lūi-pia̍t\"[[:Category:$1|$1]]\", pīng-chhiánn su-iàu í-hā kiông-tsè sio̍k-sìng: $2",
-	"apihelp-smwtask-param-task": "Tēng-gī jīm-bū luī-hêng"
+	"apihelp-smwtask-param-task": "Tēng-gī jīm-bū luī-hêng",
+	"smw-listingcontinuesabbrev": "(chiap-sòa thâu-chêng)"
 }

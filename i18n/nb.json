@@ -19,7 +19,7 @@
 			"아라"
 		]
 	},
-	"smw-desc": "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	"smw-desc": "Gjør wikien din mer tilgjengelig – for maskiner ''og'' mennesker ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	"smw-error": "Feil",
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] ble installert og slått på, men mangler en [https://www.semantic-mediawiki.org/wiki/Help:Upgrade oppgraderingsnøkkel].",
 	"smw-upgrade-release": "Utgave",
@@ -838,11 +838,11 @@
 	"smw-constraint-violation-non-negative-integer": "En <code>non_negative_integer</code>-begrensning er tildelt egenskapen «[[Property:$1|$1]]» og verdien ''$2'' bryter med denne begrensningen.",
 	"smw-constraint-violation-must-exists": "En <code>must_exists</code>-begrensning er tildelt egenskapen «[[Property:$1|$1]]», og verdien ''$2'' bryter med denne begrensningen.",
 	"smw-constraint-violation-single-value": "En <code>single_value</code>-begrensning er tildelt egenskapen «[[Property:$1|$1]]», og verdien ''$2'' bryter med denne begrensningen.",
-	"smw-constraint-violation-class-shape-constraint-missing-property": "En <code>shape_constraint</code> er tildelt kategorien «[[:Category:$1|$1]]» med en <code>property</code>-nøkkel, men den påkrevde egenskapen «$2» mangler.",
-	"smw-constraint-violation-class-shape-constraint-wrong-type": "En <code>shape_constraint</code> er tildelt kategorien «[[:Category:$1|$1]]» med en <code>property_type</code>-nøkkel; egenskapen «$2» matcher ikke typen «$3».",
-	"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality": "En <code>shape_constraint</code> er tildelt kategorien «[[:Category:$1|$1]]» med en <code>max_cardinality</code>-nøkkel; egenskapen «$2> matcher ikke kardinaliteten til «$3».",
-	"smw-constraint-violation-class-shape-constraint-invalid-min-length": "En <code>shape_constraint</code> er tildelt kategorien «[[:Category:$1|$1]]» med en <code>min_textlength</code>-nøkkel; egenskapen «$2» matcher ikke lengdekravet til «$3».",
-	"smw-constraint-violation-class-mandatory-properties-constraint": "En <code>mandatory_properties</code>-begrensning er tildelt kategorien «[[:Category:$1|$1]]» og krever følgende obligatoriske egenskaper: $2",
+	"smw-constraint-violation-class-shape-constraint-missing-property": "En <code>shape_constraint</code> er tildelt kategorien «[[:$1|$1]]» med en <code>property</code>-nøkkel, men den påkrevde egenskapen «$2» mangler.",
+	"smw-constraint-violation-class-shape-constraint-wrong-type": "En <code>shape_constraint</code> er tildelt kategorien «[[:$1|$1]]» med en <code>property_type</code>-nøkkel; egenskapen «$2» matcher ikke typen «$3».",
+	"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality": "En <code>shape_constraint</code> er tildelt kategorien «[[:$1|$1]]» med en <code>max_cardinality</code>-nøkkel; egenskapen «$2> matcher ikke kardinaliteten til «$3».",
+	"smw-constraint-violation-class-shape-constraint-invalid-min-length": "En <code>shape_constraint</code> er tildelt kategorien «[[:$1|$1]]» med en <code>min_textlength</code>-nøkkel; egenskapen «$2» matcher ikke lengdekravet til «$3».",
+	"smw-constraint-violation-class-mandatory-properties-constraint": "En <code>mandatory_properties</code>-begrensning er tildelt kategorien «[[:$1|$1]]» og krever følgende obligatoriske egenskaper: $2",
 	"smw-constraint-violation-allowed-namespace-no-match": "En <code>allowed_namespaces</code>-begrensning er tildelt egenskapen «[[Property:$1|$1]]», og «$2» bryter med navneromskravet; kun de følgende «$3» navnerommene er tillatt.",
 	"smw-constraint-violation-allowed-namespaces-requires-page-type": "Begrensningen <code>allowed_namespaces</code> krever en sidetype.",
 	"smw-constraint-schema-category-invalid-type": "Det annoterte skjemaet «$1» er ugyldig for en kategori, det krever typen «$2».",
@@ -891,7 +891,6 @@
 	"smw-parser-invalid-json-format": "JSON-parseren returnerte med «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "«$1» kan ikke brukes som foretrukket etikett fordi språket «$2» allerede har etiketten «$3» tildelt.",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Kopier lenke til utklippstavlen",
 	"smw-property-userdefined-fixedtable": "«$1» ble konfigurert som [https://www.semantic-mediawiki.org/wiki/Fixed_properties «fixed property»] og alle endringer av dens [https://www.semantic-mediawiki.org/wiki/Type_declaration typeerklæring] krever enten kjøring av <code>setupStore.php</code> eller fullføring av oppgaven [[Special:SemanticMediaWiki|«databaseinstallering og oppgradering»]].",
 	"smw-data-lookup": "Henter data ...",
@@ -1103,5 +1102,6 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Begrensning|Begrensninger}}",
 	"smw-indicator-revision-mismatch": "Revisjon",
 	"smw-indicator-revision-mismatch-error": "Sjekken for [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner assosiert revisjon] fant manglende samsvar mellom revisjonen som refereres til i MediaWiki og den som er assosiert med Semantic MediaWiki for denne entiteten.",
-	"smw-indicator-revision-mismatch-comment": "Manglende samsvar indikerer vanligvis at en prosess forstyrret lagringsoperasjonen i Semantic MediaWiki. Det anbefales å gå gjennom tjenerloggene og se etter unntak eller andre feil."
+	"smw-indicator-revision-mismatch-comment": "Manglende samsvar indikerer vanligvis at en prosess forstyrret lagringsoperasjonen i Semantic MediaWiki. Det anbefales å gå gjennom tjenerloggene og se etter unntak eller andre feil.",
+	"smw-listingcontinuesabbrev": "forts."
 }

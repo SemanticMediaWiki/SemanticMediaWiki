@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\EventListener\EventHandler;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -19,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
+class DumpRdfMaintenanceTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 
@@ -31,12 +31,17 @@ class DumpRdfMaintenanceTest extends MwDBaseUnitTestCase {
 	protected function setUp() : void {
 		parent::setUp();
 
-		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
-		$this->titleValidator = UtilityFactory::getInstance()->newValidatorFactory()->newTitleValidator();
-		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+		$utilityFactory = UtilityFactory::getInstance();
+		$this->runnerFactory  = $utilityFactory->newRunnerFactory();
+		$this->titleValidator = $utilityFactory->newValidatorFactory()->newTitleValidator();
+		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
 
 		ApplicationFactory::getInstance()->getSettings()->set( 'smwgExportBCAuxiliaryUse', true );
 		EventHandler::getInstance()->getEventDispatcher()->dispatch( 'exporter.reset' );
+
+		$utilityFactory->newMwHooksHandler()
+			->deregisterListedHooks()
+			->invokeHooksFromRegistry();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
 			__DIR__ . '/../Fixtures/' . 'GenericLoremIpsumTest-Mw-1-19-7.xml'

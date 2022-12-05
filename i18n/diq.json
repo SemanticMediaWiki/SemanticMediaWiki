@@ -115,7 +115,7 @@
 	"smw-ui-tooltip-title-info": "Melumat",
 	"smw-ui-tooltip-title-warning": "Xeta",
 	"smw-ui-tooltip-title-parameter": "Parametre",
-	"smw-ui-tooltip-title-event": "Weqeyi",
+	"smw-ui-tooltip-title-event": "Fealiyet",
 	"smw-ui-tooltip-title-note": "Not",
 	"smw-ui-tooltip-title-legend": "Kıtabek",
 	"smw-ui-tooltip-title-reference": "Çıme",
@@ -148,5 +148,6 @@
 	"smw-es-replication-error": "Problemê zêdekerdışi",
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Cıgeyrayışo elastik)\n*$2 (Mığazaya SQLi)",
 	"smw-report": "Rapore",
-	"smw-legend": "Kıtabek"
+	"smw-legend": "Kıtabek",
+	"smw-listingcontinuesabbrev": "dewam..."
 }

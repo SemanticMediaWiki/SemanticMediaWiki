@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Giromin Cangiaxo"
+			"Giromin Cangiaxo",
+			"N. Longo"
 		]
 	},
-	"browse": "Esplora o scito",
-	"smw-livepreview-loading": "Camallando…"
+	"browse": "Esplóra o scîto",
+	"smw-livepreview-loading": "Camallando…",
+	"smw-listingcontinuesabbrev": "cont."
 }

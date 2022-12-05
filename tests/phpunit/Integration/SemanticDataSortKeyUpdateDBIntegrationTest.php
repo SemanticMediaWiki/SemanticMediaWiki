@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use Title;
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataSortKeyUpdateDBIntegrationTest extends MwDBaseUnitTestCase {
+class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
 
 	private $semanticDataFactory;
 	private $subjects = [];

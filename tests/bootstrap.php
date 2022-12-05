@@ -2,7 +2,7 @@
 
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\Connection\CleanUpTables;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 
 if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {

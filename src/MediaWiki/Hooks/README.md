@@ -9,14 +9,14 @@ BeforePageDisplay allows last minute changes to the output page and is being use
 #### InternalParseBeforeLinks
 InternalParseBeforeLinks is used to process and expand text content, and in case of SMW it is used to identify and resolve the property annotation syntax ([[link::syntax]]), returning a modified content component and storing annotations within the ParserOutput object.
 
-#### LinksUpdateConstructed
-LinksUpdateConstructed is called at the end of LinksUpdate and is being used to initiate a store update for data that were held by the ParserOutput object.
+#### LinksUpdateComplete
+LinksUpdateComplete is called at the end of LinksUpdate and is being used to initiate a store update for data that were held by the ParserOutput object.
 
-#### NewRevisionFromEditComplete
-NewRevisionFromEditComplete called when a new revision was inserted due to an edit and used to update the ParserOuput with the latests special property annotation.
+#### RevisionFromEditComplete
+RevisionFromEditComplete called when a new revision was inserted due to an edit and used to update the ParserOuput with the latests special property annotation.
 
 #### ParserAfterTidy
-ParserAfterTidy is used to re-introduce content, update base annotations (e.g. special properties, categories etc.) and in case of a manual article purge initiates a store update (LinksUpdateConstructed wouldn't work because it acts only on link changes and therefore would not trigger a LinksUpdateConstructed event).
+ParserAfterTidy is used to re-introduce content, update base annotations (e.g. special properties, categories etc.) and in case of a manual article purge initiates a store update (LinksUpdateComplete wouldn't work because it acts only on link changes and therefore would not trigger a LinksUpdateComplete event).
 
 #### SpecialStatsAddExtra
 SpecialStatsAddExtra is used to add additional statistic being shown at Special:Statistics.
@@ -27,13 +27,13 @@ Extend the display with content from the Factbox.
 #### OutputPageParserOutput
 Rendering the Factbox and updating the FactboxCache.
 
-#### TitleMoveComplete
+#### PageMoveComplete
 Update the Store after an article has been deleted.
 
 #### ResourceLoaderGetConfigVars
 
 #### GetPreferences
 
-#### SkinTemplateNavigation
+#### SkinTemplateNavigation::Universal
 
 [hooks]: https://www.mediawiki.org/wiki/Hooks "Manual:Hooks"

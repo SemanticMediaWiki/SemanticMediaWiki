@@ -35,7 +35,8 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$isComplete,
-			'Failed on ' . basename( $file ) . ' with an incomplete pair of smw_decseparator/smw_kiloseparator.'
+			'Failed on ' . basename( $file ) . ' with an incomplete pair of '
+			. 'smw_decseparator/smw_kiloseparator.'
 		);
 	}
 
@@ -56,12 +57,16 @@ class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(
 			$hasDifferentSeparatorValue,
-			'Failed on ' . basename( $file ) . ' where smw_decseparator/smw_kiloseparator have the same set of values.'
+			'Failed on ' . basename( $file ) . ' where smw_decseparator/smw_kiloseparator have the '
+			. 'same set of values.'
 		);
 	}
 
 	public function mediawikiI18nFileProvider() {
-		return $this->findFilesIn( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] );
+		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
+		return $this->findFilesIn( $i18nDir );
 	}
 
 	private function findFilesIn( $location ) {

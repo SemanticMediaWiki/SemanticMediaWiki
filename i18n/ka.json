@@ -88,5 +88,6 @@
 	"smw-ui-tooltip-title-note": "შენიშვნა",
 	"smw-ui-tooltip-title-legend": "ლეგენდა",
 	"smw_unknowntype": "ამ თვისების ტიპი არასწორია",
-	"smw-livepreview-loading": "იტვირთება…"
+	"smw-livepreview-loading": "იტვირთება…",
+	"smw-listingcontinuesabbrev": "გაგრძ."
 }

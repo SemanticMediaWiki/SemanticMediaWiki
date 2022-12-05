@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Albamhandae",
+			"Bluehill",
 			"Codenstory",
 			"Ellif",
 			"HDNua",
@@ -573,7 +574,6 @@
 	"smw-parser-invalid-json-format": "JSON 파서가 \"$1\"로 반환했습니다.",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$2\" 언어가 이미 \"$3\" 레이블에 할당되어 있기 때문에 \"$1\"을(를) 선호하는 레이블로 사용할 수 없습니다.",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "클립보드에 링크 복사하기",
 	"smw-data-lookup": "정보 수집 중...",
 	"smw-data-lookup-with-wait": "이 요청은 처리 중이며 시간이 잠시 소요될 수 있습니다.",
@@ -663,5 +663,6 @@
 	"smw-es-replication-error-divergent-revision-short": "다음의 관련 판 데이터는 비교를 위해 사용되었습니다:",
 	"smw-report": "보고서",
 	"smw-legend": "범례",
-	"smw-entity-examiner-associated-revision-mismatch": "판"
+	"smw-entity-examiner-associated-revision-mismatch": "판",
+	"smw-listingcontinuesabbrev": "(계속)"
 }

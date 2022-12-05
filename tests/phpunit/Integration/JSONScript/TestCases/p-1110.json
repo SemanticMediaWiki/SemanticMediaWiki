@@ -23,7 +23,7 @@
 		},
 		{
 			"page": "Test:P1110/3",
-			"contents": "{{#subobject: |@category=P1110}}"
+			"contents": "{{#subobject: |@category=Category:P1110}}"
 		}
 	],
 	"tests": [
@@ -75,7 +75,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"P1110\",\"Mandatory 1, Mandatory 2\"]" }
+						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"Category:P1110\",\"Mandatory 1, Mandatory 2\"]" }
 					]
 				}
 			}
@@ -94,7 +94,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"P1110\",\"Mandatory 2\"]" }
+						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"Category:P1110\",\"Mandatory 2\"]" }
 					]
 				}
 			}
@@ -102,7 +102,7 @@
 		{
 			"type": "parser",
 			"about": "#4 (violation of `mandatory_properties`, missing two properties, subobject)",
-			"subject": "Test:P1110/3#_ERR1b9c6b99283108386b4f864721b2e8b7",
+			"subject": "Test:P1110/3#_ERR26c6fb10bbd9deefd0ab67e2174845df",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -113,7 +113,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"P1110\",\"Mandatory 1, Mandatory 2\"]" }
+						{ "serialization": "[8,\"smw-constraint-violation-class-mandatory-properties-constraint\",\"Category:P1110\",\"Mandatory 1, Mandatory 2\"]" }
 					]
 				}
 			}

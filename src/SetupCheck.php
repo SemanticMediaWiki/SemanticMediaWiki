@@ -187,8 +187,7 @@ class SetupCheck {
 		$setupCheck = new SetupCheck(
 			[
 				'SMW_VERSION'    => $version,
-				'MW_VERSION'     => $GLOBALS['wgVersion'], // MW_VERSION may not yet be defined!!
-				'wgLanguageCode' => $GLOBALS['wgLanguageCode'],
+				'MW_VERSION'     => $GLOBALS['wgVersion'] ?? 'unknown', // MW_VERSION may not yet be defined!!
 				'smwgUpgradeKey' => $GLOBALS['smwgUpgradeKey']
 			],
 			$setupFile
@@ -258,11 +257,7 @@ class SetupCheck {
 
 		$this->errorType = '';
 
-		// When it is not a test run or run from the command line we expect that
-		// the extension is registered using `enableSemantics`
-		if ( !defined( 'SMW_EXTENSION_LOADED' ) && !$this->isCli() ) {
-			$this->errorType = self::ERROR_EXTENSION_LOAD;
-		} elseif ( $this->setupFile->inMaintenanceMode() ) {
+		if ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = self::MAINTENANCE_MODE;
 		} elseif ( !$this->isCli() && !$this->setupFile->hasDatabaseMinRequirement() ) {
 			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
@@ -298,7 +293,7 @@ class SetupCheck {
 			'content' => ''
 		];
 
-		$this->languageCode = $_GET['uselang'] ?? $this->options['wgLanguageCode'] ?? 'en';
+		$this->languageCode = $_GET['uselang'] ?? 'en';
 
 		// Output forms for different error types are registered with a JSON file.
 		$this->definitions = $this->readFromFile(
@@ -343,6 +338,9 @@ class SetupCheck {
 			$this->header( 'Content-Length: ' . strlen( $content ) );
 			$this->header( 'Cache-control: none' );
 			$this->header( 'Pragma: no-cache' );
+			$this->header( 'HTTP/1.1 503 Service Temporarily Unavailable' );
+			$this->header( 'Status: 503 Service Temporarily Unavailable' );
+			$this->header( 'Retry-After: 10' ); // 10 seconds
 		} else {
 			$content = $error['title'] . "\n\n" . $error['content'];
 			$content = str_replace(

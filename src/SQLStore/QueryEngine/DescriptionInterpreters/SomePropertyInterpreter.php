@@ -11,15 +11,15 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMWDataItem as DataItem;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWSQLStore3Table;
-use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 
 /**
  * @license GNU GPL v2+
@@ -225,12 +225,14 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param $query
 	 * @param Description $description
-	 * @param SMWSQLStore3Table $proptable
+	 * @param PropertyTableDefinition $proptable
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
 	private function compilePropertyValueDescription(
-			$query, Description $description, SMWSQLStore3Table $proptable, DataItemHandler $diHandler, $operator ) {
+			$query, Description $description, PropertyTableDefinition $proptable,
+			DataItemHandler $diHandler, $operator
+	) {
 
 		if ( $description instanceof ValueDescription ) {
 			$this->mapValueDescription( $query, $description, $diHandler, $operator );

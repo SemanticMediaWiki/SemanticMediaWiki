@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GNU GPL v2+

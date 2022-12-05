@@ -179,5 +179,6 @@
 	"smw_unknowntype": "نوع غير مدعوم \"$1\" لتعريف الممتلكات.",
 	"smw_concept_header": "صفحات المبدأ \"$1\"",
 	"smw_conceptarticlecount": "عرض {{PLURAL:$1||صفحه واحده تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحه تنتمي}} إلى هذا المبدأ.",
-	"smw-livepreview-loading": "تحميل…"
+	"smw-livepreview-loading": "تحميل…",
+	"smw-listingcontinuesabbrev": "متابعه"
 }

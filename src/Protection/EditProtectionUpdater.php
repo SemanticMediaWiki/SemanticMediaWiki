@@ -4,6 +4,7 @@ namespace SMW\Protection;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use RequestContext;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Message;
@@ -56,7 +57,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		$this->user = $user;
 
 		if ( $this->user === null ) {
-			$this->user = $GLOBALS['wgUser'];
+			$this->user = RequestContext::getMain()->getUser();
 		}
 	}
 

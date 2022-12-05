@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -29,7 +29,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class InversePropertyRelationshipDBIntegrationTest extends MwDBaseUnitTestCase {
+class InversePropertyRelationshipDBIntegrationTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
 

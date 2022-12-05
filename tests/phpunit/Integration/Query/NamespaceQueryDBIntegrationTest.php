@@ -6,7 +6,7 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -25,7 +25,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class NamespaceQueryDBIntegrationTest extends MwDBaseUnitTestCase {
+class NamespaceQueryDBIntegrationTest extends DatabaseTestCase {
 
 	private $fixturesProvider;
 	private $semanticDataFactory;

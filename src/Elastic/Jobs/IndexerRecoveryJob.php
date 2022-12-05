@@ -2,8 +2,9 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Elastic\ElasticStore;
 use SMW\MediaWiki\Job;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticFactory;
@@ -116,7 +117,8 @@ class IndexerRecoveryJob extends Job {
 	public function run() {
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+
+		$store = $applicationFactory->getStore( ElasticStore::class );
 
 		$connection = $store->getConnection( 'elastic' );
 
@@ -130,7 +132,7 @@ class IndexerRecoveryJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$elasticFactory = $applicationFactory->singleton( 'ElasticFactory' );
+		$elasticFactory = $store->getElasticFactory();
 
 		$this->indexer = $elasticFactory->newIndexer(
 			$store

@@ -17,7 +17,7 @@ use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Store;
 use SMW\Schema\Schema;
 use SMW\SemanticData;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\PropertyAnnotator;
 use SMW\PageInfo;
 use Title;

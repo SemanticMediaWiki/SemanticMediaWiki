@@ -1,6 +1,6 @@
 <?php
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\Localizer;
 use SMW\Message;
@@ -304,7 +304,12 @@ class SMWWikiPageValue extends SMWDataValue {
 
 		if ( Image::isImage( $this->m_dataitem ) && $this->m_dataitem->getInterwiki() === '' && !$noImage ) {
 			$linkEscape = '';
-			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', \Sanitizer::removeHTMLtags( $this->m_outformat ) );
+			if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
+				$sanitizedHtml = Sanitizer::removeSomeTags( $this->m_outformat );
+			} else {
+				$sanitizedHtml = Sanitizer::removeHTMLtags( $this->m_outformat );
+			}
+			$options = $this->m_outformat === false ? 'frameless|border|text-top|' : str_replace( ';', '|', $sanitizedHtml );
 			$defaultCaption = '|' . $this->getShortCaptionText() . '|' . $options;
 		} else {
 			$linkEscape = ':';
@@ -355,11 +360,19 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_outformat == '-' || $this->m_caption === '' ) {
 
 			$caption = $this->m_caption === false ? $this->getWikiValue() : $this->m_caption;
-			return \Sanitizer::removeHTMLtags( $caption );
+			if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
+				return Sanitizer::removeSomeTags( $caption );
+			} else {
+				return Sanitizer::removeHTMLtags( $caption );
+			}
 		}
 
 		$caption = $this->m_caption === false ? $this->getShortCaptionText() : $this->m_caption;
-		$caption =  \Sanitizer::removeHTMLtags( $caption );
+		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
+			$caption = Sanitizer::removeSomeTags( $caption );
+		} else {
+			$caption = Sanitizer::removeHTMLtags( $caption );
+		}
 
 		if ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $caption );
@@ -442,19 +455,25 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 
+		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
+			$sanitizerCallback = [ Sanitizer::class, 'removeSomeTags' ];
+		} else {
+			$sanitizerCallback = [ Sanitizer::class, 'removeHTMLtags' ];
+		}
+
 		if ( $linker === null || $linker === false || $this->m_outformat == '-' ) {
-			return \Sanitizer::removeHTMLtags( $this->getWikiValue() );
+			return call_user_func( $sanitizerCallback, $this->getWikiValue() );
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj(
 				$this->getTitle(),
-				\Sanitizer::removeHTMLtags( $this->getLongCaptionText() )
+				call_user_func( $sanitizerCallback, $this->getLongCaptionText() )
 			);
 		}
 
 		// all others use default linking, no embedding of images here
 		return $linker->link(
 			$this->getTitle(),
-			 \Sanitizer::removeHTMLtags( $this->getLongCaptionText() ),
+			call_user_func( $sanitizerCallback, $this->getLongCaptionText() ),
 			$this->linkAttributes,
 			$this->queryParameters
 		);
@@ -476,7 +495,10 @@ class SMWWikiPageValue extends SMWDataValue {
 			$text = $this->getText();
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
 			$text = $this->getPrefixedText();
-		} elseif ( in_array( $this->getTypeID(), [ '_wpp', '_wps', '_wpu' ] ) || $this->m_fixNamespace == NS_MAIN ) {
+		} elseif (
+			in_array( $this->getTypeID(), [ '_wpp', '_wps', '_wpu', '__sup', '__sin', '__suc', '__con' ] ) ||
+			$this->m_fixNamespace === NS_MAIN
+		) {
 			$text = $this->getPrefixedText();
 		} else {
 			$text = $this->getText();

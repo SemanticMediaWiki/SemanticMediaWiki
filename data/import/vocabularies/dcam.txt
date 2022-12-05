@@ -1,0 +1,7 @@
+http://purl.org/dc/dcam/ | [https://dublincore.org/specifications/dublin-core/dcmi-terms/#section-8 Dublin Core Terms for vocabulary description] 
+ domainIncludes|Type:Page
+ memberOf|Type:Page
+ rangeIncludes|Type:Page
+ VocabularyEncodingScheme|Category
+
+[[Category:Imported vocabulary]]

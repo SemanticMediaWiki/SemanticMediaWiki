@@ -2,6 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Abdeaitali",
+			"Amire80",
+			"Ideophagous",
 			"Reda Benkhadra",
 			"SADIQUI"
 		]
@@ -11,5 +13,7 @@
 	"smw-admin-supplementary-elastic-version-info": "نسخة",
 	"smw-admin-supplementary-elastic-config": "ريكلاج",
 	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ....",
-	"smw-search-hide": "خبي"
+	"smw-search-hide": "خبي",
+	"smw-help": "معاونة",
+	"smw-listingcontinuesabbrev": "لكمالة"
 }

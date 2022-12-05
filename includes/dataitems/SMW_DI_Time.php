@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\Json\JsonUnserializer;
 use SMW\DataValues\Time\CalendarModel;
 use SMW\DataValues\Time\JulianDay;
 use SMW\Exception\DataItemException;
@@ -605,6 +606,35 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		} else {
 			$this->m_precision = self::PREC_YMDT;
 		}
+	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$json = parent::jsonSerialize();
+		$json['julianDay'] = $this->julianDay;
+		return $json;
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $unserializer, $json );
+		$obj->julianDay = $json['julianDay'];
+		return $obj;
 	}
 
 }

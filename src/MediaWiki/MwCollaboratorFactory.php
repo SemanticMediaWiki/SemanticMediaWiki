@@ -5,7 +5,8 @@ namespace SMW\MediaWiki;
 use Language;
 use MediaWiki\Revision\RevisionRecord;
 use Parser;
-use SMW\ApplicationFactory;
+use RequestContext;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
@@ -177,6 +178,10 @@ class MwCollaboratorFactory {
 			$this->applicationFactory->singleton( 'RevisionGuard' )
 		);
 
+		$pageInfoProvider->setRevisionLookup(
+			$this->applicationFactory->singleton( 'RevisionLookup' )
+		);
+
 		return $pageInfoProvider;
 	}
 
@@ -212,6 +217,9 @@ class MwCollaboratorFactory {
 		?RevisionRecord $revision = null,
 		?User $user = null
 	) {
+		if ( $user === null ) {
+			$user = RequestContext::getMain()->getUser();
+		}
 
 		$editInfo = new EditInfo( $wikiPage, $revision, $user );
 

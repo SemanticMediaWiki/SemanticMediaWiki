@@ -1,4 +1,4 @@
-http://www.w3.org/2002/07/owl#|[http://www.w3.org/2002/07/owl Web Ontology Language (OWL)]
+https://www.w3.org/TR/owl2-syntax/ | [https://www.w3.org/TR/owl2-syntax/ Web Ontology Language (OWL)]
  AllDifferent|Category
  allValuesFrom|Type:Page
  AnnotationProperty|Category
@@ -23,9 +23,9 @@ http://www.w3.org/2002/07/owl#|[http://www.w3.org/2002/07/owl Web Ontology Langu
  intersectionOf|Type:Page
  InverseFunctionalProperty|Category
  inverseOf|Type:Page
- isDefinedBy|Type:Page
  label|Type:Page
  maxCardinality|Type:Number
+ Members|Type:Page
  minCardinality|Type:Number
  Nothing|Category
  ObjectProperty|Category

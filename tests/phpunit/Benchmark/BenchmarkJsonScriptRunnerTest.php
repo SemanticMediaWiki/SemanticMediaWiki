@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Benchmark;
 
-use SMW\ApplicationFactory;
-use SMW\Tests\JsonTestCaseFileHandler;
-use SMW\Tests\JsonTestCaseScriptRunner;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\JSONScriptTestCaseRunner;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -15,7 +15,7 @@ use SMW\Tests\JsonTestCaseScriptRunner;
  *
  * @author mwjames
  */
-class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
+class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 
 	/**
 	 * @var PageImportBenchmarkRunner
@@ -53,7 +53,7 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 	private $benchmarkReports = [];
 
 	/**
-	 * @see JsonTestCaseScriptRunner::$deletePagesOnTearDown
+	 * @see JSONScriptTestCaseRunner::$deletePagesOnTearDown
 	 */
 	protected $deletePagesOnTearDown = true;
 
@@ -111,28 +111,28 @@ class BenchmarkJsonScriptRunnerTest extends JsonTestCaseScriptRunner {
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getTestCaseLocation() {
 		return __DIR__ . '/TestCases';
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getTestCaseLocation
+	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
 	protected function getRequiredJsonTestCaseMinVersion() {
 		return '1';
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::getAllowedTestCaseFiles
+	 * @see JSONScriptTestCaseRunner::getAllowedTestCaseFiles
 	 */
 	protected function getAllowedTestCaseFiles() {
 		return [];
 	}
 
 	/**
-	 * @see JsonTestCaseScriptRunner::runTestCaseFile
+	 * @see JSONScriptTestCaseRunner::runTestCaseFile
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */

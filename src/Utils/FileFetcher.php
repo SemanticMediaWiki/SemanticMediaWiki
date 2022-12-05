@@ -36,7 +36,7 @@ class FileFetcher {
 	 *
 	 * @param string $dir
 	 */
-	public function __construct( $dir = '' ) {
+	public function __construct( string $dir = '' ) {
 		$this->dir = $dir;
 	}
 

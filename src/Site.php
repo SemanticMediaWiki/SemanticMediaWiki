@@ -2,7 +2,9 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SiteStats;
+use WikiMap;
 
 /**
  * @license GNU GPL v2+
@@ -24,7 +26,7 @@ class Site {
 		// MediaWiki\Services\ServiceDisabledException from line 340 of
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
-			$isReadOnly = wfReadOnly();
+			$isReadOnly = MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
 		} catch( \MediaWiki\Services\ServiceDisabledException $e ) {
 			$isReadOnly = true;
 		}
@@ -141,7 +143,7 @@ class Site {
 			$affix = ':' . $affix;
 		}
 
-		return wfWikiID() . $affix;
+		return WikiMap::getCurrentWikiId() . $affix;
 	}
 
 	/**

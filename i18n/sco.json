@@ -11,5 +11,6 @@
 	"smw-admin-idlookup-title": "Object ID leukup",
 	"smw-admin-idlookup-docu": "Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
 	"smw-admin-objectid": "The Object Id:",
-	"smw-livepreview-loading": "Laidin..."
+	"smw-livepreview-loading": "Laidin...",
+	"smw-listingcontinuesabbrev": "cont."
 }

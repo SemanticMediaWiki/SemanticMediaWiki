@@ -9,6 +9,8 @@
  * @ingroup SMW
  */
 
+use MediaWiki\MediaWikiServices;
+
 class SMWPageSchemas extends PSExtensionHandler {
 
 	public static function getDisplayColor() {
@@ -259,14 +261,12 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * passed-in Page Schemas XML object.
 	 */
 	public static function generatePages( $pageSchemaObj, $selectedPages ) {
-		global $wgUser;
-
 		$datatypeLabels = smwfContLang()->getDatatypeLabels();
 		$pageTypeLabel = $datatypeLabels['_wpg'];
 
 		$jobs = [];
 		$jobParams = [];
-		$jobParams['user_id'] = $wgUser->getId();
+		$jobParams['user_id'] = RequestContext::getMain()->getUser()->getId();
 
 		// First, create jobs for all "connecting properties".
 		$psTemplates = $pageSchemaObj->getTemplates();
@@ -297,11 +297,12 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$jobParams['page_text'] = self::createPropertyText( $propertyType, $propertyAllowedValues, $propertyLinkedForm );
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
-		if ( class_exists( 'JobQueueGroup' ) ) {
-			JobQueueGroup::singleton()->push( $jobs );
+
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			MediaWikiServices::getInstance()->getJobQueueGroup()->push( $jobs );
 		} else {
-			// MW <= 1.20
-			Job::batchInsert( $jobs );
+			JobQueueGroup::singleton()->push( $jobs );
 		}
 	}
 
@@ -325,7 +326,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		}
 
 		if ( $allowedValues != null) {
-			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', $GLOBALS['wgContLang']->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
+			$text .= "\n\n" . wfMessage( 'smw-createproperty-allowedvals', MediaWikiServices::getInstance()->getContentLanguage()->formatNum( count( $allowedValues ) ) )->inContentLanguage()->text();
 
 			foreach ( $allowedValues as $value ) {
 				$prop_labels = $smwgContLang->getPropertyLabels();

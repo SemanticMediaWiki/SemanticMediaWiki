@@ -61,7 +61,7 @@ class SomePropertyInterpreter {
 	 *
 	 * @param SomeProperty $description
 	 *
-	 * @return array
+	 * @return Condition|array
 	 */
 	public function interpretDescription( SomeProperty $description, $isConjunction = false, $isChain = false ) {
 
@@ -406,12 +406,15 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $property->isInverse() ) {
+			if ( !is_array($p) ) {
+				$p = $p->toArray();
+			}
 			$parameters = $this->termsLookup->newParameters(
 				[
 					'query.string' => $desc->getQueryString(),
 					'property.key' => $property->getKey(),
 					'field' => "$pid.wpgID",
-					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $p->toArray() )
+					'params' => $this->fieldMapper->field_filter( "$pid.wpgID", $p )
 				]
 			);
 

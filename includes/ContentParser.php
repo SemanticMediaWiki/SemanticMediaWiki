@@ -2,13 +2,14 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use Parser;
 use ParserOptions;
+use RequestContext;
 use Title;
 use User;
-use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
@@ -150,17 +151,28 @@ class ContentParser {
 		$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::RAW );
 
 		if ( !$content ) {
-			$content = $revision->getContentHandler()->makeEmptyContent();
+			$mainSlot = $revision->getSlot( SlotRecord::MAIN, RevisionRecord::RAW );
+			$contentHandlerFactory = MediaWikiServices::getInstance()->getContentHandlerFactory();
+			$handler = $contentHandlerFactory->getContentHandler( $mainSlot->getModel() );
+			$content = $handler->makeEmptyContent();
 		}
 
 		// Avoid "The content model 'xyz' is not registered on this wiki."
 		try {
-			$this->parserOutput = $content->getParserOutput(
-				$this->getTitle(),
-				$revision->getId(),
-				null,
-				true
-			);
+			$services = MediaWikiServices::getInstance();
+			if ( method_exists( $services, 'getContentRenderer' ) ) {
+				$contentRenderer = $services->getContentRenderer();
+				$this->parserOutput = $contentRenderer->getParserOutput(
+					$content,
+					$this->getTitle(),
+					$revision->getId()
+				);
+			} else {
+				$this->parserOutput = $content->getParserOutput(
+					$this->getTitle(),
+					$revision->getId()
+				);
+			}
 		} catch( \MWUnknownContentModelException $e ) {
 			$this->parserOutput = null;
 		}
@@ -184,6 +196,7 @@ class ContentParser {
 			}
 		}
 
+		$user = $user ?? RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
 
 		// Use the InterfaceMessage marker to skip InTextAnnotationParser

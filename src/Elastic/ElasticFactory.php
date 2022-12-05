@@ -5,7 +5,7 @@ namespace SMW\Elastic;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use Psr\Log\LoggerInterface;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\FileRepoFinder;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
 use SMW\Elastic\Admin\IndicesInfoProvider;

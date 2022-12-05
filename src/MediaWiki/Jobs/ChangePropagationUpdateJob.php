@@ -13,7 +13,7 @@ use SMW\DIWikiPage;
  * Use `ChangePropagationUpdateJob` to easily count the jobs and distinguish them
  * from other `UpdateJob`.
  *
- * `JobQueueGroup::singleton()->get( 'SMW\ChangePropagationUpdateJob' )->getSize()`
+ * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'SMW\ChangePropagationUpdateJob' )->getSize()`
  *
  * @license GNU GPL v2+
  * @since 3.0

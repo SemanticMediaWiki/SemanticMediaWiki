@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
 use Title;
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase {
+class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;
@@ -93,7 +93,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends MwDBaseUnitTestCase 
 		$expected = [
 			'propertyCount'  => 2,
 			'propertyKeys'   => [ '_SKEY', '_INST' ],
-			'propertyValues' => [ 'SortForFoo', 'SingleCategory' ],
+			'propertyValues' => [ 'SortForFoo', 'Category:SingleCategory' ],
 		];
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

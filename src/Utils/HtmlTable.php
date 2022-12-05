@@ -130,7 +130,7 @@ class HtmlTable {
 		return $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function createRow( $content, $attributes = [], $count ) {
+	private function createRow( $content, $attributes, $count ) {
 
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 

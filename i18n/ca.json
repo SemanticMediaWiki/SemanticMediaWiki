@@ -738,7 +738,6 @@
 	"smw-parser-invalid-json-format": "L'analitzador de JSON ha retornat amb «$1».",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "No es pot utilitzar «$1» com etiqueta preferida perquè la llengua «$2» ja està assignada a l'etiqueta «$3».",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copia l'enllaç al porta-retalls",
 	"smw-data-lookup": "Recuperant les dades ...",
 	"smw-data-lookup-with-wait": "S'està processant la sol·licitud i pot trigar una estona.",
@@ -876,5 +875,6 @@
 	"smw-entity-examiner-associated-revision-mismatch": "Revisió",
 	"smw-entity-examiner-deferred-fake": "Simulació",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constricció|Constriccions}}",
-	"smw-indicator-revision-mismatch": "Revisió"
+	"smw-indicator-revision-mismatch": "Revisió",
+	"smw-listingcontinuesabbrev": " cont."
 }

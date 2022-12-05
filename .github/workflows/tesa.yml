@@ -1,0 +1,44 @@
+name: Tesa
+
+on:
+  push:
+    paths:
+      - .github/workflows/tesa.yml
+      - src/Tesa/**
+      - composer.json
+
+jobs:
+  phpunit:
+    name: "PHPUnit PHP ${{ matrix.php }}"
+
+    strategy:
+      matrix:
+        php: [ 7.4, 8.0, 8.1 ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          tools: composer, cs2pr
+          coverage: pcov
+
+      - name: Cache Composer cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          key: composer-cache-php${{ matrix.php }}
+
+      - name: Composer install
+        run: composer install --no-progress --no-suggest --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Add PHPUnit
+        run: composer require phpunit/phpunit:^9
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit -c src/Tesa/phpunit.xml.dist

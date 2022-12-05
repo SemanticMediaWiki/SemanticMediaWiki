@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @group semantic-mediawiki
@@ -15,7 +15,7 @@ use SMW\ApplicationFactory;
  *
  * @author mwjames
  */
-class RebuildElasticIndexTest extends MwDBaseUnitTestCase {
+class RebuildElasticIndexTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;

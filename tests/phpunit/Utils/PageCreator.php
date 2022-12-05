@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\Utils;
 
-use Revision;
+use CommentStoreComment;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Storage\RevisionSlotsUpdate;
+use RequestContext;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
@@ -26,7 +30,7 @@ class PageCreator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return WikiPage
+	 * @return \WikiPage
 	 */
 	public function setPage( \WikiPage $page ) {
 		$this->page = $page;
@@ -35,7 +39,7 @@ class PageCreator {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return WikiPage
+	 * @return \WikiPage
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
@@ -97,10 +101,16 @@ class PageCreator {
 			$this->getPage()->getTitle()
 		);
 
-		$this->getPage()->doEditContent(
-			$content,
-			$editMessage
-		);
+		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
+		$performer = RequestContext::getMain()->getUser();
+		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
+
+		$slotsUpdate = new RevisionSlotsUpdate();
+		$slotsUpdate->modifyContent( SlotRecord::MAIN, $content );
+
+		$updater = $this->getPage()->newPageUpdater( $performer, $slotsUpdate );
+		$updater->setContent( SlotRecord::MAIN, $content );
+		$updater->saveRevision( $summary );
 
 		TestEnvironment::executePendingDeferredUpdates();
 
@@ -120,13 +130,8 @@ class PageCreator {
 		$reason = "integration test";
 		$source = $this->getPage()->getTitle();
 
-		if ( class_exists( '\MovePage' ) ) {
-			$mp = new \MovePage( $source, $target );
-			$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
-		} else {
-			// deprecated since 1.25, use the MovePage class instead
-			$status = $source->moveTo( $target, false, $reason, $isRedirect );
-		}
+		$mp = MediaWikiServices::getInstance()->getMovePageFactory()->newMovePage( $source, $target );
+		$status = $mp->move( new MockSuperUser(), $reason, $isRedirect );
 
 		TestEnvironment::executePendingDeferredUpdates();
 

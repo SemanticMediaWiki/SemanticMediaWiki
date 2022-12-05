@@ -197,5 +197,6 @@
 	"smw-section-collapse": "Suskleisti dalį",
 	"smw-help": "Pagalba",
 	"smw-es-replication-error-no-connection": "Replikacijos stebėjimas negali atlikti jokių patikrinimų, nes negali sukurti ryšio su Elasticsearch klusteriu.",
-	"smw-es-replication-error-suggestions-no-connection": "Siūloma kreiptis į „wiki“ administratorių ir pranešti apie „be ryšio“ problemą."
+	"smw-es-replication-error-suggestions-no-connection": "Siūloma kreiptis į „wiki“ administratorių ir pranešti apie „be ryšio“ problemą.",
+	"smw-listingcontinuesabbrev": "tęsti"
 }

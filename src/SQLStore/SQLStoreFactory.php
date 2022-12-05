@@ -6,7 +6,7 @@ use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\MediaWiki\Collator;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\DIWikiPage;

@@ -13,41 +13,24 @@ use SMW\Exception\JSONFileParseException;
  */
 class LocalMessageProvider implements MessageLocalizer {
 
-	/**
-	 * @var string
-	 */
-	private $file = '';
-
-	/**
-	 * @var string
-	 */
-	private $languageCode;
-
-	/**
-	 * @var string
-	 */
-	private $languageFileDir = '';
-
-	/**
-	 * @var string
-	 */
-	private $fallbackLanguageCode = 'en';
-
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private /* string */ $file = '';
+	private /* ?string */ $languageCode;
+	private /* string */ $languageFileDir = '';
+	private /* string */ $fallbackLanguageCode = 'en';
+	private /* array */ $contents = [];
 
 	/**
 	 * @since 3.2
 	 *
 	 * @param string $file
-	 * @param string|null $languageCode
+	 * @param ?string $languageCode
 	 */
 	public function __construct( string $file, ?string $languageCode = null ) {
 		$this->file = $file;
 		$this->languageCode = $languageCode;
-		$this->languageFileDir = $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'];
+		$this->languageFileDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+							  ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+							  : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
 	}
 
 	/**

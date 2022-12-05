@@ -7,7 +7,7 @@ use SMW\Utils\Pager;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HtmlTabs;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Collator;
 
 /**

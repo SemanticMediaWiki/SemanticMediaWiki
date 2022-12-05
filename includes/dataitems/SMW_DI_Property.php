@@ -3,6 +3,7 @@
 namespace SMW;
 
 use RuntimeException;
+use MediaWiki\Json\JsonUnserializer;
 use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
@@ -555,6 +556,37 @@ class DIProperty extends SMWDataItem {
 		} catch ( DataItemException $e ) {
 			return null;
 		}
+	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$json = parent::jsonSerialize();
+		$json['propertyValueType'] = $this->propertyValueType;
+		$json['interwiki'] = $this->interwiki;
+		return $json;
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $unserializer, $json );
+		$obj->propertyValueType = $json['propertyValueType'];
+		$obj->interwiki = $json['interwiki'];
+		return $obj;
 	}
 
 }

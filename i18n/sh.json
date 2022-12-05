@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"BadDog",
 			"OC Ripper",
 			"Vlad5250"
 		]
 	},
-	"browse": "Pretražuj wiki",
+	"browse": "Pregled vikija",
 	"smw_result_prev": "Prethodna",
 	"right-smw-admin": "Pristupanje administratorskim zadacima (Semantički MediaWiki)",
 	"right-smw-patternedit": "Pristup uređivanja za udržavanje dozvolenih regularnih izraza i uzora (Semantički MediaWiki)",
@@ -15,5 +16,6 @@
 	"action-smw-pageedit": "uređujete stranice s anotacijom <code>Is edit protected</code> (Semantic MediaWiki)",
 	"action-smw-admin": "pristupanje administratorskima zadacima Semantički MediaWiki",
 	"action-smw-ruleedit": "uređivanje odredbenih stranica (Semantički MediaWiki)",
-	"smw-livepreview-loading": "Učitavanje..."
+	"smw-livepreview-loading": "Učitavanje...",
+	"smw-listingcontinuesabbrev": "nast."
 }

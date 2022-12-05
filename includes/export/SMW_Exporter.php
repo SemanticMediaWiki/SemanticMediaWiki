@@ -1,6 +1,7 @@
 <?php
 
-use SMW\ApplicationFactory;
+use MediaWiki\MediaWikiServices;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -73,6 +74,9 @@ class SMWExporter {
 	 */
 	private static $dataItemMatchFinder = null;
 
+	/** @var RepoGroup */
+	private static $mwRepoGroup = null;
+
 	/**
 	 * @var DispatchingResourceBuilder
 	 */
@@ -121,6 +125,8 @@ class SMWExporter {
 				$applicationFactory->getStore(),
 				self::$m_ent_wiki
 			);
+
+			self::$mwRepoGroup = MediaWikiServices::getInstance()->getRepoGroup();
 		}
 
 		return self::$instance;
@@ -261,7 +267,7 @@ class SMWExporter {
 	 * Make an SMWExpData object for the given page, and include the basic
 	 * properties about this subject that are not directly represented by
 	 * SMW property values. The optional parameter $typevalueforproperty
-	 * can be used to pass a particular SMWTypesValue object that is used
+	 * can be used to pass a particular TypesValue object that is used
 	 * for determining the OWL type for property pages.
 	 *
 	 * @todo Take into account whether the wiki page belongs to a builtin property, and ensure URI alignment/type declaration in this case.
@@ -363,7 +369,7 @@ class SMWExporter {
 				if ( $subject->getNamespace() === NS_FILE ) {
 
 					$title = Title::makeTitle( $subject->getNamespace(), $subject->getDBkey() );
-					$file = wfFindFile( $title );
+					$file = self::$mwRepoGroup->findFile( $title );
 
 					if ( $file !== false ) {
 						$expData->addPropertyObjectValue(
@@ -452,7 +458,7 @@ class SMWExporter {
 
 	/**
 	 * Determine what kind of OWL property some SMW property should be exported as.
-	 * The input is an SMWTypesValue object, a typeid string, or empty (use default)
+	 * The input is an TypesValue object, a typeid string, or empty (use default)
 	 *
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */

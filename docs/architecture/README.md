@@ -29,7 +29,7 @@ Some conventions to help developers and the project to maintain a consistent pro
 - The top-level namespace is `SMW` and each component should be placed in a namespace that represents the main responsibility of the component
 - [`PSR-4`](https://www.php-fig.org/psr/psr-4/) is used for resolving classes and namespaces in the `src` directory (`includes` is the legacy folder that doesn't necessarily follow any of the policies or conventions mentioned in this document)
 - Development happens against the master branch (see also the [release process](https://www.semantic-mediawiki.org/wiki/Release_process)) and will be release according the the available release plan, backports should be cherry-picked and merged into the targeted branch
-- Semantic MediaWiki tries to depend only on a selected pool of MediaWiki core classes (`Title`, `Wikipage`, `ParserOutput`, `Revision`, `Language` ... ) to minimize the potential for breakage during release changes
+- Semantic MediaWiki tries to depend only on a selected pool of MediaWiki core classes (`Title`, `Wikipage`, `ParserOutput`, `RevisionRecord`, `Language` ... ) to minimize the potential for breakage during release changes
 - It is expected that each new class and functionality is covered by corresponding unit tests and if the functionality spans into different components integration tests are required as well to ensure that the behaviour is tested across components and produces deterministic and observable outputs.
 
 #### Best practices

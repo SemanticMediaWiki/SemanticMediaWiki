@@ -3,10 +3,10 @@
 namespace SMW\Maintenance;
 
 use Exception;
-use LinkCache;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
@@ -478,7 +478,7 @@ class DataRebuilder {
 		}
 
 		if ( $this->rebuildCount % 100 === 0 ) { // every 100 pages only
-			LinkCache::singleton()->clear(); // avoid memory leaks
+			MediaWikiServices::getInstance()->getLinkCache()->clear(); // avoid memory leaks
 		}
 
 		$this->rebuildCount++;

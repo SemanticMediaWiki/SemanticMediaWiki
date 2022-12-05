@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\ApplicationFactory;
-use SMW\MediaWiki\Hooks\BaseTemplateToolbox;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use Title;
 use SMW\Tests\PHPUnitCompat;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\BaseTemplateToolbox
+ * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
  * @covers \SMWInfolink
  *
  * @group SMW
@@ -27,17 +27,17 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 	use PHPUnitCompat;
 
 	/**
-	 * @dataProvider baseTemplateToolboxDataProvider
+	 * @dataProvider sidebarBeforeOutputDataProvider
 	 */
-	public function testBaseTemplateToolboxURLEncoding( $setup, $expected ) {
+	public function testSidebarBeforeOutputURLEncoding( $setup, $expected ) {
 
-		$toolbox  = [];
+		$sidebar  = [];
 
 		foreach ( $setup['settings'] as $key => $value) {
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );
 		}
 
-		$instance = new BaseTemplateToolbox(
+		$instance = new SidebarBeforeOutput(
 			ApplicationFactory::getInstance()->getNamespaceExaminer()
 		);
 
@@ -47,17 +47,17 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 			]
 		);
 
-		$instance->process( $setup['skinTemplate'], $toolbox );
+		$instance->process( $setup['skin'], $sidebar );
 
 		$this->assertContains(
 			$expected,
-			$toolbox['smw-browse']['href']
+			$sidebar['TOOLBOX'][0]['href']
 		);
 
 		ApplicationFactory::clear();
 	}
 
-	public function baseTemplateToolboxDataProvider() {
+	public function sidebarBeforeOutputDataProvider() {
 
 		$specialName = str_replace( '%3A', ':',
 			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
@@ -65,15 +65,15 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = [];
 
-		$provider[] = [ $this->newBaseTemplateToolboxSetup( '2013/11/05' ), "$specialName/:2013-2F11-2F05" ];
-		$provider[] = [ $this->newBaseTemplateToolboxSetup( '2013-06-30' ), "$specialName/:2013-2D06-2D30" ];
-		$provider[] = [ $this->newBaseTemplateToolboxSetup( '2013$06&30' ), "$specialName/:2013-2406-2630" ];
-		$provider[] = [ $this->newBaseTemplateToolboxSetup( '2013\Foo' ),   "$specialName/:2013-5CFoo" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013/11/05' ), "$specialName/:2013-2F11-2F05" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013-06-30' ), "$specialName/:2013-2D06-2D30" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013$06&30' ), "$specialName/:2013-2406-2630" ];
+		$provider[] = [ $this->newSidebarBeforeOutputSetup( '2013\Foo' ),   "$specialName/:2013-5CFoo" ];
 
 		return $provider;
 	}
 
-	private function newBaseTemplateToolboxSetup( $text ) {
+	private function newSidebarBeforeOutputSetup( $text ) {
 
 		$settings = [
 			'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
@@ -83,6 +83,14 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 		$message = $this->getMockBuilder( '\Message' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$output = $this->getMockBuilder( '\OutputPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$output->expects( $this->atLeastOnce() )
+			->method( 'isArticle' )
+			->willReturn( true );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -94,19 +102,14 @@ class EncodingIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'msg' )
-			->will( $this->returnValue( $message ) );
+			->will( $this->returnValue( $message ) )
+			->with( 'smw_browselink' );
 
-		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
-			->disableOriginalConstructor()
-			->getMock();
+		$skin->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $output ) );
 
-		$skinTemplate->expects( $this->atLeastOnce() )
-			->method( 'getSkin' )
-			->will( $this->returnValue( $skin ) );
-
-		$skinTemplate->data['isarticle'] = true;
-
-		return [ 'settings' => $settings, 'skinTemplate' => $skinTemplate ];
+		return [ 'settings' => $settings, 'skin' => $skin ];
 	}
 
 }

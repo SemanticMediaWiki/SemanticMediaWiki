@@ -8,10 +8,41 @@ For instructions on how to install the latest version of Semantic MediaWiki (SMW
 
 ## Platform compatibility and release status
 
-The PHP and MediaWiki version ranges listed have been tested and are expected to work, attempting to use Semantic MediaWiki outside of the mentioned release boundaries is __NOT__ recommended and users who are trying to use different combinations will unlikely receive any support.
-
+The PHP and MediaWiki versions listed have been tested and are known to work.
 Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki, though this is not guaranteed.
 
+Increases of minimum requirements are indicated in bold.
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>Status</th>
+		<th>First release</th>
+		<th>Latest release</th>
+		<th>PHP</th>
+		<th>MediaWiki</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<th>4.1.x</th>
+		<td>In development</td>
+		<td>-</td>
+		<td>-</td>
+		<td><strong>7.4.0</strong> - 8.0.x</td>
+		<td>1.35.0 - 1.38.x</td>
+		<td>Not fully compatible with MW 1.39 yet</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
+		<td><strong>Stable release</strong></td>
+		<td>2022-01-18</td>
+		<td>2022-07-21</td>
+		<td><strong>7.3.0</strong> - 8.0.x</td>
+		<td><strong>1.35.0</strong> - 1.37.x</td>
+		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
+	</tr>
+</table>
+	
 <table class="compatibility">
 	<tr>
 		<th>SMW</th>
@@ -21,18 +52,11 @@ Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki,
 		<th>Status</th>
 	</tr>
 	<tr>
-		<th>4.0.x</th>
-		<td><strong>7.3.0</strong> - 7.4.x</td>
-		<td><strong>1.35.0</strong> - 1.35.x</td>
-		<td>-</td>
-		<td>In development</td>
-	</tr>
-	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
 		<td><strong>7.1.0</strong> - 7.4.x</td>
 		<td>1.31.0 - 1.35.x</td>
 		<td>2020-09-07</td>
-		<td><strong>Stable release</strong></td>
+		<td>Obsolete</td>
 	</tr>
 	<tr>
 		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
@@ -99,14 +123,6 @@ Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki,
 	</tr>
 </table>
 
-### Notes
-
-Increases of minimum requirements are indicated in bold.
-
-It is strongly recommended to also always upgrade the underlying MediaWiki software to supported versions (see the [version lifecycle](https://www.mediawiki.org/wiki/Version_lifecycle) for further information).
-
-HHVM 3.3.0 to 3.30.0 was only supported in varying versions from SMW 2.1.x to 3.0.x but since HHVM is no longer tested functionality can no longer be validated and assured.
-
 ## Database compatibility
 
 ### SQL support
@@ -117,6 +133,12 @@ HHVM 3.3.0 to 3.30.0 was only supported in varying versions from SMW 2.1.x to 3.
 		<th>MySQL</th>
 		<th>SQLite</th>
 		<th>PostgreSQL</th>
+	</tr>
+	<tr>
+		<th>4.x</th>
+		<td>Full support (5.5.8+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.5.0+)</td>
 	</tr>
 	<tr>
 		<th>3.2.x</th>

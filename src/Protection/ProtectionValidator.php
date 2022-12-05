@@ -216,7 +216,7 @@ class ProtectionValidator {
 
 		$key = md5( $title->getDBKey() . "#" . $user->getName() );
 
-		// `WikiPage::getCreator` -> `Title::getFirstRevision` isn't cached therefore
+		// `WikiPage::getCreator` -> `RevisionLookup::getFirstRevision` isn't cached therefore
 		// avoid repeated requests for the `key` combination
 		if ( isset( $this->importPerformerProtectionLookupCache[$key] ) ) {
 			return $this->importPerformerProtectionLookupCache[$key];

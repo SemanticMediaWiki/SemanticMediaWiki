@@ -112,7 +112,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"P1111\\/1\",\"Gender\",\"1\"]" }
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"Category:P1111\\/1\",\"Gender\",\"1\"]" }
 					]
 				}
 			}
@@ -151,7 +151,7 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"P1111\\/2\",\"Gender\",\"Number\"]" }
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"Category:P1111\\/2\",\"Gender\",\"Number\"]" }
 					]
 				}
 			}
@@ -190,8 +190,8 @@
 						"_ERR_TYPE"
 					],
 					"propertyValues": [
-						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"P1111\\/2\",\"Gender\",\"Number\"]" },
-						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"P1111\\/1\",\"Gender\",\"1\"]" }
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-wrong-type\",\"Category:P1111\\/2\",\"Gender\",\"Number\"]" },
+						{ "serialization": "[2,\"smw-constraint-violation-class-shape-constraint-invalid-max-cardinality\",\"Category:P1111\\/1\",\"Gender\",\"1\"]" }
 					]
 				}
 			}

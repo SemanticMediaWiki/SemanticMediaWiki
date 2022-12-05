@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use Title;
 
 /**
@@ -16,7 +16,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateTest extends MwDBaseUnitTestCase {
+class LinksUpdateTest extends DatabaseTestCase {
 
 	protected $destroyDatabaseTablesBeforeRun = true;
 
@@ -113,7 +113,7 @@ class LinksUpdateTest extends MwDBaseUnitTestCase {
 		);
 
 		/**
-		 * See #347 and LinksUpdateConstructed
+		 * See #347 and LinksUpdateComplete
 		 */
 		$linksUpdate = new \LinksUpdate( $this->title, new \ParserOutput() );
 		$linksUpdate->doUpdate();

@@ -146,5 +146,6 @@
 	"smw-sp-searchbyproperty-description": "මෙම පිටුව [https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces browsing interface] නාමික අගය හා හිමිකම් පැහැදිලි කිරීම් සෙවුම් සදහා විස්තර ලබා දේ.\nතවත් පවතින අතුරුමුහුණත් සෙවුම් ඇතුළත් කරනවා [[Special:PageProperty|page property search]], සහ [[Special:Ask|ask query builder]].",
 	"smw-sp-searchbyproperty-resultlist-header": "ප්‍රතිපල ලැයිස්තුව",
 	"smw-sp-searchbyproperty-nonvaluequery": "\"$1\" සදහා ඇති වටිනාකම් ලැයිස්තුව පවරන ලදී.",
-	"smw-sp-searchbyproperty-valuequery": "\"$2\"ක අගයේ \"$1\" හිමිකම් ඇති පිටු ලැයිස්තුව විස්තර කරන ලදී."
+	"smw-sp-searchbyproperty-valuequery": "\"$2\"ක අගයේ \"$1\" හිමිකම් ඇති පිටු ලැයිස්තුව විස්තර කරන ලදී.",
+	"smw-listingcontinuesabbrev": "ඉතිරිය."
 }

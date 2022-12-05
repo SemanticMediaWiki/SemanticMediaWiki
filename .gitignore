@@ -1,5 +1,15 @@
+# -*- mode: gitignore; -*-
+!.*
+
 *~
+\#*\#
 *.kate-swp
+.\#*
+
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
 
 vendor/
 extensions/
@@ -9,7 +19,13 @@ build/release/build-*
 composer.phar
 composer.lock
 
-!.*
 .idea/
 .smw.json
 .phpunit.result.cache
+src/Tesa/.phpunit.result.cache
+
+composer
+installer
+.envrc
+conf
+expected

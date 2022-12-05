@@ -62,5 +62,6 @@
 	"smw-livepreview-loading": "撈緊...",
 	"log-name-smw": "語意MediaWiki日誌",
 	"smw-datavalue-time-invalid-date-components-common": "“$1”包含一啲無法解釋嘅信息。",
-	"smw-datavalue-external-formatter-invalid-uri": "“$1”係無效連結。"
+	"smw-datavalue-external-formatter-invalid-uri": "“$1”係無效連結。",
+	"smw-listingcontinuesabbrev": "續"
 }

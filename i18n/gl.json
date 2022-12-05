@@ -676,7 +676,6 @@
 	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\".",
 	"smw-property-preferred-title-format": "$1 ($2)",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\".",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Copiar ligazón no portapapeis",
 	"smw-property-userdefined-fixedtable": "\"$1\" estaba configurada como [https://www.semantic-mediawiki.org/wiki/Fixed_properties propiedade fixa] e calquera modificación da [https://www.semantic-mediawiki.org/wiki/Type_declaration declaración do seu tipo] precisa executar <code>setupStore.php</code> ou completar a tarefa especial [[Special:SemanticMediaWiki|\"Instalación e actualización da base de datos\"]].",
 	"smw-data-lookup": "Obtendo datos...",
@@ -779,5 +778,6 @@
 	"smw-ask-tab-result": "Resultado",
 	"smw-ask-tab-extra": "Extras",
 	"smw-ask-tab-debug": "Depuración",
-	"smw-ask-tab-code": "Código"
+	"smw-ask-tab-code": "Código",
+	"smw-listingcontinuesabbrev": "cont."
 }

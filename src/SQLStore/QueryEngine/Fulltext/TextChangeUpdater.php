@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Database;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
@@ -67,7 +67,7 @@ class TextChangeUpdater {
 	}
 
 	/**
-	 * @note See comments in the DefaultSettings.php on the smwgFulltextDeferredUpdate setting
+	 * @note See comments in the includes/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
 	 *
 	 * @since 2.5
 	 *

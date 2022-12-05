@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\TestEnvironment;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -16,7 +16,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class RebuildElasticMissingDocumentsTest extends MwDBaseUnitTestCase {
+class RebuildElasticMissingDocumentsTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

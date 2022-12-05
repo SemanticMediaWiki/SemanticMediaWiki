@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
 use SMW\Localizer;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use Title;
 
 /**
@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
+class FileUploadIntegrationTest extends DatabaseTestCase {
 
 	private $mwHooksHandler;
 	private $fixturesFileProvider;
@@ -63,8 +63,8 @@ class FileUploadIntegrationTest extends MwDBaseUnitTestCase {
 		);
 
 		$this->mwHooksHandler->register(
-			'LinksUpdateConstructed',
-			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateConstructed' )
+			'LinksUpdateComplete',
+			$this->mwHooksHandler->getHookRegistry()->getHandlerFor( 'LinksUpdateComplete' )
 		);
 
 		$this->getStore()->setup( false );

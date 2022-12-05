@@ -40,5 +40,6 @@
 	"smw_parseerror": "Vlera e dhënë nuk është kuptuar.",
 	"smw_notitle": "\"$1\" nuk mund të përdoret si një emër faqe në këtë wiki.",
 	"smw_wrong_namespace": "Vetëm faqet në hapësirën \"$1\" lejohen këtu.",
-	"smw_unknowntype": "Lloj i pasuportuar \"$1\" të përcaktuara për pronën."
+	"smw_unknowntype": "Lloj i pasuportuar \"$1\" të përcaktuara për pronën.",
+	"smw-listingcontinuesabbrev": "vazh."
 }

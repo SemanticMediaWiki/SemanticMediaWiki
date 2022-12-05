@@ -5,7 +5,7 @@ namespace SMW\Factbox;
 use SMW\EntityCache;
 use OutputPage;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Parser\InTextAnnotationParser;
 use Title;
 use Psr\Log\LoggerAwareTrait;

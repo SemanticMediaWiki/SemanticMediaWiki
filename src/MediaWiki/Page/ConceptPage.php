@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -87,10 +87,9 @@ class ConceptPage extends Page {
 		}
 
 		// Make navigation point to the result list.
-		$this->mTitle->setFragment( '#smw-result' );
+		$this->getTitle()->setFragment( '#smw-result' );
 		$isRTL = $context->getLanguage()->isRTL();
 
-		$titleText = htmlspecialchars( $this->mTitle->getText() );
 		$resultCount = count( $diWikiPages );
 
 		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
@@ -112,7 +111,8 @@ class ConceptPage extends Page {
 				[
 					'class' => 'clearfix'
 				],
-				Pager::pagination( $this->mTitle, $limit, $offset, $resultCount, $query + [ '_target' => '#smw-result' ] )
+				Pager::pagination( $this->getTitle(), $limit, $offset, $resultCount,
+					$query + [ '_target'	=> '#smw-result' ] )
 			) . Html::rawElement(
 				'div',
 				[
@@ -130,7 +130,7 @@ class ConceptPage extends Page {
 			$isRTL
 		);
 
-		if ( $this->mTitle->exists() ) {
+		if ( $this->getTitle()->exists() ) {
 
 			$listBuilder = new ListBuilder(
 				$store

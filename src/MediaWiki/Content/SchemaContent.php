@@ -8,7 +8,7 @@ use SMW\Exception\JSONParseException;
 use SMW\Schema\Schema;
 use SMW\ParserData;
 use SMW\Message;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use JsonContent;

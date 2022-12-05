@@ -5,7 +5,7 @@ namespace SMW\Elastic\Connection;
 use Elasticsearch\ClientBuilder;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
 use Psr\Log\LoggerAwareTrait;
@@ -72,14 +72,16 @@ class ConnectionProvider implements IConnectionProvider {
 			'hosts' => $endpoints,
 			'retries' => $this->config->dotGet( 'connection.retries', 1 ),
 
-			'client' => [
+			'connectionParams' => [
+				'client' => [
 
-				// controls the request timeout
-				'timeout' => $this->config->dotGet( 'connection.timeout', 30 ),
+					// controls the request timeout
+					'timeout' => $this->config->dotGet( 'connection.timeout', 30 ),
 
-				// controls the original connection timeout duration
-				'connect_timeout' => $this->config->dotGet( 'connection.connect_timeout', 30 )
-			]
+					// controls the original connection timeout duration
+					'connect_timeout' => $this->config->dotGet( 'connection.connect_timeout', 30 )
+				]
+			],
 
 			// Use `singleHandler` if you know you will never need async capabilities,
 			// since it will save a small amount of overhead by reducing indirection

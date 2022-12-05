@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
 use Title;
@@ -21,7 +21,7 @@ use Title;
  *
  * @author mwjames
  */
-class RedirectTargetFinderIntegrationTest extends MwDBaseUnitTestCase {
+class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 
 	use PHPUnitCompat;
 

@@ -4,7 +4,7 @@ use ParamProcessor\Options;
 use ParamProcessor\ParamDefinition;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\Processor;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Deferred;
 use SMW\Query\PrintRequest;
@@ -385,7 +385,7 @@ class SMWQueryProcessor implements QueryContext {
 	 * @param string $format
 	 * @param $context
 	 *
-	 * @return SMWResultPrinter
+	 * @return ResultPrinter
 	 * @throws ResultFormatNotFoundException
 	 */
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
@@ -400,7 +400,7 @@ class SMWQueryProcessor implements QueryContext {
 		$formatClass = $smwgResultFormats[$format];
 
 		/**
-		 * @var SMWResultPrinter $printer
+		 * @var ResultPrinter $printer
 		 */
 		$printer = new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
 

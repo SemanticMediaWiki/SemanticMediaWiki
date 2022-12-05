@@ -1,6 +1,6 @@
 <?php
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\AbstractMultiValue;
 use SMW\DIProperty;

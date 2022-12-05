@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\MediaWiki\Job;
-use LinkCache;
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
+use SMW\MediaWiki\Job;
 use Title;
 
 /**
@@ -82,7 +82,7 @@ class UpdateJob extends Job {
 			return true;
 		}
 
-		LinkCache::singleton()->clear();
+		MediaWikiServices::getInstance()->getLinkCache()->clear();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 

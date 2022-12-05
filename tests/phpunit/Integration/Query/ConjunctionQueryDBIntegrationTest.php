@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -28,7 +28,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class ConjunctionQueryDBIntegrationTest extends MwDBaseUnitTestCase {
+class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;

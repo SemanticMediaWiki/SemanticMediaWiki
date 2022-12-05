@@ -22,10 +22,10 @@ class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit_Framework_TestCa
 	 */
 	public function testCheckPredefinedPropertyDesriptionKey( $key ) {
 
-		$contents = json_decode(
-			file_get_contents( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] . '/en.json' ),
-			true
-		);
+		$i18nDir = !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
+				 ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']
+				 : $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'][0];
+		$contents = json_decode( file_get_contents( $i18nDir . '/en.json' ), true );
 
 		$msgKey = self::MSG_KEY_PREFIX . (
 			str_replace( '_', '-', strtolower( $key ) )

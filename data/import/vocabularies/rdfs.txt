@@ -1,0 +1,35 @@
+http://www.w3.org/TR/rdf-schema/ | [http://www.w3.org/TR/rdf-schema/ RDF Schema]
+ type|Type:Page
+ subClassOf|Category
+ subPropertyOf|Type:Page
+ domain|Type:Page
+ range|Type:Page
+ label|Type:Text
+ comment|Type:Text
+ member|Type:Annotation URI
+ first|Type:Annotation URI
+ rest|Type:Annotation URI
+ seeAlso|Type:Annotation URI
+ isDefinedBy|Type:Annotation URI
+ value|Type:Annotation URI
+ subject|Type:Annotation URI
+ predicate|Type:Annotation URI
+ object|Type:Annotation URI
+
+ Resource|Category
+ Literal|Category
+ langString|Category
+ HTML|Category
+ XMLLiteral|Category
+ Class|Category
+ Property|Category
+ Datatype|Category
+ Statement|Category
+ Bag|Category
+ Seq|Category
+ Alt|Category
+ Container|Category
+ ContainerMembershipProperty|Category
+ List|Category
+
+[[Category:Imported vocabulary]]

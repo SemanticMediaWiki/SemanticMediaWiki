@@ -192,5 +192,6 @@
 	"smw-livepreview-loading": "Đang tải…",
 	"smw-property-tab-usage": "Sử dụng",
 	"smw-concept-tab-list": "Danh sách",
-	"smw-concept-tab-errors": "Lỗi"
+	"smw-concept-tab-errors": "Lỗi",
+	"smw-listingcontinuesabbrev": "(tiếp theo)"
 }

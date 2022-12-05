@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Runners;
 
 use Job;
 use JobQueueGroup;
+use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Connection\TestDatabaseConnectionProvider;
@@ -22,6 +23,7 @@ class JobQueueRunner {
 	protected $type = null;
 	protected $status = [];
 	protected $connectionProvider = null;
+	private $lbFactory;
 
 	/**
 	 * @var TestEnvironment
@@ -37,6 +39,7 @@ class JobQueueRunner {
 	public function __construct( $type = null, ConnectionProvider $connectionProvider = null ) {
 		$this->type = $type;
 		$this->connectionProvider = $connectionProvider;
+		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		if ( $this->connectionProvider === null ) {
 			$this->connectionProvider = new TestDatabaseConnectionProvider();
@@ -89,7 +92,7 @@ class JobQueueRunner {
 				break;
 			}
 
-			wfWaitForSlaves();
+			$this->lbFactory->waitForReplication();
 
 			$this->status[] = [
 				'type'   => $job->command,
@@ -134,11 +137,12 @@ class JobQueueRunner {
 	private function pop() {
 		$offset = 0;
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
+		} else {
 			return JobQueueGroup::singleton()->pop();
 		}
-
-		return Job::pop( $offset );
 	}
 
 	/**
@@ -146,11 +150,12 @@ class JobQueueRunner {
 	 */
 	public function pop_type( $type ) {
 
-		if ( class_exists( 'JobQueueGroup' ) ) {
+		if ( method_exists( MediaWikiServices::class, 'getJobQueueGroup' ) ) {
+			// MW 1.37+
+			return MediaWikiServices::getInstance()->getJobQueueGroup()->get( $type )->pop();
+		} else {
 			return JobQueueGroup::singleton()->get( $type )->pop();
 		}
-
-		return Job::pop_type( $type );
 	}
 
 }

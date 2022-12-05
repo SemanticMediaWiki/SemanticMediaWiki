@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Parser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\MediaWiki;
 use SMW\ParserData;
 use SMW\SemanticData;
@@ -135,16 +135,26 @@ class ParserAfterTidy implements HookListener {
 
 		$parserOutput = $this->parser->getOutput();
 
-		if ( $parserOutput->getProperty( 'displaytitle' ) ||
+		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
+			// T301915
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
+		} else {
+			// MW < 1.38
+			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
+		}
+
+		if ( $displayTitle ||
 			$parserOutput->getImages() !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
-			$parserOutput->getCategoryLinks() ) {
+			$parserOutput->getCategories() ) {
 			return true;
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
 			$title->isProtected( 'edit' ) ||
-			$this->parser->getDefaultSort() ) {
+			$parserDefaultSort ) {
 			return true;
 		}
 
@@ -199,7 +209,7 @@ class ParserAfterTidy implements HookListener {
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
-			$parserOutput->getCategoryLinks()
+			array_keys( $parserOutput->getCategories() )
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
@@ -216,15 +226,25 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
+		if ( method_exists( $parserOutput, 'getPageProperty') ) {
+			// T301915
+			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
+		} else {
+			// MW < 1.38
+			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
+			$parserDefaultSort = $this->parser->getDefaultSort();
+		}
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
-			$parserOutput->getProperty( 'displaytitle' ),
-			$this->parser->getDefaultSort()
+			$displayTitle,
+			$parserDefaultSort
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newSortKeyPropertyAnnotator(
 			$propertyAnnotator,
-			$this->parser->getDefaultSort()
+			$parserDefaultSort
 		);
 
 		// #2300
@@ -246,7 +266,7 @@ class ParserAfterTidy implements HookListener {
 
 	/**
 	 * @note Article purge: In case an article was manually purged/moved
-	 * the store is updated as well; for all other cases LinksUpdateConstructed
+	 * the store is updated as well; for all other cases LinksUpdateComplete
 	 * will handle the store update
 	 *
 	 * @note The purge action is isolated from any other request therefore using

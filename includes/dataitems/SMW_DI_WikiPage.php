@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\Json\JsonUnserializer;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\Exception\DataItemException;
 use SMWDataItem;
@@ -335,4 +336,40 @@ class DIWikiPage extends SMWDataItem {
 
 		return $di->getSerialization() === $this->getSerialization();
 	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize() {
+		$json = parent::jsonSerialize();
+		$json['sortkey'] = $this->sortkey;
+		$json['contextReference'] = $this->contextReference;
+		$json['pageLanguage'] = $this->pageLanguage;
+		$json['id'] = $this->id;
+		return $json;
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = parent::newFromJsonArray( $unserializer, $json );
+		$obj->sortkey = $json['sortkey'];
+		$obj->contextReference = $json['contextReference'];
+		$obj->pageLanguage = $json['pageLanguage'];
+		$obj->id = $json['id'];
+		return $obj;
+	}
+
 }

@@ -4,11 +4,11 @@ namespace SMW\Property\DeclarationExaminer;
 
 use SMW\DIProperty;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
+use SMW\DataValues\TypesValue;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\PropertyRegistry;
 use SMW\Message;
-use SMWTypesValue;
 
 /**
  * @license GNU GPL v2+
@@ -76,7 +76,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 			$messages[] = [
 				'smw-property-predefined-default',
 				$propertyName,
-				SMWTypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText()
+				TypesValue::newFromTypeId( $property->findPropertyValueType() )->getLongHTMLText()
 			];
 		}
 

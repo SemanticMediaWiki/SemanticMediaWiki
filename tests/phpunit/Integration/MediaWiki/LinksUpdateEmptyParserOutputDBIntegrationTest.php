@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use LinksUpdate;
 use ParserOutput;
 use SMW\DIWikiPage;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 
@@ -22,7 +22,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateEmptyParserOutputDBIntegrationTest extends MwDBaseUnitTestCase {
+class LinksUpdateEmptyParserOutputDBIntegrationTest extends DatabaseTestCase {
 
 	public function testDoUpdate() {
 
@@ -33,7 +33,7 @@ class LinksUpdateEmptyParserOutputDBIntegrationTest extends MwDBaseUnitTestCase 
 
 		$pageCreator
 			->createPage( $title )
-			->doEdit( '[[Has some property::LinksUpdateConstructedOnEmptyParserOutput]]' );
+			->doEdit( '[[Has some property::LinksUpdateCompleteOnEmptyParserOutput]]' );
 
 		$propertiesCountBeforeUpdate = count( $this->getStore()->getSemanticData( $subject )->getProperties() );
 

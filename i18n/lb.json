@@ -273,6 +273,7 @@
 	"smw-admin-idlookup-input": "Sichen:",
 	"smw-admin-objectid": "ID:",
 	"smw-admin-tab-general": "Iwwersiicht",
+	"smw-admin-tab-maintenance": "Maintenance",
 	"smw-admin-tab-alerts": "Warnungen",
 	"smw-admin-alerts-tab-maintenancealerts": "Maintenance-Warnungen",
 	"smw-admin-deprecation-notice-section": "Semantic MediaWiki",
@@ -312,12 +313,11 @@
 	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-parser-invalid-json-format": "Den JSON-Parser huet mat engem \"$1\" geäntwert.",
 	"smw-property-preferred-title-format": "$1 ($2)",
-	"smw-parse": "$1",
 	"smw-clipboard-copy-link": "Link an den Tëschespäicher kopéieren",
 	"smw-data-lookup": "Donnéeën ofruffen...",
 	"smw-data-lookup-with-wait": "D'Ufro gëtt verschafft an et kann een Ament daueren.",
 	"smw-no-data-available": "Keng Donnéeën disponibel.",
-	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic Mediawiki)",
+	"smw-edit-protection-enabled": "Gespaart fir z'änneren (Semantic MediaWiki)",
 	"smw-format-datatable-emptytable": "An der Tabell si keng Donnéeën disponibel",
 	"smw-format-datatable-infothousands": ",",
 	"smw-format-datatable-lengthmenu": "Weis_MENU_Elementer",
@@ -371,5 +371,6 @@
 	"smw-entity-examiner-deferred-constraint-error": "Limitatioun",
 	"smw-entity-examiner-associated-revision-mismatch": "Versioun",
 	"smw-entity-examiner-deferred-fake": "Fälschung",
-	"smw-indicator-revision-mismatch": "Revisioun"
+	"smw-indicator-revision-mismatch": "Revisioun",
+	"smw-listingcontinuesabbrev": "(Fortsetzung)"
 }

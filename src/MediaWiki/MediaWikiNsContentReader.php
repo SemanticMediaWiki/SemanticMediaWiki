@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use Revision;
+use MediaWiki\Revision\RevisionStore;
+use MediaWiki\Revision\SlotRecord;
 use Title;
 
 /**
@@ -32,7 +33,7 @@ class MediaWikiNsContentReader {
 	 *
 	 * @param string $name
 	 *
-	 * @return string
+	 * @return string|false
 	 */
 	public function read( $name ) {
 
@@ -57,21 +58,15 @@ class MediaWikiNsContentReader {
 			return '';
 		}
 
-		$revision = $this->revisionGuard->newRevisionFromTitle( $title, false, Revision::READ_LATEST );
+		$revision = $this->revisionGuard->newRevisionFromTitle(
+			$title, false, RevisionStore::READ_LATEST
+		);
 
 		if ( $revision === null ) {
 			return '';
 		}
 
-		if ( class_exists( 'WikitextContent' ) ) {
-			return $revision->getContent()->getNativeData();
-		}
-
-		if ( method_exists( $revision, 'getContent' ) ) {
-			return $revision->getContent( Revision::RAW );
-		}
-
-		return $revision->getRawText();
+		return $revision->getContent( SlotRecord::MAIN )->getText();
 	}
 
 }

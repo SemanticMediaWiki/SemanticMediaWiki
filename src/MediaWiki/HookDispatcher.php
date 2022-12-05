@@ -90,7 +90,7 @@ class HookDispatcher {
 	public function onSettingsBeforeInitializationComplete( array &$configuration ) {
 
 		// Deprecated since 3.1
-		\Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
+		Hooks::run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
 
 
 		Hooks::run( 'SMW::Settings::BeforeInitializationComplete', [ &$configuration ] );

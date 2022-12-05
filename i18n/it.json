@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Alexmar983",
 			"Beta16",
 			"Candalua",
@@ -17,6 +18,7 @@
 			"Gmelfi",
 			"Kaspo",
 			"Lorelai87",
+			"Lucamauri",
 			"Macofe",
 			"Matteocng",
 			"McDutchie",
@@ -121,7 +123,7 @@
 	"smw_noboolean": "“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).",
 	"smw_true_words": "vero,v,si,s,true,t,yes,y",
 	"smw_false_words": "falso,f,no,n,false",
-	"smw_nofloat": "“$1” non &egrave; un numero.",
+	"smw_nofloat": "“$1” non è un numero.",
 	"smw_infinite": "I numeri grandi come \"$1\" non sono supportati.",
 	"smw_novalues": "Nessun valore specificato",
 	"smw_nodatetime": "Non &egrave; stato possibile comprendere la data “$1”.",
@@ -168,7 +170,7 @@
 	"concepts": "Concetti",
 	"smw-special-concept-header": "Elenco di concetti",
 	"smw-special-concept-empty": "Nessun concetto trovato.",
-	"unusedproperties": "Propietà non utilizzate",
+	"unusedproperties": "Proprietà non utilizzate",
 	"smw-unusedproperties-docu": "Questa pagina elenca le [https://www.semantic-mediawiki.org/wiki/Unused_properties proprietà inutilizzate] che esistono nonostante nessun'altra pagina ne faccia uso. Per una vista differenziale, vedi le pagine speciali [[Special:Properties|intere]] o [[Special:WantedProperties|proprietà richieste]].",
 	"smw-unusedproperty-template": "$1 di tipo $2",
 	"wantedproperties": "Proprietà senza descrizione",
@@ -244,7 +246,7 @@
 	"smw_browse_no_incoming": "Nessuna proprietà ha collegamenti verso questa pagina.",
 	"smw-browse-show-group": "Mostra gruppi",
 	"smw-browse-hide-group": "Nascondi gruppi",
-	"smw-noscript": "La pagina o l'azione richiede Javascript per funzionare, per favore installa Javascript sul tuo browser o utilizza un browser dove è supportato così che la funzionalità possa essere utilizzata e sia a disposizione come richiesto. Per ulteriore assistenza, per favore dai un'occhiata alla pagina di supporto [https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript].",
+	"smw-noscript": "La pagina o l'azione richiede JavaScript per funzionare, per favore installa JavaScript sul tuo browser o utilizza un browser dove è supportato così che la funzionalità possa essere utilizzata e sia a disposizione come richiesto. Per ulteriore assistenza, per favore dai un'occhiata alla pagina di supporto [https://www.semantic-mediawiki.org/wiki/Help:Noscript noscript].",
 	"smw_inverse_label_default": "$1 di",
 	"smw_inverse_label_property": "Etichetta della proprietà inversa",
 	"pageproperty": "Ricerca proprietà della pagina",
@@ -490,5 +492,6 @@
 	"smw-concept-tab-errors": "Errori",
 	"smw-ask-tab-code": "Codice",
 	"smw-legend": "Legenda",
-	"smw-entity-examiner-associated-revision-mismatch": "Versione"
+	"smw-entity-examiner-associated-revision-mismatch": "Versione",
+	"smw-listingcontinuesabbrev": "cont."
 }

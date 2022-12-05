@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Skin;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 

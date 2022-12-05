@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\Jobs;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Job;
 use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;

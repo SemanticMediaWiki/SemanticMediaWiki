@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Subobject;
-use SMW\Tests\MwDBaseUnitTestCase;
+use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
@@ -28,7 +28,7 @@ use Title;
  *
  * @author mwjames
  */
-class SemanticDataStorageDBIntegrationTest extends MwDBaseUnitTestCase {
+class SemanticDataStorageDBIntegrationTest extends DatabaseTestCase {
 
 	private $applicationFactory;
 	private $mwHooksHandler;
