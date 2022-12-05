@@ -11,6 +11,7 @@ use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
 use Title;
+use WikiPage;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data
@@ -111,7 +112,13 @@ class UpdateJob extends Job {
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		if ( $lastModified !== \WikiPage::factory( $title )->getTimestamp() ) {
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			$currentVersion = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		} else {
+			$currentVersion = WikiPage::factory( $title );
+		}
+
+		if ( $lastModified !== $currentVersion->getTimestamp() ) {
 			return false;
 		}
 

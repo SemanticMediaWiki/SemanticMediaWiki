@@ -2,7 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use Title;
+use TitleArray;
 use WikiFilePage;
 use WikiPage;
 
@@ -46,10 +48,20 @@ class TitleFactory {
 	 *
 	 * @param array $ids
 	 *
-	 * @return Title[]
+	 * @return Title[]|TitleArray
 	 */
 	public function newFromIDs( $ids ) {
-		return Title::newFromIDs( $ids );
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			$store = MediaWikiServices::getInstance()->getPageStore();
+
+			$query = $store->newSelectQueryBuilder()
+				->fields( $store->getSelectFields() )
+				->where( [ 'page_id' => $ids ] );
+
+			return TitleArray::newFromResult( $query->fetchResultSet() );
+		} else {
+			return Title::newFromIDs( $ids );
+		}
 	}
 
 	/**
@@ -74,6 +86,10 @@ class TitleFactory {
 	 * @return WikiPage
 	 */
 	public function createPage( Title $title ) {
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		}
+
 		return WikiPage::factory( $title );
 	}
 

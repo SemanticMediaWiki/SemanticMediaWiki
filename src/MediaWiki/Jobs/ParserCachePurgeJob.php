@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use RequestContext;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -83,6 +84,10 @@ class ParserCachePurgeJob extends Job {
 	}
 
 	protected function newWikiPage( $title ) {
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		}
+
 		return WikiPage::factory( $title );
 	}
 }

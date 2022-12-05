@@ -123,7 +123,12 @@ class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
 
 	protected function assertSemanticDataBeforeContentAlteration() {
 
-		$wikiPage = WikiPage::factory( $this->title );
+        if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+            $wikiPage = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $this->title );
+        } else {
+            $wikiPage = WikiPage::factory( $this->title );
+        }
+
 		$revision = $this->revisionGuard->newRevisionFromPage( $wikiPage );
 
 		$parserData = $this->retrieveAndLoadData();

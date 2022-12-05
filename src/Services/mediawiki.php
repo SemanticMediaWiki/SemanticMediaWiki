@@ -16,6 +16,7 @@ use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\PermissionManager;
 use WikiImporter;
 use RepoGroup;
+use WikiPage;
 
 /**
  * @codeCoverageIgnore
@@ -84,8 +85,12 @@ return [
 	 */
 	'WikiPage' => function( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
-		return \WikiPage::factory( $title );
-	},
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		}
+
+		return WikiPage::factory( $title );
+ },
 
 	/**
 	 * ResourceLoader

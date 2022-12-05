@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
 use SMW\ParserData;
 use SMW\SemanticData;
@@ -100,8 +101,12 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getPage() {
-		return WikiPage::factory( $this->getTitle() );
-	}
+        if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+            return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $this->getTitle() );
+        }
+
+        return WikiPage::factory( $this->getTitle() );
+    }
 
 	protected function makeOutputFromPageRevision() {
 

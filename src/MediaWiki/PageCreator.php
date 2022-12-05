@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use Title;
 use WikiFilePage;
 use WikiPage;
@@ -22,6 +23,10 @@ class PageCreator {
 	 * @return WikiPage
 	 */
 	public function createPage( Title $title ) {
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+		}
+
 		return WikiPage::factory( $title );
 	}
 

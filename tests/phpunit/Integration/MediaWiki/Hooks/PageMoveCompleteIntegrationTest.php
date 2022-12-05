@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -197,6 +198,11 @@ class PageMoveCompleteIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function newRevisionFromTitle( $title ) {
+        if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+            $title = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
+            $this->revisionGuard->newRevisionFromPage( $title );
+        }
+
 		return $this->revisionGuard->newRevisionFromPage( WikiPage::factory( $title ) );
 	}
 }

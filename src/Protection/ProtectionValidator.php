@@ -2,6 +2,7 @@
 
 namespace SMW\Protection;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\Cache\Cache;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -13,6 +14,7 @@ use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use Title;
 use User;
+use WikiPage;
 
 /**
  * Handles protection validation.
@@ -222,7 +224,11 @@ class ProtectionValidator {
 			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
-		$creator = \WikiPage::factory( $title )->getCreator();
+		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
+			$creator = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title )->getCreator();
+		} else {
+			$creator = WikiPage::factory( $title )->getCreator();
+		}
 
 		if ( !$creator instanceof User ) {
 			return $this->importPerformerProtectionLookupCache[$key] = false;
