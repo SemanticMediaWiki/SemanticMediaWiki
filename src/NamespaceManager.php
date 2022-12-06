@@ -64,7 +64,7 @@ class NamespaceManager {
 		}
 
 		Globals::replace( $newVars = array_replace( $newVars, $this->addNamespaceSettings( $vars ) ) );
-		$newVars = array_replace( $newVars, $this->addExtraNamespaceSettings( $vars ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->addExtraNamespaceSettings( $vars ) ) );
 
 		return $newVars;
 	}

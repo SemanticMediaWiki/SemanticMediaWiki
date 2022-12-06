@@ -1,5 +1,6 @@
 <?php
 
+use SMW\Globals;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
 use SMW\Setup;
