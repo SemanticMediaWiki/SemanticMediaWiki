@@ -51,13 +51,11 @@ class GroupPermissions {
 			}
 
 			if ( !isset( $vars['wgGroupPermissions'][$group] ) ) {
-				$newVars['wgGroupPermissions'][$group] = [];
+				$vars['wgGroupPermissions'][$group] = [];
 			}
 
 			$newVars['wgGroupPermissions'][$group] = array_merge( $rights, $vars['wgGroupPermissions'][$group] );
 		}
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}

@@ -60,10 +60,10 @@ class NamespaceManager {
 		$newVars = [];
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
-			$newVars = $this->initCustomNamespace( $vars );
+			Globals::replace( $newVars = $this->initCustomNamespace( $vars ) );
 		}
 
-		$newVars = array_replace( $newVars, $this->addNamespaceSettings( $vars ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->addNamespaceSettings( $vars ) ) );
 		$newVars = array_replace( $newVars, $this->addExtraNamespaceSettings( $vars ) );
 
 		return $newVars;
@@ -94,7 +94,9 @@ class NamespaceManager {
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
 
-		$canonicalNames = self::initCustomNamespace( $GLOBALS )['instance']->getCanonicalNames();
+		$instance_newVars = self::initCustomNamespace( $GLOBALS );
+		Globals::replace( $instance_newVars['newVars'] );
+		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();
 		$namespacesByName = array_flip( $namespaces );
 
 		// https://phabricator.wikimedia.org/T160665
@@ -215,9 +217,7 @@ class NamespaceManager {
 		$newVars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
 		$newVars['wgNamespaceAliases'] = $namespaceAliases + array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
 
-		$newVars = array_replace( $newVars, $instance->addNamespaceSettings( $vars ) );
-
-		Globals::replace( $newVars );
+		Globals::replace( $newVars = array_replace( $newVars, $instance->addNamespaceSettings( $vars ) ) );
 
 		return [
 			'instance' => $instance,
@@ -281,8 +281,6 @@ class NamespaceManager {
 
 		$newVars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 
-		Globals::replace( $newVars );
-
 		return $newVars;
 	}
 
@@ -318,8 +316,6 @@ class NamespaceManager {
 			SMW_NS_PROPERTY => true,
 			SMW_NS_CONCEPT => true
 		];
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}

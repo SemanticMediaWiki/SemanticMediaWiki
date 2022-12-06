@@ -186,8 +186,6 @@ class Hooks {
 			return true;
 		};
 
-		Globals::replace( $newVars );
-
 		return $newVars;
 	}
 
@@ -958,7 +956,9 @@ class Hooks {
 			$settings->filter( ResourceLoaderGetConfigVars::OPTION_KEYS )
 		);
 
-		if ( $resourceLoaderGetConfigVars->process( $vars ) ) {
+		Globals::replace( $newVars = $resourceLoaderGetConfigVars->process( $vars ) );
+
+		if ( $newVars ) {
 			return true;
 		}
 

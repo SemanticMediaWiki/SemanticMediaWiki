@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Globals;
 use SMW\Localizer;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\HookListener;
@@ -78,8 +77,6 @@ class ResourceLoaderGetConfigVars implements HookListener {
 		foreach ( array_keys( $this->getOption( 'smwgResultFormats' ) ) as $format ) {
 			$newVars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}

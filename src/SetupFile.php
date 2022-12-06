@@ -90,8 +90,6 @@ class SetupFile {
 			$newVars[self::SMW_JSON] = $smwJson;
 		}
 
-		Globals::replace( $newVars );
-
 		return $newVars;
 	}
 

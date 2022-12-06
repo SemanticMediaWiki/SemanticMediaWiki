@@ -6,7 +6,7 @@ class Globals {
 
 	/**
 	 * PHP8.1 Compatibility
-	 * @since 4.0
+	 * @internal
 	 * @param array $vars
 	 * @return void
 	 */

@@ -65,7 +65,7 @@ final class Setup {
 			return;
 		}
 
-		$newVars = Hooks::registerExtensionCheck( $vars );
+		Globals::replace( $newVars = Hooks::registerExtensionCheck( $vars ) );
 
 		return $newVars;
 	}
@@ -122,7 +122,7 @@ final class Setup {
 		$newVars = [];
 
 		$setupFile = new SetupFile();
-		$newVars = array_replace( $newVars, $setupFile->loadSchema( $vars ) );
+		Globals::replace( $newVars = array_replace( $newVars, $setupFile->loadSchema( $vars ) ) );
 
 		$setupCheck = new SetupCheck(
 			[
@@ -150,13 +150,13 @@ final class Setup {
 
 		$this->initConnectionProviders();
 		$this->initMessageCallbackHandler();
-		$newVars = array_replace( $newVars, $this->addDefaultConfigurations( $vars, $rootDir ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->addDefaultConfigurations( $vars, $rootDir ) ) );
 
-		$newVars = array_replace( $newVars, $this->registerJobClasses( $vars ) );
-		$newVars = array_replace( $newVars, $this->registerPermissions( $vars ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->registerJobClasses( $vars ) ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->registerPermissions( $vars ) ) );
 
-		$newVars = array_replace( $newVars, $this->registerParamDefinitions( $vars ) );
-		$newVars = array_replace( $newVars, $this->registerFooterIcon( $vars, $rootDir ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->registerParamDefinitions( $vars ) ) );
+		Globals::replace( $newVars = array_replace( $newVars, $this->registerFooterIcon( $vars, $rootDir ) ) );
 		$this->registerHooks( $vars );
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
@@ -201,8 +201,6 @@ final class Setup {
 				'targets' => [ 'desktop', 'mobile' ]
 			];
 		}
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}
@@ -337,8 +335,6 @@ final class Setup {
 			$newVars['wgJobClasses'][$job] = $class;
 		}
 
-		Globals::replace( $newVars );
-
 		return $newVars;
 	}
 
@@ -362,14 +358,12 @@ final class Setup {
 			$this->hookDispatcher
 		);
 
-		$groupPermissions->initPermissions( $vars );
+		Globals::replace( $groupPermissions->initPermissions( $vars ) );
 
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
 			$newVars['wgRestrictionLevels'][] = $editProtectionRight;
 		}
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}
@@ -381,8 +375,6 @@ final class Setup {
 			'definition'=> '\SMW\Query\ResultFormat',
 		];
 
-		Globals::replace( $newVars );
-
 		return $newVars;
 	}
 
@@ -393,11 +385,11 @@ final class Setup {
 		$newVars = [];
 
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
-			return;
+			return [];
 		}
 
 		if ( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
-			return;
+			return [];
 		}
 
 		$newVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
@@ -406,8 +398,6 @@ final class Setup {
 			'alt' => 'Powered by Semantic MediaWiki',
 			'class' => 'smw-footer'
 		];
-
-		Globals::replace( $newVars );
 
 		return $newVars;
 	}
