@@ -138,7 +138,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		$newVars = NamespaceManager::initCustomNamespace( $vars );
+		$newVars = NamespaceManager::initCustomNamespace( $vars )['newVars'];
 
 		$this->assertNotEmpty( $newVars );
 
@@ -155,7 +155,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 
 		$vars = [
 			'wgLanguageCode' => 'fr',
@@ -163,7 +163,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->expectException( '\SMW\Exception\SiteLanguageChangeException' );
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 	}
 
 	public function testInitCustomNamespaceWithDefaultDifferentNamespaceIndex_ThrowsException() {
@@ -173,7 +173,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 
 		$vars = [
 			'wgLanguageCode' => 'en',
@@ -182,7 +182,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 	}
 
 	public function testInitCustomNamespaceWithPresetDifferentNamespaceIndex_ThrowsException() {
@@ -193,7 +193,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 			'smwgNamespaceIndex' => 2000
 		];
 
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 
 		$vars = [
 			'wgLanguageCode' => 'en',
@@ -202,7 +202,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
-		NamespaceManager::initCustomNamespace( $vars );
+		NamespaceManager::initCustomNamespace( $vars )['newVars'];
 	}
 
 	public function testNamespacesInitWithEmptySettings() {
@@ -277,7 +277,7 @@ class NamespaceManagerTest extends \PHPUnit_Framework_TestCase {
 		$newVars = NamespaceManager::initCustomNamespace(
 			$vars,
 			$localLanguage
-		);
+		)['newVars'];
 
 		$this->assertArrayHasKey(
 			'Foo',

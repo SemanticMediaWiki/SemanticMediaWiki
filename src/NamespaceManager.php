@@ -60,7 +60,7 @@ class NamespaceManager {
 		$newVars = [];
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
-			Globals::replace( $newVars = $this->initCustomNamespace( $vars ) );
+			Globals::replace( $newVars = $this->initCustomNamespace( $vars )['newVars'] );
 		}
 
 		Globals::replace( $newVars = array_replace( $newVars, $this->addNamespaceSettings( $vars ) ) );
