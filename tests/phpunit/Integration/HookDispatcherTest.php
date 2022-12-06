@@ -57,15 +57,15 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function( $vars ) {
-			return [ 'Foo' ];
+		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
+			$vars = [ 'Foo' ];
 		} );
 
-		$newVars = $hookDispatcher->onSetupAfterInitializationComplete( $vars );
+		$hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
 		$this->assertEquals(
 			[ 'Foo' ],
-			$newVars
+			$vars
 		);
 	}
 
