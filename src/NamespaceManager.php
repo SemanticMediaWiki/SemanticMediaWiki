@@ -185,7 +185,7 @@ class NamespaceManager {
 
 		$instance = new self( $localLanguage );
 
-		$newVars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
+		$vars['smwgNamespaceIndex'] = $newVars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
 
 		$defaultSettings = [
 			'wgNamespaceAliases',
