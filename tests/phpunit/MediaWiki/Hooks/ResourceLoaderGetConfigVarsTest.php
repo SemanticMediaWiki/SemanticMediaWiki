@@ -48,21 +48,21 @@ class ResourceLoaderGetConfigVarsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setOption( 'smwgNamespacesWithSemanticLinks', [ NS_MAIN ] );
 
-		$newVars = $instance->process( $vars );
+		$instance->process( $vars );
 
 		$this->assertArrayHasKey(
 			'smw-config',
-			$newVars
+			$vars
 		);
 
 		$this->assertArrayHasKey(
 			'namespaces',
-			$newVars['smw-config']
+			$vars['smw-config']
 		);
 
 		$this->assertArrayHasKey(
 			'settings',
-			$newVars['smw-config']
+			$vars['smw-config']
 		);
 	}
 

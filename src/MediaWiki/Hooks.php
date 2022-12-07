@@ -21,7 +21,6 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
 use SkinTemplate;
 use SMW\DataTypeRegistry;
-use SMW\Globals;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\SectionTag;
@@ -160,14 +159,11 @@ class Hooks {
 	 *
 	 * @since 3.1
 	 *
-	 * @param array $vars
-	 *
-	 * @return array $newVars
+	 * @param array &$vars
 	 */
-	public static function registerExtensionCheck( array $vars ) {
-		$newVars = [];
+	public static function registerExtensionCheck( array &$vars ) {
 
-		$newVars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function( $outputPage ) {
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = function( $outputPage ) {
 
 			$beforePageDisplay = new BeforePageDisplay();
 
@@ -185,8 +181,6 @@ class Hooks {
 
 			return true;
 		};
-
-		return $newVars;
 	}
 
 	/**
@@ -232,15 +226,15 @@ class Hooks {
 	/**
 	 * @since 3.0
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
-	public static function registerEarly( array $vars ) {
+	public static function registerEarly( array &$vars ) {
 
 		// Remove the hook registered via `Hook::registerExtensionCheck` given
 		// that at this point we know the extension was loaded and hereby is
 		// available.
 		if ( defined( 'SMW_EXTENSION_LOADED' ) ) {
-			unset( $GLOBALS['wgHooks']['BeforePageDisplay']['smw-extension-check'] );
+			unset( $vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] );
 		}
 	}
 
@@ -943,7 +937,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 */
-	public function onResourceLoaderGetConfigVars( $vars ) {
+	public function onResourceLoaderGetConfigVars( &$vars ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = ApplicationFactory::getInstance()->getSettings();
@@ -956,13 +950,7 @@ class Hooks {
 			$settings->filter( ResourceLoaderGetConfigVars::OPTION_KEYS )
 		);
 
-		Globals::replace( $newVars = $resourceLoaderGetConfigVars->process( $vars ) );
-
-		if ( $newVars ) {
-			return true;
-		}
-
-		return false;
+		return $resourceLoaderGetConfigVars->process( $vars );
 	}
 
 	/**

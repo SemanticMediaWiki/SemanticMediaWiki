@@ -150,10 +150,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$vars = [];
 
-		$newVars = Hooks::registerExtensionCheck( $vars );
+		Hooks::registerExtensionCheck( $vars );
 
 		// BeforePageDisplay
-		$callback = end( $newVars['wgHooks']['BeforePageDisplay'] );
+		$callback = end( $vars['wgHooks']['BeforePageDisplay'] );
 
 		$outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -1024,7 +1024,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $vars ]
+			[ &$vars ]
 		);
 
 		return $handler;

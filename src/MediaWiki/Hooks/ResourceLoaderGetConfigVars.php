@@ -50,12 +50,11 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	 *
 	 * @param array $vars
 	 *
-	 * @return array $newVars
+	 * @return boolean
 	 */
-	public function process( array $vars ) {
-		$newVars = [];
+	public function process( array &$vars ) {
 
-		$newVars['smw-config'] = [
+		$vars['smw-config'] = [
 			'version' => SMW_VERSION,
 			'namespaces' => [],
 			'settings' => [
@@ -69,16 +68,16 @@ class ResourceLoaderGetConfigVars implements HookListener {
 		// Available semantic namespaces
 		foreach ( array_keys( $this->getOption( 'smwgNamespacesWithSemanticLinks' ) ) as $ns ) {
 			$name = $this->namespaceInfo->getCanonicalName( $ns );
-			$newVars['smw-config']['settings']['namespace'][$name] = $ns;
-			$newVars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
-			$newVars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
+			$vars['smw-config']['settings']['namespace'][$name] = $ns;
+			$vars['smw-config']['namespaces']['canonicalName'][$ns] = $name;
+			$vars['smw-config']['namespaces']['localizedName'][$ns] = $localizer->getNsText( $ns );
 		}
 
 		foreach ( array_keys( $this->getOption( 'smwgResultFormats' ) ) as $format ) {
-			$newVars['smw-config']['formats'][$format] = htmlspecialchars( $format );
+			$vars['smw-config']['formats'][$format] = htmlspecialchars( $format );
 		}
 
-		return $newVars;
+		return true;
 	}
 
 }

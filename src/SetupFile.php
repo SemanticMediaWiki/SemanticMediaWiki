@@ -73,24 +73,20 @@ class SetupFile {
 			);
 	}
 
-	public function loadSchema( array $vars = [] ): array {
-		$newVars = [];
-
+	public function loadSchema( array &$vars = [] ): void {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
 
 		if ( isset( $vars[self::SMW_JSON] ) ) {
-			return [];
+			return;
 		}
 
 		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
 
 		if ( $smwJson !== null ) {
-			$newVars[self::SMW_JSON] = $smwJson;
+			$vars[self::SMW_JSON] = $smwJson;
 		}
-
-		return $newVars;
 	}
 
 	public static function isGoodSchema( bool $isCli = false ): bool {

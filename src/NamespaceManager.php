@@ -54,19 +54,20 @@ class NamespaceManager {
 	 *
 	 * @param $vars
 	 *
-	 * @return $newVars
+	 * @return $vars
 	 */
 	public function init( $vars ) {
-		$newVars = [];
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
-			Globals::replace( $newVars = $this->initCustomNamespace( $vars )['newVars'] );
+			$newVars = $this->initCustomNamespace( $vars )['newVars'];
+			Globals::replace( $newVars );
+			$vars = array_replace( $vars, $newVars );
 		}
 
-		Globals::replace( $newVars = array_replace( $newVars, $this->addNamespaceSettings( $vars ) ) );
-		Globals::replace( $newVars = array_replace( $newVars, $this->addExtraNamespaceSettings( $vars ) ) );
+		$this->addNamespaceSettings( $vars );
+		$this->addExtraNamespaceSettings( $vars );
 
-		return $newVars;
+		return $vars;
 	}
 
 	/**
@@ -181,11 +182,10 @@ class NamespaceManager {
 	 * @return array
 	 */
 	public static function initCustomNamespace( $vars, LocalLanguage $localLanguage = null ) {
-		$newVars = [];
 
 		$instance = new self( $localLanguage );
 
-		$vars['smwgNamespaceIndex'] = $newVars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
+		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );
 
 		$defaultSettings = [
 			'wgNamespaceAliases',
@@ -197,7 +197,7 @@ class NamespaceManager {
 		];
 
 		foreach ( $defaultSettings as $key ) {
-			$newVars[$key] = !isset( $vars[$key] ) ? [] : $vars[$key];
+			$vars[$key] = !isset( $vars[$key] ) ? [] : $vars[$key];
 		}
 
 		foreach ( $instance->buildNamespaceIndex( $vars['smwgNamespaceIndex'] ) as $ns => $index ) {
@@ -213,15 +213,15 @@ class NamespaceManager {
 		$extraNamespaces = $localLanguage->getNamespaces();
 		$namespaceAliases = $localLanguage->getNamespaceAliases();
 
-		$newVars['wgCanonicalNamespaceNames'] += $instance->getCanonicalNames();
-		$newVars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
-		$newVars['wgNamespaceAliases'] = $namespaceAliases + array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
+		$vars['wgCanonicalNamespaceNames'] += $instance->getCanonicalNames();
+		$vars['wgExtraNamespaces'] += $extraNamespaces + $instance->getCanonicalNames();
+		$vars['wgNamespaceAliases'] = $namespaceAliases + array_flip( $extraNamespaces ) + array_flip( $instance->getCanonicalNames() ) + $vars['wgNamespaceAliases'];
 
-		Globals::replace( $newVars = array_replace( $newVars, $instance->addNamespaceSettings( $vars ) ) );
+		$instance->addNamespaceSettings( $vars );
 
 		return [
 			'instance' => $instance,
-			'newVars' => $newVars
+			'newVars' => $vars
 		];
 	}
 
@@ -256,8 +256,7 @@ class NamespaceManager {
 		throw new SiteLanguageChangeException( self::$initLanguageCode, $vars['wgLanguageCode'] );
 	}
 
-	private function addNamespaceSettings( $vars ) {
-		$newVars = [];
+	private function addNamespaceSettings( &$vars ) {
 
 		/**
 		 * Default settings for the SMW specific NS which can only
@@ -274,25 +273,22 @@ class NamespaceManager {
 
 		// Combine default values with values specified in other places
 		// (LocalSettings etc.)
-		$newVars['smwgNamespacesWithSemanticLinks'] = array_replace(
+		$vars['smwgNamespacesWithSemanticLinks'] = array_replace(
 			$smwNamespacesSettings,
 			$vars['smwgNamespacesWithSemanticLinks']
 		);
 
-		$newVars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
-
-		return $newVars;
+		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 	}
 
-	private function addExtraNamespaceSettings( $vars ) {
-		$newVars = [];
+	private function addExtraNamespaceSettings( &$vars ) {
 
 		/**
 		 * Indicating which namespaces allow sub-pages
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesWithSubpages
 		 */
-		$newVars['wgNamespacesWithSubpages'] = $vars['wgNamespacesWithSubpages'] + [
+		$vars['wgNamespacesWithSubpages'] = $vars['wgNamespacesWithSubpages'] + [
 			SMW_NS_PROPERTY_TALK => true,
 			SMW_NS_CONCEPT_TALK => true,
 		];
@@ -302,7 +298,7 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
 		 */
-		$newVars['wgContentNamespaces'] = $vars['wgContentNamespaces'] + [
+		$vars['wgContentNamespaces'] = $vars['wgContentNamespaces'] + [
 			SMW_NS_PROPERTY,
 			SMW_NS_CONCEPT
 		];
@@ -312,12 +308,10 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgNamespacesToBeSearchedDefault
 		 */
-		$newVars['wgNamespacesToBeSearchedDefault'] = $vars['wgNamespacesToBeSearchedDefault'] + [
+		$vars['wgNamespacesToBeSearchedDefault'] = $vars['wgNamespacesToBeSearchedDefault'] + [
 			SMW_NS_PROPERTY => true,
 			SMW_NS_CONCEPT => true
 		];
-
-		return $newVars;
 	}
 
 	protected function isDefinedConstant( $constant ) {

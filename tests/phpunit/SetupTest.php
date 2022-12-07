@@ -84,22 +84,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'smwgIgnoreExtensionRegistrationCheck' => true
 		];
 
-		$newVars = Setup::registerExtensionCheck( $vars );
+		Setup::registerExtensionCheck( $vars );
 
 		$this->assertCount(
 			1,
-			$newVars
+			$vars
 		);
 
 		$vars = [
 			'smwgIgnoreExtensionRegistrationCheck' => false
 		];
 
-		$newVars = Setup::registerExtensionCheck( $vars );
+		Setup::registerExtensionCheck( $vars );
 
 		$this->assertCount(
 			2,
-			$newVars
+			$vars
 		);
 	}
 

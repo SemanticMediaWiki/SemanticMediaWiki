@@ -43,11 +43,8 @@ final class Setup {
 	 * @since 3.1
 	 *
 	 * @param array $vars
-	 *
-	 * @return array $newVars
 	 */
-	public static function registerExtensionCheck( $vars ) {
-		$newVars = [];
+	public static function registerExtensionCheck( &$vars ) {
 
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
 			SetupCheck::newFromDefaults()
@@ -65,9 +62,7 @@ final class Setup {
 			return;
 		}
 
-		Globals::replace( $newVars = Hooks::registerExtensionCheck( $vars ) );
-
-		return $newVars;
+		Hooks::registerExtensionCheck( $vars );
 	}
 
 	/**
@@ -75,7 +70,7 @@ final class Setup {
 	 *
 	 * @param array $vars
 	 */
-	public static function releaseExtensionCheck( $vars ) {
+	public static function releaseExtensionCheck( &$vars ) {
 
 		// Restore the exception handler from before Setup::registerExtensionCheck
 		// and before MediaWiki setup has added its own in `Setup.php` after
@@ -94,6 +89,8 @@ final class Setup {
 	 */
 	public static function initExtension( $vars ) {
 		Hooks::registerEarly( $vars );
+
+		return $vars;
 	}
 
 	/**
@@ -116,13 +113,12 @@ final class Setup {
 	 * @param array $vars
 	 * @param string $rootDir
 	 *
-	 * @return array $newVars
+	 * @return array $vars
 	 */
 	public function init( $vars, $rootDir ) {
-		$newVars = [];
 
 		$setupFile = new SetupFile();
-		Globals::replace( $newVars = array_replace( $newVars, $setupFile->loadSchema( $vars ) ) );
+		$setupFile->loadSchema( $vars );
 
 		$setupCheck = new SetupCheck(
 			[
@@ -150,22 +146,21 @@ final class Setup {
 
 		$this->initConnectionProviders();
 		$this->initMessageCallbackHandler();
-		Globals::replace( $newVars = array_replace( $newVars, $this->addDefaultConfigurations( $vars, $rootDir ) ) );
+		$this->addDefaultConfigurations( $vars, $rootDir );
 
-		Globals::replace( $newVars = array_replace( $newVars, $this->registerJobClasses( $vars ) ) );
-		Globals::replace( $newVars = array_replace( $newVars, $this->registerPermissions( $vars ) ) );
+		$this->registerJobClasses( $vars );
+		$this->registerPermissions( $vars );
 
-		Globals::replace( $newVars = array_replace( $newVars, $this->registerParamDefinitions( $vars ) ) );
-		Globals::replace( $newVars = array_replace( $newVars, $this->registerFooterIcon( $vars, $rootDir ) ) );
+		$this->registerParamDefinitions( $vars );
+		$this->registerFooterIcon( $vars, $rootDir );
 		$this->registerHooks( $vars );
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
-		return $newVars;
+		return $vars;
 	}
 
-	private function addDefaultConfigurations( $vars, $rootDir ) {
-		$newVars = [];
+	private function addDefaultConfigurations( &$vars, $rootDir ) {
 
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
@@ -174,19 +169,19 @@ final class Setup {
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
-		$newVars['wgLogTypes'][] = 'smw';
-		$newVars['wgFilterLogTypes']['smw'] = true;
+		$vars['wgLogTypes'][] = 'smw';
+		$vars['wgFilterLogTypes']['smw'] = true;
 
-		$newVars['smwgMasterStore'] = null;
-		$newVars['smwgIQRunningNumber'] = 0;
+		$vars['smwgMasterStore'] = null;
+		$vars['smwgIQRunningNumber'] = 0;
 
 		if ( !isset( $vars['smwgNamespace'] ) ) {
-			$newVars['smwgNamespace'] = parse_url( $vars['wgServer'], PHP_URL_HOST );
+			$vars['smwgNamespace'] = parse_url( $vars['wgServer'], PHP_URL_HOST );
 		}
 
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
-				$newVars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
+				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
 			}
 		}
 
@@ -196,13 +191,11 @@ final class Setup {
 		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
 		// starting with the next supported LTS (likely MW 1.35)
 		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
-			$newVars['wgResourceModules']['mediawiki.api.parse'] = [
+			$vars['wgResourceModules']['mediawiki.api.parse'] = [
 				'dependencies' => 'mediawiki.api',
 				'targets' => [ 'desktop', 'mobile' ]
 			];
 		}
-
-		return $newVars;
 	}
 
 	private function initConnectionProviders() {
@@ -294,8 +287,7 @@ final class Setup {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
 	 */
-	private function registerJobClasses( $vars ) {
-		$newVars = [];
+	private function registerJobClasses( &$vars ) {
 
 		$jobClasses = [
 
@@ -332,18 +324,15 @@ final class Setup {
 		];
 
 		foreach ( $jobClasses as $job => $class ) {
-			$newVars['wgJobClasses'][$job] = $class;
+			$vars['wgJobClasses'][$job] = $class;
 		}
-
-		return $newVars;
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
 	 */
-	private function registerPermissions( $vars ) {
-		$newVars = [];
+	private function registerPermissions( &$vars ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
@@ -358,48 +347,38 @@ final class Setup {
 			$this->hookDispatcher
 		);
 
-		Globals::replace( $groupPermissions->initPermissions( $vars ) );
-
+		$groupPermissions->initPermissions( $vars );
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
-			$newVars['wgRestrictionLevels'][] = $editProtectionRight;
+			$vars['wgRestrictionLevels'][] = $editProtectionRight;
 		}
-
-		return $newVars;
 	}
 
-	private function registerParamDefinitions( $vars ) {
-		$newVars = [];
-
-		$newVars['wgParamDefinitions']['smwformat'] = [
+	private function registerParamDefinitions( &$vars ) {
+		$vars['wgParamDefinitions']['smwformat'] = [
 			'definition'=> '\SMW\Query\ResultFormat',
 		];
-
-		return $newVars;
 	}
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
 	 */
-	private function registerFooterIcon( $vars, $path ) {
-		$newVars = [];
+	private function registerFooterIcon( &$vars, $path ) {
 
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
-			return [];
+			return;
 		}
 
 		if ( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
-			return [];
+			return;
 		}
 
-		$newVars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
+		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
 			'src' => Logo::get( 'footer' ),
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
 			'class' => 'smw-footer'
 		];
-
-		return $newVars;
 	}
 
 	/**
@@ -408,7 +387,7 @@ final class Setup {
 	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
 	 */
-	private function registerHooks( $vars ) {
+	private function registerHooks( &$vars ) {
 		$hooks = new Hooks();
 		$hooks->register( $vars );
 	}

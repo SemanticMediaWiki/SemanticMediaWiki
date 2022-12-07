@@ -9,12 +9,12 @@
 ```php
 use Hooks;
 
-Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( $vars ) {
+Hooks::register( 'SMW::Setup::AfterInitializationComplete', function( &$vars ) {
 
 	// #2565
 	// It is suggested to use `SMW::GroupPermissions::BeforeInitializationComplete` for
 	// the following case:
-	unset( $GLOBALS['wgGroupPermissions']['smwcurator'] );
+	unset( $vars['wgGroupPermissions']['smwcurator'] );
 
 	return true;
 } );

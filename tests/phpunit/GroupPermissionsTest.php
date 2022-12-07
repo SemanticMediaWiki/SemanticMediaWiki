@@ -41,26 +41,26 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->initPermissions( $vars );
+		$instance->initPermissions( $vars );
 
 		$this->assertArrayHasKey(
 			'smwadministrator',
-			$newVars['wgGroupPermissions']
+			$vars['wgGroupPermissions']
 		);
 
 		$this->assertArrayHasKey(
 			'smwcurator',
-			$newVars['wgGroupPermissions']
+			$vars['wgGroupPermissions']
 		);
 
 		$this->assertArrayHasKey(
 			'smweditor',
-			$newVars['wgGroupPermissions']
+			$vars['wgGroupPermissions']
 		);
 
 		$this->assertArrayHasKey(
 			'user',
-			$newVars['wgGroupPermissions']
+			$vars['wgGroupPermissions']
 		);
 	}
 
@@ -76,14 +76,14 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->initPermissions( $vars );
+		$instance->initPermissions( $vars );
 
 		$this->assertFalse(
-			$newVars['wgGroupPermissions']['sysop']['smw-admin']
+			$vars['wgGroupPermissions']['sysop']['smw-admin']
 		);
 
 		$this->assertFalse(
-			$newVars['wgGroupPermissions']['smwadministrator']['smw-admin']
+			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 
 	}
