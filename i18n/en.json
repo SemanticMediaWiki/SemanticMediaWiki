@@ -535,6 +535,8 @@
 	"smw-prefs-general-options-disable-search-info": "Disable the syntax support information on the standard search page",
 	"smw-prefs-general-options-suggester-textinput": "Enable input assistance for semantic entities",
 	"smw-prefs-help-general-options-suggester-textinput": "If enabled, allows to use an [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance input assistance] to find properties, concepts, and categorties from an input context.",
+	"smw-prefs-general-options-show-entity-issue-panel": "Show the entity issue panel",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "If enabled, runs integrity checks on each page and shows the [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel Entity issue panel].",
 	"smw-ui-tooltip-title-property": "Property",
 	"smw-ui-tooltip-title-quantity": "Unit conversion",
 	"smw-ui-tooltip-title-info": "Information",

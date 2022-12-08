@@ -90,6 +90,9 @@
 		"UnusedProperties": "SMW\\SpecialUnusedProperties",
 		"WantedProperties": "SMW\\SpecialWantedProperties"
 	},
+	"DefaultUserOptions": {
+		"smw-prefs-general-options-show-entity-issue-panel": true
+	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1
 }

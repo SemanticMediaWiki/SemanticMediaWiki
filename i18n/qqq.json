@@ -551,6 +551,8 @@
 	"smw-prefs-general-options-disable-search-info": "This message describes a user preference option on special page \"Preferences\".",
 	"smw-prefs-general-options-suggester-textinput": "This is the description of a user preference option selectable on special page \"Preferences\".",
 	"smw-prefs-help-general-options-suggester-textinput": "This is an informative message explaining a preference option on special page \"Preferences\". Input context means accessible from respective input fields.",
+	"smw-prefs-general-options-show-entity-issue-panel": "This message describes a user preference option on special page \"Preferences\".",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "This is a message describing a user preference option selectable via special page \"Preferences\". Relates to checks and information shown when viewing a page.",
 	"smw-ui-tooltip-title-property": "A label that is displayed on the info tooltip.\n{{Identical|Property}}",
 	"smw-ui-tooltip-title-quantity": "A label that is displayed on the info tooltip.",
 	"smw-ui-tooltip-title-info": "A label that is displayed on the info tooltip.\n{{Identical|Information}}",
