@@ -52,6 +52,11 @@ class GetPreferences implements HookListener {
 	const DISABLE_SEARCH_INFO = 'smw-prefs-general-options-disable-search-info';
 
 	/**
+	 * Option to disable the entity issue indicator and panel on a wiki page
+	 */
+	const SHOW_ENTITY_ISSUE_PANEL = 'smw-prefs-general-options-show-entity-issue-panel';
+
+	/**
 	 * @var PermissionExaminer
 	 */
 	private $permissionExaminer;
@@ -120,6 +125,13 @@ class GetPreferences implements HookListener {
 			'type' => 'toggle',
 			'label-message' => 'smw-prefs-general-options-suggester-textinput',
 			'help-message' => 'smw-prefs-help-general-options-suggester-textinput',
+			'section' => 'smw/general-options',
+		];
+
+		$preferences[self::SHOW_ENTITY_ISSUE_PANEL] = [
+			'type' => 'toggle',
+			'label-message' => 'smw-prefs-general-options-show-entity-issue-panel',
+			'help-message' => 'smw-prefs-help-general-options-show-entity-issue-panel',
 			'section' => 'smw/general-options',
 		];
 
