@@ -54,7 +54,7 @@ class NamespaceManager {
 	 *
 	 * @param $vars
 	 *
-	 * @return $vars
+	 * @return array $vars
 	 */
 	public function init( $vars ) {
 

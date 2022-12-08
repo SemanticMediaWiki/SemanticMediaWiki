@@ -118,7 +118,9 @@ final class Setup {
 	public function init( $vars, $rootDir ) {
 
 		$setupFile = new SetupFile();
-		$setupFile->loadSchema( $vars );
+		Globals::replace(
+			$setupFile->loadSchema( $vars )
+		);
 
 		$setupCheck = new SetupCheck(
 			[
@@ -348,6 +350,7 @@ final class Setup {
 		);
 
 		$groupPermissions->initPermissions( $vars );
+
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {
 			$vars['wgRestrictionLevels'][] = $editProtectionRight;
