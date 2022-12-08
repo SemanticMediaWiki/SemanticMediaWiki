@@ -154,7 +154,7 @@
 	"smw_smwadmin_datarefresh": "Ponovna izgradnja podatkov",
 	"smw_smwadmin_datarefreshbutton": "Načrtuj ponovno izgradnjo podatkov",
 	"smw_smwadmin_datarefreshstop": "Ustavi to posodobitev",
-	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|prepričan|prepričana}} sem.",
+	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|prepričan|prepričana|prepričan_a}} sem.",
 	"smw-admin-smwhomepage": "Celotna uporabniška dokumentacija za Semantic MediaWiki je na voljo na naslovu <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "Hrošče lahko prijavite na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">sledilniku težav</a>; stran za <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">poročanje o napakah</a> nudi smernice za pisanje učinkovitega poročila o napaki.",
 	"smw-admin-supplementary-elastic-settings-title": "Nastavitve (indeksi)",
