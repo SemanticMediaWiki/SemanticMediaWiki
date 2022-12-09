@@ -107,7 +107,11 @@ class SetupFile {
 			return false;
 		}
 
-		$isGoodSchema = self::makeUpgradeKey( $GLOBALS ) === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
+		$key_newVars = self::makeUpgradeKey( $GLOBALS );
+		Globals::replace(
+			$key_newVars['newVars']
+		);
+		$isGoodSchema = $key_newVars['key'] === $GLOBALS[self::SMW_JSON][$id]['upgrade_key'];
 
 		if (
 			isset( $GLOBALS[self::SMW_JSON][$id][self::MAINTENANCE_MODE] ) &&
@@ -118,8 +122,11 @@ class SetupFile {
 		return $isGoodSchema;
 	}
 
-	public static function makeUpgradeKey( array $vars ): string {
-		return sha1( self::makeKey( $vars ) );
+	public static function makeUpgradeKey( array $vars ): array {
+		return [
+			'key' => sha1( self::makeKey( $vars ) ),
+			'newVars' => $vars
+		];
 	}
 
 	public function inMaintenanceMode( array $vars = [] ): bool {
@@ -268,7 +275,7 @@ class SetupFile {
 
 		$this->write(
 			[
-				self::UPGRADE_KEY => self::makeUpgradeKey( $vars ),
+				self::UPGRADE_KEY => self::makeUpgradeKey( $vars )['key'],
 				self::MAINTENANCE_MODE => $maintenanceMode
 			],
 			$vars
@@ -282,7 +289,7 @@ class SetupFile {
 		}
 
 		// #3563, Use the specific wiki-id as identifier for the instance in use
-		$key = self::makeUpgradeKey( $vars );
+		$key = self::makeUpgradeKey( $vars )['key'];
 		$id = Site::id();
 
 		if (
@@ -397,7 +404,7 @@ class SetupFile {
 	 * or represented in Semantic MediaWiki. In most cases it will require an action
 	 * from an administrator when one of those keys are altered.
 	 */
-	private static function makeKey( array $vars ): string {
+	private static function makeKey( array &$vars ): string {
 		// Only recognize those properties that require a fixed table
 		$pageSpecialProperties = array_intersect(
 			// Special properties enabled?
