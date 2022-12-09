@@ -53,6 +53,12 @@ jobs:
           MARIADB_ROOT_PASSWORD: ${{ env.DB_ROOT_PWD }}
 
     steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl
+
       # https://getcomposer.org/download/
       - name: Get Composer
         run: |
