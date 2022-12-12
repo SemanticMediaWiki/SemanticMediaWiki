@@ -87,7 +87,7 @@ final class Setup {
 	 *
 	 * @since 3.0
 	 */
-	public static function initExtension( $vars ) {
+	public static function initExtension( array $vars ): array {
 		Hooks::registerEarly( $vars );
 
 		return $vars;
@@ -109,13 +109,8 @@ final class Setup {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $vars
-	 * @param string $rootDir
-	 *
-	 * @return array $vars
 	 */
-	public function init( $vars, $rootDir ) {
+	public function init( array $vars, string $rootDir ): array {
 
 		$setupFile = new SetupFile();
 		Globals::replace(

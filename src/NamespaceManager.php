@@ -51,12 +51,8 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param $vars
-	 *
-	 * @return array $vars
 	 */
-	public function init( $vars ) {
+	public function init( array $vars ): array {
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
 			$newVars = $this->initCustomNamespace( $vars )['newVars'];
@@ -175,13 +171,8 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $vars
-	 * @param LocalLanguage|null $localLanguage
-	 *
-	 * @return array
 	 */
-	public static function initCustomNamespace( $vars, LocalLanguage $localLanguage = null ) {
+	public static function initCustomNamespace( array $vars, LocalLanguage|null $localLanguage = null ): array {
 
 		$instance = new self( $localLanguage );
 
