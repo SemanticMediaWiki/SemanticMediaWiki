@@ -172,7 +172,7 @@ class NamespaceManager {
 	/**
 	 * @since 1.9
 	 */
-	public static function initCustomNamespace( array $vars, LocalLanguage|null $localLanguage = null ): array {
+	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
 
 		$instance = new self( $localLanguage );
 
