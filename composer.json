@@ -47,7 +47,7 @@
 		"onoi/cache": "~1.2",
 		"onoi/event-dispatcher": "~1.0",
 		"onoi/blob-store": "~1.2",
-		"onoi/http-request": "~1.1",
+		"mediawiki/http-request": "~2.0|~1.1",
 		"onoi/callback-container": "~2.0",
 		"onoi/shared-resources": "~0.3",
 		"symfony/css-selector": "^5|^4|^3.3",
