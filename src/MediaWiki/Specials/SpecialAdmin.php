@@ -153,7 +153,10 @@ class SpecialAdmin extends SpecialPage {
 
 		$htmlTabs = new HtmlTabs();
 
-		$default = $alertsSection === '' ? 'general' : 'alerts';
+		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
+		$supportTask = end( $supportTaskList );
+
+		$default = $alertsSection === '' ? ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ? 'general' : 'maintenance' ) : 'alerts';
 
 		// If we want to remain on a specific tab on a GET request, use the `tab`
 		// parameter since we are unable to fetch any #href hash from a request
@@ -169,9 +172,6 @@ class SpecialAdmin extends SpecialPage {
 				'class' => 'smw-tab-warning'
 			]
 		);
-
-		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
-		$supportTask = end( $supportTaskList );
 
 		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
 			$supportSection = $supportTask->getHtml();
