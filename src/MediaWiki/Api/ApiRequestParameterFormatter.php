@@ -45,7 +45,7 @@ final class ApiRequestParameterFormatter {
 	public function getAskApiParameters() {
 
 		if ( $this->results === null ) {
-			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])/", $this->requestParameters['query'] ) : [];
+			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])(?=[^\+])/", $this->requestParameters['query'] ) : [];
 		}
 
 		return $this->results;
