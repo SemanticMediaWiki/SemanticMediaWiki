@@ -302,10 +302,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		switch ( $type ) {
 			case 'class':
-				$this->assertTrue( class_exists( $config[$target][$entry] ) );
+				$this->assertTrue( class_exists( $newVars[$target][$entry] ) );
 				break;
 			case 'file':
-				$this->assertTrue( file_exists( $config[$target][$entry] ) );
+				$this->assertTrue( file_exists( $newVars[$target][$entry] ) );
 				break;
 		}
 	}
