@@ -498,9 +498,9 @@ class SemanticMediaWiki {
 		define( 'SMW_ADM_PSTATS', 16 );
 		// Fulltext update
 		define( 'SMW_ADM_FULLT', 32 );
-		// Fulltext update
+		// Maintenance script docs
 		define( 'SMW_ADM_MAINTENANCE_SCRIPT_DOCS', 64 );
-		// Fulltext update
+		// Show Overview tab
 		define( 'SMW_ADM_SHOW_OVERVIEW', 128 );
 		// Table optimization alert
 		define( 'SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN', 2048 );
