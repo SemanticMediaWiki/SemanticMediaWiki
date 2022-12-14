@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Exception\ExtendedPermissionsError;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -131,8 +132,7 @@ class SpecialAdmin extends SpecialPage {
 		return 'smw_group';
 	}
 
-	private function buildHTML( $taskHandlerRegistry ) {
-
+	private function buildHTML( TaskHandlerRegistry $taskHandlerRegistry ): string {
 		$maintenanceSection = '';
 
 		foreach ( $taskHandlerRegistry->get( TaskHandler::SECTION_MAINTENANCE ) as $maintenanceTask ) {
@@ -161,8 +161,6 @@ class SpecialAdmin extends SpecialPage {
 			$this->getRequest()->getVal( 'tab', $default )
 		);
 
-		$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
-
 		$htmlTabs->tab(
 			'alerts',
 			'<span class="smw-icon-alert smw-tab-icon"></span>' . $this->msg_text( 'smw-admin-tab-alerts' ),
@@ -172,13 +170,21 @@ class SpecialAdmin extends SpecialPage {
 			]
 		);
 
+		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
+		$supportTask = end( $supportTaskList );
+
+		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+			$supportSection = $supportTask->getHtml();
+			$htmlTabs->tab( 'general', $this->msg_text( 'smw-admin-tab-general' ) );
+		}
+
 		$htmlTabs->tab( 'maintenance', $this->msg_text( 'smw-admin-tab-maintenance' ) );
 		$htmlTabs->tab( 'supplement', $this->msg_text( 'smw-admin-tab-supplement' ) );
 
-		$supportTaskList = $taskHandlerRegistry->get( TaskHandler::SECTION_SUPPORT );
-		$supportSection = end( $supportTaskList )->getHtml();
+		if ( $supportTask->isEnabledFeature( SMW_ADM_SHOW_OVERVIEW ) ) {
+			$htmlTabs->content( 'general', $supportSection );
+		}
 
-		$htmlTabs->content( 'general', $supportSection );
 		$htmlTabs->content( 'alerts', $alertsSection );
 		$htmlTabs->content( 'maintenance', $maintenanceSection );
 		$htmlTabs->content( 'supplement', $supplementarySection );
