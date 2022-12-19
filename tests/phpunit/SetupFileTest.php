@@ -50,8 +50,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertEquals(
-			SetupFile::makeUpgradeKey( $var1 ),
-			SetupFile::makeUpgradeKey( $var2 )
+			SetupFile::makeUpgradeKey( $var1 )['key'],
+			SetupFile::makeUpgradeKey( $var2 )['key']
 		);
 	}
 
@@ -78,8 +78,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertNotEquals(
-			SetupFile::makeUpgradeKey( $var1 ),
-			SetupFile::makeUpgradeKey( $var2 )
+			SetupFile::makeUpgradeKey( $var1 )['key'],
+			SetupFile::makeUpgradeKey( $var2 )['key']
 		);
 	}
 

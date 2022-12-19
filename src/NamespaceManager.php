@@ -51,17 +51,19 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param &$vars
 	 */
-	public function init( &$vars ) {
+	public function init( array $vars ): array {
 
 		if ( !$this->isDefinedConstant( 'SMW_NS_PROPERTY' ) ) {
-			$this->initCustomNamespace( $vars );
+			$newVars = $this->initCustomNamespace( $vars )['newVars'];
+			Globals::replace( $newVars );
+			$vars = array_replace( $vars, $newVars );
 		}
 
 		$this->addNamespaceSettings( $vars );
 		$this->addExtraNamespaceSettings( $vars );
+
+		return $vars;
 	}
 
 	/**
@@ -89,7 +91,9 @@ class NamespaceManager {
 	 */
 	public static function initCanonicalNamespaces( array &$namespaces ) {
 
-		$canonicalNames = self::initCustomNamespace( $GLOBALS )->getCanonicalNames();
+		$instance_newVars = self::initCustomNamespace( $GLOBALS );
+		Globals::replace( $instance_newVars['newVars'] );
+		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();
 		$namespacesByName = array_flip( $namespaces );
 
 		// https://phabricator.wikimedia.org/T160665
@@ -167,11 +171,8 @@ class NamespaceManager {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array &$vars
-	 * @param LocalLanguage|null $localLanguage
 	 */
-	public static function initCustomNamespace( &$vars, LocalLanguage $localLanguage = null ) {
+	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
 
 		$instance = new self( $localLanguage );
 
@@ -209,7 +210,10 @@ class NamespaceManager {
 
 		$instance->addNamespaceSettings( $vars );
 
-		return $instance;
+		return [
+			'instance' => $instance,
+			'newVars' => $vars
+		];
 	}
 
 	private function getNamespaceIndex( $vars ) {
