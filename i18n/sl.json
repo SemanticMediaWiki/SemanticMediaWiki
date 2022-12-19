@@ -164,6 +164,8 @@
 	"smw_adminlinks_displayingdata": "Prikaz podatkov",
 	"prefs-smw": "Semantični MediaWiki",
 	"prefs-general-options": "Splošne možnosti",
+	"smw-prefs-general-options-show-entity-issue-panel": "Prikaži ploščo s težavami entitete",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Če je omogočeno, zažene preverjanje celovitosti na vsaki strani in prikaže [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel ploščo s težavami entitete].",
 	"smw-ui-tooltip-title-info": "Informacije",
 	"smw-ui-tooltip-title-warning": "Opozorilo",
 	"smw-ui-tooltip-title-parameter": "Parameter",

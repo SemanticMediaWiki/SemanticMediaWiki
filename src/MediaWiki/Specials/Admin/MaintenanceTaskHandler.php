@@ -104,8 +104,10 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 		$htmlTabs->tab( 'tasks', $this->msg( 'smw-admin-maintenance-tab-tasks' ) );
 		$htmlTabs->content( 'tasks', $tasks );
 
-		$htmlTabs->tab( 'scripts', $this->msg( 'smw-admin-maintenance-tab-scripts' ) );
-		$htmlTabs->content( 'scripts', $this->buildHTML() );
+		if ( $this->hasFeature( SMW_ADM_MAINTENANCE_SCRIPT_DOCS ) ) {
+			$htmlTabs->tab( 'scripts', $this->msg( 'smw-admin-maintenance-tab-scripts' ) );
+			$htmlTabs->content( 'scripts', $this->buildHTML() );
+		}
 
 		$html .= $htmlTabs->buildHTML( [ 'class' => 'maintenance', 'style' => 'margin-top:20px;' ] );
 
