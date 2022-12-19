@@ -196,6 +196,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return string
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return json_encode( $this->toArray() );
 	}

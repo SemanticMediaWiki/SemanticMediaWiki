@@ -169,6 +169,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		return [
 			'options' => $this->options,

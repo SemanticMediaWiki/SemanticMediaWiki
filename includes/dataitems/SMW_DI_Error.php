@@ -87,6 +87,7 @@ class SMWDIError extends SMWDataItem {
 	 *
 	 * @return array
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		$json = parent::jsonSerialize();
 		$json['userValue'] = $this->userValue;

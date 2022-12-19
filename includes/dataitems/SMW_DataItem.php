@@ -252,6 +252,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		# T312589 explicitly calling jsonSerialize() will be unnecessary
 		# in the future.
