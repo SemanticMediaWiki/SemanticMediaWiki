@@ -2,6 +2,7 @@
 
 namespace SMW\Schema;
 
+use Iterator;
 use JsonSerializable;
 use SMW\Utils\DotArray;
 use IteratorAggregate;
@@ -76,7 +77,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): string {
 		return json_encode( $this->data );
 	}
 
@@ -104,7 +105,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return Iterator
 	 */
-	public function getIterator() {
+	public function getIterator(): Iterator {
 
 		foreach ( $this->data as $key => $value ) {
 
