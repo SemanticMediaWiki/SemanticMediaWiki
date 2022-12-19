@@ -1,5 +1,6 @@
 <?php
 
+use SMW\Globals;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
 use SMW\Setup;
@@ -43,12 +44,16 @@ class SemanticMediaWiki {
 		}
 
 		// Registration point for required early registration
-		Setup::initExtension( $GLOBALS );
+		Globals::replace(
+			Setup::initExtension( $GLOBALS )
+		);
 
 		// Apparently this is required (1.28+) as the earliest possible execution
 		// point in order for settings that refer to the SMW_NS_PROPERTY namespace
 		// to be available in LocalSettings
-		NamespaceManager::initCustomNamespace( $GLOBALS );
+		Globals::replace(
+			NamespaceManager::initCustomNamespace( $GLOBALS )['newVars']
+		);
 	}
 
 	/**
@@ -65,7 +70,9 @@ class SemanticMediaWiki {
 	public static function onExtensionFunction() {
 
 		$namespace = new NamespaceManager();
-		$namespace->init( $GLOBALS );
+		Globals::replace(
+			$namespace->init( $GLOBALS )
+		);
 
 		$setup = new Setup();
 
@@ -73,7 +80,9 @@ class SemanticMediaWiki {
 			ServicesFactory::getInstance()->getHookDispatcher()
 		);
 
-		$setup->init( $GLOBALS, __DIR__ );
+		Globals::replace(
+			$setup->init( $GLOBALS, __DIR__ )
+		);
 	}
 
 	/**
