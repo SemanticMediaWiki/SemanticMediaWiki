@@ -44,7 +44,7 @@ class TitleIsAlwaysKnown implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process() {
+	public function process(): bool {
 
 		// Two possible ways of going forward:
 		//

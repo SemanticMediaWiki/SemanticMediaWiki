@@ -19,19 +19,19 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function rawUrlEncode( Query $query ) {
+	public static function rawUrlEncode( Query $query ): string {
 		return rawurlencode( self::toString( $query ) );
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param Query $query
-	 * @param boolean $printParameters
-	 *
-	 * @return string
-	 */
-	public static function toArray( Query $query, $printParameters = false ) {
+  * @since 3.0
+  *
+  * @param Query $query
+  * @param boolean $printParameters
+  *
+  * @return mixed[]
+  */
+ public static function toArray( Query $query, $printParameters = false ): array {
 
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
@@ -121,7 +121,7 @@ class QueryStringifier {
 		return $printouts;
 	}
 
-	private static function sortKeys( $query ) {
+	private static function sortKeys( $query ): array {
 
 		$sort = [];
 		$order = [];

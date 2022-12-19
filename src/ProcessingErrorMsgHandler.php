@@ -55,7 +55,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return array
 	 */
-	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
+	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ): array {
 
 		$normalizedMessages = [];
 
@@ -110,7 +110,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return string
 	 */
-	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
+	public static function getMessagesAsString( array $messages, $type = null, $language = null ): string {
 
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
@@ -269,10 +269,11 @@ class ProcessingErrorMsgHandler {
 	}
 
 	/**
-	 * Flip [ '_type_1' => [ 'a', 'b'], '_type_2' => 'c', 'd' ] ]
-	 * to  [ 'a' => '_type_1', 'b' => '_type_1', 'c' => '_type_2', 'd' => '_type_2' ]
-	 */
-	private function flip( $array ) {
+  * Flip [ '_type_1' => [ 'a', 'b'], '_type_2' => 'c', 'd' ] ]
+  * to  [ 'a' => '_type_1', 'b' => '_type_1', 'c' => '_type_2', 'd' => '_type_2' ]
+  * @return array<int|string, mixed>
+  */
+ private function flip( $array ): array {
 		$flipped = [];
 
 		foreach ( $array as $key => $value ) {

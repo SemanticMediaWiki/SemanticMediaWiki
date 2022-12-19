@@ -131,7 +131,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return new Client( $clientBuilder, $this->lockManager, $this->config );
 	}
 
-	private function hasEndpoints( $endpoints ) {
+	private function hasEndpoints( $endpoints ): bool {
 
 		if ( $this->config->isDefaultStore() === false ) {
 			return true;
@@ -140,7 +140,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $endpoints !== [];
 	}
 
-	private function hasAvailableClientBuilder() {
+	private function hasAvailableClientBuilder(): bool {
 
 		if ( $this->config->isDefaultStore() === false ) {
 			return false;

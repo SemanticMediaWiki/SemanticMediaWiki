@@ -34,7 +34,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_lat' => FieldType::TYPE_DOUBLE,
@@ -47,7 +47,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE
 		];
@@ -58,7 +58,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'p_id,o_serialized',
 			'o_lat,o_lon'
@@ -70,7 +70,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization()
 		];
@@ -81,7 +81,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_lat' => (string)$dataItem->getLatitude(),
@@ -94,7 +94,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_serialized';
 	}
 
@@ -107,7 +107,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return '';
 	}
 

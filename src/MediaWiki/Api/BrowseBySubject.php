@@ -28,7 +28,7 @@ class BrowseBySubject extends ApiBase {
 	/**
 	 * @deprecated since 3.0, use the smwbrowse API module
 	 */
-	public function isDeprecated() {
+	public function isDeprecated(): bool {
 		return true;
 	}
 
@@ -148,7 +148,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'subject' => [
 				ApiBase::PARAM_TYPE => 'string',
@@ -194,7 +194,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'subject' => 'The subject to be queried',
 			'subobject' => 'A particular subobject id for the related subject'
@@ -207,7 +207,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query a subject.'
 		];
@@ -219,7 +219,7 @@ class BrowseBySubject extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=browsebysubject&subject=Main_Page',
 		];

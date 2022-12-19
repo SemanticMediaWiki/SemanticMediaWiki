@@ -47,28 +47,28 @@ class XsdValueMapper {
 		return $val;
 	}
 
-	private static function mapString( DIBlob $dataItem ) {
+	private static function mapString( DIBlob $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#string',
 			smwfHTMLtoUTF8( $dataItem->getString() )
 		];
 	}
 
-	private static function mapNumber( DINumber $dataItem ) {
+	private static function mapNumber( DINumber $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#double',
 			strval( $dataItem->getNumber() )
 		];
 	}
 
-	private static function mapBoolean( DIBoolean $dataItem ) {
+	private static function mapBoolean( DIBoolean $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#boolean',
 			$dataItem->getBoolean() ? 'true' : 'false'
 		];
 	}
 
-	private static function mapGregorianCalendarModelTime( DITime $dataItem ) {
+	private static function mapGregorianCalendarModelTime( DITime $dataItem ): array {
 
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );

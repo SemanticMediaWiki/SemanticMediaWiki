@@ -32,7 +32,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::convertToMainUnit
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 
 		$this->m_unitin = $this->getUnitID( $unit );
 
@@ -149,14 +149,14 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::getUnitList
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ 'K', '°C', '°F', '°R' ];
 	}
 
 	/**
 	 * NumberValue::getUnit
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return 'K';
 	}
 

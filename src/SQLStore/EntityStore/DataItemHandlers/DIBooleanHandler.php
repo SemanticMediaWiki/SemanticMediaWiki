@@ -22,7 +22,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_value' => FieldType::TYPE_BOOL
 		];
@@ -33,7 +33,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_value' => FieldType::TYPE_BOOL
 		];
@@ -44,7 +44,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
 			$value = $dataItem->getBoolean() ? 't' : 'f';
@@ -62,7 +62,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
@@ -81,7 +81,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_value';
 	}
 
@@ -90,7 +90,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_value';
 	}
 

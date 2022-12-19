@@ -82,7 +82,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return []
 	 */
-	public function getModuleStyles() {
+	public function getModuleStyles(): array {
 		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',
@@ -97,7 +97,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return []
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'smw.content.schemaview', 'smw.factbox' ];
 	}
 
@@ -165,7 +165,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( Schema $schema = null ) {
+	public function getUsage( Schema $schema = null ): array {
 
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];

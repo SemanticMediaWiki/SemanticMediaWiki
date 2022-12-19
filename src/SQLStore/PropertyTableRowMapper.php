@@ -88,7 +88,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	public function mapToRows( $sid, SemanticData $semanticData ) {
+	public function mapToRows( $sid, SemanticData $semanticData ): array {
 
 		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $this->mapData(
 			$sid,
@@ -110,7 +110,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return string
 	 */
-	public function makeHash( array $array ) {
+	public function makeHash( array $array ): string {
 		return md5( implode( '#', $array ) );
 	}
 
@@ -136,7 +136,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	private function mapData( $sid, SemanticData $semanticData ) {
+	private function mapData( $sid, SemanticData $semanticData ): array {
 
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();

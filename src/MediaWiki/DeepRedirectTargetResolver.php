@@ -47,11 +47,11 @@ class DeepRedirectTargetResolver {
 		return $this->doResolveRedirectTarget( $title );
 	}
 
-	protected function isValidRedirectTarget( $title ) {
+	protected function isValidRedirectTarget( $title ): bool {
 		return $title instanceof Title && $title->isValidRedirectTarget();
 	}
 
-	protected function isRedirect( $title ) {
+	protected function isRedirect( $title ): bool {
 		return $title instanceof Title && $title->isRedirect();
 	}
 
@@ -87,7 +87,7 @@ class DeepRedirectTargetResolver {
 		return $this->recursiveResolverTracker[$title->getPrefixedDBkey()]++;
 	}
 
-	private function isCircularByKnownRedirectTarget( $title ) {
+	private function isCircularByKnownRedirectTarget( $title ): bool {
 		return isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) && $this->recursiveResolverTracker[$title->getPrefixedDBkey()] > 1;
 	}
 

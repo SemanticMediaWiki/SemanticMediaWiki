@@ -283,15 +283,15 @@ class IntlNumberFormatter {
 		);
 	}
 
-	private function isDecimal( $value ) {
+	private function isDecimal( $value ): bool {
 		return floor( $value ) !== $value;
 	}
 
-	private function isScientific( $value ) {
+	private function isScientific( $value ): bool {
 		return strpos( $value, 'E' ) !== false || strpos( $value, 'e' ) !== false;
 	}
 
-	private function applyDefaultPrecision( $value ) {
+	private function applyDefaultPrecision( $value ): float {
 		return round( $value, $this->defaultPrecision );
 	}
 

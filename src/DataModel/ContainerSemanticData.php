@@ -93,7 +93,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @return boolean
 	 */
-	public function hasAnonymousSubject() {
+	public function hasAnonymousSubject(): bool {
 
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
 		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&

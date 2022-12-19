@@ -408,7 +408,7 @@ class ConditionBuilder {
 	 *
 	 * @return boolean
 	 */
-	public function isSetFlag( $featureFlag ) {
+	public function isSetFlag( $featureFlag ): bool {
 
 		$canUse = true;
 

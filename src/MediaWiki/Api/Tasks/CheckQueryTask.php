@@ -36,7 +36,7 @@ class CheckQueryTask extends Task {
 	 *
 	 * @return array
 	 */
-	public function process( array $parameters ) {
+	public function process( array $parameters ): array {
 
 		if ( $parameters['subject'] === '' || $parameters['query'] === '' ) {
 			return [ 'done' => false ];

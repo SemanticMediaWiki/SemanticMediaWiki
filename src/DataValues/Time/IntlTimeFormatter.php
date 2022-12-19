@@ -146,7 +146,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return boolean
 	 */
-	public function containsValidDateFormatRule( $format ) {
+	public function containsValidDateFormatRule( $format ): bool {
 
 		foreach ( str_split( $format ) as $value ) {
 			if ( in_array( $value, [ 'd', 'D', 'j', 'l', 'N', 'w', 'W', 'F', 'M', 'm', 'n', 't', 'L', 'o', 'Y', 'y', "c", 'r' ] ) ) {

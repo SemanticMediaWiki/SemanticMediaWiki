@@ -105,7 +105,7 @@ class PostProcHandler {
 	 *
 	 * @return array|string
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
 	}
 
@@ -320,7 +320,7 @@ class PostProcHandler {
 		return $postEdit;
 	}
 
-	private function checkDiff( $changeDiff ) {
+	private function checkDiff( $changeDiff ): ?bool {
 
 		$propertyList = $changeDiff->getPropertyList(
 			'flip'

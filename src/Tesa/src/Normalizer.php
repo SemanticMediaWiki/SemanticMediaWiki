@@ -35,7 +35,7 @@ class Normalizer {
 	 *
 	 * @return string
 	 */
-	public static function convertDoubleWidth( $text ) {
+	public static function convertDoubleWidth( $text ): string {
 		static $full = null;
 		static $half = null;
 
@@ -68,7 +68,7 @@ class Normalizer {
 	 *
 	 * @return string
 	 */
-	public static function toLowercase( $text ) {
+	public static function toLowercase( $text ): string {
 		return mb_strtolower( $text, mb_detect_encoding( $text ) );
 	}
 

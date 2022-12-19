@@ -98,7 +98,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( &$text ) {
+	public function process( &$text ): bool {
 
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
@@ -320,7 +320,7 @@ class ParserAfterTidy implements HookListener {
 		}
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 
 		$this->logger->info(
 			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."

@@ -47,7 +47,7 @@ class SummaryTable {
 	 *
 	 * @return []
 	 */
-	public static function getModuleStyles() {
+	public static function getModuleStyles(): array {
 		return [ 'ext.smw.style', 'smw.summarytable' ];
 	}
 

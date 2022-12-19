@@ -304,7 +304,7 @@ class CallableUpdate implements DeferrableUpdate {
 		DeferredUpdates::addUpdate( $update, $stage );
 	}
 
-	protected function loggableContext() {
+	protected function loggableContext(): array {
 		return [ 'origin' => $this->origin, 'fingerprint' => $this->fingerprint, 'stage' => $this->stage ];
 	}
 

@@ -102,7 +102,7 @@ class Conjunction extends Description {
 		return $asvalue ? " <q>{$result}</q> " : $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		foreach ( $this->descriptions as $d ) {
 			if ( $d->isSingleton() ) {
 				return true;

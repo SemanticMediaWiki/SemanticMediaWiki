@@ -83,7 +83,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ) {
+	private function mapCategoriesToConditionElements( array $categories, $depth, $joinVariable ): array {
 
 		$condition = '';
 		$namespaces = [];

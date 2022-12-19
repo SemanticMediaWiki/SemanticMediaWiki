@@ -123,7 +123,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFieldsFromTableById( $id, $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 
 		if ( $id == 0 ) {
 			return [ $id, '' ];
@@ -192,7 +192,7 @@ class EntityIdFinder {
 	 *
 	 * @return array
 	 */
-	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ) {
+	public function fetchFromTableByTitle( $title, $namespace, $iw, $subobjectName, &$sortkey ): array {
 
 		$sha1 = IdCacheManager::computeSha1(
 			[
@@ -264,16 +264,16 @@ class EntityIdFinder {
 	}
 
 	/**
-	 * @since 3.1
-	 *
-	 * @param string $title
-	 * @param string|integer $namespace
-	 * @param string $iw
-	 * @param string $subobjectName
-	 *
-	 * @return array
-	 */
-	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
+  * @since 3.1
+  *
+  * @param string $title
+  * @param string|integer $namespace
+  * @param string $iw
+  * @param string $subobjectName
+  *
+  * @return int[]
+  */
+ public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 
 		$matches = [];
 

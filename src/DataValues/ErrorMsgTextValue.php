@@ -45,7 +45,7 @@ class ErrorMsgTextValue extends DataValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;

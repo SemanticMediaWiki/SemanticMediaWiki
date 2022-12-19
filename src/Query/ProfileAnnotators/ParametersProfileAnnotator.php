@@ -52,7 +52,7 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 		);
 	}
 
-	private function doSerializeSortKeys( $query ) {
+	private function doSerializeSortKeys( $query ): array {
 
 		$sort = [];
 		$order = [];

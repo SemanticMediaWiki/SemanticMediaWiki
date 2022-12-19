@@ -74,7 +74,7 @@ class Info extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'info' => [
 				ApiBase::PARAM_DFLT => 'propcount|usedpropcount|declaredpropcount',
@@ -104,7 +104,7 @@ class Info extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'info' => 'The info to provide.'
 		];
@@ -116,7 +116,7 @@ class Info extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module get info about this SMW install.'
 		];
@@ -128,7 +128,7 @@ class Info extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=smwinfo&info=proppagecount|propcount',
 		];
@@ -144,7 +144,10 @@ class Info extends ApiBase {
 		return __CLASS__ . ': $Id$';
 	}
 
-	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
+	/**
+  * @return array<int|string, mixed>
+  */
+ private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ): array {
 
 		$resultInfo = [];
 

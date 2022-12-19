@@ -120,7 +120,7 @@ class Query {
 	 *
 	 * @return boolean
 	 */
-	public function hasField( $field = '' ) {
+	public function hasField( $field = '' ): bool {
 
 		if ( (string)$field === '' ) {
 			return $this->fields !== [];
@@ -134,7 +134,7 @@ class Query {
 	 *
 	 * @return boolean
 	 */
-	public function hasCondition() {
+	public function hasCondition(): bool {
 		return $this->conditions !== [];
 	}
 
@@ -244,7 +244,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asAnd( $condition ) {
+	public function asAnd( $condition ): array {
 		return [ 'AND' => $condition ];
 	}
 
@@ -257,7 +257,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asOr( $condition ) {
+	public function asOr( $condition ): array {
 		return [ 'OR' => $condition ];
 	}
 

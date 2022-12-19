@@ -72,7 +72,7 @@ class ConstraintRegistry {
 	 *
 	 * @return []
 	 */
-	public function getConstraintKeys() {
+	public function getConstraintKeys(): array {
 
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();

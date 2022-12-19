@@ -59,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @return string
 	 */
-	public static function computeSha1( $args = '' ) {
+	public static function computeSha1( $args = '' ): string {
 		return sha1( json_encode( $args ) );
 	}
 

@@ -54,7 +54,7 @@ class LanguageContents {
 	 *
 	 * @return boolean
 	 */
-	public function isLoaded( $languageCode ) {
+	public function isLoaded( $languageCode ): bool {
 		return isset( $this->contents[$languageCode] ) || array_key_exists( $languageCode, $this->contents );
 	}
 

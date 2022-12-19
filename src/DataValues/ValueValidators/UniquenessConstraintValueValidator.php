@@ -93,7 +93,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = $this->uniqueValueConstraint->hasViolation();
 	}
 
-	private function canValidate( $dataValue ) {
+	private function canValidate( $dataValue ): bool {
 
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;

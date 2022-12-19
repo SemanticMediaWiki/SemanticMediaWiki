@@ -23,7 +23,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -35,7 +35,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -47,7 +47,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'p_id,o_serialized',
 		];
@@ -58,7 +58,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
 		// FROM `smw_object_ids`
@@ -90,7 +90,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [ 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) ];
 	}
 
@@ -99,7 +99,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
@@ -120,7 +120,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_serialized';
 	}
 
@@ -129,7 +129,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 

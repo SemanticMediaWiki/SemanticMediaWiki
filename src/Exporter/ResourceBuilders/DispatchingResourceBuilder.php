@@ -34,7 +34,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @return boolean
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();

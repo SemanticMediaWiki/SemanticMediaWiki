@@ -48,7 +48,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function removeLinkObfuscation( $text ) {
+	public static function removeLinkObfuscation( $text ): string {
 
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
@@ -63,7 +63,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function encodeLinks( $text ) {
+	public static function encodeLinks( $text ): string {
 		return str_replace(
 			[ '[', ']', '|' ],
 			[ '&#x005B;', '&#x005D;', '&#124;' ],
@@ -78,7 +78,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return str_replace( [ '%5B', '%5D' ], [ '[', ']' ], $text );
 	}
 
@@ -89,10 +89,10 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			function( array $matches ) {
+			function( array $matches ): string {
 				return str_replace( '[', '&#91;', $matches[0] );
 			},
 			self::decodeSquareBracket( $text )

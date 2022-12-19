@@ -550,7 +550,7 @@ class SQLStoreFactory {
 	 *
 	 * @return LoggerInterface
 	 */
-	public function getLogger() {
+	public function getLogger(): \Psr\Log\LoggerInterface {
 		return ApplicationFactory::getInstance()->getMediaWikiLogger();
 	}
 
@@ -1240,7 +1240,7 @@ class SQLStoreFactory {
 		return $servicesContainer;
 	}
 
-	private function getIteratorFactory() {
+	private function getIteratorFactory(): \SMW\IteratorFactory {
 		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 

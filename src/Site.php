@@ -39,7 +39,7 @@ class Site {
 	 *
 	 * @return boolean
 	 */
-	public static function isReady() {
+	public static function isReady(): bool {
 
 		// #3341
 		// When running as part of the install don't try to access the DB
@@ -151,7 +151,7 @@ class Site {
 	 *
 	 * @return []
 	 */
-	public static function stats() {
+	public static function stats(): array {
 		return [
 			'pageCount' => SiteStats::pages(),
 			'contentPageCount' => SiteStats::articles(),

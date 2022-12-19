@@ -148,7 +148,7 @@ class HierarchyLookup {
 	 *
 	 * @return boolean
 	 */
-	public function hasSubproperty( DIProperty $property ) {
+	public function hasSubproperty( DIProperty $property ): bool {
 
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
@@ -168,7 +168,7 @@ class HierarchyLookup {
 	 *
 	 * @return boolean
 	 */
-	public function hasSubcategory( DIWikiPage $category ) {
+	public function hasSubcategory( DIWikiPage $category ): bool {
 
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;

@@ -63,7 +63,7 @@ class ParameterListDocBuilder {
 	 *
 	 * @return boolean
 	 */
-	private function containsAliases( array $paramDefinitions ) {
+	private function containsAliases( array $paramDefinitions ): bool {
 		foreach ( $paramDefinitions as $parameter ) {
 			if ( !empty( $parameter->getAliases() ) ) {
 				return true;

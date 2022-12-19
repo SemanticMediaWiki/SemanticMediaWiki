@@ -110,7 +110,7 @@ class Rebuilder {
 	 *
 	 * @return array
 	 */
-	public function select( Store $store, array $conditions ) {
+	public function select( Store $store, array $conditions ): array {
 
 		$connection = $store->getConnection( 'mw.db' );
 
@@ -203,7 +203,7 @@ class Rebuilder {
 	 *
 	 * @return boolean
 	 */
-	public function hasIndices() {
+	public function hasIndices(): bool {
 
 		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
 			return false;

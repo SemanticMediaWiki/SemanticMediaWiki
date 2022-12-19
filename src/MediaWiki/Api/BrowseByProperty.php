@@ -19,7 +19,7 @@ class BrowseByProperty extends ApiBase {
 	 * #2696
 	 * @deprecated since 3.0, use the smwbrowse API module
 	 */
-	public function isDeprecated() {
+	public function isDeprecated(): bool {
 		return true;
 	}
 
@@ -116,7 +116,7 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'property' => [
 				ApiBase::PARAM_TYPE => 'string',
@@ -149,7 +149,7 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'property' => 'To match a specific property',
 			'limit'    => 'To specify the size of the list request',
@@ -164,7 +164,7 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query a property list or an individual property.'
 		];
@@ -176,7 +176,7 @@ class BrowseByProperty extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getExamples() {
+	public function getExamples(): array {
 		return [
 			'api.php?action=browsebyproperty&property=Modification_date',
 			'api.php?action=browsebyproperty&limit=50',

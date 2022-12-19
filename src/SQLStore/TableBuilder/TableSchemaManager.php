@@ -58,7 +58,7 @@ class TableSchemaManager {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 
 		$hash = [];
 
@@ -114,7 +114,7 @@ class TableSchemaManager {
 	 *
 	 * @return boolean
 	 */
-	public function hasFeatureFlag( $feature ) {
+	public function hasFeatureFlag( $feature ): bool {
 		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 

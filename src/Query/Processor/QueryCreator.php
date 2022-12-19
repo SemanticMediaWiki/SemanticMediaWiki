@@ -179,7 +179,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @return array ( keys => array(), errors => array() )
 	 */
-	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
+	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ): array {
 
 		$sortKeys = [];
 		$sortErros = [];
@@ -224,7 +224,10 @@ class QueryCreator implements QueryContext {
 		return [ 'keys' => $sortKeys, 'errors' => $sortErros ];
 	}
 
-	private function normalize_order( $orderParameters ) {
+	/**
+  * @return string[]
+  */
+ private function normalize_order( $orderParameters ): array {
 		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {

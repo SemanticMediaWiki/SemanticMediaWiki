@@ -67,7 +67,7 @@ class PropertyUsageListLookup implements ListLookup {
 	 *
 	 * @return boolean
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
@@ -128,7 +128,10 @@ class PropertyUsageListLookup implements ListLookup {
 		return $res;
 	}
 
-	private function getPropertyList( $res ) {
+	/**
+  * @return array<int, array<\SMWDIError|\SMW\DIProperty|int>>
+  */
+ private function getPropertyList( $res ): array {
 
 		$result = [];
 

@@ -45,7 +45,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	public function getVersions() {
+	public function getVersions(): array {
 
 		$languageDetector = '(Disabled)';
 

@@ -59,7 +59,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -260,7 +260,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $this->createMessageFromRows( $id, $rows );
 	}
 
-	private function createMessageFromRows( &$id, $rows ) {
+	private function createMessageFromRows( &$id, $rows ): array {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 

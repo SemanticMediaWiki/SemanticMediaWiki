@@ -223,7 +223,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return $isAllowed;
 	}
 
-	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
+	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ): bool {
 
 		$v = $allowedValue->getString();
 

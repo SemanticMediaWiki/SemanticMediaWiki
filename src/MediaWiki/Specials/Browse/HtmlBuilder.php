@@ -527,7 +527,7 @@ class HtmlBuilder {
 
 		// Sort by label instead of the key which may start with `_` or `__`
 		// and thereby distorts the lexicographical order
-		usort ( $properties, function( $a, $b ) {
+		usort ( $properties, function( $a, $b ): int {
 			return strnatcmp( $a->getLabel(), $b->getLabel() );
 		} );
 
@@ -848,7 +848,7 @@ class HtmlBuilder {
 	 * Creates a Semantic Data object with the incoming properties instead of the
 	 * usual outgoing properties.
 	 */
-	private function getInData() {
+	private function getInData(): array {
 
 		$indata = new SemanticData(
 			$this->dataValue->getDataItem()

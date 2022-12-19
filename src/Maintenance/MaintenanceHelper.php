@@ -39,7 +39,7 @@ class MaintenanceHelper {
 	 *
 	 * @return array
 	 */
-	public function getRuntimeValues() {
+	public function getRuntimeValues(): array {
 
 		$memory = memory_get_peak_usage( false );
 		$time = microtime( true ) - $this->runtime['start'];

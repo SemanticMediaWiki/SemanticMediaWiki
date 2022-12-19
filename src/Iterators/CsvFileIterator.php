@@ -175,7 +175,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
+	public function valid(): bool {
 
 		if ( $this->next() ) {
 			return true;

@@ -144,7 +144,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return []
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -153,11 +153,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( $subject, $options ): bool {
 
 		$this->indicators = [];
 

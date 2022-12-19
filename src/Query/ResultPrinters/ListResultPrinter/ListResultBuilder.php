@@ -154,7 +154,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	private function getDefaultsFromI18N() {
+	private function getDefaultsFromI18N(): array {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
@@ -167,7 +167,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function replaceVariables( $subject ) {
+	private function replaceVariables( $subject ): string {
 		return str_replace( [ '$START$', '$CLASS$' ], [ htmlspecialchars( $this->get( 'offset' ) + 1 ), htmlspecialchars( $this->get( 'class' ) ) ], $subject );
 	}
 
@@ -214,7 +214,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	private function getRowTexts() {
+	private function getRowTexts(): array {
 
 		$queryResult = $this->getQueryResult();
 		$queryResult->reset();

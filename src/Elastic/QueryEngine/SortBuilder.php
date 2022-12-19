@@ -90,7 +90,7 @@ class SortBuilder {
 		return $this->getFields( $query->getSortKeys() );
 	}
 
-	private function getFields( array $sortKeys ) {
+	private function getFields( array $sortKeys ): array {
 
 		$isRandom = false;
 		$isConstantScore = true;
@@ -178,7 +178,7 @@ class SortBuilder {
 		}
 	}
 
-	private function sort_field( $field ) {
+	private function sort_field( $field ): bool {
 		return strpos( $field, 'txt' ) !== false || strpos( $field, 'wpgField' ) !== false || strpos( $field, 'uriField' ) !== false;
 	}
 

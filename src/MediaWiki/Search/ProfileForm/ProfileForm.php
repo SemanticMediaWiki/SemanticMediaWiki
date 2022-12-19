@@ -69,7 +69,7 @@ class ProfileForm {
 	 *
 	 * @return boolean
 	 */
-	public static function isValidProfile( $profile ) {
+	public static function isValidProfile( $profile ): bool {
 		return $profile === ProfileForm::PROFILE_NAME;
 	}
 
@@ -304,7 +304,7 @@ class ProfileForm {
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildSearchForms( $request ) {
+	private function buildSearchForms( $request ): array {
 
 		$data = $this->getFormDefinitions( $this->store );
 

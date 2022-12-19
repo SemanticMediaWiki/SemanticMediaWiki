@@ -152,7 +152,7 @@ class TableChangeOp {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return [ $this->tableName => $this->changeOps ];
 	}
 

@@ -38,7 +38,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return boolean
 	 */
-	public function addReferenceLinksTo( SemanticData $semanticData, RequestOptions $requestOptions = null ) {
+	public function addReferenceLinksTo( SemanticData $semanticData, RequestOptions $requestOptions = null ): bool {
 
 		if ( !$this->queryDependencyLinksStore->isEnabled() ) {
 			return false;
@@ -90,7 +90,7 @@ class QueryReferenceBacklinks {
 	 *
 	 * @return boolean
 	 */
-	public function doesRequireFurtherLink( DIProperty $property, DIWikiPage $subject, &$html ) {
+	public function doesRequireFurtherLink( DIProperty $property, DIWikiPage $subject, &$html ): bool {
 
 		if ( $property->getKey() !== '_ASK' ) {
 			return true;

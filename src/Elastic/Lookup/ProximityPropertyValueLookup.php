@@ -171,7 +171,7 @@ class ProximityPropertyValueLookup {
 		return $list;
 	}
 
-	private function aggs_filter( $diType, $pid, $field, $limit, $property, $value ) {
+	private function aggs_filter( $diType, $pid, $field, $limit, $property, $value ): array {
 
 		// A field on ES to a property can can all different kind of values and
 		// the request is only interested in those values that match a certain
@@ -230,7 +230,7 @@ class ProximityPropertyValueLookup {
 		];
 	}
 
-	private function match_aggregations( $res, $diType, $limit ) {
+	private function match_aggregations( $res, $diType, $limit ): array {
 
 		$isNumeric = $diType === DataItem::TYPE_NUMBER;
 		$list = [];
@@ -268,7 +268,7 @@ class ProximityPropertyValueLookup {
 		return [ $list, $i ];
 	}
 
-	private function match_hits( $res, $pid, $field, $limit ) {
+	private function match_hits( $res, $pid, $field, $limit ): array {
 
 		$list = [];
 		$i = 0;

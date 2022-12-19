@@ -76,7 +76,7 @@ class Encoder {
 	 *
 	 * @return string
 	 */
-	public static function encode( $string ) {
+	public static function encode( $string ): string {
 		return rawurlencode( $string );
 	}
 

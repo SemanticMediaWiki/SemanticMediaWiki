@@ -75,7 +75,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		$taskFactory = new TaskFactory();
 
 		return [
@@ -96,7 +96,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'task' => 'Defines the task type',
 			'params' => 'JSON encoded parameters that matches the selected type requirement'
@@ -109,7 +109,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
 		];
@@ -119,7 +119,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::needsToken
 	 */
-	public function needsToken() {
+	public function needsToken(): string {
 		return 'csrf';
 	}
 
@@ -127,7 +127,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::mustBePosted
 	 */
-	public function mustBePosted() {
+	public function mustBePosted(): bool {
 		return true;
 	}
 
@@ -135,7 +135,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::isWriteMode
 	 */
-	public function isWriteMode() {
+	public function isWriteMode(): bool {
 		return true;
 	}
 
@@ -145,7 +145,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
 		];
@@ -157,7 +157,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamplesMessages() {
+	protected function getExamplesMessages(): array {
 		return [
 			'action=smwtask&task=update&params={ "subject": "Foo" }'
 				=> 'smw-apihelp-smwtask-example-update'
@@ -170,7 +170,7 @@ class Task extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getHelpUrls() {
+	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API:smwtask';
 	}
 

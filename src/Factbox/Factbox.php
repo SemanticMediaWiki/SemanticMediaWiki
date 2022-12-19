@@ -283,7 +283,7 @@ class Factbox {
 	 *
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [
 			'ext.smw.style',
 			'ext.smw.table.styles',
@@ -512,7 +512,7 @@ class Factbox {
 		return $semanticData->isEmpty();
 	}
 
-	private function hasFeature( $feature ) {
+	private function hasFeature( $feature ): bool {
 		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 

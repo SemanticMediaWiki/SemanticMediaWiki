@@ -46,7 +46,7 @@ class DeclareParserFunction {
 	 * @param PPFrame $frame
 	 * @param array $args
 	 */
-	public function parse( PPFrame $frame, array $args ) {
+	public function parse( PPFrame $frame, array $args ): string {
 
 		// @todo Save as metadata
 		if ( !$frame->isTemplate() ) {

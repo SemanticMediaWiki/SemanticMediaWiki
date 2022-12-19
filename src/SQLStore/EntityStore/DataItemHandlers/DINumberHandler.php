@@ -23,7 +23,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
@@ -35,7 +35,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE
 		];
@@ -46,7 +46,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			// API module pvalue lookup
@@ -63,7 +63,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 
 		// Store::getPropertySubjects has seen to choose the wrong index
 
@@ -97,7 +97,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [
 			'o_sortkey' => floatval( $dataItem->getNumber() )
 			];
@@ -108,7 +108,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => floatval( $dataItem->getNumber() )
@@ -120,7 +120,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_sortkey';
 	}
 
@@ -129,7 +129,7 @@ class DINumberHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 

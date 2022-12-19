@@ -50,7 +50,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public static function process( WebRequest $request, $params ) {
+	public static function process( WebRequest $request, $params ): array {
 
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
@@ -201,7 +201,10 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkParameterList( $request, $parameterList, $printouts ) {
+	/**
+  * @return array<int|string, mixed>
+  */
+ private static function checkParameterList( $request, $parameterList, $printouts ): array {
 
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
@@ -253,7 +256,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private static function hasPipe( $key, $value ) {
+	private static function hasPipe( $key, $value ): bool {
 
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
@@ -266,14 +269,14 @@ class ParametersProcessor {
 		return false;
 	}
 
-	private static function hasLink( $value ) {
+	private static function hasLink( $value ): bool {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 
 	private static function replace( $source, $target, $value ) {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function( array $matches ) use ( $source, $target ) {
+			function( array $matches ) use ( $source, $target ): string {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

@@ -119,7 +119,7 @@ class LinkBatch {
 	 *
 	 * @return boolean
 	 */
-	public function has( $dataItem ) {
+	public function has( $dataItem ): bool {
 
 		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
 			return true;

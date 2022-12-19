@@ -132,19 +132,19 @@ class XmlResponseParser implements HttpResponseParser {
 		);
 	}
 
-	private function parseXml( $xmlResultData ) {
+	private function parseXml( $xmlResultData ): int {
 		return xml_parse( $this->parser, $xmlResultData, true );
 	}
 
-	private function getLastError() {
+	private function getLastError(): ?string {
 		return xml_error_string( xml_get_error_code( $this->parser ) );
 	}
 
-	private function getLastLineNumber() {
+	private function getLastLineNumber(): int {
 		return xml_get_current_line_number( $this->parser );
 	}
 
-	private function getLastColumnNumber() {
+	private function getLastColumnNumber(): int {
 		return xml_get_current_column_number( $this->parser );
 	}
 

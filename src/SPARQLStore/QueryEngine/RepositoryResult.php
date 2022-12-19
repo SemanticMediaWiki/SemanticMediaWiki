@@ -81,7 +81,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return integer number of result rows
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->data );
 	}
 
@@ -128,7 +128,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return boolean
 	 */
-	public function isBooleanTrue() {
+	public function isBooleanTrue(): bool {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
@@ -203,7 +203,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return boolean
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return ( current( $this->data ) !== false );
 	}
 

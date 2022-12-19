@@ -58,7 +58,7 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isPropagationStopped() {
+	public function isPropagationStopped(): bool {
 		return false;
 	}
 

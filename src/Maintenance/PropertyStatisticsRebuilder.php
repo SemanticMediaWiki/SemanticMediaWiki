@@ -141,7 +141,7 @@ class PropertyStatisticsRebuilder {
 		$this->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function getCountFormRow( $row ) {
+	private function getCountFormRow( $row ): array {
 
 		$usageCount = 0;
 		$nullCount = 0;
@@ -165,7 +165,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	private function getPropertyTableRowCount( $propertyTable, $pid ) {
+	private function getPropertyTableRowCount( $propertyTable, $pid ): array {
 
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );

@@ -222,7 +222,7 @@ class DataRebuilder {
 		return $this->rebuildAll();
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 
@@ -244,7 +244,7 @@ class DataRebuilder {
 		return $this->exceptionCount;
 	}
 
-	private function rebuildFromSelection( $params = [] ) {
+	private function rebuildFromSelection( $params = [] ): bool {
 
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
@@ -287,7 +287,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function rebuildAll() {
+	private function rebuildAll(): bool {
 
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
@@ -484,7 +484,7 @@ class DataRebuilder {
 		$this->rebuildCount++;
 	}
 
-	private function getHumanReadableTextFrom( $id, array $entities ) {
+	private function getHumanReadableTextFrom( $id, array $entities ): array {
 
 		if ( !$this->options->has( 'v' ) ) {
 			return [ '', '' ];
@@ -507,7 +507,7 @@ class DataRebuilder {
 		return [ $text, "[$prefix " . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
 	}
 
-	private function performFullDelete() {
+	private function performFullDelete(): bool {
 
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Delete data' )
@@ -602,7 +602,7 @@ class DataRebuilder {
 		$outdatedDisposer->run();
 	}
 
-	private function is_writable( $startIdFile ) {
+	private function is_writable( $startIdFile ): bool {
 
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );

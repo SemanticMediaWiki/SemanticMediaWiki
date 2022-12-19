@@ -17,7 +17,7 @@ class HtmlModal {
 	 *
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'ext.smw.modal' ];
 	}
 
@@ -26,7 +26,7 @@ class HtmlModal {
 	 *
 	 * @return array
 	 */
-	public static function getModuleStyles() {
+	public static function getModuleStyles(): array {
 		return [ 'ext.smw.modal.styles' ];
 	}
 

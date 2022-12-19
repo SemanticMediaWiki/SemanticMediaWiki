@@ -125,7 +125,7 @@ class ImportValue extends DataValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;
@@ -159,7 +159,7 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		return htmlspecialchars( $this->qname );
 	}
 

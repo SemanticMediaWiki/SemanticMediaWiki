@@ -384,7 +384,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getAskParserFunctionDefinition() {
+	public function getAskParserFunctionDefinition(): array {
 
 		$askParserFunctionDefinition = function( $parser ) {
 
@@ -410,7 +410,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getShowParserFunctionDefinition() {
+	public function getShowParserFunctionDefinition(): array {
 
 		$showParserFunctionDefinition = function( $parser ) {
 
@@ -436,7 +436,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getSubobjectParserFunctionDefinition() {
+	public function getSubobjectParserFunctionDefinition(): array {
 
 		$subobjectParserFunctionDefinition = function( $parser ) {
 
@@ -457,7 +457,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getSetRecurringEventParserFunctionDefinition() {
+	public function getSetRecurringEventParserFunctionDefinition(): array {
 
 		$recurringEventsParserFunctionDefinition = function( $parser ) {
 
@@ -478,9 +478,9 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getSetParserFunctionDefinition() {
+	public function getSetParserFunctionDefinition(): array {
 
-		$setParserFunctionDefinition = function( $parser ) {
+		$setParserFunctionDefinition = function( $parser ): array {
 
 			$setParserFunction = $this->newSetParserFunction(
 				$parser
@@ -499,7 +499,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getConceptParserFunctionDefinition() {
+	public function getConceptParserFunctionDefinition(): array {
 
 		$conceptParserFunctionDefinition = function( $parser ) {
 
@@ -518,7 +518,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return array
 	 */
-	public function getDeclareParserFunctionDefinition() {
+	public function getDeclareParserFunctionDefinition(): array {
 
 		$declareParserFunctionDefinition = function( $parser, $frame, $args ) {
 

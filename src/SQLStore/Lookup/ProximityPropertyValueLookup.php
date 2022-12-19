@@ -236,7 +236,7 @@ class ProximityPropertyValueLookup {
 		return false;
 	}
 
-	private function getField( $property ) {
+	private function getField( $property ): array {
 
 		$typeId = $property->findPropertyTypeID();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );

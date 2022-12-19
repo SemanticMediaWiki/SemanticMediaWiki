@@ -351,7 +351,7 @@ class Indexer {
 		);
 	}
 
-	private function canReplicate() {
+	private function canReplicate(): bool {
 
 		$connection = $this->store->getConnection( 'elastic' );
 
@@ -363,7 +363,7 @@ class Indexer {
 		return false;
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( DIWikiPage $subject ): array {
 
 		$title = $subject->getDBKey();
 

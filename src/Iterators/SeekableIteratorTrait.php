@@ -107,7 +107,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return key( $this->container ) !== null;
 	}
 

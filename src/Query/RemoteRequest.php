@@ -82,7 +82,7 @@ class RemoteRequest implements QueryEngine {
 	 *
 	 * @return boolean
 	 */
-	public function hasFeature( $flag ) {
+	public function hasFeature( $flag ): bool {
 		return ( ( (int)$this->features & $flag ) == $flag );
 	}
 
@@ -199,7 +199,7 @@ class RemoteRequest implements QueryEngine {
 		) . $result;
 	}
 
-	private function findExtraInformation( &$result ) {
+	private function findExtraInformation( &$result ): array {
 		$count = 0;
 		$hasFurtherResults = false;
 

@@ -41,7 +41,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_ALERTS;
 	}
 
@@ -50,7 +50,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
+	public function hasAction(): bool {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
+	public function isTaskFor( $action ): bool {
 		return false;
 	}
 

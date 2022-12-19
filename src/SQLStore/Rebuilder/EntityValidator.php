@@ -100,7 +100,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function inNamespace( $row ) {
+	public function inNamespace( $row ): bool {
 
 		if ( $this->namespaces === false ) {
 			return true;
@@ -116,7 +116,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isProperty( $row ) {
+	public function isProperty( $row ): bool {
 		return $row->smw_namespace === SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '';
 	}
 
@@ -127,7 +127,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isOutdated( $row ) {
+	public function isOutdated( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW;
 	}
 
@@ -138,7 +138,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isRedirect( $row ) {
+	public function isRedirect( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWREDIIW;
 	}
 
@@ -150,7 +150,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isDetachedSubobject( $title, $row ) {
+	public function isDetachedSubobject( $title, $row ): bool {
 
 		if ( $row->smw_subobject === '' ) {
 			return false;
@@ -174,7 +174,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isDetachedQueryRef( $row ) {
+	public function isDetachedQueryRef( $row ): bool {
 
 		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
 			return false;
@@ -192,7 +192,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isPlainObjectValue( $row ) {
+	public function isPlainObjectValue( $row ): bool {
 
 		// A rogue title should never happen
 		if ( $row->smw_title === '' && $row->smw_proptable_hash === null ) {
@@ -216,7 +216,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasPropertyInvalidCharacter( $row ) {
+	public function hasPropertyInvalidCharacter( $row ): bool {
 
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
@@ -238,7 +238,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function isRetiredProperty( $row ) {
+	public function isRetiredProperty( $row ): bool {
 
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
@@ -302,7 +302,7 @@ class EntityValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasLatestRevID( Title $title, $row = false ) {
+	public function hasLatestRevID( Title $title, $row = false ): bool {
 
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 

@@ -158,7 +158,7 @@ class AutoRecovery {
 	 *
 	 * @return boolean
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 
 		if ( !$this->enabled ) {
 			return false;

@@ -87,7 +87,7 @@ class NamespaceManager {
 	 *
 	 * @param array &$namespaces
 	 */
-	public static function initCanonicalNamespaces( array &$namespaces ) {
+	public static function initCanonicalNamespaces( array &$namespaces ): bool {
 
 		$canonicalNames = self::initCustomNamespace( $GLOBALS )->getCanonicalNames();
 		$namespacesByName = array_flip( $namespaces );
@@ -106,13 +106,13 @@ class NamespaceManager {
 	}
 
 	/**
-	 * @see Hooks:CanonicalNamespaces
-	 *
-	 * @since 1.9
-	 *
-	 * @return array
-	 */
-	public static function getCanonicalNames() {
+  * @see Hooks:CanonicalNamespaces
+  *
+  * @since 1.9
+  *
+  * @return string[]
+  */
+ public static function getCanonicalNames(): array {
 
 		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',
@@ -135,7 +135,7 @@ class NamespaceManager {
 	 *
 	 * @return array
 	 */
-	public static function buildNamespaceIndex( $offset ) {
+	public static function buildNamespaceIndex( $offset ): array {
 
 		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
 		// "Relation" and "Relation_Talk"
@@ -301,7 +301,7 @@ class NamespaceManager {
 		];
 	}
 
-	protected function isDefinedConstant( $constant ) {
+	protected function isDefinedConstant( $constant ): bool {
 		return defined( $constant );
 	}
 

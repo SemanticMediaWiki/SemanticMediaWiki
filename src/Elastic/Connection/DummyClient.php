@@ -73,28 +73,28 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getIndexName
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( $type ): string {
 		return '';
 	}
 
 	/**
 	 * @see Client::getIndexDefByType
 	 */
-	public function getIndexDefByType( $type ) {
+	public function getIndexDefByType( $type ): string {
 		return '';
 	}
 
 	/**
 	 * @see Client::getIndexDefFileModificationTimeByType
 	 */
-	public function getIndexDefFileModificationTimeByType( $type ) {
+	public function getIndexDefFileModificationTimeByType( $type ): int {
 		return 0;
 	}
 
 	/**
 	 * @see Client::getSoftwareInfo
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => "[https://www.elastic.co/products/elasticsearch Elasticsearch]",
 			'version' => null
@@ -104,28 +104,28 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::info
 	 */
-	public function info() {
+	public function info(): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::stats
 	 */
-	public function stats( $type = 'indices', $params = [] ) {
+	public function stats( $type = 'indices', $params = [] ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::cat
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::hasIndex
 	 */
-	public function hasIndex( $type, $useCache = true ) {
+	public function hasIndex( $type, $useCache = true ): bool {
 		return true;
 	}
 
@@ -152,14 +152,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getMapping
 	 */
-	public function getMapping( array $params ) {
+	public function getMapping( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::getSettings
 	 */
-	public function getSettings( array $params ) {
+	public function getSettings( array $params ): array {
 		return [];
 	}
 
@@ -171,42 +171,42 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::validate
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::ping
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::quick_ping
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::exists
 	 */
-	public function exists( array $params ) {
+	public function exists( array $params ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::get
 	 */
-	public function get( array $params ) {
+	public function get( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::delete
 	 */
-	public function delete( array $params ) {
+	public function delete( array $params ): array {
 		return [];
 	}
 
@@ -228,28 +228,28 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::count
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): int {
 		return 0;
 	}
 
 	/**
 	 * @see Client::search
 	 */
-	public function search( array $params ) {
+	public function search( array $params ): array {
 		return [ [], [] ];
 	}
 
 	/**
 	 * @see Client::explain
 	 */
-	public function explain( array $params ) {
+	public function explain( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::hasMaintenanceLock
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return false;
 	}
 
@@ -266,14 +266,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasLock
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::getLock
 	 */
-	public function getLock( $type ) {
+	public function getLock( $type ): bool {
 		return false;
 	}
 

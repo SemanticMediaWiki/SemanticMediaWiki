@@ -132,7 +132,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return array
 	 */
-	public function getDefaultDataItemTables() {
+	public function getDefaultDataItemTables(): array {
 		return array_values( self::$defaultDiTypeTableIdMap );
 	}
 
@@ -143,7 +143,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return boolean
 	 */
-	public function isFixedTableProperty( DIProperty $property ) {
+	public function isFixedTableProperty( DIProperty $property ): bool {
 
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();

@@ -153,7 +153,7 @@ class Deserializer {
 		return $printRequest;
 	}
 
-	private static function isCategory( $text ) {
+	private static function isCategory( $text ): bool {
 
 		$text = mb_convert_case( $text, MB_CASE_TITLE );
 
@@ -165,7 +165,7 @@ class Deserializer {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == $text;
 	}
 
-	private static function getPartsFromText( $text ) {
+	private static function getPartsFromText( $text ): array {
 
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)

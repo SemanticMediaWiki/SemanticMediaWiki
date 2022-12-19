@@ -89,7 +89,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return boolean
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -185,7 +185,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';
@@ -659,7 +659,7 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function fetchQueryResult( $params ) {
+	private function fetchQueryResult( $params ): array {
 
 		$res = null;
 		$debug = '';

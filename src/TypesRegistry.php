@@ -46,7 +46,7 @@ class TypesRegistry {
 	 *
 	 * @return array
 	 */
-	public static function getDataTypeList() {
+	public static function getDataTypeList(): array {
 
 		return [
 
@@ -158,7 +158,7 @@ class TypesRegistry {
 	 *
 	 * @return  array
 	 */
-	public static function getPropertyList( $useCategoryHierarchy = true ) {
+	public static function getPropertyList( $useCategoryHierarchy = true ): array {
 		return [
 
 			// ID => [ valueType, isVisible, isAnnotable, isDeclarative ]

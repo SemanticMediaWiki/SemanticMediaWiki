@@ -57,7 +57,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param UserIdentity|string $user
 	 */
-	public function process( $user ) {
+	public function process( $user ): bool {
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
 			return false;

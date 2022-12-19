@@ -28,7 +28,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'concept_txt'  => FieldType::TYPE_BLOB,
 			'concept_docu' => FieldType::TYPE_BLOB,
@@ -45,7 +45,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'concept_txt'  => FieldType::TYPE_BLOB,
 			'concept_docu' => FieldType::TYPE_BLOB,
@@ -60,7 +60,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
@@ -75,7 +75,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'concept_txt' => $dataItem->getConceptQuery(),
 			'concept_docu' => $dataItem->getDocumentation(),
@@ -90,7 +90,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'concept_txt';
 	}
 
@@ -99,7 +99,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'concept_txt';
 	}
 

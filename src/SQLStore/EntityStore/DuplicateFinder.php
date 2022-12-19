@@ -217,7 +217,7 @@ class DuplicateFinder {
 		return $map;
 	}
 
-	private static function fieldsDef() {
+	private static function fieldsDef(): array {
 		return [
 			SQLStore::ID_TABLE => [
 				'smw_title',

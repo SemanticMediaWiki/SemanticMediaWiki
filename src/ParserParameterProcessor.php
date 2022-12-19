@@ -114,7 +114,7 @@ class ParserParameterProcessor {
 	 *
 	 * @return boolean
 	 */
-	public function hasParameter( $key ) {
+	public function hasParameter( $key ): bool {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
 	}
 

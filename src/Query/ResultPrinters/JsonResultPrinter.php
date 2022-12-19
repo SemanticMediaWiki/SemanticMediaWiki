@@ -36,7 +36,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'application/json';
 	}
 
@@ -147,7 +147,10 @@ class JsonResultPrinter extends FileExportPrinter {
 		return json_encode( $result, $flags );
 	}
 
-	private function buildSimpleList( $res ) {
+	/**
+  * @return array<int|string, array<int|string, mixed[]>>
+  */
+ private function buildSimpleList( $res ): array {
 
 		$result = [];
 

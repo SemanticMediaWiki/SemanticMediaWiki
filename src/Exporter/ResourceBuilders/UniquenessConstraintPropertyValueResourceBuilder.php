@@ -21,7 +21,7 @@ class UniquenessConstraintPropertyValueResourceBuilder extends PropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_PVUC';
 	}
 

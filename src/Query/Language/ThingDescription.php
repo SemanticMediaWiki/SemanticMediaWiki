@@ -20,11 +20,11 @@ class ThingDescription extends Description {
 		return $asValue ? ( isset( $this->isNegation ) ? '!' : '' ) . '+' : '';
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		return 0; // no real condition, no size or depth
 	}
 

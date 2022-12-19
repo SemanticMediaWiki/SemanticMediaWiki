@@ -58,7 +58,7 @@ class ExtensionSchemaUpdates implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Store $store ) {
+	public function process( Store $store ): bool {
 
 		$verbose = true;
 
