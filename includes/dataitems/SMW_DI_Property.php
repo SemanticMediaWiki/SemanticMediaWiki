@@ -565,7 +565,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
 		$json['propertyValueType'] = $this->propertyValueType;
 		$json['interwiki'] = $this->interwiki;

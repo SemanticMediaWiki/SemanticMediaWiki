@@ -615,7 +615,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
 		$json['julianDay'] = $this->julianDay;
 		return $json;

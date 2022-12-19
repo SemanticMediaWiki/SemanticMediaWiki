@@ -344,7 +344,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$json = parent::jsonSerialize();
 		$json['sortkey'] = $this->sortkey;
 		$json['contextReference'] = $this->contextReference;

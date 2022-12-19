@@ -897,7 +897,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		# T312589 explicitly calling jsonSerialize() will be unnecessary
 		# in the future.
 		$json = [
