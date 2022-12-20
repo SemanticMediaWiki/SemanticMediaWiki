@@ -429,5 +429,6 @@
 	"smw-datavalue-parse-error": "Дадзенае значэньне «$1» не было распазнанае.",
 	"smw-no-data-available": "Няма даступных зьвестак.",
 	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
-	"smw-listingcontinuesabbrev": " (працяг)"
+	"smw-listingcontinuesabbrev": " (працяг)",
+	"smw-showingresults": "Ніжэй {{PLURAL:$1|паданы|паданыя|паданыя}} да '''$1''' {{PLURAL:$1|выніку|вынікаў|вынікаў}}, пачынаючы з #<b>$2</b>."
 }

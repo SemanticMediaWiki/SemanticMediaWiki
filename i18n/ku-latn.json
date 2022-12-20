@@ -42,5 +42,6 @@
 	"smw-search-syntax": "Sentaks",
 	"smw-types-list": "Lîsteya cureyên daneyan",
 	"smw-format-datatable-next": "Pêşve",
-	"smw-listingcontinuesabbrev": "dewam"
+	"smw-listingcontinuesabbrev": "dewam",
+	"smw-showingresults": "{{PLURAL:$1|Encamek|'''$1''' encam}}, bi #'''$2''' dest pê dike."
 }

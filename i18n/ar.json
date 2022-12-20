@@ -1011,5 +1011,6 @@
 	"smw-datavalue-constraint-schema-property-invalid-type": "المخطط \"$1\" المشروح غير صالح لخاصية؛ فهو يتطلب نوع \"$2\".",
 	"smw-entity-examiner-associated-revision-mismatch": "مراجعة",
 	"smw-entity-examiner-deferred-fake": "مزيف",
-	"smw-listingcontinuesabbrev": "(تابع)"
+	"smw-listingcontinuesabbrev": "(تابع)",
+	"smw-showingresults": "معروض بالأسفل {{PLURAL:$1|<strong>1</strong> نتيجة}} بدءا من رقم <strong>$2</strong>."
 }

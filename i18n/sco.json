@@ -12,5 +12,6 @@
 	"smw-admin-idlookup-docu": "Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
 	"smw-admin-objectid": "The Object Id:",
 	"smw-livepreview-loading": "Laidin...",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Shawin ablo up tae {{PLURAL:$1|'''1''' ootcome|'''$1''' ootcomes}} stertin wi #'''$2'''."
 }

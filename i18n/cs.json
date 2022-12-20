@@ -378,5 +378,6 @@
 	"smw-property-tab-redirects": "Synonyma",
 	"smw-concept-tab-list": "Seznam",
 	"smw-concept-tab-errors": "Chyby",
-	"smw-listingcontinuesabbrev": "pokrač."
+	"smw-listingcontinuesabbrev": "pokrač.",
+	"smw-showingresults": "Níže zobrazuji nejvýše <strong>$1</strong> {{PLURAL:$1|výsledek|výsledky|výsledků}} počínaje od <strong>$2</strong>."
 }

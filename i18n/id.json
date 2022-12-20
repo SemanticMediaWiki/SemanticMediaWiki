@@ -256,5 +256,6 @@
 	"smw_conceptarticlecount": "Menampilkan $1 {{PLURAL:$1|halaman}} berikut.",
 	"smw-livepreview-loading": "Mengunggah...",
 	"smw-datavalue-number-nullnotallowed": "\"$1\" kembali dengan sebuah \"NULL\" yang tidak mengizinkan sebagai nomor.",
-	"smw-listingcontinuesabbrev": "samb."
+	"smw-listingcontinuesabbrev": "samb.",
+	"smw-showingresults": "Di bawah ini ditampilkan hingga {{PLURAL:$1|<strong>1</strong> hasil|<strong>$1</strong> hasil}}, dimulai dari #<strong>$2</strong>."
 }

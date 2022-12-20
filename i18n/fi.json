@@ -385,5 +385,6 @@
 	"smw-ask-tab-extra": "Ekstra",
 	"smw-ask-tab-code": "Koodi",
 	"smw-legend": "Selite",
-	"smw-listingcontinuesabbrev": "jatkuu"
+	"smw-listingcontinuesabbrev": "jatkuu",
+	"smw-showingresults": "Alla on vain {{PLURAL:$1|<strong>1</strong> hakutulos|<strong>$1</strong> hakutulosta}} alkaen tuloksesta nro <strong>$2</strong>."
 }

@@ -21,5 +21,6 @@
 	"browse": "Shfletoni wiki",
 	"smw-admin-bugsreport": "Të metat mund të njoftohen te <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">ndjekësi i problemeve</a>, faqja <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">e njoftimit të të metave</a> jep ca ndihmë mbi se si të shkruhet një raport efikas të mete.",
 	"smw-livepreview-loading": "Duke punuar…",
-	"smw-listingcontinuesabbrev": "vazh."
+	"smw-listingcontinuesabbrev": "vazh.",
+	"smw-showingresults": "Më poshtë tregohen {{PLURAL:$1|'''1''' përfundim|'''$1''' përfundime}} duke filluar nga #'''$2'''."
 }

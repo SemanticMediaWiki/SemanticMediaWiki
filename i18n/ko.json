@@ -664,5 +664,6 @@
 	"smw-report": "보고서",
 	"smw-legend": "범례",
 	"smw-entity-examiner-associated-revision-mismatch": "판",
-	"smw-listingcontinuesabbrev": "(계속)"
+	"smw-listingcontinuesabbrev": "(계속)",
+	"smw-showingresults": "'''$2'''번 부터의 {{PLURAL:$1|결과 '''1'''개|결과 '''$1'''개}}입니다."
 }

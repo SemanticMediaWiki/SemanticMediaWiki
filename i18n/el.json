@@ -714,5 +714,6 @@
 	"smw-report": "Αναφορά",
 	"smw-legend": "Υπόμνημα",
 	"smw-entity-examiner-associated-revision-mismatch": "Αναθεώρηση",
-	"smw-listingcontinuesabbrev": "συνεχίζεται"
+	"smw-listingcontinuesabbrev": "συνεχίζεται",
+	"smw-showingresults": "Παρακάτω {{PLURAL:$1|εμφανίζεται μέχρι <strong>1</strong> αποτέλεσμα|εμφανίζονται μέχρι <strong>$1</strong> αποτελέσματα}} ξεκινώντας από το Νο <strong>$2</strong>."
 }

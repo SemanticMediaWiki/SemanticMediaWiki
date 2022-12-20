@@ -473,5 +473,6 @@
 	"smw-entity-examiner-deferred-elastic-replication": "الاستیک‌سرچ",
 	"smw-entity-examiner-associated-revision-mismatch": "نسخه",
 	"smw-indicator-revision-mismatch": "نسخه",
-	"smw-listingcontinuesabbrev": "ادامه"
+	"smw-listingcontinuesabbrev": "ادامه",
+	"smw-showingresults": "نمایش حداکثر {{PLURAL:$1|'''۱''' نتیجه|'''$1''' نتیجه}} در پایین، آغاز از شماره '''$2'''."
 }

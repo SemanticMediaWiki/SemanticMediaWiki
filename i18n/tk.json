@@ -9,5 +9,6 @@
 	"smw_browse_go": "Git",
 	"smw_result_prev": "Öňki",
 	"smw-livepreview-loading": "Ýüklenýär...",
-	"smw-listingcontinuesabbrev": "(dowamy)"
+	"smw-listingcontinuesabbrev": "(dowamy)",
+	"smw-showingresults": "Aşakda №'''$2''' netijeden başlap, {{PLURAL:$1|'''1''' netije|'''$1''' netije}} görkezilýär."
 }

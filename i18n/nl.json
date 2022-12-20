@@ -554,5 +554,6 @@
 	"smw-es-replication-error-divergent-date-detail": "Wijzigingsdatum waarnaar wordt verwezen:\n*Elasticsearch: $1 \n*Database: $2",
 	"smw-report": "Verslag",
 	"smw-entity-examiner-associated-revision-mismatch": "Versie",
-	"smw-listingcontinuesabbrev": "meer"
+	"smw-listingcontinuesabbrev": "meer",
+	"smw-showingresults": "Hieronder {{PLURAL:$1|staat '''1''' resultaat|staan '''$1''' resultaten}} vanaf #'''$2'''."
 }

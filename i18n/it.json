@@ -493,5 +493,6 @@
 	"smw-ask-tab-code": "Codice",
 	"smw-legend": "Legenda",
 	"smw-entity-examiner-associated-revision-mismatch": "Versione",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Di seguito {{PLURAL:$1|viene presentato al massimo '''1''' risultato|vengono presentati al massimo '''$1''' risultati}} a partire dal numero '''$2'''."
 }

@@ -17,5 +17,6 @@
 	"action-smw-admin": "pristupanje administratorskima zadacima Semantički MediaWiki",
 	"action-smw-ruleedit": "uređivanje odredbenih stranica (Semantički MediaWiki)",
 	"smw-livepreview-loading": "Učitavanje...",
-	"smw-listingcontinuesabbrev": "nast."
+	"smw-listingcontinuesabbrev": "nast.",
+	"smw-showingresults": "Dole {{PLURAL:$1|je prikazana <strong>1</strong> stavka|su prikazane <strong>$1</strong> stavke|je prikazano <strong>$1</strong> stavki}} počev od br. <strong>$2</strong>."
 }

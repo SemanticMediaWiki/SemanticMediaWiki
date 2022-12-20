@@ -876,5 +876,6 @@
 	"smw-entity-examiner-deferred-fake": "Simulació",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constricció|Constriccions}}",
 	"smw-indicator-revision-mismatch": "Revisió",
-	"smw-listingcontinuesabbrev": " cont."
+	"smw-listingcontinuesabbrev": " cont.",
+	"smw-showingresults": "Tot seguit es {{PLURAL:$1|mostra el resultat|mostren els <b>$1</b> resultats començant pel número <b>$2</b>}}."
 }

@@ -15,5 +15,6 @@
 	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ....",
 	"smw-search-hide": "خبي",
 	"smw-help": "معاونة",
-	"smw-listingcontinuesabbrev": "لكمالة"
+	"smw-listingcontinuesabbrev": "لكمالة",
+	"smw-showingresults": "باينة لتحت {{PLURAL:$1|<strong>1</strong> نتائج}} بادية برقم <strong>$2</strong>."
 }

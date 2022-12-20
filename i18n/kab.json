@@ -61,5 +61,6 @@
 	"smw-livepreview-loading": "Asali…",
 	"protect-level-smw-pageedit": "Sirek iseqdacen yesɛan azref n usnifel n isebtar (Semantic MediaWiki)",
 	"smw-postproc-queryref": "Asebter yettwacreḍ d akken yessefk ad ittusmiren imi yesra asesfer uḍfiṛ.",
-	"smw-listingcontinuesabbrev": "asartu"
+	"smw-listingcontinuesabbrev": "asartu",
+	"smw-showingresults": "Tamuli n {{PLURAL:$1|'''Yiwen''' wegmud|'''$1''' n yigmad}} seg  #'''$2'''."
 }

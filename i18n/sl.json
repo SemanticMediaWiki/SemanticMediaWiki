@@ -222,5 +222,6 @@
 	"smw-remote-source-disabled": "Vir '''$1''' je onemogočil podporo za oddaljene zahtevke!",
 	"smw-es-replication-error-divergent-date": "Pri spremljanju replikacije je bilo ugotovljeno, da <b>datum modifikacije</b> pri članku »$1« (ID: $2) kaže neskladnost.",
 	"smw-es-replication-error-divergent-date-detail": "Referenčni datum spremembe:\n*Elasticsearch: $1 \n*Podatkovna zbirka: $2",
-	"smw-listingcontinuesabbrev": "nadalj."
+	"smw-listingcontinuesabbrev": "nadalj.",
+	"smw-showingresults": "Prikazujem do '''$1''' {{PLURAL:$1|zadetek|zadetka|zadetke|zadetkov}}, začenši s št. '''$2'''."
 }

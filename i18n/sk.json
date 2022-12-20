@@ -179,5 +179,6 @@
 	"smw_conceptarticlecount": "Nižšie {{PLURAL:$1|zobrazená jedna stránka|zobrazené $1 stránky|zobrazených $1 stránkok}}.",
 	"smw-property-predefined-askpa": "„$1“ je predefinovaná vlastnosť popisujúca parametre, ktoré ovplyvňujú výsledok dopytu, a poskytuje ju [https://www.semantic-mediawiki.org/wiki/Help:Special_properties Semantic MediaWiki].",
 	"smw-livepreview-loading": "Načítava sa…",
-	"smw-listingcontinuesabbrev": "pokrač."
+	"smw-listingcontinuesabbrev": "pokrač.",
+	"smw-showingresults": "Nižšie {{PLURAL:$1|je zobrazený jeden výsledok|sú zobrazené '''1''' výsledky|je zobrazených '''$1''' výsledkov}}, počnúc od  #<b>$2</b>."
 }
