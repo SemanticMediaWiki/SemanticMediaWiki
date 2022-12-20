@@ -9,5 +9,6 @@
 	"smw_purge": "Жаңарту",
 	"browse": "Уикиді шолу",
 	"smw-livepreview-loading": "Жүктеуде…",
-	"smw-listingcontinuesabbrev": "(жалғ.)"
+	"smw-listingcontinuesabbrev": "(жалғ.)",
+	"smw-showingresults": "Төменде #<strong>$2</strong> нәтижеден бастап {{PLURAL:$1|<strong>1</strong> нәтиже|<strong>$1</strong> нәтиже}}ге дейін нәтижелер көрсетілуде."
 }

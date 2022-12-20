@@ -56,5 +56,6 @@
 	"smw-pendingtasks-setup-tasks": "ڪم",
 	"smw-legend": "ڪنجي",
 	"smw-indicator-revision-mismatch": "ورجاءُ",
-	"smw-listingcontinuesabbrev": "جاري."
+	"smw-listingcontinuesabbrev": "جاري.",
+	"smw-showingresults": "ھيٺ #<strong>$2</strong> سان شروع ٿيندڙ {{PLURAL:$1|<strong>1</strong> نتيجو|<strong>$1</strong> نتيجا}} تائين ڏيکاري ٿو."
 }

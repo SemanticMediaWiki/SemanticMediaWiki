@@ -6,5 +6,6 @@
 	},
 	"browse": "Semantisches Browse",
 	"smw-livepreview-loading": "Am loode …",
-	"smw-listingcontinuesabbrev": "(Fortsetzung)"
+	"smw-listingcontinuesabbrev": "(Fortsetzung)",
+	"smw-showingresults": "Hier {{PLURAL:$1|ist '''1''' Ergebnis|sind '''$1''' Ergebnisse}}, beginnend mit Nummer '''$2.'''"
 }

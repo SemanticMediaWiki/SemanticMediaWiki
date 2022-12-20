@@ -6,5 +6,6 @@
 	},
 	"browse": "Wiki eçtälegen qaraw",
 	"smw-livepreview-loading": "Yökläw...",
-	"smw-listingcontinuesabbrev": "däwamı"
+	"smw-listingcontinuesabbrev": "däwamı",
+	"smw-showingresults": "Asta № '''$2''' {{PLURAL:$1|başlap}} '''$1''' {{PLURAL:$1|rezultat}} kürsätelgän."
 }

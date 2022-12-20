@@ -325,5 +325,6 @@
 	"smw-ask-format-help-link": "[https://www.semantic-mediawiki.org/wiki/Help:$1_format $1] formatua",
 	"smw-help": "Laguntza",
 	"smw-processing": "Prozesatzen...",
-	"smw-listingcontinuesabbrev": "jarr."
+	"smw-listingcontinuesabbrev": "jarr.",
+	"smw-showingresults": "Jarraian {{PLURAL:$1|emaitza <strong>bat</strong> ageri da.|<strong>$1</strong> emaitza ageri dira, #'''$2'''.etik hasita.}}"
 }

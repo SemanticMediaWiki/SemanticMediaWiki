@@ -779,5 +779,6 @@
 	"smw-ask-tab-extra": "Extras",
 	"smw-ask-tab-debug": "Depuración",
 	"smw-ask-tab-code": "Código",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "{{PLURAL:$1|Móstrase <strong>1</strong> resultado|Móstranse <strong>$1</strong> resultados}}, comezando polo número <strong>$2</strong>."
 }

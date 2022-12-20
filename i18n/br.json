@@ -248,5 +248,6 @@
 	"smw-types-title": "Doare: $1",
 	"smw-updateentitycollation-incomplete": "NEvez zo eo bet kemmet an arventenn <code>[https://www.semantic-mediawiki.org/wiki/Help:$smwgEntityCollation $smwgEntityCollation]</code> ha rekis eo erounit ar skript <code>[https://www.semantic-mediawiki.org/wiki/Help:updateEntityCollation.php updateEntityCollation.php]</code> evit ma c'hallfe an entiteoù bezañ hizivaet ha bezañ enno talvoudoù dilenn reizh.",
 	"smw-entity-examiner-associated-revision-mismatch": "Adweladenn",
-	"smw-listingcontinuesabbrev": "(war-lerc'h)"
+	"smw-listingcontinuesabbrev": "(war-lerc'h)",
+	"smw-showingresults": "Diskouez betek {{PLURAL:$1|'''1''' disoc'h|'''$1''' disoc'h}} o kregiñ gant #'''$2'''."
 }

@@ -7,5 +7,6 @@
 	"version-semantic": "Éksténsi sémantik",
 	"browse": "Jalajahi wiki",
 	"smw-livepreview-loading": "Ma'unggah...",
-	"smw-listingcontinuesabbrev": "samb."
+	"smw-listingcontinuesabbrev": "samb.",
+	"smw-showingresults": "Di bawah ngini ditampaiakan hingga {{PLURAL:$1|'''1''' kulihan|'''$1''' kukulihan}}, dimulai matan #'''$2'''."
 }

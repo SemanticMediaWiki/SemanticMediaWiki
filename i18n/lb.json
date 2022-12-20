@@ -372,5 +372,6 @@
 	"smw-entity-examiner-associated-revision-mismatch": "Versioun",
 	"smw-entity-examiner-deferred-fake": "Fälschung",
 	"smw-indicator-revision-mismatch": "Revisioun",
-	"smw-listingcontinuesabbrev": "(Fortsetzung)"
+	"smw-listingcontinuesabbrev": "(Fortsetzung)",
+	"smw-showingresults": "Hei gesitt der  {{PLURAL:$1| '''1''' Resultat|'''$1''' Resultater}}, ugefaange mat #'''$2'''."
 }

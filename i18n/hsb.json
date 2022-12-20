@@ -270,5 +270,6 @@
 	"smw-sp-admin-settings-button": "Lisćinu nastajenjow wutworić",
 	"smw-admin-objectid": "ID:",
 	"smw-livepreview-loading": "Čita so…",
-	"smw-listingcontinuesabbrev": "(pokročowanje)"
+	"smw-listingcontinuesabbrev": "(pokročowanje)",
+	"smw-showingresults": "Deleka so hač {{PLURAL:$1|'''1''' wuslědk pokazuje|'''$1''' wuslědkaj pokazujetej|'''$1''' wuslědki pokazuja|'''$1''' wuslědkow pokazuje}}, započinajo z #'''$2'''."
 }

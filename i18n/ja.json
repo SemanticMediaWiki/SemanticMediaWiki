@@ -580,5 +580,6 @@
 	"smw-report": "レポート",
 	"smw-legend": "凡例",
 	"smw-indicator-revision-mismatch-error": "[https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner 関連する改版]検査により、このエントリに対して MediaWiki が引用する改版と Semantic MediaWiki に紐付けされたものに不一致が見つかりました。",
-	"smw-listingcontinuesabbrev": "の続き"
+	"smw-listingcontinuesabbrev": "の続き",
+	"smw-showingresults": "<strong>$2</strong> 件目以降の最大 {{PLURAL:$1|<strong>$1</strong> 件の結果}}を表示しています。"
 }

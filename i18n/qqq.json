@@ -1032,5 +1032,6 @@
 	"smw-entity-examiner-deferred-constraint-error": "This is a label.",
 	"smw-entity-examiner-deferred-fake": "This is a label.",
 	"smw-indicator-revision-mismatch": "This is a label.",
-	"smw-listingcontinuesabbrev": "Shown in continuation of each first letter group. This message follows the first letter.\n\nThis is an abbreviation of the English word \"continued\". If the word is short in your language, the full stop in the end is not necessary."
+	"smw-listingcontinuesabbrev": "Shown in continuation of each first letter group. This message follows the first letter.\n\nThis is an abbreviation of the English word \"continued\". If the word is short in your language, the full stop in the end is not necessary.",
+	"smw-showingresults": "This message is used on some special pages such as [[Special:WantedCategories]]. Parameters:\n* $1 ― the total number of results in the batch shown\n* $2 ― the number of the first item listed\n\nNote that numbers given in $1 and $2 are preformated (and may contain locale-specific group separators or digits), so they cannot be used in the 1st parameter for the <code><nowiki>{{</nowiki>PLURAL:''number''<nowiki>|</nowiki>''textual variants...''<nowiki>}}</nowiki></code> parser funtion, which only accepts raw numbers written with ASCII digits.\n\n{{Int:Seealso}}{{Colon}}\n* {{msg-mw|Showingresultsnum}}"
 }

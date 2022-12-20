@@ -9,5 +9,6 @@
 	"smw-ui-tooltip-title-legend": "Lejenda",
 	"smw-livepreview-loading": "Caricamento in corso…",
 	"smw-legend": "Lejenda",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Qua de soto vien mostrà al massimo {{PLURAL:$1|'''1''' risultato|'''$1''' risultati}} a partir dal nùmaro '''$2'''."
 }

@@ -248,5 +248,6 @@
 	"smw-filter": "Pansala",
 	"smw-help": "Makatulong",
 	"smw-remote-source-unavailable": "Hindi mai-'connect' sa 'remote \"$1\" target'.",
-	"smw-listingcontinuesabbrev": "karugtong"
+	"smw-listingcontinuesabbrev": "karugtong",
+	"smw-showingresults": "Ipinapakita sa ibaba ang magpahanggang sa {{PLURAL:$1|'''1''' resultang|'''$1''' mga resultang}} nagsisimula sa #'''$2'''."
 }

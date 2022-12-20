@@ -6,5 +6,6 @@
 	},
 	"smw_result_next": "ቀጥሎ",
 	"smw-livepreview-loading": "በመጫን ላይ ነው...",
-	"smw-listingcontinuesabbrev": "(ተቀጥሏል)"
+	"smw-listingcontinuesabbrev": "(ተቀጥሏል)",
+	"smw-showingresults": "ከ ቁ.#<b>$2</b> ጀምሮ እስከ <b>$1</b> ውጤቶች ድረስ ከዚህ በታች ይታያሉ።"
 }

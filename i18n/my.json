@@ -125,5 +125,6 @@
 	"smw-es-replication-error-divergent-date-short": "အောက်ပါ ရက်စွဲအချက်အလက်များကို နှိုင်းယှဉ်ခြင်းအတွက် အသုံးပြုပါသည်:",
 	"smw-report": "အစီရင်ခံရန်",
 	"smw-legend": "အညွှန်း",
-	"smw-listingcontinuesabbrev": "ပံ့ပိုး"
+	"smw-listingcontinuesabbrev": "ပံ့ပိုး",
+	"smw-showingresults": "№<strong>$2</strong> နှင့်စသော ရလဒ် {{PLURAL:$1|<strong>1</strong> ခု|<strong>$1</strong> ခု}}ထိကို အောက်တွင် ပြထားသည်။"
 }

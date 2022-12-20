@@ -602,5 +602,6 @@
 	"smw-concept-tab-errors": "Błędy",
 	"smw-ask-tab-result": "Wynik",
 	"smw-ask-tab-code": "Kod",
-	"smw-listingcontinuesabbrev": "cd."
+	"smw-listingcontinuesabbrev": "cd.",
+	"smw-showingresults": "Poniżej znajduje się lista {{PLURAL:$1|z '''1''' wynikiem|'''$1''' wyników}}, rozpoczynając od wyniku numer '''$2'''."
 }

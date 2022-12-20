@@ -47,5 +47,6 @@
 	"smw-preparing": "Kreado ...",
 	"smw-expand": "Montrar la listo",
 	"smw-copy": "Kopiar",
-	"smw-listingcontinuesabbrev": "seq."
+	"smw-listingcontinuesabbrev": "seq.",
+	"smw-showingresults": "Montrante infre {{PLURAL:$1|'''1''' rezulto|'''$1''' rezulti}}, qui komencas kun numero #'''$2'''."
 }

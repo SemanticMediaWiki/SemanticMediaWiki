@@ -899,5 +899,6 @@
 	"smw-entity-examiner-deferred-fake": "Не настоящие",
 	"smw-indicator-revision-mismatch": "Редакция",
 	"smw-indicator-revision-mismatch-error": "Проверка [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner связанной ревизии] обнаружила несоответствие между ревизией, на которую ссылается MediaWiki, и ревизией, ассоциированной в Semantic MediaWiki для этой сущности.",
-	"smw-listingcontinuesabbrev": "(продолжение)"
+	"smw-listingcontinuesabbrev": "(продолжение)",
+	"smw-showingresults": "Ниже {{PLURAL:$1|1=показан <strong>1</strong> результат|показан  <strong>$1</strong> результат|показано <strong>$1</strong> результата|показаны <strong>$1</strong> результатов}}, начиная с № <strong>$2</strong>."
 }

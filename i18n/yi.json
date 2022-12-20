@@ -24,5 +24,6 @@
 	"smw-ui-tooltip-title-reference": "רעפערענץ",
 	"smw-livepreview-loading": "לאדנדיג…",
 	"smw-search-syntax": "סינטאקס",
-	"smw-listingcontinuesabbrev": "(המשך)"
+	"smw-listingcontinuesabbrev": "(המשך)",
+	"smw-showingresults": "ווייזן ביז {{PLURAL:$1|רעזולטאט '''איינס'''|'''$1''' רעזולטאטן}} אנגעפאנגן פון נומער #'''$2''':"
 }

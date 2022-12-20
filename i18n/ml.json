@@ -36,5 +36,6 @@
 	"smw-livepreview-loading": "ശേഖരിക്കുന്നു...",
 	"smw-data-lookup": "വിവരം ലഭ്യമാക്കുന്നു ...",
 	"smw-no-data-available": "വിവരങ്ങളൊന്നും ലഭ്യമല്ല.",
-	"smw-listingcontinuesabbrev": "തുടർച്ച."
+	"smw-listingcontinuesabbrev": "തുടർച്ച.",
+	"smw-showingresults": "'''$2''' മുതലുള്ള {{PLURAL:$1|'''ഒരു''' ഫലം|'''$1''' ഫലങ്ങൾ}} താഴെ പ്രദർശിപ്പിക്കുന്നു."
 }

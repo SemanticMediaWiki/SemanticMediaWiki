@@ -249,5 +249,6 @@
 	"smw-property-tab-constraint-schema-title": "Vingole d'u scheme combilate",
 	"smw-concept-tab-list": "Elenghe",
 	"smw-concept-tab-errors": "Errore",
-	"smw-listingcontinuesabbrev": "cond."
+	"smw-listingcontinuesabbrev": "cond.",
+	"smw-showingresults": "Stoche a fazze vedè aqquà sotte {{PLURAL:$1|'''1''' resultete|'''$1''' resultete}} ca accumenzene cu #'''$2'''."
 }

@@ -149,5 +149,6 @@
 	"smw-es-replication-error-divergent-date-detail": "*$1 (Cıgeyrayışo elastik)\n*$2 (Mığazaya SQLi)",
 	"smw-report": "Rapore",
 	"smw-legend": "Kıtabek",
-	"smw-listingcontinuesabbrev": "dewam..."
+	"smw-listingcontinuesabbrev": "dewam...",
+	"smw-showingresults": "#<strong>$2</strong> netican ra {{PLURAL:$1|<strong>1</strong> netice cêr dero|<strong>$1</strong> neticey cêr derê}}."
 }

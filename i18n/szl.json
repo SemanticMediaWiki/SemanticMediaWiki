@@ -7,5 +7,6 @@
 	},
 	"browse": "Przeglōndej wiki",
 	"smw-livepreview-loading": "Trwo uadowańy…",
-	"smw-listingcontinuesabbrev": "cd."
+	"smw-listingcontinuesabbrev": "cd.",
+	"smw-showingresults": "To lista na keryj je {{PLURAL:$1|'''1''' wyńik|'''$1''' wyńikůw}}, sztartujůnc uod nůmery '''$2'''."
 }

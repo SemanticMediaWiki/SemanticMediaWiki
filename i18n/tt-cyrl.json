@@ -33,5 +33,6 @@
 	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Идарәчеләр (Semantic MediaWiki)",
 	"smw-livepreview-loading": "Төяү бара…",
-	"smw-listingcontinuesabbrev": "дәвамы"
+	"smw-listingcontinuesabbrev": "дәвамы",
+	"smw-showingresults": "Түбәндә <strong>$2</strong>&nbsp;№ башлап {{PLURAL:$1|<strong>бер генә</strong> нәтиҗә|<strong>$1</strong> нәтиҗә}} күрсәтелгән."
 }

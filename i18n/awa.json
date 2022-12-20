@@ -8,5 +8,6 @@
 	"browse": "विकि देखा जाय",
 	"smw_browselink": "खाश जानकारी",
 	"prefs-smw": "शब्दार्थगत मीडियाविकी",
-	"smw-listingcontinuesabbrev": "आगे."
+	"smw-listingcontinuesabbrev": "आगे.",
+	"smw-showingresults": "नीचे क्रमांक '''$2''' से सुरु कै कय सबसे ढेर '''$1''' परिणाम {{PLURAL:$1|देखाइ गा है}}।"
 }

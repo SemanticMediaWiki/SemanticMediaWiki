@@ -268,5 +268,6 @@
 	"smw-section-expand": "अंश का विस्तार करें",
 	"smw-section-collapse": "अंश को संक्षिप्त करें",
 	"smw-types-title": "प्रकार: $1",
-	"smw-listingcontinuesabbrev": "जारी"
+	"smw-listingcontinuesabbrev": "जारी",
+	"smw-showingresults": "नीचे क्रमांक '''$2''' से प्रारंभ कर के अधिकतम '''$1''' परिणाम {{PLURAL:$1|दिखाया गया है|दिखाए गए हैं}}।"
 }

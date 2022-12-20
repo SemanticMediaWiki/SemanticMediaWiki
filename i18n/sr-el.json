@@ -260,5 +260,6 @@
 	"smw-concept-tab-errors": "Greške",
 	"smw-ask-tab-extra": "Dodatno",
 	"smw-ask-tab-code": "Kôd",
-	"smw-listingcontinuesabbrev": "nast."
+	"smw-listingcontinuesabbrev": "nast.",
+	"smw-showingresults": "{{PLURAL:$1|1=Prikazan je <strong>jedan</strong> rezultat|Prikazan je <strong>$1</strong> rezultat|Prikazana su <strong>$1</strong> rezultata|Prikazano je <strong>$1</strong> rezultata}}; broj prve stavke: <strong>$2</strong>."
 }

@@ -12,5 +12,6 @@
 	"browse": "ব্ৰাউজ ৱিকি",
 	"smw_result_results": "ফলাফল",
 	"smw-livepreview-loading": "ল'ড হৈ আছে…",
-	"smw-listingcontinuesabbrev": "আগলৈ"
+	"smw-listingcontinuesabbrev": "আগলৈ",
+	"smw-showingresults": "তলত #'''$2'''ৰ পৰা {{PLURAL:$1|'''1''' ফলাফল|'''$1''' ফলাফল}} দেখুওৱা হৈছে।"
 }
