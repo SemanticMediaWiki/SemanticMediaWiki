@@ -83,6 +83,6 @@ class ParserCachePurgeJob extends Job {
 	}
 
 	protected function newWikiPage( $title ) {
-		return WikiPage::factory( $title );
+		return ApplicationFactory::getInstance()->newPageCreator()->createPage( $title );
 	}
 }
