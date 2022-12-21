@@ -241,5 +241,6 @@
 	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-json": "JSON hiba: \"$1\"",
 	"smw-schema-usage": "Használat",
-	"smw-listingcontinuesabbrev": "folyt."
+	"smw-listingcontinuesabbrev": "folyt.",
+	"smw-showingresults": "Lent '''{{PLURAL:$1|egy|$1}}''' találat látható, az eleje '''$2'''."
 }

@@ -881,5 +881,6 @@
 	"smw-entity-examiner-deferred-constraint-error": "Restricción",
 	"smw-entity-examiner-associated-revision-mismatch": "Revisión",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restricción|Restricciones}}",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Abajo se {{PLURAL:$1|muestra <strong>1</strong> resultado|muestran hasta <strong>$1</strong> resultados}} comenzando por el n.º <strong>$2</strong>."
 }

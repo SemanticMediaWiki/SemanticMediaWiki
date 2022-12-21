@@ -6,5 +6,6 @@
 	},
 	"browse": "Viki kaeminõ",
 	"smw-livepreview-loading": "Laat…",
-	"smw-listingcontinuesabbrev": "lätt edesi"
+	"smw-listingcontinuesabbrev": "lätt edesi",
+	"smw-showingresults": "{{PLURAL:$1|'''Üts''' tulõmus|'''$1''' tulõmust}} (tulõmusõst '''$2''' pääle)."
 }

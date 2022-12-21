@@ -229,5 +229,6 @@
 	"smw-ask-tab-result": "Resultat",
 	"smw-ask-tab-extra": "Ekstra",
 	"smw-ask-tab-code": "Kode",
-	"smw-listingcontinuesabbrev": "forts."
+	"smw-listingcontinuesabbrev": "forts.",
+	"smw-showingresults": "Nedenfor vises <b>$1</b> {{PLURAL:$1|resultat|resultater}} startende med nummer <b>$2</b>."
 }

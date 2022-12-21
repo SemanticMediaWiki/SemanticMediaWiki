@@ -652,5 +652,6 @@
 	"smw-remote-source-unavailable": "Nun pudo coneutase col destín remotu «$1».",
 	"smw-remote-source-disabled": "L'orixe '''$1''' desactivó l'encontu de solicitúes remotes.",
 	"smw-pendingtasks-setup-tasks": "Xeres",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Abaxo s'{{PLURAL:$1|amuesa hasta <strong>un</strong> resultáu|amuesen <strong>$1</strong> resultaos}}, principando por #<strong>$2</strong>."
 }

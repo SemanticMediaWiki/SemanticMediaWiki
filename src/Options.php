@@ -169,7 +169,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		return [
 			'options' => $this->options,
 			'_type_' => get_class( $this ),

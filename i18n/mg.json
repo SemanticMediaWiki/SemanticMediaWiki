@@ -47,5 +47,6 @@
 	"smw-admin-statistics-job-title": "Statistikan'ny asa",
 	"smw_smwadmin_return": "Hiverina any amin'ny $1",
 	"smw-livepreview-loading": "Am-pakàna…",
-	"smw-listingcontinuesabbrev": " manaraka."
+	"smw-listingcontinuesabbrev": " manaraka.",
+	"smw-showingresults": "Omeo ny valiny{{PLURAL:$1||}} miisa hatramin'ny <b>$1</b> manomboka ny #<b>$2</b>."
 }

@@ -1117,5 +1117,6 @@
 	"smw-indicator-revision-mismatch": "Revisão",
 	"smw-indicator-revision-mismatch-error": "A verificação [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner revisão associada] encontrou uma falta de correspondência para esta entidade entre a revisão referenciada no MediaWiki e a que está a ser associada no MediaWiki Semântico.",
 	"smw-indicator-revision-mismatch-comment": "Uma falta de correspondência normalmente indica que um qualquer processo interrompeu a operação de armazenamento no MediaWiki Semântico. É recomendado rever os registos do servidor e procurar exceções ou outras falhas.",
-	"smw-listingcontinuesabbrev": "cont."
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "{{PLURAL:$1|É apresentado <strong>um</strong> resultado|São apresentados até <strong>$1</strong> resultados}} abaixo{{PLURAL:$1||, começando pelo <strong>$2</strong>º}}."
 }

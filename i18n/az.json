@@ -35,5 +35,6 @@
 	"smw-help": "Kömək",
 	"smw-processing": "İşləyir ...",
 	"smw-redirect-target-unresolvable": "Hədəf \"$1\" səbəbindən həll olunmayacaq",
-	"smw-listingcontinuesabbrev": "(davam)"
+	"smw-listingcontinuesabbrev": "(davam)",
+	"smw-showingresults": "Aşağıda #<strong>$2</strong> ilə başlayan {{PLURAL:$1|<strong>$1</strong>-ə qədər}} nəticə göstərilib."
 }

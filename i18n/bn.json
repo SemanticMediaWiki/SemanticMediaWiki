@@ -209,5 +209,6 @@
 	"smw-ask-tab-debug": "ডিবাগ",
 	"smw-ask-tab-code": "কোড",
 	"smw-legend": "ব্যাখ্যা",
-	"smw-listingcontinuesabbrev": "আরও আছে"
+	"smw-listingcontinuesabbrev": "আরও আছে",
+	"smw-showingresults": "<strong>$2</strong> নং থেকে শুরু করে {{PLURAL:$1|<strong>১টি</strong> ফলাফল|<strong>$1টি</strong> ফলাফল}} নিচে দেখানো হচ্ছে।"
 }

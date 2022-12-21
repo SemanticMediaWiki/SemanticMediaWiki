@@ -549,5 +549,6 @@
 	"smw-ask-tab-code": "Код",
 	"smw-report": "Извештај",
 	"smw-legend": "Легенда",
-	"smw-listingcontinuesabbrev": "продолжува"
+	"smw-listingcontinuesabbrev": "продолжува",
+	"smw-showingresults": "Подолу {{PLURAL:$1|е прикажана <strong>1</strong> ставка|се прикажани <strong>$1</strong> ставки}} почнувајќи од бр. <strong>$2</strong>."
 }

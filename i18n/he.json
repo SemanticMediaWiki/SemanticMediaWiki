@@ -646,5 +646,6 @@
 	"smw-indicator-revision-mismatch": "גרסה",
 	"smw-indicator-revision-mismatch-error": "בדיקת [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner הגרסה המשויכת] מצאה חוסר־התאמה בין הגרסה שכתובה במדיה־ויקי לבין הגרסה שמשויכת במדיה־ויקי סמנטית עבור הישות הזאת.",
 	"smw-indicator-revision-mismatch-comment": "חוסר התאמה בדרך־כלל מצביע על כך שתהליך כלשהו הפסיק פעולת אחסון במדיה־ויקי סמנטית. מומלץ לסקור את יומני השרת ולחפש חריגים וכישלונות אחרים.",
-	"smw-listingcontinuesabbrev": "המשך"
+	"smw-listingcontinuesabbrev": "המשך",
+	"smw-showingresults": "{{PLURAL:$1|מוצגת תוצאה <strong>אחת</strong>|מוצגות עד <strong>$1</strong> תוצאות}} החל ממספר <strong>$2</strong>:"
 }

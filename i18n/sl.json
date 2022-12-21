@@ -164,8 +164,8 @@
 	"smw_adminlinks_displayingdata": "Prikaz podatkov",
 	"prefs-smw": "Semantični MediaWiki",
 	"prefs-general-options": "Splošne možnosti",
-	"smw-prefs-general-options-show-entity-issue-panel": "Prikaži ploščo s težavami entitete",
-	"smw-prefs-help-general-options-show-entity-issue-panel": "Če je omogočeno, zažene preverjanje celovitosti na vsaki strani in prikaže [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel ploščo s težavami entitete].",
+	"smw-prefs-general-options-show-entity-issue-panel": "Prikaži panel s težavami entitete",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Če je omogočeno, zažene preverjanje celovitosti na vsaki strani in prikaže [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel panel s težavami entitete].",
 	"smw-ui-tooltip-title-info": "Informacije",
 	"smw-ui-tooltip-title-warning": "Opozorilo",
 	"smw-ui-tooltip-title-parameter": "Parameter",
@@ -222,5 +222,6 @@
 	"smw-remote-source-disabled": "Vir '''$1''' je onemogočil podporo za oddaljene zahtevke!",
 	"smw-es-replication-error-divergent-date": "Pri spremljanju replikacije je bilo ugotovljeno, da <b>datum modifikacije</b> pri članku »$1« (ID: $2) kaže neskladnost.",
 	"smw-es-replication-error-divergent-date-detail": "Referenčni datum spremembe:\n*Elasticsearch: $1 \n*Podatkovna zbirka: $2",
-	"smw-listingcontinuesabbrev": "nadalj."
+	"smw-listingcontinuesabbrev": "nadalj.",
+	"smw-showingresults": "Prikazujem do '''$1''' {{PLURAL:$1|zadetek|zadetka|zadetke|zadetkov}}, začenši s št. '''$2'''."
 }

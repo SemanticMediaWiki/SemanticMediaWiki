@@ -963,5 +963,6 @@
 	"smw-entity-examiner-deferred-fake": "假的",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|约束}}",
 	"smw-indicator-revision-mismatch": "版本",
-	"smw-listingcontinuesabbrev": "续"
+	"smw-listingcontinuesabbrev": "续",
+	"smw-showingresults": "下面显示从第<strong>$2</strong>条结果开始的<strong>$1</strong>条结果。"
 }

@@ -74,5 +74,6 @@
 	"smw-livepreview-loading": "กำลังค้นหา…",
 	"smw-install-incomplete-intro": "การติดตั้ง (หรืออัปเกรด) ของ <b>ความหมายมีเดียวิกิ</b> ยังไม่สิ้นสุดและผู้ดูแลระบบควรดำเนินงานต่อไปนี้เพื่อป้องกันข้อมูลที่ไม่สอดคล้องกันก่อนที่ผู้ใช้จะสร้างหรือแก้ไขเนื้อหาต่อไป",
 	"smw-install-incomplete-populate-hash-field": "<code>smw_hash</code> วงประชากรถูกข้ามไปในระหว่างการตั้งค่า สคริปต์ [https://www.semantic-mediawiki.org/wiki/Help:populateHashField.php populateHashField.php] จะต้องมีการดำเนินการ",
-	"smw-listingcontinuesabbrev": "ต่อ"
+	"smw-listingcontinuesabbrev": "ต่อ",
+	"smw-showingresults": "ด้านล่างแสดง <strong>1</strong> ผลลัพธ์ เริ่มตั้งแต่รายการที่ <strong>$2</strong>"
 }

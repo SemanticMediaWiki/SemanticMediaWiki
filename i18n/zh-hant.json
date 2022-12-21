@@ -36,6 +36,7 @@
 			"Wwycheuk",
 			"Xiplus",
 			"予弦",
+			"列维劳德",
 			"捍粵者",
 			"机智的小鱼君",
 			"神樂坂秀吉",
@@ -50,7 +51,7 @@
 	"smw-upgrade-progress-explain": "關於升級會何時完成的估計是難以預測的，因為這取決於資料存放大小以及可用的硬體，而規模較大的 wiki 會需要一段時間才能完成。\n\n請聯絡您本地的管理員來獲得更多有關進度的資訊。",
 	"smw-upgrade-progress-create-tables": "建立（或更新）表格與索引中…",
 	"smw-upgrade-progress-post-creation": "執行發佈建立任務中…",
-	"smw-upgrade-progress-table-optimization": "表格最佳化執行中…",
+	"smw-upgrade-progress-table-optimization": "正在將表格最佳化 ...",
 	"smw-upgrade-progress-supplement-jobs": "添加補充任務中…",
 	"smw-upgrade-error-title": "錯誤 » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "為什麼我會看到此頁面？",
@@ -1126,5 +1127,6 @@
 	"smw-indicator-revision-mismatch": "修訂",
 	"smw-indicator-revision-mismatch-error": "[https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner 相關修訂]檢查發現在 MediaWiki 引用的修訂之間內容不符合，且關聯到用於此實體的 Semantic MediaWiki。",
 	"smw-indicator-revision-mismatch-comment": "不符合通常表示某些程序中斷了在 Semantic MediaWiki 的儲存操作。建議檢視伺服器日誌並查看例外或其它錯誤。",
-	"smw-listingcontinuesabbrev": "續"
+	"smw-listingcontinuesabbrev": "續",
+	"smw-showingresults": "以下顯示從第 <strong>$2</strong> 筆開始，共 {{PLURAL:$1|<strong>1</strong> 筆結果|<strong>$1</strong> 筆結果}}："
 }

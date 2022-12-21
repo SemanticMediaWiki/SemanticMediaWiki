@@ -147,5 +147,6 @@
 	"smw-sp-searchbyproperty-resultlist-header": "ප්‍රතිපල ලැයිස්තුව",
 	"smw-sp-searchbyproperty-nonvaluequery": "\"$1\" සදහා ඇති වටිනාකම් ලැයිස්තුව පවරන ලදී.",
 	"smw-sp-searchbyproperty-valuequery": "\"$2\"ක අගයේ \"$1\" හිමිකම් ඇති පිටු ලැයිස්තුව විස්තර කරන ලදී.",
-	"smw-listingcontinuesabbrev": "ඉතිරිය."
+	"smw-listingcontinuesabbrev": "ඉතිරිය.",
+	"smw-showingresults": "#'''$2''' ගෙන් ආරම්භ කොට, {{PLURAL:$1|ප්‍රතිඵල '''1'''  ක් |ප්‍රතිඵල '''$1''' ක්}} දක්වා පහත පෙන්වා ඇත."
 }

@@ -91,5 +91,6 @@
 	"smw-category": "Категори",
 	"smw-help": "ГӀо",
 	"smw-schema-error-json": "JSON гӀалат: \"$1\"",
-	"smw-listingcontinuesabbrev": "(кхин дlа)"
+	"smw-listingcontinuesabbrev": "(кхин дlа)",
+	"smw-showingresults": "Лахахьа {{PLURAL:$1|гойту}} <strong>$1</strong> {{PLURAL:$1|хилам}}, дӀаболало кху № <strong>$2</strong>."
 }

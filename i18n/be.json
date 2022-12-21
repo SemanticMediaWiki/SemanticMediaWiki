@@ -31,5 +31,6 @@
 	"smw-ui-tooltip-title-property": "Уласцівасць",
 	"smw-livepreview-loading": "Счытваем…",
 	"smw-help": "Даведка",
-	"smw-listingcontinuesabbrev": "працяг"
+	"smw-listingcontinuesabbrev": "працяг",
+	"smw-showingresults": "Ніжэй паказаны да {{PLURAL:$1|'''$1''' выніку|'''$1''' вынікаў}}, пачынаючы з нумару '''$2'''."
 }

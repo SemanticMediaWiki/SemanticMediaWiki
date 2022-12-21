@@ -675,5 +675,6 @@
 	"smw-pendingtasks-setup-tasks": "Uppgifter",
 	"smw-report": "Rapportera",
 	"smw-legend": "Teckenförklaring",
-	"smw-listingcontinuesabbrev": "forts."
+	"smw-listingcontinuesabbrev": "forts.",
+	"smw-showingresults": "Nedan visas upp till {{PLURAL:$1|<strong>1</strong> resultat|<strong>$1</strong> resultat}} från och med nummer <strong>$2</strong>."
 }

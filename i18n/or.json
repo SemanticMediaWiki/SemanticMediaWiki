@@ -63,5 +63,6 @@
 	"smw_ask_hide_embed": "ଅନ୍ତଃସ୍ଥାପିତ ସାଙ୍କେତିକ ଚିହ୍ନ ଲୁଚାନ୍ତୁ",
 	"browse": "ଉଇକି ଦେଖିବେ",
 	"smw-livepreview-loading": "ଖୋଲୁଅଛି...",
-	"smw-listingcontinuesabbrev": "ଆହୁରି ଅଛି.."
+	"smw-listingcontinuesabbrev": "ଆହୁରି ଅଛି..",
+	"smw-showingresults": "ତଳେ {{PLURAL:$1|'''ଗୋଟିଏ'''  ଫଳାଫଳ|'''$1'''ଟି ଫଳାଫଳ}} ଦେଖାଉଛୁ ଯାହା #'''$2'''ରେ ଆରମ୍ଭ ହୋଇଅଛି ।"
 }

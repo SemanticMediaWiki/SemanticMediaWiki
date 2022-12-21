@@ -236,5 +236,6 @@
 	"smw_concept_header": "Pàgine dël concet \"$1\"",
 	"smw_conceptarticlecount": "Smon-e $1 {{PLURAL:$1|pàgina|pàgine}} che a aparten-o a col concet.",
 	"smw-livepreview-loading": "Antramentr ch'as caria…",
-	"smw-listingcontinuesabbrev": "anans"
+	"smw-listingcontinuesabbrev": "anans",
+	"smw-showingresults": "Ambelessì-sota a treuva fin a {{PLURAL:$1|'''1'''|'''$1'''}} arzultà, a parte dal nùmer #'''$2'''."
 }
