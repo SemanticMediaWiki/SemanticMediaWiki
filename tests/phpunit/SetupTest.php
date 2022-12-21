@@ -113,10 +113,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $config, '' );
+		$config = $instance->init( $config, '' );
 
 		$this->assertNotEmpty(
-			$newVars['wgResourceModules']
+			$config['wgResourceModules']
 		);
 	}
 
@@ -153,22 +153,22 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$newVars['wgAvailableRights']
+			$config['wgAvailableRights']
 		);
 
 		$this->assertTrue(
-			$newVars['wgGroupPermissions']['smwcurator']['smw-patternedit']
+			$config['wgGroupPermissions']['smwcurator']['smw-patternedit']
 		);
 
 		$this->assertTrue(
-			$newVars['wgGroupPermissions']['smwcurator']['smw-pageedit']
+			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
 		);
 
 		$this->assertTrue(
-			$newVars['wgGroupPermissions']['smwadministrator']['smw-admin']
+			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 	}
 
@@ -189,14 +189,14 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $localConfig, 'Foo' );
+		$localConfig = $instance->init( $localConfig, 'Foo' );
 
 		$this->assertFalse(
-			$newVars['wgGroupPermissions']['sysop']['smw-admin']
+			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
 		);
 
 		$this->assertFalse(
-			$newVars['wgGroupPermissions']['smwadministrator']['smw-admin']
+			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
 
 	}
@@ -217,10 +217,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$newVars['wgParamDefinitions']['smwformat']
+			$config['wgParamDefinitions']['smwformat']
 		);
 	}
 
@@ -236,10 +236,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$newVars['wgFooterIcons']['poweredby']['semanticmediawiki']
+			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
 		);
 	}
 
@@ -296,16 +296,16 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			$this->hookDispatcher
 		);
 
-		$newVars = $instance->init( $config, 'Foo' );
+		$config = $instance->init( $config, 'Foo' );
 
-		$this->assertNotEmpty( $newVars[$target][$entry] );
+		$this->assertNotEmpty( $config[$target][$entry] );
 
 		switch ( $type ) {
 			case 'class':
-				$this->assertTrue( class_exists( $newVars[$target][$entry] ) );
+				$this->assertTrue( class_exists( $config[$target][$entry] ) );
 				break;
 			case 'file':
-				$this->assertTrue( file_exists( $newVars[$target][$entry] ) );
+				$this->assertTrue( file_exists( $config[$target][$entry] ) );
 				break;
 		}
 	}
