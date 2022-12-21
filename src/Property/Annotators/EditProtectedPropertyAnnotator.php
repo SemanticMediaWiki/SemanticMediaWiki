@@ -4,6 +4,7 @@ namespace SMW\Property\Annotators;
 
 use Html;
 use ParserOutput;
+use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
 use SMW\PropertyAnnotator;
 use Title;
@@ -121,7 +122,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		//$this->title->flushRestrictions();
 
-		if ( !$this->title->isProtected( 'edit' ) ) {
+		if ( !PageInfoProvider::isProtected( $this->title, 'edit' ) ) {
 			return false;
 		}
 

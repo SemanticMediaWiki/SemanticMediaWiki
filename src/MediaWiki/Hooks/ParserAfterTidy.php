@@ -4,7 +4,6 @@ namespace SMW\MediaWiki\Hooks;
 
 use Parser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\MediaWiki;
 use SMW\ParserData;
 use SMW\SemanticData;
 use Onoi\Cache\Cache;
@@ -13,6 +12,7 @@ use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\PageInfoProvider;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -153,7 +153,7 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			$title->isProtected( 'edit' ) ||
+			PageInfoProvider::isProtected( $title, 'edit ') ||
 			$parserDefaultSort ) {
 			return true;
 		}
