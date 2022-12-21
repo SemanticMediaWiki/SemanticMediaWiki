@@ -113,9 +113,8 @@ final class Setup {
 	public function init( array $vars, string $rootDir ): array {
 
 		$setupFile = new SetupFile();
-		Globals::replace(
-			$setupFile->loadSchema( $vars )
-		);
+		$vars = $setupFile->loadSchema( $vars );
+		Globals::replace( $vars );
 
 		$setupCheck = new SetupCheck(
 			[
