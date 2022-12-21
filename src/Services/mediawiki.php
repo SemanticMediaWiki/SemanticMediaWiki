@@ -84,7 +84,7 @@ return [
 	 */
 	'WikiPage' => function( $containerBuilder, \Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
-		return \WikiPage::factory( $title );
+		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	},
 
 	/**

@@ -100,7 +100,7 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getPage() {
-		return WikiPage::factory( $this->getTitle() );
+		return ServicesFactory::getInstance()->newPageCreator()->createPage( $this->getTitle() );
 	}
 
 	protected function makeOutputFromPageRevision() {
