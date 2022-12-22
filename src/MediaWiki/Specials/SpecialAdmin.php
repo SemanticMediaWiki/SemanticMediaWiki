@@ -39,7 +39,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -128,7 +128,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 

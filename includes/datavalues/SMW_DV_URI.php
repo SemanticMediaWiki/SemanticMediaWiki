@@ -211,7 +211,7 @@ class SMWURIValue extends SMWDataValue {
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_URI ) {
 			return false;

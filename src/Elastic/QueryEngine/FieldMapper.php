@@ -52,7 +52,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getFieldType( DIProperty $property ) {
+	public static function getFieldType( DIProperty $property ): string {
 		return str_replace( [ '_' ], [ '' ], DataTypeRegistry::getInstance()->getFieldType( $property->findPropertyValueType() ) );
 	}
 
@@ -75,7 +75,7 @@ class FieldMapper {
 	 *
 	 * @return boolean
 	 */
-	public static function isPhrase( $value = '' ) {
+	public static function isPhrase( $value = '' ): bool {
 		return $value[0] === '"' && substr( $value, -1 ) === '"';
 	}
 
@@ -86,7 +86,7 @@ class FieldMapper {
 	 *
 	 * @return boolean
 	 */
-	public static function hasWildcard( $value = '' ) {
+	public static function hasWildcard( $value = '' ): bool {
 		return strpos( $value, '*' ) !== false && strpos( $value, '\*' ) === false;
 	}
 
@@ -97,7 +97,7 @@ class FieldMapper {
 	 *
 	 * @return boolean
 	 */
-	public function containsReservedChar( $value ) {
+	public function containsReservedChar( $value ): bool {
 
 		$reservedChars = [
 			'+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '//'

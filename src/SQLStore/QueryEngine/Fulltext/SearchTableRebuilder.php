@@ -173,7 +173,7 @@ class SearchTableRebuilder {
 		}
 	}
 
-	private function doOptimize() {
+	private function doOptimize(): bool {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 
@@ -371,7 +371,7 @@ class SearchTableRebuilder {
 		}
 	}
 
-	private function getIndexableTextFromRow( $searchTable, $row ) {
+	private function getIndexableTextFromRow( $searchTable, $row ): string {
 
 		$indexableText = '';
 

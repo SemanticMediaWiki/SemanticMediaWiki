@@ -20,7 +20,7 @@ class File {
 	 *
 	 * @return string
 	 */
-	public static function dir( $file ) {
+	public static function dir( $file ): string {
 		return str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 	}
 
@@ -49,7 +49,7 @@ class File {
 	 *
 	 * @return boolean
 	 */
-	public function exists( $file ) {
+	public function exists( $file ): bool {
 		return file_exists( self::dir( $file ) );
 	}
 

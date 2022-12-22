@@ -43,7 +43,7 @@ class ArticleFromTitle implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title &$title, Page &$page = null ) {
+	public function process( Title &$title, Page &$page = null ): bool {
 
 		$ns = $title->getNamespace();
 

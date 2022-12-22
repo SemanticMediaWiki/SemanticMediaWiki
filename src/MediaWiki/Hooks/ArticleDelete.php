@@ -59,7 +59,7 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title $title ) {
+	public function process( Title $title ): bool {
 
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title ) {
 			$this->doDelete( $title );

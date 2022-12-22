@@ -129,7 +129,10 @@ class InMemoryPoolCache {
 		return $this->poolCacheList[$poolCacheId];
 	}
 
-	private function computeStats() {
+	/**
+  * @return array<int|string, mixed>&mixed[][]
+  */
+ private function computeStats(): array {
 
 		ksort( $this->poolCacheList );
 		$stats = [];

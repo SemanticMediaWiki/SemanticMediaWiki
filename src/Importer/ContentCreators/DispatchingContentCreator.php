@@ -50,7 +50,7 @@ class DispatchingContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 
 		foreach ( $this->contentCreators as $contentCreator ) {
 			if ( $contentCreator->canCreateContentsFor( $importContents ) ) {

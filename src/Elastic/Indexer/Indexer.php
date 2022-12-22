@@ -351,7 +351,7 @@ class Indexer {
 		);
 	}
 
-	private function canReplicate() {
+	private function canReplicate(): bool {
 
 		$connection = $this->store->getConnection( 'elastic' );
 

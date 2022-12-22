@@ -290,7 +290,7 @@ class QueryResult {
 	 *
 	 * @return integer
 	 */
-	public function getCount() {
+	public function getCount(): int {
 		return count( $this->mResults );
 	}
 
@@ -328,7 +328,7 @@ class QueryResult {
 	 *
 	 * @return integer
 	 */
-	public function getColumnCount() {
+	public function getColumnCount(): int {
 		return count( $this->mPrintRequests );
 	}
 
@@ -471,7 +471,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 
 		$time = microtime( true );
 

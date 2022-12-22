@@ -39,7 +39,7 @@ class Site {
 	 *
 	 * @return boolean
 	 */
-	public static function isReady() {
+	public static function isReady(): bool {
 
 		// #3341
 		// When running as part of the install don't try to access the DB

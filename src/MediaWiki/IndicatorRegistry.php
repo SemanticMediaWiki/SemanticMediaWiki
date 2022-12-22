@@ -61,7 +61,7 @@ class IndicatorRegistry {
 	 *
 	 * @return boolean
 	 */
-	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
+	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ): bool {
 
 		$subject = DIWikiPage::newFromTitle(
 			$title

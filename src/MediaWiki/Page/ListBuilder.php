@@ -164,7 +164,10 @@ class ListBuilder {
 		return $htmlColumns->getHtml();
 	}
 
-	private function buildList( $dataItems ) {
+	/**
+  * @return array<int|string, mixed[]>
+  */
+ private function buildList( $dataItems ): array {
 
 		$dataValueFactory = DataValueFactory::getInstance();
 

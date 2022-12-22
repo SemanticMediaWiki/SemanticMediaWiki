@@ -72,12 +72,12 @@ class SMWDIUri extends SMWDataItem {
 		$this->m_fragment = $fragment;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_URI;
 	}
 
 	/// @todo This should be changed to the spelling getUri().
-	public function getURI() {
+	public function getURI(): string {
 		$schemesWithDoubleslesh = [
 			'http', 'https', 'ftp'
 		];
@@ -116,7 +116,7 @@ class SMWDIUri extends SMWDataItem {
 	 *
 	 * @return string
 	 */
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return urldecode( $this->getURI() );
 	}
 
@@ -168,7 +168,7 @@ class SMWDIUri extends SMWDataItem {
 		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $strict );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_URI ) {
 			return false;
 		}

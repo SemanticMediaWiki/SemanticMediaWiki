@@ -125,7 +125,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return boolean
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
@@ -157,7 +157,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
@@ -230,7 +230,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		];
 	}
 
-	private function wasChecked( $subject ) {
+	private function wasChecked( $subject ): bool {
 
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;

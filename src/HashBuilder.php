@@ -21,7 +21,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSemanticData( SemanticData $semanticData ) {
+	public static function createFromSemanticData( SemanticData $semanticData ): string {
 
 		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
@@ -77,7 +77,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSegments( /* args */ ) {
+	public static function createFromSegments( /* args */ ): string {
 		return implode( '#', func_get_args() );
 	}
 

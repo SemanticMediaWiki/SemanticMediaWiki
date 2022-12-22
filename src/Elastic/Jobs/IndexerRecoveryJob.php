@@ -105,7 +105,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @since  3.0
 	 */
-	public function allowRetries() {
+	public function allowRetries(): bool {
 		return false;
 	}
 

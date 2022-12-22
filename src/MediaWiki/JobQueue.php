@@ -62,7 +62,7 @@ class JobQueue {
 	 *
 	 * @return []
 	 */
-	public function runFromQueue( array $list ) {
+	public function runFromQueue( array $list ): array {
 
 		$log = [];
 

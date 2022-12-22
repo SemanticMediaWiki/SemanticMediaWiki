@@ -51,7 +51,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getName() {
+	function getName(): string {
 		return "WantedProperties";
 	}
 
@@ -59,7 +59,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return boolean
 	 */
-	function isExpensive() {
+	function isExpensive(): bool {
 		return false; /// disables caching for now
 	}
 
@@ -67,7 +67,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return boolean
 	 */
-	function isSyndicated() {
+	function isSyndicated(): bool {
 		return false; ///TODO: why not?
 	}
 

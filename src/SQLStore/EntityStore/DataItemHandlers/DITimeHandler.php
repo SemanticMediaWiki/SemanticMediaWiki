@@ -68,7 +68,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 
 		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
@@ -106,7 +106,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_sortkey';
 	}
 
@@ -115,7 +115,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 

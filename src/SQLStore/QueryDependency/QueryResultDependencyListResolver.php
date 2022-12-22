@@ -133,7 +133,7 @@ class QueryResultDependencyListResolver {
 	 * Resolving dependencies for non-embedded queries or limit=0 (which only
 	 * links to Special:Ask via further results) is not required
 	 */
-	private function canResolve( $queryResult ) {
+	private function canResolve( $queryResult ): bool {
 		return $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
 	}
 

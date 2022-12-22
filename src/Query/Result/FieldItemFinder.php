@@ -299,7 +299,7 @@ class FieldItemFinder {
 		return $content;
 	}
 
-	private function isMultiValueWithParameter( $parameter ) {
+	private function isMultiValueWithParameter( $parameter ): bool {
 		return DataTypeRegistry::getInstance()->isRecordType( $this->printRequest->getTypeID() ) &&
 		$this->printRequest->getParameter( $parameter ) !== false;
 	}

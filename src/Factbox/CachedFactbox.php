@@ -403,7 +403,7 @@ class CachedFactbox {
 		$this->entityCache->saveSub( $key, $subKey, $data, $this->cacheTTL );
 	}
 
-	private function makeSubCacheKey( ...$args ) {
+	private function makeSubCacheKey( ...$args ): string {
 		return md5( json_encode( $args ) );
 	}
 

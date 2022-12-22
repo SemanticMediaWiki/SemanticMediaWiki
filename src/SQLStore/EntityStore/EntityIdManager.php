@@ -433,7 +433,7 @@ class EntityIdManager {
 	 *
 	 * @return boolean
 	 */
-	public function isUnique( DataItem $dataItem ) {
+	public function isUnique( DataItem $dataItem ): bool {
 
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();

@@ -35,13 +35,13 @@ class QueryResultLookup {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param QueryOptions $pageRequestOptions
-	 *
-	 * @return array
-	 */
-	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ) {
+  * @since 2.5
+  *
+  * @param QueryOptions $pageRequestOptions
+  *
+  * @return array<int, \SMWDataValue[]>
+  */
+ public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ): array {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( $pageRequestOptions->limit + 1 );
@@ -74,14 +74,14 @@ class QueryResultLookup {
 	}
 
 	/**
-	 * @since 2.1
-	 *
-	 * @param QueryOptions $pageRequestOptions
-	 *
-	 * @return array of array(SMWWikiPageValue, SMWDataValue) with the
-	 * first being the entity, and the second the value
-	 */
-	public function doQuery( PageRequestOptions $pageRequestOptions ) {
+ * @since 2.1
+ *
+ * @param QueryOptions $pageRequestOptions
+ *
+  * @return array<int, \SMWDataValue[]> of array(SMWWikiPageValue, SMWDataValue) with the
+ first being the entity, and the second the value
+ */
+ public function doQuery( PageRequestOptions $pageRequestOptions ): array {
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $pageRequestOptions->limit + 1;

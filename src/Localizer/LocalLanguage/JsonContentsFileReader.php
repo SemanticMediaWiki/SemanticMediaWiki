@@ -90,7 +90,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return boolean
 	 */
-	public function canReadByLanguageCode( $languageCode ) {
+	public function canReadByLanguageCode( $languageCode ): bool {
 
 		$canReadByLanguageCode = '';
 

@@ -125,7 +125,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ): ?bool {
 
 		if ( !$this->isEnabled() ) {
 			return null;
@@ -176,14 +176,14 @@ class QueryDependencyLinksStore {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param DIWikiPage $subject
-	 * @param RequestOptions|null $requestOptions
-	 *
-	 * @return array
-	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+  * @since 2.5
+  *
+  * @param DIWikiPage $subject
+  * @param RequestOptions|null $requestOptions
+  *
+  * @return array<int|string, int>
+  */
+ public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ): array {
 
 		$embeddedQueryIdList = [];
 
@@ -446,7 +446,7 @@ class QueryDependencyLinksStore {
 		$this->dependencyLinksTableUpdater->doUpdate();
 	}
 
-	private function canUpdateDependencies( $queryResult ) {
+	private function canUpdateDependencies( $queryResult ): bool {
 
 		if ( !$this->isEnabled() || !$queryResult instanceof QueryResult ) {
 			return false;
@@ -486,7 +486,7 @@ class QueryDependencyLinksStore {
 		return $query->getLimit() > 0 && $query->getOption( Query::NO_DEPENDENCY_TRACE ) !== true;
 	}
 
-	private function isRegistered( $sid, $subject ) {
+	private function isRegistered( $sid, $subject ): bool {
 
 		static $suppressUpdateCache = [];
 		$hash = $subject->getHash();

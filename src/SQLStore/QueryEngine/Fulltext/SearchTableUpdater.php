@@ -79,7 +79,7 @@ class SearchTableUpdater {
 	 *
 	 * @return boolean
 	 */
-	public function optimize() {
+	public function optimize(): bool {
 
 		if ( !$this->connection->isType( 'mysql' ) ) {
 			return false;
@@ -101,7 +101,7 @@ class SearchTableUpdater {
 	 *
 	 * @return boolean
 	 */
-	public function exists( $sid, $pid ) {
+	public function exists( $sid, $pid ): bool {
 
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),

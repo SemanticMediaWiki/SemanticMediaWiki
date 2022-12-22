@@ -70,7 +70,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	 *
 	 * @return boolean
 	 */
-	public function isAvailable() {
+	public function isAvailable(): bool {
 		return class_exists( 'IntlRuleBasedBreakIterator' );
 	}
 
@@ -103,7 +103,10 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 		return $this->createTokens( $string );
 	}
 
-	private function createTokens( $string ) {
+	/**
+  * @return string[]
+  */
+ private function createTokens( $string ): array {
 
 		$tokens = array();
 

@@ -45,7 +45,7 @@ class Image {
 	 *
 	 * @return boolean
 	 */
-	public static function isImage( DIWikiPage $dataItem ) {
+	public static function isImage( DIWikiPage $dataItem ): bool {
 
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
 			return false;

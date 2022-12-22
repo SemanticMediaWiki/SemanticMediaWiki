@@ -21,7 +21,7 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'mappings';
 	}
 

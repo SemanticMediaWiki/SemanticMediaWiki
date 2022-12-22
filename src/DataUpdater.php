@@ -165,7 +165,7 @@ class DataUpdater {
 	 *
 	 * @return boolean
 	 */
-	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
+	public function isSkippable( Title $title, ?int &$latestRevID = null ): bool {
 
 		if ( $this->revisionGuard->isSkippableUpdate( $title, $latestRevID ) ) {
 			return true;
@@ -235,7 +235,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function canUpdate() {
+	private function canUpdate(): bool {
 
 		$title = $this->getSubject()->getTitle();
 
@@ -252,7 +252,7 @@ class DataUpdater {
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
 	 */
-	public function runUpdate() {
+	public function runUpdate(): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -401,7 +401,7 @@ class DataUpdater {
 		$this->changePropagationNotifier->checkAndNotify( $this->semanticData );
 	}
 
-	private function updateData() {
+	private function updateData(): bool {
 
 		$this->store->setOption(
 			Store::OPT_CREATE_UPDATE_JOB,

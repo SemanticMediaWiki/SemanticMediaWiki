@@ -83,7 +83,7 @@ class SearchTable {
 	 *
 	 * @return array
 	 */
-	public function getPropertyExemptionList() {
+	public function getPropertyExemptionList(): array {
 		return array_keys( $this->propertyExemptionList );
 	}
 
@@ -143,7 +143,7 @@ class SearchTable {
 	 *
 	 * @return boolean
 	 */
-	public function isValidByType( $type ) {
+	public function isValidByType( $type ): bool {
 
 		$indexType = SMW_FT_NONE;
 
@@ -185,7 +185,7 @@ class SearchTable {
 	 *
 	 * @return string
 	 */
-	public function getTableName() {
+	public function getTableName(): string {
 		return SQLStore::FT_SEARCH_TABLE;
 	}
 
@@ -194,7 +194,7 @@ class SearchTable {
 	 *
 	 * @return string
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_text';
 	}
 
@@ -203,7 +203,7 @@ class SearchTable {
 	 *
 	 * @return string
 	 */
-	public function getSortField() {
+	public function getSortField(): string {
 		return 'o_sort';
 	}
 

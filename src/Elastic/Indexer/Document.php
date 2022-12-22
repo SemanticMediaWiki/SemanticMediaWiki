@@ -82,7 +82,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return boolean
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		return $this->type === $type;
 	}
 

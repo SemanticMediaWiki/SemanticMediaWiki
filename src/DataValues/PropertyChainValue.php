@@ -45,7 +45,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return boolean
 	 */
-	public static function isChained( $value ) {
+	public static function isChained( $value ): bool {
 		return strpos( $value, '.' ) !== false;
 	}
 
@@ -136,7 +136,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see PropertyValue::isVisible
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->lastPropertyChainValue->getDataItem()->isUserDefined() || $this->lastPropertyChainValue->getDataItem()->getLabel() !== '' );
 	}
 
@@ -147,7 +147,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( !$dataItem instanceof DIBlob ) {
 			return false;

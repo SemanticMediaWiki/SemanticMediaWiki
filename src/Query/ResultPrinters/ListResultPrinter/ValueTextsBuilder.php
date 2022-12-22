@@ -27,7 +27,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getValuesText( SMWResultArray $field, $column = 0 ) {
+	public function getValuesText( SMWResultArray $field, $column = 0 ): string {
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
@@ -41,7 +41,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( SMWResultArray $field, $column ) {
+	private function getValueTexts( SMWResultArray $field, $column ): array {
 
 		$valueTexts = [];
 
@@ -128,7 +128,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return bool
 	 */
-	private function isSimpleList() {
+	private function isSimpleList(): bool {
 		$format = $this->get( 'format' );
 		return $format !== 'ul' && $format !== 'ol';
 	}

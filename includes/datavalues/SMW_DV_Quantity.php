@@ -148,7 +148,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 	}
 
-	public function getUnitList() {
+	public function getUnitList(): array {
 		$this->initConversionData();
 		return array_keys( $this->m_unitfactors );
 	}

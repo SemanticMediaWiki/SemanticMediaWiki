@@ -178,7 +178,7 @@ class MessageFormatter {
 	 *
 	 * @return boolean
 	 */
-	public function exists() {
+	public function exists(): bool {
 		return $this->messages !== [];
 	}
 
@@ -197,20 +197,20 @@ class MessageFormatter {
 	}
 
 	/**
-	 * Formatting and normalization of an array
-	 *
-	 * @note The array is being recursively resolved in order to ensure that
-	 * the returning representation is a 1-n array where duplicate entries
-	 * have been eliminated already while Message objects being transformed
-	 * into a simple text representation using the invoked language
-	 *
-	 * @since 1.9
-	 *
-	 * @param array $messages
-	 *
-	 * @return array
-	 */
-	protected function doFormat( array $messages ) {
+  * Formatting and normalization of an array
+  *
+  * @note The array is being recursively resolved in order to ensure that
+  * the returning representation is a 1-n array where duplicate entries
+  * have been eliminated already while Message objects being transformed
+  * into a simple text representation using the invoked language
+  *
+  * @since 1.9
+  *
+  * @param array $messages
+  *
+  * @return array<string, mixed>
+  */
+ protected function doFormat( array $messages ): array {
 		$newArray = [];
 
 		foreach ( $messages as $msg ) {

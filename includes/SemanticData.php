@@ -902,12 +902,12 @@ class SemanticData implements JsonUnserializable {
 		# in the future.
 		$json = [
 			'stubObject' => $this->stubObject,
-			'mPropVals' => array_map( function( $x ) {
+			'mPropVals' => array_map( function( $x ): array {
 					return array_map( function( $y ) {
 						return $y->jsonSerialize();
 					}, $x );
 			}, $this->mPropVals ),
-			'mProperties' => array_map( function( $x ) {
+			'mProperties' => array_map( function( $x ): array {
 					return $x->jsonSerialize();
 			}, $this->mProperties ),
 			'mHasVisibleProps' => $this->mHasVisibleProps,

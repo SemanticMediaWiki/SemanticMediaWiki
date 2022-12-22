@@ -112,7 +112,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return boolean
 	 */
-	public function doRebuild() {
+	public function doRebuild(): bool {
 
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
@@ -216,7 +216,7 @@ class DistinctEntityDataRebuilder {
 		}
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 

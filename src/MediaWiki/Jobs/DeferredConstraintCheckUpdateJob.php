@@ -34,7 +34,7 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 *
 	 * @return boolean
 	 */
-	public static function pushJob( Title $title, $params = [] ) {
+	public static function pushJob( Title $title, $params = [] ): bool {
 
 		$deferredConstraintCheckUpdateJob = new self(
 			$title,
@@ -51,7 +51,7 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 *
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): bool {
 
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;

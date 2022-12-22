@@ -69,7 +69,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 		}
 	}
 
-	private function matchOneOf( array $namespaces ) {
+	private function matchOneOf( array $namespaces ): bool {
 
 		if ( $this->namespace === null ) {
 			return false;

@@ -203,7 +203,7 @@ class Rebuilder {
 	 *
 	 * @return boolean
 	 */
-	public function hasIndices() {
+	public function hasIndices(): bool {
 
 		if ( !$this->client->hasIndex( ElasticClient::TYPE_DATA ) ) {
 			return false;

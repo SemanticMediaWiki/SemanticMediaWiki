@@ -103,7 +103,7 @@ class RepositoryRedirectLookup {
 		return $poolCache->fetch( $expNsResource->getUri() );
 	}
 
-	private function isNonRedirectableResource( ExpNsResource $expNsResource ) {
+	private function isNonRedirectableResource( ExpNsResource $expNsResource ): bool {
 		return $expNsResource->getNamespaceId() === 'swivt' ||
 			$expNsResource->getNamespaceId() === 'rdf' ||
 			$expNsResource->getNamespaceId() === 'rdfs' ||

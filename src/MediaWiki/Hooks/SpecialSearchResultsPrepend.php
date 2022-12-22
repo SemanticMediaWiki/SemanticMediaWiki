@@ -61,7 +61,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process( $term ) {
+	public function process( $term ): bool {
 
 		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;

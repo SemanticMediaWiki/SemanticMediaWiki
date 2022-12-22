@@ -36,7 +36,7 @@ function smwfContLang() : LocalLanguage {
  *
  * @param string $text
  */
-function smwfNormalTitleDBKey( $text ) {
+function smwfNormalTitleDBKey( $text ): string {
 	global $wgCapitalLinks;
 
 	$text = trim( $text );

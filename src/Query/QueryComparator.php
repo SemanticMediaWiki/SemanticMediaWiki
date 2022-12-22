@@ -68,7 +68,7 @@ class QueryComparator {
 	 *
 	 * @return array
 	 */
-	public function getComparatorStrings() {
+	public function getComparatorStrings(): array {
 		return array_keys( $this->comparators );
 	}
 
@@ -100,7 +100,7 @@ class QueryComparator {
 	 *
 	 * @return boolean
 	 */
-	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
+	public function containsComparator( $value, $comparator = SMW_CMP_EQ ): bool {
 		return $this->extractComparatorFromString( $value ) === $comparator;
 	}
 
