@@ -426,7 +426,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParameters( $context = null, $resultPrinter = null ) {
+	public static function getParameters( $context = null, $resultPrinter = null ): array {
 		return DefaultParamDefinition::getParamDefinitions( $context, $resultPrinter );
 	}
 
