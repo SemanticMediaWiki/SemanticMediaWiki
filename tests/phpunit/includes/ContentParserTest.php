@@ -23,6 +23,8 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 	private $parser;
 	private $parserOutput;
 
+	private TestEnvironment $testEnvironment;
+
 	protected function setUp() : void {
 		parent::setUp();
 
@@ -41,9 +43,12 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->testEnvironment = new TestEnvironment();
 	}
 
 	protected function tearDown() : void {
+		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
@@ -91,9 +96,23 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$content->expects( $this->any() )
-			->method( 'getParserOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
+			$content->expects( $this->any() )
+				->method( 'getParserOutput' )
+				->will( $this->returnValue( $this->parserOutput ) );
+		} else {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
+				$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+					->disableOriginalConstructor()
+					->getMock();
+
+				$contentRenderer->expects( $this->any() )
+					->method( 'getParserOutput' )
+					->will( $this->returnValue( $this->parserOutput ) );
+
+				return $contentRenderer;
+			} );
+		}
 
 		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
 			->disableOriginalConstructor()
