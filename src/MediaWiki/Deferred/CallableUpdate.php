@@ -185,7 +185,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 * @param string|null $queue
 	 */
 	public function setFingerprint( $fingerprint = null ) {
-		$this->fingerprint = md5( $fingerprint );
+		$this->fingerprint = md5( $fingerprint ?? '' );
 	}
 
 	/**
