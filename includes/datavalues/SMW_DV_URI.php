@@ -301,7 +301,7 @@ class SMWURIValue extends SMWDataValue {
 		return $this->m_wikitext;
 	}
 
-	public function getURI() {
+	public function getURI(): string {
 		return $this->getUriDataitem()->getURI();
 	}
 

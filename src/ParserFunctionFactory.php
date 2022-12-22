@@ -520,7 +520,7 @@ class ParserFunctionFactory {
 	 */
 	public function getDeclareParserFunctionDefinition() {
 
-		$declareParserFunctionDefinition = function( $parser, $frame, $args ) {
+		$declareParserFunctionDefinition = function( $parser, $frame, $args ): string {
 
 			$declareParserFunction = $this->newDeclareParserFunction(
 				$parser

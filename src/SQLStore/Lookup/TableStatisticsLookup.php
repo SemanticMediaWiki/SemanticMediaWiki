@@ -34,7 +34,7 @@ class TableStatisticsLookup {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->loadFromDB( $this->store->getConnection( 'mw.db' ) );
 	}
 

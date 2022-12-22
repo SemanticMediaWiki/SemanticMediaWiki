@@ -212,7 +212,7 @@ class ParserData {
 	 *
 	 * @return boolean
 	 */
-	public function isBlocked() {
+	public function isBlocked(): bool {
 		return $this->hasAnnotationBlock();
 	}
 

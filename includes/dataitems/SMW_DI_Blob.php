@@ -34,7 +34,7 @@ class SMWDIBlob extends SMWDataItem {
 		return $this->m_string;
 	}
 
-	public static function normalize( $text ) {
+	public static function normalize( $text ): string {
 		return Normalizer::convertDoubleWidth(
 			Normalizer::applyTransliteration(
 				Normalizer::toLowercase( $text )

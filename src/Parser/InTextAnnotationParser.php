@@ -242,7 +242,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
@@ -253,7 +253,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
@@ -330,7 +330,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	public function getRegexpPattern( $linksInValues = false ) {
+	public function getRegexpPattern( $linksInValues = false ): string {
 		return LinksProcessor::getRegexpPattern( $linksInValues );
 	}
 

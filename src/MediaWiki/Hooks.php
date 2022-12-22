@@ -473,7 +473,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 */
-	public function onBeforePageDisplay( &$outputPage, &$skin ) {
+	public function onBeforePageDisplay( &$outputPage, &$skin ): bool {
 
 		$beforePageDisplay = new BeforePageDisplay();
 		$setupFile = new SetupFile();
@@ -790,7 +790,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 	 */
-	public function onArticlePurge( &$wikiPage ) {
+	public function onArticlePurge( &$wikiPage ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
@@ -819,7 +819,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
 	 */
-	public function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ) {
+	public function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -918,7 +918,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 	 */
-	public function onFileUpload( $file, $reupload ) {
+	public function onFileUpload( $file, $reupload ): bool {
 
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer()
@@ -1086,7 +1086,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
 	 */
-	public function onExtensionTypes( &$extTypes ) {
+	public function onExtensionTypes( &$extTypes ): bool {
 
 		$extensionTypes = new ExtensionTypes();
 
@@ -1109,7 +1109,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
 	 */
-	public function onArticleFromTitle( &$title, &$article ) {
+	public function onArticleFromTitle( &$title, &$article ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -1147,7 +1147,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 	 */
-	public function onEditPageShowEditFormInitial( $editPage, $output ) {
+	public function onEditPageShowEditFormInitial( $editPage, $output ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $output->getUser();

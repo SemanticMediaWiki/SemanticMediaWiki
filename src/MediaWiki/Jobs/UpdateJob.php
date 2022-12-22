@@ -162,7 +162,7 @@ class UpdateJob extends Job {
 		);
 	}
 
-	private function set_data( $semanticData ) {
+	private function set_data( $semanticData ): bool {
 
 		$this->setParameter( 'updateType', 'SemanticData' );
 
