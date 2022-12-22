@@ -131,7 +131,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return $this->current !== false && $this->position < $this->count();
 	}
 
