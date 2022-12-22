@@ -545,7 +545,7 @@ class SMWInfolink {
 	 * concrete way of how parameters are encoded within this function, and to always use
 	 * the respective encoding/decoding methods instead.
 	 *
-	 * @param string|array $titleParam
+	 * @param string $titleParam
 	 * @param boolean $allParams
 	 *
 	 * @return array

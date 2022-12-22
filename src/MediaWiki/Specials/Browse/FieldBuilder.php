@@ -28,7 +28,7 @@ class FieldBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createQueryForm( string $articletext = '', $lang = Message::USER_LANGUAGE ) {
+	public static function createQueryForm( $articletext = '', $lang = Message::USER_LANGUAGE ) {
 
 		$title = SpecialPage::getTitleFor( 'Browse' );
 
