@@ -343,7 +343,7 @@ class HtmlForm {
 			],
 			QueryInputWidget::table(
 				$this->queryString,
-				$urlArgs->get( 'po' )
+				$urlArgs->get( 'po', '' )
 			)
 		);
 

@@ -60,7 +60,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->count;
 	}
 
@@ -69,6 +69,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return call_user_func( $this->callback, parent::current() );
 	}

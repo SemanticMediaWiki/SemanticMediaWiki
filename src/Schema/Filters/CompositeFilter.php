@@ -89,10 +89,10 @@ class CompositeFilter implements SchemaFilter {
 			usort( $this->matches, function( $a, $b ) use ( $order ) {
 
 				if ( $order === 'desc' ) {
-					return $a->filterScore < $b->filterScore;
+					return $b->filterScore <=> $a->filterScore;
 				}
 
-				return $a->filterScore > $b->filterScore;
+				return $a->filterScore <=> $b->filterScore;
 			} );
 		}
 	}

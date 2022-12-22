@@ -37,7 +37,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function count() {
+	public function count(): int {
 		return $this->count ?? $this->count = count( $this->container );
 	}
 
@@ -47,7 +47,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function seek( $position ) {
+	public function seek( $position ): void {
 
 		if ( !isset( $this->container[$position] ) ) {
 			throw new OutOfBoundsException( "Invalid seek position ($position)" );
@@ -62,8 +62,8 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function rewind() {
-		return reset( $this->container );
+	public function rewind(): void {
+		reset( $this->container );
 	}
 
 	/**
@@ -72,6 +72,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 
 		if ( $this->position !== null ) {
@@ -87,6 +88,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->position;
 	}
@@ -97,8 +99,8 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function next() {
-		return next( $this->container );
+	public function next(): void {
+		next( $this->container );
 	}
 
 	/**
@@ -107,7 +109,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return key( $this->container ) !== null;
 	}
 
