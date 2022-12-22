@@ -202,8 +202,8 @@ class ParametersProcessor {
 	}
 
 	/**
-  * @return array<int|string, mixed>
-  */
+	 * @return array<int|string, mixed>
+	 */
  private static function checkParameterList( $request, $parameterList, $printouts ): array {
 
 		// Add initial ? if omitted (all params considered as printouts)

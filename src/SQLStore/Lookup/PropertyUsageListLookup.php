@@ -129,8 +129,8 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	/**
-  * @return array<int, array<\SMWDIError|\SMW\DIProperty|int>>
-  */
+	 * @return array<int, array<\SMWDIError|\SMW\DIProperty|int>>
+	 */
  private function getPropertyList( $res ): array {
 
 		$result = [];

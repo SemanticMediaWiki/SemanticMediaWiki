@@ -151,8 +151,8 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	/**
-  * @return array<int|string, mixed>
-  */
+	 * @return array<int|string, mixed>
+	 */
  private function matchLabels( $propertyList, $withType ): array {
 
 		$similarities = [];
@@ -275,8 +275,8 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	/**
-  * @return \SMW\DIProperty[]
-  */
+	 * @return \SMW\DIProperty[]
+	 */
  private function getPropertyList( RequestOptions $requestOptions = null ): array {
 
 		$propertyList = [];

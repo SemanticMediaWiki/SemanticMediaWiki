@@ -98,8 +98,8 @@ class SMWDIContainer extends SMWDataItem {
 	}
 
 	/**
-  * @return mixed[]
-  */
+	 * @return mixed[]
+	 */
  private function getValueHash( $semanticData ): array {
 
 		$hash = [];

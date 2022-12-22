@@ -78,10 +78,10 @@ class JsonImportContentsFileDirReader {
 	}
 
 	/**
-  * @since 2.5
-  *
-  * @return array<string, mixed>
-  */
+	 * @since 2.5
+	 *
+	 * @return array<string, mixed>
+	 */
  public function getContentList(): array {
 
 		$contents = [];

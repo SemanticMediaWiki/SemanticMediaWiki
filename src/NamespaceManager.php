@@ -108,12 +108,12 @@ class NamespaceManager {
 	}
 
 	/**
-  * @see Hooks:CanonicalNamespaces
-  *
-  * @since 1.9
-  *
-  * @return string[]
-  */
+	 * @see Hooks:CanonicalNamespaces
+	 *
+	 * @since 1.9
+	 *
+	 * @return string[]
+	 */
  public static function getCanonicalNames(): array {
 
 		$canonicalNames = [

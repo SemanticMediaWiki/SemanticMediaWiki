@@ -445,8 +445,8 @@ class InTextAnnotationParser {
 	}
 
 	/**
-  * @return string[]
-  */
+	 * @return string[]
+	 */
  protected function doStripMagicWordsFromText( &$text ): array {
 
 		$words = [];

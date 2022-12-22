@@ -379,8 +379,8 @@ class SetupCheck {
 	}
 
 	/**
-  * @return mixed[]
-  */
+	 * @return mixed[]
+	 */
  private function createErrorContent( $type ): array {
 
 		$indicator_title = 'Error';

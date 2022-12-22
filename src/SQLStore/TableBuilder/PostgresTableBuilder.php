@@ -122,8 +122,8 @@ class PostgresTableBuilder extends TableBuilder {
 	}
 
 	/**
-  * @return string[]|string[][]
-  */
+	 * @return string[]|string[][]
+	 */
  private function getCurrentFields( $tableName ): array {
 
 		$tableName = str_replace( '"', '', $tableName );

@@ -48,8 +48,8 @@ class TableStatisticsLookup {
 	}
 
 	/**
-  * @return array{total_row_count: mixed, last_id: mixed, duplicate_count: int, rows: array{rev_count: mixed, smw_namespace_group_by_count: mixed, smw_iw: array{delete_count: mixed, redirect_count: mixed}, smw_proptable_hash: array{query_match_count: mixed, query_null_count: mixed}}}[]|array{total_row_count: mixed, rows: array{active_links_count: mixed, invalid_links_count: mixed, unassigned_count: mixed}}[]|array{total_row_count: mixed, unique_terms_occurrence_in_percent: int|float, rows: array{blob_field_null_row_count: mixed, terms_occurrence: array{single_occurrence_total_count: mixed, multi_occurrence_total_count: mixed}}}[]|array{query_time: float, snapshot_date: string}[]
-  */
+	 * @return array{total_row_count: mixed, last_id: mixed, duplicate_count: int, rows: array{rev_count: mixed, smw_namespace_group_by_count: mixed, smw_iw: array{delete_count: mixed, redirect_count: mixed}, smw_proptable_hash: array{query_match_count: mixed, query_null_count: mixed}}}[]|array{total_row_count: mixed, rows: array{active_links_count: mixed, invalid_links_count: mixed, unassigned_count: mixed}}[]|array{total_row_count: mixed, unique_terms_occurrence_in_percent: int|float, rows: array{blob_field_null_row_count: mixed, terms_occurrence: array{single_occurrence_total_count: mixed, multi_occurrence_total_count: mixed}}}[]|array{query_time: float, snapshot_date: string}[]
+	 */
  private function loadFromDB( $connection ): array {
 
 		$start_time = -microtime( true );
@@ -231,8 +231,8 @@ class TableStatisticsLookup {
 	}
 
 	/**
-  * @return array<int|string, int>
-  */
+	 * @return array<int|string, int>
+	 */
  private function rows_group_by_namespace( $connection ): array {
 		$res = $connection->select(
 			SQLStore::ID_TABLE,

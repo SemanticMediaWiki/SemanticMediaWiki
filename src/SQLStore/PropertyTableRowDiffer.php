@@ -269,20 +269,20 @@ class PropertyTableRowDiffer {
 	}
 
 	/**
-  * Get the current data stored for the given ID in the given database
-  * table. The result is an array of updates, formatted like the one of
-  * the table insertion arrays created by preparePropertyTableInserts().
-  *
-  * @note Tables without IDs as subject are not supported. They will
-  * hopefully vanish soon anyway.
-  *
-  * @since 1.8
-  *
-  * @param integer $sid
-  * @param TableDefinition $tableDeclaration
-  *
-  * @return array<string, mixed[]>
-  */
+	 * Get the current data stored for the given ID in the given database
+	 * table. The result is an array of updates, formatted like the one of
+	 * the table insertion arrays created by preparePropertyTableInserts().
+	 *
+	 * @note Tables without IDs as subject are not supported. They will
+	 * hopefully vanish soon anyway.
+	 *
+	 * @since 1.8
+	 *
+	 * @param integer $sid
+	 * @param TableDefinition $tableDeclaration
+	 *
+	 * @return array<string, mixed[]>
+	 */
  private function fetchCurrentContentsForPropertyTable( $sid, TableDefinition $propertyTable ): array {
 
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict

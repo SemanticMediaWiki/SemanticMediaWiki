@@ -159,10 +159,10 @@ class UsageStatisticsListLookup implements ListLookup {
 	}
 
 	/**
-  * @since 1.9
-  *
-  * @return array<int|string, int>
-  */
+	 * @since 1.9
+	 *
+	 * @return array<int|string, int>
+	 */
  public function getQueryFormatsCount(): array {
 		$count = [];
 
