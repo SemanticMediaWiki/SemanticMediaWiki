@@ -88,7 +88,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * submitted in the 'edit schema' form.
 	 * @return array<string, string>
 	 */
- public static function createTemplateXMLFromForm(): array {
+	public static function createTemplateXMLFromForm(): array {
 		global $wgRequest;
 
 		$xmlPerTemplate = [];
@@ -114,7 +114,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Page Schemas object.
 	 * @return mixed[]
 	 */
- public static function getPagesToGenerate( $pageSchemaObj ): array {
+	public static function getPagesToGenerate( $pageSchemaObj ): array {
 		$pagesToGenerate = [];
 
 		$psTemplates = $pageSchemaObj->getTemplates();
@@ -139,7 +139,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * in the 'edit schema' form.
 	 * @return array<int|string, string>
 	 */
- public static function createFieldXMLFromForm(): array {
+	public static function createFieldXMLFromForm(): array {
 		global $wgRequest;
 
 		$fieldNum = -1;

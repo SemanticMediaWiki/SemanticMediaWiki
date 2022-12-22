@@ -150,7 +150,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	/**
 	 * @return array<int|string, array<int|string, mixed[]>>
 	 */
- private function buildSimpleList( $res ): array {
+	private function buildSimpleList( $res ): array {
 
 		$result = [];
 

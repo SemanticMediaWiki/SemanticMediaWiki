@@ -31,7 +31,7 @@ class QueryStringifier {
 	 *
 	 * @return mixed[]
 	 */
- public static function toArray( Query $query, $printParameters = false ): array {
+	public static function toArray( Query $query, $printParameters = false ): array {
 
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();

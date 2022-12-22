@@ -311,7 +311,7 @@ class Highlighter {
 	 *
 	 * @return array{type: string, caption: string, content: string, state: string, title: string, captionclass: string}
 	 */
- private function getTypeConfiguration( $type ): array {
+	private function getTypeConfiguration( $type ): array {
 		$settings = [];
 		$settings['type'] = $type;
 		$settings['caption'] = '';

@@ -95,7 +95,7 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @return array<string, string>
 	 */
- private function parse_string( $userValue, $contents ): array {
+	private function parse_string( $userValue, $contents ): array {
 
 		$parts = array_map( 'trim', preg_split( "([\n][\s]?)", $contents ) );
 		$list = [];

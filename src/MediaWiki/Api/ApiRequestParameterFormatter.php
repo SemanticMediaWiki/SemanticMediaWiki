@@ -105,7 +105,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return array<string, string>
 	 */
- protected function formatParameters(): array {
+	protected function formatParameters(): array {
 
 		$parameters = [];
 

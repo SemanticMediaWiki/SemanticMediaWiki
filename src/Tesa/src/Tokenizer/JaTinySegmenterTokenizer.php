@@ -255,7 +255,7 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	/**
 	 * @return string[]
 	 */
- private function mb_string_to_array_( $str, $encoding = 'UTF-8' ): array {
+	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ): array {
 
 		$result = array();
 		$length = mb_strlen( $str, $encoding );

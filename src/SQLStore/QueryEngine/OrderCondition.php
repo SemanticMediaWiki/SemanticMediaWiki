@@ -132,7 +132,7 @@ class OrderCondition {
 	/**
 	 * @return \SMW\Query\Language\Description[]
 	 */
- private function findDescriptionsFromSortKeys( $querySegment ): array {
+	private function findDescriptionsFromSortKeys( $querySegment ): array {
 
 		$extraDescriptions = [];
 

@@ -275,7 +275,7 @@ class Client {
 	 * @param array
 	 * @return array<int|string, mixed>
 	 */
- public function cat( $type, $params = [] ): array {
+	public function cat( $type, $params = [] ): array {
 
 		$res = [];
 

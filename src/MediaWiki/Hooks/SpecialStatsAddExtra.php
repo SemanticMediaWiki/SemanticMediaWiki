@@ -159,7 +159,7 @@ class SpecialStatsAddExtra implements HookListener {
 	/**
 	 * @return array<int|string, array{name: string, number: mixed}>
 	 */
- private function addFormats( $key, $statistics ): array {
+	private function addFormats( $key, $statistics ): array {
 
 		$i = 0;
 		$formats = [];
