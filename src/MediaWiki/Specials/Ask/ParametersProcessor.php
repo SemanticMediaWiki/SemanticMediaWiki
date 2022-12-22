@@ -167,7 +167,7 @@ class ParametersProcessor {
 
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
-			return Infolink::decodeParameters( $params, true );
+			return Infolink::decodeParameters( $params ?? '', true );
 		}
 
 		// Called by own Special, ignore full param string in that case
