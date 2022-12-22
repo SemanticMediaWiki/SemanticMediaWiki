@@ -22,7 +22,7 @@ class QueryInputWidget {
 	 *
 	 * @return string
 	 */
-	public static function table( $queryString, $printoutString ) {
+	public static function table( string $queryString, string $printoutString ) {
 
 		$table = HtmlDivTable::open( [ 'style' => "width: 100%;" ] );
 
