@@ -217,7 +217,7 @@ abstract class SMWDataValue {
 	 * @param string $value
 	 * @param mixed $caption
 	 */
-	public function setUserValue( $value, $caption = false ) {
+	public function setUserValue( string $value, $caption = false ) {
 
 		$this->m_dataitem = null;
 		$this->mErrors = []; // clear errors
