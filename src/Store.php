@@ -428,7 +428,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param boolean $verbose
 	 */
-	public abstract function drop( $verbose = true );
+	public abstract function drop( $verbose = true ): bool;
 
 	/**
 	 * Refresh some objects in the store, addressed by numerical ids. The
