@@ -115,7 +115,7 @@ class SpecialBrowse extends SpecialPage {
 			);
 
 			if ( !$this->including() ) {
-				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article' ) );
+				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article', '' ) );
 			}
 
 			return $html;
