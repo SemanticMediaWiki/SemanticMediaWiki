@@ -76,10 +76,10 @@ class QueryResultLookup {
 	/**
 	 * @since 2.1
 	 *
- 	 * @param QueryOptions $pageRequestOptions
- 	 *
+	 * @param QueryOptions $pageRequestOptions
+	 *
 	 * @return array<int, \SMWDataValue[]> of array(SMWWikiPageValue, SMWDataValue) with the
- 	 * first being the entity, and the second the value
+	 * first being the entity, and the second the value
 	 */
 	public function doQuery( PageRequestOptions $pageRequestOptions ): array {
 
