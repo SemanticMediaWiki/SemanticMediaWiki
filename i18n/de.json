@@ -26,6 +26,7 @@
 			"Michawiki",
 			"Mirzali",
 			"MuratTheTurkish",
+			"Nadjita",
 			"Nemo bis",
 			"Omnipaedista",
 			"Pill",
@@ -1126,5 +1127,5 @@
 	"smw-indicator-revision-mismatch-error": "Der [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner Seitenversionsprüfung] hat beim Vergleich eine Abweichung der Seitenversionen zwischen den Datenbanken von MediaWiki und Semantic MediaWiki festgestellt.",
 	"smw-indicator-revision-mismatch-comment": "Eine Abweichung deutet normalerweise darauf hin, daß eine Softwareaufgabe zur Aktualisierung der Seitenversion, in der Datenbank von Semantic MediaWiki, unterbrochen wurde. Daher sollten die entsprechenden Logdateien des Servers auf Informationen zu möglichen Fehlern geprüft werden.",
 	"smw-listingcontinuesabbrev": "Fortsetzung",
-	"smw-showingresults": "Hier {{PLURAL:$1|ist '''1''' Ergebnis|sind '''$1''' Ergebnisse}}, beginnend mit Nummer '''$2.'''"
+	"smw-showingresults": "Hier {{PLURAL:$1|ist <strong>1</strong> Ergebnis|sind <strong>$1</strong> Ergebnisse}}, beginnend mit Nummer <strong>$2</strong>."
 }

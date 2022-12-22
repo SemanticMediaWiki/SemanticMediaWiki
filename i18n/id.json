@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Agam Riyandana",
 			"Arief",
 			"ArlandGa",
 			"Bagas Chrisara",
@@ -245,6 +246,8 @@
 	"smw-createproperty-isproperty": "Ini adalah properti bertipe $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Nilai|Nilai}} yang diizinkan untuk properti ini adalah:",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ MediaWiki Semantik] dan ekstensi-ekstensi terkait menyediakan preferensi untuk sekelompok fitur dan fungsi terpilih. Daftar pengaturan individu beserta deskripsi dan karakteristiknya tersedia di [http://semantic-mediawiki.org/wiki/Help:User_preferences halaman bantuan] berikut.",
+	"smw-prefs-general-options-show-entity-issue-panel": "Tampilkan panel masalah entitas",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Jika diaktifkan, jalankan pemeriksaan integritas pada setiap halaman dan tampilkan [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel Entity issue panel].",
 	"smw-ui-tooltip-title-quantity": "satuan konversi",
 	"smw-ui-tooltip-title-info": "Informasi",
 	"smw-ui-tooltip-title-warning": "Peringatan",

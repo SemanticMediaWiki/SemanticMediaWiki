@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Afalau",
 			"Ham II",
 			"Robin Owain"
 		]
 	},
+	"smw-error": "Gwall",
 	"smw_printername_table": "Tabl",
 	"smw_printername_category": "Categori",
 	"validator-type-class-SMWParamSource": "testun",
