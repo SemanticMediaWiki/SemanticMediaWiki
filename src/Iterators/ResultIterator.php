@@ -78,7 +78,7 @@ class ResultIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function seek( $position ) {
+	public function seek( $position ): void {
 		$this->res->seek( $position );
 		$this->setCurrent( $this->res->current() );
 		$this->position = $position;
