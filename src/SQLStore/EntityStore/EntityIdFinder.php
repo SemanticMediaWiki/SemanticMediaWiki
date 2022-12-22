@@ -273,7 +273,7 @@ class EntityIdFinder {
 	 *
 	 * @return int[]
 	 */
- public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 
 		$matches = [];
 

@@ -129,7 +129,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return array<int|string, mixed>
 	 */
- public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
+	public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
 
 		$references = [];
 

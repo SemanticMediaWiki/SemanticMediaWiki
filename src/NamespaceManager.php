@@ -114,7 +114,7 @@ class NamespaceManager {
 	 *
 	 * @return string[]
 	 */
- public static function getCanonicalNames(): array {
+	public static function getCanonicalNames(): array {
 
 		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',

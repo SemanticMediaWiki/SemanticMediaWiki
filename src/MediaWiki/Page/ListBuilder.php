@@ -167,7 +167,7 @@ class ListBuilder {
 	/**
 	 * @return array<int|string, mixed[]>
 	 */
- private function buildList( $dataItems ): array {
+	private function buildList( $dataItems ): array {
 
 		$dataValueFactory = DataValueFactory::getInstance();
 

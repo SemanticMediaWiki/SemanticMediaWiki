@@ -227,7 +227,7 @@ class QueryCreator implements QueryContext {
 	/**
 	 * @return string[]
 	 */
- private function normalize_order( $orderParameters ): array {
+	private function normalize_order( $orderParameters ): array {
 		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {

@@ -381,7 +381,7 @@ class SetupCheck {
 	/**
 	 * @return mixed[]
 	 */
- private function createErrorContent( $type ): array {
+	private function createErrorContent( $type ): array {
 
 		$indicator_title = 'Error';
 		$template = $this->definitions['error_types'][$type];

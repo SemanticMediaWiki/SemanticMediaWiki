@@ -106,7 +106,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	/**
 	 * @return string[]
 	 */
- private function createTokens( $string ): array {
+	private function createTokens( $string ): array {
 
 		$tokens = array();
 

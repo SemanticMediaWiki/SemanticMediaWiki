@@ -210,7 +210,7 @@ class MessageFormatter {
 	 *
 	 * @return array<string, mixed>
 	 */
- protected function doFormat( array $messages ): array {
+	protected function doFormat( array $messages ): array {
 		$newArray = [];
 
 		foreach ( $messages as $msg ) {

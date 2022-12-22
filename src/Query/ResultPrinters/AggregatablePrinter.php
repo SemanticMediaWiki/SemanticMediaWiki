@@ -161,7 +161,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @return array<int|string, int> label => value
 	 */
- protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
+	protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		while ( /* array of SMWResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)

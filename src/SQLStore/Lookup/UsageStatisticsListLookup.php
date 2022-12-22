@@ -163,7 +163,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return array<int|string, int>
 	 */
- public function getQueryFormatsCount(): array {
+	public function getQueryFormatsCount(): array {
 		$count = [];
 
 		$res = $this->store->getConnection()->select(

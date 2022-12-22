@@ -146,7 +146,7 @@ class MySQLTableBuilder extends TableBuilder {
 	/**
 	 * @return string[]|string[][]
 	 */
- private function getCurrentFields( $tableName ): array {
+	private function getCurrentFields( $tableName ): array {
 
 		$sql = 'DESCRIBE ' . $tableName;
 

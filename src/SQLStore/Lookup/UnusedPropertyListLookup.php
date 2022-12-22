@@ -130,7 +130,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	/**
 	 * @return mixed[]
 	 */
- private function buildPropertyList( $res ): array {
+	private function buildPropertyList( $res ): array {
 
 		$result = [];
 
