@@ -61,7 +61,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function format( $value ) {
+	public static function format( $value ): float {
 		// Keep microseconds to a certain degree distinguishable
 		return floatval( number_format( $value, 7, '.', '' ) );
 	}

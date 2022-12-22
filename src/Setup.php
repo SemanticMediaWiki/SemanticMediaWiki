@@ -96,14 +96,14 @@ final class Setup {
 	/**
 	 * @since 3.0
 	 */
-	public static function isEnabled() {
+	public static function isEnabled(): bool {
 		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public static function isValid( $isCli = false ) {
+	public static function isValid( $isCli = false ): bool {
 		return SetupFile::isGoodSchema( $isCli );
 	}
 

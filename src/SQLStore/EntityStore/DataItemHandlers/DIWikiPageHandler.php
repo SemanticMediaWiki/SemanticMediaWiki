@@ -99,7 +99,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 
 		// Store::getPropertySubjects has seen to choose the wrong index
 
@@ -165,7 +165,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_id';
 	}
 
@@ -174,7 +174,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_id';
 	}
 

@@ -18,7 +18,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue->getTypeID() === '_cod';
 	}
 
@@ -75,7 +75,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 		return json_encode( json_decode( $string ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	}
 
-	private function isJson( $string ) {
+	private function isJson( $string ): bool {
 
 		// Don't bother
 		if ( substr( $string, 0, 1 ) !== '{' ) {

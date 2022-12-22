@@ -56,7 +56,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		$html = '';
 
 		// Push `smw` to the top
-		uksort( $this->deprecationNoticeList, function( $a, $b ) {
+		uksort( $this->deprecationNoticeList, function( $a, $b ): bool {
 			return $b === 'smw';
 		} );
 
@@ -154,7 +154,10 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		);
 	}
 
-	private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ) {
+	/**
+  * @return never[]|mixed[]
+  */
+ private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ): array {
 
 		$noticeList = [];
 		$list = [];
@@ -224,7 +227,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function createItems( $message, $values ) {
+	private function createItems( $message, $values ): string {
 
 		$list = [];
 
@@ -266,7 +269,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return implode( '', $list );
 	}
 
-	private function hasOption( $setting, $option ) {
+	private function hasOption( $setting, $option ): bool {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 

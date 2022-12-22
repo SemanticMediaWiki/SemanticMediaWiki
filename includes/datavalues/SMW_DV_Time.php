@@ -214,7 +214,7 @@ class SMWTimeValue extends SMWDataValue {
 	 *
 	 * @return boolean stating if successful
 	 */
-	protected function interpretDateComponents( $datecomponents, &$date ) {
+	protected function interpretDateComponents( $datecomponents, &$date ): bool {
 
 		// The following code segment creates a bit vector to encode
 		// which role each digit of the entered date can take (day,
@@ -328,7 +328,7 @@ class SMWTimeValue extends SMWDataValue {
 	 *
 	 * @return boolean stating if successful
 	 */
-	protected function setDateFromParsedValues( $components ) {
+	protected function setDateFromParsedValues( $components ): bool {
 
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
@@ -450,7 +450,7 @@ class SMWTimeValue extends SMWDataValue {
 	 *
 	 * @return integer either DITime::CM_GREGORIAN or DITime::CM_JULIAN
 	 */
-	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
+	protected function getCalendarModel( $presetmodel, $year, $month, $day ): int {
 
 		// Old Style is a notational convention of Julian dates only
 		if ( $presetmodel == 'OS' ) {
@@ -484,7 +484,7 @@ class SMWTimeValue extends SMWDataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_TIME ) {
 			return false;
@@ -548,7 +548,7 @@ class SMWTimeValue extends SMWDataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isNumeric() {
+	public function isNumeric(): bool {
 		return true;
 	}
 
@@ -686,11 +686,11 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	private function isYear( $value ) {
+	private function isYear( $value ): bool {
 		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
 	}
 
-	private function isTimestamp( $value ) {
+	private function isTimestamp( $value ): bool {
 		// 1200-11-02T12:03:25 or 20120320055913
 		// avoid things like 2458119.500000 (JD)
 		return ( ( strlen( $value ) > 4 && substr( $value, 10, 1 ) === 'T' ) || ( strlen( $value ) == 14 && strpos( $value, '.' ) === false ) ) && wfTimestamp( TS_MW, $value ) !== false;

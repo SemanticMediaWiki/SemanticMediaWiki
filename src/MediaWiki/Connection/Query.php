@@ -120,7 +120,7 @@ class Query {
 	 *
 	 * @return boolean
 	 */
-	public function hasField( $field = '' ) {
+	public function hasField( $field = '' ): bool {
 
 		if ( (string)$field === '' ) {
 			return $this->fields !== [];
@@ -134,7 +134,7 @@ class Query {
 	 *
 	 * @return boolean
 	 */
-	public function hasCondition() {
+	public function hasCondition(): bool {
 		return $this->conditions !== [];
 	}
 

@@ -67,7 +67,7 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Page $page, &$outputDone, &$useParserCache ) {
+	public function process( Page $page, &$outputDone, &$useParserCache ): bool {
 
 		$title = $page->getTitle();
 
@@ -100,7 +100,7 @@ class ArticleViewHeader implements HookListener {
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ) {
+	private function updateCategoryTop( $title, $output ): bool {
 
 		$message = '';
 

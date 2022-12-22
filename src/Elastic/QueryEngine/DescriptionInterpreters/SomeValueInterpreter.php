@@ -539,11 +539,11 @@ class SomeValueInterpreter {
 		return $params;
 	}
 
-	private function isRange( $comparator ) {
+	private function isRange( $comparator ): bool {
 		return $comparator === SMW_CMP_GRTR || $comparator === SMW_CMP_GEQ || $comparator === SMW_CMP_LESS || $comparator === SMW_CMP_LEQ;
 	}
 
-	private function isNot( $comparator ) {
+	private function isNot( $comparator ): bool {
 		return $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_NEQ;
 	}
 

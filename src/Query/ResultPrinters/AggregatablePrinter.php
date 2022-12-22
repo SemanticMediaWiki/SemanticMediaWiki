@@ -151,17 +151,17 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	}
 
 	/**
-	 * Counts all the occurrences of all values in the query result,
-	 * and returns an array with as key the value and as value the count.
-	 *
-	 * @since 1.7
-	 *
-	 * @param QueryResult $queryResult
-	 * @param $outputMode
-	 *
-	 * @return array label => value
-	 */
-	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
+  * Counts all the occurrences of all values in the query result,
+  * and returns an array with as key the value and as value the count.
+  *
+  * @since 1.7
+  *
+  * @param QueryResult $queryResult
+  * @param $outputMode
+  *
+  * @return array<int|string, int> label => value
+  */
+ protected function getDistributionResults( QueryResult $queryResult, $outputMode ): array {
 		$values = [];
 
 		while ( /* array of SMWResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)

@@ -28,7 +28,7 @@ class SMWDINumber extends SMWDataItem {
 		$this->m_number = $number;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_NUMBER;
 	}
 
@@ -48,7 +48,7 @@ class SMWDINumber extends SMWDataItem {
 		return $this;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return strval( $this->m_number );
 	}
 
@@ -63,7 +63,7 @@ class SMWDINumber extends SMWDataItem {
 		return new SMWDINumber( floatval( $serialization ) );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
 			return false;
 		}

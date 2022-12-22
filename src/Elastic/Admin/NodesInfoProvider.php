@@ -19,7 +19,7 @@ class NodesInfoProvider extends InfoProviderHandler {
 	 *
 	 * @return string
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'nodes';
 	}
 

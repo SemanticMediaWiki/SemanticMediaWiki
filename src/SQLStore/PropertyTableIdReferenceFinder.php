@@ -123,13 +123,13 @@ class PropertyTableIdReferenceFinder {
 	}
 
 	/**
-	 * @since 2.5
-	 *
-	 * @param integer $id
-	 *
-	 * @return array
-	 */
-	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
+  * @since 2.5
+  *
+  * @param integer $id
+  *
+  * @return array<int|string, mixed>
+  */
+ public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
 
 		$references = [];
 

@@ -114,7 +114,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function getHeaderItems() {
+	public function getHeaderItems(): string {
 		return implode( '', $this->headerItems );
 	}
 

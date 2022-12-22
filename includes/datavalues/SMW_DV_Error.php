@@ -53,7 +53,7 @@ class SMWErrorValue extends SMWDataValue {
 		return $this->m_caption;
 	}
 
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		return htmlspecialchars( $this->getShortWikiText( $linker ) );
 	}
 
@@ -74,7 +74,7 @@ class SMWErrorValue extends SMWDataValue {
 		return $this->getErrorText();
 	}
 
-	public function isValid() {
+	public function isValid(): bool {
 		return false;
 	}
 

@@ -204,7 +204,10 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	private static function optionList( $definitions, $values ) {
+	/**
+  * @return string[]
+  */
+ private static function optionList( $definitions, $values ): array {
 
 		$html = [];
 

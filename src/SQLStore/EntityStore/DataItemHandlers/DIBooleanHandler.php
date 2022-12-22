@@ -81,7 +81,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_value';
 	}
 
@@ -90,7 +90,7 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_value';
 	}
 

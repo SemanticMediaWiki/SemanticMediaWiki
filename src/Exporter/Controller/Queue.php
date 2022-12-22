@@ -150,7 +150,7 @@ class Queue {
 	 * Check if the given task has already been completed at sufficient
 	 * recursion depth.
 	 */
-	private function isHashDone( string $hash, int $recdepth ) {
+	private function isHashDone( string $hash, int $recdepth ): bool {
 
 		if ( isset( $this->done[$hash] ) && $this->done[$hash] == -1 ) {
 			return true;

@@ -33,7 +33,7 @@ class SMWDIError extends SMWDataItem {
 		$this->userValue = $userValue;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_ERROR;
 	}
 
@@ -50,7 +50,7 @@ class SMWDIError extends SMWDataItem {
 		return $this->userValue;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return 'error';
 	}
 
@@ -58,7 +58,7 @@ class SMWDIError extends SMWDataItem {
 		return $this->getSerialization();
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this->m_errors );
 	}
 
@@ -72,7 +72,7 @@ class SMWDIError extends SMWDataItem {
 		return new SMWDIError( unserialize( $serialization ) );
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_ERROR ) {
 			return false;
 		}

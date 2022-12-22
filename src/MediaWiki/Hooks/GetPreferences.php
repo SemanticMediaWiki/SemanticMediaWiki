@@ -78,7 +78,7 @@ class GetPreferences implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( User $user, array &$preferences ) {
+	public function process( User $user, array &$preferences ): bool {
 
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );

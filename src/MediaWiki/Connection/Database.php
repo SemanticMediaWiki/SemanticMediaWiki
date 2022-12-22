@@ -90,7 +90,7 @@ class Database {
 	 *
 	 * @return boolean
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 
@@ -110,7 +110,7 @@ class Database {
 	 *
 	 * @return boolean
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();

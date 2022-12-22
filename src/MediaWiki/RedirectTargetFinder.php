@@ -70,7 +70,7 @@ class RedirectTargetFinder {
 		return Title::newFromRedirect( $text );
 	}
 
-	protected function hasContentHandler() {
+	protected function hasContentHandler(): bool {
 		return defined( 'CONTENT_MODEL_WIKITEXT' );
 	}
 

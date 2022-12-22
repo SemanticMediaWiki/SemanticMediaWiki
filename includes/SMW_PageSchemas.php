@@ -13,15 +13,15 @@ use MediaWiki\MediaWikiServices;
 
 class SMWPageSchemas extends PSExtensionHandler {
 
-	public static function getDisplayColor() {
+	public static function getDisplayColor(): string {
 		return '#DEF';
 	}
 
-	public static function getTemplateDisplayString() {
+	public static function getTemplateDisplayString(): string {
 		return 'Connecting property';
 	}
 
-	public static function getFieldDisplayString() {
+	public static function getFieldDisplayString(): string {
 		return 'Semantic property';
 	}
 
@@ -59,9 +59,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-	 * Returns the set of SMW property data from the entire page schema.
-	 */
-	static function getAllPropertyData( $pageSchemaObj ) {
+  * Returns the set of SMW property data from the entire page schema.
+  * @return mixed[]
+  */
+ static function getAllPropertyData( $pageSchemaObj ): array {
 		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
@@ -83,10 +84,11 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-	 * Constructs XML for the "connecting property", based on what was
-	 * submitted in the 'edit schema' form.
-	 */
-	public static function createTemplateXMLFromForm() {
+  * Constructs XML for the "connecting property", based on what was
+  * submitted in the 'edit schema' form.
+  * @return array<string, string>
+  */
+ public static function createTemplateXMLFromForm(): array {
 		global $wgRequest;
 
 		$xmlPerTemplate = [];
@@ -108,10 +110,11 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-	 * Sets the list of property pages defined by the passed-in
-	 * Page Schemas object.
-	 */
-	public static function getPagesToGenerate( $pageSchemaObj ) {
+  * Sets the list of property pages defined by the passed-in
+  * Page Schemas object.
+  * @return mixed[]
+  */
+ public static function getPagesToGenerate( $pageSchemaObj ): array {
 		$pagesToGenerate = [];
 
 		$psTemplates = $pageSchemaObj->getTemplates();
@@ -132,10 +135,11 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-	 * Constructs XML for the SMW property, based on what was submitted
-	 * in the 'edit schema' form.
-	 */
-	public static function createFieldXMLFromForm() {
+  * Constructs XML for the SMW property, based on what was submitted
+  * in the 'edit schema' form.
+  * @return array<int|string, string>
+  */
+ public static function createFieldXMLFromForm(): array {
 		global $wgRequest;
 
 		$fieldNum = -1;

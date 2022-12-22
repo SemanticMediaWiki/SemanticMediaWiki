@@ -759,7 +759,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function isNumeric() {
+	public function isNumeric(): bool {
 		if ( isset( $this->m_dataitem ) ) {
 			return is_numeric( $this->m_dataitem->getSortKey() );
 		}
@@ -773,7 +773,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function isValid() {
+	public function isValid(): bool {
 		return !$this->mHasErrors && isset( $this->m_dataitem );
 	}
 
@@ -789,7 +789,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return true;
 	}
 
@@ -798,7 +798,7 @@ abstract class SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		return false;
 	}
 
@@ -969,7 +969,7 @@ abstract class SMWDataValue {
 	 * creating servicelinks. The number and content of values in the parameter array
 	 * may vary, depending on the concrete datatype.
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): bool {
 		return false;
 	}
 

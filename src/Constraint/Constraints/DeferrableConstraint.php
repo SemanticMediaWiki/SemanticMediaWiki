@@ -31,7 +31,7 @@ abstract class DeferrableConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 
 		if ( $this->isCommandLineMode ) {
 			return Constraint::TYPE_INSTANT;

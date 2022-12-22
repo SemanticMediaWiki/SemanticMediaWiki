@@ -85,7 +85,7 @@ class JsonSchemaValidator {
 	 *
 	 * @param boolean
 	 */
-	public function hasSchemaValidator() {
+	public function hasSchemaValidator(): bool {
 		return $this->schemaValidator !== null;
 	}
 

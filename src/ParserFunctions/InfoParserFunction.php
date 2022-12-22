@@ -53,7 +53,7 @@ class InfoParserFunction implements HookHandler {
 		if ( strpos( $message, 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					function( $matches ) {
+					function( $matches ): string {
 						return strip_tags( $matches[0] );
 					},
 					$message
@@ -92,7 +92,7 @@ class InfoParserFunction implements HookHandler {
 	 *
 	 * @return string
 	 */
-	private function getOutputForErrors( $errors ) {
+	private function getOutputForErrors( $errors ): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}

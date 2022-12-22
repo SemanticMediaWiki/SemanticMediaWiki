@@ -270,11 +270,12 @@ class Client {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @param array
-	 */
-	public function cat( $type, $params = [] ) {
+  * @since 3.0
+  *
+  * @param array
+  * @return array<int|string, mixed>
+  */
+ public function cat( $type, $params = [] ): array {
 
 		$res = [];
 
@@ -505,7 +506,7 @@ class Client {
 	 *
 	 * @return boolean
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 

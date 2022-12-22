@@ -99,13 +99,13 @@ final class ApiRequestParameterFormatter {
 	}
 
 	/**
-	 * Format parameters
-	 *
-	 * @since  1.9
-	 *
-	 * @return string
-	 */
-	protected function formatParameters() {
+  * Format parameters
+  *
+  * @since  1.9
+  *
+  * @return array<string, string>
+  */
+ protected function formatParameters(): array {
 
 		$parameters = [];
 

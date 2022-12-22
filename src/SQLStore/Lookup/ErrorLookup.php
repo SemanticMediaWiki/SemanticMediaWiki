@@ -39,7 +39,7 @@ class ErrorLookup {
 	 *
 	 * @return array
 	 */
-	public function buildArray( /* iterable */ $res ) {
+	public function buildArray( /* iterable */ $res ): array {
 
 		$connection = $this->store->getConnection( 'mw.db' );
 		$messages = [];

@@ -104,7 +104,7 @@ class DependencyValidator {
 	 *
 	 * @return boolean
 	 */
-	public static function hasLikelyOutdatedDependencies( Title $title ) {
+	public static function hasLikelyOutdatedDependencies( Title $title ): bool {
 		return isset( $title->smwLikelyOutdatedDependencies ) && $title->smwLikelyOutdatedDependencies;
 	}
 
@@ -115,7 +115,7 @@ class DependencyValidator {
 	 *
 	 * @return boolean
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( DIWikiPage $subject ): bool {
 
 		$title = $subject->getTitle();
 
@@ -158,7 +158,7 @@ class DependencyValidator {
 	 *
 	 * @return boolean
 	 */
-	public function canKeepParserCache( DIWikiPage $subject ) {
+	public function canKeepParserCache( DIWikiPage $subject ): bool {
 
 		$key = $this->makeCacheKey( $subject->getTitle() );
 

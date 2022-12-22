@@ -85,7 +85,7 @@ class SpecialPageProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 
 		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
 			return 'smw_group';

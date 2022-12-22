@@ -72,7 +72,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ): bool {
 
 		if ( !$dataItem instanceof SMWDIBlob ) {
 			return false;

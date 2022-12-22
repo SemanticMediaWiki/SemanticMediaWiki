@@ -111,7 +111,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @return boolean
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 
 		$cliMsgFormatter = new CliMsgFormatter();
 

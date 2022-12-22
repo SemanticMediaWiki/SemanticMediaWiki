@@ -247,7 +247,7 @@ class Message {
 	 *
 	 * @return string
 	 */
-	public static function getHash( $parameters, $type = null, $language = null ) {
+	public static function getHash( $parameters, $type = null, $language = null ): string {
 
 		if ( $language instanceof Language ) {
 			$language = $language->getCode();

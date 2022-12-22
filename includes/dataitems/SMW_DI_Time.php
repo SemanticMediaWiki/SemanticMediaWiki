@@ -160,7 +160,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @return integer
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return SMWDataItem::TYPE_TIME;
 	}
 
@@ -577,7 +577,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		}
 	}
 
-	public function equals( SMWDataItem $di ) {
+	public function equals( SMWDataItem $di ): bool {
 		if ( $di->getDIType() !== SMWDataItem::TYPE_TIME ) {
 			return false;
 		}
@@ -585,7 +585,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		return $di->getSortKey() === $this->getSortKey();
 	}
 
-	private function isOutOfBoundsBySome() {
+	private function isOutOfBoundsBySome(): bool {
 		return ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||

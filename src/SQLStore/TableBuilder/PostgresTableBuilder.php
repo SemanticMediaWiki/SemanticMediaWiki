@@ -121,7 +121,10 @@ class PostgresTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+  * @return string[]|string[][]
+  */
+ private function getCurrentFields( $tableName ): array {
 
 		$tableName = str_replace( '"', '', $tableName );
 		// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
@@ -374,7 +377,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function getCumulatedIndexName( $tableName, $columns ) {
+	private function getCumulatedIndexName( $tableName, $columns ): string {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
 		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );

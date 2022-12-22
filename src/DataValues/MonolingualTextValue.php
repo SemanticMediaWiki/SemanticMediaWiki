@@ -169,7 +169,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return boolean
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;

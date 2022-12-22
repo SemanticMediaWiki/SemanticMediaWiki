@@ -35,7 +35,7 @@ class ArticlePurge implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( WikiPage &$wikiPage ) {
+	public function process( WikiPage &$wikiPage ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

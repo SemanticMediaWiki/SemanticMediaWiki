@@ -78,7 +78,7 @@ class GroupFormatter {
 	 *
 	 * @return boolean
 	 */
-	public function isLastGroup( $group ) {
+	public function isLastGroup( $group ): bool {
 		return $this->lastGroup === $group;
 	}
 
@@ -87,7 +87,7 @@ class GroupFormatter {
 	 *
 	 * @return boolean
 	 */
-	public function hasGroups() {
+	public function hasGroups(): bool {
 		return $this->groupLinks !== [];
 	}
 
@@ -251,7 +251,10 @@ class GroupFormatter {
 		return $group;
 	}
 
-	private function prepareListFromSchema( $schemaList ) {
+	/**
+  * @return array<int|string, array{properties: mixed[], msg_key: mixed, item: \SMW\DIWikiPage}>
+  */
+ private function prepareListFromSchema( $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {

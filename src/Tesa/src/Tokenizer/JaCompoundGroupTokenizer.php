@@ -161,7 +161,7 @@ class JaCompoundGroupTokenizer implements Tokenizer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isWordTokenizer() {
+	public function isWordTokenizer(): bool {
 		return false;
 	}
 

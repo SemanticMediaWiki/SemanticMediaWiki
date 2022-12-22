@@ -45,7 +45,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return boolean
 	 */
-	public function isAvailable() {
+	public function isAvailable(): bool {
 		return $this->cdb !== null;
 	}
 
@@ -56,7 +56,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return string
 	 */
-	public static function getLocation() {
+	public static function getLocation(): string {
 		return str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, __DIR__ . '/data/' );
 	}
 
@@ -78,7 +78,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return boolean
 	 */
-	public function isStopWord( $word ) {
+	public function isStopWord( $word ): bool {
 
 		if ( $this->cdb !== null && $this->cdb->get( $word ) !== false ) {
 			return true;
@@ -95,7 +95,7 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	 *
 	 * @return boolean
 	 */
-	public static function createCdbByLanguage( $location, $language ) {
+	public static function createCdbByLanguage( $location, $language ): bool {
 
 		$language = strtolower( $language );
 		$source = $location . $language . '.json';

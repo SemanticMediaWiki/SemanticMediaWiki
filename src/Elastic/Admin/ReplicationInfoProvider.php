@@ -49,7 +49,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 *
 	 * @return string
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'replication';
 	}
 

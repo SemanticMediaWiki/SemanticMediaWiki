@@ -52,7 +52,7 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Admin::RegisterTaskHandlers
 	 * @since 3.0
 	 */
-	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ) {
+	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, $outputFormatter, $user ): bool {
 
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
@@ -76,7 +76,7 @@ class Hooks {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders
 	 * @since 3.2
 	 */
-	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ) {
+	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, &$indicatorProviders ): bool {
 
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||

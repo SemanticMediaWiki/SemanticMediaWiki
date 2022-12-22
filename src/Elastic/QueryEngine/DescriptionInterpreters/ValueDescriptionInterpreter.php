@@ -145,11 +145,11 @@ class ValueDescriptionInterpreter {
 		return $condition;
 	}
 
-	private function isRange( $comparator ) {
+	private function isRange( $comparator ): bool {
 		return $comparator === SMW_CMP_GRTR || $comparator === SMW_CMP_GEQ || $comparator === SMW_CMP_LESS || $comparator === SMW_CMP_LEQ;
 	}
 
-	private function isNot( $comparator ) {
+	private function isNot( $comparator ): bool {
 		return $comparator === SMW_CMP_NLKE || $comparator === SMW_CMP_NEQ;
 	}
 
@@ -219,7 +219,7 @@ class ValueDescriptionInterpreter {
 	 * treatment which prevents a split and hereby causing the search match to be
 	 * worse off hence remove `*` in case of CJK usage.
 	 */
-	private function isCJK( &$text ) {
+	private function isCJK( &$text ): bool {
 
 		// Only use the examiner on the standard index_def since ICU provides
 		// better CJK and may handle `*` more sufficiently

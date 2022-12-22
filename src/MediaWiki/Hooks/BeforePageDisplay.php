@@ -62,7 +62,7 @@ class BeforePageDisplay implements HookListener {
 	 *
 	 * @return boolean
 	 */
-	public function process( OutputPage $outputPage, Skin $skin ) {
+	public function process( OutputPage $outputPage, Skin $skin ): bool {
 
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();

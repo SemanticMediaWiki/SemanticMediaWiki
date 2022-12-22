@@ -71,7 +71,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @return boolean
 	 */
-	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
+	public static function planAsJob( DIWikiPage $subject, $params = [] ): bool {
 
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
@@ -310,7 +310,7 @@ class ChangePropagationDispatchJob extends Job {
 		$changePropagationDispatchJob->lazyPush();
 	}
 
-	private function dispatchFromFile( $subject, $file ) {
+	private function dispatchFromFile( $subject, $file ): bool {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
@@ -364,7 +364,7 @@ class ChangePropagationDispatchJob extends Job {
 		return true;
 	}
 
-	private function dispatchFromSchema( $subject, $property_key ) {
+	private function dispatchFromSchema( $subject, $property_key ): bool {
 
 		$store = ApplicationFactory::getInstance()->getStore();
 
