@@ -29,14 +29,16 @@ trait DotSeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function seek( $position ) {
+	public function seek( $position ): void {
 
 		if ( isset( $this->seekable[$position] ) ) {
-			return $this->position = $position;
+			$this->position = $position;
+			return;
 		}
 
 		if ( isset( $this->container[$position] ) ) {
-			return $this->position = $position;
+			$this->position = $position;
+			return;
 		}
 
 		$seekable = $this->findPosition( $position );
@@ -56,6 +58,7 @@ trait DotSeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 
 		if ( isset( $this->seekable[$this->position] ) ) {
