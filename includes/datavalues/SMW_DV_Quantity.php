@@ -46,7 +46,7 @@ class SMWQuantityValue extends SMWNumberValue {
 	 */
 	protected $m_mainunit = false;
 
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->initConversionData();
 
 		if ( array_key_exists( $unit, $this->m_unitids ) ) {

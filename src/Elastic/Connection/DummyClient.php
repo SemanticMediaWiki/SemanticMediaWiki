@@ -118,7 +118,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::cat
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		return [];
 	}
 
