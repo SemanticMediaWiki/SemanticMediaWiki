@@ -968,8 +968,10 @@ abstract class SMWDataValue {
 	 * Overwritten by callers to supply an array of parameters that can be used for
 	 * creating servicelinks. The number and content of values in the parameter array
 	 * may vary, depending on the concrete datatype.
+	 *
+	 * @return bool|array
 	 */
-	protected function getServiceLinkParams(): bool {
+	protected function getServiceLinkParams() {
 		return false;
 	}
 

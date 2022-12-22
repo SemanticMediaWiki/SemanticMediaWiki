@@ -407,8 +407,10 @@ class SMWNumberValue extends SMWDataValue {
 	 * The returned value is a canonical ID for the main unit.
 	 * Returns the empty string if no unit is given for the value.
 	 * Overwritten by subclasses that support units.
+	 *
+	 * @return bool|string
 	 */
-	public function getUnit(): string {
+	public function getUnit() {
 		return '';
 	}
 
