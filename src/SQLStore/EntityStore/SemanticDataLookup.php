@@ -102,12 +102,12 @@ class SemanticDataLookup {
 	}
 
 	/**
-  * @since 3.0
-  *
-  * @param SemanticData $semanticData
-  *
-  * @return array<string, true>
-  */
+	 * @since 3.0
+	 *
+	 * @param SemanticData $semanticData
+	 *
+	 * @return array<string, true>
+	 */
  public function getTableUsageInfo( SemanticData $semanticData ): array {
 		$state = [];
 
@@ -403,8 +403,8 @@ class SemanticDataLookup {
 	}
 
 	/**
-  * @return array<int|string, mixed>
-  */
+	 * @return array<int|string, mixed>
+	 */
  private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ): array {
 
 		$result = [];
@@ -678,8 +678,8 @@ class SemanticDataLookup {
 	}
 
 	/**
-  * @return mixed[]
-  */
+	 * @return mixed[]
+	 */
  private function buildResultFromRow( $row, $params ): array {
 
 		$hash = '';

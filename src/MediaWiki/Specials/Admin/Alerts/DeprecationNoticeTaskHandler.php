@@ -155,8 +155,8 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 	}
 
 	/**
-  * @return never[]|mixed[]
-  */
+	 * @return never[]|mixed[]
+	 */
  private function buildList( $section, $noticeConfigList, $replacementConfigList, $removedConfigList ): array {
 
 		$noticeList = [];

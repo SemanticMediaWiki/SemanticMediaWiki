@@ -176,13 +176,13 @@ class QueryDependencyLinksStore {
 	}
 
 	/**
-  * @since 2.5
-  *
-  * @param DIWikiPage $subject
-  * @param RequestOptions|null $requestOptions
-  *
-  * @return array<int|string, int>
-  */
+	 * @since 2.5
+	 *
+	 * @param DIWikiPage $subject
+	 * @param RequestOptions|null $requestOptions
+	 *
+	 * @return array<int|string, int>
+	 */
  public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ): array {
 
 		$embeddedQueryIdList = [];

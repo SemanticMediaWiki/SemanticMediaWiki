@@ -130,8 +130,8 @@ class InMemoryPoolCache {
 	}
 
 	/**
-  * @return array<int|string, mixed>&mixed[][]
-  */
+	 * @return array<int|string, mixed>&mixed[][]
+	 */
  private function computeStats(): array {
 
 		ksort( $this->poolCacheList );

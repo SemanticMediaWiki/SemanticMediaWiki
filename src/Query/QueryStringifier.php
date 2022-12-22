@@ -24,13 +24,13 @@ class QueryStringifier {
 	}
 
 	/**
-  * @since 3.0
-  *
-  * @param Query $query
-  * @param boolean $printParameters
-  *
-  * @return mixed[]
-  */
+	 * @since 3.0
+	 *
+	 * @param Query $query
+	 * @param boolean $printParameters
+	 *
+	 * @return mixed[]
+	 */
  public static function toArray( Query $query, $printParameters = false ): array {
 
 		$serialized = [];

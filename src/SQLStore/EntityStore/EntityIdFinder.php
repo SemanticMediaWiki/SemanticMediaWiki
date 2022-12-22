@@ -264,15 +264,15 @@ class EntityIdFinder {
 	}
 
 	/**
-  * @since 3.1
-  *
-  * @param string $title
-  * @param string|integer $namespace
-  * @param string $iw
-  * @param string $subobjectName
-  *
-  * @return int[]
-  */
+	 * @since 3.1
+	 *
+	 * @param string $title
+	 * @param string|integer $namespace
+	 * @param string $iw
+	 * @param string $subobjectName
+	 *
+	 * @return int[]
+	 */
  public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 
 		$matches = [];

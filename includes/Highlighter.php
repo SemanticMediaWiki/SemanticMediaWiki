@@ -300,17 +300,17 @@ class Highlighter {
 	}
 
 	/**
-  * Returns initial configuration settings
-  *
-  * @note You could create a class per entity type but does this
-  * really make sense just to get some configuration parameters?
-  *
-  * @since 1.9
-  *
-  * @param string $type
-  *
-  * @return array{type: string, caption: string, content: string, state: string, title: string, captionclass: string}
-  */
+	 * Returns initial configuration settings
+	 *
+	 * @note You could create a class per entity type but does this
+	 * really make sense just to get some configuration parameters?
+	 *
+	 * @since 1.9
+	 *
+	 * @param string $type
+	 *
+	 * @return array{type: string, caption: string, content: string, state: string, title: string, captionclass: string}
+	 */
  private function getTypeConfiguration( $type ): array {
 		$settings = [];
 		$settings['type'] = $type;

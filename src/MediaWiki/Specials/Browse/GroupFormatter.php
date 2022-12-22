@@ -252,8 +252,8 @@ class GroupFormatter {
 	}
 
 	/**
-  * @return array<int|string, array{properties: mixed[], msg_key: mixed, item: \SMW\DIWikiPage}>
-  */
+	 * @return array<int|string, array{properties: mixed[], msg_key: mixed, item: \SMW\DIWikiPage}>
+	 */
  private function prepareListFromSchema( $schemaList ): array {
 		$list = [];
 

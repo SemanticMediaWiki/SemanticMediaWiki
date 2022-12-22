@@ -59,9 +59,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-  * Returns the set of SMW property data from the entire page schema.
-  * @return mixed[]
-  */
+	 * Returns the set of SMW property data from the entire page schema.
+	 * @return mixed[]
+	 */
  static function getAllPropertyData( $pageSchemaObj ): array {
 		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
@@ -84,10 +84,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-  * Constructs XML for the "connecting property", based on what was
-  * submitted in the 'edit schema' form.
-  * @return array<string, string>
-  */
+	 * Constructs XML for the "connecting property", based on what was
+	 * submitted in the 'edit schema' form.
+	 * @return array<string, string>
+	 */
  public static function createTemplateXMLFromForm(): array {
 		global $wgRequest;
 
@@ -110,10 +110,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-  * Sets the list of property pages defined by the passed-in
-  * Page Schemas object.
-  * @return mixed[]
-  */
+	 * Sets the list of property pages defined by the passed-in
+	 * Page Schemas object.
+	 * @return mixed[]
+	 */
  public static function getPagesToGenerate( $pageSchemaObj ): array {
 		$pagesToGenerate = [];
 
@@ -135,10 +135,10 @@ class SMWPageSchemas extends PSExtensionHandler {
 	}
 
 	/**
-  * Constructs XML for the SMW property, based on what was submitted
-  * in the 'edit schema' form.
-  * @return array<int|string, string>
-  */
+	 * Constructs XML for the SMW property, based on what was submitted
+	 * in the 'edit schema' form.
+	 * @return array<int|string, string>
+	 */
  public static function createFieldXMLFromForm(): array {
 		global $wgRequest;
 

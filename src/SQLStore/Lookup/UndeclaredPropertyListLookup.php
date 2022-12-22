@@ -140,8 +140,8 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	}
 
 	/**
-  * @return array<int, mixed[]>
-  */
+	 * @return array<int, mixed[]>
+	 */
  private function buildPropertyList( $res ): array {
 
 		$result = [];

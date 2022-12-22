@@ -173,8 +173,8 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	/**
-  * @return array<int|string, mixed[]>
-  */
+	 * @return array<int|string, mixed[]>
+	 */
  private function getContents( QueryResult $res, $outputMode ): array {
 		$contents = [];
 

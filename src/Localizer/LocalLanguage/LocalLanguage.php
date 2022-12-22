@@ -546,8 +546,8 @@ class LocalLanguage {
 	}
 
 	/**
-  * @return array<int, mixed[]>
-  */
+	 * @return array<int, mixed[]>
+	 */
  private function getDateFormatsByLanguageCode( $languageCode ): array {
 
 		$dateformats = [];

@@ -103,8 +103,8 @@ class SortForm {
 	}
 
 	/**
-  * @return mixed[]
-  */
+	 * @return mixed[]
+	 */
  private function sortList( $features ): array {
 
 		$list = [];

@@ -399,8 +399,8 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 	/**
-  * @return mixed[][]
-  */
+	 * @return mixed[][]
+	 */
  private function makeTypeList( $typeLabels ): array {
 
 		$contents = [];

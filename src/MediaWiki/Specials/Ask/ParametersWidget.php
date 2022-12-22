@@ -205,8 +205,8 @@ class ParametersWidget {
 	}
 
 	/**
-  * @return string[]
-  */
+	 * @return string[]
+	 */
  private static function optionList( $definitions, $values ): array {
 
 		$html = [];
