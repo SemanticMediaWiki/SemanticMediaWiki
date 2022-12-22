@@ -434,7 +434,7 @@ class PropertyRegistry {
 	/**
 	 * @deprecated since 3.0 use isRegistered instead
 	 */
-	public function isKnownPropertyId( $id ) {
+	public function isKnownPropertyId( $id ): bool {
 		return $this->isRegistered( $id );
 	}
 

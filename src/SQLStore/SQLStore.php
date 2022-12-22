@@ -456,7 +456,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );

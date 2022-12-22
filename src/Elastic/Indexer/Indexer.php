@@ -115,7 +115,7 @@ class Indexer {
 	 *
 	 * @return boolean
 	 */
-	public function isAccessible() {
+	public function isAccessible(): bool {
 		return $this->canReplicate();
 	}
 

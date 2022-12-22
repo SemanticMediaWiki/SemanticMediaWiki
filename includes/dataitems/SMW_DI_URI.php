@@ -120,7 +120,7 @@ class SMWDIUri extends SMWDataItem {
 		return urldecode( $this->getURI() );
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return $this->getURI();
 	}
 
