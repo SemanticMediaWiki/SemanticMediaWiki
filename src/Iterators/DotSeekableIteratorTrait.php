@@ -47,7 +47,7 @@ trait DotSeekableIteratorTrait {
 
 		$this->seekable[$position] = $seekable;
 
-		return $this->position = $position;
+		$this->position = $position;
 	}
 
 	/**
