@@ -51,7 +51,7 @@ class SpecialPageProperty extends SpecialPage {
 		}
 
 		// Get parameters
-		$pagename = $request->getVal( 'from' );
+		$pagename = $request->getVal( 'from', '' );
 		$propname = $request->getVal( 'type' );
 
 		// No GET parameters? Try the URL with the convention `PageName::PropertyName`
