@@ -62,7 +62,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Returns the set of SMW property data from the entire page schema.
 	 * @return mixed[]
 	 */
- static function getAllPropertyData( $pageSchemaObj ): array {
+	static function getAllPropertyData( $pageSchemaObj ): array {
 		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
