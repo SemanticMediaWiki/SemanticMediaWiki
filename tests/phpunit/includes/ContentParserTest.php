@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Content\Renderer\ContentRenderer;
+use MediaWiki\MediaWikiServices;
 use SMW\ContentParser;
 use SMW\Tests\PHPUnitCompat;
 
@@ -25,6 +27,11 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 
 	private TestEnvironment $testEnvironment;
 
+	/**
+	 * @var ?ContentRenderer
+	 */
+	private $contentRenderer = null;
+
 	protected function setUp() : void {
 		parent::setUp();
 
@@ -45,9 +52,16 @@ class ContentParserTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment = new TestEnvironment();
+
+		if ( version_compare( MW_VERSION, '1.38', '>=' ) ) {
+			$this->contentRenderer = MediaWikiServices::getInstance()->getContentRenderer();
+		}
 	}
 
 	protected function tearDown() : void {
+		if ( $this->contentRenderer !== null ) {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', fn() => $this->contentRenderer );
+		}
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
