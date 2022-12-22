@@ -492,7 +492,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 		return $this->factory->newMasterConceptCache()->refreshConceptCache( $concept );
 	}
 
