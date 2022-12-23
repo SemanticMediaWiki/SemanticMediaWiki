@@ -74,7 +74,7 @@ class SpecialSearchByProperty extends SpecialPage {
 
 		$pageBuilder = new PageBuilder(
 			$htmlFormRenderer,
-			new PageRequestOptions( $query, $requestOptions ),
+			new PageRequestOptions( $query ?? '', $requestOptions ),
 			new QueryResultLookup( $applicationFactory->getStore() )
 		);
 
