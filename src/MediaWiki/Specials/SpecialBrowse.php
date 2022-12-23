@@ -68,7 +68,7 @@ class SpecialBrowse extends SpecialPage {
 
 		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			'_wpg',
-			$articletext
+			$articletext ?? false
 		);
 
 		$out = $this->getOutput();
