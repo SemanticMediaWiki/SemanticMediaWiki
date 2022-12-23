@@ -41,7 +41,10 @@ class SchemaContentHandler extends JsonContentHandler {
 	 * {@inheritDoc}
 	 */
 	protected function getContentClass() {
-		return SchemaContent::class;
+		if ( version_compare( MW_VERSION, '1.38', '<' ) ) {
+			return SchemaContent::class;
+		}
+		return SchemaContent38::class;
 	}
 
 	/**

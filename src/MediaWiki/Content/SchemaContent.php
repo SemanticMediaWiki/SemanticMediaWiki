@@ -35,7 +35,7 @@ use Status;
  *
  * @author mwjames
  */
-class SchemaContent extends JsonContent {
+class SchemaContent extends SchemaContent38 {
 
 	/**
 	 * @var SchemaFactory
@@ -48,94 +48,98 @@ class SchemaContent extends JsonContent {
 	private $contentFormatter;
 
 	/**
-	 * @var array
-	 */
-	private $parse;
-
-	/**
-	 * @var boolean
-	 */
-	private $isYaml = false;
-
-	/**
-	 * @var boolean
-	 */
-	private $isValid;
-
-	/**
 	 * @var string
 	 */
 	private $errorMsg = '';
 
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function __construct( $text ) {
-		parent::__construct( $text, CONTENT_MODEL_SMW_SCHEMA );
+	private function initServices() {
+
+		if ( $this->schemaFactory === null ) {
+			$this->schemaFactory = new SchemaFactory();
+		}
+
+		if ( $this->contentFormatter === null ) {
+			$this->contentFormatter = new SchemaContentFormatter(
+				ApplicationFactory::getInstance()->getStore()
+			);
+		}
 	}
 
 	/**
-	 * This class doesn't own the properties but needs to guard against
-	 * a possible serialization attempt. (@see #4210)
-	 *
+	 * @see Content::prepareSave
 	 * @since 3.1
 	 *
-	 * @return array
-	 */
-	public function __sleep() {
-		return [ 'model_id', 'mText' ];
-	}
-
-	/**
-	 * `Content::getNativeData` will return the "native" text representation which
-	 * in case of YAML is just the text and not a JSON string. Therefore
-	 * `getNativeData` preserves the original user input.
-	 *
-	 * Instead, use this method to retrieve a JSON compatible string for both
-	 * JSON and YAML for when the data is valid.
-	 *
-	 * @since 3.0
-	 *
-	 * @return null|string
-	 */
-	public function toJson() {
-
-		if ( $this->isValid() ) {
-			return json_encode( $this->parse );
-		}
-
-		return null;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean
-	 */
-	public function isYaml() {
-
-		if ( $this->isValid() ) {
-			return $this->isYaml;
-		}
-
-		return false;
-	}
-
-	/**
-	 * @see Content::isValid
-	 * @since 3.0
-	 *
 	 * {@inheritDoc}
 	 */
-	public function isValid() {
+	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
 
-		if ( $this->isValid === null ) {
-			$this->decodeJSONContent();
+		$this->initServices();
+		$title = $page->getTitle();
+
+		$this->setTitlePrefix( $title );
+
+		$errors = [];
+		$schema = null;
+
+		try {
+			$schema = $this->schemaFactory->newSchema(
+				$title->getDBKey(),
+				$this->toJson()
+			);
+		} catch ( SchemaTypeNotFoundException $e ) {
+			if ( !$this->isValid && $this->errorMsg !== '' ) {
+				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
+			} elseif ( $e->getType() === '' || $e->getType() === null ) {
+				$errors[] = [ 'smw-schema-error-type-missing' ];
+			} else {
+				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
+			}
 		}
 
-		return $this->isValid;
+		if ( $schema !== null ) {
+			$errors = $this->schemaFactory->newSchemaValidator()->validate(
+				$schema
+			);
+
+			$schema_link = pathinfo(
+				$schema->info( Schema::SCHEMA_VALIDATION_FILE ),
+				PATHINFO_FILENAME
+			);
+		}
+
+		$status = Status::newGood();
+
+		if ( $errors !== [] && $schema === null ) {
+			array_unshift( $errors, [ 'smw-schema-error-input' ] );
+		} elseif ( $errors !== [] ) {
+			array_unshift( $errors, [ 'smw-schema-error-input-schema', $schema_link ] );
+		}
+
+		foreach ( $errors as $error ) {
+
+			if ( isset( $error['property'] ) && $error['property'] === 'title_prefix' ) {
+
+				if ( isset( $error['enum'] ) ) {
+					$group = end( $error['enum'] );
+				} elseif ( isset( $error['const'] ) ) {
+					$group = $error['const'];
+				} else {
+					continue;
+				}
+
+				$error = [ 'smw-schema-error-title-prefix', "$group:" ];
+			}
+
+			if ( isset( $error['message'] ) ) {
+				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
+			} elseif ( is_string( $error ) ) {
+				$status->fatal( $error );
+			} else {
+				$status->fatal( ...$error );
+			}
+		}
+
+		return $status;
 	}
 
 	/**
@@ -235,181 +239,6 @@ class SchemaContent extends JsonContent {
 		);
 
 		$parserData->copyToParserOutput();
-	}
-
-	/**
-	 * @see Content::prepareSave
-	 * @since 3.1
-	 *
-	 * {@inheritDoc}
-	 */
-	public function prepareSave( WikiPage $page, $flags, $parentRevId, User $user ) {
-
-		$this->initServices();
-		$title = $page->getTitle();
-
-		$this->setTitlePrefix( $title );
-
-		$errors = [];
-		$schema = null;
-
-		try {
-			$schema = $this->schemaFactory->newSchema(
-				$title->getDBKey(),
-				$this->toJson()
-			);
-		} catch ( SchemaTypeNotFoundException $e ) {
-			if ( !$this->isValid && $this->errorMsg !== '' ) {
-				$errors[] = [ 'smw-schema-error-json', $this->errorMsg ];
-			} elseif ( $e->getType() === '' || $e->getType() === null ) {
-				$errors[] = [ 'smw-schema-error-type-missing' ];
-			} else {
-				$errors[] = [ 'smw-schema-error-type-unknown', $e->getType() ];
-			}
-		}
-
-		if ( $schema !== null ) {
-			$errors = $this->schemaFactory->newSchemaValidator()->validate(
-				$schema
-			);
-
-			$schema_link = pathinfo(
-				$schema->info( Schema::SCHEMA_VALIDATION_FILE ),
-				PATHINFO_FILENAME
-			);
-		}
-
-		$status = Status::newGood();
-
-		if ( $errors !== [] && $schema === null ) {
-			array_unshift( $errors, [ 'smw-schema-error-input' ] );
-		} elseif ( $errors !== [] ) {
-			array_unshift( $errors, [ 'smw-schema-error-input-schema', $schema_link ] );
-		}
-
-		foreach ( $errors as $error ) {
-
-			if ( isset( $error['property'] ) && $error['property'] === 'title_prefix' ) {
-
-				if ( isset( $error['enum'] ) ) {
-					$group = end( $error['enum'] );
-				} elseif ( isset( $error['const'] ) ) {
-					$group = $error['const'];
-				} else {
-					continue;
-				}
-
-				$error = [ 'smw-schema-error-title-prefix', "$group:" ];
-			}
-
-			if ( isset( $error['message'] ) ) {
-				$status->fatal( 'smw-schema-error-violation', $error['property'], $error['message'] );
-			} elseif ( is_string( $error ) ) {
-				$status->fatal( $error );
-			} else {
-				$status->fatal( ...$error );
-			}
-		}
-
-		return $status;
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * {@inheritDoc}
-	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		// FIXME: WikiPage::doEditContent invokes PST before validation. As such, native data
-		// may be invalid (though PST result is discarded later in that case).
-		if ( !$this->isValid() ) {
-			return $this;
-		}
-
-		if ( !$this->isYaml ) {
-			$text = self::normalizeLineEndings(
-				json_encode( $this->parse, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
-			);
-		} else {
-			$text = self::normalizeLineEndings( $this->mText );
-		}
-
-		return new static( $text );
-	}
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param SchemaFactory $schemaFactory
-	 * @param SchemaContentFormatter|null $contentFormatter
-	 */
-	public function setServices( SchemaFactory $schemaFactory, SchemaContentFormatter $contentFormatter = null ) {
-		$this->schemaFactory = $schemaFactory;
-		$this->contentFormatter = $contentFormatter;
-	}
-
-	/**
-	 * @see TextContent::normalizeLineEndings (MW 1.28+)
-	 *
-	 * @param $text
-	 *
-	 * @return string
-	 */
-	public static function normalizeLineEndings( $text ) {
-		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
-	}
-
-	private function initServices() {
-
-		if ( $this->schemaFactory === null ) {
-			$this->schemaFactory = new SchemaFactory();
-		}
-
-		if ( $this->contentFormatter === null ) {
-			$this->contentFormatter = new SchemaContentFormatter(
-				ApplicationFactory::getInstance()->getStore()
-			);
-		}
-	}
-
-	private function decodeJSONContent() {
-
-		// Support either JSON or YAML, if the class is available! Do a quick
-		// check on `{ ... }` to decide whether it is a non-JSON string.
-		if (
-			$this->mText !== '' &&
-			$this->mText[0] !== '{' &&
-			substr( $this->mText, -1 ) !== '}' &&
-			class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
-
-			try {
-				$this->parse = Yaml::parse( $this->mText );
-				$this->isYaml = true;
-			} catch ( ParseException $e ) {
-				$this->isYaml = false;
-				$this->parse = null;
-			}
-
-			return $this->isValid = $this->isYaml;
-		} elseif ( $this->mText !== '' ) {
-
-			// Note that this parses it without casting objects to associative arrays.
-			// Objects and arrays are kept as distinguishable types in the PHP values.
-			$this->parse = json_decode( $this->mText );
-			$this->isValid = json_last_error() === JSON_ERROR_NONE;
-
-			if ( $this->isValid ) {
-				return true;
-			}
-
-			$jsonParseException = new JSONParseException(
-				$this->mText
-			);
-
-			$this->errorMsg = $jsonParseException->getTidyMessage();
-
-			return false;
-		}
 	}
 
 	private function setTitlePrefix( Title $title ) {
