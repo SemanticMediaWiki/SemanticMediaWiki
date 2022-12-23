@@ -225,7 +225,7 @@ class populateHashField extends \Maintenance {
 	public function populate( \Iterator $rows = null ) {
 
 		$this->cliMsgFormatter = new CliMsgFormatter();
-		$this->cliMsgFormatter->setStartTime( microtime( true ) );
+		$this->cliMsgFormatter->setStartTime( (int) microtime( true ) );
 
 		if ( $rows === null ) {
 			$rows = $this->fetchRows();
