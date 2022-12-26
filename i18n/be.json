@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Artsiom91",
+			"Maksim L.",
 			"Mechanizatar",
 			"No Sleep till Krupki",
 			"Тест",
@@ -32,5 +33,5 @@
 	"smw-livepreview-loading": "Счытваем…",
 	"smw-help": "Даведка",
 	"smw-listingcontinuesabbrev": "працяг",
-	"smw-showingresults": "Ніжэй паказаны да {{PLURAL:$1|'''$1''' выніку|'''$1''' вынікаў}}, пачынаючы з нумару '''$2'''."
+	"smw-showingresults": "Ніжэй {{PLURAL:$1|паказаны|паказаны|паказана|}} <strong>$1</strong> {{PLURAL:$1|вынік|вынікі|вынікаў|}}, пачынаючы з нумара <strong>$2</strong>."
 }

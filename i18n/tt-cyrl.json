@@ -3,6 +3,7 @@
 		"authors": [
 			"Macofe",
 			"Ерней",
+			"Ильгиз",
 			"Ильнар"
 		]
 	},
@@ -33,6 +34,7 @@
 	"group-smwadministrator-member": "{{GENDER:$1|идәрәче (Semantic MediaWiki)}}",
 	"grouppage-smwadministrator": "{{ns:project}}:Идарәчеләр (Semantic MediaWiki)",
 	"smw-livepreview-loading": "Төяү бара…",
+	"smw-category-change-propagation-locked-error": "«$1» категориясе үзгәртелгән, һәм бәйләнгән битләр  [https://www.semantic-mediawiki.org/wiki/Change_propagation үзгәрешләрне тарату] юлы белән яңартылырга тиеш. Ә хәзергә, яңарту өзелмәсен яки көйләнмәләрдә каршылыклар барлыкка килмәс өчен, яңарту тәмамланганчы категория бите үзгәрешләр өчен ябыла. Бу, [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Job_queue биремнәр чираты] зурлыгына карап, бит үзгәрү өчен ачык булганчы төрле вакыт алырга мөмкин.",
 	"smw-listingcontinuesabbrev": "дәвамы",
 	"smw-showingresults": "Түбәндә <strong>$2</strong>&nbsp;№ башлап {{PLURAL:$1|<strong>бер генә</strong> нәтиҗә|<strong>$1</strong> нәтиҗә}} күрсәтелгән."
 }
