@@ -178,7 +178,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		$date = $wgRequest->getText( 'date' );
 		if ( $date === '' ) {
-			$date = $wgRequest->getVal( 'date' );
+			$date = $wgRequest->getVal( 'date', '' );
 		}
 
 		if ( $date !== '' ) {
