@@ -231,6 +231,7 @@
 	"smw-search-profile": "Razširjeno",
 	"smw-search-profile-extended-help-sort-recent": "* »Najnovejše« bo prikazoval najnovejše spremenjene entitete (podobjekt entitete bo skrit, saj te entitete niso označene z [[Property:Modification date|datumom spremembe]])",
 	"smw-search-profile-extended-help-namespace": "Izbiralnik imenskega prostora se bo skril takoj, ko bo izbrana oblika, prikažete pa ga lahko z uporabo gumba »pokaži/skrij«.",
+	"smw-search-profile-extended-section-sort": "Razvrsti po",
 	"smw-search-show": "Prikaži",
 	"smw-search-hide": "Skrij",
 	"smw-special-pageproperty-description": "Ta stran vsebuje brskalni vmesnik za pridobitev vseh vrednosti lastnosti in dane strani. Drugi razpoložljivi iskalni vmesniki vključujejo [[Special:SearchByProperty|iskanje lastnosti]] in [[Special:Ask|gradilnik poizvedb Semantično iskanje]].",

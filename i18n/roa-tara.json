@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Joetaras"
+			"Joetaras",
+			"McDutchie"
 		]
 	},
 	"smw-error": "Errore",
@@ -199,8 +200,8 @@
 	"smw-admin-tab-general": "Panorameche",
 	"smw-admin-configutation-tab-settings": "'Mbostaziune",
 	"smw-admin-configutation-tab-namespaces": "Namespace",
-	"smw-admin-maintenance-script-section-update": "Aggiorne le script",
-	"smw-admin-maintenance-script-section-rebuild": "Recombilazione de le script",
+	"smw-admin-maintenance-script-section-update": "Script di aggiornamento",
+	"smw-admin-maintenance-script-section-rebuild": "Script di ricostruzione",
 	"smw-livepreview-loading": "Stoche a careche…",
 	"smw-sp-searchbyproperty-resultlist-header": "Elenghe de le resultate",
 	"smw-search-profile-sort-title": "Titole",

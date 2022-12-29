@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Les Meloures",
+			"McDutchie",
 			"Robby",
 			"Soued031"
 		]
@@ -158,7 +159,7 @@
 	"smw-ask-condition-input-assistance-category": "<code>c:</code> fir Propose fir Kategorien z'aktivéieren",
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> fir d'Konzeptsichen z'aktivéieren",
 	"searchbyproperty": "No Eegenschafte sichen",
-	"processingerrorlist": "Feelerlëscht gëtt verschafft",
+	"processingerrorlist": "Lëscht vun Veraarbechtungsfehler",
 	"smw_sbv_docu": "Sichen no alle Säiten déi eng bestëmmten Eegenschaft mat engem bestëmmte Wäert hunn.",
 	"smw_sbv_property": "Eegenschaft:",
 	"smw_sbv_value": "Wäert:",
