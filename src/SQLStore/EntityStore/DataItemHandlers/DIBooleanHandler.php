@@ -44,6 +44,18 @@ class DIBooleanHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
+	public function getTableIndexes() {
+		return [
+			//  smw.entityIdDisposer causes denial of service on job queue (#4950)
+			'p_id'
+		];
+	}
+	
+	/**
+	 * @since 1.8
+	 *
+	 * {@inheritDoc}
+	 */
 	public function getWhereConds( DataItem $dataItem ) {
 		//PgSQL returns as t and f and need special handling http://archives.postgresql.org/pgsql-php/2010-02/msg00005.php
 		if ( $this->isDbType( 'postgres' ) ) {
