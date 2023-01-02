@@ -30,6 +30,7 @@
 			"Imre",
 			"Indiralena",
 			"Ivanhercaz",
+			"Jack30",
 			"Jakeukalane",
 			"Javier Calzada Prado",
 			"Javiersanp",
@@ -46,6 +47,7 @@
 			"MarcoAurelio",
 			"MartaEgea",
 			"MaxSem",
+			"McDutchie",
 			"Nemo bis",
 			"Ohlila",
 			"Peter Bowman",
@@ -796,7 +798,7 @@
 	"smw-format-datatable-infoempty": "Se muestran de 0 a 0 de 0 entradas",
 	"smw-format-datatable-infofiltered": "(filtradas de un total de _MAX_ entradas)",
 	"smw-format-datatable-infothousands": "&nbsp;",
-	"smw-format-datatable-lengthmenu": "Mostrar las entradas de _MENU_",
+	"smw-format-datatable-lengthmenu": "Mostrar _MENU_ entradas",
 	"smw-format-datatable-loadingrecords": "Cargando…",
 	"smw-format-datatable-processing": "Procesando…",
 	"smw-format-datatable-search": "Buscar:",
@@ -882,5 +884,5 @@
 	"smw-entity-examiner-associated-revision-mismatch": "Revisión",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restricción|Restricciones}}",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "Abajo se {{PLURAL:$1|muestra <strong>1</strong> resultado|muestran hasta <strong>$1</strong> resultados}} comenzando por el n.º <strong>$2</strong>."
+	"smw-showingresults": "Abajo se muestran {{PLURAL:$1|<strong>1</strong> resultado|hasta <strong>$1</strong> resultados}} comenzando con el n.º <strong>$2</strong>."
 }

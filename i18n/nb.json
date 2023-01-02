@@ -930,7 +930,7 @@
 	"smw-format-datatable-info": "Viser _START_ til _END_ av _TOTAL_ oppføringer",
 	"smw-format-datatable-infoempty": "Viser 0 til 0 av 0 oppføringer",
 	"smw-format-datatable-infofiltered": "(filtrert fra totalt _MAX_  oppføringer)",
-	"smw-format-datatable-lengthmenu": "Vis _MENU_-oppføringer",
+	"smw-format-datatable-lengthmenu": "Vis _MENU_ oppføringer",
 	"smw-format-datatable-loadingrecords": "Laster …",
 	"smw-format-datatable-processing": "Prosesserer …",
 	"smw-format-datatable-search": "Søk:",

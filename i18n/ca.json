@@ -761,7 +761,7 @@
 	"smw-format-datatable-infoempty": "Es mostren 0 de 0 de 0 entrades",
 	"smw-format-datatable-infofiltered": "(filtrades d'un total de _MAX_ entrades)",
 	"smw-format-datatable-infothousands": ".",
-	"smw-format-datatable-lengthmenu": "Mostra les entrades de _MENU_",
+	"smw-format-datatable-lengthmenu": "Mostra _MENU_ entrades",
 	"smw-format-datatable-loadingrecords": "S'està carregant...",
 	"smw-format-datatable-processing": "S'està processant...",
 	"smw-format-datatable-search": "Cerca:",

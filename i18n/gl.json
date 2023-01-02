@@ -704,7 +704,7 @@
 	"smw-format-datatable-infoempty": "Amosando de 0 a 0 de 0 entradas",
 	"smw-format-datatable-infofiltered": "(filtradas dun _MAX_ entradas do total)",
 	"smw-format-datatable-infothousands": ",",
-	"smw-format-datatable-lengthmenu": "Amosar as entradas de _MENU_",
+	"smw-format-datatable-lengthmenu": "Amosar _MENU_ entradas",
 	"smw-format-datatable-loadingrecords": "Cargando...",
 	"smw-format-datatable-processing": "Procesando...",
 	"smw-format-datatable-search": "Procurar:",

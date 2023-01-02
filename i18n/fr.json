@@ -975,7 +975,7 @@
 	"smw-format-datatable-infoempty": "Affichage de 0 à 0 sur 0 entrée",
 	"smw-format-datatable-infofiltered": "(filtré sur _MAX_ entrées au total)",
 	"smw-format-datatable-infothousands": "&#x202F;",
-	"smw-format-datatable-lengthmenu": "Afficher les entrées de _MENU_",
+	"smw-format-datatable-lengthmenu": "Afficher _MENU_ entrées",
 	"smw-format-datatable-loadingrecords": "Chargement en cours...",
 	"smw-format-datatable-processing": "Traitement en cours...",
 	"smw-format-datatable-search": "Rechercher :",
