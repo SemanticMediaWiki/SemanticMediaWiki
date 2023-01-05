@@ -15,6 +15,7 @@
 			"GuoPC",
 			"Gzdavidwong",
 			"Hanyanbo98",
+			"Hehua",
 			"Hudafu",
 			"Josephine W.",
 			"Lakejason0",
@@ -355,7 +356,7 @@
 	"smw-ask-extra-query-log": "查询日志",
 	"smw-ask-extra-other": "其他",
 	"searchbyproperty": "按属性搜索",
-	"processingerrorlist": "处理错误列表",
+	"processingerrorlist": "用于处理错误的列表",
 	"constrainterrorlist": "约束错误列表",
 	"propertylabelsimilarity": "属性标签相似性报告",
 	"missingredirectannotations": "缺少重定向标注",
@@ -642,8 +643,8 @@
 	"smw-admin-maintenance-script-section-title": "可用的维护脚本列表",
 	"smw-admin-maintenance-script-section-intro": "以下维护脚本需要管理员和对命令行的访问权限才能执行列出的脚本。",
 	"smw-admin-maintenance-script-description-rebuildpropertystatistics": "重新生成所有属性实体的使用统计信息。",
-	"smw-admin-maintenance-script-section-update": "更新脚本",
-	"smw-admin-maintenance-script-section-rebuild": "重建脚本",
+	"smw-admin-maintenance-script-section-update": "用于更新的脚本",
+	"smw-admin-maintenance-script-section-rebuild": "用于重建的脚本",
 	"smw-livepreview-loading": "正在加载...",
 	"smw-sp-searchbyproperty-description": "此页面提供一个简单的[https://www.semantic-mediawiki.org/wiki/Help:Browsing_interfaces 浏览界面]用于发现一个属性和一个命名值定义的实体。其他可用搜索界面包括[[Special:PageProperty|页面属性搜索]]和[[Special:Ask|询问查询生成器]]。",
 	"smw-sp-searchbyproperty-resultlist-header": "结果列表",
@@ -965,5 +966,5 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|约束}}",
 	"smw-indicator-revision-mismatch": "版本",
 	"smw-listingcontinuesabbrev": "续",
-	"smw-showingresults": "下面显示从第<strong>$2</strong>条结果开始的<strong>$1</strong>条结果。"
+	"smw-showingresults": "下面显示从第<strong>$2</strong>条结果开始的{{PLURAL:$1|<strong>1</strong>|<strong>$1</strong>}}条结果。"
 }

@@ -105,7 +105,7 @@
 	"smw-paramdesc-order": "סדר מיון השאילתה",
 	"smw-paramdesc-searchlabel": "טקסט עבור המשך החיפוש",
 	"smw-paramdesc-named_args": "שמות הפרמטרים שיועברו לתבנית",
-	"smw-paramdesc-import-annotation": "נתונים מוערים נוספים עמודים להיות מועתקים בזמן פענוח של נושא",
+	"smw-paramdesc-import-annotation": "נתונים מוערים נוספים עומדים להיות מועתקים בזמן פענוח של נושא",
 	"smw-paramdesc-export": "אפשרות יצוא",
 	"smw-paramdesc-prettyprint": "פלט מעוצב יפה עם יותר עימוד וירידות שורה",
 	"smw-paramdesc-json-unescape": "הפלט יכיל לוכסנים בלתי־מחולפים ותווי יוניקוד מרובי־בתים.",

@@ -1094,5 +1094,5 @@
 	"smw-indicator-revision-mismatch-error": "Le verification de [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner versiones associate] ha trovate un disaccordo inter le version referentiate in MediaWiki e le version associate in Semantic MediaWiki pro iste entitate.",
 	"smw-indicator-revision-mismatch-comment": "Un discrepantia normalmente indica que alcun processo ha interrumpite le operation de immagazinage in Semantic MediaWiki. Es recommendate revider le registros del servitor e cercar exceptiones o altere fallimentos.",
 	"smw-listingcontinuesabbrev": "cont.",
-	"smw-showingresults": "Infra se monstra non plus de {{PLURAL:$1|'''1''' resultato|'''$1''' resultatos}} a partir del numero '''$2'''."
+	"smw-showingresults": "Infra appare non plus de {{PLURAL:$1|<strong>1</strong> resultato|<strong>$1</strong> resultatos}} a partir del numero <strong>$2</strong>."
 }
