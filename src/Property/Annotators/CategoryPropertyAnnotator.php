@@ -53,6 +53,8 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 */
 	private $useCategoryRedirect = true;
 
+	private ProcessingErrorMsgHandler $processingErrorMsgHandler;
+
 	/**
 	 * @since 1.9
 	 *

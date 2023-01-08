@@ -118,6 +118,12 @@ class RequestOptions {
 	 */
 	private $caller;
 
+	public bool $conditionConstraint;
+
+	public bool $isChain;
+
+	public bool $isFirstChain;
+
 	/**
 	 * @since 3.1
 	 *
