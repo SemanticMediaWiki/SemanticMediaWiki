@@ -22,9 +22,9 @@ class NamespaceManager {
 	const DEFAULT_NAMESPACEINDEX = 100;
 
 	/**
-	 * @var LocalLanguage
+	 * @var LocalLanguage|null
 	 */
-	private $LocalLanguage;
+	private $localLanguage;
 
 	/**
 	 * @var string

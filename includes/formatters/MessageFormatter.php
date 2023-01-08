@@ -38,6 +38,8 @@ class MessageFormatter {
 	/** @var boolean */
 	protected $escape = true;
 
+	private Language $language;
+
 	/**
 	 * @since 1.9
 	 *

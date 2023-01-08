@@ -27,10 +27,7 @@ class DataTypeRegistry {
 	 */
 	protected static $instance = null;
 
-	/**
-	 * @var LocalLanguage
-	 */
-	private $LocalLanguage;
+	private LocalLanguage $localLanguage;
 
 	/**
 	 * Array of type labels indexed by type ids. Used for datatype resolution.

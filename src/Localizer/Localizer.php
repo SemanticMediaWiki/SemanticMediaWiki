@@ -35,6 +35,8 @@ class Localizer {
 	 */
 	private $contentLanguage = null;
 
+	private NamespaceInfo $namespaceInfo;
+
 	/** @var IContextSource */
 	private $context = null;
 

@@ -75,6 +75,8 @@ class DIProperty extends SMWDataItem {
 	 */
 	private $interwiki = '';
 
+	public int $id;
+
 	/**
 	 * Initialise a property. This constructor checks that keys of
 	 * predefined properties do really exist (in the current configuration
