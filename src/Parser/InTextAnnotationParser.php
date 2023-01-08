@@ -182,7 +182,7 @@ class InTextAnnotationParser {
 
 		$text = preg_replace_callback(
 			$this->getRegexpPattern( $linksInValuesPcre ),
-			$linksInValuesPcre ? 'self::process' : 'self::preprocess',
+			$linksInValuesPcre ? self::class . '::process' : self::class . '::preprocess',
 			$text
 		);
 
