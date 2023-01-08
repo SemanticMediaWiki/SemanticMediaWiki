@@ -93,10 +93,19 @@ class IntlNumberFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testCompareStringValue(): void {
+		$instance = new IntlNumberFormatter( 1000 );
+
+		$this->assertSame(
+			$instance->format( '100.42', 3, IntlNumberFormatter::VALUE_FORMAT ),
+			$instance->format( 100.42, 3, IntlNumberFormatter::VALUE_FORMAT )
+		);
+	}
+
 	/**
 	 * @dataProvider separatorProvider
 	 */
-	public function testgetSeparatorByLanguage( $type, $locale, $userLanguage, $contentLanguage, $expected ) {
+	public function testGetSeparatorByLanguage( $type, $locale, $userLanguage, $contentLanguage, $expected ) {
 
 		$instance = new IntlNumberFormatter( 10000000 );
 
