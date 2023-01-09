@@ -188,7 +188,7 @@ class IntlNumberFormatter {
 		// @todo: Don't do all this magic for integers, since the formatting does not fit there
 		//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
 		// The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
-		if ( $precision > 0 && $value !== 0 ) {
+		if ( $precision > 0 && $value != 0 ) {
 			$absValue = abs( (float)$value );
 			if ( $absValue >= $this->maxNonExpNumber ) {
 				$doScientific = true;
