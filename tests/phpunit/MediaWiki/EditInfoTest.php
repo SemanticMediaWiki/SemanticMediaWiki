@@ -39,7 +39,7 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			EditInfo::class,
-			new EditInfo( $wikiPage, $revision, $user )
+			new EditInfo( $wikiPage, $user, $revision )
 		);
 	}
 
@@ -49,8 +49,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 	public function testFetchContentInfo( $parameters, $expected ) {
 		$instance = new EditInfo(
 			$parameters['wikiPage'],
-			$parameters['revision'],
-			$parameters['user']
+			$parameters['user'],
+			$parameters['revision']
 		);
 
 		$this->assertEquals(
@@ -82,8 +82,8 @@ class EditInfoTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new EditInfo(
 			$wikiPage,
-			$this->newRevisionStub(),
-			$user
+			$user,
+			$this->newRevisionStub()
 		);
 
 		$this->assertInstanceOf(

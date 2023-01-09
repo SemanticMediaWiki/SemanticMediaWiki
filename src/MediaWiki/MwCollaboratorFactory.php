@@ -221,7 +221,7 @@ class MwCollaboratorFactory {
 			$user = RequestContext::getMain()->getUser();
 		}
 
-		$editInfo = new EditInfo( $wikiPage, $revision, $user );
+		$editInfo = new EditInfo( $wikiPage, $user, $revision );
 
 		$editInfo->setRevisionGuard(
 			$this->applicationFactory->singleton( 'RevisionGuard' )
