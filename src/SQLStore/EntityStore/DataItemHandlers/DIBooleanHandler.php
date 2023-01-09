@@ -39,11 +39,6 @@ class DIBooleanHandler extends DataItemHandler {
 		];
 	}
 
-	/**
-	 * @since 1.8
-	 *
-	 * {@inheritDoc}
-	 */
 	public function getTableIndexes() {
 		return [
 			//  smw.entityIdDisposer causes denial of service on job queue (#4950)
