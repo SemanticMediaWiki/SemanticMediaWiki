@@ -338,18 +338,13 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			return '';
 		}
 
-		if ( method_exists( $wikiPage, 'getContent' ) ) {
-			$content = $wikiPage->getContent();
+		$content = $wikiPage->getContent();
 
-			if ( $content instanceof TextContent ) {
-				$text = $content->getNativeData();
-			} else {
-				return '';
-			}
+		if ( $content instanceof TextContent ) {
+			$text = $content->getNativeData();
 		} else {
-			$text = $wikiPage->getText();
+			return '';
 		}
-
 		return $this->parse( $wikiPage->getTitle(), $text );
 	}
 
@@ -390,7 +385,12 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	}
 
 	private function newFeedItem( $title, $rowItems ) {
-		$wikiPage = WikiPage::newFromID( $title->getArticleID() );
+		$mwServices = MediaWikiServices::getInstance();
+		if ( method_exists( $mwServices, 'getWikiPageFactory' ) ) {
+			$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
+		} else {
+			$wikiPage = WikiPage::newFromID( $title->getArticleID() );
+		}
 
 		if ( $wikiPage !== null && $wikiPage->exists() ) {
 
@@ -431,11 +431,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		$user = RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
-
-		// FIXME: Remove the if block once compatibility with MW <1.31 is dropped
-		if ( !defined( '\ParserOutput::SUPPORTS_STATELESS_TRANSFORMS' ) || \ParserOutput::SUPPORTS_STATELESS_TRANSFORMS !== 1 ) {
-			$parserOptions->setEditSection( false );
-		}
 
 		return MediaWikiServices::getInstance()
 			->getParser()->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
