@@ -50,6 +50,11 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	private $schemeList = [];
 
+	/**
+	 * @var null|string
+	 */
+	private $m_captionOrig;
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -70,12 +75,14 @@ class SMWURIValue extends SMWDataValue {
 			break;
 		}
 
+		$this->m_captionOrig = $this->m_caption;
 		$this->schemeList = array_flip( $GLOBALS['smwgURITypeSchemeList'] );
 	}
 
 	protected function parseUserValue( $value ) {
-		$value = trim( $value );
+		$value = trim( $value );	// trim( str_replace( ' ', '_', $value ) );
 		$this->m_wikitext = $value;
+
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $this->m_wikitext;
 		}
@@ -238,7 +245,14 @@ class SMWURIValue extends SMWDataValue {
 
 		if ( is_null( $linked ) || ( $linked === false ) || ( $url === '' ) ||
 			( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
-			return $caption;
+			// this is to ensure that spaces are handled correctly
+			// (i.e. the portion of string after the space
+			// is not threated as a caption
+			if ( $this->m_mode === SMW_URI_MODE_URI ) {
+				return $this->m_captionOrig ? $this->m_captionOrig : '[' . $url . ( $url !== '' ? ' ' : '' ) . $caption . ']';
+			} else {
+				return $caption;
+			}
 		} elseif ( $this->m_outformat == 'nowiki' ) {
 			return $this->makeNonlinkedWikiText( $caption );
 		} else {
@@ -293,7 +307,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-
 		if ( $this->getOption( self::VALUE_RAW ) ) {
 			return rawurldecode( $this->m_wikitext );
 		}
@@ -359,20 +372,27 @@ class SMWURIValue extends SMWDataValue {
 
 	private function decodeUriContext( $context, $linker ) {
 
+		// not externally encoded
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {
 			$context = Encoder::decode( str_replace( '-', '-2D', $context ) );
 		}
 
-		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null ) {
-			$context = str_replace( '_', ' ', $context );
+		$url = $this->getURL();
+
+		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null &&
+			// replace underscore with a space only for wiki links
+			// either internal or external 
+			// in all other cases a solution like the following
+			// https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+			// shall instead be used
+			// @fixme the following method could lead to false-positives !
+			Title::newFromURL( $url ) ) {
+				$context = str_replace( '_', ' ', $context );
 		}
 
-		// Allow the display without `_` so that URIs can be split
-		// during the outout by the browser without breaking the URL itself
-		// as it contains the `_` for spaces
-		return [ $this->getURL(), $context ];
+		return [ $url, $context ];
 	}
 
 }
