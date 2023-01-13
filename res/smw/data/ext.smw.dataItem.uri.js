@@ -37,7 +37,11 @@
 
 		// Get mw.Uri inheritance
 		if ( this.fullurl !== null ) {
-			this.uri = new mw.Uri( this.fullurl );
+			try {
+				this.uri = new mw.Uri( this.fullurl );
+			} catch (error) {
+				console.log(error);
+			}
 		}
 
 		return this;
