@@ -19,6 +19,7 @@
 			"Macofe",
 			"MagnusA",
 			"Martinwiss",
+			"McDutchie",
 			"Mjälten",
 			"Najami",
 			"Nemo bis",
@@ -286,7 +287,7 @@
 	"smw-ask-condition-input-assistance-concept": "<code>con:</code> för att hämta konceptsökningar",
 	"smw-ask-query-search-info": "Frågan <code><nowiki>$1</nowiki></code> besvarades av {{PLURAL:$3|1=<code>$2</code> (från cachen)|<code>$2</code> (från cachen)|<code>$2</code>}} i $4 {{PLURAL:$4|sekund|sekunder}}.",
 	"searchbyproperty": "Sökning per egenskap",
-	"processingerrorlist": "Bearbetar fellistan",
+	"processingerrorlist": "Lista över bearbetningsfel",
 	"smw-processingerrorlist-intro": "Följande lista tillhandahåller en översikt över bearbetningsfelen som uppstod i anslutning med [https://www.semantic-mediawiki.org/ Semantic MediaWiki]. Det är rekommenderat att övervaka denna lista då och då och korrigera annoteringar om ogiltiga värden.",
 	"smw_sbv_docu": "Sök efter alla sidor som har en given egenskap och värde.",
 	"smw_sbv_novalue": "Skriv in ett giltigt värde för egenskapen, eller visa alla egenskapsvärden för ”$1”.",
@@ -329,7 +330,7 @@
 	"smw-admin-docu": "Denna specialsida hjälper dig under installation, uppgradering, underhåll och användning av <a href=\"https://www.semantic-mediawiki.org\">Semantic MediaWiki</a> och tillhandahåller också ytterligare administrativa funktioner och uppgifter, såväl som statistik.\nKom ihåg att säkerhetskopiera värdefull data innan du kör administrativa funktioner!",
 	"smw-admin-environment": "Programvarumiljö",
 	"smw-admin-db": "Inställning av databas",
-	"smw-admin-dbdocu": "Semantic's Mediawiki kräver sin egen databas-struktur (och är oberoende från Mediawiki vilket inte påverkar resten av Mediawiki-installationen) för att kunna lagra semantic-datan.\nDet här installationsfunktionen kan exekveras flerfaldiga gånger utan att det gör någon skada, men det behövs endast en gång i installation eller uppgradering.",
+	"smw-admin-dbdocu": "Semantic's MediaWiki kräver sin egen databas-struktur (och är oberoende från MediaWiki vilket inte påverkar resten av MediaWiki-installationen) för att kunna lagra semantic-datan.\nDet här installationsfunktionen kan exekveras flerfaldiga gånger utan att det gör någon skada, men det behövs endast en gång i installation eller uppgradering.",
 	"smw-admin-permissionswarn": "Om operationen misslyckas och visar SQL-fel så har din användare för databasen (kolla inställningarna i filen \"LocalSettings.php\") förmodligen inte tillräckliga rättigheter.\nDet finns tre sätt att åtgärda detta: Ge rättigheter till användaren att skapa och radera tabeller, ändra temporärt användaren till ''root'' i \"LocalSettings.php\", eller använd underhålls-scriptet <code>setupStore.php</code>, vilken kan använda rättigheterna för en administratör.",
 	"smw-admin-dbbutton": "Initialisera eller uppgradera tabeller",
 	"smw-admin-announce": "Meddela att din wiki finns",
@@ -674,5 +675,7 @@
 	"smw-ask-tab-code": "Kod",
 	"smw-pendingtasks-setup-tasks": "Uppgifter",
 	"smw-report": "Rapportera",
-	"smw-legend": "Teckenförklaring"
+	"smw-legend": "Teckenförklaring",
+	"smw-listingcontinuesabbrev": "forts.",
+	"smw-showingresults": "Nedan visas upp till {{PLURAL:$1|<strong>1</strong> resultat|<strong>$1</strong> resultat}} från och med nummer <strong>$2</strong>."
 }

@@ -336,7 +336,7 @@ class RedirectStore {
 			}
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 	}
 
 	private function makeHash( $title, $namespace ) {

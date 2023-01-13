@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use RequestContext;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\Tests\DatabaseTestCase;

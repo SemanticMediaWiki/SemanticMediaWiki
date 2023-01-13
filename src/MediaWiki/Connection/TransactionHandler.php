@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
 use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\Rdbms\TransactionProfiler;
 
 /**
  * @license GNU GPL v2+
@@ -28,6 +29,8 @@ class TransactionHandler {
 	 */
 	private $mutedTransactionProfiler;
 
+	private TransactionProfiler $transactionProfiler;
+
 	/**
 	 * @since 3.1
 	 */
@@ -41,11 +44,7 @@ class TransactionHandler {
 	 * @param TransactionProfiler $transactionProfiler
 	 */
 	public function setTransactionProfiler( $transactionProfiler ) {
-
-		// MW 1.28+
-		if ( method_exists( $transactionProfiler, 'setSilenced' ) ) {
-			$this->transactionProfiler = $transactionProfiler;
-		}
+		$this->transactionProfiler = $transactionProfiler;
 	}
 
 	/**

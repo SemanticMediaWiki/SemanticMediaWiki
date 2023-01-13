@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\Tests\TestEnvironment;

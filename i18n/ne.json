@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bada Kaji",
 			"Nirajan pant",
 			"जनक राज भट्ट",
 			"पर्वत सुबेदी",
+			"बडा काजी",
 			"बिप्लब आनन्द",
 			"हिमाल सुबेदी"
 		]
@@ -26,11 +28,12 @@
 	"smw-ask-delete": "हटाउनुहोस्",
 	"smw-ask-options": "विकल्पहरू",
 	"smw-ask-options-sort": "क्रम विकल्पहरू",
+	"smw-ask-search": "खोज्नुहोस्",
 	"smw-ask-debug": "डिबग",
 	"smw-ask-result": "नतिजा",
 	"smw-ask-empty": "सबै प्रविष्टिहरू हटाउनुहोस्",
 	"smw-ask-format": "ढाँचा",
-	"browse": "ब्राउज विकि",
+	"browse": "विकि हेर्नुहोस्",
 	"smw-prev": "पछिल्लो {{PLURAL:$1|$1}}",
 	"smw-next": "अर्को {{PLURAL:$1|$1}}",
 	"smw-admin-deprecation-notice-section-legend": "दिग्गज",
@@ -38,7 +41,7 @@
 	"smw-admin-supplementary-elastic-functions": "समर्थित सुविधाहरू",
 	"smw-admin-supplementary-elastic-statistics-title": "तथ्याङ्कहरू",
 	"smw-ui-tooltip-title-reference": "सन्दर्भ",
-	"smw-admin-idlookup-input": "खोज:",
+	"smw-admin-idlookup-input": "खोज्नुहोस्:",
 	"smw-admin-tab-maintenance": "व्यवस्थापन",
 	"smw-admin-tab-alerts": "सुचनाहरू",
 	"smw-admin-alerts-tab-maintenancealerts": "मर्मत सतर्कताहरू",
@@ -47,9 +50,12 @@
 	"smw-livepreview-loading": "खुल्दै छ…",
 	"smw-limitreport-intext-parsertime-value": "$1 {{PLURAL:$1|सेकेण्ड|सेकेण्डहरू}}",
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|सेकेण्ड|सेकेण्डहरू}}",
+	"smw-format-datatable-search": "खोज्नुहोस्:",
 	"smw-pendingtasks-setup-tasks": "कार्यहरू",
 	"smw-entity-examiner-deferred-elastic-replication": "लचकता",
 	"smw-entity-examiner-deferred-fake": "नक्कली",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|बाधा|बाधाहरू}}",
-	"smw-indicator-revision-mismatch": "पुनरावलोकन"
+	"smw-indicator-revision-mismatch": "पुनरावलोकन",
+	"smw-listingcontinuesabbrev": "निरन्तरता...",
+	"smw-showingresults": "देखाउँदै  {{PLURAL:$1|'''१''' नतिजा|'''$1''' नतिजाहरू }} , #'''$2''' बाट सुरुहुने ।"
 }

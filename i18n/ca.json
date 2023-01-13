@@ -10,6 +10,7 @@
 			"Kghbln",
 			"Loupeter",
 			"Macofe",
+			"McDutchie",
 			"Mguix",
 			"Nemo bis",
 			"Pitort",
@@ -310,7 +311,7 @@
 	"smw-ask-extra-query-log": "Registre de consultes",
 	"smw-ask-extra-other": "Altre",
 	"searchbyproperty": "Cerca per propietat",
-	"processingerrorlist": "Llista de processament d'errors",
+	"processingerrorlist": "Llista d'errors de processament",
 	"constrainterrorlist": "Llista d'erros de restricció",
 	"propertylabelsimilarity": "Informe de similitud d'etiquetes de propietat",
 	"missingredirectannotations": "Absència d'anotacions de redirecció",
@@ -760,7 +761,7 @@
 	"smw-format-datatable-infoempty": "Es mostren 0 de 0 de 0 entrades",
 	"smw-format-datatable-infofiltered": "(filtrades d'un total de _MAX_ entrades)",
 	"smw-format-datatable-infothousands": ".",
-	"smw-format-datatable-lengthmenu": "Mostra les entrades de _MENU_",
+	"smw-format-datatable-lengthmenu": "Mostra _MENU_ entrades",
 	"smw-format-datatable-loadingrecords": "S'està carregant...",
 	"smw-format-datatable-processing": "S'està processant...",
 	"smw-format-datatable-search": "Cerca:",
@@ -875,5 +876,7 @@
 	"smw-entity-examiner-associated-revision-mismatch": "Revisió",
 	"smw-entity-examiner-deferred-fake": "Simulació",
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Constricció|Constriccions}}",
-	"smw-indicator-revision-mismatch": "Revisió"
+	"smw-indicator-revision-mismatch": "Revisió",
+	"smw-listingcontinuesabbrev": " cont.",
+	"smw-showingresults": "Tot seguit es {{PLURAL:$1|mostra el resultat|mostren els <b>$1</b> resultats començant pel número <b>$2</b>}}."
 }

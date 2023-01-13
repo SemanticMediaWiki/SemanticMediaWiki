@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\DatabaseTestCase;
 use Title;
 

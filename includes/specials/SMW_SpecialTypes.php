@@ -1,6 +1,6 @@
 <?php
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\Utils\HtmlTabs;
@@ -47,7 +47,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$out->addModuleStyles( 'ext.smw.page.styles' );
 		$out->addModules( 'smw.property.page' );
 
-		$params = Infolink::decodeParameters( $param, false );
+		$params = Infolink::decodeParameters( $param ?? '', false );
 		$typeLabel = reset( $params );
 
 		if ( $typeLabel == false ) {

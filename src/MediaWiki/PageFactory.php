@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki;
 
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use Title;
 use SMW\Property\DeclarationExaminerFactory;

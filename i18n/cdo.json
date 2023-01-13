@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Káng wiki",
-	"smw-livepreview-loading": "載入..."
+	"smw-livepreview-loading": "載入...",
+	"smw-listingcontinuesabbrev": "（繼續前斗）",
+	"smw-showingresults": "顯示趁#<b>$2</b>開始其{{PLURAL:$1|'''$1'''萆結果}}。"
 }

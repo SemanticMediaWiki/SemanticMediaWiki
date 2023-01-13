@@ -1,12 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hussein m mmbaga",
 			"Kwisha",
 			"Rance"
 		]
 	},
+	"browse": "vinjari na wiki",
 	"smw-ui-tooltip-title-legend": "Simulizi",
 	"smw-livepreview-loading": "Inapakizwa...",
 	"smw-filter": "Chuja",
-	"smw-property-tab-usage": "Matumizi"
+	"smw-property-tab-usage": "Matumizi",
+	"smw-listingcontinuesabbrev": "endelea",
+	"smw-showingresults": "{{PLURAL:$1|Tokeo '''1''' linaonyeshwa|matokeo '''$1''' yanaonyeshwa}} chini, kuanzia na namba '''$2'''."
 }

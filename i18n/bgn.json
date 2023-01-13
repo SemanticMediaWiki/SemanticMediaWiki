@@ -4,5 +4,7 @@
 			"Baloch Afghanistan"
 		]
 	},
-	"browse": "ویکی بروز"
+	"browse": "ویکی بروز",
+	"smw-listingcontinuesabbrev": "(ادامه)",
+	"smw-showingresults": "نشان داتین حداکثر {{PLURAL:$1|'''۱''' نتیجه|'''$1''' نتیجه}} بی جهلگا، شرو شه شماره ئی  '''$2'''."
 }

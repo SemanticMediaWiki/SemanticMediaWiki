@@ -4,7 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use WebRequest;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Elastic\Indexer\FileIndexer;

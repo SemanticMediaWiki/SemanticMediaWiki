@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Search;
 use DatabaseBase;
 use RuntimeException;
 use SearchEngine;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;

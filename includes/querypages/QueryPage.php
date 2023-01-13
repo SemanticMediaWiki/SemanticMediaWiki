@@ -135,13 +135,15 @@ abstract class QueryPage extends \QueryPage {
 
 		// No need to verify $this->selectOptions because its values are set
 		// during doQuery() which is processed before this form is generated
-		$resultCount = wfShowingResults( $this->selectOptions['offset'], $this->selectOptions['count'] );
+		$limit = $this->selectOptions['limit'];
+		$offset = $this->selectOptions['offset'];
+		$resultCount = wfMessage( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
 
 		$msgBuilder =  new MessageBuilder( $this->getLanguage() );
 		$selection = $msgBuilder->prevNextToText(
 			$this->getContext()->getTitle(),
-			$this->selectOptions['limit'],
-			$this->selectOptions['offset'],
+			$limit,
+			$offset,
 			$this->linkParameters(),
 			$this->selectOptions['end']
 		);

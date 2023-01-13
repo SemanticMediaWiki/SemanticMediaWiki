@@ -63,19 +63,10 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 
 	public function testModifiedTimeWithUserTimeCorrection() {
 
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user->expects( $this->once() )
-			->method( 'getOption' )
-			->with( $this->equalTo( 'timecorrection' ) )
-			->will( $this->returnValue( 'ZoneInfo|+120|Europe/Berlin' ) );
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( 0 );
-		$dateTime = LocalTime::getLocalizedTime( $dti, $user );
+		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+120|Europe/Berlin' );
 
 		$this->assertTrue(
 			$dateTime->hasLocalTimeCorrection
@@ -89,18 +80,9 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 
 	public function testModifiedTimeWithUserTimeCorrectionOnInvalidZone() {
 
-		$user = $this->getMockBuilder( '\User' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$user->expects( $this->once() )
-			->method( 'getOption' )
-			->with( $this->equalTo( 'timecorrection' ) )
-			->will( $this->returnValue( 'ZoneInfo|+125|Foo' ) );
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
-		$dateTime = LocalTime::getLocalizedTime( $dti, $user );
+		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+125|Foo' );
 
 		$this->assertTrue(
 			$dateTime->hasLocalTimeCorrection

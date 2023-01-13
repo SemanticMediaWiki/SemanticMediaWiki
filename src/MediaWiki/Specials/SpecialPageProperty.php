@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataModel\SequenceMap;
 use SMW\Encoder;
@@ -51,7 +51,7 @@ class SpecialPageProperty extends SpecialPage {
 		}
 
 		// Get parameters
-		$pagename = $request->getVal( 'from' );
+		$pagename = $request->getVal( 'from', '' );
 		$propname = $request->getVal( 'type' );
 
 		// No GET parameters? Try the URL with the convention `PageName::PropertyName`

@@ -81,5 +81,7 @@
 	"smw-createproperty-isproperty": "នេះ​គឺជា​លក្ខណៈសម្បត្តិមួយ​នៃ​គំរូ $1 ។",
 	"smw-createproperty-allowedvals": "តម្លៃ​ចំនួន$1 ​សម្រាប់​លក្ខណៈសម្បត្តិ​នេះគឺ​៖",
 	"smw-livepreview-loading": "កំពុងផ្ទុក…",
-	"smw-search-show": "បង្ហាញ"
+	"smw-search-show": "បង្ហាញ",
+	"smw-listingcontinuesabbrev": "បន្ត",
+	"smw-showingresults": "ខាងក្រោមកំពុងបង្ហាញរហូតដល់ {{PLURAL:$1|'''១''' លទ្ឋផល|'''$1''' លទ្ឋផល}} ចាប់ផ្ដើមពីលេខ #'''$2'''។"
 }

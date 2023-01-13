@@ -1,6 +1,9 @@
 <?php
 
+use MediaWiki\Json\JsonUnserializable;
+use MediaWiki\Json\JsonUnserializer;
 use SMW\Options;
+use SMW\SemanticData;
 
 /**
  * This group contains all parts of SMW that relate to the processing of dataitems
@@ -27,7 +30,7 @@ use SMW\Options;
  *
  * @ingroup SMWDataItems
  */
-abstract class SMWDataItem {
+abstract class SMWDataItem implements JsonUnserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
 	const TYPE_NOTYPE    = 0;
@@ -240,6 +243,39 @@ abstract class SMWDataItem {
 		}
 
 		return $default;
+	}
+
+	/**
+	 * Implements \JsonSerializable.
+	 * 
+	 * @since 4.0.0
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize(): array {
+		# T312589 explicitly calling jsonSerialize() will be unnecessary
+		# in the future.
+		return [
+			'options' => $this->options ? $this->options->jsonSerialize() : null,
+			'value' => $this->getSerialization(),
+			'_type_' => get_class( $this ),
+		];
+	}
+
+	/**
+	 * Implements JsonUnserializable.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param JsonUnserializer $unserializer Unserializer
+	 * @param array $json JSON to be unserialized
+	 *
+	 * @return self
+	 */
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+		$obj = static::doUnserialize( $json['value'] );
+		$obj->options = $json['options'] ? SemanticData::maybeUnserialize($unserializer, $json['options'] ) : null;
+		return $obj;
 	}
 
 }

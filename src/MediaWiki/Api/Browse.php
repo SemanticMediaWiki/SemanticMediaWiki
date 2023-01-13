@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;

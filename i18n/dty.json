@@ -18,5 +18,7 @@
 	"smw-format-datatable-first": "पैल्लो",
 	"smw-format-datatable-last": "छाड्डीबारको",
 	"smw-format-datatable-next": "अघबटाको",
-	"smw-format-datatable-previous": "पछबटाको"
+	"smw-format-datatable-previous": "पछबटाको",
+	"smw-listingcontinuesabbrev": "निरन्तरता...",
+	"smw-showingresults": "धेखाउँदै  {{PLURAL:$1|'''१''' नतिजा|'''$1''' नतिजाहरू }} , #'''$2''' बठे सुरुहुन्या ।"
 }

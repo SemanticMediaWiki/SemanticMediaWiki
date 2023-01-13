@@ -2,7 +2,7 @@
 
 namespace SMW\Maintenance;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
@@ -240,18 +240,19 @@ class updateEntityCountMap extends \Maintenance {
 				HmacSerializer::compress( $countMap )
 			);
 
-			$rows = [
-				'smw_id' => $row->smw_id,
-				'smw_countmap' => $countMap
-			];
 
 			$connection->upsert(
 				SQLStore::ID_AUXILIARY_TABLE,
-				$rows,
+				[
+					'smw_id' => $row->smw_id,
+					'smw_countmap' => $countMap
+				],
 				[
 					'smw_id'
 				],
-				$rows,
+				[
+					'smw_countmap' => $countMap
+				],
 				__METHOD__
 			);
 

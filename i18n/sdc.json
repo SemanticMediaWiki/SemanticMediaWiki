@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Nabiggà vichi",
-	"smw-livepreview-loading": "Carrigghendi…"
+	"smw-livepreview-loading": "Carrigghendi…",
+	"smw-listingcontinuesabbrev": "(séguiddu)",
+	"smw-showingresults": "Accó {{PLURAL:$1|màssimu '''1''' risulthaddu|màssimu li '''$1''' risulthaddi}} à partì da lu nùmaru #'''$2'''."
 }

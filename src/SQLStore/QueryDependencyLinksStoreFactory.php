@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;

@@ -111,5 +111,7 @@
 	"smw-search-profile-link-caption-query": "देखी",
 	"smw-search-show": "देखाबी",
 	"smw-search-hide": "नुकाबी",
-	"log-name-smw": "सिमेंटिक मीडियाविकि"
+	"log-name-smw": "सिमेंटिक मीडियाविकि",
+	"smw-listingcontinuesabbrev": "शेष आगाँ।",
+	"smw-showingresults": "नीचाँ एतऽ धरि {{PLURAL:$1|'''1''' परिणाम|'''$1''' परिणाम सभ}}  #'''$2''' सँ प्रारम्भ भऽ कऽ।"
 }

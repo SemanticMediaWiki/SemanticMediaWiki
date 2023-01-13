@@ -1,0 +1,15 @@
+http://purl.org/dc/dcmitype/ | [https://dublincore.org/documents/dcmi-type-vocabulary/ DCMI Type Vocabulary]
+ Collection|Category
+ Dataset|Category
+ Event|Category
+ Image|Category
+ InteractiveResource|Category
+ MovingImage|Category
+ PhysicalObject|Category
+ Service|Category
+ Software|Category
+ Sound|Category
+ StillImage|Category
+ Text|Category
+
+[[Category:Imported vocabulary]]

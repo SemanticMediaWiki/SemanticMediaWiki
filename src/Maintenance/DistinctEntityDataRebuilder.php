@@ -9,7 +9,7 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
 use SMW\Store;

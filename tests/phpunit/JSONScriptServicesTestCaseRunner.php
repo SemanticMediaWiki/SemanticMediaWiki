@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
@@ -101,7 +101,9 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 				'smwgDVFeatures' => $GLOBALS['smwgDVFeatures'] & ~SMW_DV_NUMV_USPACE,
 				'smwgCacheUsage' => [
 					'api.browse' => false
-				] + $GLOBALS['smwgCacheUsage']
+				] + $GLOBALS['smwgCacheUsage'],
+				// MW 1.37 defaults to html5 fragment mode. Force legacy mode for consistency.
+				'wgFragmentMode' => [ 'legacy', 'html5' ],
 			]
 		);
 	}

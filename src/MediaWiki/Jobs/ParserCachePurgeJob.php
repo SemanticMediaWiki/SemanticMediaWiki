@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use RequestContext;
 use SMW\MediaWiki\Job;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiPage;
 
@@ -45,7 +46,7 @@ class ParserCachePurgeJob extends Job {
 		if ( $this->hasParameter( 'user' ) ) {
 			$causeAgent = $this->getParameter( 'user' );
 		} else {
-			$causeAgent = $GLOBALS['wgUser']->getName();
+			$causeAgent = RequestContext::getMain()->getUser()->getName();
 		}
 
 		if ( $page === null ) {
@@ -82,6 +83,6 @@ class ParserCachePurgeJob extends Job {
 	}
 
 	protected function newWikiPage( $title ) {
-		return WikiPage::factory( $title );
+		return ApplicationFactory::getInstance()->newPageCreator()->createPage( $title );
 	}
 }

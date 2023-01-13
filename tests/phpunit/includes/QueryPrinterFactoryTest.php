@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\QueryPrinterFactory;
-use SMW\QueryResultPrinter;
+use SMW\Query\ResultPrinter;
 use SMW\TableResultPrinter;
 use SMWListResultPrinter;
 
@@ -88,7 +88,7 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $factory->getFormats() as $format ) {
 			$printer = $factory->getPrinter( $format );
-			$this->assertInstanceOf( QueryResultPrinter::class, $printer );
+			$this->assertInstanceOf( ResultPrinter::class, $printer );
 		}
 
 		// In case there are no formats PHPUnit would otherwise complain here.

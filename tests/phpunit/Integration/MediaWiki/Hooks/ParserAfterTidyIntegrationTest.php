@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 

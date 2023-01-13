@@ -79,7 +79,6 @@ class PropertyTableHashes {
 			],
 			[ 'smw_id' ],
 			[
-				'smw_id' => $id,
 				'smw_proptable' => $smw_proptable
 			],
 			__METHOD__

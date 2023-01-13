@@ -6,5 +6,7 @@
 		]
 	},
 	"browse": "Maglagula sa wiki",
-	"smw_browse_go": "Lakat"
+	"smw_browse_go": "Lakat",
+	"smw-listingcontinuesabbrev": "pdyn",
+	"smw-showingresults": "Ginapakita sa dalom pakadto sa {{PLURAL:$1|'''1''' ka resulta|'''$1''' ka mga resulta}} umpisa ang #'''$2'''."
 }

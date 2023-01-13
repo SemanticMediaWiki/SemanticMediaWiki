@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Api\Tasks\UpdateTask;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;

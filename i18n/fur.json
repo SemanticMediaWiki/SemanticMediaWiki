@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Esplore il sît",
-	"smw-livepreview-loading": "Daûr a cjamâ…"
+	"smw-livepreview-loading": "Daûr a cjamâ…",
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Ca sot {{PLURAL:$1|al è fin a '''1''' risultât|a son fin a '''$1''' risultâts}} scomençant dal numar '''$2'''."
 }

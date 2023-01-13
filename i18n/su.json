@@ -34,5 +34,7 @@
 	"smw-format-datatable-search": "Paluruh",
 	"smw-format-datatable-first": "mimiti",
 	"smw-format-datatable-last": "Pamungkas",
-	"smw-format-datatable-next": "Saterusna"
+	"smw-format-datatable-next": "Saterusna",
+	"smw-listingcontinuesabbrev": "(samb.)",
+	"smw-showingresults": "Di handap ieu némbongkeun {{PLURAL:$1|'''1''' hasil|'''$1''' hasil}}, dimimitianku  #'''$2'''."
 }

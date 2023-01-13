@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Importer;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\DatabaseTestCase;
 
 /**

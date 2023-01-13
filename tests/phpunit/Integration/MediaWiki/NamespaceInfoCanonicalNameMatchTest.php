@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\NamespaceManager;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Settings;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\PHPUnitCompat;

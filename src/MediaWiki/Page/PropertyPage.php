@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
@@ -275,7 +275,10 @@ class PropertyPage extends Page {
 			new DIProperty( '_PROFILE_SCHEMA' )
 		);
 
-		$data = $schemaList->toArray();
+		$data = [];
+		if ( $schemaList !== null ) {
+			$data = $schemaList->toArray();
+		}
 
 		if ( $data !== [] ) {
 			$profile = ( new JsonView() )->create(

@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Semantisches Browsen",
-	"smw-livepreview-loading": "Loada…"
+	"smw-livepreview-loading": "Loada…",
+	"smw-listingcontinuesabbrev": "(Furtsetzung)",
+	"smw-showingresults": "Hier {{PLURAL:$1|ies '''1''' Ergebnis|sein '''$1''' Ergebnisse}}, beginnend miet Nummer '''$2.'''"
 }

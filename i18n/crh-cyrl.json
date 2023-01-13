@@ -5,5 +5,7 @@
 		]
 	},
 	"smw_purge": "Янъарт",
-	"smw-livepreview-loading": "Юкленмекте…"
+	"smw-livepreview-loading": "Юкленмекте…",
+	"smw-listingcontinuesabbrev": " (девам)",
+	"smw-showingresults": "Ашагъыда №&nbsp;<strong>$2</strong>ден башлап {{PLURAL:$1|1='''1''' нетидже|'''$1''' нетидже}} булуна."
 }

@@ -1,10 +1,11 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.0.0-alpha",
+	"version": "4.0.2",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
-		"[https://www.entropywins.wtf/mediawiki Jeroen De Dauw]",
+		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
 		"James Hong Kong",
+		"[https://professional.wiki/ Professional.Wiki]",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
 	"url": "https://www.semantic-mediawiki.org",
@@ -23,8 +24,12 @@
 	"AutoloadNamespaces": {
 		"SMW\\": "src/"
 	},
+	"Hooks": {
+		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
+		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
+	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "SemanticMediaWiki.php"
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
@@ -33,6 +38,9 @@
 	"ExtensionMessagesFiles": {
 		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
 		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
+	},
+	"ContentHandlers": {
+		"smw/schema": "SMW\\MediaWiki\\Content\\SchemaContentHandler"
 	},
 	"QUnitTestModule": {
 		"ext.smw.tests": {
@@ -62,6 +70,28 @@
 			"localBasePath": "",
 			"remoteExtPath": "SemanticMediaWiki"
 		}
+	},
+	"SpecialPages": {
+		"ExportRDF": "SMWSpecialOWLExport",
+		"SMWAdmin": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
+		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
+		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
+		"Browse": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
+		"Concepts": "SMW\\SpecialConcepts",
+		"PageProperty": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
+		"SearchByProperty": "SMW\\MediaWiki\\Specials\\SpecialSearchByProperty",
+		"PropertyLabelSimilarity": "SMW\\MediaWiki\\Specials\\SpecialPropertyLabelSimilarity",
+		"ProcessingErrorList": "SMW\\MediaWiki\\Specials\\SpecialProcessingErrorList",
+		"MissingRedirectAnnotations": "SMW\\MediaWiki\\Specials\\SpecialMissingRedirectAnnotations",
+		"ConstraintErrorList": "SMW\\MediaWiki\\Specials\\SpecialConstraintErrorList",
+		"Types": "SMWSpecialTypes",
+		"URIResolver": "SMW\\MediaWiki\\Specials\\SpecialURIResolver",
+		"Properties": "SMW\\SpecialProperties",
+		"UnusedProperties": "SMW\\SpecialUnusedProperties",
+		"WantedProperties": "SMW\\SpecialWantedProperties"
+	},
+	"DefaultUserOptions": {
+		"smw-prefs-general-options-show-entity-issue-panel": true
 	},
 	"load_composer_autoloader": true,
 	"manifest_version": 1

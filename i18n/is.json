@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"LoveIceLang",
 			"Sveinn í Felli"
 		]
 	},
@@ -14,11 +15,14 @@
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Hugtak|Hugtök}}]]",
 	"browse": "Skoða wiki",
 	"smw_browselink": "Skoða eiginleika",
+	"smw-browse-js-disabled": "Grunur leikur á að JavaScript sé óvirkt eða ekki tiltækt og við mælum með að nota vafra þar sem þetta er stutt. Fjallað er um aðra valkosti á síðunni [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>] stillingarfæribreytusíðunni.",
 	"smw-admin-support": "Að fá aðstoð",
 	"smw-admin-supplementary-elastic-functions": "Tiltæk virkni",
 	"smw-admin-supplementary-elastic-settings-title": "Stillingar",
 	"smw-admin-supplementary-elastic-statistics-title": "Tölfræði",
 	"smw-livepreview-loading": "Framkalla…",
 	"log-name-smw": "Aðgerðaskrá yfir málskipan MediaWiki",
-	"smw-type-tab-types": "Tegundir"
+	"smw-type-tab-types": "Tegundir",
+	"smw-listingcontinuesabbrev": "frh.",
+	"smw-showingresults": "Sýni <strong>$1</strong> {{PLURAL:$1|niðurstöðu|niðurstöður}} frá og með #<strong>$2</strong>."
 }

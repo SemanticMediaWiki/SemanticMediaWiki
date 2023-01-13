@@ -179,7 +179,7 @@ class PropertyTableInfoFetcher {
 
 	/**
 	 * Return the array of predefined property table declarations, initialising
-	 * it if necessary. The result is an array of SMWSQLStore3Table objects
+	 * it if necessary. The result is an array of PropertyTableDefinition objects
 	 * indexed by table ids.
 	 *
 	 * It is ensured that the keys of the returned array agree with the name of

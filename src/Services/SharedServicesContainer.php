@@ -129,9 +129,14 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( ContainerBuilder $containerBuilder ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
 
 		$indicatorRegistry = new IndicatorRegistry();
+
+		if ( !$addEntityExaminer ) {
+			return $indicatorRegistry;
+		}
+
 		$entityExaminerIndicatorsFactory = new EntityExaminerIndicatorsFactory();
 
 		$entityExaminerIndicatorProvider = $entityExaminerIndicatorsFactory->newEntityExaminerIndicatorProvider(
@@ -884,7 +889,8 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
 
 			$preferenceExaminer = new PreferenceExaminer(
-				$user
+				$user,
+				ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' )
 			);
 
 			return $preferenceExaminer;

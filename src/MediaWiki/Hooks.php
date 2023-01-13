@@ -10,7 +10,7 @@ use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\UserIdentity;
 use Onoi\HttpRequest\HttpRequestFactory;
 use Parser;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\NamespaceManager;
 use SMW\SemanticData;
@@ -19,6 +19,7 @@ use SMW\Site;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use ParserHooks\HookRegistrant;
+use SkinTemplate;
 use SMW\DataTypeRegistry;
 use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\InfoParserFunction;
@@ -39,7 +40,7 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
-use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
@@ -48,7 +49,7 @@ use SMW\MediaWiki\Hooks\RejectParserCacheValue;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
-use SMW\MediaWiki\Hooks\SkinTemplateNavigation;
+use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
@@ -183,6 +184,46 @@ class Hooks {
 	}
 
 	/**
+	 * CanonicalNamespaces initialization
+	 *
+	 * @note According to T104954 registration via wgExtensionFunctions can be
+	 * too late and should happen before that in case RequestContext::getLanguage
+	 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
+	 *
+	 * @see https://phabricator.wikimedia.org/T104954#2391291
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
+	 * @Bug 34383
+	 */
+	public static function onCanonicalNamespaces( array &$namespaces ) {
+
+		NamespaceManager::initCanonicalNamespaces(
+			$namespaces
+		);
+
+		return true;
+	}
+
+	/**
+	 * Called when ApiMain has finished initializing its module manager. Can
+	 * be used to conditionally register API modules.
+	 *
+	 * #2813
+	 */
+	public static function onApiModuleManager( $moduleManager ) {
+
+		$apiModuleManager = new ApiModuleManager();
+		$apiModuleManager->setOptions(
+			[
+				'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
+			]
+		);
+
+		$apiModuleManager->process( $moduleManager );
+
+		return true;
+	}
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
@@ -195,70 +236,6 @@ class Hooks {
 		if ( defined( 'SMW_EXTENSION_LOADED' ) ) {
 			unset( $vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] );
 		}
-
-		$vars['wgContentHandlers'][CONTENT_MODEL_SMW_SCHEMA] = 'SMW\MediaWiki\Content\SchemaContentHandler';
-
-		/**
-		 * CanonicalNamespaces initialization
-		 *
-		 * @note According to T104954 registration via wgExtensionFunctions can be
-		 * too late and should happen before that in case RequestContext::getLanguage
-		 * invokes Language::getNamespaces before the `wgExtensionFunctions` execution.
-		 *
-		 * @see https://phabricator.wikimedia.org/T104954#2391291
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/CanonicalNamespaces
-		 * @Bug 34383
-		 */
-		$vars['wgHooks']['CanonicalNamespaces'][] = function( array &$namespaces ) {
-
-			NamespaceManager::initCanonicalNamespaces(
-				$namespaces
-			);
-
-			return true;
-		};
-
-		/**
-		 * To add to or remove pages from the special page list. This array has
-		 * the same structure as $wgSpecialPages.
-		 *
-		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialPage_initList
-		 *
-		 * #2813
-		 */
-		$vars['wgHooks']['SpecialPage_initList'][] = function( array &$specialPages ) {
-
-			$specialPageList = new SpecialPageList();
-			$specialPageList->setOptions(
-				[
-					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
-				]
-			);
-
-			$specialPageList->process( $specialPages );
-
-			return true;
-		};
-
-		/**
-		 * Called when ApiMain has finished initializing its module manager. Can
-		 * be used to conditionally register API modules.
-		 *
-		 * #2813
-		 */
-		$vars['wgHooks']['ApiMain::moduleManager'][] = function( $moduleManager ) {
-
-			$apiModuleManager = new ApiModuleManager();
-			$apiModuleManager->setOptions(
-				[
-					'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
-				]
-			);
-
-			$apiModuleManager->process( $moduleManager );
-
-			return true;
-		};
 	}
 
 	private function registerHandlers() {
@@ -294,14 +271,13 @@ class Hooks {
 			'ContentHandlerForModelID' => [ $this, 'onContentHandlerForModelID' ],
 
 			'RevisionFromEditComplete' => [ $this, 'onRevisionFromEditComplete' ],
-			'LinksUpdateConstructed' => [ $this, 'onLinksUpdateConstructed' ],
+			'LinksUpdateComplete' => [ $this, 'onLinksUpdateComplete' ],
 			'FileUpload' => [ $this, 'onFileUpload' ],
 			'MaintenanceUpdateAddParams' => [ $this, 'onMaintenanceUpdateAddParams' ],
 
 			'ResourceLoaderGetConfigVars' => [ $this, 'onResourceLoaderGetConfigVars' ],
 			'GetPreferences' => [ $this, 'onGetPreferences' ],
-			'PersonalUrls' => [ $this, 'onPersonalUrls' ],
-			'SkinTemplateNavigation' => [ $this, 'onSkinTemplateNavigation' ],
+			'SkinTemplateNavigation::Universal' => [ $this, 'onSkinTemplateNavigationUniversal' ],
 			'SidebarBeforeOutput' => [ $this, 'onSidebarBeforeOutput' ],
 			'LoadExtensionSchemaUpdates' => [ $this, 'onLoadExtensionSchemaUpdates' ],
 
@@ -347,6 +323,12 @@ class Hooks {
 			'AdminLinks' => [ $this, 'onAdminLinks' ],
 			'PageSchemasRegisterHandlers' => [ $this, 'onPageSchemasRegisterHandlers' ]
 		];
+
+		if ( version_compare( MW_VERSION, '1.37', '<' ) ) {
+			$this->handlers += [
+				'PersonalUrls' => [ $this, 'onPersonalUrls' ]
+			];
+		}
 	}
 
 	/**
@@ -454,8 +436,13 @@ class Hooks {
 			$permissionExaminer
 		);
 
+		$preferenceExaminer = $applicationFactory->newPreferenceExaminer( $outputPage->getUser() );
+
 		$outputPageParserOutput->setIndicatorRegistry(
-			$applicationFactory->create( 'IndicatorRegistry' )
+			$applicationFactory->create(
+				'IndicatorRegistry',
+				$preferenceExaminer->hasPreferenceOf( GetPreferences::SHOW_ENTITY_ISSUE_PANEL )
+			)
 		);
 
 		$outputPageParserOutput->process( $outputPage, $parserOutput );
@@ -848,15 +835,15 @@ class Hooks {
 	}
 
 	/**
-	 * Hook: LinksUpdateConstructed called at the end of LinksUpdate() construction
+	 * Hook: LinksUpdateComplete called at the end of LinksUpdate() construction
 	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateConstructed
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/LinksUpdateComplete
 	 */
-	public function onLinksUpdateConstructed( $linksUpdate ) {
+	public function onLinksUpdateComplete( $linksUpdate ) {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 
-		$linksUpdateConstructed = new LinksUpdateConstructed(
+		$linksUpdateConstructed = new LinksUpdateComplete(
 			$applicationFactory->getNamespaceExaminer()
 		);
 
@@ -1008,7 +995,6 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
 	 */
 	public function onPersonalUrls( array &$personal_urls, $title, $skinTemplate ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $skinTemplate->getUser();
 
@@ -1040,16 +1026,43 @@ class Hooks {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
-	public function onSkinTemplateNavigation( &$skinTemplate, &$links ) {
+	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ) {
+		if ( isset( $links['user-interface-preferences'] ) ) {
+			$applicationFactory = ApplicationFactory::getInstance();
+			$user = $skinTemplate->getUser();
 
-		$skinTemplateNavigation = new SkinTemplateNavigation(
+			$permissionExaminer = $applicationFactory->newPermissionExaminer(
+				$user
+			);
+
+			$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
+				$user
+			);
+
+			$personalUrls = new PersonalUrls(
+				$skinTemplate,
+				$applicationFactory->getJobQueue(),
+				$permissionExaminer,
+				$preferenceExaminer
+			);
+
+			$personalUrls->setOptions(
+				[
+					'smwgJobQueueWatchlist' => $applicationFactory->getSettings()
+																 ->get( 'smwgJobQueueWatchlist' )
+				]
+			);
+
+			$personalUrls->process( $links['user-interface-preferences'] );
+		}
+
+		$skinTemplateNavigationUniversal = new SkinTemplateNavigationUniversal(
 			$skinTemplate,
 			$links
 		);
-
-		return $skinTemplateNavigation->process();
+		return $skinTemplateNavigationUniversal->process();
 	}
 
 	/**
@@ -1270,7 +1283,12 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'BlockIpComplete' );
-		$userChange->process( $block->getTarget() );
+		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
+			// MW 1.37+
+			$userChange->process( $block->getTargetUserIdentity() );
+		} else {
+			$userChange->process( $block->getTarget() );
+		}
 
 		return true;
 	}
@@ -1289,7 +1307,12 @@ class Hooks {
 		);
 
 		$userChange->setOrigin( 'UnblockUserComplete' );
-		$userChange->process( $block->getTarget() );
+		if ( method_exists( $block, 'getTargetUserIdentity' ) ) {
+			// MW 1.37+
+			$userChange->process( $block->getTargetUserIdentity() );
+		} else {
+			$userChange->process( $block->getTarget() );
+		}
 
 		return true;
 	}

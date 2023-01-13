@@ -3,7 +3,7 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\Installer;
 use SMW\SetupFile;
@@ -225,7 +225,7 @@ class populateHashField extends \Maintenance {
 	public function populate( \Iterator $rows = null ) {
 
 		$this->cliMsgFormatter = new CliMsgFormatter();
-		$this->cliMsgFormatter->setStartTime( microtime( true ) );
+		$this->cliMsgFormatter->setStartTime( (int) microtime( true ) );
 
 		if ( $rows === null ) {
 			$rows = $this->fetchRows();

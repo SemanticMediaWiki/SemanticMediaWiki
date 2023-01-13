@@ -4,5 +4,7 @@
 			"Poiuyt"
 		]
 	},
-	"browse": "浏览维基"
+	"browse": "浏览维基",
+	"smw-listingcontinuesabbrev": "续",
+	"smw-showingresults": "下头显示从第<b>$2</b>条开始个<b>$1</b>条结果："
 }

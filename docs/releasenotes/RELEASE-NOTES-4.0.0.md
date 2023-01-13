@@ -1,6 +1,6 @@
 # Semantic MediaWiki 4.0.0
 
-Not released yet - under development
+Released on January 18, 2022.
 
 ## Summary
 
@@ -11,27 +11,29 @@ above is not supported.
 
 ## Compatibility
 
-* Dropped support for MediaWiki older than 1.35
-* Dropped support for PHP older than 7.4
-* Improved support for MediaWiki 1.35
 * Added support for MediaWiki 1.36 and MediaWiki 1.37
 * Improved compatibility with MediaWiki 1.38, though this version still has many issues
+* Improved support for MediaWiki 1.35
+* Dropped support for MediaWiki older than 1.35
+* Dropped support for PHP older than 7.3
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
 
 ## Upgrading
 
-Calling `wfLoadExtension` is now required in `LocalSettings.php`. Example:
+**Calling `wfLoadExtension` is now required in the "LocalSettings.php" file**. Example:
 
-```php
+```
 wfLoadExtension( 'SemanticMediaWiki' );
+```
+```
 enableSemantics( 'example.org' );
 ```
 
-There is no need to run `update.php` or any of the rebuild data scripts.
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts.
 
-When a triplestore is used with the SPARQL feature `SMW_SPARQL_QF_COLLATION`, the script
-`maintenance/updateEntityCollation.php` must be run (the collation sort key algorithm was changed).
+When a triplestore is used with the SPARQL feature `SMW_SPARQL_QF_COLLATION`, the "updateEntityCollation.php"
+maintenance script must be run (the collation sort key algorithm was changed).
 
 ## New features
 
@@ -40,10 +42,11 @@ When a triplestore is used with the SPARQL feature `SMW_SPARQL_QF_COLLATION`, th
 ## Enhancements
 
 * [Special properties of type Page are now displayed consistently](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5111)
-* [The maintenance page is no longer indexed my search engines](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967)
+* [The maintenance page is no longer indexed by search engines](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4967)
 * [Improved performance on multi-database setups](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5002)
 * [Improved support for recent ElasticSearch versions](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/4976)
 * [Updated the logo](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5013)
+* Localisation updates from the translatewiki.net community of translators
 
 ## Bug fixes
 

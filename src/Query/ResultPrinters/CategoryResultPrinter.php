@@ -6,7 +6,7 @@ use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 use SMWQueryResult as QueryResult;
 use SMW\Utils\HtmlColumns;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 
 /**
@@ -157,7 +157,7 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		$language = Localizer::getInstance()->getUserLanguage();
 
-		$this->htmlColumns->setContinueAbbrev( wfMessage( 'listingcontinuesabbrev' )->text() );
+		$this->htmlColumns->setContinueAbbrev( wfMessage( 'smw-listingcontinuesabbrev' )->text() );
 		$this->htmlColumns->setColumns( $this->numColumns );
 		$this->htmlColumns->isRTL( $language->isRTL() );
 
@@ -229,7 +229,8 @@ class CategoryResultPrinter extends ResultPrinter {
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
-			$contents[$last_letter][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
+			$index = isset( $last_letter ) ? $last_letter : $first_letter;
+			$contents[$index][] = $this->getFurtherResultsLink( $res, $outputMode )->getText( SMW_OUTPUT_WIKI, $this->mLinker );
 		}
 
 		return $contents;

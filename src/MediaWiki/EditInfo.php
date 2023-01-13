@@ -48,12 +48,8 @@ class EditInfo {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param WikiPage $page
-	 * @param ?RevisionRecord $revision
-	 * @param ?User $user
 	 */
-	public function __construct( WikiPage $page, ?RevisionRecord $revision = null, User $user, array $extraSemanticSlots = [] ) {
+	public function __construct( WikiPage $page, ?RevisionRecord $revision, User $user, array $extraSemanticSlots = [] ) {
 		$this->page = $page;
 		$this->revision = $revision;
 		$this->user = $user;

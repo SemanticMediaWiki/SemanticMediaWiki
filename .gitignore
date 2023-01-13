@@ -22,10 +22,10 @@ composer.lock
 .idea/
 .smw.json
 .phpunit.result.cache
+src/Tesa/.phpunit.result.cache
 
 composer
 installer
-makeutil
 .envrc
 conf
 expected

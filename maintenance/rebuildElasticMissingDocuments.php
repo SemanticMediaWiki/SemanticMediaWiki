@@ -3,7 +3,7 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Setup;
 use SMW\Store;
@@ -302,7 +302,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		);
 
 		$this->reportMessage( "\nInspecting documents ...\n" );
-		$cliMsgFormatter->setStartTime( microtime( true ) );
+		$cliMsgFormatter->setStartTime( (int) microtime( true ) );
 
 		foreach ( $rows as $row ) {
 

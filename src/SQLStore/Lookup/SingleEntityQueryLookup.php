@@ -6,7 +6,7 @@ use SMW\Store;
 use SMW\QueryEngine;
 use SMWQuery as Query;
 use SMW\Query\QueryResult;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\DIWikiPage;

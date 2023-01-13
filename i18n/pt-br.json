@@ -365,10 +365,10 @@
 	"smw-browse-intro": "Esta página fornece detalhes sobre um sujeito ou  entidade, por favor, digite o nome de um objeto a ser inspecionado.",
 	"smw-browse-invalid-subject": "A validação do sujeito terminou com um erro \"$1\".",
 	"smw-browse-api-subject-serialization-invalid": "O sujeito tem um formato de serialização inválido.",
-	"smw-browse-js-disabled": "É provável que o JavaScript esteja desativado ou indisponível, e recomendamos que utilize um ''browser'' que o suporte. Talvez encontre outras opções na página de configuração do parâmetro [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>].",
+	"smw-browse-js-disabled": "É provável que o JavaScript esteja desativado ou indisponível, e recomendamos que utilize um ''browser'' que o suporte. Outras opções são fornecidas na página de configuração do parâmetro [https://www.semantic-mediawiki.org/wiki/Help:$smwgBrowseByApi <code>$smwgBrowseByApi</code>].",
 	"smw-browse-show-group": "Mostrar grupos",
 	"smw-browse-hide-group": "Ocultar grupos",
-	"smw-noscript": "Esta página ou ação requer Javascript para funcionar, por favor, habilite o Javascript em seu navegador ou utilize um navegador que o suporte para que essa funcionalidade possa ser servida como requisitada. Para mais informações, consulte a  página de ajuda [https://www.semantic-mediawiki.org/wiki/Help:Noscript Noscript].",
+	"smw-noscript": "Esta página ou ação requer JavaScript para funcionar, por favor, habilite o JavaScript em seu navegador ou utilize um navegador que o suporte para que essa funcionalidade possa ser servida como requisitada. Para mais informações, consulte a  página de ajuda [https://www.semantic-mediawiki.org/wiki/Help:Noscript Noscript].",
 	"smw_inverse_label_default": "$1 de",
 	"smw_inverse_label_property": "Nome de propriedade inversa",
 	"pageproperty": "Busca por propriedade de página",
@@ -557,6 +557,8 @@
 	"smw-prefs-general-options-disable-search-info": "Desativar as informações de suporte da sintaxe na página de pesquisa padrão",
 	"smw-prefs-general-options-suggester-textinput": "Ativar o auxiliar de preenchimento para as entidades semânticas",
 	"smw-prefs-help-general-options-suggester-textinput": "Se ativado, permite usar um [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance auxiliar de preenchimento] para encontrar propriedades, conceitos e categorias num contexto de entrada.",
+	"smw-prefs-general-options-show-entity-issue-panel": "Mostrar o painel de problemas de entidades",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Se ativado, executa verificações de integridade em cada página e mostra o [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel painel de problemas de entidades].",
 	"smw-ui-tooltip-title-property": "Propriedade",
 	"smw-ui-tooltip-title-quantity": "Conversão de unidade",
 	"smw-ui-tooltip-title-info": "Informação",
@@ -1123,5 +1125,7 @@
 	"smw-indicator-constraint-violation": "{{PLURAL:$1|Restrição|Restrições}}",
 	"smw-indicator-revision-mismatch": "Revisão",
 	"smw-indicator-revision-mismatch-error": "A verificação da [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner revisão associada] encontrou uma incompatibilidade entre a revisão mencionada no MediaWiki e a que está sendo associada no Semantic MediaWiki para esta entidade.",
-	"smw-indicator-revision-mismatch-comment": "Uma incompatibilidade normalmente indica que algum processo interrompeu a operação de armazenamento do Semantic MediaWiki. É recomendado revisar os logs do servidor e procurar por erros ou outras falhas."
+	"smw-indicator-revision-mismatch-comment": "Uma incompatibilidade normalmente indica que algum processo interrompeu a operação de armazenamento do Semantic MediaWiki. É recomendado revisar os logs do servidor e procurar por erros ou outras falhas.",
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "A seguir {{PLURAL:$1|é mostrado '''um''' resultado|são mostrados até '''$1''' resultados}}, iniciando no '''$2'''º."
 }

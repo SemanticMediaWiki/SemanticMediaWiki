@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;

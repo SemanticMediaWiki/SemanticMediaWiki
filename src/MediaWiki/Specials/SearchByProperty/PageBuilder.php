@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\StringValue;

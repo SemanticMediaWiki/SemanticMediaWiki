@@ -10,6 +10,7 @@ use SMW\Message;
 use Html;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Services\ServicesFactory;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -83,7 +84,8 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		// #2726
-		if ( $user->getOption( 'smw-prefs-general-options-suggester-textinput' ) ) {
+		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
 			$outputPage->addModules( 'ext.smw.suggester.textInput' );
 		}
 

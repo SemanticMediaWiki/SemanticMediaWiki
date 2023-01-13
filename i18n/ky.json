@@ -5,6 +5,7 @@
 			"Growingup"
 		]
 	},
+	"smw_printername_template": "Калып",
 	"smw_purge": "Жаңыртуу",
 	"types": "Түрлөр",
 	"smw_ask_queryhead": "Суроо",
@@ -18,5 +19,6 @@
 	"smw-ui-tooltip-title-info": "Маалымат",
 	"smw-ui-tooltip-title-warning": "Ката",
 	"smw-ui-tooltip-title-parameter": "Параметр",
-	"smw-livepreview-loading": "Жүктөлүүдө..."
+	"smw-livepreview-loading": "Жүктөлүүдө...",
+	"smw-listingcontinuesabbrev": "уланд."
 }

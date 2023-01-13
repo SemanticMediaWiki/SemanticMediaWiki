@@ -13,17 +13,20 @@ knowledge management system. All data created within SMW can easily be
 published via the [Semantic Web](https://www.semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
-For a better understanding of how Semantic MediaWiki works, have a look at [deployed in 5 min](https://vimeo.com/82255034) and the [Sesame](https://vimeo.com/126392433), [Fuseki ](https://vimeo.com/118614078) triplestore video, or
+For a better understanding of how Semantic MediaWiki works, have a look at [deployed in 5 min](https://vimeo.com/82255034)
+and the [Sesame](https://vimeo.com/126392433), [Fuseki ](https://vimeo.com/118614078) triplestore video, or
 browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive introduction.
 
 ## Requirements
 
-- PHP 7.1 to PHP 7.4
-- MediaWiki 1.31 to 1.35
-- MySQL 5+, SQLite 3+ or PostgreSQL 9.x
-
 A list of supported PHP versions, MediaWiki versions and database systems per Semantic MediaWiki
 release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
+
+Semantic MediaWiki 4.0.x requires:
+
+- PHP 7.3 or above
+- MediaWiki 1.35 or above
+- MySQL 5+, SQLite 3+ or PostgreSQL 9+
 
 ## Installation
 
@@ -32,30 +35,38 @@ The recommended way to install Semantic MediaWiki is by using [Composer][compose
 
 ## Documentation
 
-Most of the documentation can be found on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org).
+Most of the documentation can be found on the [Semantic MediaWiki wiki](https://www.semantic-mediawiki.org).
 A small core of documentation also comes bundled with the software itself. This documentation is minimalistic
-and less explanatory then what can be found on the SMW wiki. It is however always kept up to date, and applies
+and less explanatory than what can be found on the SMW wiki. It is however always kept up to date, and applies
 to the version of the code it comes bundled with. The most important files are linked below.
 
 * [User documentation](docs/README.md)
 * [Technical documentation](docs/technical/README.md)
 * [Hacking Semantic MediaWiki](docs/architecture/README.md)
 
-## Contribution and support
+## Support
 
-[![Twitter](https://www.semantic-mediawiki.org/w/images/c/c9/Twitter_icon.jpg)](https://twitter.com/#!/semanticmw)
-[![Facebook](https://www.semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Twitter](https://www.semantic-mediawiki.org/w/thumb.php?f=Twitter-square.svg&width=35)](https://twitter.com/#!/semanticmw)
+[![Facebook](https://www.semantic-mediawiki.org/w/thumb.php?f=Facebook-square.svg&width=35)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
+[![Chatroom](https://www.semantic-mediawiki.org/w/thumb.php?f=Comment-alt-solid.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom)
+[![YouTube](https://www.semantic-mediawiki.org/w/thumb.php?f=Youtube-square.svg&width=35)](https://www.youtube.com/c/semanticmediawiki)
+[![Mailing lists](https://www.semantic-mediawiki.org/w/thumb.php?f=Envelope-square.svg&width=35)](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_mailing_lists)
+
+Primary support channels:
+
+* [User mailing list](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user) - for questions
+* [SMW chat room](https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_chatroom) - for questions
+* [Issue tracker](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues) - for bug reports
+
+## Contributing
 
 Many people have contributed to SMW. A list of people who have made contributions in the past can
 be found [here][contributors] or on the [wiki for Semantic MediaWiki](https://www.semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/CONTRIBUTING.md)
 provides information on the different ways available to do so.
 
-If you have remarks, questions, or suggestions, please send them to <semediawiki-users@lists.sourceforge.net>.
-You can subscribe to this list [here](https://sourceforge.net/projects/semediawiki/lists/semediawiki-user).
-
 If you want to contribute work to the project please subscribe to the developers mailing list and
-have a look at the contribution guideline.
+have a look at the contribution guidelines.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
@@ -64,7 +75,8 @@ have a look at the contribution guideline.
 ## Tests
 
 This extension provides unit and integration tests and are normally run by a [continuous integration platform][travis]
-but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
+but can also be executed locally using the shortcut command `composer phpunit` from the extension base directory. A more
+comprehensive introduction can be found under the [test section](/tests/README.md#running-tests).
 
 ## License
 

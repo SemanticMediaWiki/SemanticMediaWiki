@@ -98,8 +98,8 @@ class RefreshSQLStoreDBIntegrationTest extends DatabaseTestCase {
 		$provider = [];
 
 	//	$provider[] = array( NS_MAIN, 'withInterWiki', 'commons' );
-		$provider[] = [ NS_MAIN, 'normalTite', '' ];
-		$provider[] = [ NS_MAIN, 'useUpdateJobs', '' ];
+		$provider[] = [ NS_MAIN, 'NormalTite', '' ];
+		$provider[] = [ NS_MAIN, 'UseUpdateJobs', '' ];
 
 		return $provider;
 	}

@@ -158,7 +158,7 @@ class PropertyTableRowDiffer {
 			}
 
 			$tableName = $propertyTable->getName();
-			$fixedProperty = false;
+			$fixedProperty = [];
 
 			// Fixed property tables have no p_id declared, the auxiliary
 			// information is provided to easily map fixed tables and
@@ -173,11 +173,11 @@ class PropertyTableRowDiffer {
 						$property
 					);
 				} catch ( DataItemException $e ) {
-					$fixedProperty = false;
+					$fixedProperty = [];
 				}
 			}
 
-			if ( $fixedProperty ) {
+			if ( $fixedProperty !== [] ) {
 				$this->changeOp->addFixedPropertyRecord( $tableName, $fixedProperty );
 			}
 

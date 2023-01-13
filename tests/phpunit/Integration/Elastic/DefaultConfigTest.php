@@ -50,7 +50,7 @@ class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
 
 	public function defaultSettingsProvider() {
 
-		$defaultSettings = include $GLOBALS['smwgIP'] . 'DefaultSettings.php';
+		$defaultSettings = \SemanticMediaWiki::getDefaultSettings();
 
 		foreach ( $defaultSettings['smwgElasticsearchConfig'] as $key => $configs ) {
 

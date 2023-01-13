@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;

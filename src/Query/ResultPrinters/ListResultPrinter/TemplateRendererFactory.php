@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 /**

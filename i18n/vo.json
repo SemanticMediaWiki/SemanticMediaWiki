@@ -77,5 +77,7 @@
 	"smw_smwadmin_return": "Geikön lü pad: $1",
 	"smw_concept_header": "Pads suemoda: „$1“.",
 	"smw_conceptarticlecount": "{{PLURAL:$1|Pajonon pad $1, kel duton|Pajonons pads $1, kels dutons}} lü suemod at.",
-	"smw-livepreview-loading": "Pabelodon…"
+	"smw-livepreview-loading": "Pabelodon…",
+	"smw-listingcontinuesabbrev": "(fov.)",
+	"smw-showingresults": "Pajonons dono jü {{PLURAL:$1|sukasek '''1'''|sukaseks '''$1'''}}, primölo me nüm #'''$2'''."
 }

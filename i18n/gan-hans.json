@@ -2,5 +2,7 @@
 	"@metadata": {
 		"authors": []
 	},
-	"smw-livepreview-loading": "加载中…"
+	"smw-livepreview-loading": "加载中…",
+	"smw-listingcontinuesabbrev": "续",
+	"smw-showingresults": "底下从第<b>$2</b>条显示起先𠮶<b>$1</b>条结果:"
 }

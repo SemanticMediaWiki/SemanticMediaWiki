@@ -74,5 +74,7 @@
 	"smw-clipboard-copy-link": "Kopiraj link u međuspremnik",
 	"smw-data-lookup": "Dobavljam podatke...",
 	"smw-format-datatable-loadingrecords": "Učitavam...",
-	"smw-format-datatable-processing": "Obrađujem..."
+	"smw-format-datatable-processing": "Obrađujem...",
+	"smw-listingcontinuesabbrev": "nast.",
+	"smw-showingresults": "Dolje {{PLURAL:$1|je prikazan <strong>1</strong> rezultat|su prikazana <strong>$1</strong> rezultata|je prikazano '''$1''' rezultata}} počev od #<strong>$2</strong>."
 }

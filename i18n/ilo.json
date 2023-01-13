@@ -86,5 +86,7 @@
 	"smw-admin-objectid": "ID:",
 	"smw-livepreview-loading": "Maikarkarga…",
 	"smw-sp-searchbyproperty-resultlist-header": "Listaan dagiti resulta",
-	"smw-search-syntax": "Sintaksis"
+	"smw-search-syntax": "Sintaksis",
+	"smw-listingcontinuesabbrev": "tuloy.",
+	"smw-showingresults": "Maiparang dita baba agingga {{PLURAL:$1|iti <strong>1</strong> a nagbanagan|dagiti <strong>$1</strong> a nagbanagan}} a mangrugi iti #<strong>$2</strong>."
 }

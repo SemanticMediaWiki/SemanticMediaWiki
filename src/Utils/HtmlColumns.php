@@ -273,7 +273,7 @@ class HtmlColumns {
 			);
 		}
 
-		if ( !$usedColumnCloser ) {
+		if ( !$usedColumnCloser && !empty( $result ) ) {
 			$result .= "</{$this->listType}></div> <!-- end column -->";
 		}
 

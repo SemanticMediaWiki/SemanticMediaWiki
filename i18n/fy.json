@@ -68,5 +68,7 @@
 	"smw-ask-tab-result": "Resultaat",
 	"smw-ask-tab-code": "Koade",
 	"smw-pendingtasks-setup-tasks": "Taken",
-	"smw-legend": "Leginda"
+	"smw-legend": "Leginda",
+	"smw-listingcontinuesabbrev": "(ferfolch)",
+	"smw-showingresults": "Hjirûnder {{PLURAL:$1|<strong>1</strong> resultaat|<strong>$1</strong> resultaten}}, werjûn fan nû. <strong>$2</strong> ôf."
 }

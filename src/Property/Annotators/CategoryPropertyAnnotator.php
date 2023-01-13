@@ -2,7 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
@@ -52,6 +52,8 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @var boolean
 	 */
 	private $useCategoryRedirect = true;
+
+	private ProcessingErrorMsgHandler $processingErrorMsgHandler;
 
 	/**
 	 * @since 1.9

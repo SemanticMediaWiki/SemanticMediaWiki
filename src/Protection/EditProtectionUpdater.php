@@ -4,8 +4,10 @@ namespace SMW\Protection;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use RequestContext;
 use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
+use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\SemanticData;
@@ -56,7 +58,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		$this->user = $user;
 
 		if ( $this->user === null ) {
-			$this->user = $GLOBALS['wgUser'];
+			$this->user = RequestContext::getMain()->getUser();
 		}
 	}
 
@@ -121,7 +123,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 			return $this->doUpdateRestrictions( $isEditProtected );
 		}
 
-		if ( (bool)$isEditProtected === (bool)$title->isProtected( 'edit' ) ) {
+		if ( (bool)$isEditProtected === PageInfoProvider::isProtected( $title, 'edit' ) ) {
 			return $this->log( __METHOD__ . ' Status already set, no update required' );
 		}
 

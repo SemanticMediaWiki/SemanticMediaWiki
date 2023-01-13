@@ -4,12 +4,12 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use LinksUpdate;
 use ParserOutput;
-use SMW\MediaWiki\Hooks\LinksUpdateConstructed;
+use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @covers \SMW\MediaWiki\Hooks\LinksUpdateConstructed
+ * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
  * @group semantic-mediawiki
  *
  * @license GNU GPL v2+
@@ -17,7 +17,7 @@ use Title;
  *
  * @author mwjames
  */
-class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
+class LinksUpdateCompleteTest extends \PHPUnit_Framework_TestCase {
 
 	private $testEnvironment;
 	private $namespaceExaminer;
@@ -68,8 +68,8 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 	public function testCanConstruct() {
 
 		$this->assertInstanceOf(
-			LinksUpdateConstructed::class,
-			new LinksUpdateConstructed( $this->namespaceExaminer )
+			LinksUpdateComplete::class,
+			new LinksUpdateComplete( $this->namespaceExaminer )
 		);
 	}
 
@@ -132,7 +132,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$instance = new LinksUpdateConstructed(
+		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
 		);
 
@@ -183,7 +183,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getParserOutput' )
 			->will( $this->returnValue( $parserOutput ) );
 
-		$instance = new LinksUpdateConstructed(
+		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
 		);
 
@@ -234,7 +234,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$linksUpdate->mTemplates = [ 'Foo' ];
 		$linksUpdate->mRecursive = false;
 
-		$instance = new LinksUpdateConstructed(
+		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
 		);
 
@@ -258,7 +258,7 @@ class LinksUpdateConstructedTest extends \PHPUnit_Framework_TestCase {
 		$linksUpdate->expects( $this->never() )
 			->method( 'getTitle' );
 
-		$instance = new LinksUpdateConstructed(
+		$instance = new LinksUpdateComplete(
 			$this->namespaceExaminer
 		);
 

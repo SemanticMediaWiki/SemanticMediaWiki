@@ -8,5 +8,7 @@
 	"browse": "ਵਿਕੀ ਫਰੋਲੋ",
 	"smw-livepreview-loading": "ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
 	"smw-sp-searchbyproperty-resultlist-header": "ਨਤੀਜਿਆਂ ਦੀ ਸੂਚੀ",
-	"smw-copy": "ਰੀਸ ਕਰੋ"
+	"smw-copy": "ਰੀਸ ਕਰੋ",
+	"smw-listingcontinuesabbrev": "ਜਾਰੀ",
+	"smw-showingresults": "ਹੇਠਾਂ #'''$2''' ਨਾਲ਼ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲ਼ੇ {{PLURAL:\n$1|'''1''' ਨਤੀਜਾ|'''$1''' ਤੱਕ ਨਤੀਜੇ}} ਵਖਾਓ।"
 }

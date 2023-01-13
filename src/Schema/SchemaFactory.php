@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
@@ -148,12 +148,8 @@ class SchemaFactory {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store|null $store
-	 *
-	 * @return SchemaFinder
 	 */
-	public function newSchemaFinder( Store $store = null ) {
+	public function newSchemaFinder( ?Store $store = null ): SchemaFinder {
 
 		$applicationFactory = ApplicationFactory::getInstance();
 

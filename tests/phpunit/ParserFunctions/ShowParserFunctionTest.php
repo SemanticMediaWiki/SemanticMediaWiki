@@ -3,7 +3,7 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\Tests\TestEnvironment;

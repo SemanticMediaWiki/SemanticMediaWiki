@@ -63,7 +63,7 @@ class SetupFile {
 
 	private const SMW_JSON = 'smw.json';
 
-	private SmwJsonRepo $repo;
+	private /* SmwJsonRepo */ $repo;
 
 	public function __construct( File $file = null, FileFetcher $fileFetcher = null ) {
 		$this->repo = $GLOBALS['smwgSmwJsonRepo'] ??
@@ -73,13 +73,13 @@ class SetupFile {
 			);
 	}
 
-	public function loadSchema( array &$vars = [] ): void {
+	public function loadSchema( array &$vars = [] ): array {
 		if ( $vars === [] ) {
 			$vars = $GLOBALS;
 		}
 
 		if ( isset( $vars[self::SMW_JSON] ) ) {
-			return;
+			return $vars;
 		}
 
 		$smwJson = $this->repo->loadSmwJson( $vars['smwgConfigFileDir'] );
@@ -87,6 +87,8 @@ class SetupFile {
 		if ( $smwJson !== null ) {
 			$vars[self::SMW_JSON] = $smwJson;
 		}
+
+		return $vars;
 	}
 
 	public static function isGoodSchema( bool $isCli = false ): bool {

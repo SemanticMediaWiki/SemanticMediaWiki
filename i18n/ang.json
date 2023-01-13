@@ -13,5 +13,7 @@
 	"smw-expand": "Brǣde",
 	"smw-copy": "Biwrītan",
 	"smw-jsonview-expand-title": "Aþenaþ þe JSON ansyn",
-	"smw-jsonview-collapse-title": "Tofealleþ þa JSON ansyn"
+	"smw-jsonview-collapse-title": "Tofealleþ þa JSON ansyn",
+	"smw-listingcontinuesabbrev": "mā",
+	"smw-showingresults": "Ywð herunder swa fela swa {{PLURAL:$1|<strong>1</strong> gefundennesse|<strong>$1</strong> gefundennessa}}, and #<strong>$2</strong> is seo forme."
 }

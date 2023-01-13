@@ -2,18 +2,20 @@
 	"@metadata": {
 		"authors": [
 			"Akapochtli",
-			"Fluence"
+			"Fluence",
+			"Languaeditor"
 		]
 	},
 	"smw_finallistconjunct": " īhuān",
 	"smw_nofloat": "\"$1\" ahmo tlapōhualli.",
-	"smw_purge": "Ticyancuīyāz",
-	"smw-ask-search": "Tlatemoliztli",
+	"smw_purge": "Xikyankwili",
+	"smw-ask-search": "Xiktemo",
 	"smw_browse_go": "Yaliztica",
 	"smw_result_prev": "Achtopa",
 	"smw_result_next": "Niman",
 	"smw_smwadmin_return": "Titocuepāz īhuīc $1",
-	"smw-admin-idlookup-input": "Tlatemoliztli",
+	"smw-admin-idlookup-input": "Xiktemo",
 	"smw-livepreview-loading": "Tēmohua...",
-	"smw-format-datatable-search": "Tlatemoliztli:"
+	"smw-format-datatable-search": "Xiktemo:",
+	"smw-listingcontinuesabbrev": "niman"
 }

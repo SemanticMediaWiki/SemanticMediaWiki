@@ -4,7 +4,10 @@
 			"Murma174"
 		]
 	},
+	"smw_ask_otheroptions": "Muar ütjwool",
 	"browse": "Browse wiki",
 	"smw-livepreview-loading": "Loose ...",
-	"smw-search-show": "Wise"
+	"smw-search-show": "Wise",
+	"smw-listingcontinuesabbrev": "(gongt widjer)",
+	"smw-showingresults": "Heer {{PLURAL:$1|as '''1''' resultaat|san '''$1''' resultaaten}}, jo began mä numer '''$2.'''"
 }

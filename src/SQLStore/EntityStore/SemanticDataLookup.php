@@ -284,7 +284,7 @@ class SemanticDataLookup {
 
 	/**
 	 * Helper function for reading all data for from a given property table
-	 * (specified by an SMWSQLStore3Table dataItem), based on certain
+	 * (specified by an PropertyTableDefinition dataItem), based on certain
 	 * restrictions. The function can filter data based on the subject (1)
 	 * or on the property it belongs to (2) -- but one of those must be
 	 * done. The Boolean $issubject is true for (1) and false for (2).
@@ -603,7 +603,7 @@ class SemanticDataLookup {
 			}
 		}
 
-		$connection->freeResult( $res );
+		$res->free();
 
 		// Sorting via PHP for an explicit disabled `ORDER BY` to ensure that
 		// the result set has at least a lexical order for range of

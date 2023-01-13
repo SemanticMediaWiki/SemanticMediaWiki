@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Bfpage",
 			"Boukman",
 			"Jvm",
@@ -24,5 +25,7 @@
 	"smw_nofloat": "\"$1\" pa yon nimewo.",
 	"smw_infinite": "Nimewo ki gwo tankou \"$1\" pa sipòte.",
 	"browse": "Pran yon gade nan wiki sa a",
-	"smw_unknowntype": "Tip done \"$1\" yo ki pa sipòte retounen nan atribi a."
+	"smw_unknowntype": "Tip pwopriyete sa a « $1 » pa valab",
+	"smw-listingcontinuesabbrev": "(kontinye)",
+	"smw-showingresults": "Men jiska {{PLURAL:$1|<strong>$1</strong> rezilta}}, premye se #<strong>$2</strong>."
 }

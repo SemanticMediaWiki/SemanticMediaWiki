@@ -27,6 +27,9 @@
         <testsuite name="semantic-mediawiki-check">
             <file>tests/phpunit/Structure/PHPUnitCheckRunnerTest.php</file>
         </testsuite>
+        <testsuite name="semantic-mediawiki-data-model">
+            <directory>tests/phpunit/DataModel</directory>
+        </testsuite>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
             <directory>tests/phpunit/Unit</directory>

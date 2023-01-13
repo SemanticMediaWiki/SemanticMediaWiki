@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;

@@ -2,10 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Ernác",
-			"Iltever"
+			"Iltever",
+			"Къарачайлы"
 		]
 	},
 	"smw_purge": "Джангырт",
 	"browse": "Викиге кёз ат",
-	"smw-livepreview-loading": "Джюклениу..."
+	"smw-prefs-general-options-show-entity-issue-panel": "Магъананы проблемасыны панелин кёргюзт",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "Джандырылгъан эсе, хар бетде бютеулюкню тинтиуюн башлайды эмда [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel магананы проблемасыны панелин ачады].",
+	"smw-livepreview-loading": "Джюклениу...",
+	"smw-listingcontinuesabbrev": "(баргъаны)",
+	"smw-showingresults": "Тюбюрек №&nbsp;<strong>$2</strong> башлаб <strong>$1</strong> {{PLURAL:$1|1=эсеб|эсебле}} {{PLURAL:$1|1=кёргюзюлгенди|кёргюзюлгендиле}}."
 }

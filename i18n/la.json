@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Percurrere",
-	"smw-livepreview-loading": "Depromens…"
+	"smw-livepreview-loading": "Depromens…",
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Subter monstrans {{PLURAL:$1|'''1''' eventu|'''$1''' eventibus}} tenus incipiens ab #'''$2'''."
 }

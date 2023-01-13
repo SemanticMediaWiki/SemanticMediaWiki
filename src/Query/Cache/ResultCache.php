@@ -6,7 +6,7 @@ use Onoi\BlobStore\BlobStore;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Store;
 use SMW\QueryEngine;

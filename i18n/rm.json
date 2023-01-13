@@ -5,5 +5,7 @@
 		]
 	},
 	"smw-ui-tooltip-title-legend": "Legenda",
-	"smw-livepreview-loading": "Chargiar…"
+	"smw-livepreview-loading": "Chargiar…",
+	"smw-listingcontinuesabbrev": "cuntinuaziun",
+	"smw-showingresults": "Sutvart èn enfin {{PLURAL:$1|'''in''' resultat|'''$1''' resultats}} cumenzond cun il numer '''$2'''."
 }

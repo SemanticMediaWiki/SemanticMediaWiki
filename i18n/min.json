@@ -10,5 +10,7 @@
 	"smw_propertylackspage": "Sado properti musti dideskripsikan jo suatu laman!",
 	"smw_purge": "Pabaharui",
 	"browse": "Jalajahi wiki",
-	"smw_browse_go": "Tuju"
+	"smw_browse_go": "Tuju",
+	"smw-listingcontinuesabbrev": "samb.",
+	"smw-showingresults": "Di bawah ko dikaluaan sampai {{PLURAL:$1|'''$1''' hasil}}, dimulai dari #'''$2'''."
 }

@@ -201,27 +201,6 @@ function smwfGetLinker() {
 }
 
 /**
- * @private
- *
- * Copied from wfCountDown as it became deprecated in 1.31
- *
- * @since 3.0
- */
-function swfCountDown( $seconds ) {
-	for ( $i = $seconds; $i >= 0; $i-- ) {
-		if ( $i != $seconds ) {
-			echo str_repeat( "\x08", strlen( $i + 1 ) );
-		}
-		echo $i;
-		flush();
-		if ( $i ) {
-			sleep( 1 );
-		}
-	}
-	echo "\n";
-}
-
-/**
  * Function to switch on Semantic MediaWiki. This function must be called in
  * LocalSettings.php after including SMW_Settings.php. It is used to ensure
  * that required parameters for SMW are really provided explicitly. For
@@ -241,23 +220,8 @@ function swfCountDown( $seconds ) {
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 
-	// If the function is called more than once then this will fail on
-	// purpose
-	foreach ( include dirname( __DIR__ ) . '/DefaultSettings.php' as $key => $value ) {
-		if ( !isset( $GLOBALS[$key] ) ) {
-			$GLOBALS[$key] = $value;
-		}
-	}
-
-	// #4107
-	if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
-		define( 'SMW_EXTENSION_LOADED', true );
-	}
-
-	// Apparently this is required (1.28+) as the earliest possible execution
-	// point in order for settings that refer to the SMW_NS_PROPERTY namespace
-	// to be available in LocalSettings
-	NamespaceManager::initCustomNamespace( $GLOBALS );
+	SemanticMediaWiki::setupDefines();
+	SemanticMediaWiki::setupGlobals();
 
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		// The dot tells that the domain is not complete. It will be completed

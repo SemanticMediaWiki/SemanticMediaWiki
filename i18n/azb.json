@@ -9,5 +9,7 @@
 	"browse": "ویکی یه باخیش",
 	"smw_browselink": "اوزللیکلری گؤزدن کئچیر",
 	"smw_browse_go": "گئت",
-	"smw-livepreview-loading": "یوکلنیر..."
+	"smw-livepreview-loading": "یوکلنیر...",
+	"smw-listingcontinuesabbrev": "(قالانی)",
+	"smw-showingresults": "آشاغیدا نومره '''$2'''-دن باشلایان {{PLURAL:$1|'''بیر'''|'''$1'''}} سونوجا قدر گؤستریلیر."
 }

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer;
 use SMW\Tests\TestEnvironment;

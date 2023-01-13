@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestResult;
 use RuntimeException;
 use SMW\Services\ServicesFactory;
 use SMW\NamespaceExaminer;
@@ -12,6 +13,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use HashBagOStuff;
 use ObjectCache;
+use RequestContext;
 
 /**
  * @group semantic-mediawiki
@@ -106,13 +108,19 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->resetMediaWikiService( 'LocalServerObjectCache' );
 		$this->testEnvironment->resetMediaWikiService( 'MainWANObjectCache' );
 
+		// HACK: clear ActorStore cache to avoid failures in tests
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5199
+		$this->testEnvironment->resetMediaWikiService( 'ActorStore' );
+		$this->testEnvironment->resetMediaWikiService( 'ActorStoreFactory' );
+
 		$this->testEnvironment->clearPendingDeferredUpdates();
 
 		// #3916
 		// Reset $wgUser, which is probably 127.0.0.1, as its loaded data is probably not valid
 		// @todo Should we start setting $wgUser to something nondeterministic
 		//  to encourage tests to be updated to not depend on it?
-		$GLOBALS['wgUser']->clearInstanceCache( $GLOBALS['wgUser']->mFrom );
+		$user = RequestContext::getMain()->getUser();
+		$user->clearInstanceCache( $user->mFrom );
 
 		ObjectCache::$instances[CACHE_DB] = new HashBagOStuff();
 
@@ -150,7 +158,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * request a trear down so that the next test can rebuild the tables from
 	 * scratch
 	 */
-	public function run( ?\PHPUnit_Framework_TestResult $result = null ) : \PHPUnit_Framework_TestResult {
+	public function run( ?TestResult $result = null ) : TestResult {
 
 		$this->getStore()->clear();
 

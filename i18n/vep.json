@@ -24,5 +24,7 @@
 	"smw_result_results": "Rezul'tatad",
 	"smw_result_noresults": "Ei ole rezul'tatoid.",
 	"smwadmin": "Redaktiruida Semantic MediaWiki",
-	"smw-livepreview-loading": "Ozutase…"
+	"smw-livepreview-loading": "Ozutase…",
+	"smw-listingcontinuesabbrev": "jatktand",
+	"smw-showingresults": "Alemba ozutadas {{PLURAL:$1|'''1''' rezul'tat|'''$1''' rezul'tatad}} nomeraspäi #'''$2''' augotaden."
 }

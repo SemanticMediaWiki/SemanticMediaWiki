@@ -6,7 +6,7 @@ use Language;
 use MediaWiki\Revision\RevisionRecord;
 use Parser;
 use RequestContext;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;

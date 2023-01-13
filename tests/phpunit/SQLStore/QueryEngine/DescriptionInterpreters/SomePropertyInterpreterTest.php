@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DataItemFactory;
 use SMW\Query\DescriptionFactory;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\Tests\TestEnvironment;
@@ -232,7 +233,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'addQuotes' )
 			->will( $this->returnArgument( 0 ) );
 
-		$proptable = $this->getMockBuilder( '\SMWSQLStore3Table' )
+		$proptable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

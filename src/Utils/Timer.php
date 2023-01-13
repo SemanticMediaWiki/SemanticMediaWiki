@@ -21,6 +21,11 @@ class Timer {
 	private $times = [];
 
 	/**
+	 * @var string[]
+	 */
+	public array $keys;
+
+	/**
 	 * @since 3.0
 	 *
 	 * @param integer $outputType

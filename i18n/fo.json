@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "Leita í wikiini",
-	"smw-livepreview-loading": "Innlesur..."
+	"smw-livepreview-loading": "Innlesur...",
+	"smw-listingcontinuesabbrev": "frh.",
+	"smw-showingresults": "Niðanfyri standa upp til {{PLURAL:$1|'''$1''' úrslit, sum byrjar|'''$1''' úrslit, sum byrja}} við #<b>$2</b>."
 }

@@ -72,7 +72,7 @@ class PropertiesQueryPage extends QueryPage {
 			'p',
 			[ 'class' => 'smw-sp-properties-docu' ],
 			$this->msg( 'smw-sp-properties-docu' )->parse()
-		) . $this->getSearchForm( $this->getRequest()->getVal( 'property' ), $this->getCacheInfo() ) .
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property', '' ), $this->getCacheInfo() ) .
 		Html::element(
 			'h2',
 			[],

@@ -5,5 +5,7 @@
 		]
 	},
 	"browse": "વિકિ વાંચો",
-	"smw-livepreview-loading": "લવાઇ રહ્યું છે..."
+	"smw-livepreview-loading": "લવાઇ રહ્યું છે...",
+	"smw-listingcontinuesabbrev": "ચાલુ..",
+	"smw-showingresults": " {{PLURAL:$1|'''1''' પરિણામ|'''$1''' પરિણામો}} સુધી #'''$2''' થી શરૂ  કરી"
 }

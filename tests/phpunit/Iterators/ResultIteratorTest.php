@@ -51,6 +51,11 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 				$value
 			);
 		}
+
+		$this->assertEquals(
+			2,
+			$instance->key()
+		);
 	}
 
 	public function testdoSeekOnArray() {
@@ -74,7 +79,7 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$resultWrapper->expects( $this->once() )
+		$resultWrapper->expects( $this->exactly( 3 ) )
 			->method( 'numRows' )
 			->will( $this->returnValue( 1 ) );
 

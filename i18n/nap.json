@@ -6,5 +6,7 @@
 	},
 	"smw-paramdesc-table-transpose": "Fà vedé 'e cap' 'e tabella n verticale e li risultate n orizzontale",
 	"browse": "Ascìa wiki",
-	"smw_smwadmin_datarefreshstopconfirm": "Si, so' {{GENDER:$1|sicuro|sicura}}."
+	"smw_smwadmin_datarefreshstopconfirm": "Si, so' {{GENDER:$1|sicuro|sicura}}.",
+	"smw-listingcontinuesabbrev": "cont.",
+	"smw-showingresults": "Ccà abbascio {{PLURAL:$1|s'apprisentano 'o massimo '''1''' risultato|veneno apprisentate massimo '''$1''' risultate}} aropp' 'o nummero '''$2'''."
 }

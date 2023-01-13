@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -12,6 +12,7 @@ use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
+use SMWDataValue;
 
 /**
  * @license GNU GPL v2+
@@ -86,6 +87,10 @@ class HtmlBuilder {
 	 * @var array
 	 */
 	private $language = 'en';
+
+	private SMWDataValue $dataValue;
+
+	private string $articletext;
 
 	/**
 	 * @since 2.5

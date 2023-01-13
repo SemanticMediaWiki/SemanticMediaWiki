@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Hooks;
 use File;
 use Hooks;
 use ParserOptions;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Localizer;
 use SMW\NamespaceExaminer;
 use Title;

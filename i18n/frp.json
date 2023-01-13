@@ -106,5 +106,7 @@
 	"smw-info-par-message": "Mèssâjo a fâre vêre.",
 	"smw_concept_header": "Pâges du concèpte « $1 »",
 	"smw_conceptarticlecount": "Fâre vêre l{{PLURAL:$1|a pâge que repôse|es $1 pâges que repôsont}} sur cél concèpte.",
-	"smw-livepreview-loading": "Chargement..."
+	"smw-livepreview-loading": "Chargement...",
+	"smw-listingcontinuesabbrev": "(suita)",
+	"smw-showingresults": "Afichâjo ce-desot de tant qu’a <strong>$1</strong> rèsultat{{PLURAL:$1||s}} dês lo nº <strong>$2</strong>."
 }

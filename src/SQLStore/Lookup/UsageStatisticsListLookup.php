@@ -352,7 +352,7 @@ class UsageStatisticsListLookup implements ListLookup {
 			__METHOD__
 		);
 
-		$row = $this->store->getConnection()->fetchObject( $res );
+		$row = $res->fetchObject();
 
 		return isset( $row->count ) ? (int)$row->count : 0;
 	}

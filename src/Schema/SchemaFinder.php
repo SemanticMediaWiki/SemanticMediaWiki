@@ -103,24 +103,15 @@ class SchemaFinder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 *
-	 * @return SchemaList|[]
 	 */
-	public function getConstraintSchema( DataItem $dataItem ) {
+	public function getConstraintSchema( DataItem $dataItem ): ?SchemaList {
 		return $this->newSchemaList( $dataItem, new DIProperty( '_CONSTRAINT_SCHEMA' ) );
 	}
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DataItem $dataItem
-	 * @param DIProperty $property
-	 *
-	 * @return SchemaList|[]
 	 */
-	public function newSchemaList( DataItem $dataItem, DIProperty $property ) {
+	public function newSchemaList( DataItem $dataItem, DIProperty $property ): ?SchemaList {
 
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
@@ -128,7 +119,7 @@ class SchemaFinder {
 		);
 
 		if ( $dataItems === null || $dataItems === false ) {
-			return [];
+			return null;
 		}
 
 		$schemaList = [];

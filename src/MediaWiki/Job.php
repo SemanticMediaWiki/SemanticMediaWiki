@@ -5,7 +5,7 @@ namespace SMW\MediaWiki;
 use Psr\Log\LoggerAwareTrait;
 use Job as MediaWikiJob;
 use JobQueueGroup;
-use SMW\ApplicationFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\Store;
 use Title;
@@ -67,7 +67,8 @@ abstract class Job extends MediaWikiJob {
 
 	/**
 	 * @note Job::batchInsert was deprecated in MW 1.21
-	 * JobQueueGroup::singleton()->push( $job );
+	 * JobQueueGroup::singleton()->push( $job ) was deprecated in MW 1.37;
+	 * MediaWikiServices::getInstance()->getJobQueueGroup()
 	 *
 	 * @since 1.9
 	 */

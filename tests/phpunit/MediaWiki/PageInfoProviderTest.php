@@ -132,7 +132,8 @@ class PageInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = [
 			[ 90001, false ],
-			[ null , true ]
+			[ 0 , true ],
+			[ null, false ]
 		];
 
 		return $provider;

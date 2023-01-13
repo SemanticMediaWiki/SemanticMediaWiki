@@ -22,10 +22,11 @@
 	"smw_sbv_property": "Уликсчись:",
 	"browse": "Лопа-лопа ланга ютамо",
 	"smw_browse_go": "Адя",
-	"smw_pp_type": "Уликсчи",
+	"smw_pp_type": "Уликсчись:",
 	"smw-ui-tooltip-title-info": "Информация",
 	"smw-ui-tooltip-title-error": "Ильведевкс",
 	"smw-ui-tooltip-title-parameter": "Параметра",
 	"smw-ui-tooltip-title-legend": "Легенда",
-	"smw-livepreview-loading": "Йоракшны…"
+	"smw-livepreview-loading": "Йоракшны…",
+	"smw-listingcontinuesabbrev": "поладксозо моли"
 }

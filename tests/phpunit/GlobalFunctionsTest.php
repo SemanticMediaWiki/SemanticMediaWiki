@@ -89,10 +89,6 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( is_string( $results ) );
 	}
 
-	public function testSwfCountDown() {
-		$this->assertTrue( function_exists( 'swfCountDown' ) );
-	}
-
 	public function testSmwfCacheKeyOnPrefixedNamespace() {
 
 		$this->assertEquals(
@@ -116,10 +112,8 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	public function getGlobalFunctions() {
 		return [
 			[ 'smwfNormalTitleDBKey' ],
-			[ 'smwfNormalTitleText' ],
 			[ 'smwfXMLContentEncode' ],
 			[ 'smwfHTMLtoUTF8' ],
-			[ 'smwfNumberFormat' ],
 			[ 'smwfEncodeMessages' ],
 			[ 'smwfGetStore' ],
 			[ 'smwfGetLinker' ],

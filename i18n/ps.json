@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Af420",
 			"Ahmed-Najib-Biabani-Ibrahimkhel",
 			"Amjad Khan"
 		]
@@ -44,5 +45,7 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|ثانيه|ثانيې}}",
 	"smw-format-datatable-infoempty": "ښکارونه له ۰ تر ۰ له ۰ وتلو",
 	"smw-property-reserved-category": "وېشنيزه",
-	"smw-category": "وېشنيزه"
+	"smw-category": "وېشنيزه",
+	"smw-listingcontinuesabbrev": "پرله پسې",
+	"smw-showingresults": "دلته لاندې تر {{PLURAL:$1|'''1''' پايله|'''$1''' پايلې}} ښکاره شوي پيل له #'''$2''' شوی."
 }
