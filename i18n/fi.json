@@ -236,6 +236,8 @@
 	"smw_pp_from": "Sivu:",
 	"smw_pp_type": "Ominaisuus:",
 	"smw_pp_submit": "Hae",
+	"smw-prev": "edelliset {{PLURAL:$1|$1}}",
+	"smw-next": "seuraavat {{PLURAL:$1|$1}}",
 	"smw_result_prev": "Edellinen",
 	"smw_result_next": "Seuraava",
 	"smw_result_results": "Tulokset",

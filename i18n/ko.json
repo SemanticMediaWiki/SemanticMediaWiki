@@ -433,6 +433,8 @@
 	"smw-prefs-general-options-disable-search-info": "표준 검색 문서에서 문법 지원 정보를 비활성화합니다",
 	"smw-prefs-general-options-suggester-textinput": "시맨틱 엔티티를 위한 입력 지원을 사용합니다",
 	"smw-prefs-help-general-options-suggester-textinput": "활성화하면 입력 문맥에서 속성, 개념, 분류를 찾기 위해 [https://www.semantic-mediawiki.org/wiki/Help:Input_assistance 입력 지원]을 사용할 수 있게 합니다.",
+	"smw-prefs-general-options-show-entity-issue-panel": "엔티티 이슈 패널 표시",
+	"smw-prefs-help-general-options-show-entity-issue-panel": "활성화하면 각 페이지의 무결성 검사를 수행하고 [https://www.semantic-mediawiki.org/wiki/Help:Entity_issue_panel 엔티티 이슈 패널]을 표시합니다.",
 	"smw-ui-tooltip-title-property": "속성",
 	"smw-ui-tooltip-title-quantity": "단위 변환",
 	"smw-ui-tooltip-title-info": "정보",
