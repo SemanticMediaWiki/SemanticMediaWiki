@@ -26,6 +26,12 @@
 			"name": "James Hong Kong",
 			"homepage": "https://www.semantic-mediawiki.org/wiki/User:MWJames",
 			"role": "Core developer"
+		},
+		{
+			"name": "Professional Wiki",
+			"email": "info@professional.wiki",
+			"homepage": "https://professional.wiki",
+			"role": "Developer"
 		}
 	],
 	"support": {
@@ -36,7 +42,7 @@
 		"source": "https://github.com/SemanticMediaWiki/SemanticMediaWiki"
 	},
 	"require": {
-		"php": ">=7.3",
+		"php": ">=7.4",
 		"ext-mbstring": "*",
 		"composer/installers": "1.*,>=1.0.1",
 		"psr/log": "~1.0",
