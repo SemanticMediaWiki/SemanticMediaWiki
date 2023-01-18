@@ -20,10 +20,13 @@ This release improves compatibility with MediaWiki 1.38 and 1.39.
 * Fixed upsert warning log spam (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5307)
 * Added user preference that allows enabling or disabling the entity issue panel (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5345)
 * Added support for partial ISO dates (https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5312)
+* SMW now ships with updated vocabularies including Schema.org, Dublin Core, FOAF and SKOS
 * Various grammar and spelling fixes
 * Translation updates
 
-## Notable contributors
+## Contributors
+
+Top contributors
 
 1. Morne Alberts from [Professional Wiki](https://professional.wiki/)
 2. Jeroen De Dauw from [Professional Wiki](https://professional.wiki/)
@@ -31,7 +34,29 @@ This release improves compatibility with MediaWiki 1.38 and 1.39.
 4. Bernhard Krabina from [KM-A](https://km-a.net/)
 5. Karsten Hoffmeyer from [Professional Wiki](https://professional.wiki/)
 
-And 20+ amazing contributors!
+Code contributions
+
+* translatewiki.net
+* Morne Alberts
+* Jeroen De Dauw
+* Abijeet
+* Bernhard Krabina
+* Sébastien Beyou
+* Hannes
+* Hamish Slater
+* Karsten Hoffmeyer
+* Youri vd Bogert
+* Alexander
+* Alexander Mashin
+* Amir E. Aharoni
+* C. Scott Ananian
+* D-Groenewegen
+* Greg Rundlett
+* Mark A. Hershberger
+* Markus
+* Máté Szabó
+* UnknownSkyrimPasserby
+* iusgit
 
 ## Upgrading
 
