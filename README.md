@@ -24,7 +24,7 @@ release can be found in the [compatibility matrix](docs/COMPATIBILITY.md).
 
 Semantic MediaWiki 4.0.x requires:
 
-- PHP 7.3 or above
+- PHP 7.3 up to PHP 8.0
 - MediaWiki 1.35 or above
 - MySQL 5+, SQLite 3+ or PostgreSQL 9+
 
