@@ -252,7 +252,7 @@
 	"smw-statistics-error-count": "Valor{{PLURAL:$1||es}} de proprietate ([[Special:ProcessingErrorList|annotation{{PLURAL:$1||es}} incorrecte]])",
 	"smw-statistics-error-count-legacy": "Valor{{PLURAL:$1||es}} de proprietate (annotation{{PLURAL:$1||es}} incorrecte)",
 	"smw-statistics-delete-count": "[https://www.semantic-mediawiki.org/wiki/Help:Outdated_entities Entitate{{PLURAL:$1||s}} obsolete]",
-	"smw-statistics-delete-count-info": "Entitates que ha essite marcate pro remotion e que debe esser eliminate regularmente usante le scripts de mantenentia fornite.",
+	"smw-statistics-delete-count-info": "Entitates que ha essite marcate pro remotion debe esser eliminate regularmente usante le scripts de mantenentia fornite.",
 	"smw_uri_doc": "Le resolvitor de URL implementa le [$1 conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14].\nIllo assecura que le humanos non se transforma in sitos web.",
 	"ask": "Recerca semantic",
 	"smw-ask-help": "Iste section contine alcun ligamines pro adjutar a explicar como usar le syntaxe <code>#ask</code>.\n\n* [https://www.semantic-mediawiki.org/wiki/Help:Selecting_pages Seliger paginas] describe como seliger paginas e construer conditiones\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Search_operators Operatores de recerca] lista le operatores de recerca disponibile, includente illos pro consultas que usa intervallos o metacharacteres\n\n*[https://www.semantic-mediawiki.org/wiki/Help:Displaying_information Monstrar information] explica le uso de declarationes de sortita e optiones de formatation",
