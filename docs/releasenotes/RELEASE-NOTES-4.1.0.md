@@ -1,6 +1,6 @@
 # Semantic MediaWiki 4.1.0
 
-Released on January TODO, 2023.
+Released on January 21st, 2023.
 
 ## Summary
 
