@@ -35,8 +35,8 @@ Increases of minimum requirements are indicated in bold.
 	<tr>
 		<th>4.1.x</th>
 		<td><strong>Stable release</strong></td>
-		<td>2023-01-TODO</td>
-		<td>2023-01-TODO</td>
+		<td>2023-01-21</td>
+		<td>2023-01-21</td>
 		<td><strong>7.4.0</strong> - 8.0.x</td>
 		<td>1.35.0 - 1.39.x</td>
 		<td><a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5300">Confirmed to not work with PHP 8.1</a></td>
