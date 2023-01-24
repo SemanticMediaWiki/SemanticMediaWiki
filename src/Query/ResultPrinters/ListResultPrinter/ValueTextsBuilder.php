@@ -4,7 +4,9 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\Language\NamespaceDescription;
 use SMWDataValue;
+use SMWQueryResult as QueryResult;
 use SMWResultArray;
 
 /**
@@ -20,6 +22,15 @@ class ValueTextsBuilder {
 	use ParameterDictionaryUser;
 
 	private $linker;
+
+	private $mixedResults;
+
+	/**
+	 * @param SMWQueryResult $queryResult
+	 */
+	public function __construct( QueryResult $queryResult ) {
+		$this->mixedResults = !( $queryResult->getQuery()->getDescription() instanceof NamespaceDescription );
+	}
 
 	/**
 	 * @param SMWResultArray $field
@@ -65,10 +76,20 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
-
-		$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+		$text = $this->getDataValueText( $value, SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
 		return $this->sanitizeValueText( $text );
+	}
+
+	/**
+	 * @param @param SMWDataValue $dv
+	 * @param int $outputMode
+	 * @param Linker|null|bool $linker
+	 * @return string
+	 */
+	protected function getDataValueText( $dv, $outputMode, $linker ) {
+		return $this->mixedResults ? $dv->getLongText( $outputMode, $linker ) : 
+			$dv->getShortText( $outputMode, $linker );
 	}
 
 	/**
