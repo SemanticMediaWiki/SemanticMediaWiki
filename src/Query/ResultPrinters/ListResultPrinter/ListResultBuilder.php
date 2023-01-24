@@ -242,7 +242,7 @@ class ListResultBuilder {
 	private function getRowBuilder() {
 
 		if ( $this->get( 'template' ) === '' ) {
-			$rowBuilder = new SimpleRowBuilder( $this->configuration );
+			$rowBuilder = new SimpleRowBuilder();
 			$rowBuilder->setLinker( $this->linker );
 		} else {
 			$rowBuilder = new TemplateRowBuilder( $this->getTemplateRendererFactory() );
