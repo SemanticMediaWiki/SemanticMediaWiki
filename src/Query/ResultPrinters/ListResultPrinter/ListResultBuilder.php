@@ -242,13 +242,13 @@ class ListResultBuilder {
 	private function getRowBuilder() {
 
 		if ( $this->get( 'template' ) === '' ) {
-			$rowBuilder = new SimpleRowBuilder();
+			$rowBuilder = new SimpleRowBuilder( $this->configuration );
 			$rowBuilder->setLinker( $this->linker );
 		} else {
 			$rowBuilder = new TemplateRowBuilder( $this->getTemplateRendererFactory() );
 		}
 
-		$valueTextsBuilder = new ValueTextsBuilder();
+		$valueTextsBuilder = new ValueTextsBuilder( $this->getQueryResult() );
 		$valueTextsBuilder->setLinker( $this->linker );
 		$valueTextsBuilder->setConfiguration( $this->configuration );
 
