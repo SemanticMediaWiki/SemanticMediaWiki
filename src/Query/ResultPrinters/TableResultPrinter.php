@@ -5,6 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use Html;
 use SMW\DIWikiPage;
 use SMW\Message;
+use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
 use SMW\Utils\HtmlTable;
@@ -29,6 +30,8 @@ class TableResultPrinter extends ResultPrinter {
 	 * @var HtmlTable
 	 */
 	private $htmlTable;
+
+	private $mixedResults;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -85,6 +88,7 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
+		$this->mixedResults = !( $res->getQuery()->getDescription() instanceof NamespaceDescription );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -323,11 +327,11 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $this->getDataValueText( $dv, SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $this->getDataValueText( $dv, $outputMode, $this->getLinker( $isSubject ) );
 			}
 
 
@@ -345,6 +349,17 @@ class TableResultPrinter extends ResultPrinter {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * @param @param SMWDataValue $dv
+	 * @param int $outputMode
+	 * @param Linker|null|bool $linker
+	 * @return string
+	 */
+	protected function getDataValueText( $dv, $outputMode, $linker ) {
+		return $this->mixedResults ? $dv->getLongText( $outputMode, $linker ) : 
+			$dv->getShortText( $outputMode, $linker );
 	}
 
 	/**
