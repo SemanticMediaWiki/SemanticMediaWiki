@@ -725,8 +725,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$displayTitle = $this->getDisplayTitle();
 
 		if ( $displayTitle === '' ) {
-			// @fix https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5400
-			$displayTitle = $this->getPrefixedText();
+			$displayTitle = $this->getText();
 		}
 
 		// #3945 (Remove context as per pipe trick)
