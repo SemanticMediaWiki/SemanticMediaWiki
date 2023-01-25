@@ -63,6 +63,12 @@ class UserChange implements HookListener {
 			return false;
 		}
 
+		// getTargetUserIdentity returns null if it isnot user(eg. CIDR) 
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5263
+		if ( $user === null ) {
+			return false;
+		}
+
 		if ( $user instanceof UserIdentity ) {
 			$user = $user->getName();
 		}
