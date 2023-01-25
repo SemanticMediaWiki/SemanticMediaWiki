@@ -55,7 +55,7 @@ class UserChange implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param UserIdentity|string $user
+	 * @param UserIdentity|string|null $user
 	 */
 	public function process( $user ) {
 
