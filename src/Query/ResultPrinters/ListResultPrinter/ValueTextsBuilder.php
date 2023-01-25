@@ -77,19 +77,21 @@ class ValueTextsBuilder {
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
 		$prefix = $this->get('prefix');
+		$outputMode = SMW_OUTPUT_WIKI;
+		$linker = $this->getLinkerForColumn( $column );
 
 		if ( !$prefix || $prefix === 'none' ) {
-			$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+			$text = $value->getShortText( $outputMode, $linker );
 
 		} elseif ( $prefix === 'all' || ( $prefix === 'subject' && $column === 0 ) ) {
-			$text = $value->getLongText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+			$text = $value->getLongText( $outputMode, $linker );
 
 		} elseif ( $prefix === 'auto' && $column === 0 ) {
 			$text = $this->mixedResults ? $value->getLongText( $outputMode, $linker ) : 
 				$value->getShortText( $outputMode, $linker );
 
 		} else {
-			$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+			$text = $value->getShortText( $outputMode, $linker );
 		}
 
 		return $this->sanitizeValueText( $text );
