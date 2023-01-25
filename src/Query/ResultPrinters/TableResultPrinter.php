@@ -327,13 +327,12 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $this->getDataValueText( $dv, SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $this->getDataValueText( $dv, SMW_OUTPUT_WIKI, $isSubject ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $this->getDataValueText( $dv, $outputMode, $this->getLinker( $isSubject ) );
+				$value = $this->getDataValueText( $dv, $outputMode, $isSubject );
 			}
-
 
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
@@ -352,15 +351,32 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	/**
-	 * @param @param SMWDataValue $dv
+	 * @param @param SMWDataValue $value
 	 * @param int $outputMode
 	 * @param Linker|null|bool $linker
 	 * @return string
 	 */
-	protected function getDataValueText( $dv, $outputMode, $linker ) {
-		return $this->mixedResults ? $dv->getLongText( $outputMode, $linker ) : 
-			$dv->getShortText( $outputMode, $linker );
+	protected function getDataValueText( $value, $outputMode, $isSubject ) {	
+		$prefix = $this->params['prefix'];
+		$linker = $this->getLinker( $isSubject );
+
+		if ( !$prefix || $prefix === 'none' ) {
+			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
+
+		} elseif ( $prefix === 'all' || ( $prefix === 'subject' && $isSubject ) ) {
+			$text = $value->getLongText( SMW_OUTPUT_WIKI, $linker );
+
+		} elseif ( $prefix === 'auto' && $isSubject ) {
+			$text = $this->mixedResults ? $value->getLongText( $outputMode, $linker ) : 
+				$value->getShortText( $outputMode, $linker );
+
+		} else {
+			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
+		}
+
+		return $text;
 	}
+
 
 	/**
 	 * @see ResultPrinter::getResources
