@@ -361,17 +361,17 @@ class TableResultPrinter extends ResultPrinter {
 		$linker = $this->getLinker( $isSubject );
 
 		if ( !$prefix || $prefix === 'none' ) {
-			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
+			$text = $value->getShortText( $outputMode, $linker );
 
 		} elseif ( $prefix === 'all' || ( $prefix === 'subject' && $isSubject ) ) {
-			$text = $value->getLongText( SMW_OUTPUT_WIKI, $linker );
+			$text = $value->getLongText( $outputMode, $linker );
 
 		} elseif ( $prefix === 'auto' && $isSubject ) {
 			$text = $this->mixedResults ? $value->getLongText( $outputMode, $linker ) : 
 				$value->getShortText( $outputMode, $linker );
 
 		} else {
-			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
+			$text = $value->getShortText( $outputMode, $linker );
 		}
 
 		return $text;
