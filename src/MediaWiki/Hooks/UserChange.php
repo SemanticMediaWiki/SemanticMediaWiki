@@ -55,11 +55,17 @@ class UserChange implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param UserIdentity|string $user
+	 * @param UserIdentity|string|null $user
 	 */
 	public function process( $user ) {
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( NS_USER ) ) {
+			return false;
+		}
+
+		// getTargetUserIdentity returns null if it is not user(eg. CIDR) 
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5263
+		if ( $user === null ) {
 			return false;
 		}
 

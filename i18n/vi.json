@@ -197,5 +197,5 @@
 	"smw-concept-tab-list": "Danh sách",
 	"smw-concept-tab-errors": "Lỗi",
 	"smw-listingcontinuesabbrev": "(tiếp theo)",
-	"smw-showingresults": "Hiển thị bên dưới tối đa {{PLURAL:$1| <strong>1</strong> kết quả| kết quả <strong>$1</strong> }} bắt đầu bằng # <strong>$2</strong> ."
+	"smw-showingresults": "Bên dưới có cho đến <strong>1</strong> kết quả bắt đầu từ #<strong>$2</strong>."
 }

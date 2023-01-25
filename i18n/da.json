@@ -7,6 +7,7 @@
 			"Joedalton",
 			"Jon Harald Søby",
 			"Palnatoke",
+			"Peterleth",
 			"Saederup92"
 		]
 	},
@@ -77,6 +78,7 @@
 	"smw-statistics-concept-count-legacy": "{{PLURAL:$1|Koncept|Koncepter}}",
 	"smw-statistics-concept-count": "[[Special:Concepts|{{PLURAL:$1|Koncept|Koncepter}}]]",
 	"smw-statistics-datatype-count": "[[Special:Types|{{PLURAL:$1|Datatype|Datatyper}}]]",
+	"smw-statistics-delete-count-info": "Enheder, der er blevet markeret til fjernelse, skal bortskaffes regelmæssigt ved hjælp af de medfølgende vedligeholdelsesscripts.",
 	"smw-ask-order-rand": "Tilfældig",
 	"smw_ask_submit": "Find resultater",
 	"smw_ask_editquery": "Rediger forespørgsel",
