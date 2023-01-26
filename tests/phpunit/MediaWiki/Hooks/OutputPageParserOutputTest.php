@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use Language;
 use ParserOutput;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -152,7 +153,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 	public function outputDataProvider() {
 
-		$language = Language::factory( 'en' );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$language = $languageFactory->getLanguage( 'en' );
 
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
 
