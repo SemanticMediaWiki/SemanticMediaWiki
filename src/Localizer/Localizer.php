@@ -303,20 +303,16 @@ class Localizer {
 	public static function isKnownLanguageTag( $languageCode ) {
 
 		$languageCode = mb_strtolower( $languageCode );
+		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
-		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
-		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
-			return Language::isValidBuiltInCode( $languageCode );
-		}
-
-		return Language::isKnownLanguageTag( $languageCode );
+		return $languageNameUtils->isKnownLanguageTag( $languageCode );
 	}
 
 	/**
 	 * @see IETF language tag / BCP 47 standards
 	 *
 	 * @since 2.4
-	 *
+	 * 
 	 * @param string $languageCode
 	 *
 	 * @return string
