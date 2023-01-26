@@ -312,7 +312,7 @@ class Localizer {
 	 * @see IETF language tag / BCP 47 standards
 	 *
 	 * @since 2.4
-	 * 
+	 *
 	 * @param string $languageCode
 	 *
 	 * @return string
