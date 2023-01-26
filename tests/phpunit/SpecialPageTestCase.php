@@ -6,6 +6,7 @@ use FauxRequest;
 use Language;
 use OutputPage;
 use RequestContext;
+use MediaWiki\MediaWikiServices;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use WebRequest;
@@ -119,6 +120,8 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	private function makeRequestContext( WebRequest $request, $user, $title ) {
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$context = new RequestContext();
 		$context->setRequest( $request );
 
@@ -126,7 +129,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 		$out->setTitle( $title );
 
 		$context->setOutput( $out );
-		$context->setLanguage( Language::factory( 'en' ) );
+		$context->setLanguage( $languageFactory->getLanguage( 'en' ) );
 
 		$user = $user === null ? new MockSuperUser() : $user;
 		$context->setUser( $user );

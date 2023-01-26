@@ -4,6 +4,7 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
+use MediaWiki\MediaWikiServices;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\RecurringEvents;
@@ -57,10 +58,12 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$title = Title::newFromText( __METHOD__ );
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$instance = new RecurringEventsParserFunction(
 			new ParserData( $title, new ParserOutput() ),
 			new Subobject( $title ),
-			new MessageFormatter( \Language::factory( 'en' ) ),
+			new MessageFormatter( $languageFactory->getLanguage( 'en' ) ),
 			$recurringEvents
 		);
 

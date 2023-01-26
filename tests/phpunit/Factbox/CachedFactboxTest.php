@@ -4,6 +4,7 @@ namespace SMW\Tests\Factbox;
 
 use Language;
 use ParserOutput;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -178,7 +179,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			'Asserts that content from the outputpage property and retrieveContent() is equal'
 		);
 
-		if ( isset( $expected['isCached'] ) &&  $expected['isCached'] ) {
+		if ( isset( $expected['isCached'] ) && $expected['isCached'] ) {
 
 			$this->assertTrue(
 				$instance->isCached(),
@@ -196,7 +197,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 	public function outputDataProvider() {
 
-		$language = Language::factory( 'en' );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$language = $languageFactory->getLanguage( 'en' );
 
 		$title = MockTitle::buildMockForMainNamespace( __METHOD__ . 'mock-subject' );
 
