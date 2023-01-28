@@ -3,7 +3,6 @@
 namespace SMW\Tests\Factbox;
 
 use SMW\Factbox\FactboxText;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Factbox\FactboxText
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author Morne Alberts
  */
 class FactboxTextTest extends \PHPUnit_Framework_TestCase {
-
-	use PHPUnitCompat;
 
 	public function testSetText(): void {
 		$factboxText = new FactboxText();
