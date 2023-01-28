@@ -38,7 +38,8 @@ class FactboxFactory {
 		$settings = $applicationFactory->getSettings();
 
 		$cachedFactbox = new CachedFactbox(
-			$applicationFactory->getEntityCache()
+			$applicationFactory->getEntityCache(),
+			$applicationFactory->getFactboxText()
 		);
 
 		// Month = 30 * 24 * 3600

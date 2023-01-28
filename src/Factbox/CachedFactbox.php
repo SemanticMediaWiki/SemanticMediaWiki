@@ -66,13 +66,16 @@ class CachedFactbox {
 	 */
 	private $timestamp;
 
+	private FactboxText $factboxText;
+
 	/**
 	 * @since 1.9
 	 *
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache ) {
+	public function __construct( EntityCache $entityCache, FactboxText $factboxText ) {
 		$this->entityCache = $entityCache;
+		$this->factboxText = $factboxText;
 	}
 
 	/**
@@ -168,9 +171,7 @@ class CachedFactbox {
 	 */
 	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
-		$factboxText = ApplicationFactory::getInstance()->getFactboxText();
-
-		$factboxText->clear();
+		$this->factboxText->clear();
 		$time = -microtime( true );
 
 		$context = $outputPage->getContext();
@@ -210,7 +211,7 @@ class CachedFactbox {
 				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 			);
 
-			$factboxText->setText( $content['text'] );
+			$this->factboxText->setText( $content['text'] );
 			return;
 		}
 
@@ -220,7 +221,7 @@ class CachedFactbox {
 			$checkMagicWords
 		);
 
-		$factboxText->setText( $text );
+		$this->factboxText->setText( $text );
 
 		if ( $isPreview ) {
 			return;
@@ -282,10 +283,8 @@ class CachedFactbox {
 			return $text;
 		}
 
-		$factboxText = ApplicationFactory::getInstance()->getFactboxText();
-
-		if ( $factboxText->hasText() ) {
-			$text = $factboxText->getText();
+		if ( $this->factboxText->hasText() ) {
+			$text = $this->factboxText->getText();
 		} elseif ( $title instanceof Title ) {
 
 			$context = $outputPage->getContext();

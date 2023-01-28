@@ -22,4 +22,8 @@ class FactboxText {
 		return $this->text !== null;
 	}
 
+	public function hasNonEmptyText(): bool {
+		return $this->text !== null && $this->text !== '';
+	}
+
 }

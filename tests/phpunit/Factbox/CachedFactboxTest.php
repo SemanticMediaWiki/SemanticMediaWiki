@@ -5,6 +5,7 @@ namespace SMW\Tests\Factbox;
 use Language;
 use ParserOutput;
 use MediaWiki\MediaWikiServices;
+use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -32,6 +33,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	private $memoryCache;
 	private $entityCache;
 	private $spyLogger;
+	private FactboxText $factboxText;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -54,6 +56,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
+
+		$this->factboxText = ApplicationFactory::getInstance()->getFactboxText();
 	}
 
 	protected function tearDown() : void {
@@ -65,7 +69,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			CachedFactbox::class,
-			new CachedFactbox( $this->entityCache )
+			new CachedFactbox( $this->entityCache, $this->factboxText )
 		);
 	}
 
@@ -93,7 +97,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$outputPage = $parameters['outputPage'];
 
 		$instance = new CachedFactbox(
-			new EntityCache( $this->memoryCache )
+			new EntityCache( $this->memoryCache ),
+			$this->factboxText
 		);
 
 		$instance->isEnabled( true );
@@ -115,7 +120,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			$parameters['parserOutput']
 		);
 
-		$result = ApplicationFactory::getInstance()->getFactboxText()->getText();
+		$result = $this->factboxText->getText();
 
 		$this->assertPreProcess(
 			$expected,
@@ -149,7 +154,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			);
 
 			// Deliberately clear the text to force content to be retrieved from the cache
-			ApplicationFactory::getInstance()->getFactboxText()->clear();
+			$this->factboxText->clear();
 
 			$this->assertTrue(
 				$result === $instance->retrieveContent( $outputPage ),
@@ -174,7 +179,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$result === ApplicationFactory::getInstance()->getFactboxText()->getText(),
+			$result === $this->factboxText->getText(),
 			'Asserts that content from the FactboxText text and retrieveContent() is equal'
 		);
 

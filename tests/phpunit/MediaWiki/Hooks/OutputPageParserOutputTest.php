@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use Language;
 use ParserOutput;
 use MediaWiki\MediaWikiServices;
+use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -32,6 +33,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	private $parserOutput;
 	private $namespaceExaminer;
 	private $permissionExaminer;
+	private FactboxText $factboxText;
 
 	protected function setUp() : void {
 		parent::setUp();
@@ -62,6 +64,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->factboxText = $this->applicationFactory->getFactboxText();
 	}
 
 	protected function tearDown() : void {
@@ -73,7 +77,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			OutputPageParserOutput::class,
-			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer )
+			new OutputPageParserOutput( $this->namespaceExaminer, $this->permissionExaminer, $this->factboxText )
 		);
 	}
 
@@ -102,7 +106,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new OutputPageParserOutput(
 			$this->namespaceExaminer,
-			$this->permissionExaminer
+			$this->permissionExaminer,
+			$this->factboxText
 		);
 
 		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
@@ -125,13 +130,13 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $outputPage, $parserOutput );
 
 		if ( $expected['text'] == '' ) {
-			$this->assertFalse( ApplicationFactory::getInstance()->getFactboxText()->hasText() );
+			$this->assertFalse( $this->factboxText->hasText() );
 			return;
 		}
 
 		// For expected content continue to verify that the outputPage was amended and
 		// that the content is also available via the CacheStore
-		$text = ApplicationFactory::getInstance()->getFactboxText()->getText();
+		$text = $this->factboxText->getText();
 
 		$this->assertContains( $expected['text'], $text );
 
@@ -142,7 +147,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		// Deliberately clear the text to retrieve content from the CacheStore
-		ApplicationFactory::getInstance()->getFactboxText()->clear();
+		$this->factboxText->clear();
 
 		$this->assertEquals(
 			$text,
