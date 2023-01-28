@@ -17,6 +17,7 @@ use SMW\DisplayTitleFinder;
 use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
+use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
 use SMW\IteratorFactory;
@@ -482,6 +483,15 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			return $paramListProcessor;
+		} );
+
+		/**
+		 * @var FactboxText
+		 */
+		$containerBuilder->registerCallback( 'FactboxText', function( $containerBuilder ) {
+			$containerBuilder->registerExpectedReturnType( 'FactboxText', FactboxText::class );
+
+			return new FactboxText();
 		} );
 	}
 

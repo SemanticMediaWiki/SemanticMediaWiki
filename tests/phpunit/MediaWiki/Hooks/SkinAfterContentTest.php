@@ -129,7 +129,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		ApplicationFactory::getInstance()->getFactboxText()->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -221,7 +221,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		ApplicationFactory::getInstance()->getFactboxText()->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -265,7 +265,7 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
 
-		$outputPage->mSMWFactboxText = $text;
+		ApplicationFactory::getInstance()->getFactboxText()->setText( $text );
 
 		$skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()

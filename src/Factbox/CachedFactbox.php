@@ -168,7 +168,9 @@ class CachedFactbox {
 	 */
 	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
 
-		$outputPage->mSMWFactboxText = null;
+		$factboxText = ApplicationFactory::getInstance()->getFactboxText();
+
+		$factboxText->clear();
 		$time = -microtime( true );
 
 		$context = $outputPage->getContext();
@@ -208,7 +210,8 @@ class CachedFactbox {
 				[ 'rev_id' => $rev_id, 'lang' => $lang, 'procTime' => microtime( true ) + $time ]
 			);
 
-			return $outputPage->mSMWFactboxText = $content['text'];
+			$factboxText->setText( $content['text'] );
+			return;
 		}
 
 		$text = $this->rebuild(
@@ -217,7 +220,7 @@ class CachedFactbox {
 			$checkMagicWords
 		);
 
-		$outputPage->mSMWFactboxText = $text;
+		$factboxText->setText( $text );
 
 		if ( $isPreview ) {
 			return;
@@ -279,8 +282,10 @@ class CachedFactbox {
 			return $text;
 		}
 
-		if ( isset( $outputPage->mSMWFactboxText ) ) {
-			$text = $outputPage->mSMWFactboxText;
+		$factboxText = ApplicationFactory::getInstance()->getFactboxText();
+
+		if ( $factboxText->hasText() ) {
+			$text = $factboxText->getText();
 		} elseif ( $title instanceof Title ) {
 
 			$context = $outputPage->getContext();

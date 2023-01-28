@@ -115,7 +115,7 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			$parameters['parserOutput']
 		);
 
-		$result = $outputPage->mSMWFactboxText;
+		$result = ApplicationFactory::getInstance()->getFactboxText()->getText();
 
 		$this->assertPreProcess(
 			$expected,
@@ -148,9 +148,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 				'Asserts that content was altered as expected'
 			);
 
-			// Deliberately clear the outputPage property to force
-			// content to be retrieved from the cache
-			unset( $outputPage->mSMWFactboxText );
+			// Deliberately clear the text to force content to be retrieved from the cache
+			ApplicationFactory::getInstance()->getFactboxText()->clear();
 
 			$this->assertTrue(
 				$result === $instance->retrieveContent( $outputPage ),
@@ -175,8 +174,8 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertTrue(
-			$result === $outputPage->mSMWFactboxText,
-			'Asserts that content from the outputpage property and retrieveContent() is equal'
+			$result === ApplicationFactory::getInstance()->getFactboxText()->getText(),
+			'Asserts that content from the FactboxText text and retrieveContent() is equal'
 		);
 
 		if ( isset( $expected['isCached'] ) && $expected['isCached'] ) {
