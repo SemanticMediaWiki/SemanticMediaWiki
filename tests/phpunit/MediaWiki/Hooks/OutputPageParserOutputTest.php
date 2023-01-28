@@ -125,12 +125,13 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $outputPage, $parserOutput );
 
 		if ( $expected['text'] == '' ) {
-			return $this->assertFalse( isset( $outputPage->mSMWFactboxText ) );
+			$this->assertFalse( ApplicationFactory::getInstance()->getFactboxText()->hasText() );
+			return;
 		}
 
 		// For expected content continue to verify that the outputPage was amended and
 		// that the content is also available via the CacheStore
-		$text = $outputPage->mSMWFactboxText;
+		$text = ApplicationFactory::getInstance()->getFactboxText()->getText();
 
 		$this->assertContains( $expected['text'], $text );
 
@@ -140,9 +141,8 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			'Asserts that retrieveContent() returns an expected text'
 		);
 
-		// Deliberately clear the outputPage Property to retrieve
-		// content from the CacheStore
-		unset( $outputPage->mSMWFactboxText );
+		// Deliberately clear the text to retrieve content from the CacheStore
+		ApplicationFactory::getInstance()->getFactboxText()->clear();
 
 		$this->assertEquals(
 			$text,

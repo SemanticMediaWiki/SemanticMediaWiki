@@ -16,6 +16,7 @@ use SMW\DataUpdater;
 use SMW\DataValueFactory;
 use SMW\DeferredTransactionalCallableUpdate;
 use SMW\EntityCache;
+use SMW\Factbox\FactboxText;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
@@ -652,6 +653,13 @@ class ServicesFactory {
 
 	public function newPostProcHandler( ParserOutput $parserOutput ) : PostProcHandler {
 		return $this->create( 'PostProcHandler', $parserOutput );
+	}
+
+	/**
+	 * @since 4.1.1
+	 */
+	public function getFactboxText() : FactboxText {
+		return $this->containerBuilder->singleton( 'FactboxText' );
 	}
 
 }

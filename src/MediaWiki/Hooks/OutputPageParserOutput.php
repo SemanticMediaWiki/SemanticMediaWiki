@@ -126,13 +126,15 @@ class OutputPageParserOutput implements HookListener {
 
 	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ) {
 
+		$applicationFactory = ApplicationFactory::getInstance();
+
+		$factboxText = $applicationFactory->getFactboxText();
+
 		$request = $outputPage->getContext()->getRequest();
 
-		if ( isset( $outputPage->mSMWFactboxText ) && $request->getCheck( 'wpPreview' ) ) {
+		if ( $factboxText->hasText() && $request->getCheck( 'wpPreview' ) ) {
 			return '';
 		}
-
-		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
@@ -146,7 +148,7 @@ class OutputPageParserOutput implements HookListener {
 		// Due to how MW started to move the `mw-data-after-content` out of the
 		// `bodyContent` we need a way to distinguish content from a top level
 		// to apply additional CSS rules
-		if ( isset( $outputPage->mSMWFactboxText ) && $outputPage->mSMWFactboxText !== '' ) {
+		if ( $factboxText->hasText() && $factboxText->getText() !== '' ) {
 			$outputPage->addBodyClasses( 'smw-factbox-view' );
 		}
 
