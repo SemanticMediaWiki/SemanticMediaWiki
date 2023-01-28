@@ -131,13 +131,13 @@ class OutputPageParserOutput implements HookListener {
 
 	protected function addFactbox( OutputPage $outputPage, ParserOutput $parserOutput ) {
 
-		$applicationFactory = ApplicationFactory::getInstance();
-
 		$request = $outputPage->getContext()->getRequest();
 
 		if ( $this->factboxText->hasText() && $request->getCheck( 'wpPreview' ) ) {
 			return '';
 		}
+
+		$applicationFactory = ApplicationFactory::getInstance();
 
 		$cachedFactbox = $applicationFactory->singleton( 'FactboxFactory' )->newCachedFactbox();
 
