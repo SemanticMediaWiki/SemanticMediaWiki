@@ -89,11 +89,6 @@ class DefaultParamDefinition {
 			'values' => [ 'all', 'subject', 'none' ],
 		];
 
-		$params['prefix'] = [
-			'default' => 'none',
-			'values' => [ 'all', 'subject', 'none', 'auto' ],
-		];
-
 		// The empty string represents the page itself, which should be sorted by default.
 		$params['sort'] = [
 			'islist' => true,
