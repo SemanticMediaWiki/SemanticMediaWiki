@@ -24,7 +24,7 @@ trait PrefixParameterProcessor {
 		return !( $query->getDescription() instanceof NamespaceDescription );
 	}
 
-	public function useLongText( $isSubject ) : string {
+	public function useLongText( $isSubject ) : bool {
 		$prefix = $this->prefix;
 
 		if ( $prefix === 'all'
