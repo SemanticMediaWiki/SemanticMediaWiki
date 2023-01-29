@@ -4,10 +4,10 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
-use SMW\Query\Language\NamespaceDescription;
 use SMWDataValue;
 use SMWQueryResult as QueryResult;
 use SMWResultArray;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
 /**
  * Class ValueTextsBuilder
@@ -20,16 +20,16 @@ use SMWResultArray;
 class ValueTextsBuilder {
 
 	use ParameterDictionaryUser;
+	use PrefixParameterProcessor;
 
 	private $linker;
-
-	private $mixedResults;
 
 	/**
 	 * @param SMWQueryResult $queryResult
 	 */
 	public function __construct( QueryResult $queryResult ) {
-		$this->mixedResults = !( $queryResult->getQuery()->getDescription() instanceof NamespaceDescription );
+		// PrefixParameterProcessor trait
+		$this->setQuery( $queryResult->getQuery() );
 	}
 
 	/**
@@ -39,6 +39,9 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
+
+		// PrefixParameterProcessor trait
+		$this->setPrefix( $this->get( 'prefix' ) );
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
@@ -76,23 +79,10 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
-		$prefix = $this->get('prefix');
-		$outputMode = SMW_OUTPUT_WIKI;
-		$linker = $this->getLinkerForColumn( $column );
+		$isSubject = ( $column === 0 );
+		$dataValueMethod = $this->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
-		if ( !$prefix || $prefix === 'none' ) {
-			$text = $value->getShortText( $outputMode, $linker );
-
-		} elseif ( $prefix === 'all' || ( $prefix === 'subject' && $column === 0 ) ) {
-			$text = $value->getLongText( $outputMode, $linker );
-
-		} elseif ( $prefix === 'auto' && $column === 0 ) {
-			$text = $this->mixedResults ? $value->getLongText( $outputMode, $linker ) : 
-				$value->getShortText( $outputMode, $linker );
-
-		} else {
-			$text = $value->getShortText( $outputMode, $linker );
-		}
+		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
 		return $this->sanitizeValueText( $text );
 	}
