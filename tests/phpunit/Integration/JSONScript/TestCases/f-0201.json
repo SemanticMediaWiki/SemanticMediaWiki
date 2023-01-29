@@ -159,12 +159,29 @@
 		},
 		{
 			"type": "format",
-			"about": "#5 (#1464)",
+			"about": "#5 (1.38-) (#1464)",
+			"skip-on": {
+				"mediawiki": [ ">1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
 			"subject": "Example/F0201/3c",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"1\"><span style=\"color: green; font-size: 120%;\">&#10003;</span></td>",
 					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"0\"><span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span></td>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#5 (1.38+) (#1464)",
+			"skip-on": {
+				"mediawiki": [ "<1.37.x", "MediaWiki changed the HTML Tidy" ]
+			},
+			"subject": "Example/F0201/3c",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"1\"><span style=\"color: green; font-size: 120%;\">✓</span></td>",
+					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"0\"><span style=\"color: #AA0000; font-size: 120%;\">✕</span></td>"
 				]
 			}
 		}
