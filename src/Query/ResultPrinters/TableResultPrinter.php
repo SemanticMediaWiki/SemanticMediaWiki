@@ -5,7 +5,6 @@ namespace SMW\Query\ResultPrinters;
 use Html;
 use SMW\DIWikiPage;
 use SMW\Message;
-use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
 use SMW\Utils\HtmlTable;
@@ -26,12 +25,12 @@ use SMWResultArray as ResultArray;
  */
 class TableResultPrinter extends ResultPrinter {
 
+	use PrefixParameterProcessor;
+
 	/**
 	 * @var HtmlTable
 	 */
 	private $htmlTable;
-
-	private $mixedResults;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -79,6 +78,12 @@ class TableResultPrinter extends ResultPrinter {
 			'default' => '',
 		];
 
+		$params['prefix'] = [
+			'message' => 'smw-paramdesc-prefix',
+			'default' => 'none',
+			'values' => [ 'all', 'subject', 'none', 'auto' ],
+		];
+
 		return $params;
 	}
 
@@ -88,7 +93,10 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-		$this->mixedResults = !( $res->getQuery()->getDescription() instanceof NamespaceDescription );
+
+		// PrefixParameterProcessor trait
+		$this->setQuery( $res->getQuery() );
+		$this->setPrefix( $this->params['prefix'] );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -318,6 +326,7 @@ class TableResultPrinter extends ResultPrinter {
 		$values = [];
 
 		foreach ( $dataValues as $dv ) {
+			$dataValueMethod = $this->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
@@ -327,12 +336,13 @@ class TableResultPrinter extends ResultPrinter {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $this->getDataValueText( $dv, SMW_OUTPUT_WIKI, $isSubject ) ],
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $this->getDataValueText( $dv, $outputMode, $isSubject );
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
+
 
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
@@ -349,34 +359,6 @@ class TableResultPrinter extends ResultPrinter {
 
 		return $html;
 	}
-
-	/**
-	 * @param @param SMWDataValue $value
-	 * @param int $outputMode
-	 * @param Linker|null|bool $linker
-	 * @return string
-	 */
-	protected function getDataValueText( $value, $outputMode, $isSubject ) {	
-		$prefix = $this->params['prefix'];
-		$linker = $this->getLinker( $isSubject );
-
-		if ( !$prefix || $prefix === 'none' ) {
-			$text = $value->getShortText( $outputMode, $linker );
-
-		} elseif ( $prefix === 'all' || ( $prefix === 'subject' && $isSubject ) ) {
-			$text = $value->getLongText( $outputMode, $linker );
-
-		} elseif ( $prefix === 'auto' && $isSubject ) {
-			$text = $this->mixedResults ? $value->getLongText( $outputMode, $linker ) : 
-				$value->getShortText( $outputMode, $linker );
-
-		} else {
-			$text = $value->getShortText( $outputMode, $linker );
-		}
-
-		return $text;
-	}
-
 
 	/**
 	 * @see ResultPrinter::getResources
