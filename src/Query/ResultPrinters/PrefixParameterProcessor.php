@@ -5,24 +5,26 @@ namespace SMW\Query\ResultPrinters;
 use SMWQuery as Query;
 use SMW\Query\Language\NamespaceDescription;
 
-trait PrefixParameterProcessor {
+class PrefixParameterProcessor {
 
-	private bool $mixedResults;
+	private Query $query;
 	private string $prefix;
+	private bool $mixedResults;
 
-	public function setPrefix( string $prefix ) {
+	public function __construct( Query $query, string $prefix ) {
+		$this->query = $query;
 		$this->prefix = $prefix;
+
+		if ( $prefix === 'auto' ) {
+			$this->mixedResults = $this->getMixedResults();
+		}
 	}
 
-	public function setQuery( Query $query ) {
-		$this->mixedResults = $this->determineMixedResults( $query );
-	}
-
-	private function determineMixedResults( Query $query ) : bool {
+	private function getMixedResults() : bool {
 		// this is a basic implementation, possibly to be expanded,
 		// to guess whether result entries are expected to have
 		// homogeneous or mixed prefixes
-		return !( $query->getDescription() instanceof NamespaceDescription );
+		return !( $this->query->getDescription() instanceof NamespaceDescription );
 	}
 
 	public function useLongText( bool $isSubject ) : bool {

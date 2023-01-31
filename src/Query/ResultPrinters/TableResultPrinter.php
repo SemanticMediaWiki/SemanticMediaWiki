@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;
@@ -12,6 +13,7 @@ use SMWDataValue;
 use SMWDIBlob as DIBlob;
 use SMWQueryResult as QueryResult;
 use SMWResultArray as ResultArray;
+	
 
 /**
  * Print query results in tables
@@ -25,12 +27,12 @@ use SMWResultArray as ResultArray;
  */
 class TableResultPrinter extends ResultPrinter {
 
-	use PrefixParameterProcessor;
-
 	/**
 	 * @var HtmlTable
 	 */
 	private $htmlTable;
+
+	private $prefixParameterProcessor;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -94,9 +96,8 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
 
-		// PrefixParameterProcessor trait
-		$this->setQuery( $res->getQuery() );
-		$this->setPrefix( $this->params['prefix'] );
+		$this->prefixParameterProcessor = new PrefixParameterProcessor( $res->getQuery(),
+			$this->params['prefix'] );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -326,7 +327,7 @@ class TableResultPrinter extends ResultPrinter {
 		$values = [];
 
 		foreach ( $dataValues as $dv ) {
-			$dataValueMethod = $this->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+			$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
