@@ -20,16 +20,12 @@ use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 class ValueTextsBuilder {
 
 	use ParameterDictionaryUser;
-	use PrefixParameterProcessor;
 
 	private $linker;
+	private $prefixParameterProcessor;
 
-	/**
-	 * @param SMWQueryResult $queryResult
-	 */
-	public function __construct( QueryResult $queryResult ) {
-		// PrefixParameterProcessor trait
-		$this->setQuery( $queryResult->getQuery() );
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+		$this->prefixParameterProcessor = $prefixParameterProcessor;
 	}
 
 	/**
@@ -39,9 +35,6 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
-
-		// PrefixParameterProcessor trait
-		$this->setPrefix( $this->get( 'prefix' ) );
 
 		$valueTexts = $this->getValueTexts( $field, $column );
 
@@ -80,7 +73,7 @@ class ValueTextsBuilder {
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
 		$isSubject = ( $column === 0 );
-		$dataValueMethod = $this->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
