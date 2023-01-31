@@ -7,6 +7,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
 use SMW\SQLStore\Lookup\ListLookup;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
 use SMWDataItem as DataItem;
 use SMWQuery;
@@ -454,10 +455,8 @@ abstract class Store implements QueryEngine {
 	 * @param $count integer
 	 * @param $namespaces mixed array or false
 	 * @param $usejobs boolean
-	 *
-	 * @return float between 0 and 1 to indicate the overall progress of the refreshing
 	 */
-	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
+	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true ): Rebuilder;
 
 	/**
 	 * Setup the store.

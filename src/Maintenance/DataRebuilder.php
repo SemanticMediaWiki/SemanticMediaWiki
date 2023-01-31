@@ -10,6 +10,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
 use SMW\Store;
@@ -92,6 +93,7 @@ class DataRebuilder {
 	private $filters = [];
 	private $verbose = false;
 	private $startIdFile = false;
+	private Rebuilder $entityRebuildDispatcher;
 
 	/**
 	 * @since 1.9.2
