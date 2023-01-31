@@ -14,8 +14,7 @@ $pathParts = explode( '/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ) );
 
 $moduleTemplate = [
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) ),
-	'group' => 'ext.smw'
+	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) )
 ];
 
 return [
