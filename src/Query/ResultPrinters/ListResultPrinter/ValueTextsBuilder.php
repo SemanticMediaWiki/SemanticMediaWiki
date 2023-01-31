@@ -5,7 +5,6 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 use Linker;
 use Sanitizer;
 use SMWDataValue;
-use SMWQueryResult as QueryResult;
 use SMWResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
