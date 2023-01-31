@@ -14,6 +14,7 @@ use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
@@ -464,7 +465,7 @@ class SQLStore extends Store {
 		return $installer->uninstall( $verbose );
 	}
 
-	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ) {
+	public function refreshData( &$id, $count, $namespaces = false, $usejobs = true ): Rebuilder {
 
 		$rebuilder = $this->factory->newRebuilder();
 
