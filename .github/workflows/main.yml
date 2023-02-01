@@ -69,11 +69,11 @@ jobs:
           mv composer.phar /usr/local/bin/composer
 
       - name: Checkout Extension
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ${{ env.EXT_NAME }}
 
-      # Setting actions/checkout@v2 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
+      # Setting actions/checkout@v3 path to env.MW_EXT_PATH fails with "Repository path '/var/www/html/extensions' is not under ..."
       # See also open PR https://github.com/actions/checkout/pull/388
       - name: Move Extension
         run: |
